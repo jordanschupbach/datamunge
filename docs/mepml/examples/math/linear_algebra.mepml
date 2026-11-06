@@ -1,0 +1,400 @@
+//? Title: Linear Algebra: Transformations, Systems and Projections
+//? Subtitle: Hand-checkable matrix examples with datamunge::linalg, from basis vectors to conditioning
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a linear rule and some observations, we want to compute its output, recover its input,
+or find the closest output it can produce. These are the matrix problems behind coordinate
+changes, simultaneous equations and fitting a straight line. This tutorial starts with two
+dimensions: a matrix sends a square to a parallelogram, a linear system finds the intersection
+of two lines, and eigenvectors reveal directions that the matrix only stretches. A three-point
+least-squares example then shows an orthogonal projection. Finally, a controlled perturbation
+checks exactly how a condition number predicts sensitivity. All inputs are small constructed
+examples; no external dataset is needed.
+)
+
+\toc
+
+> The method: a matrix is a linear map
+
+A vector \(x\in\mathbb R^n\) is a column of coordinates. A matrix
+\(A\in\mathbb R^{m\times n}\) maps it to \(Ax\in\mathbb R^m\). Its columns
+\(a_1,\ldots,a_n\) are the images of the standard basis vectors, so
+
+$$
+Ax=\sum_{j=1}^n x_j a_j,\qquad
+A(\alpha x+\beta z)=\alpha Ax+\beta Az.
+$$
+\alttext(A times x is the sum of x j times column a j. A preserves linear combinations: A of alpha x plus beta z equals alpha A x plus beta A z.)
+
+This gives a geometric reading of multiplication: scale each column by its input coordinate
+and add. Matrix multiplication composes maps: \(BAx=B(Ax)\), so the rightmost map acts first.
+The transpose \(A^\top\) exchanges rows and columns, and the dot product
+\(x^\top z\) measures their alignment. The Euclidean length is
+\(\lVert x\rVert_2=\sqrt{x^\top x}\); perpendicular vectors have zero dot product.
+
+The diagram uses \(A=\begin{pmatrix}2&1\\1&2\end{pmatrix}\). Its columns are independent,
+so every output has a unique input. Its determinant is \(2\cdot2-1\cdot1=3\): areas grow
+by a factor of three and orientation is preserved.
+
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
+
+```{cpp, file="figures/linear_algebra_basis.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  dm::graphics::DiagramStroke arrow;
+  arrow.arrow = true;
+  dm::graphics::DiagramStroke blue_line;
+  blue_line.color = {37, 99, 235};
+  dm::graphics::DiagramStroke red_line;
+  red_line.color = {220, 38, 38};
+  dm::graphics::DiagramStroke grey_line;
+  grey_line.color = {148, 163, 184};
+  auto dashed = grey_line;
+  dashed.dashed = true;
+  auto blue_arrow = blue_line;
+  blue_arrow.arrow = true;
+  auto orange_arrow = red_line;
+  orange_arrow.arrow = true;
+  orange_arrow.color = {234, 88, 12};
+diagram.text({1.2, 3.8}, "Input coordinates")
+      .text({8, 3.8}, "Output coordinates")
+      .polygon({{0, 0}, {1, 0}, {1, 1}, {0, 1}}, {219, 234, 254, .6}, dashed)
+      .polygon({{6.5, 0}, {8.5, 1}, {9.5, 3}, {7.5, 2}}, {219, 234, 254, .6}, dashed)
+      .path({{-.3, 0}, {2.7, 0}}, arrow).path({{0, -.3}, {0, 3.1}}, arrow)
+      .path({{6.2, 0}, {10, 0}}, arrow).path({{6.5, -.3}, {6.5, 3.3}}, arrow)
+      .path({{0, 0}, {1, 0}}, blue_arrow).path({{0, 0}, {0, 1}}, orange_arrow)
+      .path({{6.5, 0}, {8.5, 1}}, blue_arrow).path({{6.5, 0}, {7.5, 2}}, orange_arrow)
+      .path({{3.2, 1.5}, {5, 1.5}}, arrow)
+      .text({4.1, 2}, "A")
+      .text({1, -.4}, "e₁").text({-.45, 1}, "e₂")
+      .text({1.6, 1.3}, "(1,1)").text({9.8, 3.3}, "(3,3)")
+      .text({9.2, .6}, "a₁ = (2,1)", 17).text({7.4, 2.6}, "a₂ = (1,2)", 17)
+      .text({1.2, -1}, "Area = 1").text({8, -1}, "Area = det A = 3");
+  diagram.save_svg("build/linear_algebra_basis.svg");
+}
+```
+// result_begin:
+// \image(figures/linear_algebra_basis.svg)
+// result_end
+\caption(The unit square maps to the parallelogram spanned by the columns of A. The image of its opposite corner is the sum of those columns.)
+\alttext(On the left, blue e 1 and orange e 2 span a unit square. On the right their images, blue (2,1) and orange (1,2), span a parallelogram with opposite corner (3,3). The map multiplies area by three.)
+
+The *column space* contains all possible outputs. Its dimension is the *rank*. The *null
+space* contains inputs sent to zero. Rank plus null-space dimension equals \(n\): independent
+columns give independent input directions, and every remaining direction can be combined
+with them to make a null vector. Thus a square full-rank matrix has a unique solution to
+\(Ax=b\). A rank-deficient matrix can have no solution or infinitely many, depending on
+whether \(b\) lies in its column space.
+
+For a square system, `dm::linalg::lu(A)` factors \(PA=LU\), where \(P\) permutes rows,
+\(L\) is lower triangular and \(U\) is upper triangular. Solving \(Lz=Pb\) and then
+\(Ux=z\) recovers the input. Partial pivoting chooses the largest available absolute entry
+in each pivot column. Factorization takes \(O(n^3)\) operations; each further right-hand side
+takes \(O(n^2)\). Factor once and reuse `.solve()` for several observations.
+
+All C++ blocks below are independent complete programs using `<dm/dm.hpp>`. `DenseMatrix`
+initialisers list entries row by row, and element indices start at zero. Program loops only
+prepare plot coordinates or display results; the library performs the factorizations.
+
+> Simple examples
+
+>> Recovering the input: two intersecting equations
+
+Take \(b=(4,5)^\top\). The rows of \(Ax=b\) give two lines. Elimination exposes the
+intermediate equation and the answer:
+
+$$
+\begin{aligned}
+2x_1+x_2&=4,\\
+x_1+2x_2&=5,\\
+\text{row 2}-\tfrac12\text{row 1}:\quad \tfrac32x_2&=3,
+\qquad x_2=2,\quad x_1=1.
+\end{aligned}
+$$
+\alttext(The equations are two x 1 plus x 2 equals four, and x 1 plus two x 2 equals five. Subtracting half of the first row from the second gives three halves x 2 equals three. Hence x 2 is two and x 1 is one.)
+
+Equivalently, the output is the column combination
+\(b=1(2,1)^\top+2(1,2)^\top\). The program solves the system and checks the result by
+multiplying back. Forming the inverse would add work when only a solution is needed.
+
+```{cpp, results="markdown", file="figures/linear_algebra_system.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const dm::linalg::DenseMatrix<double> A(2, 2, {2, 1, 1, 2});
+  const std::vector<double> b{4, 5};
+  const auto factor = dm::linalg::lu(A);
+  const auto x = factor.solve(b);
+  const auto reconstructed = A * x;
+  std::print("| quantity | first entry | second entry |\n| --- | ---: | ---: |\n");
+  std::print("| recovered x | {:.6f} | {:.6f} |\n", x[0], x[1]);
+  std::print("| A x | {:.6f} | {:.6f} |\n", reconstructed[0], reconstructed[1]);
+  std::print("\ndeterminant = {:.0f}; backward error = {:.2e}\n",
+             factor.det(), dm::linalg::backward_error(A, x, b));
+  dm::graphics::RPlot::create()
+      .line({-0.5, 2.5}, {5, -1}, "2 x1 + x2 = 4", dm::RGB{37, 99, 235}, 2)
+      .line({-0.5, 2.5}, {2.75, 1.25}, "x1 + 2 x2 = 5", dm::RGB{234, 88, 12}, 2)
+      .points({x[0]}, {x[1]}, "solution", dm::RGB{22, 163, 74}, 8)
+      .text(1.12, 2.25, "(1, 2)")
+      .x_limits(-0.6, 2.6).y_limits(-1.4, 5.5)
+      .x_label("x1").y_label("x2").title("Solving A x = b")
+      .size(760, 500).save_svg("build/linear_algebra_system.svg");
+}
+```
+// result_begin: markdown
+| quantity | first entry | second entry |
+| --- | ---: | ---: |
+| recovered x | 1.000000 | 2.000000 |
+| A x | 4.000000 | 5.000000 |
+
+determinant = 3; backward error = 0.00e+00
+\image(figures/linear_algebra_system.svg)
+// result_end
+\caption(The recovered input and its image, followed by the two equations intersecting at (1,2). Backward error measures the residual relative to the sizes of A, x and b.)
+\alttext(A descending blue line and a shallower orange line intersect at the green point (1,2). The table reports recovered input (1,2) and reconstructed output (4,5).)
+
+>> Eigenvectors: directions that do not turn
+
+An eigenvector \(v\ne0\) satisfies \(Av=\lambda v\). For this symmetric matrix the
+sum and difference of the two coordinate directions give
+
+$$
+v_+=\frac{1}{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix},\quad Av_+=3v_+,
+\qquad
+v_-=\frac{1}{\sqrt2}\begin{pmatrix}1\\-1\end{pmatrix},\quad Av_-=v_-.
+$$
+\alttext(The unit vector in direction (1,1) has eigenvalue three. The perpendicular unit vector in direction (1,minus one) has eigenvalue one.)
+
+Since these vectors are orthonormal, every vector has a unique decomposition
+\(x=c_+v_++c_-v_-\), where \(c_\pm=v_\pm^\top x\). Applying the map gives
+\(Ax=3c_+v_++c_-v_-\): resolve along the two axes, stretch, and recombine.
+In matrix notation this is \(A=V\Lambda V^\top\). A unit circle therefore becomes an
+ellipse with semiaxes 3 and 1. Their product is the area multiplier, matching the determinant.
+
+```{cpp, results="markdown", file="figures/linear_algebra_eigen.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numbers>
+
+int main() {
+  using Matrix = dm::linalg::DenseMatrix<double>;
+  const Matrix A(2, 2, {2, 1, 1, 2});
+  const auto eigen = dm::linalg::symmetric_eigen(A);
+  Matrix diagonal(2, 2);
+  std::print("| eigenvalue | v1 | v2 | norm of A v - lambda v |\n| ---: | ---: | ---: | ---: |\n");
+  for (std::size_t j = 0; j < 2; ++j) {
+    diagonal(j, j) = eigen.eigenvalues[j];
+    const auto v = eigen.eigenvectors.col(j);
+    const auto residual = A * Matrix::from_columns({v}) - Matrix::from_columns({v}) * diagonal(j, j);
+    std::print("| {:.6f} | {:.6f} | {:.6f} | {:.2e} |\n",
+               diagonal(j, j), v[0], v[1], residual.norm_frobenius());
+  }
+  const auto& V = eigen.eigenvectors;
+  std::print("\nreconstruction error = {:.2e}; orthogonality error = {:.2e}\n",
+             (A - V * diagonal * V.transpose()).norm_frobenius(),
+             (V.transpose() * V - Matrix::identity(2)).norm_frobenius());
+  Matrix circle(2, 129);
+  for (std::size_t i = 0; i < circle.cols(); ++i) {
+    const double angle = 2 * std::numbers::pi * static_cast<double>(i) / 128;
+    circle(0, i) = std::cos(angle);
+    circle(1, i) = std::sin(angle);
+  }
+  const auto ellipse = A * circle;
+  auto plot = dm::graphics::RPlot::create();
+  plot.line(circle.row(0), circle.row(1), "unit circle", dm::RGB{100, 116, 139}, 2)
+      .line(ellipse.row(0), ellipse.row(1), "image under A", dm::RGB{37, 99, 235}, 2);
+  for (std::size_t j = 0; j < 2; ++j) {
+    const auto v = V.col(j);
+    const double length = diagonal(j, j);
+    plot.segments({-length * v[0]}, {-length * v[1]},
+                  {length * v[0]}, {length * v[1]}, dm::RGB{234, 88, 12}, 2);
+  }
+  plot.x_limits(-3.5, 3.5).y_limits(-3.5, 3.5)
+      .x_label("first coordinate").y_label("second coordinate")
+      .title("Eigenvectors are the ellipse axes")
+      .size(660, 680).margins(70, 30, 55, 65)
+      .save_svg("build/linear_algebra_eigen.svg");
+}
+```
+// result_begin: markdown
+| eigenvalue | v1 | v2 | norm of A v - lambda v |
+| ---: | ---: | ---: | ---: |
+| 3.000000 | 0.707107 | 0.707107 | 0.00e+00 |
+| 1.000000 | 0.707107 | -0.707107 | 1.57e-16 |
+
+reconstruction error = 4.44e-16; orthogonality error = 3.14e-16
+\image(figures/linear_algebra_eigen.svg)
+// result_end
+\caption(The eigensolver returns unit eigenvectors as columns, ordered by decreasing eigenvalue. The plot uses equal axis scales: orange diameters show the stretched eigenvector directions.)
+\alttext(A grey unit circle becomes a blue ellipse tilted at 45 degrees. Its orange principal semiaxes have lengths three along (1,1) and one along (1,minus one).)
+
+Eigenvector signs are arbitrary: \(-v\) has the same eigenvalue as \(v\). The residual and
+reconstruction checks avoid depending on a particular sign convention. The real orthogonal
+decomposition used here applies to symmetric matrices; general real matrices need not have
+a real eigenbasis. Singular values describe stretching even in that general case.
+
+>> Least squares: the closest attainable output
+
+Fit a line \(y\approx\beta_0+\beta_1t\) through the three points
+\((0,1),(1,2),(2,4)\). There are more equations than unknowns, and no line passes through
+all three. The columns of the design matrix span a plane in three-dimensional observation
+space. Least squares projects \(y\) onto that plane:
+
+$$
+X=\begin{pmatrix}1&0\\1&1\\1&2\end{pmatrix},\qquad
+y=\begin{pmatrix}1\\2\\4\end{pmatrix},\qquad
+\widehat\beta=\arg\min_\beta\lVert y-X\beta\rVert_2^2.
+$$
+\alttext(X has rows (1,0), (1,1), and (1,2). The response is (1,2,4). Choose beta to minimise the squared length of y minus X beta.)
+
+Differentiate the squared length: its gradient is \(-2X^\top(y-X\beta)\). At a minimum
+\(X^\top r=0\), where \(r=y-X\widehat\beta\). The residual is perpendicular to every
+column of \(X\). Here the normal equations and their solution are
+
+$$
+\begin{pmatrix}3&3\\3&5\end{pmatrix}\widehat\beta
+=\begin{pmatrix}7\\10\end{pmatrix},\qquad
+\widehat\beta=\begin{pmatrix}5/6\\3/2\end{pmatrix},\qquad
+r=\begin{pmatrix}1/6\\-1/3\\1/6\end{pmatrix},\quad \lVert r\rVert_2^2=1/6.
+$$
+\alttext(The normal equations have matrix rows (3,3) and (3,5), with right-hand side (7,10). The intercept is five sixths and the slope is three halves. The residual is (one sixth, minus one third, one sixth), with squared length one sixth.)
+
+Orthogonality also proves optimality: for any coefficient change \(h\),
+\(\lVert r-Xh\rVert_2^2=\lVert r\rVert_2^2+\lVert Xh\rVert_2^2\).
+It proves uniqueness when the columns of \(X\) are independent. In particular, the two
+checks here are \(\sum r_i=0\) and \(\sum t_i r_i=0\).
+
+The program uses the default Householder QR solver. With \(X=QR\), orthogonality of
+\(Q\) preserves distances; a triangular solve recovers the coefficients without forming
+\(X^\top X\). This matters because forming the normal equations squares the 2-norm
+condition number. If columns are dependent, QR rejects the design; select
+`dm::linalg::LeastSquaresMethod::SVD` to obtain a minimum-norm solution instead.
+
+```{cpp, results="markdown", file="figures/linear_algebra_projection.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const std::vector<double> t{0, 1, 2}, y{1, 2, 4};
+  const dm::linalg::DenseMatrix<double> X(3, 2, {1, 0, 1, 1, 1, 2});
+  const auto fit = dm::linalg::least_squares(X, y);
+  const auto fitted = X * fit.coefficients;
+  const auto orthogonality = X.transpose() * fit.residuals;
+  std::print("intercept = {:.6f}; slope = {:.6f}; rank = {}\n\n",
+             fit.coefficients[0], fit.coefficients[1], fit.rank);
+  std::print("| t | observed | fitted | residual |\n| ---: | ---: | ---: | ---: |\n");
+  for (std::size_t i = 0; i < t.size(); ++i)
+    std::print("| {:.0f} | {:.6f} | {:.6f} | {:.6f} |\n", t[i], y[i], fitted[i], fit.residuals[i]);
+  std::print("\nsquared residual norm = {:.6f}; X^T r = ({:.2e}, {:.2e})\n",
+             fit.residual_norm * fit.residual_norm, orthogonality[0], orthogonality[1]);
+  dm::graphics::RPlot::create()
+      .line(t, fitted, "least-squares line", dm::RGB{37, 99, 235}, 2)
+      .segments(t, fitted, t, y, dm::RGB{234, 88, 12}, 3)
+      .points(t, y, "observed", dm::RGB{17, 24, 39}, 7)
+      .points(t, fitted, "fitted", dm::RGB{37, 99, 235}, 5)
+      .x_limits(-0.3, 2.4).y_limits(0, 5.3)
+      .x_label("t").y_label("y").title("Least-squares line and residuals")
+      .size(760, 500).save_svg("build/linear_algebra_projection.svg");
+}
+```
+// result_begin: markdown
+intercept = 0.833333; slope = 1.500000; rank = 2
+
+| t | observed | fitted | residual |
+| ---: | ---: | ---: | ---: |
+| 0 | 1.000000 | 0.833333 | 0.166667 |
+| 1 | 2.000000 | 2.333333 | -0.333333 |
+| 2 | 4.000000 | 3.833333 | 0.166667 |
+
+squared residual norm = 0.166667; X^T r = (1.11e-15, 1.78e-15)
+\image(figures/linear_algebra_projection.svg)
+// result_end
+\caption(The coefficients and residuals match the fractions above. Orange vertical segments show observation errors; orthogonality holds in the three-dimensional response space, as checked by X transpose r, rather than between these segments and the drawn line.)
+\alttext(Three observed points at (0,1), (1,2), and (2,4), with a blue fitted line of intercept five sixths and slope three halves. Vertical residuals point up, down, and up; their sum and their t-weighted sum are zero to rounding precision.)
+
+> Checking the theory: sensitivity is a property of the problem
+
+A small residual does not by itself guarantee an accurate input. For nonsingular \(A\),
+perturbing only the right-hand side gives \(A\delta x=\delta b\), hence
+
+$$
+\frac{\lVert\delta x\rVert_2}{\lVert x\rVert_2}
+\le\underbrace{\lVert A\rVert_2\lVert A^{-1}\rVert_2}_{\kappa_2(A)}
+\frac{\lVert\delta b\rVert_2}{\lVert b\rVert_2},\qquad
+\kappa_2(A)=\frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}.
+$$
+\alttext(The relative change in x is at most the condition number of A times the relative change in b. The 2-norm condition number is the product of the norms of A and its inverse, or the largest singular value divided by the smallest.)
+
+The bound follows from \(\lVert\delta x\rVert\le\lVert A^{-1}\rVert\lVert\delta b\rVert\)
+and \(\lVert b\rVert\le\lVert A\rVert\lVert x\rVert\). To attain it, use
+\(A_\tau=\operatorname{diag}(1,\tau)\), \(b=(1,0)^\top\) and
+\(\delta b=(0,10^{-8})^\top\), for \(0<\tau\le1\). Then
+\(x=(1,0)^\top\), \(\delta x=(0,10^{-8}/\tau)^\top\), and
+\(\kappa_2(A_\tau)=1/\tau\). We change the input deliberately; this experiment measures
+data sensitivity, not floating-point error introduced by the solver.
+
+```{cpp, results="markdown", file="figures/linear_algebra_conditioning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  const std::vector<double> b{1, 0}, perturbed_b{1, 1e-8};
+  std::vector<double> log_condition, log_change;
+  std::print("| tau | condition number | relative input change | relative solution change | bound |\n");
+  std::print("| ---: | ---: | ---: | ---: | ---: |\n");
+  for (double tau : {1.0, 1e-2, 1e-4, 1e-6, 1e-8}) {
+    const dm::linalg::DenseMatrix<double> A(2, 2, {1, 0, 0, tau});
+    const auto factor = dm::linalg::lu(A);
+    const auto x = factor.solve(b), perturbed_x = factor.solve(perturbed_b);
+    const double condition = dm::linalg::condition_number(A);
+    const double input_change = dm::linalg::relative_error(perturbed_b, b);
+    const double solution_change = dm::linalg::relative_error(perturbed_x, x);
+    std::print("| {:.0e} | {:.0e} | {:.0e} | {:.0e} | {:.0e} |\n",
+               tau, condition, input_change, solution_change, condition * input_change);
+    log_condition.push_back(std::log10(condition));
+    log_change.push_back(std::log10(solution_change));
+  }
+  dm::graphics::RPlot::create()
+      .line(log_condition, log_change, "solution change", dm::RGB{37, 99, 235}, 2)
+      .points(log_condition, log_change, "", dm::RGB{37, 99, 235}, 6)
+      .line({0, 8}, {-8, -8}, "input change", dm::RGB{234, 88, 12}, 2)
+      .x_ticks({0, 2, 4, 6, 8}, {"1", "100", "1e4", "1e6", "1e8"})
+      .y_ticks({-8, -6, -4, -2, 0}, {"1e-8", "1e-6", "1e-4", "0.01", "1"})
+      .x_limits(-0.3, 8.4).y_limits(-8.8, 2)
+      .x_label("condition number (log scale)").y_label("relative change (log scale)")
+      .title("The condition-number bound is attained")
+      .size(800, 520).save_svg("build/linear_algebra_conditioning.svg");
+}
+```
+// result_begin: markdown
+| tau | condition number | relative input change | relative solution change | bound |
+| ---: | ---: | ---: | ---: | ---: |
+| 1e+00 | 1e+00 | 1e-08 | 1e-08 | 1e-08 |
+| 1e-02 | 1e+02 | 1e-08 | 1e-06 | 1e-06 |
+| 1e-04 | 1e+04 | 1e-08 | 1e-04 | 1e-04 |
+| 1e-06 | 1e+06 | 1e-08 | 1e-02 | 1e-02 |
+| 1e-08 | 1e+08 | 1e-08 | 1e+00 | 1e+00 |
+\image(figures/linear_algebra_conditioning.svg)
+// result_end
+\caption(Five generated diagonal systems attain the perturbation bound. The relative change in b stays at one part in a hundred million, while the relative change in x grows to one.)
+\alttext(A log-log plot shows a horizontal orange input-change line at ten to the minus eight and a blue solution-change line rising with slope one, reaching one at condition number ten to the eight.)
+
+The final system is nonsingular, but its weak second direction magnifies the input change
+by \(10^8\). At \(\tau=0\) it loses rank: the second input coordinate becomes invisible,
+and the perturbed observation cannot be matched at all. This is why numerical rank decisions
+and measurement precision matter as well as the solver's residual.
+
+> Conclusion
+
+Columns explain a transformation; rows explain its simultaneous equations. Eigenvectors
+expose invariant directions, and least squares finds the closest output when observations
+cannot be matched exactly. LU, the symmetric eigensolver and Householder QR reproduce the
+small examples above, with residual and reconstruction checks. The diagonal sweep attains
+the condition-number bound and shows how an accurate solve can still be sensitive to data.
+These examples concern small real dense matrices. For factorization derivations, rank-deficient
+fits and dataset applications, continue with the dense linear algebra report at
+`../numerics/linear_algebra/dense_linear_algebra.mepml`.

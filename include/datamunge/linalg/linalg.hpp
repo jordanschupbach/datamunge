@@ -1,4 +1,5 @@
 #pragma once
+#include <datamunge/linalg/bindings.hpp>
 
 // Convenience umbrella header — includes all linalg components.
 
@@ -13,3 +14,4 @@
 #include <datamunge/linalg/dense.hpp>
 #include <datamunge/linalg/regression.hpp>
 #include <datamunge/linalg/tensor.hpp>
+#include <datamunge/linalg/matrix.hpp>

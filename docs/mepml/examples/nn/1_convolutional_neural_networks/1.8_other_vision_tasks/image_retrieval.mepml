@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Encode observed RGB into unit descriptors with a learned GeM power,select hard triplets from frozen current embeddings,and recompute their hinge gradient for explicit Adam. Select checkpoints by exact validation mAP and compare held-out semantic retrieval with untrained and fixed pixel descriptors.
 
-The editable concept diagram is `diagrams/image_retrieval_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/image_retrieval_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/image_retrieval_concept.tikz > build/image_retrieval_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/image_retrieval_concept.svg build/image_retrieval_concept.dvi > build/image_retrieval_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/image_retrieval_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "RGB features\nLearn GeM power");
+  diagram.node("n1", {5.2, 0}, "Hard triplets\nVisible Adam");
+  diagram.node("n2", {10.4, 0}, "Ranked neighbors\nInspect images");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/image_retrieval_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/image_retrieval_concept.svg)
 // result_end
 \caption(Learned GeM descriptors and exact gallery retrieval)

@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 The observation is a genuine16x16 downsampled image. Models either consume that LR grid or a bicubic32 interpolation derived from it. Training targets remain original32x32 pixels. Reusable tensor APIs own forward mechanisms and data transformations;the report explicitly owns optimizers,loops and checkpoint selection. Only evaluation/display clips predictions. No fitted baseline is hidden:the bicubic reference is fixed interpolation.
 
-The editable concept diagram is `diagrams/super_resolution_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/super_resolution_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/super_resolution_concept.tikz > build/super_resolution_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/super_resolution_concept.svg build/super_resolution_concept.dvi > build/super_resolution_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/super_resolution_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original HR pixels\nTrue LR observations");
+  diagram.node("n1", {5.2, 0}, "Five learned graphs\nVisible optimizer loops");
+  diagram.node("n2", {10.4, 0}, "Restore and predict\nCompare with bicubic");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/super_resolution_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/super_resolution_concept.svg)
 // result_end
 \caption(Super-resolution:five architectures with visible tensor optimization)
@@ -643,16 +649,16 @@ int main() {
 // result_begin: markdown
 | model | selected | initial fit | restored fit | validation | test PSNR dB | SSIM | pooled PSNR dB |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| srcnn | 3 | 0.216841 | 0.008918 | 0.006315 | 22.148973 | 0.590156 | 21.803240 |
+| srcnn | 3 | 0.216841 | 0.008918 | 0.006315 | 22.148973 | 0.590156 | 21.803239 |
 srcnn:48 explicit updates,6 immutable leaves,restore parity 0,single/batch max 0;VDSR-only raw-gradient tracker 0.000000,clipped coordinates 0.
 | espcn | 3 | 0.244275 | 0.011406 | 0.010886 | 21.950641 | 0.643553 | 21.722594 |
-espcn:48 explicit updates,6 immutable leaves,restore parity 0,single/batch max 1.79e-07;VDSR-only raw-gradient tracker 0.000000,clipped coordinates 0.
-| vdsr | 3 | 0.002713 | 0.002708 | 0.001854 | 26.724774 | 0.855048 | 26.237743 |
+espcn:48 explicit updates,6 immutable leaves,restore parity 0,single/batch max 0;VDSR-only raw-gradient tracker 0.000000,clipped coordinates 0.
+| vdsr | 3 | 0.002713 | 0.002708 | 0.001854 | 26.724788 | 0.855048 | 26.237750 |
 vdsr:48 explicit updates,40 immutable leaves,restore parity 0,single/batch max 0;VDSR-only raw-gradient tracker 0.001174,clipped coordinates 0.
-| edsr | 3 | 0.197318 | 0.061265 | 0.054008 | 26.378989 | 0.845764 | 25.892074 |
-edsr:48 explicit updates,40 immutable leaves,restore parity 0,single/batch max 5.96e-08;VDSR-only raw-gradient tracker 0.000000,clipped coordinates 0.
-| rcan | 3 | 0.212365 | 0.063548 | 0.056110 | 25.723505 | 0.818180 | 25.246793 |
-rcan:48 explicit updates,60 immutable leaves,restore parity 0,single/batch max 1.19e-07;VDSR-only raw-gradient tracker 0.000000,clipped coordinates 0.
+| edsr | 3 | 0.197318 | 0.061267 | 0.054009 | 26.378973 | 0.845764 | 25.892060 |
+edsr:48 explicit updates,40 immutable leaves,restore parity 0,single/batch max 0;VDSR-only raw-gradient tracker 0.000000,clipped coordinates 0.
+| rcan | 3 | 0.212365 | 0.063549 | 0.056112 | 25.723353 | 0.818173 | 25.246646 |
+rcan:48 explicit updates,60 immutable leaves,restore parity 0,single/batch max 0;VDSR-only raw-gradient tracker 0.000000,clipped coordinates 0.
 Unchanged bicubic:mean PSNR 26.711192dB,SSIM 0.854135;all32 test images,central20x20 Y.
 \image(figures/super_resolution_training.svg)
 // result_end

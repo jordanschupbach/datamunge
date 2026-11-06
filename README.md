@@ -87,6 +87,11 @@ This repo is intended to be cloned and renamed. All occurrences of the project n
 
 ## Bindings
 
+The [CAD and 3D modelling guide](docs/cad.md) covers `dm::cad` solids, the
+ported mep kernel, model formats and offline rendering. The
+[Seeed DevArm report](docs/mepml/examples/cad/seeed_devarm.mepml) includes C++/Python/R examples
+using the real Seeed DevArm CAD and visual mesh files.
+
 The native CPU game/simulation library and batched physical RL tasks are described
 in [the simulation guide](docs/simulation/README.md). GPU compute dispatch is
 optional, with native scene import, Courier behaviors and offscreen Vulkan

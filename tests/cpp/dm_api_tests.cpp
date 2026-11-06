@@ -182,3 +182,24 @@ TEST(DmApi, HistogramHandlesConstantDataAndRejectsInvalidInputs) {
     EXPECT_THROW(dm::Histogram({maximum}), std::invalid_argument);
     EXPECT_THROW(dm::Histogram({0, std::numeric_limits<double>::denorm_min()}), std::invalid_argument);
 }
+
+TEST(DmApi, EmptyPlotFactorySupportsPlaygroundAxisAndLayerChaining) {
+    auto plot = dm::plot().title("B-spline fit").subtitle("Sampled data")
+        .points(dm::c(0, 1), dm::c(1, 2), "Sampled Data", "#2233ddaa")
+        .lines(dm::c(0, 1), dm::c(1, 2), "B-spline Fits", "#ff66aa", 5.)
+        .ylim(-4., 4.).xlim(0., 1.).x_label("x").y_label("y").size(1000, 600);
+    ASSERT_EQ(plot.series().size(), 2u);
+    EXPECT_EQ(plot.series()[1].label, "B-spline Fits");
+    EXPECT_DOUBLE_EQ(plot.series()[1].stroke_width, 5.);
+    EXPECT_DOUBLE_EQ(plot.x_min(), 0.);
+    EXPECT_DOUBLE_EQ(plot.x_max(), 1.);
+    EXPECT_DOUBLE_EQ(plot.y_min(), -4.);
+    EXPECT_DOUBLE_EQ(plot.y_max(), 4.);
+    EXPECT_THROW(plot.xlim(1, 0), std::invalid_argument);
+    EXPECT_THROW(plot.ylim(0, 0), std::invalid_argument);
+    EXPECT_THROW(plot.ylim(0, std::numeric_limits<double>::quiet_NaN()), std::invalid_argument);
+    EXPECT_DOUBLE_EQ(plot.x_max(), 1.);
+    EXPECT_DOUBLE_EQ(plot.y_min(), -4.);
+    EXPECT_NE(plot.to_svg().find("B-spline fit"), std::string::npos);
+    EXPECT_TRUE(dm::plot().series().empty());
+}

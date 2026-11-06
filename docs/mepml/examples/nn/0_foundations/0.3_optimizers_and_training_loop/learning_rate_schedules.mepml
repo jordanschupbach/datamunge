@@ -45,19 +45,24 @@ Cyclical uses triangular cycles with an optional multiplicative amplitude reduct
 full cycle. Negative steps, nonfinite/negative rates and invalid shape parameters are
 rejected. A valid schedule does not prove stability on a particular objective.
 
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-The concept diagram is generated from the retained local TikZ source. LaTeX with
-PGF/TikZ and standalone, plus dvisvgm, is needed only to regenerate it.
+```{cpp, file="figures/learning_rate_schedules_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
 
-```{bash, results="output", file="figures/learning_rate_schedules_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/learning_rate_schedules_concept.tikz > build/learning_rate_schedules.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/learning_rate_schedules_concept.svg build/learning_rate_schedules_concept.dvi > build/learning_rate_schedules.render.log 2>&1
-printf 'Rendered build/learning_rate_schedules_concept.svg from local TikZ source.\n'
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Completed calls t\nread iterations()");
+  diagram.node("n1", {5.5, 0}, "Choose η(t)\ncheck endpoints");
+  diagram.node("n2", {11.0, 0}, "Set rate and update\ncounter becomes t+1");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/learning_rate_schedules_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/learning_rate_schedules_concept.svg from local TikZ source.
 // \image(figures/learning_rate_schedules_concept.svg)
 // result_end
 \caption(Evaluate the schedule at the completed-update counter before taking the next step.)

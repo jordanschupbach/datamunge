@@ -4,6 +4,7 @@
 #include <datamunge/datasets/download.hpp>
 
 #include <datamunge/algorithms/md5.hpp>
+#include <datamunge/algorithms/sha256.hpp>
 #include <datamunge/image/detail/crc32.hpp>
 #include <datamunge/image/detail/zlib_codec.hpp>
 
@@ -21,6 +22,8 @@
 #include <string>
 #include <system_error>
 #include <vector>
+
+#include "rebot_sources.hpp"
 
 #ifdef _WIN32
 #include <process.h>
@@ -180,6 +183,35 @@ void ensure_file(const std::string& dataset, const Remote& remote, const fs::pat
   publish(stage.path / target.filename(), target);
 }
 
+/// @brief Verify all pinned DevArm assets, fetching missing files through the native cache.
+/// @param dir Cache root retaining upstream relative paths.
+/// @throws std::runtime_error On corrupt bytes, offline misses or transfer failures.
+void ensure_rebot(const fs::path& dir) {
+  for (const auto& asset : detail::rebot_sources) {
+    const auto target = dir / asset.path;
+    /// @brief Reject size mismatches before reading and hashing one pinned file.
+    const auto verify = [&](const fs::path& path) {
+      if (fs::file_size(path) != asset.size ||
+          algorithms::sha256_hex(read_file(path)) != asset.sha256)
+        throw std::runtime_error("DevArm asset fingerprint mismatch: " + path.string());
+    };
+    if (fs::is_regular_file(target)) {
+      verify(target);
+      continue;
+    }
+    require_online(target);
+    Staging stage(target.parent_path());
+    const Remote remote{
+        std::string("https://raw.githubusercontent.com/Seeed-Projects/reBot-DevArm/") +
+            detail::rebot_revision + "/" + asset.path,
+        ""};
+    curl(source_url("rebot_devarm", remote), stage.path / target.filename());
+    verify(stage.path / target.filename());
+    publish(stage.path / target.filename(), target);
+    verify(target);
+  }
+}
+
 /// @brief Decompresses a single-member gzip file in memory, checking its CRC.
 std::vector<unsigned char> gunzip(const fs::path& file) {
   const std::string bytes = read_file(file);
@@ -310,11 +342,15 @@ std::string data_home() {
 }
 
 std::vector<std::string> downloadable() {
-  return {"california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "mnist", "sudoku"};
+  return {"california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "mnist", "rebot_devarm", "sudoku"};
 }
 
 std::string fetch(const std::string& name, const std::string& directory) {
   const fs::path dir = directory.empty() ? fs::path(data_home()) / name : fs::path(directory);
+  if (name == "rebot_devarm") {
+    ensure_rebot(dir);
+    return dir.string();
+  }
   if (name == "diamonds" || name == "california_housing") {
     const fs::path file = dir / (name + ".csv");
     ensure_file(name, name == "diamonds" ? kDiamonds : kCaliforniaHousing, file);
@@ -334,7 +370,7 @@ std::string fetch(const std::string& name, const std::string& directory) {
     ensure_cifar(name == "cifar100", dir);
   } else {
     throw std::invalid_argument("unknown downloadable dataset \"" + name +
-                                "\"; expected california_housing, cifar10, cifar100, diamonds, fashion_mnist, mnist or sudoku");
+                                "\"; expected california_housing, cifar10, cifar100, diamonds, fashion_mnist, mnist, rebot_devarm or sudoku");
   }
   return dir.string();
 }

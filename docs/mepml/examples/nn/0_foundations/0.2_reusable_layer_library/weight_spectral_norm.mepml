@@ -340,15 +340,15 @@ Power iteration against the exact formula sqrt(A_4k / A_(4k−2)), A_m = Σ c_i�
 | σ2/σ1 = 0.8 | 0.800 | 3.6e-12 | 1.9e-04 | 0.361 (k = 19 to 24) | 0.410 |
 | Glorot, σ2/σ1 = 0.955 | 0.955 | 7.3e-13 | 1.9e-02 | 0.825 (k = 35 to 40) | 0.830 |
 
-Gradient of σ̂ after 400 iterations against u1 v1^T from the SVD: max difference 3.4e-14 (sign fixed by σ̂ > 0: 3.4e-14).
+Gradient of σ̂ after 400 iterations against u1 v1^T from the SVD: max difference 3.5e-14 (sign fixed by σ̂ > 0: 3.5e-14).
 
 Weight-normalised softmax regression on all 1797 digits, full-batch gradient descent, 300 steps:
 
 | learning rate η | Σ_j norm(v_j)² at start | at end | largest per-step identity error | effective learning rate η g²/norm(v)², start → end |
 | ---: | ---: | ---: | ---: | ---: |
-| 0.5 | 16.8336 | 18.3008 | 1.3e-16 | 0.500 → 4.439 |
+| 0.5 | 16.8336 | 18.5794 | 1.1e-16 | 0.500 → 4.380 |
 | 2 | 16.8336 | 104.2946 | 1.5e-16 | 2.000 → 7.464 |
-| 8 | 16.8336 | 1747.2744 | 8.3e-16 | 8.000 → 3.584 |
+| 8 | 16.8336 | 1747.2744 | 5.9e-16 | 8.000 → 3.584 |
 \image(figures/spectral_theory.svg)
 // result_end
 
@@ -538,12 +538,12 @@ Test images: mean Euclidean norm 3.88 (pixels in [0, 1], 64 per image).
 | model | test accuracy | Lipschitz bound of the logits | median certified radius | certified / PGD accuracy at ε = 0.1 | 0.25 | 0.5 | 0.75 | 1 |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | plain | 91.9% | 64.7 | 0.138 | 68.3% / 87.2% | 1.9% / 73.9% | 0.0% / 42.5% | 0.0% / 13.3% | 0.0% / 0.8% |
-| weight norm | 92.5% | 46.1 | 0.176 | 75.3% / 88.9% | 17.5% / 77.5% | 0.0% / 48.9% | 0.0% / 18.6% | 0.0% / 2.2% |
-| spectral norm, c = 5 | 89.2% | 6.3 | 0.383 | 83.9% / 86.4% | 68.1% / 80.8% | 27.8% / 63.9% | 0.3% / 40.3% | 0.0% / 13.6% |
-| spectral norm, c = 20 | 93.1% | 22.2 | 0.314 | 86.1% / 89.7% | 63.3% / 80.6% | 7.8% / 53.1% | 0.0% / 17.8% | 0.0% / 1.4% |
+| weight norm | 92.5% | 46.1 | 0.176 | 75.3% / 88.9% | 17.5% / 77.5% | 0.0% / 49.2% | 0.0% / 18.6% | 0.0% / 2.2% |
+| spectral norm, c = 5 | 88.9% | 5.8 | 0.386 | 83.9% / 86.1% | 68.6% / 80.0% | 25.0% / 63.3% | 0.0% / 40.3% | 0.0% / 11.9% |
+| spectral norm, c = 20 | 93.1% | 21.9 | 0.316 | 86.1% / 89.7% | 63.6% / 81.1% | 8.1% / 52.2% | 0.0% / 17.5% | 0.0% / 1.4% |
 
-spectral norm, c = 5, after training, per layer: stored estimate / exact σ1, and σ2/σ1: layer 1: 0.9388, 0.9529; layer 2: 0.8821, 0.9379; layer 3: 0.9612, 0.9571;
-spectral norm, c = 20, after training, per layer: stored estimate / exact σ1, and σ2/σ1: layer 1: 0.9690, 0.9856; layer 2: 0.9509, 0.9805; layer 3: 0.9768, 0.9847;
+spectral norm, c = 5, after training, per layer: stored estimate / exact σ1, and σ2/σ1: layer 1: 0.9541, 0.9541; layer 2: 0.9516, 0.9487; layer 3: 0.9425, 0.9673;
+spectral norm, c = 20, after training, per layer: stored estimate / exact σ1, and σ2/σ1: layer 1: 0.9594, 0.9824; layer 2: 0.9784, 0.9966; layer 3: 0.9718, 0.9822;
 \image(figures/spectral_digits.svg)
 // result_end
 

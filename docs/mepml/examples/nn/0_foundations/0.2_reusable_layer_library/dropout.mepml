@@ -156,22 +156,22 @@ int main() {
 | rate p | share of zeros | mean | variance | p/(1 − p) | values |
 | ---: | ---: | ---: | ---: | ---: | :--- |
 | 0 | 0.0000 | 1.0000 | 0.0000 | 0.0000 | {0, 1} |
-| 0.1 | 0.1005 | 0.9994 | 0.1116 | 0.1111 | {0, 1.111} |
-| 0.25 | 0.2507 | 0.9991 | 0.3339 | 0.3333 | {0, 1.333} |
-| 0.5 | 0.4994 | 1.0012 | 1.0000 | 1.0000 | {0, 2} |
-| 0.8 | 0.8000 | 1.0001 | 4.0001 | 4.0000 | {0, 5} |
+| 0.1 | 0.0994 | 1.0007 | 0.1105 | 0.1111 | {0, 1.111} |
+| 0.25 | 0.2495 | 1.0007 | 0.3329 | 0.3333 | {0, 1.333} |
+| 0.5 | 0.4979 | 1.0042 | 1.0000 | 1.0000 | {0, 2} |
+| 0.8 | 0.7998 | 1.0009 | 4.0027 | 4.0000 | {0, 5} |
 
 Inference (training = false), p = 0.5: 100000 of 100000 outputs identical to the input.
 
 | variant, p = 0.2 | input | mean | variance | target mean, variance |
 | :--- | :--- | ---: | ---: | :--- |
-| gaussian_dropout | 1 | 0.9997 | 0.2500 | 1, 0.25 (as dropout) |
-| dropout | N(0, 1) | -0.0063 | 1.2490 | 0, 1.25 |
-| alpha_dropout | N(0, 1) | -0.0024 | 1.0015 | 0, 1 |
-| alpha_dropout | selu(N(0, 1)): mean -0.0037, variance 0.9982 | -0.0046 | 0.9993 | unchanged for mean 0, variance 1 |
+| gaussian_dropout | 1 | 0.9986 | 0.2496 | 1, 0.25 (as dropout) |
+| dropout | N(0, 1) | 0.0029 | 1.2554 | 0, 1.25 |
+| alpha_dropout | N(0, 1) | 0.0038 | 1.0030 | 0, 1 |
+| alpha_dropout | selu(N(0, 1)): mean 0.0052, variance 1.0036 | 0.0048 | 1.0073 | unchanged for mean 0, variance 1 |
 
-spatial_dropout, p = 0.5, ones [4, 6, 6, 8]: 32 of 32 (example, channel) maps constant over the 36 positions, 17 kept (value 2).
-drop_path, p = 0.25, ones [8, 6, 6, 4]: 8 of 8 examples constant over their 144 entries; values per example: 0, 1.333, 1.333, 1.333, 1.333, 1.333, 0, 1.333.
+spatial_dropout, p = 0.5, ones [4, 6, 6, 8]: 32 of 32 (example, channel) maps constant over the 36 positions, 14 kept (value 2).
+drop_path, p = 0.25, ones [8, 6, 6, 4]: 8 of 8 examples constant over their 144 entries; values per example: 1.333, 1.333, 0, 1.333, 0, 0, 1.333, 1.333.
 // result_end
 
 The share of zeros is within 0.0007 of \(p\) at every rate, the mean within 0.0012 of 1 and the variance within 0.0006 of \(p/(1-p)\). The only values are 0 and \(1/(1-p)\). In inference mode all 100000 outputs equal the input exactly.
@@ -413,30 +413,30 @@ int main() {
 // result_begin: markdown
 | loss of a fixed w under | Monte Carlo, 20000 masks (± standard error) | closed form | difference in standard errors |
 | :--- | ---: | ---: | ---: |
-| Bernoulli dropout, p = 0.2 | 23.6738 ± 0.0122 | 23.6699 | 0.3 |
-| Gaussian dropout, p = 0.2 | 23.6484 ± 0.0148 | 23.6699 | -1.4 |
-| Bernoulli dropout, p = 0.5 | 28.9659 ± 0.0295 | 29.0029 | -1.3 |
-| Gaussian dropout, p = 0.5 | 29.0322 ± 0.0317 | 29.0029 | 0.9 |
+| Bernoulli dropout, p = 0.2 | 23.6742 ± 0.0122 | 23.6699 | 0.4 |
+| Gaussian dropout, p = 0.2 | 23.7003 ± 0.0150 | 23.6699 | 2.0 |
+| Bernoulli dropout, p = 0.5 | 28.9847 ± 0.0295 | 29.0029 | -0.6 |
+| Gaussian dropout, p = 0.5 | 28.9794 ± 0.0320 | 29.0029 | -0.7 |
 
 | p | closed-form minimiser | SGD with dropout, averaged | max abs. difference | Gaussian dropout SGD, max abs. difference |
 | ---: | :--- | :--- | ---: | ---: |
-| 0.2 | (0.676, -0.713, 1.672, 0.533, 0.293) | (0.674, -0.713, 1.671, 0.534, 0.293) | 0.002 | 0.001 |
-| 0.4 | (0.495, -0.496, 1.341, 0.465, 0.257) | (0.496, -0.497, 1.339, 0.463, 0.257) | 0.001 | 0.003 |
-| 0.6 | (0.346, -0.305, 0.966, 0.355, 0.196) | (0.345, -0.305, 0.964, 0.354, 0.196) | 0.001 | 0.001 |
+| 0.2 | (0.676, -0.713, 1.672, 0.533, 0.293) | (0.675, -0.714, 1.670, 0.534, 0.293) | 0.001 | 0.001 |
+| 0.4 | (0.495, -0.496, 1.341, 0.465, 0.257) | (0.496, -0.496, 1.341, 0.464, 0.257) | 0.001 | 0.001 |
+| 0.6 | (0.346, -0.305, 0.966, 0.355, 0.196) | (0.346, -0.305, 0.965, 0.355, 0.196) | 0.001 | 0.002 |
 Least squares (p = 0): (0.960, -0.974, 1.958, 0.519, 0.293); true β = (1.000, -1.000, 2.000, 0.500, 0.300).
-no dropout: pre-activation variance at layers 1, 8, 16, 32 = 1.007, 0.946, 0.955, 0.949; mean-field 1.000, 1.000, 1.000, 1.000.
-dropout: pre-activation variance at layers 1, 8, 16, 32 = 1.007, 1.428, 1.539, 1.595; mean-field 1.000, 1.488, 1.605, 1.625.
-alpha dropout: pre-activation variance at layers 1, 8, 16, 32 = 1.007, 0.982, 0.977, 0.996; mean-field 1.000, 1.000, 1.000, 1.000.
+no dropout: pre-activation variance at layers 1, 8, 16, 32 = 1.002, 0.944, 0.956, 0.950; mean-field 1.000, 1.000, 1.000, 1.000.
+dropout: pre-activation variance at layers 1, 8, 16, 32 = 1.002, 1.421, 1.529, 1.591; mean-field 1.000, 1.488, 1.605, 1.625.
+alpha dropout: pre-activation variance at layers 1, 8, 16, 32 = 1.002, 0.974, 0.975, 0.995; mean-field 1.000, 1.000, 1.000, 1.000.
 
 | dropout rate | train MSE, seeds 1–3 | mean | test MSE on [−1, 1], seeds 1–3 | mean |
 | ---: | :--- | ---: | :--- | ---: |
-| 0 | 0.0577, 0.0551, 0.0550 | 0.0559 | 0.1079, 0.1341, 0.0966 | 0.1129 |
-| 0.1 | 0.0747, 0.0725, 0.0786 | 0.0753 | 0.0461, 0.0362, 0.0735 | 0.0519 |
-| 0.3 | 0.0972, 0.0966, 0.0841 | 0.0927 | 0.0578, 0.0472, 0.0606 | 0.0552 |
-| 0.5 | 0.1303, 0.1327, 0.1440 | 0.1357 | 0.0791, 0.0775, 0.0862 | 0.0809 |
-Lowest value of the fit without dropout on the test grid: -1.71 (axis from -3).
-MC dropout, p = 0.5, seed 1: predictive sd at x = −1.5, −1, 0, 1, 1.5: 0.405, 0.299, 0.123, 0.330, 0.409.
-Outside [−1, 1]: sin(3x) lies within the MC mean ± 2 sd at 0 of 68 grid points; at x = −1.5 the band is [-2.30, -0.68] and sin(−4.5) = 0.98.
+| 0 | 0.0571, 0.0552, 0.0550 | 0.0558 | 0.1045, 0.1343, 0.1022 | 0.1137 |
+| 0.1 | 0.0732, 0.0755, 0.0771 | 0.0753 | 0.0519, 0.0511, 0.0473 | 0.0501 |
+| 0.3 | 0.0925, 0.1083, 0.1019 | 0.1009 | 0.0541, 0.0527, 0.0558 | 0.0542 |
+| 0.5 | 0.1374, 0.1536, 0.1521 | 0.1477 | 0.0834, 0.0899, 0.0914 | 0.0882 |
+Lowest value of the fit without dropout on the test grid: -1.70 (axis from -3).
+MC dropout, p = 0.5, seed 1: predictive sd at x = −1.5, −1, 0, 1, 1.5: 0.387, 0.359, 0.115, 0.295, 0.389.
+Outside [−1, 1]: sin(3x) lies within the MC mean ± 2 sd at 0 of 68 grid points; at x = −1.5 the band is [-2.35, -0.80] and sin(−4.5) = 0.98.
 \image(figures/dropout_theory.svg)
 // result_end
 
@@ -567,12 +567,12 @@ int main() {
 | setting | train accuracy | test accuracy | test NLL, inference mode | test accuracy, MC average of 100 passes | test NLL, MC average |
 | :--- | ---: | ---: | ---: | ---: | ---: |
 | no dropout | 100.0 (100.0–100.0) | 88.1 (85.8–89.4) | 0.496 (0.454–0.575) | – | – |
-| dropout, p = 0.2 | 100.0 (100.0–100.0) | 88.1 (85.8–89.7) | 0.522 (0.467–0.618) | 87.6 (85.6–89.2) | 0.452 (0.407–0.523) |
-| dropout, p = 0.5 | 100.0 (100.0–100.0) | 88.8 (87.5–90.3) | 0.532 (0.492–0.604) | 88.2 (87.8–88.9) | 0.410 (0.387–0.454) |
+| dropout, p = 0.2 | 100.0 (100.0–100.0) | 88.5 (86.7–90.0) | 0.519 (0.453–0.620) | 88.7 (86.9–90.3) | 0.450 (0.405–0.526) |
+| dropout, p = 0.5 | 100.0 (100.0–100.0) | 88.7 (87.5–89.4) | 0.538 (0.504–0.596) | 88.8 (87.8–89.4) | 0.413 (0.385–0.453) |
 | Gaussian, p = 0.5 | 100.0 (100.0–100.0) | 89.0 (87.2–90.3) | 0.531 (0.475–0.631) | 89.2 (87.8–90.0) | 0.412 (0.377–0.463) |
 no dropout: test NLL lowest 0.428 at step 150, final 0.496.
-dropout, p = 0.2: test NLL lowest 0.417 at step 150, final 0.522.
-dropout, p = 0.5: test NLL lowest 0.412 at step 250, final 0.532.
+dropout, p = 0.2: test NLL lowest 0.411 at step 150, final 0.519.
+dropout, p = 0.5: test NLL lowest 0.416 at step 250, final 0.538.
 Gaussian, p = 0.5: test NLL lowest 0.422 at step 250, final 0.531.
 \image(figures/dropout_digits.svg)
 // result_end

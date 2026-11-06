@@ -18,6 +18,7 @@
 #include <array>
 #include <cstdint>
 #include <utility>
+#include <vector>
 
 #include "datamunge/nn/tensor.hpp"
 
@@ -60,6 +61,24 @@ std::int64_t conv_output_size(std::int64_t in, std::int64_t kernel, std::int64_t
 
 /// 2-D cross-correlation (TF Conv2D): x [N, H, W, C], filter [KH, KW, C / groups, O] -> [N, H', W', O].
 Tensor conv2d(const Tensor& x, const Tensor& filter, const Conv2DOptions& options = {});
+
+/// relu(conv2d(x, filter, options) + bias) as one op, bias [C_out]. The bias
+/// and ReLU are applied to each output tile while it is still in cache, and
+/// the backward pass forms the masked gradient once per tile for the bias,
+/// filter and input gradients (one pass over the activations instead of
+/// five). Same values and gradients as the composition (summation orders
+/// differ); grouped, depthwise and device inputs use the composition.
+Tensor conv2d_bias_relu(const Tensor& x, const Tensor& filter, const Tensor& bias, const Conv2DOptions& options = {});
+
+/// concat({conv2d_bias_relu(x, filters[i], biases[i], options[i]) ...}, -1) as
+/// one op: every branch writes its channel band of one [N, H', W', sum C_out]
+/// output (no concatenation copy), and the backward pass accumulates the input
+/// gradients of all branches into one buffer. Branches must have the same
+/// output size (e.g. the 1x1 and SAME 3x3 expand convolutions of a SqueezeNet
+/// Fire module). Same values and gradients as the composition; grouped,
+/// depthwise and device inputs use the composition.
+Tensor conv2d_bias_relu_concat(const Tensor& x, const std::vector<Tensor>& filters, const std::vector<Tensor>& biases,
+                               const std::vector<Conv2DOptions>& options);
 
 /// Gradient of conv2d with respect to its input (TF Conv2DBackpropInput):
 /// grad [N, H', W', O] -> [N, H, W, C] for `input_shape` [N, H, W, C].

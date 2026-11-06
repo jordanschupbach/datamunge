@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 Shared prototype maps combine linearly with signed per-anchor coefficients. Box crops isolate each object's mask. Five shared prediction scales and a semantic auxiliary objective train jointly through explicit tensor Adam;Fast NMS uses every higher-scored predecessor.
 
-The editable concept diagram is `diagrams/yolact_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/yolact_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/yolact_concept.tikz > build/yolact_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/yolact_concept.svg build/yolact_concept.dvi > build/yolact_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/yolact_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Shared image basis\nLearn basis maps");
+  diagram.node("n1", {5.2, 0}, "Object coefficients\nCombine and crop");
+  diagram.node("n2", {10.4, 0}, "Visible Adam loop\nRestore both stores");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/yolact_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/yolact_concept.svg)
 // result_end
 \caption(YOLACT shared prototypes and Fast NMS)
@@ -530,40 +536,40 @@ int main() {
 // result_begin: markdown
 | epoch | joint objective | weighted mask term | val box AP50 |
 |---:|---:|---:|---:|
-| 1 | 29.331300 | 4.512894 | 0.014829 |
-| 2 | 19.857782 | 4.223069 | 0.007143 |
-| 3 | 17.422148 | 4.229269 | 0.000312 |
-| 4 | 14.734863 | 4.224788 | 0.000124 |
-| 5 | 13.197720 | 4.220254 | 0.000000 |
-| 6 | 12.005847 | 4.213271 | 0.002086 |
-| 7 | 10.955942 | 4.218502 | 0.006288 |
-| 8 | 10.016847 | 4.217586 | 0.016905 |
-| 9 | 9.403957 | 4.219734 | 0.017857 |
-| 10 | 8.932403 | 4.218518 | 0.001538 |
-| 11 | 8.297507 | 4.189585 | 0.016224 |
-| 12 | 8.241108 | 4.205460 | 0.003030 |
-| 13 | 7.897312 | 4.218401 | 0.020525 |
-| 14 | 7.623631 | 4.197661 | 0.025624 |
-| 15 | 7.234062 | 4.198419 | 0.037098 |
-| 16 | 6.797606 | 4.213569 | 0.017521 |
-| 17 | 6.608904 | 4.227598 | 0.000758 |
-| 18 | 6.652981 | 4.205145 | 0.038677 |
-| 19 | 6.523813 | 4.209793 | 0.025397 |
-| 20 | 6.318169 | 4.215567 | 0.016246 |
-| 21 | 6.023244 | 4.200682 | 0.002165 |
-| 22 | 6.064855 | 4.218434 | 0.018205 |
-| 23 | 5.899037 | 4.211513 | 0.001852 |
-| 24 | 5.835065 | 4.205997 | 0.017316 |
-| 25 | 5.737747 | 4.217685 | 0.034333 |
-| 26 | 5.557482 | 4.195290 | 0.004167 |
-| 27 | 5.403058 | 4.195211 | 0.006845 |
-| 28 | 5.520148 | 4.212126 | 0.031481 |
-| 29 | 5.578425 | 4.204366 | 0.006667 |
-| 30 | 5.541926 | 4.212457 | 0.037037 |
-| 31 | 5.465350 | 4.212710 | 0.016667 |
-| 32 | 5.282815 | 4.200257 | 0.000000 |
-Restored first test image:eight16px ReLU prototype maps,nearest-expanded64px,shared intensity range[0,1.095120]. These are learned basis activations,not class masks.
-293407 learned/1200 BN state scalars,512 Adam updates/6080 selected positive masks;selected epoch18,validation box AP50 0.038677. Held-out26 digits/130 detections:box AP50 0.000000;integral mask AP50 0.000000,AP75 0.000000,mean50:95 0.000000. Custom integral mask AP is not official COCO.
+| 1 | 29.331298 | 4.512895 | 0.014829 |
+| 2 | 19.857785 | 4.223070 | 0.007269 |
+| 3 | 17.402813 | 4.229312 | 0.000463 |
+| 4 | 14.723657 | 4.225131 | 0.000000 |
+| 5 | 13.212337 | 4.219695 | 0.000680 |
+| 6 | 11.930291 | 4.211430 | 0.015966 |
+| 7 | 11.087124 | 4.219471 | 0.001170 |
+| 8 | 10.179294 | 4.220815 | 0.020444 |
+| 9 | 9.357330 | 4.224600 | 0.000000 |
+| 10 | 8.753188 | 4.218178 | 0.001288 |
+| 11 | 8.394180 | 4.204103 | 0.017664 |
+| 12 | 8.149765 | 4.219497 | 0.017347 |
+| 13 | 7.779467 | 4.214962 | 0.004040 |
+| 14 | 7.462388 | 4.204841 | 0.027880 |
+| 15 | 7.178447 | 4.203720 | 0.019617 |
+| 16 | 6.856010 | 4.210231 | 0.005635 |
+| 17 | 6.668240 | 4.209523 | 0.015714 |
+| 18 | 6.718747 | 4.208757 | 0.020462 |
+| 19 | 6.436065 | 4.212466 | 0.019286 |
+| 20 | 6.421016 | 4.206376 | 0.004762 |
+| 21 | 6.030899 | 4.209660 | 0.014286 |
+| 22 | 5.956730 | 4.228562 | 0.043206 |
+| 23 | 5.825556 | 4.216360 | 0.005000 |
+| 24 | 5.746987 | 4.210959 | 0.033333 |
+| 25 | 5.692440 | 4.222326 | 0.014286 |
+| 26 | 5.580519 | 4.202545 | 0.014286 |
+| 27 | 5.549487 | 4.202529 | 0.007619 |
+| 28 | 5.539060 | 4.218687 | 0.001299 |
+| 29 | 5.589517 | 4.208475 | 0.047619 |
+| 30 | 5.427357 | 4.219014 | 0.033333 |
+| 31 | 5.403598 | 4.216793 | 0.015873 |
+| 32 | 5.293374 | 4.205737 | 0.021429 |
+Restored first test image:eight16px ReLU prototype maps,nearest-expanded64px,shared intensity range[0,2.442698]. These are learned basis activations,not class masks.
+293407 learned/1200 BN state scalars,512 Adam updates/6080 selected positive masks;selected epoch29,validation box AP50 0.047619. Held-out26 digits/77 detections:box AP50 0.000000;integral mask AP50 0.000000,AP75 0.000000,mean50:95 0.000000. Custom integral mask AP is not official COCO.
 \image(figures/yolact_training.svg)
 // result_end
 \caption(Complete compact YOLACT optimization with all-branch objectives and paired learned/BN validation selection. The weighted mask contribution is shown separately from the joint loss.)

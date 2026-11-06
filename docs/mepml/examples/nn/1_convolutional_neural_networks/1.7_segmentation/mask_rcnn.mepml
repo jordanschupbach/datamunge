@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 Continuous regions supply aligned features to separate box and sigmoid mask heads. A shared backbone and RPN learn proposals jointly with classification,box regression and positive-region mask BCE. Tensor-generated MNIST scenes retain a separate support for every object.
 
-The editable concept diagram is `diagrams/mask_rcnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/mask_rcnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mask_rcnn_concept.tikz > build/mask_rcnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/mask_rcnn_concept.svg build/mask_rcnn_concept.dvi > build/mask_rcnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/mask_rcnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Learn object regions\nShared CNN and RPN");
+  diagram.node("n1", {5.2, 0}, "Align each region\nBox and mask branches");
+  diagram.node("n2", {10.4, 0}, "Visible Adam loop\nRestore and inspect");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/mask_rcnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/mask_rcnn_concept.svg)
 // result_end
 \caption(Mask R-CNN aligned regions and individual masks)
@@ -528,39 +534,39 @@ int main() {
 // result_begin: markdown
 | epoch | joint loss | RPN | box | mask | val box AP50 |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 5.894208 | 2.621989 | 2.579201 | 0.693018 | 0.000000 |
-| 2 | 4.353507 | 1.650130 | 2.060576 | 0.642800 | 0.002564 |
-| 3 | 4.261525 | 1.114743 | 2.624279 | 0.522502 | 0.105171 |
-| 4 | 3.785798 | 0.804388 | 2.527987 | 0.453424 | 0.195918 |
-| 5 | 3.267251 | 0.595033 | 2.263998 | 0.408221 | 0.244131 |
-| 6 | 2.759456 | 0.449159 | 1.944605 | 0.365693 | 0.252249 |
-| 7 | 2.485310 | 0.325893 | 1.811848 | 0.347569 | 0.315054 |
-| 8 | 2.297285 | 0.281214 | 1.700836 | 0.315235 | 0.356191 |
-| 9 | 2.047097 | 0.192626 | 1.561743 | 0.292728 | 0.486193 |
-| 10 | 1.886509 | 0.174522 | 1.422354 | 0.289634 | 0.574088 |
-| 11 | 1.773977 | 0.183905 | 1.307466 | 0.282607 | 0.616760 |
-| 12 | 1.592747 | 0.143906 | 1.186359 | 0.262482 | 0.606927 |
-| 13 | 1.518117 | 0.135659 | 1.118812 | 0.263645 | 0.678213 |
-| 14 | 1.441054 | 0.121760 | 1.069855 | 0.249439 | 0.716296 |
-| 15 | 1.381916 | 0.133815 | 1.003276 | 0.244826 | 0.762403 |
-| 16 | 1.276745 | 0.104061 | 0.931502 | 0.241182 | 0.727763 |
-| 17 | 1.195215 | 0.103805 | 0.858047 | 0.233363 | 0.750708 |
-| 18 | 1.127854 | 0.095902 | 0.799132 | 0.232820 | 0.789964 |
-| 19 | 0.997944 | 0.084627 | 0.687304 | 0.226013 | 0.803700 |
-| 20 | 1.056573 | 0.080092 | 0.746573 | 0.229908 | 0.814760 |
-| 21 | 0.928970 | 0.073123 | 0.636145 | 0.219701 | 0.825117 |
-| 22 | 0.926428 | 0.067165 | 0.634450 | 0.224813 | 0.818660 |
-| 23 | 0.867083 | 0.060489 | 0.582152 | 0.224441 | 0.830359 |
-| 24 | 0.812269 | 0.070257 | 0.533900 | 0.208112 | 0.839164 |
-| 25 | 0.779679 | 0.072363 | 0.501598 | 0.205718 | 0.849381 |
-| 26 | 0.774177 | 0.058918 | 0.511384 | 0.203875 | 0.855989 |
-| 27 | 0.720510 | 0.056642 | 0.464968 | 0.198899 | 0.813413 |
-| 28 | 0.736606 | 0.058715 | 0.478194 | 0.199696 | 0.847386 |
-| 29 | 0.673975 | 0.058298 | 0.418000 | 0.197677 | 0.866234 |
-| 30 | 0.632864 | 0.049215 | 0.392583 | 0.191066 | 0.868659 |
-| 31 | 0.619089 | 0.045042 | 0.380175 | 0.193872 | 0.845278 |
-| 32 | 0.608277 | 0.040016 | 0.372705 | 0.195557 | 0.861639 |
-1077290 learned scalars,512 Adam updates,29552 positive mask training regions;selected epoch30,validation box AP50 0.868659. Test eight scenes/26 digits/93 detections:box AP50 0.806614;integral mask AP50 0.806614,AP75 0.370370,mean50:95 0.391733. Mask AP is not the official COCO101-point protocol. No moving state.
+| 1 | 5.916564 | 2.621632 | 2.601752 | 0.693180 | 0.000000 |
+| 2 | 4.326989 | 1.651758 | 2.034069 | 0.641161 | 0.001190 |
+| 3 | 4.192781 | 1.112793 | 2.553988 | 0.526000 | 0.135017 |
+| 4 | 3.721048 | 0.822473 | 2.440313 | 0.458263 | 0.173399 |
+| 5 | 3.200136 | 0.608405 | 2.183303 | 0.408427 | 0.214997 |
+| 6 | 2.732768 | 0.449130 | 1.925410 | 0.358228 | 0.227330 |
+| 7 | 2.536933 | 0.353579 | 1.848478 | 0.334876 | 0.428258 |
+| 8 | 2.316140 | 0.300151 | 1.688582 | 0.327408 | 0.398054 |
+| 9 | 2.071621 | 0.215670 | 1.558478 | 0.297472 | 0.436475 |
+| 10 | 1.884761 | 0.190844 | 1.414632 | 0.279285 | 0.547388 |
+| 11 | 1.799581 | 0.180870 | 1.335800 | 0.282911 | 0.537859 |
+| 12 | 1.560452 | 0.149459 | 1.150677 | 0.260316 | 0.605293 |
+| 13 | 1.452050 | 0.124990 | 1.072916 | 0.254143 | 0.647282 |
+| 14 | 1.372637 | 0.107546 | 1.019854 | 0.245238 | 0.708770 |
+| 15 | 1.330649 | 0.100626 | 0.983699 | 0.246324 | 0.717993 |
+| 16 | 1.186148 | 0.091065 | 0.860991 | 0.234092 | 0.795563 |
+| 17 | 1.107619 | 0.073705 | 0.804386 | 0.229529 | 0.726825 |
+| 18 | 1.024193 | 0.072714 | 0.729987 | 0.221491 | 0.775348 |
+| 19 | 1.012359 | 0.068052 | 0.723467 | 0.220840 | 0.760520 |
+| 20 | 0.984142 | 0.063019 | 0.706179 | 0.214944 | 0.806658 |
+| 21 | 0.952368 | 0.059314 | 0.676496 | 0.216558 | 0.830119 |
+| 22 | 0.895910 | 0.067401 | 0.617266 | 0.211242 | 0.822545 |
+| 23 | 0.903605 | 0.062549 | 0.629286 | 0.211770 | 0.828833 |
+| 24 | 0.871294 | 0.070651 | 0.591573 | 0.209070 | 0.799165 |
+| 25 | 0.842502 | 0.072687 | 0.565640 | 0.204176 | 0.800739 |
+| 26 | 0.827009 | 0.062521 | 0.556091 | 0.208397 | 0.827270 |
+| 27 | 0.718308 | 0.064165 | 0.453247 | 0.200897 | 0.825737 |
+| 28 | 0.738574 | 0.054426 | 0.486290 | 0.197858 | 0.808969 |
+| 29 | 0.708452 | 0.059593 | 0.447788 | 0.201072 | 0.830878 |
+| 30 | 0.671498 | 0.055442 | 0.419380 | 0.196676 | 0.854592 |
+| 31 | 0.626841 | 0.057260 | 0.377139 | 0.192442 | 0.829282 |
+| 32 | 0.639225 | 0.053829 | 0.397256 | 0.188140 | 0.824592 |
+1077290 learned scalars,512 Adam updates,29577 positive mask training regions;selected epoch30,validation box AP50 0.854592. Test eight scenes/26 digits/113 detections:box AP50 0.812169;integral mask AP50 0.812169,AP75 0.435185,mean50:95 0.428307. Mask AP is not the official COCO101-point protocol. No moving state.
 \image(figures/mask_rcnn_training.svg)
 // result_end
 \caption(All three unregularized training objectives and the validation box AP50 selection trace. The code visibly optimizes every learned branch and restores the selected checkpoint before mask evaluation.)

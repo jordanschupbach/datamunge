@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Preserve official released-array boundaries and original byte intensities,compute fitting-only moments with tensors,and show the full residual3Doptimizer loop. Restore20learned tensors and two moments for intensity-only inference,then compare every held-out record and depth control with a fixed memory reference.
 
-The editable concept diagram is `diagrams/medical_volume_classification_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/medical_volume_classification_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/medical_volume_classification_concept.tikz > build/medical_volume_classification_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/medical_volume_classification_concept.svg build/medical_volume_classification_concept.dvi > build/medical_volume_classification_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/medical_volume_classification_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original CT\n source cubes");
+  diagram.node("n1", {5.2, 0}, "Three residual\n tensor3Dstages");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n and every record error");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/medical_volume_classification_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/medical_volume_classification_concept.svg)
 // result_end
 \caption(Medical volumes:genuine CT cubes and visible tensor Adam)
@@ -113,9 +119,6 @@ int main() {
 }
 ```
 // result_begin:
-// fit:64original cubes,source offset0
-// validation:16original cubes,source offset1158
-// test:64original cubes,source offset1323
 // result_end
 
 The tensor loader scales original bytes to Float32/255. Below every held-out
@@ -510,10 +513,10 @@ int main() {
 // result_begin: markdown
 | epoch | dropout fitting CE | validation NLL |
 |---:|---:|---:|
-| 1 | 0.819639 | 0.703951 |
-| 2 | 0.709756 | 0.691821 |
-| 3 | 0.679826 | 0.670794 |
-48explicitAdam updates;selected epoch 3,val 0.670794;fixed fitting inference NLL 0.872803->0.659494.
+| 1 | 0.794181 | 0.718237 |
+| 2 | 0.693717 | 0.686631 |
+| 3 | 0.683823 | 0.674815 |
+48explicitAdam updates;selected epoch 3,val 0.674815;fixed fitting inference NLL 0.872803->0.655299.
 \image(figures/medical_volume_classification_training.svg)
 // result_end
 \caption(All48actual tensor Adam updates on original fitting CT cubes. Validation alone selects the learned checkpoint;the two fitting-only normalization moments stay separate from optimized leaves.)
@@ -680,16 +683,16 @@ int main() {
 }
 ```
 // result_begin: markdown
-Intensity-only restore/repeat 0;single/batch 0 within1e-6;all22learned/moment arrays immutable:true;depth-reverse/collapse changes 8.547919488/13.473229527.
+Intensity-only restore/repeat 0;single/batch 0 within1e-6;all22learned/moment arrays immutable:true;depth-reverse/collapse changes 10.204783406/12.511177138.
 
 | predictor | accuracy | macroF1 | NLL | source0/1recall | complete true-row confusion |
 |---|---:|---:|---:|---|---|
-| learned CNN | 0.609375 | 0.551444 | 0.681749 | float64[2] [0.96875, 0.25] | int32[2, 2] [[31, 1], [24, 8]] |
+| learned CNN | 0.578125 | 0.515559 | 0.677774 | float64[2] [0.9375, 0.21875] | int32[2, 2] [[30, 2], [25, 7]] |
 | untrained | 0.531250 | 0.514170 | 0.843172 | float64[2] [0.34375, 0.71875] | int32[2, 2] [[11, 21], [9, 23]] |
 | block1NN | 0.640625 | 0.640537 | 0.672637 | float64[2] [0.65625, 0.625] | int32[2, 2] [[21, 11], [12, 20]] |
 | tie0 | 0.500000 | 0.333333 | 0.693147 | float64[2] [1, 0] | int32[2, 2] [[32, 0], [32, 0]] |
-| depth reverse control | 0.562500 | 0.490909 | 0.686332 | float64[2] [0.9375, 0.1875] | int32[2, 2] [[30, 2], [26, 6]] |
-| depth collapse control | 0.515625 | 0.410751 | 0.688064 | float64[2] [0.9375, 0.09375] | int32[2, 2] [[30, 2], [29, 3]] |
+| depth reverse control | 0.546875 | 0.479675 | 0.682639 | float64[2] [0.90625, 0.1875] | int32[2, 2] [[29, 3], [26, 6]] |
+| depth collapse control | 0.593750 | 0.539313 | 0.686389 | float64[2] [0.9375, 0.25] | int32[2, 2] [[30, 2], [24, 8]] |
 
 | released source ID | true dataset class | CNN prediction |
 |---:|---:|---:|
@@ -715,7 +718,7 @@ Intensity-only restore/repeat 0;single/batch 0 within1e-6;all22learned/moment ar
 | 1342 | 0 | 0 |
 | 1343 | 0 | 0 |
 | 1344 | 0 | 0 |
-| 1345 | 0 | 0 |
+| 1345 | 0 | 1 |
 | 1346 | 1 | 1 |
 | 1347 | 0 | 0 |
 | 1348 | 0 | 0 |
@@ -729,13 +732,13 @@ Intensity-only restore/repeat 0;single/batch 0 within1e-6;all22learned/moment ar
 | 1356 | 0 | 0 |
 | 1357 | 0 | 0 |
 | 1363 | 1 | 0 |
-| 1364 | 1 | 0 |
+| 1364 | 1 | 1 |
 | 1373 | 1 | 0 |
 | 1384 | 1 | 0 |
 | 1385 | 1 | 0 |
 | 1388 | 1 | 0 |
 | 1398 | 1 | 0 |
-| 1399 | 1 | 1 |
+| 1399 | 1 | 0 |
 | 1407 | 1 | 1 |
 | 1416 | 1 | 0 |
 | 1424 | 1 | 1 |
@@ -749,7 +752,7 @@ Intensity-only restore/repeat 0;single/batch 0 within1e-6;all22learned/moment ar
 | 1462 | 1 | 0 |
 | 1464 | 1 | 0 |
 | 1466 | 1 | 1 |
-| 1467 | 1 | 1 |
+| 1467 | 1 | 0 |
 | 1470 | 1 | 0 |
 | 1472 | 1 | 0 |
 | 1473 | 1 | 0 |

@@ -1,0 +1,794 @@
+//? Title: Robot-arm fruit-sorting playground
+//? Exports: both
+//? Lang: en-GB
+
+> Robot-arm fruit-sorting playground
+
+>> A conveyor workcell
+
+This first experiment creates a headless physics environment and imports the
+real Seeed DevArm CAD model. One randomly selected apple or banana travels down
+the conveyor. An optical pick sensor stops the belt in front of the arm, and
+the fruit waits there. The learning task below uses the red bin on one side as
+the target for either fruit; the yellow bin is a distractor. This first video holds
+the stopped scene for several seconds.
+
+The reusable `dm::sim::ConveyorEnvironment` owns the physical belt, fruit, floor,
+pedestal and open sorting bins. Its belt uses tangential contact friction,
+not prescribed fruit positions. Physics runs at 240 Hz; the video samples it at
+24 frames per second. A seed controls the fruit sequence independently of
+rendering. Every run records the seed and trajectory for replay.
+
+```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <charconv>
+#include <cstdlib>
+#include <fstream>
+#include <random>
+#include <stdexcept>
+
+// The URDF loader bakes link placements into mesh coordinates. Place the arm
+// on the end pedestal facing back along the conveyor (a half-turn about Z).
+void add_arm(dm::cad::Scene& scene, dm::cad::Scene arm) {
+  const int mesh_offset = int(scene.meshes.size());
+  const int texture_offset = int(scene.textures.size());
+  for (auto& mesh : arm.meshes) {
+    for (std::size_t i = 0; i < mesh.positions.size(); i += 3) {
+      mesh.positions[i] = .62f - mesh.positions[i];
+      mesh.positions[i + 1] = -mesh.positions[i + 1];
+      mesh.positions[i + 2] += .72f;
+    }
+    for (std::size_t i = 0; i < mesh.normals.size(); i += 3) {
+      mesh.normals[i] *= -1; mesh.normals[i + 1] *= -1;
+    }
+    scene.meshes.push_back(std::move(mesh));
+  }
+  for (auto& texture : arm.textures) scene.textures.push_back(std::move(texture));
+  for (auto object : arm.objects) {
+    object.mesh_index += mesh_offset;
+    for (int* slot : {&object.texture_index, &object.normal_map_index,
+                      &object.roughness_map_index, &object.metallic_map_index})
+      if (*slot >= 0) *slot += texture_offset;
+    object.parent = -1;
+    scene.AddObject(object);
+  }
+}
+
+int main() {
+  namespace fs = std::filesystem;
+  fs::create_directories("build/fruit_sorting/frames");
+  fs::create_directories("figures");
+  const fs::path assets = dm::datasets::fetch(
+    "rebot_devarm", "../../../build/cad-assets/rebot");
+  auto robot = dm::cad::Robot::load_urdf(
+    (assets / "Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf").string());
+  robot.set_joint("joint2", -1.05);
+  robot.set_joint("joint3", -.65);
+  robot.set_joint("finger_left", .025);
+
+  // Set DATAMUNGE_CONVEYOR_SEED to the printed integer to repeat a run.
+  std::random_device entropy;
+  std::uint64_t seed = (std::uint64_t(entropy()) << 32) ^ entropy();
+  if (const char* value = std::getenv("DATAMUNGE_CONVEYOR_SEED")) {
+    const std::string text(value);
+    auto [end, error] = std::from_chars(text.data(), text.data()+text.size(), seed);
+    if (error != std::errc{} || end != text.data()+text.size())
+      throw std::invalid_argument("DATAMUNGE_CONVEYOR_SEED must be an unsigned integer");
+  }
+  dm::sim::ConveyorEnvironment env(dm::sim::FruitVariation::Diverse);
+  env.reset(seed);
+  auto scenery = env.static_scene();
+  scenery.objects.erase(std::remove_if(scenery.objects.begin(), scenery.objects.end(),
+    [](const auto& o) { return o.name == "apple bin symbol" || o.name == "banana bin symbol"; }),
+    scenery.objects.end());
+  add_arm(scenery, robot.scene());
+  dm::cad::Light key;
+  key.direction = {-1, -2, 3}; key.intensity = 1.0f;
+  scenery.AddLight(key);
+  dm::cad::Light fill;
+  fill.direction = {1, 1, 2}; fill.intensity = .35f;
+  scenery.AddLight(fill);
+  dm::cad::Camera camera;
+  camera.position = {-1.65, -2.10, 3.40};
+  camera.target = {-.10, 0, .78};
+  camera.projection = dm::cad::Projection::Orthographic;
+  camera.ortho_height = 1.95;
+  dm::cad::RenderOptions options;
+  options.width = 960; options.height = 640;
+  options.samples = 1; options.background = {.91f, .94f, .96f, 1};
+
+  // Cache the detailed, stationary CAD background. Moving actors are ray traced
+  // separately, then depth-composited so rails, bins and the arm occlude them.
+  // Static shadows are cached too; moving fruit does not cast onto the backdrop.
+  const auto background = dm::cad::render(scenery, camera, options);
+  std::ofstream trajectory("build/fruit_sorting/trajectory.csv");
+  trajectory << "frame,time,x,y_up,z_across,vx,vy,vz,waiting\n";
+  constexpr int fps = 24, frames = 8 * fps;
+  double stopped_x = 0;
+  for (int frame = 0; frame < frames; ++frame) {
+    auto state = env.observation();
+    auto moving_scene = env.dynamic_scene();
+    moving_scene.lights = scenery.lights;
+    auto actors = dm::cad::render(moving_scene, camera, options);
+    auto image = background;
+    for (std::size_t pixel = 0; pixel < image.depth.size(); ++pixel)
+      if (actors.depth[pixel] < image.depth[pixel]) {
+        std::copy_n(actors.rgba.begin() + 4*pixel, 4, image.rgba.begin() + 4*pixel);
+        image.depth[pixel] = actors.depth[pixel];
+        image.object_ids[pixel] = actors.object_ids[pixel];
+      }
+    image.save(std::format("build/fruit_sorting/frames/{:04}.png", frame));
+    if (frame == frames-1) {
+      image.save("build/fruit_sorting/poster.png");
+      if (state.stage != dm::sim::ConveyorStage::Waiting || std::abs(state.velocity[0]) > .002)
+        throw std::runtime_error("Fruit did not stop at the pick station");
+      if (std::abs(state.position[0]-stopped_x) > .001)
+        throw std::runtime_error("Waiting fruit drifted during the final second");
+    }
+    if (frame == frames-fps) stopped_x = state.position[0];
+    trajectory << std::format("{},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f},{}\n",
+      frame, state.time, state.position[0], state.position[1], state.position[2],
+      state.velocity[0], state.velocity[1], state.velocity[2],
+      state.stage == dm::sim::ConveyorStage::Waiting ? 1 : 0);
+    for (int tick = 0; tick < 5; ++tick) env.step(1./120);
+  }
+  const auto final = env.observation();
+  const std::string fruit = final.kind == dm::sim::FruitKind::Apple ? "apple" : "banana";
+  std::ofstream metadata("build/fruit_sorting/run.json");
+  metadata << std::format("{{\"seed\":{},\"fruit\":\"{}\",\"arrival_seconds\":{:.8f},"
+    "\"fps\":{},\"frames\":{},\"physics_hz\":240}}\n",
+    seed, fruit, final.arrival_time, fps, frames);
+
+  // H.264 baseline / YUV420 is playable by mep and ordinary HTML video players.
+  // Encoding uses the ffmpeg supplied by the repository's C++ development shell.
+  const int status = std::system(
+    "ffmpeg -hide_banner -loglevel error -y -framerate 24 "
+    "-i build/fruit_sorting/frames/%04d.png -frames:v 192 -an "
+    "-c:v libx264 -profile:v baseline -level 3.1 -bf 0 -g 48 "
+    "-preset fast -crf 19 -pix_fmt yuv420p -movflags +faststart "
+    "build/fruit_sorting/arrival.mp4");
+  if (status != 0) throw std::runtime_error("ffmpeg could not encode the arrival video");
+  fs::copy_file("build/fruit_sorting/arrival.mp4", "figures/fruit_sorting_arrival.mp4",
+    fs::copy_options::overwrite_existing);
+  fs::copy_file("build/fruit_sorting/poster.png", "figures/fruit_sorting_poster.png",
+    fs::copy_options::overwrite_existing);
+  std::println("Seed `{}` selected **{}** as the first fruit. The pick sensor stopped the belt at **{:.3f} s**. "
+    "The fruit is waiting for the robot; no picking policy has run.\n", seed, fruit, final.arrival_time);
+  std::println("\\video(figures/fruit_sorting_arrival.mp4)");
+}
+```
+// result_begin: markdown
+Seed `15675708447074113772` selected **banana** as the first fruit. The pick sensor stopped the belt at **4.642 s**. The fruit is waiting for the robot; no picking policy has run.
+
+\video(figures/fruit_sorting_arrival.mp4)
+// result_end
+\caption(The first randomly selected fruit arrives at the DevArm pick station and waits. Red: target bin for either fruit; yellow: distractor bin.)
+\alttext(A Seeed robot arm beside a conveyor, with a red target bin and a yellow spare bin on opposite sides. One fruit travels along the belt and stops in front of the arm.)
+
+[Open or download the arrival video|file:figures/fruit_sorting_arrival.mp4].
+
+\image(figures/fruit_sorting_poster.png)
+\caption(The final frame: the belt has stopped and the fruit is ready to pick.)
+\alttext(The stationary fruit at the pick station, the parked robot arm, and two empty sorting bins.)
+
+>> Learning to put every fruit in the red bin
+
+The objective now ignores fruit identity: both apples and bananas belong in the
+red bin. The yellow bin is a distractor. Each training episode starts with one
+fruit already waiting at the sensor, with independently seeded position jitter
+of up to 8 mm. This separates manipulation learning from the belt's automatic
+arrival controller shown above.
+
+The agent chooses among nine actions: move the grasp point by 30 mm along one
+of the six Cartesian directions, close the gripper, open it, or wait. Numerical
+inverse kinematics converts each motion into the real URDF joint coordinates;
+position servos respect the joint limits and a 1.5 rad/s rate limit. The gripper
+moves at at most 0.08 m/s. There are no automatic reach, carry or deposit actions:
+the policy must choose its motions and decide when to grasp and release.
+
+We use tabular [Q-learning|https://www.gatsby.ucl.ac.uk/~dayan/papers/cjch.pdf]
+with learning rate 0.3, discount 0.98 and epsilon-greedy exploration at 0.25.
+The state table records the Cartesian command cell and whether the fruit is
+held. Continuous joint/tool/fruit observations remain available through the
+environment API. Fruit identity is deliberately absent from the policy input.
+The table is a compact state abstraction for this workcell, rather than a
+vision policy or a claim of general manipulation capability.
+
+Each decision costs 0.05; a blocked move costs another 0.15. A released fruit
+that settles on the red-bin floor earns 10; a failed release or lost fruit earns
+-3. [Potential-based shaping|https://ai.stanford.edu/~ang/papers/shaping-icml99.pdf]
+adds `0.98 * Phi(next) - Phi(current)`, using distance to the fruit before a
+grasp and distance to a point over the red bin while holding it. Absorbing
+states have zero potential. Shaping supplies feedback without choosing actions.
+Episodes end at release/loss or after 80 decisions, with termination and time
+limits reported separately.
+
+The next block trains from scratch, saves and reloads the final checkpoint,
+and evaluates its frozen greedy policy on 128 separate seeds in an independent
+environment. It also measures
+an untrained random-action baseline. The video replays the first successful
+apple and banana from that evaluation, in that order. Those are selected
+successful examples; the printed evaluation counts include every failure.
+
+```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+#include <dm/dm.hpp>
+#include <algorithm>
+#include <array>
+#include <chrono>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <optional>
+#include <random>
+#include <stdexcept>
+
+int main() {
+  namespace fs = std::filesystem;
+  using Env = dm::sim::DevArmPickEnvironment;
+  using Action = dm::sim::PickAction;
+  fs::create_directories("build/fruit_sorting_rl/frames");
+  fs::create_directories("figures");
+  const auto assets = dm::datasets::fetch("rebot_devarm", "../../../build/cad-assets/rebot");
+  const auto urdf = (fs::path(assets) / "Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf").string();
+  Env task(urdf, 80);
+  constexpr std::uint64_t training_seed = 20261101, evaluation_seed = 9000000000ULL;
+  constexpr int training_episodes = 2000, evaluations = 128, baseline_episodes = 64;
+
+  // Baseline and evaluation share initial-state seeds. Neither affects training RNGs.
+  std::mt19937_64 random(1789);
+  std::uniform_int_distribution<int> random_action(0, 8);
+  int baseline_successes = 0;
+  for (int n = 0; n < baseline_episodes; ++n) {
+    auto s = task.reset(evaluation_seed + n);
+    while (!s.terminated && !s.truncated) s = task.step(Action(random_action(random)));
+    baseline_successes += s.success;
+  }
+  const auto start = std::chrono::steady_clock::now();
+  Env training_task(urdf, 80);
+  auto trained = dm::sim::train_red_bin(training_task, training_episodes, training_seed);
+  const double training_seconds = std::chrono::duration<double>(
+    std::chrono::steady_clock::now() - start).count();
+  trained.policy.save("build/fruit_sorting_rl/policy.txt");
+  const auto policy = dm::sim::PickPolicy::load("build/fruit_sorting_rl/policy.txt");
+  if (policy.q != trained.policy.q) throw std::runtime_error("Checkpoint round trip changed Q values");
+
+  std::ofstream training_csv("build/fruit_sorting_rl/training.csv");
+  training_csv << "episode,return,success\n";
+  for (int n = 0; n < training_episodes; ++n)
+    training_csv << std::format("{},{:.9f},{}\n", n+1, trained.returns[n], int(trained.successes[n]));
+  std::vector<double> episodes, rates;
+  for (int end = 100; end <= training_episodes; end += 100) {
+    episodes.push_back(end);
+    rates.push_back(std::accumulate(trained.successes.begin()+end-100,
+      trained.successes.begin()+end, 0) / 100.0);
+  }
+  auto curve = dm::Plot().lines(episodes, rates, "Exploratory training");
+  curve.set_xlab("Training episode").set_ylab("Fraction placed into red").ylim(0, 1);
+  dm::plot(curve).title("Learning to place either fruit into the red bin")
+    .size(900, 340).save_svg("build/fruit_sorting_rl/learning.svg");
+
+  std::array<int, 2> attempts{}, successes{};
+  std::array<std::optional<std::uint64_t>, 2> selected;
+  std::ofstream evaluation_csv("build/fruit_sorting_rl/evaluation.csv");
+  evaluation_csv << "seed,fruit,success,decisions,seconds,x,y,z\n";
+  for (int n = 0; n < evaluations; ++n) {
+    const std::uint64_t seed = evaluation_seed + n;
+    auto s = task.reset(seed);
+    const int kind = s.kind == dm::sim::FruitKind::Apple ? 0 : 1;
+    ++attempts[kind];
+    while (!s.terminated && !s.truncated) s = task.step(policy.action(s.state));
+    successes[kind] += s.success;
+    if (s.success && !selected[kind]) selected[kind] = seed;
+    evaluation_csv << std::format("{},{},{},{},{:.8f},{:.8f},{:.8f},{:.8f}\n",
+      seed, kind == 0 ? "apple" : "banana", s.success ? 1 : 0, s.decisions,
+      s.time, s.fruit.x, s.fruit.y, s.fruit.z);
+  }
+  if (!selected[0] || !selected[1])
+    throw std::runtime_error("The final policy did not solve both fruit types; no success video fabricated");
+  if (successes[0] + successes[1] < .9 * evaluations)
+    throw std::runtime_error("Held-out success below 90%; inspect evaluation.csv before presenting this policy");
+
+  // Render actual recorded joint/fruit trajectories from the reloaded frozen policy.
+  dm::cad::Camera camera;
+  camera.position = {-1.65, -2.10, 3.40}; camera.target = {-.10, 0, .78};
+  camera.projection = dm::cad::Projection::Orthographic; camera.ortho_height = 1.95;
+  dm::cad::RenderOptions options;
+  options.width = 960; options.height = 640; options.samples = 1;
+  options.background = {.91f, .94f, .96f, 1};
+  auto scenery = task.static_scene();
+  dm::cad::Light key; key.direction = {-1, -2, 3}; key.intensity = 1;
+  dm::cad::Light fill; fill.direction = {1, 1, 2}; fill.intensity = .35f;
+  scenery.AddLight(key); scenery.AddLight(fill);
+  const auto background = dm::cad::render(scenery, camera, options);
+  std::ofstream trajectory("build/fruit_sorting_rl/trajectory.csv");
+  trajectory << "video_frame,episode,seed,sim_seconds,grasped,success,tool_x,tool_y,tool_z,fruit_x,fruit_y,fruit_z,q1,q2,q3,q4,q5,q6,finger\n";
+  int frame_number = 0;
+  for (int kind = 0; kind < 2; ++kind) {
+    std::vector<dm::sim::PickObservation> frames;
+    task.record([&](const auto& frame) { frames.push_back(frame); });
+    auto s = task.reset(*selected[kind]);
+    while (!s.terminated && !s.truncated) s = task.step(policy.action(s.state));
+    task.record({});
+    if (!s.success) throw std::runtime_error("Frozen-policy replay did not reproduce its evaluation success");
+    for (int hold = 0; hold < 24; ++hold) frames.push_back(s);
+    for (const auto& frame : frames) {
+      auto moving = task.dynamic_scene(frame);
+      moving.lights = scenery.lights;
+      const auto foreground = dm::cad::render(moving, camera, options);
+      auto image = background;
+      for (std::size_t pixel = 0; pixel < image.depth.size(); ++pixel)
+        if (foreground.depth[pixel] < image.depth[pixel])
+          std::copy_n(foreground.rgba.begin()+4*pixel, 4, image.rgba.begin()+4*pixel);
+      image.save(std::format("build/fruit_sorting_rl/frames/{:05}.png", frame_number));
+      if (&frame == &frames.back()) image.save("build/fruit_sorting_rl/poster.png");
+      trajectory << std::format("{},{},{},{:.8f},{},{},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f}",
+        frame_number++, kind+1, *selected[kind], frame.time, frame.grasped ? 1 : 0,
+        frame.success ? 1 : 0, frame.tool.x, frame.tool.y, frame.tool.z,
+        frame.fruit.x, frame.fruit.y, frame.fruit.z);
+      for (double q : frame.joints) trajectory << std::format(",{:.9f}", q);
+      trajectory << std::format(",{:.9f}\n", frame.finger);
+    }
+  }
+  const std::string encode = "ffmpeg -hide_banner -loglevel error -y -framerate 24 "
+    "-i build/fruit_sorting_rl/frames/%05d.png -frames:v " + std::to_string(frame_number) +
+    " -an -c:v libx264 -profile:v baseline -level 3.1 -bf 0 -g 48 -preset fast "
+    "-crf 19 -pix_fmt yuv420p -movflags +faststart build/fruit_sorting_rl/success.mp4";
+  if (std::system(encode.c_str()) != 0) throw std::runtime_error("Could not encode learned-policy video");
+
+  std::ofstream metrics("build/fruit_sorting_rl/metrics.json");
+  metrics << std::format("{{\"algorithm\":\"tabular_q_learning\",\"training_seed\":{},"
+    "\"training_episodes\":{},\"training_seconds\":{:.3f},\"baseline_successes\":{},"
+    "\"baseline_episodes\":{},\"evaluation_seed\":{},\"evaluation_episodes\":{},"
+    "\"apple_successes\":{},\"apple_attempts\":{},\"banana_successes\":{},\"banana_attempts\":{},"
+    "\"video_apple_seed\":{},\"video_banana_seed\":{},\"video_frames\":{},\"fps\":24}}\n",
+    training_seed, training_episodes, training_seconds, baseline_successes, baseline_episodes,
+    evaluation_seed, evaluations, successes[0], attempts[0], successes[1], attempts[1],
+    *selected[0], *selected[1], frame_number);
+  training_csv.close(); evaluation_csv.close(); trajectory.close(); metrics.close();
+  for (const std::string name : {"success.mp4", "poster.png", "learning.svg", "policy.txt",
+      "training.csv", "evaluation.csv", "trajectory.csv", "metrics.json"})
+    fs::copy_file("build/fruit_sorting_rl/"+name, "figures/fruit_sorting_rl_"+name,
+      fs::copy_options::overwrite_existing);
+  std::println("After **{} training episodes**, the frozen policy placed **{}/{} apples** and "
+    "**{}/{} bananas** into the red bin on separate evaluation seeds. "
+    "The random-action baseline completed **{}/{}** episodes.\n",
+    training_episodes, successes[0], attempts[0], successes[1], attempts[1],
+    baseline_successes, baseline_episodes);
+  std::println("The selected successful replays use apple seed `{}` and banana seed `{}`. "
+    "Both execute the reloaded policy without exploration or scripted corrections.\n",
+    *selected[0], *selected[1]);
+  std::println("\\video(figures/fruit_sorting_rl_success.mp4)");
+}
+```
+// result_begin: markdown
+After **2000 training episodes**, the frozen policy placed **67/67 apples** and **61/61 bananas** into the red bin on separate evaluation seeds. The random-action baseline completed **0/64** episodes.
+
+The selected successful replays use apple seed `9000000001` and banana seed `9000000000`. Both execute the reloaded policy without exploration or scripted corrections.
+
+\video(figures/fruit_sorting_rl_success.mp4)
+// result_end
+\caption(The learned policy picks and places an apple, then a banana, into the red bin. These are the first successful held-out rollouts for each class, using the final frozen checkpoint.)
+\alttext(The real Seeed robot arm lowers its gripper around a fruit, closes, lifts, moves across the conveyor, and releases into the red bin. A second evaluation episode repeats the task with the other fruit.)
+
+[Open or download the learned-policy video|file:figures/fruit_sorting_rl_success.mp4].
+
+\image(figures/fruit_sorting_rl_learning.svg)
+\caption(Training success in consecutive batches of 100 episodes. Exploration remains active, so this curve differs from the final greedy-policy evaluation.)
+\alttext(A line plot showing the fraction of training episodes that placed the fruit into the red bin, against training episode.)
+
+\image(figures/fruit_sorting_rl_poster.png)
+\caption(The end of a successful learned-policy rollout, with the released fruit in the red bin.)
+\alttext(The arm has opened its gripper over the red bin, where the fruit has landed.)
+
+Reproducible run artifacts: [frozen Q checkpoint|file:figures/fruit_sorting_rl_policy.txt],
+[training history|file:figures/fruit_sorting_rl_training.csv],
+[all evaluation outcomes|file:figures/fruit_sorting_rl_evaluation.csv],
+[recorded joint and fruit trajectories|file:figures/fruit_sorting_rl_trajectory.csv],
+and [run metrics and selected seeds|file:figures/fruit_sorting_rl_metrics.json].
+The complete frame sequences remain in the local `build/fruit_sorting_rl/frames/`
+directory. Rerunning this block trains again from scratch with the stated seed;
+`PickPolicy::load` supports inference without retraining.
+
+>> What this first learning environment models
+
+The policy controls the real DevArm's joint poses through a kinematic Cartesian
+position servo. Fruit motion, gravity, conveyor/bin contacts and post-release
+settling use the native rigid-body engine at 240 Hz. A close command near the
+fruit creates an ideal stabilized grasp with a size-dependent finger aperture;
+a missed grasp reopens. Payload orientation stays stabilized during transport.
+Opening restores a dynamic body, and success requires a released fruit to settle
+inside the red bin with low speed and physical floor support. Merely closing the
+gripper, hovering above the bin, or moving the fruit while held cannot succeed.
+
+This model uses conservative tool/payload collision guards. It does not yet
+model full arm self-collision, motor torques, slip, deformable fruit, noisy vision
+or hardware timing. The camera rendering includes the actual CAD arm and depth
+occlusion; cached static scenery receives no moving-object shadows. The reported
+success rate describes this simplified workcell and its two fruit proxies, not
+a hardware transfer result.
+
+Source model: [Seeed reBot DevArm|https://github.com/Seeed-Projects/reBot-DevArm],
+revision `922c5fa3d8c8919db1847b49166f02fc26c8fdad`, B601-DM.
+`dm::datasets::fetch` downloads missing assets and verifies the pinned hashes.
+The hardware assets are © 2026 Seeed Studio Co., Ltd., CERN-OHL-W-2.0;
+the downloaded license remains alongside the cached model.
+
+>> Wrist-camera vision with varied fruit and visible localization
+
+We assign **apples to red** and **bananas to yellow** using a camera rigidly
+mounted to the real DevArm's `end_link`. The classifier receives only RGB
+pixels; its prediction chooses the destination before the first arm action.
+
+Each class has **six geometry prototypes**: apples vary in girth, taper and
+lobing; bananas vary in length, curvature and thickness. Each new fruit receives
+an independent scale from 0.85 to 1.15, mottled skin texture, material roughness,
+optional apple leaf, full-turn random yaw and small pitch/roll tilts. Both
+classes draw from the same green, yellow, red/russet and brown palette.
+A fruit enters at a random position along and across the belt, then travels
+under friction until the optical sensor stops it. Rendered orientation and
+size follow the physical proxy. Rotation remains stabilized after spawning,
+as in the manipulation baseline; this is not a rolling/deformable-fruit model.
+
+The blue wrist camera follows actual joint kinematics and never aims using
+fruit coordinates or labels. Its fixed local mount is `(-0.09,-0.075,0.045)` m,
+viewing local `(0.13,0,0)` with local +Z up. We use a 95-degree field of view
+and 128 by 128 RGB pixels to accommodate off-centre arrivals and long bananas.
+
+A **calibrated RGB background-subtraction localizer** compares the camera view
+with a registered empty workcell at the same arm pose, including its moving
+tread marks. It uses RGB differences, without reading object IDs, depth,
+fruit coordinates or labels. The green box bounds the visible foreground.
+Its square, padded crop is resized to 64 by 64 and supplied to MobileNet.
+Boxes and prediction borders are drawn afterward for display. This localizer
+assumes known synthetic scenery; it is not a trained object detector and does
+not establish robustness to arbitrary backgrounds.
+
+The full [MobileNet-v1|https://arxiv.org/abs/1704.04861] uses width 0.125,
+all thirteen depthwise/pointwise blocks, ReLU6, BN and global average pooling.
+All 57,738 parameters are trained from scratch with native Adam/autograd.
+Training includes brightness jitter and 25% grayscale augmentation. We also
+report grayscale test accuracy to check reliance on color.
+
+We render **1,024 training scenes from prototypes 0–3**, **256 validation
+scenes from prototype 4**, and **256 test scenes from prototype 5**, balanced
+by class and training prototype. Seed ranges are disjoint; validation loss
+selects the checkpoint and test prototypes never supply classifier gradients. This is a
+stronger check than changing the seed of the same geometry. The manifest
+records each seed, inspection position, sampled appearance parameters and visible bounding box.
+
+Both placement policies are retrained for 8,000 randomized episodes each.
+Motor training uses all six prototypes with independent seeds; the prototype
+holdout applies to the image classifier.
+The motor state adds five observed across-belt position bins before grasp;
+carrying states are shared. The servo aligns the jaws to the banana proxy's
+short axis and sizes its aperture to the payload. These motor controls still
+use simulator geometry and the stabilized proximity grasp; fruit pose is not
+estimated by the image classifier. There is no ground-truth class routing or
+corrective fallback. End-to-end evaluation includes every held-out test scene;
+the demonstration video then selects two successful examples of each class.
+
+```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/parallel.hpp>
+#include <algorithm>
+#include <array>
+#include <cstdlib>
+#include <fstream>
+#include <optional>
+#include <iostream>
+#include <stdexcept>
+namespace n = dm::nn;
+namespace s = dm::sim;
+
+// Raw camera RGB only: labels and display annotations are never model inputs.
+n::Tensor rgb(const dm::cad::RenderResult& frame) {
+  std::vector<float> pixels;
+  pixels.reserve(frame.width * frame.height * 3);
+  for (std::size_t p = 0; p < frame.rgba.size(); p += 4)
+    for (int c = 0; c < 3; ++c) pixels.push_back(frame.rgba[p+c] / 255.f);
+  return n::from_vector(pixels, {1, frame.height, frame.width, 3});
+}
+struct Data { n::Tensor images, labels; std::vector<std::uint64_t> seeds; };
+// Feed under contact physics, wait at the optical sensor, then settle before inspection.
+s::PickObservation arrive(s::DevArmPickEnvironment& task,std::uint64_t seed) {
+  auto state=task.reset_feed(seed);
+  for(int i=0;i<1000 && state.feed_stage==s::ConveyorStage::Travelling;++i)
+    state=task.advance_feed(1./120);
+  if(state.feed_stage!=s::ConveyorStage::Waiting)throw std::runtime_error("Fruit did not arrive");
+  for(int i=0;i<24;++i)state=task.advance_feed(1./120);
+  return state;
+}
+Data camera_data(s::DevArmPickEnvironment& task,s::DevArmWristCamera& camera,
+                 std::uint64_t first_seed,int per_class_prototype,int first_prototype,
+                 int last_prototype,const std::string& split,std::ostream& manifest) {
+  std::vector<float> pixels; std::vector<std::int64_t> labels;
+  std::vector<std::uint64_t> seeds;
+  std::array<std::array<int,6>,2> counts{};
+  const int target=2*(last_prototype-first_prototype+1)*per_class_prototype;
+  for(std::uint64_t seed=first_seed;int(seeds.size())<target;++seed){
+    const auto sampled=task.reset_feed(seed);
+    const int truth=sampled.kind==s::FruitKind::Apple ? 0:1;
+    const int prototype=sampled.appearance.prototype;
+    if(prototype<first_prototype || prototype>last_prototype || counts[truth][prototype]>=per_class_prototype)continue;
+    const auto frame=arrive(task,seed);const auto inspection=camera.inspect(frame);
+    if(inspection.crop.rgba.empty())throw std::runtime_error("Inspection RGB localizer missed fruit");
+    auto image=rgb(inspection.crop).to_vector<float>();
+    pixels.insert(pixels.end(),image.begin(),image.end());labels.push_back(truth);seeds.push_back(seed);
+    ++counts[truth][prototype];
+    manifest<<std::format("{},{},{},{},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f},{:.5f},{:.5f},{:.5f},{},{},{},{},{}\n",
+      split,seed,truth,prototype,frame.fruit.x,frame.fruit.y,frame.appearance.yaw,
+      frame.appearance.pitch,frame.appearance.scale,frame.appearance.skin[0],frame.appearance.skin[1],
+      frame.appearance.skin[2],inspection.box.x,inspection.box.y,inspection.box.width,inspection.box.height,
+      inspection.foreground_pixels);
+    if(seeds.size()%128==0)std::cerr<<split<<" images "<<seeds.size()<<"/"<<target<<'\n';
+  }
+  return {n::from_vector(pixels,{target,64,64,3}),n::from_vector(labels),seeds};
+}
+// Display annotation only: model crops are taken before drawing any rectangle.
+void box(dm::cad::RenderResult& image,const s::ImageBox& b,std::array<unsigned char,3> color){
+  if(!b.width||!b.height)return;
+  for(int y=b.y;y<b.y+b.height;++y)for(int x=b.x;x<b.x+b.width;++x){
+    if(x>=b.x+2&&x<b.x+b.width-2&&y>=b.y+2&&y<b.y+b.height-2)continue;
+    for(int c=0;c<3;++c)image.rgba[4*(y*image.width+x)+c]=color[c];
+  }
+}
+n::Tensor grayscale(const n::Tensor& images){
+  auto values=images.to_vector<float>();
+  for(std::size_t i=0;i<values.size();i+=3){float y=.299f*values[i]+.587f*values[i+1]+.114f*values[i+2];values[i]=values[i+1]=values[i+2]=y;}
+  return n::from_vector(values,images.shape());
+}
+void append(dm::cad::Scene& scene, dm::cad::Scene extra) {
+  const int mesh_base = int(scene.meshes.size()), texture_base = int(scene.textures.size());
+  for (auto& mesh : extra.meshes) scene.meshes.push_back(std::move(mesh));
+  for (auto& texture : extra.textures) scene.textures.push_back(std::move(texture));
+  for (auto object : extra.objects) {
+    object.mesh_index += mesh_base; object.parent = -1;
+    for (int* slot : {&object.texture_index, &object.normal_map_index,
+                      &object.roughness_map_index, &object.metallic_map_index})
+      if (*slot >= 0) *slot += texture_base;
+    scene.AddObject(object);
+  }
+}
+
+int main() {
+  namespace fs = std::filesystem;
+  n::set_num_threads(1);
+  fs::create_directories("build/fruit_vision/frames");
+  fs::create_directories("figures");
+  const auto assets = dm::datasets::fetch("rebot_devarm", "../../../build/cad-assets/rebot");
+  const auto urdf = (fs::path(assets)/"Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf").string();
+  s::DevArmPickEnvironment task(urdf,100,s::FruitVariation::Diverse);
+  s::DevArmWristCamera wrist(task,128,95);
+  std::ofstream manifest("build/fruit_vision/image_manifest.csv");
+  manifest << "split,seed,label_0_apple_1_banana,prototype,x,y,yaw,pitch,scale,red,green,blue,box_x,box_y,box_width,box_height,foreground_pixels\n";
+  const auto training=camera_data(task,wrist,12000000000ULL,128,0,3,"training",manifest);
+  const auto validation=camera_data(task,wrist,13000000000ULL,128,4,4,"validation",manifest);
+  const auto test=camera_data(task,wrist,14000000000ULL,128,5,5,"test",manifest);
+  manifest.close();
+  n::save_image_grid(n::slice_axis(test.images,0,0,24),"build/fruit_vision/camera_samples.png",8,0,1,2,.9,2);
+  // One actual wrist image for each of the twelve geometry prototypes.
+  std::array<std::array<std::optional<std::uint64_t>,6>,2> gallery{};
+  for(unsigned seed=0;seed<1000;++seed){auto f=task.reset_feed(seed);gallery[int(f.kind)][f.appearance.prototype]=seed;}
+  std::vector<float> gallery_pixels;
+  for(int fruit=0;fruit<2;++fruit)for(int prototype=0;prototype<6;++prototype){
+    const auto f=arrive(task,*gallery[fruit][prototype]);auto v=wrist.inspect(f);box(v.rgb,v.box,{30,245,120});
+    const auto pixels=rgb(v.rgb).to_vector<float>();gallery_pixels.insert(gallery_pixels.end(),pixels.begin(),pixels.end());
+  }
+  n::save_image_grid(n::from_vector(gallery_pixels,{12,128,128,3}),"build/fruit_vision/prototypes.png",6,0,1,2,.9,1);
+
+  n::MobileNetClassifier model(2,64,.125,20261103);
+  n::MobileClassifierOptions options;
+  options.epochs=40; options.batch_size=16; options.seed=20261103;
+  options.grayscale_probability=.25;
+  const auto fitted = model.fit(training.images,training.labels,
+    validation.images,validation.labels,options);
+  model.save("build/fruit_vision/mobilenet.npz");
+  auto classifier = n::MobileNetClassifier::load("build/fruit_vision/mobilenet.npz");
+  const auto probabilities = classifier.predict(test.images);
+  if (n::max(n::abs(probabilities-model.predict(test.images))).item() > 1e-7)
+    throw std::runtime_error("MobileNet checkpoint changed inference");
+  const auto predicted = n::argmax(probabilities,-1);
+  n::ConfusionMatrix confusion(2); confusion.add(test.labels,predicted);
+  n::ConfusionMatrixPlotOptions confusion_options;
+  confusion_options.labels={"Apple","Banana"}; confusion_options.cell_size=100;
+  confusion_options.title="Wrist RGB: held-out prototype 5";
+  confusion.save_svg("build/fruit_vision/confusion.svg",confusion_options);
+
+  std::ofstream fit_csv("build/fruit_vision/classifier_training.csv");
+  fit_csv << "epoch,training_loss,validation_loss,validation_accuracy\n";
+  std::vector<double> epochs, train_loss, validation_loss, accuracy;
+  for (const auto& row : fitted.history) {
+    epochs.push_back(row.epoch); train_loss.push_back(row.training_loss);
+    validation_loss.push_back(row.validation_loss); accuracy.push_back(row.validation_accuracy);
+    fit_csv << std::format("{},{:.9f},{:.9f},{:.9f}\n",row.epoch,
+      row.training_loss,row.validation_loss,row.validation_accuracy);
+  }
+  fit_csv.close();
+  auto losses=dm::Plot().lines(epochs,train_loss,"Training",dm::RGB{37,99,235});
+  losses.lines(epochs,validation_loss,"Validation",dm::RGB{220,38,38});
+  losses.set_title("Cross entropy").set_xlab("Epoch").set_ylab("Loss");
+  auto valid_accuracy=dm::Plot().lines(epochs,accuracy,"Validation",dm::RGB{15,140,100});
+  valid_accuracy.set_title("Validation accuracy").set_xlab("Epoch").set_ylab("Correct fraction").ylim(0,1);
+  auto layout=dm::graphics::RLayout::create(1,2).add(losses).add(valid_accuracy).fit_panels();
+  dm::plot(layout).size(1050,340).save_svg("build/fruit_vision/classifier_learning.svg");
+
+  const auto gray_predictions=n::argmax(classifier.predict(grayscale(test.images)),-1).to_vector<std::int64_t>();
+  const auto truths=test.labels.to_vector<std::int64_t>();
+  int gray_correct=0;for(std::size_t i=0;i<truths.size();++i)gray_correct+=gray_predictions[i]==truths[i];
+  // Train both motor policies afresh for randomized sizes, orientations and lateral bins.
+  s::DevArmPickEnvironment training_task(urdf,100,s::FruitVariation::Diverse);
+  auto learn=[&](s::PickBin goal,const std::string& name){
+    std::cerr<<"Learning "<<name<<" policy\n";
+    const auto learned=s::train_pick_bin(training_task,goal,8000,20261105);
+    learned.policy.save("build/fruit_vision/"+name+"_policy.txt");
+    const auto restored=s::PickPolicy::load("build/fruit_vision/"+name+"_policy.txt");
+    if(restored.q!=learned.policy.q)throw std::runtime_error("Q checkpoint changed values");
+    std::ofstream csv("build/fruit_vision/"+name+"_training.csv");csv<<"episode,return,success\n";
+    for(std::size_t i=0;i<learned.returns.size();++i)csv<<std::format("{},{:.9f},{}\n",i+1,learned.returns[i],int(learned.successes[i]));
+    return restored;
+  };
+  const auto red=learn(s::PickBin::Red,"red"),yellow=learn(s::PickBin::Yellow,"yellow");
+  std::array<int,2> totals{},classified{},sorted{},placed{};
+  std::array<std::vector<std::uint64_t>,2> selected;
+  std::ofstream evaluation("build/fruit_vision/evaluation.csv");
+  evaluation<<"seed,prototype,true_class,predicted_class,confidence,destination,goal_placement,correct_sort,decisions,x,y,z\n";
+  for(const auto seed:test.seeds){
+    auto state=arrive(task,seed);const auto inspection=wrist.inspect(state);
+    const auto p=classifier.predict(rgb(inspection.crop)).to_vector<float>();
+    const int prediction=p[1]>p[0]?1:0;
+    task.set_destination(prediction==0?s::PickBin::Red:s::PickBin::Yellow);
+    const auto& policy=prediction==0?red:yellow;
+    while(!state.terminated&&!state.truncated)state=task.step(policy.action(state.state));
+    const int truth=state.kind==s::FruitKind::Apple?0:1;
+    ++totals[truth];classified[truth]+=prediction==truth;placed[truth]+=state.success;
+    const bool correct=state.success&&prediction==truth;sorted[truth]+=correct;
+    if(correct&&selected[truth].size()<2)selected[truth].push_back(seed);
+    evaluation<<std::format("{},{},{},{},{:.9f},{},{},{},{},{:.8f},{:.8f},{:.8f}\n",seed,state.appearance.prototype,
+      truth,prediction,p[prediction],prediction==0?"red":"yellow",int(state.success),int(correct),state.decisions,state.fruit.x,state.fruit.y,state.fruit.z);
+  }
+  evaluation.close();
+  if(selected[0].size()<2||selected[1].size()<2)throw std::runtime_error("Insufficient successful examples for video");
+  std::cerr<<"Evaluation: classifier "<<classified[0]+classified[1]<<"/256, sorting "<<sorted[0]+sorted[1]<<"/256\n";
+
+  // A steep overview makes both bin interiors visible; the inset remains a real wrist view.
+  dm::cad::Camera overview;
+  overview.position={-1.35,-.6,5.0}; overview.target={-.10,0,.70};
+  overview.projection=dm::cad::Projection::Orthographic; overview.ortho_height=1.95;
+  dm::cad::RenderOptions render_options;
+  render_options.width=960; render_options.height=640;
+  render_options.background={.91f,.94f,.96f,1};
+  auto scenery=task.static_scene();
+  dm::cad::Light key; key.direction={-1,-2,3}; key.intensity=1; scenery.AddLight(key);
+  dm::cad::Light fill; fill.direction={1,1,2}; fill.intensity=.35f; scenery.AddLight(fill);
+  const auto background=dm::cad::render(scenery,overview,render_options);
+  std::ofstream trajectory("build/fruit_vision/trajectory.csv");
+  trajectory << "frame,episode,seed,predicted_class,target,sim_seconds,grasped,success,fruit_x,fruit_y,fruit_z,q1,q2,q3,q4,q5,q6,finger\n";
+  int frame_number=0;
+  for(int episode=0;episode<4;++episode){
+    const auto seed=selected[episode%2][episode/2];
+    std::vector<s::PickObservation> feeding;
+    task.record([&](const auto& f){feeding.push_back(f);});
+    auto state=arrive(task,seed);task.record({});
+    const auto p=classifier.predict(rgb(wrist.inspect(state).crop)).to_vector<float>();
+    const int prediction=p[1]>p[0]?1:0;
+    task.set_destination(prediction==0?s::PickBin::Red:s::PickBin::Yellow);
+    // Speed up feeding fourfold in the video; manipulation stays at real time.
+    std::vector<s::PickObservation> frames;
+    for(std::size_t k=0;k<feeding.size();k+=4)frames.push_back(feeding[k]);
+    frames.push_back(state);
+    task.record([&](const auto& f){frames.push_back(f);});
+    const auto& policy=prediction==0?red:yellow;
+    while(!state.terminated&&!state.truncated)state=task.step(policy.action(state.state));
+    task.record({});
+    if(!state.success||prediction!=(state.kind==s::FruitKind::Apple?0:1))throw std::runtime_error("Replay failed");
+    for(int hold=0;hold<24;++hold)frames.push_back(state);
+    std::array<double,6> last_joints{};double last_finger=-1;
+    auto base=background;
+    for(const auto& frame:frames){
+      if(frame.joints!=last_joints||frame.finger!=last_finger){
+        auto arm=task.robot_scene(frame);append(arm,wrist.housing(frame));arm.lights=scenery.lights;
+        const auto rendered=dm::cad::render(arm,overview,render_options);base=background;
+        for(std::size_t i=0;i<base.depth.size();++i)if(rendered.depth[i]<base.depth[i]){
+          std::copy_n(rendered.rgba.begin()+4*i,4,base.rgba.begin()+4*i);base.depth[i]=rendered.depth[i];
+        }
+        last_joints=frame.joints;last_finger=frame.finger;
+      }
+      auto moving=task.fruit_scene(frame);moving.lights=scenery.lights;
+      const auto actors=dm::cad::render(moving,overview,render_options);auto image=base;
+      for(std::size_t i=0;i<image.depth.size();++i)if(actors.depth[i]<image.depth[i])
+        std::copy_n(actors.rgba.begin()+4*i,4,image.rgba.begin()+4*i);
+      auto inspection=wrist.inspect(frame);
+      // Green rectangle is the live RGB localizer; red/yellow border is the latched prediction.
+      box(inspection.rgb,inspection.box,{30,245,120});
+      constexpr int scale=2,left=684,top=20,border=5;
+      const std::array<unsigned char,3> color{static_cast<unsigned char>(prediction==0?210:250),static_cast<unsigned char>(prediction==0?40:210),35};
+      for(int y=-border;y<128*scale+border;++y)for(int x=-border;x<128*scale+border;++x){
+        const auto i=4*((top+y)*image.width+left+x);const bool edge=x<0||y<0||x>=128*scale||y>=128*scale;
+        for(int c=0;c<3;++c)image.rgba[i+c]=edge?color[c]:inspection.rgb.rgba[4*((y/scale)*128+x/scale)+c];
+        image.rgba[i+3]=255;
+      }
+      image.save(std::format("build/fruit_vision/frames/{:05}.png",frame_number));
+      if(frame_number==int(feeding.size()/4)+1&&episode==0)image.save("build/fruit_vision/inspection.png");
+      if(&frame==&frames.back())image.save("build/fruit_vision/poster.png");
+      trajectory<<std::format("{},{},{},{},{},{:.8f},{},{},{:.8f},{:.8f},{:.8f}",frame_number++,episode+1,seed,
+        prediction,prediction==0?"red":"yellow",frame.time,int(frame.grasped),int(frame.success),frame.fruit.x,frame.fruit.y,frame.fruit.z);
+      for(double q:frame.joints)trajectory<<std::format(",{:.9f}",q);trajectory<<std::format(",{:.9f}\n",frame.finger);
+    }
+  }
+  trajectory.close();
+  const auto encode="ffmpeg -hide_banner -loglevel error -y -framerate 24 "
+    "-i build/fruit_vision/frames/%05d.png -frames:v "+std::to_string(frame_number)+
+    " -an -c:v libx264 -profile:v baseline -level 3.1 -bf 0 -g 48 -preset fast "
+    "-crf 19 -pix_fmt yuv420p -movflags +faststart build/fruit_vision/sorting.mp4";
+  if(std::system(encode.c_str())!=0) throw std::runtime_error("Could not encode vision sorting video");
+  std::ofstream metrics("build/fruit_vision/metrics.json");
+  metrics<<"{\"architecture\":\"MobileNetV1\",\"parameters\":"<<classifier.parameter_count()
+    <<",\"training_images\":1024,\"validation_images\":256,\"test_images\":256,\"training_prototypes\":[0,1,2,3],\"validation_prototypes\":[4],\"test_prototypes\":[5]"
+    <<",\"epochs\":40,\"selected_epoch\":"<<fitted.selected_epoch<<",\"classifier_correct\":"<<classified[0]+classified[1]
+    <<",\"grayscale_correct\":"<<gray_correct<<",\"correct_sorts\":"<<sorted[0]+sorted[1]
+    <<",\"placements_at_predicted_goal\":"<<placed[0]+placed[1]<<",\"apple_correct_sorts\":"<<sorted[0]
+    <<",\"banana_correct_sorts\":"<<sorted[1]<<",\"motor_episodes_per_goal\":8000,\"video_frames\":"<<frame_number<<",\"fps\":24}\n";
+  metrics.close();
+  for(const std::string name:{"sorting.mp4","poster.png","inspection.png","prototypes.png","camera_samples.png","confusion.svg",
+      "classifier_learning.svg","mobilenet.npz","red_policy.txt","yellow_policy.txt","image_manifest.csv",
+      "classifier_training.csv","red_training.csv","yellow_training.csv","evaluation.csv","trajectory.csv","metrics.json"})
+    fs::copy_file("build/fruit_vision/"+name,"figures/fruit_vision_"+name,fs::copy_options::overwrite_existing);
+  std::println("On **256 held-out prototype-5 scenes**, MobileNet classified **{}/256** RGB crops correctly and **{}/256** grayscale crops correctly. Validation selected epoch **{}**.\n",classified[0]+classified[1],gray_correct,fitted.selected_epoch);
+  std::println("Using only those class predictions for routing, the robot correctly sorted **{}/128 apples into red** and **{}/128 bananas into yellow**. All 256 attempts appear in the evaluation CSV.\n",sorted[0],sorted[1]);
+  std::println("The video shows four successful held-out episodes: seeds `{}`, `{}`, `{}`, `{}`. Feeding is shown at 4x speed; arm manipulation is real time. Green rectangles are live RGB localization boxes; red/yellow inset borders show the latched MobileNet prediction.\n",selected[0][0],selected[1][0],selected[0][1],selected[1][1]);
+  std::println("\\video(figures/fruit_vision_sorting.mp4)");
+}
+```
+// result_begin: markdown
+On **256 held-out prototype-5 scenes**, MobileNet classified **241/256** RGB crops correctly and **236/256** grayscale crops correctly. Validation selected epoch **38**.
+
+Using only those class predictions for routing, the robot correctly sorted **126/128 apples into red** and **115/128 bananas into yellow**. All 256 attempts appear in the evaluation CSV.
+
+The video shows four successful held-out episodes: seeds `14000000016`, `14000000001`, `14000000023`, `14000000005`. Feeding is shown at 4x speed; arm manipulation is real time. Green rectangles are live RGB localization boxes; red/yellow inset borders show the latched MobileNet prediction.
+
+\video(figures/fruit_vision_sorting.mp4)
+// result_end
+
+\caption(Four varied-fruit sorting examples. Feeding is accelerated fourfold; arm motion is real time. Green rectangles in the live wrist view are RGB foreground boxes. The red or yellow inset border displays the inspection prediction throughout each replayed clip.)
+\alttext(Off-centre fruit with varied colors, sizes and orientations arrives on a belt. A wrist-mounted camera shows a green box around the visible fruit. The robot places predicted apples in red and predicted bananas in yellow.)
+
+[Open the varied-fruit sorting video|file:figures/fruit_vision_sorting.mp4]
+or its [final placement frame|file:figures/fruit_vision_poster.png].
+
+\image(figures/fruit_vision_prototypes.png)
+\caption(Twelve actual wrist-camera images: apple prototypes 0–5 across the top and banana prototypes 0–5 below. Colors, pose and texture are sampled independently. Green rectangles show RGB foreground localization before the padded crop.)
+\alttext(Two rows of six fruit prototypes in different colors, sizes and orientations, with visible bounding boxes.)
+
+\image(figures/fruit_vision_camera_samples.png)
+\caption(The first 24 unannotated classifier crops from held-out prototype 5. These RGB pixels, enlarged twofold, are the model inputs.)
+\alttext(Three rows of varied apple and banana crops show different orientations and colors.)
+
+\image(figures/fruit_vision_classifier_learning.svg)
+\caption(Training and validation curves. Validation uses prototype 4, which is absent from training; the lowest validation loss selects weights and BN moments together.)
+\alttext(Training and validation cross entropy and validation accuracy across forty epochs.)
+
+\image(figures/fruit_vision_confusion.svg)
+\caption(All 256 held-out-prototype RGB predictions; true classes run top to bottom and predicted classes left to right.)
+\alttext(A two-by-two confusion matrix counts every apple and banana classification.)
+
+\image(figures/fruit_vision_inspection.png)
+\caption(A held-out fruit at inspection, showing its live localization box and prediction border in the wrist-camera inset.)
+\alttext(A robot inspects an off-centre fruit. The camera inset highlights its visible bounds.)
+
+Run artifacts: [MobileNet checkpoint|file:figures/fruit_vision_mobilenet.npz],
+[red placement policy|file:figures/fruit_vision_red_policy.txt],
+[yellow placement policy|file:figures/fruit_vision_yellow_policy.txt],
+[image/appearance/box manifest|file:figures/fruit_vision_image_manifest.csv],
+[classifier training|file:figures/fruit_vision_classifier_training.csv],
+[red-policy training|file:figures/fruit_vision_red_training.csv],
+[yellow-policy training|file:figures/fruit_vision_yellow_training.csv],
+[all end-to-end evaluations|file:figures/fruit_vision_evaluation.csv],
+[video trajectories|file:figures/fruit_vision_trajectory.csv],
+and [metrics|file:figures/fruit_vision_metrics.json].
+
+This tests generalization within procedural simulated CAD fruit and a calibrated
+workcell. It does not establish recognition of real fruit photographs or
+unfamiliar backgrounds. Classification is supervised; manipulation is tabular
+Q-learning with simulator geometry and idealized grasp/collision assumptions.
+A wrong prediction is counted as a wrong sort even if placement succeeds.

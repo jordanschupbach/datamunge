@@ -56,18 +56,24 @@ state checkpoints before testing. The tensor library performs preprocessing, for
 optimization. This tiny single-seed experiment differs from the larger source fit and published
 ImageNet training; it cannot reproduce benchmark accuracy or establish architecture superiority.
 
-The editable concept diagram is `diagrams/ghostnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/ghostnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/ghostnet_concept.tikz > build/ghostnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/ghostnet_concept.svg build/ghostnet_concept.dvi > build/ghostnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/ghostnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Intrinsic primary maps\nCheap depthwise maps");
+  diagram.node("n1", {5.2, 0}, "Concatenate and trim\nGhost bottleneck sum");
+  diagram.node("n2", {10.4, 0}, "CIFAR inputs\nTensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/ghostnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/ghostnet_concept.svg)
 // result_end
 \caption(GhostNet: Intrinsic Maps and Cheap Feature Generation)
@@ -355,7 +361,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Complete full-width 16-block backward at 64 pixels: 272 finite parameter-tensor gradients; 13 redundant BN shifts max 0.000000012; other minimum 0.001900218, overall maximum 3.001646042.
+Complete full-width 16-block backward at 64 pixels: 272 finite parameter-tensor gradients; 13 redundant BN shifts max 0.000000017; other minimum 0.001898077, overall maximum 3.010402918.
 // result_end
 
 > Dataset and explicit fitting
@@ -539,7 +545,7 @@ int main() {
 ```
 // result_begin: markdown
 64 fit / 32 validation / 32 official-test rows; 3914318 learned scalars, 21968 moving scalars; 80 explicit Adam updates.
-Selected epoch 10; validation NLL 2.348713; inference training NLL 2.039306; test NLL 2.766860; test accuracy 0.125000.
+Selected epoch 2; validation NLL 2.325629; inference training NLL 2.295486; test NLL 2.915730; test accuracy 0.093750.
 \image(figures/ghostnet_training.svg)
 // result_end
 \caption(Explicit ten-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)

@@ -19,18 +19,24 @@ $$ L=CE(z^{RGB},y)+CE(z^{flow},y),\qquad p=\tfrac12[softmax(z^{RGB})+softmax(z^{
 
 All preprocessing,forward,loss,optimization,inference,metrics and plot values use the tensor library. The declared flow-estimation adaptation is shown explicitly and is separate from the CNN fitting objective. Full reference geometry is an analytical census;both complete compact streams actually execute.
 
-The editable concept diagram is `diagrams/two_stream_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/two_stream_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/two_stream_concept.tikz > build/two_stream_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/two_stream_concept.svg build/two_stream_concept.dvi > build/two_stream_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/two_stream_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Consecutive RGB\n and estimated flow");
+  diagram.node("n1", {5.2, 0}, "Two complete\n CNN-M branches");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n probability fusion");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/two_stream_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/two_stream_concept.svg)
 // result_end
 \caption(Two-Stream:actual adjacent-frame flow and visible tensor optimizers)
@@ -82,7 +88,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-78 displayed nodes; 78748 reachable learned values.
+76 displayed nodes; 78748 reachable learned values.
 \image(figures/two_stream_architecture.svg)
 // result_end
 \caption(Executed two stream tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
@@ -114,43 +120,6 @@ int main() {
 }
 ```
 // result_begin:
-// Original clip video0,segment0:quadratic flow energy 8.28073692->3.00280547.
-// Original clip video0,segment1:quadratic flow energy 6.65041542->2.23170805.
-// Original clip video1,segment0:quadratic flow energy 20.8697109->7.84222603.
-// Original clip video1,segment1:quadratic flow energy 22.7293549->8.65926743.
-// Original clip video2,segment0:quadratic flow energy 9.259902->3.02107573.
-// Original clip video2,segment1:quadratic flow energy 8.19072628->2.47631764.
-// Original clip video3,segment0:quadratic flow energy 8.67780972->2.62351894.
-// Original clip video3,segment1:quadratic flow energy 4.19869089->1.14439833.
-// Original clip video6,segment0:quadratic flow energy 12.2959309->3.28308964.
-// Original clip video6,segment1:quadratic flow energy 8.9198761->3.2204771.
-// Original clip video7,segment0:quadratic flow energy 7.2425456->2.46206117.
-// Original clip video7,segment1:quadratic flow energy 14.7427158->4.98229933.
-// Original clip video8,segment0:quadratic flow energy 3.70161223->1.43311214.
-// Original clip video8,segment1:quadratic flow energy 8.36072063->3.18183327.
-// Original clip video9,segment0:quadratic flow energy 7.87803555->1.51662099.
-// Original clip video9,segment1:quadratic flow energy 9.78907299->4.00578976.
-// Original clip video12,segment0:quadratic flow energy 10.2419338->2.74937415.
-// Original clip video12,segment1:quadratic flow energy 13.4331074->3.78828669.
-// Original clip video13,segment0:quadratic flow energy 17.5338821->4.91975784.
-// Original clip video13,segment1:quadratic flow energy 44.2711182->18.2658501.
-// Original clip video14,segment0:quadratic flow energy 5.1040082->1.44254994.
-// Original clip video14,segment1:quadratic flow energy 6.55702114->1.65182579.
-// Original clip video15,segment0:quadratic flow energy 58.9715157->19.5884781.
-// Original clip video15,segment1:quadratic flow energy 97.974205->47.3926086.
-// Original clip video4,segment0:quadratic flow energy 6.64493752->3.55523109.
-// Original clip video4,segment1:quadratic flow energy 6.95185757->3.44466496.
-// Original clip video10,segment0:quadratic flow energy 6.15318966->3.30086756.
-// Original clip video10,segment1:quadratic flow energy 3.98346281->2.1451056.
-// Original clip video16,segment0:quadratic flow energy 20.85182->13.5190887.
-// Original clip video16,segment1:quadratic flow energy 17.3551559->9.1655407.
-// Original clip video5,segment0:quadratic flow energy 14.9476175->4.91055059.
-// Original clip video5,segment1:quadratic flow energy 18.1018696->6.00557423.
-// Original clip video11,segment0:quadratic flow energy 2.95834827->1.19401085.
-// Original clip video11,segment1:quadratic flow energy 2.48027444->1.16449451.
-// Original clip video17,segment0:quadratic flow energy 6.89472198->2.89927721.
-// Original clip video17,segment1:quadratic flow energy 13.1709404->7.21756363.
-// Prepared36actual RGB/ten estimated dense flow pairs;all400-step tensorSGD fits explicit.
 // result_end
 
 Show all six genuine middle RGB observations and every ten-field magnitude map.
@@ -557,10 +526,10 @@ KTH validation:6 RGB+flow pairs,1 people,3 source AVIs
 KTH test:6 RGB+flow pairs,1 people,3 source AVIs
 | epoch | dropout branch CE sum | validation fused NLL |
 |---:|---:|---:|
-| 1 | 2.772806 | 1.114867 |
-| 2 | 2.249606 | 1.088412 |
-| 3 | 2.238553 | 1.089211 |
-36explicit joint Adam updates;selected 2,validation 1.088412;fixed fused fitNLL 1.122472737->1.074159313.
+| 1 | 2.470278 | 1.087580 |
+| 2 | 2.211625 | 1.090458 |
+| 3 | 2.206370 | 1.095502 |
+36explicit joint Adam updates;selected 1,validation 1.087580;fixed fused fitNLL 1.122472777->1.089305350.
 \image(figures/two_stream_training.svg)
 // result_end
 \caption(Both independent stream CE losses appear explicitly before each joint tensor Adam step. The summed fitting objective differs in scale and semantics from validation fused NLL;all32leaves are selected together.)
@@ -709,27 +678,27 @@ int main() {
 KTH fit:24 RGB+flow pairs,4 people,12 source AVIs
 KTH validation:6 RGB+flow pairs,1 people,3 source AVIs
 KTH test:6 RGB+flow pairs,1 people,3 source AVIs
-Fresh restore/repeat 0,single/batch 1.1920929e-07,all32immutable;zero-flow/neutral-RGB/reverse-order L1 0.212156296/0.5244205/0.125096917.
+Fresh restore/repeat 0,single/batch 0,all32immutable;zero-flow/neutral-RGB/reverse-order L1 0.201318026/0.802395105/0.115843236.
 | predictor | accuracy | macroF1 | NLL | all recalls | all confusion counts |
 |---|---:|---:|---:|---|---|
-| fused | 0.333333 | 0.266667 | 1.097883 | [0, 1, 0] | [0, 0, 2, 0, 2, 0, 1, 1, 0] |
-| RGB | 0.333333 | 0.166667 | 1.115090 | [0, 1, 0] | [0, 2, 0, 0, 2, 0, 0, 2, 0] |
-| flow | 0.333333 | 0.166667 | 1.091294 | [0, 0, 1] | [0, 0, 2, 0, 0, 2, 0, 0, 2] |
+| fused | 0.333333 | 0.166667 | 1.075934 | [1, 0, 0] | [2, 0, 0, 2, 0, 0, 2, 0, 0] |
+| RGB | 0.500000 | 0.412698 | 1.059143 | [1, 0, 0.5] | [2, 0, 0, 2, 0, 0, 1, 0, 1] |
+| flow | 0.333333 | 0.166667 | 1.093877 | [1, 0, 0] | [2, 0, 0, 2, 0, 0, 2, 0, 0] |
 | initial | 0.333333 | 0.222222 | 1.126989 | [1, 0, 0] | [2, 0, 0, 0, 0, 2, 2, 0, 0] |
 | RGB1NN | 0.333333 | 0.166667 | 1.218111 | [1, 0, 0] | [2, 0, 0, 2, 0, 0, 2, 0, 0] |
 | flow1NN | 0.500000 | 0.412698 | 1.051445 | [0, 1, 0.5] | [0, 2, 0, 0, 2, 0, 0, 1, 1] |
-| zero flow | 0.333333 | 0.190476 | 1.103215 | [0, 1, 0] | [0, 1, 1, 0, 2, 0, 0, 2, 0] |
-| neutral RGB | 0.333333 | 0.166667 | 1.093660 | [0, 0, 1] | [0, 0, 2, 0, 0, 2, 0, 0, 2] |
-| reversed stack | 0.333333 | 0.266667 | 1.097153 | [0, 1, 0] | [0, 0, 2, 0, 2, 0, 1, 1, 0] |
+| zero flow | 0.333333 | 0.166667 | 1.079525 | [1, 0, 0] | [2, 0, 0, 2, 0, 0, 2, 0, 0] |
+| neutral RGB | 0.333333 | 0.166667 | 1.095522 | [1, 0, 0] | [2, 0, 0, 2, 0, 0, 2, 0, 0] |
+| reversed stack | 0.333333 | 0.166667 | 1.073574 | [1, 0, 0] | [2, 0, 0, 2, 0, 0, 2, 0, 0] |
 
 | source video | segment | true action | fused action |
 |---:|---:|---:|---:|
-| 5 | 0 | 0 | 2 |
-| 5 | 1 | 0 | 2 |
-| 11 | 0 | 1 | 1 |
-| 11 | 1 | 1 | 1 |
+| 5 | 0 | 0 | 0 |
+| 5 | 1 | 0 | 0 |
+| 11 | 0 | 1 | 0 |
+| 11 | 1 | 1 | 0 |
 | 17 | 0 | 2 | 0 |
-| 17 | 1 | 2 | 1 |
+| 17 | 1 | 2 | 0 |
 \image(figures/two_stream_confusion.svg)
 // result_end
 \caption(Complete nine-predictor/control metrics and every held-out source prediction. Fused and unchanged flow1NN confusion counts expose all class errors;modality controls preserve learned arrays.)

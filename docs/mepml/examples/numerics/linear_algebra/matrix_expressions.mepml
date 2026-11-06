@@ -1,0 +1,119 @@
+//? Title: Matrix expressions and least squares
+//? Subtitle: Dense and sparse native solves in C++, Python and R
+//? Exports: both
+//? Lang: en-GB
+
+Choose a language tab for each example. Code and its results stay together.
+Run each tab independently. Python uses the local package in
+`build/venv/pydatamunge-run`; R uses `build/r/library`. Build these once with
+`just build-python` and `just build-r`, and rebuild after binding changes.
+
+> Linear algebra
+
+Given a model $\boldsymbol{y} = \boldsymbol{X} \boldsymbol{\beta} +
+\boldsymbol{\epsilon}$, we want to solve for $\beta$ given our data $y$ and our
+design matrix $\boldsymbol{X}$. The best $\beta$ is one that minimizes the
+squared errors: $\hat{\boldsymbol{\beta}} = \text{argmin}_{\beta}
+||(\boldsymbol{y} - \hat{\boldsymbol{y}})||_2$ where fitted values are
+$\hat{\boldsymbol{y}} = \boldsymbol{X}\hat{\boldsymbol{\beta}}$.
+
+Checking the first condition by setting the derivative 
+of our objective equal to 0 yields the normal equations:
+
+\tabs(
+\tab(C++,
+
+```{cpp, results="markdown", nix-shell="git+file:../../../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+#include <dm/dm.hpp>
+
+int main() {
+  using dm::t;
+  dm::Mat<> X = {{1.1, 2.2}, {3.3, 4.4}, {5.5, 6.6}};
+  dm::Mat<> y = {{1.2}, {3.3}, {4.4}};
+  auto beta = ((t(X) * X)^(-1)) * t(X) * y;
+  const auto equation = dm::Tex("\\beta = ") +
+    (t(X).to_tex().underbrace("X^T") +  X.to_tex().underbrace("X")).delimit().superscript("-1") + 
+    t(X).to_tex().underbrace("X^T") +  y.to_tex().underbrace("y") + dm::Tex(" = ") + beta.to_tex().underbrace("\\beta");
+  std::print("Solving for $\\beta$, in (1) yields \n\n{}\n\n", equation.display());
+  return 0;
+}
+```
+// result_begin: markdown
+Solving for $\beta$, in (1) yields 
+
+$$
+\beta = {\left( \underbrace{\begin{bmatrix}
+1.1 & 3.3 & 5.5 \\
+2.2 & 4.4 & 6.6
+\end{bmatrix}}_{X^T}\underbrace{\begin{bmatrix}
+1.1 & 2.2 \\
+3.3 & 4.4 \\
+5.5 & 6.6
+\end{bmatrix}}_{X} \right)}^{-1}\underbrace{\begin{bmatrix}
+1.1 & 3.3 & 5.5 \\
+2.2 & 4.4 & 6.6
+\end{bmatrix}}_{X^T}\underbrace{\begin{bmatrix}
+1.2 \\
+3.3 \\
+4.4
+\end{bmatrix}}_{y} = \underbrace{\begin{bmatrix}
+0.2121212 \\
+0.5151515
+\end{bmatrix}}_{\beta}
+$$
+// result_end
+
+)
+\tab(Python,
+
+`Mat` / `SpMat` accept nested rows. `@`, `.t()` and `solve()` use the
+native deferred matrix operations; `.eval()` retains an owned snapshot.
+
+```{python, results="markdown", nix-shell="git+file:../../../../..#python", cmd="env -u PYTHONPATH ../../../../../build/venv/pydatamunge-run/bin/python {file}"}
+import pydatamunge as dm
+
+print("| Storage | beta[0] | beta[1] |")
+print("|---|---:|---:|")
+for name, matrix in [("Dense", dm.Mat), ("CSR", dm.SpMat)]:
+    X = matrix([[1.1, 2.2], [3.3, 4.4], [5.5, 6.6]])
+    y = matrix([[1.2], [3.3], [4.4]])
+    beta = dm.solve(X.t() @ X) @ X.t() @ y
+    values = beta.eval().to_list()
+    print(f"| {name} | {values[0][0]:.9f} | {values[1][0]:.9f} |")
+```
+// result_begin: markdown
+| Storage | beta[0] | beta[1] |
+|---|---:|---:|
+| Dense | 0.212121212 | 0.515151515 |
+| CSR | 0.212121212 | 0.515151515 |
+// result_end
+
+)
+\tab(R,
+
+`Mat()` / `SpMat()` accept ordinary R matrices. `t()`, `%*%` and `solve()`
+dispatch to native operations; `eval_mat()` keeps a snapshot.
+
+```{r, results="markdown", nix-shell="git+file:../../../../..#r", cmd="env R_LIBS_USER=../../../../../build/r/library Rscript {file}"}
+suppressPackageStartupMessages(library(datamunger))
+
+cat("| Storage | beta[0] | beta[1] |\n")
+cat("|---|---:|---:|\n")
+for (name in c("Dense", "CSR")) {
+  constructor <- if (name == "Dense") Mat else SpMat
+  X <- constructor(matrix(c(1.1, 2.2, 3.3, 4.4, 5.5, 6.6), ncol = 2, byrow = TRUE))
+  y <- constructor(matrix(c(1.2, 3.3, 4.4), ncol = 1))
+  beta <- solve(t(X) %*% X) %*% t(X) %*% y
+  values <- as.matrix(eval_mat(beta))
+  cat(sprintf("| %s | %.9f | %.9f |\n", name, values[1, 1], values[2, 1]))
+}
+```
+// result_begin: markdown
+| Storage | beta[0] | beta[1] |
+|---|---:|---:|
+| Dense | 0.212121212 | 0.515151515 |
+| CSR | 0.212121212 | 0.515151515 |
+// result_end
+
+)
+)

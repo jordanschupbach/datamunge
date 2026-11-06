@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 A detector proposes boxes, resamples fixed-size patches, classifies them and suppresses duplicates. Exhaustive square windows offer predictable coverage but can fit narrow digit boxes poorly. Component proposals use the blank background to suggest tighter regions, while touching strokes can merge objects. Both methods below share the same learned classifier; only proposal geometry changes.
 
-The editable concept diagram is `diagrams/detection_baselines_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/detection_baselines_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/detection_baselines_concept.tikz > build/detection_baselines_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/detection_baselines_concept.svg build/detection_baselines_concept.dvi > build/detection_baselines_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/detection_baselines_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Candidate boxes\nWindows or components");
+  diagram.node("n1", {5.2, 0}, "28-pixel patches\nExplicit Adam fit");
+  diagram.node("n2", {10.4, 0}, "Class-wise NMS\nHeld-out detections");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/detection_baselines_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/detection_baselines_concept.svg)
 // result_end
 \caption(Detection by patch classification)
@@ -367,19 +373,19 @@ int main() {
 // result_begin: markdown
 | epoch | fit NLL | validation NLL |
 |---:|---:|---:|
-| 1 | 1.560494 | 1.243558 |
-| 2 | 0.646196 | 1.106667 |
-| 3 | 0.335086 | 0.991112 |
-| 4 | 0.148905 | 0.857149 |
-| 5 | 0.062244 | 1.148461 |
-| 6 | 0.035756 | 1.250959 |
-| 7 | 0.015096 | 1.209333 |
-| 8 | 0.009359 | 1.199670 |
-| 9 | 0.004890 | 1.257117 |
-| 10 | 0.003561 | 1.277903 |
-| 11 | 0.002899 | 1.266251 |
-| 12 | 0.002282 | 1.321854 |
-421771 learned scalars, 372 Adam updates; selected epoch 4, validation NLL 0.857149, patch accuracy 0.772727 on 198 patches. No moving model state.
+| 1 | 1.560495 | 1.243511 |
+| 2 | 0.645752 | 1.110692 |
+| 3 | 0.335155 | 0.981803 |
+| 4 | 0.152933 | 0.873306 |
+| 5 | 0.061304 | 1.240274 |
+| 6 | 0.033494 | 1.228067 |
+| 7 | 0.012874 | 1.244777 |
+| 8 | 0.009893 | 1.192268 |
+| 9 | 0.004446 | 1.241443 |
+| 10 | 0.003304 | 1.277478 |
+| 11 | 0.002635 | 1.279648 |
+| 12 | 0.002110 | 1.331721 |
+421771 learned scalars, 372 Adam updates; selected epoch 4, validation NLL 0.873306, patch accuracy 0.742424 on 198 patches. No moving model state.
 \image(figures/detection_baselines_training.svg)
 // result_end
 \caption(Explicit Adam fitting on 64 scene-derived patch sets, selected by NLL on sixteen separate scenes. The confusion matrix includes ten digit classes and background; its entries count validation patches.)
@@ -563,8 +569,8 @@ int main() {
 }
 ```
 // result_begin: markdown
-sliding: 454.000 candidates/image, proposal recall .5/.7 0.782609/0.391304; inclusive VOC AP50 0.421627, COCO AP75 0.037404, AP50:95 0.175300; 341 retained detections.
-components: 11.750 candidates/image, proposal recall .5/.7 0.869565/0.695652; inclusive VOC AP50 0.674392, COCO AP75 0.345508, AP50:95 0.378197; 78 retained detections.
+sliding: 454.000 candidates/image, proposal recall .5/.7 0.782609/0.391304; inclusive VOC AP50 0.419012, COCO AP75 0.037404, AP50:95 0.174683; 347 retained detections.
+components: 11.750 candidates/image, proposal recall .5/.7 0.869565/0.695652; inclusive VOC AP50 0.667169, COCO AP75 0.343674, AP50:95 0.408248; 77 retained detections.
 Eight official-test-derived scenes contain 23 target digits. Green outlines are truth; red outlines are selected component detections, regardless of confidence/class correctness. Overlapping red boxes may belong to different predicted classes.
 \image(figures/detection_baselines_detections.png)
 // result_end

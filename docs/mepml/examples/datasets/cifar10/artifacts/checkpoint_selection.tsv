@@ -1,0 +1,3 @@
+candidate	epoch	validation_accuracy	raw_nll	calibrated_nll	temperature
+nll	36	0.8838	0.377642716326	0.353751005884	1.3858467971
+converged	90	0.9026	0.444124679051	0.298818325264	2.27885740462

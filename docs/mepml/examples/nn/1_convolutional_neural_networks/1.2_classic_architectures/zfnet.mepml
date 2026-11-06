@@ -46,18 +46,24 @@ dropout. Validation NLL selects a saved checkpoint. A separate block reloads it 
 the strongest conv5 feature of the first test image using a unit signal, then compares ordinary
 differentiation with the same feature seed. Cached CIFAR-10 is required.
 
-The editable concept diagram is `diagrams/zfnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/zfnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/zfnet_concept.tikz > build/zfnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/zfnet_concept.svg build/zfnet_concept.dvi > build/zfnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/zfnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Finer sampling\ndense channels");
+  diagram.node("n1", {5.2, 0}, "Compact Adam loop\nsave checkpoint");
+  diagram.node("n2", {10.4, 0}, "Pooling switches\nfeature projections");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/zfnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/zfnet_concept.svg)
 // result_end
 \caption(ZFNet: Finer Sampling and Deconvnet Feature Projections)
@@ -451,8 +457,8 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 320810 learned scalars; 320 Adam updates.
-Best validation epoch 16; NLL 2.182336.
-Selected inference training NLL 2.004603; test NLL 2.200640; test accuracy 0.218750.
+Best validation epoch 19; NLL 2.177948.
+Selected inference training NLL 1.720059; test NLL 2.136979; test accuracy 0.171875.
 \image(figures/zfnet_training.svg)
 // result_end
 \caption(Primary cross entropy from the visible Adam loop. Training uses augmentation and dropout; validation is deterministic. Both use fixed, small subsets.)
@@ -519,8 +525,8 @@ int main() {
 }
 ```
 // result_begin: markdown
-Selected flat conv5 index 258, channel 2; activation 0.170605.
-Both projections use a unit signal at this feature. Maximum signed RGB difference 0.010788.
+Selected flat conv5 index 113, channel 49; activation 0.208132.
+Both projections use a unit signal at this feature. Maximum signed RGB difference 0.015458.
 \image(figures/zfnet_projection.svg)
 // result_end
 \caption(Selected-checkpoint diagnostic for one feature and one test image. Each heatmap uses its own colour range. Deconvnet omits LRN and gates the backward signal; ordinary differentiation includes the forward graph.)

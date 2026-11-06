@@ -19,18 +19,24 @@ $$ L=\frac1B\sum_i-\log\operatorname{softmax}(z_i)_{y_i}+\lambda\sum_{W}\|W\|_F^
 
 The visible MomentumSGD loop fits all eight learned tensors. Four quarter-turn logits are averaged at inference. Reindexing this finite rotation orbit preserves the average up to floating-point accumulation order;this is discrete C4invariance,not arbitrary3Drotation invariance.
 
-The editable concept diagram is `diagrams/voxnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/voxnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/voxnet_concept.tikz > build/voxnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/voxnet_concept.svg build/voxnet_concept.dvi > build/voxnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/voxnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Genuine mesh\n surface samples");
+  diagram.node("n1", {5.2, 0}, "32cube occupancy\n full-width CNN");
+  diagram.node("n2", {10.4, 0}, "Visible SGD\n four-logit vote");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/voxnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/voxnet_concept.svg)
 // result_end
 \caption(VoxNet:genuine surface occupancy and explicit tensor MomentumSGD)
@@ -111,7 +117,6 @@ int main() {
 }
 ```
 // result_begin:
-// Tensor65536point surface sampling,bounding-box normalization and32cube occupancy saved42original surfaces.
 // result_end
 
 Show all12held-out objects as axis projections,then inspect genuine fitting
@@ -341,14 +346,14 @@ ModelNet10 validation:6 distinct objects,balanced chair/sofa/table
 ModelNet10 test:12 distinct objects,balanced chair/sofa/table
 | learned tensor | shape | CE gradient L2 | regularized L2 |
 |---|---|---:|---:|
-| conv1/W | [5, 5, 5, 1, 32] | 0.408839 | 0.409495 |
-| conv1/b | [32] | 0.0369291 | 0.0369291 |
-| conv2/W | [3, 3, 3, 32, 32] | 0.825275 | 0.8256 |
-| conv2/b | [32] | 0.0298901 | 0.0298901 |
-| fc1/W | [6912, 128] | 4.90578 | 4.90584 |
-| fc1/b | [128] | 0.0299041 | 0.0299041 |
-| head/W | [128, 3] | 4.7568 | 4.75683 |
-| head/b | [3] | 0.236842 | 0.236842 |
+| conv1/W | [5, 5, 5, 1, 32] | 0.349029 | 0.349757 |
+| conv1/b | [32] | 0.0293984 | 0.0293984 |
+| conv2/W | [3, 3, 3, 32, 32] | 0.992469 | 0.992725 |
+| conv2/b | [32] | 0.0368079 | 0.0368079 |
+| fc1/W | [6912, 128] | 6.46439 | 6.46444 |
+| fc1/b | [128] | 0.0428641 | 0.0428641 |
+| head/W | [128, 3] | 5.69143 | 5.69146 |
+| head/b | [3] | 0.23386 | 0.23386 |
 Actual916963values/8learned leaves;conv1 [4, 14, 14, 14, 32],conv2 [4, 12, 12, 12, 32],pool [4, 6, 6, 6, 32],flat [4, 6912],FC [4, 128].
 \image(figures/voxnet_gradients.svg)
 // result_end
@@ -499,10 +504,10 @@ ModelNet10 validation:6 distinct objects,balanced chair/sofa/table
 ModelNet10 test:12 distinct objects,balanced chair/sofa/table
 | epoch | dropout CE+L2 | validation C4-logit NLL |
 |---:|---:|---:|
-| 1 | 1.321908 | 1.099104 |
-| 2 | 1.315848 | 1.098456 |
-| 3 | 1.275253 | 1.092044 |
-18explicit MomentumSGD updates,selected 3,validation 1.092044;fixed C4fit NLL 1.106853194->1.065721723.
+| 1 | 1.349562 | 1.096750 |
+| 2 | 1.302746 | 1.101050 |
+| 3 | 1.328580 | 1.106999 |
+18explicit MomentumSGD updates,selected 1,validation 1.096750;fixed C4fit NLL 1.106853201->1.103441974.
 \image(figures/voxnet_training.svg)
 // result_end
 \caption(All18actual optimizer updates show CE gradients,weight-only L2,random quarter turns and three independent dropout streams. Validation selects on four-rotated-logit NLL;the fitting objective additionally contains L2.)
@@ -636,25 +641,25 @@ int main() {
 ModelNet10 fit:24 distinct objects,balanced chair/sofa/table
 ModelNet10 validation:6 distinct objects,balanced chair/sofa/table
 ModelNet10 test:12 distinct objects,balanced chair/sofa/table
-Fresh restore/repeat 0,single/batch 3.7252903e-08,C4orbit 7.4505806e-09;single-view rotation L1 2.10843587;all8leaves immutable.
+Fresh restore/repeat 0,single/batch 0,C4orbit 7.4505806e-09;single-view rotation L1 1.19293356;all8leaves immutable.
 | predictor | accuracy | macroF1 | NLL | all recalls | all confusion counts |
 |---|---:|---:|---:|---|---|
-| C4voted | 0.583333 | 0.464646 | 1.097433 | [0.75, 0, 1] | [3, 0, 1, 2, 0, 2, 0, 0, 4] |
-| single view | 0.416667 | 0.305556 | 1.124004 | [0.25, 0, 1] | [1, 0, 3, 3, 0, 1, 0, 0, 4] |
+| C4voted | 0.333333 | 0.166667 | 1.102454 | [0, 0, 1] | [0, 0, 4, 0, 0, 4, 0, 0, 4] |
+| single view | 0.250000 | 0.133333 | 1.112723 | [0, 0, 0.75] | [0, 0, 4, 0, 0, 4, 0, 1, 3] |
 | initial C4 | 0.250000 | 0.142857 | 1.100081 | [0, 0.75, 0] | [0, 3, 1, 0, 3, 1, 0, 4, 0] |
 | coarse1NN | 0.583333 | 0.555556 | 0.968111 | [0.75, 0.25, 0.75] | [3, 0, 1, 2, 1, 1, 1, 0, 3] |
-| rotated single | 0.583333 | 0.472222 | 1.076883 | [0.75, 0, 1] | [3, 0, 1, 1, 0, 3, 0, 0, 4] |
+| rotated single | 0.333333 | 0.166667 | 1.097219 | [0, 0, 1] | [0, 0, 4, 0, 0, 4, 0, 0, 4] |
 | balanced tie | 0.333333 | 0.166667 | 1.098612 | [1, 0, 0] | [4, 0, 0, 4, 0, 0, 4, 0, 0] |
 
 | source ID | true class | learned class |
 |---:|---:|---:|
-| 10 | 0 | 0 |
-| 11 | 0 | 0 |
-| 12 | 0 | 0 |
+| 10 | 0 | 2 |
+| 11 | 0 | 2 |
+| 12 | 0 | 2 |
 | 13 | 0 | 2 |
-| 24 | 1 | 0 |
+| 24 | 1 | 2 |
 | 25 | 1 | 2 |
-| 26 | 1 | 0 |
+| 26 | 1 | 2 |
 | 27 | 1 | 2 |
 | 38 | 2 | 2 |
 | 39 | 2 | 2 |

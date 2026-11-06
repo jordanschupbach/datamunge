@@ -33,18 +33,24 @@ matrix reshape. Padding, stride and dilation use convolution's geometry; SAME pu
 extra zero after the image. Patch storage is O(N Ho Wo kh kw Cin); the matrix product takes
 O(N Ho Wo kh kw Cin Cout). The reference path targets clarity, not a memory-saving kernel.
 
-The editable concept diagram is `diagrams/convolution_im2col_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/convolution_im2col_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/convolution_im2col_concept.tikz > build/convolution_im2col_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/convolution_im2col_concept.svg build/convolution_im2col_concept.dvi > build/convolution_im2col_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/convolution_im2col_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Image tensor\nNHWC positions");
+  diagram.node("n1", {5.2, 0}, "Overlapping patch rows\nP=EX");
+  diagram.node("n2", {10.4, 0}, "Filter GEMM\nY=PW");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/convolution_im2col_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/convolution_im2col_concept.svg)
 // result_end
 \caption(Convolution as Patch Extraction and GEMM)

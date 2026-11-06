@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 FCN replaces classification layers with spatial convolutions. Bilinear deconvolution restores resolution; projected intermediate VGG features add progressively finer class scores. Full released geometry and compact teaching geometry are checked separately before fitting.
 
-The editable concept diagram is `diagrams/fcn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/fcn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/fcn_concept.tikz > build/fcn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/fcn_concept.svg build/fcn_concept.dvi > build/fcn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/fcn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "VGG spatial features\nCoarse class scores");
+  diagram.node("n1", {5.2, 0}, "Pool4 and pool3\nAligned score skips");
+  diagram.node("n2", {10.4, 0}, "Fixed upsampling\nExplicit Adam fit");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/fcn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/fcn_concept.svg)
 // result_end
 \caption(FCN32s,16s and8s dense prediction skips)
@@ -431,39 +437,39 @@ int main() {
 Variant32: 271916 learned scalars, no BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
-| 32 | 1 | 1.342616 | 0.186900 |
-| 32 | 2 | 1.183523 | 0.239047 |
-| 32 | 3 | 1.119462 | 0.282820 |
-| 32 | 4 | 0.983291 | 0.257870 |
-| 32 | 5 | 0.896263 | 0.316811 |
-| 32 | 6 | 0.802533 | 0.311597 |
-| 32 | 7 | 0.772540 | 0.351520 |
-| 32 | 8 | 0.689064 | 0.367674 |
-Variant32 restored epoch8: validation mIoU 0.367674; test pixel accuracy 0.748332, mean IoU 0.376401; per-class IoU(background,circle,rectangle,triangle) 0.790797/0.181684/0.310373/0.222750. 128 explicit Adam updates.
+| 32 | 1 | 1.342650 | 0.186900 |
+| 32 | 2 | 1.179774 | 0.244521 |
+| 32 | 3 | 1.107383 | 0.287929 |
+| 32 | 4 | 0.988292 | 0.274134 |
+| 32 | 5 | 0.872347 | 0.338088 |
+| 32 | 6 | 0.790140 | 0.323298 |
+| 32 | 7 | 0.747178 | 0.370090 |
+| 32 | 8 | 0.708472 | 0.353052 |
+Variant32 restored epoch7: validation mIoU 0.370090; test pixel accuracy 0.748074, mean IoU 0.359113; per-class IoU(background,circle,rectangle,triangle) 0.798001/0.159189/0.268806/0.210455. 128 explicit Adam updates.
 Variant16: 272176 learned scalars, no BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
-| 16 | 1 | 1.312580 | 0.186888 |
-| 16 | 2 | 1.060047 | 0.294596 |
-| 16 | 3 | 0.805999 | 0.419132 |
-| 16 | 4 | 0.636816 | 0.398192 |
-| 16 | 5 | 0.482690 | 0.527858 |
-| 16 | 6 | 0.349934 | 0.648003 |
-| 16 | 7 | 0.292242 | 0.637337 |
-| 16 | 8 | 0.263755 | 0.656522 |
-Variant16 restored epoch8: validation mIoU 0.656522; test pixel accuracy 0.906813, mean IoU 0.669480; per-class IoU(background,circle,rectangle,triangle) 0.916957/0.602608/0.635477/0.522878. 128 explicit Adam updates.
+| 16 | 1 | 1.312685 | 0.186898 |
+| 16 | 2 | 1.057147 | 0.282598 |
+| 16 | 3 | 0.817263 | 0.428897 |
+| 16 | 4 | 0.667678 | 0.402813 |
+| 16 | 5 | 0.500946 | 0.509416 |
+| 16 | 6 | 0.394875 | 0.546187 |
+| 16 | 7 | 0.346326 | 0.569853 |
+| 16 | 8 | 0.314404 | 0.647986 |
+Variant16 restored epoch8: validation mIoU 0.647986; test pixel accuracy 0.889153, mean IoU 0.623664; per-class IoU(background,circle,rectangle,triangle) 0.912008/0.526805/0.543892/0.511951. 128 explicit Adam updates.
 Variant8: 272308 learned scalars, no BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
-| 8 | 1 | 1.238906 | 0.343969 |
-| 8 | 2 | 0.795192 | 0.329377 |
-| 8 | 3 | 0.687835 | 0.446691 |
-| 8 | 4 | 0.558325 | 0.409217 |
-| 8 | 5 | 0.466497 | 0.498833 |
-| 8 | 6 | 0.369228 | 0.504719 |
-| 8 | 7 | 0.351034 | 0.601637 |
-| 8 | 8 | 0.275532 | 0.632153 |
-Variant8 restored epoch8: validation mIoU 0.632153; test pixel accuracy 0.929186, mean IoU 0.688770; per-class IoU(background,circle,rectangle,triangle) 0.962051/0.494061/0.691676/0.607294. 128 explicit Adam updates.
+| 8 | 1 | 1.238803 | 0.344492 |
+| 8 | 2 | 0.790673 | 0.330359 |
+| 8 | 3 | 0.697601 | 0.449763 |
+| 8 | 4 | 0.558823 | 0.404858 |
+| 8 | 5 | 0.469483 | 0.505206 |
+| 8 | 6 | 0.375339 | 0.507944 |
+| 8 | 7 | 0.345844 | 0.621748 |
+| 8 | 8 | 0.265788 | 0.636179 |
+Variant8 restored epoch8: validation mIoU 0.636179; test pixel accuracy 0.925130, mean IoU 0.672019; per-class IoU(background,circle,rectangle,triangle) 0.962679/0.482896/0.670464/0.572035. 128 explicit Adam updates.
 \image(figures/fcn_training.svg)
 // result_end
 \caption(Three separately initialized compact FCN models, each with a visible128-update Adam fit. Weighted CE excludes explicit L2; validation mean IoU selects each checkpoint independently.)

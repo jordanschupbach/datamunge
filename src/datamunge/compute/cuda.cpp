@@ -1,15 +1,25 @@
 /// @file cuda.cpp
 /// @brief Optional CUDA Driver API memory and native PTX execution, without host numerical
 /// fallback.
+///
+/// Context::matmul runs the library's own GEMM kernels (shaders/compute/blas.cu, embedded as
+/// PTX in cuda_blas_ptx.hpp and JIT-compiled by the driver on first use), so the CUDA backend
+/// needs nothing beyond the NVIDIA driver. Builds with DATAMUNGE_ENABLE_CUBLAS keep a cuBLAS
+/// path for comparison only; it runs when the environment variable DATAMUNGE_CUDA_GEMM is
+/// "cublas" when the device is created.
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <map>
 #include <stdexcept>
+#include <tuple>
 
 #ifdef DATAMUNGE_ENABLE_CUBLAS
 #include <cublas_v2.h>
 #endif
 
+#include "cuda_blas_ptx.hpp"
 #include "gpu.hpp"
 #ifdef DATAMUNGE_ENABLE_CUDA
 #ifndef _WIN32
@@ -36,6 +46,9 @@ struct Driver {
 
   /// @brief Native cuDeviceGetName.
   Result (*device_name)(char*, int, int){};
+
+  /// @brief Native cuDeviceGetAttribute.
+  Result (*device_attribute)(int*, int, int){};
 
   /// @brief Native Stable cuCtxCreate_v2 ABI.
   Result (*context_create)(void**, unsigned, int){};
@@ -96,6 +109,9 @@ struct Driver {
   /// @brief Native cuGetErrorString.
   Result (*error_string)(Result, const char**){};
 
+  /// @brief Native cuOccupancyMaxActiveBlocksPerMultiprocessor (GEMM planning).
+  Result (*occupancy)(int*, void*, int, std::size_t){};
+
   /// @brief Load one required driver symbol or fail before creating a device.
   template<class T>
   void load(T& target, const char* name) {
@@ -121,6 +137,7 @@ struct Driver {
       load(device_count, "cuDeviceGetCount");
       load(device_get, "cuDeviceGet");
       load(device_name, "cuDeviceGetName");
+      load(device_attribute, "cuDeviceGetAttribute");
       load(context_create, "cuCtxCreate_v2");
       load(context_destroy, "cuCtxDestroy_v2");
       load(push, "cuCtxPushCurrent_v2");
@@ -137,6 +154,7 @@ struct Driver {
       load(launch, "cuLaunchKernel");
       load(synchronize, "cuCtxSynchronize");
       load(error_string, "cuGetErrorString");
+      load(occupancy, "cuOccupancyMaxActiveBlocksPerMultiprocessor");
     } catch (...) {
       dlclose(library);
       library = nullptr;
@@ -212,11 +230,208 @@ struct CudaProgram : GpuProgram {
     }
   }
 };
+/// @brief By-value parameter block of the gemm_* entries in shaders/compute/blas.cu.
+struct GemmParameters {
+  std::uint64_t m, n, k;
+  std::uint64_t lda, ldb, ldc;
+  std::uint32_t transpose_a, transpose_b;
+  double        alpha, beta;
+  std::uint64_t whole;  ///< Tiles computed whole, one block each.
+  std::uint64_t splits; ///< k chunks of every later tile.
+  std::uint64_t kchunk; ///< k per chunk, a multiple of 16.
+};
+static_assert(sizeof(GemmParameters) == 96, "GemmParameters must match shaders/compute/blas.cu");
+/// @brief By-value parameter block of the reduce_* entries (the split tiles of one product).
+struct ReduceParameters {
+  std::uint64_t m, n, ldc, bm, bn, whole, splits, count;
+  double        alpha, beta;
+};
+static_assert(sizeof(ReduceParameters) == 80, "ReduceParameters must match shaders/compute/blas.cu");
+
+/// @brief One GEMM entry of blas.cu: output tile, block size and cost-model constants.
+struct GemmKernel {
+  const char*   entry;
+  std::uint64_t bm, bn;
+  unsigned      threads;
+  bool          f32;
+  /// @brief One wave of every multiprocessor's resident blocks with chunk length kc takes
+  /// a + b * kc microseconds, measured on an RTX 5080 Laptop GPU (only the ratios between
+  /// entries matter for the choice).
+  double a, b;
+  void*  function{nullptr};
+  int    occupancy{1}; ///< Resident blocks per multiprocessor, from the driver.
+};
+
+/// @brief How one product runs: tiles [0, whole) whole, every later tile in `splits` k chunks.
+struct GemmPlan {
+  const GemmKernel* kernel{nullptr};
+  std::uint64_t     whole{0}, splits{1}, kchunk{0};
+};
+
 /// @brief Native CUDA executor; all public submissions are serialized by its owning context.
 class CudaDevice final : public GpuDevice {
   Driver      driver_;           ///< Shared-library and driver function ownership.
   void*       context_{nullptr}; ///< Exclusive native CUDA context.
   std::string name_;             ///< Physical GPU name.
+  void*       gemm_module_{nullptr}; ///< In-house GEMM module, JIT-compiled on first matmul.
+  /// @brief GEMM entries (see shaders/compute/blas.cu for the tilings).
+  GemmKernel gemm_kernels_[6]{{"gemm_f32_128x256", 128, 256, 256, true, 11.7, 0.1356},
+                              {"gemm_f32_128x128", 128, 128, 128, true, 11.3, 0.1474},
+                              {"gemm_f32_128x64", 128, 64, 128, true, 9.5, 0.111},
+                              {"gemm_f32_64x64", 64, 64, 256, true, 6.5, 0.0795},
+                              {"gemm_f32_128x32", 128, 32, 256, true, 5.5, 0.102},
+                              {"gemm_f64_64x32", 64, 32, 256, false, 5.8, 0.734}};
+  void*         reduce_f32_{nullptr};    ///< Split-K reduction entries.
+  void*         reduce_f64_{nullptr};
+  int           multiprocessors_{1};     ///< Streaming multiprocessors, for GEMM planning.
+  DevicePointer workspace_{0};           ///< Split-K partial slabs, grown on demand.
+  std::size_t   workspace_bytes_{0};
+  /// @brief Plans of recent shapes (m, n, k, float), so repeated products skip the search.
+  std::map<std::tuple<std::uint64_t, std::uint64_t, std::uint64_t, bool>, GemmPlan> plans_;
+  bool          use_cublas_{false};      ///< DATAMUNGE_CUDA_GEMM=cublas in a cuBLAS build.
+
+  /// @brief Load the embedded GEMM PTX once; the caller holds the context scope.
+  void prepare_gemm() {
+    if (gemm_module_)
+      return;
+    char  log[4096]{};
+    int   options[]{5, 6}; // CU_JIT_ERROR_LOG_BUFFER / CU_JIT_ERROR_LOG_BUFFER_SIZE_BYTES
+    void* values[]{log, reinterpret_cast<void*>(std::uintptr_t(sizeof(log)))};
+    void* module = nullptr;
+    if (const auto status = driver_.module_load(&module, blas_ptx, 2, options, values); status != 0) {
+      try {
+        driver_.check(status, "cuModuleLoadDataEx(gemm)");
+      } catch (const std::runtime_error& error) {
+        throw std::runtime_error(std::string(error.what()) + ": " + log);
+      }
+    }
+    try {
+      for (auto& kernel : gemm_kernels_) {
+        driver_.check(driver_.function(&kernel.function, module, kernel.entry), "cuModuleGetFunction(gemm)");
+        driver_.check(driver_.occupancy(&kernel.occupancy, kernel.function, int(kernel.threads), 0),
+                      "cuOccupancyMaxActiveBlocksPerMultiprocessor(gemm)");
+        kernel.occupancy = std::max(kernel.occupancy, 1);
+      }
+      driver_.check(driver_.function(&reduce_f32_, module, "reduce_f32"), "cuModuleGetFunction(reduce_f32)");
+      driver_.check(driver_.function(&reduce_f64_, module, "reduce_f64"), "cuModuleGetFunction(reduce_f64)");
+    } catch (...) {
+      (void)driver_.module_unload(module);
+      throw;
+    }
+    gemm_module_ = module;
+  }
+  /// @brief Workspace of at least `bytes`, reallocated (never shrunk) as needed.
+  DevicePointer workspace(std::size_t bytes) {
+    if (bytes > workspace_bytes_) {
+      if (workspace_)
+        (void)driver_.free(workspace_);
+      workspace_       = 0;
+      workspace_bytes_ = 0;
+      driver_.check(driver_.allocate(&workspace_, bytes), "cuMemAlloc(gemm workspace)");
+      workspace_bytes_ = bytes;
+    }
+    return workspace_;
+  }
+  /// @brief Pick the entry and k split with the lowest modelled time for an m x n x k product.
+  ///
+  /// The busiest multiprocessor runs ceil(blocks / multiprocessors) blocks in rounds of the
+  /// entry's occupancy; a full round costs b * kc (GemmKernel), a partly filled one sqrt(fill)
+  /// of that, and every launch a. Split tiles add a reduction pass that reads their slabs.
+  /// Candidates per entry: every tile whole; with fewer tiles than resident blocks, every tile
+  /// split into 2..64 chunks of at least 32; with more, full waves of whole tiles and only the
+  /// leftover tiles split (instead of a last, mostly idle wave). Deterministic for a given device
+  /// and shape; the split workspace is capped at 64 MiB.
+  GemmPlan plan(std::uint64_t m, std::uint64_t n, std::uint64_t k, bool f32) {
+    const auto key = std::make_tuple(m, n, k, f32);
+    if (const auto found = plans_.find(key); found != plans_.end())
+      return found->second;
+    const std::uint64_t sms   = std::uint64_t(multiprocessors_);
+    const double        width = f32 ? sizeof(float) : sizeof(double);
+    GemmPlan            best;
+    double              best_time = 0;
+    for (const auto& g : gemm_kernels_) {
+      if (g.f32 != f32)
+        continue;
+      const std::uint64_t occ = std::uint64_t(g.occupancy);
+      const std::uint64_t tiles = ((m + g.bm - 1) / g.bm) * ((n + g.bn - 1) / g.bn), slots = sms * occ;
+      const auto          rounds = [&](std::uint64_t blocks, double kc) {
+        const std::uint64_t per = (blocks + sms - 1) / sms;
+        return g.b * kc * (double(per / occ) + std::sqrt(double(per % occ) / double(occ)));
+      };
+      const auto consider = [&](std::uint64_t whole, std::uint64_t splits) {
+        std::uint64_t kchunk = k;
+        if (splits > 1) {
+          kchunk = ((k + splits - 1) / splits + 15) / 16 * 16;
+          splits = (k + kchunk - 1) / kchunk;
+        }
+        if (splits <= 1) {
+          whole  = tiles;
+          splits = 1;
+          kchunk = k;
+        }
+        const double slabs = double(tiles - whole) * double(g.bm * g.bn) * width;
+        if (slabs * double(splits) > double(64u << 20))
+          return;
+        double time = g.a + rounds(whole, double(k));
+        if (whole < tiles)
+          time += rounds((tiles - whole) * splits, double(kchunk)) + 2 + slabs * double(splits + 1) / 2.5e6;
+        if (!best.kernel || time < best_time) {
+          best      = {&g, whole, splits, kchunk};
+          best_time = time;
+        }
+      };
+      consider(tiles, 1);
+      for (std::uint64_t splits = 2; splits <= 64 && k / splits >= 32; ++splits) {
+        if (tiles < slots)
+          consider(0, splits);
+        else if (tiles % slots)
+          consider(tiles / slots * slots, splits);
+      }
+    }
+    if (plans_.size() >= 256)
+      plans_.clear();
+    plans_.emplace(key, best);
+    return best;
+  }
+  /// @brief C = op(A) op(B) with the in-house kernels: one block per whole output tile or k chunk
+  /// of a split tile (see plan()), then, when tiles were split, a reduction with one thread per
+  /// vector of their outputs and group of eight chunks (blocks of up to 256 threads).
+  void gemm(DevicePointer c, DevicePointer a, DevicePointer b, const MatrixProduct& product) {
+    prepare_gemm();
+    const bool          f32 = product.type == MatrixType::Float32;
+    const std::uint64_t m = product.rows, n = product.columns, k = product.inner;
+    const std::uint64_t width = f32 ? sizeof(float) : sizeof(double);
+    const GemmPlan      p     = plan(m, n, k, f32);
+    const GemmKernel&   g     = *p.kernel;
+    const std::uint64_t tiles = ((m + g.bm - 1) / g.bm) * ((n + g.bn - 1) / g.bn);
+    const std::uint64_t blocks = p.whole + (tiles - p.whole) * p.splits;
+    if (blocks > 0x7fffffffull)
+      throw std::length_error("matmul: product too large for one native launch");
+    GemmParameters parameters{m, n, k, product.transpose_a ? m : k, product.transpose_b ? k : n, n,
+                              product.transpose_a ? 1u : 0u, product.transpose_b ? 1u : 0u, 1.0, 0.0,
+                              p.whole, p.splits, p.kchunk};
+    const std::uint64_t split_tiles = tiles - p.whole;
+    DevicePointer       w = split_tiles ? workspace(std::size_t(split_tiles * p.splits * g.bm * g.bn * width))
+                                        : DevicePointer(0);
+    void*               args[]{&a, &b, &c, &w, &parameters};
+    driver_.check(
+        driver_.launch(g.function, unsigned(blocks), 1, 1, g.threads, 1, 1, 0, nullptr, args, nullptr),
+        "cuLaunchKernel(gemm)");
+    if (split_tiles) {
+      const std::uint64_t vectors = split_tiles * g.bm * g.bn / (f32 ? 4 : 2);
+      ReduceParameters    r{m, n, n, g.bm, g.bn, p.whole, p.splits, vectors, 1.0, 0.0};
+      void*               reduce_args[]{&w, &c, &r};
+      // Blocks of X vectors x G groups of eight chunks: splits <= 64 (plan()), so G <= 8 and
+      // X * G <= 256. X is narrowed while fewer than eight blocks per multiprocessor would run.
+      const std::uint64_t groups = (p.splits + 7) / 8;
+      std::uint64_t       x      = 32 * std::max<std::uint64_t>(1, 8 / groups);
+      while (x > 32 && (vectors + x - 1) / x < 8 * std::uint64_t(multiprocessors_))
+        x /= 2;
+      driver_.check(driver_.launch(f32 ? reduce_f32_ : reduce_f64_, unsigned((vectors + x - 1) / x), 1, 1,
+                                   unsigned(x), unsigned(groups), 1, 0, nullptr, reduce_args, nullptr),
+                    "cuLaunchKernel(gemm reduce)");
+    }
+  }
 #ifdef DATAMUNGE_ENABLE_CUBLAS
   cublasHandle_t blas_{nullptr}; ///< Lazily created matrix adapter, bound to this CUDA context.
 
@@ -254,6 +469,12 @@ class CudaDevice final : public GpuDevice {
     char text[256]{};
     driver_.check(driver_.device_name(text, sizeof(text), device), "cuDeviceGetName");
     name_ = text;
+    driver_.check(driver_.device_attribute(&multiprocessors_, 16, device), "cuDeviceGetAttribute");
+    multiprocessors_ = std::max(multiprocessors_, 1);
+#ifdef DATAMUNGE_ENABLE_CUBLAS
+    if (const char* gemm = std::getenv("DATAMUNGE_CUDA_GEMM"))
+      use_cublas_ = std::strcmp(gemm, "cublas") == 0;
+#endif
     driver_.check(driver_.context_create(&context_, 0, device), "cuCtxCreate_v2");
     void* popped = nullptr;
     try {
@@ -266,14 +487,18 @@ class CudaDevice final : public GpuDevice {
   }
   /// @brief Release the native context before unloading the retained driver.
   ~CudaDevice() override {
-#ifdef DATAMUNGE_ENABLE_CUBLAS
     try {
       Scope scope(driver_, context_);
+      if (workspace_)
+        (void)driver_.free(workspace_);
+      if (gemm_module_)
+        (void)driver_.module_unload(gemm_module_);
+#ifdef DATAMUNGE_ENABLE_CUBLAS
       if (blas_)
         (void)cublasDestroy(blas_);
+#endif
     } catch (...) {
     }
-#endif
     if (context_)
       (void)driver_.context_destroy(context_);
   }
@@ -321,19 +546,12 @@ class CudaDevice final : public GpuDevice {
     Scope scope(driver_, context_);
     driver_.check(driver_.fill(address(dst), byte, dst.size), "cuMemsetD8");
   }
-  bool supports_matmul() const noexcept override {
-#ifdef DATAMUNGE_ENABLE_CUBLAS
-    return true;
-#else
-    return false;
-#endif
-  }
+  bool supports_matmul() const noexcept override { return true; }
   void matmul(
       const GpuArgument&   dst,
       const GpuArgument&   a,
       const GpuArgument&   b,
       const MatrixProduct& product) override {
-#ifdef DATAMUNGE_ENABLE_CUBLAS
     Scope scope(driver_, context_);
     if (!product.rows || !product.columns)
       return;
@@ -344,6 +562,12 @@ class CudaDevice final : public GpuDevice {
       driver_.check(driver_.synchronize(), "cuCtxSynchronize");
       return;
     }
+    if (!use_cublas_) {
+      gemm(address(dst), address(a), address(b), product);
+      driver_.check(driver_.synchronize(), "cuCtxSynchronize");
+      return;
+    }
+#ifdef DATAMUNGE_ENABLE_CUBLAS
     prepare_blas();
     const auto m = int(product.rows), n = int(product.columns), k = int(product.inner);
     const auto ta  = product.transpose_a ? CUBLAS_OP_T : CUBLAS_OP_N;
@@ -390,8 +614,6 @@ class CudaDevice final : public GpuDevice {
           "cublasDgemm");
     }
     driver_.check(driver_.synchronize(), "cuCtxSynchronize");
-#else
-    GpuDevice::matmul(dst, a, b, product);
 #endif
   }
   std::shared_ptr<GpuProgram> program(const KernelSource& source) override {

@@ -248,6 +248,25 @@ a [Leaf] []
 - matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
 - the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
 // result_end
+```
+Sum_10 [Sum] [] <- BatchMatMulV2_9
+BatchMatMulV2_9 [BatchMatMulV2] [1, 2] <- Mul_7 encoder/w
+encoder/w [Leaf] [2, 2]
+Mul_7 [Mul] [1, 2] <- Reshape_6 const
+Reshape_6 [Reshape] [1, 1] <- Mul_5
+Mul_5 [Mul] [] <- Add_3 block/k
+block/k [Leaf] []
+Add_3 [Add] [] <- Add_2 const
+Add_2 [Add] [] <- a const
+a [Leaf] []
+```
+
+- y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
+
+- counter reads: three plain, three after an increment, one plain: [0, 0, 0, 1, 2, 3, 3]
+- matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
+- the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
+// result_end
 
 By hand: \(h_2=1+2+3=6\), \(h_2k=30\), \((30,30)\,I=(30,30)\) and \(y=60\). The derivative \(\partial y/\partial a\) is \(k\) times the sum of the entries of \(w\), \(5\cdot2=10\).
 Likewise \(\partial y/\partial k=h_2\cdot2=12\), and \(\partial y/\partial w_{ij}=30\) for every entry. The second `get("block/k")` returned the first tensor, with value 5, so its initialiser 7
@@ -527,9 +546,9 @@ int main() {
 // result_begin: markdown
 | k | tied: loss | untied: loss | PCA optimum | tied: largest entry of WᵀW − I | untied: largest entry of EᵀE − I | tied: subspace distance to PCA | parameters tied / untied |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 2 | 0.052426 | 0.052426 | 0.052426 | 4.7e-05 | 0.10 | 4.0e-04 | 128 / 256 |
-| 5 | 0.033369 | 0.033369 | 0.033369 | 9.1e-05 | 0.09 | 4.8e-04 | 320 / 640 |
-| 10 | 0.019197 | 0.019197 | 0.019196 | 2.0e-04 | 0.13 | 7.8e-04 | 640 / 1280 |
+| 2 | 0.052426 | 0.052426 | 0.052426 | 2.9e-05 | 0.10 | 6.1e-04 | 128 / 256 |
+| 5 | 0.033369 | 0.033369 | 0.033369 | 2.2e-04 | 0.09 | 8.9e-04 | 320 / 640 |
+| 10 | 0.019197 | 0.019197 | 0.019196 | 2.3e-03 | 0.13 | 6.3e-04 | 640 / 1280 |
 
 Total variance per pixel 0.07333; the top 2, 5 and 10 components keep 28.5%, 54.5% and 73.8% of it.
 \image(figures/graph_construction_autoencoder.svg)

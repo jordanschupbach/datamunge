@@ -60,18 +60,24 @@ unsmoothed primary validation NLL selects a paired parameter/state checkpoint. A
 uses independent padded crops/flips. These different architectures are not a controlled
 residual ablation or ImageNet reproduction. Cached CIFAR-10 is required.
 
-The editable concept diagram is `diagrams/inception_v4_resnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/inception_v4_resnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/inception_v4_resnet_concept.tikz > build/inception_v4_resnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/inception_v4_resnet_concept.svg build/inception_v4_resnet_concept.dvi > build/inception_v4_resnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/inception_v4_resnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Complete blocks\nv4 or residual model");
+  diagram.node("n1", {5.2, 0}, "Identity plus scaled branch\ncheck values and gradients");
+  diagram.node("n2", {10.4, 0}, "Explicit tensor Adam\nsave weights and BN state");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/inception_v4_resnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/inception_v4_resnet_concept.svg)
 // result_end
 \caption(Inception v4 and Inception-ResNet: Complete Depth and Scaled Branches)
@@ -576,8 +582,8 @@ Inception-ResNet-v2: 160 explicit Adam updates.
 
 | model | parameters | moving_state | best_epoch | validation_NLL | selected_train_NLL | test_NLL | test_accuracy |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Inception v4 | 652508 | 8120 | 1 | 2.347312 | 2.300811 | 2.348314 | 0.156250 |
-| Inception-ResNet-v2 | 863200 | 7792 | 10 | 2.161477 | 1.718614 | 2.064205 | 0.328125 |
+| Inception v4 | 652508 | 8120 | 1 | 2.364903 | 2.319015 | 2.323411 | 0.140625 |
+| Inception-ResNet-v2 | 863200 | 7792 | 9 | 2.319508 | 1.797640 | 2.344087 | 0.109375 |
 
 \image(figures/inception_v4_resnet_training.svg)
 // result_end

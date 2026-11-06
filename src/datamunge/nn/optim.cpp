@@ -131,7 +131,9 @@ Tensor fused_basic_update(
           one_minus_beta2  = static_cast<T>(1 - config.beta2);
   const T correction1 = static_cast<T>(c1), correction2 = static_cast<T>(c2);
   const T epsilon = static_cast<T>(config.epsilon), decay = static_cast<T>(config.weight_decay);
-  detail::parallel_elements(w.numel(), [&](std::int64_t i) {
+  // Captured by value: parallel_elements runs a local copy, so the stores cannot
+  // alias the pointers and scalars and the loop vectorises.
+  detail::parallel_elements(w.numel(), [=](std::int64_t i) {
     if constexpr (Kind == OptimizerKind::Sgd) {
       out[i] = gradient[i] * rate;
     } else {
@@ -462,7 +464,7 @@ void apply_packed_update(Tensor& parameter, const Tensor& update) {
     using T       = typename decltype(tag)::type;
     T*       to   = parameter.data_ptr<T>();
     const T* from = update.data_ptr<T>();
-    detail::parallel_elements(parameter.numel(), [&](std::int64_t i) { to[i] = to[i] - from[i]; });
+    detail::parallel_elements(parameter.numel(), [to, from](std::int64_t i) { to[i] = to[i] - from[i]; });
   });
   ++parameter.impl()->storage->version;
 }

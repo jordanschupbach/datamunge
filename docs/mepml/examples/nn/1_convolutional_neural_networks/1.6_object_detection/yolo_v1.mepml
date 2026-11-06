@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 YOLO v1 predicts two linear boxes and shared class scores per7x7 cell. Detached IoU responsibility chooses the coordinate predictor. Optional digit-crop pretraining initializes the first20 convolutions, followed by explicit whole-detector optimization.
 
-The editable concept diagram is `diagrams/yolo_v1_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/yolo_v1_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/yolo_v1_concept.tikz > build/yolo_v1_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/yolo_v1_concept.svg build/yolo_v1_concept.dvi > build/yolo_v1_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/yolo_v1_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Digit-crop Adam fitting\nTransfer conv1–20");
+  diagram.node("n1", {5.2, 0}, "24-convolution detector\nExplicit Adam loop");
+  diagram.node("n2", {10.4, 0}, "IoU responsibility\nDecode and suppress");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/yolo_v1_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/yolo_v1_concept.svg)
 // result_end
 \caption(YOLO v1 IoU responsibility and explicit prefix pretraining)
@@ -426,15 +432,15 @@ int main() {
 // result_begin: markdown
 | epoch | train NLL | val NLL | val accuracy |
 |---:|---:|---:|---:|
-| 1 | 2.321119 | 2.334438 | 0.088889 |
-| 2 | 2.269681 | 2.379031 | 0.133333 |
-| 3 | 2.112329 | 2.183596 | 0.288889 |
-| 4 | 1.930190 | 2.128031 | 0.288889 |
-| 5 | 1.747297 | 3.029991 | 0.311111 |
-| 6 | 1.627681 | 1.855651 | 0.377778 |
-| 7 | 1.488036 | 1.796586 | 0.444444 |
-| 8 | 1.389088 | 1.453287 | 0.488889 |
-Prefix pretraining:168 fit/45 validation crops,353714 learned/2272 state scalars,88 visible Adam(.001) updates. Selected epoch8 by validation NLL1.453287; restored accuracy0.488889. Detector fitting below transfers only conv1–20 and their BN state.
+| 1 | 2.326276 | 2.320442 | 0.111111 |
+| 2 | 2.262328 | 2.281945 | 0.177778 |
+| 3 | 2.068979 | 2.167120 | 0.288889 |
+| 4 | 1.939209 | 2.627378 | 0.200000 |
+| 5 | 1.813218 | 2.947885 | 0.288889 |
+| 6 | 1.661864 | 3.861132 | 0.200000 |
+| 7 | 1.559173 | 2.238592 | 0.244444 |
+| 8 | 1.452612 | 1.954668 | 0.377778 |
+Prefix pretraining:168 fit/45 validation crops,353714 learned/2272 state scalars,88 visible Adam(.001) updates. Selected epoch8 by validation NLL1.954668; restored accuracy0.377778. Detector fitting below transfers only conv1–20 and their BN state.
 \image(figures/yolo_v1_pretraining.svg)
 // result_end
 \caption(Explicit first20-convolution Adam pretraining and unaugmented validation. Both classifier weights and moving BN state are selected/restored by validation NLL; the prefix transfer contains no optimizer step.)
@@ -676,19 +682,19 @@ int main() {
 // result_begin: markdown
 | epoch | grid squared error loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 25.790169 | 5.326744 | 20.463424 | 0.000000 |
-| 2 | 9.836160 | 3.061086 | 6.775075 | 0.000768 |
-| 3 | 5.878909 | 2.410897 | 3.468012 | 0.001214 |
-| 4 | 4.575413 | 2.035689 | 2.539724 | 0.002677 |
-| 5 | 4.039686 | 1.877349 | 2.162338 | 0.002609 |
-| 6 | 3.627202 | 1.778213 | 1.848989 | 0.003154 |
-| 7 | 3.291730 | 1.591580 | 1.700150 | 0.003064 |
-| 8 | 3.125192 | 1.489678 | 1.635514 | 0.003937 |
-| 9 | 2.981507 | 1.452817 | 1.528690 | 0.002940 |
-| 10 | 2.708401 | 1.336554 | 1.371847 | 0.004518 |
-| 11 | 2.638180 | 1.220623 | 1.417558 | 0.006327 |
-| 12 | 2.521090 | 1.170960 | 1.350130 | 0.006528 |
-2801020 learned scalars, 192 Adam updates; selected epoch 12, validation AP50 0.006528. Test: 23 digits in eight scenes, inclusive VOC AP50 0.029141, COCO AP75 0.000000, AP50:95 0.014282, 748 detections. Selected mean absolute first BN state 1.305174; paired learned and BN state restored.
+| 1 | 27.813035 | 5.390815 | 22.422220 | 0.000000 |
+| 2 | 10.247133 | 3.123577 | 7.123556 | 0.001261 |
+| 3 | 5.781883 | 2.360052 | 3.421831 | 0.002349 |
+| 4 | 4.562913 | 2.098956 | 2.463956 | 0.004926 |
+| 5 | 4.216040 | 1.997645 | 2.218395 | 0.005415 |
+| 6 | 3.857875 | 1.892191 | 1.965684 | 0.007652 |
+| 7 | 3.593434 | 1.727930 | 1.865503 | 0.026378 |
+| 8 | 3.336690 | 1.630740 | 1.705950 | 0.013552 |
+| 9 | 3.108713 | 1.591184 | 1.517529 | 0.003684 |
+| 10 | 2.860062 | 1.401061 | 1.459001 | 0.011024 |
+| 11 | 2.901176 | 1.422913 | 1.478262 | 0.003611 |
+| 12 | 2.621840 | 1.264025 | 1.357815 | 0.007146 |
+2801020 learned scalars, 192 Adam updates; selected epoch 7, validation AP50 0.026378. Test: 23 digits in eight scenes, inclusive VOC AP50 0.028042, COCO AP75 0.022222, AP50:95 0.014312, 736 detections. Selected mean absolute first BN state 1.198120; paired learned and BN state restored.
 \image(figures/yolo_v1_training.svg)
 // result_end
 \caption(Visible Adam fits all24 convolution layers and both dense layers after exact prefix transfer. Classification and coordinate/confidence traces exclude explicit kernel L2. Paired learned/BN state is restored before held-out detection.)

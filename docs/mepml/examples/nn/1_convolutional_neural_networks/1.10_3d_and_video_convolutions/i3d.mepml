@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Inflate random spatial filters equally over time,preserve the complete RGB I3D graph and source offset-only population BN,then show every optimizer and moving-state update. Select paired checkpoints on validation and restore RGB-only inference before complete held-out and temporal-control comparisons.
 
-The editable concept diagram is `diagrams/i3d_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/i3d_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/i3d_concept.tikz > build/i3d_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/i3d_concept.svg build/i3d_concept.dvi > build/i3d_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/i3d_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original annotated\n video frames");
+  diagram.node("n1", {5.2, 0}, "57inflated units\n and population BN");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n and paired restoration");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/i3d_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/i3d_concept.svg)
 // result_end
 \caption(I3D:random temporal inflation and visible tensor Adam)
@@ -569,10 +575,10 @@ int main() {
 // result_begin: markdown
 | epoch | batch-moment dropout fit CE | moving-moment validation NLL |
 |---:|---:|---:|
-| 1 | 1.487908 | 1.098950 |
-| 2 | 1.459764 | 1.098766 |
-| 3 | 1.392782 | 1.098550 |
-36explicit Adam updates;selected epoch 3,validation 1.098550;fixed inference fitting NLL 1.098623920->1.098829636.
+| 1 | 1.244014 | 1.098993 |
+| 2 | 1.706947 | 1.098365 |
+| 3 | 1.115372 | 1.099423 |
+36explicit Adam updates;selected epoch 2,validation 1.098365;fixed inference fitting NLL 1.098623920->1.098953629.
 \image(figures/i3d_training.svg)
 // result_end
 \caption(Every actual fitting update uses all57units,nine Mixed modules,head dropout and one moving-population update. Both selected stores are restored before the fixed inference probe and held-out evaluation.)
@@ -735,17 +741,17 @@ int main() {
 }
 ```
 // result_begin: markdown
-Fresh RGB restore/repeat 0;single/batch 1.86264515e-09 within1e-6;116learned+114moving leaves immutable:true;reverse/repeat-first changes 0.004682282/0.023916861.
+Fresh RGB restore/repeat 0;single/batch 0 within1e-6;116learned+114moving leaves immutable:true;reverse/repeat-first changes 0.006293457/0.018783078.
 
 | predictor | accuracy | macroF1 | NLL | all recalls | all true-row confusion counts |
 |---|---:|---:|---:|---|---|
-| learned I3D | 0.333333 | 0.166667 | 1.098270 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
+| learned I3D | 0.333333 | 0.166667 | 1.098258 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 | untrained | 0.333333 | 0.166667 | 1.098527 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
 | static1NN | 0.333333 | 0.166667 | 1.218111 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 | motion1NN | 0.666667 | 0.555556 | 0.884778 | float64[3] [0, 1, 1] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 0, 2]] |
 | class0 tie | 0.333333 | 0.166667 | 1.098612 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
-| reversed control | 0.333333 | 0.166667 | 1.098296 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
-| still control | 0.333333 | 0.166667 | 1.098234 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
+| reversed control | 0.333333 | 0.166667 | 1.098282 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
+| still control | 0.333333 | 0.166667 | 1.098400 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 
 | held-out row | true action | learned action |
 |---:|---:|---:|

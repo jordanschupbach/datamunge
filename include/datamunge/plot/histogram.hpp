@@ -162,6 +162,16 @@ class Histogram final : public graphics::RPlot {
     RPlot::set_col(std::move(color));
     return *this;
   }
+  /// @brief Parse a literal color while preserving the Histogram chaining type.
+  /// @param color Null-terminated color name, #RRGGBB or #RRGGBBAA; must be non-null.
+  /// @return This histogram, for chaining.
+  /// @throws std::invalid_argument For null, empty or malformed color text.
+  /// @par Example
+  /// See the string set_col() overload, which also accepts literals through this overload.
+  Histogram& set_col(const char* color) {
+    RPlot::set_col(color);
+    return *this;
+  }
   /// @brief Same as RPlot::background(), returning this histogram so chains keep the Histogram type.
   Histogram& background(graphics::RGB color) {
     RPlot::background(color);

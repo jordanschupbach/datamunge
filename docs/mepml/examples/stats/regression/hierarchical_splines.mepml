@@ -1,0 +1,425 @@
+//? Title: B-splines, P-splines and hierarchical spline fits
+//? Subtitle: Global fits, HB/HP refinement meshes and penalties
+//? Exports: both
+//? Lang: en-GB
+
+> B-splines, P-splines, HB splines and HP splines
+
+Compare four cubic spline fits to the same 241 observations: a smooth wave,
+a narrow bump near x = 0.65, and deterministic oscillatory measurement errors.
+Each language tab is a complete program using the native datamunge solvers
+and plotting API. Run blocks from this document's directory. Python and R use
+the local packages built with `just build-python` and `just build-r`; rebuild
+R after the hierarchical spline bindings change.
+
+- **B-spline:** `BSplineRegression` fits 40 global cubic basis functions by
+  ordinary least squares, without a smoothing penalty. It has the same
+  37 uniform knot spans on [0, 1] as the P-spline below.
+- **P-spline:** `PSplineRegression` uses 40 global basis functions with a
+  second-difference coefficient penalty and lambda = 0.5.
+- **HB:** `HierarchicalBSpline` first fits 10 global basis functions, then adds
+  a 32-coefficient local residual patch on [0.5, 0.75]. Both fits are unpenalized.
+- **HP:** here this means **hierarchical penalized splines**. The same hierarchy
+  calls `fit_cell_penalized` with lambda = 0.5 and difference order 2 on each patch.
+  This is a use of `HierarchicalBSpline`, rather than a separate HP class.
+
+The B-spline repeats its boundary knots; the P-spline extends uniform knots
+past the boundaries. Their cubic spline spaces on [0, 1] agree: setting the
+P-spline penalty to zero reproduces the B-spline predictions to numerical
+precision. The positive P-spline penalty acts on its extended-basis coefficients.
+
+For each penalized fit, the coefficients minimize
+
+$$\|y - B\beta\|^2 + \lambda\|D_2\beta\|^2.$$
+
+For a local patch, y in this expression is the residual after the ancestor
+patches. Pass the original observations to the API; it computes that residual
+itself. Child bases use local coordinates on [0, 1]. Refining the upper half of
+the root and then its lower half selects [0.5, 0.75]; the intermediate cell has
+no patch. All polynomial degrees stay at 3: this example's HP does not mean
+hp refinement with variable polynomial degree.
+
+The HB/HP implementation is a Forsey–Bartels additive patch hierarchy.
+Independent patches do not enforce continuity at cell boundaries; this is
+also different from the nested basis in `TruncatedHierarchicalBSpline`.
+The table reports RMSE against the known noise-free signal at 1,001 grid
+locations. Coefficient counts are stored coefficients, not effective degrees
+of freedom. These illustrative settings use different spline spaces and are
+not an equal-complexity model selection comparison.
+
+The refinement figure below each fit shows the actual HB and HP cell trees.
+Each horizontal bar is an instantiated cell at its refinement depth. Vertical
+ticks mark the distinct knots of that cell's fitted basis, mapped from local
+coordinates back to global x; repeated endpoint knots are drawn once. The
+root has seven knot spans and 10 coefficients. The fitted [0.5, 0.75] patch
+has 29 spans and 32 coefficients; its parent [0.5, 1] is a routing cell with
+no fitted patch. Both methods use the same mesh and cubic degree: HP changes
+the penalty, not the refinement geometry. These are overlapping additive
+patches, so the bars do not represent disjoint leaf elements.
+
+With these settings, the standard B-spline has the lowest signal RMSE
+(0.01567). Local refinement and a fixed penalty do not automatically improve
+a fit; the mesh figure explains where the hierarchical models spend their
+additional coefficients.
+
+\tabs(
+
+\tab(C++,
+
+```{cpp, results="markdown", nix-shell="git+file:../../../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}", file="figures/spline_comparison.svg"}
+#include <dm/dm.hpp>
+#include <datamunge/fda/hierarchical_bspline.hpp>
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <numbers>
+#include <print>
+#include <vector>
+
+int main() {
+  using dm::fda::BSplineBasis;
+  using dm::fda::HierarchicalBSpline;
+  const auto signal = [](double t) {
+    return std::sin(2 * std::numbers::pi * t)
+         + 0.8 * std::exp(-2500 * (t - 0.65) * (t - 0.65));
+  };
+  std::vector<double> x, y, local_y, grid, truth;
+  std::vector<std::vector<double>> points, local_points;
+  for (int i = 0; i <= 240; ++i) {
+    const double t = i / 240.0;
+    const double value = signal(t) + 0.12 * std::sin(173*t) + 0.07 * std::cos(297*t);
+    x.push_back(t); y.push_back(value); points.push_back({t});
+    if (0.5 <= t && t <= 0.75) {
+      local_points.push_back({t}); local_y.push_back(value);
+    }
+  }
+  // Same cubic spline space; P uses extended endpoint knots and a penalty.
+  const dm::BSplineRegression bs(dm::Vector<>(x), dm::Vector<>(y), 40, 3);
+  const dm::PSplineRegression ps(dm::Vector<>(x), dm::Vector<>(y), 40, 0.5, 3, 2);
+  const auto coarse = BSplineBasis::open_uniform(3, 10);
+  const auto fine = BSplineBasis::open_uniform(3, 32);
+  HierarchicalBSpline hb({0.0}, {1.0}), hp({0.0}, {1.0});
+  hb.fit_cell(0, {coarse}, points, y);
+  hp.fit_cell_penalized(0, {coarse}, points, y, {0.5}, 2);
+  // h-refinement: upper half, then its lower half -> [0.5, 0.75].
+  const int hb_half = hb.refine(0, 1), hp_half = hp.refine(0, 1);
+  const int hb_patch = hb.refine(hb_half, 0), hp_patch = hp.refine(hp_half, 0);
+  // Pass raw observations: fit_cell subtracts existing ancestor patches itself.
+  hb.fit_cell(hb_patch, {fine}, local_points, local_y);
+  hp.fit_cell_penalized(hp_patch, {fine}, local_points, local_y, {0.5}, 2);
+  std::vector<double> hb_fit, hp_fit;
+  for (int i = 0; i <= 1000; ++i) {
+    const double t = i / 1000.0;
+    grid.push_back(t); truth.push_back(signal(t));
+    hb_fit.push_back(hb.evaluate({t})); hp_fit.push_back(hp.evaluate({t}));
+  }
+  const auto b_fit = bs.predict(dm::Vector<>(grid));
+  const auto p_fit = ps.predict(dm::Vector<>(grid));
+  const auto rmse = [&](const auto& fitted) {
+    double sum = 0;
+    for (std::size_t i = 0; i < grid.size(); ++i) sum += std::pow(fitted[i] - truth[i], 2);
+    return std::sqrt(sum / grid.size());
+  };
+  std::println("| Fit | Coefficients | Signal RMSE |\n| --- | ---: | ---: |");
+  std::println("| B-spline | 40 | {:.5f} |", rmse(b_fit));
+  std::println("| P-spline | 40 | {:.5f} |", rmse(p_fit));
+  std::println("| HB patches | 42 | {:.5f} |", rmse(hb_fit));
+  std::println("| HP patches | 42 | {:.5f} |", rmse(hp_fit));
+  const auto plot = dm::plot()
+    .points(dm::Vector<>(x), dm::Vector<>(y), "Observations", "#8899aa88")
+    .lines(dm::Vector<>(grid), dm::Vector<>(truth), "Signal", "#334155", 2.0)
+    .lines(dm::Vector<>(grid), b_fit, "B-spline", "#15803d", 2.0)
+    .lines(dm::Vector<>(grid), p_fit, "P-spline", "#b83280", 2.5)
+    .lines(dm::Vector<>(grid), dm::Vector<>(hb_fit), "HB patches", "#d97706", 2.5)
+    .lines(dm::Vector<>(grid), dm::Vector<>(hp_fit), "HP patches", "#2563eb", 3.0)
+    .title("Global and hierarchical spline fits")
+    .subtitle("Cubic splines; local correction on [0.5, 0.75]; lambda = 0.5")
+    .x_label("x").y_label("y").size(1100, 650);
+  std::filesystem::create_directories("build/figs");
+  // Inspect the fitted objects: cells, depths, bounds and patch knot sequences.
+  auto meshes = dm::graphics::RLayout::create(2, 1);
+  const auto add_mesh = [&](const auto& model, const char* title, const char* color) {
+    auto mesh = dm::plot().title(title)
+      .subtitle("Bars = cells; ticks = distinct fitted knots; all degrees = 3")
+      .x_label("Global x").y_label("Refinement depth")
+      .xlim(0, 1).ylim(-2.45, 0.45)
+      .y_ticks({0, -1, -2}, {"0", "1", "2"})
+      .show_grid(false).margins(85, 35, 65, 50).size(1100, 310);
+    for (int cell = 0; cell < model.cell_count(); ++cell) {
+      const double lo = model.cell_min(cell)[0], hi = model.cell_max(cell)[0];
+      const double level = -model.depth(cell);
+      const bool fitted = model.has_spline(cell);
+      mesh.segments({lo}, {level}, {hi}, {level}, fitted ? color : "#94a3b8", 5);
+      if (fitted) {
+        const auto& basis = model.spline(cell).bases()[0];
+        auto knots = basis.knots();
+        knots.erase(std::unique(knots.begin(), knots.end()), knots.end());
+        for (double& t : knots) t = lo + (hi - lo) * t;
+        mesh.segments(knots, std::vector<double>(knots.size(), level - .12),
+          knots, std::vector<double>(knots.size(), level + .12), color, 1.5);
+        mesh.text((lo + hi) / 2, level - .28,
+          std::format("{} coefficients, {} spans", basis.basis_size(), knots.size() - 1),
+          "#334155", 12);
+      } else {
+        mesh.text((lo + hi) / 2, level - .28, "Routing cell: no fitted patch", "#64748b", 12);
+      }
+    }
+    meshes.add(mesh);
+  };
+  add_mesh(hb, "HB refinement mesh (unpenalized patches)", "#d97706");
+  add_mesh(hp, "HP refinement mesh (penalized patches)", "#2563eb");
+  meshes.size(1100, 620).save("build/figs/spline_refinement.svg");
+  std::filesystem::create_directories("figures");
+  std::filesystem::copy_file("build/figs/spline_refinement.svg", "figures/spline_refinement.svg",
+    std::filesystem::copy_options::overwrite_existing);
+  // Save this last so file= selects the fit comparison when the block is run.
+  plot.save("build/figs/spline_comparison.svg");
+}
+```
+// result_begin: markdown
+| Fit | Coefficients | Signal RMSE |
+| --- | ---: | ---: |
+| B-spline | 40 | 0.01567 |
+| P-spline | 40 | 0.05015 |
+| HB patches | 42 | 0.05322 |
+| HP patches | 42 | 0.03583 |
+\image(figures/spline_comparison.svg)
+// result_end
+\caption(Standard B-spline, P-spline, HB and HP fits to the same observations.)
+\alttext(Four fitted cubic spline curves compared with the known smooth signal and noisy observations.)
+
+\image(figures/spline_refinement.svg)
+\caption(HB and HP refinement cells with fitted knot spans in global coordinates.)
+\alttext(Two matching three-level interval diagrams: a global root patch, an unfitted half-domain cell, and a dense local patch on x from 0.5 to 0.75.)
+
+)
+
+\tab(Python,
+
+```{python, results="markdown", nix-shell="git+file:../../../../..#python", cmd="env -u PYTHONPATH ../../../../../build/venv/pydatamunge-run/bin/python {file}", file="figures/spline_comparison_python.svg"}
+import math
+import shutil
+from pathlib import Path
+from pydatamunge import datamunge as dm
+
+def signal(t):
+    return math.sin(2 * math.pi * t) + 0.8 * math.exp(-2500 * (t - 0.65)**2)
+
+x = [i / 240 for i in range(241)]
+y = [signal(t) + 0.12 * math.sin(173*t) + 0.07 * math.cos(297*t) for t in x]
+points = [[t] for t in x]
+selected = [i for i, t in enumerate(x) if 0.5 <= t <= 0.75]
+local_points = [points[i] for i in selected]
+local_y = [y[i] for i in selected]
+# Same global cubic spline space; only the P-spline is penalized.
+bs = dm.BSplineRegression(x, y, 40, 3)
+ps = dm.PSplineRegression(x, y, 40, 0.5, 3, 2)
+coarse = dm.BSplineBasis.open_uniform(3, 10)
+fine = dm.BSplineBasis.open_uniform(3, 32)
+hb = dm.HierarchicalBSpline([0.0], [1.0])
+hp = dm.HierarchicalBSpline([0.0], [1.0])
+hb.fit_cell(0, [coarse], points, y)
+hp.fit_cell_penalized(0, [coarse], points, y, [0.5], 2)
+# Refine [0,1] -> [0.5,1] -> [0.5,0.75].
+hb_patch = hb.refine(hb.refine(0, 1), 0)
+hp_patch = hp.refine(hp.refine(0, 1), 0)
+# Supply raw values; each local solver subtracts the ancestor contribution.
+hb.fit_cell(hb_patch, [fine], local_points, local_y)
+hp.fit_cell_penalized(hp_patch, [fine], local_points, local_y, [0.5], 2)
+grid = [i / 1000 for i in range(1001)]
+truth = [signal(t) for t in grid]
+b_fit = list(bs.predict(grid))
+p_fit = list(ps.predict(grid))
+hb_fit = [hb.evaluate([t]) for t in grid]
+hp_fit = [hp.evaluate([t]) for t in grid]
+def rmse(fitted):
+    return math.sqrt(sum((a-b)**2 for a, b in zip(fitted, truth)) / len(grid))
+
+print("| Fit | Coefficients | Signal RMSE |\n| --- | ---: | ---: |")
+for name, count, fitted in [("B-spline", 40, b_fit), ("P-spline", 40, p_fit), ("HB patches", 42, hb_fit), ("HP patches", 42, hp_fit)]:
+    print(f"| {name} | {count} | {rmse(fitted):.5f} |")
+plot = dm.RPlot.create()
+plot.points(x, y, "Observations", dm.RGB("#8899aa88"))
+for fitted, label, color, width in [(truth, "Signal", "#334155", 2.0),
+    (b_fit, "B-spline", "#15803d", 2.0), (p_fit, "P-spline", "#b83280", 2.5), (hb_fit, "HB patches", "#d97706", 2.5),
+    (hp_fit, "HP patches", "#2563eb", 3.0)]:
+    plot.lines(grid, fitted, label, dm.RGB(color), width)
+plot.set_title("Global and hierarchical spline fits")
+plot.set_subtitle("Cubic splines; local correction on [0.5, 0.75]; lambda = 0.5")
+plot.set_xlab("x")
+plot.set_ylab("y")
+plot.size(1100, 650)
+Path("build/figs").mkdir(parents=True, exist_ok=True)
+meshes = dm.RLayout.create(2, 1)
+for model, title, color in [(hb, "HB refinement mesh (unpenalized patches)", "#d97706"),
+                             (hp, "HP refinement mesh (penalized patches)", "#2563eb")]:
+    mesh = dm.RPlot.create()
+    mesh.set_title(title)
+    mesh.set_subtitle("Bars = cells; ticks = distinct fitted knots; all degrees = 3")
+    mesh.set_xlab("Global x")
+    mesh.set_ylab("Refinement depth")
+    mesh.xlim(0, 1)
+    mesh.ylim(-2.45, .45)
+    mesh.y_ticks([0, -1, -2], ["0", "1", "2"])
+    mesh.show_grid(False)
+    mesh.margins(85, 35, 65, 50)
+    mesh.size(1100, 310)
+    for cell in range(model.cell_count()):
+        lo, hi = model.cell_min(cell)[0], model.cell_max(cell)[0]
+        level = -model.depth(cell)
+        fitted = model.has_spline(cell)
+        mesh.segments([lo], [level], [hi], [level], dm.RGB(color if fitted else "#94a3b8"), 5)
+        if fitted:
+            patch = model.spline(cell)
+            basis = patch.bases()[0]
+            knots = sorted(set(basis.knots()))
+            knots = [lo + (hi - lo) * t for t in knots]
+            mesh.segments(knots, [level-.12]*len(knots), knots,
+                          [level+.12]*len(knots), dm.RGB(color), 1.5)
+            mesh.text((lo+hi)/2, level-.28,
+                      f"{basis.basis_size()} coefficients, {len(knots)-1} spans", dm.RGB("#334155"), 12)
+        else:
+            mesh.text((lo+hi)/2, level-.28, "Routing cell: no fitted patch", dm.RGB("#64748b"), 12)
+    meshes.add(mesh)
+meshes.size(1100, 620)
+meshes.save("build/figs/spline_refinement_python.svg")
+Path("figures").mkdir(exist_ok=True)
+shutil.copyfile("build/figs/spline_refinement_python.svg", "figures/spline_refinement_python.svg")
+plot.save_svg("build/figs/spline_comparison_python.svg")
+```
+// result_begin: markdown
+| Fit | Coefficients | Signal RMSE |
+| --- | ---: | ---: |
+| B-spline | 40 | 0.01567 |
+| P-spline | 40 | 0.05015 |
+| HB patches | 42 | 0.05322 |
+| HP patches | 42 | 0.03583 |
+\image(figures/spline_comparison_python.svg)
+// result_end
+\caption(Standard B-spline, P-spline, HB and HP fits to the same observations.)
+\alttext(Four fitted cubic spline curves compared with the known smooth signal and noisy observations.)
+
+\image(figures/spline_refinement_python.svg)
+\caption(HB and HP refinement cells with fitted knot spans in global coordinates.)
+\alttext(Two matching three-level interval diagrams: a global root patch, an unfitted half-domain cell, and a dense local patch on x from 0.5 to 0.75.)
+
+)
+
+\tab(R,
+
+```{r, results="markdown", nix-shell="git+file:../../../../..#r", cmd="env R_LIBS_USER=../../../../../build/r/library Rscript {file}", file="figures/spline_comparison_r.svg"}
+suppressPackageStartupMessages(library(datamunger))
+signal <- function(t) sin(2*pi*t) + 0.8*exp(-2500*(t - 0.65)^2)
+x <- (0:240)/240
+y <- signal(x) + 0.12*sin(173*x) + 0.07*cos(297*x)
+points <- lapply(x, function(t) c(t))
+selected <- which(x >= 0.5 & x <= 0.75)
+local_points <- points[selected]
+local_y <- y[selected]
+bs <- BSplineRegression(x, y, 40L, 3L)
+ps <- PSplineRegression(x, y, 40L, 0.5, 3L, 2L)
+# A native vector holds one basis per coordinate axis.
+coarse <- BSplineBasisVector()
+invisible(coarse$push_back(BSplineBasis_open_uniform(3L, 10L)))
+fine <- BSplineBasisVector()
+invisible(fine$push_back(BSplineBasis_open_uniform(3L, 32L)))
+hb <- HierarchicalBSpline(c(0), c(1))
+hp <- HierarchicalBSpline(c(0), c(1))
+invisible(hb$fit_cell(0L, coarse, points, y))
+invisible(hp$fit_cell_penalized(0L, coarse, points, y, c(0.5), 2L))
+# Refine [0,1] -> [0.5,1] -> [0.5,0.75].
+hb_patch <- hb$refine(hb$refine(0L, 1L), 0L)
+hp_patch <- hp$refine(hp$refine(0L, 1L), 0L)
+# Pass raw data; the C++ solver subtracts the ancestor contribution.
+invisible(hb$fit_cell(hb_patch, fine, local_points, local_y))
+invisible(hp$fit_cell_penalized(hp_patch, fine, local_points, local_y, c(0.5), 2L))
+grid <- (0:1000)/1000
+truth <- signal(grid)
+b_fit <- as.numeric(bs$predict(grid))
+p_fit <- as.numeric(ps$predict(grid))
+hb_fit <- vapply(grid, function(t) hb$evaluate(c(t)), numeric(1))
+hp_fit <- vapply(grid, function(t) hp$evaluate(c(t)), numeric(1))
+rmse <- function(fitted) sqrt(mean((fitted - truth)^2))
+cat("| Fit | Coefficients | Signal RMSE |\n| --- | ---: | ---: |\n")
+cat(sprintf("| B-spline | 40 | %.5f |\n", rmse(b_fit)))
+cat(sprintf("| P-spline | 40 | %.5f |\n", rmse(p_fit)))
+cat(sprintf("| HB patches | 42 | %.5f |\n", rmse(hb_fit)))
+cat(sprintf("| HP patches | 42 | %.5f |\n", rmse(hp_fit)))
+plot <- RPlot_create()
+invisible(plot$points(x, y, "Observations", RGB("#8899aa88")))
+invisible(plot$lines(grid, truth, "Signal", RGB("#334155"), 2))
+invisible(plot$lines(grid, b_fit, "B-spline", RGB("#15803d"), 2))
+invisible(plot$lines(grid, p_fit, "P-spline", RGB("#b83280"), 2.5))
+invisible(plot$lines(grid, hb_fit, "HB patches", RGB("#d97706"), 2.5))
+invisible(plot$lines(grid, hp_fit, "HP patches", RGB("#2563eb"), 3))
+invisible(plot$set_title("Global and hierarchical spline fits"))
+invisible(plot$set_subtitle("Cubic splines; local correction on [0.5, 0.75]; lambda = 0.5"))
+invisible(plot$set_xlab("x"))
+invisible(plot$set_ylab("y"))
+invisible(plot$size(1100L, 650L))
+dir.create("build/figs", recursive=TRUE, showWarnings=FALSE)
+meshes <- RLayout_create(2L, 1L)
+models <- list(hb, hp)
+titles <- c("HB refinement mesh (unpenalized patches)", "HP refinement mesh (penalized patches)")
+colors <- c("#d97706", "#2563eb")
+for (i in seq_along(models)) {
+  model <- models[[i]]
+  mesh <- RPlot_create()
+  invisible(mesh$set_title(titles[i]))
+  invisible(mesh$set_subtitle("Bars = cells; ticks = distinct fitted knots; all degrees = 3"))
+  invisible(mesh$set_xlab("Global x"))
+  invisible(mesh$set_ylab("Refinement depth"))
+  invisible(mesh$xlim(0, 1))
+  invisible(mesh$ylim(-2.45, .45))
+  invisible(mesh$y_ticks(c(0, -1, -2), c("0", "1", "2")))
+  invisible(mesh$show_grid(FALSE))
+  invisible(mesh$margins(85, 35, 65, 50))
+  invisible(mesh$size(1100L, 310L))
+  for (cell in seq_len(model$cell_count()) - 1L) {
+    lo <- as.numeric(model$cell_min(cell))[1]
+    hi <- as.numeric(model$cell_max(cell))[1]
+    level <- -model$depth(cell)
+    fitted <- model$has_spline(cell)
+    invisible(mesh$segments(c(lo), c(level), c(hi), c(level),
+      RGB(if (fitted) colors[i] else "#94a3b8"), 5))
+    if (fitted) {
+      patch <- model$spline(cell)
+      bases <- patch$bases()
+      basis <- bases$front()
+      knots <- lo + (hi-lo)*sort(unique(as.numeric(basis$knots())))
+      invisible(mesh$segments(knots, rep(level-.12, length(knots)), knots,
+        rep(level+.12, length(knots)), RGB(colors[i]), 1.5))
+      invisible(mesh$text((lo+hi)/2, level-.28,
+        sprintf("%d coefficients, %d spans", basis$basis_size(), length(knots)-1L), RGB("#334155"), 12))
+    } else {
+      invisible(mesh$text((lo+hi)/2, level-.28, "Routing cell: no fitted patch", RGB("#64748b"), 12))
+    }
+  }
+  invisible(meshes$add(mesh))
+}
+invisible(meshes$size(1100L, 620L))
+invisible(meshes$save("build/figs/spline_refinement_r.svg"))
+dir.create("figures", showWarnings=FALSE)
+stopifnot(file.copy("build/figs/spline_refinement_r.svg", "figures/spline_refinement_r.svg", overwrite=TRUE))
+invisible(plot$save_svg("build/figs/spline_comparison_r.svg"))
+```
+// result_begin: markdown
+| Fit | Coefficients | Signal RMSE |
+| --- | ---: | ---: |
+| B-spline | 40 | 0.01567 |
+| P-spline | 40 | 0.05015 |
+| HB patches | 42 | 0.05322 |
+| HP patches | 42 | 0.03583 |
+\image(figures/spline_comparison_r.svg)
+// result_end
+\caption(Standard B-spline, P-spline, HB and HP fits to the same observations.)
+\alttext(Four fitted cubic spline curves compared with the known smooth signal and noisy observations.)
+
+\image(figures/spline_refinement_r.svg)
+\caption(HB and HP refinement cells with fitted knot spans in global coordinates.)
+\alttext(Two matching three-level interval diagrams: a global root patch, an unfitted half-domain cell, and a dense local patch on x from 0.5 to 0.75.)
+
+)
+
+)

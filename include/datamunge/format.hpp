@@ -27,6 +27,8 @@
 #include <datamunge/format/gis.hpp>
 #include <datamunge/format/image.hpp>
 #include <datamunge/format/linalg.hpp>
+#include <datamunge/format/matrix.hpp>
+#include <datamunge/format/tex.hpp>
 #include <datamunge/format/nn.hpp>
 #include <datamunge/format/ode.hpp>
 #include <datamunge/format/optim.hpp>

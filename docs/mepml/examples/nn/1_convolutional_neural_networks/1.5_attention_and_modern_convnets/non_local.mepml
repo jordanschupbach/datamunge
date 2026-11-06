@@ -53,18 +53,24 @@ epochs (64 updates, kept short for build time), Adam(.001), explicit kernel L2=.
 validation checkpoints. This small single-seed fit cannot establish an attention accuracy or
 latency advantage and does not reproduce the source's larger training schedule.
 
-The editable concept diagram is `diagrams/non_local_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/non_local_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/non_local_concept.tikz > build/non_local_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/non_local_concept.svg build/non_local_concept.dvi > build/non_local_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/non_local_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "All queries and keys\nFour affinity rules");
+  diagram.node("n1", {5.2, 0}, "Zero-scale BN start\nGlobal active response");
+  diagram.node("n2", {10.4, 0}, "Five non-local modules\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/non_local_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/non_local_concept.svg)
 // result_end
 \caption(Non-Local Attention: Four Affinities, Global Derivatives and Explicit Fitting)
@@ -355,7 +361,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Full-width ResNet-50 plus five active non-local blocks at 64 pixels: 32915496 learned scalars, 211 finite parameter-tensor derivatives, norm range [0.000000001723,355.855468750], all moving state frozen. No claim that bias-shift invariances have nonzero gradients.
+Full-width ResNet-50 plus five active non-local blocks at 64 pixels: 32915496 learned scalars, 211 finite parameter-tensor derivatives, norm range [0.000000001461,352.212463379], all moving state frozen. No claim that bias-shift invariances have nonzero gradients.
 // result_end
 
 > Original images and visible fitting
@@ -541,7 +547,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1947546 learned scalars, 15328 moving scalars; 64 explicit Adam updates.
-Selected epoch 4; validation NLL 2.370671; inference training NLL 2.479165; test NLL 2.303873; test accuracy 0.171875.
+Selected epoch 2; validation NLL 2.372885; inference training NLL 2.533373; test NLL 2.475636; test accuracy 0.078125.
 \image(figures/non_local_training.svg)
 // result_end
 \caption(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

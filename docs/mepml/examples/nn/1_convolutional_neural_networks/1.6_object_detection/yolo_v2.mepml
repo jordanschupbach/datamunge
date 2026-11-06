@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 YOLO v2 adds dimension priors and fine-feature space-to-depth passthrough. YOLO9000-style WordTree supervision combines coarse detection boxes with fine image labels, selecting an objectness-weighted marginal prediction for classification-only examples.
 
-The editable concept diagram is `diagrams/yolo_v2_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/yolo_v2_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/yolo_v2_concept.tikz > build/yolo_v2_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/yolo_v2_concept.svg build/yolo_v2_concept.dvi > build/yolo_v2_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/yolo_v2_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Tensor box priors\nDarknet passthrough");
+  diagram.node("n1", {5.2, 0}, "Coarse/fine labels\nWordTree losses");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam loop\nPaired BN state");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/yolo_v2_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/yolo_v2_concept.svg)
 // result_end
 \caption(YOLO v2 priors, feature passthrough and WordTree fitting)
@@ -780,23 +786,23 @@ int main() {
 flat model
 | epoch | detection loss | class-only loss | val AP50 |
 |---:|---:|---:|---:|
-| 1 | 36.896208 | 0.000000 | 0.000613 |
-| 2 | 23.412688 | 0.000000 | 0.000247 |
-| 3 | 8.794223 | 0.000000 | 0.001250 |
-| 4 | 7.049459 | 0.000000 | 0.001629 |
-| 5 | 4.989071 | 0.000000 | 0.001417 |
-| 6 | 4.686698 | 0.000000 | 0.006284 |
-flat: 801447 learned/2584 state scalars, 96 Adam(.001) updates: 96 detection/0 classification-only; 0 cumulative training collisions. Selected epoch 6, validation AP50 0.006284. Test 23 digits: AP50 0.007700, AP75 0.000000, AP50:95 0.003289,800 detections. Paired restored checkpoint verified.
+| 1 | 38.556775 | 0.000000 | 0.000000 |
+| 2 | 22.831401 | 0.000000 | 0.000000 |
+| 3 | 8.997876 | 0.000000 | 0.000794 |
+| 4 | 7.341809 | 0.000000 | 0.006491 |
+| 5 | 5.045531 | 0.000000 | 0.008717 |
+| 6 | 4.685383 | 0.000000 | 0.005033 |
+flat: 801447 learned/2584 state scalars, 96 Adam(.001) updates: 96 detection/0 classification-only; 0 cumulative training collisions. Selected epoch 5, validation AP50 0.008717. Test 23 digits: AP50 0.004502, AP75 0.000000, AP50:95 0.000835,800 detections. Paired restored checkpoint verified.
 joint model
 | epoch | detection loss | class-only loss | val AP50 |
 |---:|---:|---:|---:|
-| 1 | 35.303680 | 0.509662 | 0.000726 |
-| 2 | 62.692450 | 0.397532 | 0.000000 |
-| 3 | 31.689036 | 0.519937 | 0.000168 |
-| 4 | 14.784330 | 0.451262 | 0.000479 |
-| 5 | 7.913745 | 0.351970 | 0.000000 |
-| 6 | 7.398825 | 0.300692 | 0.002315 |
-joint: 798351 learned/2584 state scalars, 96 Adam(.001) updates: 19 detection/77 classification-only; 0 cumulative training collisions. Selected epoch 6, validation AP50 0.002315. Test 23 digits: AP50 0.002435, AP75 0.000000, AP50:95 0.000697,800 detections. Paired restored checkpoint verified.
+| 1 | 37.838072 | 0.543980 | 0.000386 |
+| 2 | 51.896755 | 0.466386 | 0.001481 |
+| 3 | 21.051189 | 0.463017 | 0.000000 |
+| 4 | 21.851566 | 0.387789 | 0.000253 |
+| 5 | 9.046747 | 0.400825 | 0.001111 |
+| 6 | 9.497100 | 0.307002 | 0.003472 |
+joint: 798351 learned/2584 state scalars, 96 Adam(.001) updates: 19 detection/77 classification-only; 0 cumulative training collisions. Selected epoch 6, validation AP50 0.003472. Test 23 digits: AP50 0.000617, AP75 0.000000, AP50:95 0.000257,800 detections. Paired restored checkpoint verified.
 \image(figures/yolo_v2_training.svg)
 // result_end
 \caption(Both complete compact models fit with visible Adam and multiscale inputs. Joint losses are shown separately by supervision phase because their objectives differ. Validation selects paired checkpoints; this bounded split does not establish an architecture ranking.)

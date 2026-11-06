@@ -256,7 +256,7 @@ int main() {
 | conv1d, kernel 3, VALID | [2, 9, 2] | [2, 7, 3] | matrix (height 1) | 0.0e+00 |
 | conv3d, kernel 2, VALID | [1, 4, 4, 4, 2] | [1, 3, 3, 3, 3] | loops | 4.4e-16 |
 | depthwise 3×3, multiplier 2 | [1, 6, 6, 3] | [1, 6, 6, 6] | grouped matrix | 4.4e-16 |
-| separable 3×3 to 8 channels | [1, 6, 6, 3] | [1, 6, 6, 8] | pointwise × depthwise matrices | 4.4e-16 |
+| separable 3×3 to 8 channels | [1, 6, 6, 3] | [1, 6, 6, 8] | pointwise × depthwise matrices | 6.7e-16 |
 | conv2d 3×3, dilation 2, SAME | [1, 8, 8, 1] | [1, 8, 8, 1] | 5×5 kernel with holes (layer; matrix) | 0.0e+00; 0.0e+00 |
 | conv2d_transpose, stride 2 | [1, 3, 3, 3] | [1, 6, 6, 2] | autograd input gradient; Mᵀ r | 0.0e+00; 2.2e-16 |
 
@@ -496,11 +496,11 @@ Transposed convolution, stride 2, 6×6 → 12×12, ones input and ones kernel: d
 | 24 | 49 | 4.044 | 4.000 | 2.851 | 2.828 |
 | 32 | 65 | 4.577 | 4.619 | 3.285 | 3.266 |
 
-Circular 3×3 conv 4 → 4 on 8×8: 256 singular values; max |FFT − SVD of the 256×256 matrix| = 1.0e-14; FFT route 7× faster here.
+Circular 3×3 conv 4 → 4 on 8×8: 256 singular values; max |FFT − SVD of the 256×256 matrix| = 7.6e-14; FFT route 342× faster here.
 Spectral norm: circular 2.2544, zero-padded SAME 2.1202; smallest singular value: circular 0.0125, zero-padded 0.0022.
 Upper bound Σ over taps of ‖K_ab‖₂ = 5.0379. Σσ² = 313.403608 and H·W·‖K‖²_F = 313.403608 (each weight appears H·W times in the matrix).
 Ranks where the zero-padded singular value exceeds the circular one: 0 of 256.
-32×32 input: 4096 singular values in 0.011 s, spectral norm 2.2544 (the dense matrix would be 4096×4096).
+32×32 input: 4096 singular values in 0.007 s, spectral norm 2.2544 (the dense matrix would be 4096×4096).
 \image(figures/conv_layers_theory.svg)
 // result_end
 
@@ -645,9 +645,9 @@ int main() {
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | MLP 64-64-10 | 4810 | 64 (all) | 90.6% (90.0–90.8) | 17.1% | 42.5% | 53.0% | 13.1% |
 | conv, pool, conv | 5130 | 8 | 89.1% (88.3–89.7) | 50.2% | 62.1% | 58.5% | 39.3% |
-| conv, pool, separable | 1178 | 8 | 87.4% (85.6–89.7) | 45.5% | 60.9% | 59.0% | 44.4% |
-| conv, strided conv | 5130 | 5 | 84.0% (82.5–85.6) | 54.9% | 50.5% | 53.1% | 56.8% |
-| conv, dilated conv | 5130 | 7 | 85.2% (83.9–87.5) | 41.0% | 63.4% | 66.3% | 32.5% |
+| conv, pool, separable | 1178 | 8 | 87.4% (85.6–89.7) | 45.5% | 60.9% | 58.8% | 44.4% |
+| conv, strided conv | 5130 | 5 | 83.9% (82.5–85.3) | 54.8% | 50.5% | 53.1% | 56.8% |
+| conv, dilated conv | 5130 | 7 | 85.1% (83.6–87.5) | 41.0% | 63.2% | 66.3% | 32.7% |
 
 Share of the test images' ink pushed out of the frame: -2 px 4.0%; -1 px 0.0%; 1 px 0.1%; 2 px 5.7%;
 \image(figures/conv_layers_digits.svg)

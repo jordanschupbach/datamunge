@@ -48,18 +48,24 @@ Its 128 fitting, 64 validation and 64 official-test images are a bounded teachin
 It runs 20 epochs, independent padded crops/flips, Adam(.001), and kernel L2=.0001/2.
 Validation selects the checkpoint before a test pass. Cached CIFAR-10 is required.
 
-The editable concept diagram is `diagrams/alexnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/alexnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/alexnet_concept.tikz > build/alexnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/alexnet_concept.svg build/alexnet_concept.dvi > build/alexnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/alexnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "RGB patches\ngrouped filters");
+  diagram.node("n1", {5.2, 0}, "LRN and pooling\nfive convolutions");
+  diagram.node("n2", {10.4, 0}, "Two dense layers\ndropout and Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/alexnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/alexnet_concept.svg)
 // result_end
 \caption(AlexNet: Grouped Filters, Channel Normalisation and Dropout)
@@ -474,8 +480,8 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 237674 learned scalars; 320 Adam updates.
-Best validation epoch 19; NLL 2.208655.
-Selected inference training NLL 1.709206; test NLL 2.126871; test accuracy 0.265625.
+Best validation epoch 20; NLL 2.182571.
+Selected inference training NLL 1.690637; test NLL 2.130621; test accuracy 0.265625.
 \image(figures/alexnet_training.svg)
 // result_end
 \caption(Primary cross entropy from the visible Adam loop. Training uses augmentation and dropout; validation is deterministic. Both use fixed, small subsets.)

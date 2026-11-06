@@ -47,18 +47,24 @@ kernel L2=.0001/2, padded crops/flips and paired learned/BN checkpoint selection
 All attention parameters participate in the optimizer. This bounded single-seed run differs
 from the paper's ImageNet schedule and cannot establish attention accuracy superiority.
 
-The editable concept diagram is `diagrams/cbam_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/cbam_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/cbam_concept.tikz > build/cbam_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/cbam_concept.svg build/cbam_concept.dvi > build/cbam_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/cbam_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Shared mean/max MLP\nChannel refinement");
+  diagram.node("n1", {5.2, 0}, "Max and mean maps\n7 by 7 spatial gate");
+  diagram.node("n2", {10.4, 0}, "All sixteen blocks\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/cbam_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/cbam_concept.svg)
 // result_end
 \caption(CBAM: Shared Channel Gates, Spatial Refinement and Visible Adam)
@@ -252,7 +258,7 @@ int main() {
 ```
 // result_begin: markdown
 Full-width cbam groups 1: 28089624 learned / 53152 moving scalars; sixteen blocks, 64-pixel forward.
-Every 273 parameter-tensor gradient finite; norm range [0.000046657678,4.647744179], moving state frozen.
+Every 273 parameter-tensor gradient finite; norm range [0.000046657511,4.647747993], moving state frozen.
 // result_end
 
 > Original pixels and explicit optimization
@@ -436,7 +442,7 @@ int main() {
 ```
 // result_begin: markdown
 64 fit / 32 validation / 32 official-test rows; 1646982 learned scalars, 13312 moving scalars; 20 explicit Adam updates.
-Selected epoch 2; validation NLL 2.303205; inference training NLL 2.111003; test NLL 2.335123; test accuracy 0.093750.
+Selected epoch 2; validation NLL 2.298038; inference training NLL 2.110572; test NLL 2.339606; test accuracy 0.093750.
 \image(figures/cbam_training.svg)
 // result_end
 \caption(Explicit five-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)

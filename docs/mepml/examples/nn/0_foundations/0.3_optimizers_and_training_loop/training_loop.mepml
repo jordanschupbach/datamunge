@@ -41,19 +41,24 @@ boundary for a complete training resume. Other stochastic layers, data transform
 schedules and monitors may require additional state. The sampler test alone does not
 establish whole-training-job resume or cross-toolchain shuffle compatibility.
 
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-The concept diagram is generated from the retained local TikZ source. LaTeX with
-PGF/TikZ and standalone, plus dvisvgm, is needed only to regenerate it.
+```{cpp, file="figures/training_loop_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
 
-```{bash, results="output", file="figures/training_loop_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/training_loop_concept.tikz > build/training_loop.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/training_loop_concept.svg build/training_loop_concept.dvi > build/training_loop.render.log 2>&1
-printf 'Rendered build/training_loop_concept.svg from local TikZ source.\n'
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Choose rows and gather\nkeep the short batch");
+  diagram.node("n1", {5.5, 0}, "Forward, loss, update\none update per batch");
+  diagram.node("n2", {11.0, 0}, "Weight online metrics\nevaluate fixed weights");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/training_loop_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/training_loop_concept.svg from local TikZ source.
 // \image(figures/training_loop_concept.svg)
 // result_end
 \caption(Separate the epoch clock, update clock and evaluation weights.)

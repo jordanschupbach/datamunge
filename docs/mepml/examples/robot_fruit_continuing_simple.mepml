@@ -1,0 +1,395 @@
+//? Title: Continuing robot-arm fruit sorting
+//? Exports: both
+//? Lang: en-GB
+
+> Continuing robot-arm fruit sorting
+
+The robot now works in a **continuing environment**. Fruit appears according to
+a Poisson process while the belt keeps moving and the arm keeps its joint pose
+between picks. The environment has no episode horizon; the video below is a
+single, uninterrupted **60-second observation window** of a frozen trained policy.
+The earlier arrival, episodic RL and varied-fruit classification examples remain
+in [the episodic report|file:robot_fruit_episodic.mepml].
+
+>> Arrivals, deadlines and physical outcomes
+
+The demonstration uses **0.12 fruit per second**, or 7.2 arrivals per minute in
+expectation. Exponential inter-arrival times are independent of the arm's
+availability, chosen actions and appearance randomness. There is no minimum
+spacing, busy-arm pause, source queue or admission delay. Poisson bursts can
+produce several fruit at once. Every fruit receives a random belt position,
+orientation, size, skin and one of six prototypes per class.
+
+The friction-driven belt runs continuously at **0.22 metres per second**.
+The arm can intercept at X=0.04 or X=0.16 m. Unhandled fruit passing X=0.30 m
+counts as missed. Misses also include failed releases and capacity overflow. Fruit still travelling, held or falling at the end of a
+measurement window remains **in progress**, and is reported separately.
+A correct sort requires a dynamic fruit to settle with physical floor support
+inside the correct bin: apples in red and bananas in yellow.
+
+The bins automatically clear completed fruit after two seconds so the world
+can run indefinitely with bounded memory. The active-body limit is 32;
+an arrival at capacity is counted as an overflow miss, rather than postponed.
+Births are inserted within one 1/240-second tick of their exact scheduled time.
+
+>> Learning to keep up
+
+A hierarchical controller learns five duration-varying choices: wait, intercept
+the leading fruit at either gate, or intercept the second-leading fruit at
+either gate. It observes queue size, leading position, spacing, arm side and
+pending releases. It cannot see future arrivals or use true fruit labels to
+choose a bin. Fixed IK options approach, time the descent, close the gripper,
+lift, traverse and release, with bounded joint/finger rates and fixture guards.
+This trains scheduling and interception decisions; it does not learn motor
+torques or replace the existing idealized grasp and arm-collision assumptions.
+
+The option reward is five times correct placements, minus five times wrong
+placements, minus three times misses, minus 0.02 per elapsed second and 0.25
+per failed attempt. Q-learning discounts the next-state value by
+`0.995^elapsed_seconds`, so a slow option has its actual time cost. Training
+uses **8,192 independent continuing windows of at least 120 simulated seconds**,
+with randomized arrival rates from 0.10 to 0.22 fruit/s. Windows are truncated
+for sampling; their final values bootstrap rather than receive a terminal reward.
+
+The fast training model preserves arrival scheduling, servo durations, fixture
+guards and rewards, while approximating belt transport and bin settling and
+omitting fruit-to-fruit contacts. Its perception-error channel is calibrated
+using classifier validation data. **It is a training proxy, not the final
+physics simulation.** Power-of-two checkpoints are compared on twelve separate
+full-physics validation streams before the final policy is selected.
+
+>> Adapting wrist vision to moving pickups
+
+The rigid wrist camera renders the actual multi-fruit scene. Registered RGB
+background subtraction finds visible components; a projected tracked target
+position associates the intended component. This association and the motor
+controller use privileged geometry. The box itself comes from RGB differences,
+and MobileNet receives the unannotated padded RGB crop. Its prediction alone
+selects red or yellow. Empty crops remain unknown and never use a true-label
+fallback. Green video boxes show the current target's visible component.
+
+The previous MobileNet checkpoint is fine-tuned for forty epochs on moving
+pickup views: 512 images from prototypes 0–3, 128 validation images from
+prototype 4, and 128 test images from prototype 5. Classes/prototypes are
+balanced and stream seeds are disjoint. Brightness and grayscale augmentation
+remain enabled. Validation loss selects the vision checkpoint; test images
+never supply gradients or select a checkpoint.
+
+The final comparison uses sixteen independent two-minute streams with actual
+RGB inference and full 240 Hz physics. The learned scheduler and both fixed
+oldest-first baselines see identical Poisson arrival streams. Counts are taken
+at the exact window boundary, including unresolved work. The video seed is
+fixed before training, and its minute includes all idle periods, misses,
+classification mistakes and unfinished work—there is no success montage.
+
+Run `just playground` to train and build everything. Once learning has completed,
+`DATAMUNGE_STREAM_REPLAY=1 just playground` reloads its frozen checkpoints and
+regenerates the evaluation video. The simulator itself can keep stepping forever;
+only recording stops at one minute.
+
+```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/parallel.hpp>
+#include <algorithm>
+#include <array>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <numeric>
+#include <sstream>
+#include <stdexcept>
+namespace s=dm::sim;namespace n=dm::nn;namespace c=dm::cad;
+namespace fs=std::filesystem;
+constexpr double arrival_rate=.12;
+constexpr std::uint64_t video_seed=2026113001ULL;
+constexpr int fps=15,video_seconds=60;
+const std::string directory="build/fruit_stream/";
+
+n::Tensor rgb(const c::RenderResult& image){
+ std::vector<float> pixels;pixels.reserve(image.width*image.height*3);
+ for(std::size_t i=0;i<image.rgba.size();i+=4)for(int k=0;k<3;++k)pixels.push_back(image.rgba[i+k]/255.f);
+ return n::from_vector(pixels,{1,image.height,image.width,3});
+}
+const s::StreamFruit& target(const s::StreamFrame& frame,std::uint64_t id){
+ auto it=std::find_if(frame.fruit.begin(),frame.fruit.end(),[&](const auto& p){return p.id==id;});
+ if(it==frame.fruit.end())throw std::runtime_error("Recorded target is absent");return *it;
+}
+c::Vec3d centre(const s::StreamFruit& p){return {p.body.position[0],p.body.position[2],p.body.position[1]};}
+std::uint64_t unresolved(const s::StreamFrame& f){
+ return f.counts.arrivals-f.counts.correct-f.counts.wrong-f.counts.missed;
+}
+struct Data {n::Tensor images,labels;};
+// These are supervised synthetic image-collection streams, not evaluation runs.
+// Quotas use labels, while the exploratory collection routes alternate by ID.
+Data collect(s::FruitStreamEnvironment& env,s::DevArmWristCamera& camera,std::uint64_t first_seed,
+             int lo,int hi,int quota,const std::string& split,std::ostream& manifest){
+ std::array<std::array<int,6>,2> counts{};std::vector<float> pixels;std::vector<std::int64_t> labels;
+ const int needed=2*(hi-lo+1)*quota;std::uint64_t current_seed=first_seed;
+ env.set_perception([&](const s::StreamFrame& frame,std::uint64_t id){
+   const auto& p=target(frame,id);const int truth=p.body.kind==s::FruitKind::Apple?0:1;int prototype=p.body.appearance.prototype;
+   if(prototype>=lo&&prototype<=hi&&counts[truth][prototype]<quota){
+     const auto input=camera.inspect_actors(frame.arm,env.fruit_scene(frame),centre(p));
+     if(!input.crop.rgba.empty()){
+       auto v=rgb(input.crop).to_vector<float>();pixels.insert(pixels.end(),v.begin(),v.end());labels.push_back(truth);++counts[truth][prototype];
+       manifest<<std::format("{},{},{},{},{},{},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f},{},{},{},{}\n",split,current_seed,id,p.seed,truth,prototype,frame.time,p.body.position[0],p.body.position[2],p.body.appearance.yaw,p.body.appearance.scale,input.box.x,input.box.y,input.box.width,input.box.height);
+       if(labels.size()%128==0)std::cerr<<split<<" moving-view crops "<<labels.size()<<"/"<<needed<<'\n';
+     }
+   }
+   return s::StreamPrediction{int(id%2),.5}; // independent of the true label
+ });
+ for(;int(labels.size())<needed;++current_seed){
+   auto f=env.reset(current_seed,arrival_rate);std::size_t decisions=0;
+   while(f.time<120&&int(labels.size())<needed)
+     f=env.step(++decisions%3==0?s::StreamAction::LateFront:s::StreamAction::EarlyFront).frame;
+ }
+ env.set_perception({});
+ return {n::from_vector(pixels,{needed,64,64,3}),n::from_vector(labels)};
+}
+struct Vision {
+ s::FruitStreamEnvironment& env;s::DevArmWristCamera& camera;n::MobileNetClassifier& model;
+ std::ostream& log;std::uint64_t seed{0};std::string mode;
+ s::StreamPrediction operator()(const s::StreamFrame& f,std::uint64_t id){
+   if(f.training_proxy)throw std::runtime_error("Actual evaluation must use full physics");
+   const auto& p=target(f,id);auto input=camera.inspect_actors(f.arm,env.fruit_scene(f),centre(p));
+   s::StreamPrediction prediction;
+   if(!input.crop.rgba.empty()){const auto probabilities=model.predict(rgb(input.crop)).to_vector<float>();prediction.label=probabilities[1]>probabilities[0]?1:0;prediction.confidence=probabilities[prediction.label];}
+   if(f.time<=(mode=="video"?video_seconds:120))
+     log<<std::format("{},{},{},{:.8f},{},{},{:.9f},{},{},{},{}\n",mode,seed,id,f.time,int(p.body.kind),prediction.label,prediction.confidence,input.box.x,input.box.y,input.box.width,input.box.height);
+   return prediction; // an empty crop stays unknown; there is no true-class fallback
+ }
+};
+s::StreamFrame window(s::FruitStreamEnvironment& env,std::uint64_t seed,double rate,double seconds,
+                      const std::function<s::StreamAction(std::size_t)>& policy){
+ s::StreamFrame endpoint;
+ env.record([&](const auto& f){if(f.time<=seconds+1e-9)endpoint=f;},1);
+ auto f=env.reset(seed,rate);
+ while(f.time<seconds)f=env.step(policy(f.state)).frame;
+ env.record({});
+ if(std::abs(endpoint.time-seconds)>1e-8)throw std::runtime_error("Evaluation did not capture the exact horizon");
+ return endpoint; // final option may complete later; its future outcomes are not counted
+}
+struct Totals {
+ std::uint64_t arrivals{0},correct{0},wrong{0},missed{0},pending{0},inspections{0},classified{0},unknown{0};
+ void add(const s::StreamFrame& f){const auto& x=f.counts;arrivals+=x.arrivals;correct+=x.correct;wrong+=x.wrong;missed+=x.missed;pending+=unresolved(f);inspections+=x.inspections;classified+=x.classification_correct;unknown+=x.unknown;}
+};
+void append(c::Scene& scene,c::Scene extra){
+ int base=int(scene.meshes.size()),tex=int(scene.textures.size());
+ for(auto& m:extra.meshes)scene.meshes.push_back(std::move(m));for(auto& t:extra.textures)scene.textures.push_back(std::move(t));
+ for(auto o:extra.objects){o.mesh_index+=base;o.parent=-1;for(int* p:{&o.texture_index,&o.normal_map_index,&o.roughness_map_index,&o.metallic_map_index})if(*p>=0)*p+=tex;scene.AddObject(o);}
+}
+void box(c::RenderResult& image,const s::ImageBox& b){
+ for(int y=b.y;y<b.y+b.height;++y)for(int x=b.x;x<b.x+b.width;++x){
+  if(x>b.x+1&&x<b.x+b.width-2&&y>b.y+1&&y<b.y+b.height-2)continue;
+  auto i=4*(y*image.width+x);image.rgba[i]=30;image.rgba[i+1]=245;image.rgba[i+2]=120;
+ }
+}
+void panel(c::RenderResult& image,int x,int y,int width,int height){
+ for(int yy=y;yy<y+height;++yy)for(int xx=x;xx<x+width;++xx){auto i=4*(yy*image.width+xx);for(int k=0;k<3;++k)image.rgba[i+k]=static_cast<unsigned char>(.18*image.rgba[i+k]+.82*20);}
+}
+void composite(c::RenderResult& dest,const c::RenderResult& actors){
+ for(std::size_t i=0;i<dest.depth.size();++i)if(actors.depth[i]<dest.depth[i]){
+   std::copy_n(actors.rgba.begin()+4*i,4,dest.rgba.begin()+4*i);dest.depth[i]=actors.depth[i];
+ }
+}
+void copy_artifacts(){
+ for(const std::string name:{"sorting.mp4","poster.png","inspection.png","camera_samples.png","vision_learning.svg","controller_learning.svg","load_curve.svg","mobile.npz","policy.txt","images.csv","vision_training.csv","controller_training.csv","controller_validation.csv","evaluation.csv","load_evaluation.csv","perception.csv","video_perception.csv","evaluation_summary.txt","trajectory.csv","fruit_trajectory.csv","metadata.txt","metrics.json"})
+   if(fs::exists(directory+name))fs::copy_file(directory+name,"figures/fruit_stream_"+name,fs::copy_options::overwrite_existing);
+}
+int main(){
+ n::set_num_threads(1);fs::create_directories(directory+"frames");fs::create_directories("figures");
+ const bool replay=std::getenv("DATAMUNGE_STREAM_REPLAY")!=nullptr;
+ const bool learn_only=std::getenv("DATAMUNGE_STREAM_LEARN_ONLY")!=nullptr;
+ if(replay&&learn_only)throw std::invalid_argument("Choose learning or replay, not both");
+ const auto assets=dm::datasets::fetch("rebot_devarm","../../../build/cad-assets/rebot");
+ const auto urdf=(fs::path(assets)/"Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf").string();
+ std::size_t selected_epoch=0,selected_window=0;int vision_correct=0;
+ double trained_seconds=0;std::array<double,2> errors{};
+ if(!replay){
+   s::FruitStreamOptions collection_options;collection_options.training_proxy=true;
+   s::FruitStreamEnvironment collection(urdf,collection_options);s::DevArmWristCamera camera(collection.arm_model(),128,95);
+   std::ofstream manifest(directory+"images.csv");manifest<<"split,stream_seed,id,fruit_seed,true_class,prototype,time,x,y,yaw,scale,box_x,box_y,box_width,box_height\n";
+   const auto train=collect(collection,camera,6000000000000ULL,0,3,64,"train",manifest);
+   const auto validation=collect(collection,camera,7000000000000ULL,4,4,64,"validation",manifest);
+   const auto test=collect(collection,camera,8000000000000ULL,5,5,64,"test",manifest);manifest.close();
+   n::save_image_grid(n::slice_axis(test.images,0,0,24),directory+"camera_samples.png",8,0,1,2,.9,2);
+   auto mobile=n::MobileNetClassifier::load("figures/fruit_vision_mobilenet.npz");
+   n::MobileClassifierOptions fit;fit.epochs=40;fit.learning_rate=.001;fit.grayscale_probability=.25;fit.seed=20261109;
+   std::cerr<<"Fine-tuning actual moving-view RGB classifier\n";
+   const auto fitted=mobile.fit(train.images,train.labels,validation.images,validation.labels,fit);selected_epoch=fitted.selected_epoch;
+   mobile.save(directory+"mobile.npz");auto loaded=n::MobileNetClassifier::load(directory+"mobile.npz");
+   if(n::max(n::abs(loaded.predict(test.images)-mobile.predict(test.images))).item()>1e-7)throw std::runtime_error("Vision checkpoint changed probabilities");
+   auto val_pred=n::argmax(loaded.predict(validation.images),-1).to_vector<std::int64_t>();
+   auto val_truth=validation.labels.to_vector<std::int64_t>();std::array<int,2> val_count{},val_wrong{};
+   for(std::size_t i=0;i<val_pred.size();++i){++val_count[val_truth[i]];val_wrong[val_truth[i]]+=val_pred[i]!=val_truth[i];}
+   for(int k=0;k<2;++k)errors[k]=double(val_wrong[k]+1)/(val_count[k]+2); // validation-only smoothed error channel
+   const auto test_pred=n::argmax(loaded.predict(test.images),-1).to_vector<std::int64_t>();const auto truth=test.labels.to_vector<std::int64_t>();
+   for(std::size_t i=0;i<truth.size();++i)vision_correct+=test_pred[i]==truth[i];
+   std::ofstream history(directory+"vision_training.csv");history<<"epoch,training_loss,validation_loss,validation_accuracy\n";
+   std::vector<double> epochs,train_loss,val_loss;
+   for(const auto& e:fitted.history){history<<std::format("{},{:.9f},{:.9f},{:.9f}\n",e.epoch,e.training_loss,e.validation_loss,e.validation_accuracy);epochs.push_back(e.epoch);train_loss.push_back(e.training_loss);val_loss.push_back(e.validation_loss);}history.close();
+   auto learning=dm::Plot().lines(epochs,train_loss,"Training",dm::RGB{37,99,235});learning.lines(epochs,val_loss,"Validation",dm::RGB{220,38,38});
+   learning.set_title("MobileNet adaptation to moving pickups").set_xlab("Epoch").set_ylab("Cross entropy");learning.size(900,340).save_svg(directory+"vision_learning.svg");
+   s::FruitStreamOptions training_options;training_options.training_proxy=true;training_options.training_error=errors;
+   s::FruitStreamEnvironment trainer(urdf,training_options);s::StreamTrainingOptions training;training.rollouts=8192;
+   std::cerr<<"Training scheduler over 8192 continuing windows\n";
+   auto learned=s::train_fruit_stream(trainer,training);trained_seconds=std::accumulate(learned.seconds.begin(),learned.seconds.end(),0.);
+   std::ofstream csv(directory+"controller_training.csv");csv<<"window,seconds,arrivals,correct,wrong,missed,return\n";
+   for(std::size_t k=0;k<learned.counts.size();++k){const auto& x=learned.counts[k];csv<<std::format("{},{:.8f},{},{},{},{},{:.9f}\n",k+1,learned.seconds[k],x.arrivals,x.correct,x.wrong,x.missed,learned.returns[k]);}csv.close();
+   // Select a frozen checkpoint on independent full-physics validation streams.
+   s::FruitStreamOptions physical_options;physical_options.training_error=errors;s::FruitStreamEnvironment physical(urdf,physical_options);
+   double best=-1e100;std::vector<double> hours,correct_rate,miss_rate;std::ofstream valid(directory+"controller_validation.csv");valid<<"training_windows,training_seconds,arrivals,correct,wrong,missed,pending,score\n";
+   for(std::size_t k=0;k<learned.snapshots.size();++k){const auto& candidate=learned.snapshots[k];Totals total;
+     for(int stream=0;stream<12;++stream)total.add(window(physical,90000000000ULL+stream,arrival_rate,120,[&](auto state){return candidate.action(state);}));
+     double score=5.*total.correct-5.*total.wrong-3.*total.missed;
+     auto completed=learned.snapshot_windows[k];double seconds=std::accumulate(learned.seconds.begin(),learned.seconds.begin()+completed,0.);
+     valid<<std::format("{},{:.8f},{},{},{},{},{},{:.8f}\n",completed,seconds,total.arrivals,total.correct,total.wrong,total.missed,total.pending,score);
+     hours.push_back(seconds/3600);correct_rate.push_back(total.correct/24.);miss_rate.push_back(total.missed/24.);
+     if(score>best){best=score;selected_window=completed;candidate.save(directory+"policy.txt");}
+     std::cerr<<"Physical validation "<<completed<<" windows: correct "<<total.correct<<", missed "<<total.missed<<'\n';
+   }valid.close();
+   auto control=dm::Plot().lines(hours,correct_rate,"Correct sorts",dm::RGB{15,140,100});control.lines(hours,miss_rate,"Missed",dm::RGB{220,38,38});
+   control.set_title("Frozen scheduler: full-physics validation").set_xlab("Simulated training hours").set_ylab("Fruit per minute");control.size(900,340).save_svg(directory+"controller_learning.svg");
+   std::ofstream metadata(directory+"metadata.txt");metadata<<"DATAMUNGE_STREAM_RUN 1\n"<<selected_epoch<<' '<<selected_window<<' '<<vision_correct<<' '<<std::setprecision(17)<<trained_seconds<<' '<<errors[0]<<' '<<errors[1]<<'\n';
+ }
+ // Explicit replay loads the completed training run; normal builds train above.
+ std::ifstream metadata(directory+"metadata.txt");std::string magic;int version=0;
+ if(!(metadata>>magic>>version>>selected_epoch>>selected_window>>vision_correct>>trained_seconds>>errors[0]>>errors[1])||magic!="DATAMUNGE_STREAM_RUN"||version!=1)throw std::runtime_error("Missing completed training metadata");
+ auto classifier=n::MobileNetClassifier::load(directory+"mobile.npz");const auto policy=s::StreamPolicy::load(directory+"policy.txt");
+ s::FruitStreamEnvironment env(urdf);s::DevArmWristCamera wrist(env.arm_model(),128,95);
+ std::ofstream perception; if(!replay){perception.open(directory+"perception.csv");perception<<"mode,stream_seed,id,time,true_class,predicted_class,confidence,box_x,box_y,box_width,box_height\n";}
+ Vision vision{env,wrist,classifier,perception};env.set_perception([&](const auto& f,auto id){return vision(f,id);});
+ std::array<Totals,3> totals{};
+ if(!replay){
+   std::ofstream evaluation(directory+"evaluation.csv");evaluation<<"method,seed,rate,seconds,arrivals,correct,wrong,missed,pending,inspections,classified,unknown\n";
+   for(int method=0;method<3;++method)for(int k=0;k<16;++k){vision.seed=91000000000ULL+k;vision.mode=method==0?"trained":method==1?"early-oldest":"late-oldest";
+     auto f=window(env,vision.seed,arrival_rate,120,[&](auto state){return method==0?policy.action(state):method==1?s::StreamAction::EarlyFront:s::StreamAction::LateFront;});totals[method].add(f);
+     const auto& x=f.counts;evaluation<<std::format("{},{},{:.4f},120,{},{},{},{},{},{},{},{}\n",vision.mode,vision.seed,arrival_rate,x.arrivals,x.correct,x.wrong,x.missed,unresolved(f),x.inspections,x.classification_correct,x.unknown);
+   }evaluation.close();
+   std::ofstream evaluation_summary(directory+"evaluation_summary.txt");for(const auto& t:totals)evaluation_summary<<t.arrivals<<' '<<t.correct<<' '<<t.wrong<<' '<<t.missed<<' '<<t.pending<<' '<<t.inspections<<' '<<t.classified<<' '<<t.unknown<<'\n';evaluation_summary.close();
+   // Load tests isolate scheduling under the validation-calibrated error channel.
+   s::FruitStreamOptions stress_options;stress_options.training_error=errors;s::FruitStreamEnvironment stress(urdf,stress_options);
+   std::vector<double> load,learn_correct,fifo_correct,learn_missed,fifo_missed;std::ofstream stress_csv(directory+"load_evaluation.csv");stress_csv<<"method,seed,rate,seconds,arrivals,correct,wrong,missed,pending\n";
+   for(double rate:{.08,.12,.18,.24}){load.push_back(rate*60);std::array<Totals,2> scored;
+     for(int method=0;method<2;++method)for(int k=0;k<8;++k){auto seed=92000000000ULL+k;auto f=window(stress,seed,rate,120,[&](auto state){return method==0?policy.action(state):s::StreamAction::EarlyFront;});scored[method].add(f);
+       stress_csv<<std::format("{},{},{:.4f},120,{},{},{},{},{}\n",method==0?"trained":"early-oldest",seed,rate,f.counts.arrivals,f.counts.correct,f.counts.wrong,f.counts.missed,unresolved(f));}
+     learn_correct.push_back(scored[0].correct/16.);fifo_correct.push_back(scored[1].correct/16.);learn_missed.push_back(scored[0].missed/16.);fifo_missed.push_back(scored[1].missed/16.);
+   }stress_csv.close();
+   auto throughput=dm::Plot().lines(load,learn_correct,"Learned",dm::RGB{37,99,235});throughput.lines(load,fifo_correct,"Early oldest",dm::RGB{140,140,140});throughput.set_title("Correct sorting throughput").set_xlab("Expected arrivals per minute").set_ylab("Correct sorts per minute");
+   auto misses=dm::Plot().lines(load,learn_missed,"Learned",dm::RGB{37,99,235});misses.lines(load,fifo_missed,"Early oldest",dm::RGB{140,140,140});misses.set_title("Missed fruit").set_xlab("Expected arrivals per minute").set_ylab("Misses per minute");
+   auto layout=dm::graphics::RLayout::create(1,2).add(throughput).add(misses).fit_panels();dm::plot(layout).size(1050,340).save_svg(directory+"load_curve.svg");
+ } else {
+   std::ifstream summary(directory+"evaluation_summary.txt");for(auto& t:totals)if(!(summary>>t.arrivals>>t.correct>>t.wrong>>t.missed>>t.pending>>t.inspections>>t.classified>>t.unknown))throw std::runtime_error("Missing frozen evaluation summary");
+ }
+ if(learn_only){perception.flush();copy_artifacts();std::cerr<<"LEARNING COMPLETE: vision "<<vision_correct<<"/128; selected controller window "<<selected_window<<"; trained actual RGB correct "<<totals[0].correct<<" vs early "<<totals[1].correct<<" vs late "<<totals[2].correct<<'\n';return 0;}
+ // One unselected seed, one uninterrupted real-time minute: no episode montage.
+ std::ofstream video_log(directory+"video_perception.csv");video_log<<"mode,stream_seed,id,time,true_class,predicted_class,confidence,box_x,box_y,box_width,box_height\n";
+ Vision video_vision{env,wrist,classifier,video_log};video_vision.seed=video_seed;video_vision.mode="video";
+ env.set_perception([&](const auto& frame,auto id){return video_vision(frame,id);});
+ std::vector<s::StreamFrame> frames;
+ env.record([&](const auto& f){if(f.time<=video_seconds+1e-9)frames.push_back(f);},fps);
+ auto f=env.reset(video_seed,arrival_rate);
+ while(f.time<video_seconds)f=env.step(policy.action(f.state)).frame;
+ env.record({});
+ if(frames.size()!=fps*video_seconds+1||std::abs(frames.back().time-video_seconds)>1e-8)throw std::runtime_error("Video horizon/sample count mismatch");
+ const auto endpoint=frames.back();frames.resize(fps*video_seconds);
+ for(const auto& x:frames)if(x.training_proxy||x.synthetic_perception)throw std::runtime_error("Final video must use full physics and actual RGB predictions");
+ c::Camera overview;overview.position={-1.35,-.6,5};overview.target={-.1,0,.7};overview.projection=c::Projection::Orthographic;overview.ortho_height=1.95;
+ c::RenderOptions options;options.width=960;options.height=640;options.background={.91f,.94f,.96f,1};
+ auto scenery=env.arm_model().static_scene();c::Light key;key.direction={-1,-2,3};key.intensity=1;scenery.AddLight(key);c::Light fill;fill.direction={1,1,2};fill.intensity=.35f;scenery.AddLight(fill);
+ const auto background=c::render(scenery,overview,options);auto base=background;std::array<double,6> last_joints{};double last_finger=-1;
+ std::ofstream trajectory(directory+"trajectory.csv");trajectory<<"frame,time,target,arrivals,correct,wrong,missed,pending,grasped,q1,q2,q3,q4,q5,q6,finger\n";
+ std::ofstream fruit_trace(directory+"fruit_trajectory.csv");fruit_trace<<"frame,time,id,seed,scheduled_arrival,status,prediction,confidence,x,y,z,qw,qx,qy,qz\n";
+ bool saved_inspection=false;
+ for(std::size_t k=0;k<frames.size();++k){const auto& x=frames[k];
+   if(x.arm.joints!=last_joints||x.arm.finger!=last_finger){auto arm=env.arm_model().robot_scene(x.arm);append(arm,wrist.housing(x.arm));arm.lights=scenery.lights;base=background;composite(base,c::render(arm,overview,options));last_joints=x.arm.joints;last_finger=x.arm.finger;}
+   auto actors=env.fruit_scene(x);actors.lights=scenery.lights;auto image=base;composite(image,c::render(actors,overview,options));
+   c::RenderResult live;int prediction=-1;double confidence=0;
+   auto focus=std::find_if(x.fruit.begin(),x.fruit.end(),[&](const auto& p){return p.id==x.target;});
+   if(focus!=x.fruit.end()){auto inspected=wrist.inspect_actors(x.arm,actors,centre(*focus));box(inspected.rgb,inspected.box);live=std::move(inspected.rgb);prediction=focus->prediction;confidence=focus->confidence;}
+   else live=wrist.capture_actors(x.arm,actors);
+   constexpr int left=684,top=20,scale=2,border=5;
+   std::array<unsigned char,3> color=prediction<0?std::array<unsigned char,3>{145,160,175}:prediction==0?std::array<unsigned char,3>{215,40,35}:std::array<unsigned char,3>{250,210,35};
+   for(int yy=-border;yy<128*scale+border;++yy)for(int xx=-border;xx<128*scale+border;++xx){auto i=4*((top+yy)*image.width+left+xx);bool edge=xx<0||yy<0||xx>=128*scale||yy>=128*scale;for(int ch=0;ch<3;++ch)image.rgba[i+ch]=edge?color[ch]:live.rgba[4*((yy/scale)*128+xx/scale)+ch];image.rgba[i+3]=255;}
+   panel(image,679,281,266,26);c::draw_text(image,prediction<0?"WRIST - NOT CLASSIFIED":std::format("{} P {:.2f}",prediction==0?"APPLE":"BANANA",confidence),690,288,2);
+   panel(image,15,570,650,58);c::draw_text(image,std::format("T {:.1f} S  POISSON {:.2f}/S  ARRIVED {}",x.time,arrival_rate,x.counts.arrivals),25,578,2);
+   c::draw_text(image,std::format("SORTED {}  WRONG {}  MISSED {}  ACTIVE {}",x.counts.correct,x.counts.wrong,x.counts.missed,unresolved(x)),25,602,2);
+   image.save(std::format("{}frames/{:05}.png",directory,k));
+   if(k+1==frames.size())image.save(directory+"poster.png");if(!saved_inspection&&prediction>=0){image.save(directory+"inspection.png");saved_inspection=true;}
+   trajectory<<std::format("{},{:.8f},{},{},{},{},{},{},{}",k,x.time,x.target,x.counts.arrivals,x.counts.correct,x.counts.wrong,x.counts.missed,unresolved(x),int(x.arm.grasped));for(double q:x.arm.joints)trajectory<<std::format(",{:.9f}",q);trajectory<<std::format(",{:.9f}\n",x.arm.finger);
+   for(const auto& p:x.fruit){fruit_trace<<std::format("{},{:.8f},{},{},{:.9f},{},{},{:.9f},{:.9f},{:.9f},{:.9f}",k,x.time,p.id,p.seed,p.arrival,int(p.status),p.prediction,p.confidence,p.body.position[0],p.body.position[2],p.body.position[1]);for(double v:p.body.rotation)fruit_trace<<std::format(",{:.9f}",v);fruit_trace<<'\n';}
+   if(k%150==0)std::cerr<<"Render "<<k<<"/"<<frames.size()<<" frames\n";
+ }
+ trajectory.close();fruit_trace.close();perception.close();video_log.close();
+ const auto encode="ffmpeg -hide_banner -loglevel error -y -framerate 15 -i "+directory+"frames/%05d.png -frames:v 900 -an -c:v libx264 -profile:v baseline -level 3.1 -bf 0 -g 30 -preset fast -crf 19 -pix_fmt yuv420p -movflags +faststart "+directory+"sorting.mp4";
+ if(std::system(encode.c_str())!=0)throw std::runtime_error("Video encoding failed");
+ std::ofstream metrics(directory+"metrics.json");metrics<<"{\"arrival_rate\":"<<arrival_rate<<",\"video_seed\":"<<video_seed<<",\"video_seconds\":60,\"fps\":15,\"frames\":900,\"training_windows\":8192,\"training_seconds\":"<<std::setprecision(17)<<trained_seconds<<",\"selected_controller_window\":"<<selected_window<<",\"selected_vision_epoch\":"<<selected_epoch<<",\"vision_test_correct\":"<<vision_correct<<",\"vision_test_total\":128,\"video_arrivals\":"<<endpoint.counts.arrivals<<",\"video_correct\":"<<endpoint.counts.correct<<",\"video_wrong\":"<<endpoint.counts.wrong<<",\"video_missed\":"<<endpoint.counts.missed<<",\"video_pending\":"<<unresolved(endpoint)<<",\"actual_rgb_evaluation_arrivals\":"<<totals[0].arrivals<<",\"actual_rgb_evaluation_correct\":"<<totals[0].correct<<",\"actual_rgb_evaluation_wrong\":"<<totals[0].wrong<<",\"actual_rgb_evaluation_missed\":"<<totals[0].missed<<",\"actual_rgb_evaluation_pending\":"<<totals[0].pending<<",\"early_oldest_correct\":"<<totals[1].correct<<",\"early_oldest_missed\":"<<totals[1].missed<<",\"late_oldest_correct\":"<<totals[2].correct<<",\"late_oldest_missed\":"<<totals[2].missed<<",\"full_physics_video\":true,\"actual_rgb_video\":true}\n";metrics.close();copy_artifacts();
+ if(replay)std::println("Replaying the completed training run and its frozen checkpoints.\n");
+ std::println("The scheduler trained for **{:.1f} simulated hours** across **8,192 continuing windows**. Independent full-physics validation selected checkpoint **{}**. Moving-view MobileNet classified **{}/128** held-out-prototype crops correctly.\n",trained_seconds/3600,selected_window,vision_correct);
+ std::println("Across **16 independent two-minute streams with actual wrist RGB**, the learned scheduler correctly sorted **{}**, versus **{}** for early-oldest and **{}** for late-oldest. Missed fruit: **{}**, **{}**, and **{}**, respectively. All methods use the same Poisson arrival streams.\n",totals[0].correct,totals[1].correct,totals[2].correct,totals[0].missed,totals[1].missed,totals[2].missed);
+ std::println("The uninterrupted **60-second** video uses seed `{}` at **{:.2f} fruit/s**. At 60 seconds: **{} arrivals**, **{} correct**, **{} wrong**, **{} missed**, **{} still in progress**. The belt keeps running; there are no cuts, speed-ups or between-pick resets.\n",video_seed,arrival_rate,endpoint.counts.arrivals,endpoint.counts.correct,endpoint.counts.wrong,endpoint.counts.missed,unresolved(endpoint));
+ std::println("\\video(figures/fruit_stream_sorting.mp4)");
+}
+```
+// result_begin: markdown
+Replaying the completed training run and its frozen checkpoints.
+
+The scheduler trained for **276.1 simulated hours** across **8,192 continuing windows**. Independent full-physics validation selected checkpoint **512**. Moving-view MobileNet classified **121/128** held-out-prototype crops correctly.
+
+Across **16 independent two-minute streams with actual wrist RGB**, the learned scheduler correctly sorted **155**, versus **149** for early-oldest and **97** for late-oldest. Missed fruit: **66**, **73**, and **133**, respectively. All methods use the same Poisson arrival streams.
+
+The uninterrupted **60-second** video uses seed `2026113001` at **0.12 fruit/s**. At 60 seconds: **4 arrivals**, **3 correct**, **0 wrong**, **1 missed**, **0 still in progress**. The belt keeps running; there are no cuts, speed-ups or between-pick resets.
+
+\video(figures/fruit_stream_sorting.mp4)
+// result_end
+
+\caption(One uninterrupted real-time minute of the frozen trained scheduler, with continuous Poisson arrivals and actual wrist RGB classification. The HUD reports arrivals, correct/wrong placements, misses and active work. Green boxes show visible target regions; gray means not yet classified, red means predicted apple, and yellow means predicted banana. Completed fruit clears from the bins after two seconds.)
+\alttext(A robot repeatedly intercepts fruit on a continuously moving conveyor and sorts it into red and yellow bins. Multiple fruit can coexist. A wrist-camera inset shows target bounds and current class predictions, while live counters show misses and unfinished work.)
+
+[Open the one-minute video|file:figures/fruit_stream_sorting.mp4]
+or its [final frame|file:figures/fruit_stream_poster.png].
+
+\image(figures/fruit_stream_inspection.png)
+\caption(A classification made at an actual moving-pickup pose. The box and text are display annotations and never enter MobileNet.)
+\alttext(The continuing conveyor workcell with its live wrist-camera crop and prediction overlay.)
+
+\image(figures/fruit_stream_camera_samples.png)
+\caption(Unannotated moving-view classifier inputs from held-out prototype 5. These include position, orientation, color and occlusion variation.)
+\alttext(Three rows of eight varied fruit crops captured from the wrist camera.)
+
+\image(figures/fruit_stream_vision_learning.svg)
+\caption(MobileNet fine-tuning on moving-pickup images. Validation prototype 4 selects the checkpoint before test prototype 5 is evaluated.)
+\alttext(Training and validation cross entropy across forty epochs.)
+
+\image(figures/fruit_stream_controller_learning.svg)
+\caption(Frozen scheduler checkpoints on full-physics validation streams, using the validation-calibrated perception-error channel. This figure selects the scheduling checkpoint; the final comparison and video use actual MobileNet RGB inference.)
+\alttext(Correct sorts and misses per minute as simulated training time increases.)
+
+\image(figures/fruit_stream_load_curve.svg)
+\caption(Full-physics throughput and total misses across increasing Poisson arrival rates, using the same validation-calibrated perception channel for both controllers. Bursts and limited service capacity produce more losses at high rates. This controlled load test is separate from the actual-RGB evaluation.)
+\alttext(Two panels compare correct sorting throughput and missed fruit per minute for learned and early-oldest scheduling as arrivals increase.)
+
+Artifacts: [adapted MobileNet|file:figures/fruit_stream_mobile.npz],
+[learned scheduler|file:figures/fruit_stream_policy.txt],
+[image manifest|file:figures/fruit_stream_images.csv],
+[vision training|file:figures/fruit_stream_vision_training.csv],
+[scheduler training|file:figures/fruit_stream_controller_training.csv],
+[scheduler validation|file:figures/fruit_stream_controller_validation.csv],
+[all actual-RGB evaluations|file:figures/fruit_stream_evaluation.csv],
+[load tests|file:figures/fruit_stream_load_evaluation.csv],
+[evaluation perception decisions|file:figures/fruit_stream_perception.csv],
+[video perception decisions|file:figures/fruit_stream_video_perception.csv],
+[evaluation summary|file:figures/fruit_stream_evaluation_summary.txt],
+[arm trajectory|file:figures/fruit_stream_trajectory.csv],
+[all fruit trajectories|file:figures/fruit_stream_fruit_trajectory.csv],
+[checkpoint metadata|file:figures/fruit_stream_metadata.txt], and
+[metrics|file:figures/fruit_stream_metrics.json].
+
+The CAD model is the pinned Seeed B601-DM DevArm from
+[reBot-DevArm|https://github.com/Seeed-Projects/reBot-DevArm], revision
+`922c5fa3d8c8919db1847b49166f02fc26c8fdad`, CERN-OHL-W-2.0.
+The complete program downloads/verifies missing assets through the native
+catalog. The initial vision checkpoint is supplied with the archived episodic
+example. Results concern procedural CAD fruit and a calibrated workcell;
+rotation stabilization, ideal grasping, kinematic servos and limited collision
+geometry remain approximations rather than a hardware-transfer demonstration.

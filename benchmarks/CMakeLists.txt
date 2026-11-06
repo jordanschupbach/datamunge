@@ -18,6 +18,8 @@ include(../cmake/CPM.cmake)
 
 CPMAddPackage(NAME datamunge SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 
+add_subdirectory(cad)
+
 # Prefer a preinstalled Google Benchmark; fall back to CPM.
 find_package(benchmark QUIET CONFIG)
 if(NOT benchmark_FOUND)
@@ -46,6 +48,35 @@ set_target_properties(linalg_bench PROPERTIES CXX_STANDARD 17)
 add_executable(nn_bench ${CMAKE_CURRENT_SOURCE_DIR}/nn/nn_bench.cpp)
 target_link_libraries(nn_bench datamunge::datamunge benchmark::benchmark)
 set_target_properties(nn_bench PROPERTIES CXX_STANDARD 17)
+
+# SqueezeNet CIFAR-10 training-throughput driver (`just bench-squeezenet`): epochs per minute
+# of the report's exact training loop, with per-phase timing and an optional op trace.
+add_executable(squeezenet_train ${CMAKE_CURRENT_SOURCE_DIR}/nn/squeezenet_train.cpp)
+target_link_libraries(squeezenet_train datamunge::datamunge)
+set_target_properties(squeezenet_train PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+
+# Per-op micro-benchmarks at SqueezeNet's layer shapes (`just bench-squeezenet-ops`).
+add_executable(squeezenet_ops_bench ${CMAKE_CURRENT_SOURCE_DIR}/nn/squeezenet_ops_bench.cpp)
+target_link_libraries(squeezenet_ops_bench datamunge::datamunge benchmark::benchmark benchmark::benchmark_main)
+set_target_properties(squeezenet_ops_bench PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+
+# In-house BLAS against external BLAS libraries loaded with dlopen (`just bench-blas`).
+add_executable(blas_compare ${CMAKE_CURRENT_SOURCE_DIR}/blas/blas_compare.cpp)
+target_link_libraries(blas_compare datamunge::datamunge ${CMAKE_DL_LIBS})
+set_target_properties(blas_compare PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+
+# Built-in decompositions against LAPACK (`just bench-linalg`, a -DDATAMUNGE_USE_LAPACK=ON build).
+add_executable(linalg_compare ${CMAKE_CURRENT_SOURCE_DIR}/blas/linalg_compare.cpp)
+target_link_libraries(linalg_compare datamunge::datamunge ${CMAKE_DL_LIBS})
+set_target_properties(linalg_compare PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+
+# In-house CUDA GEMM against cuBLAS through compute::Context::matmul (`just bench-blas-cuda`);
+# needs the library built with DATAMUNGE_ENABLE_CUDA and DATAMUNGE_ENABLE_CUBLAS.
+if(DATAMUNGE_ENABLE_CUDA)
+  add_executable(cuda_gemm_compare ${CMAKE_CURRENT_SOURCE_DIR}/blas/cuda_gemm_compare.cpp)
+  target_link_libraries(cuda_gemm_compare datamunge::datamunge)
+  set_target_properties(cuda_gemm_compare PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+endif()
 
 # Focused, bounded backend cases; the legacy NN epoch remains in nn_bench.
 file(GLOB backend_sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/backend/*.cpp)

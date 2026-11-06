@@ -1,0 +1,2 @@
+peak_lr	completed_epochs	selected_epoch	validation_nll	plateau_train_change	plateau_validation_change	converged	seconds
+0.001	90	36	0.377642720938	0.00135161989049	0.000705790519714	1	3056.01746161

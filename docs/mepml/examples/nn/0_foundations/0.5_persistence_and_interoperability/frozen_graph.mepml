@@ -29,18 +29,24 @@ input-dependent branch may reach other parameters. This is neither static graph 
 serializing program code; the consumer must retain the same inference function and dtype/shape
 contract. Selection costs a backward traversal; storage costs the selected parameter bytes.
 
-The concept diagram has a retained TikZ source in `diagrams/frozen_graph_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/frozen_graph_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/frozen_graph_concept.tikz > build/frozen_graph_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/frozen_graph_concept.svg build/frozen_graph_concept.dvi > build/frozen_graph_concept.render.log 2>&1
-printf 'Rendered build/frozen_graph_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/frozen_graph_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Executed eager output\nf(x)=wx+b");
+  diagram.node("n1", {5.2, 0}, "Reachable parameters\ndefined VJP, even zero");
+  diagram.node("n2", {10.4, 0}, "Detached deep copies\nNPZ + consumer code");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/frozen_graph_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/frozen_graph_concept.svg from local TikZ source.
 // \image(figures/frozen_graph_concept.svg)
 // result_end
 \caption(A snapshot contains values; the consumer still supplies the inference function)

@@ -9,6 +9,715 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-02: Reimplemented the articulated sorting capabilities in the independent
+  native solver: full COM inertia, compounds/ellipsoids/STL support hulls, strict
+  reusable URDF import, fixed joints, bounded implicit drives, reflected rotors,
+  coupled bilateral/Schur projection, mimic gearing and angular friction. Free
+  rotation uses midpoint Euler/Cayley integration. Standard CPU/CUDA packages
+  have no MuJoCo dependency; the reference backend remains explicit and optional.
+  Native tests include rapid-tumble energy/world-momentum conservation, authored
+  inertia-frame rotations, effort/inertia/load sharing, actual opposing-jaw
+  frictional lifting, conveyor/bin force feedback, snapshots and import rollback.
+  Scoped Doxygen covers 1072/1072 definitions; six representative clangd hovers
+  and compiled public API examples pass. The no-MuJoCo suite passes 126 tests
+  with 14 optional reference/GPU skips; allocation checks retain zero steady-state
+  allocations. Evidence is in `build/native-physics/`. The new 20-second native
+  transfer video is explicitly not native training: six arrivals, zero correct,
+  three missed, three pending, maximum penetration 1.35 mm, bounded effort.
+  The playground has separate native training/cache fingerprints; the earlier
+  completed MuJoCo comparison remains in `robot_fruit_mujoco.mepml`.
+
+
+- 2026-11-02: Audited the robot stream's kinematic grasp, release and analytic
+  training assumptions. Added optional MuJoCo articulated contact dynamics with
+  pinned URDF masses/inertias and official collision assets, free rotating fruit,
+  effort-limited servos, sustained bilateral grasp forces and force/dwell-based
+  bin scoring. Measured joint/body poses feed rendering; strict commanded joint
+  setters retain their limits. Full implicit integration fixes a reproduced
+  fast-tumbling asymmetric-body instability; numerical warnings reject a run.
+  Scoped Doxygen covers 430/430 definitions, twelve clangd hovers and four new
+  compiled/runnable public examples pass. The native simulation suite passes
+  115 tests with eight optional GPU skips. Evidence is in `build/physics-audit/`
+  (`coverage.json`, `hover.json`, `doc-examples.cpp`, `final-native-tests.log`,
+  `gyro-tests.log`, `reproduce6-implicit.log`). The physics audit explicitly
+  distinguishes nominal parameters and numerical checks from hardware calibration. The
+  completed installed MuJoCo 3.4.0 run retrains four 256-window controllers;
+  independent RGB validation selects dueling Double DQN window 256 before test.
+  Held-out counts are 111 correct, 8 wrong, 73 missed and 15 pending from 207
+  arrivals. The final 20-second/300-frame CUDA video fully decodes and all 353
+  decisions independently replay from its NPZ. The compiled Mep block passes
+  in 206.32 s with HTML/TeX exports. Raw physics limits, model hashes, per-stream
+  results and timing evidence are in
+  `benchmarks/results/fruit_render/physics_fidelity.json`.
+
+
+- 2026-11-02: Added the installed native `datamunge::rl` discrete pipeline API:
+  masked Q(λ), Double DQN, dueling Double DQN and clipped categorical PPO.
+  Owned observations and explicit terminal/truncation transitions preserve
+  elapsed-time discounts; replay targets, GAE and exact forced-chain composition
+  are checked analytically. Native autograd/Adam learners improve a masked bandit;
+  checkpoint round trips and rejection of incomplete/nonfinite NPZ data pass.
+  A borrowing fruit-stream adapter exposes 25 bounded tracked features and an
+  independently seeded arrival curriculum, preserving callbacks and physical
+  motor configuration. The playground compares matched fresh training budgets
+  with separate physical screening, actual-RGB selection and held-out groups,
+  retaining the historical controller as a separately labelled reference.
+  Scoped Doxygen covers 345/345 definitions; eleven clangd hovers and 33 compiled
+  public examples pass. The simulation suite passes 107 tests with eight optional
+  GPU skips. Evidence: `build/rl-benchmark/coverage.json`, `hover.json`,
+  `doc-examples.log`, `tests.log`, and the report's exported `rl_*.csv` artifacts.
+  Final installed CUDA replay passes its one code block in 157.855 s and exports
+  HTML/TeX. Validation ties the three neural methods at 217 and selects Double
+  DQN window 256 by the declared tie rule; held-out results are 181 correct,
+  8 wrong, 35 missed and 10 pending from 234 arrivals. Q(λ)'s held-out weighted
+  score is slightly higher (634 versus 631), explicitly reported without
+  reselection. The 20-second/300-frame video fully decodes; 20 artifact links
+  and all checkpoint copies match exports. All 357 video decisions independently
+  reproduce from the selected NPZ. `benchmarks/results/fruit_render/rl_pipelines.json`
+  retains full results, hashes, protocol limits and final timings.
+
+
+
+- 2026-11-01: Added the native continuing `sim::FruitStreamEnvironment` and
+  duration-aware hierarchical Q-learning. Multiple seeded fruit arrive under an
+  independent Poisson clock while the belt and real-URDF servos continue; there
+  are no between-pick resets, source backpressure or stopped-belt shortcuts.
+  Capacity loss is counted, outcomes require settled physical bin support, and
+  completed fruit clear after two seconds to bound retained state. The scheduler
+  chooses waits and oldest/second-oldest interception gates over a finite queue/
+  urgency/spacing/arm-side abstraction. Fixed IK options retain explicit ideal
+  grasp, limited collision and privileged-geometry assumptions. An opt-in analytic
+  timing/transport model accelerates training; recording on that proxy is rejected.
+  Training-channel classification noise is calibrated from independent validation.
+  New camera actor rendering/component association supports real multi-fruit RGB;
+  a tracked projected centre associates an RGB-derived component without using
+  semantic class for routing. Empty perception remains unknown. `cad::draw_text`
+  reuses the native bitmap font for live video counters without external assets.
+  Archived the previous three experiments in `robot_fruit_episodic.mepml` and
+  replaced the main playground with a complete continuing training/evaluation/
+  recording program. MobileNet adapts on 512 moving crops (prototypes 0–3),
+  validates on 128 (prototype 4), and scores 121/128 on test prototype 5; all
+  stream seed groups and balanced quotas are audited. Forty epochs select epoch
+  13. Q-learning runs 8,192 continuing windows, totaling 993,947.28 proxy seconds
+  (276.10 simulated hours); independent full-physics validation selects window 512
+  after later checkpoints plateau. Across sixteen paired 120 s actual-RGB streams,
+  learned/early-oldest/late-oldest achieve 155/149/97 correct sorts and 66/73/133
+  misses, with 246 identical arrivals and 12 pending fruit for every method.
+  The unselected fixed-seed video is exactly 60 s: 900 frames at 15 Hz, no cuts,
+  time scaling or resets, actual frozen RGB inference and full native physics.
+  Its four arrivals produce three correct sorts and one miss. Scheduled births
+  are 7.0163, 36.2092, 44.8636 and 45.4906 s, preserving the Poisson lull and burst.
+  Frame/counter conservation, servo limits and exact-window perception counts
+  are verified. Maximum recorded joint/finger rates are 1.49983 rad/s and
+  .079899 m/s. Native simulation tests pass 79 cases (eight optional GPU cases
+  skip), classifier tests pass three, and all 24 affected public header examples
+  compile/run. Doxygen covers 359/359 selected definitions and 10 clangd
+  hovers pass. Native full learning completed; `DATAMUNGE_STREAM_REPLAY=1 just
+  playground` then passes its code block in 95.196 s and exports HTML/
+  TeX. Training is the default code path; explicit replay preserves its completed
+  checkpoints and evaluation evidence. All 22 linked artifacts resolve and match
+  exported copies byte-for-byte; the 960x640 H264 Baseline/YUV420P video decodes
+  completely. Evidence: `build/fruit-stream-verification.txt`,
+  `build/fruit-stream-audit.json`, `build/playground/run.json`,
+  `build/debug/docs/fruit-stream-coverage.json` and
+  `build/debug/docs/fruit-stream-hover.json`.
+
+- 2026-11-01: Extended the conveyor's opt-in `FruitVariation::Diverse` protocol
+  with six geometry prototypes per class, shared green/yellow/red/brown palettes,
+  seeded mottled textures, scale/roughness/leaf variation, full-turn yaw and small
+  pitch/roll tilts. Random physical belt entry and across-belt offsets are retained
+  through contact-driven arrival. Recorded quaternion/scale determine rendering;
+  proxy dimensions and rotated payload collision bounds follow the sampled fruit.
+  Default Basic behavior and its earlier checkpoints remain available. Diverse
+  manipulation adds five observed lateral bins before grasp, a shared carrying
+  table, size-dependent jaws and short-axis wrist alignment. `reset_feed()` and
+  `advance_feed()` expose actual feeding separately from efficient training resets.
+  The wrist camera adds configurable FOV and `inspect()`: registered empty-scene
+  RGB subtraction produces a visible foreground box and a padded classifier crop,
+  without using depth/object IDs or class predictions to determine the box.
+  Video annotations never enter the model. This is calibrated synthetic
+  localization rather than a learned detector. Optional seeded grayscale training
+  augmentation discourages a color shortcut. The playground now trains on 1,024
+  images from prototypes 0–3, validates on 256 from prototype 4, and tests on 256
+  from prototype 5, with balanced classes/prototypes and disjoint seeds. Forty
+  epochs select epoch 38 by validation loss: RGB accuracy 241/256 and grayscale
+  236/256. Both motor policies train for 8,000 episodes across all six prototypes;
+  all 256 test fruits reach the predicted goal, giving 126/128 correct apple sorts
+  and 115/128 correct banana sorts. The report includes all twelve prototypes,
+  unannotated crop samples, learning curves, confusion counts and every evaluated
+  outcome. Its 778-frame, 24 fps video shows four selected successful held-out
+  episodes with live green boxes and prediction borders; feeding is shown at 4x
+  speed and manipulation at real time. Rotation stabilization, privileged motor
+  geometry and ideal grasp/collision assumptions remain explicit. Native checks
+  pass 72 simulation cases (eight optional GPU cases skip) and three classifier
+  cases. All 30 public header examples compile/run with their documented asset
+  prerequisites; Doxygen covers 281/281 definitions and eleven clangd hovers pass.
+  `just playground` passes all three blocks in 1348.4 seconds and exports
+  HTML/TeX. Evidence: `build/playground/run.json`,
+  `build/fruit-variation-verification.txt`,
+  `build/debug/docs/fruit-variation-coverage.json`, and
+  `build/debug/docs/fruit-variation-hover.json`.
+
+- 2026-11-01: Added a fixed real-URDF wrist RGB camera and visible blue housing,
+  a trainable native `nn::MobileNetClassifier`, and caller-selected Red/Yellow
+  manipulation goals. Camera extrinsics depend only on the end-link transform;
+  background caching still renders independent payload motion and arm occlusion.
+  The classifier uses all thirteen MobileNet-v1 depthwise/pointwise blocks at
+  width .125, with 57,738 learned parameters and complete weight/BN inference
+  checkpoints. The third playground block generates 256 training, 64 validation
+  and 128 separate-seed test images, trains twenty epochs, and selects epoch 17
+  using validation loss. It loads the earlier red policy and trains yellow with
+  native Q-learning. Predicted class alone chooses the bin and policy; ground
+  truth is used for labels and scoring. Final evaluation classifies 128/128 and
+  sorts 54/54 apples into red and 74/74 bananas into yellow. A 242-frame,
+  24 fps video includes the moving camera and live wrist-view inset; a colored
+  display-only border shows the latched initial prediction. Saved artifacts
+  include the MobileNet/BN checkpoint, yellow Q table, image manifests, every
+  evaluation outcome, trajectories, loss curves and confusion matrix. Results
+  explicitly concern synthetic CAD imagery and the existing simplified grasp/
+  collision model. Four new simulation tests cover rigid camera extrinsics,
+  metadata independence, payload updates despite caching, explicit goal selection
+  and physical yellow-bin placement. Two NN tests cover fitting, inference
+  restoration, missing moments and validation before mutation. The simulation
+  runner passes 69 tests (eight optional GPU cases skip); the NN runner passes
+  two. All seventeen public examples compile/run, scoped Doxygen covers 172/172
+  definitions, and seven relevant clangd hovers pass. The complete `just playground`
+  run passes three blocks and exports HTML/TeX in 308.4 seconds. Evidence:
+  `build/playground/run.json`, `build/fruit-vision-verification.txt`,
+  `build/debug/docs/fruit-vision-coverage.json`, and
+  `build/debug/docs/fruit-vision-hover.json`.
+
+- 2026-11-01: Added `sim::DevArmPickEnvironment`, a red-bin-only manipulation
+  task using the real B601-DM URDF, bounded/rate-limited Cartesian IK servos,
+  an ideal stabilized proximity grasp, and physical post-release settling.
+  Both bins are reachable; tool/payload guards prevent crossing workcell solids.
+  Full arm self-collision and torque/contact-grasp dynamics are explicitly outside
+  this first model. Canonical tabular Q-learning trains from task transitions;
+  `PickPolicy` saves/loads validated finite action-value checkpoints. The second
+  playground block trains 2,000 episodes, evaluates a separate environment and
+  128 separate seeds, and replays the final reloaded policy's first successful
+  apple/banana without exploration or scripted corrections. The final run places
+  67/67 apples and 61/61 bananas into red; the random-action baseline is 0/64.
+  It exports an 8.75-second, 210-frame H.264 video, a native learning-curve SVG,
+  a poster, the checkpoint, all evaluation/training outcomes and joint/fruit
+  trajectories. All links are copied into the HTML export's asset directory.
+  Six offline regression tests use a licensed, geometry-free fixture preserving
+  the actual URDF joint tree. The native simulation runner passes 65 tests;
+  eight optional GPU tests skip. Seven public API examples compile/run, including
+  the documented 4,000-episode training call. Scoped Doxygen covers 155/155
+  definitions and three new clangd hovers pass. `just playground` passes both
+  blocks (159.8 seconds) and exports HTML/TeX. Evidence:
+  `build/playground/run.json`, `build/devarm-pick-verification.txt`,
+  `build/debug/docs/devarm-pick-coverage.json`, and
+  `build/debug/docs/devarm-pick-hover.json`.
+
+- 2026-11-01: Added the native `sim::ConveyorEnvironment` and the first robot-arm
+  playground block. A seeded apple/banana is driven by tangential tread friction,
+  stops at a pick sensor and waits beside two physical sorting bins. Observations,
+  placement outcomes and guarded next-fruit spawning provide a foundation for an
+  external manipulation controller. `Body::surface_velocity` leaves collision
+  geometry stationary and wakes nearby payloads when the tread changes. The report
+  imports the pinned real DevArm meshes, records a 240 Hz simulation at 24 fps,
+  generates an eight-second baseline H.264 MP4, and embeds it with a download link
+  and PNG poster. The arm is a parked visual; grasping and arm collision proxies
+  are explicitly deferred. Native tests cover both fruit classes, deterministic
+  replay, braking/holding, sleeping-payload restart, placement/next-fruit gating,
+  invalid inputs and independent scenes. The simulation runner passes 59 tests;
+  eight optional GPU tests skip because those backends are not enabled. All new
+  public examples compile/run, scoped Doxygen covers 194/194 definitions, and
+  three representative clangd hovers pass. The full `just playground` build runs
+  its one block and exports HTML/TeX with a playable video element. Evidence:
+  `build/playground/run.json`, `build/debug/docs/conveyor-coverage.json`,
+  `build/debug/docs/conveyor-hover.json` and `build/conveyor-verification.txt`.
+
+- 2026-11-01: Moved the HP research manuscript to the standalone local project
+  `~/papers/hp_splines/hp_splines.mepml`, together with its fifteen figures and
+  eighteen outcome/protocol files. Its flake reuses the canonical datamunge C++
+  shell, locks the current local implementation, and gives every block the
+  project-relative `.#cpp` shell reference. Added full/cached-export just recipes,
+  the earlier `playground` alias, dependency refresh instructions and build ignores.
+  The standalone full build passes six blocks (514.7 seconds), exports HTML/TeX,
+  and reproduces every rendered figure and outcome/protocol byte. All fifteen
+  image links and data links resolve. No other report references the moved assets.
+  The library retains a clean scratch playground; its zero-block build and three
+  native-diagram report checks pass. Evidence:
+  `build/hp-paper-project-verification.txt` and the standalone `build/run.json`.
+
+- 2026-11-01: Added an early Steps example with grow data, truth and the
+  selected HP curve above a panel of activated and active-support knot ticks.
+  Three cubic roots share a 512-span finest grid and each grow 48 splits;
+  positive lambda is retuned on every mesh. Independent tuning selects a
+  fourteen-split, depth-seven, 63-coefficient fit, with midpoint signal RMSE
+  0.02528 at noise SD 0.10. Truth locations are display/assessment information,
+  never refinement inputs. Archived data, predictions, knots, root comparisons,
+  full path, lambda trials and protocol accompany the complete embedded C++.
+  Expanded the depth guard to 0..9 while retaining the 1024-coefficient cap;
+  fifteen CTest cases pass, including new depth 7/8/9 affine/grid-budget checks.
+  The changed module remains 100/100 documented, and five clangd hovers include
+  the updated depth contract. Independently reconstructed the selected tree,
+  active functions and every knot tick; checked tuning decisions, sample counts
+  and ISE. Earlier experiment CSVs remain byte-identical. `just playground`
+  passes six native blocks (496.9 seconds), exporting HTML/TeX with fifteen
+  figures, zero tables and resolving all figure/data links. Three native-diagram
+  report checks pass. Evidence: `build/hp-steps/`.
+
+- 2026-11-01: Replaced the playground's thirteen rendered result tables with
+  native graphical summaries. Five new SVGs show paired mean-ISE ratios,
+  search effort/model size/zero-penalty rates, and every observed-data split
+  loss with its arithmetic mean and median. The exact example now includes
+  a plotted greedy-candidate audit. Multi-panel figures use `fit_panels()`;
+  browser-like renders were visually checked. Ratio intervals use the core
+  bootstrap API with 10,000 paired index resamples, seed 2026110201; the paper
+  distinguishes these percentile intervals from earlier quoted absolute-MCSE
+  intervals and retains rare-event caveats. Independently recomputed all 92
+  plotted mean ratios and 184 bootstrap endpoints. All seven original outcome
+  CSVs are byte-identical; source digests and a new figure-effects CSV record
+  the presentation change. `just playground` passes five native C++ blocks
+  (469.7 seconds), exports HTML/TeX with zero tables and fourteen images, and
+  all image/archive links resolve. Three native-diagram report checks pass.
+  Evidence: `build/hp-figures/figure-audit.log`, `export-audit.txt`, and
+  `just-playground.log`.
+
+- 2026-11-01: Added `fit_joint_adaptive_pspline()` and analytic spline
+  derivatives. The joint search retunes lambda on every accepted mesh, probes
+  between seed multipliers, and supports either positive local-MSE-gain priority
+  or spanwise integrated curvature priority. Split gains compare the same lambda
+  before/after refinement; path and tuning audits disclose subsequent retuning.
+  Mesh-dependent matrices are reused across multipliers, with sparse transfer
+  supports avoiding zero products. The fixed-path baseline's complete stdout
+  and three archived CSVs remain byte-identical. The revised playground retains
+  that baseline and adds 600 fresh datasets / 3,600 selected fits plus an
+  explicitly diagnostic 30-split Old Faithful revisit. Joint HP has lower mean
+  ISE than fixed HP in 18/20 conditions; curvature is not consistently preferable,
+  and global P still wins the observed-data mean comparison. Finite basis bounds,
+  interpolation/feedback confounding and candidate failures are disclosed.
+  Fourteen native tests pass, including an independent per-mesh lambda oracle,
+  matched-lambda replay, exact derivative/curvature checks and recursive priority;
+  address/undefined-behavior sanitizers also pass with leak checking disabled.
+  The changed module has 100/100 documented definitions, eleven compiled public
+  examples and four verified clangd hovers. All 360 printed follow-up mean/MCSE
+  and paired statistics were independently checked. `just playground` passes all
+  five blocks (470.1 seconds), prints results and exports HTML/TeX; nine local
+  figures and all archive links resolve. Evidence: `build/hp-joint/` and
+  `build/playground/run.json`.
+
+- 2026-10-31: `just playground` now runs the manuscript through native
+  `mep-mepml build --run`, prints refreshed block results, and exports HTML/TeX
+  with local figures under `build/playground/`. The full Nix library build and
+  all four C++ blocks pass (102.2 seconds for block execution); all six HTML
+  image links resolve, archived CSV bytes are unchanged, and protocol source
+  hashes still match. Evidence: `build/playground/run.json` and
+  `build/hp-paper/just-playground.log`.
+
+- 2026-10-31: Wrote the playground as a reproducible research manuscript on
+  continuous hierarchical P-splines. Background distinguishes B/P/HB/THB,
+  T-splines, LR splines and earlier adaptive statistical smoothing, using ten
+  verified references. Added the canonical C++ `adaptive_pspline` module:
+  globally fitted continuous HB/THB spaces share a fixed finest-grid penalty;
+  Greville-site divided differences preserve physical affine trends at clamped
+  boundaries. Both unpenalized and penalized growth choose the largest positive
+  counterfactual parent-local training-MSE drop, audit every proposal, and let
+  independent validation select root, lambda and path prefix. The paper proves
+  fixed-space identifiability, coordinate invariance and objective monotonicity
+  without claiming a global tree/risk optimum or field-wide novelty.
+  The disclosed grid covers 480 independent simulated datasets and 2,400
+  selected fits, plus 30 Old Faithful splits and 150 observed-data fits. Paired
+  MCSEs, failures, search counts and tail outcomes are retained; HP improves
+  mean ISE over global P in 13/16 conditions but loses the observed-data mean
+  comparison. Four complete embedded C++ programs reproduce captured stdout,
+  six native SVGs and all archived per-replicate CSV bytes. Nine CTest cases
+  pass, also under address/undefined-behavior sanitizers with leak detection
+  disabled; tests include an independent augmented-QR oracle, exact solution,
+  affine preservation, basis invariance, candidate replay and validation leakage
+  checks. The new header/source have 68/68 documented definitions, seven compiled
+  API examples and two clangd hovers. Native parsing and HTML/TeX exports pass;
+  direct native PDF compilation encounters existing SVG/LaTeX export limitations.
+  Evidence: `build/hp-paper/`; compact outcomes and source digests are archived
+  under `docs/mepml/examples/results/hp_*`.
+
+- 2026-10-31: Moved the spline comparison into
+  `docs/mepml/examples/stats/regression/hierarchical_splines.mepml` and the
+  complete Seeed CAD workflow into `docs/mepml/examples/cad/seeed_devarm.mepml`.
+  Each report retains its C++/Python/R tabs, cached results and six figures.
+  Figure assets move beside their reports without byte changes; spline figure
+  names now describe the comparison/refinement rather than the playground.
+  Nix shell, interpreter, R library and robot-cache paths are rebased to the
+  repository root. All six fence commands run from their new directories and
+  reproduce the cached stdout and images; the DevArm programs generate usable
+  local glTF exports there. Root/docs indexes and the CAD guide point to the
+  new reports. Playground now contains only its title, export and language
+  metadata, ready for new examples. Native parsing and HTML/TeX exports pass
+  for all three documents. No core or binding changes.
+  Evidence: `build/playground-split/`.
+
+- 2026-10-31: Expanded the playground spline comparison to include an ordinary
+  least-squares cubic B-spline with 40 coefficients, using the same interior
+  breakpoints and cubic spline space as the P-spline. Boundary knot conventions
+  are explained; zero-penalty P-spline predictions agree with the baseline. Each C++/Python/R tab also saves a native two-panel HB/HP
+  refinement figure from the fitted objects' cell bounds, depths and mapped
+  knot sequences. The figures distinguish the 10-coefficient global patch
+  (seven spans), the unfitted routing cell and the 32-coefficient local patch
+  (29 spans). Prose explains that HB and HP share their mesh and degree, with
+  HP changing the coefficient penalty. All three programs run and produce
+  identical tables and SVG bytes for both figures; B-spline signal RMSE is
+  0.01567. The CAD workflow is preserved byte for byte. No core or binding
+  changes are needed. Native parsing and HTML/TeX exports preserve all twelve
+  figures and both tab groups, including captions/alt text for the meshes.
+  Evidence: `build/playground-refinement/`.
+
+- 2026-10-31: Merged the playground CAD examples into one complete workflow
+  per C++/Python/R tab. Each program obtains the pinned Seeed assets with native
+  `datasets::fetch("rebot_devarm")`, imports and poses the real arm, imports the
+  separate STEP link, exports both as glTF, checks reopened geometry counts and
+  renders the exports. The report retains the independent spline example and
+  cached figures; generated model links point into its local ignored build
+  directory. The catalog adapter verifies every cached/downloaded file by size
+  and SHA-256, retains the source license and honors shared cache/offline/mirror
+  controls without optional data-preparation dependencies. The private native
+  fingerprints match all 38 entries of `examples/cad/rebot-assets.json`.
+  All six report programs pass with matching stdout, PNGs and glTF bytes across
+  languages; native HTML/TeX exports retain nine figures and two tab groups.
+  A fresh native download independently matches all pinned fingerprints and
+  the cache reopens offline. Fourteen native dataset/loader tests, eight Python
+  tests and 39 R expectations pass. The touched native download/header batch
+  has 43/43 documented definitions and a passing clangd fetch hover. Two stale
+  binding test counts are refreshed for the existing 23-row table catalog.
+  Evidence: `build/cad-workflow/`.
+
+- 2026-10-31: Ported mep's reusable CAD kernel, polygon modeller, importers and
+  materials to canonical C++ `dm::cad`, with owned solid operations, headless
+  rendering, picking, URDF forward kinematics and thin Python/R facades. The
+  feature inventory and inherited format/geometry limits are recorded in
+  `docs/cad-port-plan.md` and `docs/cad.md`; source hashes and MIT attribution
+  accompany the port. The four new facade/render/URDF headers have 132/132
+  documented definitions, five passing clangd hovers and 36 compiled/executed
+  documentation programs. Original kernel comments are retained; the remaining
+  legacy headers are not claimed as a completed Doxygen batch.
+  All 21 native suites pass, including 19 source regressions, 90 API checks and
+  independent binary-format oracles. Four focused suites pass address/undefined
+  sanitizers with leak detection disabled; 14 installed Python tests and 57 R
+  expectations pass. A separate installed CMake consumer exercises mass
+  properties and rendering. All nine playground programs execute: spline,
+  Seeed DevArm and exact STEP-link groups each agree across C++, Python and R
+  on cached Markdown and image bytes. The real robot has 34 mesh parts and
+  430,912 triangles; asset downloads are pinned and hash-verified. Native mep
+  parsing and HTML/TeX exports preserve all three tab groups and nine figures.
+  Evidence: `build/cad-port/`.
+
+- 2026-10-31: Added a P/HB/HP spline comparison to the fresh playground with
+  complete C++, Python and R tabs, native SVG plots and rendered RMSE tables.
+  HP is explicitly defined as hierarchical penalized patches using the existing
+  `fit_cell_penalized` API. The report explains raw-data residual fitting, local
+  coordinates, coefficient counts and the additive hierarchy's boundary behavior.
+  R now exposes the canonical hierarchical spline surface through SWIG, matching
+  Python; generated sources are regenerated using `scripts/prebuild_bindings.py r`.
+  Native R help documents construction, fitting, ownership and errors. All three
+  programs run and agree on the reported RMSEs; ten new R spline expectations and
+  32 existing algebra/matrix expectations pass. Native mep parsing and HTML/TeX
+  export preserve all three tabs, result tables and plots. No core API changes.
+  Evidence: `build/playground-splines/`.
+
+- 2026-10-31: Moved the playground's examples into standalone language-tab reports:
+  `numerics/linear_algebra/matrix_expressions.mepml`,
+  `math/computer_algebra.mepml` and `stats/regression/bspline_regression.mepml`
+  beneath `docs/mepml/examples/`. All twelve programs and their four C++/Python/R
+  tab groups are preserved. Shell/interpreter paths are rebased for each report's
+  depth, and all three spline SVGs move into the regression report's figures
+  directory without changing bytes. All twelve fence commands execute from their
+  new directories and cached output matches stdout; two previously stale CAS
+  output blocks are refreshed to include the current programs' printed text.
+  Native parsing and HTML/TeX exports pass for all three reports, including all
+  tables, equations and image references. The examples README links to the new
+  locations; website discovery finds them automatically. Playground retains only
+  its original metadata, ready for a new example. No core API changes.
+  Evidence: `build/playground-move/`.
+
+- 2026-10-31: Added C++ Expr arithmetic operators (+, -, *, /, ^), unary signs
+  and implicit numeric constants, delegating to the canonical immutable-tree
+  methods. Literal operands work on either side, assignment retains value
+  ownership, and expressions do not convert implicitly back to numbers. Power
+  documentation explicitly covers C++ precedence, left associativity and the
+  distinction between negative bases and negated powers; the playground uses
+  `(x ^ 3) - 2 * x + 1`, `f * 1 + 0` and `(2 * x).sin()`.
+  All 90 focused C++17 algebra checks pass, including six new operator cases
+  covering mixed operands, calculus, temporary/self-assignment lifetimes and
+  compiler parsing of powers. All nine expression-header examples compile/run
+  and eight documented output lines match. Fresh Doxygen verifies all eight new
+  public contracts/parameters/examples, and six definition hovers pass. The
+  existing expression-header documentation backlog remains outside this batch.
+  Canonical Python/R SWIG regeneration changes no generated artifacts; these
+  C++ conveniences leave the established language method APIs intact. The C++
+  playground program runs and its cached results match stdout and independent
+  calculus checks; all four tab sets and the other eleven programs/results are
+  preserved. HTML/TeX exports pass. Evidence: `build/cas-operators/`.
+
+- 2026-10-31: Reorganized the playground into four native mep tab sets: linear
+  algebra, symbolic calculus, polynomial/rational algebra and B-spline regression.
+  Every set contains independent C++, Python and R programs with their saved
+  results inside the corresponding panel. Shared SWIG extensions expose the
+  existing native algebra TeX serializers as owned strings in Python/R; R also
+  gains the canonical definite-integral and shifted-Taylor helpers. The native
+  normal generator is available as `native_rnorm(mean, sd, n)` in R without
+  masking `stats::rnorm`. All spline examples seed the shared generator with 42
+  and use the same breakpoints; Python/R use BSplineRegression for the same
+  spline space as C++'s explicit sparse-design LM fit. Separate SVG files preserve
+  each panel's plot. All 12 programs compile/run, their cached results match
+  stdout, and all 1000 plotted positions plus the fitted curves agree exactly
+  across the three SVGs. Native parsing and HTML/TeX exports verify four groups
+  and twelve code/result panels. Eleven installed-Python tests and 32 R testthat
+  expectations pass, including owned TeX strings, error translation, calculus,
+  matrix ownership and reproducible native draws. Core SWIG regeneration and
+  installed core-binding builds pass against the checkout's validation library;
+  Python's existing unrelated NN-wrapper build is isolated. Cached Nix R testthat
+  dependencies supply the normal runner without modifying global R libraries.
+  Evidence: `build/playground-tabs/`.
+
+- 2026-10-31: Added composable C++ `.to_tex()` methods for algebra `Expr`,
+  `Polynomial` and `RationalFunction`, returning owned `dm::Tex` values without
+  math delimiters. Expressions preserve operator grouping, negative and nested
+  power bases, fractions and named functions; logical multi-letter names are
+  escaped literally. Polynomial output handles signs, omitted unit coefficients,
+  configurable formal symbols and reduced rational-function denominators. All
+  serializers support 1-17 significant digits, classic-locale numbers, scientific
+  notation and nonfinite values. Formatting performs no symbolic evaluation.
+  All 84 focused C++17 algebra checks pass, including eight TeX regressions.
+  Fresh Doxygen covers 10/10 shared-helper definitions and verifies all three
+  new public contracts, parameters and examples; all three header examples
+  compile and run and all three clangd definition hovers pass. Legacy algebra
+  header documentation remains outside this batch and is not marked complete.
+  The methods are C++-only companions to the C++ Tex value; canonical Python/R
+  SWIG regeneration leaves binding outputs unchanged. Both playground programs
+  compile and run, with raw Markdown results matching stdout. Native mep parsing
+  recognizes four math displays and four tables in the CAS section; HTML/TeX
+  exports and the isolated CAS PDF pass, with the rendered mathematics visually
+  inspected. Evidence: `build/cas-tex/`.
+
+- 2026-10-31: Added the owned C++ `dm::Tex` value type and changed matrix
+  `.to_tex()` to return it. Nonmutating underbrace/overbrace and underset/overset
+  annotations, grouped scripts, fractions, roots, sized delimiters, escaped
+  literal text and raw concatenation compose before display/inline delimiters.
+  String conversion copies source; string-view conversion borrows it. Both
+  standard stream output and string-style `std::format` are supported. The
+  playground now displays the expanded normal equations with underbraces and
+  the computed beta, retaining its editable program and Markdown result mode.
+  All 252 matrix tests, 96 formatting tests, five C++17 Tex tests and the matrix
+  allocation checks pass. All 58 affected-header examples compile and run;
+  157/157 selected definitions pass fresh Doxygen and seventeen definition
+  hovers pass. Canonical Python/R SWIG generation changes no binding outputs.
+  The matrix section compiles to PDF with visually checked underbraces, and
+  the complete report exports to HTML/TeX. Full-report PDF export remains limited by the later existing SVG
+  plot, which the bundled TeX engine rejects. Evidence: `build/tex/`.
+
+- 2026-10-31: Added lazy ordinary matrix `operator^` and free `dm::t(A)`.
+  Integral powers use binary powering, zero yields identity, and both -1 and
+  -1.0 retain the existing fused solve path. Fractional powers use a checked
+  binomial Taylor series with repeated Denman-Beavers square roots and scalar
+  scaling; diagonal powers use scalar pow. General fractional inputs require
+  the real principal branch (no nonpositive real eigenvalues); singular,
+  nonconvergent and overflowing cases fail explicitly. Scalar types and
+  lvalue/temporary ownership are retained, with dense power results.
+  Free transpose forwards all four value-category/const overloads unchanged.
+  All 290 focused matrix/spline checks and 40 sanitizer facade checks pass;
+  both inverse exponent spellings construct without allocations and retain the
+  sub-1-KiB fused-solve allocation bound. An independent NumPy eigendecomposition
+  oracle agrees on 738 nonsymmetric, positive-spectrum/scaled cases, with maximum
+  relative infinity-norm difference 1.70e-14. All 37 matrix/format header examples
+  compile and run, 182/182 matrix-header/backend definitions are documented,
+  and thirteen definition hovers pass. The playground's dense and CSR
+  `(t(X) * X) ^ -1` expressions run in its declared Nix shell; results and
+  HTML/Markdown exports pass. The backend remains in the existing tracked
+  matrix.cpp so Git-filtered Nix sources include it. Evidence: `build/matrix-powers/`.
+
+- 2026-10-31: Added typed `dm::mat(rows, cols)` and `dm::spmat(rows, cols)`
+  factories, defaulting to double and forwarding to zero-initialised dense/CSR
+  constructors. Writable zero-based coefficient access returns dense references
+  or CSR coordinate proxies, preserving checked insertion/removal and read-only
+  sparse-zero behavior. Proxy copying assigns values without rebinding; scalar
+  formatting supports existing numeric format specifications. Lazy coefficient
+  reads retain value semantics after their temporary snapshot is destroyed.
+  All 283 focused matrix/spline checks pass, including storage/allocation budgets;
+  all 33 facade checks also pass address/undefined-behavior sanitizers (leak
+  detection disabled in this supervised environment). All 35 matrix/format-header
+  examples compile and run, 109/109 definitions pass the documentation audit and
+  eleven definition hovers pass. Updated the playground's last-row indices to
+  `(2, 4)` and `(2, 2)`, ran its matrix block in its Nix shell and refreshed the
+  results; HTML/Markdown exports pass. Evidence: `build/matrix-factories/`.
+
+- 2026-10-31: Added `.to_tex(type = "bmatrix")` to dense/sparse matrices and
+  their lazy expressions. Serialization includes every coefficient, reads owned
+  storage directly and evaluates expressions once. Environment names support
+  matrix/pmatrix/bmatrix and other letter names with an optional trailing star.
+  Seven-significant-digit numbers use locale-independent decimal points, TeX
+  scientific notation and explicit infinity/NaN commands; empty dimensions have
+  an empty body. All 240 focused matrix checks pass, including typed storage,
+  lazy solves, custom delimiters, empty/full output, locale and allocation tests.
+  All 29 header examples compile and run, 91/91 header definitions are documented,
+  and eight definition hovers pass. Fixed the playground's C++ beta escape,
+  executed its matrix block in the declared Nix shell and refreshed its TeX
+  results; HTML/Markdown exports pass. Evidence: `build/matrix-tex/`.
+
+- 2026-10-31: Matrix templates now use `dm::Mat<Storage, T>`, defaulting to
+  `dm::Dense` and `double`; `dm::Mat<dm::Sparse>` selects double-precision CSR.
+  The root storage policies alias the existing native policy types, and
+  `dm::la::Mat` follows the same storage-first order. Updated typed solve and
+  spline alias regressions, canonical header examples and playground prose.
+  All 271 focused matrix/spline checks pass, including allocation regressions.
+  All 28 matrix-header examples compile and run, all 90 header definitions pass
+  the documentation audit, and seven definition hovers pass. The playground's
+  matrix block runs in its declared Nix shell, reproducing both dense and sparse
+  coefficients and replacing stale compiler errors; HTML/Markdown exports pass.
+  Evidence: `build/matrix-storage-order/`.
+
+- 2026-10-31: Added the C++ `dm::lm(...)` factory, forwarding to existing `LM`
+  constructors with their original argument categories, defaults, data ownership
+  and dense/CSR solvers. The playground now uses `dm::lm(y, xmat)`. Existing
+  dense/sparse/formula comparisons and typed no-intercept regressions exercise
+  the factory; all 38 focused spline/model checks pass. The public example
+  compiles and prints both documented predictions; fresh Doxygen documents the
+  factory and four selected definition hovers pass. Python/R regeneration leaves
+  binding outputs unchanged. All four playground blocks pass in their declared
+  Nix environments, retaining the source code and regenerating the displayed
+  B-spline image. Evidence: `build/lm-factory/`.
+
+- 2026-10-31: Added the empty `dm::plot()` factory and fluent `RPlot::xlim()` /
+  `ylim()` aliases needed by the current B-spline playground block. The aliases
+  reuse the existing axis-range validation and rendering semantics; invalid
+  ranges leave the plot unchanged. Python aliases retain their owning proxy,
+  and Python/R translate invalid-range exceptions. Canonical SWIG regeneration
+  and local core-binding builds pass (the Python core wheel uses the previously
+  documented isolation from the unrelated NN wrapper build). All 89 focused
+  plotting checks, ten Python tests and 68 R expectations pass. Both new header
+  examples compile and print their documented values; 379 selected Doxygen
+  definitions and seventeen definition hovers pass. All four playground blocks
+  run in their declared Nix shells with the user's C++ code retained. Replaced
+  the stale compiler-error result with the regenerated SVG: 1,000 sampled points,
+  one five-pixel fit curve and the requested axis ranges. The displayed SVG
+  matches the saved file; HTML/Markdown exports and a visual preview pass.
+  Evidence: `build/playground-plot-api/`.
+
+- 2026-10-31: Plot color arguments now spell their shared native type `RGBA`,
+  retaining the existing `RGB` type identity, numeric initialization and layout.
+  Implicit string/literal conversion centralizes the existing basic color names
+  and strict `#RRGGBB`/`#RRGGBBAA` parsing, with alpha last and normalized to [0, 1].
+  Invalid text fails before plot mutation. Literal labels and Histogram chaining
+  retain their prior behavior; numeric scalars cannot implicitly become colors.
+  Added constructor exception translation and regenerated the Python/R wrappers
+  from the canonical header, replacing the old numeric-constructor SWIG extension.
+  All 115 focused native plot/vector tests pass. Six color/label documentation
+  examples compile and execute, four printed-output comments match, 278 selected
+  Doxygen definitions pass, and four definition hovers pass. The binding suites
+  cover numeric compatibility, parsed alpha, ownership, SVG output and malformed
+  input: nine Python tests and 62 R expectations pass after rebuilding the core
+  bindings. The Python core wheel is isolated from the previously recorded NN
+  wrapper-build issue. The playground demonstrates literal and std::string line colors and uses
+  explicit local Git shell references. Nix metadata and the pinned editor's Lua
+  helper resolve those references to this checkout; the originally reported
+  GitHub-URL failure has not been reproduced. All four report blocks pass with the
+  explicit references; the regenerated SVG matches the displayed file and exports
+  to HTML/Markdown. Evidence: `build/rgba-colors/`.
+
+- 2026-10-31: Numeric `Vector` arithmetic, scalar broadcasting and element-wise
+  math now use lazy expression templates. Named vector leaves are borrowed;
+  temporary vectors and child nodes are owned. Owned-vector assignment is
+  alias-safe, `.eval()` captures snapshots, and standard-vector consumers
+  materialise directly. Recycling remains local to each node, including unequal
+  lengths and empty inputs. Arbitrary `apply()` callbacks remain eager; random
+  sampling happens once and its owned results are reused across evaluations.
+  Legacy eager ABI symbols and the owned-vector layout are retained.
+  All 302 focused native tests pass, with nine new lifetime/alias/domain/API
+  cases also passing address and undefined-behavior sanitizers. A 100,000-element
+  Doppler chain forms with zero allocations and evaluates with one 800,000-byte
+  output allocation; constructing the chain with `rnorm()` allocates only its
+  sampled noise. Expression reductions allocate no result arrays. Regenerating
+  Python/R interfaces produces no changes; eight Python tests and 53 R binding
+  expectations pass. All 65 vector-header examples compile and execute, including
+  80 checked printed-output comments. All 184 selected Doxygen definitions and
+  eleven clangd definition hovers pass. The playground uses a forwarding Doppler
+  lambda and whole-vector evaluation. All four blocks run in their declared Nix
+  shells; the regenerated SVG matches the displayed file, exports to HTML/Markdown
+  and has been visually checked. Existing hex line colors are expressed through
+  the plot's RGBA API. Evidence: `build/vector-expressions/`.
+
+- 2026-10-31: Added typed `SpMat<T>`, direct-CSR `Bspline::speval()`, and dense/CSR
+  numeric-response LM constructors and point prediction. Sparse fits retain CSR
+  designs (including any automatic intercept), use the existing native PCG
+  normal-equation solver, and share inference with formula models; coefficient
+  covariance remains dense. Sparse diagnostics and sequential ANOVA retain sparse
+  row/prefix access. Input validation, ownership, empty predictions, cross-storage
+  prediction, rank/solver failures and formula regressions are covered by tests.
+  All 275 native checks pass, including a 20,000-row allocation regression: largest
+  allocations are 1 MiB for sparse basis evaluation and 512 KiB for sparse LM
+  fit/prediction. On the playground design (1000 x 101, 3990 nonzeros), prediction
+  differs from dense QR by at most 1.37e-11. All 35 selected header examples compile
+  and run; 221 complete-path Doxygen definitions, nine selected basis/facade
+  definitions and seven definition hovers pass. Recompiled the local R binding
+  and Python core-extension wheel (isolated from the existing NN-wrapper build
+  issue); eight Python binding tests and the R binding suite pass, including
+  formula-model ownership checks. All four playground blocks run in their Nix
+  shells and keep the displayed SVG. Evidence: `build/sparse-lm/`.
+
+- 2026-10-31: Added the C++ `dm::mkdir(path)` free helper for recursive output
+  directory creation. Native paths, strings and literals are accepted; existing
+  directories are a no-op and conflicting files/filesystem failures propagate
+  as exceptions. Four filesystem tests cover missing parents, repeated creation
+  with retained contents, conflicting files and empty paths without a cwd change.
+  The public example compiles and prints `true` on both initial and repeated
+  runs; the new definition has Doxygen documentation and a clangd hover check.
+  All four blocks from the starting playground snapshot pass with the Nix
+  shells and preserve the SVG. Concurrent user edits introducing a sparse
+  regression API were retained after that run; that newer API is outside this
+  helper's verification. Evidence: `build/playground-mkdir/`.
+
+- 2026-10-31: Promoted the typed facade to `dm::Mat<T, Storage>`, with
+  `dm::la::Mat<T, Storage>` retained as an alias to the same underlying types.
+  Concrete dense-double declarations and return types use `Mat<>`; sparse
+  storage and expression-template kernels retain their existing types. Tests
+  verify root-namespace dense/sparse solves for float, double and long double,
+  alias identity and the playground's `dm::Mat<> = basis.eval(x)` assignment.
+  All 266 native checks (including allocation budgets) and seven installed
+  Python binding tests pass. All 33 selected public-header examples compile and
+  run; 711 affected-header Doxygen definitions and eight definition hovers pass.
+  All four playground blocks run with their Nix shells; both report exports
+  retain the spline figure, whose bytes are unchanged. Evidence:
+  `build/root-matrix-api/`.
+
+- 2026-10-31: Added the `bs(lower, upper, knots, degree, intercept)` free factory
+  for an owned `Bspline`, and switched the playground and formula-regression
+  integration test to that spelling. The factory preserves the existing cubic
+  and omitted-first-column defaults, validates immediately and owns temporary
+  knot inputs. All 33 spline/model tests pass, the new header example compiles
+  and prints `3 4`, all six factory/basis definitions have Doxygen descriptions,
+  and three definition hovers pass. All four playground blocks run through mep;
+  the displayed spline SVG is byte-for-byte unchanged and remains in the HTML
+  and Markdown exports. Evidence: `build/playground-bs-factory/`.
+
+- 2026-10-31: Playground B-spline regression now composes `Bspline::eval()`,
+  matrix column labels and `cbind()`, named DataFrame conversion, the existing
+  formula LM and native scatter/line plotting. The same clamped basis is reused
+  for prediction; dropping its first column by default preserves a full-rank
+  model with a formula intercept. The report saves a local SVG and displays the
+  copied figure through mep's `file=` result. Six new integration tests and the
+  adjacent spline/LM cases pass (32 tests), as do 232 matrix regressions. The
+  cubic design matches R's `splines::bs()` exactly on a reference grid. Ten new
+  API examples compile and run; the new class/methods and facade constructors
+  have Doxygen descriptions, three affected complete headers pass 765/765
+  definitions, and two spline definition hovers pass. The SVG was rendered and
+  visually reviewed. All four playground blocks run through mep, including the
+  Python/R Nix shells; Markdown and HTML exports retain the image reference.
+  Evidence: `build/playground-bspline/`.
+
+- 2026-10-31: Playground Python/R examples now use native dense/CSR matrix
+  bindings, with owned runtime expression handles, deferred inverse actions and
+  fused solves. Added installed-package binding tests, native previews, Python
+  docstrings and R help/examples. The adapter passes 34/34 Doxygen definitions,
+  nine compiled/executed C++ header examples and two clangd definition hovers.
+  Seven Python binding tests, the R binding suite, 232 native matrix tests and
+  the allocation regression pass. A 20,000-row binding expression uses a largest
+  construction/evaluation allocation of 112 bytes. All three playground blocks
+  execute against the local core and installed bindings. The full Python wheel
+  build encounters unrelated NN-wrapper namespace/type errors; Python validation
+  uses an isolated core-extension wheel. Evidence: `build/playground-bindings/`.
+
 - [x] Read repository instructions and inventory the source trees and existing docs.
 - [x] Start an active goal for completing this checklist.
 - [x] Adopt Doxygen as the documentation format at the user's request.
@@ -112,6 +821,68 @@ them separately in each source batch. Full symbol reports belong under `build/`;
 compact baseline counts belong in this directory.
 
 ## Batch progress
+
+### Typed native matrix facade and lazy inverse actions (2026-10-31)
+
+`linalg/matrix.hpp`, `src/datamunge/linalg/matrix.cpp` and `format/matrix.hpp`
+implement the playground's `dm::Mat<Storage, T>` API, also available as
+`dm::la::Mat<Storage, T>`. Storage comes first and defaults to `dm::Dense`;
+the scalar defaults to double. `dm::Sparse` selects existing CSR storage.
+The original `dm::la::DMat` and `dm::la::SpMat` policy types remain supported.
+Float, double and long double flow through products and solves without implicit
+promotion. `dm::Mat<>` and `dm::SpMat<>` are convenient double specialisations.
+Nested row initialisers, checked coefficient access, mutation, storage/scalar
+conversion, canonical-backend interoperation and formatting have adjacent contracts.
+
+Expression nodes borrow lvalue matrices, own rvalues and copy intermediate nodes.
+They recheck dimensions at evaluation, preserve sparse products and avoid dense
+transpose buffers. `solve(A)*B*C` is reassociated into one solve of `A Z = B C`;
+an inverse is formed only when explicitly evaluating a standalone `solve(A)`.
+Sparse arithmetic stays CSR until the dense coefficient/RHS solve boundary.
+Two-argument `solve(X,y)` uses existing LU for square systems and Householder QR
+for tall systems. The normal-equations condition-number penalty and explicit-Q
+memory cost are documented. Move operations leave usable empty source matrices.
+
+Validation: the core CMake build, 233 focused/existing linear algebra checks and
+all 95 module-formatting tests pass. All 21 new API cases pass AddressSanitizer and UndefinedBehaviorSanitizer;
+LeakSanitizer is unavailable under the environment's ptrace supervision. The
+allocation regression measures no allocations during expression formation and a
+largest allocation of 32 bytes both for a 20,000-column inverse-action chain and
+for the playground expression on a 20,000-row dense design. A billion-column
+sparse product retains two stored entries without allocating a dense grid.
+The playground runs and exports to HTML/Markdown with coefficients 7/33 and 17/33,
+checked independently using exact rational arithmetic. All 25 documentation
+examples compile/run with matching output; the three new files pass 143/143
+documentation definitions and four representative clangd definition hovers.
+Evidence: `build/matrix-api/`. Graphical editor help was not checked.
+
+### Native method diagrams (2026-10-31)
+
+`include/datamunge/plot/diagram.hpp` and `src/datamunge/plot/diagram.cpp` add
+`graphics::Diagram`, with owned labelled nodes, measured multiline wrapping,
+boundary-anchored arrows, geometric paths/polygons/ellipses and fitted SVG bounds.
+Visible text uses the plotting library's own Computer Modern glyph outlines,
+including native constructions for Unicode scripts; selectable source text and
+accessible labels remain in the SVG. Unsupported glyphs and style/error contracts
+are documented. The feature is exposed by the standard public umbrella header.
+
+All 189 former external-renderer diagram blocks in the executable reports now
+contain complete native C++ programs. The old diagram sources are removed, and
+the report/contributor standards require native graphics. Fifteen misplaced TeX
+figure copies were restored from the existing native numerical/architecture SVGs
+in their build directories; their training/data computations were not rerun.
+The 1,007 pre-existing C++ blocks in the indexed affected reports are unchanged.
+
+Validation: the CMake core and focused runner build; eight native renderer tests
+and three report/provenance regression tests pass. MEP executes all 189 changed
+diagram programs; their generated SVGs were rasterised at 1100 px and visually
+reviewed. All 292 current reports export to HTML and Markdown. All thirteen header
+examples compile and run, including the documented `0 0` and `true` outputs.
+Both new library files pass the documentation presence audit (59/59 definitions),
+and four representative definition hovers pass through clangd. The full completed-path
+gate reports 34 unrelated undocumented CUDA parameter fields in `compute/cuda.cpp`;
+the new diagram files pass their selected audit. Graphical editor
+integration was not checked. Evidence: `build/diagram-migration/`.
 
 ### Vectors and tensor types
 
@@ -352,7 +1123,7 @@ check instead of counting only the already documented symbols.
 pass the presence audit for all 16 definitions. Contracts cover owned table
 storage, zero-category keys, checked indices and board shapes, categorical
 DataFrame encoding, exact hexadecimal update traces, distinct-input pair counts,
-and the ideal-key assumption behind collision expectations. All seven header
+and the ideal-key assumption behind collision expectations. All thirteen header
 examples compile and run. Five focused C++17 tests pass; an independent Python
 XOR and bucket-count calculation reproduces the report at all nine widths.
 The converted digits report runs seven blocks, exports to Markdown, and has
@@ -664,7 +1435,7 @@ R 4.5.2 splineDesign and augmented QR independently reproduce eight fits, predic
 GCV minima and all 272 Old Faithful delete-one refits; maximum scalar discrepancy
 is 2.6e-9. SciPy basis evaluation, augmented least squares and a generalized penalty
 eigensystem verify all 41 lambda-path rows and the two unpenalized modes (largest
-scalar discrepancy 1.1e-8). The rewritten `docs/mepml/examples/pspline.mepml` has seven
+scalar discrepancy 1.1e-8). The rewritten `docs/mepml/examples/stats/regression/pspline.mepml` has seven
 executed blocks, six SVGs inspected through Inkscape at browser width, and verified
 Markdown/Doxygen exports with nine display formulas and working source links.
 It covers hand calculations, a flat tuning criterion, boundary/nullspace distinctions,
@@ -703,7 +1474,7 @@ nonuniform/repeated/unclamped knots and tiny/translated domains, with maximum
 coordinate discrepancy 1.8e-15. Exact rational arithmetic on the represented
 inputs checks 509 recorded blends, with maximum coordinate discrepancy 4.5e-16.
 
-The rewritten `docs/mepml/examples/de_boor_analysis.mepml` has six executed blocks
+The rewritten `docs/mepml/examples/numerics/interpolation/de_boor_analysis.mepml` has six executed blocks
 and six SVGs inspected through Inkscape at browser width. It derives the evaluator
 by collecting coefficients in the basis recursion, shows all intermediate steps,
 distinguishes absolute control conditioning from relative/knot sensitivity, verifies
@@ -761,7 +1532,7 @@ The model is trained on 105 flowers and scored on 45 held out before any preproc
 or tuning: RMSE 0.402965 cm, 42/45 new-observation coverage versus 14/45 latent-interval
 coverage, with 95% nominal pointwise intervals.
 
-The rewritten `docs/mepml/examples/gaussian_process_regression_iris_analysis.mepml`
+The rewritten `docs/mepml/examples/stats/bayes/gaussian_process_regression_iris_analysis.mepml`
 has seven executed blocks, six SVGs inspected with Inkscape at browser width, and
 verified Markdown/Doxygen exports with nine display formulas and source links.
 It clarifies interval targets, variance units, fixed-fit conditional deletion and
@@ -813,7 +1584,7 @@ Validation:
   all four SVG diagnostic recipes. Four clangd hover checks pass for the class, working-data
   method, boundary flag and iteration-limit field. The mep graphical K integration was
   not verified separately.
-- The rewritten `docs/mepml/examples/glm_iris_analysis.mepml` executes all seven programs.
+- The rewritten `docs/mepml/examples/stats/regression/glm_iris_analysis.mepml` executes all seven programs.
   All seven SVGs were rendered with Inkscape and visually inspected at 1100 px, including
   fitted two-panel layouts and corrected distinct series colours. Both Markdown and
   Doxygen exports pass; the latter retains seven C++ programs, seven copied SVGs and
@@ -886,7 +1657,7 @@ Validation:
 - All 13 header code examples compile and execute. Four clangd hover checks pass for
   the model class, working-data method, working-criterion accessor and known-SD field.
   The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/glmm_analysis.mepml` executes all 8 programs. All 7 SVGs were rendered
+- `docs/mepml/examples/stats/regression/glmm_analysis.mepml` executes all 8 programs. All 7 SVGs were rendered
   with Inkscape and visually inspected at 1100 px; multi-panel layouts fit their panels.
   Markdown and Doxygen exports pass. The Doxygen export retains 8 C++ programs, 7 copied
   SVGs and 10 display formulas with reference links.
@@ -945,7 +1716,7 @@ Validation:
 - All 13 header code examples compile and execute. Four clangd hover checks pass for the
   class, edge-table method, reference-diagnostic method and neighbour-count field. The
   mep graphical K integration was not separately verified.
-- `docs/mepml/examples/isomap_iris_analysis.mepml` executes all 8 programs. All 7 SVGs were
+- `docs/mepml/examples/ml/dimensionality_reduction/isomap_iris_analysis.mepml` executes all 8 programs. All 7 SVGs were
   rendered with Inkscape and visually inspected at 1100 px; multi-panel layouts fit their
   panels, titles are readable and square-cycle axis scales preserve the square's shape.
   Markdown and Doxygen exports pass. The Doxygen export retains 8 C++ programs, 7 copied
@@ -1016,7 +1787,7 @@ Validation:
 - All 29 header code examples compile and run. Five clangd hover checks pass for the
   alternative enum, Welch test, exact binomial test, operating-characteristic helper and
   fixed-null KS contract. The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/hypothesis_tests_analysis.mepml` executes all 10 programs. All 10
+- `docs/mepml/examples/stats/inference/hypothesis_tests_analysis.mepml` executes all 10 programs. All 10
   SVGs were rendered with Inkscape and visually inspected at 1100 px, including fitted
   multi-panel layouts and the shortened interval legend. Markdown and Doxygen exports
   pass; the latter retains 10 C++ programs, 10 copied SVGs, 7 display formulas and rendered
@@ -1070,7 +1841,7 @@ Validation:
 - All 17 header code examples compile and run. Five clangd definition-hover checks pass
   for the model class, candidate option, bandwidth diagnostics, score and query weights.
   The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/kernel_regression_iris_analysis.mepml` executes all seven programs.
+- `docs/mepml/examples/stats/regression/kernel_regression_iris_analysis.mepml` executes all seven programs.
   All seven SVGs were rendered with Inkscape and visually inspected at 1100 px, including
   fitted multi-panel layouts, legends and axis labels. Markdown and Doxygen exports pass;
   the latter retains seven C++ programs, seven copied SVGs, five display formulas and
@@ -1132,7 +1903,7 @@ Validation:
 - All ten header code examples compile and run. Five clangd definition-hover checks pass
   for the model class, polynomial degree, spectrum, frozen transform and projection loss.
   The mep graphical K integration was not separately verified.
-- `docs/mepml/examples/kernel_pca_iris_analysis.mepml` executes all eight programs. All
+- `docs/mepml/examples/ml/dimensionality_reduction/kernel_pca_iris_analysis.mepml` executes all eight programs. All
   eight SVGs were rendered with Inkscape and visually inspected at 1100 px; iris panels
   were rerun with legend headroom, and long headings shortened. Markdown and Doxygen
   exports pass, retaining eight C++ programs, eight copied SVGs, five display formulas
@@ -1181,7 +1952,7 @@ six standalone SVG files. All six were rendered with Inkscape at 1100 px and vis
 reviewed; the TikZ diagram was arranged side by side with bounding-box padding, and long
 shell-plot legend labels shortened. Markdown/Doxygen exports retain five C++ programs,
 one shell build, six copied SVGs and four display formulas. TikZ source is retained in
-`docs/mepml/examples/diagrams/hamming_distance_concept.tikz`; LaTeX/dvisvgm save the diagram,
+`docs/mepml/examples/math/coding_theory/diagrams/hamming_distance_concept.tikz`; LaTeX/dvisvgm save the diagram,
 intermediates and logs under local `build/`, without SVG XML in output. Legacy Mepml/Org
 copies were removed, and the checklist/index updated. The user's TikZ and local-image-file
 preferences are recorded in AGENTS.md, the conversion plan and the reports README.
@@ -2241,7 +3012,7 @@ transformed design inference, dense complexity and zero-penalty limitations are
 explicit. Public references point to Kimeldorf–Wahba (1971) and Saunders et al.
 (1998); algorithm papers were verified through the publisher/author repository.
 
-The converted `docs/mepml/examples/kernel_ridge_analysis.mepml` opens with exact
+The converted `docs/mepml/examples/stats/regression/kernel_ridge_analysis.mepml` opens with exact
 RBF/linear two-point calculations and a four-row preprocessing counterexample.
 Its sine-wave sweep separates training, fixed-metric tuning and generating-mean
 error. Correct free-intercept LOO changes default selection and curve recovery:
@@ -2308,7 +3079,7 @@ as hexadecimal strings. References were verified against the original 1998 paper
 authors' distinct 64-bit version page and the C++ working draft parameters and
 10000th reference output. The 32-bit engine's 623-dimensional claim is not transferred.
 
-The converted `docs/mepml/examples/mersenne_twister64.mepml` derives scalar seeding,
+The converted `docs/mepml/examples/random/generators/mersenne_twister64.mepml` derives scalar seeding,
 bit joining/twisting and the inverse of each nilpotent masked-shift map. Exact
 odd/even and input-one calculations precede the reference transcript, state
 recovery, single-seed battery and all forty-seed second-level checks. It preserves
@@ -4939,3 +5710,300 @@ previews were visually reviewed. Browser UI verification is not claimed. Detaile
 execution hashes, SVG audits, 32 compiled examples, exports and fresh Doxygen XML
 are under `build/cnn-figures-expansion/`; scope and frozen-count distinctions are
 recorded in `docs/mepml/nn-conversion-plan.md`.
+
+- 2026-10-30: CIFAR-10 dataset-study helpers add native stratified preparation,
+  persisted split/moment restoration, independent crop/flip augmentation and
+  compact ResNet inference; generic proper classification scores, reliability
+  bins, validation-only bounded temperature fitting, and exact decoded-image
+  overlap auditing with full-byte collision checks. All three new headers pass
+  35/35 Doxygen definitions, twelve compiled/executed header examples, five
+  clangd definition hovers and nine native offline tests. Source identities,
+  convergence, held-out inference and interpretation evidence are retained with
+  the dataset report. Evidence: `build/cifar10-report/`; graphical mep K was not
+  available for a UI check.
+
+## Realistic robot workcell assets (2026-11-01)
+
+Added the opt-in `WorkcellVisualStyle::Realistic` profile, reusable workcell
+lighting/render settings, procedural industrial surfaces, rounded fixtures and
+detailed fruit meshes. The default Simple profile and existing aggregate
+initializers remain compatible. Visual geometry does not change collision
+geometry or consume the environment's random streams. The wrist camera renders
+the same complete scene for RGB and registered empty-background inspection.
+
+The public renderer documents optional linear-light GGX/Schlick shading, soft
+key shadows, local occlusion, exposure and display mapping, including its
+approximate ambient illumination and lack of subsurface scattering. References
+were checked against the original publications. New public and private symbols
+have adjacent documentation; completed asset files are included in the manifest.
+
+Verification: 84 native simulation/render tests and three classifier tests pass
+(eight optional GPU tests skip); the existing CAD API suite passes 90 checks,
+with model bookkeeping and format/import/render regressions also passing.
+All 22 affected short public-header examples compile and execute against current
+headers and the rebuilt library. Fresh scoped Doxygen covers 328/328 definitions
+with no missing entries; 13 representative clangd hovers pass. Evidence is in
+`build/debug/docs/realistic-workcell-{coverage,hover}.json`,
+`build/realistic-workcell-*-tests.log`, and `build/realistic-workcell-doc-examples/`.
+This is scoped documentation coverage, not completion of the renderer's existing
+private-symbol documentation backlog. Graphical mep UI playback was not checked.
+
+The complete playground learning run adapts vision on 768 disjoint moving-view
+crops (120/128 held-out correct), trains 8,192 scheduling windows and evaluates
+actual RGB in 48 runs across 16 paired streams. An explicit frozen-checkpoint replay via
+`DATAMUNGE_STREAM_REPLAY=1 just playground` completes in 1,642 seconds and
+regenerates the uninterrupted minute with the new assets. The 960x640 H.264
+video fully decodes, has 900 frames at 15 fps and duration exactly 60 seconds.
+All 23 published artifacts match the run directory and exported figure copies;
+all corresponding HTML links resolve. The four scheduled birth times match the
+previous visual profile, with no changed joint/finger limits. The minute reports
+two correct placements and two misses, without cutting unsuccessful events.
+Detailed evidence: `build/realistic-workcell-audit.json` and
+`build/realistic-workcell-verification.txt`.
+
+## Robot workcell performance baseline (2026-11-01)
+
+Added the independent Release C++ recorded-workcell benchmark, standard CMake
+target and `just bench-fruit-render` entrypoint. The benchmark guide explains
+replay reconstruction, temporal sampling, warm caches, per-call scopes, worker
+controls, the one-pixel preparation proxy, and timing limitations. The measured
+implementation plan lives in `PERFORMANCE.md`; compact raw evidence is in
+`benchmarks/results/fruit_render/`. No public core symbols or generated bindings
+changed, so no new public-symbol documentation batch is claimed.
+
+Validation: the actual standalone CMake configure/build and Python runner pass;
+36 full-frame samples and three repetitions per control/component complete.
+Worker counts 1/2/4/8/16 produce byte-identical RGBA at the control pose. Three
+full 60-second actual-RGB simulations reproduce the frozen report outcomes and
+901 endpoint-inclusive snapshots. Full encoding retains 900 frames, 15 fps and
+60.000 seconds, fully decodes and matches the published MP4 byte for byte.
+`just` recipe parsing/dry-run and Python compilation pass. The full Nix wrapper
+was not rerun; measurements use the existing local Release core, identified by
+its linked path/hash. Full model-training wall times were not remeasured.
+
+## Lossless robot rendering and streaming pass (2026-11-01)
+
+Added `cad::PreparedScene`, explicit wrist-camera worker budgets and native
+`cad::VideoWriter`. Public contracts describe owned immutable geometry, lazy
+thread-safe base hierarchy initialization, exact actor-order hierarchy rebuilds,
+ID/material mapping, synchronous bounded encoder handoff, explicit publication
+and failure/abandonment cleanup. New API examples are included in the public
+headers; private video helpers/state also have adjacent documentation.
+
+Fresh scoped Doxygen passes 147/147 definitions across render/video/camera headers
+and the video/camera implementations; ten clangd hover checks pass. All 17
+affected examples compile and execute against the installed Nix package. Added
+the video header/implementation to the completed manifest. This does not claim
+to finish the renderer's older private-symbol documentation backlog.
+
+Evidence: 85 simulation/render tests, three classifier tests, prepared-scene and
+real-video suites, existing CAD API (90 checks) and import/render regressions; 34
+exact reference-buffer/crop/box matches. A complete `just playground` frozen
+replay improves from 1,642.1 to 771.3 seconds and reproduces the original MP4, two
+stills, both trajectories and perception decisions byte for byte. Its 25 assets
+and export links pass the audit. Detailed phase timings and source/settings/model
+fingerprints are published with the report. Repeated paired performance data is
+under `benchmarks/results/fruit_render/optimized.json`; the original baseline is
+retained. Native tests validate private-worker SIGPIPE handling without changing
+the caller's handler/mask; the Windows branch has not been runtime-tested.
+Nix source-filter checks retain build/binding inputs while excluding benchmark
+notes/helper scripts. No graphical mep UI playback check is claimed.
+
+## Compact renderer queries and configurable previews (2026-11-01)
+
+Documented new private compact triangle records, original bounds/centroid lookup,
+per-query ray reciprocals with guarded division fallback, cached light/sample
+helpers, and their ownership and arithmetic-order constraints. The public API is
+unchanged. Fresh Doxygen passes 10/10 definitions in
+`src/datamunge/cad/detail/ray_box.hpp`; added that header to the completed manifest.
+Three new clangd definition hovers pass. This does not claim coverage of the older
+private renderer backlog. Evidence: `build/debug/docs/fruit-pass2-{coverage,hover}.*`.
+
+Native validation passes 85 simulation/render tests (eight optional GPU tests
+skip), prepared-scene regressions, 90 CAD API checks, import/render regressions,
+and 2,000,040 differential slab comparisons. All 34 reference buffers match
+exactly. Three paired rounds in each scheduling mode measure a 5.8–6.1% reduction
+in median sampled pipeline time; retained samples and hashes are in
+`benchmarks/results/fruit_render/pass2.json`.
+
+The playground now documents and executes a configurable 15-second preview while
+recording the unchanged full minute of physics and both 900-frame trajectories.
+It explicitly labels cumulative counters and the debugging excerpt, links the
+preserved full-minute video, and separates short PNG dumps from full benchmark
+inputs. `just playground-preview` reuses frozen checkpoints. The completed mep
+compilation/execution scope takes 186.229 seconds; rendering/streaming takes
+168.010 seconds. This includes the shorter duration, not only engine gains.
+The new MP4 equals an independent encoding of original frames 540–764 byte for
+byte; full trajectories, inspection image and poster also match their references.
+All 26 assets, HTML links, full video decode and conservation checks pass
+`build/fruit-pass2-audit.py`. The benchmark runner validates full-minute simulation
+outcomes against preview metrics. No new training run or graphical mep UI
+playback check is claimed.
+
+## Explicit CUDA CAD renderer (2026-11-02)
+
+Documented the new C++ `cad::CudaRenderer` ownership, serialized persistent device
+cache, synchronous outputs, float32 constraints, precision/bias differences and
+explicit availability/error behavior. CPU rendering and wrist sensor input remain
+the reference paths. New private shared host/device types have individual field
+contracts; added `src/datamunge/cad/detail/cuda_types.hpp` to the completed manifest.
+Fresh scoped Doxygen passes 153/153 definitions across that file and the public
+render header. Six clangd hovers pass, including the complete CUDA class contract
+and constructor. The public class example compiles and executes on an RTX 5080
+Laptop GPU. This does not complete the older private renderer documentation backlog.
+
+Real-device tests cover maps, point lights, soft shadows/AO, transparency, camera
+projection, sample/style modes, actor/base caching, failed cache replacement,
+concurrency and invalid inputs. Existing compute/simulation tests pass 90/93;
+three Vulkan-only tests skip. All 34 CPU reference buffers still match exactly.
+The bounded four-pose benchmark retains paired timings and RGB/depth/ID errors
+in `benchmarks/results/fruit_render/cuda.json`; it generates no video or training.
+The measured median complete overview call improves from 476.15 to 133.87 ms,
+with float32 image RMSE below 0.72/255 and source-ID mismatch below 0.025%.
+Evidence: `build/cad-gpu/`, `build/debug/docs/cad-gpu-{coverage,hover}.*`.
+
+`just playground-gpu` completes a five-second/75-frame clip with the installed
+CUDA package: 42.866 seconds for code-block compilation/execution, 26.780 seconds
+for rendering/streaming, excluding outer Nix builds. All 26 assets and HTML/TeX
+exports are present; video decode and cumulative/physical outcomes pass the audit.
+Full trajectories, perception decisions and checkpoints remain unchanged. Both
+representative wrist insets are pixel-identical to the CPU reference; complete
+stills have RGB RMSE below 0.60/255. `just bench-fruit-render-gpu --repetitions 1`
+also passes against the installed Clang package. The wrapper explicitly propagates
+the repository's canonical pkg-config override through the nested Nix shell.
+No full-minute rendering or fresh model training was run in this GPU pass.
+
+## Exact CPU wrist reference concurrency and caching (2026-11-02)
+
+Documented bounded full/reference render concurrency, sequential one-worker mode,
+exact joint/finger invalidation, owned base-only buffers, fresh moving reference
+actors and off-image behavior in the camera header and private helpers. API
+signatures and the single-writer camera contract are unchanged. Fresh scoped
+Doxygen covers 50/50 definitions in the camera header/implementation; five clangd
+hovers pass. The class, actor-capture and associated-inspection examples compile
+and execute against the real cached DevArm URDF.
+
+Four new tests cover owned RGB/depth/IDs, pose/finger changes, moving non-fruit
+reference objects, invalid textures, off-image returns, sequential/parallel parity
+and recovery after failures. The native suite passes 89/97; eight optional GPU
+tests skip. All 31 saved paired wrist outputs and all 34 older reference buffers
+match exactly. Bounded paired measurements show 20.0% lower mean wrist cost;
+an earlier variable run measured 13.3% and is retained with the raw acceptance
+samples in `benchmarks/results/fruit_render/wrist.json`.
+
+The installed-package five-second playground check reproduces the archived MP4
+byte for byte. Its wrist stage improves 15.025→12.067 seconds, and rendering/
+streaming improves 26.356→23.525 seconds. All settings, physical/outcome metrics,
+perception logs, checkpoints, complete trajectories and 26 report assets/links
+pass the audit. `just bench-fruit-wrist --repetitions 1` also passes against the
+installed core. No full-minute video or fresh training was run. Evidence:
+`build/wrist-performance/`, `build/wrist-perf-oracle/`, and
+`build/debug/docs/wrist-performance-{coverage,hover}.*`.
+
+## Exterior workcell presentation and studio illumination (2026-11-02)
+
+Documented `sim::workcell_presentation`, `workcell_presentation_options`, the
+opt-in `RenderOptions::studio_environment` field and shared CUDA parameter.
+Contracts cover owned copies, deterministic maps, texture/index validation,
+world-space cable anchors, cosmetic-only geometry, calibration preservation and
+analytic-lighting limitations. Source meshes and transforms remain unchanged;
+additional surroundings and cables belong only to exterior display scenes.
+Existing ambient shading is retained at the default zero studio strength.
+Appending the options field requires recompiling native consumers.
+
+Fresh scoped Doxygen covers **183/183** definitions; **11** clangd hovers and both
+affected public examples pass. The simulation suite passes **91/99**, with eight
+optional GPU skips. Dedicated studio tests and the real-device CPU/CUDA suite
+pass. Two enhanced-scene stills have RGB RMSE below 0.401/255 and source-ID
+mismatch below 0.037%; all 34 old reference buffers and 31 wrist outputs match
+exactly. Evidence: `build/realism2/` and
+`build/debug/docs/realism2-{coverage,hover}.*`. This scoped pass does not complete
+the older private renderer documentation backlog.
+
+The installed-package `just playground-gpu` build exports HTML/TeX and a fully
+decoded 20-second/300-frame video. The 26 report assets and links pass the audit;
+complete trajectories, perception logs, frozen checkpoints and physical outcomes
+are unchanged. Both representative wrist insets remain pixel-identical. Raw
+quality settings and stage timings are archived in
+`benchmarks/results/fruit_render/presentation.json`; no new training or full-minute
+video rendering was performed.
+
+## Idle infeed observation behavior (2026-11-02)
+
+Added and documented the optional `FruitStreamOptions::watch_infeed` behavior.
+The real rigid camera mount and bounded URDF joints determine an elevated
+upstream observation pose. Empty-queue waiting returns through guarded servo
+waypoints in 0.125-second budgets; subsequent pick options interrupt the return.
+Reset starts in that pose only when enabled. The default false retains existing
+controller behavior. Queue sensing remains privileged tracked geometry, and the
+watch behavior changes travel times rather than providing a newly trained policy.
+
+Fresh Doxygen covers 155/155 definitions in the stream header/implementation;
+three clangd hovers and both affected public examples pass. The native simulation
+suite passes 93/101, with eight optional GPU skips. New cases check the complete
+randomized entry region, exact wait ticks and independent arrival seeds, both-bin
+returns, servo limits and subsequent pickups in full physics and the training
+proxy. An actual-mesh wrist render confirms a newly arrived fruit has a nonempty
+RGB-derived box (7x9 at 128x128), rather than relying solely on projection.
+Evidence: `build/infeed-watch/` and
+`build/debug/docs/infeed-watch-{coverage,hover}.*`.
+
+The installed-package playground build exports the default 20-second/300-frame
+video, HTML and TeX. All 26 assets/links and full video decoding pass the audit.
+Complete joint/fruit trajectories and perception decisions match an independent
+simulation-only run; Poisson births/appearance seeds and frozen model checkpoints
+remain unchanged. The actual camera aims upstream in 659 of 681 idle frames;
+the remaining idle frames include its return motion. The clip ends in the watch
+pose and labels the live camera state. The fresh minute yields two correct sorts,
+zero wrong and two misses. This is a demonstration using the prior scheduler,
+not retraining or a new throughput comparison. Raw evidence is archived in
+`benchmarks/results/fruit_render/infeed_watch.json`.
+
+## Synchronized interception and continuing-policy retraining (2026-11-02)
+
+Added optional synchronized approach/descent wrist roll, guarded short return
+approaches, coordinated idle return segments, live feasible-action masks and
+configurable queued-wait/missed/wrong-bin reward costs. Default options retain
+the prior behavior. `StreamPolicy::action(state, mask)` preserves the existing
+1680-by-five checkpoint format. Training optionally applies the mask to behavior,
+exploration and bootstrap values and uses elapsed-time-discounted replacing
+Watkins traces, clearing at nongreedy actions and independent windows. Bounded
+geometry caches retain four entries with exact pose/aperture/identity/rotation/
+lateral-bin keys; live deadlines are never cached. Observation FK has one exact
+joint-pose cache. Reset and unknown-perception invalidation are explicit.
+
+Fresh Doxygen covers 193/193 stream definitions; six clangd hovers and five public
+examples pass. Native simulation tests pass 98/106, with eight optional GPU skips.
+New tests cover deadline expiry, missing targets, query ownership, unknown-target
+invalidation, synchronized capture, servo limits, queued-wait rewards, masked
+bootstrapping, trace reproducibility and invalid options. The legacy profile's
+sixteen-stream actual-RGB results match the frozen prior library byte for byte.
+Eight training rollouts also produce identical Q values, durations and returns
+with the asset-free and full URDFs.
+
+Completed 32,768 native training windows (3,980,652.31 simulated seconds), with
+watching enabled, trace decay 0.8, masked actions and a broader 0.08–0.30 arrival
+curriculum. Physical screening and separate actual-RGB validation select the
+checkpoint. A further 24-epoch MobileNet adaptation uses independently seeded
+aligned-view crops; its validation-selected epoch is 17. Its held-out prototype
+test scores 119/128; this is a different view/seed set from the archived image
+experiment. No test images enter gradients or checkpoint selection. Evidence:
+`build/sort-training/` and `build/debug/docs/sort-training-{coverage,hover}.*`.
+
+Actual-RGB validation selects window 256. On sixteen further paired 120-second
+streams (246 identical arrivals), correct placements improve 143→176, misses
+87→56 and wrong-bin placements 5→2; pending outcomes are 11→12. Unknown
+perception falls 25→0. Updated early/late-oldest schedules achieve 166/152 correct
+placements. The unchanged fixed-seed minute improves two→three correct sorts,
+with zero wrong placements and one miss. No test/video seed selects a checkpoint.
+These results combine motor changes, new vision fitting and scheduler retraining.
+
+`just playground-gpu` exports the default 20-second/300-frame video, HTML and TeX.
+All 30 assets/links, complete video decode, servo bounds, Poisson births, seed
+separation, dataset quotas, training histories, validation selection and paired
+outcome/perception logs pass the audit. Both prior models remain available. Raw
+results and fingerprints are archived in
+`benchmarks/results/fruit_render/control_training.json`. Replay takes 149.23 s
+including code-block compilation, with 135.26 s program time; Nix builds are
+excluded. The full-training recipe has a configurable two-hour timeout to allow
+the longer learning/validation workflow; rendering remains a 20-second default.

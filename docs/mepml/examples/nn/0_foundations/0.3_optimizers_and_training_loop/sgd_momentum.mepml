@@ -38,18 +38,40 @@ For constant gradient g, its velocity is \((1-\mu^t)g/(1-\mu)\); for zero new gr
 old velocity decays rather than vanishing immediately. A larger displacement is not
 necessarily a better optimization step. These deterministic examples use Float64.
 
-The editable TikZ source and its rendering logs stay local. Regeneration requires LaTeX
-with PGF/TikZ and standalone plus dvisvgm; exports consume the saved figure.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/sgd_updates.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/sgd_momentum_updates.tikz > build/sgd_updates.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/sgd_updates.svg build/sgd_momentum_updates.dvi > build/sgd_updates.render.log 2>&1
-printf 'Rendered build/sgd_updates.svg from local TikZ source.\n'
+```{cpp, file="figures/sgd_updates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  dm::graphics::DiagramNodeStyle blue;
+  auto orange = blue;
+  orange.fill = {255, 237, 213};
+  auto green = blue;
+  green.fill = {220, 252, 231};
+  dm::graphics::DiagramStroke arrow;
+  arrow.arrow = true;
+auto compact = orange;
+  compact.width = 3.8; compact.height = 1.3;
+  diagram.node("gradient", {0, 0}, "Gradient at stored weights\ng_t = ∇f(w_t)")
+      .node("velocity", {6, 0}, "Updated velocity\nv_t = μ v_(t−1) + g_t", compact)
+      .node("old", {6, 2.6}, "Previous velocity\nv_(t−1)", compact)
+      .node("sgd", {0, -3}, "SGD\nw_(t+1) = w_t − η_t g_t", green)
+      .node("momentum", {6, -3}, "Momentum\nw_(t+1) = w_t − η_t v_t", green)
+      .node("nesterov", {12, -3}, "Nesterov convention here\nw_(t+1) = w_t − η_t(g_t + μ v_t)", green)
+      .edge("gradient", "velocity").edge("old", "velocity")
+      .edge("gradient", "sgd").edge("velocity", "momentum")
+      .path({{7.9, 0}, {12, 0}, {12, -2.35}}, arrow)
+      .text({9.4, 1.3}, "Remember with decay μ")
+      .text({6, -5}, "Velocity remembers gradients, not previous parameter displacements.\nThe current rate multiplies the whole update direction.");
+  diagram.save_svg("build/sgd_updates.svg");
+}
 ```
 // result_begin:
-// Rendered build/sgd_updates.svg from local TikZ source.
 // \image(figures/sgd_updates.svg)
 // result_end
 \caption(The optimizer turns the current gradient and stored state into a parameter displacement. The current learning rate is outside the velocity recurrence.)

@@ -1,0 +1,6 @@
+ReBot_Arm_DM.urdf kinematics-only regression fixture.
+Source: https://github.com/Seeed-Projects/reBot-DevArm/blob/922c5fa3d8c8919db1847b49166f02fc26c8fdad/Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf
+Revision: 922c5fa3d8c8919db1847b49166f02fc26c8fdad
+Copyright 2026 Seeed Studio Co., Ltd.
+SPDX-License-Identifier: CERN-OHL-W-2.0 (see LICENSE).
+Modification by datamunge: retain only link names and the unmodified joint elements; omit visuals, inertials and collision meshes so native kinematics/learning tests are offline and lightweight.

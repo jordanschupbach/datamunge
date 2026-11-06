@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 For boxes A and B, IoU is intersection area divided by union area, with zero for an empty union. NMS costs quadratic overlap work in the worst case; matching stores an anchor-by-target overlap matrix. Neither operation is differentiable selection. Regression coding and proposal losses retain tensor gradients; training uses explicit Adam steps below.
 
-The editable concept diagram is `diagrams/nms_matching_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/nms_matching_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/nms_matching_concept.tikz > build/nms_matching_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/nms_matching_concept.svg build/nms_matching_concept.dvi > build/nms_matching_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/nms_matching_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Overlapping boxes\nIoU and scores");
+  diagram.node("n1", {5.2, 0}, "Match and suppress\nDiscrete decisions");
+  diagram.node("n2", {10.4, 0}, "Fit proposal losses\nTensor gradients");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/nms_matching_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/nms_matching_concept.svg)
 // result_end
 \caption(NMS, anchor matching and box coding)

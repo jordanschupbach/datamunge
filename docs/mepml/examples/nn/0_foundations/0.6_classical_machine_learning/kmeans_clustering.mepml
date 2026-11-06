@@ -29,18 +29,24 @@ initialisation sensitivity. Retain the smallest final objective from the same se
 of starts; extending that sequence cannot worsen its best value. Each step costs O(NKD) and
 materialises [N,K,D] differences. The plotted cloud shows every generated input observation.
 
-The concept diagram has a retained TikZ source in `diagrams/kmeans_clustering_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/kmeans_clustering_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/kmeans_clustering_concept.tikz > build/kmeans_clustering_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/kmeans_clustering_concept.svg build/kmeans_clustering_concept.dvi > build/kmeans_clustering_concept.render.log 2>&1
-printf 'Rendered build/kmeans_clustering_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/kmeans_clustering_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Seeded initial centres\nlearnable tensor leaves");
+  diagram.node("n1", {5.2, 0}, "Nearest-centre distortion\npiecewise quadratic loss");
+  diagram.node("n2", {10.4, 0}, "Autograd + SGD\ncompare retained restarts");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/kmeans_clustering_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/kmeans_clustering_concept.svg from local TikZ source.
 // \image(figures/kmeans_clustering_concept.svg)
 // result_end
 \caption(Cluster IDs are arbitrary; compare distances and centres)

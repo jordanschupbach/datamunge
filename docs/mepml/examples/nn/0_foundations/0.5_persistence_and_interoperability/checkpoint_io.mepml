@@ -30,18 +30,24 @@ Use training_state/save_training_checkpoint for optimizer and batch-order contin
 save any additional application RNG/configuration state explicitly. Storage and restoration
 cost are linear in total state bytes.
 
-The concept diagram has a retained TikZ source in `diagrams/checkpoint_io_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/checkpoint_io_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/checkpoint_io_concept.tikz > build/checkpoint_io_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/checkpoint_io_concept.svg build/checkpoint_io_concept.dvi > build/checkpoint_io_concept.render.log 2>&1
-printf 'Rendered build/checkpoint_io_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/checkpoint_io_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Named typed state\nweights, step, text");
+  diagram.node("n1", {5.2, 0}, "Validate all entries\nname + dtype + shape");
+  diagram.node("n2", {10.4, 0}, "Stage and assign\npreserve tensor handles");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/checkpoint_io_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/checkpoint_io_concept.svg from local TikZ source.
 // \image(figures/checkpoint_io_concept.svg)
 // result_end
 \caption(Validate the whole assignment set before changing any live tensor)

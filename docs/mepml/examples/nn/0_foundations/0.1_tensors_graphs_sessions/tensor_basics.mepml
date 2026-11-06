@@ -348,15 +348,15 @@ Random reshapes: 20000 cases, view_strides agrees with the brute-force search in
 
 | n × n float32 | reshape (view) | transpose (view) | contiguous copy of the transpose | sum(x) | sum(transpose(x)) |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 64 | 0.41 µs | 0.38 µs | 2.1 µs | 1.4 µs | 2.9 µs |
-| 128 | 0.30 µs | 0.30 µs | 8.6 µs | 2.6 µs | 9.2 µs |
-| 256 | 0.26 µs | 0.27 µs | 55.9 µs | 14.7 µs | 75.4 µs |
-| 512 | 0.42 µs | 0.37 µs | 126.1 µs | 49.0 µs | 244.8 µs |
-| 1024 | 0.42 µs | 0.37 µs | 1088.6 µs | 219.2 µs | 1056.9 µs |
-| 2048 | 0.39 µs | 0.34 µs | 4284.5 µs | 917.0 µs | 4596.4 µs |
-| 4096 | 0.39 µs | 0.33 µs | 21733.3 µs | 3843.3 µs | 27840.9 µs |
+| 64 | 0.40 µs | 0.39 µs | 2.5 µs | 1.6 µs | 3.6 µs |
+| 128 | 0.41 µs | 0.39 µs | 10.2 µs | 4.0 µs | 14.0 µs |
+| 256 | 0.42 µs | 0.37 µs | 117.6 µs | 12.9 µs | 133.9 µs |
+| 512 | 0.42 µs | 0.38 µs | 158.8 µs | 45.0 µs | 252.4 µs |
+| 1024 | 0.39 µs | 0.35 µs | 1004.1 µs | 304.5 µs | 2498.8 µs |
+| 2048 | 0.41 µs | 0.36 µs | 7361.7 µs | 1160.0 µs | 7596.2 µs |
+| 4096 | 0.49 µs | 0.45 µs | 37062.9 µs | 3973.6 µs | 32458.4 µs |
 
-At n = 4096 the copy moves 6.2 GB/s (64 MiB read and 64 MiB written).
+At n = 4096 the copy moves 3.6 GB/s (64 MiB read and 64 MiB written).
 
 | integers in | exactly representable in float32 |
 | :--- | ---: |

@@ -20,7 +20,8 @@ struct BuildInfo {
   std::string version;
   /// Supported tensor dtypes, in DType order.
   std::vector<DType> dtypes;
-  /// The GEMM used for float matmul and convolution: "accelerate", "openblas", "cblas" or "builtin".
+  /// The GEMM used for float matmul and convolution: "inhouse-<isa>" (the library's own kernels,
+  /// e.g. "inhouse-avx512"), or "accelerate", "openblas", "cblas" in DATAMUNGE_USE_BLAS builds.
   std::string gemm_backend;
   /// Whether dense linear algebra (cholesky, eigh, svd, ...) uses LAPACK.
   bool lapack{false};

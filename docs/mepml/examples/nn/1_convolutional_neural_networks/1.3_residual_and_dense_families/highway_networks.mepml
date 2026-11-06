@@ -63,18 +63,24 @@ digits, ten epochs and batch 32. Adam(.001) minimizes mean cross entropy plus .0
 the sum of kernel squares. Validation NLL selects a parameter checkpoint before test evaluation.
 Preprocessing stays in tensor reshape; pixels remain in [0,1]. Cached MNIST is required.
 
-The editable concept diagram is `diagrams/highway_networks_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/highway_networks_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/highway_networks_concept.tikz > build/highway_networks_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/highway_networks_concept.svg build/highway_networks_concept.dvi > build/highway_networks_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/highway_networks_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Transform H(x)\nsigmoid gate T(x)");
+  diagram.node("n1", {5.2, 0}, "Carry and transform\ngate derivatives");
+  diagram.node("n2", {10.4, 0}, "Twenty hidden layers\nexplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/highway_networks_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/highway_networks_concept.svg)
 // result_end
 \caption(Highway Networks: Coupled Gates and Carry Derivatives)
@@ -507,7 +513,7 @@ int main() {
 ```
 // result_begin: markdown
 512 fit / 128 validation / 128 official-test digits; 136660 learned scalars; 160 explicit Adam updates.
-Selected epoch 9, validation NLL 0.962916, training NLL 0.126805, test NLL 0.759486, test accuracy 0.765625.
+Selected epoch 9, validation NLL 0.962934, training NLL 0.126804, test NLL 0.759502, test accuracy 0.765625.
 \image(figures/highway_networks_training.svg)
 // result_end
 \caption(Visible Adam updates train all twenty hidden layers and both terms of every coupled gate. The checkpoint uses validation NLL; the test count matrix sums to 128 and its title gives the colour limits.)

@@ -7,12 +7,18 @@
 
 #include "datamunge/nn/conv.hpp"
 
+#include <algorithm>
+#include <cstdint>
 #include <cstring>
 #include <limits>
+#include <memory>
 #include <type_traits>
+#include <vector>
 
+#include "datamunge/nn/ops.hpp"
 #include "datamunge/nn/parallel.hpp"
 #include "detail.hpp"
+#include "device_ops.hpp"
 #include "gemm.hpp"
 
 namespace datamunge::nn {
@@ -20,6 +26,7 @@ namespace datamunge::nn {
 using detail::as_dtype;
 using detail::dispatch_float;
 using detail::gemm;
+using detail::gemm_local;
 using detail::nograd;
 
 namespace {
@@ -27,7 +34,7 @@ namespace {
 using I64   = std::int64_t;
 using Grads = std::vector<Tensor>;
 
-/// Upper bound on the im2col buffer; larger batches are processed in chunks of images.
+/// Upper bound on the 3-D vol2col buffer; larger batches are processed in chunks of units.
 constexpr I64 kColBudgetBytes = I64{64} << 20;
 
 struct Axis {
@@ -115,62 +122,82 @@ I64 units_per_chunk(const G& g, std::size_t elem) {
   return std::max<I64>(1, std::min<I64>(g.units(), kColBudgetBytes / per_unit));
 }
 
-/// cols[r, (i KW + j) Cg + c] = x[n, oy s - pt + i d, ox s - pl + j d, group Cg + c] (0 outside),
-/// for the images [n0, n1) of the batch.
+// ---- 2-D patch tiles -----------------------------------------------------------------
+//
+// A 2-D convolution is computed one tile at a time: the patch rows of a block
+// of output rows of one image, sized to stay in a core's L2 cache, so that
+// im2col (or the input gradient's col2im) and the GEMM on that tile run back
+// to back on one thread and the patch matrix never leaves the cache. The
+// tiles are fixed by the geometry, so every sum runs in the same order
+// whatever the thread count.
+
+/// Patch bytes per tile.
+constexpr I64 kTileBytes = I64{384} << 10;
+/// Partial filter gradients kept by the backward-filter reduction (fixed, for determinism).
+constexpr I64 kFilterPartials = 16;
+
+struct RowBlocks {
+  I64 rows{1};    ///< output rows (oy) per block
+  I64 blocks{1};  ///< blocks per image
+};
+
+RowBlocks row_blocks(const Geometry& g, std::size_t elem) {
+  RowBlocks b;
+  const I64 per_row = std::max<I64>(1, g.ow * g.kc() * static_cast<I64>(elem));
+  b.rows            = std::max<I64>(1, std::min<I64>(g.oh, kTileBytes / per_row));
+  b.blocks          = (g.oh + b.rows - 1) / b.rows;
+  return b;
+}
+
+/// cols[r, (i KW + j) Cg + c] = x[n, oy s - pt + i d, ox s - pl + j d, group Cg + c] (0 outside)
+/// for the output rows oy in [oy0, oy1) of image n, r = (oy - oy0) OW + ox.
 template <typename T>
-void im2col(const Geometry& g, const T* x, I64 n0, I64 n1, I64 group, T* cols) {
-  const I64 kc = g.kc();
-  parallel_for(0, (n1 - n0) * g.oh, std::max<I64>(1, 4096 / std::max<I64>(1, g.ow * kc)), [&](I64 lo, I64 hi) {
-    for (I64 r = lo; r < hi; ++r) {
-      const I64 n = n0 + r / g.oh, oy = r % g.oh;
-      for (I64 ox = 0; ox < g.ow; ++ox) {
-        T* dst = cols + (r * g.ow + ox) * kc;
-        for (I64 i = 0; i < g.kh; ++i) {
-          const I64 iy = oy * g.sh - g.pt + i * g.dh;
-          if (iy < 0 || iy >= g.h) {
-            std::fill(dst, dst + g.kw * g.cg, T(0));
-            dst += g.kw * g.cg;
-            continue;
-          }
-          const T* row = x + ((n * g.h + iy) * g.w) * g.c + group * g.cg;
-          for (I64 j = 0; j < g.kw; ++j, dst += g.cg) {
-            const I64 ix = ox * g.sw - g.pl + j * g.dw;
-            if (ix < 0 || ix >= g.w)
-              std::fill(dst, dst + g.cg, T(0));
-            else
-              std::memcpy(dst, row + ix * g.c, sizeof(T) * static_cast<std::size_t>(g.cg));
-          }
+void im2col_rows(const Geometry& g, const T* x, I64 n, I64 oy0, I64 oy1, I64 group, T* cols) {
+  const I64 kc = g.kc(), line = g.kw * g.cg;
+  for (I64 oy = oy0; oy < oy1; ++oy)
+    for (I64 ox = 0; ox < g.ow; ++ox) {
+      T* dst = cols + ((oy - oy0) * g.ow + ox) * kc;
+      for (I64 i = 0; i < g.kh; ++i) {
+        const I64 iy = oy * g.sh - g.pt + i * g.dh;
+        if (iy < 0 || iy >= g.h) {
+          std::fill(dst, dst + line, T(0));
+          dst += line;
+          continue;
+        }
+        const T* row = x + ((n * g.h + iy) * g.w) * g.c + group * g.cg;
+        for (I64 j = 0; j < g.kw; ++j, dst += g.cg) {
+          const I64 ix = ox * g.sw - g.pl + j * g.dw;
+          if (ix < 0 || ix >= g.w)
+            std::fill(dst, dst + g.cg, T(0));
+          else
+            std::memcpy(dst, row + ix * g.c, sizeof(T) * static_cast<std::size_t>(g.cg));
         }
       }
     }
-  });
 }
 
-/// The adjoint of im2col: adds cols back into dx for the images [n0, n1).
+/// The adjoint of im2col_rows: adds cols back into dx for the output rows [oy0, oy1) of image n.
 template <typename T>
-void col2im_add(const Geometry& g, const T* cols, I64 n0, I64 n1, I64 group, T* dx) {
-  const I64 kc = g.kc();
-  parallel_for(n0, n1, 1, [&](I64 lo, I64 hi) {
-    for (I64 n = lo; n < hi; ++n)
-      for (I64 oy = 0; oy < g.oh; ++oy)
-        for (I64 ox = 0; ox < g.ow; ++ox) {
-          const T* src = cols + (((n - n0) * g.oh + oy) * g.ow + ox) * kc;
-          for (I64 i = 0; i < g.kh; ++i) {
-            const I64 iy = oy * g.sh - g.pt + i * g.dh;
-            if (iy < 0 || iy >= g.h) {
-              src += g.kw * g.cg;
-              continue;
-            }
-            T* row = dx + ((n * g.h + iy) * g.w) * g.c + group * g.cg;
-            for (I64 j = 0; j < g.kw; ++j, src += g.cg) {
-              const I64 ix = ox * g.sw - g.pl + j * g.dw;
-              if (ix < 0 || ix >= g.w) continue;
-              T* d = row + ix * g.c;
-              for (I64 c = 0; c < g.cg; ++c) d[c] += src[c];
-            }
-          }
+void col2im_add_rows(const Geometry& g, const T* cols, I64 n, I64 oy0, I64 oy1, I64 group, T* dx) {
+  const I64 kc = g.kc(), line = g.kw * g.cg;
+  for (I64 oy = oy0; oy < oy1; ++oy)
+    for (I64 ox = 0; ox < g.ow; ++ox) {
+      const T* src = cols + ((oy - oy0) * g.ow + ox) * kc;
+      for (I64 i = 0; i < g.kh; ++i) {
+        const I64 iy = oy * g.sh - g.pt + i * g.dh;
+        if (iy < 0 || iy >= g.h) {
+          src += line;
+          continue;
         }
-  });
+        T* row = dx + ((n * g.h + iy) * g.w) * g.c + group * g.cg;
+        for (I64 j = 0; j < g.kw; ++j, src += g.cg) {
+          const I64 ix = ox * g.sw - g.pl + j * g.dw;
+          if (ix < 0 || ix >= g.w) continue;
+          T* d = row + ix * g.c;
+          for (I64 c = 0; c < g.cg; ++c) d[c] += src[c];
+        }
+      }
+    }
 }
 
 // ---- 3-D geometry and vol2col -------------------------------------------------------
@@ -434,6 +461,61 @@ void depthwise_backward_filter(const Geometry& g, const T* x, const T* dy, T* df
   }
 }
 
+/// Reusable, uninitialised workspace for the patch matrix of one thread, grown
+/// on demand and kept (at most kColBudgetBytes). A fresh std::vector per call
+/// would be value-initialised and page-faulted again every time, although
+/// im2col and the input-gradient GEMM write every element before it is read.
+template <typename T, int Slot = 0>
+T* patch_scratch(I64 n) {
+  static thread_local std::unique_ptr<T[]> buffer;
+  static thread_local I64                  capacity = 0;
+  if (n > capacity) {
+    buffer.reset(new T[static_cast<std::size_t>(n)]);
+    capacity = n;
+  }
+  return buffer.get();
+}
+
+/// Reusable workspace for the partial filter gradients of one call (same policy as patch_scratch).
+template <typename T>
+T* partial_scratch(I64 n) {
+  static thread_local std::unique_ptr<T[]> buffer;
+  static thread_local I64                  capacity = 0;
+  if (n > capacity) {
+    buffer.reset(new T[static_cast<std::size_t>(n)]);
+    capacity = n;
+  }
+  return buffer.get();
+}
+
+/// out [rows, cols] = the sum of `parts` partials laid out [parts, rows, cols], in part order.
+template <typename T>
+void reduce_partials(const T* partial, I64 parts, I64 rows, I64 cols, T* out) {
+  const I64 plane = rows * cols;
+  parallel_for(0, rows, std::max<I64>(1, 16384 / std::max<I64>(cols, 1)), [&](I64 lo, I64 hi) {
+    for (I64 r = lo; r < hi; ++r) {
+      T* dst = out + r * cols;
+      std::copy(partial + r * cols, partial + (r + 1) * cols, dst);
+      for (I64 p = 1; p < parts; ++p) {
+        const T* src = partial + p * plane + r * cols;
+        for (I64 c = 0; c < cols; ++c) dst[c] += src[c];
+      }
+    }
+  });
+}
+
+/// Pixel rows per task of a pointwise convolution (a plain GEMM over pixels):
+/// enough rows for an efficient GEMM, few enough to keep the tile in cache.
+I64 pointwise_rows(const Geometry& g, std::size_t elem) {
+  const I64 widest = std::max<I64>(1, std::max(g.c, g.o) * static_cast<I64>(elem));
+  return std::max<I64>(64, std::min<I64>(256, kTileBytes / widest));
+}
+
+template <typename T>
+void parallel_zero(T* p, I64 n) {
+  parallel_for(0, n, I64{1} << 18, [&](I64 lo, I64 hi) { std::fill(p + lo, p + hi, T(0)); });
+}
+
 // The GEMM drivers below serve 2-D (Geometry, im2col) and 3-D (Geometry3,
 // vol2col) convolutions alike; the overloads of im2col / col2im_add pick the
 // patch layout.
@@ -446,14 +528,33 @@ void conv_forward(const G& g, const T* x, const T* f, T* y) {
     gemm(false, false, g.n * g.pixels(), g.o, g.c, T(1), x, g.c, f, g.o, T(0), y, g.o);
     return;
   }
-  const I64      kc = g.kc(), rpu = g.rows_per_unit(), chunk = units_per_chunk(g, sizeof(T));
-  std::vector<T> cols(static_cast<std::size_t>(chunk * rpu * kc));
-  for (I64 u0 = 0; u0 < g.units(); u0 += chunk) {
-    const I64 u1 = std::min(g.units(), u0 + chunk), rows = (u1 - u0) * rpu;
-    for (I64 grp = 0; grp < g.groups; ++grp) {
-      im2col(g, x, u0, u1, grp, cols.data());
-      gemm(false, false, rows, g.og, kc, T(1), cols.data(), kc, f + grp * g.og, g.o, T(0),
-           y + u0 * rpu * g.o + grp * g.og, g.o);
+  if constexpr (std::is_same<G, Geometry>::value) {
+    // One task per tile: im2col into this thread's scratch, then the GEMM on it.
+    const I64       kc = g.kc();
+    const RowBlocks rb = row_blocks(g, sizeof(T));
+    parallel_for(0, g.n * rb.blocks, 1, [&](I64 lo, I64 hi) {
+      T* cols = patch_scratch<T>(rb.rows * g.ow * kc);
+      for (I64 t = lo; t < hi; ++t) {
+        const I64 n = t / rb.blocks, oy0 = (t % rb.blocks) * rb.rows, oy1 = std::min(g.oh, oy0 + rb.rows);
+        const I64 rows = (oy1 - oy0) * g.ow;
+        T*        out  = y + ((n * g.oh + oy0) * g.ow) * g.o;
+        for (I64 grp = 0; grp < g.groups; ++grp) {
+          im2col_rows(g, x, n, oy0, oy1, grp, cols);
+          gemm_local(false, false, rows, g.og, kc, T(1), cols, kc, f + grp * g.og, g.o, T(0), out + grp * g.og, g.o);
+        }
+      }
+    });
+    return;
+  } else {
+    const I64 kc = g.kc(), rpu = g.rows_per_unit(), chunk = units_per_chunk(g, sizeof(T));
+    T*        cols = patch_scratch<T>(chunk * rpu * kc);
+    for (I64 u0 = 0; u0 < g.units(); u0 += chunk) {
+      const I64 u1 = std::min(g.units(), u0 + chunk), rows = (u1 - u0) * rpu;
+      for (I64 grp = 0; grp < g.groups; ++grp) {
+        im2col(g, x, u0, u1, grp, cols);
+        gemm(false, false, rows, g.og, kc, T(1), cols, kc, f + grp * g.og, g.o, T(0),
+             y + u0 * rpu * g.o + grp * g.og, g.o);
+      }
     }
   }
 }
@@ -467,15 +568,37 @@ void conv_backward_input(const G& g, const T* f, const T* dy, T* dx) {
     gemm(false, true, g.n * g.pixels(), g.c, g.o, T(1), dy, g.o, f, g.o, T(0), dx, g.c);
     return;
   }
-  std::fill(dx, dx + g.n * g.pixels() * g.c, T(0));
-  const I64      kc = g.kc(), rpu = g.rows_per_unit(), chunk = units_per_chunk(g, sizeof(T));
-  std::vector<T> cols(static_cast<std::size_t>(chunk * rpu * kc));
-  for (I64 u0 = 0; u0 < g.units(); u0 += chunk) {
-    const I64 u1 = std::min(g.units(), u0 + chunk), rows = (u1 - u0) * rpu;
-    for (I64 grp = 0; grp < g.groups; ++grp) {
-      gemm(false, true, rows, kc, g.og, T(1), dy + u0 * rpu * g.o + grp * g.og, g.o, f + grp * g.og, g.o, T(0),
-           cols.data(), kc);
-      col2im_add(g, cols.data(), u0, u1, grp, dx);
+  if constexpr (std::is_same<G, Geometry>::value) {
+    // One task per image (its tiles overlap in dx, so one thread owns the whole
+    // image): zero its dx, then per tile the GEMM into scratch and col2im.
+    const I64       kc = g.kc(), image = g.pixels() * g.c;
+    const RowBlocks rb = row_blocks(g, sizeof(T));
+    parallel_for(0, g.n, 1, [&](I64 lo, I64 hi) {
+      T* cols = patch_scratch<T>(rb.rows * g.ow * kc);
+      for (I64 n = lo; n < hi; ++n) {
+        std::fill(dx + n * image, dx + (n + 1) * image, T(0));
+        for (I64 b = 0; b < rb.blocks; ++b) {
+          const I64 oy0 = b * rb.rows, oy1 = std::min(g.oh, oy0 + rb.rows), rows = (oy1 - oy0) * g.ow;
+          const T*  grad = dy + ((n * g.oh + oy0) * g.ow) * g.o;
+          for (I64 grp = 0; grp < g.groups; ++grp) {
+            gemm_local(false, true, rows, kc, g.og, T(1), grad + grp * g.og, g.o, f + grp * g.og, g.o, T(0), cols, kc);
+            col2im_add_rows(g, cols, n, oy0, oy1, grp, dx);
+          }
+        }
+      }
+    });
+    return;
+  } else {
+    parallel_zero(dx, g.n * g.pixels() * g.c);
+    const I64 kc = g.kc(), rpu = g.rows_per_unit(), chunk = units_per_chunk(g, sizeof(T));
+    T*        cols = patch_scratch<T>(chunk * rpu * kc);
+    for (I64 u0 = 0; u0 < g.units(); u0 += chunk) {
+      const I64 u1 = std::min(g.units(), u0 + chunk), rows = (u1 - u0) * rpu;
+      for (I64 grp = 0; grp < g.groups; ++grp) {
+        gemm(false, true, rows, kc, g.og, T(1), dy + u0 * rpu * g.o + grp * g.og, g.o, f + grp * g.og, g.o, T(0),
+             cols, kc);
+        col2im_add(g, cols, u0, u1, grp, dx);
+      }
     }
   }
 }
@@ -489,17 +612,191 @@ void conv_backward_filter(const G& g, const T* x, const T* dy, T* df) {
     gemm(true, false, g.c, g.o, g.n * g.pixels(), T(1), x, g.c, dy, g.o, T(0), df, g.o);
     return;
   }
-  const I64 kc = g.kc(), rpu = g.rows_per_unit(), chunk = units_per_chunk(g, sizeof(T));
-  std::fill(df, df + kc * g.o, T(0));
-  std::vector<T> cols(static_cast<std::size_t>(chunk * rpu * kc));
-  for (I64 u0 = 0; u0 < g.units(); u0 += chunk) {
-    const I64 u1 = std::min(g.units(), u0 + chunk), rows = (u1 - u0) * rpu;
-    for (I64 grp = 0; grp < g.groups; ++grp) {
-      im2col(g, x, u0, u1, grp, cols.data());
-      gemm(true, false, kc, g.og, rows, T(1), cols.data(), kc, dy + u0 * rpu * g.o + grp * g.og, g.o, T(1),
-           df + grp * g.og, g.o);
+  if constexpr (std::is_same<G, Geometry>::value) {
+    // Tile t accumulates into partial t % parts (a fixed assignment); each
+    // partial is owned by one thread and stays in its cache across its tiles.
+    const I64       kc = g.kc(), plane = kc * g.o;
+    const RowBlocks rb = row_blocks(g, sizeof(T));
+    const I64       tasks = g.n * rb.blocks, parts = std::max<I64>(1, std::min(tasks, kFilterPartials));
+    T*              partial = partial_scratch<T>(parts * plane);
+    parallel_for(0, parts, 1, [&](I64 lo, I64 hi) {
+      T* cols = patch_scratch<T>(rb.rows * g.ow * kc);
+      for (I64 p = lo; p < hi; ++p) {
+        T* acc = partial + p * plane;
+        for (I64 t = p; t < tasks; t += parts) {
+          const I64 n = t / rb.blocks, oy0 = (t % rb.blocks) * rb.rows, oy1 = std::min(g.oh, oy0 + rb.rows);
+          const I64 rows = (oy1 - oy0) * g.ow;
+          const T*  grad = dy + ((n * g.oh + oy0) * g.ow) * g.o;
+          for (I64 grp = 0; grp < g.groups; ++grp) {
+            im2col_rows(g, x, n, oy0, oy1, grp, cols);
+            // The partial's first tile overwrites it (no zero fill).
+            gemm_local(true, false, kc, g.og, rows, T(1), cols, kc, grad + grp * g.og, g.o, t == p ? T(0) : T(1),
+                       acc + grp * g.og, g.o);
+          }
+        }
+      }
+    });
+    reduce_partials(partial, parts, kc, g.o, df);
+    return;
+  } else {
+    const I64 kc = g.kc(), rpu = g.rows_per_unit(), chunk = units_per_chunk(g, sizeof(T));
+    std::fill(df, df + kc * g.o, T(0));
+    T* cols = patch_scratch<T>(chunk * rpu * kc);
+    for (I64 u0 = 0; u0 < g.units(); u0 += chunk) {
+      const I64 u1 = std::min(g.units(), u0 + chunk), rows = (u1 - u0) * rpu;
+      for (I64 grp = 0; grp < g.groups; ++grp) {
+        im2col(g, x, u0, u1, grp, cols);
+        gemm(true, false, kc, g.og, rows, T(1), cols, kc, dy + u0 * rpu * g.o + grp * g.og, g.o, T(1),
+             df + grp * g.og, g.o);
+      }
     }
   }
+}
+
+// ---- fused convolution + bias + ReLU ---------------------------------------------------
+//
+// The conv layer's bias and ReLU are applied to each output tile of
+// conv_forward while it is in cache, and the backward pass forms the masked
+// gradient dz = grad * [y > 0] once per tile and consumes it in cache for the
+// bias reduction, the filter-gradient GEMM and the input-gradient GEMM +
+// col2im: one pass over the activations instead of the five of the
+// composition (mask, bias reduction, two GEMM inputs). Ungrouped,
+// non-depthwise 2-D geometries only.
+
+/// y = relu(conv(x, f) + b), with output pixel rows y_ld apart (y_ld >= g.o; a
+/// wider stride writes one channel band of a concatenated output).
+template <typename T>
+void conv_bias_relu_forward(const Geometry& g, const T* x, const T* f, const T* b, T* y, I64 y_ld) {
+  const I64  o        = g.o;
+  const auto epilogue = [b, o, y_ld](T* out, I64 rows) {
+    for (I64 r = 0; r < rows; ++r) {
+      T* row = out + r * y_ld;
+      for (I64 c = 0; c < o; ++c) {
+        const T v = row[c] + b[c];
+        row[c]    = v > T(0) ? v : T(0);
+      }
+    }
+  };
+  if (g.pointwise()) {
+    const I64 total = g.n * g.pixels(), block = pointwise_rows(g, sizeof(T)), tasks = (total + block - 1) / block;
+    parallel_for(0, tasks, 1, [&](I64 lo, I64 hi) {
+      for (I64 t = lo; t < hi; ++t) {
+        const I64 r0 = t * block, rows = std::min(total, r0 + block) - r0;
+        gemm_local(false, false, rows, o, g.c, T(1), x + r0 * g.c, g.c, f, o, T(0), y + r0 * y_ld, y_ld);
+        epilogue(y + r0 * y_ld, rows);
+      }
+    });
+    return;
+  }
+  const I64       kc = g.kc();
+  const RowBlocks rb = row_blocks(g, sizeof(T));
+  parallel_for(0, g.n * rb.blocks, 1, [&](I64 lo, I64 hi) {
+    T* cols = patch_scratch<T>(rb.rows * g.ow * kc);
+    for (I64 t = lo; t < hi; ++t) {
+      const I64 n = t / rb.blocks, oy0 = (t % rb.blocks) * rb.rows, oy1 = std::min(g.oh, oy0 + rb.rows);
+      const I64 rows = (oy1 - oy0) * g.ow;
+      T*        out  = y + ((n * g.oh + oy0) * g.ow) * y_ld;
+      im2col_rows(g, x, n, oy0, oy1, 0, cols);
+      gemm_local(false, false, rows, o, kc, T(1), cols, kc, f, o, T(0), out, y_ld);
+      epilogue(out, rows);
+    }
+  });
+}
+
+/// (dx, df, db) of y = relu(conv(x, f) + b) from y (pixel rows y_ld apart)
+/// and its gradient (rows grad_ld apart). Tile t accumulates df and db into
+/// partial t % parts (a fixed assignment), so the sums are deterministic. With
+/// dx_accumulate the input gradient is added to dx instead of overwriting it
+/// (several convolutions of one input). A null output is skipped.
+template <typename T>
+void conv_bias_relu_backward(const Geometry& g, const T* x, const T* y, I64 y_ld, const T* grad, I64 grad_ld,
+                             const T* f, T* dx, bool dx_accumulate, T* df, T* db) {
+  const I64 o = g.o;
+  // dz for the pixel rows [r0, r0 + rows) of the output.
+  const auto mask = [y, y_ld, grad, grad_ld, o](I64 r0, I64 rows, T* dz) {
+    for (I64 r = 0; r < rows; ++r) {
+      const T* yr = y + (r0 + r) * y_ld;
+      const T* gr = grad + (r0 + r) * grad_ld;
+      T*       d  = dz + r * o;
+      for (I64 c = 0; c < o; ++c) {
+        const T gv = gr[c];
+        d[c]       = yr[c] > T(0) ? gv : T(0);
+      }
+    }
+  };
+  const auto bias_sum = [o](const T* dz, I64 rows, double* acc) {
+    for (I64 r = 0; r < rows; ++r)
+      for (I64 c = 0; c < o; ++c) acc[c] += static_cast<double>(dz[r * o + c]);
+  };
+  const auto finish_bias = [db, o](const std::vector<double>& partial, I64 parts) {
+    if (!db) return;
+    for (I64 c = 0; c < o; ++c) {
+      double total = 0;
+      for (I64 p = 0; p < parts; ++p) total += partial[static_cast<std::size_t>(p * o + c)];
+      db[c] = static_cast<T>(total);
+    }
+  };
+
+  if (g.pointwise()) {
+    const I64 total = g.n * g.pixels(), block = pointwise_rows(g, sizeof(T)), tasks = (total + block - 1) / block;
+    const I64 parts = std::max<I64>(1, std::min(tasks, kFilterPartials)), plane = g.c * o;
+    T*        partial = df ? partial_scratch<T>(parts * plane) : nullptr;
+    std::vector<double> bias_partial(static_cast<std::size_t>(db ? parts * o : 0), 0.0);
+    parallel_for(0, parts, 1, [&](I64 lo, I64 hi) {
+      T* dz = patch_scratch<T, 2>(block * o);
+      for (I64 p = lo; p < hi; ++p) {
+        T*      acc  = partial ? partial + p * plane : nullptr;
+        double* bacc = db ? bias_partial.data() + p * o : nullptr;
+        for (I64 t = p; t < tasks; t += parts) {
+          const I64 r0 = t * block, rows = std::min(total, r0 + block) - r0;
+          mask(r0, rows, dz);
+          if (bacc) bias_sum(dz, rows, bacc);
+          // The partial's first tile overwrites it (no zero fill).
+          if (acc) gemm_local(true, false, g.c, o, rows, T(1), x + r0 * g.c, g.c, dz, o, t == p ? T(0) : T(1), acc, o);
+          if (dx)
+            gemm_local(false, true, rows, g.c, o, T(1), dz, o, f, o, dx_accumulate ? T(1) : T(0), dx + r0 * g.c, g.c);
+        }
+      }
+    });
+    if (df) reduce_partials(partial, parts, g.c, o, df);
+    finish_bias(bias_partial, parts);
+    return;
+  }
+
+  // One task per image (its tiles overlap in dx); image n feeds partial n % parts.
+  const I64       kc = g.kc(), image = g.pixels() * g.c, plane = kc * o;
+  const RowBlocks rb = row_blocks(g, sizeof(T));
+  const I64       parts   = std::max<I64>(1, std::min(g.n, kFilterPartials));
+  T*              partial = df ? partial_scratch<T>(parts * plane) : nullptr;
+  std::vector<double> bias_partial(static_cast<std::size_t>(db ? parts * o : 0), 0.0);
+  parallel_for(0, parts, 1, [&](I64 lo, I64 hi) {
+    T* cols  = df ? patch_scratch<T, 0>(rb.rows * g.ow * kc) : nullptr;
+    T* cols2 = dx ? patch_scratch<T, 1>(rb.rows * g.ow * kc) : nullptr;
+    T* dz    = patch_scratch<T, 2>(rb.rows * g.ow * o);
+    for (I64 p = lo; p < hi; ++p) {
+      T*      acc  = partial ? partial + p * plane : nullptr;
+      double* bacc = db ? bias_partial.data() + p * o : nullptr;
+      for (I64 n = p; n < g.n; n += parts) {
+        if (dx && !dx_accumulate) std::fill(dx + n * image, dx + (n + 1) * image, T(0));
+        for (I64 b = 0; b < rb.blocks; ++b) {
+          const I64 oy0 = b * rb.rows, oy1 = std::min(g.oh, oy0 + rb.rows), rows = (oy1 - oy0) * g.ow;
+          mask((n * g.oh + oy0) * g.ow, rows, dz);
+          if (bacc) bias_sum(dz, rows, bacc);
+          if (acc) {
+            // The partial's first tile overwrites it (no zero fill).
+            im2col_rows(g, x, n, oy0, oy1, 0, cols);
+            gemm_local(true, false, kc, o, rows, T(1), cols, kc, dz, o, n == p && b == 0 ? T(0) : T(1), acc, o);
+          }
+          if (dx) {
+            gemm_local(false, true, rows, kc, o, T(1), dz, o, f, o, T(0), cols2, kc);
+            col2im_add_rows(g, cols2, n, oy0, oy1, 0, dx);
+          }
+        }
+      }
+    }
+  });
+  if (df) reduce_partials(partial, parts, kc, o, df);
+  finish_bias(bias_partial, parts);
 }
 
 template <typename G>
@@ -651,7 +948,189 @@ I64 transpose_length(I64 in, I64 k, I64 s, I64 d, Padding padding, I64 pb, I64 p
 }  // namespace
 
 Tensor conv2d(const Tensor& x, const Tensor& filter, const Conv2DOptions& options) {
+  if (detail::is_native(x) || detail::is_native(filter)) {
+    const auto g = conv_geometry(x.shape(), filter.shape(), options, "conv2d");
+    return detail::device_conv2d(
+        x, filter,
+        {g.n, g.h, g.w, g.c, g.kh, g.kw, g.o, g.oh, g.ow, g.sh, g.sw, g.dh, g.dw, g.pt, g.pl,
+         g.groups});
+  }
   return conv_impl(x, filter, options);
+}
+
+Tensor conv2d_bias_relu(const Tensor& x, const Tensor& filter, const Tensor& bias, const Conv2DOptions& options) {
+  if (filter.dim() != 4 || bias.dim() != 1 || bias.shape()[0] != filter.shape()[3])
+    throw std::invalid_argument("conv2d_bias_relu: bias " + shape_str(bias.shape()) + " must be [C_out] for filter " +
+                                shape_str(filter.shape()));
+  if (detail::is_native(x) || detail::is_native(filter) || detail::is_native(bias) || options.groups != 1)
+    return bias_add_relu(conv2d(x, filter, options), bias);
+  DType dt = promote_types(promote_types(x.dtype(), filter.dtype()), bias.dtype());
+  if (!is_floating(dt)) dt = DType::Float32;
+  const Tensor xc = as_dtype(x, dt), fc = as_dtype(filter, dt), bc = as_dtype(bias, dt);
+  const auto   g  = conv_geometry(xc.shape(), fc.shape(), options, "conv2d_bias_relu");
+  if (is_depthwise(g)) return bias_add_relu(conv2d(xc, fc, options), bc);
+  Tensor out = empty(g.out_shape(), dt);
+  {
+    NoGradGuard  guard;
+    const Tensor xk = nograd(xc).contiguous(), fk = nograd(fc).contiguous(), bk = nograd(bc).contiguous();
+    dispatch_float(dt, "conv2d_bias_relu", [&](auto tag) {
+      using T = typename decltype(tag)::type;
+      conv_bias_relu_forward<T>(g, xk.data_ptr<T>(), fk.data_ptr<T>(), bk.data_ptr<T>(), out.data_ptr<T>(), g.o);
+    });
+  }
+  const SavedTensor sx(xc), sf(fc);
+  const bool        need_x = xc.requires_grad(), need_f = fc.requires_grad(), need_b = bc.requires_grad();
+  record(
+      "Conv2DBiasRelu", {xc, fc, bc}, {out},
+      [sx, sf, options, need_x, need_f, need_b](const Grads& gr, const Grads& outs) {
+        const Tensor& X = sx.get();
+        const Tensor& F = sf.get();
+        const Tensor  Y = outs[0].detach();
+        if (is_grad_enabled()) {
+          // Recording: the differentiable composition, for higher-order gradients.
+          const Tensor dz = where(greater(Y, 0.0), gr[0], 0.0);
+          Axes         axes;
+          for (std::int64_t i = 0; i + 1 < Y.dim(); ++i) axes.push_back(i);
+          return Grads{need_x ? conv2d_backprop_input(X.shape(), F, dz, options) : Tensor(),
+                       need_f ? conv2d_backprop_filter(X, F.shape(), dz, options) : Tensor(),
+                       need_b ? sum(dz, axes) : Tensor()};
+        }
+        const DType dt = Y.dtype();
+        const auto  g  = conv_geometry(X.shape(), F.shape(), options, "conv2d_bias_relu");
+        check_grad_shape(g, gr[0], "conv2d_bias_relu");
+        Tensor dx = need_x ? empty(X.shape(), dt) : Tensor(), df = need_f ? empty(F.shape(), dt) : Tensor(),
+               db = need_b ? empty({g.o}, dt) : Tensor();
+        const Tensor xk = nograd(X).contiguous(), fk = nograd(F).contiguous();
+        Tensor       gk = detail::cast_raw(nograd(gr[0]), dt);
+        I64          ld = detail::uniform_row_stride(gk);
+        if (ld < 0) {
+          gk = gk.contiguous();
+          ld = g.o;
+        }
+        dispatch_float(dt, "conv2d_bias_relu backward", [&](auto tag) {
+          using T = typename decltype(tag)::type;
+          conv_bias_relu_backward<T>(g, xk.data_ptr<T>(), Y.data_ptr<T>(), g.o, gk.data_ptr<T>(), ld,
+                                     fk.data_ptr<T>(), need_x ? dx.data_ptr<T>() : nullptr, false,
+                                     need_f ? df.data_ptr<T>() : nullptr, need_b ? db.data_ptr<T>() : nullptr);
+        });
+        return Grads{dx, df, db};
+      },
+      /*save_outputs=*/true);
+  return out;
+}
+
+Tensor conv2d_bias_relu_concat(const Tensor& x, const std::vector<Tensor>& filters, const std::vector<Tensor>& biases,
+                               const std::vector<Conv2DOptions>& options) {
+  const std::size_t branches = filters.size();
+  if (branches == 0 || biases.size() != branches || options.size() != branches)
+    throw std::invalid_argument("conv2d_bias_relu_concat: need matching, nonempty filter, bias and option lists");
+  for (std::size_t i = 0; i < branches; ++i)
+    if (filters[i].dim() != 4 || biases[i].dim() != 1 || biases[i].shape()[0] != filters[i].shape()[3])
+      throw std::invalid_argument("conv2d_bias_relu_concat: bias " + shape_str(biases[i].shape()) +
+                                  " must be [C_out] for filter " + shape_str(filters[i].shape()));
+  // The composition: every case the fused kernels do not cover.
+  const auto composed = [&] {
+    std::vector<Tensor> outs;
+    for (std::size_t i = 0; i < branches; ++i) outs.push_back(conv2d_bias_relu(x, filters[i], biases[i], options[i]));
+    return branches == 1 ? outs[0] : concat(outs, -1);
+  };
+  DType dt = x.dtype();
+  bool  fused = !detail::is_native(x);
+  for (std::size_t i = 0; i < branches; ++i) {
+    dt    = promote_types(promote_types(dt, filters[i].dtype()), biases[i].dtype());
+    fused = fused && !detail::is_native(filters[i]) && !detail::is_native(biases[i]) && options[i].groups == 1;
+  }
+  if (!is_floating(dt)) dt = DType::Float32;
+  if (!fused) return composed();
+  const Tensor          xc = as_dtype(x, dt);
+  std::vector<Tensor>   fc, bc;
+  std::vector<Geometry> geos;
+  std::vector<I64>      offsets;
+  I64                   width = 0;
+  for (std::size_t i = 0; i < branches; ++i) {
+    fc.push_back(as_dtype(filters[i], dt));
+    bc.push_back(as_dtype(biases[i], dt));
+    geos.push_back(conv_geometry(xc.shape(), fc.back().shape(), options[i], "conv2d_bias_relu_concat"));
+    const Geometry& g = geos.back();
+    if (is_depthwise(g) || g.oh != geos[0].oh || g.ow != geos[0].ow) return composed();
+    offsets.push_back(width);
+    width += g.o;
+  }
+  const Geometry& g0  = geos[0];
+  Tensor          out = empty({g0.n, g0.oh, g0.ow, width}, dt);
+  {
+    NoGradGuard  guard;
+    const Tensor xk = nograd(xc).contiguous();
+    for (std::size_t i = 0; i < branches; ++i) {
+      const Tensor fk = nograd(fc[i]).contiguous(), bk = nograd(bc[i]).contiguous();
+      dispatch_float(dt, "conv2d_bias_relu_concat", [&](auto tag) {
+        using T = typename decltype(tag)::type;
+        conv_bias_relu_forward<T>(geos[i], xk.data_ptr<T>(), fk.data_ptr<T>(), bk.data_ptr<T>(),
+                                  out.data_ptr<T>() + offsets[i], width);
+      });
+    }
+  }
+  std::vector<Tensor> inputs{xc};
+  inputs.insert(inputs.end(), fc.begin(), fc.end());
+  inputs.insert(inputs.end(), bc.begin(), bc.end());
+  std::vector<bool> need;
+  for (const Tensor& t : inputs) need.push_back(t.requires_grad());
+  const SavedTensor        sx(xc);
+  std::vector<SavedTensor> sf;
+  for (const Tensor& f : fc) sf.emplace_back(f);
+  record(
+      "Conv2DBiasReluConcat", inputs, {out},
+      [sx, sf, options, need, offsets, width](const Grads& gr, const Grads& outs) {
+        const std::size_t branches = sf.size();
+        const Tensor&     X        = sx.get();
+        const Tensor      Y        = outs[0].detach();
+        Grads             result(1 + 2 * branches);
+        if (is_grad_enabled()) {
+          // Recording: the differentiable composition, for higher-order gradients.
+          const Tensor dz = where(greater(Y, 0.0), gr[0], 0.0);
+          for (std::size_t i = 0; i < branches; ++i) {
+            const Tensor& F   = sf[i].get();
+            const Tensor  dzi = slice_axis(dz, -1, offsets[i], offsets[i] + F.shape()[3]);
+            if (need[0]) {
+              const Tensor dxi = conv2d_backprop_input(X.shape(), F, dzi, options[i]);
+              result[0]        = result[0].defined() ? add(result[0], dxi) : dxi;
+            }
+            if (need[1 + i]) result[1 + i] = conv2d_backprop_filter(X, F.shape(), dzi, options[i]);
+            if (need[1 + branches + i]) result[1 + branches + i] = sum(dzi, Axes{0, 1, 2});
+          }
+          return result;
+        }
+        const DType dt = Y.dtype();
+        if (gr[0].shape() != Y.shape())
+          throw std::invalid_argument("conv2d_bias_relu_concat: gradient shape " + shape_str(gr[0].shape()) +
+                                      " does not match the output " + shape_str(Y.shape()));
+        const Tensor xk = nograd(X).contiguous();
+        Tensor       gk = detail::cast_raw(nograd(gr[0]), dt);
+        I64          ld = detail::uniform_row_stride(gk);
+        if (ld < 0) {
+          gk = gk.contiguous();
+          ld = width;
+        }
+        if (need[0]) result[0] = empty(X.shape(), dt);
+        for (std::size_t i = 0; i < branches; ++i) {
+          const Tensor& F  = sf[i].get();
+          const auto    g  = conv_geometry(X.shape(), F.shape(), options[i], "conv2d_bias_relu_concat");
+          const Tensor  fk = nograd(F).contiguous();
+          if (need[1 + i]) result[1 + i] = empty(F.shape(), dt);
+          if (need[1 + branches + i]) result[1 + branches + i] = empty({g.o}, dt);
+          dispatch_float(dt, "conv2d_bias_relu_concat backward", [&](auto tag) {
+            using T = typename decltype(tag)::type;
+            conv_bias_relu_backward<T>(g, xk.data_ptr<T>(), Y.data_ptr<T>() + offsets[i], width,
+                                       gk.data_ptr<T>() + offsets[i], ld, fk.data_ptr<T>(),
+                                       need[0] ? result[0].data_ptr<T>() : nullptr, /*dx_accumulate=*/i > 0,
+                                       need[1 + i] ? result[1 + i].data_ptr<T>() : nullptr,
+                                       need[1 + branches + i] ? result[1 + branches + i].data_ptr<T>() : nullptr);
+          });
+        }
+        return result;
+      },
+      /*save_outputs=*/true);
+  return out;
 }
 
 Tensor conv2d_backprop_input(const Shape& input_shape, const Tensor& filter, const Tensor& grad,
@@ -875,19 +1354,23 @@ Tensor avg_pool_grad(const Tensor& grad, const Shape& input_shape, std::array<I6
 Tensor max_pool_gather(const Tensor& grad_in, const Tensor& argmax);
 
 Tensor max_pool_scatter(const Tensor& grad_out, const Tensor& argmax, const Shape& input_shape) {
-  Tensor out = zeros(input_shape, grad_out.dtype());
+  Tensor out = empty(input_shape, grad_out.dtype());
   {
     NoGradGuard  guard;
     const Tensor gk = nograd(grad_out).contiguous();
-    const I64    n = input_shape[0], per_out = n ? argmax.numel() / n : 0;
+    const I64    n = input_shape[0], per_out = n ? argmax.numel() / n : 0, per_in = n ? out.numel() / n : 0;
     const I64*   idx = argmax.data_ptr<I64>();
     dispatch_float(grad_out.dtype(), "max_pool2d backward", [&](auto tag) {
       using T      = typename decltype(tag)::type;
       const T* src = gk.data_ptr<T>();
       T*       dst = out.data_ptr<T>();
-      // Each image's argmaxes stay inside that image, so images never collide.
+      // Each image's argmaxes stay inside that image, so images never collide;
+      // zeroing the image right before its scatter keeps it in cache.
       parallel_for(0, n, 1, [&](I64 lo, I64 hi) {
-        for (I64 i = lo * per_out; i < hi * per_out; ++i) dst[idx[i]] += src[i];
+        for (I64 image = lo; image < hi; ++image) {
+          std::fill(dst + image * per_in, dst + (image + 1) * per_in, T(0));
+          for (I64 i = image * per_out; i < (image + 1) * per_out; ++i) dst[idx[i]] += src[i];
+        }
       });
     });
   }
@@ -935,25 +1418,49 @@ std::pair<Tensor, Tensor> max_pool_with_global_argmax(const Tensor& x_in, std::a
       const T* src = xk.data_ptr<T>();
       T*       dst = out.data_ptr<T>();
       I64*     idx = argmax.data_ptr<I64>();
+      // Each window is pooled in blocks of kBlock channels held in local arrays,
+      // so the per-tap compare/select over a block vectorises and never bounces
+      // through memory. The first tap of a window is taken as is and every
+      // later tap replaces it only when strictly greater (so a NaN first tap
+      // stays and a later NaN is ignored).
+      constexpr I64 kBlock = 16;
       parallel_for(0, g.n * g.oh, 1, [&](I64 lo, I64 hi) {
         for (I64 r = lo; r < hi; ++r) {
           const I64 n = r / g.oh, oy = r % g.oh;
           for (I64 ox = 0; ox < g.ow; ++ox) {
-            const Window wd   = window_at(g, oy, ox);
-            const I64    o    = ((n * g.oh + oy) * g.ow + ox) * g.c;
-            T*           best = dst + o;
-            I64*         at   = idx + o;
-            std::fill(best, best + g.c, -std::numeric_limits<T>::infinity());
-            std::fill(at, at + g.c, I64{-1});
-            for (I64 iy = wd.y0; iy < wd.y1; ++iy)
-              for (I64 ix = wd.x0; ix < wd.x1; ++ix) {
-                const I64 base = ((n * g.h + iy) * g.w + ix) * g.c;
-                for (I64 c = 0; c < g.c; ++c)
-                  if (src[base + c] > best[c] || at[c] < 0) {
-                    best[c] = src[base + c];
-                    at[c]   = base + c;
+            const Window wd = window_at(g, oy, ox);
+            const I64    o  = ((n * g.oh + oy) * g.ow + ox) * g.c;
+            if (wd.y0 >= wd.y1 || wd.x0 >= wd.x1) {
+              std::fill(dst + o, dst + o + g.c, -std::numeric_limits<T>::infinity());
+              std::fill(idx + o, idx + o + g.c, I64{-1});
+              continue;
+            }
+            for (I64 c0 = 0; c0 < g.c; c0 += kBlock) {
+              const I64 cn = std::min(kBlock, g.c - c0);
+              T         best[kBlock];
+              I64       at[kBlock];
+              bool      first = true;
+              for (I64 iy = wd.y0; iy < wd.y1; ++iy)
+                for (I64 ix = wd.x0; ix < wd.x1; ++ix) {
+                  const I64 base = ((n * g.h + iy) * g.w + ix) * g.c + c0;
+                  const T*  v    = src + base;
+                  if (first) {
+                    for (I64 c = 0; c < cn; ++c) {
+                      best[c] = v[c];
+                      at[c]   = base + c;
+                    }
+                    first = false;
+                  } else {
+                    for (I64 c = 0; c < cn; ++c) {
+                      const bool better = v[c] > best[c];
+                      best[c]           = better ? v[c] : best[c];
+                      at[c]             = better ? base + c : at[c];
+                    }
                   }
-              }
+                }
+              std::copy(best, best + cn, dst + o + c0);
+              std::copy(at, at + cn, idx + o + c0);
+            }
           }
         }
       });
@@ -966,10 +1473,152 @@ std::pair<Tensor, Tensor> max_pool_with_global_argmax(const Tensor& x_in, std::a
   return {out, argmax};
 }
 
+/// Tap value of an output whose window holds no input (it gets no gradient).
+constexpr std::uint8_t kNoTap = 255;
+
+/// Max pooling that keeps each output's winning tap (its row-major position
+/// in the window, one byte) instead of a global input index: 8x less index
+/// memory, and both passes run over channels in vector-friendly blocks. Same
+/// values and switches as max_pool_with_global_argmax: the first in-bounds tap
+/// is taken as is and a later one wins only when strictly greater.
+template <typename T>
+void max_pool_taps_forward(const PoolGeometry& g, const T* x, T* y, std::uint8_t* taps) {
+  constexpr I64 kBlock = 64;
+  parallel_for(0, g.n * g.oh, 1, [&](I64 lo, I64 hi) {
+    for (I64 r = lo; r < hi; ++r) {
+      const I64 n = r / g.oh, oy = r % g.oh, ys = oy * g.sh - g.pt;
+      for (I64 ox = 0; ox < g.ow; ++ox) {
+        const I64    xs = ox * g.sw - g.pl, o = ((n * g.oh + oy) * g.ow + ox) * g.c;
+        const Window wd = window_at(g, oy, ox);
+        if (wd.y0 >= wd.y1 || wd.x0 >= wd.x1) {
+          std::fill(y + o, y + o + g.c, -std::numeric_limits<T>::infinity());
+          std::fill(taps + o, taps + o + g.c, kNoTap);
+          continue;
+        }
+        for (I64 c0 = 0; c0 < g.c; c0 += kBlock) {
+          const I64    cn = std::min(kBlock, g.c - c0);
+          T            best[kBlock];
+          std::uint8_t at[kBlock];
+          bool         first = true;
+          for (I64 iy = wd.y0; iy < wd.y1; ++iy)
+            for (I64 ix = wd.x0; ix < wd.x1; ++ix) {
+              const auto t = static_cast<std::uint8_t>((iy - ys) * g.kw + (ix - xs));
+              const T*   v = x + ((n * g.h + iy) * g.w + ix) * g.c + c0;
+              if (first) {
+                for (I64 c = 0; c < cn; ++c) {
+                  best[c] = v[c];
+                  at[c]   = t;
+                }
+                first = false;
+              } else {
+                for (I64 c = 0; c < cn; ++c) {
+                  const bool better = v[c] > best[c];
+                  best[c]           = better ? v[c] : best[c];
+                  at[c]             = better ? t : at[c];
+                }
+              }
+            }
+          for (I64 c = 0; c < cn; ++c) {
+            y[o + c0 + c]    = best[c];
+            taps[o + c0 + c] = at[c];
+          }
+        }
+      }
+    }
+  });
+}
+
+/// dx of max_pool_taps_forward. Each image is zeroed right before it is
+/// filled (so it stays in cache), and every input element receives its
+/// windows' gradients in output order, the summation order of
+/// max_pool_scatter, so the result is the same.
+template <typename T>
+void max_pool_taps_backward(const PoolGeometry& g, const T* grad, const std::uint8_t* taps, T* dx) {
+  const I64 per_in = g.h * g.w * g.c;
+  parallel_for(0, g.n, 1, [&](I64 lo, I64 hi) {
+    for (I64 n = lo; n < hi; ++n) {
+      T* d = dx + n * per_in;
+      std::fill(d, d + per_in, T(0));
+      for (I64 oy = 0; oy < g.oh; ++oy)
+        for (I64 ox = 0; ox < g.ow; ++ox) {
+          const I64           ys = oy * g.sh - g.pt, xs = ox * g.sw - g.pl, o = ((n * g.oh + oy) * g.ow + ox) * g.c;
+          const Window        wd = window_at(g, oy, ox);
+          const T* __restrict            gv = grad + o;
+          const std::uint8_t* __restrict tv = taps + o;
+          for (I64 iy = wd.y0; iy < wd.y1; ++iy)
+            for (I64 ix = wd.x0; ix < wd.x1; ++ix) {
+              const auto     t   = static_cast<std::uint8_t>((iy - ys) * g.kw + (ix - xs));
+              T* __restrict dst = d + (iy * g.w + ix) * g.c;
+              // Both values are loaded unconditionally so the select vectorises.
+              for (I64 c = 0; c < g.c; ++c) {
+                const T v = gv[c];
+                dst[c] += tv[c] == t ? v : T(0);
+              }
+            }
+        }
+    }
+  });
+}
+
+/// The global input index of every output (the max_pool_scatter form; -1 for
+/// an empty window), for higher-order gradients of the tap form.
+Tensor taps_to_argmax(const PoolGeometry& g, const std::vector<std::uint8_t>& taps) {
+  Tensor argmax = empty(g.out_shape(), DType::Int64);
+  I64*   idx    = argmax.data_ptr<I64>();
+  parallel_for(0, g.n * g.oh, 1, [&](I64 lo, I64 hi) {
+    for (I64 r = lo; r < hi; ++r) {
+      const I64 n = r / g.oh, oy = r % g.oh, ys = oy * g.sh - g.pt;
+      for (I64 ox = 0; ox < g.ow; ++ox) {
+        const I64 xs = ox * g.sw - g.pl, o = ((n * g.oh + oy) * g.ow + ox) * g.c;
+        for (I64 c = 0; c < g.c; ++c) {
+          const std::uint8_t t = taps[static_cast<std::size_t>(o + c)];
+          idx[o + c] = t == kNoTap ? I64{-1}
+                                   : ((n * g.h + ys + t / g.kw) * g.w + xs + t % g.kw) * g.c + c;
+        }
+      }
+    }
+  });
+  return argmax;
+}
+
+Tensor max_pool_with_taps(const Tensor& x_in, std::array<I64, 2> window, std::array<I64, 2> strides,
+                          Padding padding) {
+  const Tensor       x = is_floating(x_in.dtype()) ? x_in : cast(x_in, DType::Float32);
+  const PoolGeometry g = pool_geometry(x.shape(), window, strides, padding, "max_pool2d");
+  Tensor             out  = empty(g.out_shape(), x.dtype());
+  auto               taps = std::make_shared<std::vector<std::uint8_t>>(static_cast<std::size_t>(out.numel()));
+  {
+    NoGradGuard  guard;
+    const Tensor xk = nograd(x).contiguous();
+    dispatch_float(x.dtype(), "max_pool2d", [&](auto tag) {
+      using T = typename decltype(tag)::type;
+      max_pool_taps_forward<T>(g, xk.data_ptr<T>(), out.data_ptr<T>(), taps->data());
+    });
+  }
+  record("MaxPool", {x}, {out}, [g, taps](const Grads& gr, const Grads&) {
+    if (is_grad_enabled()) return Grads{max_pool_scatter(gr[0], taps_to_argmax(g, *taps), {g.n, g.h, g.w, g.c})};
+    const DType  dt = gr[0].dtype();
+    const Tensor gk = nograd(gr[0]).contiguous();
+    Tensor       dx = empty({g.n, g.h, g.w, g.c}, dt);
+    dispatch_float(dt, "max_pool2d backward", [&](auto tag) {
+      using T = typename decltype(tag)::type;
+      max_pool_taps_backward<T>(g, gk.data_ptr<T>(), taps->data(), dx.data_ptr<T>());
+    });
+    return Grads{dx};
+  });
+  return out;
+}
+
 }  // namespace
 
 Tensor max_pool2d(const Tensor& x, std::array<std::int64_t, 2> window, std::array<std::int64_t, 2> strides,
                   Padding padding) {
+  if (detail::is_native(x)) {
+    const PoolGeometry g = pool_geometry(x.shape(), window, strides, padding, "max_pool2d");
+    return detail::device_max_pool2d(
+        x, {g.n, g.h, g.w, g.c, g.kh, g.kw, g.sh, g.sw, g.oh, g.ow, g.pt, g.pl});
+  }
+  if (window[0] * window[1] < kNoTap) return max_pool_with_taps(x, window, strides, padding);
   return max_pool_with_global_argmax(x, window, strides, padding, "max_pool2d").first;
 }
 
@@ -1059,6 +1708,7 @@ Tensor avg_pool1d(const Tensor& x, std::int64_t window, std::int64_t stride, Pad
 
 Tensor global_avg_pool2d(const Tensor& x, bool keepdims) {
   if (x.dim() != 4) throw std::invalid_argument("global_avg_pool2d: input must be [N, H, W, C]");
+  if (detail::is_native(x)) return detail::device_global_avg_pool2d(x, keepdims);
   return mean(x, {1, 2}, keepdims);
 }
 
@@ -1418,6 +2068,8 @@ BatchNormResult batch_norm_train(const Tensor& x_in, const Tensor& gamma_in, con
 
 Tensor batch_norm_infer(const Tensor& x, const Tensor& gamma, const Tensor& beta, const Tensor& mean_in,
                         const Tensor& variance, double eps) {
+  if (detail::is_native(x))
+    return detail::device_batch_norm_infer(x, gamma, beta, mean_in, variance, eps);
   const DType  dt    = is_floating(x.dtype()) ? x.dtype() : DType::Float32;
   const Tensor scale = as_dtype(gamma, dt) * rsqrt(as_dtype(variance, dt) + eps);
   return as_dtype(x, dt) * scale + (as_dtype(beta, dt) - as_dtype(mean_in, dt) * scale);

@@ -58,18 +58,24 @@ which can precede full condensation. Its saved stages are printed separately fro
 stages. This deliberately tiny single-seed CPU run (kept short so the report builds in seconds)
 shows the mechanics only; it does not reproduce paper accuracy or a mobile latency study.
 
-The editable concept diagram is `diagrams/condensenet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/condensenet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/condensenet_concept.tikz > build/condensenet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/condensenet_concept.svg build/condensenet_concept.dvi > build/condensenet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/condensenet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Dense feature reuse\nTensor masks");
+  diagram.node("n1", {5.2, 0}, "Gather and pack\nGrouped convolution");
+  diagram.node("n2", {10.4, 0}, "Full C86 fit\nAdam plus group lasso");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/condensenet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/condensenet_concept.svg)
 // result_end
 \caption(CondenseNet: Tensor Pruning, Packed Groups and Explicit Optimization)
@@ -553,7 +559,7 @@ int main() {
 Final training step 18, mask stages [3,3].
 Selected checkpoint step 6, mask stages [1,1].
 48 fit / 32 validation / 32 official-test rows; 1451594 learned scalars, 1273851 moving scalars; 18 explicit Adam updates.
-Selected epoch 1; validation NLL 2.301555; inference training NLL 2.162721; test NLL 2.338217; test accuracy 0.062500.
+Selected epoch 1; validation NLL 2.301571; inference training NLL 2.161753; test NLL 2.339916; test accuracy 0.062500.
 \image(figures/condensenet_training.svg)
 // result_end
 \caption(Explicit 3-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)

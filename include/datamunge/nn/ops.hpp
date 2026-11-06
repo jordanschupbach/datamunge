@@ -291,6 +291,10 @@ Tensor argsort(const Tensor& x, bool descending = false);
 Tensor matmul(const Tensor& a, const Tensor& b, bool transpose_a = false, bool transpose_b = false);
 /// x + bias along the last axis (NHWC channels).
 Tensor bias_add(const Tensor& x, const Tensor& bias);
+/// relu(x + bias) as one fused op: one pass forward, and one backward pass that
+/// also produces the bias gradient. Same values and gradients as
+/// `relu(bias_add(x, bias))` (the bias gradient's summation order differs).
+Tensor bias_add_relu(const Tensor& x, const Tensor& bias);
 /// Inner product of two 1-D tensors.
 Tensor dot(const Tensor& a, const Tensor& b);
 /// Outer product of two 1-D tensors.

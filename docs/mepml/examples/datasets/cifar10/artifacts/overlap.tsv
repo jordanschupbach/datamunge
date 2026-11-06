@@ -1,0 +1,7 @@
+partition1	partition2	exact_matching_pairs
+Fitting	Fitting	0
+Fitting	Validation	0
+Fitting	Official test	0
+Validation	Validation	0
+Validation	Official test	0
+Official test	Official test	0

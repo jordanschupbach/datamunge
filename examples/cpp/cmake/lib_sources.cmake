@@ -3,6 +3,7 @@ set(EXAMPLES_
     source/playground.cpp
     # Asset-driven offscreen simulation demo; invoked with explicit scene/output paths.
     ../simulation/courier_offscreen.cpp
+    source/cad/rebot_arm.cpp
     # Data
     source/data/datamunge_ex.cpp
     source/data/dataframe_ex.cpp

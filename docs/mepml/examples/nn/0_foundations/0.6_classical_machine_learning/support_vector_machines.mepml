@@ -28,18 +28,24 @@ This follows from the characteristic function of a Gaussian. A finite draw appro
 kernel and may deviate; training a linear margin model on it solves a finite-feature problem.
 Feature evaluation costs O(NDm), and primal steps O(Nm).
 
-The concept diagram has a retained TikZ source in `diagrams/support_vector_machines_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/support_vector_machines_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/support_vector_machines_concept.tikz > build/support_vector_machines_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/support_vector_machines_concept.svg build/support_vector_machines_concept.dvi > build/support_vector_machines_concept.render.log 2>&1
-printf 'Rendered build/support_vector_machines_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/support_vector_machines_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Signed margin\nyf(x)");
+  diagram.node("n1", {5.2, 0}, "Hinge penalty\nmax(0,1-yf)");
+  diagram.node("n2", {10.4, 0}, "Weight regularisation\nlinear or Fourier features");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/support_vector_machines_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/support_vector_machines_concept.svg from local TikZ source.
 // \image(figures/support_vector_machines_concept.svg)
 // result_end
 \caption(A finite Fourier feature map approximates an RBF kernel)

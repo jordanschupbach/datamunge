@@ -44,18 +44,24 @@ kernel L2=.0001/2, padded crops/flips and paired learned/BN checkpoint selection
 All attention parameters participate in the optimizer. This bounded single-seed run differs
 from the paper's ImageNet schedule and cannot establish attention accuracy superiority.
 
-The editable concept diagram is `diagrams/senet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/senet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/senet_concept.tikz > build/senet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/senet_concept.svg build/senet_concept.dvi > build/senet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/senet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Global channel means\nBiased channel MLP");
+  diagram.node("n1", {5.2, 0}, "Logistic channel gates\nScale residual branch");
+  diagram.node("n2", {10.4, 0}, "All sixteen blocks\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/senet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/senet_concept.svg)
 // result_end
 \caption(Squeeze-and-Excitation: Channel Recalibration and Explicit Fitting)
@@ -237,9 +243,9 @@ int main() {
 ```
 // result_begin: markdown
 Full-width senet groups 1: 28088024 learned / 53120 moving scalars; sixteen blocks, 64-pixel forward.
-Every 225 parameter-tensor gradient finite; norm range [0.007497377228,23.249969482], moving state frozen.
+Every 225 parameter-tensor gradient finite; norm range [0.007498974912,23.132677078], moving state frozen.
 Full-width senet groups 32: 27559896 learned / 68224 moving scalars; sixteen blocks, 64-pixel forward.
-Every 225 parameter-tensor gradient finite; norm range [0.007449598052,23.473028183], moving state frozen.
+Every 225 parameter-tensor gradient finite; norm range [0.007449599449,23.451292038], moving state frozen.
 // result_end
 
 > Original pixels and explicit optimization
@@ -425,7 +431,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1645382 learned scalars, 13280 moving scalars; 176 explicit Adam updates.
-Selected epoch 11; validation NLL 2.296753; inference training NLL 1.454913; test NLL 2.520617; test accuracy 0.250000.
+Selected epoch 5; validation NLL 2.347029; inference training NLL 1.686925; test NLL 2.271837; test accuracy 0.265625.
 \image(figures/senet_training.svg)
 // result_end
 \caption(Explicit 11-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

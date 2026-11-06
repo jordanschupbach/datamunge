@@ -1,5 +1,9 @@
 # Backend benchmarks
 
+The recorded robot workcell rendering/physics benchmark is separate:
+[`just bench-fruit-render`](cad/README.md). Its measured plan is in
+[`PERFORMANCE.md`](../PERFORMANCE.md#robot-workcell-rendering-2026-11-01).
+
 The focused `backend_bench` executable measures tensor linear algebra, both tensor
 APIs, autograd/autodiff, general optimization, tensor optimizers and compact neural
 networks. Google Benchmark drives all timing. The older `linalg_bench` and

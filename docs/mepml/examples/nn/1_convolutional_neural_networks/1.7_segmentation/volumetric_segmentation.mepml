@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 3D convolutional encoders learn volumetric features;learned up-convolutions and skip connections recover voxel resolution. Sparse weighted CE excludes unannotated voxels,while squared Dice trains dense foreground overlap. Explicit Adam and restored validation checkpoints keep the fitting and evaluation policies visible.
 
-The editable concept diagram is `diagrams/volumetric_segmentation_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/volumetric_segmentation_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/volumetric_segmentation_concept.tikz > build/volumetric_segmentation_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/volumetric_segmentation_concept.svg build/volumetric_segmentation_concept.dvi > build/volumetric_segmentation_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/volumetric_segmentation_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Volume and labels\nDense or sparse truth");
+  diagram.node("n1", {5.2, 0}, "Encode and recover\nLearn voxel features");
+  diagram.node("n2", {10.4, 0}, "Visible Adam loop\nRestore and inspect");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/volumetric_segmentation_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/volumetric_segmentation_concept.svg)
 // result_end
 \caption(Volumetric segmentation from sparse and dense labels)
@@ -486,13 +492,13 @@ unet3d:74828 learned/292 moving-state scalars;25% axial annotations;Adam(.001),b
 |---:|---:|---:|
 | 1 | 0.763778 | 0.178952 |
 | 2 | 0.603435 | 0.253013 |
-| 3 | 0.570237 | 0.276593 |
-| 4 | 0.543229 | 0.283591 |
-| 5 | 0.519957 | 0.296622 |
-| 6 | 0.498088 | 0.294040 |
-| 7 | 0.477775 | 0.316138 |
-| 8 | 0.459045 | 0.327564 |
-unet3d:192 Adam updates;selected epoch8,validation Dice 0.327564;fixed fitting objective 1.079751->0.465392. Dense held-out8-volume mean Dice 0.319163,IoU 0.192295,voxel accuracy 0.793549;TP/FP/FN/TN 1608/6762/3/24395. Both stores restored;test BN has no moving updates.
+| 3 | 0.570237 | 0.276528 |
+| 4 | 0.543208 | 0.283581 |
+| 5 | 0.519998 | 0.295400 |
+| 6 | 0.498139 | 0.292467 |
+| 7 | 0.477748 | 0.314371 |
+| 8 | 0.459090 | 0.324687 |
+unet3d:192 Adam updates;selected epoch8,validation Dice 0.324687;fixed fitting objective 1.079751->0.465889. Dense held-out8-volume mean Dice 0.316432,IoU 0.190323,voxel accuracy 0.790955;TP/FP/FN/TN 1608/6847/3/24310. Both stores restored;test BN has no moving updates.
 vnet:1019348 learned/0 moving-state scalars;dense annotations;Adam(.001),batch1.
 | epoch | mean fitting objective | validation Dice |
 |---:|---:|---:|
@@ -503,8 +509,8 @@ vnet:1019348 learned/0 moving-state scalars;dense annotations;Adam(.001),batch1.
 | 5 | 0.013502 | 0.983919 |
 | 6 | 0.010292 | 0.986020 |
 | 7 | 0.008191 | 0.987050 |
-| 8 | 0.006598 | 0.989172 |
-vnet:192 Adam updates;selected epoch8,validation Dice 0.989172;fixed fitting objective 0.881667->0.006914. Dense held-out8-volume mean Dice 0.991557,IoU 0.983311,voxel accuracy 0.999115;TP/FP/FN/TN 1596/14/15/31143. Both stores restored;test BN has no moving updates.
+| 8 | 0.006594 | 0.988768 |
+vnet:192 Adam updates;selected epoch8,validation Dice 0.988768;fixed fitting objective 0.881667->0.006898. Dense held-out8-volume mean Dice 0.991557,IoU 0.983311,voxel accuracy 0.999115;TP/FP/FN/TN 1596/14/15/31143. Both stores restored;test BN has no moving updates.
 \image(figures/volumetric_segmentation_training.svg)
 // result_end
 \caption(Both complete compact models fit192 visible Adam updates. Separate objective/validation panels retain their different sparse-CE versus dense-Dice protocols;paired learned/BN restoration precedes all test slices and metrics.)

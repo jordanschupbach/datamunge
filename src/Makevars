@@ -14,6 +14,8 @@ PKG_LIBS += -framework Accelerate
 endif
 endif
 OBJECTS = $(SOURCES:.cpp=.o)
+# Keep the source-built R kernel's predicate arithmetic identical to CMake.
+$(filter datamunge/cad/%.o,$(OBJECTS)): PKG_CXXFLAGS += -ffp-contract=off
 all: $(SHLIB)
 
 # Headers can affect every translation unit, including the generated wrapper.

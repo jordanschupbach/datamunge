@@ -5,7 +5,7 @@
 #include <limits>
 #include <stdexcept>
 
-#include "math.hpp"
+#include "convex.hpp"
 namespace datamunge::sim::detail {
 /// @brief Axis-aligned bounds for broadphase and swept candidate generation.
 struct Bounds {
@@ -34,6 +34,23 @@ inline Vec3 support(const Body& b, const Vec3& direction) {
   if (b.shape == Shape::Box) {
     for (int i = 0; i < 3; ++i)
       point[i] = std::copysign(.5 * b.dimensions[i], local[i]);
+  } else if (b.shape == Shape::Ellipsoid) {
+    Vec3   scaled{};
+    double den = 0;
+    for (int i = 0; i < 3; ++i) {
+      scaled[i] = .5 * b.dimensions[i] * local[i];
+      den += scaled[i] * scaled[i];
+    }
+    den = std::sqrt(den);
+    for (int i = 0; i < 3; ++i)
+      point[i] = den > 1e-20 ? .5 * b.dimensions[i] * scaled[i] / den : 0;
+  } else if (b.shape == Shape::ConvexHull) {
+    double best = -INFINITY;
+    for (auto v : *b.vertices)
+      if (double d = dot(v, local); d > best) {
+        best  = d;
+        point = v;
+      }
   } else {
     point = mul(unit(local), .5 * b.dimensions[0]);
     if (b.shape == Shape::Capsule)
@@ -41,8 +58,37 @@ inline Vec3 support(const Body& b, const Vec3& direction) {
   }
   return add(b.position, rotate(b.rotation, point));
 }
+/// @brief One component expressed as a world-space primitive; no geometry is copied.
+inline Body component(const Body& b, std::size_t i) {
+  if (!b.colliders)
+    return b;
+  auto& c   = b.colliders->at(i);
+  auto  out = b;
+  out.colliders.reset();
+  out.shape      = c.shape;
+  out.dimensions = c.dimensions;
+  out.vertices   = c.vertices;
+  out.position   = add(b.position, rotate(b.rotation, c.position));
+  out.rotation   = normalized(product(b.rotation, c.rotation));
+  return out;
+}
+/// @brief Number of convex components, including the legacy single primitive.
+inline std::size_t component_count(const Body& b) {
+  return b.colliders ? b.colliders->size() : 1;
+}
 /// @brief Exact world-space AABB from the primitive support function.
 inline Bounds bounds(const Body& b) {
+  if (b.colliders) {
+    Bounds out{{INFINITY, INFINITY, INFINITY}, {-INFINITY, -INFINITY, -INFINITY}};
+    for (std::size_t j = 0; j < component_count(b); ++j) {
+      auto a = bounds(component(b, j));
+      for (int i = 0; i < 3; ++i) {
+        out.lo[i] = std::min(out.lo[i], a.lo[i]);
+        out.hi[i] = std::max(out.hi[i], a.hi[i]);
+      }
+    }
+    return out;
+  }
   Bounds out;
   for (int i = 0; i < 3; ++i) {
     auto d    = basis(i);
@@ -51,10 +97,39 @@ inline Bounds bounds(const Body& b) {
   }
   return out;
 }
-/// @brief Conservative swept AABB including angular displacement about the centre.
-inline Bounds swept_bounds(const Body& b, double dt) {
+/// @brief Conservative maximum distance from the COM to any point in arbitrary compound geometry.
+/// @param b Valid body with local COM and immutable geometry.
+/// @return Bounding radius in metres, accounting for collider offsets and hull vertices.
+inline double rotation_radius(const Body& b) {
+  auto box = bounds(b);
+  auto c   = center(b);
+  Vec3 extent{};
+  for (int i = 0; i < 3; ++i)
+    extent[i] = std::max(std::abs(box.lo[i] - c[i]), std::abs(box.hi[i] - c[i]));
+  return length(extent);
+}
+/// @brief Bound free angular speed using invariant momentum and the inverse-inertia norm.
+/// @param b Valid body.
+/// @param gyro Whether torque-free Euler evolution is active.
+/// @return Angular speed bound in rad/s over free motion.
+inline double angular_bound(const Body& b, bool gyro) {
+  if (!gyro || b.motion != Motion::Dynamic)
+    return length(b.angular_velocity);
+  auto   I = body_tensor(b), inv = invert_tensor(I);
+  double norm = 0;
+  for (double x : inv)
+    norm += x * x;
+  return std::sqrt(norm) *
+         length(apply_tensor(I, rotate(conjugate(b.rotation), b.angular_velocity)));
+}
+/// @brief Conservative swept AABB including arbitrary compound rotation about its COM.
+/// @param b Valid reference-origin rigid body.
+/// @param dt Nonnegative duration, seconds.
+/// @param gyro Whether free rotation uses Euler dynamics, default false.
+/// @return Bounds containing all intermediate collision geometry.
+inline Bounds swept_bounds(const Body& b, double dt, bool gyro = false) {
   auto   box        = bounds(b);
-  double rotational = length(b.angular_velocity) * dt * .5 * length(b.dimensions);
+  double rotational = angular_bound(b, gyro) * dt * rotation_radius(b);
   for (int i = 0; i < 3; ++i) {
     double change = b.linear_velocity[i] * dt;
     box.lo[i] += std::min(0., change) - rotational;
@@ -158,6 +233,28 @@ inline std::array<Vec3, 2> segment_box(const Vec3& a, const Vec3& b, const Vec3&
 inline Distance boxes_distance(const Body& a, const Body& b);
 /// @brief Exact primitive distance using segment and box feature witnesses.
 inline Distance distance(const Body& a, const Body& b) {
+  if (a.colliders || b.colliders) {
+    Distance best;
+    best.value = INFINITY;
+    for (std::size_t i = 0; i < component_count(a); ++i)
+      for (std::size_t j = 0; j < component_count(b); ++j) {
+        auto d = distance(component(a, i), component(b, j));
+        if (d.value < best.value)
+          best = d;
+      }
+    return best;
+  }
+  if (a.shape == Shape::Ellipsoid || a.shape == Shape::ConvexHull || b.shape == Shape::Ellipsoid ||
+      b.shape == Shape::ConvexHull) {
+    auto result = gjk(
+        [&](Vec3 d) {
+          auto p = support(a, d), q = support(b, mul(d, -1));
+          return SupportVertex{sub(p, q), p, q};
+        },
+        sub(b.position, a.position));
+    return {result.closest.a, result.closest.b, length(result.closest.v)};
+  }
+
   if (a.shape == Shape::Box && b.shape == Shape::Box)
     return boxes_distance(a, b);
   if (a.shape == Shape::Box) {
@@ -388,6 +485,21 @@ inline Distance boxes_distance(const Body& a, const Body& b) {
 }
 /// @brief Native exact primitive manifold dispatch.
 inline Manifold collide(const Body& a, const Body& b, double slop) {
+  if (a.shape == Shape::Ellipsoid || a.shape == Shape::ConvexHull || b.shape == Shape::Ellipsoid ||
+      b.shape == Shape::ConvexHull) {
+    auto query = [&](Vec3 d) {
+      auto p = support(a, d), q = support(b, mul(d, -1));
+      return SupportVertex{add(sub(p, q), mul(d, slop)), p, q};
+    };
+    auto g = gjk(query, sub(b.position, a.position));
+    if (!g.overlap && length(g.closest.v) > 1e-8)
+      return {};
+    auto     c = epa(query, g, slop);
+    Manifold m;
+    m.points[m.count++] = {mul(add(c.a, c.b), .5), c.normal, c.separation};
+    return m;
+  }
+
   if (a.shape == Shape::Box && b.shape == Shape::Box)
     return boxes(a, b, slop);
   if (b.shape == Shape::Box)
@@ -415,6 +527,62 @@ inline Manifold collide(const Body& a, const Body& b, double slop) {
 /// @brief First exact ray intersection with a convex primitive; ray direction is unit length.
 inline bool
 ray_hit(const Body& b, Vec3 origin, Vec3 direction, double maximum, double& time, Vec3& normal) {
+  if (b.colliders) {
+    bool   hit  = false;
+    double best = maximum;
+    for (std::size_t i = 0; i < component_count(b); ++i) {
+      double t;
+      Vec3   n;
+      if (ray_hit(component(b, i), origin, direction, best, t, n)) {
+        best   = t;
+        normal = n;
+        hit    = true;
+      }
+    }
+    if (hit)
+      time = best;
+    return hit;
+  }
+  if (b.shape == Shape::Ellipsoid) {
+    auto   inv = conjugate(b.rotation);
+    auto   o = rotate(inv, sub(origin, b.position)), d = rotate(inv, direction);
+    double A = 0, B = 0, C = -1;
+    for (int i = 0; i < 3; ++i) {
+      double r = b.dimensions[i] / 2;
+      A += d[i] * d[i] / (r * r);
+      B += o[i] * d[i] / (r * r);
+      C += o[i] * o[i] / (r * r);
+    }
+    double disc = B * B - A * C;
+    if (disc < 0)
+      return false;
+    double t = (-B - std::sqrt(disc)) / A;
+    if (t < 0 || t > maximum)
+      return false;
+    auto p = add(o, mul(d, t));
+    for (int i = 0; i < 3; ++i)
+      p[i] /= std::pow(b.dimensions[i] / 2, 2);
+    time   = t;
+    normal = rotate(b.rotation, unit(p));
+    return true;
+  }
+  if (b.shape == Shape::ConvexHull) {
+    Body point;
+    point.shape      = Shape::Sphere;
+    point.dimensions = {1e-8, 1e-8, 1e-8};
+    double t         = 0;
+    for (int k = 0; k < 128 && t <= maximum; ++k) {
+      point.position = add(origin, mul(direction, t));
+      auto q         = distance(point, b);
+      if (q.value < 1e-7) {
+        time   = t;
+        normal = unit(sub(q.first, q.second), mul(direction, -1));
+        return true;
+      }
+      t += q.value;
+    }
+    return false;
+  }
   auto inverse = conjugate(b.rotation);
   origin       = rotate(inverse, sub(origin, b.position));
   direction    = rotate(inverse, direction);

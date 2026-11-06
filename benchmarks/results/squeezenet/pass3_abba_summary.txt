@@ -1,0 +1,23 @@
+# Third pass (2026-10-31), quiet machine, 25 s runs (16 threads: 20 s), 15-20 s cool-down, alternating order.
+# A: narrow = GEMM with the A-in-place narrow path; final = + 512-deep AVX-512 blocks and C prefetch.
+# B: final = previous pool (mutex job pickup, first-come chunks); pool = claim-word pool with home blocks.
+A narrow t=8  13.5 ms/step 17.80 epochs/min
+A final  t=8  13.6 ms/step 17.60 epochs/min
+A final  t=8  13.4 ms/step 17.88 epochs/min
+A narrow t=8  13.4 ms/step 17.86 epochs/min
+A narrow t=8  13.7 ms/step 17.56 epochs/min
+A final  t=8  13.5 ms/step 17.76 epochs/min
+A final  t=1  57.6 ms/step 4.17 epochs/min
+A narrow t=1  57.6 ms/step 4.16 epochs/min
+A narrow t=1  57.4 ms/step 4.18 epochs/min
+A final  t=1  57.3 ms/step 4.19 epochs/min
+B final  t=8  13.8 ms/step 17.42 epochs/min
+B pool   t=8  13.5 ms/step 17.75 epochs/min
+B pool   t=8  13.6 ms/step 17.64 epochs/min
+B final  t=8  14.1 ms/step 17.02 epochs/min
+B final  t=8  13.9 ms/step 17.25 epochs/min
+B pool   t=8  13.4 ms/step 17.97 epochs/min
+B pool   t=16 14.7 ms/step 16.36 epochs/min
+B final  t=16 15.8 ms/step 15.23 epochs/min
+B final  t=16 15.6 ms/step 15.40 epochs/min
+B pool   t=16 14.4 ms/step 16.61 epochs/min

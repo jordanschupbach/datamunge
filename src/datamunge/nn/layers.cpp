@@ -1,12 +1,15 @@
 #include "datamunge/nn/layers.hpp"
 #include "datamunge/nn/model_plot.hpp"
 
+#include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <stdexcept>
 
 #include "datamunge/nn/autograd.hpp"
 #include "datamunge/nn/ops.hpp"
 #include "detail.hpp"
+#include "device_ops.hpp"
 #include "vector_math.hpp"
 
 namespace datamunge::nn {
@@ -99,12 +102,85 @@ Tensor mlp(ParameterStore& store, const std::string& name, const Tensor& x, cons
   return h;
 }
 
+namespace {
+
+/// SplitMix64 step: the output is a hash of the counter `s`, so any window of
+/// the stream can be started from its counter without generating the rest.
+inline std::uint64_t splitmix64(std::uint64_t& s) {
+  std::uint64_t z = (s += 0x9e3779b97f4a7c15ull);
+  z               = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ull;
+  z               = (z ^ (z >> 27)) * 0x94d049bb133111ebull;
+  return z ^ (z >> 31);
+}
+
+/// Elements per independently seeded block of the dropout mask. Fixed, so
+/// the mask for a given seed does not depend on the thread count.
+constexpr std::int64_t kDropoutBlock = 4096;
+
+/// One pass: mask[i] is 1/keep or 0 (kept with probability `keep`) and
+/// out[i] = x[i] * mask[i]. Block b draws from the SplitMix64 stream at
+/// counter seed + b * kDropoutBlock / 2 (two 32-bit draws per 64-bit output).
+template <typename T>
+void dropout_kernel(const T* x, T* mask, T* out, std::int64_t n_, double keep, std::uint64_t seed_) {
+  const std::uint32_t threshold_ = static_cast<std::uint32_t>(keep * 4294967296.0);
+  const T             scale_     = static_cast<T>(1.0 / keep);
+  const std::int64_t  blocks     = (n_ + kDropoutBlock - 1) / kDropoutBlock;
+  parallel_for(0, blocks, 1, [=](std::int64_t lo, std::int64_t hi) {
+    // Local copies of every capture: see bias_relu_backward in elementwise.cpp.
+    const std::int64_t  n = n_;
+    const std::uint32_t threshold = threshold_;
+    const T             scale = scale_;
+    const T* __restrict xs = x;
+    T* __restrict       ms = mask;
+    T* __restrict       os = out;
+    for (std::int64_t b = lo; b < hi; ++b) {
+      std::uint64_t      s  = seed_ + static_cast<std::uint64_t>(b) * (kDropoutBlock / 2) * 0x9e3779b97f4a7c15ull;
+      const std::int64_t i0 = b * kDropoutBlock, i1 = std::min(n, i0 + kDropoutBlock);
+      std::int64_t       i  = i0;
+      for (; i + 1 < i1; i += 2) {
+        const std::uint64_t r  = splitmix64(s);
+        const T             m0 = static_cast<std::uint32_t>(r) < threshold ? scale : T(0);
+        const T             m1 = static_cast<std::uint32_t>(r >> 32) < threshold ? scale : T(0);
+        ms[i]                  = m0;
+        ms[i + 1]              = m1;
+        os[i]                  = xs[i] * m0;
+        os[i + 1]              = xs[i + 1] * m1;
+      }
+      if (i < i1) {
+        const T m0 = static_cast<std::uint32_t>(splitmix64(s)) < threshold ? scale : T(0);
+        ms[i]      = m0;
+        os[i]      = xs[i] * m0;
+      }
+    }
+  });
+}
+
+}  // namespace
+
 Tensor dropout(const Tensor& x, double rate, bool training, Generator& gen) {
   if (!(rate >= 0 && rate < 1)) throw std::invalid_argument("dropout: rate must be in [0, 1)");
   if (!training || rate == 0) return x;
   const double keep = 1.0 - rate;
-  const Tensor mask = bernoulli(x.shape(), keep, gen, to_floating(x.dtype()));
-  return mul(x, mask) / keep;
+  if (detail::is_native(x) || !is_floating(x.dtype()) || !x.is_contiguous() || x.numel() == 0) {
+    const Tensor mask = bernoulli(x.shape(), keep, gen, to_floating(x.dtype()));
+    return mul(x, mask) / keep;
+  }
+  // One pass that writes the scaled mask and the output; the generator
+  // supplies one seed per call instead of one draw per element, so the mask is
+  // reproducible for a seed and is produced in parallel.
+  const std::uint64_t seed = gen.next_u64();
+  Tensor              mask = empty(x.shape(), x.dtype()), out = empty(x.shape(), x.dtype());
+  {
+    NoGradGuard guard;
+    detail::dispatch_float(x.dtype(), "dropout", [&](auto tag) {
+      using T = typename decltype(tag)::type;
+      dropout_kernel<T>(x.data_ptr<T>(), mask.data_ptr<T>(), out.data_ptr<T>(), x.numel(), keep, seed);
+    });
+  }
+  record("Dropout", {x}, {out}, [mask](const std::vector<Tensor>& g, const std::vector<Tensor>&) {
+    return std::vector<Tensor>{mul(g[0], mask)};
+  });
+  return out;
 }
 
 Tensor embedding(ParameterStore& store, const std::string& name, const Tensor& ids, std::int64_t vocab,
@@ -301,6 +377,8 @@ Conv2DOptions layer_conv_options(const ConvLayerOptions& o) { return conv_option
 
 Tensor finish(ParameterStore& store, const std::string& name, Tensor y, std::int64_t units,
               const ConvLayerOptions& o) {
+  if (o.bias && o.activation == Activation::Relu)
+    return bias_add_relu(y, store.get(name + "/b", {units}, init::zeros()));
   if (o.bias) y = bias_add(y, store.get(name + "/b", {units}, init::zeros()));
   return activate(y, o.activation, o.alpha);
 }
@@ -312,7 +390,9 @@ Tensor conv2d(ParameterStore& store, const std::string& name, const Tensor& x, s
   const std::int64_t in = channels(x, 4, "conv2d layer");
   const Tensor       w  = store.get(name + "/W", {kernel, kernel, in, filters}, options.init);
   const Tensor output =
-      finish(store, name, conv2d(x, w, layer_conv_options(options)), filters, options);
+      options.bias && options.activation == Activation::Relu
+          ? conv2d_bias_relu(x, w, store.get(name + "/b", {filters}, init::zeros()), layer_conv_options(options))
+          : finish(store, name, conv2d(x, w, layer_conv_options(options)), filters, options);
   if (model_plot_detail::recording())
     return model_plot_detail::layer(
         name,
@@ -320,6 +400,26 @@ Tensor conv2d(ParameterStore& store, const std::string& name, const Tensor& x, s
             std::to_string(options.dilation) + " / " + activation_name(options.activation),
         x, output);
   return output;
+}
+
+Tensor conv2d_concat(ParameterStore& store, const std::vector<std::string>& names, const Tensor& x,
+                     const std::vector<std::int64_t>& filters, const std::vector<std::int64_t>& kernels,
+                     const ConvLayerOptions& options) {
+  if (names.empty() || filters.size() != names.size() || kernels.size() != names.size())
+    throw std::invalid_argument("conv2d_concat layer: need matching, nonempty name, filter and kernel lists");
+  // Model plots draw each branch as its own layer.
+  if (!(options.bias && options.activation == Activation::Relu) || model_plot_detail::recording()) {
+    std::vector<Tensor> outs;
+    for (std::size_t i = 0; i < names.size(); ++i) outs.push_back(conv2d(store, names[i], x, filters[i], kernels[i], options));
+    return outs.size() == 1 ? outs[0] : concat(outs, -1);
+  }
+  const std::int64_t  in = channels(x, 4, "conv2d_concat layer");
+  std::vector<Tensor> w, b;
+  for (std::size_t i = 0; i < names.size(); ++i) {
+    w.push_back(store.get(names[i] + "/W", {kernels[i], kernels[i], in, filters[i]}, options.init));
+    b.push_back(store.get(names[i] + "/b", {filters[i]}, init::zeros()));
+  }
+  return conv2d_bias_relu_concat(x, w, b, std::vector<Conv2DOptions>(names.size(), layer_conv_options(options)));
 }
 
 Tensor conv1d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,

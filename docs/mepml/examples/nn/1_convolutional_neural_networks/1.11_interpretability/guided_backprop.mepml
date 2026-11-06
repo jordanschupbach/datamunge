@@ -20,18 +20,24 @@ $$ G(a,g)=g\,1[a>0]1[g>0]. $$
 
 No classifier fitting occurs here. Restore the exact selected and actual-initial arrays produced by the explicit tensor-Adam loop in vanilla_saliency;all model computations and control statistics remain tensors.
 
-The editable concept diagram is `diagrams/guided_backprop_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/guided_backprop_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/guided_backprop_concept.tikz > build/guided_backprop_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/guided_backprop_concept.svg build/guided_backprop_concept.dvi > build/guided_backprop_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/guided_backprop_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Frozen identical\n forward scores");
+  diagram.node("n1", {5.2, 0}, "Positive-positive\n hidden gates");
+  diagram.node("n2", {10.4, 0}, "Target and weight\n sensitivity controls");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/guided_backprop_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/guided_backprop_concept.svg)
 // result_end
 \caption(Guided backpropagation:unchanged logits and a modified backward rule)
@@ -410,13 +416,13 @@ int main() {
 }
 ```
 // result_begin: markdown
-Repeat 0,single/batch 2.98023224e-08;all24selected/initial/head-reset arrays immutable.
+Repeat 0,single/batch 0;all24selected/initial/head-reset arrays immutable.
 | control | total guided L1change | mean case cosine |
 |---|---:|---:|
-| ordinary | 351.020233 | 0.635562927 |
-| runner | 190.699829 | 0.817330223 |
-| actual initial | 292.196411 | 0.758817072 |
-| head reset | 34.7883873 | 0.997573187 |
+| ordinary | 351.020233 | 0.635562925 |
+| runner | 190.699814 | 0.817330218 |
+| actual initial | 292.196411 | 0.758817067 |
+| head reset | 34.7883873 | 0.997573186 |
 \image(figures/guided_backprop_maps.png)
 // result_end
 \caption(Columns:true digits0..9. Rows:actual input,ordinary selected-target gradient,guided selected-target signal,guided runner-up signal,guided actual-initial-weight signal,guided head-reset signal. All signed signal rows share one absolute peak,zero grey.)

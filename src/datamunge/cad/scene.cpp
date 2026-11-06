@@ -1,0 +1,1679 @@
+// Ported from mep; MIT license: third_party_licenses/mep-cad-LICENSE.
+#include <datamunge/cad/scene.hpp>
+
+#include "detail/base64.hpp"
+
+#include <algorithm>
+#include <array>
+#include <cctype>
+#include <cmath>
+#include <fstream>
+#include <set>
+#include <utility>
+
+#include "detail/json.hpp"
+using datamunge::cad::detail::Json;
+#include "detail/model_cpu.hpp"
+#include "detail/model_cpu.hpp"
+#include "detail/vecmath.hpp"
+
+namespace datamunge::cad {
+using namespace detail;
+
+
+namespace {
+
+constexpr float kPi = 3.14159265358979323846f;
+
+// Composite XYZ (intrinsic: rotate about X, then Y, then Z) Euler-degrees to
+// quaternion, for glTF's node.rotation field (glTF has no Euler-angle node
+// representation, only quaternions). Verified against each principal axis
+// in isolation (e.g. deg = {90,0,0} -> (sin45,0,0,cos45), the expected
+// quaternion for a 90-degree rotation about X).
+void EulerXYZDegToQuat(const Vec3f &deg, float q[4]) {
+    float rx = deg.x * (kPi / 180.0f) * 0.5f;
+    float ry = deg.y * (kPi / 180.0f) * 0.5f;
+    float rz = deg.z * (kPi / 180.0f) * 0.5f;
+    float cx = cosf(rx);
+    float sx = sinf(rx);
+    float cy = cosf(ry);
+    float sy = sinf(ry);
+    float cz = cosf(rz);
+    float sz = sinf(rz);
+    q[0] = sx * cy * cz - cx * sy * sz;
+    q[1] = cx * sy * cz + sx * cy * sz;
+    q[2] = cx * cy * sz - sx * sy * cz;
+    q[3] = cx * cy * cz + sx * sy * sz;
+}
+
+
+void AppendBytes(std::vector<unsigned char> &buf, const void *data, size_t len) {
+    if (len == 0) return;
+    const unsigned char *p = static_cast<const unsigned char *>(data);
+    buf.insert(buf.end(), p, p + len);
+}
+
+// Copies a gfx::Mesh's CPU-side vertex arrays into a plain MeshData -- the
+// one place this module reaches into gfx::'s backend-facing types,
+// immediately converted away so nothing else in this file (or its
+// callers) needs to touch a gfx::Mesh/gfx::Model handle.
+void ExtractMeshData(const gfx::Mesh &m, MeshData *out) {
+    out->positions.assign(m.vertices, m.vertices + static_cast<size_t>(m.vertexCount) * 3);
+    if (m.normals) out->normals.assign(m.normals, m.normals + static_cast<size_t>(m.vertexCount) * 3);
+    if (m.texcoords) out->texcoords.assign(m.texcoords, m.texcoords + static_cast<size_t>(m.vertexCount) * 2);
+    if (m.indices) {
+        out->indices.reserve(static_cast<size_t>(m.triangleCount) * 3);
+        for (int k = 0; k < m.triangleCount * 3; k++) out->indices.push_back(m.indices[k]);
+    } else {
+        // No index buffer -- gfx::UploadMesh/importers guarantee the
+        // vertex stream is already triangle-list order in this case, so
+        // 0..vertexCount-1 is correct.
+        out->indices.resize(static_cast<size_t>(m.vertexCount));
+        for (int k = 0; k < m.vertexCount; k++) out->indices[static_cast<size_t>(k)] = static_cast<unsigned int>(k);
+    }
+}
+
+// A right-triangular prism ("wedge"/ramp/doorstop shape) -- gfx:: has no
+// GenMeshWedge (raylib never did either), so this is a hand-built mesh in
+// the exact style of gfx::GenMeshCube (backend_native_renderer3d.cpp):
+// flat, non-indexed triangle-soup arrays (one vertex per triangle-corner,
+// so each triangle can carry its own flat face normal), then UploadMesh
+// so it can go through the same ExtractMeshData + UnloadMesh path every
+// other primitive uses. Added after dogfooding a rocket build from
+// primitives found flattened, rotated cubes an awkward stand-in for flat
+// panel/fin shapes (MODEL3D_PLAN.md Part VIII/MODEL3D.md Phase 1.5's "no
+// wedge primitive" gap).
+//
+// Base-pivoted like Cylinder/Cone (footprint centered in XZ at Y=0,
+// extending up to Y=height), not centered like Cube/Sphere/Torus -- see
+// MEP_AGENT_API.md's primitive pivot table. The vertical face sits at
+// Z=-length/2 (full `height` tall); the mesh ramps down to Y=0 at
+// Z=+length/2, so "forward" (+Z) is the downhill direction.
+gfx::Mesh GenMeshWedge(float width, float height, float length) {
+    gfx::Mesh mesh{};
+    float hw = width * 0.5f;
+    float hl = length * 0.5f;
+
+    // Bottom rectangle (Y=0).
+    gfx::Vector3 a{-hw, 0.0f, -hl};
+    gfx::Vector3 b{hw, 0.0f, -hl};
+    gfx::Vector3 c{hw, 0.0f, hl};
+    gfx::Vector3 d{-hw, 0.0f, hl};
+    // Top ridge (Y=height), running along X at the front (Z=-hl) edge.
+    gfx::Vector3 e{-hw, height, -hl};
+    gfx::Vector3 f{hw, height, -hl};
+
+    // Each entry is one triangle's 3 corners, wound so cross(v1-v0, v2-v0)
+    // points outward (worked out by hand per face against each vertex's
+    // known position -- e.g. the bottom face's cross((b-a),(c-a)) reduces to
+    // (0, -width*length, 0), i.e. straight down, confirming (a,b,c)/(a,c,d)
+    // is the correct winding for that face's downward-facing normal).
+    struct Tri {
+        gfx::Vector3 v0, v1, v2;
+        gfx::Vector3 n;
+    };
+    const Tri tris[8] = {
+        {a, b, c, {0, -1, 0}},        // bottom
+        {a, c, d, {0, -1, 0}},        // bottom
+        {a, e, f, {0, 0, -1}},        // front (vertical) wall
+        {a, f, b, {0, 0, -1}},        // front (vertical) wall
+        {e, d, c, {0, 0, 0}},         // ramp (normal computed below)
+        {e, c, f, {0, 0, 0}},         // ramp (normal computed below)
+        {a, d, e, {-1, 0, 0}},        // left end cap
+        {b, f, c, {1, 0, 0}},         // right end cap
+    };
+    // Ramp outward normal: proportional to (0, length, height) -- tilts up
+    // and toward +Z (the downhill direction), derived from the same
+    // cross-product-of-edges test as every other face here.
+    float ramp_len = std::sqrt(length * length + height * height);
+    gfx::Vector3 ramp_n = ramp_len > 1e-6f ? gfx::Vector3{0.0f, length / ramp_len, height / ramp_len} : gfx::Vector3{0.0f, 1.0f, 0.0f};
+
+    const int kVertexCount = 24;  // 8 triangles * 3 corners, non-indexed
+    mesh.vertices = new float[static_cast<size_t>(kVertexCount) * 3];
+    mesh.normals = new float[static_cast<size_t>(kVertexCount) * 3];
+    mesh.texcoords = new float[static_cast<size_t>(kVertexCount) * 2];
+    int vi = 0;
+    for (int t = 0; t < 8; t++) {
+        gfx::Vector3 n = (t == 4 || t == 5) ? ramp_n : tris[t].n;
+        const gfx::Vector3 corners[3] = {tris[t].v0, tris[t].v1, tris[t].v2};
+        const float uvs[3][2] = {{0.0f, 0.0f}, {1.0f, 0.0f}, {1.0f, 1.0f}};
+        for (int k = 0; k < 3; k++) {
+            mesh.vertices[vi * 3 + 0] = corners[k].x;
+            mesh.vertices[vi * 3 + 1] = corners[k].y;
+            mesh.vertices[vi * 3 + 2] = corners[k].z;
+            mesh.normals[vi * 3 + 0] = n.x;
+            mesh.normals[vi * 3 + 1] = n.y;
+            mesh.normals[vi * 3 + 2] = n.z;
+            mesh.texcoords[vi * 2 + 0] = uvs[k][0];
+            mesh.texcoords[vi * 2 + 1] = uvs[k][1];
+            vi++;
+        }
+    }
+    mesh.vertexCount = kVertexCount;
+    mesh.triangleCount = 8;
+    gfx::UploadMesh(&mesh, false);
+    return mesh;
+}
+
+// Copies a gfx::Image's CPU-side pixel data into a plain TextureData,
+// normalizing to RGBA8 first -- the one place both texture-loading entry
+// points (LoadTextureIntoScene's file decode, LoadModel3DFile's GPU
+// texture readback) converge, so both fill out a TextureData the exact
+// same way. Does not call UnloadImage -- that's the caller's own
+// decode-vs-readback-specific cleanup.
+void ExtractImageToTextureData(gfx::Image img, const std::string &name, TextureData *out) {
+    gfx::ImageFormat(&img, gfx::kPixelFormatR8G8B8A8);
+    out->name = name;
+    out->width = img.width;
+    out->height = img.height;
+    size_t byte_count = static_cast<size_t>(img.width) * static_cast<size_t>(img.height) * 4;
+    const unsigned char *bytes = static_cast<const unsigned char *>(img.data);
+    out->pixels.assign(bytes, bytes + byte_count);
+}
+
+// Appends one (bufferView + accessor) pair describing `floats` (assumed
+// tightly packed, `components`-per-element) to the growing glTF document,
+// returning the new accessor's index, or -1 if `floats` is empty.
+int AppendFloatAccessor(std::vector<unsigned char> &buffer, Json &buffer_views, Json &accessors, const std::vector<float> &floats,
+                         int components, bool with_min_max) {
+    if (floats.empty()) return -1;
+    int count = static_cast<int>(floats.size()) / components;
+    size_t offset = buffer.size();
+    AppendBytes(buffer, floats.data(), floats.size() * sizeof(float));
+
+    Json bv = Json::Object();
+    bv["buffer"] = 0;
+    bv["byteOffset"] = static_cast<int>(offset);
+    bv["byteLength"] = static_cast<int>(floats.size() * sizeof(float));
+    bv["target"] = 34962;  // ARRAY_BUFFER
+    int bv_index = static_cast<int>(buffer_views.size());
+    buffer_views.push_back(bv);
+
+    Json acc = Json::Object();
+    acc["bufferView"] = bv_index;
+    acc["componentType"] = 5126;  // FLOAT
+    acc["count"] = count;
+    acc["type"] = components == 3 ? "VEC3" : "VEC2";
+    if (with_min_max && components == 3) {
+        float lo[3] = {floats[0], floats[1], floats[2]};
+        float hi[3] = {floats[0], floats[1], floats[2]};
+        for (int v = 0; v < count; v++) {
+            for (int c = 0; c < 3; c++) {
+                float val = floats[static_cast<size_t>(v) * 3 + static_cast<size_t>(c)];
+                lo[c] = std::min(lo[c], val);
+                hi[c] = std::max(hi[c], val);
+            }
+        }
+        Json minj = Json::Array();
+        minj.push_back(static_cast<double>(lo[0]));
+        minj.push_back(static_cast<double>(lo[1]));
+        minj.push_back(static_cast<double>(lo[2]));
+        Json maxj = Json::Array();
+        maxj.push_back(static_cast<double>(hi[0]));
+        maxj.push_back(static_cast<double>(hi[1]));
+        maxj.push_back(static_cast<double>(hi[2]));
+        acc["min"] = minj;
+        acc["max"] = maxj;
+    }
+    int acc_index = static_cast<int>(accessors.size());
+    accessors.push_back(acc);
+    return acc_index;
+}
+
+int AppendIndexAccessor(std::vector<unsigned char> &buffer, Json &buffer_views, Json &accessors, const std::vector<unsigned int> &indices) {
+    if (indices.empty()) return -1;
+    size_t offset = buffer.size();
+    AppendBytes(buffer, indices.data(), indices.size() * sizeof(unsigned int));
+
+    Json bv = Json::Object();
+    bv["buffer"] = 0;
+    bv["byteOffset"] = static_cast<int>(offset);
+    bv["byteLength"] = static_cast<int>(indices.size() * sizeof(unsigned int));
+    bv["target"] = 34963;  // ELEMENT_ARRAY_BUFFER
+    int bv_index = static_cast<int>(buffer_views.size());
+    buffer_views.push_back(bv);
+
+    Json acc = Json::Object();
+    acc["bufferView"] = bv_index;
+    acc["componentType"] = 5125;  // UNSIGNED_INT
+    acc["count"] = static_cast<int>(indices.size());
+    acc["type"] = "SCALAR";
+    int acc_index = static_cast<int>(accessors.size());
+    accessors.push_back(acc);
+    return acc_index;
+}
+
+}  // namespace
+
+int Scene::AddObject(Object3D obj) {
+    obj.id = next_object_id++;
+    objects.push_back(std::move(obj));
+    return objects.back().id;
+}
+
+Object3D *Scene::FindObject(int id) {
+    for (auto &o : objects) {
+        if (o.id == id) return &o;
+    }
+    return nullptr;
+}
+
+const Object3D *Scene::FindObject(int id) const {
+    for (const auto &o : objects) {
+        if (o.id == id) return &o;
+    }
+    return nullptr;
+}
+
+bool Scene::RemoveObject(int id) {
+    auto it = std::find_if(objects.begin(), objects.end(), [id](const Object3D &o) { return o.id == id; });
+    if (it == objects.end()) return false;
+    objects.erase(it);
+    return true;
+}
+
+int Scene::AddLight(Light light) {
+    light.id = next_object_id++;
+    lights.push_back(std::move(light));
+    return lights.back().id;
+}
+
+Light *Scene::FindLight(int id) {
+    for (auto &l : lights) {
+        if (l.id == id) return &l;
+    }
+    return nullptr;
+}
+
+const Light *Scene::FindLight(int id) const {
+    for (const auto &l : lights) {
+        if (l.id == id) return &l;
+    }
+    return nullptr;
+}
+
+bool Scene::RemoveLight(int id) {
+    auto it = std::find_if(lights.begin(), lights.end(), [id](const Light &l) { return l.id == id; });
+    if (it == lights.end()) return false;
+    lights.erase(it);
+    return true;
+}
+
+std::vector<int> Scene::Descendants(int object_id) const {
+    std::vector<int> result;
+    std::vector<int> frontier{object_id};
+    std::vector<int> visited{object_id};
+    while (!frontier.empty()) {
+        std::vector<int> next_frontier;
+        for (const auto &obj : objects) {
+            if (std::find(frontier.begin(), frontier.end(), obj.parent) == frontier.end()) continue;
+            if (std::find(visited.begin(), visited.end(), obj.id) != visited.end()) continue;
+            result.push_back(obj.id);
+            visited.push_back(obj.id);
+            next_frontier.push_back(obj.id);
+        }
+        frontier = std::move(next_frontier);
+    }
+    return result;
+}
+
+void MeshData::RemoveVertices(const std::vector<int> &vertex_indices) {
+    int old_count = VertexCount();
+    std::vector<bool> remove(static_cast<size_t>(old_count), false);
+    for (int v : vertex_indices) {
+        if (v >= 0 && v < old_count) remove[static_cast<size_t>(v)] = true;
+    }
+
+    // Old-index -> new-index remap: -1 for a removed vertex, else its
+    // position in the compacted (kept-only) array.
+    std::vector<int> remap(static_cast<size_t>(old_count), -1);
+    int next_new_index = 0;
+    for (int v = 0; v < old_count; v++) {
+        if (!remove[static_cast<size_t>(v)]) remap[static_cast<size_t>(v)] = next_new_index++;
+    }
+
+    bool has_normals = !normals.empty();
+    bool has_texcoords = !texcoords.empty();
+    std::vector<float> new_positions, new_normals, new_texcoords;
+    new_positions.reserve(static_cast<size_t>(next_new_index) * 3);
+    if (has_normals) new_normals.reserve(static_cast<size_t>(next_new_index) * 3);
+    if (has_texcoords) new_texcoords.reserve(static_cast<size_t>(next_new_index) * 2);
+    for (int v = 0; v < old_count; v++) {
+        if (remove[static_cast<size_t>(v)]) continue;
+        new_positions.insert(new_positions.end(), positions.begin() + v * 3, positions.begin() + v * 3 + 3);
+        if (has_normals) new_normals.insert(new_normals.end(), normals.begin() + v * 3, normals.begin() + v * 3 + 3);
+        if (has_texcoords) new_texcoords.insert(new_texcoords.end(), texcoords.begin() + v * 2, texcoords.begin() + v * 2 + 2);
+    }
+
+    std::vector<unsigned int> new_indices;
+    new_indices.reserve(indices.size());
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        if (static_cast<int>(a) >= old_count || static_cast<int>(b) >= old_count || static_cast<int>(c) >= old_count) {
+            continue;  // defensive -- a malformed/out-of-range triangle can't be remapped, drop it
+        }
+        if (remove[a] || remove[b] || remove[c]) continue;  // the whole triangle goes if any corner did
+        new_indices.push_back(static_cast<unsigned int>(remap[a]));
+        new_indices.push_back(static_cast<unsigned int>(remap[b]));
+        new_indices.push_back(static_cast<unsigned int>(remap[c]));
+    }
+
+    positions = std::move(new_positions);
+    normals = std::move(new_normals);
+    texcoords = std::move(new_texcoords);
+    indices = std::move(new_indices);
+}
+
+void MeshData::MergeVertices(const std::vector<int> &vertex_indices) {
+    int old_count = VertexCount();
+    std::vector<bool> in_group(static_cast<size_t>(old_count), false);
+    std::vector<int> group;
+    for (int v : vertex_indices) {
+        if (v >= 0 && v < old_count && !in_group[static_cast<size_t>(v)]) {
+            in_group[static_cast<size_t>(v)] = true;
+            group.push_back(v);
+        }
+    }
+    if (group.size() < 2) return;  // nothing to merge
+    std::sort(group.begin(), group.end());
+    int keep_index = group.front();
+
+    bool has_normals = !normals.empty();
+    bool has_texcoords = !texcoords.empty();
+
+    // Average the group's attributes into the kept vertex's own slot.
+    float sum_pos[3] = {0.0f, 0.0f, 0.0f};
+    float sum_norm[3] = {0.0f, 0.0f, 0.0f};
+    float sum_uv[2] = {0.0f, 0.0f};
+    for (int v : group) {
+        for (int i = 0; i < 3; i++) sum_pos[i] += positions[static_cast<size_t>(v) * 3 + static_cast<size_t>(i)];
+        if (has_normals) {
+            for (int i = 0; i < 3; i++) sum_norm[i] += normals[static_cast<size_t>(v) * 3 + static_cast<size_t>(i)];
+        }
+        if (has_texcoords) {
+            for (int i = 0; i < 2; i++) sum_uv[i] += texcoords[static_cast<size_t>(v) * 2 + static_cast<size_t>(i)];
+        }
+    }
+    float n = static_cast<float>(group.size());
+    for (int i = 0; i < 3; i++) positions[static_cast<size_t>(keep_index) * 3 + static_cast<size_t>(i)] = sum_pos[i] / n;
+    if (has_normals) {
+        for (int i = 0; i < 3; i++) normals[static_cast<size_t>(keep_index) * 3 + static_cast<size_t>(i)] = sum_norm[i] / n;
+    }
+    if (has_texcoords) {
+        for (int i = 0; i < 2; i++) texcoords[static_cast<size_t>(keep_index) * 2 + static_cast<size_t>(i)] = sum_uv[i] / n;
+    }
+
+    // Every merged-away vertex now points at keep_index; everything else maps to itself.
+    std::vector<int> merge_target(static_cast<size_t>(old_count));
+    for (int v = 0; v < old_count; v++) merge_target[static_cast<size_t>(v)] = v;
+    for (int v : group) merge_target[static_cast<size_t>(v)] = keep_index;
+
+    // Remap triangles and drop any that became degenerate (two or more corners now equal).
+    std::vector<unsigned int> remapped_indices;
+    remapped_indices.reserve(indices.size());
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        if (static_cast<int>(a) >= old_count || static_cast<int>(b) >= old_count || static_cast<int>(c) >= old_count) {
+            continue;  // defensive -- a malformed/out-of-range triangle can't be remapped, drop it
+        }
+        unsigned int ra = static_cast<unsigned int>(merge_target[a]);
+        unsigned int rb = static_cast<unsigned int>(merge_target[b]);
+        unsigned int rc = static_cast<unsigned int>(merge_target[c]);
+        if (ra == rb || rb == rc || ra == rc) continue;  // degenerate after the weld -- drop it
+        remapped_indices.push_back(ra);
+        remapped_indices.push_back(rb);
+        remapped_indices.push_back(rc);
+    }
+
+    // Compact away the merged-away vertices (everything in `group` except keep_index) --
+    // same shape as RemoveVertices' own compaction step.
+    std::vector<bool> remove(static_cast<size_t>(old_count), false);
+    for (int v : group) {
+        if (v != keep_index) remove[static_cast<size_t>(v)] = true;
+    }
+    std::vector<int> remap(static_cast<size_t>(old_count), -1);
+    int next_new_index = 0;
+    for (int v = 0; v < old_count; v++) {
+        if (!remove[static_cast<size_t>(v)]) remap[static_cast<size_t>(v)] = next_new_index++;
+    }
+
+    std::vector<float> new_positions, new_normals, new_texcoords;
+    new_positions.reserve(static_cast<size_t>(next_new_index) * 3);
+    if (has_normals) new_normals.reserve(static_cast<size_t>(next_new_index) * 3);
+    if (has_texcoords) new_texcoords.reserve(static_cast<size_t>(next_new_index) * 2);
+    for (int v = 0; v < old_count; v++) {
+        if (remove[static_cast<size_t>(v)]) continue;
+        new_positions.insert(new_positions.end(), positions.begin() + v * 3, positions.begin() + v * 3 + 3);
+        if (has_normals) new_normals.insert(new_normals.end(), normals.begin() + v * 3, normals.begin() + v * 3 + 3);
+        if (has_texcoords) new_texcoords.insert(new_texcoords.end(), texcoords.begin() + v * 2, texcoords.begin() + v * 2 + 2);
+    }
+
+    std::vector<unsigned int> new_indices;
+    new_indices.reserve(remapped_indices.size());
+    for (unsigned int idx : remapped_indices) new_indices.push_back(static_cast<unsigned int>(remap[idx]));
+
+    positions = std::move(new_positions);
+    normals = std::move(new_normals);
+    texcoords = std::move(new_texcoords);
+    indices = std::move(new_indices);
+}
+
+void MeshData::RecalculateNormals() {
+    int vertex_count = VertexCount();
+    if (vertex_count == 0 || indices.empty()) return;
+
+    normals.assign(static_cast<size_t>(vertex_count) * 3, 0.0f);
+    auto accumulate = [&](unsigned int idx, float nx, float ny, float nz) {
+        size_t base = static_cast<size_t>(idx) * 3;
+        normals[base + 0] += nx;
+        normals[base + 1] += ny;
+        normals[base + 2] += nz;
+    };
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int ia = indices[t], ib = indices[t + 1], ic = indices[t + 2];
+        if (static_cast<int>(ia) >= vertex_count || static_cast<int>(ib) >= vertex_count ||
+            static_cast<int>(ic) >= vertex_count) {
+            continue;  // defensive -- a malformed/out-of-range triangle contributes nothing
+        }
+        float ax = positions[ia * 3 + 0], ay = positions[ia * 3 + 1], az = positions[ia * 3 + 2];
+        float bx = positions[ib * 3 + 0], by = positions[ib * 3 + 1], bz = positions[ib * 3 + 2];
+        float cx = positions[ic * 3 + 0], cy = positions[ic * 3 + 1], cz = positions[ic * 3 + 2];
+        float e1x = bx - ax, e1y = by - ay, e1z = bz - az;
+        float e2x = cx - ax, e2y = cy - ay, e2z = cz - az;
+        // Unnormalized cross product -- its magnitude is proportional to
+        // the triangle's area, so summing it directly (rather than
+        // normalizing per-face first) gives an area-weighted average for
+        // free.
+        float nx = e1y * e2z - e1z * e2y;
+        float ny = e1z * e2x - e1x * e2z;
+        float nz = e1x * e2y - e1y * e2x;
+        accumulate(ia, nx, ny, nz);
+        accumulate(ib, nx, ny, nz);
+        accumulate(ic, nx, ny, nz);
+    }
+
+    for (int v = 0; v < vertex_count; v++) {
+        size_t base = static_cast<size_t>(v) * 3;
+        float x = normals[base + 0], y = normals[base + 1], z = normals[base + 2];
+        float len = std::sqrt(x * x + y * y + z * z);
+        if (len > 1e-8f) {
+            normals[base + 0] = x / len;
+            normals[base + 1] = y / len;
+            normals[base + 2] = z / len;
+        } else {
+            // Referenced by zero (or only degenerate) triangles -- nothing
+            // to average, fall back to a fixed up-normal rather than NaN.
+            normals[base + 0] = 0.0f;
+            normals[base + 1] = 0.0f;
+            normals[base + 2] = 1.0f;
+        }
+    }
+}
+
+std::vector<int> MeshData::SubdivideFaces(const std::vector<int> &vertex_indices) {
+    int vertex_count = VertexCount();
+    std::vector<bool> selected(static_cast<size_t>(vertex_count), false);
+    for (int v : vertex_indices) {
+        if (v >= 0 && v < vertex_count) selected[static_cast<size_t>(v)] = true;
+    }
+
+    bool has_normals = !normals.empty();
+    bool has_texcoords = !texcoords.empty();
+    std::vector<int> new_centroids;
+    std::vector<unsigned int> new_indices;
+    new_indices.reserve(indices.size());
+    size_t original_triangle_count = indices.size() / 3;
+    for (size_t tri = 0; tri < original_triangle_count; tri++) {
+        size_t t = tri * 3;
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        bool full = static_cast<int>(a) < vertex_count && static_cast<int>(b) < vertex_count &&
+                    static_cast<int>(c) < vertex_count && selected[a] && selected[b] && selected[c];
+        if (!full) {
+            new_indices.push_back(a);
+            new_indices.push_back(b);
+            new_indices.push_back(c);
+            continue;
+        }
+        int centroid_index = VertexCount();
+        positions.push_back((positions[a * 3 + 0] + positions[b * 3 + 0] + positions[c * 3 + 0]) / 3.0f);
+        positions.push_back((positions[a * 3 + 1] + positions[b * 3 + 1] + positions[c * 3 + 1]) / 3.0f);
+        positions.push_back((positions[a * 3 + 2] + positions[b * 3 + 2] + positions[c * 3 + 2]) / 3.0f);
+        if (has_normals) {
+            normals.push_back((normals[a * 3 + 0] + normals[b * 3 + 0] + normals[c * 3 + 0]) / 3.0f);
+            normals.push_back((normals[a * 3 + 1] + normals[b * 3 + 1] + normals[c * 3 + 1]) / 3.0f);
+            normals.push_back((normals[a * 3 + 2] + normals[b * 3 + 2] + normals[c * 3 + 2]) / 3.0f);
+        }
+        if (has_texcoords) {
+            texcoords.push_back((texcoords[a * 2 + 0] + texcoords[b * 2 + 0] + texcoords[c * 2 + 0]) / 3.0f);
+            texcoords.push_back((texcoords[a * 2 + 1] + texcoords[b * 2 + 1] + texcoords[c * 2 + 1]) / 3.0f);
+        }
+        new_centroids.push_back(centroid_index);
+        unsigned int centroid = static_cast<unsigned int>(centroid_index);
+        new_indices.push_back(a);
+        new_indices.push_back(b);
+        new_indices.push_back(centroid);
+        new_indices.push_back(b);
+        new_indices.push_back(c);
+        new_indices.push_back(centroid);
+        new_indices.push_back(c);
+        new_indices.push_back(a);
+        new_indices.push_back(centroid);
+    }
+    indices = std::move(new_indices);
+    return new_centroids;
+}
+
+std::vector<int> MeshData::ExtrudeFaces(const std::vector<int> &vertex_indices, float distance) {
+    int vertex_count = VertexCount();
+    std::vector<bool> selected(static_cast<size_t>(vertex_count), false);
+    for (int v : vertex_indices) {
+        if (v >= 0 && v < vertex_count) selected[static_cast<size_t>(v)] = true;
+    }
+
+    struct Face {
+        unsigned int a, b, c;
+    };
+    std::vector<Face> faces;
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        if (static_cast<int>(a) < vertex_count && static_cast<int>(b) < vertex_count &&
+            static_cast<int>(c) < vertex_count && selected[a] && selected[b] && selected[c]) {
+            faces.push_back({a, b, c});
+        }
+    }
+    if (faces.empty()) return {};
+
+    // Area-weighted average of every selected triangle's own (unnormalized)
+    // cross-product normal -- the geometric extrude direction, deliberately
+    // not read from `normals` (which may be stale or absent).
+    float sum[3] = {0.0f, 0.0f, 0.0f};
+    for (const Face &f : faces) {
+        float ax = positions[f.a * 3 + 0], ay = positions[f.a * 3 + 1], az = positions[f.a * 3 + 2];
+        float bx = positions[f.b * 3 + 0], by = positions[f.b * 3 + 1], bz = positions[f.b * 3 + 2];
+        float cx = positions[f.c * 3 + 0], cy = positions[f.c * 3 + 1], cz = positions[f.c * 3 + 2];
+        float e1x = bx - ax, e1y = by - ay, e1z = bz - az;
+        float e2x = cx - ax, e2y = cy - ay, e2z = cz - az;
+        sum[0] += e1y * e2z - e1z * e2y;
+        sum[1] += e1z * e2x - e1x * e2z;
+        sum[2] += e1x * e2y - e1y * e2x;
+    }
+    float len = std::sqrt(sum[0] * sum[0] + sum[1] * sum[1] + sum[2] * sum[2]);
+    if (len < 1e-8f) return {};  // degenerate (zero-area) selection -- no sane direction to extrude along
+    float dirx = sum[0] / len, diry = sum[1] / len, dirz = sum[2] / len;
+
+    std::vector<bool> used(static_cast<size_t>(vertex_count), false);
+    for (const Face &f : faces) {
+        used[f.a] = true;
+        used[f.b] = true;
+        used[f.c] = true;
+    }
+
+    bool has_normals = !normals.empty();
+    bool has_texcoords = !texcoords.empty();
+    std::vector<int> dup(static_cast<size_t>(vertex_count), -1);
+    std::vector<int> new_cap;
+    for (int v = 0; v < vertex_count; v++) {
+        if (!used[static_cast<size_t>(v)]) continue;
+        int new_idx = VertexCount();
+        dup[static_cast<size_t>(v)] = new_idx;
+        new_cap.push_back(new_idx);
+        positions.push_back(positions[static_cast<size_t>(v) * 3 + 0] + dirx * distance);
+        positions.push_back(positions[static_cast<size_t>(v) * 3 + 1] + diry * distance);
+        positions.push_back(positions[static_cast<size_t>(v) * 3 + 2] + dirz * distance);
+        if (has_normals) {
+            normals.push_back(normals[static_cast<size_t>(v) * 3 + 0]);
+            normals.push_back(normals[static_cast<size_t>(v) * 3 + 1]);
+            normals.push_back(normals[static_cast<size_t>(v) * 3 + 2]);
+        }
+        if (has_texcoords) {
+            texcoords.push_back(texcoords[static_cast<size_t>(v) * 2 + 0]);
+            texcoords.push_back(texcoords[static_cast<size_t>(v) * 2 + 1]);
+        }
+    }
+
+    // A directed edge (a,b) of a selected triangle is on the group's
+    // *boundary* unless its reverse (b,a) is also a directed edge of
+    // some (other) selected triangle -- true exactly for an edge shared
+    // between two selected triangles (consistent winding walks it in
+    // both directions), e.g. a face's own internal diagonal.
+    std::set<std::pair<unsigned int, unsigned int>> directed_edges;
+    for (const Face &f : faces) {
+        directed_edges.insert({f.a, f.b});
+        directed_edges.insert({f.b, f.c});
+        directed_edges.insert({f.c, f.a});
+    }
+
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        if (static_cast<int>(a) < vertex_count && static_cast<int>(b) < vertex_count &&
+            static_cast<int>(c) < vertex_count && selected[a] && selected[b] && selected[c]) {
+            indices[t] = static_cast<unsigned int>(dup[a]);
+            indices[t + 1] = static_cast<unsigned int>(dup[b]);
+            indices[t + 2] = static_cast<unsigned int>(dup[c]);
+        }
+    }
+
+    for (const auto &e : directed_edges) {
+        unsigned int a = e.first, b = e.second;
+        if (directed_edges.count({b, a}) != 0) continue;  // interior edge, shared by two selected triangles
+        unsigned int a2 = static_cast<unsigned int>(dup[a]);
+        unsigned int b2 = static_cast<unsigned int>(dup[b]);
+        indices.push_back(a);
+        indices.push_back(b);
+        indices.push_back(b2);
+        indices.push_back(a);
+        indices.push_back(b2);
+        indices.push_back(a2);
+    }
+
+    std::sort(new_cap.begin(), new_cap.end());
+    return new_cap;
+}
+
+bool MeshData::DissolveVertex(int vertex_index) {
+    int vertex_count = VertexCount();
+    if (vertex_index < 0 || vertex_index >= vertex_count) return false;
+    unsigned int v = static_cast<unsigned int>(vertex_index);
+
+    // Every incident triangle's "opposite" directed edge, in the same
+    // rotational order the triangle already had relative to v (so the
+    // fan triangulation below preserves winding).
+    std::vector<std::pair<unsigned int, unsigned int>> ring_edges;
+    std::vector<size_t> incident_tri_starts;
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int p[3] = {indices[t], indices[t + 1], indices[t + 2]};
+        for (int i = 0; i < 3; i++) {
+            if (p[i] == v) {
+                ring_edges.push_back({p[(i + 1) % 3], p[(i + 2) % 3]});
+                incident_tri_starts.push_back(t);
+                break;
+            }
+        }
+    }
+    if (ring_edges.empty()) {
+        RemoveVertices({vertex_index});  // isolated vertex -- nothing to retriangulate
+        return true;
+    }
+
+    // Try to walk ring_edges into one closed loop -- a proper manifold
+    // fan around v. Any failure (a dangling edge, a branch, more than one
+    // loop, or too short a ring to fan-triangulate) means v isn't a clean
+    // interior vertex, so fall back to a plain removal rather than risk a
+    // malformed retriangulation.
+    std::vector<unsigned int> ring;
+    bool ok = true;
+    {
+        std::vector<std::pair<unsigned int, unsigned int>> remaining = ring_edges;
+        ring.push_back(remaining.front().first);
+        unsigned int cur = remaining.front().second;
+        remaining.erase(remaining.begin());
+        while (!remaining.empty()) {
+            auto it = std::find_if(remaining.begin(), remaining.end(),
+                                    [cur](const std::pair<unsigned int, unsigned int> &e) { return e.first == cur; });
+            if (it == remaining.end()) {
+                ok = false;
+                break;
+            }
+            ring.push_back(cur);
+            cur = it->second;
+            remaining.erase(it);
+        }
+        if (!ok || cur != ring.front() || ring.size() != ring_edges.size() || ring.size() < 3) ok = false;
+    }
+    if (!ok) {
+        RemoveVertices({vertex_index});
+        return true;
+    }
+
+    for (auto rit = incident_tri_starts.rbegin(); rit != incident_tri_starts.rend(); ++rit) {
+        indices.erase(indices.begin() + static_cast<long>(*rit), indices.begin() + static_cast<long>(*rit) + 3);
+    }
+    for (size_t i = 1; i + 1 < ring.size(); i++) {
+        indices.push_back(ring[0]);
+        indices.push_back(ring[i]);
+        indices.push_back(ring[i + 1]);
+    }
+
+    RemoveVertices({vertex_index});
+    return true;
+}
+
+std::vector<int> MeshData::InsetFaces(const std::vector<int> &vertex_indices, float amount) {
+    amount = std::max(0.0f, std::min(1.0f, amount));
+    int vertex_count = VertexCount();
+    std::vector<bool> selected(static_cast<size_t>(vertex_count), false);
+    for (int v : vertex_indices) {
+        if (v >= 0 && v < vertex_count) selected[static_cast<size_t>(v)] = true;
+    }
+
+    struct Face {
+        unsigned int a, b, c;
+    };
+    std::vector<Face> faces;
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        if (static_cast<int>(a) < vertex_count && static_cast<int>(b) < vertex_count &&
+            static_cast<int>(c) < vertex_count && selected[a] && selected[b] && selected[c]) {
+            faces.push_back({a, b, c});
+        }
+    }
+    if (faces.empty()) return {};
+
+    std::vector<bool> used(static_cast<size_t>(vertex_count), false);
+    for (const Face &f : faces) {
+        used[f.a] = true;
+        used[f.b] = true;
+        used[f.c] = true;
+    }
+
+    // The face group's own centroid -- the average position of every
+    // vertex it uses -- is what everything insets toward.
+    float centroid[3] = {0.0f, 0.0f, 0.0f};
+    int used_count = 0;
+    for (int v = 0; v < vertex_count; v++) {
+        if (!used[static_cast<size_t>(v)]) continue;
+        centroid[0] += positions[static_cast<size_t>(v) * 3 + 0];
+        centroid[1] += positions[static_cast<size_t>(v) * 3 + 1];
+        centroid[2] += positions[static_cast<size_t>(v) * 3 + 2];
+        used_count++;
+    }
+    centroid[0] /= static_cast<float>(used_count);
+    centroid[1] /= static_cast<float>(used_count);
+    centroid[2] /= static_cast<float>(used_count);
+
+    bool has_normals = !normals.empty();
+    bool has_texcoords = !texcoords.empty();
+    std::vector<int> dup(static_cast<size_t>(vertex_count), -1);
+    std::vector<int> new_cap;
+    for (int v = 0; v < vertex_count; v++) {
+        if (!used[static_cast<size_t>(v)]) continue;
+        int new_idx = VertexCount();
+        dup[static_cast<size_t>(v)] = new_idx;
+        new_cap.push_back(new_idx);
+        float ox = positions[static_cast<size_t>(v) * 3 + 0];
+        float oy = positions[static_cast<size_t>(v) * 3 + 1];
+        float oz = positions[static_cast<size_t>(v) * 3 + 2];
+        positions.push_back(ox + (centroid[0] - ox) * amount);
+        positions.push_back(oy + (centroid[1] - oy) * amount);
+        positions.push_back(oz + (centroid[2] - oz) * amount);
+        if (has_normals) {
+            normals.push_back(normals[static_cast<size_t>(v) * 3 + 0]);
+            normals.push_back(normals[static_cast<size_t>(v) * 3 + 1]);
+            normals.push_back(normals[static_cast<size_t>(v) * 3 + 2]);
+        }
+        if (has_texcoords) {
+            texcoords.push_back(texcoords[static_cast<size_t>(v) * 2 + 0]);
+            texcoords.push_back(texcoords[static_cast<size_t>(v) * 2 + 1]);
+        }
+    }
+
+    // Same boundary-edge convention as ExtrudeFaces: a directed edge is
+    // walled only if its reverse isn't also a directed edge of some
+    // (other) selected triangle -- an edge shared between two selected
+    // triangles (e.g. a face's own diagonal) is left alone.
+    std::set<std::pair<unsigned int, unsigned int>> directed_edges;
+    for (const Face &f : faces) {
+        directed_edges.insert({f.a, f.b});
+        directed_edges.insert({f.b, f.c});
+        directed_edges.insert({f.c, f.a});
+    }
+
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        if (static_cast<int>(a) < vertex_count && static_cast<int>(b) < vertex_count &&
+            static_cast<int>(c) < vertex_count && selected[a] && selected[b] && selected[c]) {
+            indices[t] = static_cast<unsigned int>(dup[a]);
+            indices[t + 1] = static_cast<unsigned int>(dup[b]);
+            indices[t + 2] = static_cast<unsigned int>(dup[c]);
+        }
+    }
+
+    for (const auto &e : directed_edges) {
+        unsigned int a = e.first, b = e.second;
+        if (directed_edges.count({b, a}) != 0) continue;  // interior edge, shared by two selected triangles
+        unsigned int a2 = static_cast<unsigned int>(dup[a]);
+        unsigned int b2 = static_cast<unsigned int>(dup[b]);
+        indices.push_back(a);
+        indices.push_back(b);
+        indices.push_back(b2);
+        indices.push_back(a);
+        indices.push_back(b2);
+        indices.push_back(a2);
+    }
+
+    std::sort(new_cap.begin(), new_cap.end());
+    return new_cap;
+}
+
+int MeshData::AddVertex(float x, float y, float z) {
+    int new_index = VertexCount();
+    positions.push_back(x);
+    positions.push_back(y);
+    positions.push_back(z);
+    if (!normals.empty()) {
+        normals.push_back(0.0f);
+        normals.push_back(0.0f);
+        normals.push_back(1.0f);
+    }
+    if (!texcoords.empty()) {
+        texcoords.push_back(0.0f);
+        texcoords.push_back(0.0f);
+    }
+    return new_index;
+}
+
+bool MeshData::MakeFace(const std::vector<int> &vertex_indices) {
+    int vertex_count = VertexCount();
+    std::vector<bool> seen(static_cast<size_t>(vertex_count), false);
+    std::vector<int> distinct;
+    for (int v : vertex_indices) {
+        if (v >= 0 && v < vertex_count && !seen[static_cast<size_t>(v)]) {
+            seen[static_cast<size_t>(v)] = true;
+            distinct.push_back(v);
+        }
+    }
+    if (distinct.size() < 3) return false;
+
+    unsigned int pivot = static_cast<unsigned int>(distinct[0]);
+    for (size_t i = 1; i + 1 < distinct.size(); i++) {
+        indices.push_back(pivot);
+        indices.push_back(static_cast<unsigned int>(distinct[i]));
+        indices.push_back(static_cast<unsigned int>(distinct[i + 1]));
+    }
+    return true;
+}
+
+int MeshData::MergeByDistance(float threshold) {
+    threshold = std::max(threshold, 0.0f);
+    int vertex_count = VertexCount();
+    if (vertex_count < 2) return 0;
+
+    // Union-find over every pair within threshold -- grouping is
+    // transitive through a chain of close-enough pairs. No path
+    // compression during the unions themselves (kept simple; mesh sizes
+    // here are small enough that it doesn't matter), just a plain find()
+    // used both while unioning and for the final grouping pass below.
+    std::vector<int> parent(static_cast<size_t>(vertex_count));
+    for (int i = 0; i < vertex_count; i++) parent[static_cast<size_t>(i)] = i;
+    auto find_root = [&](int x) {
+        while (parent[static_cast<size_t>(x)] != x) x = parent[static_cast<size_t>(x)];
+        return x;
+    };
+
+    float threshold_sq = threshold * threshold;
+    for (int i = 0; i < vertex_count; i++) {
+        for (int j = i + 1; j < vertex_count; j++) {
+            float dx = positions[static_cast<size_t>(i) * 3 + 0] - positions[static_cast<size_t>(j) * 3 + 0];
+            float dy = positions[static_cast<size_t>(i) * 3 + 1] - positions[static_cast<size_t>(j) * 3 + 1];
+            float dz = positions[static_cast<size_t>(i) * 3 + 2] - positions[static_cast<size_t>(j) * 3 + 2];
+            if (dx * dx + dy * dy + dz * dz > threshold_sq) continue;
+            int ri = find_root(i), rj = find_root(j);
+            if (ri != rj) parent[static_cast<size_t>(std::max(ri, rj))] = std::min(ri, rj);
+        }
+    }
+
+    std::vector<std::vector<int>> groups(static_cast<size_t>(vertex_count));
+    for (int i = 0; i < vertex_count; i++) groups[static_cast<size_t>(find_root(i))].push_back(i);
+
+    bool has_normals = !normals.empty();
+    bool has_texcoords = !texcoords.empty();
+    std::vector<int> merge_target(static_cast<size_t>(vertex_count));
+    for (int i = 0; i < vertex_count; i++) merge_target[static_cast<size_t>(i)] = i;
+    int removed_count = 0;
+    for (int root = 0; root < vertex_count; root++) {
+        const std::vector<int> &group = groups[static_cast<size_t>(root)];
+        if (group.size() < 2) continue;
+        float sum_pos[3] = {0.0f, 0.0f, 0.0f};
+        float sum_norm[3] = {0.0f, 0.0f, 0.0f};
+        float sum_uv[2] = {0.0f, 0.0f};
+        for (int v : group) {
+            for (int k = 0; k < 3; k++) sum_pos[k] += positions[static_cast<size_t>(v) * 3 + static_cast<size_t>(k)];
+            if (has_normals) {
+                for (int k = 0; k < 3; k++) sum_norm[k] += normals[static_cast<size_t>(v) * 3 + static_cast<size_t>(k)];
+            }
+            if (has_texcoords) {
+                for (int k = 0; k < 2; k++) sum_uv[k] += texcoords[static_cast<size_t>(v) * 2 + static_cast<size_t>(k)];
+            }
+        }
+        float n = static_cast<float>(group.size());
+        for (int k = 0; k < 3; k++) positions[static_cast<size_t>(root) * 3 + static_cast<size_t>(k)] = sum_pos[k] / n;
+        if (has_normals) {
+            for (int k = 0; k < 3; k++) normals[static_cast<size_t>(root) * 3 + static_cast<size_t>(k)] = sum_norm[k] / n;
+        }
+        if (has_texcoords) {
+            for (int k = 0; k < 2; k++) texcoords[static_cast<size_t>(root) * 2 + static_cast<size_t>(k)] = sum_uv[k] / n;
+        }
+        for (int v : group) {
+            merge_target[static_cast<size_t>(v)] = root;
+            if (v != root) removed_count++;
+        }
+    }
+    if (removed_count == 0) return 0;
+
+    std::vector<unsigned int> remapped_indices;
+    remapped_indices.reserve(indices.size());
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) {
+        unsigned int a = indices[t], b = indices[t + 1], c = indices[t + 2];
+        if (static_cast<int>(a) >= vertex_count || static_cast<int>(b) >= vertex_count ||
+            static_cast<int>(c) >= vertex_count) {
+            continue;
+        }
+        unsigned int ra = static_cast<unsigned int>(merge_target[a]);
+        unsigned int rb = static_cast<unsigned int>(merge_target[b]);
+        unsigned int rc = static_cast<unsigned int>(merge_target[c]);
+        if (ra == rb || rb == rc || ra == rc) continue;  // degenerate after the weld -- drop it
+        remapped_indices.push_back(ra);
+        remapped_indices.push_back(rb);
+        remapped_indices.push_back(rc);
+    }
+
+    std::vector<bool> remove(static_cast<size_t>(vertex_count), false);
+    for (int v = 0; v < vertex_count; v++) {
+        if (merge_target[static_cast<size_t>(v)] != v) remove[static_cast<size_t>(v)] = true;
+    }
+    std::vector<int> remap(static_cast<size_t>(vertex_count), -1);
+    int next_new_index = 0;
+    for (int v = 0; v < vertex_count; v++) {
+        if (!remove[static_cast<size_t>(v)]) remap[static_cast<size_t>(v)] = next_new_index++;
+    }
+
+    std::vector<float> new_positions, new_normals, new_texcoords;
+    new_positions.reserve(static_cast<size_t>(next_new_index) * 3);
+    if (has_normals) new_normals.reserve(static_cast<size_t>(next_new_index) * 3);
+    if (has_texcoords) new_texcoords.reserve(static_cast<size_t>(next_new_index) * 2);
+    for (int v = 0; v < vertex_count; v++) {
+        if (remove[static_cast<size_t>(v)]) continue;
+        new_positions.insert(new_positions.end(), positions.begin() + v * 3, positions.begin() + v * 3 + 3);
+        if (has_normals) new_normals.insert(new_normals.end(), normals.begin() + v * 3, normals.begin() + v * 3 + 3);
+        if (has_texcoords) new_texcoords.insert(new_texcoords.end(), texcoords.begin() + v * 2, texcoords.begin() + v * 2 + 2);
+    }
+
+    std::vector<unsigned int> new_indices;
+    new_indices.reserve(remapped_indices.size());
+    for (unsigned int idx : remapped_indices) new_indices.push_back(static_cast<unsigned int>(remap[idx]));
+
+    positions = std::move(new_positions);
+    normals = std::move(new_normals);
+    texcoords = std::move(new_texcoords);
+    indices = std::move(new_indices);
+    return removed_count;
+}
+
+void MeshData::FlipNormals() {
+    for (size_t t = 0; t + 2 < indices.size(); t += 3) std::swap(indices[t + 1], indices[t + 2]);
+    for (size_t i = 0; i + 2 < normals.size(); i += 3) {
+        normals[i + 0] = -normals[i + 0];
+        normals[i + 1] = -normals[i + 1];
+        normals[i + 2] = -normals[i + 2];
+    }
+}
+
+int Scene::EnsureUniqueMesh(int object_id) {
+    Object3D *obj = FindObject(object_id);
+    if (!obj || obj->mesh_index < 0 || obj->mesh_index >= static_cast<int>(meshes.size())) return -1;
+    int share_count = 0;
+    for (const Object3D &o : objects) {
+        if (o.mesh_index == obj->mesh_index) share_count++;
+    }
+    if (share_count <= 1) return obj->mesh_index;  // already exclusively this object's own
+    MeshData clone = meshes[static_cast<size_t>(obj->mesh_index)];
+    int new_index = static_cast<int>(meshes.size());
+    meshes.push_back(std::move(clone));
+    obj->mesh_index = new_index;
+    return new_index;
+}
+
+int Scene::TotalTriangleCount() const {
+    int total = 0;
+    for (const auto &obj : objects) {
+        if (obj.mesh_index >= 0 && obj.mesh_index < static_cast<int>(meshes.size())) {
+            total += meshes[static_cast<size_t>(obj.mesh_index)].TriangleCount();
+        }
+    }
+    return total;
+}
+
+bool IsModel3DPath(const std::string &path) {
+    size_t dot = path.find_last_of('.');
+    if (dot == std::string::npos) return false;
+    std::string ext = path.substr(dot + 1);
+    std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c) { return std::tolower(c); });
+    return ext == "obj" || ext == "gltf" || ext == "glb" || ext == "iqm" || ext == "vox" || ext == "m3d";
+}
+
+namespace {
+// Reads back the `extras.mep_lights` array SaveModel3DGltf writes (see
+// its own comment on why a custom extras field instead of
+// KHR_lights_punctual). `gfx::LoadModel`/`LoadGltfModel` (the path
+// LoadModel3DFile below uses for the actual mesh/material data) return a
+// gfx::Model -- a format-agnostic, lights-unaware shape shared with
+// every other importer (obj/iqm/vox/m3d) -- so this independently
+// re-opens and re-parses the same file's raw JSON, deliberately outside
+// that pipeline, to pull out this one mep-specific field. A no-op for
+// any file this app didn't itself save with lights (no `.gltf`
+// extension, a binary `.glb` container, no `extras.mep_lights` present,
+// or simply a scene that had zero lights when saved) -- `out->lights`
+// is simply left however LoadModel3DFile's own caller already set it up
+// (empty, for a fresh Scene).
+void LoadModel3DGltfLights(const std::string &path, Scene *out) {
+    size_t dot = path.find_last_of('.');
+    if (dot == std::string::npos) return;
+    std::string ext = path.substr(dot + 1);
+    std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c) { return std::tolower(c); });
+    if (ext != "gltf") return;  // .glb is a binary container; SaveModel3DGltf only ever writes plain-text .gltf
+
+    std::ifstream in(path, std::ios::binary);
+    if (!in) return;
+    std::string text((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+
+    Json doc;
+    if (!Json::Parse(text, &doc)) return;
+    if (!doc.contains("extras")) return;
+    const Json &extras = doc.get("extras");
+    if (!extras.contains("mep_lights")) return;
+
+    auto read_vec3 = [](const Json &arr, Vec3f fallback) -> Vec3f {
+        if (arr.items().size() != 3) return fallback;
+        const std::vector<Json> &v = arr.items();
+        return Vec3f{static_cast<float>(v[0].as_double(static_cast<double>(fallback.x))),
+                     static_cast<float>(v[1].as_double(static_cast<double>(fallback.y))),
+                     static_cast<float>(v[2].as_double(static_cast<double>(fallback.z)))};
+    };
+
+    for (const Json &lj : extras.get("mep_lights").items()) {
+        Light light;
+        light.name = lj.contains("name") ? lj.get("name").as_string("") : "";
+        light.type = lj.contains("type") && lj.get("type").as_string("") == "point" ? LightType::Point : LightType::Directional;
+        if (lj.contains("position")) light.position = read_vec3(lj.get("position"), light.position);
+        if (lj.contains("direction")) light.direction = read_vec3(lj.get("direction"), light.direction);
+        if (lj.contains("color") && lj.get("color").items().size() == 4) {
+            const std::vector<Json> &col = lj.get("color").items();
+            light.color = RgbaColorF{static_cast<float>(col[0].as_double(1.0)), static_cast<float>(col[1].as_double(1.0)),
+                                      static_cast<float>(col[2].as_double(1.0)), static_cast<float>(col[3].as_double(1.0))};
+        }
+        light.intensity = lj.contains("intensity") ? static_cast<float>(lj.get("intensity").as_double(1.0)) : 1.0f;
+        light.range = lj.contains("range") ? static_cast<float>(lj.get("range").as_double(10.0)) : 10.0f;
+        light.visible = lj.contains("visible") ? lj.get("visible").as_bool(true) : true;
+        out->AddLight(light);
+    }
+}
+}  // namespace
+
+bool LoadModel3DFile(const std::string &path, Scene *out, std::string *error) {
+    gfx::Model model = gfx::LoadModel(path.c_str());
+    if (model.meshCount <= 0) {
+        if (error) *error = "no meshes loaded (missing file, or unsupported/corrupt format): " + path;
+        gfx::UnloadModel(model);
+        return false;
+    }
+
+    size_t slash = path.find_last_of('/');
+    std::string base_name = slash == std::string::npos ? path : path.substr(slash + 1);
+
+    for (int i = 0; i < model.meshCount; i++) {
+        MeshData md;
+        md.name = model.meshCount > 1 ? (base_name + "#" + std::to_string(i)) : base_name;
+        ExtractMeshData(model.meshes[i], &md);
+        int mesh_index = static_cast<int>(out->meshes.size());
+        out->meshes.push_back(std::move(md));
+
+        Object3D obj;
+        obj.name = model.meshCount > 1 ? (base_name + " " + std::to_string(i + 1)) : base_name;
+        obj.mesh_index = mesh_index;
+        obj.kind = PrimitiveKind::Imported;
+        // Base color, roughness/metallic scalars, and up to 3 textures
+        // (albedo/normal -- roughness+metallic map slots too, though only
+        // the glTF importer ever actually populates any non-albedo slot
+        // today, see LoadGltfMaterial's own comment on why not the
+        // combined metallicRoughnessTexture specifically).
+        // model.meshMaterial[i] indexes model.materials; LoadModel always
+        // populates both (falling back to a single default material) so
+        // this is safe whenever any meshes loaded at all.
+        if (model.meshMaterial && model.materialCount > 0) {
+            int mat_idx = model.meshMaterial[i];
+            if (mat_idx >= 0 && mat_idx < model.materialCount) {
+                const gfx::Material &src_mat = model.materials[mat_idx];
+                gfx::Color c = src_mat.maps[gfx::kMaterialMapAlbedo].color;
+                obj.color = RgbaColorF{static_cast<float>(c.r) / 255.0f, static_cast<float>(c.g) / 255.0f,
+                                        static_cast<float>(c.b) / 255.0f, static_cast<float>(c.a) / 255.0f};
+                obj.roughness = src_mat.maps[gfx::kMaterialMapRoughness].value;
+                obj.metallic = src_mat.maps[gfx::kMaterialMapMetalness].value;
+                // Reads a texture back from the GPU (it's already resident
+                // there -- LoadModel uploaded it as part of loading the
+                // material) into a plain TextureData, so the doc layer
+                // keeps owning real pixel bytes instead of a GPU handle,
+                // same as every other texture path here. Each object gets
+                // its own TextureData copy per slot even if several
+                // objects/slots in this file share one texture -- a little
+                // redundant for a multi-mesh file with shared textures,
+                // but simple and still correct; not deduplicated this pass.
+                auto import_map = [&](int slot) -> int {
+                    gfx::Texture2D tex = src_mat.maps[slot].texture;
+                    if (tex.id == 0) return -1;
+                    gfx::Image img = gfx::LoadImageFromTexture(tex);
+                    if (!img.data) return -1;
+                    TextureData td;
+                    ExtractImageToTextureData(img, base_name + "_tex", &td);
+                    gfx::UnloadImage(img);
+                    int index = static_cast<int>(out->textures.size());
+                    out->textures.push_back(std::move(td));
+                    return index;
+                };
+                obj.texture_index = import_map(gfx::kMaterialMapAlbedo);
+                obj.normal_map_index = import_map(gfx::kMaterialMapNormal);
+                obj.roughness_map_index = import_map(gfx::kMaterialMapRoughness);
+                obj.metallic_map_index = import_map(gfx::kMaterialMapMetalness);
+            }
+        }
+        out->AddObject(std::move(obj));
+    }
+    out->source_path = path;
+    gfx::UnloadModel(model);
+    LoadModel3DGltfLights(path, out);
+    return true;
+}
+
+int AddPrimitiveToScene(Scene *scene, PrimitiveKind kind) {
+    gfx::Mesh m{};
+    const char *name = "";
+    switch (kind) {
+        case PrimitiveKind::Cube:
+            m = gfx::GenMeshCube(1.0f, 1.0f, 1.0f);
+            name = "Cube";
+            break;
+        case PrimitiveKind::Sphere:
+            m = gfx::GenMeshSphere(0.5f, 16, 16);
+            name = "Sphere";
+            break;
+        case PrimitiveKind::Cylinder:
+            m = gfx::GenMeshCylinder(0.5f, 1.0f, 16);
+            name = "Cylinder";
+            break;
+        case PrimitiveKind::Cone:
+            m = gfx::GenMeshCone(0.5f, 1.0f, 16);
+            name = "Cone";
+            break;
+        case PrimitiveKind::Plane:
+            m = gfx::GenMeshPlane(1.0f, 1.0f, 1, 1);
+            name = "Plane";
+            break;
+        case PrimitiveKind::Torus:
+            // Ring radius 0.35, tube diameter 0.15 (tube radius 0.075) --
+            // leaves a real hole (inner edge at 0.35-0.075=0.275) instead
+            // of the tube overlapping itself through the center. The
+            // original defaults (radius 0.2, size 0.5) had a tube radius
+            // *bigger* than the ring radius, which doesn't read as a ring
+            // at all -- caught live building a test scene (MODEL3D_PLAN.md
+            // Part VIII/IX) and documented as a known quirk in
+            // MEP_AGENT_API.md before this fix landed.
+            m = gfx::GenMeshTorus(0.35f, 0.15f, 16, 16);
+            name = "Torus";
+            break;
+        case PrimitiveKind::Wedge:
+            // Base-pivoted like Cylinder/Cone (unlike Cube/Sphere/Torus,
+            // which are centered) -- see GenMeshWedge's own comment and
+            // MEP_AGENT_API.md's pivot table.
+            m = GenMeshWedge(1.0f, 1.0f, 1.0f);
+            name = "Wedge";
+            break;
+        case PrimitiveKind::None:
+        case PrimitiveKind::Imported:
+        default:
+            return -1;
+    }
+    MeshData md;
+    md.name = name;
+    ExtractMeshData(m, &md);
+    gfx::UnloadMesh(m);
+
+    int mesh_index = static_cast<int>(scene->meshes.size());
+    scene->meshes.push_back(std::move(md));
+
+    Object3D obj;
+    obj.name = name;
+    obj.mesh_index = mesh_index;
+    obj.kind = kind;
+    return scene->AddObject(std::move(obj));
+}
+
+// Revolves `profile` (radius/height pairs, bottom to top) around the Y
+// axis into a real, WELDED/indexed mesh -- deliberately NOT the "unwelded
+// per-quad" convention AddPrimitiveToScene's GenMesh* shapes inherited
+// from raylib (ExtrudeFace's own comment explains why those are unwelded:
+// legacy raylib behavior, not a deliberate choice here) -- a lathed piece
+// is exactly the kind of shape someone then wants to select/extrude/inset
+// around its own real connectivity, which only works on a genuinely
+// connected mesh. `segments+1` columns (not `segments`) so the seam has
+// distinct u=0/u=1 vertices for correct texture wrapping, at the cost of
+// one duplicated column -- normals are computed analytically from the
+// profile's own local tangent (rotated per-column), not by face-normal
+// averaging, so this duplication doesn't cost any shading smoothness the
+// way an unwelded mesh's would.
+int AddLatheToScene(Scene *scene, const std::vector<Vec2f> &profile, int segments, bool cap_top, bool cap_bottom) {
+    int n = static_cast<int>(profile.size());
+    if (n < 2 || segments < 3) return -1;
+
+    MeshData md;
+    md.name = "Lathe";
+    int cols = segments + 1;
+    md.positions.resize(static_cast<size_t>(cols) * static_cast<size_t>(n) * 3);
+    md.normals.resize(static_cast<size_t>(cols) * static_cast<size_t>(n) * 3);
+    md.texcoords.resize(static_cast<size_t>(cols) * static_cast<size_t>(n) * 2);
+
+    auto vertex_index = [cols](int row, int col) { return row * cols + col; };
+    for (int row = 0; row < n; row++) {
+        // The profile curve's own local tangent (in the r/height plane),
+        // central-differenced except at the two open ends -- the outward
+        // surface normal at this row is this tangent rotated -90 degrees
+        // (perpendicular, pointing away from the axis for a profile drawn
+        // with increasing height), same "derive the normal from the
+        // curve's own shape" idea RecalculateNormals uses for triangles.
+        float dr, dh;
+        if (row == 0) {
+            dr = profile[1].radius - profile[0].radius;
+            dh = profile[1].height - profile[0].height;
+        } else if (row == n - 1) {
+            dr = profile[static_cast<size_t>(row)].radius - profile[static_cast<size_t>(row - 1)].radius;
+            dh = profile[static_cast<size_t>(row)].height - profile[static_cast<size_t>(row - 1)].height;
+        } else {
+            dr = profile[static_cast<size_t>(row + 1)].radius - profile[static_cast<size_t>(row - 1)].radius;
+            dh = profile[static_cast<size_t>(row + 1)].height - profile[static_cast<size_t>(row - 1)].height;
+        }
+        float tangent_len = std::sqrt(dr * dr + dh * dh);
+        // n_r/n_h: the 2D outward normal in the (radius, height) plane,
+        // before it's rotated around Y per-column below. A degenerate
+        // (zero-length) tangent -- two identical consecutive profile
+        // points -- falls back to a straight-out radial normal rather
+        // than dividing by zero.
+        float n_r = tangent_len > 1e-6f ? dh / tangent_len : 1.0f;
+        float n_h = tangent_len > 1e-6f ? -dr / tangent_len : 0.0f;
+        for (int col = 0; col < cols; col++) {
+            float theta = 2.0f * kPi * static_cast<float>(col) / static_cast<float>(segments);
+            float c = std::cos(theta), s = std::sin(theta);
+            int vi = vertex_index(row, col);
+            md.positions[static_cast<size_t>(vi) * 3 + 0] = profile[static_cast<size_t>(row)].radius * c;
+            md.positions[static_cast<size_t>(vi) * 3 + 1] = profile[static_cast<size_t>(row)].height;
+            md.positions[static_cast<size_t>(vi) * 3 + 2] = profile[static_cast<size_t>(row)].radius * s;
+            md.normals[static_cast<size_t>(vi) * 3 + 0] = n_r * c;
+            md.normals[static_cast<size_t>(vi) * 3 + 1] = n_h;
+            md.normals[static_cast<size_t>(vi) * 3 + 2] = n_r * s;
+            md.texcoords[static_cast<size_t>(vi) * 2 + 0] = static_cast<float>(col) / static_cast<float>(segments);
+            md.texcoords[static_cast<size_t>(vi) * 2 + 1] = static_cast<float>(row) / static_cast<float>(n - 1);
+        }
+    }
+    for (int row = 0; row + 1 < n; row++) {
+        for (int col = 0; col < segments; col++) {
+            unsigned int a = static_cast<unsigned int>(vertex_index(row, col));
+            unsigned int b = static_cast<unsigned int>(vertex_index(row, col + 1));
+            unsigned int c = static_cast<unsigned int>(vertex_index(row + 1, col + 1));
+            unsigned int d = static_cast<unsigned int>(vertex_index(row + 1, col));
+            md.indices.insert(md.indices.end(), {a, b, c, a, c, d});
+        }
+    }
+
+    // Caps: a fan from a new center vertex to the top/bottom ring, only
+    // when that ring's radius is actually non-zero (a profile that
+    // already tapers to a point there, e.g. a pawn's rounded top,
+    // naturally needs no cap -- adding one anyway would just be a
+    // zero-area degenerate fan).
+    auto add_cap = [&](int row, bool is_bottom) {
+        if (profile[static_cast<size_t>(row)].radius <= 1e-6f) return;
+        int center = static_cast<int>(md.positions.size() / 3);
+        md.positions.insert(md.positions.end(), {0.0f, profile[static_cast<size_t>(row)].height, 0.0f});
+        md.normals.insert(md.normals.end(), {0.0f, is_bottom ? -1.0f : 1.0f, 0.0f});
+        md.texcoords.insert(md.texcoords.end(), {0.5f, 0.5f});
+        for (int col = 0; col < segments; col++) {
+            unsigned int a = static_cast<unsigned int>(vertex_index(row, col));
+            unsigned int b = static_cast<unsigned int>(vertex_index(row, col + 1));
+            if (is_bottom) {
+                md.indices.insert(md.indices.end(), {static_cast<unsigned int>(center), b, a});
+            } else {
+                md.indices.insert(md.indices.end(), {static_cast<unsigned int>(center), a, b});
+            }
+        }
+    };
+    if (cap_bottom) add_cap(0, true);
+    if (cap_top) add_cap(n - 1, false);
+
+    int mesh_index = static_cast<int>(scene->meshes.size());
+    scene->meshes.push_back(std::move(md));
+
+    Object3D obj;
+    obj.name = "Lathe";
+    obj.mesh_index = mesh_index;
+    obj.kind = PrimitiveKind::Imported;  // no PrimitiveKind::Lathe -- a variable-profile shape
+                                          // isn't "regenerate at a new size"-safe the way the
+                                          // fixed GenMesh* primitives are (DescribePrimitiveKind's
+                                          // own doc-comment on what Kind besides Imported means).
+    return scene->AddObject(std::move(obj));
+}
+
+int AddCustomMeshToScene(Scene *scene, const std::vector<Vec3f> &positions, const std::vector<unsigned int> &indices,
+                          const std::string &name, const std::vector<float> &texcoords) {
+    if (positions.empty() || indices.empty() || indices.size() % 3 != 0) return -1;
+    if (!texcoords.empty() && texcoords.size() != positions.size() * 2) return -1;
+    for (unsigned int idx : indices) {
+        if (idx >= positions.size()) return -1;
+    }
+
+    MeshData md;
+    md.name = name;
+    md.positions.resize(positions.size() * 3);
+    for (size_t i = 0; i < positions.size(); i++) {
+        md.positions[i * 3 + 0] = positions[i].x;
+        md.positions[i * 3 + 1] = positions[i].y;
+        md.positions[i * 3 + 2] = positions[i].z;
+    }
+    md.texcoords = texcoords;  // flat, 2 floats/vertex, matching MeshData::texcoords' own convention
+    md.indices = indices;
+    md.RecalculateNormals();
+
+    int mesh_index = static_cast<int>(scene->meshes.size());
+    scene->meshes.push_back(std::move(md));
+
+    Object3D obj;
+    obj.name = name;
+    obj.mesh_index = mesh_index;
+    obj.kind = PrimitiveKind::Imported;
+    return scene->AddObject(std::move(obj));
+}
+
+int LoadTextureIntoScene(Scene *scene, const std::string &path, std::string *error) {
+    gfx::Image img = gfx::LoadImage(path.c_str());
+    if (!img.data) {
+        if (error) *error = "failed to load image (missing file, or unsupported/corrupt format): " + path;
+        return -1;
+    }
+    size_t slash = path.find_last_of('/');
+    std::string name = slash == std::string::npos ? path : path.substr(slash + 1);
+    TextureData td;
+    ExtractImageToTextureData(img, name, &td);
+    gfx::UnloadImage(img);
+    int index = static_cast<int>(scene->textures.size());
+    scene->textures.push_back(std::move(td));
+    return index;
+}
+
+bool DescribePrimitiveKind(PrimitiveKind kind, std::string *out_pivot, std::string *out_dimensions) {
+    switch (kind) {
+        case PrimitiveKind::Cube:
+            *out_pivot = "centered";
+            *out_dimensions = "1 x 1 x 1";
+            return true;
+        case PrimitiveKind::Sphere:
+            *out_pivot = "centered";
+            *out_dimensions = "radius 0.5";
+            return true;
+        case PrimitiveKind::Cylinder:
+            *out_pivot = "base (extends +Y)";
+            *out_dimensions = "radius 0.5, height 1";
+            return true;
+        case PrimitiveKind::Cone:
+            *out_pivot = "base (extends +Y, apex at top)";
+            *out_dimensions = "radius 0.5, height 1";
+            return true;
+        case PrimitiveKind::Plane:
+            *out_pivot = "centered, lies flat in XZ";
+            *out_dimensions = "1 x 1";
+            return true;
+        case PrimitiveKind::Torus:
+            *out_pivot = "centered, lies flat in XZ (hole faces +Y)";
+            *out_dimensions = "ring radius 0.35, tube diameter 0.15";
+            return true;
+        case PrimitiveKind::Wedge:
+            *out_pivot = "base (extends +Y); vertical face at local Z=-0.5, ramps down to Y=0 at Z=+0.5";
+            *out_dimensions = "width 1, height 1, length 1";
+            return true;
+        case PrimitiveKind::None:
+        case PrimitiveKind::Imported:
+        default:
+            return false;
+    }
+}
+
+bool SaveModel3DGltf(const Scene &scene, const std::string &path, std::string *error) {
+    std::vector<unsigned char> buffer;
+    Json accessors = Json::Array();
+    Json buffer_views = Json::Array();
+    Json meshes_json = Json::Array();
+    Json materials_json = Json::Array();
+    Json nodes_json = Json::Array();
+    Json scene_node_indices = Json::Array();
+
+    // One (bufferView + accessor) triple per Scene::meshes entry, shared by
+    // every Object3D that references it -- but a *separate* glTF mesh +
+    // material per Object3D below, so two objects sharing one MeshData can
+    // still each keep their own base color.
+    std::vector<int> position_accessor(scene.meshes.size(), -1);
+    std::vector<int> normal_accessor(scene.meshes.size(), -1);
+    std::vector<int> texcoord_accessor(scene.meshes.size(), -1);
+    std::vector<int> index_accessor(scene.meshes.size(), -1);
+
+    for (size_t mi = 0; mi < scene.meshes.size(); mi++) {
+        const MeshData &md = scene.meshes[mi];
+        if (md.VertexCount() <= 0) continue;
+        position_accessor[mi] = AppendFloatAccessor(buffer, buffer_views, accessors, md.positions, 3, true);
+        normal_accessor[mi] = AppendFloatAccessor(buffer, buffer_views, accessors, md.normals, 3, false);
+        texcoord_accessor[mi] = AppendFloatAccessor(buffer, buffer_views, accessors, md.texcoords, 2, false);
+        index_accessor[mi] = AppendIndexAccessor(buffer, buffer_views, accessors, md.indices);
+    }
+
+    // One glTF image+texture per Scene::textures entry (not per-object the
+    // way meshes/materials are -- unlike base color, pixel data has no
+    // reason to be duplicated in the export just because our own in-memory
+    // model might hold more than one copy of visually-identical bytes).
+    // Encoded to real PNG bytes via gfx::ExportImageToMemory rather than
+    // embedding raw RGBA8 -- glTF images must be an actual encoded image
+    // format, not a raw pixel dump.
+    Json images_json = Json::Array();
+    Json textures_json = Json::Array();
+    std::vector<int> texture_gltf_index(scene.textures.size(), -1);
+    for (size_t ti = 0; ti < scene.textures.size(); ti++) {
+        const TextureData &td = scene.textures[ti];
+        if (td.width <= 0 || td.height <= 0 || td.pixels.size() < static_cast<size_t>(td.width) * static_cast<size_t>(td.height) * 4) {
+            continue;
+        }
+        gfx::Image img{};
+        img.data = const_cast<unsigned char *>(td.pixels.data());
+        img.width = td.width;
+        img.height = td.height;
+        img.mipmaps = 1;
+        img.format = gfx::kPixelFormatR8G8B8A8;
+        std::vector<unsigned char> png_data = gfx::ExportImageToMemory(img, ".png");
+        if (png_data.empty()) continue;
+        Json image_entry = Json::Object();
+        image_entry["uri"] = std::string("data:image/png;base64,") + base64::Encode(png_data.data(), png_data.size());
+        int image_index = static_cast<int>(images_json.size());
+        images_json.push_back(image_entry);
+        Json texture_entry = Json::Object();
+        texture_entry["source"] = image_index;
+        texture_gltf_index[ti] = static_cast<int>(textures_json.size());
+        textures_json.push_back(texture_entry);
+    }
+
+    for (const Object3D &obj : scene.objects) {
+        Json node = Json::Object();
+        node["name"] = obj.name;
+        Json extras = Json::Object();
+        extras["visible"] = obj.visible;
+        node["extras"] = extras;
+
+        Json trans = Json::Array();
+        trans.push_back(static_cast<double>(obj.position.x));
+        trans.push_back(static_cast<double>(obj.position.y));
+        trans.push_back(static_cast<double>(obj.position.z));
+        node["translation"] = trans;
+
+        float q[4];
+        EulerXYZDegToQuat(obj.rotation_deg, q);
+        Json rot = Json::Array();
+        rot.push_back(static_cast<double>(q[0]));
+        rot.push_back(static_cast<double>(q[1]));
+        rot.push_back(static_cast<double>(q[2]));
+        rot.push_back(static_cast<double>(q[3]));
+        node["rotation"] = rot;
+
+        Json scl = Json::Array();
+        scl.push_back(static_cast<double>(obj.scale.x));
+        scl.push_back(static_cast<double>(obj.scale.y));
+        scl.push_back(static_cast<double>(obj.scale.z));
+        node["scale"] = scl;
+
+        if (obj.mesh_index >= 0 && obj.mesh_index < static_cast<int>(scene.meshes.size()) &&
+            position_accessor[static_cast<size_t>(obj.mesh_index)] >= 0) {
+            size_t mi = static_cast<size_t>(obj.mesh_index);
+
+            Json pbr = Json::Object();
+            Json base_color = Json::Array();
+            base_color.push_back(static_cast<double>(obj.color.r));
+            base_color.push_back(static_cast<double>(obj.color.g));
+            base_color.push_back(static_cast<double>(obj.color.b));
+            base_color.push_back(static_cast<double>(obj.color.a));
+            pbr["baseColorFactor"] = base_color;
+            // Real scalars (CHESS_SET_BENCHMARK_PLAN.md Phase 1 added
+            // Object3D::roughness/metallic; this export previously
+            // hardcoded 0.0/0.8 regardless, silently dropping whatever an
+            // agent/user had actually tuned via model.setMaterial).
+            pbr["metallicFactor"] = static_cast<double>(obj.metallic);
+            pbr["roughnessFactor"] = static_cast<double>(obj.roughness);
+            if (obj.texture_index >= 0 && obj.texture_index < static_cast<int>(texture_gltf_index.size()) &&
+                texture_gltf_index[static_cast<size_t>(obj.texture_index)] >= 0) {
+                Json base_color_tex = Json::Object();
+                base_color_tex["index"] = texture_gltf_index[static_cast<size_t>(obj.texture_index)];
+                pbr["baseColorTexture"] = base_color_tex;
+            }
+            Json material = Json::Object();
+            material["pbrMetallicRoughness"] = pbr;
+            // normalTexture is glTF's own dedicated single-texture slot, so
+            // it round-trips directly; roughness/metallic *maps* (as
+            // opposed to the scalars above) have no such 1:1 slot -- glTF
+            // only offers one combined metallicRoughnessTexture
+            // (G=roughness/B=metallic), and repacking this app's two
+            // independent single-channel textures into that combined
+            // layout is real image-processing work with no benchmark need
+            // yet (mirrors LoadGltfMaterial's identical reasoning for NOT
+            // unpacking metallicRoughnessTexture on import) -- a documented
+            // scope cut, not an oversight.
+            if (obj.normal_map_index >= 0 && obj.normal_map_index < static_cast<int>(texture_gltf_index.size()) &&
+                texture_gltf_index[static_cast<size_t>(obj.normal_map_index)] >= 0) {
+                Json normal_tex = Json::Object();
+                normal_tex["index"] = texture_gltf_index[static_cast<size_t>(obj.normal_map_index)];
+                material["normalTexture"] = normal_tex;
+            }
+            int material_index = static_cast<int>(materials_json.size());
+            materials_json.push_back(material);
+
+            Json attributes = Json::Object();
+            attributes["POSITION"] = position_accessor[mi];
+            if (normal_accessor[mi] >= 0) attributes["NORMAL"] = normal_accessor[mi];
+            if (texcoord_accessor[mi] >= 0) attributes["TEXCOORD_0"] = texcoord_accessor[mi];
+
+            Json primitive = Json::Object();
+            primitive["attributes"] = attributes;
+            primitive["indices"] = index_accessor[mi];
+            primitive["material"] = material_index;
+            Json primitives = Json::Array();
+            primitives.push_back(primitive);
+            Json mesh_json = Json::Object();
+            mesh_json["primitives"] = primitives;
+            int mesh_json_index = static_cast<int>(meshes_json.size());
+            meshes_json.push_back(mesh_json);
+            node["mesh"] = mesh_json_index;
+        }
+
+        int node_index = static_cast<int>(nodes_json.size());
+        nodes_json.push_back(node);
+        scene_node_indices.push_back(node_index);
+    }
+
+    Json doc = Json::Object();
+    Json asset = Json::Object();
+    asset["version"] = "2.0";
+    asset["generator"] = "mep 3D modeler";
+    doc["asset"] = asset;
+    doc["scene"] = 0;
+
+    // Scene::lights (MULTILIGHT_ANIMATION_PLAN.md Part A) round-trip via a
+    // custom `extras.mep_lights` array -- CHESS_REALISM_PLAN.md's own
+    // follow-up fix, after live testing found lights silently didn't
+    // survive a save/reopen at all (no light-related code existed here
+    // previously). Deliberately not the standard KHR_lights_punctual
+    // extension: that encodes a directional light's direction via the
+    // owning node's own rotation quaternion, which is real complexity
+    // (and a real place to get the math wrong) this app's own `Light`
+    // struct has no need for, since it already stores direction/position
+    // directly -- `extras` is glTF-spec-legal free-form JSON for exactly
+    // this kind of app-specific data (the same bag `node.extras.visible`
+    // above already uses), so a direct field-for-field dump round-trips
+    // losslessly with no coordinate-system translation at all. Not
+    // standard-glTF-tool-readable, but this array is only ever written
+    // and read by mep itself, same as every other `extras` use here.
+    if (!scene.lights.empty()) {
+        Json lights_arr = Json::Array();
+        for (const Light &l : scene.lights) {
+            Json lj = Json::Object();
+            lj["name"] = l.name;
+            lj["type"] = l.type == LightType::Point ? "point" : "directional";
+            Json pos = Json::Array();
+            pos.push_back(static_cast<double>(l.position.x));
+            pos.push_back(static_cast<double>(l.position.y));
+            pos.push_back(static_cast<double>(l.position.z));
+            lj["position"] = pos;
+            Json dir = Json::Array();
+            dir.push_back(static_cast<double>(l.direction.x));
+            dir.push_back(static_cast<double>(l.direction.y));
+            dir.push_back(static_cast<double>(l.direction.z));
+            lj["direction"] = dir;
+            Json col = Json::Array();
+            col.push_back(static_cast<double>(l.color.r));
+            col.push_back(static_cast<double>(l.color.g));
+            col.push_back(static_cast<double>(l.color.b));
+            col.push_back(static_cast<double>(l.color.a));
+            lj["color"] = col;
+            lj["intensity"] = static_cast<double>(l.intensity);
+            lj["range"] = static_cast<double>(l.range);
+            lj["visible"] = l.visible;
+            lights_arr.push_back(lj);
+        }
+        Json extras = Json::Object();
+        extras["mep_lights"] = lights_arr;
+        doc["extras"] = extras;
+    }
+
+    Json scene0 = Json::Object();
+    scene0["nodes"] = scene_node_indices;
+    Json scenes_arr = Json::Array();
+    scenes_arr.push_back(scene0);
+    doc["scenes"] = scenes_arr;
+
+    doc["nodes"] = nodes_json;
+    doc["meshes"] = meshes_json;
+    doc["materials"] = materials_json;
+    if (!images_json.items().empty()) {
+        doc["images"] = images_json;
+        doc["textures"] = textures_json;
+    }
+    doc["accessors"] = accessors;
+    doc["bufferViews"] = buffer_views;
+
+    Json buf = Json::Object();
+    buf["byteLength"] = static_cast<int>(buffer.size());
+    buf["uri"] = "data:application/octet-stream;base64," + base64::Encode(buffer.data(), buffer.size());
+    Json buffers_arr = Json::Array();
+    buffers_arr.push_back(buf);
+    doc["buffers"] = buffers_arr;
+
+    std::ofstream out(path, std::ios::binary);
+    if (!out) {
+        if (error) *error = "could not open for writing: " + path;
+        return false;
+    }
+    std::string text = doc.dump();
+    out.write(text.data(), static_cast<std::streamsize>(text.size()));
+    if (!out) {
+        if (error) *error = "write failed: " + path;
+        return false;
+    }
+    return true;
+}
+} // namespace datamunge::cad

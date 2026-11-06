@@ -337,9 +337,17 @@ Tensor& Tensor::copy_(const Tensor& src) {
         shape(),
         st,
         {offset(), s.offset()},
-        [&](const auto& off, std::int64_t n, const auto& step) {
-          for (std::int64_t j = 0; j < n; ++j)
-            dst[off[0] + j * step[0]] = from[off[1] + j * step[1]];
+        [dst, from](const auto& off, std::int64_t n, const auto& step) {
+          T*       d = dst + off[0];
+          const T* s = from + off[1];
+          // Unit strides (filling a slice of a concatenation) and a broadcast
+          // source are the common cases: plain loops that vectorise.
+          if (step[0] == 1 && step[1] == 1)
+            for (std::int64_t j = 0; j < n; ++j) d[j] = s[j];
+          else if (step[0] == 1 && step[1] == 0)
+            std::fill(d, d + n, *s);
+          else
+            for (std::int64_t j = 0; j < n; ++j) d[j * step[0]] = s[j * step[1]];
         });
   });
   ++checked().storage->version;

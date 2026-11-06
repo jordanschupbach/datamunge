@@ -50,18 +50,24 @@ kernel L2=.0001/2 and padded crops/flips. Each selects paired parameters/moving 
 validation NLL before testing. Equal seeds alone do not establish a general accuracy advantage;
 this tiny experiment differs from both the original example's larger fit and the paper schedule.
 
-The editable concept diagram is `diagrams/stochastic_depth_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/stochastic_depth_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/stochastic_depth_concept.tikz > build/stochastic_depth_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/stochastic_depth_concept.svg build/stochastic_depth_concept.dvi > build/stochastic_depth_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/stochastic_depth_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Linear survival schedule\nbatch or row mask");
+  diagram.node("n1", {5.2, 0}, "Original or inverted scale\nbranch already computed");
+  diagram.node("n2", {10.4, 0}, "Paired CIFAR-20 fits\nexplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/stochastic_depth_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/stochastic_depth_concept.svg)
 // result_end
 \caption(Stochastic Depth: Survival, Scaling and Visible Optimization)
@@ -460,9 +466,9 @@ int main() {
 ```
 // result_begin: markdown
 CIFAR-20 last survival 1: 128 fit / 64 validation / 64 official-test rows; 269722 learned scalars, 1376 moving scalars; 160 explicit Adam updates.
-Selected epoch 8; validation NLL 2.329446; inference training NLL 1.319105; test NLL 2.225254; test accuracy 0.265625.
+Selected epoch 7; validation NLL 2.311271; inference training NLL 1.338334; test NLL 2.265325; test accuracy 0.234375.
 CIFAR-20 last survival 0.5: 128 fit / 64 validation / 64 official-test rows; 269722 learned scalars, 1376 moving scalars; 160 explicit Adam updates.
-Selected epoch 7; validation NLL 2.278336; inference training NLL 1.780219; test NLL 2.191659; test accuracy 0.265625.
+Selected epoch 10; validation NLL 2.174138; inference training NLL 1.657073; test NLL 2.159506; test accuracy 0.203125.
 \image(figures/stochastic_depth_training.svg)
 // result_end
 \caption(Two complete CIFAR-20 fits compare constant depth with a linear schedule ending at survival .5. Both compute every branch and select paired parameter/moving-state checkpoints by validation NLL.)

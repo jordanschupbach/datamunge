@@ -1,9 +1,12 @@
 // Elementwise ops: arithmetic, unary math, activations, comparisons, where.
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
+#include <vector>
 
 #include "detail.hpp"
+#include "device_ops.hpp"
 #include "vector_math.hpp"
 
 namespace datamunge::nn {
@@ -168,6 +171,8 @@ Tensor scalar_like(double value, const Tensor& like) {
 // ---- binary arithmetic -----------------------------------------------------------------
 
 Tensor add(const Tensor& a, const Tensor& b) {
+  if (detail::is_native(a) || detail::is_native(b))
+    return detail::device_add(a, b);
   const DType dt  = arithmetic_dtype(a.dtype(), b.dtype());
   Tensor      ac  = as_dtype(a, dt), bc = as_dtype(b, dt);
   Tensor      out = binary_kernel(ac, bc, dt, [](auto x, auto y) { return x + y; });
@@ -595,7 +600,11 @@ Tensor leaky_relu_backward(const Tensor& x, const Tensor& g, double alpha) {
       throw std::logic_error("leaky_relu_backward: bool");
     } else {
       const T a = static_cast<T>(alpha);
-      return detail::map_binary<T, T>(x, g, g.dtype(), [a](T xv, T gv) { return xv > T(0) ? gv : a * gv; });
+      // Selecting the slope (a constant) and multiplying unconditionally lets the
+      // loop vectorise; selecting between gv and a * gv does not, because the
+      // compiler may not speculate a floating-point multiply (-ftrapping-math).
+      // The results are identical: gv * 1 is gv, and 0 * gv is a * gv.
+      return detail::map_binary<T, T>(x, g, g.dtype(), [a](T xv, T gv) { return gv * (xv > T(0) ? T(1) : a); });
     }
   });
   SavedTensor sx(x);
@@ -605,7 +614,146 @@ Tensor leaky_relu_backward(const Tensor& x, const Tensor& g, double alpha) {
   return out;
 }
 
+
+// ---- fused bias + ReLU ----------------------------------------------------------------------
+//
+// A convolution or dense layer's bias and ReLU are one memory-bound pass each
+// way instead of two forward passes and two backward passes (ReLU backward
+// plus the bias reduction). The kernels are plain loops over restrict
+// pointers, so they vectorise.
+
+namespace {
+
+using detail::uniform_row_stride;
+
+template <typename T>
+void bias_relu_forward(const T* x, const T* b, T* y, std::int64_t rows, std::int64_t c_) {
+  parallel_for(0, rows, std::max<std::int64_t>(1, detail::kParallelGrain / std::max<std::int64_t>(c_, 1)),
+               [=](std::int64_t lo, std::int64_t hi) {
+                 // Local copies: the closure lives behind a pointer inside
+                 // parallel_for, so a captured bound reloaded after a store
+                 // would make the loop uncountable (see bias_relu_backward).
+                 const std::int64_t  c  = c_;
+                 const T* __restrict xs = x;
+                 const T* __restrict bs = b;
+                 T* __restrict       ys = y;
+                 for (std::int64_t r = lo; r < hi; ++r) {
+                   const T* xr = xs + r * c;
+                   T*       yr = ys + r * c;
+                   for (std::int64_t j = 0; j < c; ++j) {
+                     const T v = xr[j] + bs[j];
+                     yr[j]     = v > T(0) ? v : T(0);
+                   }
+                 }
+               });
+}
+
+/// dx = g where y > 0 else 0, and db = the column sums of dx. Rows are reduced
+/// in fixed chunks (independent of the thread count), each in double, so db is
+/// deterministic. g's rows are `g_ld` apart (a split view needs no copy).
+template <typename T>
+void bias_relu_backward(const T* y, const T* g, std::int64_t g_ld_, T* dx, T* db, std::int64_t rows_,
+                        std::int64_t c_) {
+  const std::int64_t rows = rows_, c = c_;
+  const std::int64_t chunk_rows_ =
+      std::max<std::int64_t>((rows + 63) / 64, std::max<std::int64_t>(1, detail::kParallelGrain / std::max<std::int64_t>(c, 1)));
+  const std::int64_t  chunks = (rows + chunk_rows_ - 1) / chunk_rows_;
+  std::vector<double> partial(static_cast<std::size_t>(chunks * c), 0.0);
+  double*             parts_ = partial.data();
+  parallel_for(0, chunks, 1, [=](std::int64_t lo, std::int64_t hi) {
+    // The closure is reached through a pointer, so every captured scalar is
+    // copied to a local first: otherwise the stores below could alias the
+    // captured loop bounds, the compiler reloads them each iteration and the
+    // inner loop neither if-converts nor vectorises (14x slower).
+    const std::int64_t  c = c_, g_ld = g_ld_, rows = rows_, chunk_rows = chunk_rows_;
+    const T* __restrict ys  = y;
+    const T* __restrict gs  = g;
+    T* __restrict       dxs = dx;
+    double* __restrict  parts = parts_;
+    for (std::int64_t ch = lo; ch < hi; ++ch) {
+      double* __restrict acc = parts + ch * c;
+      const std::int64_t r0 = ch * chunk_rows, r1 = std::min(rows, r0 + chunk_rows);
+      for (std::int64_t r = r0; r < r1; ++r) {
+        const T* yr = ys + r * c;
+        const T* gr = gs + r * g_ld;
+        T*       dr = dxs + r * c;
+        for (std::int64_t j = 0; j < c; ++j) {
+          // Load unconditionally: a load behind the compare would not be if-converted.
+          const T gv = gr[j];
+          const T d  = yr[j] > T(0) ? gv : T(0);
+          dr[j]      = d;
+          acc[j] += static_cast<double>(d);
+        }
+      }
+    }
+  });
+  for (std::int64_t j = 0; j < c; ++j) {
+    double s = 0;
+    for (std::int64_t ch = 0; ch < chunks; ++ch) s += parts_[ch * c + j];
+    db[j] = static_cast<T>(s);
+  }
+}
+
+/// (dx, db) for the fused op with output y and seed g; recorded so that
+/// second-order gradients flow (both outputs are linear in g).
+std::vector<Tensor> bias_add_relu_backward(const Tensor& y, const Tensor& g) {
+  if (g.shape() != y.shape())
+    throw std::invalid_argument("bias_add_relu: gradient shape " + shape_str(g.shape()) + " does not match " +
+                                shape_str(y.shape()));
+  const std::int64_t c = y.shape().back(), rows = c ? y.numel() / c : 0;
+  Tensor             dx = empty(y.shape(), y.dtype()), db = empty({c}, y.dtype());
+  {
+    NoGradGuard  guard;
+    Tensor       gk = detail::cast_raw(detail::nograd(g), y.dtype());
+    std::int64_t ld = uniform_row_stride(gk);
+    if (ld < 0) {
+      gk = gk.contiguous();
+      ld = c;
+    }
+    dispatch_float(y.dtype(), "bias_add_relu backward", [&](auto tag) {
+      using T = typename decltype(tag)::type;
+      bias_relu_backward<T>(y.data_ptr<T>(), gk.data_ptr<T>(), ld, dx.data_ptr<T>(), db.data_ptr<T>(),
+                            rows, c);
+    });
+  }
+  const SavedTensor sy(y);
+  record("BiasAddReluGrad", {g}, {dx, db}, [sy](const Grads& gg, const Grads&) {
+    // d<sx, dx> + d<sb, db> with respect to g is (sx + sb) masked by y > 0.
+    return Grads{leaky_relu_backward(sy.get(), add(gg[0], gg[1]), 0.0)};
+  });
+  return {dx, db};
+}
+
+}  // namespace
+
+Tensor bias_add_relu(const Tensor& x, const Tensor& bias) {
+  if (bias.dim() != 1 || x.dim() < 1 || bias.shape()[0] != x.shape().back())
+    throw std::invalid_argument("bias_add_relu: bias " + shape_str(bias.shape()) +
+                                " must be 1-D and match the last axis of " + shape_str(x.shape()));
+  const DType dt = arithmetic_dtype(x.dtype(), bias.dtype());
+  if (detail::is_native(x) || detail::is_native(bias) || !is_floating(dt)) return relu(bias_add(x, bias));
+  const Tensor xc = as_dtype(x, dt), bc = as_dtype(bias, dt);
+  if (!xc.is_contiguous() || !bc.is_contiguous() || xc.numel() == 0) return relu(bias_add(xc, bc));
+  const std::int64_t c = xc.shape().back(), rows = xc.numel() / c;
+  Tensor             out = empty(xc.shape(), dt);
+  {
+    NoGradGuard guard;
+    dispatch_float(dt, "bias_add_relu", [&](auto tag) {
+      using T = typename decltype(tag)::type;
+      bias_relu_forward<T>(xc.data_ptr<T>(), bc.data_ptr<T>(), out.data_ptr<T>(), rows, c);
+    });
+  }
+  // The mask out > 0 equals x + bias > 0, so only the output is kept.
+  record(
+      "BiasAddRelu", {xc, bc}, {out},
+      [](const Grads& g, const Grads& outs) { return bias_add_relu_backward(outs[0].detach(), g[0]); },
+      /*save_outputs=*/true);
+  return out;
+}
+
 Tensor relu(const Tensor& x) {
+  if (detail::is_native(x))
+    return detail::device_relu(x);
   Tensor      out = unary_kernel(x, x.dtype(), [](auto v) { return v > 0 ? v : decltype(v)(0); });
   // The mask out > 0 equals x > 0, so keep the output (often kept alive by
   // the next op anyway) instead of the input.

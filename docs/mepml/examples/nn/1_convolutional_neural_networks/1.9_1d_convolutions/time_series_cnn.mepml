@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_c
 
 Retain the original official test records,compute fitting-only population normalization,and train a complete temporal FCN with hard-label CE. Calibrate BN sequentially on fitting observations after each epoch;validation selects the paired learned/state checkpoint. Compare raw1NN and explicitly SGD-fitted centroid fields using tensor metrics and original source signal plots.
 
-The editable concept diagram is `diagrams/time_series_cnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/time_series_cnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/time_series_cnn_concept.tikz > build/time_series_cnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/time_series_cnn_concept.svg build/time_series_cnn_concept.dvi > build/time_series_cnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/time_series_cnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original hand\n motion signals");
+  diagram.node("n1", {5.2, 0}, "Temporal8/5/3\n BN and pooling");
+  diagram.node("n2", {10.4, 0}, "Frozen state\n and held-out scores");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/time_series_cnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/time_series_cnn_concept.svg)
 // result_end
 \caption(Temporal FCN:raw signals,explicit Adam and calibrated BN)
@@ -678,7 +684,7 @@ int main() {
 | 2 | 0.666389 | 0.549827 |
 | 3 | 0.650981 | 0.551412 |
 15 explicit Adam updates;selected epoch 2,validation 0.549827;fixed calibrated fitting CE 0.804196->0.632365.
-Raw-signal-only restore/repeat parity 0;single/batch 0 within1e-6;22 learned+state leaves immutable:true;reversal logit change 0.019842476.
+Raw-signal-only restore/repeat parity 0;single/batch 0 within1e-6;22 learned+state leaves immutable:true;reversal logit change 0.019842535.
 | predictor | accuracy | stable NLL | true-row confusion |
 |---|---:|---:|---|
 | learned | 0.626667 | 0.625393 | int64[2, 2] [[75, 1], [55, 19]] |

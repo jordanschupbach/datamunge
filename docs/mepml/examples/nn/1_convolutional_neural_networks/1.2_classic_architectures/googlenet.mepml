@@ -54,18 +54,24 @@ are visible below: 128 fitting, 64 validation and 64 official-test rows, batch e
 Adam(.001), kernel penalty lambda=.0001, and padded crop/flip augmentation. Main validation
 NLL selects the checkpoint. These bounded runs require cached data and are not ImageNet benchmarks.
 
-The editable concept diagram is `diagrams/googlenet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/googlenet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/googlenet_concept.tikz > build/googlenet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/googlenet_concept.svg build/googlenet_concept.dvi > build/googlenet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/googlenet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Parallel filter scales\n1×1 bottlenecks");
+  diagram.node("n1", {5.2, 0}, "Nine modules\nauxiliary heads\nat 4a and 4d");
+  diagram.node("n2", {10.4, 0}, "Global spatial mean\nmain logits and visible Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/googlenet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/googlenet_concept.svg)
 // result_end
 \caption(GoogLeNet: Parallel Receptive Fields and Auxiliary Supervision)
@@ -483,8 +489,8 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 398458 learned scalars; 320 Adam updates.
-Best validation epoch 19; NLL 2.180210.
-Selected inference training NLL 1.900604; test NLL 2.111705; test accuracy 0.171875.
+Best validation epoch 20; NLL 2.293201.
+Selected inference training NLL 2.023623; test NLL 2.243516; test accuracy 0.140625.
 \image(figures/googlenet_training.svg)
 // result_end
 \caption(Primary cross entropy from the visible Adam loop. Training uses augmentation and dropout; validation is deterministic. Both use fixed, small subsets.)

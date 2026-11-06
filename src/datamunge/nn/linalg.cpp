@@ -7,7 +7,8 @@
 // differentiated again.
 //
 // With DATAMUNGE_HAVE_LAPACK, large matrices go to LAPACK (and triangular
-// solves to BLAS trsm with DATAMUNGE_HAVE_CBLAS); the built-in kernels stay
+// solves to BLAS trsm: CBLAS with DATAMUNGE_HAVE_CBLAS, else the LAPACK
+// library's Fortran dtrsm_); the built-in kernels stay
 // for small matrices and as the fallback. LAPACK is column-major: a packed
 // row-major matrix is the column-major transpose, which several drivers use
 // directly instead of copying.
@@ -22,8 +23,12 @@
 #include <numeric>
 #include <string>
 
+#include "blas_dispatch.hpp"
+#include "datamunge/nn/blas.hpp"
 #include "datamunge/nn/parallel.hpp"
 #include "detail.hpp"
+#include "gemm.hpp"
+#include "linalg_householder.hpp"
 
 #if defined(__APPLE__) && (defined(DATAMUNGE_HAVE_LAPACK) || defined(DATAMUNGE_HAVE_CBLAS))
 #ifndef ACCELERATE_NEW_LAPACK
@@ -39,7 +44,8 @@
 using datamunge_lapack_int = __LAPACK_int;
 #else
 // OpenBLAS built with INTERFACE64 (as in nixpkgs) takes 64-bit integers in its LAPACK entry
-// points too; its cblas.h, included above, defines OPENBLAS_USE64BITINT in that case.
+// points too. CMake asks the linked OpenBLAS and defines DATAMUNGE_LAPACK_ILP64; in a
+// CBLAS comparison build its cblas.h, included above, also defines OPENBLAS_USE64BITINT.
 #if defined(DATAMUNGE_LAPACK_ILP64) || defined(OPENBLAS_USE64BITINT)
 using datamunge_lapack_int = std::int64_t;
 #else
@@ -71,6 +77,10 @@ void dgetrs_(const char* trans, const dm_lpint* n, const dm_lpint* nrhs, const d
 void dgeev_(const char* jobvl, const char* jobvr, const dm_lpint* n, double* a, const dm_lpint* lda, double* wr,
             double* wi, double* vl, const dm_lpint* ldvl, double* vr, const dm_lpint* ldvr, double* work,
             const dm_lpint* lwork, dm_lpint* info);
+// Level-3 BLAS, exported by every LAPACK library (used without a CBLAS).
+void dtrsm_(const char* side, const char* uplo, const char* transa, const char* diag, const dm_lpint* m,
+            const dm_lpint* n, const double* alpha, const double* a, const dm_lpint* lda, double* b,
+            const dm_lpint* ldb);
 }
 #endif
 #endif
@@ -142,16 +152,22 @@ constexpr bool kHaveLapack = false;
 /// Kernels with a LAPACK (or BLAS) path.
 enum class Op { Svd, SvdValues, Eigh, EighValues, Qr, Cholesky, Lu, TriSolve, Eig };
 
-/// Smallest size (min(m, n), or n) from which Auto uses LAPACK, the measured
-/// break-even of LAPACK (Accelerate, M-series Mac) against the built-in
-/// kernels for single matrices and batches with 1 and 10 threads. Below it the
-/// per-call overhead (workspace queries, layout copies) dominates. LU and trsm
-/// stay built-in up to 64 also because Accelerate's own threading
-/// oversubscribes the pool on batches of 32 x 32 matrices (0.4x). geev is
-/// always used when available: its balancing makes it more robust on badly
-/// scaled input, while the built-in eig (faster for small batches) is only
-/// the fallback without LAPACK.
+/// Smallest size (min(m, n), or n) from which Auto uses LAPACK: the measured
+/// break-even of LAPACK against the built-in kernels for single matrices on
+/// one and several threads (kNever: the built-in kernel was as fast or faster
+/// at every measured size). Below the break-even the per-call overhead
+/// (workspace queries, layout copies) dominates. geev is always used when
+/// available: its balancing makes it more robust on badly scaled input, while
+/// the built-in eig (faster for small batches) is only the fallback without
+/// LAPACK. A single right-hand side never goes to trsm (triangular_solve_any).
+constexpr I64 kNever = std::numeric_limits<I64>::max();
 I64 lapack_min_size(Op op) {
+#if defined(__APPLE__)
+  // Accelerate on an M-series Mac, single matrices and batches with 1 and 10
+  // threads, measured against the earlier unblocked QR / eigh / SVD (the
+  // blocked kernels are 2-25x faster from n = 128; re-measure). LU and trsm
+  // stay built-in up to 64 also because Accelerate's own threading
+  // oversubscribes the pool on batches of 32 x 32 matrices (0.4x).
   switch (op) {
     case Op::Svd: return 16;        // 1.2x at 16, 4-5x at 64, 40x at 512
     case Op::SvdValues: return 8;   // 1.0-1.2x at 8, 9x at 64
@@ -163,6 +179,22 @@ I64 lapack_min_size(Op op) {
     case Op::TriSolve: return 64;   // 1.5-3x at 64, 13x at 512
     case Op::Eig: return 0;
   }
+#else
+  // OpenBLAS 0.3.30 (AVX-512 kernels) on a 16-core Zen 5, n = 16-1024 on 1
+  // and 8 threads (benchmarks/BLAS.md). Comments: LAPACK's speed relative to
+  // the built-in kernel (1 thread / 8 threads where they differ).
+  switch (op) {
+    case Op::Svd: return kNever;     // 0.75-1.05x / 0.5-0.95x from 16
+    case Op::SvdValues: return 8;    // 1.05-2.4x (dqds against implicit QL), once 0.97x
+    case Op::Eigh: return kNever;    // 0.6-1.0x from 16
+    case Op::EighValues: return 384; // ~1x up to 256, 1.25-1.4x at 512, 1.3-1.8x at 1024
+    case Op::Qr: return kNever;      // 0.3-0.9x from 16 (once 1.1x: n = 64, 8 threads)
+    case Op::Cholesky: return 384;   // 0.85-1.0x up to 256; 1.0-1.1x / 1.4x at 512-1024
+    case Op::Lu: return 64;          // 0.6-0.95x up to 48; 1.1-1.15x at 64-128; then 0.95-1.0x / 1.0-1.5x
+    case Op::TriSolve: return 96;    // k = n: 0.8-1.1x / 0.6-1.0x up to 64; then 0.8-1.1x / 1.1-2.1x
+    case Op::Eig: return 0;
+  }
+#endif
   return 0;
 }
 
@@ -170,7 +202,7 @@ I64 lapack_min_size(Op op) {
   const auto b = static_cast<LinalgBackend>(g_backend.load(std::memory_order_relaxed));
   if (b == LinalgBackend::Builtin || size <= 0) return false;  // LAPACK rejects empty matrices (lda >= 1)
   const bool avail = op == Op::TriSolve ?
-#if defined(DATAMUNGE_HAVE_CBLAS)
+#if defined(DATAMUNGE_HAVE_CBLAS) || (defined(DATAMUNGE_HAVE_LAPACK) && !defined(__APPLE__))
                                         true
 #else
                                         false
@@ -414,26 +446,53 @@ Tensor diag_part_impl(const Tensor& a) {
 
 // ---- kernels (float64, one packed matrix) ---------------------------------------------------
 
+/// Lower Cholesky factor of the n x n lower triangle of a (row stride lda)
+/// into the lower triangle of l (row stride ldl; may alias a); nothing above
+/// the diagonal is written. False if not positive definite. The BLAS kernel
+/// works right-looking on U = L^T, so every update runs along a contiguous
+/// row in the CPU's vector width.
+bool cholesky_small(const double* a, I64 lda, double* l, I64 ldl, I64 n) {
+  static thread_local std::vector<double> work;
+  work.resize(static_cast<std::size_t>(n * (n + 8) + 8));
+  return detail::blas_kernels().dpotrf_small(n, a, lda, l, ldl, work.data());
+}
+
 /// Lower Cholesky factor of the lower triangle of a; false if not positive definite.
-bool cholesky_kernel(const double* a, double* l, I64 n) {
+bool cholesky_unblocked(const double* a, double* l, I64 n) {
   std::fill(l, l + n * n, 0.0);
-  for (I64 i = 0; i < n; ++i) {
-    for (I64 j = 0; j < i; ++j) {
-      double s = a[i * n + j];
-      for (I64 k = 0; k < j; ++k) s -= l[i * n + k] * l[j * n + k];
-      l[i * n + j] = s / l[j * n + j];
-    }
-    double s = a[i * n + i];
-    for (I64 k = 0; k < i; ++k) s -= l[i * n + k] * l[i * n + k];
-    if (!(s > 0.0)) return false;
-    l[i * n + i] = std::sqrt(s);
-  }
-  return true;
+  return cholesky_small(a, n, l, n, n);
 }
 
 /// x = op(A)^-1 b for triangular A [n, n], b and x [n, k] (may alias).
-void triangular_solve_kernel(const double* a, const double* b, double* x, I64 n, I64 k, bool lower, bool adjoint) {
+void triangular_solve_unblocked(const double* a, const double* b, double* x, I64 n, I64 k, bool lower, bool adjoint) {
   if (x != b) std::copy(b, b + n * k, x);
+  if (k == 1) {
+    // One right-hand side: walk A's rows, which are contiguous. Without
+    // adjoint a row of A is a row of op(A) (dot products); with it a row of A
+    // is a column of op(A) (axpy updates).
+    if (!adjoint) {
+      if (lower)
+        for (I64 i = 0; i < n; ++i) x[i] = (x[i] - blas::dot(i, a + i * n, 1, x, 1)) / a[i * n + i];
+      else
+        for (I64 i = n - 1; i >= 0; --i)
+          x[i] = (x[i] - blas::dot(n - 1 - i, a + i * n + i + 1, 1, x + i + 1, 1)) / a[i * n + i];
+    } else if (!lower) {  // op(A) = A^T is lower: column j of op(A) below the diagonal is a[j, j+1:]
+      for (I64 j = 0; j < n; ++j) {
+        x[j] /= a[j * n + j];
+        const double xj = x[j];
+        const double* __restrict row = a + j * n;
+        for (I64 i = j + 1; i < n; ++i) x[i] -= row[i] * xj;
+      }
+    } else {  // op(A) = A^T is upper: column j of op(A) above the diagonal is a[j, :j]
+      for (I64 j = n - 1; j >= 0; --j) {
+        x[j] /= a[j * n + j];
+        const double xj = x[j];
+        const double* __restrict row = a + j * n;
+        for (I64 i = 0; i < j; ++i) x[i] -= row[i] * xj;
+      }
+    }
+    return;
+  }
   const auto A   = [&](I64 i, I64 j) { return adjoint ? a[j * n + i] : a[i * n + j]; };
   const bool low = lower != adjoint;
   if (low) {
@@ -463,7 +522,7 @@ void triangular_solve_kernel(const double* a, const double* b, double* x, I64 n,
 
 /// In-place LU with partial pivoting: lu = P A with unit-lower L below the
 /// diagonal. Returns the permutation sign, or 0 if a pivot is exactly zero.
-int lu_kernel(double* lu, I64* perm, I64 n) {
+int lu_unblocked(double* lu, I64* perm, I64 n) {
   int sign = 1;
   for (I64 i = 0; i < n; ++i) perm[i] = i;
   for (I64 c = 0; c < n; ++c) {
@@ -488,9 +547,354 @@ int lu_kernel(double* lu, I64* perm, I64 n) {
   return sign;
 }
 
+// ---- blocked kernels ------------------------------------------------------------------------
+//
+// From the sizes below on, Cholesky, LU and the triangular solve work in
+// blocks of kLinalgBlock rows: an unblocked step on one block (vectorised
+// over contiguous rows) followed by one GEMM that updates everything after
+// it, so nearly all the flops run in the in-house GEMM (multi-threaded) as in
+// LAPACK. Row work outside the GEMM is split by column ranges, which leaves
+// every element's arithmetic unchanged, so results do not depend on the
+// thread count.
+
+constexpr I64 kLinalgBlock = 64;
+// Smallest n for the blocked kernels, measured on one thread against the
+// unblocked ones: Cholesky past one block (1.4x at 96, 2.3x at 128); LU from
+// 96 (1.45x; 0.85x at 64); the triangular solve with several right-hand sides
+// from 16 (1.2x at 16, 2-3.4x at 64; at 8 the unblocked loop is cheaper).
+constexpr I64 kCholeskyBlockedMinSize = kLinalgBlock + 1;
+constexpr I64 kLuBlockedMinSize       = 96;
+constexpr I64 kTriSolveBlockedMinSize = 16;
+// From these sizes (min(m, n), or n) QR, eigh and the SVD use the blocked
+// Householder kernels and divide and conquer of linalg_householder.cpp; below
+// them the unblocked kernels here have less overhead. Measured break-even on
+// one and eight threads: QR 40-48, eigh 20-24 (12-16 for the values only),
+// SVD 12-16. At 64 the blocked kernels are 1.4x (QR), 2x (eigh), 3x
+// (eigenvalues) and 6x (SVD) faster.
+constexpr I64 kHouseholderQr         = 48;
+constexpr I64 kHouseholderEigh       = 24;
+constexpr I64 kHouseholderEighValues = 16;
+constexpr I64 kHouseholderSvd        = 16;
+// Row work outside the GEMMs (a block of kLinalgBlock rows, ~4 K flops per
+// column) is split into tasks of whole 64-column blocks: ~0.25 MFLOP each,
+// enough to amortise a pool dispatch, and fine enough that a 512-column
+// update uses 8 threads.
+constexpr I64 kColumnBlock = 64;
+// The blocked LU factors the next panel on one thread while the others update
+// the rest of the trailing matrix once at least this many columns remain
+// (below it the panel's own threading is worth more).
+constexpr I64 kLookAheadMinCols = 2 * kLinalgBlock;
+
+/// Runs fn(lo, hi) over [begin, end) on the pool, in ranges of whole
+/// kColumnBlock-column blocks (the last one may be short).
+template <typename Fn>
+void for_columns(I64 begin, I64 end, Fn fn) {
+  const I64 blocks = (end - begin + kColumnBlock - 1) / kColumnBlock;
+  if (blocks <= 1) {
+    if (end > begin) fn(begin, end);
+    return;
+  }
+  parallel_for(0, blocks, 1, [&](I64 b0, I64 b1) {
+    fn(begin + b0 * kColumnBlock, std::min(end, begin + b1 * kColumnBlock));
+  });
+}
+
+// Cholesky and the many right-hand-side triangular solve recurse as LAPACK's dpotrf2 and a
+// recursive trsm: each level splits the rows in two at a multiple of kLinalgBlock and couples
+// the halves with one GEMM as deep as a half, so nearly all the flops run in large GEMMs (the
+// right-looking blocked forms they replace updated kLinalgBlock deep, with global transposes
+// around every panel). Leaves of kLinalgBlock run in the BLAS kernels dtrsm_rows and
+// dpotrf_small. (Solving independent row or column chunks serially, one pool dispatch per
+// phase, was 5-15% slower on one and eight threads: the GEMMs of a chunk are narrower.)
+
+/// The recursion's split of n rows: half, rounded up to whole blocks.
+I64 rec_split(I64 n) { return (n / 2 + kLinalgBlock - 1) / kLinalgBlock * kLinalgBlock; }
+
+/// The leaves of one recursive solve or update go to the pool from this many multiply-adds.
+constexpr I64 kLeafSplitFlops = I64{1} << 17;
+
+/// X L^T = B in place for the lower triangular L [m, m] (row stride ldl) and B [r, m] (row
+/// stride ldb). A leaf transposes chunks of kLinalgBlock rows of B into a local buffer, so the
+/// substitution runs along contiguous rows, and solves the chunks on the pool.
+void trsm_right_lower_t(const double* L, I64 ldl, double* B, I64 ldb, I64 r, I64 m) {
+  if (r <= 0 || m <= 0) return;
+  if (m > kLinalgBlock) {
+    const I64 m1 = rec_split(m);
+    trsm_right_lower_t(L, ldl, B, ldb, r, m1);
+    detail::gemm(false, true, r, m - m1, m1, -1.0, B, ldb, L + m1 * ldl, ldl, 1.0, B + m1, ldb);
+    trsm_right_lower_t(L + m1 * ldl + m1, ldl, B + m1, ldb, r, m - m1);
+    return;
+  }
+  const I64  chunks = (r + kLinalgBlock - 1) / kLinalgBlock;
+  const auto solve  = [=](I64 c0, I64 c1) {
+    static thread_local std::vector<double> buf;
+    buf.resize(static_cast<std::size_t>(m * kLinalgBlock));
+    double* Y = buf.data();
+    for (I64 c = c0; c < c1; ++c) {
+      const I64 r0 = c * kLinalgBlock, rows = std::min(kLinalgBlock, r - r0);
+      double*   Bc = B + r0 * ldb;
+      for (I64 i = 0; i < rows; ++i)
+        for (I64 j = 0; j < m; ++j) Y[j * rows + i] = Bc[i * ldb + j];
+      detail::blas_kernels().dtrsm_rows(m, rows, L, ldl, 1, false, Y, rows);
+      for (I64 i = 0; i < rows; ++i)
+        for (I64 j = 0; j < m; ++j) Bc[i * ldb + j] = Y[j * rows + i];
+    }
+  };
+  if (chunks > 1 && r * m * m >= kLeafSplitFlops)
+    parallel_for(0, chunks, 1, solve);
+  else
+    solve(0, chunks);
+}
+
+/// The blocks of syrk_lower below its diagonal leaves, recursively by GEMMs.
+void syrk_off_diagonal(double* C, I64 ldc, const double* A, I64 lda, I64 n, I64 k) {
+  if (n <= kLinalgBlock) return;
+  const I64 n1 = rec_split(n);
+  syrk_off_diagonal(C, ldc, A, lda, n1, k);
+  detail::gemm(false, true, n - n1, n1, k, -1.0, A + n1 * lda, lda, A, lda, 1.0, C + n1 * ldc, ldc);
+  syrk_off_diagonal(C + n1 * ldc + n1, ldc, A + n1 * lda, lda, n - n1, k);
+}
+
+/// C -= A A^T on the lower triangle of C [n, n] (row stride ldc; A [n, k], row stride lda): the
+/// recursion's off-diagonal blocks, then its diagonal kLinalgBlock squares, whole (values land
+/// above the diagonal too), one serial GEMM per pool task (a GEMM that small barely speeds up
+/// on several threads; one dispatch per block cost 0.1 of 0.3 ms at n = 512 on eight).
+void syrk_lower(double* C, I64 ldc, const double* A, I64 lda, I64 n, I64 k) {
+  if (n <= 0 || k <= 0) return;
+  syrk_off_diagonal(C, ldc, A, lda, n, k);
+  const I64  blocks = (n + kLinalgBlock - 1) / kLinalgBlock;
+  const auto diag   = [=](I64 b0, I64 b1) {
+    for (I64 b = b0; b < b1; ++b) {
+      const I64 r0 = b * kLinalgBlock, rows = std::min(kLinalgBlock, n - r0);
+      detail::gemm(false, true, rows, rows, k, -1.0, A + r0 * lda, lda, A + r0 * lda, lda, 1.0, C + r0 * ldc + r0, ldc);
+    }
+  };
+  if (blocks > 1 && n * kLinalgBlock * k >= kLeafSplitFlops)
+    parallel_for(0, blocks, 1, diag);
+  else
+    diag(0, blocks);
+}
+
+/// Cholesky in place on the lower triangle of A [n, n] (row stride lda): factor the leading
+/// half, solve the block below it, update the trailing half's lower triangle, factor that.
+bool cholesky_rec(double* A, I64 lda, I64 n) {
+  if (n <= kLinalgBlock) return cholesky_small(A, lda, A, lda, n);
+  const I64 n1 = rec_split(n), n2 = n - n1;
+  if (!cholesky_rec(A, lda, n1)) return false;
+  double* A21 = A + n1 * lda;
+  trsm_right_lower_t(A, lda, A21, lda, n2, n1);
+  syrk_lower(A21 + n1, lda, A21, lda, n2, n1);
+  return cholesky_rec(A21 + n1, lda, n2);
+}
+
+/// Cholesky of the lower triangle of a into l (row-major lower; may alias a), recursively. The
+/// upper triangle collects scratch values and is cleared at the end.
+bool cholesky_blocked(const double* a, double* l, I64 n) {
+  for (I64 i = 0; i < n; ++i) std::copy(a + i * n, a + i * n + i + 1, l + i * n);
+  if (!cholesky_rec(l, n, n)) return false;
+  for (I64 i = 0; i + 1 < n; ++i) std::fill(l + i * n + i + 1, l + (i + 1) * n, 0.0);
+  return true;
+}
+
+/// Triangular solve x = op(A)^-1 b (b and x [n, k], may alias), recursively: the rows split in
+/// two, the half solved first is subtracted from the other by one GEMM. A leaf of at most
+/// kLinalgBlock rows is solved by substitution in the BLAS kernel, split over column blocks.
+/// With unit_diagonal the diagonal of A is taken as ones (an LU factor's L).
+void triangular_solve_blocked(const double* a, const double* b, double* x, I64 n, I64 k, bool lower, bool adjoint,
+                              bool unit_diagonal = false) {
+  if (x != b) std::copy(b, b + n * k, x);
+  const auto& blas = detail::blas_kernels();
+  const bool  low  = lower != adjoint;
+  // op(A)(i, j) = a[i * rs + j * cs]; an upper op(A) runs as a reversed lower one (negated
+  // strides).
+  const I64  rs = adjoint ? 1 : n, cs = adjoint ? n : 1;
+  const auto leaf = [&](I64 i0, I64 i1) {
+    const I64 first = low ? i0 : i1 - 1, dir = low ? 1 : -1;
+    for_columns(0, k, [&](I64 lo, I64 hi) {
+      blas.dtrsm_rows(i1 - i0, hi - lo, a + first * (rs + cs), dir * rs, dir * cs, unit_diagonal, x + first * k + lo,
+                      dir * k);
+    });
+  };
+  // Rows [i0, i1): a lower op(A) solves the top half first, an upper one the bottom half.
+  const auto solve = [&](const auto& self, I64 i0, I64 i1) -> void {
+    if (i1 - i0 <= kLinalgBlock) {
+      leaf(i0, i1);
+      return;
+    }
+    const I64 mid = i0 + rec_split(i1 - i0);
+    if (low) {
+      self(self, i0, mid);  // x[mid:i1] -= op(A)[mid:i1, i0:mid] x[i0:mid]
+      detail::gemm(adjoint, false, i1 - mid, k, mid - i0, -1.0, adjoint ? a + i0 * n + mid : a + mid * n + i0, n,
+                   x + i0 * k, k, 1.0, x + mid * k, k);
+      self(self, mid, i1);
+    } else {
+      self(self, mid, i1);  // x[i0:mid] -= op(A)[i0:mid, mid:i1] x[mid:i1]
+      detail::gemm(adjoint, false, mid - i0, k, i1 - mid, -1.0, adjoint ? a + mid * n + i0 : a + i0 * n + mid, n,
+                   x + mid * k, k, 1.0, x + i0 * k, k);
+      self(self, i0, mid);
+    }
+  };
+  solve(solve, 0, n);
+}
+
+/// Factors columns [j0, j1) of a transposed LU panel in place (T[q][r] =
+/// A[r][q], `nb` columns of `rows` entries; partial pivoting), recursively
+/// as LAPACK's dgetrf2: the left half, then the right half's rows of U by
+/// unit-lower substitution and the rest of it by one GEMM with the left half,
+/// then the right half. Leaves of kLuLeaf columns use rank-1 updates, so most
+/// of the panel's flops run in the (multi-threaded) GEMM. A chosen row swap
+/// is applied to the whole panel at once. Returns false on an exactly zero
+/// pivot column.
+bool lu_panel(double* T, I64 rows, I64 nb, I64 j0, I64 j1, I64* pivots, I64* perm, int& sign) {
+  constexpr I64 kLuLeaf = 8;
+  if (j1 - j0 <= kLuLeaf) {
+    const auto& blas = detail::blas_kernels();
+    for (I64 j = j0; j < j1; ++j) {
+      double* __restrict tj = T + j * rows;
+      I64    piv = j;
+      double best = std::abs(tj[j]);
+      for (I64 r = j + 1; r < rows; ++r)
+        if (std::abs(tj[r]) > best) best = std::abs(tj[r]), piv = r;
+      if (best == 0.0) return false;
+      pivots[j] = piv;
+      if (piv != j) {
+        for (I64 q = 0; q < nb; ++q) std::swap(T[q * rows + j], T[q * rows + piv]);
+        std::swap(perm[j], perm[piv]);
+        sign = -sign;
+      }
+      const double d = tj[j];
+      for (I64 r = j + 1; r < rows; ++r) tj[r] /= d;
+      for (I64 q = j + 1; q < j1; ++q) {
+        double*      tq = T + q * rows;
+        const double f  = tq[j];
+        if (f != 0.0) blas.daxpy(rows - j - 1, -f, tj + j + 1, 1, tq + j + 1, 1);
+      }
+    }
+    return true;
+  }
+  const I64 mid = j0 + (j1 - j0 + 1) / 2;
+  if (!lu_panel(T, rows, nb, j0, mid, pivots, perm, sign)) return false;
+  // U12: rows [j0, mid) of the right half, L11^-1 times them (unit lower,
+  // L11[r][p] = T[p][r]).
+  for (I64 q = mid; q < j1; ++q) {
+    double* tq = T + q * rows;
+    for (I64 r = j0 + 1; r < mid; ++r) {
+      double s = tq[r];
+      for (I64 p = j0; p < r; ++p) s -= T[p * rows + r] * tq[p];
+      tq[r] = s;
+    }
+  }
+  // A22 -= L21 U12, transposed: T[mid:j1][mid:] -= T[mid:j1][j0:mid] T[j0:mid][mid:].
+  detail::gemm(false, false, j1 - mid, rows - mid, mid - j0, -1.0, T + mid * rows + j0, rows, T + j0 * rows + mid,
+               rows, 1.0, T + mid * rows + mid, rows);
+  return lu_panel(T, rows, nb, mid, j1, pivots, perm, sign);
+}
+
+/// Blocked right-looking LU with partial pivoting (same contract as
+/// lu_unblocked). Each panel of columns is factored in a transposed copy
+/// (lu_panel) so the pivot search, scaling and rank-1 updates run over
+/// contiguous memory; its row swaps are then applied to the other columns,
+/// the block row of U solved, and the trailing matrix updated with one GEMM.
+/// With several threads and enough columns left, the next panel's columns are
+/// updated first and the panel is factored by one pool task while the others
+/// update the remaining columns (a look-ahead, as in LAPACK implementations
+/// that overlap dgetrf's panel with the trailing update). Every entry sees the
+/// same arithmetic either way, so results do not depend on the thread count.
+int lu_blocked(double* lu, I64* perm, I64 n) {
+  int sign = 1;
+  for (I64 i = 0; i < n; ++i) perm[i] = i;
+  std::vector<double> panel(static_cast<std::size_t>(kLinalgBlock * n));
+  std::vector<I64>    pivots(static_cast<std::size_t>(kLinalgBlock)), next(static_cast<std::size_t>(kLinalgBlock));
+  // Factors the (updated) panel of columns [c0, c0 + nb) in place.
+  const auto factor_panel = [&](I64 c0, I64* piv) {
+    const I64 c1 = std::min(n, c0 + kLinalgBlock), nb = c1 - c0, rows = n - c0;
+    // T[j][r] = lu[c0 + r][c0 + j]: panel column j is a contiguous row of T.
+    double* T = panel.data();
+    detail::transpose_into(lu + c0 * n + c0, n, T, rows, rows, nb);
+    if (!lu_panel(T, rows, nb, 0, nb, piv, perm + c0, sign)) return false;
+    detail::transpose_into(T, rows, lu + c0 * n + c0, n, nb, rows);
+    return true;
+  };
+  // Panel c0's row swaps, in order, on columns [lo, hi).
+  const auto swap_rows = [&](I64 c0, const I64* piv, I64 lo, I64 hi) {
+    const I64 nb = std::min(n, c0 + kLinalgBlock) - c0;
+    for (I64 j = 0; j < nb; ++j)
+      if (piv[j] != j) std::swap_ranges(lu + (c0 + j) * n + lo, lu + (c0 + j) * n + hi, lu + (c0 + piv[j]) * n + lo);
+  };
+  // U12 = L11^-1 A12 (unit lower) on columns [lo, hi) of panel c0's block row.
+  const auto solve_u12 = [&](I64 c0, I64 lo, I64 hi) {
+    const I64 nb    = std::min(n, c0 + kLinalgBlock) - c0;
+    double*   rows0 = lu + c0 * n;
+    detail::blas_kernels().dtrsm_rows(nb, hi - lo, rows0 + c0, n, 1, true, rows0 + lo, n);
+  };
+  // A22 -= L21 U12 on columns [lo, hi).
+  const auto update = [&](I64 c0, I64 lo, I64 hi) {
+    const I64 c1 = std::min(n, c0 + kLinalgBlock);
+    detail::gemm(false, false, n - c1, hi - lo, c1 - c0, -1.0, lu + c1 * n + c0, n, lu + c0 * n + lo, n, 1.0,
+                 lu + c1 * n + lo, n);
+  };
+  if (!factor_panel(0, pivots.data())) return 0;
+  for (I64 c0 = 0; c0 < n; c0 += kLinalgBlock) {
+    const I64  c1  = std::min(n, c0 + kLinalgBlock);
+    const I64* piv = pivots.data();
+    // Swaps on the columns left of the panel (split over column blocks; each
+    // block sees every swap in order).
+    for_columns(0, c0, [&](I64 lo, I64 hi) { swap_rows(c0, piv, lo, hi); });
+    if (c1 == n) break;
+    const I64 c2 = std::min(n, c1 + kLinalgBlock), rest = n - c2;
+    const I64 threads = get_num_threads();
+    if (threads <= 1 || rest < kLookAheadMinCols) {
+      for_columns(c1, n, [&](I64 lo, I64 hi) { swap_rows(c0, piv, lo, hi); });
+      for_columns(c1, n, [&](I64 lo, I64 hi) { solve_u12(c0, lo, hi); });
+      update(c0, c1, n);
+      if (!factor_panel(c1, next.data())) return 0;
+    } else {
+      // The next panel's columns first, then task 0 factors that panel while
+      // tasks 1.. finish the other columns in blocks of whole kColumnBlocks.
+      swap_rows(c0, piv, c1, c2);
+      solve_u12(c0, c1, c2);
+      update(c0, c1, c2);
+      const I64 blocks = std::min<I64>(4 * threads - 1, (rest + kColumnBlock - 1) / kColumnBlock);
+      const I64 width  = ((rest + blocks - 1) / blocks + kColumnBlock - 1) / kColumnBlock * kColumnBlock;
+      std::atomic<bool> ok{true};
+      parallel_for(0, (rest + width - 1) / width + 1, 1, [&](I64 t0, I64 t1) {
+        for (I64 t = t0; t < t1; ++t) {
+          if (t == 0) {
+            if (!factor_panel(c1, next.data())) ok = false;
+            continue;
+          }
+          const I64 lo = c2 + (t - 1) * width, hi = std::min(n, lo + width);
+          swap_rows(c0, piv, lo, hi);
+          solve_u12(c0, lo, hi);
+          update(c0, lo, hi);
+        }
+      });
+      if (!ok) return 0;
+    }
+    std::swap(pivots, next);
+  }
+  return sign;
+}
+
+bool cholesky_kernel(const double* a, double* l, I64 n) {
+  return n >= kCholeskyBlockedMinSize ? cholesky_blocked(a, l, n) : cholesky_unblocked(a, l, n);
+}
+
+void triangular_solve_kernel(const double* a, const double* b, double* x, I64 n, I64 k, bool lower, bool adjoint) {
+  if (n >= kTriSolveBlockedMinSize && k >= 4)
+    triangular_solve_blocked(a, b, x, n, k, lower, adjoint);
+  else
+    triangular_solve_unblocked(a, b, x, n, k, lower, adjoint);
+}
+
+int lu_kernel(double* lu, I64* perm, I64 n) {
+  return n >= kLuBlockedMinSize ? lu_blocked(lu, perm, n) : lu_unblocked(lu, perm, n);
+}
+
 /// Householder QR of a [m, n]: q [m, qc] (qc = m when full, else min(m, n)),
-/// r [rr, n] (rr = m when full, else min(m, n)).
+/// r [rr, n] (rr = m when full, else min(m, n)). Blocked from kHouseholderQr.
 void qr_kernel(const double* a, double* q, double* r, I64 m, I64 n, bool full) {
+  if (std::min(m, n) >= kHouseholderQr) return detail::qr_householder(a, q, r, m, n, full);
   const I64           k = std::min(m, n), qc = full ? m : k, rr = full ? m : k;
   std::vector<double> w(a, a + m * n), vs(static_cast<std::size_t>(k * m), 0.0);
   std::vector<char>   used(static_cast<std::size_t>(k), 0);
@@ -561,9 +965,11 @@ void complete_basis(double* q, I64 m, I64 cols, std::vector<char> missing) {
 }
 
 /// Symmetric eigen decomposition of the lower triangle of a [n, n]
-/// (Householder tridiagonalisation + implicit QL, after JAMA's tred2/tql2).
-/// e ascending; v [n, n] with eigenvectors as columns.
+/// (small n: Householder tridiagonalisation + implicit QL, after JAMA's
+/// tred2/tql2; from kHouseholderEigh, the blocked kernel and divide and
+/// conquer). e ascending; v [n, n] with eigenvectors as columns.
 void eigh_kernel(const double* a, double* e_out, double* v_out, I64 n) {
+  if (n >= (v_out ? kHouseholderEigh : kHouseholderEighValues)) return detail::eigh_householder(a, e_out, v_out, n);
   if (n == 0) return;
   std::vector<std::vector<double>> V(static_cast<std::size_t>(n), std::vector<double>(static_cast<std::size_t>(n)));
   for (I64 i = 0; i < n; ++i)
@@ -721,8 +1127,11 @@ void eigh_kernel(const double* a, double* e_out, double* v_out, I64 n) {
 }
 
 /// SVD of a [m, n]: s [k] descending; u [m, uc], v [n, vc] where uc/vc are
-/// k, or m/n with full. u, v may be null (values only).
+/// k, or m/n with full. u, v may be null (values only). Small matrices use
+/// one-sided Jacobi (after a QR); from kHouseholderSvd, bidiagonalisation
+/// and divide and conquer.
 void svd_kernel(const double* a, double* s_out, double* u_out, double* v_out, I64 m, I64 n, bool full) {
+  if (std::min(m, n) >= kHouseholderSvd) return detail::svd_householder(a, s_out, u_out, v_out, m, n, full);
   const I64 k = std::min(m, n);
   if (m < n) {
     // svd(A^T) = V S U^T
@@ -818,6 +1227,17 @@ void svd_kernel(const double* a, double* s_out, double* u_out, double* v_out, I6
 
 void solve_lu_builtin_factors(const double* lu, const I64* perm, const double* bp, double* x, I64 n, I64 k) {
   for (I64 i = 0; i < n; ++i) std::copy(bp + perm[i] * k, bp + perm[i] * k + k, x + i * k);
+  if (k == 1) {  // rows of the factors are contiguous: dot products
+    for (I64 i = 1; i < n; ++i) x[i] -= blas::dot(i, lu + i * n, 1, x, 1);
+    for (I64 i = n - 1; i >= 0; --i)
+      x[i] = (x[i] - blas::dot(n - 1 - i, lu + i * n + i + 1, 1, x + i + 1, 1)) / lu[i * n + i];
+    return;
+  }
+  if (n >= kTriSolveBlockedMinSize && k >= 4) {
+    triangular_solve_blocked(lu, x, x, n, k, /*lower=*/true, /*adjoint=*/false, /*unit_diagonal=*/true);
+    triangular_solve_blocked(lu, x, x, n, k, /*lower=*/false, /*adjoint=*/false);
+    return;
+  }
   // unit lower, then upper
   for (I64 i = 0; i < n; ++i)
     for (I64 j = 0; j < i; ++j) {
@@ -1338,11 +1758,10 @@ bool lu_solve_lapack(const double* a, const double* b, double* x, I64 n, I64 k, 
   std::vector<double>       lu(a, a + n * n), bc(static_cast<std::size_t>(n * k));
   std::vector<lapack::LI>   ipiv(static_cast<std::size_t>(n));
   if (lapack::getrf(n, lu.data(), ipiv.data()) != 0) return false;
-  for (I64 i = 0; i < n; ++i)
-    for (I64 c = 0; c < k; ++c) bc[static_cast<std::size_t>(i + c * n)] = b[i * k + c];
+  // Right-hand sides to column-major and back, in cache-sized tiles.
+  detail::transpose_into(b, k, bc.data(), n, n, k);
   if (lapack::getrs(adjoint ? 'N' : 'T', n, k, lu.data(), ipiv.data(), bc.data()) != 0) return false;
-  for (I64 i = 0; i < n; ++i)
-    for (I64 c = 0; c < k; ++c) x[i * k + c] = bc[static_cast<std::size_t>(i + c * n)];
+  detail::transpose_into(bc.data(), n, x, k, k, n);
   return true;
 }
 
@@ -1426,12 +1845,30 @@ void lu_det_any(const double* a, I64 n, double& sign, double& logabs, double& de
 }
 
 void triangular_solve_any(const double* a, const double* b, double* x, I64 n, I64 k, bool lower, bool adjoint) {
+#if defined(DATAMUNGE_HAVE_CBLAS) || (defined(DATAMUNGE_HAVE_LAPACK) && !defined(__APPLE__))
+  // Auto keeps a single right-hand side built-in: the dot-product / axpy forms
+  // are 3-5x faster than trsm at every size (no call overhead, contiguous rows).
+  const bool lapack = use_lapack(Op::TriSolve, n) && n > 0 && k > 0 &&
+                      (k > 1 || static_cast<LinalgBackend>(g_backend.load(std::memory_order_relaxed)) ==
+                                    LinalgBackend::Lapack);
+#endif
 #if defined(DATAMUNGE_HAVE_CBLAS)
-  if (use_lapack(Op::TriSolve, n) && n > 0 && k > 0) {
+  if (lapack) {
     std::copy(b, b + n * k, x);
     cblas_dtrsm(CblasRowMajor, CblasLeft, lower ? CblasLower : CblasUpper, adjoint ? CblasTrans : CblasNoTrans,
                 CblasNonUnit, static_cast<int>(n), static_cast<int>(k), 1.0, a, static_cast<int>(n), x,
                 static_cast<int>(k));
+    return;
+  }
+#elif defined(DATAMUNGE_HAVE_LAPACK) && !defined(__APPLE__)
+  if (lapack) {
+    // Row-major A X = B is X^T A^T = B^T in column-major: the buffer of A read
+    // column-major is A^T (upper when A is lower), X^T is [k, n] with ld k.
+    std::copy(b, b + n * k, x);
+    const char         side = 'R', uplo = lower ? 'U' : 'L', trans = adjoint ? 'T' : 'N', diag = 'N';
+    const lapack::LI   M = lapack::li(k), N = lapack::li(n);
+    const double       one = 1.0;
+    dtrsm_(&side, &uplo, &trans, &diag, &M, &N, &one, a, &N, x, &M);
     return;
   }
 #endif

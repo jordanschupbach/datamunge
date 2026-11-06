@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 The transformation network learns weights;the VGG16 feature extractor stays fixed. Every learnable tensor and moving BN statistic is explicit,and the report owns the optimizer,all minibatches,validation and paired checkpoint. Deployment consumes only observed RGB. Content/style targets and training objectives are confined to the demonstrated fit and evaluation.
 
-The editable concept diagram is `diagrams/johnson_fast_style_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/johnson_fast_style_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/johnson_fast_style_concept.tikz > build/johnson_fast_style_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/johnson_fast_style_concept.svg build/johnson_fast_style_concept.dvi > build/johnson_fast_style_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/johnson_fast_style_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed content RGB\nFixed VGG16 targets");
+  diagram.node("n1", {5.2, 0}, "Train generator leaves\nVisible Adam and BN");
+  diagram.node("n2", {10.4, 0}, "Restore generator only\nOne-pass RGB prediction");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/johnson_fast_style_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/johnson_fast_style_concept.svg)
 // result_end
 \caption(Johnson fast style:explicit tensor training and generator-only prediction)
@@ -695,19 +701,19 @@ int main() {
 ```
 // result_begin: markdown
 62 learned/30 moving-BN tensors warmed before Adam(.001).
-Fixed content/style/TV denominators 515694.093750/126185922560.000000/0.127916.
+Fixed content/style/TV denominators 515694.062500/126185938944.000000/0.127916.
 | epoch | mean fitting | validation | relative content | relative style | relative TV |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 2.422542 | 2.177598 | 0.409644 | 1.668511 | 0.099443 |
-| 2 | 2.039440 | 1.969218 | 0.465974 | 1.404819 | 0.098424 |
-| 3 | 1.841498 | 1.763701 | 0.628539 | 0.962342 | 0.172820 |
-36 visible updates;selected epoch3,restored validation 1.763701;fixed training-mode fit 3.000000->1.734083.
+| 1 | 2.422503 | 2.173540 | 0.413166 | 1.660563 | 0.099810 |
+| 2 | 2.042915 | 1.973037 | 0.451122 | 1.430836 | 0.091079 |
+| 3 | 1.856956 | 1.777037 | 0.589924 | 1.029338 | 0.157774 |
+36 visible updates;selected epoch3,restored validation 1.777037;fixed training-mode fit 3.000000->1.754814.
 | evaluation | combined | relative content | relative style | relative TV |
 |---|---:|---:|---:|---:|
-| initial generator | 12.357131 | 1.498519 | 8.625579 | 2.233032 |
-| restored generator | 1.783372 | 0.679889 | 0.912451 | 0.191033 |
-Generator-only RGB prediction:checkpoint parity 0,single/batch max 1.79e-07,repeat exact;all62 learned/30 BN tensors immutable. All26 VGG tensors and cached feature targets unchanged.
-Distinct-content mean difference 0.139763;three-call64x64 CPU mean 29.697557ms. No real-time claim.
+| initial generator | 12.357130 | 1.498519 | 8.625578 | 2.233032 |
+| restored generator | 1.785202 | 0.644511 | 0.963903 | 0.176788 |
+Generator-only RGB prediction:checkpoint parity 0,single/batch max 0,repeat exact;all62 learned/30 BN tensors immutable. All26 VGG tensors and cached feature targets unchanged.
+Distinct-content mean difference 0.129638;three-call64x64 CPU mean 23.755170ms. No real-time claim.
 \image(figures/johnson_fast_style_training.svg)
 // result_end
 \caption(Thirty-six explicit Adam updates with separate learned/BN stores. Every validation component uses its fixed initial denominator;their sum equals validation total.)

@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 The encoder saves detached2x2 maximum indices. Sparse unpooling restores values to those positions and convolution densifies the result. Full and compact VGG-style graphs preserve original odd shapes,and learned/BN state are checkpointed together during explicit optimization.
 
-The editable concept diagram is `diagrams/segnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/segnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/segnet_concept.tikz > build/segnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/segnet_concept.svg build/segnet_concept.dvi > build/segnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/segnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Encoder pooling\nSave winner indices");
+  diagram.node("n1", {5.2, 0}, "Sparse unpooling\nRestore saved shapes");
+  diagram.node("n2", {10.4, 0}, "Learned decoder\nExplicit Adam loop");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/segnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/segnet_concept.svg)
 // result_end
 \caption(SegNet pooling indices and sparse decoding)
@@ -444,19 +450,19 @@ int main() {
 Variant1: 463132 learned scalars, paired BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
-| 1 | 1 | 1.489587 | 0.175447 |
-| 1 | 2 | 1.274654 | 0.190084 |
-| 1 | 3 | 1.152626 | 0.185302 |
-| 1 | 4 | 1.058200 | 0.188590 |
-| 1 | 5 | 0.953063 | 0.192023 |
-| 1 | 6 | 0.892072 | 0.195073 |
-| 1 | 7 | 0.844066 | 0.200790 |
-| 1 | 8 | 0.813267 | 0.304293 |
-| 1 | 9 | 0.792780 | 0.308943 |
-| 1 | 10 | 0.772431 | 0.314951 |
-| 1 | 11 | 0.762964 | 0.313470 |
-| 1 | 12 | 0.750770 | 0.329043 |
-Variant1 restored epoch12: validation mIoU 0.329043; test pixel accuracy 0.810140, mean IoU 0.315424; per-class IoU(background,circle,rectangle,triangle) 0.935009/0.274629/0.046585/0.005472. 192 explicit Adam updates.
+| 1 | 1 | 1.489093 | 0.175756 |
+| 1 | 2 | 1.273744 | 0.187172 |
+| 1 | 3 | 1.145779 | 0.185325 |
+| 1 | 4 | 1.047357 | 0.187552 |
+| 1 | 5 | 0.947189 | 0.191811 |
+| 1 | 6 | 0.884347 | 0.194303 |
+| 1 | 7 | 0.842551 | 0.199928 |
+| 1 | 8 | 0.820628 | 0.300580 |
+| 1 | 9 | 0.791830 | 0.305041 |
+| 1 | 10 | 0.770608 | 0.316909 |
+| 1 | 11 | 0.761433 | 0.324899 |
+| 1 | 12 | 0.746499 | 0.325244 |
+Variant1 restored epoch12: validation mIoU 0.325244; test pixel accuracy 0.812832, mean IoU 0.317216; per-class IoU(background,circle,rectangle,triangle) 0.929383/0.275060/0.057915/0.006508. 192 explicit Adam updates.
 \image(figures/segnet_training.svg)
 // result_end
 \caption(All compact SegNet parameters fit192 explicit Adam updates. Training CE excludes kernel L2; validation selects and restores paired learned/BN state before test evaluation.)

@@ -49,18 +49,24 @@ padded crop/flip augmentation. Paired learned/moving-state checkpoints are selec
 validation NLL before test evaluation. The visible loop uses the tensor library throughout. These bounded CIFAR fits differ from both the larger
 source-example run and published ImageNet experiments; they do not reproduce benchmark results.
 
-The editable concept diagram is `diagrams/res2net_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/res2net_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/res2net_concept.tikz > build/res2net_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/res2net_concept.svg build/res2net_concept.dvi > build/res2net_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/res2net_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Reduce and split channels\nhierarchical 3x3 paths");
+  diagram.node("n1", {5.2, 0}, "Stage entries independent\npool final split");
+  diagram.node("n2", {10.4, 0}, "All fifty compact layers\nexplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/res2net_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/res2net_concept.svg)
 // result_end
 \caption(Res2Net: Multi-Scale Features Inside One Bottleneck)
@@ -459,7 +465,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1493062 learned scalars, 14852 moving scalars; 96 explicit Adam updates.
-Selected epoch 4; validation NLL 2.428941; inference training NLL 2.163193; test NLL 2.232393; test accuracy 0.250000.
+Selected epoch 3; validation NLL 2.348122; inference training NLL 2.241882; test NLL 2.456116; test accuracy 0.125000.
 \image(figures/res2net_training.svg)
 // result_end
 \caption(Explicit six-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

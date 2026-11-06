@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Construct annotation-supported confidence/PAF targets,supervise all twelve raw fields,and decode local peaks through directed line integration and conflict-safe person assembly. Numerical preprocessing,objectives,decoding,metrics and figure values use the tensor library. Containers retain only metadata,topology and presentation.
 
-The editable concept diagram is `diagrams/openpose_pafs_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/openpose_pafs_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/openpose_pafs_concept.tikz > build/openpose_pafs_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/openpose_pafs_concept.svg build/openpose_pafs_concept.dvi > build/openpose_pafs_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/openpose_pafs_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Whole RGB\n and annotations");
+  diagram.node("n1", {5.2, 0}, "Six supervised\n field pairs");
+  diagram.node("n2", {10.4, 0}, "Directed links\n and person groups");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/openpose_pafs_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/openpose_pafs_concept.svg)
 // result_end
 \caption(OpenPose:directed tensor fields and visible optimization)
@@ -309,7 +315,6 @@ int main() {
 }
 ```
 // result_begin:
-// Prepared genuine COCO8-Pose:12/1/14 oracle person crops and6/1/4 full-image observations,source-image-disjoint;fitting-only anatomical mirrors.
 // result_end
 
 Fit19+38 spatial reference channels with one visible Double SGD(.5) update
@@ -653,14 +658,14 @@ int main() {
 // result_begin: markdown
 | epoch | fitting sum12 | validation sum12 |
 |---:|---:|---:|
-| 1 | 1.209986 | 0.356452 |
-| 2 | 0.370890 | 0.332582 |
-| 3 | 0.353951 | 0.312052 |
-9 Adam updates;selected epoch 3;fixed probe 1.329592->0.282178;validation 0.312052.
-RGB-only parity 0,single/batch 8.94069672e-08 within2e-6;184 learned leaves unchanged:true;image sensitivity 0.003542.
+| 1 | 1.209986 | 0.356432 |
+| 2 | 0.370885 | 0.332639 |
+| 3 | 0.353950 | 0.312091 |
+9 Adam updates;selected epoch 3;fixed probe 1.329592->0.282191;validation 0.312091.
+RGB-only parity 0,single/batch 0 within2e-6;184 learned leaves unchanged:true;image sensitivity 0.003578.
 | predictor | heat MSE | PAF MSE | precision | recall | F1 | people | correct/predicted/GT |
 |---|---:|---:|---:|---:|---:|---:|---|
-| learned | 0.044782 | 0.015214 | 0.000000 | 0.000000 | 0.000000 | 0 | 0/0/116 |
+| learned | 0.044781 | 0.015214 | 0.000000 | 0.000000 | 0.000000 | 0 | 0/0/116 |
 | SGD prior | 0.026796 | 0.016192 | 0.026316 | 0.034483 | 0.029851 | 36 | 4/152/116 |
 | empty | 0.024235 | 0.015298 | 0.000000 | 0.000000 | 0.000000 | 0 | 0/0/116 |
 \image(figures/openpose_pafs_training.svg)

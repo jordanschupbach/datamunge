@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 UNet++ refines dense nested skip pathways and supervises several full-resolution heads. Attention U-Net learns context-dependent sigmoid multipliers for encoder skips. Both mechanisms are checked with small examples and full graphs before explicit Adam fits.
 
-The editable concept diagram is `diagrams/unet_variants_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/unet_variants_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/unet_variants_concept.tikz > build/unet_variants_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/unet_variants_concept.svg build/unet_variants_concept.dvi > build/unet_variants_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/unet_variants_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Dense nested skips\nFour supervised heads");
+  diagram.node("n1", {5.2, 0}, "Additive skip gates\nContext coefficients");
+  diagram.node("n2", {10.4, 0}, "Whole-model Adam\nHeld-out mask checks");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/unet_variants_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/unet_variants_concept.svg)
 // result_end
 \caption(UNet++ dense skips and additive attention U-Net)
@@ -470,31 +476,31 @@ int main() {
 Variant0: 573240 learned scalars, no BN state. Fit-only weights 1.147737/4.012647/2.837215/4.279897.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
-| 0 | 1 | 1.369074 | 0.176849 |
-| 0 | 2 | 1.278012 | 0.186375 |
-| 0 | 3 | 1.116476 | 0.188449 |
-| 0 | 4 | 1.042689 | 0.211795 |
-| 0 | 5 | 0.996057 | 0.195127 |
-| 0 | 6 | 0.952422 | 0.311594 |
-| 0 | 7 | 0.902457 | 0.311542 |
-| 0 | 8 | 0.841784 | 0.312859 |
-| 0 | 9 | 0.806758 | 0.322672 |
-| 0 | 10 | 0.792323 | 0.325184 |
-| 0 | 11 | 0.771169 | 0.322069 |
-| 0 | 12 | 0.761814 | 0.323632 |
-| 0 | 13 | 0.748470 | 0.328936 |
-| 0 | 14 | 0.737719 | 0.323985 |
-| 0 | 15 | 0.735409 | 0.336252 |
-| 0 | 16 | 0.714433 | 0.416870 |
-| 0 | 17 | 0.687127 | 0.348534 |
-| 0 | 18 | 0.690940 | 0.367229 |
-| 0 | 19 | 0.676332 | 0.468073 |
-| 0 | 20 | 0.656493 | 0.411899 |
-| 0 | 21 | 0.665415 | 0.425705 |
-| 0 | 22 | 0.628595 | 0.574956 |
-| 0 | 23 | 0.605846 | 0.535836 |
-| 0 | 24 | 0.588795 | 0.598489 |
-Variant0 restored epoch24: validation mIoU 0.598489; test pixel accuracy 0.858588, mean IoU 0.526918; per-class IoU(background,circle,rectangle,triangle) 0.980017/0.253090/0.440412/0.434153. 192 explicit Adam updates.
+| 0 | 1 | 1.369074 | 0.176835 |
+| 0 | 2 | 1.278032 | 0.186143 |
+| 0 | 3 | 1.116676 | 0.188342 |
+| 0 | 4 | 1.042838 | 0.211674 |
+| 0 | 5 | 0.996241 | 0.194948 |
+| 0 | 6 | 0.952600 | 0.311226 |
+| 0 | 7 | 0.902927 | 0.311463 |
+| 0 | 8 | 0.842307 | 0.312053 |
+| 0 | 9 | 0.807056 | 0.322699 |
+| 0 | 10 | 0.792508 | 0.325489 |
+| 0 | 11 | 0.771416 | 0.322686 |
+| 0 | 12 | 0.762165 | 0.323460 |
+| 0 | 13 | 0.748689 | 0.329023 |
+| 0 | 14 | 0.737566 | 0.322913 |
+| 0 | 15 | 0.735189 | 0.394821 |
+| 0 | 16 | 0.709828 | 0.420970 |
+| 0 | 17 | 0.685679 | 0.360619 |
+| 0 | 18 | 0.684766 | 0.368066 |
+| 0 | 19 | 0.671734 | 0.477275 |
+| 0 | 20 | 0.636134 | 0.414514 |
+| 0 | 21 | 0.643919 | 0.429391 |
+| 0 | 22 | 0.615376 | 0.516592 |
+| 0 | 23 | 0.598083 | 0.573821 |
+| 0 | 24 | 0.584118 | 0.530826 |
+Variant0 restored epoch23: validation mIoU 0.573821; test pixel accuracy 0.857693, mean IoU 0.516618; per-class IoU(background,circle,rectangle,triangle) 0.982075/0.219103/0.431910/0.433386. 192 explicit Adam updates.
 Variant1: 491468 learned scalars, no BN state. Fit-only weights 1.147737/4.012647/2.837215/4.279897.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
@@ -502,31 +508,31 @@ Variant1: 491468 learned scalars, no BN state. Fit-only weights 1.147737/4.01264
 | 1 | 2 | 1.354771 | 0.276740 |
 | 1 | 3 | 1.304151 | 0.272586 |
 | 1 | 4 | 1.165722 | 0.303112 |
-| 1 | 5 | 0.864329 | 0.291897 |
-| 1 | 6 | 0.726969 | 0.311084 |
-| 1 | 7 | 0.682053 | 0.313450 |
-| 1 | 8 | 0.656939 | 0.318197 |
-| 1 | 9 | 0.644578 | 0.320178 |
-| 1 | 10 | 0.627742 | 0.326699 |
-| 1 | 11 | 0.613290 | 0.327070 |
-| 1 | 12 | 0.600432 | 0.329714 |
-| 1 | 13 | 0.587939 | 0.341595 |
-| 1 | 14 | 0.578274 | 0.346060 |
-| 1 | 15 | 0.564820 | 0.354997 |
-| 1 | 16 | 0.557518 | 0.357366 |
-| 1 | 17 | 0.561232 | 0.373781 |
-| 1 | 18 | 0.537019 | 0.361983 |
-| 1 | 19 | 0.548728 | 0.367379 |
-| 1 | 20 | 0.532382 | 0.426049 |
-| 1 | 21 | 0.521740 | 0.423078 |
-| 1 | 22 | 0.503445 | 0.439815 |
-| 1 | 23 | 0.487343 | 0.450874 |
-| 1 | 24 | 0.467807 | 0.468296 |
-Restored attention gate1:6x6,coefficient range[0.424599,0.915859].
-Restored attention gate2:12x12,coefficient range[0.075759,0.824009].
-Restored attention gate3:24x24,coefficient range[0.651654,0.979612].
-Restored attention gate4:48x48,coefficient range[0.005739,0.989271].
-Variant1 restored epoch24: validation mIoU 0.468296; test pixel accuracy 0.856228, mean IoU 0.469080; per-class IoU(background,circle,rectangle,triangle) 0.989603/0.143314/0.492096/0.251307. 192 explicit Adam updates.
+| 1 | 5 | 0.864327 | 0.291890 |
+| 1 | 6 | 0.727040 | 0.311049 |
+| 1 | 7 | 0.682075 | 0.313460 |
+| 1 | 8 | 0.656897 | 0.318176 |
+| 1 | 9 | 0.644535 | 0.320434 |
+| 1 | 10 | 0.627641 | 0.326744 |
+| 1 | 11 | 0.613247 | 0.327096 |
+| 1 | 12 | 0.600324 | 0.329690 |
+| 1 | 13 | 0.587905 | 0.341416 |
+| 1 | 14 | 0.578313 | 0.344991 |
+| 1 | 15 | 0.564880 | 0.354601 |
+| 1 | 16 | 0.557613 | 0.357174 |
+| 1 | 17 | 0.561222 | 0.373549 |
+| 1 | 18 | 0.537286 | 0.362081 |
+| 1 | 19 | 0.549776 | 0.367225 |
+| 1 | 20 | 0.532807 | 0.422966 |
+| 1 | 21 | 0.523190 | 0.412535 |
+| 1 | 22 | 0.506804 | 0.442435 |
+| 1 | 23 | 0.488965 | 0.456724 |
+| 1 | 24 | 0.467659 | 0.469361 |
+Restored attention gate1:6x6,coefficient range[0.402579,0.870819].
+Restored attention gate2:12x12,coefficient range[0.066701,0.796465].
+Restored attention gate3:24x24,coefficient range[0.640233,0.983747].
+Restored attention gate4:48x48,coefficient range[0.008786,0.991760].
+Variant1 restored epoch24: validation mIoU 0.469361; test pixel accuracy 0.857205, mean IoU 0.473140; per-class IoU(background,circle,rectangle,triangle) 0.988314/0.162740/0.502443/0.239065. 192 explicit Adam updates.
 \image(figures/unet_variants_training.svg)
 // result_end
 \caption(Two explicit whole-model192-update Adam fits. UNet++ CE averages all four learned heads; attention U-Net CE uses its final head. Validation chooses separate checkpoints before test evaluation.)

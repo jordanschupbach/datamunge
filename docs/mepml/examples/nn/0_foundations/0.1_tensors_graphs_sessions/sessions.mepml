@@ -305,31 +305,31 @@ int main() {
 // result_begin: markdown
 | call | α (fixed cost per call) | β (cost per row) | half-overhead batch α/β |
 | :--- | ---: | ---: | ---: |
-| direct | 1.72 µs | 6.84 ns | 252 |
-| std::function | 1.74 µs | 7.38 ns | 235 |
-| direct, inside a ProfileScope (profiler on) | 1.81 µs | 7.33 ns | 247 |
+| direct | 2.01 µs | 7.21 ns | 279 |
+| std::function | 1.98 µs | 8.33 ns | 238 |
+| direct, inside a ProfileScope (profiler on) | 2.19 µs | 7.75 ns | 283 |
 
 | batch n | direct | std::function | profiled | fit α + βn | fixed-cost share α / T |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1 | 1.50 µs | 1.43 µs | 1.67 µs | 1.73 µs | 115% |
-| 2 | 1.72 µs | 1.78 µs | 1.90 µs | 1.74 µs | 100% |
-| 4 | 1.69 µs | 1.75 µs | 1.77 µs | 1.75 µs | 102% |
-| 8 | 1.67 µs | 1.63 µs | 1.64 µs | 1.78 µs | 103% |
-| 16 | 2.07 µs | 1.94 µs | 1.92 µs | 1.83 µs | 83% |
-| 32 | 2.29 µs | 2.27 µs | 2.52 µs | 1.94 µs | 75% |
-| 64 | 2.47 µs | 2.53 µs | 2.40 µs | 2.16 µs | 70% |
-| 128 | 2.57 µs | 3.20 µs | 2.87 µs | 2.60 µs | 67% |
-| 256 | 3.85 µs | 4.15 µs | 4.35 µs | 3.47 µs | 45% |
-| 512 | 5.43 µs | 6.11 µs | 5.64 µs | 5.22 µs | 32% |
-| 1024 | 7.46 µs | 8.71 µs | 9.91 µs | 8.72 µs | 23% |
-| 2048 | 13.50 µs | 15.24 µs | 15.24 µs | 15.72 µs | 13% |
-| 4096 | 30.56 µs | 31.04 µs | 29.74 µs | 29.72 µs | 6% |
-| 8192 | 63.34 µs | 58.19 µs | 57.96 µs | 57.72 µs | 3% |
-| 16384 | 132.82 µs | 131.39 µs | 135.60 µs | 113.71 µs | 1% |
+| 1 | 1.90 µs | 1.82 µs | 1.86 µs | 2.02 µs | 106% |
+| 2 | 1.97 µs | 1.89 µs | 1.96 µs | 2.03 µs | 102% |
+| 4 | 2.29 µs | 2.17 µs | 2.38 µs | 2.04 µs | 88% |
+| 8 | 1.83 µs | 1.86 µs | 2.17 µs | 2.07 µs | 110% |
+| 16 | 2.34 µs | 2.29 µs | 2.37 µs | 2.13 µs | 86% |
+| 32 | 2.47 µs | 2.85 µs | 2.83 µs | 2.24 µs | 82% |
+| 64 | 2.67 µs | 2.50 µs | 2.93 µs | 2.48 µs | 76% |
+| 128 | 2.99 µs | 2.80 µs | 3.56 µs | 2.94 µs | 67% |
+| 256 | 3.46 µs | 5.07 µs | 5.28 µs | 3.86 µs | 58% |
+| 512 | 6.23 µs | 6.38 µs | 6.89 µs | 5.71 µs | 32% |
+| 1024 | 8.23 µs | 9.27 µs | 8.93 µs | 9.40 µs | 24% |
+| 2048 | 16.68 µs | 18.15 µs | 17.37 µs | 16.78 µs | 12% |
+| 4096 | 32.57 µs | 38.09 µs | 31.88 µs | 31.54 µs | 6% |
+| 8192 | 58.47 µs | 75.51 µs | 67.68 µs | 61.07 µs | 3% |
+| 16384 | 143.26 µs | 135.66 µs | 128.96 µs | 120.12 µs | 1% |
 
-Largest relative misfit of the direct-call line: 18%.
+Largest relative misfit of the direct-call line: 19%.
 
-An empty ProfileScope costs 7.6 ns with no profiler active and 121.0 ns while recording (200000 events in the last block).
+An empty ProfileScope costs 7.0 ns with no profiler active and 106.7 ns while recording (200000 events in the last block).
 \image(figures/sessions_overhead.svg)
 // result_end
 
@@ -465,7 +465,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-The loss gap first falls below 1e-12 at step 2451; over the last 100 steps it lies between -1.8e-15 and 8.9e-16.
+The loss gap first falls below 1e-12 at step 2451; over the last 100 steps it lies between -8.9e-16 and 1.8e-15.
 After 3000 steps (step counter 3000): training loss 4.609201, least-squares loss 4.609201, largest |w − β| = 2.6e-09.
 
 | predictor | trained w | normal equations β |
@@ -481,7 +481,7 @@ After 3000 steps (step counter 3000): training loss 4.609201, least-squares loss
 | gear | 0.4836 | 0.4836 |
 | carb | -0.3221 | -0.3221 |
 
-Step time: median 12.6 µs, 10th to 90th percentile 9.7 to 15.8 µs, longest 832 µs.
+Step time: median 14.0 µs, 10th to 90th percentile 12.0 to 19.0 µs, longest 2269 µs.
 \image(figures/sessions_training.svg)
 // result_end
 
@@ -585,22 +585,22 @@ int main() {
 }
 ```
 // result_begin: markdown
-Profile of all 3000 steps (wall time 57.7 ms):
+Profile of all 3000 steps (wall time 62.7 ms):
 
 | name | category | calls | total | self | mean | self share |
 | :--- | :--- | ---: | ---: | ---: | ---: | ---: |
-| step | region | 3000 | 57.12 ms | 6.46 ms | 19.0 us | 11.2% |
-| grad | region | 3000 | 26.21 ms | 13.69 ms | 8.7 us | 23.7% |
-| loss | region | 3000 | 11.62 ms | 11.62 ms | 3.9 us | 20.1% |
-| update | region | 3000 | 7.18 ms | 7.18 ms | 2.4 us | 12.4% |
-| forward | region | 3000 | 5.66 ms | 5.66 ms | 1.9 us | 9.8% |
-| BatchMatMulV2 | backward | 3000 | 3.93 ms | 3.93 ms | 1.3 us | 6.8% |
-| Sum | backward | 3000 | 2.92 ms | 2.92 ms | 1.0 us | 5.1% |
-| Div | backward | 3000 | 2.19 ms | 2.19 ms | 0.7 us | 3.8% |
-| Sub | backward | 3000 | 1.84 ms | 1.84 ms | 0.6 us | 3.2% |
-| Square | backward | 3000 | 1.65 ms | 1.65 ms | 0.5 us | 2.9% |
+| step | region | 3000 | 62.24 ms | 5.63 ms | 20.7 us | 9.0% |
+| grad | region | 3000 | 30.00 ms | 16.12 ms | 10.0 us | 25.7% |
+| loss | region | 3000 | 12.85 ms | 12.85 ms | 4.3 us | 20.5% |
+| update | region | 3000 | 7.37 ms | 7.37 ms | 2.5 us | 11.8% |
+| forward | region | 3000 | 6.39 ms | 6.39 ms | 2.1 us | 10.2% |
+| Sum | backward | 3000 | 4.44 ms | 4.44 ms | 1.5 us | 7.1% |
+| BatchMatMulV2 | backward | 3000 | 3.94 ms | 3.94 ms | 1.3 us | 6.3% |
+| Div | backward | 3000 | 2.43 ms | 2.43 ms | 0.8 us | 3.9% |
+| Square | backward | 3000 | 1.71 ms | 1.71 ms | 0.6 us | 2.7% |
+| Sub | backward | 3000 | 1.36 ms | 1.36 ms | 0.5 us | 2.2% |
 
-Per step: 5 forward ops on the tape, 5.0 backward nodes executed; step time median 14.0 µs, 10th to 90th percentile 11.9 to 18.3 µs, longest 2210 µs.
+Per step: 5 forward ops on the tape, 5.0 backward nodes executed; step time median 11.7 µs, 10th to 90th percentile 10.6 to 16.2 µs, longest 3071 µs.
 \image(figures/sessions_timeline.svg)
 // result_end
 

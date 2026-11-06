@@ -3748,319 +3748,322 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__LMM swig_types[30]
 #define SWIGTYPE_p_datamunge__LaplacianEigenmaps swig_types[31]
 #define SWIGTYPE_p_datamunge__Lasso swig_types[32]
-#define SWIGTYPE_p_datamunge__MDS swig_types[33]
-#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[34]
-#define SWIGTYPE_p_datamunge__PCA swig_types[35]
-#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[36]
-#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[37]
-#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[38]
-#define SWIGTYPE_p_datamunge__Ridge swig_types[39]
-#define SWIGTYPE_p_datamunge__SVM swig_types[40]
-#define SWIGTYPE_p_datamunge__SammonMapping swig_types[41]
-#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[42]
-#define SWIGTYPE_p_datamunge__Splom swig_types[43]
-#define SWIGTYPE_p_datamunge__TSNE swig_types[44]
-#define SWIGTYPE_p_datamunge__Tape swig_types[45]
-#define SWIGTYPE_p_datamunge__Tensor swig_types[46]
-#define SWIGTYPE_p_datamunge__UMAP swig_types[47]
-#define SWIGTYPE_p_datamunge__Var swig_types[48]
-#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[49]
-#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[50]
-#define SWIGTYPE_p_datamunge__algebra__Complex swig_types[51]
-#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[52]
-#define SWIGTYPE_p_datamunge__algebra__GfFactorization swig_types[53]
-#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[54]
-#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[55]
-#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[56]
-#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[57]
-#define SWIGTYPE_p_datamunge__algebra__RealFactor swig_types[58]
-#define SWIGTYPE_p_datamunge__algebra__RealFactorization swig_types[59]
-#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[60]
-#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[61]
-#define SWIGTYPE_p_datamunge__algebra__detail__Cplx swig_types[62]
-#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[63]
-#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[64]
-#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[65]
-#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[66]
-#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[67]
-#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[68]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[69]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[70]
-#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[71]
-#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[72]
-#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[73]
-#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[74]
-#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[75]
-#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[76]
-#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[77]
-#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[78]
-#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[79]
-#define SWIGTYPE_p_datamunge__cv__Corner swig_types[80]
-#define SWIGTYPE_p_datamunge__cv__FlowVector swig_types[81]
-#define SWIGTYPE_p_datamunge__cv__HoughCircle swig_types[82]
-#define SWIGTYPE_p_datamunge__cv__HoughLine swig_types[83]
-#define SWIGTYPE_p_datamunge__cv__KeyPoint swig_types[84]
-#define SWIGTYPE_p_datamunge__cv__LabelMap swig_types[85]
-#define SWIGTYPE_p_datamunge__cv__detail__StructureTensorField swig_types[86]
-#define SWIGTYPE_p_datamunge__datasets__ImageBatch swig_types[87]
-#define SWIGTYPE_p_datamunge__datasets__ImageLoader swig_types[88]
-#define SWIGTYPE_p_datamunge__dstruct__DirectedGraphT_std__string_t swig_types[89]
-#define SWIGTYPE_p_datamunge__dstruct__UndirectedGraphT_std__string_t swig_types[90]
-#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t swig_types[91]
-#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t__BellmanFordResult swig_types[92]
-#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t__ShortestPaths swig_types[93]
-#define SWIGTYPE_p_datamunge__fda__BSplineBasis swig_types[94]
-#define SWIGTYPE_p_datamunge__fda__BSplineRefinement swig_types[95]
-#define SWIGTYPE_p_datamunge__fda__HierarchicalBSpline swig_types[96]
-#define SWIGTYPE_p_datamunge__fda__SplineSolveOptions swig_types[97]
-#define SWIGTYPE_p_datamunge__fda__TensorBSpline swig_types[98]
-#define SWIGTYPE_p_datamunge__fda__TruncatedHierarchicalBSpline swig_types[99]
-#define SWIGTYPE_p_datamunge__fem__BoundaryCondition1D swig_types[100]
-#define SWIGTYPE_p_datamunge__fem__FEM1D swig_types[101]
-#define SWIGTYPE_p_datamunge__fem__FEM1DResult swig_types[102]
-#define SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries swig_types[103]
-#define SWIGTYPE_p_datamunge__fem__FEM2D swig_types[104]
-#define SWIGTYPE_p_datamunge__fem__FEM2DResult swig_types[105]
-#define SWIGTYPE_p_datamunge__fem__Mesh1D swig_types[106]
-#define SWIGTYPE_p_datamunge__fem__Mesh2D swig_types[107]
-#define SWIGTYPE_p_datamunge__fem__ScalarField1D swig_types[108]
-#define SWIGTYPE_p_datamunge__fem__ScalarField2D swig_types[109]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaFilter swig_types[110]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaFilter swig_types[111]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaState swig_types[112]
-#define SWIGTYPE_p_datamunge__filter__AlphaBetaState swig_types[113]
-#define SWIGTYPE_p_datamunge__filter__EnsembleKalmanFilter swig_types[114]
-#define SWIGTYPE_p_datamunge__filter__ExtendedKalmanFilter swig_types[115]
-#define SWIGTYPE_p_datamunge__filter__InformationFilter swig_types[116]
-#define SWIGTYPE_p_datamunge__filter__KalmanFilter swig_types[117]
-#define SWIGTYPE_p_datamunge__filter__KalmanState swig_types[118]
-#define SWIGTYPE_p_datamunge__filter__ParticleFilter swig_types[119]
-#define SWIGTYPE_p_datamunge__filter__SmoothResult swig_types[120]
-#define SWIGTYPE_p_datamunge__filter__UnscentedKalmanFilter swig_types[121]
-#define SWIGTYPE_p_datamunge__filter__VectorFunction swig_types[122]
-#define SWIGTYPE_p_datamunge__geometry__BoundingBox swig_types[123]
-#define SWIGTYPE_p_datamunge__geometry__Circle swig_types[124]
-#define SWIGTYPE_p_datamunge__geometry__ClosestPairResult swig_types[125]
-#define SWIGTYPE_p_datamunge__geometry__DTWResult swig_types[126]
-#define SWIGTYPE_p_datamunge__geometry__DiameterResult swig_types[127]
-#define SWIGTYPE_p_datamunge__geometry__KDTree2D swig_types[128]
-#define SWIGTYPE_p_datamunge__geometry__MinimumBoundingRectangle swig_types[129]
-#define SWIGTYPE_p_datamunge__geometry__Point2D swig_types[130]
-#define SWIGTYPE_p_datamunge__geometry__Triangle swig_types[131]
-#define SWIGTYPE_p_datamunge__geometry__VoronoiDiagram swig_types[132]
-#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge swig_types[133]
-#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash swig_types[134]
-#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[135]
-#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[136]
-#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[137]
-#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[138]
-#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[139]
-#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[140]
-#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[141]
-#define SWIGTYPE_p_datamunge__image__HSV swig_types[142]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[143]
-#define SWIGTYPE_p_datamunge__image__Pixel swig_types[144]
-#define SWIGTYPE_p_datamunge__nn__NnModel swig_types[145]
-#define SWIGTYPE_p_datamunge__nn__NnTensor swig_types[146]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[147]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[148]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[149]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[150]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[151]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[152]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[153]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[154]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[155]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[156]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[157]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[158]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[159]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[160]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[161]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[162]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[163]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[164]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[165]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[166]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[167]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[168]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[169]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[170]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[171]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[172]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[173]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[174]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[175]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[176]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[177]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[178]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[179]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[180]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[181]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[182]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[183]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[184]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[185]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[186]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[187]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[188]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[189]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[190]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[191]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[192]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[193]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[194]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[195]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[196]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[197]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[198]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[199]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[200]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[201]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[202]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[203]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[204]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[205]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[206]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[207]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[208]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[209]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[210]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[211]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[212]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[213]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[214]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[215]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[216]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[217]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[218]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[219]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[220]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[221]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[222]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[223]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[224]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[225]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[226]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[227]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[228]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[229]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[230]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[231]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[232]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[233]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[234]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[235]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[236]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[237]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[238]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[239]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[240]
-#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[241]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[242]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[243]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[244]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[245]
-#define SWIGTYPE_p_datamunge__sim__TaskBatch swig_types[246]
-#define SWIGTYPE_p_datamunge__sim__TaskOutput swig_types[247]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[248]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[249]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[250]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[251]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[252]
-#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[253]
-#define SWIGTYPE_p_difference_type swig_types[254]
-#define SWIGTYPE_p_first_type swig_types[255]
-#define SWIGTYPE_p_int swig_types[256]
-#define SWIGTYPE_p_long_long swig_types[257]
-#define SWIGTYPE_p_p_PyObject swig_types[258]
-#define SWIGTYPE_p_second_type swig_types[259]
-#define SWIGTYPE_p_short swig_types[260]
-#define SWIGTYPE_p_signed_char swig_types[261]
-#define SWIGTYPE_p_size_type swig_types[262]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t swig_types[263]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[264]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[265]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[266]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[267]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[268]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[269]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[270]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[271]
-#define SWIGTYPE_p_std__allocatorT_datamunge__fda__BSplineBasis_t swig_types[272]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[273]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[274]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[275]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[276]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[277]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__ABLine_t swig_types[278]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__DataSeries_t swig_types[279]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__LegendEntry_t swig_types[280]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__RGB_t swig_types[281]
-#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[282]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[283]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[284]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[285]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[286]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[287]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[288]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[289]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[290]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[291]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[292]
-#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[293]
-#define SWIGTYPE_p_std__invalid_argument swig_types[294]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[295]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[296]
-#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[297]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[298]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[299]
-#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[300]
-#define SWIGTYPE_p_std__string swig_types[301]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t swig_types[302]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[303]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[304]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[305]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[306]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[307]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[308]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[309]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[310]
-#define SWIGTYPE_p_std__vectorT_datamunge__fda__BSplineBasis_t swig_types[311]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[312]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[313]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[314]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[315]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[316]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t swig_types[317]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t swig_types[318]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t swig_types[319]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t swig_types[320]
-#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[321]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[322]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[323]
-#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[324]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[325]
-#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[326]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[327]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t swig_types[328]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[329]
-#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[330]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[331]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[332]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[333]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t swig_types[334]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[335]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[336]
-#define SWIGTYPE_p_unsigned_char swig_types[337]
-#define SWIGTYPE_p_unsigned_int swig_types[338]
-#define SWIGTYPE_p_unsigned_long_long swig_types[339]
-#define SWIGTYPE_p_unsigned_short swig_types[340]
-#define SWIGTYPE_p_value_type swig_types[341]
-#define SWIGTYPE_p_vertex_type swig_types[342]
-#define SWIGTYPE_p_weight_type swig_types[343]
-static swig_type_info *swig_types[345];
-static swig_module_info swig_module = {swig_types, 344, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__LinalgMatrix swig_types[33]
+#define SWIGTYPE_p_datamunge__MDS swig_types[34]
+#define SWIGTYPE_p_datamunge__NaiveBayesClassifier swig_types[35]
+#define SWIGTYPE_p_datamunge__PCA swig_types[36]
+#define SWIGTYPE_p_datamunge__PSplineRegression swig_types[37]
+#define SWIGTYPE_p_datamunge__RandomForestClassifier swig_types[38]
+#define SWIGTYPE_p_datamunge__RandomForestRegressor swig_types[39]
+#define SWIGTYPE_p_datamunge__Ridge swig_types[40]
+#define SWIGTYPE_p_datamunge__SVM swig_types[41]
+#define SWIGTYPE_p_datamunge__SammonMapping swig_types[42]
+#define SWIGTYPE_p_datamunge__ShapeLayer swig_types[43]
+#define SWIGTYPE_p_datamunge__Splom swig_types[44]
+#define SWIGTYPE_p_datamunge__TSNE swig_types[45]
+#define SWIGTYPE_p_datamunge__Tape swig_types[46]
+#define SWIGTYPE_p_datamunge__Tensor swig_types[47]
+#define SWIGTYPE_p_datamunge__UMAP swig_types[48]
+#define SWIGTYPE_p_datamunge__Var swig_types[49]
+#define SWIGTYPE_p_datamunge__XGBoostClassifier swig_types[50]
+#define SWIGTYPE_p_datamunge__XGBoostRegressor swig_types[51]
+#define SWIGTYPE_p_datamunge__algebra__Complex swig_types[52]
+#define SWIGTYPE_p_datamunge__algebra__Expr swig_types[53]
+#define SWIGTYPE_p_datamunge__algebra__GfFactorization swig_types[54]
+#define SWIGTYPE_p_datamunge__algebra__MultivariatePolynomial swig_types[55]
+#define SWIGTYPE_p_datamunge__algebra__PolyExtendedGcdResult swig_types[56]
+#define SWIGTYPE_p_datamunge__algebra__Polynomial swig_types[57]
+#define SWIGTYPE_p_datamunge__algebra__RationalFunction swig_types[58]
+#define SWIGTYPE_p_datamunge__algebra__RealFactor swig_types[59]
+#define SWIGTYPE_p_datamunge__algebra__RealFactorization swig_types[60]
+#define SWIGTYPE_p_datamunge__algebra__RealRootIntervals swig_types[61]
+#define SWIGTYPE_p_datamunge__algebra__SquareFreeFactor swig_types[62]
+#define SWIGTYPE_p_datamunge__algebra__detail__Cplx swig_types[63]
+#define SWIGTYPE_p_datamunge__bayes__GibbsOptions swig_types[64]
+#define SWIGTYPE_p_datamunge__bayes__GibbsResult swig_types[65]
+#define SWIGTYPE_p_datamunge__bayes__GibbsSampler swig_types[66]
+#define SWIGTYPE_p_datamunge__bayes__HMC swig_types[67]
+#define SWIGTYPE_p_datamunge__bayes__HMCOptions swig_types[68]
+#define SWIGTYPE_p_datamunge__bayes__HMCResult swig_types[69]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSampling swig_types[70]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingOptions swig_types[71]
+#define SWIGTYPE_p_datamunge__bayes__ImportanceSamplingResult swig_types[72]
+#define SWIGTYPE_p_datamunge__bayes__MAP swig_types[73]
+#define SWIGTYPE_p_datamunge__bayes__MAPOptions swig_types[74]
+#define SWIGTYPE_p_datamunge__bayes__NUTS swig_types[75]
+#define SWIGTYPE_p_datamunge__bayes__NUTSOptions swig_types[76]
+#define SWIGTYPE_p_datamunge__bayes__NUTSResult swig_types[77]
+#define SWIGTYPE_p_datamunge__bayes__RWMOptions swig_types[78]
+#define SWIGTYPE_p_datamunge__bayes__RWMResult swig_types[79]
+#define SWIGTYPE_p_datamunge__bayes__RandomWalkMetropolis swig_types[80]
+#define SWIGTYPE_p_datamunge__cad__Solid swig_types[81]
+#define SWIGTYPE_p_datamunge__cad__View swig_types[82]
+#define SWIGTYPE_p_datamunge__cv__Corner swig_types[83]
+#define SWIGTYPE_p_datamunge__cv__FlowVector swig_types[84]
+#define SWIGTYPE_p_datamunge__cv__HoughCircle swig_types[85]
+#define SWIGTYPE_p_datamunge__cv__HoughLine swig_types[86]
+#define SWIGTYPE_p_datamunge__cv__KeyPoint swig_types[87]
+#define SWIGTYPE_p_datamunge__cv__LabelMap swig_types[88]
+#define SWIGTYPE_p_datamunge__cv__detail__StructureTensorField swig_types[89]
+#define SWIGTYPE_p_datamunge__datasets__ImageBatch swig_types[90]
+#define SWIGTYPE_p_datamunge__datasets__ImageLoader swig_types[91]
+#define SWIGTYPE_p_datamunge__dstruct__DirectedGraphT_std__string_t swig_types[92]
+#define SWIGTYPE_p_datamunge__dstruct__UndirectedGraphT_std__string_t swig_types[93]
+#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t swig_types[94]
+#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t__BellmanFordResult swig_types[95]
+#define SWIGTYPE_p_datamunge__dstruct__WeightedGraphT_std__string_double_t__ShortestPaths swig_types[96]
+#define SWIGTYPE_p_datamunge__fda__BSplineBasis swig_types[97]
+#define SWIGTYPE_p_datamunge__fda__BSplineRefinement swig_types[98]
+#define SWIGTYPE_p_datamunge__fda__HierarchicalBSpline swig_types[99]
+#define SWIGTYPE_p_datamunge__fda__SplineSolveOptions swig_types[100]
+#define SWIGTYPE_p_datamunge__fda__TensorBSpline swig_types[101]
+#define SWIGTYPE_p_datamunge__fda__TruncatedHierarchicalBSpline swig_types[102]
+#define SWIGTYPE_p_datamunge__fem__BoundaryCondition1D swig_types[103]
+#define SWIGTYPE_p_datamunge__fem__FEM1D swig_types[104]
+#define SWIGTYPE_p_datamunge__fem__FEM1DResult swig_types[105]
+#define SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries swig_types[106]
+#define SWIGTYPE_p_datamunge__fem__FEM2D swig_types[107]
+#define SWIGTYPE_p_datamunge__fem__FEM2DResult swig_types[108]
+#define SWIGTYPE_p_datamunge__fem__Mesh1D swig_types[109]
+#define SWIGTYPE_p_datamunge__fem__Mesh2D swig_types[110]
+#define SWIGTYPE_p_datamunge__fem__ScalarField1D swig_types[111]
+#define SWIGTYPE_p_datamunge__fem__ScalarField2D swig_types[112]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaFilter swig_types[113]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaFilter swig_types[114]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaGammaState swig_types[115]
+#define SWIGTYPE_p_datamunge__filter__AlphaBetaState swig_types[116]
+#define SWIGTYPE_p_datamunge__filter__EnsembleKalmanFilter swig_types[117]
+#define SWIGTYPE_p_datamunge__filter__ExtendedKalmanFilter swig_types[118]
+#define SWIGTYPE_p_datamunge__filter__InformationFilter swig_types[119]
+#define SWIGTYPE_p_datamunge__filter__KalmanFilter swig_types[120]
+#define SWIGTYPE_p_datamunge__filter__KalmanState swig_types[121]
+#define SWIGTYPE_p_datamunge__filter__ParticleFilter swig_types[122]
+#define SWIGTYPE_p_datamunge__filter__SmoothResult swig_types[123]
+#define SWIGTYPE_p_datamunge__filter__UnscentedKalmanFilter swig_types[124]
+#define SWIGTYPE_p_datamunge__filter__VectorFunction swig_types[125]
+#define SWIGTYPE_p_datamunge__geometry__BoundingBox swig_types[126]
+#define SWIGTYPE_p_datamunge__geometry__Circle swig_types[127]
+#define SWIGTYPE_p_datamunge__geometry__ClosestPairResult swig_types[128]
+#define SWIGTYPE_p_datamunge__geometry__DTWResult swig_types[129]
+#define SWIGTYPE_p_datamunge__geometry__DiameterResult swig_types[130]
+#define SWIGTYPE_p_datamunge__geometry__KDTree2D swig_types[131]
+#define SWIGTYPE_p_datamunge__geometry__MinimumBoundingRectangle swig_types[132]
+#define SWIGTYPE_p_datamunge__geometry__Point2D swig_types[133]
+#define SWIGTYPE_p_datamunge__geometry__Triangle swig_types[134]
+#define SWIGTYPE_p_datamunge__geometry__VoronoiDiagram swig_types[135]
+#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge swig_types[136]
+#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash swig_types[137]
+#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[138]
+#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[139]
+#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[140]
+#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[141]
+#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[142]
+#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[143]
+#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[144]
+#define SWIGTYPE_p_datamunge__image__HSV swig_types[145]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[146]
+#define SWIGTYPE_p_datamunge__image__Pixel swig_types[147]
+#define SWIGTYPE_p_datamunge__nn__NnModel swig_types[148]
+#define SWIGTYPE_p_datamunge__nn__NnTensor swig_types[149]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[150]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[151]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[152]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[153]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[154]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[155]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[156]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[157]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[158]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[159]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[160]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[161]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[162]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[163]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[164]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[165]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[166]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[167]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[168]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[169]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[170]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[171]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[172]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[173]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[174]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[175]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[176]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[177]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[178]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[179]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[180]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[181]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[182]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[183]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[184]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[185]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[186]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[187]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[188]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[189]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[190]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[191]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[192]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[193]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[194]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[195]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[196]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[197]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[198]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[199]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[200]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[201]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[202]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[203]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[204]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[205]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[206]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[207]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[208]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[209]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[210]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[211]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[212]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[213]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[214]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[215]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[216]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[217]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[218]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[219]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[220]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[221]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[222]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[223]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[224]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[225]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[226]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[227]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[228]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[229]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[230]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[231]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[232]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[233]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[234]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[235]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[236]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[237]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[238]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[239]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[240]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[241]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[242]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[243]
+#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[244]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[245]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[246]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[247]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[248]
+#define SWIGTYPE_p_datamunge__sim__TaskBatch swig_types[249]
+#define SWIGTYPE_p_datamunge__sim__TaskOutput swig_types[250]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[251]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[252]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[253]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[254]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[255]
+#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[256]
+#define SWIGTYPE_p_difference_type swig_types[257]
+#define SWIGTYPE_p_first_type swig_types[258]
+#define SWIGTYPE_p_int swig_types[259]
+#define SWIGTYPE_p_long_long swig_types[260]
+#define SWIGTYPE_p_p_PyObject swig_types[261]
+#define SWIGTYPE_p_second_type swig_types[262]
+#define SWIGTYPE_p_short swig_types[263]
+#define SWIGTYPE_p_signed_char swig_types[264]
+#define SWIGTYPE_p_size_type swig_types[265]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t swig_types[266]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[267]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[268]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[269]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[270]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[271]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[272]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[273]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[274]
+#define SWIGTYPE_p_std__allocatorT_datamunge__fda__BSplineBasis_t swig_types[275]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[276]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[277]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[278]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[279]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[280]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__ABLine_t swig_types[281]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__DataSeries_t swig_types[282]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__LegendEntry_t swig_types[283]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__RGB_t swig_types[284]
+#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[285]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[286]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[287]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[288]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[289]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[290]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[291]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[292]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[293]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[294]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[295]
+#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[296]
+#define SWIGTYPE_p_std__invalid_argument swig_types[297]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[298]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[299]
+#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[300]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[301]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[302]
+#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[303]
+#define SWIGTYPE_p_std__string swig_types[304]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t swig_types[305]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[306]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[307]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[308]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[309]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[310]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[311]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[312]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[313]
+#define SWIGTYPE_p_std__vectorT_datamunge__fda__BSplineBasis_t swig_types[314]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[315]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[316]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[317]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[318]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[319]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t swig_types[320]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t swig_types[321]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t swig_types[322]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t swig_types[323]
+#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[324]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[325]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[326]
+#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[327]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[328]
+#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[329]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[330]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t swig_types[331]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[332]
+#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[333]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[334]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[335]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[336]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t swig_types[337]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[338]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[339]
+#define SWIGTYPE_p_unsigned_char swig_types[340]
+#define SWIGTYPE_p_unsigned_int swig_types[341]
+#define SWIGTYPE_p_unsigned_long_long swig_types[342]
+#define SWIGTYPE_p_unsigned_short swig_types[343]
+#define SWIGTYPE_p_value_type swig_types[344]
+#define SWIGTYPE_p_vertex_type swig_types[345]
+#define SWIGTYPE_p_weight_type swig_types[346]
+static swig_type_info *swig_types[348];
+static swig_module_info swig_module = {swig_types, 347, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4206,6 +4209,9 @@ namespace swig {
     }
   };
 }
+
+
+#include "datamunge/linalg/bindings.hpp"
 
 
 #include <stdint.h>		// Use the C99 official header
@@ -6784,10 +6790,6 @@ SWIGINTERN std::vector< datamunge::graphics::RGB >::iterator std_vector_Sl_datam
 SWIGINTERN std::vector< datamunge::graphics::RGB >::iterator std_vector_Sl_datamunge_graphics_RGB_Sg__erase__SWIG_1(std::vector< datamunge::graphics::RGB > *self,std::vector< datamunge::graphics::RGB >::iterator first,std::vector< datamunge::graphics::RGB >::iterator last){ return self->erase(first, last); }
 SWIGINTERN std::vector< datamunge::graphics::RGB >::iterator std_vector_Sl_datamunge_graphics_RGB_Sg__insert__SWIG_0(std::vector< datamunge::graphics::RGB > *self,std::vector< datamunge::graphics::RGB >::iterator pos,std::vector< datamunge::graphics::RGB >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_graphics_RGB_Sg__insert__SWIG_1(std::vector< datamunge::graphics::RGB > *self,std::vector< datamunge::graphics::RGB >::iterator pos,std::vector< datamunge::graphics::RGB >::size_type n,std::vector< datamunge::graphics::RGB >::value_type const &x){ self->insert(pos, n, x); }
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_graphics_RGB__SWIG_0(){ return new datamunge::graphics::RGB(); }
-SWIGINTERN datamunge::graphics::RGB *new_datamunge_graphics_RGB__SWIG_1(int r,int g,int b,double alpha=1.0){
-    return new datamunge::graphics::RGB{r, g, b, alpha};
-  }
 
 SWIGINTERN int
 SWIG_AsVal_bool (PyObject *obj, bool *val)
@@ -8766,6 +8768,9 @@ SWIGINTERN std::vector< datamunge::filter::AlphaBetaGammaState >::iterator std_v
 SWIGINTERN std::vector< datamunge::filter::AlphaBetaGammaState >::iterator std_vector_Sl_datamunge_filter_AlphaBetaGammaState_Sg__erase__SWIG_1(std::vector< datamunge::filter::AlphaBetaGammaState > *self,std::vector< datamunge::filter::AlphaBetaGammaState >::iterator first,std::vector< datamunge::filter::AlphaBetaGammaState >::iterator last){ return self->erase(first, last); }
 SWIGINTERN std::vector< datamunge::filter::AlphaBetaGammaState >::iterator std_vector_Sl_datamunge_filter_AlphaBetaGammaState_Sg__insert__SWIG_0(std::vector< datamunge::filter::AlphaBetaGammaState > *self,std::vector< datamunge::filter::AlphaBetaGammaState >::iterator pos,std::vector< datamunge::filter::AlphaBetaGammaState >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_filter_AlphaBetaGammaState_Sg__insert__SWIG_1(std::vector< datamunge::filter::AlphaBetaGammaState > *self,std::vector< datamunge::filter::AlphaBetaGammaState >::iterator pos,std::vector< datamunge::filter::AlphaBetaGammaState >::size_type n,std::vector< datamunge::filter::AlphaBetaGammaState >::value_type const &x){ self->insert(pos, n, x); }
+SWIGINTERN std::string datamunge_algebra_Polynomial_tex_source__SWIG_0(datamunge::algebra::Polynomial const *self,std::string const &variable="x",int precision=7){
+    return self->to_tex(variable, precision).str();
+  }
 
   namespace swig {
     template <>  struct traits< datamunge::algebra::Polynomial > {
@@ -8866,6 +8871,9 @@ SWIGINTERN std::vector< datamunge::algebra::Polynomial >::iterator std_vector_Sl
 SWIGINTERN std::vector< datamunge::algebra::Polynomial >::iterator std_vector_Sl_datamunge_algebra_Polynomial_Sg__erase__SWIG_1(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::iterator first,std::vector< datamunge::algebra::Polynomial >::iterator last){ return self->erase(first, last); }
 SWIGINTERN std::vector< datamunge::algebra::Polynomial >::iterator std_vector_Sl_datamunge_algebra_Polynomial_Sg__insert__SWIG_0(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::iterator pos,std::vector< datamunge::algebra::Polynomial >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_algebra_Polynomial_Sg__insert__SWIG_1(std::vector< datamunge::algebra::Polynomial > *self,std::vector< datamunge::algebra::Polynomial >::iterator pos,std::vector< datamunge::algebra::Polynomial >::size_type n,std::vector< datamunge::algebra::Polynomial >::value_type const &x){ self->insert(pos, n, x); }
+SWIGINTERN std::string datamunge_algebra_RationalFunction_tex_source__SWIG_0(datamunge::algebra::RationalFunction const *self,std::string const &variable="x",int precision=7){
+    return self->to_tex(variable, precision).str();
+  }
 
   namespace swig {
     template <>  struct traits< datamunge::algebra::SquareFreeFactor > {
@@ -9158,6 +9166,7 @@ SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::iterator s
 SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::iterator std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__erase__SWIG_1(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::iterator first,std::vector< datamunge::algebra::MultivariatePolynomial >::iterator last){ return self->erase(first, last); }
 SWIGINTERN std::vector< datamunge::algebra::MultivariatePolynomial >::iterator std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__insert__SWIG_0(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::iterator pos,std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_algebra_MultivariatePolynomial_Sg__insert__SWIG_1(std::vector< datamunge::algebra::MultivariatePolynomial > *self,std::vector< datamunge::algebra::MultivariatePolynomial >::iterator pos,std::vector< datamunge::algebra::MultivariatePolynomial >::size_type n,std::vector< datamunge::algebra::MultivariatePolynomial >::value_type const &x){ self->insert(pos, n, x); }
+SWIGINTERN std::string datamunge_algebra_Expr_tex_source__SWIG_0(datamunge::algebra::Expr const *self,int precision=7){ return self->to_tex(precision).str(); }
 
   namespace swig {
     template <>  struct traits< datamunge::algebra::Complex > {
@@ -9379,6 +9388,9 @@ static PyObject* simulation_flags(const std::vector<std::uint8_t>* values) {retu
 SWIGINTERN datamunge::sim::TaskBatch *datamunge_sim_TaskBatch_create__SWIG_0(datamunge::sim::Task task,std::size_t count,std::size_t workers=1,std::uint64_t seed=0,std::uint64_t time_limit=1000){
     return new datamunge::sim::TaskBatch(task,count,datamunge::compute::Context({},workers),seed,time_limit);
   }
+
+#include <datamunge/cad/view.hpp>
+
 
 
 /* ---------------------------------------------------
@@ -21386,7 +21398,7 @@ SWIGINTERN PyObject *_wrap_RGBVector_pop__SWIG_0(PyObject *self, Py_ssize_t nobj
   int res1 = 0 ;
   ptrdiff_t val2 ;
   int ecode2 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  std::vector< datamunge::graphics::RGB >::value_type result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -21417,7 +21429,7 @@ SWIGINTERN PyObject *_wrap_RGBVector_pop__SWIG_1(PyObject *self, Py_ssize_t nobj
   std::vector< datamunge::graphics::RGB > *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  std::vector< datamunge::graphics::RGB >::value_type result;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
@@ -22769,7 +22781,15 @@ SWIGINTERN PyObject *_wrap_new_RGB__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyO
   
   (void)self;
   if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
-  result = (datamunge::graphics::RGB *)new_datamunge_graphics_RGB__SWIG_0();
+  {
+    try {
+      result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB();
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
@@ -22815,7 +22835,15 @@ SWIGINTERN PyObject *_wrap_new_RGB__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyO
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_RGB" "', argument " "4"" of type '" "double""'");
   } 
   arg4 = static_cast< double >(val4);
-  result = (datamunge::graphics::RGB *)new_datamunge_graphics_RGB__SWIG_1(arg1,arg2,arg3,arg4);
+  {
+    try {
+      result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3,arg4);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
@@ -22853,10 +22881,123 @@ SWIGINTERN PyObject *_wrap_new_RGB__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyO
     SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_RGB" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = static_cast< int >(val3);
-  result = (datamunge::graphics::RGB *)new_datamunge_graphics_RGB__SWIG_1(arg1,arg2,arg3);
+  {
+    try {
+      result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2,arg3);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NEW |  0 );
   return resultobj;
 fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RGB__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RGB" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  {
+    try {
+      result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RGB__SWIG_4(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  int arg1 ;
+  int arg2 ;
+  int val1 ;
+  int ecode1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  datamunge::graphics::RGB *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_int(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_RGB" "', argument " "1"" of type '" "int""'");
+  } 
+  arg1 = static_cast< int >(val1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_RGB" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    try {
+      result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB(arg1,arg2);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_RGB__SWIG_5(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::graphics::RGB *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_RGB" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_RGB" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    try {
+      result = (datamunge::graphics::RGB *)new datamunge::graphics::RGB((std::string const &)*arg1);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_NEW |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
   return NULL;
 }
 
@@ -22871,6 +23012,40 @@ SWIGINTERN PyObject *_wrap_new_RGB(PyObject *self, PyObject *args) {
   --argc;
   if (argc == 0) {
     return _wrap_new_RGB__SWIG_0(self, argc, argv);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_RGB__SWIG_3(self, argc, argv);
+    }
+  }
+  if (argc == 1) {
+    int _v = 0;
+    int res = SWIG_AsPtr_std_string(argv[0], (std::string**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_new_RGB__SWIG_5(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_int(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_new_RGB__SWIG_4(self, argc, argv);
+      }
+    }
   }
   if (argc == 3) {
     int _v = 0;
@@ -22928,7 +23103,10 @@ fail:
     "  Possible C/C++ prototypes are:\n"
     "    datamunge::graphics::RGB::RGB()\n"
     "    datamunge::graphics::RGB::RGB(int,int,int,double)\n"
-    "    datamunge::graphics::RGB::RGB(int,int,int)\n");
+    "    datamunge::graphics::RGB::RGB(int,int,int)\n"
+    "    datamunge::graphics::RGB::RGB(int)\n"
+    "    datamunge::graphics::RGB::RGB(int,int)\n"
+    "    datamunge::graphics::RGB::RGB(std::string const &)\n");
   return 0;
 }
 
@@ -23193,7 +23371,7 @@ fail:
 SWIGINTERN PyObject *_wrap_DataSeries_color_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::DataSeries *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -23209,9 +23387,9 @@ SWIGINTERN PyObject *_wrap_DataSeries_color_set(PyObject *self, PyObject *args) 
   arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGBA *""'"); 
   }
-  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -23226,7 +23404,7 @@ SWIGINTERN PyObject *_wrap_DataSeries_color_get(PyObject *self, PyObject *args) 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -23236,7 +23414,7 @@ SWIGINTERN PyObject *_wrap_DataSeries_color_get(PyObject *self, PyObject *args) 
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_color_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   return resultobj;
 fail:
@@ -23463,7 +23641,7 @@ fail:
 SWIGINTERN PyObject *_wrap_DataSeries_point_colors_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::DataSeries *arg1 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *arg2 = 0 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -23479,9 +23657,9 @@ SWIGINTERN PyObject *_wrap_DataSeries_point_colors_set(PyObject *self, PyObject 
   arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_point_colors_set" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DataSeries_point_colors_set" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *""'"); 
   }
-  arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > * >(argp2);
+  arg2 = reinterpret_cast< std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > * >(argp2);
   if (arg1) (arg1)->point_colors = *arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -23496,7 +23674,7 @@ SWIGINTERN PyObject *_wrap_DataSeries_point_colors_get(PyObject *self, PyObject 
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *result = 0 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -23506,7 +23684,7 @@ SWIGINTERN PyObject *_wrap_DataSeries_point_colors_get(PyObject *self, PyObject 
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DataSeries_point_colors_get" "', argument " "1"" of type '" "datamunge::graphics::DataSeries *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::DataSeries * >(argp1);
-  result = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)& ((arg1)->point_colors);
+  result = (std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *)& ((arg1)->point_colors);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t, 0 |  0 );
   return resultobj;
 fail:
@@ -23727,7 +23905,7 @@ fail:
 SWIGINTERN PyObject *_wrap_ABLine_color_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::ABLine *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -23743,9 +23921,9 @@ SWIGINTERN PyObject *_wrap_ABLine_color_set(PyObject *self, PyObject *args) {
   arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ABLine_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGBA *""'"); 
   }
-  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -23760,7 +23938,7 @@ SWIGINTERN PyObject *_wrap_ABLine_color_get(PyObject *self, PyObject *args) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -23770,7 +23948,7 @@ SWIGINTERN PyObject *_wrap_ABLine_color_get(PyObject *self, PyObject *args) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ABLine_color_get" "', argument " "1"" of type '" "datamunge::graphics::ABLine *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::ABLine * >(argp1);
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   return resultobj;
 fail:
@@ -23944,7 +24122,7 @@ fail:
 SWIGINTERN PyObject *_wrap_LegendEntry_color_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::LegendEntry *arg1 = 0 ;
-  datamunge::graphics::RGB *arg2 = 0 ;
+  datamunge::graphics::RGBA *arg2 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -23960,9 +24138,9 @@ SWIGINTERN PyObject *_wrap_LegendEntry_color_set(PyObject *self, PyObject *args)
   arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
   res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGB *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LegendEntry_color_set" "', argument " "2"" of type '" "datamunge::graphics::RGBA *""'"); 
   }
-  arg2 = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+  arg2 = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
   if (arg1) (arg1)->color = *arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -23977,7 +24155,7 @@ SWIGINTERN PyObject *_wrap_LegendEntry_color_get(PyObject *self, PyObject *args)
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  datamunge::graphics::RGB *result = 0 ;
+  datamunge::graphics::RGBA *result = 0 ;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -23987,7 +24165,7 @@ SWIGINTERN PyObject *_wrap_LegendEntry_color_get(PyObject *self, PyObject *args)
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LegendEntry_color_get" "', argument " "1"" of type '" "datamunge::graphics::LegendEntry *""'"); 
   }
   arg1 = reinterpret_cast< datamunge::graphics::LegendEntry * >(argp1);
-  result = (datamunge::graphics::RGB *)& ((arg1)->color);
+  result = (datamunge::graphics::RGBA *)& ((arg1)->color);
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RGB, 0 |  0 );
   return resultobj;
 fail:
@@ -24240,7 +24418,7 @@ fail:
 SWIGINTERN PyObject *_wrap_Plot_background(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -24258,12 +24436,12 @@ SWIGINTERN PyObject *_wrap_Plot_background(PyObject *self, PyObject *args) {
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
       arg2 = *temp;
       if (SWIG_IsNewObj(res2)) delete temp;
     }
@@ -24279,7 +24457,7 @@ fail:
 SWIGINTERN PyObject *_wrap_Plot_axis_color(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -24297,12 +24475,12 @@ SWIGINTERN PyObject *_wrap_Plot_axis_color(PyObject *self, PyObject *args) {
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
       arg2 = *temp;
       if (SWIG_IsNewObj(res2)) delete temp;
     }
@@ -24318,7 +24496,7 @@ fail:
 SWIGINTERN PyObject *_wrap_Plot_grid_color(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::Plot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -24336,12 +24514,12 @@ SWIGINTERN PyObject *_wrap_Plot_grid_color(PyObject *self, PyObject *args) {
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Plot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
       arg2 = *temp;
       if (SWIG_IsNewObj(res2)) delete temp;
     }
@@ -25126,7 +25304,7 @@ SWIGINTERN PyObject *_wrap_Plot_background_color(PyObject *self, PyObject *args)
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -25137,7 +25315,7 @@ SWIGINTERN PyObject *_wrap_Plot_background_color(PyObject *self, PyObject *args)
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = ((datamunge::graphics::Plot const *)arg1)->background_color();
-  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -25150,7 +25328,7 @@ SWIGINTERN PyObject *_wrap_Plot_axes_color(PyObject *self, PyObject *args) {
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -25161,7 +25339,7 @@ SWIGINTERN PyObject *_wrap_Plot_axes_color(PyObject *self, PyObject *args) {
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = ((datamunge::graphics::Plot const *)arg1)->axes_color();
-  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -25174,7 +25352,7 @@ SWIGINTERN PyObject *_wrap_Plot_major_grid_color(PyObject *self, PyObject *args)
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
-  SwigValueWrapper< datamunge::graphics::RGB > result;
+  datamunge::graphics::RGBA result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -25185,7 +25363,7 @@ SWIGINTERN PyObject *_wrap_Plot_major_grid_color(PyObject *self, PyObject *args)
   }
   arg1 = reinterpret_cast< datamunge::graphics::Plot * >(argp1);
   result = ((datamunge::graphics::Plot const *)arg1)->major_grid_color();
-  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RGB(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
+  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RGBA(result)), SWIGTYPE_p_datamunge__graphics__RGB, SWIG_POINTER_OWN |  0 );
   return resultobj;
 fail:
   return NULL;
@@ -26618,7 +26796,7 @@ fail:
 SWIGINTERN PyObject *_wrap_RPlot_set_col__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -26635,12 +26813,12 @@ SWIGINTERN PyObject *_wrap_RPlot_set_col__SWIG_0(PyObject *self, Py_ssize_t nobj
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_set_col" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_set_col" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_set_col" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_set_col" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
       arg2 = *temp;
       if (SWIG_IsNewObj(res2)) delete temp;
     }
@@ -26739,7 +26917,7 @@ SWIGINTERN PyObject *_wrap_RPlot_set_col(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_set_col'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::set_col(datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::set_col(datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::set_col(std::string)\n");
   return 0;
 }
@@ -26748,7 +26926,7 @@ fail:
 SWIGINTERN PyObject *_wrap_RPlot_background(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -26766,12 +26944,12 @@ SWIGINTERN PyObject *_wrap_RPlot_background(PyObject *self, PyObject *args) {
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_background" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
       arg2 = *temp;
       if (SWIG_IsNewObj(res2)) delete temp;
     }
@@ -26787,7 +26965,7 @@ fail:
 SWIGINTERN PyObject *_wrap_RPlot_axis_color(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -26805,12 +26983,12 @@ SWIGINTERN PyObject *_wrap_RPlot_axis_color(PyObject *self, PyObject *args) {
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_axis_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
       arg2 = *temp;
       if (SWIG_IsNewObj(res2)) delete temp;
     }
@@ -26826,7 +27004,7 @@ fail:
 SWIGINTERN PyObject *_wrap_RPlot_grid_color(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGBA arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -26844,12 +27022,12 @@ SWIGINTERN PyObject *_wrap_RPlot_grid_color(PyObject *self, PyObject *args) {
   {
     res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res2)) {
-      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp2) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_grid_color" "', argument " "2"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp2);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp2);
       arg2 = *temp;
       if (SWIG_IsNewObj(res2)) delete temp;
     }
@@ -27027,6 +27205,100 @@ SWIGINTERN PyObject *_wrap_RPlot_y_limits(PyObject *self, PyObject *args) {
   } 
   arg3 = static_cast< double >(val3);
   result = (datamunge::graphics::RPlot *) &(arg1)->y_limits(arg2,arg3);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RPlot_xlim(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "RPlot_xlim", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_xlim" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_xlim" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_xlim" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = (datamunge::graphics::RPlot *) &(arg1)->xlim(arg2,arg3);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RPlot_ylim(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::graphics::RPlot *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  datamunge::graphics::RPlot *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "RPlot_ylim", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RPlot_ylim" "', argument " "1"" of type '" "datamunge::graphics::RPlot *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::graphics::RPlot * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "RPlot_ylim" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RPlot_ylim" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = (datamunge::graphics::RPlot *) &(arg1)->ylim(arg2,arg3);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__graphics__RPlot, 0 |  0 );
   return resultobj;
 fail:
@@ -27466,7 +27738,7 @@ SWIGINTERN PyObject *_wrap_RPlot_plot__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   std::vector< double,std::allocator< double > > arg2 ;
   std::string arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
   datamunge::graphics::RPlot result;
@@ -27512,12 +27784,12 @@ SWIGINTERN PyObject *_wrap_RPlot_plot__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_plot" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -27746,7 +28018,7 @@ SWIGINTERN PyObject *_wrap_RPlot_plot(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_plot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::plot(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::plot(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::plot(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,std::string)\n"
     "    datamunge::graphics::RPlot::plot(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string)\n"
     "    datamunge::graphics::RPlot::plot(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >)\n");
@@ -27759,7 +28031,7 @@ SWIGINTERN PyObject *_wrap_RPlot_hist__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   std::vector< double,std::allocator< double > > arg1 ;
   std::size_t arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   size_t val2 ;
   int ecode2 = 0 ;
   void *argp4 = 0 ;
@@ -27794,12 +28066,12 @@ SWIGINTERN PyObject *_wrap_RPlot_hist__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_hist" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -28016,7 +28288,7 @@ SWIGINTERN PyObject *_wrap_RPlot_hist(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_hist'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::hist(std::vector< double,std::allocator< double > >,std::size_t,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::hist(std::vector< double,std::allocator< double > >,std::size_t,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::hist(std::vector< double,std::allocator< double > >,std::size_t,std::string)\n"
     "    datamunge::graphics::RPlot::hist(std::vector< double,std::allocator< double > >,std::size_t)\n"
     "    datamunge::graphics::RPlot::hist(std::vector< double,std::allocator< double > >)\n");
@@ -28029,7 +28301,7 @@ SWIGINTERN PyObject *_wrap_RPlot_barplot__SWIG_0(PyObject *self, Py_ssize_t nobj
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
   std::string arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp4 = 0 ;
   int res4 = 0 ;
   datamunge::graphics::RPlot result;
@@ -28066,12 +28338,12 @@ SWIGINTERN PyObject *_wrap_RPlot_barplot__SWIG_0(PyObject *self, Py_ssize_t nobj
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_barplot" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -28254,7 +28526,7 @@ SWIGINTERN PyObject *_wrap_RPlot_barplot(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_barplot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::barplot(std::vector< double,std::allocator< double > >,std::vector< std::string,std::allocator< std::string > >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::barplot(std::vector< double,std::allocator< double > >,std::vector< std::string,std::allocator< std::string > >,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::barplot(std::vector< double,std::allocator< double > >,std::vector< std::string,std::allocator< std::string > >,std::string)\n"
     "    datamunge::graphics::RPlot::barplot(std::vector< double,std::allocator< double > >,std::vector< std::string,std::allocator< std::string > >)\n"
     "    datamunge::graphics::RPlot::barplot(std::vector< double,std::allocator< double > >)\n");
@@ -28266,7 +28538,7 @@ SWIGINTERN PyObject *_wrap_RPlot_boxplot__SWIG_0(PyObject *self, Py_ssize_t nobj
   PyObject *resultobj = 0;
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
   datamunge::graphics::RPlot result;
@@ -28294,12 +28566,12 @@ SWIGINTERN PyObject *_wrap_RPlot_boxplot__SWIG_0(PyObject *self, Py_ssize_t nobj
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -28374,7 +28646,7 @@ SWIGINTERN PyObject *_wrap_RPlot_boxplot__SWIG_3(PyObject *self, Py_ssize_t nobj
   PyObject *resultobj = 0;
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg3 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg3 ;
   datamunge::graphics::RPlot result;
   
   (void)self;
@@ -28401,7 +28673,7 @@ SWIGINTERN PyObject *_wrap_RPlot_boxplot__SWIG_3(PyObject *self, Py_ssize_t nobj
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_boxplot" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -28478,10 +28750,10 @@ SWIGINTERN PyObject *_wrap_RPlot_boxplot(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_boxplot'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::vector< std::string,std::allocator< std::string > >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::vector< std::string,std::allocator< std::string > >,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::vector< std::string,std::allocator< std::string > >)\n"
     "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >)\n"
-    "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::vector< std::string,std::allocator< std::string > >,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >)\n");
+    "    datamunge::graphics::RPlot::boxplot(std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >,std::vector< std::string,std::allocator< std::string > >,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >)\n");
   return 0;
 }
 
@@ -28490,7 +28762,7 @@ SWIGINTERN PyObject *_wrap_RPlot_pie__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   PyObject *resultobj = 0;
   std::vector< double,std::allocator< double > > arg1 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg3 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg3 ;
   datamunge::graphics::RPlot result;
   
   (void)self;
@@ -28517,7 +28789,7 @@ SWIGINTERN PyObject *_wrap_RPlot_pie__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_pie" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -28636,7 +28908,7 @@ SWIGINTERN PyObject *_wrap_RPlot_pie(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_pie'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::pie(std::vector< double,std::allocator< double > >,std::vector< std::string,std::allocator< std::string > >,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >)\n"
+    "    datamunge::graphics::RPlot::pie(std::vector< double,std::allocator< double > >,std::vector< std::string,std::allocator< std::string > >,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >)\n"
     "    datamunge::graphics::RPlot::pie(std::vector< double,std::allocator< double > >,std::vector< std::string,std::allocator< std::string > >)\n"
     "    datamunge::graphics::RPlot::pie(std::vector< double,std::allocator< double > >)\n");
   return 0;
@@ -28650,7 +28922,7 @@ SWIGINTERN PyObject *_wrap_RPlot_curve__SWIG_0(PyObject *self, Py_ssize_t nobjs,
   double arg3 ;
   std::size_t arg4 ;
   std::string arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -28700,12 +28972,12 @@ SWIGINTERN PyObject *_wrap_RPlot_curve__SWIG_0(PyObject *self, Py_ssize_t nobjs,
   {
     res6 = SWIG_ConvertPtr(swig_obj[5], &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_curve" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp6);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp6);
       arg6 = *temp;
       if (SWIG_IsNewObj(res6)) delete temp;
     }
@@ -28993,7 +29265,7 @@ SWIGINTERN PyObject *_wrap_RPlot_curve(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_curve'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double,std::size_t,std::string)\n"
     "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double,std::size_t)\n"
     "    datamunge::graphics::RPlot::curve(datamunge::Callback &,double,double)\n");
@@ -29005,7 +29277,7 @@ SWIGINTERN PyObject *_wrap_RPlot_qqnorm__SWIG_0(PyObject *self, Py_ssize_t nobjs
   PyObject *resultobj = 0;
   std::vector< double,std::allocator< double > > arg1 ;
   std::string arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp3 = 0 ;
   int res3 = 0 ;
   datamunge::graphics::RPlot result;
@@ -29033,12 +29305,12 @@ SWIGINTERN PyObject *_wrap_RPlot_qqnorm__SWIG_0(PyObject *self, Py_ssize_t nobjs
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqnorm" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -29157,7 +29429,7 @@ SWIGINTERN PyObject *_wrap_RPlot_qqnorm(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_qqnorm'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::qqnorm(std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::qqnorm(std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::qqnorm(std::vector< double,std::allocator< double > >,std::string)\n"
     "    datamunge::graphics::RPlot::qqnorm(std::vector< double,std::allocator< double > >)\n");
   return 0;
@@ -29170,7 +29442,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_0(PyObject *self, Py_ssize_t nobjs
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -29217,12 +29489,12 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_0(PyObject *self, Py_ssize_t nobjs
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -29246,7 +29518,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_1(PyObject *self, Py_ssize_t nobjs
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -29290,12 +29562,12 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_1(PyObject *self, Py_ssize_t nobjs
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -29407,7 +29679,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points_colored__SWIG_0(PyObject *self, Py_ssize
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg4 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -29444,7 +29716,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points_colored__SWIG_0(PyObject *self, Py_ssize
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[3], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -29467,7 +29739,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points_colored__SWIG_1(PyObject *self, Py_ssize
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg4 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   datamunge::graphics::RPlot *result = 0 ;
@@ -29501,7 +29773,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points_colored__SWIG_1(PyObject *self, Py_ssize
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[3], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_points_colored" "', argument " "4"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg4 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -29574,8 +29846,8 @@ SWIGINTERN PyObject *_wrap_RPlot_points_colored(PyObject *self, PyObject *args) 
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_points_colored'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::points_colored(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >,double)\n"
-    "    datamunge::graphics::RPlot::points_colored(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >)\n");
+    "    datamunge::graphics::RPlot::points_colored(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >,double)\n"
+    "    datamunge::graphics::RPlot::points_colored(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >)\n");
   return 0;
 }
 
@@ -29586,7 +29858,7 @@ SWIGINTERN PyObject *_wrap_RPlot_line__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -29633,12 +29905,12 @@ SWIGINTERN PyObject *_wrap_RPlot_line__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -29662,7 +29934,7 @@ SWIGINTERN PyObject *_wrap_RPlot_line__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -29706,12 +29978,12 @@ SWIGINTERN PyObject *_wrap_RPlot_line__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_line" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -29924,8 +30196,8 @@ SWIGINTERN PyObject *_wrap_RPlot_line(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_line'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::line(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::line(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::line(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::line(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::line(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string)\n"
     "    datamunge::graphics::RPlot::line(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >)\n");
   return 0;
@@ -29938,7 +30210,7 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_0(PyObject *self, Py_ssize_t nobjs,
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -29985,12 +30257,12 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_0(PyObject *self, Py_ssize_t nobjs,
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -30014,7 +30286,7 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_1(PyObject *self, Py_ssize_t nobjs,
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -30058,12 +30330,12 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_1(PyObject *self, Py_ssize_t nobjs,
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -30175,7 +30447,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_4(PyObject *self, Py_ssize_t nobjs
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -30213,12 +30485,12 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_4(PyObject *self, Py_ssize_t nobjs
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -30241,7 +30513,7 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_5(PyObject *self, Py_ssize_t nobjs
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
@@ -30276,12 +30548,12 @@ SWIGINTERN PyObject *_wrap_RPlot_points__SWIG_5(PyObject *self, Py_ssize_t nobjs
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_points" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -30448,12 +30720,12 @@ SWIGINTERN PyObject *_wrap_RPlot_points(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_points'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string)\n"
     "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >)\n"
-    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB)\n");
+    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::points(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA)\n");
   return 0;
 }
 
@@ -30463,7 +30735,7 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_4(PyObject *self, Py_ssize_t nobjs,
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -30501,12 +30773,12 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_4(PyObject *self, Py_ssize_t nobjs,
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -30529,7 +30801,7 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_5(PyObject *self, Py_ssize_t nobjs,
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
@@ -30564,12 +30836,12 @@ SWIGINTERN PyObject *_wrap_RPlot_lines__SWIG_5(PyObject *self, Py_ssize_t nobjs,
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_lines" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -30736,12 +31008,12 @@ SWIGINTERN PyObject *_wrap_RPlot_lines(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_lines'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string)\n"
     "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >)\n"
-    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB)\n");
+    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::lines(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA)\n");
   return 0;
 }
 
@@ -30752,7 +31024,7 @@ SWIGINTERN PyObject *_wrap_RPlot_bars__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -30799,12 +31071,12 @@ SWIGINTERN PyObject *_wrap_RPlot_bars__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -30828,7 +31100,7 @@ SWIGINTERN PyObject *_wrap_RPlot_bars__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp5 = 0 ;
@@ -30872,12 +31144,12 @@ SWIGINTERN PyObject *_wrap_RPlot_bars__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_bars" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -31090,8 +31362,8 @@ SWIGINTERN PyObject *_wrap_RPlot_bars(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_bars'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::bars(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::bars(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::bars(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::bars(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::bars(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::string)\n"
     "    datamunge::graphics::RPlot::bars(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >)\n");
   return 0;
@@ -31108,7 +31380,7 @@ SWIGINTERN PyObject *_wrap_RPlot_box__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   double arg6 ;
   double arg7 ;
   std::vector< double,std::allocator< double > > arg8 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+  datamunge::graphics::RGBA arg9 ;
   double arg10 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -31179,12 +31451,12 @@ SWIGINTERN PyObject *_wrap_RPlot_box__SWIG_0(PyObject *self, Py_ssize_t nobjs, P
   {
     res9 = SWIG_ConvertPtr(swig_obj[8], &argp9, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res9)) {
-      SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp9) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp9);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp9);
       arg9 = *temp;
       if (SWIG_IsNewObj(res9)) delete temp;
     }
@@ -31212,7 +31484,7 @@ SWIGINTERN PyObject *_wrap_RPlot_box__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   double arg6 ;
   double arg7 ;
   std::vector< double,std::allocator< double > > arg8 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg9 ;
+  datamunge::graphics::RGBA arg9 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -31280,12 +31552,12 @@ SWIGINTERN PyObject *_wrap_RPlot_box__SWIG_1(PyObject *self, Py_ssize_t nobjs, P
   {
     res9 = SWIG_ConvertPtr(swig_obj[8], &argp9, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res9)) {
-      SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp9) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_box" "', argument " "9"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp9);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp9);
       arg9 = *temp;
       if (SWIG_IsNewObj(res9)) delete temp;
     }
@@ -31666,8 +31938,8 @@ SWIGINTERN PyObject *_wrap_RPlot_box(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_box'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::box(double,double,double,double,double,double,std::vector< double,std::allocator< double > >)\n"
     "    datamunge::graphics::RPlot::box(double,double,double,double,double,double)\n");
   return 0;
@@ -31679,7 +31951,7 @@ SWIGINTERN PyObject *_wrap_RPlot_abline__SWIG_0(PyObject *self, Py_ssize_t nobjs
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   double arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -31713,12 +31985,12 @@ SWIGINTERN PyObject *_wrap_RPlot_abline__SWIG_0(PyObject *self, Py_ssize_t nobjs
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -31741,7 +32013,7 @@ SWIGINTERN PyObject *_wrap_RPlot_abline__SWIG_1(PyObject *self, Py_ssize_t nobjs
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
   double arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -31772,12 +32044,12 @@ SWIGINTERN PyObject *_wrap_RPlot_abline__SWIG_1(PyObject *self, Py_ssize_t nobjs
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -31917,8 +32189,8 @@ SWIGINTERN PyObject *_wrap_RPlot_abline(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_abline'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::abline(double,double,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::abline(double,double,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::abline(double,double,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::abline(double,double,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::abline(double,double)\n");
   return 0;
 }
@@ -31928,7 +32200,7 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_h__SWIG_0(PyObject *self, Py_ssize_t nob
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -31955,12 +32227,12 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_h__SWIG_0(PyObject *self, Py_ssize_t nob
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -31982,7 +32254,7 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_h__SWIG_1(PyObject *self, Py_ssize_t nob
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -32006,12 +32278,12 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_h__SWIG_1(PyObject *self, Py_ssize_t nob
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_h" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -32125,8 +32397,8 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_h(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_abline_h'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::abline_h(double,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::abline_h(double,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::abline_h(double,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::abline_h(double,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::abline_h(double)\n");
   return 0;
 }
@@ -32136,7 +32408,7 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_v__SWIG_0(PyObject *self, Py_ssize_t nob
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -32163,12 +32435,12 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_v__SWIG_0(PyObject *self, Py_ssize_t nob
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -32190,7 +32462,7 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_v__SWIG_1(PyObject *self, Py_ssize_t nob
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
   double arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -32214,12 +32486,12 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_v__SWIG_1(PyObject *self, Py_ssize_t nob
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_abline_v" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -32333,8 +32605,8 @@ SWIGINTERN PyObject *_wrap_RPlot_abline_v(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_abline_v'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::abline_v(double,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::abline_v(double,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::abline_v(double,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::abline_v(double,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::abline_v(double)\n");
   return 0;
 }
@@ -32344,7 +32616,7 @@ SWIGINTERN PyObject *_wrap_RPlot_qqline__SWIG_0(PyObject *self, Py_ssize_t nobjs
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   double arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -32373,12 +32645,12 @@ SWIGINTERN PyObject *_wrap_RPlot_qqline__SWIG_0(PyObject *self, Py_ssize_t nobjs
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -32400,7 +32672,7 @@ SWIGINTERN PyObject *_wrap_RPlot_qqline__SWIG_1(PyObject *self, Py_ssize_t nobjs
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGBA arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp3 = 0 ;
@@ -32426,12 +32698,12 @@ SWIGINTERN PyObject *_wrap_RPlot_qqline__SWIG_1(PyObject *self, Py_ssize_t nobjs
   {
     res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res3)) {
-      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp3) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_qqline" "', argument " "3"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp3);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp3);
       arg3 = *temp;
       if (SWIG_IsNewObj(res3)) delete temp;
     }
@@ -32541,8 +32813,8 @@ SWIGINTERN PyObject *_wrap_RPlot_qqline(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_qqline'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::qqline(std::vector< double,std::allocator< double > >,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::qqline(std::vector< double,std::allocator< double > >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::qqline(std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::qqline(std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::qqline(std::vector< double,std::allocator< double > >)\n");
   return 0;
 }
@@ -32552,7 +32824,7 @@ SWIGINTERN PyObject *_wrap_RPlot_legend(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< std::string,std::allocator< std::string > > arg2 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg3 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[3] ;
@@ -32578,7 +32850,7 @@ SWIGINTERN PyObject *_wrap_RPlot_legend(PyObject *self, PyObject *args) {
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[2], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_legend" "', argument " "3"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg3 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -32597,7 +32869,7 @@ SWIGINTERN PyObject *_wrap_RPlot_text__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -32640,12 +32912,12 @@ SWIGINTERN PyObject *_wrap_RPlot_text__SWIG_0(PyObject *self, Py_ssize_t nobjs, 
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -32669,7 +32941,7 @@ SWIGINTERN PyObject *_wrap_RPlot_text__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   double arg2 ;
   double arg3 ;
   std::string arg4 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg5 ;
+  datamunge::graphics::RGBA arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   double val2 ;
@@ -32709,12 +32981,12 @@ SWIGINTERN PyObject *_wrap_RPlot_text__SWIG_1(PyObject *self, Py_ssize_t nobjs, 
   {
     res5 = SWIG_ConvertPtr(swig_obj[4], &argp5, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res5)) {
-      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp5) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_text" "', argument " "5"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp5);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp5);
       arg5 = *temp;
       if (SWIG_IsNewObj(res5)) delete temp;
     }
@@ -32876,8 +33148,8 @@ SWIGINTERN PyObject *_wrap_RPlot_text(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_text'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::text(double,double,std::string,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::text(double,double,std::string,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::text(double,double,std::string,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::text(double,double,std::string,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::text(double,double,std::string)\n");
   return 0;
 }
@@ -32888,7 +33160,7 @@ SWIGINTERN PyObject *_wrap_RPlot_polygon__SWIG_0(PyObject *self, Py_ssize_t nobj
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   bool arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -32926,12 +33198,12 @@ SWIGINTERN PyObject *_wrap_RPlot_polygon__SWIG_0(PyObject *self, Py_ssize_t nobj
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -32954,7 +33226,7 @@ SWIGINTERN PyObject *_wrap_RPlot_polygon__SWIG_1(PyObject *self, Py_ssize_t nobj
   datamunge::graphics::RPlot *arg1 = 0 ;
   std::vector< double,std::allocator< double > > arg2 ;
   std::vector< double,std::allocator< double > > arg3 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGBA arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp4 = 0 ;
@@ -32989,12 +33261,12 @@ SWIGINTERN PyObject *_wrap_RPlot_polygon__SWIG_1(PyObject *self, Py_ssize_t nobj
   {
     res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp4) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_polygon" "', argument " "4"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp4);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp4);
       arg4 = *temp;
       if (SWIG_IsNewObj(res4)) delete temp;
     }
@@ -33126,8 +33398,8 @@ SWIGINTERN PyObject *_wrap_RPlot_polygon(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_polygon'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::polygon(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB,bool)\n"
-    "    datamunge::graphics::RPlot::polygon(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::polygon(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA,bool)\n"
+    "    datamunge::graphics::RPlot::polygon(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::polygon(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >)\n");
   return 0;
 }
@@ -33139,7 +33411,7 @@ SWIGINTERN PyObject *_wrap_RPlot_image__SWIG_0(PyObject *self, Py_ssize_t nobjs,
   std::vector< double,std::allocator< double > > *arg2 = 0 ;
   std::vector< double,std::allocator< double > > *arg3 = 0 ;
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg5 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg5 ;
   double arg6 ;
   double arg7 ;
   void *argp1 = 0 ;
@@ -33197,7 +33469,7 @@ SWIGINTERN PyObject *_wrap_RPlot_image__SWIG_0(PyObject *self, Py_ssize_t nobjs,
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[4], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg5 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -33232,7 +33504,7 @@ SWIGINTERN PyObject *_wrap_RPlot_image__SWIG_1(PyObject *self, Py_ssize_t nobjs,
   std::vector< double,std::allocator< double > > *arg2 = 0 ;
   std::vector< double,std::allocator< double > > *arg3 = 0 ;
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg5 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg5 ;
   double arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -33287,7 +33559,7 @@ SWIGINTERN PyObject *_wrap_RPlot_image__SWIG_1(PyObject *self, Py_ssize_t nobjs,
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[4], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg5 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -33317,7 +33589,7 @@ SWIGINTERN PyObject *_wrap_RPlot_image__SWIG_2(PyObject *self, Py_ssize_t nobjs,
   std::vector< double,std::allocator< double > > *arg2 = 0 ;
   std::vector< double,std::allocator< double > > *arg3 = 0 ;
   std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > *arg4 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg5 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg5 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
@@ -33369,7 +33641,7 @@ SWIGINTERN PyObject *_wrap_RPlot_image__SWIG_2(PyObject *self, Py_ssize_t nobjs,
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[4], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "RPlot_image" "', argument " "5"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg5 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -33581,9 +33853,9 @@ SWIGINTERN PyObject *_wrap_RPlot_image(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_image'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::image(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >,double,double)\n"
-    "    datamunge::graphics::RPlot::image(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >,double)\n"
-    "    datamunge::graphics::RPlot::image(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >)\n"
+    "    datamunge::graphics::RPlot::image(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >,double,double)\n"
+    "    datamunge::graphics::RPlot::image(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >,double)\n"
+    "    datamunge::graphics::RPlot::image(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >)\n"
     "    datamunge::graphics::RPlot::image(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > > const &)\n");
   return 0;
 }
@@ -33596,7 +33868,7 @@ SWIGINTERN PyObject *_wrap_RPlot_segments__SWIG_0(PyObject *self, Py_ssize_t nob
   std::vector< double,std::allocator< double > > arg3 ;
   std::vector< double,std::allocator< double > > arg4 ;
   std::vector< double,std::allocator< double > > arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   double arg7 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -33652,12 +33924,12 @@ SWIGINTERN PyObject *_wrap_RPlot_segments__SWIG_0(PyObject *self, Py_ssize_t nob
   {
     res6 = SWIG_ConvertPtr(swig_obj[5], &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp6);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp6);
       arg6 = *temp;
       if (SWIG_IsNewObj(res6)) delete temp;
     }
@@ -33682,7 +33954,7 @@ SWIGINTERN PyObject *_wrap_RPlot_segments__SWIG_1(PyObject *self, Py_ssize_t nob
   std::vector< double,std::allocator< double > > arg3 ;
   std::vector< double,std::allocator< double > > arg4 ;
   std::vector< double,std::allocator< double > > arg5 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg6 ;
+  datamunge::graphics::RGBA arg6 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp6 = 0 ;
@@ -33735,12 +34007,12 @@ SWIGINTERN PyObject *_wrap_RPlot_segments__SWIG_1(PyObject *self, Py_ssize_t nob
   {
     res6 = SWIG_ConvertPtr(swig_obj[5], &argp6, SWIGTYPE_p_datamunge__graphics__RGB,  0  | 0);
     if (!SWIG_IsOK(res6)) {
-      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'"); 
+      SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'"); 
     }  
     if (!argp6) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGB""'");
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RPlot_segments" "', argument " "6"" of type '" "datamunge::graphics::RGBA""'");
     } else {
-      datamunge::graphics::RGB * temp = reinterpret_cast< datamunge::graphics::RGB * >(argp6);
+      datamunge::graphics::RGBA * temp = reinterpret_cast< datamunge::graphics::RGBA * >(argp6);
       arg6 = *temp;
       if (SWIG_IsNewObj(res6)) delete temp;
     }
@@ -33916,8 +34188,8 @@ SWIGINTERN PyObject *_wrap_RPlot_segments(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RPlot_segments'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::RPlot::segments(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB,double)\n"
-    "    datamunge::graphics::RPlot::segments(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGB)\n"
+    "    datamunge::graphics::RPlot::segments(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA,double)\n"
+    "    datamunge::graphics::RPlot::segments(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,datamunge::graphics::RGBA)\n"
     "    datamunge::graphics::RPlot::segments(std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >,std::vector< double,std::allocator< double > >)\n");
   return 0;
 }
@@ -34761,7 +35033,7 @@ SWIGINTERN PyObject *_wrap_terrain_colors(PyObject *self, PyObject *args) {
   size_t val1 ;
   int ecode1 = 0 ;
   PyObject *swig_obj[1] ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > result;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -34785,7 +35057,7 @@ SWIGINTERN PyObject *_wrap_diverging_colors(PyObject *self, PyObject *args) {
   size_t val1 ;
   int ecode1 = 0 ;
   PyObject *swig_obj[1] ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > result;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -34809,7 +35081,7 @@ SWIGINTERN PyObject *_wrap_viridis_colors(PyObject *self, PyObject *args) {
   size_t val1 ;
   int ecode1 = 0 ;
   PyObject *swig_obj[1] ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > result;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > result;
   
   (void)self;
   if (!args) SWIG_fail;
@@ -34830,7 +35102,7 @@ fail:
 SWIGINTERN PyObject *_wrap_value_colors__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg2 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg2 ;
   double arg3 ;
   double arg4 ;
   int res1 = SWIG_OLDOBJ ;
@@ -34838,7 +35110,7 @@ SWIGINTERN PyObject *_wrap_value_colors__SWIG_0(PyObject *self, Py_ssize_t nobjs
   int ecode3 = 0 ;
   double val4 ;
   int ecode4 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > result;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > result;
   
   (void)self;
   if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
@@ -34857,7 +35129,7 @@ SWIGINTERN PyObject *_wrap_value_colors__SWIG_0(PyObject *self, Py_ssize_t nobjs
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -34885,12 +35157,12 @@ fail:
 SWIGINTERN PyObject *_wrap_value_colors__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg2 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg2 ;
   double arg3 ;
   int res1 = SWIG_OLDOBJ ;
   double val3 ;
   int ecode3 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > result;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > result;
   
   (void)self;
   if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
@@ -34909,7 +35181,7 @@ SWIGINTERN PyObject *_wrap_value_colors__SWIG_1(PyObject *self, Py_ssize_t nobjs
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -34932,9 +35204,9 @@ fail:
 SWIGINTERN PyObject *_wrap_value_colors__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > arg2 ;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > arg2 ;
   int res1 = SWIG_OLDOBJ ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > result;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > result;
   
   (void)self;
   if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
@@ -34953,7 +35225,7 @@ SWIGINTERN PyObject *_wrap_value_colors__SWIG_2(PyObject *self, Py_ssize_t nobjs
     std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *ptr = (std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *)0;
     int res = swig::asptr(swig_obj[1], &ptr);
     if (!SWIG_IsOK(res) || !ptr) {
-      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >""'"); 
+      SWIG_exception_fail(SWIG_ArgError((ptr ? res : SWIG_TypeError)), "in method '" "value_colors" "', argument " "2"" of type '" "std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >""'"); 
     }
     arg2 = *ptr;
     if (SWIG_IsNewObj(res)) delete ptr;
@@ -34972,7 +35244,7 @@ SWIGINTERN PyObject *_wrap_value_colors__SWIG_3(PyObject *self, Py_ssize_t nobjs
   PyObject *resultobj = 0;
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
   int res1 = SWIG_OLDOBJ ;
-  std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > result;
+  std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > result;
   
   (void)self;
   if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
@@ -35071,9 +35343,9 @@ SWIGINTERN PyObject *_wrap_value_colors(PyObject *self, PyObject *args) {
 fail:
   SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'value_colors'.\n"
     "  Possible C/C++ prototypes are:\n"
-    "    datamunge::graphics::value_colors(std::vector< double,std::allocator< double > > const &,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >,double,double)\n"
-    "    datamunge::graphics::value_colors(std::vector< double,std::allocator< double > > const &,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >,double)\n"
-    "    datamunge::graphics::value_colors(std::vector< double,std::allocator< double > > const &,std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >)\n"
+    "    datamunge::graphics::value_colors(std::vector< double,std::allocator< double > > const &,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >,double,double)\n"
+    "    datamunge::graphics::value_colors(std::vector< double,std::allocator< double > > const &,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >,double)\n"
+    "    datamunge::graphics::value_colors(std::vector< double,std::allocator< double > > const &,std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >)\n"
     "    datamunge::graphics::value_colors(std::vector< double,std::allocator< double > > const &)\n");
   return 0;
 }
@@ -48803,8 +49075,8 @@ fail:
 SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   std::size_t arg4 ;
   std::size_t arg5 ;
   void *argp1 = 0 ;
@@ -48873,8 +49145,8 @@ fail:
 SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   std::size_t arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -48935,8 +49207,8 @@ fail:
 SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg2 ;
+  datamunge::graphics::RGB arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -48989,7 +49261,7 @@ fail:
 SWIGINTERN PyObject *_wrap_ShapeLayer_plot__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::ShapeLayer *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -49662,7 +49934,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_point__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -49708,7 +49980,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_point__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -49828,7 +50100,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_line__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   double arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -49874,7 +50146,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_line__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -49994,7 +50266,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_bar__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -50094,7 +50366,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_col__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -50195,7 +50467,7 @@ SWIGINTERN PyObject *_wrap_GGPlot_geom_histogram__SWIG_0(PyObject *self, Py_ssiz
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
   std::size_t arg2 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg3 ;
+  datamunge::graphics::RGB arg3 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   size_t val2 ;
@@ -50354,7 +50626,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_boxplot__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -50454,7 +50726,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_smooth__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -50554,7 +50826,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_area__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -50656,7 +50928,7 @@ SWIGINTERN PyObject *_wrap_GGPlot_geom_ribbon__SWIG_0(PyObject *self, Py_ssize_t
   datamunge::GGPlot *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::string *arg3 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg4 ;
+  datamunge::graphics::RGB arg4 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int res2 = SWIG_OLDOBJ ;
@@ -50830,7 +51102,7 @@ fail:
 SWIGINTERN PyObject *_wrap_GGPlot_geom_density__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
   PyObject *resultobj = 0;
   datamunge::GGPlot *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -52103,7 +52375,7 @@ fail:
 SWIGINTERN PyObject *_wrap_Splom_color(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::Splom *arg1 = 0 ;
-  SwigValueWrapper< datamunge::graphics::RGB > arg2 ;
+  datamunge::graphics::RGB arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   void *argp2 = 0 ;
@@ -199671,6 +199943,194 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Polynomial_to_tex__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int val3 ;
+  int ecode3 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_to_tex" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Polynomial_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Polynomial_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Polynomial_to_tex" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      result = datamunge_algebra_Polynomial_tex_source__SWIG_0((datamunge::algebra::Polynomial const *)arg1,(std::string const &)*arg2,arg3);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Polynomial_to_tex__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_to_tex" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "Polynomial_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "Polynomial_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = datamunge_algebra_Polynomial_tex_source__SWIG_0((datamunge::algebra::Polynomial const *)arg1,(std::string const &)*arg2);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Polynomial_to_tex__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Polynomial *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Polynomial, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Polynomial_to_tex" "', argument " "1"" of type '" "datamunge::algebra::Polynomial const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Polynomial * >(argp1);
+  {
+    try {
+      result = datamunge_algebra_Polynomial_tex_source__SWIG_0((datamunge::algebra::Polynomial const *)arg1);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Polynomial_to_tex(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Polynomial_to_tex", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__Polynomial, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_Polynomial_to_tex__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__Polynomial, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_Polynomial_to_tex__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__Polynomial, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_Polynomial_to_tex__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Polynomial_to_tex'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::Polynomial::tex_source(std::string const &,int) const\n"
+    "    datamunge::algebra::Polynomial::tex_source(std::string const &) const\n"
+    "    datamunge::algebra::Polynomial::tex_source() const\n");
+  return 0;
+}
+
+
 SWIGINTERN PyObject *_wrap_delete_Polynomial(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   datamunge::algebra::Polynomial *arg1 = 0 ;
@@ -202490,6 +202950,194 @@ SWIGINTERN PyObject *_wrap_RationalFunction_to_string(PyObject *self, PyObject *
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RationalFunction_to_tex__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RationalFunction *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int val3 ;
+  int ecode3 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_to_tex" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RationalFunction_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RationalFunction_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "RationalFunction_to_tex" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      result = datamunge_algebra_RationalFunction_tex_source__SWIG_0((datamunge::algebra::RationalFunction const *)arg1,(std::string const &)*arg2,arg3);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RationalFunction_to_tex__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RationalFunction *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_to_tex" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "RationalFunction_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "RationalFunction_to_tex" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = datamunge_algebra_RationalFunction_tex_source__SWIG_0((datamunge::algebra::RationalFunction const *)arg1,(std::string const &)*arg2);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RationalFunction_to_tex__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::RationalFunction *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__RationalFunction, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "RationalFunction_to_tex" "', argument " "1"" of type '" "datamunge::algebra::RationalFunction const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::RationalFunction * >(argp1);
+  {
+    try {
+      result = datamunge_algebra_RationalFunction_tex_source__SWIG_0((datamunge::algebra::RationalFunction const *)arg1);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_RationalFunction_to_tex(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "RationalFunction_to_tex", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_RationalFunction_to_tex__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_RationalFunction_to_tex__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__RationalFunction, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_int(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_RationalFunction_to_tex__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'RationalFunction_to_tex'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::RationalFunction::tex_source(std::string const &,int) const\n"
+    "    datamunge::algebra::RationalFunction::tex_source(std::string const &) const\n"
+    "    datamunge::algebra::RationalFunction::tex_source() const\n");
+  return 0;
 }
 
 
@@ -210483,6 +211131,116 @@ SWIGINTERN PyObject *_wrap_Expr_to_string(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Expr_to_tex__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_to_tex" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Expr_to_tex" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    try {
+      result = datamunge_algebra_Expr_tex_source__SWIG_0((datamunge::algebra::Expr const *)arg1,arg2);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Expr_to_tex__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::algebra::Expr *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  std::string result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__algebra__Expr, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Expr_to_tex" "', argument " "1"" of type '" "datamunge::algebra::Expr const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::algebra::Expr * >(argp1);
+  {
+    try {
+      result = datamunge_algebra_Expr_tex_source__SWIG_0((datamunge::algebra::Expr const *)arg1);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Expr_to_tex(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "Expr_to_tex", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__Expr, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_Expr_to_tex__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__algebra__Expr, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_Expr_to_tex__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'Expr_to_tex'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::algebra::Expr::tex_source(int) const\n"
+    "    datamunge::algebra::Expr::tex_source() const\n");
+  return 0;
 }
 
 
@@ -230719,6 +231477,3125 @@ SWIGINTERN PyObject *TaskBatch_swigregister(PyObject *SWIGUNUSEDPARM(self), PyOb
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_LinalgMatrix__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  bool arg4 ;
+  int res1 = SWIG_OLDOBJ ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  bool val4 ;
+  int ecode4 = 0 ;
+  datamunge::LinalgMatrix *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_LinalgMatrix" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LinalgMatrix" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_LinalgMatrix" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_LinalgMatrix" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_bool(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "new_LinalgMatrix" "', argument " "4"" of type '" "bool""'");
+  } 
+  arg4 = static_cast< bool >(val4);
+  {
+    try {
+      result = (datamunge::LinalgMatrix *)new datamunge::LinalgMatrix((std::vector< double,std::allocator< double > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),arg4); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_NEW |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_LinalgMatrix__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::LinalgMatrix *result = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "new_LinalgMatrix" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "new_LinalgMatrix" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_LinalgMatrix" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "new_LinalgMatrix" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  {
+    try {
+      result = (datamunge::LinalgMatrix *)new datamunge::LinalgMatrix((std::vector< double,std::allocator< double > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3))); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_NEW |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_LinalgMatrix(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "new_LinalgMatrix", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_new_LinalgMatrix__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_bool(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_new_LinalgMatrix__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'new_LinalgMatrix'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::LinalgMatrix::LinalgMatrix(std::vector< double,std::allocator< double > > const &,std::size_t,std::size_t,bool)\n"
+    "    datamunge::LinalgMatrix::LinalgMatrix(std::vector< double,std::allocator< double > > const &,std::size_t,std::size_t)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_rows(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_rows" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->rows(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_cols(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_cols" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->cols(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_is_sparse(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_is_sparse" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = (bool)((datamunge::LinalgMatrix const *)arg1)->is_sparse(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_transpose(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< datamunge::LinalgMatrix > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_transpose" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->transpose(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::LinalgMatrix(result)), SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_multiply(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  datamunge::LinalgMatrix *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< datamunge::LinalgMatrix > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "LinalgMatrix_multiply", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_multiply" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__LinalgMatrix,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LinalgMatrix_multiply" "', argument " "2"" of type '" "datamunge::LinalgMatrix const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LinalgMatrix_multiply" "', argument " "2"" of type '" "datamunge::LinalgMatrix const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::LinalgMatrix * >(argp2);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->multiply((datamunge::LinalgMatrix const &)*arg2); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::LinalgMatrix(result)), SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_inverse_action(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< datamunge::LinalgMatrix > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_inverse_action" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->inverse_action(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::LinalgMatrix(result)), SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_solve(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  datamunge::LinalgMatrix *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< datamunge::LinalgMatrix > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "LinalgMatrix_solve", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_solve" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__LinalgMatrix,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "LinalgMatrix_solve" "', argument " "2"" of type '" "datamunge::LinalgMatrix const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "LinalgMatrix_solve" "', argument " "2"" of type '" "datamunge::LinalgMatrix const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::LinalgMatrix * >(argp2);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->solve((datamunge::LinalgMatrix const &)*arg2); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::LinalgMatrix(result)), SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_eval(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< datamunge::LinalgMatrix > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_eval" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->eval(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::LinalgMatrix(result)), SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_values(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< double,std::allocator< double > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_values" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->values(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< double,std::allocator< double > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_LinalgMatrix_text(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::string result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "LinalgMatrix_text" "', argument " "1"" of type '" "datamunge::LinalgMatrix const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  {
+    try {
+      result = ((datamunge::LinalgMatrix const *)arg1)->text(); 
+    }
+    catch (const std::invalid_argument& e) {
+      SWIG_exception(SWIG_ValueError, e.what()); 
+    }
+    catch (const std::exception& e) {
+      SWIG_exception(SWIG_RuntimeError, e.what()); 
+    }
+  }
+  resultobj = SWIG_From_std_string(static_cast< std::string >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_LinalgMatrix(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::LinalgMatrix *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_LinalgMatrix" "', argument " "1"" of type '" "datamunge::LinalgMatrix *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::LinalgMatrix * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *LinalgMatrix_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__LinalgMatrix, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *LinalgMatrix_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_CadSolid_box(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double arg3 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_box", 3, 3, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "CadSolid_box" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_box" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadSolid_box" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = datamunge::cad::Solid::box(arg1,arg2,arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_cylinder(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_cylinder", 2, 2, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "CadSolid_cylinder" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_cylinder" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = datamunge::cad::Solid::cylinder(arg1,arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_sphere(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject *swig_obj[1] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "CadSolid_sphere" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  {
+    try {
+      result = datamunge::cad::Solid::sphere(arg1); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_torus(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double arg2 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_torus", 2, 2, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "CadSolid_torus" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_torus" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = datamunge::cad::Solid::torus(arg1,arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_united(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  datamunge::cad::Solid *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_united", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_united" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__cad__Solid,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadSolid_united" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_united" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::cad::Solid * >(argp2);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->united((datamunge::cad::Solid const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_subtracted(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  datamunge::cad::Solid *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_subtracted", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_subtracted" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__cad__Solid,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadSolid_subtracted" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_subtracted" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::cad::Solid * >(argp2);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->subtracted((datamunge::cad::Solid const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_intersected(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  datamunge::cad::Solid *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_intersected", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_intersected" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__cad__Solid,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadSolid_intersected" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_intersected" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::cad::Solid * >(argp2);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->intersected((datamunge::cad::Solid const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_translated(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  PyObject *swig_obj[4] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_translated", 4, 4, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_translated" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_translated" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadSolid_translated" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CadSolid_translated" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->translated(arg2,arg3,arg4); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_rotated(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  PyObject *swig_obj[5] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_rotated", 5, 5, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_rotated" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_rotated" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadSolid_rotated" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CadSolid_rotated" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "CadSolid_rotated" "', argument " "5"" of type '" "double""'");
+  } 
+  arg5 = static_cast< double >(val5);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->rotated(arg2,arg3,arg4,arg5); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_filleted(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_filleted", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_filleted" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadSolid_filleted" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_filleted" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadSolid_filleted" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->filleted((std::vector< int,std::allocator< int > > const &)*arg2,arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_chamfered(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  std::vector< int,std::allocator< int > > *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadSolid_chamfered", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_chamfered" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadSolid_chamfered" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_chamfered" "', argument " "2"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadSolid_chamfered" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->chamfered((std::vector< int,std::allocator< int > > const &)*arg2,arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_shelled__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  double arg2 ;
+  std::vector< int,std::allocator< int > > *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_shelled" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_shelled" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "CadSolid_shelled" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_shelled" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->shelled(arg2,(std::vector< int,std::allocator< int > > const &)*arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_shelled__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  SwigValueWrapper< datamunge::cad::Solid > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_shelled" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_shelled" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->shelled(arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::Solid(result)), SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_shelled(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "CadSolid_shelled", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__Solid, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_CadSolid_shelled__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__Solid, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        int res = swig::asptr(argv[2], (std::vector< int,std::allocator< int > >**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_CadSolid_shelled__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CadSolid_shelled'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::cad::Solid::shelled(double,std::vector< int,std::allocator< int > > const &) const\n"
+    "    datamunge::cad::Solid::shelled(double) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_volume__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_volume" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadSolid_volume" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  {
+    try {
+      result = (double)((datamunge::cad::Solid const *)arg1)->volume(arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_volume__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_volume" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    try {
+      result = (double)((datamunge::cad::Solid const *)arg1)->volume(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_volume(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "CadSolid_volume", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__Solid, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_CadSolid_volume__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__Solid, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_CadSolid_volume__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CadSolid_volume'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::cad::Solid::volume(double) const\n"
+    "    datamunge::cad::Solid::volume() const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_valid(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_valid" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    try {
+      result = (bool)((datamunge::cad::Solid const *)arg1)->valid(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_edges(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< int,std::allocator< int > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_edges" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->edges(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_faces(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< int,std::allocator< int > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_faces" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    try {
+      result = ((datamunge::cad::Solid const *)arg1)->faces(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< int,std::allocator< int > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_save__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_save" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadSolid_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadSolid_save" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      ((datamunge::cad::Solid const *)arg1)->save((std::string const &)*arg2,arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_save__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadSolid_save" "', argument " "1"" of type '" "datamunge::cad::Solid const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadSolid_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadSolid_save" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      ((datamunge::cad::Solid const *)arg1)->save((std::string const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadSolid_save(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "CadSolid_save", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__Solid, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_CadSolid_save__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__Solid, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsPtr_std_string(argv[1], (std::string**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_CadSolid_save__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CadSolid_save'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::cad::Solid::save(std::string const &,double) const\n"
+    "    datamunge::cad::Solid::save(std::string const &) const\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CadSolid(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::Solid *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CadSolid" "', argument " "1"" of type '" "datamunge::cad::Solid *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::Solid * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CadSolid_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__cad__Solid, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_CadScene(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_CadScene", 0, 0, 0)) SWIG_fail;
+  {
+    try {
+      result = (datamunge::cad::View *)new datamunge::cad::View(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__cad__View, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_from_file(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  datamunge::cad::View result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_from_file" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_from_file" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    try {
+      result = datamunge::cad::View::from_file((std::string const &)*arg1); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::View(result)), SWIGTYPE_p_datamunge__cad__View, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_from_urdf(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::string *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[1] ;
+  datamunge::cad::View result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  {
+    std::string *ptr = (std::string *)0;
+    res1 = SWIG_AsPtr_std_string(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_from_urdf" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_from_urdf" "', argument " "1"" of type '" "std::string const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    try {
+      result = datamunge::cad::View::from_urdf((std::string const &)*arg1); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_NewPointerObj((new datamunge::cad::View(result)), SWIGTYPE_p_datamunge__cad__View, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_set_joint(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_set_joint", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_set_joint" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_set_joint" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_set_joint" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadScene_set_joint" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      (arg1)->set_joint((std::string const &)*arg2,arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_joint_names(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::string,std::allocator< std::string > > result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_joint_names" "', argument " "1"" of type '" "datamunge::cad::View const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    try {
+      result = ((datamunge::cad::View const *)arg1)->joint_names(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = swig::from(static_cast< std::vector< std::string,std::allocator< std::string > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_add__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  datamunge::cad::Solid *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_add" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__cad__Solid,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_add" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_add" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::cad::Solid * >(argp2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "CadScene_add" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_add" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "CadScene_add" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_add" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    try {
+      result = (int)(arg1)->add((datamunge::cad::Solid const &)*arg2,(std::string const &)*arg3,(std::string const &)*arg4); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_add__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  datamunge::cad::Solid *arg2 = 0 ;
+  std::string *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int res3 = SWIG_OLDOBJ ;
+  int result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_add" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__cad__Solid,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_add" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_add" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::cad::Solid * >(argp2);
+  {
+    std::string *ptr = (std::string *)0;
+    res3 = SWIG_AsPtr_std_string(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "CadScene_add" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_add" "', argument " "3"" of type '" "std::string const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    try {
+      result = (int)(arg1)->add((datamunge::cad::Solid const &)*arg2,(std::string const &)*arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_add__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  datamunge::cad::Solid *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_add" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__cad__Solid,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_add" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_add" "', argument " "2"" of type '" "datamunge::cad::Solid const &""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::cad::Solid * >(argp2);
+  {
+    try {
+      result = (int)(arg1)->add((datamunge::cad::Solid const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_add(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "CadScene_add", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__View, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_CadScene_add__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__View, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_CadScene_add__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__View, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__cad__Solid, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_AsPtr_std_string(argv[2], (std::string**)(0));
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          int res = SWIG_AsPtr_std_string(argv[3], (std::string**)(0));
+          _v = SWIG_CheckState(res);
+          if (_v) {
+            return _wrap_CadScene_add__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CadScene_add'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::cad::View::add(datamunge::cad::Solid const &,std::string const &,std::string const &)\n"
+    "    datamunge::cad::View::add(datamunge::cad::Solid const &,std::string const &)\n"
+    "    datamunge::cad::View::add(datamunge::cad::Solid const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_primitive(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  int result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_primitive", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_primitive" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_primitive" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_primitive" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      result = (int)(arg1)->primitive((std::string const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_size(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  int arg2 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_size", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_size" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_size" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadScene_size" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  {
+    try {
+      (arg1)->size(arg2,arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_samples(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_samples", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_samples" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_samples" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  {
+    try {
+      (arg1)->samples(arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_style(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_style", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_style" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_style" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_style" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      (arg1)->style((std::string const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_shadows(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_shadows", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_shadows" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_shadows" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  {
+    try {
+      (arg1)->shadows(arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_camera(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  double arg5 ;
+  double arg6 ;
+  double arg7 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  double val5 ;
+  int ecode5 = 0 ;
+  double val6 ;
+  int ecode6 = 0 ;
+  double val7 ;
+  int ecode7 = 0 ;
+  PyObject *swig_obj[7] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_camera", 7, 7, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_camera" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_camera" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadScene_camera" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CadScene_camera" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_double(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "CadScene_camera" "', argument " "5"" of type '" "double""'");
+  } 
+  arg5 = static_cast< double >(val5);
+  ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "CadScene_camera" "', argument " "6"" of type '" "double""'");
+  } 
+  arg6 = static_cast< double >(val6);
+  ecode7 = SWIG_AsVal_double(swig_obj[6], &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "CadScene_camera" "', argument " "7"" of type '" "double""'");
+  } 
+  arg7 = static_cast< double >(val7);
+  {
+    try {
+      (arg1)->camera(arg2,arg3,arg4,arg5,arg6,arg7); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_fit(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_fit" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    try {
+      (arg1)->fit(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_light__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  std::string *arg5 = 0 ;
+  double arg6 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  double val6 ;
+  int ecode6 = 0 ;
+  int result;
+  
+  (void)self;
+  if ((nobjs < 6) || (nobjs > 6)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_light" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_light" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadScene_light" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CadScene_light" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "CadScene_light" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_light" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  ecode6 = SWIG_AsVal_double(swig_obj[5], &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "CadScene_light" "', argument " "6"" of type '" "double""'");
+  } 
+  arg6 = static_cast< double >(val6);
+  {
+    try {
+      result = (int)(arg1)->light(arg2,arg3,arg4,(std::string const &)*arg5,arg6); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_light__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  std::string *arg5 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  int res5 = SWIG_OLDOBJ ;
+  int result;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_light" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_light" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadScene_light" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CadScene_light" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    std::string *ptr = (std::string *)0;
+    res5 = SWIG_AsPtr_std_string(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "CadScene_light" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_light" "', argument " "5"" of type '" "std::string const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  {
+    try {
+      result = (int)(arg1)->light(arg2,arg3,arg4,(std::string const &)*arg5); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_light__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  double arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  int result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_light" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_light" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadScene_light" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "CadScene_light" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  {
+    try {
+      result = (int)(arg1)->light(arg2,arg3,arg4); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_light(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[7] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "CadScene_light", 0, 6, argv))) SWIG_fail;
+  --argc;
+  if (argc == 4) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__View, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_CadScene_light__SWIG_2(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__View, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              return _wrap_CadScene_light__SWIG_1(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (argc == 6) {
+    int _v = 0;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_datamunge__cad__View, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            int res = SWIG_AsPtr_std_string(argv[4], (std::string**)(0));
+            _v = SWIG_CheckState(res);
+            if (_v) {
+              {
+                int res = SWIG_AsVal_double(argv[5], NULL);
+                _v = SWIG_CheckState(res);
+              }
+              if (_v) {
+                return _wrap_CadScene_light__SWIG_0(self, argc, argv);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'CadScene_light'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::cad::View::light(double,double,double,std::string const &,double)\n"
+    "    datamunge::cad::View::light(double,double,double,std::string const &)\n"
+    "    datamunge::cad::View::light(double,double,double)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_render(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_render", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_render" "', argument " "1"" of type '" "datamunge::cad::View const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_render" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_render" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      ((datamunge::cad::View const *)arg1)->render((std::string const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_save_gltf(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  std::string *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_save_gltf", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_save_gltf" "', argument " "1"" of type '" "datamunge::cad::View const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    std::string *ptr = (std::string *)0;
+    res2 = SWIG_AsPtr_std_string(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CadScene_save_gltf" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CadScene_save_gltf" "', argument " "2"" of type '" "std::string const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    try {
+      ((datamunge::cad::View const *)arg1)->save_gltf((std::string const &)*arg2); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_pick_object(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  double arg2 ;
+  double arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  int result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "CadScene_pick_object", 3, 3, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_pick_object" "', argument " "1"" of type '" "datamunge::cad::View const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CadScene_pick_object" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "CadScene_pick_object" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  {
+    try {
+      result = (int)((datamunge::cad::View const *)arg1)->pick_object(arg2,arg3); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_object_count(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_object_count" "', argument " "1"" of type '" "datamunge::cad::View const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    try {
+      result = (int)((datamunge::cad::View const *)arg1)->object_count(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CadScene_triangle_count(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CadScene_triangle_count" "', argument " "1"" of type '" "datamunge::cad::View const *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  {
+    try {
+      result = (int)((datamunge::cad::View const *)arg1)->triangle_count(); 
+    }
+    catch (const std::out_of_range& error) {
+      SWIG_exception_fail(SWIG_IndexError, error.what()); 
+    }
+    catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what()); 
+    }
+    catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what()); 
+    }
+  }
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CadScene(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::cad::View *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__cad__View, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CadScene" "', argument " "1"" of type '" "datamunge::cad::View *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::cad::View * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CadScene_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__cad__View, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *CadScene_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
 static PyMethodDef SwigMethods[] = {
 	 { "delete_SwigPyIterator", _wrap_delete_SwigPyIterator, METH_O, NULL},
 	 { "SwigPyIterator_value", _wrap_SwigPyIterator_value, METH_O, NULL},
@@ -230963,7 +234840,83 @@ static PyMethodDef SwigMethods[] = {
 	 { "RGB_b_get", _wrap_RGB_b_get, METH_O, NULL},
 	 { "RGB_alpha_set", _wrap_RGB_alpha_set, METH_VARARGS, NULL},
 	 { "RGB_alpha_get", _wrap_RGB_alpha_get, METH_O, NULL},
-	 { "new_RGB", _wrap_new_RGB, METH_VARARGS, NULL},
+	 { "new_RGB", _wrap_new_RGB, METH_VARARGS, "\n"
+		"*Overload 1:*\n"
+		"Construct the default opaque dark-slate ink color.\n"
+		"Title: Example\n"
+		"See the RGB class example.\n"
+		"\n"
+		"|\n"
+		"\n"
+		"*Overload 2:*\n"
+		"Construct numeric RGB channels and an optional normalized alpha.\n"
+		"Channels and alpha are retained; renderers clamp them when drawing.\n"
+		":type red: int\n"
+		":param red: Red channel, conventionally 0-255.\n"
+		":type green: int\n"
+		":param green: Green channel, conventionally 0-255.\n"
+		":type blue: int\n"
+		":param blue: Blue channel, conventionally 0-255.\n"
+		":type opacity: float, optional\n"
+		":param opacity: Alpha in [0, 1], default 1 (opaque).\n"
+		"Title: Example\n"
+		"See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.\n"
+		"\n"
+		"|\n"
+		"\n"
+		"*Overload 3:*\n"
+		"Construct numeric RGB channels and an optional normalized alpha.\n"
+		"Channels and alpha are retained; renderers clamp them when drawing.\n"
+		":type red: int\n"
+		":param red: Red channel, conventionally 0-255.\n"
+		":type green: int\n"
+		":param green: Green channel, conventionally 0-255.\n"
+		":type blue: int\n"
+		":param blue: Blue channel, conventionally 0-255.\n"
+		":param opacity: Alpha in [0, 1], default 1 (opaque).\n"
+		"Title: Example\n"
+		"See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.\n"
+		"\n"
+		"|\n"
+		"\n"
+		"*Overload 4:*\n"
+		"Preserve direct initialization with a red channel and default remaining channels.\n"
+		"Explicit so a number cannot accidentally become a color argument.\n"
+		":type red: int\n"
+		":param red: Red channel; green remains 41, blue 55 and alpha 1.\n"
+		"Title: Example\n"
+		"See the numeric constructor; RGB{255} keeps the other default channels.\n"
+		"\n"
+		"|\n"
+		"\n"
+		"*Overload 5:*\n"
+		"Preserve direct initialization with red/green and default blue/alpha.\n"
+		":type red: int\n"
+		":param red: Red channel, conventionally 0-255.\n"
+		":type green: int\n"
+		":param green: Green channel, conventionally 0-255; blue remains 55 and alpha 1.\n"
+		"Title: Example\n"
+		"See the numeric constructor; RGB{255, 0} keeps the other default channels.\n"
+		"\n"
+		"|\n"
+		"\n"
+		"*Overload 6:*\n"
+		"Implicitly parse a color name, #RRGGBB or #RRGGBBAA string.\n"
+		"Names and hexadecimal digits are case-insensitive. Hex alpha is the final\n"
+		"byte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named\n"
+		"green is (0, 128, 0); transparent is black with alpha zero. The input is copied\n"
+		"while parsing and is never borrowed by a plot or palette.\n"
+		":type color: string\n"
+		":param color: Color text; supported names are listed in the class description.\n"
+		":raises: std::invalid_argument For empty text, unknown names or malformed hex.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const dm::RGBA glass = std::string(\"#ff44ff55\");\n"
+		"    const auto plt = dm::plot(dm::c(0, 1), dm::c(1, 2), \"data\", \"#ff44ff55\");\n"
+		"    std::print(\"{} {}\\n\", glass.r, dm::round(glass.alpha, 3)); // 255 0.333\n"
+		""},
 	 { "delete_RGB", _wrap_delete_RGB, METH_O, NULL},
 	 { "RGB_swigregister", RGB_swigregister, METH_O, NULL},
 	 { "RGB_swiginit", RGB_swiginit, METH_VARARGS, NULL},
@@ -231058,7 +235011,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Plot_background", _wrap_Plot_background, METH_VARARGS, "\n"
 		"Base-class form of RPlot::background(): sets the canvas fill color.\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Fill for the whole canvas (default white).\n"
 		":rtype: :py:class:`Plot`\n"
 		":return: This plot, for chaining.\n"
@@ -231066,7 +235019,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Plot_axis_color", _wrap_Plot_axis_color, METH_VARARGS, "\n"
 		"Base-class form of RPlot::axis_color(): sets the axis-line and text color.\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Color for axis lines, ticks, axis labels, title, and subtitle.\n"
 		":rtype: :py:class:`Plot`\n"
 		":return: This plot, for chaining.\n"
@@ -231074,7 +235027,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Plot_grid_color", _wrap_Plot_grid_color, METH_VARARGS, "\n"
 		"Base-class form of RPlot::grid_color(): sets the grid-line color.\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Grid-line color (default light gray `{229, 231, 235}`).\n"
 		":rtype: :py:class:`Plot`\n"
 		":return: This plot, for chaining.\n"
@@ -231229,17 +235182,17 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "Plot_background_color", _wrap_Plot_background_color, METH_O, "\n"
 		"Returns the canvas fill color set by background().\n"
-		":rtype: :py:class:`RGB`\n"
+		":rtype: :py:class:`RGBA`\n"
 		":return: The background color (default white `{255, 255, 255}`).\n"
 		""},
 	 { "Plot_axes_color", _wrap_Plot_axes_color, METH_O, "\n"
 		"Returns the axis and text color set by axis_color().\n"
-		":rtype: :py:class:`RGB`\n"
+		":rtype: :py:class:`RGBA`\n"
 		":return: The axis color (default gray `{55, 65, 81}`).\n"
 		""},
 	 { "Plot_major_grid_color", _wrap_Plot_major_grid_color, METH_O, "\n"
 		"Returns the grid-line color set by grid_color().\n"
-		":rtype: :py:class:`RGB`\n"
+		":rtype: :py:class:`RGBA`\n"
 		":return: The grid color (default light gray `{229, 231, 235}`).\n"
 		""},
 	 { "Plot_grid_visible", _wrap_Plot_grid_visible, METH_O, "\n"
@@ -231689,7 +235642,7 @@ static PyMethodDef SwigMethods[] = {
 		"one color. Only layers present now are affected: points added later keep their own\n"
 		"colors. Reference lines (abline) and manual legend entries keep their explicit colors.\n"
 		"\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  New color, including its alpha.\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: This plot, for chaining.\n"
@@ -231736,7 +235689,7 @@ static PyMethodDef SwigMethods[] = {
 		"The default is white `{255, 255, 255}`. The color fills the margins as well as the\n"
 		"plotting area. Its alpha is ignored: the background is always drawn opaque.\n"
 		"\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Canvas fill color.\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: This plot, for chaining.\n"
@@ -231763,7 +235716,7 @@ static PyMethodDef SwigMethods[] = {
 		"The default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and\n"
 		"data layers keep their own colors.\n"
 		"\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Axis and text color.\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: This plot, for chaining.\n"
@@ -231781,7 +235734,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		"Has no visible effect while the grid is off (show_grid(false)) or the axes are hidden.\n"
 		"\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Grid-line color.\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: This plot, for chaining.\n"
@@ -231867,6 +235820,39 @@ static PyMethodDef SwigMethods[] = {
 		"- R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n"
 		"\n"
 		"See also: x_limits()\n"
+		""},
+	 { "RPlot_xlim", _wrap_RPlot_xlim, METH_VARARGS, "\n"
+		"Short spelling of x_limits(), matching R's xlim plot argument.\n"
+		"Fixes the horizontal plotting range without automatic padding. Data outside\n"
+		"the range follows x_limits() rendering behavior; this does not filter layers.\n"
+		":type min_x: float\n"
+		":param min_x: Left edge in data units.\n"
+		":type max_x: float\n"
+		":param max_x: Right edge; must be greater than min_x.\n"
+		":rtype: :py:class:`RPlot`\n"
+		":return: This plot, for chaining.\n"
+		":raises: std::invalid_argument Unless max_x > min_x (NaN fails); the plot is unchanged.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);\n"
+		"    std::print(\"{} {}\\n\", plt.x_max(), plt.y_min()); // 1 -4\n"
+		"See also: x_limits(), ylim()\n"
+		""},
+	 { "RPlot_ylim", _wrap_RPlot_ylim, METH_VARARGS, "\n"
+		"Short spelling of y_limits(), matching R's ylim plot argument.\n"
+		"Fixes the vertical plotting range without automatic padding; layers are retained.\n"
+		":type min_y: float\n"
+		":param min_y: Bottom edge in data units.\n"
+		":type max_y: float\n"
+		":param max_y: Top edge; must be greater than min_y.\n"
+		":rtype: :py:class:`RPlot`\n"
+		":return: This plot, for chaining.\n"
+		":raises: std::invalid_argument Unless max_y > min_y (NaN fails); the plot is unchanged.\n"
+		"Title: Example\n"
+		"See xlim(), whose example uses both aliases.\n"
+		"See also: y_limits(), xlim()\n"
 		""},
 	 { "RPlot_hide_axes", _wrap_RPlot_hide_axes, METH_VARARGS, "\n"
 		"Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,\n"
@@ -232096,7 +236082,7 @@ static PyMethodDef SwigMethods[] = {
 		":type label: string, optional\n"
 		":param label:  Legend text; empty (the default) keeps the plot out of the automatic legend.\n"
 		"           With `\"b\"` only the line carries it.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Color of the points and line (default blue `{37, 99, 235}`).\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding the series.\n"
@@ -232134,7 +236120,7 @@ static PyMethodDef SwigMethods[] = {
 		":param bins:  Number of bins (default 10).\n"
 		":type label: string, optional\n"
 		":param label:  Legend text; empty (the default) shows no legend.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Bar color (default light blue `{96, 165, 250}`).\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding one Bar series.\n"
@@ -232169,7 +236155,7 @@ static PyMethodDef SwigMethods[] = {
 		":param names:  Tick labels, one per bar; empty (the default) keeps numeric ticks.\n"
 		":type label: string, optional\n"
 		":param label:  Legend text; empty (the default) shows no legend.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Bar color (default green `{22, 163, 74}`).\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding one Bar series.\n"
@@ -232205,7 +236191,7 @@ static PyMethodDef SwigMethods[] = {
 		":param groups:  One vector of observations per box; each must be nonempty.\n"
 		":type names: std::vector< std::string,std::allocator< std::string > >, optional\n"
 		":param names:  Tick labels under the boxes; empty (the default) keeps numeric ticks.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).\n"
@@ -232242,7 +236228,7 @@ static PyMethodDef SwigMethods[] = {
 		":param groups:  One vector of observations per box; each must be nonempty.\n"
 		":type names: std::vector< std::string,std::allocator< std::string > >\n"
 		":param names:  Tick labels under the boxes; empty keeps numeric ticks.\n"
-		":type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >\n"
+		":type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >\n"
 		":param colors:  Box colors, recycled when shorter than ``groups;`` must be nonempty.\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding one Box series per group.\n"
@@ -232274,7 +236260,7 @@ static PyMethodDef SwigMethods[] = {
 		":param values:  Wedge sizes; nonnegative, with a positive sum.\n"
 		":type names: std::vector< std::string,std::allocator< std::string > >, optional\n"
 		":param names:  Wedge labels; empty (the default) draws none.\n"
-		":type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional\n"
+		":type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >, optional\n"
 		":param colors:  Wedge colors, recycled; empty (the default) uses the built-in palette.\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding one Polygon series per wedge plus one Text series per name.\n"
@@ -232311,7 +236297,7 @@ static PyMethodDef SwigMethods[] = {
 		":param n:  Number of sample points, at least 2 (default 101, as in R).\n"
 		":type label: string, optional\n"
 		":param label:  Legend text; empty (the default) shows no legend.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Line color (default red `{220, 38, 38}`).\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding one Line series.\n"
@@ -232349,7 +236335,7 @@ static PyMethodDef SwigMethods[] = {
 		":type label: string, optional\n"
 		":param label:  Legend text (default \"sample\", so the automatic legend shows one row; pass\n"
 		"           \"\" to hide it).\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Point color (default blue `{37, 99, 235}`).\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: A new plot holding one Scatter series.\n"
@@ -232380,7 +236366,7 @@ static PyMethodDef SwigMethods[] = {
 		":param x:  Horizontal coordinates.\n"
 		":type y: std::vector< double,std::allocator< double > >\n"
 		":param y:  Vertical coordinates, paired with ``x``.\n"
-		":type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >\n"
+		":type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >\n"
 		":param colors:  Palette; point i uses `colors[i % colors.size()]`.\n"
 		":type marker_size: float, optional\n"
 		":param marker_size:  Marker radius in pixels (default 4).\n"
@@ -232415,7 +236401,7 @@ static PyMethodDef SwigMethods[] = {
 		":param y:  Vertical coordinates, paired with ``x`` by position.\n"
 		":type label: string, optional\n"
 		":param label:  Legend text; empty (the default) keeps it out of the legend.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Line color (default red `{220, 38, 38}`).\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Line width in pixels (default 2).\n"
@@ -232445,7 +236431,7 @@ static PyMethodDef SwigMethods[] = {
 		":param y:  Vertical coordinates, paired with ``x`` by position.\n"
 		":type label: string, optional\n"
 		":param label:  Legend text for this series; empty (the default) keeps it out of the legend.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Marker color for every point (default blue `{37, 99, 235}`).\n"
 		":type marker_size: float, optional\n"
 		":param marker_size:  Marker radius in pixels (default 4).\n"
@@ -232477,7 +236463,7 @@ static PyMethodDef SwigMethods[] = {
 		":param x:  Horizontal coordinates.\n"
 		":type y: std::vector< double,std::allocator< double > >\n"
 		":param y:  Vertical coordinates, paired with ``x``.\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Marker color for every point.\n"
 		":type marker_size: float, optional\n"
 		":param marker_size:  Marker radius in pixels (default 4).\n"
@@ -232502,7 +236488,7 @@ static PyMethodDef SwigMethods[] = {
 		":param x:  Horizontal coordinates.\n"
 		":type y: std::vector< double,std::allocator< double > >\n"
 		":param y:  Vertical coordinates, paired with ``x``.\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Marker color for every point.\n"
 		":param marker_size:  Marker radius in pixels (default 4).\n"
 		":rtype: :py:class:`RPlot`\n"
@@ -232532,7 +236518,7 @@ static PyMethodDef SwigMethods[] = {
 		":param y:  Vertical coordinates, paired with ``x`` by position.\n"
 		":type label: string, optional\n"
 		":param label:  Legend text; empty (the default) keeps it out of the legend.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Line color (default red `{220, 38, 38}`).\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Line width in pixels (default 2).\n"
@@ -232562,7 +236548,7 @@ static PyMethodDef SwigMethods[] = {
 		":param x:  Horizontal coordinates.\n"
 		":type y: std::vector< double,std::allocator< double > >\n"
 		":param y:  Vertical coordinates, paired with ``x``.\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Line color.\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Line width in pixels (default 2).\n"
@@ -232586,7 +236572,7 @@ static PyMethodDef SwigMethods[] = {
 		":param x:  Horizontal coordinates.\n"
 		":type y: std::vector< double,std::allocator< double > >\n"
 		":param y:  Vertical coordinates, paired with ``x``.\n"
-		":type color: :py:class:`RGB`\n"
+		":type color: :py:class:`RGBA`\n"
 		":param color:  Line color.\n"
 		":param stroke_width:  Line width in pixels (default 2).\n"
 		":rtype: :py:class:`RPlot`\n"
@@ -232615,7 +236601,7 @@ static PyMethodDef SwigMethods[] = {
 		":param y:  Bar heights, paired with ``x`` by position.\n"
 		":type label: string, optional\n"
 		":param label:  Legend text; empty (the default) keeps it out of the legend.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Bar color (default green `{22, 163, 74}`).\n"
 		":type bar_width: float, optional\n"
 		":param bar_width:  Bar width in data units (default 0.8).\n"
@@ -232658,7 +236644,7 @@ static PyMethodDef SwigMethods[] = {
 		":param whisker_hi:  Upper whisker end.\n"
 		":type outliers: std::vector< double,std::allocator< double > >, optional\n"
 		":param outliers:  Values drawn as individual points (default none).\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).\n"
 		":type width: float, optional\n"
 		":param width:  Box width in data units (default 0.6).\n"
@@ -232690,7 +236676,7 @@ static PyMethodDef SwigMethods[] = {
 		":param intercept:  y value at x = 0.\n"
 		":type slope: float\n"
 		":param slope:  Change in y per unit x.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Line color (default opaque black).\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Line width in pixels (default 1).\n"
@@ -232725,7 +236711,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		":type y_value: float\n"
 		":param y_value:  Height of the line, in data units.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Line color (default opaque black).\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Line width in pixels (default 1).\n"
@@ -232751,7 +236737,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		":type x_value: float\n"
 		":param x_value:  Horizontal position of the line, in data units.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Line color (default opaque black).\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Line width in pixels (default 1).\n"
@@ -232781,7 +236767,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		":type data: std::vector< double,std::allocator< double > >\n"
 		":param data:  The sample; at least two values. Taken by value, so the caller's data is unchanged.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Line color (default red `{220, 38, 38}`).\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Line width in pixels (default 1.5).\n"
@@ -232818,7 +236804,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		":type labels: std::vector< std::string,std::allocator< std::string > >\n"
 		":param labels:  Row texts, in display order.\n"
-		":type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >\n"
+		":type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >\n"
 		":param colors:  Swatch colors, one per label.\n"
 		":rtype: :py:class:`RPlot`\n"
 		":return: This plot, for chaining.\n"
@@ -232856,7 +236842,7 @@ static PyMethodDef SwigMethods[] = {
 		":param y:  Vertical position, in data units.\n"
 		":type label: string\n"
 		":param label:  The text to draw (XML-escaped in SVG output).\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Text color (default near-black `{17, 24, 39}`).\n"
 		":type font_size: float, optional\n"
 		":param font_size:  Font size in pixels (default 14).\n"
@@ -232889,7 +236875,7 @@ static PyMethodDef SwigMethods[] = {
 		":param x:  Vertex x coordinates, in order around the polygon.\n"
 		":type y: std::vector< double,std::allocator< double > >\n"
 		":param y:  Vertex y coordinates, paired with ``x``.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Fill (and outline) color (default blue `{37, 99, 235}`).\n"
 		":type filled: boolean, optional\n"
 		":param filled:  True (the default) fills; false draws the outline only.\n"
@@ -232925,7 +236911,7 @@ static PyMethodDef SwigMethods[] = {
 		":param y:  Cell centres along y, increasing (at least 2).\n"
 		":type z: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >\n"
 		":param z:  Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.\n"
-		":type palette: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional\n"
+		":type palette: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >, optional\n"
 		":param palette:  Colours from low to high (default terrain_colors(12)).\n"
 		":type z_min: float, optional\n"
 		":param z_min:  Value mapped to the first colour; NaN (the default) uses the smallest z.\n"
@@ -232964,7 +236950,7 @@ static PyMethodDef SwigMethods[] = {
 		":param x1:  End x coordinates.\n"
 		":type y1: std::vector< double,std::allocator< double > >\n"
 		":param y1:  End y coordinates.\n"
-		":type color: :py:class:`RGB`, optional\n"
+		":type color: :py:class:`RGBA`, optional\n"
 		":param color:  Segment color (default opaque black).\n"
 		":type stroke_width: float, optional\n"
 		":param stroke_width:  Segment width in pixels (default 1).\n"
@@ -233243,7 +237229,7 @@ static PyMethodDef SwigMethods[] = {
 		"``n`` colours from green through yellow and brown to near-white, as R's `terrain.colors(n)`.\n"
 		":type n: std::size_t\n"
 		":param n:  Number of colours (at least 1).\n"
-		":rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >\n"
+		":rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >\n"
 		":return: The palette, low to high.\n"
 		":raises: std::invalid_argument  If ``n`` is 0.\n"
 		""},
@@ -233257,7 +237243,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		":type n: std::size_t\n"
 		":param n:  Number of colours (at least 1; 1 gives the white midpoint).\n"
-		":rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >\n"
+		":rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >\n"
 		":return: The palette, low (blue) to high (red).\n"
 		":raises: std::invalid_argument  If ``n`` is 0.\n"
 		"\n"
@@ -233283,7 +237269,7 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		":type n: std::size_t\n"
 		":param n:  Number of colours (at least 1).\n"
-		":rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >\n"
+		":rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >\n"
 		":return: The palette, low (purple) to high (yellow).\n"
 		":raises: std::invalid_argument  If ``n`` is 0.\n"
 		"\n"
@@ -233310,13 +237296,13 @@ static PyMethodDef SwigMethods[] = {
 		"\n"
 		":type values: std::vector< double,std::allocator< double > >\n"
 		":param values:  Values to colour.\n"
-		":type palette: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional\n"
+		":type palette: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >, optional\n"
 		":param palette:  Colours from low to high (default viridis_colors(256)).\n"
 		":type z_min: float, optional\n"
 		":param z_min:  Value of the first colour; NaN (the default) uses the smallest value.\n"
 		":type z_max: float, optional\n"
 		":param z_max:  Value of the last colour; NaN (the default) uses the largest value.\n"
-		":rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >\n"
+		":rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >\n"
 		":return: One colour per value.\n"
 		"\n"
 		"Title: Example\n"
@@ -233440,7 +237426,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "downloadable", _wrap_downloadable, METH_NOARGS, "\n"
 		"The names fetch() accepts, sorted: \"california_housing\", \"cifar10\", \"cifar100\",\n"
-		"       \"diamonds\", \"fashion_mnist\", \"mnist\", \"sudoku\".\n"
+		"       \"diamonds\", \"fashion_mnist\", \"mnist\", \"rebot_devarm\", \"sudoku\".\n"
 		"\n"
 		"Title: Example\n"
 		"\n"
@@ -233456,14 +237442,21 @@ static PyMethodDef SwigMethods[] = {
 		"IDX files (`train-images-idx3-ubyte`, ...); \"cifar10\" holds `data_batch_1..5.bin` and\n"
 		"`test_batch.bin`; \"cifar100\" holds `train.bin` and `test.bin` (the binary versions);\n"
 		"\"sudoku\" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.\n"
+		"\"rebot_devarm\" holds 38 pinned Seeed DevArm CAD/URDF/STL files and the\n"
+		"CERN-OHL-W-2.0 source license in their upstream relative directory layout.\n"
+		"DevArm verifies the size and SHA-256 of every cached file on every call;\n"
+		"changed files throw without replacement. Missing files are staged and verified\n"
+		"before publication. It uses the same offline/mirror/cache controls, and works\n"
+		"without the optional native data-preparation dependencies. Hashing uses memory\n"
+		"proportional to the largest source file (about 35 MB).\n"
 		"Approximate download sizes: diamonds 2.7 MB, california_housing 1.4 MB, MNIST 11 MB,\n"
-		"Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB.\n"
+		"Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB, DevArm 56 MB.\n"
 		"\n"
 		":type name: string\n"
 		":param name: One of downloadable().\n"
 		":type directory: string, optional\n"
 		":param directory: Where the files live; empty means `data_home() + \"/\" + name`. Files\n"
-		"           already present there are used as they are.\n"
+		"           already present there are used as they are, except DevArm's verified files.\n"
 		":rtype: string\n"
 		":return: The local path of the CSV file or the dataset directory.\n"
 		":raises: std::invalid_argument for an unknown name.\n"
@@ -233475,6 +237468,9 @@ static PyMethodDef SwigMethods[] = {
 		".. code-block:: c++\n"
 		"\n"
 		"    const auto housing = dm::datasets::read_csv(dm::datasets::fetch(\"california_housing\"));\n"
+		"For a complete CAD asset tree, use `dm::datasets::fetch(\"rebot_devarm\")`.\n"
+		"Title: References\n"
+		"- Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm\n"
 		"See also: data_home(), downloadable(), download_file()\n"
 		""},
 	 { "download_file", _wrap_download_file, METH_VARARGS, "\n"
@@ -241306,6 +245302,7 @@ static PyMethodDef SwigMethods[] = {
 		"       a member operator becomes a per-class `__eq__` with no such collision.\n"
 		""},
 	 { "Polynomial___ne__", _wrap_Polynomial___ne__, METH_VARARGS, NULL},
+	 { "Polynomial_to_tex", _wrap_Polynomial_to_tex, METH_VARARGS, "Render descending powers using a raw TeX symbol and 1-17 significant digits; return raw TeX."},
 	 { "delete_Polynomial", _wrap_delete_Polynomial, METH_O, NULL},
 	 { "Polynomial_swigregister", Polynomial_swigregister, METH_O, NULL},
 	 { "Polynomial_swiginit", Polynomial_swiginit, METH_VARARGS, NULL},
@@ -241427,6 +245424,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "RationalFunction_multiply", _wrap_RationalFunction_multiply, METH_VARARGS, NULL},
 	 { "RationalFunction_divide", _wrap_RationalFunction_divide, METH_VARARGS, ":raises: std::invalid_argument if other is the zero rational function."},
 	 { "RationalFunction_to_string", _wrap_RationalFunction_to_string, METH_O, NULL},
+	 { "RationalFunction_to_tex", _wrap_RationalFunction_to_tex, METH_VARARGS, "Render the native reduced rational function as raw TeX, omitting a unit denominator."},
 	 { "delete_RationalFunction", _wrap_delete_RationalFunction, METH_O, NULL},
 	 { "RationalFunction_swigregister", RationalFunction_swigregister, METH_O, NULL},
 	 { "RationalFunction_swiginit", RationalFunction_swiginit, METH_VARARGS, NULL},
@@ -241758,6 +245756,7 @@ static PyMethodDef SwigMethods[] = {
 		"            expression has no binding.\n"
 		""},
 	 { "Expr_to_string", _wrap_Expr_to_string, METH_O, NULL},
+	 { "Expr_to_tex", _wrap_Expr_to_tex, METH_VARARGS, "Render the expression using native grouping and precision; return raw TeX without math delimiters."},
 	 { "delete_Expr", _wrap_delete_Expr, METH_O, NULL},
 	 { "Expr_swigregister", Expr_swigregister, METH_O, NULL},
 	 { "Expr_swiginit", Expr_swiginit, METH_VARARGS, NULL},
@@ -242010,7 +246009,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "NnModel_load", _wrap_NnModel_load, METH_VARARGS, "Loads an archive written by save() (or any .npz with the same names)."},
 	 { "NnModel_swigregister", NnModel_swigregister, METH_O, NULL},
 	 { "NnModel_swiginit", NnModel_swiginit, METH_VARARGS, NULL},
-	 { "nn_gemm_backend", _wrap_nn_gemm_backend, METH_NOARGS, "The GEMM backend nn uses (\"accelerate\", \"openblas\", \"cblas\" or \"builtin\")."},
+	 { "nn_gemm_backend", _wrap_nn_gemm_backend, METH_NOARGS, "The GEMM backend nn uses: \"inhouse-<isa>\" (e.g. \"inhouse-avx512\"), or \"accelerate\", \"openblas\" or \"cblas\" in DATAMUNGE_USE_BLAS builds."},
 	 { "nn_get_num_threads", _wrap_nn_get_num_threads, METH_NOARGS, "Threads used by nn kernels."},
 	 { "nn_set_num_threads", _wrap_nn_set_num_threads, METH_O, NULL},
 	 { "new_BSplineBasis", _wrap_new_BSplineBasis, METH_VARARGS, "\n"
@@ -243049,6 +247048,582 @@ static PyMethodDef SwigMethods[] = {
 	 { "TaskBatch_create", _wrap_TaskBatch_create, METH_VARARGS, "Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers must be positive. seed defaults to zero and time_limit to 1000 successful episode steps. Physics runs in the canonical C++ engine. No rendering or external simulator is required."},
 	 { "delete_TaskBatch", _wrap_delete_TaskBatch, METH_O, NULL},
 	 { "TaskBatch_swigregister", TaskBatch_swigregister, METH_O, NULL},
+	 { "new_LinalgMatrix", _wrap_new_LinalgMatrix, METH_VARARGS, "\n"
+		"Construct an owned dense or CSR matrix from row-major values.\n"
+		":type values: std::vector< double,std::allocator< double > >\n"
+		":param values: Exactly rows * cols coefficients; sparse zero entries are omitted.\n"
+		":type rows: std::size_t\n"
+		":param rows: Number of rows, including zero.\n"
+		":type cols: std::size_t\n"
+		":param cols: Number of columns, including zero.\n"
+		":type sparse: boolean, optional\n"
+		":param sparse: Select CSR storage, default false.\n"
+		":raises: std::invalid_argument If dimensions overflow or do not match values.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({1, 0}, 1, 2, true);\n"
+		"    std::print(\"{}\\n\", A.cols()); // 2\n"
+		""},
+	 { "LinalgMatrix_rows", _wrap_LinalgMatrix_rows, METH_O, "\n"
+		"Read the deferred result's row count without evaluating.\n"
+		":rtype: std::size_t\n"
+		":return: Number of rows.\n"
+		""},
+	 { "LinalgMatrix_cols", _wrap_LinalgMatrix_cols, METH_O, "\n"
+		"Read the deferred result's column count without evaluating.\n"
+		":rtype: std::size_t\n"
+		":return: Number of columns.\n"
+		""},
+	 { "LinalgMatrix_is_sparse", _wrap_LinalgMatrix_is_sparse, METH_O, "\n"
+		"Inspect the deferred result's storage policy without evaluating.\n"
+		":rtype: boolean\n"
+		":return: True for CSR results; inverse actions and solves return dense results.\n"
+		""},
+	 { "LinalgMatrix_transpose", _wrap_LinalgMatrix_transpose, METH_O, "\n"
+		"Form a lazy transpose, retaining shared ownership of this operand.\n"
+		":rtype: :py:class:`LinalgMatrix`\n"
+		":return: Deferred transpose handle.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({1, 2}, 1, 2);\n"
+		"    std::print(\"{}\\n\", A.transpose().rows()); // 2\n"
+		""},
+	 { "LinalgMatrix_multiply", _wrap_LinalgMatrix_multiply, METH_VARARGS, "\n"
+		"Form a lazy matrix product, fusing preceding inverse actions into a solve.\n"
+		"An expression solve(A) * B * C evaluates B * C before one native solve.\n"
+		":type other: :py:class:`LinalgMatrix`\n"
+		":param other: Right operand, retained by shared ownership.\n"
+		":rtype: :py:class:`LinalgMatrix`\n"
+		":return: Deferred product or solve handle.\n"
+		":raises: std::invalid_argument If inner dimensions differ.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({1, 2}, 1, 2), b({3, 4}, 2, 1);\n"
+		"    std::print(\"{:.0f}\\n\", A.multiply(b).values()[0]); // 11\n"
+		""},
+	 { "LinalgMatrix_inverse_action", _wrap_LinalgMatrix_inverse_action, METH_O, "\n"
+		"Form a deferred square inverse action, without factorisation or inversion.\n"
+		"Multiplication turns this into a solve; evaluating it alone forms an explicit inverse.\n"
+		":rtype: :py:class:`LinalgMatrix`\n"
+		":return: Deferred inverse-action handle.\n"
+		":raises: std::invalid_argument If this matrix is not square.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({2}, 1, 1);\n"
+		"    std::print(\"{:.1f}\\n\", A.inverse_action().values()[0]); // 0.5\n"
+		""},
+	 { "LinalgMatrix_solve", _wrap_LinalgMatrix_solve, METH_VARARGS, "\n"
+		"Evaluate a square system with LU or a tall least-squares system with QR.\n"
+		":type rhs: :py:class:`LinalgMatrix`\n"
+		":param rhs: Matrix of right-hand sides with rows() rows.\n"
+		":rtype: :py:class:`LinalgMatrix`\n"
+		":return: Owned dense solution snapshot.\n"
+		":raises: std::invalid_argument For incompatible/wide shapes or nonfinite solve inputs.\n"
+		":raises: std::runtime_error For singular or rank-deficient systems.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({1, 1, 1}, 3, 1), b({1, 2, 3}, 3, 1);\n"
+		"    std::print(\"{:.0f}\\n\", A.solve(b).values()[0]); // 2\n"
+		""},
+	 { "LinalgMatrix_eval", _wrap_LinalgMatrix_eval, METH_O, "\n"
+		"Evaluate once into an owned snapshot with no deferred operands.\n"
+		":rtype: :py:class:`LinalgMatrix`\n"
+		":return: Materialised matrix handle, sharing immutable storage when already concrete.\n"
+		":raises: std::invalid_argument For nonfinite solve inputs.\n"
+		":raises: std::runtime_error For singular or rank-deficient systems.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({1, 2}, 1, 2);\n"
+		"    auto snapshot = A.transpose().eval();\n"
+		"    std::print(\"{}\\n\", snapshot.rows()); // 2\n"
+		""},
+	 { "LinalgMatrix_values", _wrap_LinalgMatrix_values, METH_O, "\n"
+		"Evaluate and copy all coefficients in row-major order.\n"
+		":rtype: std::vector< double,std::allocator< double > >\n"
+		":return: Dense vector, including sparse zeros.\n"
+		":raises: std::invalid_argument For nonfinite solve inputs.\n"
+		":raises: std::runtime_error For singular or rank-deficient systems.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({1, 2}, 1, 2);\n"
+		"    std::print(\"{:.0f}\\n\", A.values()[1]); // 2\n"
+		""},
+	 { "LinalgMatrix_text", _wrap_LinalgMatrix_text, METH_O, "\n"
+		"Evaluate once and produce the native capped Mat/SpMat preview.\n"
+		":rtype: string\n"
+		":return: Shape, storage information and at most ten rows/eight columns.\n"
+		":raises: std::invalid_argument For nonfinite solve inputs.\n"
+		":raises: std::runtime_error For singular or rank-deficient systems.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::LinalgMatrix A({1}, 1, 1);\n"
+		"    std::print(\"{}\\n\", A.text());\n"
+		"   Mat 1 x 1\n"
+		"        [,0]\n"
+		"   [0,]    1\n"
+		""},
+	 { "delete_LinalgMatrix", _wrap_delete_LinalgMatrix, METH_O, NULL},
+	 { "LinalgMatrix_swigregister", LinalgMatrix_swigregister, METH_O, NULL},
+	 { "LinalgMatrix_swiginit", LinalgMatrix_swiginit, METH_VARARGS, NULL},
+	 { "CadSolid_box", _wrap_CadSolid_box, METH_VARARGS, "\n"
+		"Construct an axis-aligned box with minimum corner at the origin.\n"
+		":type width: float\n"
+		":param width: Positive finite X extent.\n"
+		":type depth: float\n"
+		":param depth: Positive finite Y extent.\n"
+		":type height: float\n"
+		":param height: Positive finite Z extent.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: Owned solid.\n"
+		":raises: std::invalid_argument Nonpositive/nonfinite size.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadSolid_cylinder", _wrap_CadSolid_cylinder, METH_VARARGS, "\n"
+		"Construct a cylinder with base at the origin and axis +Z.\n"
+		":type radius: float\n"
+		":param radius: Positive finite radius.\n"
+		":type height: float\n"
+		":param height: Positive finite height.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: Owned solid.\n"
+		":raises: std::invalid_argument Invalid dimensions.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadSolid_sphere", _wrap_CadSolid_sphere, METH_O, "\n"
+		"Construct a sphere centred at the origin.\n"
+		":type radius: float\n"
+		":param radius: Positive finite radius.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: Owned solid.\n"
+		":raises: std::invalid_argument Invalid radius.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto ball = dm::cad::Solid::sphere(2).translated(0, 0, 2);\n"
+		""},
+	 { "CadSolid_torus", _wrap_CadSolid_torus, METH_VARARGS, "\n"
+		"Construct a ring torus centred at the origin around +Z.\n"
+		":type major_radius: float\n"
+		":param major_radius: Positive finite distance from axis to tube centre.\n"
+		":type minor_radius: float\n"
+		":param minor_radius: Positive finite tube radius smaller than major_radius.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: Owned solid.\n"
+		":raises: std::invalid_argument Invalid radii.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto ring = dm::cad::Solid::torus(3, 1);\n"
+		""},
+	 { "CadSolid_united", _wrap_CadSolid_united, METH_VARARGS, "\n"
+		"Return the union with another solid.\n"
+		":type other: :py:class:`Solid`\n"
+		":param other: Borrowed operand, in the same units/frame.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid; inputs unchanged.\n"
+		":raises: std::runtime_error Kernel failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto a = dm::cad::Solid::box(2, 2, 2);\n"
+		"    auto b = a.translated(.5, .5, .5);\n"
+		"    auto joined = a.united(b);\n"
+		""},
+	 { "CadSolid_subtracted", _wrap_CadSolid_subtracted, METH_VARARGS, "\n"
+		"Subtract another solid, preserving cavities and trimmed faces.\n"
+		":type other: :py:class:`Solid`\n"
+		":param other: Borrowed tool solid.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid.\n"
+		":raises: std::runtime_error Kernel failure or empty result.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadSolid_intersected", _wrap_CadSolid_intersected, METH_VARARGS, "\n"
+		"Return the common material of two solids.\n"
+		":type other: :py:class:`Solid`\n"
+		":param other: Borrowed operand.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid.\n"
+		":raises: std::runtime_error Kernel failure or empty result.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto a = dm::cad::Solid::box(2, 2, 2);\n"
+		"    auto common = a.intersected(a.translated(.5, .5, .5));\n"
+		""},
+	 { "CadSolid_translated", _wrap_CadSolid_translated, METH_VARARGS, "\n"
+		"Return a translated copy.\n"
+		":type x: float\n"
+		":param x: Finite X displacement in model units.\n"
+		":type y: float\n"
+		":param y: Finite Y displacement.\n"
+		":type z: float\n"
+		":param z: Finite Z displacement.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid.\n"
+		":raises: std::invalid_argument Nonfinite displacement.\n"
+		":raises: std::runtime_error Transform failure.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadSolid_rotated", _wrap_CadSolid_rotated, METH_VARARGS, "\n"
+		"Rotate about an axis through the origin, using the right-hand rule.\n"
+		":type x: float\n"
+		":param x: Axis X component.\n"
+		":type y: float\n"
+		":param y: Axis Y component.\n"
+		":type z: float\n"
+		":param z: Axis Z component; axis must be finite and nonzero.\n"
+		":type radians: float\n"
+		":param radians: Finite rotation angle.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid.\n"
+		":raises: std::invalid_argument Invalid axis or angle.\n"
+		":raises: std::runtime_error Kernel failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto turned = dm::cad::Solid::box(2, 3, 4).rotated(0, 0, 1, dm::cad::kHalfPi);\n"
+		""},
+	 { "CadSolid_filleted", _wrap_CadSolid_filleted, METH_VARARGS, "\n"
+		"Fillet selected edge IDs in sequence using persistent face-pair references.\n"
+		":type edges: std::vector< int,std::allocator< int > >\n"
+		":param edges: Edge IDs from this solid's model; empty list leaves a copy unchanged.\n"
+		":type radius: float\n"
+		":param radius: Positive finite rolling-ball radius.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid. Source kernel supports straight edges between planar faces.\n"
+		":raises: std::invalid_argument Invalid radius.\n"
+		":raises: std::runtime_error Unsupported edge/blend geometry.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto a = dm::cad::Solid::box(4, 4, 4);\n"
+		"    auto rounded = a.filleted({a.edges().front()}, .2);\n"
+		""},
+	 { "CadSolid_chamfered", _wrap_CadSolid_chamfered, METH_VARARGS, "\n"
+		"Chamfer selected edge IDs by a common setback.\n"
+		":type edges: std::vector< int,std::allocator< int > >\n"
+		":param edges: Source edge IDs; empty list returns a copy.\n"
+		":type setback: float\n"
+		":param setback: Positive finite distance along adjacent faces.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid.\n"
+		":raises: std::invalid_argument Invalid setback.\n"
+		":raises: std::runtime_error Kernel failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto a = dm::cad::Solid::box(4, 4, 4);\n"
+		"    auto bevel = a.chamfered({a.edges().front()}, .2);\n"
+		""},
+	 { "CadSolid_shelled", _wrap_CadSolid_shelled, METH_VARARGS, "\n"
+		"Hollow a solid, optionally opening specified faces.\n"
+		":type thickness: float\n"
+		":param thickness: Positive finite wall thickness.\n"
+		":type open_faces: std::vector< int,std::allocator< int > >, optional\n"
+		":param open_faces: Face IDs to open; empty creates a sealed cavity.\n"
+		":rtype: :py:class:`Solid`\n"
+		":return: New solid, subject to ShellBody's supported surface combinations.\n"
+		":raises: std::invalid_argument Invalid thickness.\n"
+		":raises: std::runtime_error Kernel failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto hollow = dm::cad::Solid::box(4, 4, 4).shelled(.2);\n"
+		""},
+	 { "CadSolid_volume", _wrap_CadSolid_volume, METH_VARARGS, "\n"
+		"Measure volume from the trimmed tessellated boundary.\n"
+		":type chord: float, optional\n"
+		":param chord: Positive tessellation tolerance; lower improves curved-face accuracy.\n"
+		":rtype: float\n"
+		":return: Signed volume in cubic model units; honours imported STEP trimming.\n"
+		":raises: std::invalid_argument Invalid tolerance.\n"
+		":raises: std::runtime_error Tessellation failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto volume = dm::cad::Solid::box(2, 3, 4).volume(); // 24\n"
+		""},
+	 { "CadSolid_valid", _wrap_CadSolid_valid, METH_O, "\n"
+		"Validate topology, orientations and geometric boundary consistency.\n"
+		":rtype: boolean\n"
+		":return: True when the kernel validation report has no errors.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    bool valid = dm::cad::Solid::box(2, 3, 4).valid(); // true\n"
+		""},
+	 { "CadSolid_edges", _wrap_CadSolid_edges, METH_O, "\n"
+		"List the source edge IDs usable by filleted() and chamfered().\n"
+		":rtype: std::vector< int,std::allocator< int > >\n"
+		":return: Owned vector of unique edge IDs.\n"
+		""},
+	 { "CadSolid_faces", _wrap_CadSolid_faces, METH_O, "\n"
+		"List face IDs usable by shelled() and the low-level modifiers.\n"
+		":rtype: std::vector< int,std::allocator< int > >\n"
+		":return: Owned vector of face IDs.\n"
+		""},
+	 { "CadSolid_save", _wrap_CadSolid_save, METH_VARARGS, "\n"
+		"Save STEP, binary STL, OBJ, glTF or an SVG drawing by extension.\n"
+		":type path: string\n"
+		":param path: Output path; parent directory must exist; existing files are replaced.\n"
+		":type chord: float, optional\n"
+		":param chord: Positive tessellation tolerance for mesh/drawing output; default .01.\n"
+		":raises: std::invalid_argument Unsupported extension or tolerance.\n"
+		":raises: std::runtime_error Export or file I/O failure.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "delete_CadSolid", _wrap_delete_CadSolid, METH_O, NULL},
+	 { "CadSolid_swigregister", CadSolid_swigregister, METH_O, NULL},
+	 { "new_CadScene", _wrap_new_CadScene, METH_NOARGS, "\n"
+		"Create an empty scene with automatic camera framing.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadScene_from_file", _wrap_CadScene_from_file, METH_O, "\n"
+		"Import any format supported by load_scene().\n"
+		":type path: string\n"
+		":param path: Input filename.\n"
+		":rtype: :py:class:`View`\n"
+		":return: Owned view with automatic framing.\n"
+		":raises: std::invalid_argument Unsupported format.\n"
+		":raises: std::runtime_error Import/I/O failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto view = dm::cad::View::from_file(\"part.step\");\n"
+		"    view.render(\"part.png\");\n"
+		""},
+	 { "CadScene_from_urdf", _wrap_CadScene_from_urdf, METH_O, "\n"
+		"Load an articulated URDF visual model and its asset files.\n"
+		":type path: string\n"
+		":param path: URDF file; relative meshes resolve beside it.\n"
+		":rtype: :py:class:`View`\n"
+		":return: Owned view at the loader's initial joint coordinates.\n"
+		":raises: std::invalid_argument Invalid URDF/joint data.\n"
+		":raises: std::runtime_error Import failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    auto view = dm::cad::View::from_urdf(\"robot.urdf\");\n"
+		"    view.set_joint(\"joint2\", -.6); view.render(\"robot.png\");\n"
+		""},
+	 { "CadScene_set_joint", _wrap_CadScene_set_joint, METH_VARARGS, "\n"
+		"Set a movable independent joint on a view loaded from URDF.\n"
+		":type name: string\n"
+		":param name: Joint name.\n"
+		":type value: float\n"
+		":param value: Coordinate in radians/metres, within limits.\n"
+		":raises: std::invalid_argument View has no robot or joint value is invalid.\n"
+		"Title: Example\n"
+		"See from_urdf().\n"
+		""},
+	 { "CadScene_joint_names", _wrap_CadScene_joint_names, METH_O, "\n"
+		"List independent movable joints of a URDF view.\n"
+		":rtype: std::vector< std::string,std::allocator< std::string > >\n"
+		":return: Owned names; empty for ordinary scenes.\n"
+		""},
+	 { "CadScene_add", _wrap_CadScene_add, METH_VARARGS, "\n"
+		"Tessellate a solid and append it as a scene object.\n"
+		":type solid: :py:class:`Solid`\n"
+		":param solid: Borrowed source, unchanged.\n"
+		":type color: string, optional\n"
+		":param color: Hex RGB/RGBA tint, default #4080d9.\n"
+		":type name: string, optional\n"
+		":param name: Object name, default Solid.\n"
+		":rtype: int\n"
+		":return: New object ID.\n"
+		":raises: std::invalid_argument Invalid color.\n"
+		":raises: std::runtime_error Tessellation failure.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadScene_primitive", _wrap_CadScene_primitive, METH_VARARGS, "\n"
+		"Append a source polygon modeller primitive.\n"
+		":type kind: string\n"
+		":param kind: cube, sphere, cylinder, cone, plane, torus or wedge (lowercase).\n"
+		":rtype: int\n"
+		":return: New object ID; editable via scene() in C++.\n"
+		":raises: std::invalid_argument Unknown kind.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.primitive(\"torus\"); view.render(\"ring.png\");\n"
+		""},
+	 { "CadScene_size", _wrap_CadScene_size, METH_VARARGS, "\n"
+		"Set the output dimensions used by render() and picking.\n"
+		":type width: int\n"
+		":param width: Pixel width, 1..8192.\n"
+		":type height: int\n"
+		":param height: Pixel height, 1..8192.\n"
+		":raises: std::invalid_argument Invalid dimensions.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadScene_samples", _wrap_CadScene_samples, METH_VARARGS, "\n"
+		"Set regular-grid antialiasing samples per axis.\n"
+		":type count: int\n"
+		":param count: 1..4, i.e. 1..16 rays/pixel.\n"
+		":raises: std::invalid_argument Invalid count.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.samples(2);\n"
+		""},
+	 { "CadScene_style", _wrap_CadScene_style, METH_VARARGS, "\n"
+		"Select shaded, unlit, wireframe or shaded-wireframe output.\n"
+		":type name: string\n"
+		":param name: One of those exact lowercase names.\n"
+		":raises: std::invalid_argument Unknown style.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.style(\"shaded-wireframe\");\n"
+		""},
+	 { "CadScene_shadows", _wrap_CadScene_shadows, METH_VARARGS, "\n"
+		"Enable/disable shadows cast by the first visible light.\n"
+		":type enabled: boolean\n"
+		":param enabled: True enables triangle-ray shadow tests.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.shadows(false);\n"
+		""},
+	 { "CadScene_camera", _wrap_CadScene_camera, METH_VARARGS, "\n"
+		"Set explicit camera position and target, with +Z as up.\n"
+		":type x: float\n"
+		":param x: Camera X position.\n"
+		":type y: float\n"
+		":param y: Camera Y position.\n"
+		":type z: float\n"
+		":param z: Camera Z position.\n"
+		":type target_x: float\n"
+		":param target_x: Target X.\n"
+		":type target_y: float\n"
+		":param target_y: Target Y.\n"
+		":type target_z: float\n"
+		":param target_z: Target Z; all values finite, target distinct and view not parallel to +Z.\n"
+		":raises: std::invalid_argument Invalid camera.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.camera(6,-8,5,0,0,0);\n"
+		""},
+	 { "CadScene_fit", _wrap_CadScene_fit, METH_O, "\n"
+		"Resume automatic perspective framing after an explicit camera.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.fit();\n"
+		""},
+	 { "CadScene_light", _wrap_CadScene_light, METH_VARARGS, "\n"
+		"Add a directional light; the first explicit light replaces the fallback light.\n"
+		":type x: float\n"
+		":param x: Direction X from surface toward light.\n"
+		":type y: float\n"
+		":param y: Direction Y.\n"
+		":type z: float\n"
+		":param z: Direction Z; finite nonzero vector.\n"
+		":type color: string, optional\n"
+		":param color: Hex RGB/RGBA light color, default white; alpha unused.\n"
+		":type intensity: float, optional\n"
+		":param intensity: Nonnegative finite multiplier, default 1.\n"
+		":rtype: int\n"
+		":return: New light ID.\n"
+		":raises: std::invalid_argument Invalid direction, color or intensity.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.light(1,-2,3,\"#ffffff\",1.2);\n"
+		""},
+	 { "CadScene_render", _wrap_CadScene_render, METH_VARARGS, "\n"
+		"Render synchronously and save a PNG/JPEG/PPM color image.\n"
+		":type path: string\n"
+		":param path: Output filename, parent directory must exist.\n"
+		":raises: std::invalid_argument Invalid scene or extension.\n"
+		":raises: std::runtime_error File I/O failure.\n"
+		"Title: Example\n"
+		"See the class example.\n"
+		""},
+	 { "CadScene_save_gltf", _wrap_CadScene_save_gltf, METH_VARARGS, "\n"
+		"Save the scene as self-contained glTF with meshes, textures and lights.\n"
+		":type path: string\n"
+		":param path: Output .gltf filename; parent must exist.\n"
+		":raises: std::runtime_error Export/I/O failure.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.primitive(\"cube\"); view.save_gltf(\"cube.gltf\");\n"
+		""},
+	 { "CadScene_pick_object", _wrap_CadScene_pick_object, METH_VARARGS, "\n"
+		"Pick a source object using the current camera and image dimensions.\n"
+		":type x: float\n"
+		":param x: Pixel X from left; continuous coordinates.\n"
+		":type y: float\n"
+		":param y: Pixel Y from top.\n"
+		":rtype: int\n"
+		":return: Object ID or -1 for background.\n"
+		":raises: std::invalid_argument Invalid ray or geometry.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    dm::cad::View view; view.primitive(\"cube\"); int id=view.pick_object(400,300);\n"
+		""},
+	 { "CadScene_object_count", _wrap_CadScene_object_count, METH_O, "\n"
+		"Count scene objects, including empty groups.\n"
+		":rtype: int\n"
+		":return: Object count.\n"
+		""},
+	 { "CadScene_triangle_count", _wrap_CadScene_triangle_count, METH_O, "\n"
+		"Count triangles over all object mesh references, including hidden objects.\n"
+		":rtype: int\n"
+		":return: Triangle count.\n"
+		""},
+	 { "delete_CadScene", _wrap_delete_CadScene, METH_O, NULL},
+	 { "CadScene_swigregister", CadScene_swigregister, METH_O, NULL},
+	 { "CadScene_swiginit", CadScene_swiginit, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -243133,6 +247708,7 @@ static swig_type_info _swigt__p_datamunge__LM = {"_p_datamunge__LM", "datamunge:
 static swig_type_info _swigt__p_datamunge__LMM = {"_p_datamunge__LMM", "datamunge::LMM *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__LaplacianEigenmaps = {"_p_datamunge__LaplacianEigenmaps", "datamunge::LaplacianEigenmaps *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__Lasso = {"_p_datamunge__Lasso", "datamunge::Lasso *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__LinalgMatrix = {"_p_datamunge__LinalgMatrix", "datamunge::LinalgMatrix *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__MDS = {"_p_datamunge__MDS", "datamunge::MDS *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__NaiveBayesClassifier = {"_p_datamunge__NaiveBayesClassifier", "datamunge::NaiveBayesClassifier *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__PCA = {"_p_datamunge__PCA", "datamunge::PCA *", 0, 0, (void*)0, 0};
@@ -243180,6 +247756,8 @@ static swig_type_info _swigt__p_datamunge__bayes__NUTSResult = {"_p_datamunge__b
 static swig_type_info _swigt__p_datamunge__bayes__RWMOptions = {"_p_datamunge__bayes__RWMOptions", "datamunge::bayes::RWMOptions *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__RWMResult = {"_p_datamunge__bayes__RWMResult", "datamunge::bayes::RWMResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__bayes__RandomWalkMetropolis = {"_p_datamunge__bayes__RandomWalkMetropolis", "datamunge::bayes::RandomWalkMetropolis *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__cad__Solid = {"_p_datamunge__cad__Solid", "datamunge::cad::Solid *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__cad__View = {"_p_datamunge__cad__View", "datamunge::cad::View *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__cv__Corner = {"_p_datamunge__cv__Corner", "std::vector< datamunge::cv::Corner >::value_type *|datamunge::cv::Corner *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__cv__FlowVector = {"_p_datamunge__cv__FlowVector", "std::vector< datamunge::cv::FlowVector >::value_type *|datamunge::cv::FlowVector *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__cv__HoughCircle = {"_p_datamunge__cv__HoughCircle", "std::vector< datamunge::cv::HoughCircle >::value_type *|datamunge::cv::HoughCircle *", 0, 0, (void*)0, 0};
@@ -243420,7 +247998,7 @@ static swig_type_info _swigt__p_std__vectorT_datamunge__geometry__Triangle_t = {
 static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__ABLine_t = {"_p_std__vectorT_datamunge__graphics__ABLine_t", "std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *|std::vector< datamunge::graphics::ABLine > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__DataSeries_t = {"_p_std__vectorT_datamunge__graphics__DataSeries_t", "std::vector< datamunge::graphics::DataSeries,std::allocator< datamunge::graphics::DataSeries > > *|std::vector< datamunge::graphics::DataSeries > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__LegendEntry_t = {"_p_std__vectorT_datamunge__graphics__LegendEntry_t", "std::vector< datamunge::graphics::LegendEntry,std::allocator< datamunge::graphics::LegendEntry > > *|std::vector< datamunge::graphics::LegendEntry > *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__RGB_t = {"_p_std__vectorT_datamunge__graphics__RGB_t", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *|std::vector< datamunge::graphics::RGB > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__RGB_t = {"_p_std__vectorT_datamunge__graphics__RGB_t", "std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > > *|std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > > *|std::vector< datamunge::graphics::RGB > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__image__Image_t = {"_p_std__vectorT_datamunge__image__Image_t", "std::vector< datamunge::image::Image,std::allocator< datamunge::image::Image > > *|std::vector< datamunge::image::Image > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_double_t = {"_p_std__vectorT_double_t", "datamunge::image::Kernel *|std::vector< double,std::allocator< double > > *|std::vector< double > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "std::vector< int,std::allocator< int > > *|std::vector< int > *", 0, 0, (void*)0, 0};
@@ -243479,6 +248057,7 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__LMM,
   &_swigt__p_datamunge__LaplacianEigenmaps,
   &_swigt__p_datamunge__Lasso,
+  &_swigt__p_datamunge__LinalgMatrix,
   &_swigt__p_datamunge__MDS,
   &_swigt__p_datamunge__NaiveBayesClassifier,
   &_swigt__p_datamunge__PCA,
@@ -243526,6 +248105,8 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__bayes__RWMOptions,
   &_swigt__p_datamunge__bayes__RWMResult,
   &_swigt__p_datamunge__bayes__RandomWalkMetropolis,
+  &_swigt__p_datamunge__cad__Solid,
+  &_swigt__p_datamunge__cad__View,
   &_swigt__p_datamunge__cv__Corner,
   &_swigt__p_datamunge__cv__FlowVector,
   &_swigt__p_datamunge__cv__HoughCircle,
@@ -243825,6 +248406,7 @@ static swig_cast_info _swigc__p_datamunge__LM[] = {  {&_swigt__p_datamunge__LM, 
 static swig_cast_info _swigc__p_datamunge__LMM[] = {  {&_swigt__p_datamunge__LMM, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__LaplacianEigenmaps[] = {  {&_swigt__p_datamunge__LaplacianEigenmaps, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__Lasso[] = {  {&_swigt__p_datamunge__Lasso, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__LinalgMatrix[] = {  {&_swigt__p_datamunge__LinalgMatrix, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__MDS[] = {  {&_swigt__p_datamunge__MDS, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__NaiveBayesClassifier[] = {  {&_swigt__p_datamunge__NaiveBayesClassifier, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__PCA[] = {  {&_swigt__p_datamunge__PCA, 0, 0, 0},{0, 0, 0, 0}};
@@ -243872,6 +248454,8 @@ static swig_cast_info _swigc__p_datamunge__bayes__NUTSResult[] = {  {&_swigt__p_
 static swig_cast_info _swigc__p_datamunge__bayes__RWMOptions[] = {  {&_swigt__p_datamunge__bayes__RWMOptions, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__RWMResult[] = {  {&_swigt__p_datamunge__bayes__RWMResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__bayes__RandomWalkMetropolis[] = {  {&_swigt__p_datamunge__bayes__RandomWalkMetropolis, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__cad__Solid[] = {  {&_swigt__p_datamunge__cad__Solid, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__cad__View[] = {  {&_swigt__p_datamunge__cad__View, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__cv__Corner[] = {  {&_swigt__p_datamunge__cv__Corner, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__cv__FlowVector[] = {  {&_swigt__p_datamunge__cv__FlowVector, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__cv__HoughCircle[] = {  {&_swigt__p_datamunge__cv__HoughCircle, 0, 0, 0},{0, 0, 0, 0}};
@@ -244171,6 +248755,7 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__LMM,
   _swigc__p_datamunge__LaplacianEigenmaps,
   _swigc__p_datamunge__Lasso,
+  _swigc__p_datamunge__LinalgMatrix,
   _swigc__p_datamunge__MDS,
   _swigc__p_datamunge__NaiveBayesClassifier,
   _swigc__p_datamunge__PCA,
@@ -244218,6 +248803,8 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__bayes__RWMOptions,
   _swigc__p_datamunge__bayes__RWMResult,
   _swigc__p_datamunge__bayes__RandomWalkMetropolis,
+  _swigc__p_datamunge__cad__Solid,
+  _swigc__p_datamunge__cad__View,
   _swigc__p_datamunge__cv__Corner,
   _swigc__p_datamunge__cv__FlowVector,
   _swigc__p_datamunge__cv__HoughCircle,

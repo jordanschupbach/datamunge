@@ -30,6 +30,36 @@ void expect_close(const Tensor& a, const std::vector<double>& b, double tol) {
 
 // ---- initializers and the parameter store ---------------------------------------------
 
+TEST(NnLayers, DropoutIsOnePassScaledMaskReproducibleAndDifferentiable) {
+  nn::Generator g(7), g2(7), g3(7);
+  Tensor        x = nn::normal({64, 4, 4, 128}, 0.0, 1.0, g);
+  x.requires_grad_(true);
+  const double keep = 0.6;
+  const Tensor y    = nn::dropout(x, 1.0 - keep, true, g2);
+  const auto   xv = x.to_vector<double>(), yv = y.to_vector<double>();
+  std::int64_t kept = 0;
+  for (std::size_t i = 0; i < xv.size(); ++i) {
+    if (yv[i] == 0.0) continue;
+    ++kept;
+    EXPECT_NEAR(yv[i], xv[i] / keep, 1e-5);
+  }
+  const double frac = static_cast<double>(kept) / static_cast<double>(xv.size());
+  EXPECT_NEAR(frac, keep, 0.01);
+  // The same generator state gives the same mask, at any thread count.
+  const int threads = nn::get_num_threads();
+  nn::set_num_threads(3);
+  const Tensor y2 = nn::dropout(x, 1.0 - keep, true, g3);
+  nn::set_num_threads(threads);
+  EXPECT_EQ(y2.to_vector<double>(), yv);
+  // dy/dx is the scaled mask.
+  const Tensor seed = nn::normal(y.shape(), 0.0, 1.0, g);
+  const auto   gx = nn::grad({y}, {x}, {seed})[0].to_vector<double>(), sv = seed.to_vector<double>();
+  for (std::size_t i = 0; i < gx.size(); ++i) EXPECT_NEAR(gx[i], yv[i] == 0.0 ? 0.0 : sv[i] / keep, 1e-5);
+  EXPECT_EQ(nn::dropout(x, 0.0, true, g).to_vector<double>(), xv);
+  EXPECT_EQ(nn::dropout(x, 0.5, false, g).to_vector<double>(), xv);
+  EXPECT_THROW((void)nn::dropout(x, 1.0, true, g), std::invalid_argument);
+}
+
 TEST(NnParams, Fans) {
   EXPECT_EQ(nn::init::fans({3, 5}), std::make_pair(3.0, 5.0));
   EXPECT_EQ(nn::init::fans({3, 3, 4, 8}), std::make_pair(36.0, 72.0));

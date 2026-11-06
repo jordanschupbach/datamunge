@@ -20,18 +20,24 @@ $$ x'=clip_{[0,1]}\left(x+\eta\frac{g}{\sqrt{mean(g^2)}+10^{-12}}\right). $$
 
 The report expresses ascent through plain tensorSGD on the negative normalized derivative. Classifier weights remain frozen;the mean feature objective differs from fitting a categorical loss. This small MNIST adaptation is not a pretrained Inception dream benchmark.
 
-The editable concept diagram is `diagrams/deepdream_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/deepdream_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/deepdream_concept.tikz > build/deepdream_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/deepdream_concept.svg build/deepdream_concept.dvi > build/deepdream_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/deepdream_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original digit\n frozen feature mean");
+  diagram.node("n1", {5.2, 0}, "Visible TensorSGD\n bounded proposals");
+  diagram.node("n2", {10.4, 0}, "Octaves and\n unchanged model controls");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/deepdream_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/deepdream_concept.svg)
 // result_end
 \caption(DeepDream:visible bounded tensor optimization of original images)
@@ -317,36 +323,36 @@ int main() {
 // result_begin: markdown
 | variant | octave side | step | before | after | accepted rate | halvings |
 |---|---:|---:|---:|---:|---:|---:|
-| main | 20 | 0 | 0.419970304 | 0.445919752 | 0.02 | 0 |
-| main | 20 | 1 | 0.445919752 | 0.469532192 | 0.02 | 0 |
-| main | 20 | 2 | 0.469532192 | 0.491801947 | 0.02 | 0 |
-| main | 20 | 3 | 0.491801947 | 0.514134228 | 0.02 | 0 |
+| main | 20 | 0 | 0.419970274 | 0.445919722 | 0.02 | 0 |
+| main | 20 | 1 | 0.445919722 | 0.469532162 | 0.02 | 0 |
+| main | 20 | 2 | 0.469532162 | 0.491801918 | 0.02 | 0 |
+| main | 20 | 3 | 0.491801918 | 0.514134228 | 0.02 | 0 |
 | main | 20 | 4 | 0.514134228 | 0.536893606 | 0.02 | 0 |
-| main | 24 | 0 | 0.51144892 | 0.542291999 | 0.02 | 0 |
-| main | 24 | 1 | 0.542291999 | 0.571338713 | 0.02 | 0 |
-| main | 24 | 2 | 0.571338713 | 0.599423945 | 0.02 | 0 |
+| main | 24 | 0 | 0.51144892 | 0.542291939 | 0.02 | 0 |
+| main | 24 | 1 | 0.542291939 | 0.571338654 | 0.02 | 0 |
+| main | 24 | 2 | 0.571338654 | 0.599423945 | 0.02 | 0 |
 | main | 24 | 3 | 0.599423945 | 0.626943469 | 0.02 | 0 |
 | main | 24 | 4 | 0.626943469 | 0.654157698 | 0.02 | 0 |
 | main | 28 | 0 | 0.631932259 | 0.664213181 | 0.02 | 0 |
-| main | 28 | 1 | 0.664213181 | 0.694351017 | 0.02 | 0 |
-| main | 28 | 2 | 0.694351017 | 0.723461449 | 0.02 | 0 |
-| main | 28 | 3 | 0.723461449 | 0.751814783 | 0.02 | 0 |
-| main | 28 | 4 | 0.751814783 | 0.779571593 | 0.02 | 0 |
+| main | 28 | 1 | 0.664213181 | 0.694350958 | 0.02 | 0 |
+| main | 28 | 2 | 0.694350958 | 0.72346139 | 0.02 | 0 |
+| main | 28 | 3 | 0.72346139 | 0.751814723 | 0.02 | 0 |
+| main | 28 | 4 | 0.751814723 | 0.779571593 | 0.02 | 0 |
 | conv1 | 20 | 0 | 0.182870924 | 0.19576928 | 0.02 | 0 |
 | conv1 | 20 | 1 | 0.19576928 | 0.208206892 | 0.02 | 0 |
 | conv1 | 20 | 2 | 0.208206892 | 0.221338719 | 0.02 | 0 |
 | conv1 | 20 | 3 | 0.221338719 | 0.235362038 | 0.02 | 0 |
 | conv1 | 20 | 4 | 0.235362038 | 0.249955997 | 0.02 | 0 |
-| conv1 | 24 | 0 | 0.239152059 | 0.257314622 | 0.02 | 0 |
-| conv1 | 24 | 1 | 0.257314622 | 0.275176525 | 0.02 | 0 |
-| conv1 | 24 | 2 | 0.275176525 | 0.292695999 | 0.02 | 0 |
-| conv1 | 24 | 3 | 0.292695999 | 0.310076833 | 0.02 | 0 |
+| conv1 | 24 | 0 | 0.239152044 | 0.257314622 | 0.02 | 0 |
+| conv1 | 24 | 1 | 0.257314622 | 0.275176495 | 0.02 | 0 |
+| conv1 | 24 | 2 | 0.275176495 | 0.292695969 | 0.02 | 0 |
+| conv1 | 24 | 3 | 0.292695969 | 0.310076833 | 0.02 | 0 |
 | conv1 | 24 | 4 | 0.310076833 | 0.327280015 | 0.02 | 0 |
 | conv1 | 28 | 0 | 0.321103424 | 0.340047359 | 0.02 | 0 |
 | conv1 | 28 | 1 | 0.340047359 | 0.358495027 | 0.02 | 0 |
 | conv1 | 28 | 2 | 0.358495027 | 0.376548707 | 0.02 | 0 |
 | conv1 | 28 | 3 | 0.376548707 | 0.394311816 | 0.02 | 0 |
-| conv1 | 28 | 4 | 0.394311816 | 0.411843151 | 0.02 | 0 |
+| conv1 | 28 | 4 | 0.394311816 | 0.411843121 | 0.02 | 0 |
 | initial | 20 | 0 | 0.101277709 | 0.108451612 | 0.02 | 0 |
 | initial | 20 | 1 | 0.108451612 | 0.115006953 | 0.02 | 0 |
 | initial | 20 | 2 | 0.115006953 | 0.121231116 | 0.02 | 0 |
@@ -362,36 +368,36 @@ int main() {
 | initial | 28 | 2 | 0.169877574 | 0.177278847 | 0.02 | 0 |
 | initial | 28 | 3 | 0.177278847 | 0.18443571 | 0.02 | 0 |
 | initial | 28 | 4 | 0.18443571 | 0.191405118 | 0.02 | 0 |
-| single | 28 | 0 | 0.422342002 | 0.440927744 | 0.02 | 0 |
-| single | 28 | 1 | 0.440927744 | 0.45867005 | 0.02 | 0 |
-| single | 28 | 2 | 0.45867005 | 0.477315933 | 0.02 | 0 |
-| single | 28 | 3 | 0.477315933 | 0.497204751 | 0.02 | 0 |
-| single | 28 | 4 | 0.497204751 | 0.518357396 | 0.02 | 0 |
+| single | 28 | 0 | 0.422342002 | 0.440927714 | 0.02 | 0 |
+| single | 28 | 1 | 0.440927714 | 0.45867005 | 0.02 | 0 |
+| single | 28 | 2 | 0.45867005 | 0.477315903 | 0.02 | 0 |
+| single | 28 | 3 | 0.477315903 | 0.497204721 | 0.02 | 0 |
+| single | 28 | 4 | 0.497204721 | 0.518357396 | 0.02 | 0 |
 | single | 28 | 5 | 0.518357396 | 0.540628374 | 0.02 | 0 |
 | single | 28 | 6 | 0.540628374 | 0.563618004 | 0.02 | 0 |
 | single | 28 | 7 | 0.563618004 | 0.587050974 | 0.02 | 0 |
 | single | 28 | 8 | 0.587050974 | 0.610755026 | 0.02 | 0 |
-| single | 28 | 9 | 0.610755026 | 0.634662151 | 0.02 | 0 |
-| single | 28 | 10 | 0.634662151 | 0.658709407 | 0.02 | 0 |
-| single | 28 | 11 | 0.658709407 | 0.68288064 | 0.02 | 0 |
-| single | 28 | 12 | 0.68288064 | 0.707097828 | 0.02 | 0 |
+| single | 28 | 9 | 0.610755026 | 0.634662092 | 0.02 | 0 |
+| single | 28 | 10 | 0.634662092 | 0.658709347 | 0.02 | 0 |
+| single | 28 | 11 | 0.658709347 | 0.68288058 | 0.02 | 0 |
+| single | 28 | 12 | 0.68288058 | 0.707097828 | 0.02 | 0 |
 | single | 28 | 13 | 0.707097828 | 0.731452048 | 0.02 | 0 |
 | single | 28 | 14 | 0.731452048 | 0.755996704 | 0.02 | 0 |
-| zero | 20 | 0 | 0.419970304 | 0.419970304 | 0 | 0 |
-| zero | 20 | 1 | 0.419970304 | 0.419970304 | 0 | 0 |
-| zero | 20 | 2 | 0.419970304 | 0.419970304 | 0 | 0 |
-| zero | 20 | 3 | 0.419970304 | 0.419970304 | 0 | 0 |
-| zero | 20 | 4 | 0.419970304 | 0.419970304 | 0 | 0 |
+| zero | 20 | 0 | 0.419970274 | 0.419970274 | 0 | 0 |
+| zero | 20 | 1 | 0.419970274 | 0.419970274 | 0 | 0 |
+| zero | 20 | 2 | 0.419970274 | 0.419970274 | 0 | 0 |
+| zero | 20 | 3 | 0.419970274 | 0.419970274 | 0 | 0 |
+| zero | 20 | 4 | 0.419970274 | 0.419970274 | 0 | 0 |
 | zero | 24 | 0 | 0.398540676 | 0.398540676 | 0 | 0 |
 | zero | 24 | 1 | 0.398540676 | 0.398540676 | 0 | 0 |
 | zero | 24 | 2 | 0.398540676 | 0.398540676 | 0 | 0 |
 | zero | 24 | 3 | 0.398540676 | 0.398540676 | 0 | 0 |
 | zero | 24 | 4 | 0.398540676 | 0.398540676 | 0 | 0 |
-| zero | 28 | 0 | 0.383538038 | 0.383538038 | 0 | 0 |
-| zero | 28 | 1 | 0.383538038 | 0.383538038 | 0 | 0 |
-| zero | 28 | 2 | 0.383538038 | 0.383538038 | 0 | 0 |
-| zero | 28 | 3 | 0.383538038 | 0.383538038 | 0 | 0 |
-| zero | 28 | 4 | 0.383538038 | 0.383538038 | 0 | 0 |
+| zero | 28 | 0 | 0.383538008 | 0.383538008 | 0 | 0 |
+| zero | 28 | 1 | 0.383538008 | 0.383538008 | 0 | 0 |
+| zero | 28 | 2 | 0.383538008 | 0.383538008 | 0 | 0 |
+| zero | 28 | 3 | 0.383538008 | 0.383538008 | 0 | 0 |
+| zero | 28 | 4 | 0.383538008 | 0.383538008 | 0 | 0 |
 Every75image iterations recorded;zero-rate EXACTresize-only,all16frozen arrays unchanged;source IDs int32[10] [66921, 63380, 68936, 62280, 62094, 65222, 61209, 61721, 69402, 62570].
 \image(figures/deepdream_images.png)
 // result_end
@@ -436,7 +442,7 @@ int main() {
 // result_begin: markdown
 | main octave | start score | final score |
 |---:|---:|---:|
-| 20 | 0.419970304 | 0.536893606 |
+| 20 | 0.419970274 | 0.536893606 |
 | 24 | 0.51144892 | 0.654157698 |
 | 28 | 0.631932259 | 0.779571593 |
 \image(figures/deepdream_scores.svg)

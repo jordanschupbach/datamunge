@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 The learnable object is the generated image,not VGG weights. Frozen source features define content and style objectives;an explicit tensor optimizer updates pixels and projects them into the unit interval. Reproducible official assets,independent gradient fixtures and actual source/output previews connect the mechanism to a measurable short experiment.
 
-The editable concept diagram is `diagrams/gatys_style_transfer_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/gatys_style_transfer_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/gatys_style_transfer_concept.tikz > build/gatys_style_transfer_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/gatys_style_transfer_concept.svg build/gatys_style_transfer_concept.dvi > build/gatys_style_transfer_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/gatys_style_transfer_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Content and painting\nFrozen VGG19 features");
+  diagram.node("n1", {5.2, 0}, "Only pixels are leaves\nVisible projected Adam");
+  diagram.node("n2", {10.4, 0}, "Restore best image\nInspect actual changes");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/gatys_style_transfer_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/gatys_style_transfer_concept.svg)
 // result_end
 \caption(Gatys style transfer:visible projected Adam through frozen VGG19)
@@ -596,41 +602,41 @@ int main() {
 ```
 // result_begin: markdown
 Only12288 pixel scalars optimized;VGG32 tensors/20024384 values frozen.
-Fixed initial raw content/style 263952832.000000/973494272.000000.
+Fixed initial raw content/style 263952848.000000/973494208.000000.
 | step | objective | relative content | relative style |
 |---:|---:|---:|---:|
 | 0 | 2.000000 | 1.000000 | 1.000000 |
-| 1 | 1.329745 | 0.482833 | 0.846912 |
+| 1 | 1.329744 | 0.482832 | 0.846912 |
 | 2 | 1.219039 | 0.477410 | 0.741629 |
-| 3 | 1.165623 | 0.473546 | 0.692077 |
+| 3 | 1.165623 | 0.473547 | 0.692077 |
 | 4 | 1.103668 | 0.435844 | 0.667824 |
-| 5 | 1.069081 | 0.412607 | 0.656474 |
-| 6 | 1.038924 | 0.387210 | 0.651714 |
-| 7 | 1.019438 | 0.367569 | 0.651869 |
-| 8 | 0.992719 | 0.338952 | 0.653767 |
-| 9 | 0.975723 | 0.317574 | 0.658149 |
-| 10 | 0.961276 | 0.294882 | 0.666394 |
-| 11 | 0.936015 | 0.259803 | 0.676212 |
-| 12 | 0.915559 | 0.231249 | 0.684310 |
-| 13 | 0.903468 | 0.213650 | 0.689818 |
-| 14 | 0.891827 | 0.198652 | 0.693175 |
-| 15 | 0.882375 | 0.186326 | 0.696049 |
-| 16 | 0.875249 | 0.175457 | 0.699791 |
-| 17 | 0.868160 | 0.164053 | 0.704107 |
-| 18 | 0.862036 | 0.154204 | 0.707832 |
-| 19 | 0.857640 | 0.147540 | 0.710100 |
-| 20 | 0.854054 | 0.143755 | 0.710298 |
-| 21 | 0.849874 | 0.140322 | 0.709553 |
-| 22 | 0.844326 | 0.135346 | 0.708980 |
-| 23 | 0.840266 | 0.131428 | 0.708838 |
-| 24 | 0.837993 | 0.129383 | 0.708610 |
-| 25 | 0.835577 | 0.127439 | 0.708138 |
-| 26 | 0.833061 | 0.125641 | 0.707420 |
-| 27 | 0.830150 | 0.123018 | 0.707132 |
-| 28 | 0.827815 | 0.120692 | 0.707123 |
-| 29 | 0.826465 | 0.118906 | 0.707559 |
-| 30 | 0.824895 | 0.116245 | 0.708650 |
-Selected step30,restored objective 0.824895;relative content/style 0.116245/0.708650;image gradient norm 0.051868;mean pixel change 0.085392.
+| 5 | 1.069080 | 0.412606 | 0.656474 |
+| 6 | 1.038928 | 0.387211 | 0.651716 |
+| 7 | 1.019441 | 0.367567 | 0.651874 |
+| 8 | 0.992719 | 0.338952 | 0.653768 |
+| 9 | 0.975728 | 0.317583 | 0.658145 |
+| 10 | 0.961283 | 0.294894 | 0.666388 |
+| 11 | 0.936002 | 0.259769 | 0.676233 |
+| 12 | 0.915561 | 0.231223 | 0.684339 |
+| 13 | 0.903458 | 0.213623 | 0.689835 |
+| 14 | 0.891784 | 0.198622 | 0.693162 |
+| 15 | 0.882317 | 0.186282 | 0.696035 |
+| 16 | 0.875251 | 0.175508 | 0.699743 |
+| 17 | 0.868176 | 0.164169 | 0.704007 |
+| 18 | 0.862030 | 0.154355 | 0.707674 |
+| 19 | 0.857664 | 0.147754 | 0.709910 |
+| 20 | 0.854059 | 0.143909 | 0.710151 |
+| 21 | 0.849849 | 0.140335 | 0.709514 |
+| 22 | 0.844339 | 0.135280 | 0.709059 |
+| 23 | 0.840368 | 0.131498 | 0.708870 |
+| 24 | 0.838069 | 0.129495 | 0.708575 |
+| 25 | 0.835632 | 0.127619 | 0.708013 |
+| 26 | 0.833164 | 0.125934 | 0.707230 |
+| 27 | 0.830224 | 0.123254 | 0.706970 |
+| 28 | 0.827890 | 0.120819 | 0.707072 |
+| 29 | 0.826569 | 0.118993 | 0.707577 |
+| 30 | 0.825019 | 0.116294 | 0.708725 |
+Selected step30,restored objective 0.825019;relative content/style 0.116294/0.708725;image gradient norm 0.051977;mean pixel change 0.085361.
 All32 frozen weight tensors and six feature targets unchanged;checkpoint contains generated image only.
 \image(figures/gatys_style_transfer_training.svg)
 // result_end

@@ -34,18 +34,24 @@ the paper's loss and optimiser. The report exposes three epochs on 256 fitting r
 validation rows and 128 official test rows. Sparse convolution work sums only connected pairs;
 parameter sparsity is preserved, while 16 small C3 calls need not minimise runtime.
 
-The editable concept diagram is `diagrams/lenet5_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/lenet5_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/lenet5_concept.tikz > build/lenet5_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/lenet5_concept.svg build/lenet5_concept.dvi > build/lenet5_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/lenet5_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Padded digit image\nscaled tanh stages");
+  diagram.node("n1", {5.2, 0}, "Sparse C3 connections\nlearned subsampling");
+  diagram.node("n2", {10.4, 0}, "Fixed RBF prototypes\nexplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/lenet5_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/lenet5_concept.svg)
 // result_end
 \caption(LeNet-5: Sparse Connections, Learned Pooling and RBF Outputs)

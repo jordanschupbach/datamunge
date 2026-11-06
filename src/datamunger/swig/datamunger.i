@@ -1,5 +1,9 @@
 %module(directors="1") datamunger
 
+%{
+#include "datamunge/linalg/bindings.hpp"
+%}
+
 %include <stdint.i>
 %include <std_vector.i>
 %include <std_string.i>
@@ -211,8 +215,9 @@
 %include "datamunge/plot/plot.hpp"
 %template(RGBVector) std::vector<datamunge::graphics::RGB>;
 // datamunge::rnorm(mean, sd, n) would mask stats::rnorm(n, mean, sd), which has a different
-// argument order, for anyone who attaches datamunger; R users have rnorm()/runif()/seq() already.
-%ignore datamunge::rnorm;
+// argument order. Expose the shared native generator under a distinct name for
+// cross-language reproducibility, while leaving stats::rnorm() available.
+%rename(native_rnorm) datamunge::rnorm;
 %ignore datamunge::runif;
 %include "datamunge/vector.i"
 %include "datamunge/stats/arima.hpp"
@@ -308,6 +313,17 @@
 %include "datamunge/algebra/groebner.hpp"
 
 %include "datamunge/algebra/expression.hpp"
+%include "datamunge/algebra/tex.i"
+// Numeric integration and shifted Taylor polynomials use the canonical calculus helpers.
+%exception {
+  try {
+    $action
+  } catch (const std::exception& error) {
+    SWIG_exception_fail(SWIG_RuntimeError, error.what());
+  }
+}
+%include "datamunge/algebra/calculus.hpp"
+%exception;
 
 // datamunge::nn binding surface: NnTensor (tensors, core ops, autograd) and NnModel
 // (sequential models, gradients, optimizer steps, .npz weights). See include/datamunge/nn/api.hpp;
@@ -328,6 +344,29 @@
 %include "datamunge/nn/api.hpp"
 %exception;
 
+// Hierarchical spline fits use the canonical C++ bases and local patch solvers,
+// matching the Python surface. Matrix-valued operators remain C++ only.
+%{
+  #include "datamunge/fda/hierarchical_bspline.hpp"
+%}
+%ignore datamunge::fda::LocalBSplineEvaluation;
+%ignore datamunge::fda::BSplineBasis::evaluate_point;
+%ignore datamunge::fda::BSplineBasis::evaluate;
+%ignore datamunge::fda::BSplineBasis::evaluate_dense;
+%ignore datamunge::fda::BSpline;
+%ignore datamunge::fda::BSplineRefinement::matrix;
+%ignore datamunge::fda::tensor_difference_penalty;
+%exception {
+  try { $action }
+  catch (const std::exception& error) {
+    SWIG_exception_fail(SWIG_RuntimeError, error.what());
+  }
+}
+%include "datamunge/fda/bspline.hpp"
+%template(BSplineBasisVector) std::vector<datamunge::fda::BSplineBasis>;
+%include "datamunge/fda/hierarchical_bspline.hpp"
+%exception;
+
 // Native simulation tasks share one generated adapter with Python.
 %exception {
   try { $action }
@@ -335,3 +374,13 @@
 }
 %include "prebindings/simulation/src/tasks.i"
 %exception;
+
+%exception {
+  try { $action }
+  catch (const std::exception& e) { SWIG_exception(SWIG_RuntimeError, e.what()); }
+}
+%include "datamunge/linalg/bindings.hpp"
+%exception;
+
+// Code-driven CAD modelling, import and headless rendering.
+%include "datamunge/cad/bindings.i"

@@ -28,18 +28,24 @@ unpenalised optimum to infinite coefficients; finite iterations do not prove a f
 Classification thresholds encode a decision rule, while calibration compares probabilities
 with event frequencies. A dense gradient step costs O(Np).
 
-The concept diagram has a retained TikZ source in `diagrams/logistic_regression_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/logistic_regression_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/logistic_regression_concept.tikz > build/logistic_regression_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/logistic_regression_concept.svg build/logistic_regression_concept.dvi > build/logistic_regression_concept.render.log 2>&1
-printf 'Rendered build/logistic_regression_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/logistic_regression_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Linear logit\nz=x^Tw");
+  diagram.node("n1", {5.2, 0}, "Stable Bernoulli NLL\ngradient p-y");
+  diagram.node("n2", {10.4, 0}, "Probabilities + decisions\ncalibration needs evaluation");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/logistic_regression_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/logistic_regression_concept.svg from local TikZ source.
 // \image(figures/logistic_regression_concept.svg)
 // result_end
 \caption(Fit logits, then distinguish calibration from classification)

@@ -15,11 +15,13 @@ endif()
 
 option(DATAMUNGE_ENABLE_DATA_ASSETS "Enable native report dataset acquisition and preparation" ON)
 
+option(DATAMUNGE_ENABLE_MUJOCO "Enable optional MuJoCo reference backend (native articulated physics is always available)" OFF)
+
 option(DATAMUNGE_ENABLE_ARROW "Enable Apache Arrow integration when available" ON)
-option(DATAMUNGE_USE_BLAS "Use the platform BLAS (Accelerate or OpenBLAS) for nn GEMM when found" ON)
-option(DATAMUNGE_USE_LAPACK "Use LAPACK (Accelerate, OpenBLAS's or another) for nn linear algebra when found" ON)
+option(DATAMUNGE_USE_BLAS "Use an external CBLAS (Accelerate/OpenBLAS) for nn GEMM instead of the in-house kernels (comparison only)" OFF)
+option(DATAMUNGE_USE_LAPACK "Use an external LAPACK (Accelerate, OpenBLAS's or another) for large nn decompositions instead of the built-in kernels" OFF)
 option(DATAMUNGE_ENABLE_CUDA "Enable native CUDA Driver API compute (runtime NVIDIA driver required)" OFF)
-option(DATAMUNGE_ENABLE_CUBLAS "Enable CUDA Float32/Float64 matrix adapters (CUDA toolkit required)" OFF)
+option(DATAMUNGE_ENABLE_CUBLAS "cuBLAS comparison path for Context::matmul (in-house kernels are the default; CUDA toolkit required)" OFF)
 option(DATAMUNGE_ENABLE_VULKAN "Enable native Vulkan compute (Vulkan 1.3 headers/loader required)" OFF)
 
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
@@ -64,7 +66,47 @@ file(GLOB_RECURSE cxx_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src
 add_library(${PROJECT_NAME} SHARED ${c_headers} ${c_sources} ${cxx_headers} ${cxx_sources})
 set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 23)
+if(DATAMUNGE_ENABLE_MUJOCO)
+  # Only the headless C API is needed; upstream's viewer config also requires OpenGL.
+  find_path(MUJOCO_INCLUDE_DIR mujoco/mujoco.h)
+  find_library(MUJOCO_LIBRARY mujoco)
+  if(NOT MUJOCO_INCLUDE_DIR OR NOT MUJOCO_LIBRARY)
+    message(FATAL_ERROR "DATAMUNGE_ENABLE_MUJOCO requires MuJoCo >=3.3 headers and library")
+  endif()
+  target_include_directories(${PROJECT_NAME} PRIVATE ${MUJOCO_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} PRIVATE ${MUJOCO_LIBRARY})
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_ENABLE_MUJOCO=1)
+endif()
+# CAD predicates and geometric tolerances require individually rounded operations.
+# Preserve the source kernel's arithmetic on ARM as well as x86.
+file(GLOB cad_kernel_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/datamunge/cad/*.cpp")
+set_source_files_properties(${cad_kernel_sources} PROPERTIES COMPILE_OPTIONS
+  "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-ffp-contract=off>;$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/fp:strict>")
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
+
+# The nn kernels never read floating-point exception flags or math errno. Under
+# GCC's default trapping-math semantics a float compare may trap, so the
+# compiler refuses to if-convert the selects in ReLU masks, pooling argmax and
+# similar loops and they run as scalar branches (10-15x slower than the
+# vectorised form). Results are bit-identical either way.
+option(DATAMUNGE_NN_FAST_FP "Compile the nn kernels with -fno-trapping-math -fno-math-errno" ON)
+if(DATAMUNGE_NN_FAST_FP)
+  file(GLOB nn_kernel_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/datamunge/nn/*.cpp")
+  set_source_files_properties(${nn_kernel_sources} PROPERTIES COMPILE_OPTIONS
+    "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-fno-trapping-math;-fno-math-errno>")
+endif()
+# The in-house BLAS (src/datamunge/nn/blas_kernels.hpp) is compiled once per
+# instruction set; blas.cpp picks a unit at run time from the CPU features, so
+# the library itself stays buildable for the baseline ISA. The -m flags apply
+# to those units only (never -march=native, which Nix strips anyway).
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(x86_64|AMD64|amd64)$" AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+  set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/src/datamunge/nn/blas_avx512.cpp" APPEND PROPERTY COMPILE_OPTIONS
+    -mavx512f -mavx512vl -mavx512dq -mavx512bw -mfma -ffp-contract=fast)
+  set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/src/datamunge/nn/blas_avx2.cpp" APPEND PROPERTY COMPILE_OPTIONS
+    -mavx2 -mfma -ffp-contract=fast)
+  set_property(SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/src/datamunge/nn/blas_generic.cpp" APPEND PROPERTY COMPILE_OPTIONS
+    -ffp-contract=fast)
+endif()
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                          $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
@@ -135,9 +177,9 @@ if(X11_FOUND)
   target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_X11=1)
 endif()
 
-# datamunge::nn kernels use a std::thread pool and, when available, a CBLAS
-# GEMM (Accelerate on macOS, OpenBLAS or another CBLAS elsewhere). Without
-# one they fall back to a built-in blocked GEMM.
+# datamunge::nn kernels use a std::thread pool and the in-house BLAS above.
+# DATAMUNGE_USE_BLAS swaps the GEMM for a CBLAS (Accelerate on macOS, OpenBLAS
+# or another CBLAS elsewhere) so the two can be compared; it is not needed.
 find_package(Threads REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)
 if(DATAMUNGE_USE_BLAS)
@@ -166,15 +208,15 @@ if(DATAMUNGE_USE_BLAS)
         target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_CBLAS=1)
         message(STATUS "datamunge::nn GEMM: CBLAS (${BLAS_LIBRARIES})")
       else()
-        message(STATUS "datamunge::nn GEMM: built-in (no CBLAS found)")
+        message(STATUS "datamunge::nn GEMM: in-house (no CBLAS found)")
       endif()
     endif()
   endif()
 endif()
 
-# datamunge::nn linear algebra (SVD, eigen, QR, Cholesky, LU, eig) calls
-# LAPACK for larger matrices when available; the built-in kernels remain for
-# small matrices and as the fallback. On Linux OpenBLAS usually bundles LAPACK;
+# datamunge::nn linear algebra (SVD, eigen, QR, Cholesky, LU, eig) has built-in
+# kernels for every size; DATAMUNGE_USE_LAPACK optionally sends larger matrices
+# to an external LAPACK instead. On Linux OpenBLAS usually bundles LAPACK;
 # otherwise any LAPACK found by FindLAPACK is used.
 if(DATAMUNGE_USE_LAPACK)
   set(DATAMUNGE_LAPACK_BACKEND "")
@@ -195,6 +237,7 @@ if(DATAMUNGE_USE_LAPACK)
       if(DATAMUNGE_OPENBLAS_HAS_LAPACK)
         target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_LAPACK=1)
         set(DATAMUNGE_LAPACK_BACKEND "OpenBLAS")
+        set(DATAMUNGE_LAPACK_LINK ${DATAMUNGE_OPENBLAS_LINK_LIBRARIES})
       endif()
     endif()
     if(NOT DATAMUNGE_LAPACK_BACKEND)
@@ -203,6 +246,30 @@ if(DATAMUNGE_USE_LAPACK)
         target_link_libraries(${PROJECT_NAME} PRIVATE ${LAPACK_LIBRARIES})
         target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_HAVE_LAPACK=1)
         set(DATAMUNGE_LAPACK_BACKEND "${LAPACK_LIBRARIES}")
+        set(DATAMUNGE_LAPACK_LINK ${LAPACK_LIBRARIES})
+      endif()
+    endif()
+    # The integer width of the LAPACK entry points is part of their ABI: OpenBLAS
+    # built with INTERFACE64 (nixpkgs' default on 64-bit platforms) takes 64-bit
+    # integers. Ask the linked OpenBLAS; -DDATAMUNGE_LAPACK_ILP64=ON/OFF overrides
+    # the probe (another ILP64 LAPACK such as MKL's, or a cross build).
+    if(DATAMUNGE_LAPACK_BACKEND)
+      if(DEFINED DATAMUNGE_LAPACK_ILP64)
+        set(DATAMUNGE_LAPACK_IS_ILP64 ${DATAMUNGE_LAPACK_ILP64})
+      elseif(NOT CMAKE_CROSSCOMPILING)
+        include(CheckCXXSourceRuns)
+        set(CMAKE_REQUIRED_LIBRARIES ${DATAMUNGE_LAPACK_LINK})
+        check_cxx_source_runs([=[
+#include <cstring>
+extern "C" char* openblas_get_config();
+int main() { return std::strstr(openblas_get_config(), "USE64BITINT") ? 0 : 1; }
+]=] DATAMUNGE_LAPACK_OPENBLAS_ILP64)
+        unset(CMAKE_REQUIRED_LIBRARIES)
+        set(DATAMUNGE_LAPACK_IS_ILP64 ${DATAMUNGE_LAPACK_OPENBLAS_ILP64})
+      endif()
+      if(DATAMUNGE_LAPACK_IS_ILP64)
+        target_compile_definitions(${PROJECT_NAME} PRIVATE DATAMUNGE_LAPACK_ILP64=1)
+        string(APPEND DATAMUNGE_LAPACK_BACKEND ", 64-bit integers")
       endif()
     endif()
   endif()
@@ -235,6 +302,8 @@ configure_file(
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/datamunge.pc"
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
 )
+install(FILES "${PROJECT_SOURCE_DIR}/third_party_licenses/mep-cad-LICENSE"
+        DESTINATION "${CMAKE_INSTALL_DATADIR}/licenses/${PROJECT_NAME}")
 
 if(DATAMUNGE_ENABLE_DATA_ASSETS)
   add_executable(datamunge-prepare-data tools/prepare_example_data.cpp)

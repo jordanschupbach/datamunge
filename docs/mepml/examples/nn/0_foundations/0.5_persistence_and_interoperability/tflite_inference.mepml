@@ -28,18 +28,24 @@ stable public addresses do not establish allocation-free inference, compilation,
 delegate acceleration or TFLite compatibility. Model initialization and input validation occur
 before the repeated calls; each call costs O(input_width times output_width) in this fixture.
 
-The concept diagram has a retained TikZ source in `diagrams/tflite_inference_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/tflite_inference_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/tflite_inference_concept.tikz > build/tflite_inference_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/tflite_inference_concept.svg build/tflite_inference_concept.dvi > build/tflite_inference_concept.render.log 2>&1
-printf 'Rendered build/tflite_inference_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/tflite_inference_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Persistent input\n2 Float32 = 8 bytes");
+  diagram.node("n1", {5.2, 0}, "Native affine function\ntemporary result");
+  diagram.node("n2", {10.4, 0}, "Persistent output\n1 Float32 = 4 bytes");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/tflite_inference_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/tflite_inference_concept.svg from local TikZ source.
 // \image(figures/tflite_inference_concept.svg)
 // result_end
 \caption(Stable public buffers do not imply allocation-free internal execution)

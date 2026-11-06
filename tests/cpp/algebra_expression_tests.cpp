@@ -3,6 +3,7 @@
 #include <datamunge/algebra/algebra.hpp>
 
 #include <cmath>
+#include <type_traits>
 
 using namespace datamunge::algebra;
 
@@ -81,4 +82,107 @@ TEST(Expr, ToStringProducesAReadableExpression) {
     const Expr x = Expr::variable("x");
     const Expr e = x.add(Expr::constant(1.0));
     EXPECT_EQ(e.to_string(), "(x + 1)");
+}
+
+TEST(ExprOperators, NumericConstantsConvertWithoutNumericConversionOfExpressions) {
+    static_assert(std::is_convertible_v<int, Expr>);
+    static_assert(std::is_convertible_v<float, Expr>);
+    static_assert(std::is_convertible_v<long double, Expr>);
+    static_assert(!std::is_convertible_v<Expr, double>);
+    static_assert(!std::is_convertible_v<std::string, Expr>);
+    static_assert(!std::is_convertible_v<const char*, Expr>);
+    Expr scalar = 2.5;
+    EXPECT_DOUBLE_EQ(scalar.evaluate({}, {}), 2.5);
+    scalar = -7;
+    EXPECT_DOUBLE_EQ(scalar.evaluate({}, {}), -7);
+    const Expr precise = 0.125L;
+    EXPECT_DOUBLE_EQ(precise.evaluate({}, {}), 0.125);
+}
+
+TEST(ExprOperators, AllBinaryOperatorsAcceptLiteralsOnEitherSideAndExpressions) {
+    const auto x = Expr::variable("x");
+    const auto y = Expr::variable("y");
+    EXPECT_DOUBLE_EQ((x + 2).evaluate({"x"}, {3}), 5);
+    EXPECT_DOUBLE_EQ((2 + x).evaluate({"x"}, {3}), 5);
+    EXPECT_DOUBLE_EQ((x - 2).evaluate({"x"}, {3}), 1);
+    EXPECT_DOUBLE_EQ((2 - x).evaluate({"x"}, {3}), -1);
+    EXPECT_DOUBLE_EQ((x * 2).evaluate({"x"}, {3}), 6);
+    EXPECT_DOUBLE_EQ((2 * x).evaluate({"x"}, {3}), 6);
+    EXPECT_DOUBLE_EQ((x / 2).evaluate({"x"}, {3}), 1.5);
+    EXPECT_DOUBLE_EQ((2 / x).evaluate({"x"}, {4}), 0.5);
+    EXPECT_DOUBLE_EQ((x ^ 2).evaluate({"x"}, {3}), 9);
+    EXPECT_DOUBLE_EQ((2 ^ x).evaluate({"x"}, {3}), 8);
+    EXPECT_DOUBLE_EQ((x + y).evaluate({"x", "y"}, {3, 2}), 5);
+    EXPECT_DOUBLE_EQ((x - y).evaluate({"x", "y"}, {3, 2}), 1);
+    EXPECT_DOUBLE_EQ((x * y).evaluate({"x", "y"}, {3, 2}), 6);
+    EXPECT_DOUBLE_EQ((x / y).evaluate({"x", "y"}, {3, 2}), 1.5);
+    EXPECT_DOUBLE_EQ((x ^ y).evaluate({"x", "y"}, {3, 2}), 9);
+    EXPECT_DOUBLE_EQ((x ^ -2).evaluate({"x"}, {2}), 0.25);
+    EXPECT_DOUBLE_EQ((x ^ 0.5).evaluate({"x"}, {4}), 2);
+    EXPECT_DOUBLE_EQ((2.5f * x + 3u - 0.5L).evaluate({"x"}, {2}), 7.5);
+}
+
+TEST(ExprOperators, OperatorPolynomialMatchesCalculusAndExistingMethodTrees) {
+    const auto x = Expr::variable("x");
+    const auto f = (x ^ 3) - 2 * x + 1;
+    const auto named = x.power(Expr::constant(3)).subtract(Expr::constant(2).multiply(x)).add(Expr::constant(1));
+    EXPECT_EQ(f.to_string(), named.to_string());
+    const auto derivative = f.differentiate("x").simplify();
+    const auto primitive = f.integrate("x").simplify();
+    for (double value : {-2., -1., 0., 1., 2., 3.5}) {
+        EXPECT_DOUBLE_EQ(f.evaluate({"x"}, {value}), value * value * value - 2 * value + 1);
+        EXPECT_DOUBLE_EQ(derivative.evaluate({"x"}, {value}), 3 * value * value - 2);
+        EXPECT_NEAR(primitive.differentiate("x").evaluate({"x"}, {value}),
+                    f.evaluate({"x"}, {value}), 1e-12);
+    }
+    EXPECT_NEAR(definite_integral(f, "x", 0, 2), 2, 1e-12);
+    EXPECT_EQ((f * 1 + 0).simplify().to_string(), f.to_string());
+    EXPECT_EQ(f.to_tex(), "x^{3} - 2 \\cdot x + 1");
+    const auto wave = (2 * x).sin();
+    EXPECT_NEAR(wave.differentiate("x").simplify().evaluate({"x"}, {0.3}), 2 * std::cos(0.6), 1e-12);
+}
+
+TEST(ExprOperators, OwnOperandsAfterTemporaryDestructionReassignmentAndSelfAssignment) {
+    const auto temporary = (Expr::variable("x") + 1) / (Expr::variable("x") - 2);
+    EXPECT_DOUBLE_EQ(temporary.evaluate({"x"}, {3}), 4);
+    Expr term = Expr::variable("x") + 1;
+    const auto product = term * term;
+    term = 100;
+    EXPECT_DOUBLE_EQ(product.evaluate({"x"}, {2}), 9);
+    Expr evolving = Expr::variable("x");
+    evolving = evolving * evolving;
+    evolving = evolving + 1;
+    const auto snapshot = evolving;
+    evolving = 0;
+    EXPECT_DOUBLE_EQ(snapshot.evaluate({"x"}, {2}), 5);
+}
+
+TEST(ExprOperators, RetainsCppPowerPrecedenceAndLeftAssociativity) {
+    const auto x = Expr::variable("x");
+    const auto polynomial = (x ^ 3) - 2 * x + 1;
+    // C++ parses the entire additive expression as the exponent without parentheses.
+    const auto ungrouped = x ^ 3 - 2 * x + 1;
+    EXPECT_DOUBLE_EQ(polynomial.evaluate({"x"}, {2}), 5);
+    EXPECT_DOUBLE_EQ(ungrouped.evaluate({"x"}, {2}), 1);
+    EXPECT_THROW((void)ungrouped.differentiate("x"), std::invalid_argument);
+    const auto left = x ^ 2 ^ 3;
+    const auto right = x ^ (Expr(2) ^ 3);
+    EXPECT_DOUBLE_EQ(left.evaluate({"x"}, {2}), 64);
+    EXPECT_DOUBLE_EQ(right.evaluate({"x"}, {2}), 256);
+    EXPECT_EQ(2 ^ 3, 1); // Ordinary integral operands keep C++ XOR semantics.
+}
+
+TEST(ExprOperators, UnarySignsAndDeferredDivisionRetainExistingSemantics) {
+    const auto x = Expr::variable("x");
+    EXPECT_EQ((+x).to_string(), x.to_string());
+    EXPECT_DOUBLE_EQ((-x).evaluate({"x"}, {3}), -3);
+    EXPECT_DOUBLE_EQ(((-x) ^ 2).evaluate({"x"}, {3}), 9);
+    EXPECT_DOUBLE_EQ((-(x ^ 2)).evaluate({"x"}, {3}), -9);
+    EXPECT_DOUBLE_EQ((x - (x + 1)).evaluate({"x"}, {3}), -1);
+    EXPECT_EQ((x + 0).to_string(), "(x + 0)");
+    const auto zero_division = 1 / (x - x);
+    EXPECT_TRUE(std::isinf(zero_division.evaluate({"x"}, {3})));
+    const auto variable_power = x ^ x;
+    EXPECT_DOUBLE_EQ(variable_power.evaluate({"x"}, {3}), 27);
+    EXPECT_THROW((void)variable_power.differentiate("x"), std::invalid_argument);
 }

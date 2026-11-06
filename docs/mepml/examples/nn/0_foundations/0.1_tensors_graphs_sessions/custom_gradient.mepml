@@ -264,6 +264,14 @@ z [Leaf] []
 
 - gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
 // result_end
+```
+Square_168 [Square] [] <- Erfc_167
+Erfc_167 [Erfc] [] <- z
+z [Leaf] []
+```
+
+- gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
+// result_end
 
 The custom gradient agrees with the closed form and with central differences to every printed decimal. The second derivative,
 which differentiates the recorded backward, matches \(4xe^{-x^2}/\sqrt\pi\) at all five points. Both checks pass, with largest errors

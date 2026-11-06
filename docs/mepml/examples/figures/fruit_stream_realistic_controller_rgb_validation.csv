@@ -1,0 +1,4 @@
+training_windows,arrivals,correct,wrong,missed,pending,score
+128,86,62,1,18,5,194.00000000
+256,86,65,3,13,5,223.00000000
+512,86,64,3,14,5,212.00000000

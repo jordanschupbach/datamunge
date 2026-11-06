@@ -48,18 +48,24 @@ kernel L2=.0001/2, padded crops/flips and paired learned/BN checkpoint selection
 All attention parameters participate in the optimizer. This bounded single-seed run differs
 from the paper's ImageNet schedule and cannot establish attention accuracy superiority.
 
-The editable concept diagram is `diagrams/eca_net_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/eca_net_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/eca_net_concept.tikz > build/eca_net_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/eca_net_concept.svg build/eca_net_concept.dvi > build/eca_net_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/eca_net_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Global channel means\nLocal 1D filter");
+  diagram.node("n1", {5.2, 0}, "No width reduction\nAdaptive odd kernel");
+  diagram.node("n2", {10.4, 0}, "All sixteen blocks\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/eca_net_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/eca_net_concept.svg)
 // result_end
 \caption(ECA-Net: Local Channel Filtering and Explicit Tensor Optimization)
@@ -257,7 +263,7 @@ int main() {
 ```
 // result_begin: markdown
 Full-width eca_net groups 1: 25557118 learned / 53120 moving scalars; sixteen blocks, 64-pixel forward.
-Every 177 parameter-tensor gradient finite; norm range [0.006478741299,18.076606750], moving state frozen.
+Every 177 parameter-tensor gradient finite; norm range [0.006518106908,18.082700729], moving state frozen.
 // result_end
 
 ```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
@@ -463,7 +469,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1484260 learned scalars, 13280 moving scalars; 128 explicit Adam updates.
-Selected epoch 7; validation NLL 2.268924; inference training NLL 1.569579; test NLL 2.261681; test accuracy 0.265625.
+Selected epoch 1; validation NLL 2.580398; inference training NLL 2.268038; test NLL 2.247559; test accuracy 0.203125.
 \image(figures/eca_net_training.svg)
 // result_end
 \caption(Explicit eight-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

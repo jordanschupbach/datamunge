@@ -4,6 +4,7 @@
 
 #include "datamunge/nn/views.hpp"
 #include "detail.hpp"
+#include "device_ops.hpp"
 
 namespace datamunge::nn {
 
@@ -294,6 +295,8 @@ Tensor concat(const std::vector<Tensor>& tensors, std::int64_t axis_in) {
     shape[static_cast<std::size_t>(axis)] += t.shape()[static_cast<std::size_t>(axis)];
     dt = promote_types(dt, t.dtype());
   }
+  if (std::any_of(tensors.begin(), tensors.end(), [](const Tensor& t) { return detail::is_native(t); }))
+    return detail::device_concat(tensors, axis, shape);
   std::vector<Tensor> inputs;
   for (const auto& t : tensors) inputs.push_back(as_dtype(t, dt));
   Tensor out = empty(shape, dt);
@@ -409,6 +412,7 @@ Tensor pad(const Tensor& x, const std::vector<std::pair<std::int64_t, std::int64
     if (p.first < 0 || p.second < 0) throw std::invalid_argument("pad: negative padding");
 
   if (mode == PadMode::Constant) {
+    if (detail::is_native(x)) return detail::device_pad_constant(x, paddings, value);
     Shape shape = x.shape();
     auto  slices = full_slices(x.shape());
     for (std::size_t i = 0; i < paddings.size(); ++i) {

@@ -49,6 +49,14 @@ let
     (under "TODO.org")
     (under "AGENTS.md")
     (under "CONTRIBUTING.md")
+    (under "PERFORMANCE.md")
+
+    # Measurement/editor-audit tooling is never executed by core/binding package builds.
+    # Updating benchmark metadata or hover expectations must not rebuild the library.
+    (under "scripts/benchmark_fruit_render.py")
+    (under "scripts/benchmark_fruit_render_gpu.py")
+    (under "scripts/benchmark_fruit_wrist.py")
+    (under "scripts/check_documentation_hover.py")
 
     # report / notebook / plot output anywhere in the tree
     (fs.fileFilter (

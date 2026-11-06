@@ -29,18 +29,24 @@ in mel, their weighted powers are summed, and a natural-log floor prevents log(0
 These are powers, not amplitudes or decibels; no sample-rate conversion occurs.
 FFT cost is O(frames N log N); multiplying a dense B-band filter bank costs O(frames N B).
 
-The concept diagram has a retained TikZ source in `diagrams/audio_features_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/audio_features_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/audio_features_concept.tikz > build/audio_features_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/audio_features_concept.svg build/audio_features_concept.dvi > build/audio_features_concept.render.log 2>&1
-printf 'Rendered build/audio_features_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/audio_features_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Samples\nx_n");
+  diagram.node("n1", {5.2, 0}, "Periodic Hann + FFT\nP=|X|^2");
+  diagram.node("n2", {10.4, 0}, "Mel triangles + floor\nlog(max(PW, ε))");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/audio_features_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/audio_features_concept.svg from local TikZ source.
 // \image(figures/audio_features_concept.svg)
 // result_end
 \caption(Windowing controls leakage; zero-padding changes the grid, not the information)

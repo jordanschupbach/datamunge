@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_c
 
 Quantize original8kHz audio with tensor mu-law256,learn next-code distributions after127warmup samples,and expose every optimizer update. Restore76 learned arrays,verify causal prefixes,and generate256new codes per real prompt using only previous sampled codes.
 
-The editable concept diagram is `diagrams/wavenet_stack_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/wavenet_stack_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/wavenet_stack_concept.tikz > build/wavenet_stack_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/wavenet_stack_concept.svg build/wavenet_stack_concept.dvi > build/wavenet_stack_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/wavenet_stack_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original spoken\n digit audio");
+  diagram.node("n1", {5.2, 0}, "Gated causal\n tensor stack");
+  diagram.node("n2", {10.4, 0}, "Explicit fit\n and sampled feedback");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/wavenet_stack_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/wavenet_stack_concept.svg)
 // result_end
 \caption(WaveNet stack:real audio and visible autoregressive fitting)
@@ -105,7 +111,6 @@ int main() {
 }
 ```
 // result_begin:
-// Prepared genuine FSDD72/12/24speaker-disjoint windows and3original held-out prompts
 // result_end
 
 Keep the first1025 actual samples without resampling,peak normalization or
@@ -261,7 +266,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Compact 14512values/76leaves,RF128;future intervention earlier maximum 0,later total 731.049338.
+Compact 14512values/76leaves,RF128;future intervention earlier maximum 0,later total 731.049328.
 \image(figures/wavenet_stack_gates.svg)
 // result_end
 \caption(Actual initialized gates for one original fitting window,sharing the actual symmetric gate range. A future suffix leaves all earlier logits exactly unchanged.)
@@ -596,7 +601,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Fresh restore/repeat 0;all held-out prefixes maximum 3.16649675e-08 within2e-6;future earlier 0,later 13252.614975;76leaves immutable:true.
+Fresh restore/repeat 0;all held-out prefixes maximum 0 within2e-6;future earlier 0,later 13252.614960;76leaves immutable:true.
 
 | predictor | NLL | bits/sample | expected amplitude MSE | exact-code fraction |
 |---|---:|---:|---:|---:|

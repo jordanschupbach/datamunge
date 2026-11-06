@@ -30,18 +30,24 @@ offline dataset model uses 64→32→10, explicit minibatch Adam and fixed pixel
 reproduce that MNIST training budget, split or epsilon-LRP analysis. Use `just run-nn mlp_mnist`
 with prepared MNIST files for the original complete workflow.
 
-The concept diagram has a retained TikZ source in `diagrams/mlp_mnist_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/mlp_mnist_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mlp_mnist_concept.tikz > build/mlp_mnist_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/mlp_mnist_concept.svg build/mlp_mnist_concept.dvi > build/mlp_mnist_concept.render.log 2>&1
-printf 'Rendered build/mlp_mnist_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/mlp_mnist_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Input predictors\npixels or XOR corners");
+  diagram.node("n1", {5.2, 0}, "Nonlinear hidden features\nh=ReLU(XW+b)");
+  diagram.node("n2", {10.4, 0}, "Softmax output\nbackpropagate p-y");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/mlp_mnist_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/mlp_mnist_concept.svg from local TikZ source.
 // \image(figures/mlp_mnist_concept.svg)
 // result_end
 \caption(A hidden layer changes the function class; evaluate it with a fixed split)

@@ -29,18 +29,24 @@ minibatch Adam objective and every update. Pixel intensities divide by the known
 method demonstration, not a reproduction of the original program's Adam/validation-selected
 MNIST benchmark. Use `just run-nn softmax_mnist` with prepared MNIST files for that workflow.
 
-The concept diagram has a retained TikZ source in `diagrams/softmax_mnist_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/softmax_mnist_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/softmax_mnist_concept.tikz > build/softmax_mnist_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/softmax_mnist_concept.svg build/softmax_mnist_concept.dvi > build/softmax_mnist_concept.render.log 2>&1
-printf 'Rendered build/softmax_mnist_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/softmax_mnist_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Flattened pixel vector\nD predictors");
+  diagram.node("n1", {5.2, 0}, "One affine readout\nK logits");
+  diagram.node("n2", {10.4, 0}, "Cross entropy\nAdam updates");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/softmax_mnist_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/softmax_mnist_concept.svg from local TikZ source.
 // \image(figures/softmax_mnist_concept.svg)
 // result_end
 \caption(Logits may shift together without changing class probabilities)

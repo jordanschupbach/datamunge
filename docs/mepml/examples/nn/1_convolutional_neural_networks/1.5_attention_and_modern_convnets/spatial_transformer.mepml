@@ -52,18 +52,24 @@ state exists. The final gallery reloads the selected STN and shows actual test w
 supervised geometric inversion. These bounded single-seed fits cannot establish benchmark
 superiority, reproduce the source's much larger schedule or guarantee recovery of the true pose.
 
-The editable concept diagram is `diagrams/spatial_transformer_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/spatial_transformer_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/spatial_transformer_concept.tikz > build/spatial_transformer_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/spatial_transformer_concept.svg build/spatial_transformer_concept.dvi > build/spatial_transformer_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/spatial_transformer_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Predict six affine values\nIdentity head start");
+  diagram.node("n1", {5.2, 0}, "Output-to-input grid\nBilinear zero padding");
+  diagram.node("n2", {10.4, 0}, "Two full CNN fits\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/spatial_transformer_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/spatial_transformer_concept.svg)
 // result_end
 \caption(Spatial Transformers: Tensor Warps and Explicit Paired MNIST Fits)
@@ -485,8 +491,8 @@ int main() {
 }
 ```
 // result_begin: markdown
-Transformer=false: 1044746 learned scalars, 96 explicit Adam updates; selected epoch 1, validation NLL 2.234509, inference fit NLL 1.819659, test NLL 2.162720, test accuracy 0.234375.
-Transformer=true: 1176642 learned scalars, 96 explicit Adam updates; selected epoch 2, validation NLL 2.250255, inference fit NLL 1.151433, test NLL 2.245193, test accuracy 0.312500.
+Transformer=false: 1044746 learned scalars, 96 explicit Adam updates; selected epoch 1, validation NLL 2.234508, inference fit NLL 1.819659, test NLL 2.162720, test accuracy 0.234375.
+Transformer=true: 1176642 learned scalars, 96 explicit Adam updates; selected epoch 2, validation NLL 2.252429, inference fit NLL 1.153814, test NLL 2.242136, test accuracy 0.296875.
 Selected STN fraction of64 test images with mean absolute warped intensity <=1e-5: 0.000000.
 \image(figures/spatial_transformer_training.svg)
 // result_end

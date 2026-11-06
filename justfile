@@ -738,9 +738,48 @@ jq:
     {{ NIX_DEVELOP }} . --command bash -c "find ./build -name 'compile_commands.json' -exec cat {} + | jq -s add > compile_commands.json"
 
 
+# Run the playground document, print its captured results, and export HTML/TeX.
+# Optional arguments select export formats; the C++ demo remains TARGET=playground run-cpp.
 [positional-arguments]
-playground *ARGS:
-    @just TARGET=playground run-cpp "$@"
+playground *FORMATS:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ "$#" -eq 0 ]; then set -- html tex; fi
+    output_dir="$PWD/build/playground"
+    document="docs/mepml/examples/playground.mepml"
+    mkdir -p "$output_dir"
+    pc="{{ MEPML_PKG_CONFIG_PATH }}"
+    {{ NIX_DEVELOP }} .#cpp --command env -u LD_LIBRARY_PATH ${pc:+PKG_CONFIG_PATH="$pc"} ${pc:+DATAMUNGE_CAD_PKG_CONFIG_PATH="$pc"} \
+      mep-mepml build --run --timeout "${DATAMUNGE_MEPML_TIMEOUT:-7200}" --report "$output_dir/run.json" --no-post \
+      -d "$output_dir" "$document" "$@"
+    mkdir -p "$output_dir/figures"
+    if [ -d "$(dirname "$document")/figures" ]; then
+      cp -R "$(dirname "$document")/figures/." "$output_dir/figures/"
+    fi
+    awk '/^\/\/ result_begin/ {printing=1; next} /^\/\/ result_end/ {printing=0; print ""; next} printing {sub(/^\/\/ ?/, ""); print}' "$document"
+    printf 'Build output: %s\n' "$output_dir"
+
+# Frozen-checkpoint preview; the report's default window is 40..60 seconds.
+[positional-arguments]
+playground-preview *FORMATS:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    export DATAMUNGE_STREAM_REPLAY=1
+    just playground "$@"
+
+# Twenty-second CUDA overview preview; sensor inference remains the CPU reference.
+[positional-arguments]
+playground-gpu *FORMATS:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ -z "${DATAMUNGE_MEPML_PKG_CONFIG_PATH:-}" ]; then
+      core="$(nix build --no-link --print-out-paths .#datamunge-cuda)"
+      export DATAMUNGE_MEPML_PKG_CONFIG_PATH="$core/lib/pkgconfig"
+    fi
+    export DATAMUNGE_RENDER_BACKEND=cuda
+    export DATAMUNGE_VIDEO_START="${DATAMUNGE_VIDEO_START:-40}"
+    export DATAMUNGE_VIDEO_SECONDS="${DATAMUNGE_VIDEO_SECONDS:-20}"
+    just playground-preview "$@"
 
 flamechart:
     @echo "Running Performance Tests"
@@ -761,6 +800,66 @@ benchmark:
     @echo "Running {{ BENCH_TARGET }}"
     python3 scripts/benchmark_backend.py run --no-build --suite {{ BENCH_TARGET }}
     @echo "Results saved to benchmarks/results/"
+
+# Replay bounded rendering/physics/inference cases using the realistic playground's saved run.
+# Requires one completed realistic playground; does not train or modify the report/artifacts.
+bench-fruit-render *ARGS:
+    {{ NIX_DEVELOP }} .#cpp --command python3 scripts/benchmark_fruit_render.py {{ ARGS }}
+
+# Four CPU wrist poses with exact buffers/crops/boxes; no video or model training.
+[positional-arguments]
+bench-fruit-wrist *ARGS:
+    {{ NIX_DEVELOP }} .#cpp --command python3 scripts/benchmark_fruit_wrist.py "$@"
+
+# Four matched CPU/CUDA poses, at most five repeats; no video encoding or training.
+[positional-arguments]
+bench-fruit-render-gpu *ARGS:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    pc="${DATAMUNGE_MEPML_PKG_CONFIG_PATH:-}"
+    if [ -z "$pc" ]; then
+      core="$(nix build --no-link --print-out-paths .#datamunge-cuda)"
+      pc="$core/lib/pkgconfig"
+    fi
+    {{ NIX_DEVELOP }} .#cpp-tools --command env PKG_CONFIG_PATH="$pc" python3 scripts/benchmark_fruit_render_gpu.py "$@"
+
+# SqueezeNet CIFAR-10 training throughput (epochs per minute); see benchmarks/nn/squeezenet_train.cpp.
+# Extra arguments go to the driver, e.g. `just bench-squeezenet --threads 16 --seconds 60`.
+bench-squeezenet *ARGS:
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks --config Release --target squeezenet_train -j{{ JOBS }}"
+    {{ NIX_DEVELOP }} .#cpp --command ./build/benchmarks/squeezenet_train {{ ARGS }}
+
+# Per-op micro-benchmarks at SqueezeNet's exact layer shapes, 1 and 16 threads (see benchmarks/SQUEEZENET.md).
+# Extra arguments go to Google Benchmark, e.g. `just bench-squeezenet-ops --benchmark_filter=Conv2dForward`.
+bench-squeezenet-ops *ARGS:
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#cpp --command bash -c "cmake --build build/benchmarks --config Release --target squeezenet_ops_bench -j{{ JOBS }}"
+    {{ NIX_DEVELOP }} .#cpp --command ./build/benchmarks/squeezenet_ops_bench {{ ARGS }}
+
+# In-house BLAS (every instruction set this CPU runs) against OpenBLAS (nixpkgs Haswell
+# kernels and an AVX-512 build), BLIS and the netlib reference BLAS from the blas-bench
+# shell: GEMM at square and SqueezeNet shapes, GEMV, DOT, AXPY, SCAL, float and double,
+# 1/8/16 threads. Writes benchmarks/results/blas/cpu.json and cpu.md (see benchmarks/blas/).
+# Extra arguments go to the driver, e.g. `just bench-blas --quick --threads 1,8`.
+bench-blas *ARGS:
+    {{ NIX_DEVELOP }} .#blas-bench --command bash -c "cmake -S benchmarks -B build/benchmarks -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#blas-bench --command bash -c "cmake --build build/benchmarks --config Release --target blas_compare -j{{ JOBS }}"
+    mkdir -p benchmarks/results/blas
+    {{ NIX_DEVELOP }} .#blas-bench --command ./build/benchmarks/blas_compare --json benchmarks/results/blas/cpu.json {{ ARGS }}
+    python3 benchmarks/blas/summarize.py benchmarks/results/blas/cpu.json --out benchmarks/results/blas/cpu.md
+
+# Built-in decompositions (Cholesky, LU solve, slogdet, triangular solve, QR, eigh, SVD) against
+# LAPACK in one -DDATAMUNGE_USE_LAPACK=ON build. The library links nixpkgs' OpenBLAS (Haswell
+# kernels); the run loads the blas-bench shell's AVX-512 OpenBLAS in its place, the stronger
+# LAPACK on AVX-512 CPUs. Extra arguments go to the driver, e.g.
+# `just bench-linalg --threads 1 --sizes 256,1024`.
+bench-linalg *ARGS:
+    {{ NIX_DEVELOP }} .#blas-bench --command bash -c "cmake -S benchmarks -B build/benchmarks-lapack -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_USE_LAPACK=ON -DCMAKE_MAKE_PROGRAM=$(command -v make)"
+    {{ NIX_DEVELOP }} .#blas-bench --command bash -c "cmake --build build/benchmarks-lapack --config Release --target linalg_compare -j{{ JOBS }}"
+    mkdir -p benchmarks/results/blas
+    {{ NIX_DEVELOP }} .#blas-bench --command bash -c 'lib=$(printf "%s" "$DATAMUNGE_BLAS_LIBS" | tr ";" "\n" | sed -n "s|^openblas-avx512=\(.*\)/libopenblas.so.*|\1|p"); LD_LIBRARY_PATH="$lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" ./build/benchmarks-lapack/linalg_compare --json benchmarks/results/blas/linalg.json "$@"' linalg_compare {{ ARGS }}
+    python3 benchmarks/blas/summarize.py benchmarks/results/blas/linalg.json --out benchmarks/results/blas/linalg.md
 
 # Build and run the datamunge::nn speed benchmarks (GEMM, conv, pooling, batch norm, a cnn_mnist epoch).
 bench-nn *ARGS:
@@ -1001,13 +1100,25 @@ docs-hover *ARGS:
 # Native library simulation tests; optional GPU tests report unavailable backends explicitly.
 # Opt-in SDK build; the host NVIDIA driver is discovered at runtime, including NixOS.
 build-cuda *CMAKE_ARGS:
-    {{ NIX_DEVELOP }} .#cuda --command cmake -S . -B build/cuda -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_ENABLE_CUDA=ON -DDATAMUNGE_ENABLE_CUBLAS=ON {{ CMAKE_ARGS }}
+    {{ NIX_DEVELOP }} .#cuda --command cmake -S . -B build/cuda -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_ENABLE_CUDA=ON {{ CMAKE_ARGS }}
     {{ NIX_DEVELOP }} .#cuda --command cmake --build build/cuda --target datamunge -j{{ JOBS }}
 
 test-cuda *CMAKE_ARGS:
-    {{ NIX_DEVELOP }} .#cuda --command cmake -S tests -B build/cuda-tests -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_ENABLE_CUDA=ON -DDATAMUNGE_ENABLE_CUBLAS=ON {{ CMAKE_ARGS }}
+    {{ NIX_DEVELOP }} .#cuda --command cmake -S tests -B build/cuda-tests -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_ENABLE_CUDA=ON {{ CMAKE_ARGS }}
     {{ NIX_DEVELOP }} .#cuda --command cmake --build build/cuda-tests --target run_simulation_tests run_nn_device_tests check_simulation_allocations -j{{ JOBS }}
     {{ NIX_DEVELOP }} .#cuda --command env DATAMUNGE_REQUIRE_CUDA=1 ctest --test-dir build/cuda-tests -R '^(simulation|nn-device)\.' --output-on-failure
+
+test-cad *CMAKE_ARGS:
+  {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S tests/cad -B build/cad-tests -DCMAKE_BUILD_TYPE=Release {{ CMAKE_ARGS }}
+  {{ NIX_DEVELOP }} .#cpp-tools --command cmake --build build/cad-tests -j{{ JOBS }}
+  {{ NIX_DEVELOP }} .#cpp-tools --command ctest --test-dir build/cad-tests --output-on-failure
+
+cad-assets:
+  python3 scripts/fetch_cad_example.py
+
+cad-rebot: cad-assets
+  mkdir -p build/cad-demo
+  {{ NIX_DEVELOP }} .#cpp --command bash -c 'c++ -std=c++23 -O2 examples/cpp/source/cad/rebot_arm.cpp -o build/cad-demo/rebot_arm $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && build/cad-demo/rebot_arm'
 
 test-simulation *CMAKE_ARGS:
     {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S tests -B build/simulation -DCMAKE_BUILD_TYPE=Release {{ CMAKE_ARGS }}
@@ -1024,6 +1135,23 @@ prebuild-simulation-shaders *ARGS:
 # Native tensor storage shaders; generated SPIR-V is consumed without an SDK.
 prebuild-nn-storage-shaders *ARGS:
     python3 scripts/prebuild_nn_storage_shaders.py {{ ARGS }}
+
+# Native CUDA nn inference kernels (shaders/nn/inference.cu); generated PTX is consumed without nvcc.
+# In-house CUDA GEMM (Context::matmul) against cuBLAS (no TF32) at square and SqueezeNet
+# shapes, float and double. Writes benchmarks/results/blas/cuda.json and cuda.md.
+bench-blas-cuda *ARGS:
+    {{ NIX_DEVELOP }} .#cuda --command cmake -S benchmarks -B build/benchmarks-cuda -DCMAKE_BUILD_TYPE=Release -DDATAMUNGE_ENABLE_CUDA=ON -DDATAMUNGE_ENABLE_CUBLAS=ON
+    {{ NIX_DEVELOP }} .#cuda --command cmake --build build/benchmarks-cuda --target cuda_gemm_compare -j{{ JOBS }}
+    mkdir -p benchmarks/results/blas
+    {{ NIX_DEVELOP }} .#cuda --command ./build/benchmarks-cuda/cuda_gemm_compare --json benchmarks/results/blas/cuda.json {{ ARGS }}
+    python3 benchmarks/blas/summarize.py benchmarks/results/blas/cuda.json --out benchmarks/results/blas/cuda.md
+
+# CAD ray tracer only; ordinary library builds need no CUDA SDK.
+prebuild-cad-cuda-kernels:
+    {{ NIX_DEVELOP }} .#cuda --command python3 scripts/prebuild_nn_cuda_kernels.py --only render
+
+prebuild-nn-cuda-kernels *ARGS:
+    {{ NIX_DEVELOP }} .#cuda --command python3 scripts/prebuild_nn_cuda_kernels.py {{ ARGS }}
 
 test-nn-device *CMAKE_ARGS:
     {{ NIX_DEVELOP }} .#cpp-tools --command cmake -S tests -B build/simulation -DCMAKE_BUILD_TYPE=Release {{ CMAKE_ARGS }}

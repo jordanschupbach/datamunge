@@ -49,18 +49,24 @@ paired parameter/moment checkpoint before test evaluation. Width changes random 
 so equal seeds do not produce identical kernels. These tiny single-seed fits illustrate the
 comparison procedure; they do not establish a width/dropout ranking or reproduce the paper.
 
-The editable concept diagram is `diagrams/wide_resnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/wide_resnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/wide_resnet_concept.tikz > build/wide_resnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/wide_resnet_concept.svg build/wide_resnet_concept.dvi > build/wide_resnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/wide_resnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Preactivated 3x3 pair\nbranch-only dropout");
+  diagram.node("n1", {5.2, 0}, "Raw or projected shortcut\nsigned addition");
+  diagram.node("n2", {10.4, 0}, "Width and dropout fits\nvisible tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/wide_resnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/wide_resnet_concept.svg)
 // result_end
 \caption(Wide Residual Networks: Width and Branch Dropout)
@@ -196,7 +202,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-1250 positive preactivations: removed fraction 0.315200. Retained values/derivatives scale by 1/.7, training masks change, inference repeats, and zero residual gives exact identity values/derivatives.
+1250 positive preactivations: removed fraction 0.309600. Retained values/derivatives scale by 1/.7, training masks change, inference repeats, and zero residual gives exact identity values/derivatives.
 \image(figures/wide_resnet_dropout.svg)
 // result_end
 \caption(Dropout changes the learned branch and leaves shortcuts intact. Top panels share a colour range. The zero-branch diagnostic keeps signed input values and unit input derivatives despite training dropout.)
@@ -493,11 +499,11 @@ int main() {
 ```
 // result_begin: markdown
 WRN-16 width 1, dropout 0: 128 fit / 64 validation / 64 official-test rows; 175066 learned scalars, 928 moving scalars; 128 explicit Adam updates.
-Selected epoch 7; validation NLL 2.218949; inference training NLL 1.484779; test NLL 2.200018; test accuracy 0.312500.
+Selected epoch 8; validation NLL 2.215158; inference training NLL 1.428457; test NLL 2.324214; test accuracy 0.265625.
 WRN-16 width 2, dropout 0: 128 fit / 64 validation / 64 official-test rows; 691674 learned scalars, 1824 moving scalars; 128 explicit Adam updates.
-Selected epoch 1; validation NLL 2.200805; inference training NLL 2.218276; test NLL 2.247619; test accuracy 0.187500.
+Selected epoch 1; validation NLL 2.202557; inference training NLL 2.223423; test NLL 2.257607; test accuracy 0.187500.
 WRN-16 width 2, dropout 0.3: 128 fit / 64 validation / 64 official-test rows; 691674 learned scalars, 1824 moving scalars; 128 explicit Adam updates.
-Selected epoch 1; validation NLL 2.265416; inference training NLL 2.202762; test NLL 2.207598; test accuracy 0.187500.
+Selected epoch 1; validation NLL 2.300318; inference training NLL 2.241382; test NLL 2.212213; test accuracy 0.187500.
 \image(figures/wide_resnet_training.svg)
 // result_end
 \caption(Three complete WRN-16 fits on 16x16 average-pooled images share fixed subsets and augmentation seeds. Width and branch dropout vary; validation selects each paired checkpoint before its test evaluation.)

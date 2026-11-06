@@ -7,6 +7,689 @@ Raw JSON/TSV, immutable comparison snapshots and content-addressed history remai
 plans. New TensorFlow runs in the standard results directory automatically refresh
 the full comparison-table section without overwriting the human-written plan.
 
+## Robot workcell rendering (2026-11-01)
+
+**The slow part is producing the images.** The completed realistic playground
+replay took **1,642.1 seconds (27.4 minutes)** to produce its 60-second, 900-frame
+video. This replay loaded frozen checkpoints; it did not train the models again.
+The following new measurements isolate rendering from physics, neural inference
+and video encoding. These initial measurements are retained below; the first
+implementation pass and the follow-up renderer/preview pass are now complete.
+
+Reproduce with `just bench-fruit-render`. The [benchmark guide](benchmarks/cad/README.md)
+describes prerequisites and the independent Release build. The
+[raw baseline](benchmarks/results/fruit_render/baseline.json) retains every sample,
+environment, linked library/executable/input hashes and min/max/deviation.
+
+The presentation default is now the final **20 seconds of the recorded minute
+(world time 40–60 s)** for both CPU and GPU playground commands. The five-second
+measurements below remain historical measurements of that shorter clip. Use
+`DATAMUNGE_VIDEO_SECONDS=5 just playground-gpu` for a short performance check.
+
+### Articulated physics fidelity pass (2026-11-02)
+
+The current playground uses MuJoCo articulated contact dynamics for all RL
+training and evaluation. Previous analytic-proxy training timings are historical
+and do not describe this more expensive task. Four independent native learners
+run concurrently with one NN worker each; the image classifier is adapted once
+and frozen across candidates. The simulation runs at 960 Hz internally with a
+240 Hz task clock, full implicit integration, sparse Newton contacts and eight
+retained payload slots. Full implicit integration is necessary for the observed
+fast-tumbling asymmetric-fruit case; it must not be removed solely for speed.
+
+CUDA continues to accelerate only the overview renderer. Physics and wrist RGB
+remain CPU workloads. The default rendered excerpt remains 20 seconds, and short
+render performance checks can use five seconds. See the [physics audit](docs/robot-physics-audit.md)
+for modeling assumptions and the playground's exported timing/diagnostic files
+for this experiment. Numerical contact fidelity takes precedence over the former
+analytic transport and kinematic attachment optimizations.
+
+The completed contact experiment uses installed MuJoCo 3.4.0. Four matched
+256-window learners cover about 34.6 simulated training hours in total. The
+learn/compare process takes 4523.40 s with a cached camera model; the parallel
+training phase is 2795.30 s and held-out RGB evaluation is 659.95 s. The separate
+camera adaptation is excluded from that cached run timing.
+
+The final 20-second CUDA replay takes 191.05 s inside the executable (206.32 s
+for its compiled Mep block), with 186.04 s rendering/streaming: 84.88 s overview
+rendering, 76.92 s CPU wrist views and 20.42 s overview preparation. This new
+physical motion/camera trace differs from the historical performance trace, so
+these are end-to-end costs rather than an isolated renderer regression test.
+The video has 300 frames and fully decodes. Detailed evidence is in
+[physics_fidelity.json](benchmarks/results/fruit_render/physics_fidelity.json).
+
+### Native RL pipeline comparison (2026-11-02)
+
+The robot benchmark now compares installed **Q(λ), Double DQN, dueling Double
+DQN and clipped PPO** pipelines. Native CPU tensors/autograd and Adam implement
+the neural learners; the overview renderer retains CUDA. Each fresh method
+trains 2,048 continuing windows of at least 120 seconds with matched reset seeds,
+fixed motor options and a frozen wrist classifier. Actual simulation totals are
+69.10–69.14 hours per method; gradient/TD update counts are recorded separately.
+The historical incumbent remains an explicitly different 32,768-window reference.
+
+Twelve physical synthetic-perception streams screen five checkpoints per method.
+Two per method proceed to six independent actual-RGB validation streams. Double
+DQN, dueling DDQN and PPO tie at score **217** (63 correct, 1 wrong, 15 missed,
+2 pending from 81 arrivals); the deterministic tie rule selects **Double DQN,
+window 256**. The fresh Q(λ) score is 208 and incumbent score is 206. Selection
+is frozen before sixteen new paired actual-RGB test streams or the video run.
+
+On **234 held-out arrivals**, Double DQN sorts **181** correctly with **8** wrong
+placements, **35** misses and **10** pending. Fresh Q(λ) has 180/4/39/11,
+dueling DDQN 179/8/37/10, PPO 179/9/36/10, and the incumbent 175/7/43/9.
+Q(λ)'s weighted held-out score is **634**, slightly above Double DQN's **631**;
+these results do not establish a unique overall winner. The video keeps the
+validation-selected controller rather than reselecting on test data. One training
+seed per method, different tabular/continuous-feature representations and the
+incumbent's larger historical budget limit algorithm-ranking claims.
+
+The complete C++ playground exports all inference checkpoints, actual work/update
+histories, per-stream outcomes, RGB inference records and selection hashes.
+Backend targets, masks, time-limit bootstrapping, PPO clipping, checkpoint integrity
+and actual learning are covered by native tests. Both installed CPU/CUDA packages
+build; the simulation suite passes 107 tests with eight optional GPU skips, and
+the installed package separately passes all nine new RL tests. Rendering remains
+a 20-second/300-frame preview of world time 40–60 seconds. Raw results are in
+[`rl_pipelines.json`](benchmarks/results/fruit_render/rl_pipelines.json).
+The installed-package report build passes in **157.86 s** including compilation;
+program time is **143.48 s**, with **141.24 s** rendering/streaming (CUDA overview
+**73.25 s**, CPU wrist **58.55 s**). These are replay timings, excluding training
+and outer package builds. The 20-second H264/YUV420P video decodes fully; all
+20 linked artifacts match their exported copies, and all **357** video decisions
+reproduce independently from the selected checkpoint and recorded observations.
+
+
+### Sorting throughput and retraining (2026-11-02)
+
+The controller now aligns wrist roll during approach, chooses guarded short
+approaches, masks infeasible targets and trains with delayed-reward eligibility
+traces. Waiting with queued fruit costs 0.5 per second; miss/wrong-bin costs are
+6/8. Infeed watching is used during training and deployment. Joint/finger limits
+(1.5 rad/s, 0.08 m/s), belt speed (0.22 m/s), arrival streams and render quality
+are unchanged. Empty-belt gaps remain expected under Poisson arrivals.
+
+Completed **32,768** native training windows, totaling **1,105.74 simulated
+hours**, in **985.44 seconds** of development-run wall time. Some package builds
+overlapped that training run, so this is not a calibrated training-speed benchmark.
+The classifier receives **24** further epochs on independently seeded aligned
+pickup crops; validation chooses epoch 17. Physical screening and a separate
+actual-RGB validation group select scheduler window 256, preserving the stronger
+earlier checkpoint rather than forcing the final one.
+
+Across sixteen paired two-minute actual-RGB streams with **246 arrivals**, correct
+sorts improve **143→176 (+23.1%)**, misses fall **87→56 (−35.6%)**, and wrong-bin
+placements fall **5→2**. Pending fruit is **11→12**; unknown vision falls **25→0**.
+Updated early/late-oldest controls sort **166/152** correctly. This compares the
+complete new motor/vision/scheduler configuration with the prior controller and
+classifier, and does not isolate the effect of extra training alone. The fixed
+minute improves **2→3** correct placements, with zero wrong placements and one miss.
+
+The default **20-second/300-frame** installed-package replay takes **149.23 s**
+including code-block compilation, with **135.26 s** program time. Rendering/
+streaming takes **133.13 s**: CUDA overview **70.28 s**, CPU wrist **54.55 s** and
+overview preparation **5.05 s**. Changed poses/work mean this is not a fixed-work
+renderer speed comparison. All 30 assets/links, full video decode, servo bounds,
+independent seeds and outcome/vision records pass. Native tests pass 98/106 with
+eight optional GPU skips; scoped documentation covers 193/193 definitions, six
+clangd hovers and five compiled public examples. See
+[`control_training.json`](benchmarks/results/fruit_render/control_training.json).
+
+### Idle infeed watching (2026-11-02)
+
+The default playground video now enables the optional native `watch_infeed`
+servo behavior, returning the rigid wrist camera toward the entry area during
+empty-queue waits. The return yields at each 0.125-second scheduler decision and
+uses the existing velocity limits and fixture guards. Training/benchmark history
+retains the earlier idle controller; the video reuses its frozen policy and
+classifier in a fresh full-physics run. Changed poses and travel times mean this
+is not an equal-work optimization comparison.
+
+The installed-package **20-second/300-frame** build takes **159.93 s** for
+code-block compilation/execution, with **145.62 s** of program time and
+**143.45 s** rendering/streaming. CUDA overview rendering takes **74.90 s**,
+CPU wrist views **57.56 s**, and overview preparation **7.20 s**. Outer Nix builds
+are excluded. No longer clip or new training run was performed. Full video
+decode, all 26 assets/links, servo bounds, conserved outcomes and matching
+independent simulation trajectories/decisions pass. See
+[`infeed_watch.json`](benchmarks/results/fruit_render/infeed_watch.json).
+
+### Exterior realism pass (2026-11-02)
+
+The playground now renders a separate `factory-v2` presentation scene: finer
+apple/banana peel maps, differentiated concrete/rubber/plastic/metal finishes,
+factory surroundings, roller bearings, adjustable fixture feet and a flexible
+servo harness reconstructed from each robot pose. The exterior camera sits lower
+and closer. CPU wrist images, classifier inputs, physics, random streams and
+frozen checkpoints retain their previous configuration.
+
+Exterior quality increases to **2x2 primary samples, six shadow samples and three
+AO samples**, with optional analytic studio illumination at strength **0.55**.
+The new renderer field defaults to zero. These settings increase rendering work;
+this is a quality improvement, and earlier equal-quality speed comparisons below
+remain historical. The studio approximation evaluates sky/ground and broad
+softboxes rather than tracing scene reflections or indirect bounces. GPU overview
+rendering, prepared-scene caching and the optimized CPU wrist path remain active.
+
+Two final enhanced-scene stills have CPU/CUDA RGB RMSE **0.383 and 0.400/255**, with
+source-ID mismatch below **0.037%**. These are diagnostic parity checks, not paired
+speed measurements. All **34** original reference buffers and **31** saved wrist
+outputs remain exact. The native simulation suite passes **91 tests** with eight
+optional GPU tests skipped; the dedicated real-device CUDA renderer suite passes.
+No model retraining is needed for this exterior-only change. Evidence is under
+`build/realism2/`.
+
+The installed-package `just playground-gpu` build produces and fully decodes the
+default **20-second, 300-frame** clip. Code-block compilation/execution takes
+**145.05 s**, including **130.38 s** of program time; outer Nix package builds
+are excluded. Rendering/streaming takes **127.24 s**, with **68.70 s** for the
+CUDA overview, **51.03 s** for CPU wrist views and **1.55 s** for presentation
+actor finishes. The one-time refreshed fruit gallery takes **1.34 s**. The prior
+20-second clip spent 100.78 s rendering/streaming with fewer samples and different
+exterior assets/camera; it is not an equal-quality speed comparison. Full
+trajectories, classification decisions, checkpoint hashes and outcomes match;
+both saved wrist insets are pixel-identical. All 26 report assets, HTML links and
+TeX export pass the audit. Raw settings, fingerprints and timings are retained in
+[`presentation.json`](benchmarks/results/fruit_render/presentation.json).
+
+### CPU wrist-view optimization (2026-11-02)
+
+Realistic wrist inspections now overlap the complete RGB view and its registered
+fruit-free reference. Both borrow the same immutable prepared base and split the
+existing total worker budget (**8+8 for a budget of 16**). A single-worker budget
+keeps sequential execution. Moving tread/sensor objects remain fresh in the
+reference; they cannot safely be frozen in a pose-only cache. Off-image focus
+returns the same raw RGB/depth/IDs without rendering an unused reference.
+Genuinely base-only views retain one owned image at the exact joint/finger pose;
+empty-actor callers receive independent copies. Malformed actor textures remain
+validated, and concurrent render exceptions are joined before returning.
+Two temporary actor hierarchies may coexist during inspection; retained image
+storage is bounded to one base-only image per camera.
+
+The bounded benchmark uses four actual 256x256 poses, primed by their immediate
+predecessors, with two paired rounds and two repetitions per case. It measures
+**276.33 → 221.09 ms** mean video-style wrist cost (**20.0% lower**). Active
+changed-pose inspection improves **466.66 → 341.45 ms**; stable-pose inspection
+**324.06 → 224.02 ms**. Off-image controls improve **390.20 → 226.71 ms**
+(**41.9% lower**). Single-view captures show no material gain in these cases.
+These are equal-weight sparse pose measurements, not a full-minute estimate.
+An earlier, more variable paired run observed 13.3% lower aggregate cost; its
+complete samples are retained with the acceptance data in
+[`wrist.json`](benchmarks/results/fruit_render/wrist.json). Unpinned host load and
+CPU clocks limit the precision of any individual timing.
+
+The same five-second, 75-frame GPU-overview playground clip now spends
+**12.067 seconds** on CPU wrist views, versus the **15.025-second baseline
+archived at the start of this pass** (**19.7% lower**). Rendering/streaming falls
+**26.356 → 23.525 seconds** (**10.7% lower**); total program time falls
+**28.579 → 25.400 seconds**. Code-block compilation/execution is **39.894 seconds**,
+excluding outer Nix builds. The MP4 is **byte for byte identical** to the archived
+clip. Complete trajectories, perception records, checkpoint hashes, settings and
+all physical/outcome metrics remain unchanged. No resolution, sample count,
+lighting, classifier, physics or encoded duration was changed.
+
+`just bench-fruit-wrist --repetitions 1` performs the short four-pose check without
+video, encoding, simulation replay or training. Add `--reference-library` for an
+archived compatible core to enable paired timings and exact-output comparisons;
+without it, the utility records output hashes without claiming baseline equality.
+Set `DATAMUNGE_VIDEO_SECONDS=5` with `just playground-gpu` to repeat that five-second
+end-to-end check. Both recipes have
+been exercised against the installed packages. All 31 wrist RGB/depth/ID/crop/box
+artifacts match across the old/new paired libraries, and all 34 older reference
+buffers remain exact. Four new regressions cover owned cache buffers, joint/finger
+invalidation, moving non-fruit references, malformed input, off-image output and
+single-worker/parallel parity. The native suite passes **89/97** with eight
+optional GPU tests skipped. Fresh scoped Doxygen covers **50/50** definitions;
+five clangd hovers and three affected public examples pass. Video decode and all
+26 report assets/HTML links pass `build/wrist-performance/audit.py`.
+
+Persistent per-mesh acceleration or combined-hierarchy refitting remains the next
+larger CPU cost to investigate. The two view renders still construct separate
+combined hierarchies to preserve original traversal and equal-depth ties.
+
+### CUDA overview rendering (2026-11-02)
+
+An explicit `cad::CudaRenderer` now executes primary/shadow/AO rays, mapped
+legacy/GGX materials, transparent layers, wire overlays and offscreen readback
+through the existing CUDA `compute::Context` kernel backend. A persistent context
+and JIT program retain the last prepared base snapshot and its device uploads;
+actor geometry and combined hierarchy buffers are updated per call. Transient
+GPU hierarchies omit unused CPU leaf-query records. Geometry transforms and BVH
+construction still run on the CPU. The opt-in CUDA build needs only the NVIDIA
+driver at runtime; embedded PTX is regenerated with
+`just prebuild-cad-cuda-kernels`. Normal CPU builds remain available.
+
+On the **RTX 5080 Laptop GPU**, four representative recorded poses with three
+alternating CPU/CUDA repetitions give median complete overview calls of
+**476.15 ms CPU → 133.87 ms CUDA (3.56x)**. These include combined hierarchy
+work, uploads and synchronous readback, and use the same 960x640 image, six
+shadow samples and two AO samples. Common base preparation, context creation
+and first base upload/render are recorded separately. An earlier run observed
+about 3.1x; the unpinned host and CPU clock/load variation limit precision.
+These sparse pose comparisons are not an end-to-end video speedup estimate.
+All samples, quality measurements and fingerprints are retained in
+[`cuda.json`](benchmarks/results/fruit_render/cuda.json).
+
+The float32 CUDA path uses a larger self-intersection bias. RGB RMSE across the
+four poses is **0.57–0.72 / 255**, source-ID mismatch **0.021–0.024%**, and
+foreground overlap is 1.0. Rare edge/outlier differences are retained, including
+maximum channel/depth error, rather than claiming bit-identical images.
+The playground keeps **wrist RGB, boxes and classifier inference on the CPU
+reference**. Both complete trajectories and final physical outcomes can therefore
+be checked against the original run without retraining the classifier.
+
+Use `just playground-gpu` for the CUDA-enabled package and a **five-second**
+frozen-checkpoint video (world time 40–45 s). Backend/device and kernel/source
+fingerprints are published with the report. Explicit CUDA fails on unavailability;
+the ordinary report's `auto` setting chooses CPU when CUDA cannot be probed.
+Use `just bench-fruit-render-gpu --repetitions 1` for a quick change, then the
+default three repetitions when accepting it. That benchmark renders only four
+still poses, with no training, video encoding or complete-minute rendering.
+Keep performance video checks to **5–20 seconds**; the full minute is still
+simulated and recorded in both trajectory CSVs.
+
+Validation: real-device mapped-material, point-light, shadow/AO, transparency,
+projection/sampling/style, cache replacement/recovery, empty-scene, concurrency
+and input-validation regressions pass. The public CUDA class example compiles
+and executes on the GPU. Existing simulation/compute tests pass **90/93**, with
+three Vulkan-only tests skipped. CPU output still matches all **34** original
+buffer/crop/box files exactly. Fresh scoped Doxygen covers **153/153** definitions
+across the render header and new private storage header; six clangd hovers pass.
+
+The actual `just playground-gpu` workflow builds both HTML/TeX and a **5.000 s /
+75-frame** H.264 clip at 15 fps. Its code-block compilation/execution takes
+**42.866 seconds**; the program spends **26.780 seconds rendering/streaming**.
+Outer Nix package builds are excluded. Overview rendering uses **9.506 s**, wrist
+views **15.374 s**, and overview base preparation **1.275 s**. This makes the
+unchanged CPU wrist view the largest remaining video cost. A five-second clip
+is used instead of rendering a new complete minute.
+
+All 26 assets/export links, full video decode, clip/cumulative counters, original
+full trajectories and perception records pass `build/cad-gpu/audit.py`. The
+poster and inspection insets match their original CPU wrist pixels **exactly**;
+whole-image RGB RMSE is 0.59 and 0.53/255. Checkpoint hashes are unchanged.
+The installed-package benchmark recipe also passes a one-repetition smoke run
+(**394.01 → 109.43 ms**, 3.60x; Clang build), separately retained under
+`build/cad-gpu/installed-benchmark.json`. The three-repetition acceptance data
+above uses the local GCC Release library. The report wrapper now explicitly
+propagates `DATAMUNGE_MEPML_PKG_CONFIG_PATH` across its nested Nix shell, preventing
+accidental selection of the CPU package for an explicit GPU run.
+
+Next priorities are persistent per-mesh/TLAS acceleration or hierarchy refitting,
+then separately evaluating GPU wrist rendering against held-out crops and actual
+stream decisions. The current CUDA path does not remove those CPU costs. Native
+Vulkan CAD-kernel parity and hardware ray-tracing APIs remain future work.
+
+### Completed second implementation pass
+
+The next renderer pass reduces the median sampled pipeline time by **5.8%**
+with normal scheduling (**809 → 762 ms/frame**) and **6.1%** with affinity
+restricted to the sixteen physical cores (**826 → 776 ms/frame**). Median
+overview-render time improves **7.5%** in the latter comparison (**449 → 415 ms**).
+These comparisons use the previous optimized renderer, sixteen workers for both
+implementations, and the same full-minute trajectory and quality settings.
+Three paired serial rounds per affinity mode retain all 144 full-frame samples
+in [`pass2.json`](benchmarks/results/fruit_render/pass2.json). The unpinned old
+run means range from 618 to 811 ms, so an initial 16% estimate was not adopted;
+the reported reduction is the median of repeated run means, with the faster old
+run retained. These measurements include PNG output; production streaming does not.
+
+The completed frozen-checkpoint preview takes **186.229 seconds (3.1 minutes)**
+for the mep code-block compilation/execution scope, versus the prior **771.279
+seconds** for a complete minute. The program itself takes **170.001 seconds**,
+of which **168.010** are rendering/streaming. These scopes exclude the outer Nix
+package rebuild. This **75.9% shorter iteration** combines fewer frames with
+renderer improvements; the two videos have different durations. All 225 preview
+frames independently re-encoded from the original full-minute PNGs reproduce the
+new streamed MP4 **byte for byte**. Both full trajectories remain byte-identical.
+
+Implemented:
+
+- Store leaf-ordered intersection vertices/edges/tolerances separately from cold
+  shading normals, UVs and materials. Split bounds and original centroid keys
+  from shading triangles while preserving the original hierarchy comparator,
+  traversal, global triangle indices and equal-depth ordering. The hot query
+  records cost about 43 MiB for this half-million-triangle hierarchy; the arrays
+  are owned per hierarchy, rather than accumulated across frames.
+- Cache ray reciprocals and parallel-axis flags per query. Near-touching slab
+  intervals and nonfinite intermediates fall back to the original division
+  predicate. The sixteen-ULP guard passes **2,000,040** differential comparisons,
+  including grazing, flat, signed-zero and extreme-scale cases. An earlier
+  floating-point guard regressed performance and was replaced before acceptance.
+- Precompute directional soft-shadow disk rays and AO hemisphere coefficients
+  once per render, retaining arithmetic grouping and sample order. Normalize
+  directional lights once, and omit unused legacy specular powers in physical
+  shading. Resolution, primary/shadow/AO samples and sensor fidelity are unchanged.
+- Default the report to a contiguous **15-second / 225-frame** preview of world
+  time **36–51 seconds**, including classification and sorting. Both complete
+  900-frame trajectory CSVs and the full 60-second physics/RGB simulation remain.
+  Clip counters explicitly include earlier outcomes; this is a debugging excerpt,
+  not another policy evaluation. The prior full-minute video remains linked.
+
+Use `just playground-preview` to reuse frozen checkpoints. Override
+`DATAMUNGE_VIDEO_START` and `DATAMUNGE_VIDEO_SECONDS` to select an integer-second
+window; use `0` and `60` for the complete minute. Diagnostic PNGs for shortened
+windows use separate folders, preserving the full-minute benchmark inputs.
+Rendering one quarter as many frames is a separate iteration improvement from
+the measured renderer gain; it is not a fourfold engine speedup. Full model
+training was not repeated or re-timed.
+
+Fresh native checks pass: 85 simulation/render tests (eight optional GPU tests
+skip), prepared-scene regressions,
+90 CAD API checks, import/render regressions, and the new differential slab test.
+All 34 reference image/depth/ID/crop/box files match exactly. Fresh scoped Doxygen
+covers 10/10 definitions in the new private header and three clangd hovers pass.
+The older private renderer documentation backlog remains outside this scope.
+The HTML export, all 26 assets/links, full video decode, clip counters and
+complete-simulation conservation checks pass `build/fruit-pass2-audit.py`.
+The benchmark runner also successfully validates full-minute outcomes against
+the new preview metrics. Evidence is in `build/fruit-pass2-audit.json`,
+`build/fruit-pass2-runner-check.json` and `build/debug/docs/fruit-pass2-*`.
+
+### Completed first implementation pass
+
+The complete frozen-checkpoint playground replay now takes **771.3 seconds
+(12.9 minutes)** instead of **1,642.1 seconds (27.4 minutes)**: **2.13x faster,
+53.0% less wall time**. These are the same mep code-block replay scopes, including
+compilation/execution overhead and excluding the outer Nix package build. The
+new C++ phase timer records **756.0 seconds** inside the program. The original
+MP4, poster, inspection image, trajectory, fruit trajectory and video perception
+CSV all match the new outputs **byte for byte**. The video is still exactly
+60.000 seconds / 900 frames; it has not been sped up or shortened.
+
+Implemented in the canonical core and adopted in the complete playground code:
+
+- Reserve triangle/node storage once; compute normal inverse-transposes per
+  object and relative determinant thresholds per triangle. Reuse the centre-ray
+  hit when there is one primary sample; use early-exit any-hit shadow queries.
+- Add owned `PreparedScene` snapshots. The base-only BVH is initialized once;
+  actor views share the large validated/transformed triangle arrays and rebuild
+  the combined hierarchy in the original flattened order. This deliberately
+  preserves coincident-surface color/depth/ID ties. A faster two-tree prototype
+  failed that exact-output check and was replaced before acceptance.
+- Cache camera and overview base geometry by exact joint/finger pose. The full
+  minute prepares overview base geometry **68 times, rather than 900**. Moving
+  actors always remain fresh. This is a count of geometry preparations, not a
+  claim that combined BVHs are rebuilt only 68 times.
+- Skip the unused legacy tread render during realistic camera inspection. Expose
+  an explicit camera worker budget and use up to **16 workers** in the report;
+  the general renderer default remains capped at eight.
+- Add bounded, shell-free native `VideoWriter` streaming to ffmpeg, with explicit
+  successful publication and preservation of the old output on failure. Normal
+  builds save two representative stills and **no intermediate PNG sequence**;
+  `DATAMUNGE_STREAM_KEEP_FRAMES=1` retains the diagnostic sequence when wanted.
+- Persist nonoverlapping phase timings, detailed frame timings, settings,
+  compiler/package provenance, and model/policy/URDF/source fingerprints. Replay
+  still explicitly uses frozen checkpoints; automatic training-stage caches were
+  not introduced. Exclude performance notes and measurement/hover helper scripts
+  from Nix package source inputs so editing them does not rebuild the core.
+
+Repeated adjacent comparisons are retained in
+[`optimized.json`](benchmarks/results/fruit_render/optimized.json). Three serial
+Latin-square rounds put each configuration in each position once. Each run uses
+12 temporal strata, with candidate caches primed from each frame's actual
+immediate predecessor outside timing. This matters: sampling jumps otherwise
+produce seven apparent pose changes in 12 samples, whereas the full video has
+only 68 changes in 900 frames. The frozen uncached baseline needs no such priming.
+
+| Configuration | Median of three run means | Reduction versus paired baseline |
+| --- | ---: | ---: |
+| Frozen baseline, eight workers | 1,484 ms/frame | — |
+| Optimized, eight workers | 955 ms/frame | 35.7% |
+| Optimized, sixteen workers | 816 ms/frame | 45.0% |
+
+Each configuration has 36 full-frame samples. The benchmark retains PNG output
+for comparison; production streaming omits it. These are local observations on
+an unpinned host, not a universal speedup prediction. Individual baseline run
+means range from 1,473 to 1,785 ms; optimized sixteen-worker runs range from
+815 to 921 ms. The full replay timing is the acceptance result rather than a
+sample-based extrapolation. The benchmark runner now records the actual CMake
+compiler instead of assuming the ambient `c++` command matches it.
+
+The new program's nonoverlapping phase timers report 1.64 seconds for the full
+physics/RGB simulation, 753.71 seconds for rendering/streaming, and 0.11 seconds
+for encoder finalization. The encoder runs concurrently with rendering; the
+0.11-second tail is **not** its total CPU or encoding cost. Overview rendering
+accounts for 525.30 seconds and wrist views 218.22 seconds. Preparing cached
+bases takes 6.23 seconds, and stream writes/backpressure 1.02 seconds.
+
+Verification: 85 simulation/render tests and three classifier tests pass (eight
+optional GPU tests skip), plus prepared-scene and real-encoder regressions,
+including concurrent first use, transparency, maps, negative scales, all render
+styles, malformed inputs, child failure, literal filenames, abandoned output and
+unchanged caller SIGPIPE state. Existing CAD API (90 checks) and import/render
+regressions pass. All 34 saved reference-buffer/crop/box files match exactly.
+All **17 affected header examples** compile and run against the installed Nix
+core. Scoped Doxygen covers **147/147** definitions and ten clangd hovers pass.
+All 25 report assets and exported links are checked. Encoding the original 900
+frames through the new writer also independently reproduces the original MP4.
+Linux runtime behavior is verified; the Windows process branch is untested here.
+Detailed evidence is in `build/fruit-performance-{audit,source-filter}.json`,
+`build/fruit-performance-doc-examples/` and `build/debug/docs/fruit-performance-*`.
+
+The first milestone (30% lower frame time with unchanged output) is achieved.
+Remaining work is prepared per-mesh acceleration/refitting, further traversal and
+shading profiling, and carefully budgeted frame parallelism. Actor views still
+rebuild a combined hierarchy, so persistent per-mesh BVHs/TLAS refits are **not**
+claimed as completed. Quality tiers and GPU rendering remain later experiments;
+no reduction in resolution, AO/shadow samples, sensor fidelity, or simulation
+accuracy was used for this pass. Full training wall times were not remeasured.
+
+### Measured baseline
+
+AMD Ryzen 9 9955HX, 16 physical cores/32 logical CPUs, GCC 15.2, native core and
+driver built with `-O3 -DNDEBUG`. Default renders use eight workers. Twelve
+equally spaced temporal strata across the recorded minute were measured three
+times, after warmup, with the actual URDF meshes, seeded fruit appearance,
+recorded joint/body poses, 960x640 overview and 256x256 wrist camera. All cases
+ran serially; CPU affinity was not pinned. The benchmark does not overwrite the
+playground, checkpoints or published assets.
+
+| Stage | Mean time per sampled frame | Share of frame time |
+| --- | ---: | ---: |
+| Overview rendering | 851.2 ms | 57.7% |
+| Wrist capture or inspection, weighted across the sampled minute | 469.1 ms | 31.8% |
+| PNG encoding and normal file writes | 116.6 ms | 7.9% |
+| Overview scene assembly, including robot/housing | 35.4 ms | 2.4% |
+| Moving fruit/tread assets | 1.7 ms | 0.1% |
+| Representative inset/HUD | 0.08 ms | <0.1% |
+| Total | **1,474.1 ms** | **100%** |
+
+Wrist costs include registered empty-reference rendering and localization for
+focused frames. Their weighted mean includes cheap idle views; it is not the
+cost of every individual inspection. At a classified pickup pose, capture alone
+takes **464 ms** median and inspection **947 ms** median. These component probes
+overlap the pipeline stages and must not be added to that table.
+
+The sampled estimate is **1,326.6 seconds (22.1 minutes)** for 900 frames,
+approximately **0.68 output frames/second**. This is an extrapolation from 36
+samples, not another complete video timing or an achieved improvement over the
+historical 27.4-minute replay. Different frame selection, warm caches, host load
+and thermal state limit that comparison. A complete minute still needs a new
+end-to-end timing after any optimization.
+
+Independent measurements, each repeated three times:
+
+- **Full 60-second simulation plus actual wrist RGB inference:** **2.886 s**
+  median, 2.821–2.932 s range. All runs reproduce four arrivals, two correct
+  placements, zero wrong placements, two misses and zero pending, with 901
+  snapshots through the exact endpoint. This includes perception rendering at
+  decisions, not a camera render at every physics tick.
+- **MobileNet prediction:** **0.270 ms/crop** median, one NN thread, real 64x64
+  crop, 50 warmed predictions per sample. It excludes localization/crop generation.
+- **Encoding all 900 existing PNGs:** **7.009 s** median, 6.905–7.170 s range,
+  using the report's actual x264 settings. Optimizing the final H.264 encode
+  alone will barely affect the overall runtime. An [earlier encoding batch](benchmarks/results/fruit_render/encoding_initial.json)
+  took 3.005–3.089 s; host load rose substantially for the retained final batch.
+  The baseline labels its environment/load snapshot as the summary/encoding pass
+  because native samples were reused when adding provenance checks. The final
+  encoded output is byte-identical to the published video.
+- The active scene contains **508,860 instanced triangles**, 179 objects,
+  209 stored meshes, **37.2 MiB of mesh arrays** and **2.42 MiB of textures**.
+  Those are asset sizes, not peak process memory.
+- A one-pixel render without secondary rays costs **216 ms** median
+  (192–243 ms). This is a proxy for scene validation, transforms and BVH
+  construction plus one pixel; it is not an exact internal construction timer.
+  A static scene copy costs only **0.40 ms**; robot-scene construction costs
+  **34.2 ms** at the tested pose. These costs have different scope.
+
+Render-only controls below use the same prepared scene at frame 611, with rotated
+case order and three samples each. The eight-worker baseline is **1,090 ms**
+median (924–1,094 ms range). This differs from the full-minute overview mean
+because it is one selected pickup pose measured separately.
+
+| Control | Median render time | Interpretation |
+| --- | ---: | --- |
+| 1 / 2 / 4 / 8 / 16 workers | 3,163 / 1,753 / 1,581 / 1,090 / 693 ms | 16 workers help this pose; scaling is not linear. RGBA matches exactly across all thread counts. |
+| Disable AO only | 942 ms | Changes lighting; quality tradeoff. |
+| One shadow sample instead of six | 625 ms | Changes shadow softness; quality tradeoff. |
+| Disable shadows and AO | 571 ms | Diagnostic lower bound; loses the new appearance. |
+| 640x426 overview instead of 960x640 | 621 ms | Fewer pixels; fixed preparation costs remain. |
+
+These are measurements of controls, not implemented improvements. Three samples
+on an unpinned host are not strong evidence for small percentage differences;
+the raw ranges expose substantial variance. Ratios at one pose must not be
+multiplied together or applied directly to the whole pipeline. Quality controls
+do not change the wrist sensor resolution in this benchmark.
+
+### Implementation plan, in priority order
+
+1. **Add durable stage timing and make stages independently replayable.** Keep
+   the current benchmark and add timers to data collection, each training phase,
+   physical validation, simulation, scene preparation, tracing, image output and
+   encoding. Persist input/settings/core hashes beside each stage result so
+   unchanged training and simulation can be reused safely. The existing replay
+   flag already avoids training, but still repeats simulation and all rendering.
+   Historical full training wall time was not captured reliably and was not
+   remeasured here; do not infer it from simulated hours. First acceptance gate:
+   a timing summary whose nonoverlapping stage totals reconcile with wall time,
+   and cache invalidation tests for changed geometry, camera, material, model,
+   policy and seed.
+
+2. **Reuse geometry and acceleration structures across views and frames.**
+   `cad::render()` constructs `Acceleration` on every call. The overview, occupied
+   wrist and empty wrist all rebuild overlapping half-million-triangle worlds.
+   Introduce an owned prepared-scene API: immutable meshes/textures/materials,
+   per-mesh local acceleration structures, and a small object-transform hierarchy
+   that can be refitted as joints, treads and fruit move. Reuse the static
+   workcell and rigid arm-link meshes; use explicit visibility masks for empty
+   references. Preserve complete-scene shadows, depth, object IDs, normals,
+   transparency and picking. In particular, do not restore the old isolated
+   actor compositing shortcut, which loses arm/fruit shadows on the fixtures.
+   Also compute the normal inverse-transpose once per object instead of through
+   `TransformNormal()` for every indexed triangle vertex. Benchmark construction,
+   refit and tracing separately; use the 216 ms proxy as motivation, not a
+   promised saving from an unimplemented cache.
+
+3. **Remove duplicate work without changing pixels.** In realistic mode,
+   `inspect_actors()` renders the legacy tread `marks` image even though its
+   compositing loop is disabled. Skip that unused render. Compute a frame's
+   robot pose/FK, housing, actor scene and camera extrinsics once, and share owned
+   immutable results between overview/camera paths. Separate small joint state
+   from robot mesh ownership to avoid cloning complete CAD assets for `pose()`
+   and `robot_scene()`. With one primary sample, reuse the already computed
+   centre-ray hit for color, depth and IDs rather than tracing it again in
+   `trace()`. Add an early-exit any-hit query for shadow visibility; keep nearest
+   hits for depth and AO, which uses hit distance. Preserve clipping, sidedness,
+   alpha behavior, numerical tie handling and sampling order. Exact pixel/depth/ID
+   comparisons and unchanged classifier crops are the acceptance gate. The
+   unused marks render is confirmed by source inspection; its individual cost
+   has not been isolated and no specific speedup is claimed for deleting it.
+
+4. **Tune CPU use and overlap work within a memory budget.** Expose a renderer
+   worker budget for overview and camera settings instead of the current default
+   cap of eight. Repeat adjacent 8-versus-16 controls on more poses, including
+   bursts and empty views. Test bounded frame parallelism (initially two frames)
+   against per-frame worker counts while keeping the total worker budget fixed;
+   do not multiply frame workers by 16 render threads. Give each worker owned
+   camera/cache state, respect the existing single-writer environment contract,
+   keep output ordering deterministic, and measure peak RSS before increasing
+   concurrency. A persistent worker pool is secondary to removing preparation
+   work; thread creation itself was not isolated by this benchmark.
+
+5. **Avoid the PNG round trip in ordinary video builds.** Keep PNG frames as an
+   optional debugging/export mode. Stream raw RGBA into a bounded encoder queue
+   so the current 116.6 ms/frame PNG encode/write stage is avoided, and overlap
+   encoding with rendering. The measured PNG stage is about **105 seconds per
+   900 frames**; eliminating it alone caps improvement at about **8.6%** for this
+   sampled pipeline. The current final encoder is already fast. Verify ordering,
+   backpressure/error propagation, exact duration/frame count, representative
+   decoded frames, posters and report links; account for any changed color
+   conversion. Reuse an encoded file only when its complete frame/settings hash
+   matches.
+
+6. **CUDA overview backend implemented; profile the remaining CPU preparation/sensor work.**
+   The CUDA implementation and bounded acceptance measurements are recorded above.
+   Continue with persistent hierarchy work and an explicitly validated sensor path.
+   The original quality/GPU investigation guidance follows for context:
+   After the preceding changes, provide preview/final settings for overview
+   resolution, AO and shadow samples. Keep final quality as the comparison
+   baseline. The measured controls show a tradeoff, not free acceleration.
+   Preserve the trained sensor distribution unless a separate change includes
+   retraining and held-out/actual-stream evaluation. A GPU render path is a
+   later feasibility experiment, with matching material/normal/roughness maps,
+   shadows, camera extrinsics, self-occlusion, RGB boxes, offscreen readback and a
+   CPU fallback. GPU performance and compatibility have not been measured here.
+   At 15 fps the frame budget is 66.7 ms, versus the current sampled 1,474 ms:
+   real-time visualization requires roughly **22x** total acceleration, not
+   simply a faster video encoder.
+
+Work through items 2–4 as separately measured changes, starting with reusable
+scene preparation and the small exact-output fixes. The first milestone is
+**at least 30% lower sampled full-frame time with unchanged pixels**, followed
+by a new complete 900-frame replay; this is a target, not a measured improvement.
+For every accepted change retain the matched raw baseline/candidate samples,
+validate existing CAD/simulation tests, compare full-quality RGB/depth/ID outputs
+across multiple poses, and reproduce classifier decisions, Poisson timestamps,
+joint/finger bounds and all physical outcomes. Quality-tier or GPU changes need
+explicit visual review and perception validation rather than the exact-pixel
+gate. For performance iterations finish with a decoded **5–20-second** clip and verified
+playground links. A complete-minute video is optional separate validation, not a
+requirement for each optimization.
+
+## SqueezeNet CPU training pass (2026-10-30)
+
+Two passes optimised the CPU training step of the SqueezeNet CIFAR-10
+report: 95 ms/step to 19 ms/step at 8 threads (2.5 to 12.5 epochs/min, 5x)
+and 132 to 62 ms/step on one thread, above TensorFlow's graph-mode CPU
+throughput for the same network. The benchmarks (`just bench-squeezenet`,
+`just bench-squeezenet-ops`, `benchmarks/frameworks/`), the profiles, the
+plan and the per-item results are in
+[benchmarks/SQUEEZENET.md](benchmarks/SQUEEZENET.md). The library changes it
+retained: GEMM split across the `nn` pool, vectorisable elementwise maps,
+blocked max pool with a one-byte winning tap, spin-wait pool,
+`-fno-trapping-math` for the nn kernels (`DATAMUNGE_NN_FAST_FP`), fused
+`bias_add_relu`, one-pass dropout, tiled convolution with per-thread
+im2col, the fused `conv2d_bias_relu` op with a single-pass backward, the
+fused fire-module expand (`conv2d_bias_relu_concat`), ceil-mode pooling
+without a padded copy, and the physical-core thread default. The 19 ms was
+measured with other processes on the cores; on a quiet machine the step now
+takes 13.5 ms at 8 threads (17.8 epochs/min, section 8 of SQUEEZENET.md).
+
+## In-house linear algebra (2026-10-30, second pass 2026-10-31)
+
+The library no longer needs OpenBLAS, LAPACK or cuBLAS: GEMM, GEMV and the
+level-1 routines (float and double, AVX-512 / AVX2 / baseline kernels picked
+at run time), the CUDA matrix product (embedded PTX) and the dense
+decompositions run on in-house kernels, with the external libraries kept as
+opt-in comparison builds. In the SqueezeNet step the in-house GEMM is 2-3 %
+faster than OpenBLAS with AVX-512 kernels and 1.41x the OpenBLAS nixpkgs
+ships. Kernels, benchmark recipes (`just bench-blas`, `just bench-blas-cuda`,
+`just bench-linalg`) and the comparison against OpenBLAS, BLIS, the
+reference BLAS, LAPACK and cuBLAS are in [benchmarks/BLAS.md](benchmarks/BLAS.md).
+
+The second pass worked through that page's improvement plan. QR, eigh and
+the SVD are now blocked Householder reductions with divide and conquer and
+run at 1.0-3.7x LAPACK's speed from n = 96 (they were 0.05-0.48x); only
+the values-only eigh and SVD still trail it. LU looks one panel ahead on several threads.
+The CUDA float GEMM went from 0.71-0.83x to 0.94-1.29x of cuBLAS on large
+products. Large CPU products on one core now match OpenBLAS (they were
+0.84-0.91x). The `nn` thread pool takes chunks with one compare-exchange
+and gives every thread the same block of a range on each call, which makes
+cache-resident vector routines 2-3.5x faster at 8 threads and the SqueezeNet
+step 3 % faster (13.5 ms, 17.8 epochs/min on a quiet machine;
+[benchmarks/SQUEEZENET.md](benchmarks/SQUEEZENET.md), section 8).
+
 ## Completed pass and next priorities
 
 1. **Completed:** expanded cross-framework coverage from 12 operation families /
@@ -1491,7 +2174,7 @@ Deferred from the active scope: reinforcement learning, binding overhead, unrela
 
 Existing integration: Google Benchmark; `benchmarks/CMakeLists.txt` builds `linalg_bench` (including data structures) and `nn_bench`; `just benchmark`, `just bench-nn *ARGS`, `just benchmark-compare BASE NEW`; C++ Nix shell includes Google Benchmark. An archived linalg JSON result exists in `benchmarks/results/`.
 
-RL currently lives primarily in `examples/nn/common/rl/` and executable examples under `examples/nn/6_deep_reinforcement_learning/`, rather than an installed `datamunge::rl` API. Benchmark reusable helpers directly where possible; label example-level workloads accordingly. Do not turn this effort into a public RL API redesign.
+The installed `datamunge::rl` API now supplies masked Q(λ), Double DQN, dueling Double DQN and clipped PPO for variable-duration discrete options. The robot playground compares these pipelines using native tensors/autograd, matched reset seeds and separate actual-RGB validation/test streams. The wider teaching examples remain in `examples/nn/common/rl/` and `examples/nn/6_deep_reinforcement_learning/`; continuous-control and model-based examples are not part of this installed discrete API.
 
 Correctness tests already exist for both tensor systems, standalone autodiff, NN autograd, layers, convolution, sequence, attention, training, memory, and general optimizers. Reuse their small reference problems outside timed regions; correctness tests are not timing benchmarks.
 
@@ -3037,3 +3720,13 @@ Tensor metadata/container locality, measured gains and retained exceptions:
 
 </details>
 
+
+### Native articulated backend provenance
+
+The MuJoCo physics-fidelity timings above belong to the historical reference
+backend. Native articulated physics now runs in datamunge's own `sim::World`;
+the standard CPU/CUDA packages do not depend on MuJoCo. Native and reference
+results use separate report caches and source/checkpoint fingerprints. A
+20-second policy-transfer diagnostic is separate from fresh native RL training.
+See `docs/native-physics.md` and `build/native-physics/` for checks. Do not reuse
+the reference training/render timings as native solver measurements.

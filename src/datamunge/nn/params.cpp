@@ -232,6 +232,17 @@ ParameterStore ParameterStore::clone() const {
   return out;
 }
 
+ParameterStore ParameterStore::to(const compute::Context& context) const {
+  ParameterStore out(0, dtype_);
+  out.gen_ = gen_;
+  NoGradGuard guard;
+  for (std::size_t i = 0; i < names_.size(); ++i) {
+    const Tensor moved = values_[i].detach().to(context);
+    out.get(names_[i], moved.shape(), [moved](const Shape&, DType, Generator&) { return moved; });
+  }
+  return out;
+}
+
 std::vector<double> ParameterStore::flatten() const {
   std::vector<double> out;
   out.reserve(static_cast<std::size_t>(count()));

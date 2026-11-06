@@ -28,18 +28,24 @@ The box clips at image boundaries. All-positive filters and average pooling acti
 reachable path; ReLU, signed cancellation and max-pooling may reduce a trained unit's support.
 Geometry tracking is O(layers); an input derivative costs one backward evaluation.
 
-The editable concept diagram is `diagrams/receptive_fields_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/receptive_fields_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/receptive_fields_concept.tikz > build/receptive_fields_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/receptive_fields_concept.svg build/receptive_fields_concept.dvi > build/receptive_fields_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/receptive_fields_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Layer kernel and stride\ntrack width and jump");
+  diagram.node("n1", {5.2, 0}, "Padding aligns centres\nclip at image borders");
+  diagram.node("n2", {10.4, 0}, "Autograd support\ncan shrink inside the box");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/receptive_fields_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/receptive_fields_concept.svg)
 // result_end
 \caption(Receptive Fields: Enclosing Boxes and Actual Derivatives)

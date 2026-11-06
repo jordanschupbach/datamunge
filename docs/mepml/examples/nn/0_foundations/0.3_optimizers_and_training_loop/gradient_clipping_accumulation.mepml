@@ -46,19 +46,24 @@ random layers can also make microbatch and full-batch forwards different. Accumu
 does not reproduce those forwards merely by choosing correct weights. Reset the
 accumulator after applying an update. An empty mean is an error, not a zero-gradient step.
 
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-The concept diagram is generated from the retained local TikZ source. LaTeX with
-PGF/TikZ and standalone, plus dvisvgm, is needed only to regenerate it.
+```{cpp, file="figures/gradient_clipping_accumulation_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
 
-```{bash, results="output", file="figures/gradient_clipping_accumulation_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/gradient_clipping_accumulation_concept.tikz > build/gradient_clipping_accumulation.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/gradient_clipping_accumulation_concept.svg build/gradient_clipping_accumulation_concept.dvi > build/gradient_clipping_accumulation.render.log 2>&1
-printf 'Rendered build/gradient_clipping_accumulation_concept.svg from local TikZ source.\n'
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Microbatch gradients\nsample-count weights");
+  diagram.node("n1", {5.5, 0}, "One logical mean\nfixed parameter state");
+  diagram.node("n2", {11.0, 0}, "Global clip then step\nreset accumulator");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/gradient_clipping_accumulation_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/gradient_clipping_accumulation_concept.svg from local TikZ source.
 // \image(figures/gradient_clipping_accumulation_concept.svg)
 // result_end
 \caption(Average sample gradients, clip the result, then apply one optimizer update.)

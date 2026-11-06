@@ -7,6 +7,19 @@ test_that("tensor values survive collection of temporary SWIG objects", {
   expect_error(result$reshape(as.integer(3)))
 })
 
+test_that("formula models own their data and use the current native layout", {
+  data <- DataFrame_empty()
+  DataFrame_add_numeric_column(data, "x", c(0, 1, 2, 3))
+  DataFrame_add_numeric_column(data, "y", c(1, 3, 5, 7))
+  model <- LM(data, "y ~ x")
+  rm(data)
+  gc()
+  newdata <- DataFrame_empty()
+  DataFrame_add_numeric_column(newdata, "x", c(4, 5))
+  expect_equal(as.numeric(model$coefficients()), c(1, 2), tolerance = 1e-10)
+  expect_equal(as.numeric(model$predict(newdata)), c(9, 11), tolerance = 1e-10)
+})
+
 test_that("plot palettes recycle and subtitle chains retain their owner", {
   colors <- RGBVector()
   colors$push_back(RGB(10L, 20L, 30L, 0.25))

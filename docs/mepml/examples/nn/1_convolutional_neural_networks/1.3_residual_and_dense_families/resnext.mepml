@@ -46,18 +46,24 @@ images select paired parameter/BN checkpoints before evaluating 32 official-test
 The original source's 12k-row/twelve-epoch run and the paper's long SGD run are different
 experiments. This bounded fit illustrates optimization, not a published accuracy benchmark.
 
-The editable concept diagram is `diagrams/resnext_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/resnext_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/resnext_concept.tikz > build/resnext_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/resnext_concept.svg build/resnext_concept.dvi > build/resnext_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/resnext_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Dense reduction\nC grouped transforms");
+  diagram.node("n1", {5.2, 0}, "Sum linear projections\nBN and shortcut ReLU");
+  diagram.node("n2", {10.4, 0}, "Explicit tensor Adam\ncompact CIFAR-29");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/resnext_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/resnext_concept.svg)
 // result_end
 \caption(ResNeXt: Cardinality and Aggregated Transformations)
@@ -504,7 +510,7 @@ int main() {
 ```
 // result_begin: markdown
 64 fit / 32 validation / 32 official-test rows; 359898 learned scalars, 6304 moving scalars; 80 explicit Adam updates.
-Selected epoch 10; validation NLL 2.333824; inference training NLL 1.435927; test NLL 2.636453; test accuracy 0.218750.
+Selected epoch 10; validation NLL 2.224162; inference training NLL 1.768396; test NLL 2.319206; test accuracy 0.281250.
 \image(figures/resnext_training.svg)
 // result_end
 \caption(Explicit ten-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)

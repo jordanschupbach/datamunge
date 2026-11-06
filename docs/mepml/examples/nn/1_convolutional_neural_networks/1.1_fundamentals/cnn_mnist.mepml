@@ -33,18 +33,24 @@ Convolution work is O(B Ho Wo k² Cin Cout) per layer. The report uses 512 fitti
 full 55000/5000/10000 benchmark. It requires cached MNIST under DATAMUNGE_DATA_DIR or the
 standard user dataset cache and performs no download.
 
-The editable concept diagram is `diagrams/cnn_mnist_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/cnn_mnist_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/cnn_mnist_concept.tikz > build/cnn_mnist_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/cnn_mnist_concept.svg build/cnn_mnist_concept.dvi > build/cnn_mnist_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/cnn_mnist_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original MNIST pixels\n28×28×1");
+  diagram.node("n1", {5.2, 0}, "Shared spatial features\nconv, ReLU, pooling");
+  diagram.node("n2", {10.4, 0}, "Ten logits\nexplicit minibatch Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/cnn_mnist_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/cnn_mnist_concept.svg)
 // result_end
 \caption(MNIST CNN: Image Features and an Explicit Adam Loop)
@@ -308,7 +314,7 @@ int main() {
 // result_begin: markdown
 512 fitted rows; 128 validation rows; 128 official-test rows; 105866 parameters; 96 Adam steps.
 
-Selected validation NLL 0.634436; test NLL 0.458136; test accuracy 0.843750.
+Selected validation NLL 0.634424; test NLL 0.458114; test accuracy 0.843750.
 \image(figures/cnn_mnist_training.svg)
 // result_end
 \caption(Training and validation losses come from the visible minibatch loop; the official test subset is evaluated only after checkpoint selection.)

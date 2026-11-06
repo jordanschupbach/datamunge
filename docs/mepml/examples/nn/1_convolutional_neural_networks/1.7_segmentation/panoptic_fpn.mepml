@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 Shared multiscale features train region proposals,aligned box/mask heads and a group-normalized semantic path. Scored instances claim pixels before semantic stuff fills gaps. Strict-IoU panoptic statistics handle void/crowd and aggregate category counts before quality averages.
 
-The editable concept diagram is `diagrams/panoptic_fpn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/panoptic_fpn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/panoptic_fpn_concept.tikz > build/panoptic_fpn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/panoptic_fpn_concept.svg build/panoptic_fpn_concept.dvi > build/panoptic_fpn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/panoptic_fpn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Shared scene features\nLearn both tasks");
+  diagram.node("n1", {5.2, 0}, "Resolve object masks\nFill remaining stuff");
+  diagram.node("n2", {10.4, 0}, "Visible Adam loop\nMeasure merged maps");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/panoptic_fpn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/panoptic_fpn_concept.svg)
 // result_end
 \caption(Panoptic FPN things,stuff and quality)
@@ -679,39 +685,39 @@ int main() {
 // result_begin: markdown
 | epoch | RPN | box | mask | .5 semantic | val box AP50 |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 13.585021 | 9.596374 | 0.742217 | 0.295116 | 0.000000 |
-| 2 | 6.865145 | 3.580438 | 0.691674 | 0.159832 | 0.001430 |
-| 3 | 4.073567 | 2.270061 | 0.688828 | 0.129449 | 0.003513 |
-| 4 | 3.275501 | 2.068900 | 0.684145 | 0.113154 | 0.006698 |
-| 5 | 3.075382 | 2.031048 | 0.680022 | 0.103441 | 0.000979 |
-| 6 | 3.003755 | 2.390609 | 0.676537 | 0.097392 | 0.000000 |
-| 7 | 2.970260 | 2.062222 | 0.674229 | 0.091757 | 0.008740 |
-| 8 | 2.881698 | 2.162588 | 0.667311 | 0.089377 | 0.032794 |
-| 9 | 2.846552 | 2.240648 | 0.662455 | 0.086418 | 0.033184 |
-| 10 | 2.782635 | 2.302072 | 0.658455 | 0.083181 | 0.007414 |
-| 11 | 2.671618 | 2.224326 | 0.650228 | 0.081221 | 0.003732 |
-| 12 | 2.609564 | 2.290449 | 0.640769 | 0.079775 | 0.030560 |
-| 13 | 2.588335 | 2.216009 | 0.632512 | 0.076830 | 0.062371 |
-| 14 | 2.575900 | 2.334071 | 0.627383 | 0.076286 | 0.013442 |
-| 15 | 2.693761 | 2.285521 | 0.619732 | 0.073996 | 0.014614 |
-| 16 | 2.444915 | 2.129304 | 0.614045 | 0.072682 | 0.016959 |
-| 17 | 2.360369 | 2.195024 | 0.612568 | 0.070188 | 0.019465 |
-| 18 | 2.359026 | 2.203111 | 0.607491 | 0.068642 | 0.061793 |
-| 19 | 2.469897 | 2.310086 | 0.602084 | 0.068534 | 0.016731 |
-| 20 | 2.301879 | 2.131769 | 0.599094 | 0.066563 | 0.028036 |
-| 21 | 2.189116 | 2.096853 | 0.591074 | 0.065514 | 0.019548 |
-| 22 | 2.104406 | 2.027492 | 0.590707 | 0.064315 | 0.007965 |
-| 23 | 2.137115 | 2.059790 | 0.591912 | 0.063063 | 0.012449 |
-| 24 | 2.038163 | 2.166502 | 0.579218 | 0.062190 | 0.044925 |
-| 25 | 1.989330 | 2.188909 | 0.581071 | 0.061190 | 0.026500 |
-| 26 | 1.891744 | 2.035005 | 0.573204 | 0.059704 | 0.014435 |
-| 27 | 1.953918 | 1.914887 | 0.570120 | 0.059999 | 0.027398 |
-| 28 | 1.908526 | 2.038487 | 0.579827 | 0.060678 | 0.012560 |
-| 29 | 1.877940 | 2.048885 | 0.577123 | 0.059367 | 0.042968 |
-| 30 | 1.760610 | 2.044857 | 0.567757 | 0.057262 | 0.025089 |
-| 31 | 1.602288 | 2.104419 | 0.566026 | 0.056681 | 0.042366 |
-| 32 | 1.698036 | 2.035141 | 0.554861 | 0.056677 | 0.063308 |
-489751 learned/1200 BN state scalars,512 Adam updates/11399 positive mask regions;selected epoch32,validation box AP50 0.063308. Test box AP50 0.113274,integral mask AP50 0.000000,semantic mean IoU 0.735548;dataset category-macro PQ 0.165495,SQ 0.165495,RQ 0.181818,things PQ 0.000000,stuff PQ 0.910225. Counts aggregate before macro averaging;custom integral mask AP is not official COCO.
+| 1 | 13.585027 | 9.596372 | 0.742219 | 0.295116 | 0.000000 |
+| 2 | 6.860232 | 3.572479 | 0.691613 | 0.159769 | 0.001135 |
+| 3 | 4.055907 | 2.235036 | 0.689059 | 0.129121 | 0.003647 |
+| 4 | 3.274058 | 2.033232 | 0.684723 | 0.112369 | 0.001742 |
+| 5 | 3.072683 | 1.835375 | 0.679956 | 0.102497 | 0.001460 |
+| 6 | 3.029145 | 2.046525 | 0.676966 | 0.097657 | 0.023028 |
+| 7 | 2.858033 | 2.243061 | 0.671470 | 0.092432 | 0.005826 |
+| 8 | 2.897942 | 2.201657 | 0.665408 | 0.090481 | 0.007054 |
+| 9 | 2.879305 | 2.123635 | 0.662323 | 0.085833 | 0.012010 |
+| 10 | 2.689149 | 2.206460 | 0.652959 | 0.083181 | 0.018391 |
+| 11 | 2.602156 | 2.173630 | 0.646987 | 0.080428 | 0.018051 |
+| 12 | 2.524872 | 2.259682 | 0.633348 | 0.078497 | 0.016506 |
+| 13 | 2.487731 | 2.181069 | 0.622878 | 0.077236 | 0.034869 |
+| 14 | 2.441416 | 2.163914 | 0.620127 | 0.075351 | 0.014704 |
+| 15 | 2.593763 | 2.106207 | 0.618329 | 0.071666 | 0.021537 |
+| 16 | 2.354121 | 2.139232 | 0.613450 | 0.070467 | 0.019519 |
+| 17 | 2.324910 | 2.182572 | 0.609607 | 0.070004 | 0.016624 |
+| 18 | 2.211069 | 2.217818 | 0.602393 | 0.067271 | 0.012167 |
+| 19 | 2.288229 | 2.200646 | 0.601274 | 0.067526 | 0.006396 |
+| 20 | 2.279950 | 2.124220 | 0.592673 | 0.067088 | 0.016861 |
+| 21 | 2.245226 | 2.093746 | 0.591067 | 0.065788 | 0.056956 |
+| 22 | 2.132475 | 2.041701 | 0.584535 | 0.063794 | 0.038144 |
+| 23 | 2.072861 | 2.053624 | 0.585595 | 0.063659 | 0.030008 |
+| 24 | 2.133922 | 2.123413 | 0.576549 | 0.062949 | 0.038453 |
+| 25 | 2.110386 | 1.997082 | 0.574944 | 0.061283 | 0.042103 |
+| 26 | 1.970849 | 1.993442 | 0.566059 | 0.059906 | 0.019400 |
+| 27 | 2.033728 | 2.087242 | 0.566852 | 0.059839 | 0.044937 |
+| 28 | 1.772775 | 1.904253 | 0.561025 | 0.060811 | 0.133143 |
+| 29 | 1.857043 | 1.914208 | 0.566620 | 0.059279 | 0.076952 |
+| 30 | 1.745171 | 1.873876 | 0.564118 | 0.056863 | 0.034387 |
+| 31 | 1.663806 | 1.817665 | 0.556164 | 0.055909 | 0.029959 |
+| 32 | 1.681606 | 1.892236 | 0.554895 | 0.055490 | 0.055458 |
+489751 learned/1200 BN state scalars,512 Adam updates/11428 positive mask regions;selected epoch28,validation box AP50 0.133143. Test box AP50 0.061530,integral mask AP50 0.027263,semantic mean IoU 0.736735;dataset category-macro PQ 0.165164,SQ 0.165164,RQ 0.181818,things PQ 0.000000,stuff PQ 0.908404. Counts aggregate before macro averaging;custom integral mask AP is not official COCO.
 \image(figures/panoptic_fpn_training.svg)
 // result_end
 \caption(Four unregularized task components and validation box AP50 selection. The code visibly optimizes the entire compact model and restores learned/BN stores together before semantic,instance and merged-map evaluation.)

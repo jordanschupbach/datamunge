@@ -52,18 +52,24 @@ padded crops/flips. The fixed subsets are 64 fit/32 validation/32 official-test 
 lowest validation NLL selects paired parameter/moving-state checkpoints before the test pass.
 Cached CIFAR-10 is required; this bounded CPU run is not the paper's long SGD schedule.
 
-The editable concept diagram is `diagrams/preactivation_resnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/preactivation_resnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/preactivation_resnet_concept.tikz > build/preactivation_resnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/preactivation_resnet_concept.svg build/preactivation_resnet_concept.dvi > build/preactivation_resnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/preactivation_resnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Preactivate filters\nraw shortcut path");
+  diagram.node("n1", {5.2, 0}, "164 or 1001 layers\nthree CIFAR stages");
+  diagram.node("n2", {10.4, 0}, "Tensor Adam loop\nsave weights\nand BN state");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/preactivation_resnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/preactivation_resnet_concept.svg)
 // result_end
 \caption(Pre-Activation ResNet: Signed Identity Paths Through Complete Depth)
@@ -490,7 +496,7 @@ int main() {
 ```
 // result_begin: markdown
 64 fit / 32 validation / 32 official-test rows; 432626 learned scalars, 12112 moving scalars; 20 explicit Adam updates.
-Selected epoch 4; validation NLL 2.325037; inference training NLL 2.159872; test NLL 2.470615; test accuracy 0.062500.
+Selected epoch 4; validation NLL 2.346310; inference training NLL 2.152311; test NLL 2.476890; test accuracy 0.000000.
 \image(figures/preactivation_resnet_training.svg)
 // result_end
 \caption(Explicit five-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order. The title gives the colour limits.)

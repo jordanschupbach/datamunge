@@ -715,6 +715,8 @@
         };
 
         packages = {
+          # Optional reference engine; standard CPU/CUDA packages use native vsim alone.
+          datamunge-mujoco = import ./nix/datamunge.nix { inherit pkgs; enableMujoco = true; };
           inherit
             datamunge
             pydatamunge
@@ -740,7 +742,8 @@
           datamunge-cuda = import ./nix/datamunge.nix {
             pkgs = cudaPkgs;
             enableCuda = true;
-            enableCublas = true;
+            # Context::matmul uses the in-house GEMM kernels; cuBLAS is a comparison path only.
+            enableCublas = false;
             inherit cudaToolkit;
           };
         };
@@ -932,18 +935,7 @@
             pkgs.doctest
             pkgs.cmake
             pkgs.xorg.libX11.dev
-            # The mepml reports' TikZ concept diagrams (docs/mepml/examples/**/diagrams/*.tikz),
-            # which a bash block renders with `latex` + `dvisvgm --no-fonts` during `just docs`.
-            (pkgs.texlive.combine {
-              inherit (pkgs.texlive)
-                scheme-small
-                standalone
-                pgf
-                amsmath
-                lm
-                dvisvgm
-                ;
-            })
+            # Method diagrams are rendered by the native C++ graphics library.
             # benchmarks/ (nn GEMM, conv and training benchmarks)
             pkgs.gbenchmark
 
@@ -952,9 +944,25 @@
             # pkgs.nodePackages.npm
 
           ]
-          # CBLAS for datamunge::nn GEMM on Linux (macOS uses Accelerate).
+          # OpenBLAS is not a dependency (datamunge::nn has in-house BLAS kernels);
+          # it stays in this shell only so -DDATAMUNGE_USE_BLAS=ON comparison
+          # builds work. `just bench-blas` uses the blas-bench shell below.
           ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.openblas ];
           shellHook = nnThreadHook;
+        };
+
+        # Comparators for `just bench-blas` (benchmarks/blas/blas_compare.cpp loads
+        # them with dlopen): nixpkgs OpenBLAS (Haswell kernels on x86-64), OpenBLAS
+        # with its AVX-512 kernels, BLIS, and the netlib reference BLAS.
+        devShells.blas-bench = pkgs.mkShell {
+          inputsFrom = [ self.devShells.${system}.cpp-tools ];
+          shellHook =
+            nnThreadHook
+            + lib.optionalString pkgs.stdenv.isLinux ''
+              export DATAMUNGE_BLAS_LIBS="openblas=${pkgs.openblas}/lib/libopenblas.so;openblas-avx512=${
+                pkgs.openblas.override { enableAVX512 = pkgs.stdenv.hostPlatform.isx86_64; }
+              }/lib/libopenblas.so;blis=${pkgs.blis}/lib/libblis.so;reference=${pkgs.lapack-reference}/lib/libblas.so:fixed-threads:slow"
+            '';
         };
 
         # Optional simulation/compute SDKs; ordinary CPU builds keep cpp-tools sufficient.

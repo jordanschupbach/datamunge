@@ -25,8 +25,8 @@ namespace nn = datamunge::nn;
 /// @see Fire()
 struct FireOutputs {
   nn::Tensor squeeze;   ///< Biased 1x1/ReLU reduced-width map.
-  nn::Tensor expand1x1; ///< Biased 1x1/ReLU expansion of squeezed activations.
-  nn::Tensor expand3x3; ///< Biased SAME 3x3/ReLU expansion of squeezed activations.
+  nn::Tensor expand1x1; ///< Biased 1x1/ReLU expansion of squeezed activations (channel view of output).
+  nn::Tensor expand3x3; ///< Biased SAME 3x3/ReLU expansion of squeezed activations (channel view of output).
   nn::Tensor output;    ///< Concatenation [expand1x1,expand3x3] on NHWC channels.
 };
 /// @brief Apply a Fire squeeze layer and parallel 1x1/3x3 expand layers.
@@ -63,16 +63,20 @@ inline FireOutputs Fire(nn::ParameterStore &p, const std::string &name, const nn
   o.activation = nn::Activation::Relu;
   FireOutputs out;
   out.squeeze = nn::conv2d(p, name + "/squeeze1x1", x, squeeze, 1, o);
-  out.expand1x1 = nn::conv2d(p, name + "/expand1x1", out.squeeze, expand1x1, 1, o);
-  out.expand3x3 = nn::conv2d(p, name + "/expand3x3", out.squeeze, expand3x3, 3, o);
-  out.output = nn::concat({out.expand1x1, out.expand3x3}, 3);
+  // Both expand branches write straight into the concatenated output.
+  out.output = nn::conv2d_concat(p, {name + "/expand1x1", name + "/expand3x3"}, out.squeeze,
+                                 {expand1x1, expand3x3}, {1, 3}, o);
+  out.expand1x1 = nn::slice_axis(out.output, 3, 0, expand1x1);
+  out.expand3x3 = nn::slice_axis(out.output, 3, expand1x1, expand1x1 + expand3x3);
   return out;
 }
 /// @brief Apply Caffe-style ceil-rounded 3x3 stride-two max pooling to a square map.
 ///
-/// If needed append one row/column of negative infinity at bottom/right,
-/// then use VALID pooling. Padding cannot win against finite input pixels.
-/// Work O(NHoWo*C*9); gradient follows max-pool switches. No fitting.
+/// An even side needs one more row/column at bottom/right: SAME pooling pads
+/// exactly that and skips the padded taps, the same windows as appending
+/// negative infinity and pooling VALID (without copying the map). An odd
+/// side pools VALID. Work O(NHoWo*C*9); gradient follows max-pool switches.
+/// No fitting.
 ///
 /// @param x Nonempty floating square NHWC map; handle copied, storage not mutated.
 /// @param size Input side at least two, matching x; overwritten with output side.
@@ -91,12 +95,9 @@ inline nn::Tensor CeilMaxPool(nn::Tensor x, int &size) {
   if (x.dim() != 4 || x.numel() == 0 || size < 2 || x.size(1) != size || x.size(2) != size)
     throw std::invalid_argument(
         "ceil pooling requires matching square NHWC sides of at least two");
-  const int pad = (size - 3) % 2 ? 1 : 0;
-  if (pad)
-    x = nn::pad(x, {{0, 0}, {0, 1}, {0, 1}, {0, 0}}, nn::PadMode::Constant,
-                -std::numeric_limits<double>::infinity());
+  const int pad = size % 2 == 0 ? 1 : 0;
   size = (size + pad - 3) / 2 + 1;
-  return nn::max_pool2d(x, 3, 2, nn::Padding::Valid);
+  return nn::max_pool2d(x, 3, 2, pad ? nn::Padding::Same : nn::Padding::Valid);
 }
 /// @brief SqueezeNet release version, square image size and dropout/bypass settings.
 ///

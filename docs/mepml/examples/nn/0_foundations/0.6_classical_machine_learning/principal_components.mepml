@@ -36,18 +36,24 @@ matrix K with H=I-11ᵀ/N and diagonalises HKH. Its eigenvalues are Gram eigenva
 variances; divide by N-1 to compare with covariance PCA. Query centring must use training means,
 not each query batch's own mean. No input-space inverse is claimed for kernel PCA.
 
-The concept diagram has a retained TikZ source in `diagrams/principal_components_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/principal_components_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/principal_components_concept.tikz > build/principal_components_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/principal_components_concept.svg build/principal_components_concept.dvi > build/principal_components_concept.render.log 2>&1
-printf 'Rendered build/principal_components_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/principal_components_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Tensor centre and scale\nfreeze for later queries");
+  diagram.node("n1", {5.2, 0}, "Reconstruction loss\northonormal parameter map");
+  diagram.node("n2", {10.4, 0}, "Explicit SGD or Adam\nSVD checks final error");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/principal_components_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/principal_components_concept.svg from local TikZ source.
 // \image(figures/principal_components_concept.svg)
 // result_end
 \caption(Fit the centre once and preserve it for every new query batch)

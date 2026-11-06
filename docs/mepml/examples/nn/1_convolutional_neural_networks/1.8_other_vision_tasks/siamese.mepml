@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Learn a weighted absolute difference between two shared sigmoid embeddings with binary cross entropy. Use the highest query/support score to classify one-shot tasks without fine-tuning;keep class-disjoint selection,optimizer loops and baseline comparisons visible.
 
-The editable concept diagram is `diagrams/siamese_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/siamese_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/siamese_concept.tikz > build/siamese_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/siamese_concept.svg build/siamese_concept.dvi > build/siamese_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/siamese_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Pair two images\nShare one encoder");
+  diagram.node("n1", {5.2, 0}, "Learn same or different\nVisible Adam steps");
+  diagram.node("n2", {10.4, 0}, "Compare new classes\nOne support per class");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/siamese_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/siamese_concept.svg)
 // result_end
 \caption(Siamese verification and unseen-class one-shot tasks)
@@ -454,12 +460,12 @@ int main() {
 // result_begin: markdown
 | epoch | fitting BCE | validation BCE | validation2-way |
 |---:|---:|---:|---:|
-| 1 | 0.647384 | 0.703590 | 0.671875 |
-| 2 | 0.583847 | 0.711113 | 0.703125 |
-| 3 | 0.511164 | 0.735208 | 0.593750 |
-96 explicit Adam updates;selected epoch2;restored validation2-way 0.703125/BCE 0.711113;fixed fitting BCE 0.694596->0.566996.
-512 balanced unseen-class test pairs:BCE 0.702042,accuracy 0.509766,TP/FP/FN/TN 5/0/251/256;same/different probabilities 0.394406/0.362365.
-256 unseen-class3-way tasks:trained 0.500000,untrained 0.601562,byte-pixel nearest 0.550781,chance1/3.
+| 1 | 0.647387 | 0.703524 | 0.671875 |
+| 2 | 0.583944 | 0.710273 | 0.695312 |
+| 3 | 0.510795 | 0.729649 | 0.601562 |
+96 explicit Adam updates;selected epoch2;restored validation2-way 0.695312/BCE 0.710273;fixed fitting BCE 0.694596->0.566320.
+512 balanced unseen-class test pairs:BCE 0.701201,accuracy 0.509766,TP/FP/FN/TN 5/0/251/256;same/different probabilities 0.395632/0.363492.
+256 unseen-class3-way tasks:trained 0.492188,untrained 0.601562,byte-pixel nearest 0.550781,chance1/3.
 | episode | correct support column | selected support column |
 |---:|---:|---:|
 | 0 | 2 | 0 |

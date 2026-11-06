@@ -774,12 +774,17 @@ class RGB(object):
     A plotting color: 8-bit red, green, and blue channels plus an alpha opacity,
            the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.
 
-    An aggregate, so brace-initialize it: `dm::RGB{255, 0, 0}` is opaque red and
+    Brace-initialize numeric channels: `dm::RGB{255, 0, 0}` is opaque red and
     `dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the
     library's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep
     them in [0, 255] (both the raster and SVG renderers clamp out-of-range channels), and
-    keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGB by value,
+    keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGBA (the same type as RGB) by value,
     and `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().
+    Color strings convert implicitly: names are case-insensitive black, white, red, green,
+    blue, yellow, cyan, magenta, gray/grey and transparent; hex accepts #RRGGBB and
+    #RRGGBBAA, with alpha last and scaled to [0, 1]. Malformed text throws before a
+    plot is changed. RGB and RGBA remain the same type, preserving existing palettes
+    and the binary layout of numeric colors. Parsing owns no reference to the string.
 
     Title: Example
 
@@ -801,6 +806,83 @@ class RGB(object):
     alpha = property(_datamunge.RGB_alpha_get, _datamunge.RGB_alpha_set)
 
     def __init__(self, *args):
+        r"""
+        *Overload 1:*
+        Construct the default opaque dark-slate ink color.
+        Title: Example
+        See the RGB class example.
+
+        |
+
+        *Overload 2:*
+        Construct numeric RGB channels and an optional normalized alpha.
+        Channels and alpha are retained; renderers clamp them when drawing.
+        :type red: int
+        :param red: Red channel, conventionally 0-255.
+        :type green: int
+        :param green: Green channel, conventionally 0-255.
+        :type blue: int
+        :param blue: Blue channel, conventionally 0-255.
+        :type opacity: float, optional
+        :param opacity: Alpha in [0, 1], default 1 (opaque).
+        Title: Example
+        See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.
+
+        |
+
+        *Overload 3:*
+        Construct numeric RGB channels and an optional normalized alpha.
+        Channels and alpha are retained; renderers clamp them when drawing.
+        :type red: int
+        :param red: Red channel, conventionally 0-255.
+        :type green: int
+        :param green: Green channel, conventionally 0-255.
+        :type blue: int
+        :param blue: Blue channel, conventionally 0-255.
+        :param opacity: Alpha in [0, 1], default 1 (opaque).
+        Title: Example
+        See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.
+
+        |
+
+        *Overload 4:*
+        Preserve direct initialization with a red channel and default remaining channels.
+        Explicit so a number cannot accidentally become a color argument.
+        :type red: int
+        :param red: Red channel; green remains 41, blue 55 and alpha 1.
+        Title: Example
+        See the numeric constructor; RGB{255} keeps the other default channels.
+
+        |
+
+        *Overload 5:*
+        Preserve direct initialization with red/green and default blue/alpha.
+        :type red: int
+        :param red: Red channel, conventionally 0-255.
+        :type green: int
+        :param green: Green channel, conventionally 0-255; blue remains 55 and alpha 1.
+        Title: Example
+        See the numeric constructor; RGB{255, 0} keeps the other default channels.
+
+        |
+
+        *Overload 6:*
+        Implicitly parse a color name, #RRGGBB or #RRGGBBAA string.
+        Names and hexadecimal digits are case-insensitive. Hex alpha is the final
+        byte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named
+        green is (0, 128, 0); transparent is black with alpha zero. The input is copied
+        while parsing and is never borrowed by a plot or palette.
+        :type color: string
+        :param color: Color text; supported names are listed in the class description.
+        :raises: std::invalid_argument For empty text, unknown names or malformed hex.
+        Title: Example
+
+        .. code-block:: c++
+
+            const dm::RGBA glass = std::string("#ff44ff55");
+            const auto plt = dm::plot(dm::c(0, 1), dm::c(1, 2), "data", "#ff44ff55");
+            std::print("{} {}\n", glass.r, dm::round(glass.alpha, 3)); // 255 0.333
+        """
         _datamunge.RGB_swiginit(self, _datamunge.new_RGB(*args))
     __swig_destroy__ = _datamunge.delete_RGB
 
@@ -1050,7 +1132,7 @@ class Plot(object):
     def background(self, color):
         r"""
         Base-class form of RPlot::background(): sets the canvas fill color.
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Fill for the whole canvas (default white).
         :rtype: :py:class:`Plot`
         :return: This plot, for chaining.
@@ -1065,7 +1147,7 @@ class Plot(object):
     def axis_color(self, color):
         r"""
         Base-class form of RPlot::axis_color(): sets the axis-line and text color.
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Color for axis lines, ticks, axis labels, title, and subtitle.
         :rtype: :py:class:`Plot`
         :return: This plot, for chaining.
@@ -1080,7 +1162,7 @@ class Plot(object):
     def grid_color(self, color):
         r"""
         Base-class form of RPlot::grid_color(): sets the grid-line color.
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Grid-line color (default light gray `{229, 231, 235}`).
         :rtype: :py:class:`Plot`
         :return: This plot, for chaining.
@@ -1316,7 +1398,7 @@ class Plot(object):
     def background_color(self):
         r"""
         Returns the canvas fill color set by background().
-        :rtype: :py:class:`RGB`
+        :rtype: :py:class:`RGBA`
         :return: The background color (default white `{255, 255, 255}`).
         """
         return _datamunge.Plot_background_color(self)
@@ -1324,7 +1406,7 @@ class Plot(object):
     def axes_color(self):
         r"""
         Returns the axis and text color set by axis_color().
-        :rtype: :py:class:`RGB`
+        :rtype: :py:class:`RGBA`
         :return: The axis color (default gray `{55, 65, 81}`).
         """
         return _datamunge.Plot_axes_color(self)
@@ -1332,7 +1414,7 @@ class Plot(object):
     def major_grid_color(self):
         r"""
         Returns the grid-line color set by grid_color().
-        :rtype: :py:class:`RGB`
+        :rtype: :py:class:`RGBA`
         :return: The grid color (default light gray `{229, 231, 235}`).
         """
         return _datamunge.Plot_major_grid_color(self)
@@ -1994,7 +2076,7 @@ class RPlot(Plot):
         one color. Only layers present now are affected: points added later keep their own
         colors. Reference lines (abline) and manual legend entries keep their explicit colors.
 
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  New color, including its alpha.
         :rtype: :py:class:`RPlot`
         :return: This plot, for chaining.
@@ -2048,7 +2130,7 @@ class RPlot(Plot):
         The default is white `{255, 255, 255}`. The color fills the margins as well as the
         plotting area. Its alpha is ignored: the background is always drawn opaque.
 
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Canvas fill color.
         :rtype: :py:class:`RPlot`
         :return: This plot, for chaining.
@@ -2082,7 +2164,7 @@ class RPlot(Plot):
         The default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and
         data layers keep their own colors.
 
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Axis and text color.
         :rtype: :py:class:`RPlot`
         :return: This plot, for chaining.
@@ -2107,7 +2189,7 @@ class RPlot(Plot):
 
         Has no visible effect while the grid is off (show_grid(false)) or the axes are hidden.
 
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Grid-line color.
         :rtype: :py:class:`RPlot`
         :return: This plot, for chaining.
@@ -2216,6 +2298,53 @@ class RPlot(Plot):
         See also: x_limits()
         """
         val = _datamunge.RPlot_y_limits(self, min_y, max_y)
+        val = self 
+
+        return val
+
+
+    def xlim(self, min_x, max_x):
+        r"""
+        Short spelling of x_limits(), matching R's xlim plot argument.
+        Fixes the horizontal plotting range without automatic padding. Data outside
+        the range follows x_limits() rendering behavior; this does not filter layers.
+        :type min_x: float
+        :param min_x: Left edge in data units.
+        :type max_x: float
+        :param max_x: Right edge; must be greater than min_x.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument Unless max_x > min_x (NaN fails); the plot is unchanged.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);
+            std::print("{} {}\n", plt.x_max(), plt.y_min()); // 1 -4
+        See also: x_limits(), ylim()
+        """
+        val = _datamunge.RPlot_xlim(self, min_x, max_x)
+        val = self 
+
+        return val
+
+
+    def ylim(self, min_y, max_y):
+        r"""
+        Short spelling of y_limits(), matching R's ylim plot argument.
+        Fixes the vertical plotting range without automatic padding; layers are retained.
+        :type min_y: float
+        :param min_y: Bottom edge in data units.
+        :type max_y: float
+        :param max_y: Top edge; must be greater than min_y.
+        :rtype: :py:class:`RPlot`
+        :return: This plot, for chaining.
+        :raises: std::invalid_argument Unless max_y > min_y (NaN fails); the plot is unchanged.
+        Title: Example
+        See xlim(), whose example uses both aliases.
+        See also: y_limits(), xlim()
+        """
+        val = _datamunge.RPlot_ylim(self, min_y, max_y)
         val = self 
 
         return val
@@ -2491,7 +2620,7 @@ class RPlot(Plot):
         :type label: string, optional
         :param label:  Legend text; empty (the default) keeps the plot out of the automatic legend.
                    With `"b"` only the line carries it.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Color of the points and line (default blue `{37, 99, 235}`).
         :rtype: :py:class:`RPlot`
         :return: A new plot holding the series.
@@ -2533,7 +2662,7 @@ class RPlot(Plot):
         :param bins:  Number of bins (default 10).
         :type label: string, optional
         :param label:  Legend text; empty (the default) shows no legend.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Bar color (default light blue `{96, 165, 250}`).
         :rtype: :py:class:`RPlot`
         :return: A new plot holding one Bar series.
@@ -2572,7 +2701,7 @@ class RPlot(Plot):
         :param names:  Tick labels, one per bar; empty (the default) keeps numeric ticks.
         :type label: string, optional
         :param label:  Legend text; empty (the default) shows no legend.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Bar color (default green `{22, 163, 74}`).
         :rtype: :py:class:`RPlot`
         :return: A new plot holding one Bar series.
@@ -2612,7 +2741,7 @@ class RPlot(Plot):
         :param groups:  One vector of observations per box; each must be nonempty.
         :type names: std::vector< std::string,std::allocator< std::string > >, optional
         :param names:  Tick labels under the boxes; empty (the default) keeps numeric ticks.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
         :rtype: :py:class:`RPlot`
         :return: A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).
@@ -2649,7 +2778,7 @@ class RPlot(Plot):
         :param groups:  One vector of observations per box; each must be nonempty.
         :type names: std::vector< std::string,std::allocator< std::string > >
         :param names:  Tick labels under the boxes; empty keeps numeric ticks.
-        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >
         :param colors:  Box colors, recycled when shorter than ``groups;`` must be nonempty.
         :rtype: :py:class:`RPlot`
         :return: A new plot holding one Box series per group.
@@ -2685,7 +2814,7 @@ class RPlot(Plot):
         :param values:  Wedge sizes; nonnegative, with a positive sum.
         :type names: std::vector< std::string,std::allocator< std::string > >, optional
         :param names:  Wedge labels; empty (the default) draws none.
-        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional
+        :type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >, optional
         :param colors:  Wedge colors, recycled; empty (the default) uses the built-in palette.
         :rtype: :py:class:`RPlot`
         :return: A new plot holding one Polygon series per wedge plus one Text series per name.
@@ -2726,7 +2855,7 @@ class RPlot(Plot):
         :param n:  Number of sample points, at least 2 (default 101, as in R).
         :type label: string, optional
         :param label:  Legend text; empty (the default) shows no legend.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Line color (default red `{220, 38, 38}`).
         :rtype: :py:class:`RPlot`
         :return: A new plot holding one Line series.
@@ -2768,7 +2897,7 @@ class RPlot(Plot):
         :type label: string, optional
         :param label:  Legend text (default "sample", so the automatic legend shows one row; pass
                    "" to hide it).
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Point color (default blue `{37, 99, 235}`).
         :rtype: :py:class:`RPlot`
         :return: A new plot holding one Scatter series.
@@ -2802,7 +2931,7 @@ class RPlot(Plot):
         :param x:  Horizontal coordinates.
         :type y: std::vector< double,std::allocator< double > >
         :param y:  Vertical coordinates, paired with ``x``.
-        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >
         :param colors:  Palette; point i uses `colors[i % colors.size()]`.
         :type marker_size: float, optional
         :param marker_size:  Marker radius in pixels (default 4).
@@ -2844,7 +2973,7 @@ class RPlot(Plot):
         :param y:  Vertical coordinates, paired with ``x`` by position.
         :type label: string, optional
         :param label:  Legend text; empty (the default) keeps it out of the legend.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Line color (default red `{220, 38, 38}`).
         :type stroke_width: float, optional
         :param stroke_width:  Line width in pixels (default 2).
@@ -2881,7 +3010,7 @@ class RPlot(Plot):
         :param y:  Vertical coordinates, paired with ``x`` by position.
         :type label: string, optional
         :param label:  Legend text for this series; empty (the default) keeps it out of the legend.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Marker color for every point (default blue `{37, 99, 235}`).
         :type marker_size: float, optional
         :param marker_size:  Marker radius in pixels (default 4).
@@ -2913,7 +3042,7 @@ class RPlot(Plot):
         :param x:  Horizontal coordinates.
         :type y: std::vector< double,std::allocator< double > >
         :param y:  Vertical coordinates, paired with ``x``.
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Marker color for every point.
         :type marker_size: float, optional
         :param marker_size:  Marker radius in pixels (default 4).
@@ -2938,7 +3067,7 @@ class RPlot(Plot):
         :param x:  Horizontal coordinates.
         :type y: std::vector< double,std::allocator< double > >
         :param y:  Vertical coordinates, paired with ``x``.
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Marker color for every point.
         :param marker_size:  Marker radius in pixels (default 4).
         :rtype: :py:class:`RPlot`
@@ -2975,7 +3104,7 @@ class RPlot(Plot):
         :param y:  Vertical coordinates, paired with ``x`` by position.
         :type label: string, optional
         :param label:  Legend text; empty (the default) keeps it out of the legend.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Line color (default red `{220, 38, 38}`).
         :type stroke_width: float, optional
         :param stroke_width:  Line width in pixels (default 2).
@@ -3005,7 +3134,7 @@ class RPlot(Plot):
         :param x:  Horizontal coordinates.
         :type y: std::vector< double,std::allocator< double > >
         :param y:  Vertical coordinates, paired with ``x``.
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Line color.
         :type stroke_width: float, optional
         :param stroke_width:  Line width in pixels (default 2).
@@ -3029,7 +3158,7 @@ class RPlot(Plot):
         :param x:  Horizontal coordinates.
         :type y: std::vector< double,std::allocator< double > >
         :param y:  Vertical coordinates, paired with ``x``.
-        :type color: :py:class:`RGB`
+        :type color: :py:class:`RGBA`
         :param color:  Line color.
         :param stroke_width:  Line width in pixels (default 2).
         :rtype: :py:class:`RPlot`
@@ -3065,7 +3194,7 @@ class RPlot(Plot):
         :param y:  Bar heights, paired with ``x`` by position.
         :type label: string, optional
         :param label:  Legend text; empty (the default) keeps it out of the legend.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Bar color (default green `{22, 163, 74}`).
         :type bar_width: float, optional
         :param bar_width:  Bar width in data units (default 0.8).
@@ -3115,7 +3244,7 @@ class RPlot(Plot):
         :param whisker_hi:  Upper whisker end.
         :type outliers: std::vector< double,std::allocator< double > >, optional
         :param outliers:  Values drawn as individual points (default none).
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
         :type width: float, optional
         :param width:  Box width in data units (default 0.6).
@@ -3154,7 +3283,7 @@ class RPlot(Plot):
         :param intercept:  y value at x = 0.
         :type slope: float
         :param slope:  Change in y per unit x.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Line color (default opaque black).
         :type stroke_width: float, optional
         :param stroke_width:  Line width in pixels (default 1).
@@ -3196,7 +3325,7 @@ class RPlot(Plot):
 
         :type y_value: float
         :param y_value:  Height of the line, in data units.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Line color (default opaque black).
         :type stroke_width: float, optional
         :param stroke_width:  Line width in pixels (default 1).
@@ -3229,7 +3358,7 @@ class RPlot(Plot):
 
         :type x_value: float
         :param x_value:  Horizontal position of the line, in data units.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Line color (default opaque black).
         :type stroke_width: float, optional
         :param stroke_width:  Line width in pixels (default 1).
@@ -3266,7 +3395,7 @@ class RPlot(Plot):
 
         :type data: std::vector< double,std::allocator< double > >
         :param data:  The sample; at least two values. Taken by value, so the caller's data is unchanged.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Line color (default red `{220, 38, 38}`).
         :type stroke_width: float, optional
         :param stroke_width:  Line width in pixels (default 1.5).
@@ -3310,7 +3439,7 @@ class RPlot(Plot):
 
         :type labels: std::vector< std::string,std::allocator< std::string > >
         :param labels:  Row texts, in display order.
-        :type colors: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+        :type colors: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >
         :param colors:  Swatch colors, one per label.
         :rtype: :py:class:`RPlot`
         :return: This plot, for chaining.
@@ -3355,7 +3484,7 @@ class RPlot(Plot):
         :param y:  Vertical position, in data units.
         :type label: string
         :param label:  The text to draw (XML-escaped in SVG output).
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Text color (default near-black `{17, 24, 39}`).
         :type font_size: float, optional
         :param font_size:  Font size in pixels (default 14).
@@ -3395,7 +3524,7 @@ class RPlot(Plot):
         :param x:  Vertex x coordinates, in order around the polygon.
         :type y: std::vector< double,std::allocator< double > >
         :param y:  Vertex y coordinates, paired with ``x``.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Fill (and outline) color (default blue `{37, 99, 235}`).
         :type filled: boolean, optional
         :param filled:  True (the default) fills; false draws the outline only.
@@ -3438,7 +3567,7 @@ class RPlot(Plot):
         :param y:  Cell centres along y, increasing (at least 2).
         :type z: std::vector< std::vector< double,std::allocator< double > >,std::allocator< std::vector< double,std::allocator< double > > > >
         :param z:  Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.
-        :type palette: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional
+        :type palette: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >, optional
         :param palette:  Colours from low to high (default terrain_colors(12)).
         :type z_min: float, optional
         :param z_min:  Value mapped to the first colour; NaN (the default) uses the smallest z.
@@ -3480,7 +3609,7 @@ class RPlot(Plot):
         :param x1:  End x coordinates.
         :type y1: std::vector< double,std::allocator< double > >
         :param y1:  End y coordinates.
-        :type color: :py:class:`RGB`, optional
+        :type color: :py:class:`RGBA`, optional
         :param color:  Segment color (default opaque black).
         :type stroke_width: float, optional
         :param stroke_width:  Segment width in pixels (default 1).
@@ -3887,7 +4016,7 @@ def terrain_colors(n):
     ``n`` colours from green through yellow and brown to near-white, as R's `terrain.colors(n)`.
     :type n: std::size_t
     :param n:  Number of colours (at least 1).
-    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >
     :return: The palette, low to high.
     :raises: std::invalid_argument  If ``n`` is 0.
     """
@@ -3904,7 +4033,7 @@ def diverging_colors(n):
 
     :type n: std::size_t
     :param n:  Number of colours (at least 1; 1 gives the white midpoint).
-    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >
     :return: The palette, low (blue) to high (red).
     :raises: std::invalid_argument  If ``n`` is 0.
 
@@ -3933,7 +4062,7 @@ def viridis_colors(n):
 
     :type n: std::size_t
     :param n:  Number of colours (at least 1).
-    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >
     :return: The palette, low (purple) to high (yellow).
     :raises: std::invalid_argument  If ``n`` is 0.
 
@@ -3963,13 +4092,13 @@ def value_colors(*args):
 
     :type values: std::vector< double,std::allocator< double > >
     :param values:  Values to colour.
-    :type palette: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >, optional
+    :type palette: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >, optional
     :param palette:  Colours from low to high (default viridis_colors(256)).
     :type z_min: float, optional
     :param z_min:  Value of the first colour; NaN (the default) uses the smallest value.
     :type z_max: float, optional
     :param z_max:  Value of the last colour; NaN (the default) uses the largest value.
-    :rtype: std::vector< datamunge::graphics::RGB,std::allocator< datamunge::graphics::RGB > >
+    :rtype: std::vector< datamunge::graphics::RGBA,std::allocator< datamunge::graphics::RGBA > >
     :return: One colour per value.
 
     Title: Example
@@ -4285,7 +4414,7 @@ def data_home():
 def downloadable():
     r"""
     The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100",
-           "diamonds", "fashion_mnist", "mnist", "sudoku".
+           "diamonds", "fashion_mnist", "mnist", "rebot_devarm", "sudoku".
 
     Title: Example
 
@@ -4304,14 +4433,21 @@ def fetch(*args):
     IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
     `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
     "sudoku" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.
+    "rebot_devarm" holds 38 pinned Seeed DevArm CAD/URDF/STL files and the
+    CERN-OHL-W-2.0 source license in their upstream relative directory layout.
+    DevArm verifies the size and SHA-256 of every cached file on every call;
+    changed files throw without replacement. Missing files are staged and verified
+    before publication. It uses the same offline/mirror/cache controls, and works
+    without the optional native data-preparation dependencies. Hashing uses memory
+    proportional to the largest source file (about 35 MB).
     Approximate download sizes: diamonds 2.7 MB, california_housing 1.4 MB, MNIST 11 MB,
-    Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB.
+    Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB, DevArm 56 MB.
 
     :type name: string
     :param name: One of downloadable().
     :type directory: string, optional
     :param directory: Where the files live; empty means `data_home() + "/" + name`. Files
-               already present there are used as they are.
+               already present there are used as they are, except DevArm's verified files.
     :rtype: string
     :return: The local path of the CSV file or the dataset directory.
     :raises: std::invalid_argument for an unknown name.
@@ -4323,6 +4459,9 @@ def fetch(*args):
     .. code-block:: c++
 
         const auto housing = dm::datasets::read_csv(dm::datasets::fetch("california_housing"));
+    For a complete CAD asset tree, use `dm::datasets::fetch("rebot_devarm")`.
+    Title: References
+    - Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm
     See also: data_home(), downloadable(), download_file()
     """
     return _datamunge.fetch(*args)
@@ -19464,6 +19603,10 @@ class Polynomial(object):
 
     def __ne__(self, other):
         return _datamunge.Polynomial___ne__(self, other)
+
+    def to_tex(self, *args):
+        r"""Render descending powers using a raw TeX symbol and 1-17 significant digits; return raw TeX."""
+        return _datamunge.Polynomial_to_tex(self, *args)
     __swig_destroy__ = _datamunge.delete_Polynomial
 
 # Register Polynomial in _datamunge:
@@ -19722,6 +19865,10 @@ class RationalFunction(object):
 
     def to_string(self):
         return _datamunge.RationalFunction_to_string(self)
+
+    def to_tex(self, *args):
+        r"""Render the native reduced rational function as raw TeX, omitting a unit denominator."""
+        return _datamunge.RationalFunction_to_tex(self, *args)
     __swig_destroy__ = _datamunge.delete_RationalFunction
 
 # Register RationalFunction in _datamunge:
@@ -20447,6 +20594,10 @@ class Expr(object):
 
     def to_string(self):
         return _datamunge.Expr_to_string(self)
+
+    def to_tex(self, precision=7):
+        r"""Render the expression using native grouping and precision; return raw TeX without math delimiters."""
+        return _datamunge.Expr_to_tex(self, precision)
     __swig_destroy__ = _datamunge.delete_Expr
 
 # Register Expr in _datamunge:
@@ -21057,7 +21208,7 @@ class NnModel(object):
 _datamunge.NnModel_swigregister(NnModel)
 
 def nn_gemm_backend():
-    r"""The GEMM backend nn uses ("accelerate", "openblas", "cblas" or "builtin")."""
+    r"""The GEMM backend nn uses: "inhouse-<isa>" (e.g. "inhouse-avx512"), or "accelerate", "openblas" or "cblas" in DATAMUNGE_USE_BLAS builds."""
     return _datamunge.nn_gemm_backend()
 
 def nn_get_num_threads():
@@ -22599,4 +22750,789 @@ class TaskBatch(object):
 
 # Register TaskBatch in _datamunge:
 _datamunge.TaskBatch_swigregister(TaskBatch)
+class LinalgMatrix(object):
+    r"""
+    Binding counterpart of Mat/SpMat with shared, immutable expression operands.
+    Transpose, multiplication and inverse actions defer native computation until eval(),
+    values() or text(). Handles keep temporary operands alive across garbage collection.
+    Sparse products use CSR; solves use the canonical dense LU/QR implementation.
+    Concurrent const evaluation is safe; no evaluation cache is mutated.
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::LinalgMatrix A({2, 0, 0, 4}, 2, 2), b({6, 8}, 2, 1);
+        auto x = A.inverse_action().multiply(b);
+        std::print("{:.0f}\n", x.values()[0]); // 3
+    See also: Mat, SpMat, solve()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, values, rows, cols, sparse=False):
+        r"""
+        Construct an owned dense or CSR matrix from row-major values.
+        :type values: std::vector< double,std::allocator< double > >
+        :param values: Exactly rows * cols coefficients; sparse zero entries are omitted.
+        :type rows: std::size_t
+        :param rows: Number of rows, including zero.
+        :type cols: std::size_t
+        :param cols: Number of columns, including zero.
+        :type sparse: boolean, optional
+        :param sparse: Select CSR storage, default false.
+        :raises: std::invalid_argument If dimensions overflow or do not match values.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({1, 0}, 1, 2, true);
+            std::print("{}\n", A.cols()); // 2
+        """
+        _datamunge.LinalgMatrix_swiginit(self, _datamunge.new_LinalgMatrix(values, rows, cols, sparse))
+
+    def rows(self):
+        r"""
+        Read the deferred result's row count without evaluating.
+        :rtype: std::size_t
+        :return: Number of rows.
+        """
+        return _datamunge.LinalgMatrix_rows(self)
+
+    def cols(self):
+        r"""
+        Read the deferred result's column count without evaluating.
+        :rtype: std::size_t
+        :return: Number of columns.
+        """
+        return _datamunge.LinalgMatrix_cols(self)
+
+    def is_sparse(self):
+        r"""
+        Inspect the deferred result's storage policy without evaluating.
+        :rtype: boolean
+        :return: True for CSR results; inverse actions and solves return dense results.
+        """
+        return _datamunge.LinalgMatrix_is_sparse(self)
+
+    def transpose(self):
+        r"""
+        Form a lazy transpose, retaining shared ownership of this operand.
+        :rtype: :py:class:`LinalgMatrix`
+        :return: Deferred transpose handle.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({1, 2}, 1, 2);
+            std::print("{}\n", A.transpose().rows()); // 2
+        """
+        return _datamunge.LinalgMatrix_transpose(self)
+
+    def multiply(self, other):
+        r"""
+        Form a lazy matrix product, fusing preceding inverse actions into a solve.
+        An expression solve(A) * B * C evaluates B * C before one native solve.
+        :type other: :py:class:`LinalgMatrix`
+        :param other: Right operand, retained by shared ownership.
+        :rtype: :py:class:`LinalgMatrix`
+        :return: Deferred product or solve handle.
+        :raises: std::invalid_argument If inner dimensions differ.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({1, 2}, 1, 2), b({3, 4}, 2, 1);
+            std::print("{:.0f}\n", A.multiply(b).values()[0]); // 11
+        """
+        return _datamunge.LinalgMatrix_multiply(self, other)
+
+    def inverse_action(self):
+        r"""
+        Form a deferred square inverse action, without factorisation or inversion.
+        Multiplication turns this into a solve; evaluating it alone forms an explicit inverse.
+        :rtype: :py:class:`LinalgMatrix`
+        :return: Deferred inverse-action handle.
+        :raises: std::invalid_argument If this matrix is not square.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({2}, 1, 1);
+            std::print("{:.1f}\n", A.inverse_action().values()[0]); // 0.5
+        """
+        return _datamunge.LinalgMatrix_inverse_action(self)
+
+    def solve(self, rhs):
+        r"""
+        Evaluate a square system with LU or a tall least-squares system with QR.
+        :type rhs: :py:class:`LinalgMatrix`
+        :param rhs: Matrix of right-hand sides with rows() rows.
+        :rtype: :py:class:`LinalgMatrix`
+        :return: Owned dense solution snapshot.
+        :raises: std::invalid_argument For incompatible/wide shapes or nonfinite solve inputs.
+        :raises: std::runtime_error For singular or rank-deficient systems.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({1, 1, 1}, 3, 1), b({1, 2, 3}, 3, 1);
+            std::print("{:.0f}\n", A.solve(b).values()[0]); // 2
+        """
+        return _datamunge.LinalgMatrix_solve(self, rhs)
+
+    def eval(self):
+        r"""
+        Evaluate once into an owned snapshot with no deferred operands.
+        :rtype: :py:class:`LinalgMatrix`
+        :return: Materialised matrix handle, sharing immutable storage when already concrete.
+        :raises: std::invalid_argument For nonfinite solve inputs.
+        :raises: std::runtime_error For singular or rank-deficient systems.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({1, 2}, 1, 2);
+            auto snapshot = A.transpose().eval();
+            std::print("{}\n", snapshot.rows()); // 2
+        """
+        return _datamunge.LinalgMatrix_eval(self)
+
+    def values(self):
+        r"""
+        Evaluate and copy all coefficients in row-major order.
+        :rtype: std::vector< double,std::allocator< double > >
+        :return: Dense vector, including sparse zeros.
+        :raises: std::invalid_argument For nonfinite solve inputs.
+        :raises: std::runtime_error For singular or rank-deficient systems.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({1, 2}, 1, 2);
+            std::print("{:.0f}\n", A.values()[1]); // 2
+        """
+        return _datamunge.LinalgMatrix_values(self)
+
+    def text(self):
+        r"""
+        Evaluate once and produce the native capped Mat/SpMat preview.
+        :rtype: string
+        :return: Shape, storage information and at most ten rows/eight columns.
+        :raises: std::invalid_argument For nonfinite solve inputs.
+        :raises: std::runtime_error For singular or rank-deficient systems.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::LinalgMatrix A({1}, 1, 1);
+            std::print("{}\n", A.text());
+           Mat 1 x 1
+                [,0]
+           [0,]    1
+        """
+        return _datamunge.LinalgMatrix_text(self)
+    __swig_destroy__ = _datamunge.delete_LinalgMatrix
+
+# Register LinalgMatrix in _datamunge:
+_datamunge.LinalgMatrix_swigregister(LinalgMatrix)
+class CadSolid(object):
+    r"""
+    An owned B-rep solid with value-returning modelling and export operations.
+    Geometry uses doubles in caller-selected consistent units. Copies own topology;
+    immutable surfaces may be shared. Operations return new solids, preserving inputs.
+    Unsupported kernel operations throw std::runtime_error with the kernel diagnostic.
+    Concurrent const access is safe; do not mutate a shared object concurrently.
+    Title: Example
+
+    .. code-block:: c++
+
+        auto block = dm::cad::Solid::box(4, 3, 2);
+        auto hole = dm::cad::Solid::cylinder(.4, 4).translated(2, 1.5, -1);
+        auto part = block.subtracted(hole);
+        part.save("part.step");
+    See also: Model, FeatureTree, load_scene()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+
+    def __init__(self, *args, **kwargs):
+        raise AttributeError("No constructor defined")
+    __repr__ = _swig_repr
+
+    @staticmethod
+    def box(width, depth, height):
+        r"""
+        Construct an axis-aligned box with minimum corner at the origin.
+        :type width: float
+        :param width: Positive finite X extent.
+        :type depth: float
+        :param depth: Positive finite Y extent.
+        :type height: float
+        :param height: Positive finite Z extent.
+        :rtype: :py:class:`Solid`
+        :return: Owned solid.
+        :raises: std::invalid_argument Nonpositive/nonfinite size.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadSolid_box(width, depth, height)
+
+    @staticmethod
+    def cylinder(radius, height):
+        r"""
+        Construct a cylinder with base at the origin and axis +Z.
+        :type radius: float
+        :param radius: Positive finite radius.
+        :type height: float
+        :param height: Positive finite height.
+        :rtype: :py:class:`Solid`
+        :return: Owned solid.
+        :raises: std::invalid_argument Invalid dimensions.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadSolid_cylinder(radius, height)
+
+    @staticmethod
+    def sphere(radius):
+        r"""
+        Construct a sphere centred at the origin.
+        :type radius: float
+        :param radius: Positive finite radius.
+        :rtype: :py:class:`Solid`
+        :return: Owned solid.
+        :raises: std::invalid_argument Invalid radius.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto ball = dm::cad::Solid::sphere(2).translated(0, 0, 2);
+        """
+        return _datamunge.CadSolid_sphere(radius)
+
+    @staticmethod
+    def torus(major_radius, minor_radius):
+        r"""
+        Construct a ring torus centred at the origin around +Z.
+        :type major_radius: float
+        :param major_radius: Positive finite distance from axis to tube centre.
+        :type minor_radius: float
+        :param minor_radius: Positive finite tube radius smaller than major_radius.
+        :rtype: :py:class:`Solid`
+        :return: Owned solid.
+        :raises: std::invalid_argument Invalid radii.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto ring = dm::cad::Solid::torus(3, 1);
+        """
+        return _datamunge.CadSolid_torus(major_radius, minor_radius)
+
+    def united(self, other):
+        r"""
+        Return the union with another solid.
+        :type other: :py:class:`Solid`
+        :param other: Borrowed operand, in the same units/frame.
+        :rtype: :py:class:`Solid`
+        :return: New solid; inputs unchanged.
+        :raises: std::runtime_error Kernel failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto a = dm::cad::Solid::box(2, 2, 2);
+            auto b = a.translated(.5, .5, .5);
+            auto joined = a.united(b);
+        """
+        return _datamunge.CadSolid_united(self, other)
+
+    def subtracted(self, other):
+        r"""
+        Subtract another solid, preserving cavities and trimmed faces.
+        :type other: :py:class:`Solid`
+        :param other: Borrowed tool solid.
+        :rtype: :py:class:`Solid`
+        :return: New solid.
+        :raises: std::runtime_error Kernel failure or empty result.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadSolid_subtracted(self, other)
+
+    def intersected(self, other):
+        r"""
+        Return the common material of two solids.
+        :type other: :py:class:`Solid`
+        :param other: Borrowed operand.
+        :rtype: :py:class:`Solid`
+        :return: New solid.
+        :raises: std::runtime_error Kernel failure or empty result.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto a = dm::cad::Solid::box(2, 2, 2);
+            auto common = a.intersected(a.translated(.5, .5, .5));
+        """
+        return _datamunge.CadSolid_intersected(self, other)
+
+    def translated(self, x, y, z):
+        r"""
+        Return a translated copy.
+        :type x: float
+        :param x: Finite X displacement in model units.
+        :type y: float
+        :param y: Finite Y displacement.
+        :type z: float
+        :param z: Finite Z displacement.
+        :rtype: :py:class:`Solid`
+        :return: New solid.
+        :raises: std::invalid_argument Nonfinite displacement.
+        :raises: std::runtime_error Transform failure.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadSolid_translated(self, x, y, z)
+
+    def rotated(self, x, y, z, radians):
+        r"""
+        Rotate about an axis through the origin, using the right-hand rule.
+        :type x: float
+        :param x: Axis X component.
+        :type y: float
+        :param y: Axis Y component.
+        :type z: float
+        :param z: Axis Z component; axis must be finite and nonzero.
+        :type radians: float
+        :param radians: Finite rotation angle.
+        :rtype: :py:class:`Solid`
+        :return: New solid.
+        :raises: std::invalid_argument Invalid axis or angle.
+        :raises: std::runtime_error Kernel failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto turned = dm::cad::Solid::box(2, 3, 4).rotated(0, 0, 1, dm::cad::kHalfPi);
+        """
+        return _datamunge.CadSolid_rotated(self, x, y, z, radians)
+
+    def filleted(self, edges, radius):
+        r"""
+        Fillet selected edge IDs in sequence using persistent face-pair references.
+        :type edges: std::vector< int,std::allocator< int > >
+        :param edges: Edge IDs from this solid's model; empty list leaves a copy unchanged.
+        :type radius: float
+        :param radius: Positive finite rolling-ball radius.
+        :rtype: :py:class:`Solid`
+        :return: New solid. Source kernel supports straight edges between planar faces.
+        :raises: std::invalid_argument Invalid radius.
+        :raises: std::runtime_error Unsupported edge/blend geometry.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto a = dm::cad::Solid::box(4, 4, 4);
+            auto rounded = a.filleted({a.edges().front()}, .2);
+        """
+        return _datamunge.CadSolid_filleted(self, edges, radius)
+
+    def chamfered(self, edges, setback):
+        r"""
+        Chamfer selected edge IDs by a common setback.
+        :type edges: std::vector< int,std::allocator< int > >
+        :param edges: Source edge IDs; empty list returns a copy.
+        :type setback: float
+        :param setback: Positive finite distance along adjacent faces.
+        :rtype: :py:class:`Solid`
+        :return: New solid.
+        :raises: std::invalid_argument Invalid setback.
+        :raises: std::runtime_error Kernel failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto a = dm::cad::Solid::box(4, 4, 4);
+            auto bevel = a.chamfered({a.edges().front()}, .2);
+        """
+        return _datamunge.CadSolid_chamfered(self, edges, setback)
+
+    def shelled(self, *args):
+        r"""
+        Hollow a solid, optionally opening specified faces.
+        :type thickness: float
+        :param thickness: Positive finite wall thickness.
+        :type open_faces: std::vector< int,std::allocator< int > >, optional
+        :param open_faces: Face IDs to open; empty creates a sealed cavity.
+        :rtype: :py:class:`Solid`
+        :return: New solid, subject to ShellBody's supported surface combinations.
+        :raises: std::invalid_argument Invalid thickness.
+        :raises: std::runtime_error Kernel failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto hollow = dm::cad::Solid::box(4, 4, 4).shelled(.2);
+        """
+        return _datamunge.CadSolid_shelled(self, *args)
+
+    def volume(self, chord=.01):
+        r"""
+        Measure volume from the trimmed tessellated boundary.
+        :type chord: float, optional
+        :param chord: Positive tessellation tolerance; lower improves curved-face accuracy.
+        :rtype: float
+        :return: Signed volume in cubic model units; honours imported STEP trimming.
+        :raises: std::invalid_argument Invalid tolerance.
+        :raises: std::runtime_error Tessellation failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto volume = dm::cad::Solid::box(2, 3, 4).volume(); // 24
+        """
+        return _datamunge.CadSolid_volume(self, chord)
+
+    def valid(self):
+        r"""
+        Validate topology, orientations and geometric boundary consistency.
+        :rtype: boolean
+        :return: True when the kernel validation report has no errors.
+        Title: Example
+
+        .. code-block:: c++
+
+            bool valid = dm::cad::Solid::box(2, 3, 4).valid(); // true
+        """
+        return _datamunge.CadSolid_valid(self)
+
+    def edges(self):
+        r"""
+        List the source edge IDs usable by filleted() and chamfered().
+        :rtype: std::vector< int,std::allocator< int > >
+        :return: Owned vector of unique edge IDs.
+        """
+        return _datamunge.CadSolid_edges(self)
+
+    def faces(self):
+        r"""
+        List face IDs usable by shelled() and the low-level modifiers.
+        :rtype: std::vector< int,std::allocator< int > >
+        :return: Owned vector of face IDs.
+        """
+        return _datamunge.CadSolid_faces(self)
+
+    def save(self, path, chord=.01):
+        r"""
+        Save STEP, binary STL, OBJ, glTF or an SVG drawing by extension.
+        :type path: string
+        :param path: Output path; parent directory must exist; existing files are replaced.
+        :type chord: float, optional
+        :param chord: Positive tessellation tolerance for mesh/drawing output; default .01.
+        :raises: std::invalid_argument Unsupported extension or tolerance.
+        :raises: std::runtime_error Export or file I/O failure.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadSolid_save(self, path, chord)
+    __swig_destroy__ = _datamunge.delete_CadSolid
+
+# Register CadSolid in _datamunge:
+_datamunge.CadSolid_swigregister(CadSolid)
+class CadScene(object):
+    r"""
+    A small code-driven scene facade, exposed as CadScene in Python/R.
+    Owns scene/camera/render controls. All operations delegate to the canonical
+    CAD, polygon and renderer APIs; copying retains independent scene state.
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::cad::View view;
+        view.add(dm::cad::Solid::box(2, 3, 4), "#3b82f6", "block");
+        view.size(640, 480); view.render("block.png");
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self):
+        r"""
+        Create an empty scene with automatic camera framing.
+        Title: Example
+        See the class example.
+        """
+        _datamunge.CadScene_swiginit(self, _datamunge.new_CadScene())
+
+    @staticmethod
+    def from_file(path):
+        r"""
+        Import any format supported by load_scene().
+        :type path: string
+        :param path: Input filename.
+        :rtype: :py:class:`View`
+        :return: Owned view with automatic framing.
+        :raises: std::invalid_argument Unsupported format.
+        :raises: std::runtime_error Import/I/O failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto view = dm::cad::View::from_file("part.step");
+            view.render("part.png");
+        """
+        return _datamunge.CadScene_from_file(path)
+
+    @staticmethod
+    def from_urdf(path):
+        r"""
+        Load an articulated URDF visual model and its asset files.
+        :type path: string
+        :param path: URDF file; relative meshes resolve beside it.
+        :rtype: :py:class:`View`
+        :return: Owned view at the loader's initial joint coordinates.
+        :raises: std::invalid_argument Invalid URDF/joint data.
+        :raises: std::runtime_error Import failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            auto view = dm::cad::View::from_urdf("robot.urdf");
+            view.set_joint("joint2", -.6); view.render("robot.png");
+        """
+        return _datamunge.CadScene_from_urdf(path)
+
+    def set_joint(self, name, value):
+        r"""
+        Set a movable independent joint on a view loaded from URDF.
+        :type name: string
+        :param name: Joint name.
+        :type value: float
+        :param value: Coordinate in radians/metres, within limits.
+        :raises: std::invalid_argument View has no robot or joint value is invalid.
+        Title: Example
+        See from_urdf().
+        """
+        return _datamunge.CadScene_set_joint(self, name, value)
+
+    def joint_names(self):
+        r"""
+        List independent movable joints of a URDF view.
+        :rtype: std::vector< std::string,std::allocator< std::string > >
+        :return: Owned names; empty for ordinary scenes.
+        """
+        return _datamunge.CadScene_joint_names(self)
+
+    def add(self, *args):
+        r"""
+        Tessellate a solid and append it as a scene object.
+        :type solid: :py:class:`Solid`
+        :param solid: Borrowed source, unchanged.
+        :type color: string, optional
+        :param color: Hex RGB/RGBA tint, default #4080d9.
+        :type name: string, optional
+        :param name: Object name, default Solid.
+        :rtype: int
+        :return: New object ID.
+        :raises: std::invalid_argument Invalid color.
+        :raises: std::runtime_error Tessellation failure.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadScene_add(self, *args)
+
+    def primitive(self, kind):
+        r"""
+        Append a source polygon modeller primitive.
+        :type kind: string
+        :param kind: cube, sphere, cylinder, cone, plane, torus or wedge (lowercase).
+        :rtype: int
+        :return: New object ID; editable via scene() in C++.
+        :raises: std::invalid_argument Unknown kind.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.primitive("torus"); view.render("ring.png");
+        """
+        return _datamunge.CadScene_primitive(self, kind)
+
+    def size(self, width, height):
+        r"""
+        Set the output dimensions used by render() and picking.
+        :type width: int
+        :param width: Pixel width, 1..8192.
+        :type height: int
+        :param height: Pixel height, 1..8192.
+        :raises: std::invalid_argument Invalid dimensions.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadScene_size(self, width, height)
+
+    def samples(self, count):
+        r"""
+        Set regular-grid antialiasing samples per axis.
+        :type count: int
+        :param count: 1..4, i.e. 1..16 rays/pixel.
+        :raises: std::invalid_argument Invalid count.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.samples(2);
+        """
+        return _datamunge.CadScene_samples(self, count)
+
+    def style(self, name):
+        r"""
+        Select shaded, unlit, wireframe or shaded-wireframe output.
+        :type name: string
+        :param name: One of those exact lowercase names.
+        :raises: std::invalid_argument Unknown style.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.style("shaded-wireframe");
+        """
+        return _datamunge.CadScene_style(self, name)
+
+    def shadows(self, enabled):
+        r"""
+        Enable/disable shadows cast by the first visible light.
+        :type enabled: boolean
+        :param enabled: True enables triangle-ray shadow tests.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.shadows(false);
+        """
+        return _datamunge.CadScene_shadows(self, enabled)
+
+    def camera(self, x, y, z, target_x, target_y, target_z):
+        r"""
+        Set explicit camera position and target, with +Z as up.
+        :type x: float
+        :param x: Camera X position.
+        :type y: float
+        :param y: Camera Y position.
+        :type z: float
+        :param z: Camera Z position.
+        :type target_x: float
+        :param target_x: Target X.
+        :type target_y: float
+        :param target_y: Target Y.
+        :type target_z: float
+        :param target_z: Target Z; all values finite, target distinct and view not parallel to +Z.
+        :raises: std::invalid_argument Invalid camera.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.camera(6,-8,5,0,0,0);
+        """
+        return _datamunge.CadScene_camera(self, x, y, z, target_x, target_y, target_z)
+
+    def fit(self):
+        r"""
+        Resume automatic perspective framing after an explicit camera.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.fit();
+        """
+        return _datamunge.CadScene_fit(self)
+
+    def light(self, *args):
+        r"""
+        Add a directional light; the first explicit light replaces the fallback light.
+        :type x: float
+        :param x: Direction X from surface toward light.
+        :type y: float
+        :param y: Direction Y.
+        :type z: float
+        :param z: Direction Z; finite nonzero vector.
+        :type color: string, optional
+        :param color: Hex RGB/RGBA light color, default white; alpha unused.
+        :type intensity: float, optional
+        :param intensity: Nonnegative finite multiplier, default 1.
+        :rtype: int
+        :return: New light ID.
+        :raises: std::invalid_argument Invalid direction, color or intensity.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.light(1,-2,3,"#ffffff",1.2);
+        """
+        return _datamunge.CadScene_light(self, *args)
+
+    def render(self, path):
+        r"""
+        Render synchronously and save a PNG/JPEG/PPM color image.
+        :type path: string
+        :param path: Output filename, parent directory must exist.
+        :raises: std::invalid_argument Invalid scene or extension.
+        :raises: std::runtime_error File I/O failure.
+        Title: Example
+        See the class example.
+        """
+        return _datamunge.CadScene_render(self, path)
+
+    def save_gltf(self, path):
+        r"""
+        Save the scene as self-contained glTF with meshes, textures and lights.
+        :type path: string
+        :param path: Output .gltf filename; parent must exist.
+        :raises: std::runtime_error Export/I/O failure.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.primitive("cube"); view.save_gltf("cube.gltf");
+        """
+        return _datamunge.CadScene_save_gltf(self, path)
+
+    def pick_object(self, x, y):
+        r"""
+        Pick a source object using the current camera and image dimensions.
+        :type x: float
+        :param x: Pixel X from left; continuous coordinates.
+        :type y: float
+        :param y: Pixel Y from top.
+        :rtype: int
+        :return: Object ID or -1 for background.
+        :raises: std::invalid_argument Invalid ray or geometry.
+        Title: Example
+
+        .. code-block:: c++
+
+            dm::cad::View view; view.primitive("cube"); int id=view.pick_object(400,300);
+        """
+        return _datamunge.CadScene_pick_object(self, x, y)
+
+    def object_count(self):
+        r"""
+        Count scene objects, including empty groups.
+        :rtype: int
+        :return: Object count.
+        """
+        return _datamunge.CadScene_object_count(self)
+
+    def triangle_count(self):
+        r"""
+        Count triangles over all object mesh references, including hidden objects.
+        :rtype: int
+        :return: Triangle count.
+        """
+        return _datamunge.CadScene_triangle_count(self)
+    __swig_destroy__ = _datamunge.delete_CadScene
+
+# Register CadScene in _datamunge:
+_datamunge.CadScene_swigregister(CadScene)
 

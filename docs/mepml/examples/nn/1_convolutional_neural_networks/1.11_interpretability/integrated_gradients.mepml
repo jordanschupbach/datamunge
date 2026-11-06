@@ -20,18 +20,24 @@ $$ IG_i=(x_i-x_{0i})\int_0^1\partial_iF(x_0+\alpha(x-x_0))\,d\alpha,\qquad\sum_i
 
 The equality follows by the chain rule and fundamental theorem along the path,including piecewise-linear regions almost everywhere. Finite midpoint quadrature approximates the integral;the baseline and target define the attribution question. All numerical preprocessing,derivatives,integrals,checks and plots remain tensors;no optimizer is needed for this frozen-model numerical integration.
 
-The editable concept diagram is `diagrams/integrated_gradients_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/integrated_gradients_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/integrated_gradients_concept.tikz > build/integrated_gradients_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/integrated_gradients_concept.svg build/integrated_gradients_concept.dvi > build/integrated_gradients_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/integrated_gradients_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed image\n explicit baseline");
+  diagram.node("n1", {5.2, 0}, "Ordinary gradients\n midpoint path");
+  diagram.node("n2", {10.4, 0}, "Signed attribution\n completeness checks");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/integrated_gradients_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/integrated_gradients_concept.svg)
 // result_end
 \caption(Integrated gradients:visible midpoint paths and completeness controls)
@@ -339,9 +345,9 @@ int main() {
 }
 ```
 // result_begin: markdown
-Selected64midpoints for all40paths;single/batch 7.4505806e-09;all16learned/controlarrays unchanged.
+Selected64midpoints for all40paths;single/batch 0;all16learned/controlarrays unchanged.
 Original case IDs int32[10] [66921, 63380, 68936, 62280, 62094, 65222, 61209, 61721, 69402, 62570],fixed target/runner int32[10] [0, 1, 2, 3, 9, 5, 6, 7, 8, 9]/int32[10] [2, 6, 3, 5, 4, 9, 1, 9, 5, 4].
-Primary L1changes vs endpoint/runner/gray/initial 8.06342411/83.9826889/55.5069809/73.4423523.
+Primary L1changes vs endpoint/runner/gray/initial 8.06338596/83.9826736/55.5069427/73.4423294.
 \image(figures/integrated_gradients_maps.png)
 // result_end
 \caption(Columns:true digit0..9. Rows:actual image,primary black-baseline attribution,runner-up black-baseline attribution,grey.1baseline attribution,actual-initial-weight attribution,and endpoint-gradient-times-input. All attribution rows share one absolute peak,signed zero grey. Baseline/target/weight choices are explicit.)
@@ -401,47 +407,47 @@ int main() {
 // result_begin: markdown
 | path | true digit | original source ID | raw score change | sum attribution | residual | declared tolerance |
 |---|---:|---:|---:|---:|---:|---:|
-| primary | 0 | 66921 | 9.86810288 | 9.88773013 | 0.0196272538 | 0.108681029 |
-| primary | 1 | 63380 | 3.06782556 | 3.06675687 | -0.0010686859 | 0.0406782556 |
-| primary | 2 | 68936 | 8.8448518 | 8.84991732 | 0.00506552085 | 0.098448518 |
-| primary | 3 | 62280 | 3.16543012 | 3.18087436 | 0.015444241 | 0.0416543012 |
-| primary | 4 | 62094 | 2.15866026 | 2.16450789 | 0.00584762219 | 0.0315866026 |
-| primary | 5 | 65222 | 5.95051463 | 5.95012255 | -0.000392075512 | 0.0695051463 |
-| primary | 6 | 61209 | 2.51992255 | 2.5096138 | -0.0103087511 | 0.0351992255 |
-| primary | 7 | 61721 | 1.7112518 | 1.71675003 | 0.00549823043 | 0.027112518 |
-| primary | 8 | 69402 | 6.5752458 | 6.56513491 | -0.0101108909 | 0.075752458 |
-| primary | 9 | 62570 | 3.37706369 | 3.37946938 | 0.00240569278 | 0.0437706369 |
-| runner | 0 | 66921 | 4.62604118 | 4.62108655 | -0.00495462386 | 0.0562604118 |
-| runner | 1 | 63380 | -0.117849171 | -0.117651376 | 0.000197795366 | 0.0111784917 |
-| runner | 2 | 68936 | 3.48367106 | 3.48600956 | 0.00233849848 | 0.0448367106 |
-| runner | 3 | 62280 | 2.11656345 | 2.12019341 | 0.00362995386 | 0.0311656345 |
-| runner | 4 | 62094 | 2.02065652 | 2.02516762 | 0.00451110283 | 0.0302065652 |
-| runner | 5 | 65222 | 0.946019739 | 0.946484145 | 0.000464406112 | 0.0194601974 |
-| runner | 6 | 61209 | 1.38985187 | 1.39383624 | 0.00398436832 | 0.0238985187 |
-| runner | 7 | 61721 | 0.653162092 | 0.654471215 | 0.00130912257 | 0.0165316209 |
-| runner | 8 | 69402 | 2.89919285 | 2.89061568 | -0.00857717855 | 0.0389919285 |
-| runner | 9 | 62570 | 0.623309053 | 0.615713355 | -0.00759569817 | 0.0162330905 |
-| gray | 0 | 66921 | 8.96298432 | 8.95729727 | -0.00568704965 | 0.0996298432 |
-| gray | 1 | 63380 | 5.04005039 | 5.03895371 | -0.00109667548 | 0.0604005039 |
-| gray | 2 | 68936 | 6.80426764 | 6.80505474 | 0.000787094323 | 0.0780426764 |
-| gray | 3 | 62280 | 1.70171404 | 1.70238491 | 0.00067087309 | 0.0270171404 |
-| gray | 4 | 62094 | 1.81161624 | 1.80244282 | -0.00917342561 | 0.0281161624 |
-| gray | 5 | 65222 | 4.90408754 | 4.90318666 | -0.000900880349 | 0.0590408754 |
-| gray | 6 | 61209 | 3.4520455 | 3.44462849 | -0.007417012 | 0.044520455 |
-| gray | 7 | 61721 | 0.984574914 | 0.980178046 | -0.00439686832 | 0.0198457491 |
-| gray | 8 | 69402 | 5.21478164 | 5.21017122 | -0.00461042083 | 0.0621478164 |
-| gray | 9 | 62570 | 3.03001952 | 3.03064187 | 0.000622353236 | 0.0403001952 |
-| initial | 0 | 66921 | 0.0531620085 | 0.0531621426 | 1.34055881e-07 | 0.0105316201 |
-| initial | 1 | 63380 | -0.0756738037 | -0.0756737854 | 1.82881195e-08 | 0.010756738 |
-| initial | 2 | 68936 | 0.481224179 | 0.481224203 | 2.32794264e-08 | 0.0148122418 |
-| initial | 3 | 62280 | 0.334854603 | 0.334854573 | -2.9349394e-08 | 0.013348546 |
-| initial | 4 | 62094 | -0.439651728 | -0.439651816 | -8.82927225e-08 | 0.0143965173 |
-| initial | 5 | 65222 | 0.830083489 | 0.830083473 | -1.65236997e-08 | 0.0183008349 |
-| initial | 6 | 61209 | -0.0976542234 | -0.0976542112 | 1.22845449e-08 | 0.0109765422 |
-| initial | 7 | 61721 | -0.05356282 | -0.0535627893 | 3.07032786e-08 | 0.0105356282 |
-| initial | 8 | 69402 | -0.175785139 | -0.175785134 | 5.41695044e-09 | 0.0117578514 |
-| initial | 9 | 62570 | -0.541296721 | -0.541296811 | -9.06693458e-08 | 0.0154129672 |
-Coarse32node max primary residual 0.0401768225;selected64node max primary residual 0.0196272538.
+| primary | 0 | 66921 | 9.86810359 | 9.88773064 | 0.0196270427 | 0.108681036 |
+| primary | 1 | 63380 | 3.06782582 | 3.06675662 | -0.00106920516 | 0.0406782582 |
+| primary | 2 | 68936 | 8.84485191 | 8.84991694 | 0.00506503193 | 0.0984485191 |
+| primary | 3 | 62280 | 3.1654308 | 3.1808745 | 0.0154437038 | 0.041654308 |
+| primary | 4 | 62094 | 2.15866032 | 2.16450789 | 0.00584756541 | 0.0315866032 |
+| primary | 5 | 65222 | 5.95051524 | 5.9501225 | -0.000392738206 | 0.0695051524 |
+| primary | 6 | 61209 | 2.51992312 | 2.50961367 | -0.0103094548 | 0.0351992312 |
+| primary | 7 | 61721 | 1.71125129 | 1.71675028 | 0.00549899126 | 0.0271125129 |
+| primary | 8 | 69402 | 6.57524604 | 6.56513519 | -0.0101108473 | 0.0757524604 |
+| primary | 9 | 62570 | 3.37706271 | 3.37946267 | 0.00239996257 | 0.0437706271 |
+| runner | 0 | 66921 | 4.62604231 | 4.6210868 | -0.00495551067 | 0.0562604231 |
+| runner | 1 | 63380 | -0.117848724 | -0.117651392 | 0.000197331882 | 0.0111784872 |
+| runner | 2 | 68936 | 3.48367025 | 3.48600987 | 0.00233962096 | 0.0448367025 |
+| runner | 3 | 62280 | 2.11656281 | 2.12019342 | 0.00363060784 | 0.0311656281 |
+| runner | 4 | 62094 | 2.02065583 | 2.02516746 | 0.00451163379 | 0.0302065583 |
+| runner | 5 | 65222 | 0.946019679 | 0.946484166 | 0.000464486249 | 0.0194601968 |
+| runner | 6 | 61209 | 1.38985148 | 1.39383599 | 0.00398450795 | 0.0238985148 |
+| runner | 7 | 61721 | 0.653161556 | 0.654471345 | 0.00130978945 | 0.0165316156 |
+| runner | 8 | 69402 | 2.89919207 | 2.8906154 | -0.0085766626 | 0.0389919207 |
+| runner | 9 | 62570 | 0.623308316 | 0.615710741 | -0.00759757473 | 0.0162330832 |
+| gray | 0 | 66921 | 8.96298552 | 8.95729759 | -0.00568792794 | 0.0996298552 |
+| gray | 1 | 63380 | 5.04005015 | 5.03895354 | -0.00109660565 | 0.0604005015 |
+| gray | 2 | 68936 | 6.80426788 | 6.80505462 | 0.000786734431 | 0.0780426788 |
+| gray | 3 | 62280 | 1.7017144 | 1.70238506 | 0.000670666828 | 0.027017144 |
+| gray | 4 | 62094 | 1.81161606 | 1.8024429 | -0.00917315868 | 0.0281161606 |
+| gray | 5 | 65222 | 4.9040879 | 4.90318649 | -0.000901413391 | 0.059040879 |
+| gray | 6 | 61209 | 3.45204556 | 3.44462825 | -0.00741731138 | 0.0445204556 |
+| gray | 7 | 61721 | 0.984574556 | 0.980178337 | -0.00439621934 | 0.0198457456 |
+| gray | 8 | 69402 | 5.21478176 | 5.21017135 | -0.00461040793 | 0.0621478176 |
+| gray | 9 | 62570 | 3.03001845 | 3.03064202 | 0.000623574138 | 0.0403001845 |
+| initial | 0 | 66921 | 0.0531620719 | 0.053162142 | 7.01438694e-08 | 0.0105316207 |
+| initial | 1 | 63380 | -0.0756737217 | -0.0756737806 | -5.88279363e-08 | 0.0107567372 |
+| initial | 2 | 68936 | 0.48122409 | 0.481224194 | 1.04446372e-07 | 0.0148122409 |
+| initial | 3 | 62280 | 0.334854603 | 0.334854585 | -1.81375981e-08 | 0.013348546 |
+| initial | 4 | 62094 | -0.439651817 | -0.439651815 | 2.36354936e-09 | 0.0143965182 |
+| initial | 5 | 65222 | 0.830083549 | 0.830083485 | -6.45050022e-08 | 0.0183008355 |
+| initial | 6 | 61209 | -0.0976542309 | -0.0976542261 | 4.82168616e-09 | 0.0109765423 |
+| initial | 7 | 61721 | -0.0535626709 | -0.0535627953 | -1.24343055e-07 | 0.0105356267 |
+| initial | 8 | 69402 | -0.175785109 | -0.17578515 | -4.06171239e-08 | 0.0117578511 |
+| initial | 9 | 62570 | -0.54129678 | -0.541296814 | -3.36372068e-08 | 0.0154129678 |
+Coarse32node max primary residual 0.0401769962;selected64node max primary residual 0.0196270427.
 \image(figures/integrated_gradients_completeness.svg)
 // result_end
 \caption(Every actual case/control completeness check uses its own endpoint score change and fixed tolerance. Ratios below1verify the declared finite-quadrature accuracy;they do not prove explanation quality or monotonic refinement.)

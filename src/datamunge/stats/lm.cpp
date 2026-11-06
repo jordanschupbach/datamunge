@@ -100,6 +100,67 @@ LM::LM(const dstruct::DataFrame& data, const std::string& formula, LmOptions opt
     fit(data, std::move(options));
 }
 
+void LM::initialise_matrix_design(const std::vector<double>& y, std::size_t rows,
+                                   std::size_t cols, bool intercept) {
+    if (cols == std::numeric_limits<std::size_t>::max() || (!intercept && cols == 0))
+        throw std::invalid_argument("LM: matrix design requires at least one coefficient");
+    linalg::regression_detail::validate_regression_inputs<double>(rows, cols + (intercept ? 1 : 0), y.size(), "LM");
+    for (double value : y)
+        if (!std::isfinite(value)) throw std::invalid_argument("LM: response must be finite");
+    formula_ = Formula(intercept ? "y ~ ." : "y ~ . - 1");
+    dstruct::DataFrame schema;
+    schema.add_column("y", std::vector<double>{});
+    for (std::size_t j = 0; j < cols; ++j)
+        schema.add_column("V" + std::to_string(j + 1), std::vector<double>{});
+    design_ = formula_.resolve(schema);
+    matrix_input_ = true;
+    response_ = y;
+    fitted_rows_.resize(rows);
+    std::iota(fitted_rows_.begin(), fitted_rows_.end(), std::size_t{0});
+}
+
+LM::LM(const std::vector<double>& y, const Mat<>& predictors, bool intercept)
+    : formula_("y ~ 1") {
+    initialise_matrix_design(y, predictors.rows(), predictors.cols(), intercept);
+    design_matrix_ = linalg::DenseMatrix<double>(predictors.rows(), predictors.cols() + (intercept ? 1 : 0));
+    for (std::size_t i = 0; i < predictors.rows(); ++i) {
+        if (intercept) design_matrix_(i, 0) = 1;
+        for (std::size_t j = 0; j < predictors.cols(); ++j) {
+            const double value = predictors(i, j);
+            if (!std::isfinite(value)) throw std::invalid_argument("LM: predictors must be finite");
+            design_matrix_(i, j + (intercept ? 1 : 0)) = value;
+        }
+    }
+    auto result = linalg::linear_regression(design_matrix_, response_);
+    auto fitted = std::move(result.fitted);
+    finish_fit(std::move(result), y, std::move(fitted));
+}
+
+LM::LM(const std::vector<double>& y, const SpMat<>& predictors, bool intercept,
+       linalg::SparseLinearRegressionOptions options) : formula_("y ~ 1"), sparse_options_(options) {
+    initialise_matrix_design(y, predictors.rows(), predictors.cols(), intercept);
+    if (!(options.solver.tol > 0) || !std::isfinite(options.solver.tol))
+        throw std::invalid_argument("LM: sparse solver tolerance must be finite and positive");
+    const auto& source = predictors.storage();
+    linalg::SparseCSR<double> design;
+    design.nrows = predictors.rows();
+    design.ncols = predictors.cols() + (intercept ? 1 : 0);
+    design.row_ptr.push_back(0);
+    for (std::size_t i = 0; i < predictors.rows(); ++i) {
+        if (intercept) { design.col_idx.push_back(0); design.values.push_back(1); }
+        for (std::size_t k = source.row_ptr[i]; k < source.row_ptr[i+1]; ++k) {
+            if (!std::isfinite(source.values[k])) throw std::invalid_argument("LM: predictors must be finite");
+            design.col_idx.push_back(source.col_idx[k] + (intercept ? 1 : 0));
+            design.values.push_back(source.values[k]);
+        }
+        design.row_ptr.push_back(design.values.size());
+    }
+    sparse_design_matrix_ = std::move(design);
+    auto result = linalg::sparse_linear_regression(*sparse_design_matrix_, response_, options);
+    auto fitted = std::move(result.fitted);
+    finish_fit(std::move(result), y, std::move(fitted));
+}
+
 void LM::fit(const dstruct::DataFrame& data, LmOptions options) {
     options_       = options;
     design_        = formula_.resolve(data);
@@ -130,6 +191,12 @@ void LM::fit(const dstruct::DataFrame& data, LmOptions options) {
 
     auto result = linalg::linear_regression(design_matrix_, response_);
 
+    auto fitted = raw_design.X * result.coefficients;
+    finish_fit(std::move(result), raw_design.y, std::move(fitted));
+}
+
+void LM::finish_fit(linalg::LinearRegressionResult<double> result,
+                    const std::vector<double>& y, std::vector<double> fitted) {
     coefficients_        = result.coefficients;
     standard_errors_     = result.standard_errors;
     covariance_          = result.covariance;
@@ -140,18 +207,20 @@ void LM::fit(const dstruct::DataFrame& data, LmOptions options) {
     observations_        = result.observations;
     degrees_of_freedom_  = result.degrees_of_freedom;
 
-    fitted_ = raw_design.X * coefficients_;
-    residuals_.resize(raw_design.y.size());
-    for (std::size_t i = 0; i < raw_design.y.size(); ++i) residuals_[i] = raw_design.y[i] - fitted_[i];
+    fitted_ = std::move(fitted);
+    residuals_.resize(y.size());
+    for (std::size_t i = 0; i < y.size(); ++i) residuals_[i] = y[i] - fitted_[i];
 
     if (sigma2_ > 0.0) {
         xtx_inverse_ = covariance_;
         xtx_inverse_ *= (1.0 / sigma2_);
     } else {
-        auto xtx  = design_matrix_.transpose() * design_matrix_;
+        auto xtx = sparse_design_matrix_
+            ? linalg::regression_detail::dense_gram(linalg::to_coo(*sparse_design_matrix_))
+            : design_matrix_.transpose() * design_matrix_;
         auto chol = linalg::cholesky(xtx);
         if (!chol.ok) throw std::runtime_error("LM: X^T X is not positive definite");
-        xtx_inverse_ = chol.solve(linalg::DenseMatrix<double>::identity(design_matrix_.cols()));
+        xtx_inverse_ = chol.solve(linalg::DenseMatrix<double>::identity(coefficients_.size()));
     }
 
     t_values_.resize(coefficients_.size());
@@ -167,15 +236,15 @@ void LM::fit(const dstruct::DataFrame& data, LmOptions options) {
     // model has an intercept, and about 0 when it has none. linear_regression() always centres
     // on the mean of the transformed response, so recompute R^2, adjusted R^2 and the ESS here.
     double tss = 0.0, rss = 0.0, sum_w = 0.0, sum_wy = 0.0;
-    for (std::size_t i = 0; i < raw_design.y.size(); ++i) {
+    for (std::size_t i = 0; i < y.size(); ++i) {
         const double w = weights_.empty() ? 1.0 : weights_[i];
         sum_w += w;
-        sum_wy += w * raw_design.y[i];
+        sum_wy += w * y[i];
     }
     const double centre = design_.has_intercept ? sum_wy / sum_w : 0.0;
-    for (std::size_t i = 0; i < raw_design.y.size(); ++i) {
+    for (std::size_t i = 0; i < y.size(); ++i) {
         const double w = weights_.empty() ? 1.0 : weights_[i];
-        const double d = raw_design.y[i] - centre;
+        const double d = y[i] - centre;
         tss += w * d * d;
         rss += w * residuals_[i] * residuals_[i];
     }
@@ -201,7 +270,7 @@ void LM::fit(const dstruct::DataFrame& data, LmOptions options) {
 }
 
 void LM::compute_diagnostics() {
-    const std::size_t n = design_matrix_.rows();
+    const std::size_t n = observations_;
     const std::size_t p = coefficients_.size();
     leverage_.assign(n, 0.0);
     standardized_residuals_.assign(n, 0.0);
@@ -214,10 +283,17 @@ void LM::compute_diagnostics() {
 
     for (std::size_t i = 0; i < n; ++i) {
         double h = 0.0;
+        if (sparse_design_matrix_) {
+            const auto& x = *sparse_design_matrix_;
+            for (std::size_t a = x.row_ptr[i]; a < x.row_ptr[i+1]; ++a)
+                for (std::size_t b = x.row_ptr[i]; b < x.row_ptr[i+1]; ++b)
+                    h += x.values[a] * xtx_inverse_(x.col_idx[a], x.col_idx[b]) * x.values[b];
+        } else {
         for (std::size_t a = 0; a < p; ++a) {
             double acc = 0.0;
             for (std::size_t b = 0; b < p; ++b) acc += xtx_inverse_(a, b) * design_matrix_(i, b);
             h += design_matrix_(i, a) * acc;
+        }
         }
         h            = std::clamp(h, 0.0, 1.0 - 1e-12);
         leverage_[i] = h;
@@ -250,13 +326,30 @@ std::vector<AnovaRow> LM::anova() const {
     std::vector<AnovaRow> rows;
     if (design_.term_groups.empty()) return rows;
 
-    const std::size_t n = design_matrix_.rows();
+    const std::size_t n = observations_;
 
+    /// @brief Refit a leading column prefix for sequential ANOVA, retaining sparse storage.
+    /// @param num_cols Leading design columns, including any intercept.
+    /// @return Residual sum of squares, or response norm squared for zero columns.
+    /// @throws std::runtime_error For a rank-deficient or nonconvergent prefix fit.
     auto rss_for_prefix = [&](std::size_t num_cols) -> double {
         if (num_cols == 0) {
             double s = 0.0;
             for (const double v : response_) s += v * v;
             return s;
+        }
+        if (sparse_design_matrix_) {
+            linalg::SparseCSR<double> prefix;
+            prefix.nrows = n; prefix.ncols = num_cols; prefix.row_ptr.push_back(0);
+            const auto& x = *sparse_design_matrix_;
+            for (std::size_t i = 0; i < n; ++i) {
+                for (std::size_t k = x.row_ptr[i]; k < x.row_ptr[i+1]; ++k)
+                    if (x.col_idx[k] < num_cols) {
+                        prefix.col_idx.push_back(x.col_idx[k]); prefix.values.push_back(x.values[k]);
+                    }
+                prefix.row_ptr.push_back(prefix.values.size());
+            }
+            return linalg::sparse_linear_regression(prefix, response_, sparse_options_).residual_sum_of_squares;
         }
         linalg::DenseMatrix<double> prefix(n, num_cols);
         for (std::size_t i = 0; i < n; ++i)
@@ -342,6 +435,37 @@ void LM::print_summary() const { print_summary(std::cout); }
 
 void LM::validate_categorical_levels(const dstruct::DataFrame& newdata) const {
     design_.validate_categorical_levels(newdata, "LM::predict");
+}
+
+void LM::validate_matrix_prediction(std::size_t cols) const {
+    if (!matrix_input_) throw std::invalid_argument("LM: matrix prediction requires a matrix-fitted model");
+    if (cols != design_.columns.size()) throw std::invalid_argument("LM: prediction column count differs from training");
+}
+
+std::vector<double> LM::predict(const Mat<>& newdata) const {
+    validate_matrix_prediction(newdata.cols());
+    const std::size_t offset = has_intercept() ? 1 : 0;
+    std::vector<double> result(newdata.rows(), offset ? coefficients_[0] : 0);
+    for (std::size_t i = 0; i < newdata.rows(); ++i)
+        for (std::size_t j = 0; j < newdata.cols(); ++j) {
+            const auto value = newdata(i, j);
+            if (!std::isfinite(value)) throw std::invalid_argument("LM: prediction values must be finite");
+            result[i] += value * coefficients_[j + offset];
+        }
+    return result;
+}
+
+std::vector<double> LM::predict(const SpMat<>& newdata) const {
+    validate_matrix_prediction(newdata.cols());
+    const std::size_t offset = has_intercept() ? 1 : 0;
+    std::vector<double> result(newdata.rows(), offset ? coefficients_[0] : 0);
+    const auto& x = newdata.storage();
+    for (std::size_t i = 0; i < newdata.rows(); ++i)
+        for (std::size_t k = x.row_ptr[i]; k < x.row_ptr[i+1]; ++k) {
+            if (!std::isfinite(x.values[k])) throw std::invalid_argument("LM: prediction values must be finite");
+            result[i] += x.values[k] * coefficients_[x.col_idx[k] + offset];
+        }
+    return result;
 }
 
 std::vector<double> LM::predict(const dstruct::DataFrame& newdata) const {

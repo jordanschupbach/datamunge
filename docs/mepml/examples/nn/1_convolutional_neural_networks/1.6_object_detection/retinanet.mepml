@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 RetinaNet combines feature pyramids with shared class/box towers and focal modulation of dense foreground/background imbalance. Every class is an independent sigmoid channel, and moving backbone normalization state is part of the selected fitted model.
 
-The editable concept diagram is `diagrams/retinanet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/retinanet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/retinanet_concept.tikz > build/retinanet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/retinanet_concept.svg build/retinanet_concept.dvi > build/retinanet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/retinanet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "P3–P7 pyramid\nNine anchors per cell");
+  diagram.node("n1", {5.2, 0}, "Shared sigmoid heads\nFocal plus box loss");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam loop\nPaired BN checkpoint");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/retinanet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/retinanet_concept.svg)
 // result_end
 \caption(RetinaNet sigmoid focal loss and shared dense heads)
@@ -548,39 +554,39 @@ int main() {
 // result_begin: markdown
 | epoch | focal + box loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 1.617259 | 1.089703 | 0.527555 | 0.002916 |
-| 2 | 1.528677 | 1.053288 | 0.475389 | 0.003053 |
-| 3 | 1.415859 | 0.987098 | 0.428762 | 0.007617 |
-| 4 | 1.358419 | 0.969489 | 0.388930 | 0.002418 |
-| 5 | 1.168984 | 0.792971 | 0.376013 | 0.034675 |
-| 6 | 1.085546 | 0.703406 | 0.382140 | 0.009399 |
-| 7 | 1.103700 | 0.722895 | 0.380805 | 0.022100 |
-| 8 | 1.031952 | 0.656588 | 0.375364 | 0.009970 |
-| 9 | 0.997577 | 0.631591 | 0.365986 | 0.024743 |
-| 10 | 0.985806 | 0.631347 | 0.354459 | 0.008010 |
-| 11 | 0.973536 | 0.610453 | 0.363083 | 0.007542 |
-| 12 | 0.964242 | 0.622084 | 0.342159 | 0.017394 |
-| 13 | 1.009255 | 0.677822 | 0.331433 | 0.010287 |
-| 14 | 0.967110 | 0.625104 | 0.342006 | 0.010274 |
-| 15 | 0.945378 | 0.610198 | 0.335180 | 0.048383 |
-| 16 | 0.934523 | 0.606354 | 0.328169 | 0.022667 |
-| 17 | 0.928136 | 0.594182 | 0.333953 | 0.041723 |
-| 18 | 0.880817 | 0.548036 | 0.332781 | 0.114848 |
-| 19 | 0.907830 | 0.567767 | 0.340063 | 0.040836 |
-| 20 | 0.840753 | 0.534094 | 0.306659 | 0.087984 |
-| 21 | 0.837280 | 0.530465 | 0.306815 | 0.075762 |
-| 22 | 0.865146 | 0.576884 | 0.288262 | 0.020785 |
-| 23 | 0.884801 | 0.583037 | 0.301763 | 0.042675 |
-| 24 | 1.418737 | 1.101524 | 0.317213 | 0.009290 |
-| 25 | 1.371674 | 1.051692 | 0.319983 | 0.014326 |
-| 26 | 1.108163 | 0.813757 | 0.294406 | 0.044410 |
-| 27 | 0.977923 | 0.706431 | 0.271493 | 0.021333 |
-| 28 | 0.863866 | 0.616918 | 0.246948 | 0.030933 |
-| 29 | 0.793016 | 0.555109 | 0.237908 | 0.076538 |
-| 30 | 0.771416 | 0.543506 | 0.227910 | 0.061088 |
-| 31 | 0.757196 | 0.532234 | 0.224963 | 0.096937 |
-| 32 | 0.702565 | 0.499117 | 0.203449 | 0.017156 |
-346246 learned scalars, 512 Adam updates; selected epoch 18, validation AP50 0.114848. Test: 23 digits in eight scenes, inclusive VOC AP50 0.021629, COCO AP75 0.000000, AP50:95 0.003207, 800 detections. Selected mean absolute first BN state 1.313753; paired learned and BN state restored.
+| 1 | 1.617258 | 1.089703 | 0.527555 | 0.002916 |
+| 2 | 1.528677 | 1.053290 | 0.475387 | 0.003026 |
+| 3 | 1.411510 | 0.982754 | 0.428755 | 0.008557 |
+| 4 | 1.333325 | 0.942181 | 0.391145 | 0.001612 |
+| 5 | 1.415899 | 1.030420 | 0.385479 | 0.006155 |
+| 6 | 1.235475 | 0.852839 | 0.382637 | 0.018271 |
+| 7 | 1.218166 | 0.843402 | 0.374764 | 0.005020 |
+| 8 | 1.158903 | 0.778984 | 0.379919 | 0.039644 |
+| 9 | 1.057238 | 0.696507 | 0.360731 | 0.037244 |
+| 10 | 1.003988 | 0.649470 | 0.354518 | 0.016624 |
+| 11 | 1.023851 | 0.653935 | 0.369916 | 0.023442 |
+| 12 | 0.981443 | 0.627384 | 0.354058 | 0.026828 |
+| 13 | 0.956769 | 0.616970 | 0.339800 | 0.008956 |
+| 14 | 0.919824 | 0.590300 | 0.329524 | 0.024438 |
+| 15 | 0.915768 | 0.581673 | 0.334095 | 0.042470 |
+| 16 | 0.947975 | 0.621887 | 0.326088 | 0.030076 |
+| 17 | 0.997193 | 0.677794 | 0.319398 | 0.025850 |
+| 18 | 0.929981 | 0.623396 | 0.306585 | 0.045448 |
+| 19 | 0.943996 | 0.635825 | 0.308171 | 0.038863 |
+| 20 | 0.915184 | 0.602305 | 0.312879 | 0.022574 |
+| 21 | 0.922773 | 0.592355 | 0.330418 | 0.033819 |
+| 22 | 0.861325 | 0.570944 | 0.290381 | 0.038667 |
+| 23 | 0.845171 | 0.553744 | 0.291428 | 0.033229 |
+| 24 | 0.784829 | 0.523477 | 0.261352 | 0.024570 |
+| 25 | 0.837011 | 0.590296 | 0.246715 | 0.087929 |
+| 26 | 0.807762 | 0.570959 | 0.236803 | 0.011135 |
+| 27 | 0.787948 | 0.561618 | 0.226331 | 0.037381 |
+| 28 | 0.734091 | 0.501599 | 0.232492 | 0.048672 |
+| 29 | 0.701515 | 0.478832 | 0.222683 | 0.044757 |
+| 30 | 0.675861 | 0.462464 | 0.213397 | 0.036978 |
+| 31 | 0.662829 | 0.453380 | 0.209449 | 0.074236 |
+| 32 | 0.638224 | 0.440030 | 0.198194 | 0.095360 |
+346246 learned scalars, 512 Adam updates; selected epoch 32, validation AP50 0.095360. Test: 23 digits in eight scenes, inclusive VOC AP50 0.032388, COCO AP75 0.000000, AP50:95 0.004685, 800 detections. Selected mean absolute first BN state 1.548398; paired learned and BN state restored.
 \image(figures/retinanet_training.svg)
 // result_end
 \caption(Visible Adam fits every compact backbone, pyramid and shared-head parameter. Focal/box curves exclude the explicit kernel L2 term. Validation selects both learned and moving-state checkpoints.)

@@ -1,3 +1,4 @@
+# Generated plot output (reports, examples, benchmarks) is never committed.
 *.svg
 *.dll
 # LaTeX intermediates that `org-latex-export-to-pdf` writes next to the .org
@@ -76,10 +77,54 @@ plans/
 /datamunger_*.tar.gz
 /src/.swig-*/
 
-# Report figures are committed (the docs build never runs the reports).
-!docs/mepml/examples/figures/*.svg
-!docs/mepml/examples/**/figures/*.svg
 
 # Lossless tensor-generated dataset contact sheets are report assets.
 !docs/mepml/examples/figures/*.png
 !docs/mepml/examples/**/figures/*.png
+
+# Native CAD simulation clips embedded by the executable playground.
+!docs/mepml/examples/figures/fruit_sorting_arrival.mp4
+!docs/mepml/examples/figures/fruit_sorting_rl_*
+!docs/mepml/examples/figures/fruit_vision_*
+!docs/mepml/examples/figures/fruit_stream_*
+
+# Large binary outputs: videos, trained weights/arrays, archives, native binaries.
+# (Small hand-made test fixtures under tests/ are still tracked explicitly.)
+*.mp4
+*.mov
+*.m4v
+*.mkv
+*.avi
+*.webm
+*.npz
+*.npy
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.zip
+*.7z
+*.rar
+*.tar
+*.tgz
+*.tar.xz
+*.tar.bz2
+*.whl
+*.exe
+*.dylib
+*.lib
+*.pdb
+*.iso
+*.dmg
+
+# Files the C++ CAD tests write into the working directory.
+/cad-api-artifacts/
+/cad-format-artifacts/
+
+# Keep generated SVG plots out even where a wildcard exception above re-includes a folder.
+*.svg

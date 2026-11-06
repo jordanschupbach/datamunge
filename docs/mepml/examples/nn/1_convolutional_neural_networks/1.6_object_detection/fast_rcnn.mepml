@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 Fast R-CNN separates image-wide convolution from per-region pooling and dense prediction. A softmax head and class-specific box head share the pooled features and a multitask objective. The compact source adaptation below uses four convolutions and bilinear14x14 sampling followed by7x7 max pooling, rather than the original large pretrained backbone and rounded RoI bins.
 
-The editable concept diagram is `diagrams/fast_rcnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/fast_rcnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/fast_rcnn_concept.tikz > build/fast_rcnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/fast_rcnn_concept.svg build/fast_rcnn_concept.dvi > build/fast_rcnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/fast_rcnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "One image backbone\nShared stride-4 maps");
+  diagram.node("n1", {5.2, 0}, "Pool many regions\nClass and box heads");
+  diagram.node("n2", {10.4, 0}, "Joint Adam fitting\nValidation-selected AP");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/fast_rcnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/fast_rcnn_concept.svg)
 // result_end
 \caption(Fast R-CNN shared features and RoI pooling)
@@ -494,15 +500,15 @@ int main() {
 // result_begin: markdown
 | epoch | sampled training joint loss | validation AP50 |
 |---:|---:|---:|
-| 1 | 2.304483 | 0.066129 |
-| 2 | 1.505769 | 0.141755 |
-| 3 | 1.448358 | 0.205905 |
-| 4 | 1.417093 | 0.234034 |
-| 5 | 1.291381 | 0.307192 |
-| 6 | 1.237651 | 0.331481 |
-| 7 | 0.989659 | 0.402968 |
-| 8 | 1.009439 | 0.464696 |
-946963 learned scalars, 256 Adam updates; selected epoch 8, validation AP50 0.464696. Test: 8 scenes, 23 digits, 15.625 proposals/image, proposal recall .5/.7 0.869565/0.739130; inclusive VOC AP50 0.603580, COCO AP75 0.295288, AP50:95 0.329845; 214 detections. One shared backbone evaluation per image; no moving state.
+| 1 | 2.301879 | 0.066597 |
+| 2 | 1.491360 | 0.123294 |
+| 3 | 1.426299 | 0.236740 |
+| 4 | 1.405904 | 0.266561 |
+| 5 | 1.320747 | 0.305319 |
+| 6 | 1.221669 | 0.445949 |
+| 7 | 1.010952 | 0.457546 |
+| 8 | 0.929646 | 0.468829 |
+946963 learned scalars, 256 Adam updates; selected epoch 8, validation AP50 0.468829. Test: 8 scenes, 23 digits, 15.625 proposals/image, proposal recall .5/.7 0.869565/0.739130; inclusive VOC AP50 0.700988, COCO AP75 0.357719, AP50:95 0.390331; 184 detections. One shared backbone evaluation per image; no moving state.
 \image(figures/fast_rcnn_training.svg)
 // result_end
 \caption(The complete sampled-region Adam loop, selected by validation detection AP50. Training loss excludes explicit L2 in the plotted value. All validation/test predictions use classical proposals only.)

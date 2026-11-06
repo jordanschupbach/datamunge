@@ -31,18 +31,24 @@ families use nonnegative integer y. Callers supply valid response support and fi
 The helper is a log-link likelihood, including for gamma; it differs from stats::GLM's inverse-link
 gamma family. NB uses a softplus expression for stability. Shape/size are supplied, not estimated.
 
-The concept diagram has a retained TikZ source in `diagrams/generalized_linear_models_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/generalized_linear_models_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/generalized_linear_models_concept.tikz > build/generalized_linear_models_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/generalized_linear_models_concept.svg build/generalized_linear_models_concept.dvi > build/generalized_linear_models_concept.render.log 2>&1
-printf 'Rendered build/generalized_linear_models_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/generalized_linear_models_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Linear predictor\nη=Xw");
+  diagram.node("n1", {5.2, 0}, "Positive mean\nμ=exp(η)");
+  diagram.node("n2", {10.4, 0}, "Choose response family\nlikelihood + variance");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/generalized_linear_models_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/generalized_linear_models_concept.svg from local TikZ source.
 // \image(figures/generalized_linear_models_concept.svg)
 // result_end
 \caption(Poisson, gamma and negative-binomial likelihoods imply different variance models)

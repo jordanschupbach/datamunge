@@ -51,18 +51,24 @@ with padded crops/flips. Validation selects learned parameters; no moving state 
 The two versions have 3376290/3389170 learned scalars in this setting. These bounded runs do
 not reproduce the paper's AdamW, longer schedules, stronger augmentation or pretraining.
 
-The editable concept diagram is `diagrams/convnext_v2_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/convnext_v2_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/convnext_v2_concept.tikz > build/convnext_v2_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/convnext_v2_concept.svg build/convnext_v2_concept.dvi > build/convnext_v2_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/convnext_v2_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Spatial depthwise filter\nExpanded channel MLP");
+  diagram.node("n1", {5.2, 0}, "GRN response weights\nSafe norm derivative");
+  diagram.node("n2", {10.4, 0}, "Complete Atto fit\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/convnext_v2_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/convnext_v2_concept.svg)
 // result_end
 \caption(ConvNeXt V2: Global Response Normalization and Visible Atto Fitting)
@@ -334,7 +340,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Full-width Tiny V2, all eighteen blocks at 64 pixels: 200 finite parameter-tensor gradients, norm range [0.000276859180,0.822385490]. V2 probe uses active GRN affine entries.
+Full-width Tiny V2, all eighteen blocks at 64 pixels: 200 finite parameter-tensor gradients, norm range [0.000276859180,0.822385311]. V2 probe uses active GRN affine entries.
 // result_end
 
 > Original pixels and visible Atto optimization
@@ -517,7 +523,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 3389170 learned scalars; no BN/moving scalars; 128 explicit Adam updates.
-Selected epoch 4; validation NLL 2.127380; inference training NLL 1.889064; test NLL 2.110236; test accuracy 0.234375.
+Selected epoch 4; validation NLL 2.127382; inference training NLL 1.889065; test NLL 2.110237; test accuracy 0.234375.
 \image(figures/convnext_v2_training.svg)
 // result_end
 \caption(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and row branch dropout; validation/test use full branches. LayerNorm has no moving state. Counts sum to 64; IDs follow the original CIFAR-10 order.)

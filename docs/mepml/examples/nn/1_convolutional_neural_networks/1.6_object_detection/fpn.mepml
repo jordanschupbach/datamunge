@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 FPN projects each backbone scale to a shared width, adds resized deeper inner features, and independently smooths every output. A multi-level shared RPN proposes regions; each region chooses one pyramid level before the shared box head. The source64-pixel adaptation below preserves these mechanisms while using a small learned convolutional backbone and canonical RoI side32.
 
-The editable concept diagram is `diagrams/fpn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/fpn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/fpn_concept.tikz > build/fpn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/fpn_concept.svg build/fpn_concept.dvi > build/fpn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/fpn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Lateral plus top-down\nUnsmoothed inner maps");
+  diagram.node("n1", {5.2, 0}, "Smooth every scale\nShared multilevel RPN");
+  diagram.node("n2", {10.4, 0}, "Route region scale\nJoint tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/fpn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/fpn_concept.svg)
 // result_end
 \caption(Feature pyramids for multiscale detection)
@@ -597,19 +603,19 @@ int main() {
 // result_begin: markdown
 | epoch | joint loss | RPN loss | RoI loss | val AP50 | val RPN recall .5 |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 9.132850 | 5.284337 | 3.848513 | 0.000000 | 0.484848 |
-| 2 | 4.347938 | 2.585719 | 1.762219 | 0.000000 | 0.454545 |
-| 3 | 3.839292 | 1.971743 | 1.867549 | 0.064691 | 0.757576 |
-| 4 | 3.434844 | 1.468136 | 1.966708 | 0.046091 | 0.666667 |
-| 5 | 2.948492 | 1.096805 | 1.851686 | 0.145066 | 0.848485 |
-| 6 | 2.556507 | 0.810049 | 1.746458 | 0.109528 | 0.939394 |
-| 7 | 2.392025 | 0.632639 | 1.759386 | 0.044213 | 0.969697 |
-| 8 | 2.152615 | 0.473587 | 1.679028 | 0.161901 | 0.939394 |
-| 9 | 2.155504 | 0.400867 | 1.754637 | 0.107422 | 0.969697 |
-| 10 | 2.001692 | 0.387681 | 1.614010 | 0.163455 | 0.969697 |
-| 11 | 1.961831 | 0.440282 | 1.521549 | 0.115432 | 0.969697 |
-| 12 | 1.839978 | 0.390309 | 1.449669 | 0.254823 | 1.000000 |
-2174882 learned scalars, 384 Adam updates; selected epoch 12, validation AP50 0.254823. Test: 8 scenes, 23 digits, 100.000 proposals/image, proposal recall .5/.7 1.000000/0.652174; inclusive VOC AP50 0.262407, COCO AP75 0.057187, AP50:95 0.108975; 181 detections. One shared backbone evaluation per image; no moving state.
+| 1 | 9.092148 | 5.299548 | 3.792600 | 0.000000 | 0.484848 |
+| 2 | 4.410977 | 2.564585 | 1.846392 | 0.003704 | 0.636364 |
+| 3 | 4.003180 | 2.010617 | 1.992563 | 0.002380 | 0.424242 |
+| 4 | 3.117332 | 1.349496 | 1.767836 | 0.089847 | 0.787879 |
+| 5 | 2.846886 | 1.011615 | 1.835271 | 0.069366 | 0.787879 |
+| 6 | 2.653389 | 0.875950 | 1.777439 | 0.167552 | 0.878788 |
+| 7 | 2.414019 | 0.656606 | 1.757413 | 0.062822 | 0.909091 |
+| 8 | 2.246703 | 0.589582 | 1.657120 | 0.094480 | 0.969697 |
+| 9 | 2.179238 | 0.546392 | 1.632846 | 0.174730 | 0.909091 |
+| 10 | 2.026749 | 0.461913 | 1.564836 | 0.165448 | 0.969697 |
+| 11 | 2.048902 | 0.478471 | 1.570431 | 0.178327 | 0.939394 |
+| 12 | 2.005388 | 0.413775 | 1.591614 | 0.135893 | 0.969697 |
+2174882 learned scalars, 384 Adam updates; selected epoch 11, validation AP50 0.178327. Test: 8 scenes, 23 digits, 100.000 proposals/image, proposal recall .5/.7 0.869565/0.347826; inclusive VOC AP50 0.112849, COCO AP75 0.026403, AP50:95 0.048619; 255 detections. One shared backbone evaluation per image; no moving state.
 \image(figures/fpn_training.svg)
 // result_end
 \caption(The complete tensor optimizer loop fits backbone, lateral/smoothing pyramid, shared RPN and box head. RPN and RoI losses are shown separately; validation AP and proposal coverage remain distinct measurements.)

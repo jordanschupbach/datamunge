@@ -52,7 +52,9 @@ tensor inference. Formatting must keep statements and control flow readable.
 - Generate executable model architecture figures through `nn::Module::plot` or
   `nn::plot_model`, using inference mode and the reported configuration. Keep
   local SVGs and the complete generating block; label shape probes and grouped
-  stages explicitly. Retain explanatory TikZ diagrams when they teach the method.
+  stages explicitly. Use native `dm::graphics::Diagram` concept diagrams when
+  they teach the method; extend the C++ graphics library as needed. Earlier batch
+  notes about TikZ record historical verification, superseded by the native migration.
   Keep architecture graphs left to right with counterclockwise node labels; choose
   Flow, Graph or LeNet style and block/layer/operation detail explicitly. Demonstrate
   relevant plot settings and disclose shape scales, visibility floors and sampled

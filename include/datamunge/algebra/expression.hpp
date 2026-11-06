@@ -1,5 +1,7 @@
 #pragma once
 
+#include <datamunge/algebra/tex.hpp>
+
 #include <cmath>
 #include <memory>
 #include <optional>
@@ -34,6 +36,24 @@ class Expr {
  public:
     Expr() : node_(make_const(0.0)) {}
 
+#ifndef SWIG
+    /// @brief Construct a symbolic constant from a C++ numeric value, including implicit conversion.
+    ///
+    /// Numeric arguments convert to double, matching constant(); integers larger than double's
+    /// exact integer range may round. Infinity and NaN are accepted. The new immutable node
+    /// owns its value. Enables literals on either side of expression operators and assignment
+    /// such as Expr f = 1. Does not add a conversion from Expr back to a number; use evaluate().
+    /// @param value Numeric constant, stored as a double without evaluation or simplification.
+    /// @throws std::bad_alloc If the constant node cannot be allocated.
+    /// @par Example
+    /// @code
+    /// dm::algebra::Expr value = 2.5;
+    /// std::print("{}\n", value.evaluate({}, {})); // 2.5
+    /// @endcode
+    /// @see constant(), evaluate()
+    Expr(double value) : node_(make_const(value)) {}
+#endif
+
     [[nodiscard]] static Expr constant(double value) { return Expr(make_const(value)); }
     [[nodiscard]] static Expr variable(const std::string& name) { return Expr(make_var(name)); }
 
@@ -47,6 +67,145 @@ class Expr {
     [[nodiscard]] Expr cos() const { return unary(detail::ExprOp::Cos); }
     [[nodiscard]] Expr exp() const { return unary(detail::ExprOp::Exp); }
     [[nodiscard]] Expr log() const { return unary(detail::ExprOp::Log); }
+
+#ifndef SWIG
+    /// @brief Construct a symbolic sum using C++ operator+.
+    ///
+    /// Both operands retain shared ownership of their immutable trees. Numeric operands on
+    /// either side convert to double constants. Construction does not evaluate, simplify or
+    /// mutate either operand. Existing expressions remain valid after operands are reassigned.
+    /// @param left Left operand, sharing its immutable tree into the result.
+    /// @param right Right operand, sharing its immutable tree into the result.
+    /// @return Owned sum expression, equivalent to left.add(right).
+    /// @throws std::bad_alloc If the expression node cannot be allocated.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = x + 2;
+    /// std::print("{}\n", f.evaluate({"x"}, {3})); // 5
+    /// @endcode
+    /// @see add(), evaluate()
+    [[nodiscard]] friend Expr operator+(const Expr& left, const Expr& right) {
+        return left.add(right);
+    }
+
+    /// @brief Construct a symbolic difference using C++ operator-.
+    ///
+    /// Both operands retain shared ownership of their immutable trees. Numeric operands on
+    /// either side convert to double constants. Construction does not evaluate, simplify or
+    /// mutate either operand. Existing expressions remain valid after operands are reassigned.
+    /// @param left Left operand, sharing its immutable tree into the result.
+    /// @param right Right operand, sharing its immutable tree into the result.
+    /// @return Owned difference expression, equivalent to left.subtract(right).
+    /// @throws std::bad_alloc If the expression node cannot be allocated.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = 2 - x;
+    /// std::print("{}\n", f.evaluate({"x"}, {3})); // -1
+    /// @endcode
+    /// @see subtract(), evaluate()
+    [[nodiscard]] friend Expr operator-(const Expr& left, const Expr& right) {
+        return left.subtract(right);
+    }
+
+    /// @brief Construct a symbolic product using C++ operator*.
+    ///
+    /// Both operands retain shared ownership of their immutable trees. Numeric operands on
+    /// either side convert to double constants. Construction does not evaluate, simplify or
+    /// mutate either operand. Existing expressions remain valid after operands are reassigned.
+    /// @param left Left operand, sharing its immutable tree into the result.
+    /// @param right Right operand, sharing its immutable tree into the result.
+    /// @return Owned product expression, equivalent to left.multiply(right).
+    /// @throws std::bad_alloc If the expression node cannot be allocated.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = 2 * x;
+    /// std::print("{}\n", f.evaluate({"x"}, {3})); // 6
+    /// @endcode
+    /// @see multiply(), evaluate()
+    [[nodiscard]] friend Expr operator*(const Expr& left, const Expr& right) {
+        return left.multiply(right);
+    }
+
+    /// @brief Construct a symbolic quotient using C++ operator/.
+    ///
+    /// Both operands retain shared ownership of their immutable trees. Numeric operands on
+    /// either side convert to double constants. Construction does not evaluate, simplify or
+    /// mutate either operand. Existing expressions remain valid after operands are reassigned.
+    /// Zero denominators are retained; evaluation follows the existing double-division rules.
+    /// @param left Left operand, sharing its immutable tree into the result.
+    /// @param right Right operand, sharing its immutable tree into the result.
+    /// @return Owned quotient expression, equivalent to left.divide(right).
+    /// @throws std::bad_alloc If the expression node cannot be allocated.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = 1 / (x + 1);
+    /// std::print("{}\n", f.evaluate({"x"}, {3})); // 0.25
+    /// @endcode
+    /// @see divide(), evaluate()
+    [[nodiscard]] friend Expr operator/(const Expr& left, const Expr& right) {
+        return left.divide(right);
+    }
+
+    /// @brief Construct a symbolic power using C++ operator^.
+    ///
+    /// Both operands retain shared ownership of their immutable trees. Numeric operands on
+    /// either side convert to double constants. Construction does not evaluate, simplify or
+    /// mutate either operand. Existing expressions remain valid after operands are reassigned.
+    /// C++ fixes ^ below +, -, * and / in precedence: write (x ^ 3) - 2 * x + 1.
+    /// Powers group left-to-right; use x ^ (y ^ z) for a right-associated power. At least one
+    /// operand must be Expr; 2 ^ 3 on ordinary integers is still C++ bitwise XOR. Negative
+    /// bases and negated powers differ: (-x) ^ 2 versus -(x ^ 2). Variable exponents can be
+    /// built and evaluated; differentiation retains power()'s constant-exponent restriction.
+    /// @param left Left operand, sharing its immutable tree into the result.
+    /// @param right Right operand, sharing its immutable tree into the result.
+    /// @return Owned power expression, equivalent to left.power(right).
+    /// @throws std::bad_alloc If the expression node cannot be allocated.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = (x ^ 3) - 2 * x + 1;
+    /// std::print("{}\n", f.evaluate({"x"}, {3})); // 22
+    /// @endcode
+    /// @par References
+    /// - ISO C++ working draft, expression grammar and operator overloading:
+    ///   https://eel.is/c++draft/expr.xor and https://eel.is/c++draft/over.oper
+    /// @see power(), evaluate()
+    [[nodiscard]] friend Expr operator^(const Expr& left, const Expr& right) {
+        return left.power(right);
+    }
+
+    /// @brief Return an expression unchanged with unary plus.
+    /// Shares the immutable node tree; no evaluation, simplification or operand mutation.
+    /// @param value Expression to copy, retaining shared ownership.
+    /// @return Cheap owned copy of value.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = +x;
+    /// std::print("{}\n", f.evaluate({"x"}, {3})); // 3
+    /// @endcode
+    /// @see operator-(), evaluate()
+    [[nodiscard]] friend Expr operator+(const Expr& value) { return value; }
+
+    /// @brief Construct a symbolic negation using unary minus.
+    /// Retains shared ownership of the immutable operand tree without evaluation,
+    /// simplification or mutation. Parenthesize powers explicitly: -(x ^ 2).
+    /// @param value Operand to negate, sharing its immutable tree.
+    /// @return Owned negation expression, equivalent to value.negate().
+    /// @throws std::bad_alloc If the expression node cannot be allocated.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = -(x ^ 2);
+    /// std::print("{}\n", f.evaluate({"x"}, {3})); // -9
+    /// @endcode
+    /// @see negate(), evaluate()
+    [[nodiscard]] friend Expr operator-(const Expr& value) { return value.negate(); }
+#endif
 
     /// @brief The symbolic derivative with respect to `var` (any other variable name is
     ///        treated as a constant).
@@ -87,6 +246,37 @@ class Expr {
     }
 
     [[nodiscard]] std::string to_string() const { return to_str(node_); }
+
+#ifndef SWIG
+    /// @brief Render this symbolic expression as a composable C++ Tex value.
+    ///
+    /// Preserves the tree's operations without evaluating or simplifying it. Products use
+    /// cdot, quotients use frac, powers group their full exponents and ambiguous bases,
+    /// and sin/cos/exp/log use named math operators with sized parentheses. Single ASCII
+    /// letter names are math symbols; all other logical variable names are escaped literally
+    /// with Tex::text(). Constants use a locale-independent decimal point, integer scientific
+    /// exponents, and explicit infinity/NaN commands; signed zero prints as 0.
+    /// The result owns its source, has no math-mode delimiters and supports Tex chaining.
+    /// Read-only serialization may run concurrently and does not mutate shared tree nodes.
+    /// @param precision Significant decimal digits, default 7; from 1 to double's max_digits10.
+    /// @return Owned Tex fragment; call display() or inline_math() to insert it in a report.
+    /// @throws std::invalid_argument If precision is outside the supported range.
+    /// @par Example
+    /// @code
+    /// const auto x = dm::algebra::Expr::variable("x");
+    /// const auto f = x ^ 3;
+    /// std::print("{}\n", f.differentiate("x").simplify().to_tex().underbrace("f'(x)").display());
+    /// @endcode
+    /// @par References
+    /// - American Mathematical Society, User's Guide for the amsmath Package:
+    ///   https://www.latex-project.org/help/documentation/amsldoc.pdf
+    /// @see to_string(), Tex, Polynomial::to_tex()
+    [[nodiscard]] Tex to_tex(int precision = 7) const {
+        detail::validate_tex_precision(precision);
+        return Tex(detail::expression_tex(node_, precision).source);
+    }
+#endif
+
 
  private:
     explicit Expr(detail::ExprNodePtr node) : node_(std::move(node)) {}

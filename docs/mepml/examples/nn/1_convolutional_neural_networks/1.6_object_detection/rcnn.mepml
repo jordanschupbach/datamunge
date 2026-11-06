@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 R-CNN computes convolutional features separately for each proposed image patch. Classification identifies the object; a class-specific four-coordinate regressor corrects the proposal. The source teaching adaptation jointly learns softmax and regression heads on compact MNIST scenes rather than reproducing the original pretrained CNN/SVM/ridge pipeline.
 
-The editable concept diagram is `diagrams/rcnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/rcnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/rcnn_concept.tikz > build/rcnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/rcnn_concept.svg build/rcnn_concept.dvi > build/rcnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/rcnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Padded proposals\nPer-region CNN");
+  diagram.node("n1", {5.2, 0}, "Class and box heads\nVisible Adam updates");
+  diagram.node("n2", {10.4, 0}, "Decode and suppress\nHeld-out AP");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/rcnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/rcnn_concept.svg)
 // result_end
 \caption(R-CNN region classification and box refinement)
@@ -388,23 +394,23 @@ int main() {
 // result_begin: markdown
 | epoch | fit joint loss | validation joint loss |
 |---:|---:|---:|
-| 1 | 2.930477 | 2.646057 |
-| 2 | 1.701109 | 2.676893 |
-| 3 | 1.056194 | 2.632252 |
-| 4 | 0.721561 | 2.561399 |
-| 5 | 0.530007 | 2.611975 |
-| 6 | 0.405914 | 2.293463 |
-| 7 | 0.334073 | 2.413780 |
-| 8 | 0.265782 | 2.521699 |
-| 9 | 0.206402 | 2.600252 |
-| 10 | 0.196371 | 2.676600 |
-| 11 | 0.160820 | 2.643288 |
-| 12 | 0.142795 | 2.729695 |
-| 13 | 0.123766 | 2.679020 |
-| 14 | 0.124661 | 2.973188 |
-| 15 | 0.091086 | 2.969600 |
-| 16 | 0.080167 | 2.762349 |
-426931 learned scalars, 480 Adam updates; selected epoch 6, validation joint loss 2.293463, region accuracy 0.583756 on 197 patches. No moving model state.
+| 1 | 2.930474 | 2.646573 |
+| 2 | 1.701279 | 2.711715 |
+| 3 | 1.051043 | 2.608390 |
+| 4 | 0.719282 | 2.523980 |
+| 5 | 0.526788 | 2.645635 |
+| 6 | 0.412842 | 2.264238 |
+| 7 | 0.337080 | 2.521334 |
+| 8 | 0.260300 | 2.608122 |
+| 9 | 0.209706 | 2.621835 |
+| 10 | 0.189033 | 2.639115 |
+| 11 | 0.157470 | 2.603286 |
+| 12 | 0.146070 | 2.653747 |
+| 13 | 0.132085 | 2.571427 |
+| 14 | 0.125386 | 2.923934 |
+| 15 | 0.092668 | 2.814151 |
+| 16 | 0.079434 | 2.684502 |
+426931 learned scalars, 480 Adam updates; selected epoch 6, validation joint loss 2.264238, region accuracy 0.563452 on 197 patches. No moving model state.
 \image(figures/rcnn_training.svg)
 // result_end
 \caption(Visible tensor Adam fitting of classification and class-specific regression. The plotted objective excludes L2; validation includes the same masked multitask terms. Background is class 10 in the selected confusion matrix.)
@@ -585,8 +591,8 @@ int main() {
 }
 ```
 // result_begin: markdown
-unrefined: 15.625 candidates/image, proposal recall .5/.7 0.869565/0.739130; inclusive VOC AP50 0.682429, COCO AP75 0.492616, AP50:95 0.485728; 92 retained detections.
-refined: 15.625 candidates/image, proposal recall .5/.7 0.869565/0.739130; inclusive VOC AP50 0.682429, COCO AP75 0.505146, AP50:95 0.428570; 93 retained detections.
+unrefined: 15.625 candidates/image, proposal recall .5/.7 0.869565/0.739130; inclusive VOC AP50 0.676080, COCO AP75 0.492616, AP50:95 0.469572; 95 retained detections.
+refined: 15.625 candidates/image, proposal recall .5/.7 0.869565/0.739130; inclusive VOC AP50 0.676080, COCO AP75 0.535949, AP50:95 0.438216; 96 retained detections.
 Eight official-test-derived scenes contain 23 target digits. Green outlines are truth; red outlines are refined detections, regardless of confidence/class correctness. Overlapping red boxes may belong to different predicted classes.
 \image(figures/rcnn_detections.png)
 // result_end

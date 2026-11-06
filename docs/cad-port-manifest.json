@@ -1,0 +1,563 @@
+{
+  "source": "mep",
+  "revision": "2dcdf576a43091f25d87fcb88074e1cc4f80e974",
+  "files": [
+    {
+      "source": "src/cad_classify.cpp",
+      "sha256": "86ee012bc26e89366d8d300f3183b90e2e60b2f9e2873d9d3430f283319feb13",
+      "destination": "src/datamunge/cad/classify.cpp"
+    },
+    {
+      "source": "src/cad_feature.cpp",
+      "sha256": "e878ac1cd669742226ed431ada1f0ee88b24f7b5c703c4a98f65942e61f3dbc6",
+      "destination": "src/datamunge/cad/feature.cpp"
+    },
+    {
+      "source": "src/cad_math.h",
+      "sha256": "689096e785958bc1ffee8259bb6002b474f3874b3802104d45dd279b2c134217",
+      "destination": "include/datamunge/cad/math.hpp"
+    },
+    {
+      "source": "src/cad_sketch.cpp",
+      "sha256": "16b935ffb3af8115cea3a3d1d357a95053cfc2517dc63d3e6fa9ac8db4fadbfd",
+      "destination": "src/datamunge/cad/sketch.cpp"
+    },
+    {
+      "source": "src/cad_validate.cpp",
+      "sha256": "c551b56654c1a5b07c9348581429b37da6f6a55367c7334364593972aed95113",
+      "destination": "src/datamunge/cad/validate.cpp"
+    },
+    {
+      "source": "src/cad_classify.h",
+      "sha256": "04032b093b42aac38684fae9cb0d64937ed8e691a59b00226d26981fcab71542",
+      "destination": "include/datamunge/cad/classify.hpp"
+    },
+    {
+      "source": "src/cad_constraint.cpp",
+      "sha256": "5681b0118cb16cd12e3022bb88483036941185e60ef9eb2e8ace5e831d3417fb",
+      "destination": "src/datamunge/cad/constraint.cpp"
+    },
+    {
+      "source": "src/cad_constraint.h",
+      "sha256": "99179d5f0940aa3af81987dcccf59d3dd7c89ac18ea47555df1ab079fd2a7114",
+      "destination": "include/datamunge/cad/constraint.hpp"
+    },
+    {
+      "source": "src/cad_curve.cpp",
+      "sha256": "764c3be5a3048df56a47ac00cf84fe763dbbb502726eecd94c8a7ed236974fcd",
+      "destination": "src/datamunge/cad/curve.cpp"
+    },
+    {
+      "source": "src/cad_curve.h",
+      "sha256": "cf04f2d3f19003e62e6a1ba1b5621406e57c266f8606c694648e9bcba0f0f8ac",
+      "destination": "include/datamunge/cad/curve.hpp"
+    },
+    {
+      "source": "src/cad_doc.cpp",
+      "sha256": "d89b5efc4dc4287a9ac2447e1e1dd34d64ad5a2832cda6ae70a384e5547eee9b",
+      "destination": "src/datamunge/cad/doc.cpp"
+    },
+    {
+      "source": "src/cad_doc.h",
+      "sha256": "14bd229e8ca757fdb5bf01ace85c9e44e94d683ebb3b80c9717ec8ca64c8babd",
+      "destination": "include/datamunge/cad/doc.hpp"
+    },
+    {
+      "source": "src/cad_drawing.cpp",
+      "sha256": "383b6b4488b6527cfe58148d45455392ba4951ec68ec4e7e552a9dda91b5661e",
+      "destination": "src/datamunge/cad/drawing.cpp"
+    },
+    {
+      "source": "src/cad_drawing.h",
+      "sha256": "f14f265ea712a22f19aeae93347308f74eb0ae989c6e5078c5cc37bef35ac575",
+      "destination": "include/datamunge/cad/drawing.hpp"
+    },
+    {
+      "source": "src/cad_dual.h",
+      "sha256": "23190b65a515c922814e969883948c2edfe4b3a54641114d972df3a6ca12e57c",
+      "destination": "include/datamunge/cad/dual.hpp"
+    },
+    {
+      "source": "src/cad_exchange.h",
+      "sha256": "3be041c0af3d6204f0495d94943b0169485a21b64b730521c6d229e7b9d83000",
+      "destination": "include/datamunge/cad/exchange.hpp"
+    },
+    {
+      "source": "src/cad_exchange_dxf.cpp",
+      "sha256": "71bb67faa125ba5495d51daa49175f5e44ad0920ba6bd1d321183368e3dc0ad6",
+      "destination": "src/datamunge/cad/exchange_dxf.cpp"
+    },
+    {
+      "source": "src/cad_exchange_iges.cpp",
+      "sha256": "5f5cf6786dcbe1aec6727695a40867cdedb76da3fc5cf69739540a53b53c5a77",
+      "destination": "src/datamunge/cad/exchange_iges.cpp"
+    },
+    {
+      "source": "src/cad_exchange_mesh.cpp",
+      "sha256": "097c6570fd0051afda422568ac84f10e08b8b7c56bab08e6778a1e777f1339f2",
+      "destination": "src/datamunge/cad/exchange_mesh.cpp"
+    },
+    {
+      "source": "src/cad_feature.h",
+      "sha256": "d9855f912122d1e3a552d5bd02de1c4f4b7c16c7a25e4531f5d8611e6edacb55",
+      "destination": "include/datamunge/cad/feature.hpp"
+    },
+    {
+      "source": "src/cad_intersect.cpp",
+      "sha256": "8735a102d31901e841c1521fa33e7bb0c86cf73db6b3d804e68bd3622b42e23c",
+      "destination": "src/datamunge/cad/intersect.cpp"
+    },
+    {
+      "source": "src/cad_intersect.h",
+      "sha256": "c271c5a2a251c2000eabecd2afe0f9e4f2803df50c309fe365b3d54be57b0e94",
+      "destination": "include/datamunge/cad/intersect.hpp"
+    },
+    {
+      "source": "src/cad_mass.cpp",
+      "sha256": "3d3356e8e78660d064cf63bfd2a8a6f630abdafa1a96ffab28c855f3eb6cc4f4",
+      "destination": "src/datamunge/cad/mass.cpp"
+    },
+    {
+      "source": "src/cad_mass.h",
+      "sha256": "250564e4d30cecda86c95c31a05b4dc46640918d95ba40d46cd94c6e4cf3beb8",
+      "destination": "include/datamunge/cad/mass.hpp"
+    },
+    {
+      "source": "src/cad_math.cpp",
+      "sha256": "94968ba44f9af5b5f29c116a5828eaca6888a8b67e734706d435a33ff8f71b6b",
+      "destination": "src/datamunge/cad/math.cpp"
+    },
+    {
+      "source": "src/cad_modify.cpp",
+      "sha256": "4e3c8aabdd9ee7e07c0acb33fece6b4e2280f619ccfe974f0309806c2dc08ea9",
+      "destination": "src/datamunge/cad/modify.cpp"
+    },
+    {
+      "source": "src/cad_modify.h",
+      "sha256": "82367cff957d27d64578bcd821d3c9f61d487365265fa7a2860a61584dcce80d",
+      "destination": "include/datamunge/cad/modify.hpp"
+    },
+    {
+      "source": "src/cad_naming.cpp",
+      "sha256": "744a8f458a23086c58ff9828737c4832b81aa76750f24a288578319b1d199e57",
+      "destination": "src/datamunge/cad/naming.cpp"
+    },
+    {
+      "source": "src/cad_naming.h",
+      "sha256": "2a71f0115e98d1b2230c46ebff1fc2a2eda4ae91873c1d66581cad78877dd77d",
+      "destination": "include/datamunge/cad/naming.hpp"
+    },
+    {
+      "source": "src/cad_nurbs.cpp",
+      "sha256": "4743a3eb0cbe0ce076e0b2c187d7adf47f88a4000d5ff82edd7b4375adfb80d5",
+      "destination": "src/datamunge/cad/nurbs.cpp"
+    },
+    {
+      "source": "src/cad_nurbs.h",
+      "sha256": "6845cf6cd8b8e88ca182765e1eb07e507c238b43b8ce30deba5f4de60011c066",
+      "destination": "include/datamunge/cad/nurbs.hpp"
+    },
+    {
+      "source": "src/cad_pattern.cpp",
+      "sha256": "061d96a3819266e7db433fac3d12e223533aa3b24807c5cb923b0638856d5d84",
+      "destination": "src/datamunge/cad/pattern.cpp"
+    },
+    {
+      "source": "src/cad_pattern.h",
+      "sha256": "dbe2e640b9d052e3bd536ea29ab6a92625d8b509717b2e6a36d9dbb8cc9a5376",
+      "destination": "include/datamunge/cad/pattern.hpp"
+    },
+    {
+      "source": "src/cad_pcurve.cpp",
+      "sha256": "fb8d9fb3d3c17aab94c05953fdf4318d82532ba6c75a40c4741d7011d89dab70",
+      "destination": "src/datamunge/cad/pcurve.cpp"
+    },
+    {
+      "source": "src/cad_pcurve.h",
+      "sha256": "0ebacbf71e23da2346d933b43ec0c34e56e85fbd2446bcc63ea82bb8cfaf87b8",
+      "destination": "include/datamunge/cad/pcurve.hpp"
+    },
+    {
+      "source": "src/cad_predicates.cpp",
+      "sha256": "edcbd80a953dbd9c5f122c4ae89f9e4403706f3dab956dd8b4e92bfb7fe6cea7",
+      "destination": "src/datamunge/cad/predicates.cpp"
+    },
+    {
+      "source": "src/cad_predicates.h",
+      "sha256": "071dbc01aee3f82a086bc5b70eee511d08e5d7bdb09df8eb3d2536bdd62ee809",
+      "destination": "include/datamunge/cad/predicates.hpp"
+    },
+    {
+      "source": "src/cad_sketch.h",
+      "sha256": "13082865b8992d2420b779e457dbbf02df6ec60189f307f8d9063be44483826b",
+      "destination": "include/datamunge/cad/sketch.hpp"
+    },
+    {
+      "source": "src/cad_step.h",
+      "sha256": "0614f8544f09e3929d9efb102504ed84c8180fa41366f783207bd372671ee57f",
+      "destination": "include/datamunge/cad/step.hpp"
+    },
+    {
+      "source": "src/cad_step_parse.cpp",
+      "sha256": "44a7ca10201464a1bc00718bfa0a20e7adc4a7ae701028be966ce7509cceccb6",
+      "destination": "src/datamunge/cad/step_parse.cpp"
+    },
+    {
+      "source": "src/cad_step_read.cpp",
+      "sha256": "3979f49c10f4209eafd4e85040e95674589caee66e0ada554b3db2065e79abe8",
+      "destination": "src/datamunge/cad/step_read.cpp"
+    },
+    {
+      "source": "src/cad_step_write.cpp",
+      "sha256": "be9a2c056225ae23bf0cf38e28ce477f8d7ed32aa84a0963bb3689a62a2b0b3a",
+      "destination": "src/datamunge/cad/step_write.cpp"
+    },
+    {
+      "source": "src/cad_surface.cpp",
+      "sha256": "ea40cd3c35062af1fc11c716a1e08e736f53710c5c8202a176f43693192ce0f3",
+      "destination": "src/datamunge/cad/surface.cpp"
+    },
+    {
+      "source": "src/cad_surface.h",
+      "sha256": "5bfc87acd23eda23f0fa9dde4cf9f1c85d14ab40b3a0fdd9e2bb655f9d7a3004",
+      "destination": "include/datamunge/cad/surface.hpp"
+    },
+    {
+      "source": "src/cad_tessellate.cpp",
+      "sha256": "32ed0a8b9ae532e1f82385bcfeec1c2bbfc5f4df0d3b2505de192cd2cfcd65d0",
+      "destination": "src/datamunge/cad/tessellate.cpp"
+    },
+    {
+      "source": "src/cad_tessellate.h",
+      "sha256": "76f43553c71efd264b081a21ef4c42d10ec3f03051aedcbab4a05b5a8cd8f37a",
+      "destination": "include/datamunge/cad/tessellate.hpp"
+    },
+    {
+      "source": "src/cad_topology.cpp",
+      "sha256": "5c32dbe0eb19c0c82225c80f98b339b08b8abae165ddf216461392396d7d95cf",
+      "destination": "src/datamunge/cad/topology.cpp"
+    },
+    {
+      "source": "src/cad_topology.h",
+      "sha256": "185a7a0f6a6007de4444f7e94fd896b29190c5e994f5a53ced061461dd259f65",
+      "destination": "include/datamunge/cad/topology.hpp"
+    },
+    {
+      "source": "src/cad_arrangement.cpp",
+      "sha256": "252795ae5c757665cf75d9cb6e7d6709fb3b0b497bf3c865f0b919d2fac4d301",
+      "destination": "src/datamunge/cad/arrangement.cpp"
+    },
+    {
+      "source": "src/cad_arrangement.h",
+      "sha256": "58447baa31e5bcaa3cfea0100288d460c72e84a384af95a2ff829dbfb01ec6f5",
+      "destination": "include/datamunge/cad/arrangement.hpp"
+    },
+    {
+      "source": "src/cad_assembly.cpp",
+      "sha256": "414b517474076460844f16df0edd194378c1894aa1445871c20a59c3107320a0",
+      "destination": "src/datamunge/cad/assembly.cpp"
+    },
+    {
+      "source": "src/cad_assembly.h",
+      "sha256": "adde4076d09266190f2610f3a3eca6425cd04437e6c625ba9cd7fe8c8957338a",
+      "destination": "include/datamunge/cad/assembly.hpp"
+    },
+    {
+      "source": "src/cad_boolean.cpp",
+      "sha256": "b7db03ec5a073da56938950e54de94fa2acea6ab0691a99acb7fd177e20a71d7",
+      "destination": "src/datamunge/cad/boolean.cpp"
+    },
+    {
+      "source": "src/cad_boolean.h",
+      "sha256": "c1925dfdfa448bb41024555a051e5a3d43293d48204b7c95b339ad4f887ccfe6",
+      "destination": "include/datamunge/cad/boolean.hpp"
+    },
+    {
+      "source": "src/cad_validate.h",
+      "sha256": "a5492e7eab37719009e5fbdb9d8e223e78edb04b3b31e41015a55b3e4ca0037f",
+      "destination": "include/datamunge/cad/validate.hpp"
+    },
+    {
+      "source": "src/cad_curve_test.cpp",
+      "sha256": "0cc69d7c07a743949b95f3cc238756924acc808d02c78f2683056c124d6057d3",
+      "destination": "tests/cpp/cad/cad_curve_test.cpp"
+    },
+    {
+      "source": "src/cad_doc_test.cpp",
+      "sha256": "e0bae6bc3e9db1608fe58e9fa8e2ab4aea1e785d0eadeb48505d15f423bc6584",
+      "destination": "tests/cpp/cad/cad_doc_test.cpp"
+    },
+    {
+      "source": "src/cad_exchange_test.cpp",
+      "sha256": "4b68eb76dbb1617e0f08ae18dba15237017fb3df0eef4f09346c5af50e280d6c",
+      "destination": "tests/cpp/cad/cad_exchange_test.cpp"
+    },
+    {
+      "source": "src/cad_feature_test.cpp",
+      "sha256": "af5315061241cc9b532702d125a882bdad3da9b9e2bea8e53e08484c409056b2",
+      "destination": "tests/cpp/cad/cad_feature_test.cpp"
+    },
+    {
+      "source": "src/cad_intersect_test.cpp",
+      "sha256": "3a4f5549c74d78093256bc5e35ffe518e560a1f99947cf94b84c94b0707b2f1f",
+      "destination": "tests/cpp/cad/cad_intersect_test.cpp"
+    },
+    {
+      "source": "src/cad_mass_test.cpp",
+      "sha256": "36fd73b97218cdb14cc057475d18adfeee3607b772d69283d917ea7c9f8d280b",
+      "destination": "tests/cpp/cad/cad_mass_test.cpp"
+    },
+    {
+      "source": "src/cad_math_test.cpp",
+      "sha256": "0bff19727b32f220e0c8803402bb9bec827af260c871e8c3f7c6eb3c3074bd57",
+      "destination": "tests/cpp/cad/cad_math_test.cpp"
+    },
+    {
+      "source": "src/cad_modify_test.cpp",
+      "sha256": "55f2e9632fcf81423e7525fdf71cc28fbb477551f889f8c128aee92bb5868159",
+      "destination": "tests/cpp/cad/cad_modify_test.cpp"
+    },
+    {
+      "source": "src/cad_nurbs_test.cpp",
+      "sha256": "f6247b0ffaa96ddc8545027296eb4105b62fa673c08f5186cc6e371a84daba37",
+      "destination": "tests/cpp/cad/cad_nurbs_test.cpp"
+    },
+    {
+      "source": "src/cad_pattern_test.cpp",
+      "sha256": "bceb91db25f56dd3fb8d747ca54c9ea93450f471385411859e09b5fcb2788901",
+      "destination": "tests/cpp/cad/cad_pattern_test.cpp"
+    },
+    {
+      "source": "src/cad_predicates_test.cpp",
+      "sha256": "b057d769a4eee2b0a7f941d448c915a440f8228b41affb2938aad34db61c0e0d",
+      "destination": "tests/cpp/cad/cad_predicates_test.cpp"
+    },
+    {
+      "source": "src/cad_sketch_test.cpp",
+      "sha256": "51d4cea85da64b58b3d360d4f3d3637ce378441acc8d75f4ef99b5417568753d",
+      "destination": "tests/cpp/cad/cad_sketch_test.cpp"
+    },
+    {
+      "source": "src/cad_step_test.cpp",
+      "sha256": "efbe2db33cc682574e45e6bc319235b1b043a933b507148bb1663322d676c6b9",
+      "destination": "tests/cpp/cad/cad_step_test.cpp"
+    },
+    {
+      "source": "src/cad_surface_test.cpp",
+      "sha256": "e478a32ba1de041094ad86cebacbd8a7ee53131878e731b012d99ad58327f902",
+      "destination": "tests/cpp/cad/cad_surface_test.cpp"
+    },
+    {
+      "source": "src/cad_topology_test.cpp",
+      "sha256": "348c6cbbfdfe5b022862603afb762c48c616c35e8dc781f7cea25dc269e6bc76",
+      "destination": "tests/cpp/cad/cad_topology_test.cpp"
+    },
+    {
+      "source": "src/cad_assembly_test.cpp",
+      "sha256": "ffa2cb40f4b4f6f7573f515c347106e004221aedbd3c02fe7def5d84d339121e",
+      "destination": "tests/cpp/cad/cad_assembly_test.cpp"
+    },
+    {
+      "source": "src/cad_boolean_test.cpp",
+      "sha256": "9e93e4bbd49b2c30557f4a79058383a4586c37904b15541c8cee3e992bb0867d",
+      "destination": "tests/cpp/cad/cad_boolean_test.cpp"
+    },
+    {
+      "source": "src/json.h",
+      "sha256": "649bf6a8391baff2243e7b03f8ea10507c8169dd2a3eef502fb5306ecd028a4a",
+      "destination": "src/datamunge/cad/detail/json.hpp"
+    },
+    {
+      "source": "src/image_codec.h",
+      "sha256": "8f8b1c5f3b0bf3100585f141213a2a480f7e0575dc84d1d7e66370cd1da6270a",
+      "destination": "src/datamunge/cad/detail/image_codec.hpp"
+    },
+    {
+      "source": "src/image_codec.cpp",
+      "sha256": "713eb1a85396ced3d48abf75c1648e97a3916fc9d3773c1400bd6aa5534ed443",
+      "destination": "src/datamunge/cad/image_codec.cpp"
+    },
+    {
+      "source": "src/png_codec.h",
+      "sha256": "dc1b70d89dbe688d121dce9352c739d884c80c71e114bf1d20fba9a0a95f02c2",
+      "destination": "src/datamunge/cad/detail/png_codec.hpp"
+    },
+    {
+      "source": "src/png_codec.cpp",
+      "sha256": "a9ce68eafc95a36ae50aae983d7c33ea6f2f9735ebe3a9181d7845b74fc9a8d1",
+      "destination": "src/datamunge/cad/png_codec.cpp"
+    },
+    {
+      "source": "src/jpeg_codec.h",
+      "sha256": "94fba451d54b201d9d273fd391dd97bc27d9a245653e9ad01d44ac6969809ad4",
+      "destination": "src/datamunge/cad/detail/jpeg_codec.hpp"
+    },
+    {
+      "source": "src/jpeg_codec.cpp",
+      "sha256": "f3eea09d87dac41a5080ee9fb2515c605bbd43c0b66d9393ed2e1de02df5ac94",
+      "destination": "src/datamunge/cad/jpeg_codec.cpp"
+    },
+    {
+      "source": "src/bmp_codec.h",
+      "sha256": "d26e7286af754d485bf8172e9b3d67d34f998a3716ba97f172be5abd60f4714e",
+      "destination": "src/datamunge/cad/detail/bmp_codec.hpp"
+    },
+    {
+      "source": "src/bmp_codec.cpp",
+      "sha256": "a34ac33531315bd7eee15255b72e4ec7435534b1b89342508a551ac5c3b0bbf5",
+      "destination": "src/datamunge/cad/bmp_codec.cpp"
+    },
+    {
+      "source": "src/gif_codec.h",
+      "sha256": "31524094defeab5ae1539613a0d21581972556f4c428f617047cb55f8309dd13",
+      "destination": "src/datamunge/cad/detail/gif_codec.hpp"
+    },
+    {
+      "source": "src/gif_codec.cpp",
+      "sha256": "bbe6d41a93518bd323c6f629b402f1531038c920c422a99dc178fe29f7d2b09f",
+      "destination": "src/datamunge/cad/gif_codec.cpp"
+    },
+    {
+      "source": "src/deflate.h",
+      "sha256": "d5309fa3b200cd9c0e818e960b9968c196d75d54045d06200768d970babde9f5",
+      "destination": "src/datamunge/cad/detail/deflate.hpp"
+    },
+    {
+      "source": "src/deflate.cpp",
+      "sha256": "c49899dce53f25f3ea94c84067a00650cabc45eb1139caac5e822862ead97bcc",
+      "destination": "src/datamunge/cad/deflate.cpp"
+    },
+    {
+      "source": "src/zstd_decode.h",
+      "sha256": "12f1cb303cba10145543c121c2bb1718a2592cdccf3ef3e1f74b642c4e35a12b",
+      "destination": "src/datamunge/cad/detail/zstd_decode.hpp"
+    },
+    {
+      "source": "src/zstd_decode.cpp",
+      "sha256": "1c7d67bd63ee06317d1110de06cf740cf03504a93442bba5d72a9f3ab9390926",
+      "destination": "src/datamunge/cad/zstd_decode.cpp"
+    },
+    {
+      "source": "src/base64.h",
+      "sha256": "a0cc0bd55a32d61e9f4477d83b9b353b6f2246bd3a1b13c6f25d9f3247727bdc",
+      "destination": "src/datamunge/cad/detail/base64.hpp"
+    },
+    {
+      "source": "src/blend_file.h",
+      "sha256": "d78ed22685bf71d51b8754441998a34855f38c463f189893d516ac9a32e0d0f8",
+      "destination": "src/datamunge/cad/detail/blend_file.hpp"
+    },
+    {
+      "source": "src/blend_file.cpp",
+      "sha256": "6de39500ce31629cde503438285481c069b372b6b5511f62b11dcd2d21fc1a72",
+      "destination": "src/datamunge/cad/blend_file.cpp"
+    },
+    {
+      "source": "src/blend_scene.h",
+      "sha256": "ba2246730e140e014db2378fe7db10ba81b719f251a9933c04396f05ebc0539a",
+      "destination": "src/datamunge/cad/detail/blend_scene.hpp"
+    },
+    {
+      "source": "src/blend_scene.cpp",
+      "sha256": "5c4902ee7ad7c424a48b1fc3ec325643b081528b8a7b711b2d30aaca95ab7d76",
+      "destination": "src/datamunge/cad/blend_scene.cpp"
+    },
+    {
+      "source": "src/gfx/types.h",
+      "sha256": "24e816d53654b7100bbe8eaffaed29a1b135bfe6204dfba111166694a3a58ac8",
+      "destination": "src/datamunge/cad/detail/types.hpp"
+    },
+    {
+      "source": "src/gfx/vecmath.h",
+      "sha256": "c7b514149705fb41e680e71368232a5b42db55b47c496e3b51a9ef4c3f6c7755",
+      "destination": "src/datamunge/cad/detail/vecmath.hpp"
+    },
+    {
+      "source": "src/gfx/model_read_util.cppm",
+      "sha256": "da77780b8707e6ccb71aed5a058774d26c2b86b936ae74c3bd1e8f656eab7cfa",
+      "destination": "src/datamunge/cad/detail/model_read_util.hpp"
+    },
+    {
+      "source": "src/gfx/backend_native_model_gltf.cpp",
+      "sha256": "cf0b58dc5f98cecac61138b8797052de07d75295d4fd5daab4af48e7dfbefa39",
+      "destination": "src/datamunge/cad/model_gltf.cpp"
+    },
+    {
+      "source": "src/gfx/backend_native_model_iqm.cpp",
+      "sha256": "46ee88c721f5af70110acfbcbe2ab9edf6294bd76c4b08c53283bd1782483a8f",
+      "destination": "src/datamunge/cad/model_iqm.cpp"
+    },
+    {
+      "source": "src/gfx/backend_native_model_m3d.cpp",
+      "sha256": "bf584d956014fb4753151511d8d3f1be3fc4c33ea83a502dc13f50bec942f897",
+      "destination": "src/datamunge/cad/model_m3d.cpp"
+    },
+    {
+      "source": "src/gfx/backend_native_model_obj.cpp",
+      "sha256": "a3a17aea4a26eb4130db9590c4cf90e993ebeb954e7ae7397d5f5287b3f84c3b",
+      "destination": "src/datamunge/cad/model_obj.cpp"
+    },
+    {
+      "source": "src/gfx/backend_native_model_vox.cpp",
+      "sha256": "82908245f1c02474898f312fe2ec24387f106d93d206869a0434930490b4ad50",
+      "destination": "src/datamunge/cad/model_vox.cpp"
+    },
+    {
+      "source": "src/model3d_doc.h",
+      "sha256": "81376707a8245884e9e0af3b6c7917784ac29dc725f8e081c8ee45ef5575b3f8",
+      "destination": "include/datamunge/cad/scene.hpp"
+    },
+    {
+      "source": "src/model3d_doc.cpp",
+      "sha256": "16edadd4b2ac7b8dc37b5abaf8a8bc3bef16a515d936847b81d7757dede666a9",
+      "destination": "src/datamunge/cad/scene.cpp"
+    },
+    {
+      "source": "src/model3d_blend_import.h",
+      "sha256": "1638b0ed4780ce33d84c289484ff10f0c37f4ead383cdd0b4e64dbecf90f1f74",
+      "destination": "include/datamunge/cad/blend.hpp"
+    },
+    {
+      "source": "src/model3d_blend_import.cpp",
+      "sha256": "259a269dea7fc87e010cb8e081b576b34a11d7269714d533cccd17891ebb96dd",
+      "destination": "src/datamunge/cad/blend.cpp"
+    },
+    {
+      "source": "src/gfx/backend_native_renderer3d.cpp",
+      "sha256": "9e573b7273e066231b8cb31101f97afb81f2c6b220cda091691a916898a46894",
+      "destination": "src/datamunge/cad/primitives.cpp"
+    },
+    {
+      "source": "src/model3d_doc_test.cpp",
+      "sha256": "b3651d2af0e03c3eccae7df5303d19953d1a2e98333a276b183ae75fd56e877e",
+      "destination": "tests/cpp/cad/cad_model3d_doc_test.cpp"
+    },
+    {
+      "source": "src/blend_import_test.cpp",
+      "sha256": "aa91fbd1b94dd2dbb0794fb9a470afa7aaefd4d367f52691cd7d72f400af4261",
+      "destination": "tests/cpp/cad/cad_blend_import_test.cpp"
+    },
+    {
+      "source": "src/xml_doc.h",
+      "sha256": "1e248485f41c3cdf97fe24205975bc4daa46c53a629072fcdaed1305db974358",
+      "destination": "src/datamunge/cad/detail/xml.hpp"
+    },
+    {
+      "source": "src/xml_doc.cpp",
+      "sha256": "a84edbefdc7b574df73d12f3171c280a3618ae7ef71c5bf27b544017d36ca7cf",
+      "destination": "src/datamunge/cad/xml.cpp"
+    },
+    {
+      "source": "src/cad_fem_api.cpp",
+      "sha256": "06fe521b6e8509c12b538981f31f2b7f2fe0323e5498a3e1f13b7b0360f7fecc",
+      "destination": "src/datamunge/cad/mass.cpp",
+      "portion": "BodyMass / ComputeBodyMass trimmed-boundary integration helper"
+    },
+    {
+      "source": "src/gfx/backend_native_renderer3d.cpp",
+      "sha256": "9e573b7273e066231b8cb31101f97afb81f2c6b220cda091691a916898a46894",
+      "destination": "src/datamunge/cad/render.cpp",
+      "portion": "Material shading formula; device-independent CPU ray rendering is implemented in datamunge"
+    }
+  ]
+}

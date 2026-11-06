@@ -1245,6 +1245,32 @@ setClass('_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t', contain
 setClass('_p_datamunge__algebra__Expr', contains = 'C++Reference')
 setClass('_p_datamunge__nn__NnTensor', contains = 'C++Reference')
 setClass('_p_datamunge__nn__NnModel', contains = 'C++Reference')
+setClass('_p_datamunge__fda__BSplineBasis', contains = 'C++Reference')
+setClass('_p_std__vectorT_datamunge__fda__BSplineBasis_t', contains = 'C++Reference')
+setClass('_p_datamunge__fda__SplineSolveOptions', contains = 'C++Reference')
+setClass("datamunge::fda::SplineSolveOptions",
+    representation(
+        method = "character",
+        direct_limit = "integer",
+        tolerance = "numeric",
+        max_iterations = "integer"),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::fda::SplineSolveOptions
+
+setClass('_p_datamunge__fda__BSplineRefinement', contains = 'C++Reference')
+setClass("datamunge::fda::BSplineRefinement",
+    representation(
+),
+        contains = "RSWIGStruct")
+
+
+# End class datamunge::fda::BSplineRefinement
+
+setClass('_p_datamunge__fda__TensorBSpline', contains = 'C++Reference')
+setClass('_p_datamunge__fda__HierarchicalBSpline', contains = 'C++Reference')
+setClass('_p_datamunge__fda__TruncatedHierarchicalBSpline', contains = 'C++Reference')
 setClass('_p_datamunge__sim__TaskOutput', contains = 'C++Reference')
 setClass("datamunge::sim::TaskOutput",
     representation(
@@ -1260,6 +1286,9 @@ setClass("datamunge::sim::TaskOutput",
 # End class datamunge::sim::TaskOutput
 
 setClass('_p_datamunge__sim__TaskBatch', contains = 'C++Reference')
+setClass('_p_datamunge__LinalgMatrix', contains = 'C++Reference')
+setClass('_p_datamunge__cad__Solid', contains = 'C++Reference')
+setClass('_p_datamunge__cad__View', contains = 'C++Reference')
 
 
 
@@ -36399,28 +36428,28 @@ class(`RGB__SWIG_0`) = c("SWIGFunction", class('RGB__SWIG_0'))
 
 # Start of new_RGB
 
-`RGB__SWIG_1` = function(r, g, b, alpha)
+`RGB__SWIG_1` = function(red, green, blue, opacity)
 {
-  r = as.integer(r);
+  red = as.integer(red);
   
-  if(length(r) > 1) {
-    warning("using only the first element of r");
+  if(length(red) > 1) {
+    warning("using only the first element of red");
   };
   
-  g = as.integer(g);
+  green = as.integer(green);
   
-  if(length(g) > 1) {
-    warning("using only the first element of g");
+  if(length(green) > 1) {
+    warning("using only the first element of green");
   };
   
-  b = as.integer(b);
+  blue = as.integer(blue);
   
-  if(length(b) > 1) {
-    warning("using only the first element of b");
+  if(length(blue) > 1) {
+    warning("using only the first element of blue");
   };
   
   
-  ;ans = .Call('R_swig_new_RGB__SWIG_1', r, g, b, alpha, PACKAGE='datamunger');
+  ;ans = .Call('R_swig_new_RGB__SWIG_1', red, green, blue, opacity, PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
   else new("_p_datamunge__graphics__RGB", ref=ans);
   
@@ -36435,27 +36464,27 @@ class(`RGB__SWIG_1`) = c("SWIGFunction", class('RGB__SWIG_1'))
 
 # Start of new_RGB
 
-`RGB__SWIG_2` = function(r, g, b)
+`RGB__SWIG_2` = function(red, green, blue)
 {
-  r = as.integer(r);
+  red = as.integer(red);
   
-  if(length(r) > 1) {
-    warning("using only the first element of r");
+  if(length(red) > 1) {
+    warning("using only the first element of red");
   };
   
-  g = as.integer(g);
+  green = as.integer(green);
   
-  if(length(g) > 1) {
-    warning("using only the first element of g");
+  if(length(green) > 1) {
+    warning("using only the first element of green");
   };
   
-  b = as.integer(b);
+  blue = as.integer(blue);
   
-  if(length(b) > 1) {
-    warning("using only the first element of b");
+  if(length(blue) > 1) {
+    warning("using only the first element of blue");
   };
   
-  ;ans = .Call('R_swig_new_RGB__SWIG_2', r, g, b, PACKAGE='datamunger');
+  ;ans = .Call('R_swig_new_RGB__SWIG_2', red, green, blue, PACKAGE='datamunger');
   ans <- if (is.null(ans)) ans
   else new("_p_datamunge__graphics__RGB", ref=ans);
   
@@ -36468,14 +36497,95 @@ attr(`RGB__SWIG_2`, 'returnType') = '_p_datamunge__graphics__RGB'
 attr(`RGB__SWIG_2`, "inputTypes") = c('integer', 'integer', 'integer')
 class(`RGB__SWIG_2`) = c("SWIGFunction", class('RGB__SWIG_2'))
 
+# Start of new_RGB
+
+`RGB__SWIG_3` = function(red)
+{
+  red = as.integer(red);
+  
+  if(length(red) > 1) {
+    warning("using only the first element of red");
+  };
+  
+  ;ans = .Call('R_swig_new_RGB__SWIG_3', red, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RGB", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RGB);
+  ans
+  
+}
+
+attr(`RGB__SWIG_3`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`RGB__SWIG_3`, "inputTypes") = c('integer')
+class(`RGB__SWIG_3`) = c("SWIGFunction", class('RGB__SWIG_3'))
+
+# Start of new_RGB
+
+`RGB__SWIG_4` = function(red, green)
+{
+  red = as.integer(red);
+  
+  if(length(red) > 1) {
+    warning("using only the first element of red");
+  };
+  
+  green = as.integer(green);
+  
+  if(length(green) > 1) {
+    warning("using only the first element of green");
+  };
+  
+  ;ans = .Call('R_swig_new_RGB__SWIG_4', red, green, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RGB", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RGB);
+  ans
+  
+}
+
+attr(`RGB__SWIG_4`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`RGB__SWIG_4`, "inputTypes") = c('integer', 'integer')
+class(`RGB__SWIG_4`) = c("SWIGFunction", class('RGB__SWIG_4'))
+
+# Start of new_RGB
+
+`RGB__SWIG_5` = function(color)
+{
+  color = as(color, "character"); 
+  ;ans = .Call('R_swig_new_RGB__SWIG_5', color, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RGB", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_RGB);
+  ans
+  
+}
+
+attr(`RGB__SWIG_5`, 'returnType') = '_p_datamunge__graphics__RGB'
+attr(`RGB__SWIG_5`, "inputTypes") = c('character')
+class(`RGB__SWIG_5`) = c("SWIGFunction", class('RGB__SWIG_5'))
+
 `RGB` <- function(...) {
   argtypes <- mapply(class, list(...));
   argv <- list(...);
   argc <- length(argtypes);
   f <- NULL;
-# dispatch functions 3
+# dispatch functions 6
   if (argc == 0) {
     f <- RGB__SWIG_0; 
+  } else if (argc == 1) {
+    if ( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) {
+      f <- RGB__SWIG_3; 
+    }
+    else if ( is.character(argv[[1]]) && length(argv[[1]]) == 1 ) {
+      f <- RGB__SWIG_5; 
+    }
+  } else if (argc == 2) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- RGB__SWIG_4; 
+    }
   } else if (argc == 3) {
     if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
       f <- RGB__SWIG_2; 
@@ -39128,6 +39238,44 @@ attr(`RPlot_y_limits`, 'returnType') = '_p_datamunge__graphics__RPlot'
 attr(`RPlot_y_limits`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
 class(`RPlot_y_limits`) = c("SWIGFunction", class('RPlot_y_limits'))
 
+# Start of RPlot_xlim
+
+`RPlot_xlim` = function(self, min_x, max_x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  ;ans = .Call('R_swig_RPlot_xlim', self, min_x, max_x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_xlim`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_xlim`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
+class(`RPlot_xlim`) = c("SWIGFunction", class('RPlot_xlim'))
+
+# Start of RPlot_ylim
+
+`RPlot_ylim` = function(self, min_y, max_y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  ;ans = .Call('R_swig_RPlot_ylim', self, min_y, max_y, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__graphics__RPlot", ref=ans);
+  
+  ans
+  
+}
+
+attr(`RPlot_ylim`, 'returnType') = '_p_datamunge__graphics__RPlot'
+attr(`RPlot_ylim`, "inputTypes") = c('_p_datamunge__graphics__RPlot', 'numeric', 'numeric')
+class(`RPlot_ylim`) = c("SWIGFunction", class('RPlot_ylim'))
+
 # Start of RPlot_hide_axes
 
 `RPlot_hide_axes__SWIG_0` = function(self, enabled, .copy = FALSE)
@@ -41562,7 +41710,7 @@ class(`delete_RPlot`) = c("SWIGFunction", class('delete_RPlot'))
 setMethod('$', '_p_datamunge__graphics__RPlot', function(x, name)
 
 {
-  accessorFuns = list('size' = RPlot_size, 'title' = RPlot_title, 'subtitle' = RPlot_subtitle, 'x_label' = RPlot_x_label, 'y_label' = RPlot_y_label, 'xlab' = RPlot_xlab, 'ylab' = RPlot_ylab, 'set_title' = RPlot_set_title, 'set_subtitle' = RPlot_set_subtitle, 'set_xlab' = RPlot_set_xlab, 'set_ylab' = RPlot_set_ylab, 'set_col' = RPlot_set_col, 'background' = RPlot_background, 'axis_color' = RPlot_axis_color, 'grid_color' = RPlot_grid_color, 'show_grid' = RPlot_show_grid, 'x_limits' = RPlot_x_limits, 'y_limits' = RPlot_y_limits, 'hide_axes' = RPlot_hide_axes, 'x_tick_labels' = RPlot_x_tick_labels, 'x_ticks' = RPlot_x_ticks, 'y_tick_labels' = RPlot_y_tick_labels, 'y_ticks' = RPlot_y_ticks, 'margins' = RPlot_margins, 'tick_font_size' = RPlot_tick_font_size, 'pretty_ticks' = RPlot_pretty_ticks, 'points' = RPlot_points, 'points_colored' = RPlot_points_colored, 'line' = RPlot_line, 'lines' = RPlot_lines, 'bars' = RPlot_bars, 'box' = RPlot_box, 'abline' = RPlot_abline, 'abline_h' = RPlot_abline_h, 'abline_v' = RPlot_abline_v, 'qqline' = RPlot_qqline, 'legend' = RPlot_legend, 'text' = RPlot_text, 'polygon' = RPlot_polygon, 'image' = RPlot_image, 'segments' = RPlot_segments);
+  accessorFuns = list('size' = RPlot_size, 'title' = RPlot_title, 'subtitle' = RPlot_subtitle, 'x_label' = RPlot_x_label, 'y_label' = RPlot_y_label, 'xlab' = RPlot_xlab, 'ylab' = RPlot_ylab, 'set_title' = RPlot_set_title, 'set_subtitle' = RPlot_set_subtitle, 'set_xlab' = RPlot_set_xlab, 'set_ylab' = RPlot_set_ylab, 'set_col' = RPlot_set_col, 'background' = RPlot_background, 'axis_color' = RPlot_axis_color, 'grid_color' = RPlot_grid_color, 'show_grid' = RPlot_show_grid, 'x_limits' = RPlot_x_limits, 'y_limits' = RPlot_y_limits, 'xlim' = RPlot_xlim, 'ylim' = RPlot_ylim, 'hide_axes' = RPlot_hide_axes, 'x_tick_labels' = RPlot_x_tick_labels, 'x_ticks' = RPlot_x_ticks, 'y_tick_labels' = RPlot_y_tick_labels, 'y_ticks' = RPlot_y_ticks, 'margins' = RPlot_margins, 'tick_font_size' = RPlot_tick_font_size, 'pretty_ticks' = RPlot_pretty_ticks, 'points' = RPlot_points, 'points_colored' = RPlot_points_colored, 'line' = RPlot_line, 'lines' = RPlot_lines, 'bars' = RPlot_bars, 'box' = RPlot_box, 'abline' = RPlot_abline, 'abline_h' = RPlot_abline_h, 'abline_v' = RPlot_abline_v, 'qqline' = RPlot_qqline, 'legend' = RPlot_legend, 'text' = RPlot_text, 'polygon' = RPlot_polygon, 'image' = RPlot_image, 'segments' = RPlot_segments);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -42814,6 +42962,24 @@ class(`set_seed`) = c("SWIGFunction", class('set_seed'))
 attr(`unif`, 'returnType') = 'numeric'
 attr(`unif`, "inputTypes") = c('numeric', 'numeric', 'integer')
 class(`unif`) = c("SWIGFunction", class('unif'))
+
+# Start of native_rnorm
+
+`native_rnorm` = function(mean, sd, n, .copy = FALSE)
+{
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;.Call('R_swig_native_rnorm', mean, sd, n, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`native_rnorm`, 'returnType') = 'numeric'
+attr(`native_rnorm`, "inputTypes") = c('numeric', 'numeric', 'integer')
+class(`native_rnorm`) = c("SWIGFunction", class('native_rnorm'))
 
 # Start of seql
 
@@ -70256,6 +70422,79 @@ attr(`Polynomial_NotEqual`, 'returnType') = 'logical'
 attr(`Polynomial_NotEqual`, "inputTypes") = c('_p_datamunge__algebra__Polynomial', '_p_datamunge__algebra__Polynomial')
 class(`Polynomial_NotEqual`) = c("SWIGFunction", class('Polynomial_NotEqual'))
 
+# Start of Polynomial_to_tex
+
+`Polynomial_to_tex__SWIG_0` = function(self, variable, precision, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  variable = as(variable, "character"); 
+  precision = as.integer(precision);
+  
+  if(length(precision) > 1) {
+    warning("using only the first element of precision");
+  };
+  
+  ;.Call('R_swig_Polynomial_to_tex__SWIG_0', self, variable, precision, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Polynomial_to_tex__SWIG_0`, 'returnType') = 'character'
+attr(`Polynomial_to_tex__SWIG_0`, "inputTypes") = c('_p_datamunge__algebra__Polynomial', 'character', 'integer')
+class(`Polynomial_to_tex__SWIG_0`) = c("SWIGFunction", class('Polynomial_to_tex__SWIG_0'))
+
+# Start of Polynomial_to_tex
+
+`Polynomial_to_tex__SWIG_1` = function(self, variable, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  variable = as(variable, "character"); 
+  ;.Call('R_swig_Polynomial_to_tex__SWIG_1', self, variable, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Polynomial_to_tex__SWIG_1`, 'returnType') = 'character'
+attr(`Polynomial_to_tex__SWIG_1`, "inputTypes") = c('_p_datamunge__algebra__Polynomial', 'character')
+class(`Polynomial_to_tex__SWIG_1`) = c("SWIGFunction", class('Polynomial_to_tex__SWIG_1'))
+
+# Start of Polynomial_to_tex
+
+`Polynomial_to_tex__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Polynomial_to_tex__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Polynomial_to_tex__SWIG_2`, 'returnType') = 'character'
+attr(`Polynomial_to_tex__SWIG_2`, "inputTypes") = c('_p_datamunge__algebra__Polynomial')
+class(`Polynomial_to_tex__SWIG_2`) = c("SWIGFunction", class('Polynomial_to_tex__SWIG_2'))
+
+`Polynomial_to_tex` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__algebra__Polynomial') || is.null(argv[[1]]) ) {
+      f <- Polynomial_to_tex__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__Polynomial') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- Polynomial_to_tex__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__Polynomial') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- Polynomial_to_tex__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Polynomial_to_tex with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of delete_Polynomial
 
 `delete_Polynomial` = function(self)
@@ -70273,7 +70512,7 @@ class(`delete_Polynomial`) = c("SWIGFunction", class('delete_Polynomial'))
 setMethod('$', '_p_datamunge__algebra__Polynomial', function(x, name)
 
 {
-  accessorFuns = list('degree' = Polynomial_degree, 'is_zero' = Polynomial_is_zero, 'coefficient' = Polynomial_coefficient, 'coefficients' = Polynomial_coefficients, 'evaluate' = Polynomial_evaluate, 'derivative' = Polynomial_derivative, 'antiderivative' = Polynomial_antiderivative, 'add' = Polynomial_add, 'subtract' = Polynomial_subtract, 'multiply' = Polynomial_multiply, 'scale' = Polynomial_scale, 'negate' = Polynomial_negate, 'to_string' = Polynomial_to_string, 'EqualEqual' = Polynomial_EqualEqual, 'NotEqual' = Polynomial_NotEqual);
+  accessorFuns = list('degree' = Polynomial_degree, 'is_zero' = Polynomial_is_zero, 'coefficient' = Polynomial_coefficient, 'coefficients' = Polynomial_coefficients, 'evaluate' = Polynomial_evaluate, 'derivative' = Polynomial_derivative, 'antiderivative' = Polynomial_antiderivative, 'add' = Polynomial_add, 'subtract' = Polynomial_subtract, 'multiply' = Polynomial_multiply, 'scale' = Polynomial_scale, 'negate' = Polynomial_negate, 'to_string' = Polynomial_to_string, 'EqualEqual' = Polynomial_EqualEqual, 'NotEqual' = Polynomial_NotEqual, 'to_tex' = Polynomial_to_tex);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -71498,6 +71737,79 @@ attr(`RationalFunction_to_string`, 'returnType') = 'character'
 attr(`RationalFunction_to_string`, "inputTypes") = c('_p_datamunge__algebra__RationalFunction')
 class(`RationalFunction_to_string`) = c("SWIGFunction", class('RationalFunction_to_string'))
 
+# Start of RationalFunction_to_tex
+
+`RationalFunction_to_tex__SWIG_0` = function(self, variable, precision, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  variable = as(variable, "character"); 
+  precision = as.integer(precision);
+  
+  if(length(precision) > 1) {
+    warning("using only the first element of precision");
+  };
+  
+  ;.Call('R_swig_RationalFunction_to_tex__SWIG_0', self, variable, precision, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RationalFunction_to_tex__SWIG_0`, 'returnType') = 'character'
+attr(`RationalFunction_to_tex__SWIG_0`, "inputTypes") = c('_p_datamunge__algebra__RationalFunction', 'character', 'integer')
+class(`RationalFunction_to_tex__SWIG_0`) = c("SWIGFunction", class('RationalFunction_to_tex__SWIG_0'))
+
+# Start of RationalFunction_to_tex
+
+`RationalFunction_to_tex__SWIG_1` = function(self, variable, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  variable = as(variable, "character"); 
+  ;.Call('R_swig_RationalFunction_to_tex__SWIG_1', self, variable, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RationalFunction_to_tex__SWIG_1`, 'returnType') = 'character'
+attr(`RationalFunction_to_tex__SWIG_1`, "inputTypes") = c('_p_datamunge__algebra__RationalFunction', 'character')
+class(`RationalFunction_to_tex__SWIG_1`) = c("SWIGFunction", class('RationalFunction_to_tex__SWIG_1'))
+
+# Start of RationalFunction_to_tex
+
+`RationalFunction_to_tex__SWIG_2` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_RationalFunction_to_tex__SWIG_2', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`RationalFunction_to_tex__SWIG_2`, 'returnType') = 'character'
+attr(`RationalFunction_to_tex__SWIG_2`, "inputTypes") = c('_p_datamunge__algebra__RationalFunction')
+class(`RationalFunction_to_tex__SWIG_2`) = c("SWIGFunction", class('RationalFunction_to_tex__SWIG_2'))
+
+`RationalFunction_to_tex` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__algebra__RationalFunction') || is.null(argv[[1]]) ) {
+      f <- RationalFunction_to_tex__SWIG_2; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__RationalFunction') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- RationalFunction_to_tex__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__RationalFunction') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- RationalFunction_to_tex__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for RationalFunction_to_tex with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of delete_RationalFunction
 
 `delete_RationalFunction` = function(self)
@@ -71515,7 +71827,7 @@ class(`delete_RationalFunction`) = c("SWIGFunction", class('delete_RationalFunct
 setMethod('$', '_p_datamunge__algebra__RationalFunction', function(x, name)
 
 {
-  accessorFuns = list('numerator' = RationalFunction_numerator, 'denominator' = RationalFunction_denominator, 'evaluate' = RationalFunction_evaluate, 'add' = RationalFunction_add, 'subtract' = RationalFunction_subtract, 'multiply' = RationalFunction_multiply, 'divide' = RationalFunction_divide, 'to_string' = RationalFunction_to_string);
+  accessorFuns = list('numerator' = RationalFunction_numerator, 'denominator' = RationalFunction_denominator, 'evaluate' = RationalFunction_evaluate, 'add' = RationalFunction_add, 'subtract' = RationalFunction_subtract, 'multiply' = RationalFunction_multiply, 'divide' = RationalFunction_divide, 'to_string' = RationalFunction_to_string, 'to_tex' = RationalFunction_to_tex);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -75036,6 +75348,60 @@ attr(`Expr_to_string`, 'returnType') = 'character'
 attr(`Expr_to_string`, "inputTypes") = c('_p_datamunge__algebra__Expr')
 class(`Expr_to_string`) = c("SWIGFunction", class('Expr_to_string'))
 
+# Start of Expr_to_tex
+
+`Expr_to_tex__SWIG_0` = function(self, precision, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  precision = as.integer(precision);
+  
+  if(length(precision) > 1) {
+    warning("using only the first element of precision");
+  };
+  
+  ;.Call('R_swig_Expr_to_tex__SWIG_0', self, precision, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Expr_to_tex__SWIG_0`, 'returnType') = 'character'
+attr(`Expr_to_tex__SWIG_0`, "inputTypes") = c('_p_datamunge__algebra__Expr', 'integer')
+class(`Expr_to_tex__SWIG_0`) = c("SWIGFunction", class('Expr_to_tex__SWIG_0'))
+
+# Start of Expr_to_tex
+
+`Expr_to_tex__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_Expr_to_tex__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`Expr_to_tex__SWIG_1`, 'returnType') = 'character'
+attr(`Expr_to_tex__SWIG_1`, "inputTypes") = c('_p_datamunge__algebra__Expr')
+class(`Expr_to_tex__SWIG_1`) = c("SWIGFunction", class('Expr_to_tex__SWIG_1'))
+
+`Expr_to_tex` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__algebra__Expr') || is.null(argv[[1]]) ) {
+      f <- Expr_to_tex__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__Expr') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- Expr_to_tex__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for Expr_to_tex with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
 # Start of delete_Expr
 
 `delete_Expr` = function(self)
@@ -75053,7 +75419,7 @@ class(`delete_Expr`) = c("SWIGFunction", class('delete_Expr'))
 setMethod('$', '_p_datamunge__algebra__Expr', function(x, name)
 
 {
-  accessorFuns = list('add' = Expr_add, 'subtract' = Expr_subtract, 'multiply' = Expr_multiply, 'divide' = Expr_divide, 'power' = Expr_power, 'negate' = Expr_negate, 'sin' = Expr_sin, 'cos' = Expr_cos, 'exp' = Expr_exp, 'log' = Expr_log, 'differentiate' = Expr_differentiate, 'integrate' = Expr_integrate, 'simplify' = Expr_simplify, 'evaluate' = Expr_evaluate, 'to_string' = Expr_to_string);
+  accessorFuns = list('add' = Expr_add, 'subtract' = Expr_subtract, 'multiply' = Expr_multiply, 'divide' = Expr_divide, 'power' = Expr_power, 'negate' = Expr_negate, 'sin' = Expr_sin, 'cos' = Expr_cos, 'exp' = Expr_exp, 'log' = Expr_log, 'differentiate' = Expr_differentiate, 'integrate' = Expr_integrate, 'simplify' = Expr_simplify, 'evaluate' = Expr_evaluate, 'to_string' = Expr_to_string, 'to_tex' = Expr_to_tex);
   ;        idx = pmatch(name, names(accessorFuns));
   if(is.na(idx)) 
   return(callNextMethod(x, name));
@@ -75067,6 +75433,153 @@ setMethod('$', '_p_datamunge__algebra__Expr', function(x, name)
 );
 # end of accessor method for datamunge::algebra::Expr
 setMethod('delete', '_p_datamunge__algebra__Expr', function(obj) {delete_datamunge__algebra__Expr(obj)})
+# Start of simpson_estimate
+
+`simpson_estimate` = function(f, var, a, b, .copy = FALSE)
+{
+  if (inherits(f, "ExternalReference")) f = slot(f,"ref"); 
+  var = as(var, "character"); 
+  
+  
+  ;.Call('R_swig_simpson_estimate', f, var, a, b, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`simpson_estimate`, 'returnType') = 'numeric'
+attr(`simpson_estimate`, "inputTypes") = c('_p_datamunge__algebra__Expr', 'character', 'numeric', 'numeric')
+class(`simpson_estimate`) = c("SWIGFunction", class('simpson_estimate'))
+
+# Start of adaptive_simpson_recurse
+
+`adaptive_simpson_recurse` = function(f, var, a, b, whole, tol, depth, .copy = FALSE)
+{
+  if (inherits(f, "ExternalReference")) f = slot(f,"ref"); 
+  var = as(var, "character"); 
+  
+  
+  
+  
+  depth = as.integer(depth);
+  
+  if(length(depth) > 1) {
+    warning("using only the first element of depth");
+  };
+  
+  ;.Call('R_swig_adaptive_simpson_recurse', f, var, a, b, whole, tol, depth, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`adaptive_simpson_recurse`, 'returnType') = 'numeric'
+attr(`adaptive_simpson_recurse`, "inputTypes") = c('_p_datamunge__algebra__Expr', 'character', 'numeric', 'numeric', 'numeric', 'numeric', 'integer')
+class(`adaptive_simpson_recurse`) = c("SWIGFunction", class('adaptive_simpson_recurse'))
+
+# Start of definite_integral
+
+`definite_integral__SWIG_0` = function(f, var, a, b, tolerance, max_depth, .copy = FALSE)
+{
+  if (inherits(f, "ExternalReference")) f = slot(f,"ref"); 
+  var = as(var, "character"); 
+  
+  
+  
+  max_depth = as.integer(max_depth);
+  
+  if(length(max_depth) > 1) {
+    warning("using only the first element of max_depth");
+  };
+  
+  ;.Call('R_swig_definite_integral__SWIG_0', f, var, a, b, tolerance, max_depth, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`definite_integral__SWIG_0`, 'returnType') = 'numeric'
+attr(`definite_integral__SWIG_0`, "inputTypes") = c('_p_datamunge__algebra__Expr', 'character', 'numeric', 'numeric', 'numeric', 'integer')
+class(`definite_integral__SWIG_0`) = c("SWIGFunction", class('definite_integral__SWIG_0'))
+
+# Start of definite_integral
+
+`definite_integral__SWIG_1` = function(f, var, a, b, tolerance, .copy = FALSE)
+{
+  if (inherits(f, "ExternalReference")) f = slot(f,"ref"); 
+  var = as(var, "character"); 
+  
+  
+  
+  ;.Call('R_swig_definite_integral__SWIG_1', f, var, a, b, tolerance, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`definite_integral__SWIG_1`, 'returnType') = 'numeric'
+attr(`definite_integral__SWIG_1`, "inputTypes") = c('_p_datamunge__algebra__Expr', 'character', 'numeric', 'numeric', 'numeric')
+class(`definite_integral__SWIG_1`) = c("SWIGFunction", class('definite_integral__SWIG_1'))
+
+# Start of definite_integral
+
+`definite_integral__SWIG_2` = function(f, var, a, b, .copy = FALSE)
+{
+  if (inherits(f, "ExternalReference")) f = slot(f,"ref"); 
+  var = as(var, "character"); 
+  
+  
+  ;.Call('R_swig_definite_integral__SWIG_2', f, var, a, b, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`definite_integral__SWIG_2`, 'returnType') = 'numeric'
+attr(`definite_integral__SWIG_2`, "inputTypes") = c('_p_datamunge__algebra__Expr', 'character', 'numeric', 'numeric')
+class(`definite_integral__SWIG_2`) = c("SWIGFunction", class('definite_integral__SWIG_2'))
+
+`definite_integral` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__Expr') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- definite_integral__SWIG_2; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__Expr') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- definite_integral__SWIG_1; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__algebra__Expr') && length(argv[[1]]) == 1 ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.numeric(argv[[5]]) && length(argv[[5]]) == 1 ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 )) {
+      f <- definite_integral__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for definite_integral with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of taylor_series
+
+`taylor_series` = function(f, var, center, order, .copy = FALSE)
+{
+  if (inherits(f, "ExternalReference")) f = slot(f,"ref"); 
+  var = as(var, "character"); 
+  
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  ;ans = .Call('R_swig_taylor_series', f, var, center, order, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__algebra__Polynomial", ref=ans);
+  
+  ans
+  
+}
+
+attr(`taylor_series`, 'returnType') = '_p_datamunge__algebra__Polynomial'
+attr(`taylor_series`, "inputTypes") = c('_p_datamunge__algebra__Expr', 'character', 'numeric', 'integer')
+class(`taylor_series`) = c("SWIGFunction", class('taylor_series'))
+
 # Start of new_NnTensor
 
 `NnTensor__SWIG_0` = function()
@@ -78119,6 +78632,3197 @@ attr(`nn_set_num_threads`, 'returnType') = 'void'
 attr(`nn_set_num_threads`, "inputTypes") = c('integer')
 class(`nn_set_num_threads`) = c("SWIGFunction", class('nn_set_num_threads'))
 
+# Start of new_BSplineBasis
+
+`BSplineBasis__SWIG_0` = function()
+{
+  ;ans = .Call('R_swig_new_BSplineBasis__SWIG_0', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BSplineBasis);
+  ans
+  
+}
+
+attr(`BSplineBasis__SWIG_0`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+class(`BSplineBasis__SWIG_0`) = c("SWIGFunction", class('BSplineBasis__SWIG_0'))
+
+# Start of new_BSplineBasis
+
+`BSplineBasis__SWIG_1` = function(degree, knots)
+{
+  degree = as.integer(degree);
+  
+  if(length(degree) > 1) {
+    warning("using only the first element of degree");
+  };
+  
+  knots = as.numeric(knots);
+  ;ans = .Call('R_swig_new_BSplineBasis__SWIG_1', degree, knots, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BSplineBasis);
+  ans
+  
+}
+
+attr(`BSplineBasis__SWIG_1`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasis__SWIG_1`, "inputTypes") = c('integer', 'numeric')
+class(`BSplineBasis__SWIG_1`) = c("SWIGFunction", class('BSplineBasis__SWIG_1'))
+
+`BSplineBasis` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 0) {
+    f <- BSplineBasis__SWIG_0; 
+  } else if (argc == 2) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) )) {
+      f <- BSplineBasis__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for BSplineBasis with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of BSplineBasis_open_uniform
+
+`BSplineBasis_open_uniform__SWIG_0` = function(degree, basis_size, min_x, max_x, .copy = FALSE)
+{
+  degree = as.integer(degree);
+  
+  if(length(degree) > 1) {
+    warning("using only the first element of degree");
+  };
+  
+  basis_size = as.integer(basis_size);
+  
+  if(length(basis_size) > 1) {
+    warning("using only the first element of basis_size");
+  };
+  
+  
+  
+  ;ans = .Call('R_swig_BSplineBasis_open_uniform__SWIG_0', degree, basis_size, min_x, max_x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasis_open_uniform__SWIG_0`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasis_open_uniform__SWIG_0`, "inputTypes") = c('integer', 'integer', 'numeric', 'numeric')
+class(`BSplineBasis_open_uniform__SWIG_0`) = c("SWIGFunction", class('BSplineBasis_open_uniform__SWIG_0'))
+
+# Start of BSplineBasis_open_uniform
+
+`BSplineBasis_open_uniform__SWIG_1` = function(degree, basis_size, min_x, .copy = FALSE)
+{
+  degree = as.integer(degree);
+  
+  if(length(degree) > 1) {
+    warning("using only the first element of degree");
+  };
+  
+  basis_size = as.integer(basis_size);
+  
+  if(length(basis_size) > 1) {
+    warning("using only the first element of basis_size");
+  };
+  
+  
+  ;ans = .Call('R_swig_BSplineBasis_open_uniform__SWIG_1', degree, basis_size, min_x, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasis_open_uniform__SWIG_1`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasis_open_uniform__SWIG_1`, "inputTypes") = c('integer', 'integer', 'numeric')
+class(`BSplineBasis_open_uniform__SWIG_1`) = c("SWIGFunction", class('BSplineBasis_open_uniform__SWIG_1'))
+
+# Start of BSplineBasis_open_uniform
+
+`BSplineBasis_open_uniform__SWIG_2` = function(degree, basis_size, .copy = FALSE)
+{
+  degree = as.integer(degree);
+  
+  if(length(degree) > 1) {
+    warning("using only the first element of degree");
+  };
+  
+  basis_size = as.integer(basis_size);
+  
+  if(length(basis_size) > 1) {
+    warning("using only the first element of basis_size");
+  };
+  
+  ;ans = .Call('R_swig_BSplineBasis_open_uniform__SWIG_2', degree, basis_size, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasis_open_uniform__SWIG_2`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasis_open_uniform__SWIG_2`, "inputTypes") = c('integer', 'integer')
+class(`BSplineBasis_open_uniform__SWIG_2`) = c("SWIGFunction", class('BSplineBasis_open_uniform__SWIG_2'))
+
+`BSplineBasis_open_uniform` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 2) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- BSplineBasis_open_uniform__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- BSplineBasis_open_uniform__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- BSplineBasis_open_uniform__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for BSplineBasis_open_uniform with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of BSplineBasis_degree
+
+`BSplineBasis_degree` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasis_degree', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasis_degree`, 'returnType') = 'integer'
+attr(`BSplineBasis_degree`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasis_degree`) = c("SWIGFunction", class('BSplineBasis_degree'))
+
+# Start of BSplineBasis_basis_size
+
+`BSplineBasis_basis_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasis_basis_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasis_basis_size`, 'returnType') = 'integer'
+attr(`BSplineBasis_basis_size`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasis_basis_size`) = c("SWIGFunction", class('BSplineBasis_basis_size'))
+
+# Start of BSplineBasis_knots
+
+`BSplineBasis_knots` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasis_knots', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasis_knots`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`BSplineBasis_knots`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasis_knots`) = c("SWIGFunction", class('BSplineBasis_knots'))
+
+# Start of BSplineBasis_domain
+
+`BSplineBasis_domain` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_BSplineBasis_domain', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__pairT_double_double_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasis_domain`, 'returnType') = '_p_std__pairT_double_double_t'
+attr(`BSplineBasis_domain`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasis_domain`) = c("SWIGFunction", class('BSplineBasis_domain'))
+
+# Start of delete_BSplineBasis
+
+`delete_BSplineBasis` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_BSplineBasis', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_BSplineBasis`, 'returnType') = 'void'
+attr(`delete_BSplineBasis`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis')
+class(`delete_BSplineBasis`) = c("SWIGFunction", class('delete_BSplineBasis'))
+
+# Start of accessor method for datamunge::fda::BSplineBasis
+setMethod('$', '_p_datamunge__fda__BSplineBasis', function(x, name)
+
+{
+  accessorFuns = list('degree' = BSplineBasis_degree, 'basis_size' = BSplineBasis_basis_size, 'knots' = BSplineBasis_knots, 'domain' = BSplineBasis_domain);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::fda::BSplineBasis
+setMethod('delete', '_p_datamunge__fda__BSplineBasis', function(obj) {delete_datamunge__fda__BSplineBasis(obj)})
+# Start of BSplineBasisVector___nonzero__
+
+`BSplineBasisVector___nonzero__` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector___nonzero__', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector___nonzero__`, 'returnType') = 'logical'
+attr(`BSplineBasisVector___nonzero__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector___nonzero__`) = c("SWIGFunction", class('BSplineBasisVector___nonzero__'))
+
+# Start of BSplineBasisVector___len__
+
+`BSplineBasisVector___len__` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector___len__', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector___len__`, 'returnType') = 'integer'
+attr(`BSplineBasisVector___len__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector___len__`) = c("SWIGFunction", class('BSplineBasisVector___len__'))
+
+# Start of BSplineBasisVector_pop
+
+`BSplineBasisVector_pop` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_BSplineBasisVector_pop', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasisVector_pop`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasisVector_pop`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_pop`) = c("SWIGFunction", class('BSplineBasisVector_pop'))
+
+# Start of BSplineBasisVector___getslice__
+
+`BSplineBasisVector___getslice__` = function(self, i, j)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  ;ans = .Call('R_swig_BSplineBasisVector___getslice__', self, i, j, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__fda__BSplineBasis_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasisVector___getslice__`, 'returnType') = '_p_std__vectorT_datamunge__fda__BSplineBasis_t'
+attr(`BSplineBasisVector___getslice__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer', 'integer')
+class(`BSplineBasisVector___getslice__`) = c("SWIGFunction", class('BSplineBasisVector___getslice__'))
+
+# Start of BSplineBasisVector___setslice__
+
+`BSplineBasisVector___setslice__` = function(self, i, j, is)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  if (inherits(is, "ExternalReference")) is = slot(is,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector___setslice__', self, i, j, is, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector___setslice__`, 'returnType') = 'void'
+attr(`BSplineBasisVector___setslice__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer', 'integer', '_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector___setslice__`) = c("SWIGFunction", class('BSplineBasisVector___setslice__'))
+
+# Start of BSplineBasisVector___delslice__
+
+`BSplineBasisVector___delslice__` = function(self, i, j)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  j = as.integer(j);
+  
+  if(length(j) > 1) {
+    warning("using only the first element of j");
+  };
+  
+  ;.Call('R_swig_BSplineBasisVector___delslice__', self, i, j, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector___delslice__`, 'returnType') = 'void'
+attr(`BSplineBasisVector___delslice__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer', 'integer')
+class(`BSplineBasisVector___delslice__`) = c("SWIGFunction", class('BSplineBasisVector___delslice__'))
+
+# Start of BSplineBasisVector___delitem__
+
+`BSplineBasisVector___delitem__` = function(self, i)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  ;.Call('R_swig_BSplineBasisVector___delitem__', self, i, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector___delitem__`, 'returnType') = 'void'
+attr(`BSplineBasisVector___delitem__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer')
+class(`BSplineBasisVector___delitem__`) = c("SWIGFunction", class('BSplineBasisVector___delitem__'))
+
+# Start of BSplineBasisVector___getitem__
+
+`BSplineBasisVector___getitem__` = function(self, i, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  ;ans = .Call('R_swig_BSplineBasisVector___getitem__', self, i, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasisVector___getitem__`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasisVector___getitem__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer')
+class(`BSplineBasisVector___getitem__`) = c("SWIGFunction", class('BSplineBasisVector___getitem__'))
+
+# Start of BSplineBasisVector___setitem__
+
+`BSplineBasisVector___setitem__` = function(self, i, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  i = as.integer(i);
+  
+  if(length(i) > 1) {
+    warning("using only the first element of i");
+  };
+  
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector___setitem__', self, i, x, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector___setitem__`, 'returnType') = 'void'
+attr(`BSplineBasisVector___setitem__`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer', '_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasisVector___setitem__`) = c("SWIGFunction", class('BSplineBasisVector___setitem__'))
+
+# Start of BSplineBasisVector_append
+
+`BSplineBasisVector_append` = function(self, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_append', self, x, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_append`, 'returnType') = 'void'
+attr(`BSplineBasisVector_append`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', '_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasisVector_append`) = c("SWIGFunction", class('BSplineBasisVector_append'))
+
+# Start of new_BSplineBasisVector
+
+`BSplineBasisVector__SWIG_0` = function()
+{
+  ;ans = .Call('R_swig_new_BSplineBasisVector__SWIG_0', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__fda__BSplineBasis_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BSplineBasisVector);
+  ans
+  
+}
+
+attr(`BSplineBasisVector__SWIG_0`, 'returnType') = '_p_std__vectorT_datamunge__fda__BSplineBasis_t'
+class(`BSplineBasisVector__SWIG_0`) = c("SWIGFunction", class('BSplineBasisVector__SWIG_0'))
+
+# Start of new_BSplineBasisVector
+
+`BSplineBasisVector__SWIG_1` = function(other)
+{
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_new_BSplineBasisVector__SWIG_1', other, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__fda__BSplineBasis_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BSplineBasisVector);
+  ans
+  
+}
+
+attr(`BSplineBasisVector__SWIG_1`, 'returnType') = '_p_std__vectorT_datamunge__fda__BSplineBasis_t'
+attr(`BSplineBasisVector__SWIG_1`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector__SWIG_1`) = c("SWIGFunction", class('BSplineBasisVector__SWIG_1'))
+
+# Start of BSplineBasisVector_empty
+
+`BSplineBasisVector_empty` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_empty', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_empty`, 'returnType') = 'logical'
+attr(`BSplineBasisVector_empty`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_empty`) = c("SWIGFunction", class('BSplineBasisVector_empty'))
+
+# Start of BSplineBasisVector_size
+
+`BSplineBasisVector_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_size`, 'returnType') = 'integer'
+attr(`BSplineBasisVector_size`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_size`) = c("SWIGFunction", class('BSplineBasisVector_size'))
+
+# Start of BSplineBasisVector_swap
+
+`BSplineBasisVector_swap` = function(self, v)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(v, "ExternalReference")) v = slot(v,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_swap', self, v, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_swap`, 'returnType') = 'void'
+attr(`BSplineBasisVector_swap`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', '_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_swap`) = c("SWIGFunction", class('BSplineBasisVector_swap'))
+
+# Start of BSplineBasisVector_clear
+
+`BSplineBasisVector_clear` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_clear', self, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_clear`, 'returnType') = 'void'
+attr(`BSplineBasisVector_clear`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_clear`) = c("SWIGFunction", class('BSplineBasisVector_clear'))
+
+# Start of BSplineBasisVector_get_allocator
+
+`BSplineBasisVector_get_allocator` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_BSplineBasisVector_get_allocator', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__allocatorT_datamunge__fda__BSplineBasis_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasisVector_get_allocator`, 'returnType') = '_p_std__allocatorT_datamunge__fda__BSplineBasis_t'
+attr(`BSplineBasisVector_get_allocator`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_get_allocator`) = c("SWIGFunction", class('BSplineBasisVector_get_allocator'))
+
+# Start of new_BSplineBasisVector
+
+`BSplineBasisVector__SWIG_2` = function(size)
+{
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  ;ans = .Call('R_swig_new_BSplineBasisVector__SWIG_2', size, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__fda__BSplineBasis_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BSplineBasisVector);
+  ans
+  
+}
+
+attr(`BSplineBasisVector__SWIG_2`, 'returnType') = '_p_std__vectorT_datamunge__fda__BSplineBasis_t'
+attr(`BSplineBasisVector__SWIG_2`, "inputTypes") = c('integer')
+class(`BSplineBasisVector__SWIG_2`) = c("SWIGFunction", class('BSplineBasisVector__SWIG_2'))
+
+# Start of BSplineBasisVector_pop_back
+
+`BSplineBasisVector_pop_back` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_pop_back', self, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_pop_back`, 'returnType') = 'void'
+attr(`BSplineBasisVector_pop_back`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_pop_back`) = c("SWIGFunction", class('BSplineBasisVector_pop_back'))
+
+# Start of BSplineBasisVector_resize
+
+`BSplineBasisVector_resize__SWIG_0` = function(self, new_size)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  new_size = as.integer(new_size);
+  
+  if(length(new_size) > 1) {
+    warning("using only the first element of new_size");
+  };
+  
+  ;.Call('R_swig_BSplineBasisVector_resize__SWIG_0', self, new_size, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_resize__SWIG_0`, 'returnType') = 'void'
+attr(`BSplineBasisVector_resize__SWIG_0`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer')
+class(`BSplineBasisVector_resize__SWIG_0`) = c("SWIGFunction", class('BSplineBasisVector_resize__SWIG_0'))
+
+# Start of new_BSplineBasisVector
+
+`BSplineBasisVector__SWIG_3` = function(size, value)
+{
+  size = as.integer(size);
+  
+  if(length(size) > 1) {
+    warning("using only the first element of size");
+  };
+  
+  if (inherits(value, "ExternalReference")) value = slot(value,"ref"); 
+  ;ans = .Call('R_swig_new_BSplineBasisVector__SWIG_3', size, value, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__fda__BSplineBasis_t", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BSplineBasisVector);
+  ans
+  
+}
+
+attr(`BSplineBasisVector__SWIG_3`, 'returnType') = '_p_std__vectorT_datamunge__fda__BSplineBasis_t'
+attr(`BSplineBasisVector__SWIG_3`, "inputTypes") = c('integer', '_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasisVector__SWIG_3`) = c("SWIGFunction", class('BSplineBasisVector__SWIG_3'))
+
+`BSplineBasisVector` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 4
+  if (argc == 0) {
+    f <- BSplineBasisVector__SWIG_0; 
+  } else if (argc == 1) {
+    if ( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) {
+      f <- BSplineBasisVector__SWIG_2; 
+    }
+    else if ( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[1]]) == 1 ) {
+      f <- BSplineBasisVector__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( (is.integer(argv[[1]]) || is.numeric(argv[[1]])) && length(argv[[1]]) == 1 ) && ( extends(argtypes[2], '_p_datamunge__fda__BSplineBasis') && length(argv[[2]]) == 1 )) {
+      f <- BSplineBasisVector__SWIG_3; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for BSplineBasisVector with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of BSplineBasisVector_push_back
+
+`BSplineBasisVector_push_back` = function(self, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_push_back', self, x, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_push_back`, 'returnType') = 'void'
+attr(`BSplineBasisVector_push_back`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', '_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasisVector_push_back`) = c("SWIGFunction", class('BSplineBasisVector_push_back'))
+
+# Start of BSplineBasisVector_front
+
+`BSplineBasisVector_front` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_BSplineBasisVector_front', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasisVector_front`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasisVector_front`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_front`) = c("SWIGFunction", class('BSplineBasisVector_front'))
+
+# Start of BSplineBasisVector_back
+
+`BSplineBasisVector_back` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_BSplineBasisVector_back', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineBasisVector_back`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineBasisVector_back`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_back`) = c("SWIGFunction", class('BSplineBasisVector_back'))
+
+# Start of BSplineBasisVector_assign
+
+`BSplineBasisVector_assign` = function(self, n, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_assign', self, n, x, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_assign`, 'returnType') = 'void'
+attr(`BSplineBasisVector_assign`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer', '_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasisVector_assign`) = c("SWIGFunction", class('BSplineBasisVector_assign'))
+
+# Start of BSplineBasisVector_resize
+
+`BSplineBasisVector_resize__SWIG_1` = function(self, new_size, x)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  new_size = as.integer(new_size);
+  
+  if(length(new_size) > 1) {
+    warning("using only the first element of new_size");
+  };
+  
+  if (inherits(x, "ExternalReference")) x = slot(x,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_resize__SWIG_1', self, new_size, x, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_resize__SWIG_1`, 'returnType') = 'void'
+attr(`BSplineBasisVector_resize__SWIG_1`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer', '_p_datamunge__fda__BSplineBasis')
+class(`BSplineBasisVector_resize__SWIG_1`) = c("SWIGFunction", class('BSplineBasisVector_resize__SWIG_1'))
+
+`BSplineBasisVector_resize` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 )) {
+      f <- BSplineBasisVector_resize__SWIG_0; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_datamunge__fda__BSplineBasis') && length(argv[[3]]) == 1 )) {
+      f <- BSplineBasisVector_resize__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for BSplineBasisVector_resize with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of BSplineBasisVector_reserve
+
+`BSplineBasisVector_reserve` = function(self, n)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  n = as.integer(n);
+  
+  if(length(n) > 1) {
+    warning("using only the first element of n");
+  };
+  
+  ;.Call('R_swig_BSplineBasisVector_reserve', self, n, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_reserve`, 'returnType') = 'void'
+attr(`BSplineBasisVector_reserve`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'integer')
+class(`BSplineBasisVector_reserve`) = c("SWIGFunction", class('BSplineBasisVector_reserve'))
+
+# Start of BSplineBasisVector_capacity
+
+`BSplineBasisVector_capacity` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_BSplineBasisVector_capacity', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineBasisVector_capacity`, 'returnType') = 'integer'
+attr(`BSplineBasisVector_capacity`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`BSplineBasisVector_capacity`) = c("SWIGFunction", class('BSplineBasisVector_capacity'))
+
+# Start of delete_BSplineBasisVector
+
+`delete_BSplineBasisVector` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_BSplineBasisVector', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_BSplineBasisVector`, 'returnType') = 'void'
+attr(`delete_BSplineBasisVector`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t')
+class(`delete_BSplineBasisVector`) = c("SWIGFunction", class('delete_BSplineBasisVector'))
+
+# Start of accessor method for std::vector< datamunge::fda::BSplineBasis >
+setMethod('$', '_p_std__vectorT_datamunge__fda__BSplineBasis_t', function(x, name)
+
+{
+  accessorFuns = list('__nonzero__' = BSplineBasisVector___nonzero__, '__len__' = BSplineBasisVector___len__, 'pop' = BSplineBasisVector_pop, '__getslice__' = BSplineBasisVector___getslice__, '__setslice__' = BSplineBasisVector___setslice__, '__delslice__' = BSplineBasisVector___delslice__, '__delitem__' = BSplineBasisVector___delitem__, '__getitem__' = BSplineBasisVector___getitem__, '__setitem__' = BSplineBasisVector___setitem__, 'append' = BSplineBasisVector_append, 'empty' = BSplineBasisVector_empty, 'size' = BSplineBasisVector_size, 'swap' = BSplineBasisVector_swap, 'clear' = BSplineBasisVector_clear, 'get_allocator' = BSplineBasisVector_get_allocator, 'pop_back' = BSplineBasisVector_pop_back, 'resize' = BSplineBasisVector_resize, 'push_back' = BSplineBasisVector_push_back, 'front' = BSplineBasisVector_front, 'back' = BSplineBasisVector_back, 'assign' = BSplineBasisVector_assign, 'reserve' = BSplineBasisVector_reserve, 'capacity' = BSplineBasisVector_capacity);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for std::vector< datamunge::fda::BSplineBasis >
+setMethod('delete', '_p_std__vectorT_datamunge__fda__BSplineBasis_t', function(obj) {delete_std__vectorT_datamunge__fda__BSplineBasis_t(obj)})
+# Start of SplineSolver_Automatic_get
+
+`SplineSolver_Automatic_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_SplineSolver_Automatic_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__fda__SplineSolver");
+  
+  ans
+  
+}
+
+attr(`SplineSolver_Automatic_get`, 'returnType') = 'character'
+class(`SplineSolver_Automatic_get`) = c("SWIGFunction", class('SplineSolver_Automatic_get'))
+
+# Start of SplineSolver_Cholesky_get
+
+`SplineSolver_Cholesky_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_SplineSolver_Cholesky_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__fda__SplineSolver");
+  
+  ans
+  
+}
+
+attr(`SplineSolver_Cholesky_get`, 'returnType') = 'character'
+class(`SplineSolver_Cholesky_get`) = c("SWIGFunction", class('SplineSolver_Cholesky_get'))
+
+# Start of SplineSolver_ConjugateGradient_get
+
+`SplineSolver_ConjugateGradient_get` = function(.copy = FALSE)
+{
+  ;ans = .Call('R_swig_SplineSolver_ConjugateGradient_get', as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__fda__SplineSolver");
+  
+  ans
+  
+}
+
+attr(`SplineSolver_ConjugateGradient_get`, 'returnType') = 'character'
+class(`SplineSolver_ConjugateGradient_get`) = c("SWIGFunction", class('SplineSolver_ConjugateGradient_get'))
+
+# Start of SplineSolveOptions_method_set
+
+`SplineSolveOptions_method_set` = function(self, s_method)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_method = enumToInteger(s_method, "_datamunge__fda__SplineSolver"); 
+  
+  if(length(s_method) > 1) {
+    warning("using only the first element of s_method");
+  };
+  
+  ;.Call('R_swig_SplineSolveOptions_method_set', self, s_method, PACKAGE='datamunger');
+  
+}
+
+attr(`SplineSolveOptions_method_set`, 'returnType') = 'void'
+attr(`SplineSolveOptions_method_set`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions', 'character')
+class(`SplineSolveOptions_method_set`) = c("SWIGFunction", class('SplineSolveOptions_method_set'))
+
+# Start of SplineSolveOptions_method_get
+
+`SplineSolveOptions_method_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_SplineSolveOptions_method_get', self, as.logical(.copy), PACKAGE='datamunger');
+  ans = enumFromInteger(ans, "_datamunge__fda__SplineSolver");
+  
+  ans
+  
+}
+
+attr(`SplineSolveOptions_method_get`, 'returnType') = 'character'
+attr(`SplineSolveOptions_method_get`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions')
+class(`SplineSolveOptions_method_get`) = c("SWIGFunction", class('SplineSolveOptions_method_get'))
+
+# Start of SplineSolveOptions_direct_limit_set
+
+`SplineSolveOptions_direct_limit_set` = function(self, s_direct_limit)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_direct_limit = as.integer(s_direct_limit);
+  
+  if(length(s_direct_limit) > 1) {
+    warning("using only the first element of s_direct_limit");
+  };
+  
+  ;.Call('R_swig_SplineSolveOptions_direct_limit_set', self, s_direct_limit, PACKAGE='datamunger');
+  
+}
+
+attr(`SplineSolveOptions_direct_limit_set`, 'returnType') = 'void'
+attr(`SplineSolveOptions_direct_limit_set`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions', 'integer')
+class(`SplineSolveOptions_direct_limit_set`) = c("SWIGFunction", class('SplineSolveOptions_direct_limit_set'))
+
+# Start of SplineSolveOptions_direct_limit_get
+
+`SplineSolveOptions_direct_limit_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SplineSolveOptions_direct_limit_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SplineSolveOptions_direct_limit_get`, 'returnType') = 'integer'
+attr(`SplineSolveOptions_direct_limit_get`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions')
+class(`SplineSolveOptions_direct_limit_get`) = c("SWIGFunction", class('SplineSolveOptions_direct_limit_get'))
+
+# Start of SplineSolveOptions_tolerance_set
+
+`SplineSolveOptions_tolerance_set` = function(self, s_tolerance)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_SplineSolveOptions_tolerance_set', self, s_tolerance, PACKAGE='datamunger');
+  
+}
+
+attr(`SplineSolveOptions_tolerance_set`, 'returnType') = 'void'
+attr(`SplineSolveOptions_tolerance_set`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions', 'numeric')
+class(`SplineSolveOptions_tolerance_set`) = c("SWIGFunction", class('SplineSolveOptions_tolerance_set'))
+
+# Start of SplineSolveOptions_tolerance_get
+
+`SplineSolveOptions_tolerance_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SplineSolveOptions_tolerance_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SplineSolveOptions_tolerance_get`, 'returnType') = 'numeric'
+attr(`SplineSolveOptions_tolerance_get`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions')
+class(`SplineSolveOptions_tolerance_get`) = c("SWIGFunction", class('SplineSolveOptions_tolerance_get'))
+
+# Start of SplineSolveOptions_max_iterations_set
+
+`SplineSolveOptions_max_iterations_set` = function(self, s_max_iterations)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_max_iterations = as.integer(s_max_iterations);
+  
+  if(length(s_max_iterations) > 1) {
+    warning("using only the first element of s_max_iterations");
+  };
+  
+  ;.Call('R_swig_SplineSolveOptions_max_iterations_set', self, s_max_iterations, PACKAGE='datamunger');
+  
+}
+
+attr(`SplineSolveOptions_max_iterations_set`, 'returnType') = 'void'
+attr(`SplineSolveOptions_max_iterations_set`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions', 'integer')
+class(`SplineSolveOptions_max_iterations_set`) = c("SWIGFunction", class('SplineSolveOptions_max_iterations_set'))
+
+# Start of SplineSolveOptions_max_iterations_get
+
+`SplineSolveOptions_max_iterations_get` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_SplineSolveOptions_max_iterations_get', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`SplineSolveOptions_max_iterations_get`, 'returnType') = 'integer'
+attr(`SplineSolveOptions_max_iterations_get`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions')
+class(`SplineSolveOptions_max_iterations_get`) = c("SWIGFunction", class('SplineSolveOptions_max_iterations_get'))
+
+# Start of new_SplineSolveOptions
+
+`SplineSolveOptions` = function()
+{
+  ;ans = .Call('R_swig_new_SplineSolveOptions', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__SplineSolveOptions", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_SplineSolveOptions);
+  ans
+  
+}
+
+attr(`SplineSolveOptions`, 'returnType') = '_p_datamunge__fda__SplineSolveOptions'
+class(`SplineSolveOptions`) = c("SWIGFunction", class('SplineSolveOptions'))
+
+# Start of delete_SplineSolveOptions
+
+`delete_SplineSolveOptions` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_SplineSolveOptions', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_SplineSolveOptions`, 'returnType') = 'void'
+attr(`delete_SplineSolveOptions`, "inputTypes") = c('_p_datamunge__fda__SplineSolveOptions')
+class(`delete_SplineSolveOptions`) = c("SWIGFunction", class('delete_SplineSolveOptions'))
+
+# Start of accessor method for datamunge::fda::SplineSolveOptions
+setMethod('$', '_p_datamunge__fda__SplineSolveOptions', function(x, name)
+
+{
+  accessorFuns = list('method' = SplineSolveOptions_method_get, 'direct_limit' = SplineSolveOptions_direct_limit_get, 'tolerance' = SplineSolveOptions_tolerance_get, 'max_iterations' = SplineSolveOptions_max_iterations_get);
+  vaccessors = c('method', 'direct_limit', 'tolerance', 'max_iterations');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::fda::SplineSolveOptions
+# Start of accessor method for datamunge::fda::SplineSolveOptions
+setMethod('$<-', '_p_datamunge__fda__SplineSolveOptions', function(x, name, value)
+
+{
+  accessorFuns = list('method' = SplineSolveOptions_method_set, 'direct_limit' = SplineSolveOptions_direct_limit_set, 'tolerance' = SplineSolveOptions_tolerance_set, 'max_iterations' = SplineSolveOptions_max_iterations_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__fda__SplineSolveOptions', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('method' = SplineSolveOptions_method_set, 'direct_limit' = SplineSolveOptions_direct_limit_set, 'tolerance' = SplineSolveOptions_tolerance_set, 'max_iterations' = SplineSolveOptions_max_iterations_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::fda::SplineSolveOptions
+setMethod('delete', '_p_datamunge__fda__SplineSolveOptions', function(obj) {delete_datamunge__fda__SplineSolveOptions(obj)})
+# Start definition of copy functions & methods for datamunge::fda::SplineSolveOptions
+CopyToR_datamunge__fda__SplineSolveOptions = function(value, obj = new("datamunge::fda::SplineSolveOptions"))
+{
+  obj@method = value$method;
+  obj@direct_limit = value$direct_limit;
+  obj@tolerance = value$tolerance;
+  obj@max_iterations = value$max_iterations;
+  obj;
+}
+
+
+
+CopyToC_datamunge__fda__SplineSolveOptions = function(value, obj)
+{
+  obj$method = value@method;
+  obj$direct_limit = value@direct_limit;
+  obj$tolerance = value@tolerance;
+  obj$max_iterations = value@max_iterations;
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::fda::SplineSolveOptions
+setMethod('copyToR', '_p_datamunge__fda__SplineSolveOptions', CopyToR_datamunge__fda__SplineSolveOptions);
+setMethod('copyToC', "datamunge::fda::SplineSolveOptions", CopyToC_datamunge__fda__SplineSolveOptions);
+
+# End definition of copy methods for datamunge::fda::SplineSolveOptions
+# End definition of copy functions & methods for datamunge::fda::SplineSolveOptions
+# Start of BSplineRefinement_basis_set
+
+`BSplineRefinement_basis_set` = function(self, s_basis)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(s_basis, "ExternalReference")) s_basis = slot(s_basis,"ref"); 
+  ;.Call('R_swig_BSplineRefinement_basis_set', self, s_basis, PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineRefinement_basis_set`, 'returnType') = 'void'
+attr(`BSplineRefinement_basis_set`, "inputTypes") = c('_p_datamunge__fda__BSplineRefinement', '_p_datamunge__fda__BSplineBasis')
+class(`BSplineRefinement_basis_set`) = c("SWIGFunction", class('BSplineRefinement_basis_set'))
+
+# Start of BSplineRefinement_basis_get
+
+`BSplineRefinement_basis_get` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_BSplineRefinement_basis_get', self, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineBasis", ref=ans);
+  
+  ans
+  
+}
+
+attr(`BSplineRefinement_basis_get`, 'returnType') = '_p_datamunge__fda__BSplineBasis'
+attr(`BSplineRefinement_basis_get`, "inputTypes") = c('_p_datamunge__fda__BSplineRefinement')
+class(`BSplineRefinement_basis_get`) = c("SWIGFunction", class('BSplineRefinement_basis_get'))
+
+# Start of BSplineRefinement_apply
+
+`BSplineRefinement_apply` = function(self, coefficients, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  coefficients = as.numeric(coefficients);
+  ;.Call('R_swig_BSplineRefinement_apply', self, coefficients, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`BSplineRefinement_apply`, 'returnType') = 'numeric'
+attr(`BSplineRefinement_apply`, "inputTypes") = c('_p_datamunge__fda__BSplineRefinement', '_p_std__vectorT_double_t')
+class(`BSplineRefinement_apply`) = c("SWIGFunction", class('BSplineRefinement_apply'))
+
+# Start of new_BSplineRefinement
+
+`BSplineRefinement` = function()
+{
+  ;ans = .Call('R_swig_new_BSplineRefinement', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineRefinement", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_BSplineRefinement);
+  ans
+  
+}
+
+attr(`BSplineRefinement`, 'returnType') = '_p_datamunge__fda__BSplineRefinement'
+class(`BSplineRefinement`) = c("SWIGFunction", class('BSplineRefinement'))
+
+# Start of delete_BSplineRefinement
+
+`delete_BSplineRefinement` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_BSplineRefinement', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_BSplineRefinement`, 'returnType') = 'void'
+attr(`delete_BSplineRefinement`, "inputTypes") = c('_p_datamunge__fda__BSplineRefinement')
+class(`delete_BSplineRefinement`) = c("SWIGFunction", class('delete_BSplineRefinement'))
+
+# Start of accessor method for datamunge::fda::BSplineRefinement
+setMethod('$', '_p_datamunge__fda__BSplineRefinement', function(x, name)
+
+{
+  accessorFuns = list('basis' = BSplineRefinement_basis_get, 'apply' = BSplineRefinement_apply);
+  vaccessors = c('basis');
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  if (is.na(match(name, vaccessors))) function(...){
+    f(x, ...)
+  } else f(x);
+}
+
+
+);
+# end of accessor method for datamunge::fda::BSplineRefinement
+# Start of accessor method for datamunge::fda::BSplineRefinement
+setMethod('$<-', '_p_datamunge__fda__BSplineRefinement', function(x, name, value)
+
+{
+  accessorFuns = list('basis' = BSplineRefinement_basis_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+setMethod('[[<-', c('_p_datamunge__fda__BSplineRefinement', 'character'),function(x, i, j, ..., value)
+
+{
+  name = i;
+  accessorFuns = list('basis' = BSplineRefinement_basis_set);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name, value));
+  f = accessorFuns[[idx]];
+  f(x, value);
+  x;
+}
+
+
+);
+# end of accessor method for datamunge::fda::BSplineRefinement
+setMethod('delete', '_p_datamunge__fda__BSplineRefinement', function(obj) {delete_datamunge__fda__BSplineRefinement(obj)})
+# Start definition of copy functions & methods for datamunge::fda::BSplineRefinement
+CopyToR_datamunge__fda__BSplineRefinement = function(value, obj = new("datamunge::fda::BSplineRefinement"))
+{
+  obj;
+}
+
+
+
+CopyToC_datamunge__fda__BSplineRefinement = function(value, obj)
+{
+  obj
+}
+
+
+
+# Start definition of copy methods for datamunge::fda::BSplineRefinement
+setMethod('copyToR', '_p_datamunge__fda__BSplineRefinement', CopyToR_datamunge__fda__BSplineRefinement);
+setMethod('copyToC', "datamunge::fda::BSplineRefinement", CopyToC_datamunge__fda__BSplineRefinement);
+
+# End definition of copy methods for datamunge::fda::BSplineRefinement
+# End definition of copy functions & methods for datamunge::fda::BSplineRefinement
+# Start of refine_basis
+
+`refine_basis` = function(basis, inserted_knots, .copy = FALSE)
+{
+  if (inherits(basis, "ExternalReference")) basis = slot(basis,"ref"); 
+  inserted_knots = as.numeric(inserted_knots);
+  ;ans = .Call('R_swig_refine_basis', basis, inserted_knots, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineRefinement", ref=ans);
+  
+  ans
+  
+}
+
+attr(`refine_basis`, 'returnType') = '_p_datamunge__fda__BSplineRefinement'
+attr(`refine_basis`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis', '_p_std__vectorT_double_t')
+class(`refine_basis`) = c("SWIGFunction", class('refine_basis'))
+
+# Start of dyadic_refine
+
+`dyadic_refine` = function(basis, .copy = FALSE)
+{
+  if (inherits(basis, "ExternalReference")) basis = slot(basis,"ref"); 
+  ;ans = .Call('R_swig_dyadic_refine', basis, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__BSplineRefinement", ref=ans);
+  
+  ans
+  
+}
+
+attr(`dyadic_refine`, 'returnType') = '_p_datamunge__fda__BSplineRefinement'
+attr(`dyadic_refine`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis')
+class(`dyadic_refine`) = c("SWIGFunction", class('dyadic_refine'))
+
+# Start of new_TensorBSpline
+
+`TensorBSpline__SWIG_0` = function(basis, coefficients)
+{
+  if (inherits(basis, "ExternalReference")) basis = slot(basis,"ref"); 
+  coefficients = as.numeric(coefficients);
+  ;ans = .Call('R_swig_new_TensorBSpline__SWIG_0', basis, coefficients, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_TensorBSpline);
+  ans
+  
+}
+
+attr(`TensorBSpline__SWIG_0`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`TensorBSpline__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__BSplineBasis', 'numeric')
+class(`TensorBSpline__SWIG_0`) = c("SWIGFunction", class('TensorBSpline__SWIG_0'))
+
+# Start of new_TensorBSpline
+
+`TensorBSpline__SWIG_1` = function(bases, coefficients)
+{
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  coefficients = as.numeric(coefficients);
+  ;ans = .Call('R_swig_new_TensorBSpline__SWIG_1', bases, coefficients, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_TensorBSpline);
+  ans
+  
+}
+
+attr(`TensorBSpline__SWIG_1`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`TensorBSpline__SWIG_1`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'numeric')
+class(`TensorBSpline__SWIG_1`) = c("SWIGFunction", class('TensorBSpline__SWIG_1'))
+
+`TensorBSpline` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__BSplineBasis') && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) )) {
+      f <- TensorBSpline__SWIG_0; 
+    }
+    else if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[1]]) == 1 ) && ( is.numeric(argv[[2]]) )) {
+      f <- TensorBSpline__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TensorBSpline with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TensorBSpline_dimensions
+
+`TensorBSpline_dimensions` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TensorBSpline_dimensions', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_dimensions`, 'returnType') = 'integer'
+attr(`TensorBSpline_dimensions`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_dimensions`) = c("SWIGFunction", class('TensorBSpline_dimensions'))
+
+# Start of TensorBSpline_bases
+
+`TensorBSpline_bases` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_TensorBSpline_bases', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_std__vectorT_datamunge__fda__BSplineBasis_t", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TensorBSpline_bases`, 'returnType') = '_p_std__vectorT_datamunge__fda__BSplineBasis_t'
+attr(`TensorBSpline_bases`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_bases`) = c("SWIGFunction", class('TensorBSpline_bases'))
+
+# Start of TensorBSpline_shape
+
+`TensorBSpline_shape` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TensorBSpline_shape', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_shape`, 'returnType') = 'integer'
+attr(`TensorBSpline_shape`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_shape`) = c("SWIGFunction", class('TensorBSpline_shape'))
+
+# Start of TensorBSpline_coefficient_count
+
+`TensorBSpline_coefficient_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TensorBSpline_coefficient_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_coefficient_count`, 'returnType') = 'integer'
+attr(`TensorBSpline_coefficient_count`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_coefficient_count`) = c("SWIGFunction", class('TensorBSpline_coefficient_count'))
+
+# Start of TensorBSpline_coefficients
+
+`TensorBSpline_coefficients` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TensorBSpline_coefficients', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_coefficients`, 'returnType') = '_p_std__vectorT_double_t'
+attr(`TensorBSpline_coefficients`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_coefficients`) = c("SWIGFunction", class('TensorBSpline_coefficients'))
+
+# Start of TensorBSpline_domain_min
+
+`TensorBSpline_domain_min` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TensorBSpline_domain_min', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_domain_min`, 'returnType') = 'numeric'
+attr(`TensorBSpline_domain_min`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_domain_min`) = c("SWIGFunction", class('TensorBSpline_domain_min'))
+
+# Start of TensorBSpline_domain_max
+
+`TensorBSpline_domain_max` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TensorBSpline_domain_max', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_domain_max`, 'returnType') = 'numeric'
+attr(`TensorBSpline_domain_max`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_domain_max`) = c("SWIGFunction", class('TensorBSpline_domain_max'))
+
+# Start of TensorBSpline_coefficient
+
+`TensorBSpline_coefficient` = function(self, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  ;.Call('R_swig_TensorBSpline_coefficient', self, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_coefficient`, 'returnType') = 'numeric'
+attr(`TensorBSpline_coefficient`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline', '_p_std__vectorT_int_t')
+class(`TensorBSpline_coefficient`) = c("SWIGFunction", class('TensorBSpline_coefficient'))
+
+# Start of TensorBSpline_set_coefficient
+
+`TensorBSpline_set_coefficient` = function(self, index, value)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  index = as.integer(index);
+  
+  ;.Call('R_swig_TensorBSpline_set_coefficient', self, index, value, PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_set_coefficient`, 'returnType') = 'void'
+attr(`TensorBSpline_set_coefficient`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline', '_p_std__vectorT_int_t', 'numeric')
+class(`TensorBSpline_set_coefficient`) = c("SWIGFunction", class('TensorBSpline_set_coefficient'))
+
+# Start of TensorBSpline_evaluate
+
+`TensorBSpline_evaluate__SWIG_0` = function(self, x, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_TensorBSpline_evaluate__SWIG_0', self, x, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_evaluate__SWIG_0`, 'returnType') = 'numeric'
+attr(`TensorBSpline_evaluate__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline', 'numeric')
+class(`TensorBSpline_evaluate__SWIG_0`) = c("SWIGFunction", class('TensorBSpline_evaluate__SWIG_0'))
+
+# Start of TensorBSpline_evaluate
+
+`TensorBSpline_evaluate__SWIG_1` = function(self, point, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  ;.Call('R_swig_TensorBSpline_evaluate__SWIG_1', self, point, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_evaluate__SWIG_1`, 'returnType') = 'numeric'
+attr(`TensorBSpline_evaluate__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline', '_p_std__vectorT_double_t')
+class(`TensorBSpline_evaluate__SWIG_1`) = c("SWIGFunction", class('TensorBSpline_evaluate__SWIG_1'))
+
+`TensorBSpline_evaluate` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TensorBSpline') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- TensorBSpline_evaluate__SWIG_0; 
+    }
+    else if (( extends(argtypes[1], '_p_datamunge__fda__TensorBSpline') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) )) {
+      f <- TensorBSpline_evaluate__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TensorBSpline_evaluate with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TensorBSpline_evaluate_points
+
+`TensorBSpline_evaluate_points` = function(self, points, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  ;.Call('R_swig_TensorBSpline_evaluate_points', self, points, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_evaluate_points`, 'returnType') = 'numeric'
+attr(`TensorBSpline_evaluate_points`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline', 'list')
+class(`TensorBSpline_evaluate_points`) = c("SWIGFunction", class('TensorBSpline_evaluate_points'))
+
+# Start of TensorBSpline_evaluate_grid
+
+`TensorBSpline_evaluate_grid` = function(self, axes, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = lapply(axes, as.numeric);
+  ;.Call('R_swig_TensorBSpline_evaluate_grid', self, axes, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TensorBSpline_evaluate_grid`, 'returnType') = 'numeric'
+attr(`TensorBSpline_evaluate_grid`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline', 'list')
+class(`TensorBSpline_evaluate_grid`) = c("SWIGFunction", class('TensorBSpline_evaluate_grid'))
+
+# Start of TensorBSpline_dyadic_refine
+
+`TensorBSpline_dyadic_refine` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_TensorBSpline_dyadic_refine', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TensorBSpline_dyadic_refine`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`TensorBSpline_dyadic_refine`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TensorBSpline_dyadic_refine`) = c("SWIGFunction", class('TensorBSpline_dyadic_refine'))
+
+# Start of delete_TensorBSpline
+
+`delete_TensorBSpline` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_TensorBSpline', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_TensorBSpline`, 'returnType') = 'void'
+attr(`delete_TensorBSpline`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`delete_TensorBSpline`) = c("SWIGFunction", class('delete_TensorBSpline'))
+
+# Start of accessor method for datamunge::fda::TensorBSpline
+setMethod('$', '_p_datamunge__fda__TensorBSpline', function(x, name)
+
+{
+  accessorFuns = list('dimensions' = TensorBSpline_dimensions, 'bases' = TensorBSpline_bases, 'shape' = TensorBSpline_shape, 'coefficient_count' = TensorBSpline_coefficient_count, 'coefficients' = TensorBSpline_coefficients, 'domain_min' = TensorBSpline_domain_min, 'domain_max' = TensorBSpline_domain_max, 'coefficient' = TensorBSpline_coefficient, 'set_coefficient' = TensorBSpline_set_coefficient, 'evaluate' = TensorBSpline_evaluate, 'evaluate_points' = TensorBSpline_evaluate_points, 'evaluate_grid' = TensorBSpline_evaluate_grid, 'dyadic_refine' = TensorBSpline_dyadic_refine);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::fda::TensorBSpline
+setMethod('delete', '_p_datamunge__fda__TensorBSpline', function(obj) {delete_datamunge__fda__TensorBSpline(obj)})
+# Start of fit_tensor_bspline
+
+`fit_tensor_bspline__SWIG_0` = function(bases, points, values, options, .copy = FALSE)
+{
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_fit_tensor_bspline__SWIG_0', bases, points, values, options, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`fit_tensor_bspline__SWIG_0`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`fit_tensor_bspline__SWIG_0`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_datamunge__fda__SplineSolveOptions')
+class(`fit_tensor_bspline__SWIG_0`) = c("SWIGFunction", class('fit_tensor_bspline__SWIG_0'))
+
+# Start of fit_tensor_bspline
+
+`fit_tensor_bspline__SWIG_1` = function(bases, points, values, .copy = FALSE)
+{
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  ;ans = .Call('R_swig_fit_tensor_bspline__SWIG_1', bases, points, values, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`fit_tensor_bspline__SWIG_1`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`fit_tensor_bspline__SWIG_1`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t')
+class(`fit_tensor_bspline__SWIG_1`) = c("SWIGFunction", class('fit_tensor_bspline__SWIG_1'))
+
+`fit_tensor_bspline` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[1]]) == 1 ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) )) {
+      f <- fit_tensor_bspline__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[1]]) == 1 ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[4]]) == 1 )) {
+      f <- fit_tensor_bspline__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for fit_tensor_bspline with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of fit_tensor_pspline
+
+`fit_tensor_pspline__SWIG_0` = function(bases, points, values, lambdas, order, options, .copy = FALSE)
+{
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;ans = .Call('R_swig_fit_tensor_pspline__SWIG_0', bases, points, values, lambdas, order, options, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`fit_tensor_pspline__SWIG_0`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`fit_tensor_pspline__SWIG_0`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer', '_p_datamunge__fda__SplineSolveOptions')
+class(`fit_tensor_pspline__SWIG_0`) = c("SWIGFunction", class('fit_tensor_pspline__SWIG_0'))
+
+# Start of fit_tensor_pspline
+
+`fit_tensor_pspline__SWIG_1` = function(bases, points, values, lambdas, order, .copy = FALSE)
+{
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  ;ans = .Call('R_swig_fit_tensor_pspline__SWIG_1', bases, points, values, lambdas, order, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`fit_tensor_pspline__SWIG_1`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`fit_tensor_pspline__SWIG_1`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer')
+class(`fit_tensor_pspline__SWIG_1`) = c("SWIGFunction", class('fit_tensor_pspline__SWIG_1'))
+
+# Start of fit_tensor_pspline
+
+`fit_tensor_pspline__SWIG_2` = function(bases, points, values, lambdas, .copy = FALSE)
+{
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  ;ans = .Call('R_swig_fit_tensor_pspline__SWIG_2', bases, points, values, lambdas, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`fit_tensor_pspline__SWIG_2`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`fit_tensor_pspline__SWIG_2`, "inputTypes") = c('_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`fit_tensor_pspline__SWIG_2`) = c("SWIGFunction", class('fit_tensor_pspline__SWIG_2'))
+
+`fit_tensor_pspline` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[1]]) == 1 ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) )) {
+      f <- fit_tensor_pspline__SWIG_2; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[1]]) == 1 ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 )) {
+      f <- fit_tensor_pspline__SWIG_1; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[1]]) == 1 ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 ) && ( extends(argtypes[6], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[6]]) == 1 )) {
+      f <- fit_tensor_pspline__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for fit_tensor_pspline with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of new_HierarchicalBSpline
+
+`HierarchicalBSpline` = function(domain_min, domain_max)
+{
+  domain_min = as.numeric(domain_min);
+  domain_max = as.numeric(domain_max);
+  ;ans = .Call('R_swig_new_HierarchicalBSpline', domain_min, domain_max, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__HierarchicalBSpline", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_HierarchicalBSpline);
+  ans
+  
+}
+
+attr(`HierarchicalBSpline`, 'returnType') = '_p_datamunge__fda__HierarchicalBSpline'
+attr(`HierarchicalBSpline`, "inputTypes") = c('numeric', 'numeric')
+class(`HierarchicalBSpline`) = c("SWIGFunction", class('HierarchicalBSpline'))
+
+# Start of HierarchicalBSpline_dimensions
+
+`HierarchicalBSpline_dimensions` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HierarchicalBSpline_dimensions', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_dimensions`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_dimensions`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline')
+class(`HierarchicalBSpline_dimensions`) = c("SWIGFunction", class('HierarchicalBSpline_dimensions'))
+
+# Start of HierarchicalBSpline_cell_count
+
+`HierarchicalBSpline_cell_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HierarchicalBSpline_cell_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_cell_count`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_cell_count`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline')
+class(`HierarchicalBSpline_cell_count`) = c("SWIGFunction", class('HierarchicalBSpline_cell_count'))
+
+# Start of HierarchicalBSpline_root
+
+`HierarchicalBSpline_root` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_HierarchicalBSpline_root', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_root`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_root`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline')
+class(`HierarchicalBSpline_root`) = c("SWIGFunction", class('HierarchicalBSpline_root'))
+
+# Start of HierarchicalBSpline_parent
+
+`HierarchicalBSpline_parent` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_parent', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_parent`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_parent`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_parent`) = c("SWIGFunction", class('HierarchicalBSpline_parent'))
+
+# Start of HierarchicalBSpline_child
+
+`HierarchicalBSpline_child` = function(self, cell, slot, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  slot = as.integer(slot);
+  
+  if(length(slot) > 1) {
+    warning("using only the first element of slot");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_child', self, cell, slot, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_child`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_child`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', 'integer')
+class(`HierarchicalBSpline_child`) = c("SWIGFunction", class('HierarchicalBSpline_child'))
+
+# Start of HierarchicalBSpline_depth
+
+`HierarchicalBSpline_depth` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_depth', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_depth`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_depth`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_depth`) = c("SWIGFunction", class('HierarchicalBSpline_depth'))
+
+# Start of HierarchicalBSpline_cell_min
+
+`HierarchicalBSpline_cell_min` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_cell_min', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_cell_min`, 'returnType') = 'numeric'
+attr(`HierarchicalBSpline_cell_min`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_cell_min`) = c("SWIGFunction", class('HierarchicalBSpline_cell_min'))
+
+# Start of HierarchicalBSpline_cell_max
+
+`HierarchicalBSpline_cell_max` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_cell_max', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_cell_max`, 'returnType') = 'numeric'
+attr(`HierarchicalBSpline_cell_max`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_cell_max`) = c("SWIGFunction", class('HierarchicalBSpline_cell_max'))
+
+# Start of HierarchicalBSpline_locate
+
+`HierarchicalBSpline_locate` = function(self, point, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  ;.Call('R_swig_HierarchicalBSpline_locate', self, point, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_locate`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_locate`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', '_p_std__vectorT_double_t')
+class(`HierarchicalBSpline_locate`) = c("SWIGFunction", class('HierarchicalBSpline_locate'))
+
+# Start of HierarchicalBSpline_has_spline
+
+`HierarchicalBSpline_has_spline` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_has_spline', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_has_spline`, 'returnType') = 'logical'
+attr(`HierarchicalBSpline_has_spline`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_has_spline`) = c("SWIGFunction", class('HierarchicalBSpline_has_spline'))
+
+# Start of HierarchicalBSpline_spline
+
+`HierarchicalBSpline_spline` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;ans = .Call('R_swig_HierarchicalBSpline_spline', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`HierarchicalBSpline_spline`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`HierarchicalBSpline_spline`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_spline`) = c("SWIGFunction", class('HierarchicalBSpline_spline'))
+
+# Start of HierarchicalBSpline_set_spline
+
+`HierarchicalBSpline_set_spline` = function(self, cell, spline)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  if (inherits(spline, "ExternalReference")) spline = slot(spline,"ref"); 
+  ;.Call('R_swig_HierarchicalBSpline_set_spline', self, cell, spline, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_set_spline`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_set_spline`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', '_p_datamunge__fda__TensorBSpline')
+class(`HierarchicalBSpline_set_spline`) = c("SWIGFunction", class('HierarchicalBSpline_set_spline'))
+
+# Start of HierarchicalBSpline_clear_spline
+
+`HierarchicalBSpline_clear_spline` = function(self, cell)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_clear_spline', self, cell, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_clear_spline`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_clear_spline`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_clear_spline`) = c("SWIGFunction", class('HierarchicalBSpline_clear_spline'))
+
+# Start of HierarchicalBSpline_subdivide
+
+`HierarchicalBSpline_subdivide` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_subdivide', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_subdivide`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_subdivide`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer')
+class(`HierarchicalBSpline_subdivide`) = c("SWIGFunction", class('HierarchicalBSpline_subdivide'))
+
+# Start of HierarchicalBSpline_refine
+
+`HierarchicalBSpline_refine__SWIG_0` = function(self, cell, slot, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  slot = as.integer(slot);
+  
+  if(length(slot) > 1) {
+    warning("using only the first element of slot");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_refine__SWIG_0', self, cell, slot, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_refine__SWIG_0`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_refine__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', 'integer')
+class(`HierarchicalBSpline_refine__SWIG_0`) = c("SWIGFunction", class('HierarchicalBSpline_refine__SWIG_0'))
+
+# Start of HierarchicalBSpline_refine
+
+`HierarchicalBSpline_refine__SWIG_1` = function(self, cell, slot, spline, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  slot = as.integer(slot);
+  
+  if(length(slot) > 1) {
+    warning("using only the first element of slot");
+  };
+  
+  if (inherits(spline, "ExternalReference")) spline = slot(spline,"ref"); 
+  ;.Call('R_swig_HierarchicalBSpline_refine__SWIG_1', self, cell, slot, spline, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_refine__SWIG_1`, 'returnType') = 'integer'
+attr(`HierarchicalBSpline_refine__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', 'integer', '_p_datamunge__fda__TensorBSpline')
+class(`HierarchicalBSpline_refine__SWIG_1`) = c("SWIGFunction", class('HierarchicalBSpline_refine__SWIG_1'))
+
+`HierarchicalBSpline_refine` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__HierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- HierarchicalBSpline_refine__SWIG_0; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__HierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( extends(argtypes[4], '_p_datamunge__fda__TensorBSpline') && length(argv[[4]]) == 1 )) {
+      f <- HierarchicalBSpline_refine__SWIG_1; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for HierarchicalBSpline_refine with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of HierarchicalBSpline_refine_region
+
+`HierarchicalBSpline_refine_region` = function(self, region_min, region_max, depth)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  region_min = as.numeric(region_min);
+  region_max = as.numeric(region_max);
+  depth = as.integer(depth);
+  
+  if(length(depth) > 1) {
+    warning("using only the first element of depth");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_refine_region', self, region_min, region_max, depth, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_refine_region`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_refine_region`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer')
+class(`HierarchicalBSpline_refine_region`) = c("SWIGFunction", class('HierarchicalBSpline_refine_region'))
+
+# Start of HierarchicalBSpline_fit_cell
+
+`HierarchicalBSpline_fit_cell__SWIG_0` = function(self, cell, bases, points, values, options)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;.Call('R_swig_HierarchicalBSpline_fit_cell__SWIG_0', self, cell, bases, points, values, options, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_fit_cell__SWIG_0`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_fit_cell__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', '_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_datamunge__fda__SplineSolveOptions')
+class(`HierarchicalBSpline_fit_cell__SWIG_0`) = c("SWIGFunction", class('HierarchicalBSpline_fit_cell__SWIG_0'))
+
+# Start of HierarchicalBSpline_fit_cell
+
+`HierarchicalBSpline_fit_cell__SWIG_1` = function(self, cell, bases, points, values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  ;.Call('R_swig_HierarchicalBSpline_fit_cell__SWIG_1', self, cell, bases, points, values, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_fit_cell__SWIG_1`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_fit_cell__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', '_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t')
+class(`HierarchicalBSpline_fit_cell__SWIG_1`) = c("SWIGFunction", class('HierarchicalBSpline_fit_cell__SWIG_1'))
+
+`HierarchicalBSpline_fit_cell` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__HierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[3]]) == 1 ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( is.numeric(argv[[5]]) )) {
+      f <- HierarchicalBSpline_fit_cell__SWIG_1; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__HierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[3]]) == 1 ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( is.numeric(argv[[5]]) ) && ( extends(argtypes[6], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[6]]) == 1 )) {
+      f <- HierarchicalBSpline_fit_cell__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for HierarchicalBSpline_fit_cell with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of HierarchicalBSpline_fit_cell_penalized
+
+`HierarchicalBSpline_fit_cell_penalized__SWIG_0` = function(self, cell, bases, points, values, lambdas, order, options)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;.Call('R_swig_HierarchicalBSpline_fit_cell_penalized__SWIG_0', self, cell, bases, points, values, lambdas, order, options, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_fit_cell_penalized__SWIG_0`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_fit_cell_penalized__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', '_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer', '_p_datamunge__fda__SplineSolveOptions')
+class(`HierarchicalBSpline_fit_cell_penalized__SWIG_0`) = c("SWIGFunction", class('HierarchicalBSpline_fit_cell_penalized__SWIG_0'))
+
+# Start of HierarchicalBSpline_fit_cell_penalized
+
+`HierarchicalBSpline_fit_cell_penalized__SWIG_1` = function(self, cell, bases, points, values, lambdas, order)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  ;.Call('R_swig_HierarchicalBSpline_fit_cell_penalized__SWIG_1', self, cell, bases, points, values, lambdas, order, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_fit_cell_penalized__SWIG_1`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_fit_cell_penalized__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', '_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer')
+class(`HierarchicalBSpline_fit_cell_penalized__SWIG_1`) = c("SWIGFunction", class('HierarchicalBSpline_fit_cell_penalized__SWIG_1'))
+
+# Start of HierarchicalBSpline_fit_cell_penalized
+
+`HierarchicalBSpline_fit_cell_penalized__SWIG_2` = function(self, cell, bases, points, values, lambdas)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  if (inherits(bases, "ExternalReference")) bases = slot(bases,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  ;.Call('R_swig_HierarchicalBSpline_fit_cell_penalized__SWIG_2', self, cell, bases, points, values, lambdas, PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_fit_cell_penalized__SWIG_2`, 'returnType') = 'void'
+attr(`HierarchicalBSpline_fit_cell_penalized__SWIG_2`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'integer', '_p_std__vectorT_datamunge__fda__BSplineBasis_t', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`HierarchicalBSpline_fit_cell_penalized__SWIG_2`) = c("SWIGFunction", class('HierarchicalBSpline_fit_cell_penalized__SWIG_2'))
+
+`HierarchicalBSpline_fit_cell_penalized` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__HierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[3]]) == 1 ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( is.numeric(argv[[5]]) ) && ( is.numeric(argv[[6]]) )) {
+      f <- HierarchicalBSpline_fit_cell_penalized__SWIG_2; 
+    }
+  } else if (argc == 7) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__HierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[3]]) == 1 ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( is.numeric(argv[[5]]) ) && ( is.numeric(argv[[6]]) ) && ( (is.integer(argv[[7]]) || is.numeric(argv[[7]])) && length(argv[[7]]) == 1 )) {
+      f <- HierarchicalBSpline_fit_cell_penalized__SWIG_1; 
+    }
+  } else if (argc == 8) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__HierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( extends(argtypes[3], '_p_std__vectorT_datamunge__fda__BSplineBasis_t') && length(argv[[3]]) == 1 ) && ( is.list(argv[[4]]) && all(vapply(argv[[4]], is.numeric, logical(1))) ) && ( is.numeric(argv[[5]]) ) && ( is.numeric(argv[[6]]) ) && ( (is.integer(argv[[7]]) || is.numeric(argv[[7]])) && length(argv[[7]]) == 1 ) && ( extends(argtypes[8], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[8]]) == 1 )) {
+      f <- HierarchicalBSpline_fit_cell_penalized__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for HierarchicalBSpline_fit_cell_penalized with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of HierarchicalBSpline_evaluate
+
+`HierarchicalBSpline_evaluate` = function(self, point, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  ;.Call('R_swig_HierarchicalBSpline_evaluate', self, point, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_evaluate`, 'returnType') = 'numeric'
+attr(`HierarchicalBSpline_evaluate`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', '_p_std__vectorT_double_t')
+class(`HierarchicalBSpline_evaluate`) = c("SWIGFunction", class('HierarchicalBSpline_evaluate'))
+
+# Start of HierarchicalBSpline_evaluate_points
+
+`HierarchicalBSpline_evaluate_points` = function(self, points, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  ;.Call('R_swig_HierarchicalBSpline_evaluate_points', self, points, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_evaluate_points`, 'returnType') = 'numeric'
+attr(`HierarchicalBSpline_evaluate_points`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'list')
+class(`HierarchicalBSpline_evaluate_points`) = c("SWIGFunction", class('HierarchicalBSpline_evaluate_points'))
+
+# Start of HierarchicalBSpline_evaluate_grid
+
+`HierarchicalBSpline_evaluate_grid` = function(self, axes, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = lapply(axes, as.numeric);
+  ;.Call('R_swig_HierarchicalBSpline_evaluate_grid', self, axes, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`HierarchicalBSpline_evaluate_grid`, 'returnType') = 'numeric'
+attr(`HierarchicalBSpline_evaluate_grid`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline', 'list')
+class(`HierarchicalBSpline_evaluate_grid`) = c("SWIGFunction", class('HierarchicalBSpline_evaluate_grid'))
+
+# Start of delete_HierarchicalBSpline
+
+`delete_HierarchicalBSpline` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_HierarchicalBSpline', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_HierarchicalBSpline`, 'returnType') = 'void'
+attr(`delete_HierarchicalBSpline`, "inputTypes") = c('_p_datamunge__fda__HierarchicalBSpline')
+class(`delete_HierarchicalBSpline`) = c("SWIGFunction", class('delete_HierarchicalBSpline'))
+
+# Start of accessor method for datamunge::fda::HierarchicalBSpline
+setMethod('$', '_p_datamunge__fda__HierarchicalBSpline', function(x, name)
+
+{
+  accessorFuns = list('dimensions' = HierarchicalBSpline_dimensions, 'cell_count' = HierarchicalBSpline_cell_count, 'root' = HierarchicalBSpline_root, 'parent' = HierarchicalBSpline_parent, 'child' = HierarchicalBSpline_child, 'depth' = HierarchicalBSpline_depth, 'cell_min' = HierarchicalBSpline_cell_min, 'cell_max' = HierarchicalBSpline_cell_max, 'locate' = HierarchicalBSpline_locate, 'has_spline' = HierarchicalBSpline_has_spline, 'spline' = HierarchicalBSpline_spline, 'set_spline' = HierarchicalBSpline_set_spline, 'clear_spline' = HierarchicalBSpline_clear_spline, 'subdivide' = HierarchicalBSpline_subdivide, 'refine' = HierarchicalBSpline_refine, 'refine_region' = HierarchicalBSpline_refine_region, 'fit_cell' = HierarchicalBSpline_fit_cell, 'fit_cell_penalized' = HierarchicalBSpline_fit_cell_penalized, 'evaluate' = HierarchicalBSpline_evaluate, 'evaluate_points' = HierarchicalBSpline_evaluate_points, 'evaluate_grid' = HierarchicalBSpline_evaluate_grid);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::fda::HierarchicalBSpline
+setMethod('delete', '_p_datamunge__fda__HierarchicalBSpline', function(obj) {delete_datamunge__fda__HierarchicalBSpline(obj)})
+# Start of new_TruncatedHierarchicalBSpline
+
+`TruncatedHierarchicalBSpline` = function(base)
+{
+  if (inherits(base, "ExternalReference")) base = slot(base,"ref"); 
+  ;ans = .Call('R_swig_new_TruncatedHierarchicalBSpline', base, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TruncatedHierarchicalBSpline", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_TruncatedHierarchicalBSpline);
+  ans
+  
+}
+
+attr(`TruncatedHierarchicalBSpline`, 'returnType') = '_p_datamunge__fda__TruncatedHierarchicalBSpline'
+attr(`TruncatedHierarchicalBSpline`, "inputTypes") = c('_p_datamunge__fda__TensorBSpline')
+class(`TruncatedHierarchicalBSpline`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline'))
+
+# Start of TruncatedHierarchicalBSpline_dimensions
+
+`TruncatedHierarchicalBSpline_dimensions` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_dimensions', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_dimensions`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_dimensions`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline')
+class(`TruncatedHierarchicalBSpline_dimensions`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_dimensions'))
+
+# Start of TruncatedHierarchicalBSpline_level_count
+
+`TruncatedHierarchicalBSpline_level_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_level_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_level_count`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_level_count`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline')
+class(`TruncatedHierarchicalBSpline_level_count`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_level_count'))
+
+# Start of TruncatedHierarchicalBSpline_level
+
+`TruncatedHierarchicalBSpline_level` = function(self, s_level, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  s_level = as.integer(s_level);
+  
+  if(length(s_level) > 1) {
+    warning("using only the first element of s_level");
+  };
+  
+  ;ans = .Call('R_swig_TruncatedHierarchicalBSpline_level', self, s_level, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__fda__TensorBSpline", ref=ans);
+  
+  ans
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_level`, 'returnType') = '_p_datamunge__fda__TensorBSpline'
+attr(`TruncatedHierarchicalBSpline_level`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer')
+class(`TruncatedHierarchicalBSpline_level`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_level'))
+
+# Start of TruncatedHierarchicalBSpline_cell_count
+
+`TruncatedHierarchicalBSpline_cell_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_cell_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_cell_count`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_cell_count`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline')
+class(`TruncatedHierarchicalBSpline_cell_count`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_cell_count'))
+
+# Start of TruncatedHierarchicalBSpline_root
+
+`TruncatedHierarchicalBSpline_root` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_root', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_root`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_root`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline')
+class(`TruncatedHierarchicalBSpline_root`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_root'))
+
+# Start of TruncatedHierarchicalBSpline_parent
+
+`TruncatedHierarchicalBSpline_parent` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_parent', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_parent`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_parent`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer')
+class(`TruncatedHierarchicalBSpline_parent`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_parent'))
+
+# Start of TruncatedHierarchicalBSpline_child
+
+`TruncatedHierarchicalBSpline_child` = function(self, cell, slot, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  slot = as.integer(slot);
+  
+  if(length(slot) > 1) {
+    warning("using only the first element of slot");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_child', self, cell, slot, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_child`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_child`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', 'integer')
+class(`TruncatedHierarchicalBSpline_child`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_child'))
+
+# Start of TruncatedHierarchicalBSpline_depth
+
+`TruncatedHierarchicalBSpline_depth` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_depth', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_depth`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_depth`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer')
+class(`TruncatedHierarchicalBSpline_depth`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_depth'))
+
+# Start of TruncatedHierarchicalBSpline_cell_min
+
+`TruncatedHierarchicalBSpline_cell_min` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_cell_min', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_cell_min`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_cell_min`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer')
+class(`TruncatedHierarchicalBSpline_cell_min`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_cell_min'))
+
+# Start of TruncatedHierarchicalBSpline_cell_max
+
+`TruncatedHierarchicalBSpline_cell_max` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_cell_max', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_cell_max`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_cell_max`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer')
+class(`TruncatedHierarchicalBSpline_cell_max`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_cell_max'))
+
+# Start of TruncatedHierarchicalBSpline_locate
+
+`TruncatedHierarchicalBSpline_locate` = function(self, point, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_locate', self, point, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_locate`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_locate`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', '_p_std__vectorT_double_t')
+class(`TruncatedHierarchicalBSpline_locate`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_locate'))
+
+# Start of TruncatedHierarchicalBSpline_refine
+
+`TruncatedHierarchicalBSpline_refine` = function(self, cell, slot, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  slot = as.integer(slot);
+  
+  if(length(slot) > 1) {
+    warning("using only the first element of slot");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_refine', self, cell, slot, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_refine`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_refine`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', 'integer')
+class(`TruncatedHierarchicalBSpline_refine`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_refine'))
+
+# Start of TruncatedHierarchicalBSpline_subdivide
+
+`TruncatedHierarchicalBSpline_subdivide` = function(self, cell, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  cell = as.integer(cell);
+  
+  if(length(cell) > 1) {
+    warning("using only the first element of cell");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_subdivide', self, cell, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_subdivide`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_subdivide`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer')
+class(`TruncatedHierarchicalBSpline_subdivide`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_subdivide'))
+
+# Start of TruncatedHierarchicalBSpline_refine_region
+
+`TruncatedHierarchicalBSpline_refine_region` = function(self, region_min, region_max, depth)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  region_min = as.numeric(region_min);
+  region_max = as.numeric(region_max);
+  depth = as.integer(depth);
+  
+  if(length(depth) > 1) {
+    warning("using only the first element of depth");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_refine_region', self, region_min, region_max, depth, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_refine_region`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_refine_region`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer')
+class(`TruncatedHierarchicalBSpline_refine_region`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_refine_region'))
+
+# Start of TruncatedHierarchicalBSpline_support_min
+
+`TruncatedHierarchicalBSpline_support_min` = function(self, level, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  index = as.integer(index);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_support_min', self, level, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_support_min`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_support_min`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', '_p_std__vectorT_int_t')
+class(`TruncatedHierarchicalBSpline_support_min`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_support_min'))
+
+# Start of TruncatedHierarchicalBSpline_support_max
+
+`TruncatedHierarchicalBSpline_support_max` = function(self, level, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  index = as.integer(index);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_support_max', self, level, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_support_max`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_support_max`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', '_p_std__vectorT_int_t')
+class(`TruncatedHierarchicalBSpline_support_max`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_support_max'))
+
+# Start of TruncatedHierarchicalBSpline_is_active
+
+`TruncatedHierarchicalBSpline_is_active` = function(self, level, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  index = as.integer(index);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_is_active', self, level, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_is_active`, 'returnType') = 'logical'
+attr(`TruncatedHierarchicalBSpline_is_active`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', '_p_std__vectorT_int_t')
+class(`TruncatedHierarchicalBSpline_is_active`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_is_active'))
+
+# Start of TruncatedHierarchicalBSpline_active_indices
+
+`TruncatedHierarchicalBSpline_active_indices` = function(self, level, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_active_indices', self, level, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_active_indices`, 'returnType') = 'list'
+attr(`TruncatedHierarchicalBSpline_active_indices`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer')
+class(`TruncatedHierarchicalBSpline_active_indices`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_active_indices'))
+
+# Start of TruncatedHierarchicalBSpline_basis_size
+
+`TruncatedHierarchicalBSpline_basis_size` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_basis_size', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_basis_size`, 'returnType') = 'integer'
+attr(`TruncatedHierarchicalBSpline_basis_size`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline')
+class(`TruncatedHierarchicalBSpline_basis_size`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_basis_size'))
+
+# Start of TruncatedHierarchicalBSpline_coefficient
+
+`TruncatedHierarchicalBSpline_coefficient` = function(self, level, index, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  index = as.integer(index);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_coefficient', self, level, index, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_coefficient`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_coefficient`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', '_p_std__vectorT_int_t')
+class(`TruncatedHierarchicalBSpline_coefficient`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_coefficient'))
+
+# Start of TruncatedHierarchicalBSpline_set_coefficient
+
+`TruncatedHierarchicalBSpline_set_coefficient` = function(self, level, index, value)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  index = as.integer(index);
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_set_coefficient', self, level, index, value, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_set_coefficient`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_set_coefficient`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', '_p_std__vectorT_int_t', 'numeric')
+class(`TruncatedHierarchicalBSpline_set_coefficient`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_set_coefficient'))
+
+# Start of TruncatedHierarchicalBSpline_truncated_basis
+
+`TruncatedHierarchicalBSpline_truncated_basis` = function(self, level, index, point, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  index = as.integer(index);
+  point = as.numeric(point);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_truncated_basis', self, level, index, point, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_truncated_basis`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_truncated_basis`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', '_p_std__vectorT_int_t', '_p_std__vectorT_double_t')
+class(`TruncatedHierarchicalBSpline_truncated_basis`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_truncated_basis'))
+
+# Start of TruncatedHierarchicalBSpline_fit_level
+
+`TruncatedHierarchicalBSpline_fit_level__SWIG_0` = function(self, level, points, values, options)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_level__SWIG_0', self, level, points, values, options, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_level__SWIG_0`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_level__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', 'list', '_p_std__vectorT_double_t', '_p_datamunge__fda__SplineSolveOptions')
+class(`TruncatedHierarchicalBSpline_fit_level__SWIG_0`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_level__SWIG_0'))
+
+# Start of TruncatedHierarchicalBSpline_fit_level
+
+`TruncatedHierarchicalBSpline_fit_level__SWIG_1` = function(self, level, points, values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_level__SWIG_1', self, level, points, values, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_level__SWIG_1`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_level__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', 'list', '_p_std__vectorT_double_t')
+class(`TruncatedHierarchicalBSpline_fit_level__SWIG_1`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_level__SWIG_1'))
+
+`TruncatedHierarchicalBSpline_fit_level` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.list(argv[[3]]) && all(vapply(argv[[3]], is.numeric, logical(1))) ) && ( is.numeric(argv[[4]]) )) {
+      f <- TruncatedHierarchicalBSpline_fit_level__SWIG_1; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.list(argv[[3]]) && all(vapply(argv[[3]], is.numeric, logical(1))) ) && ( is.numeric(argv[[4]]) ) && ( extends(argtypes[5], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[5]]) == 1 )) {
+      f <- TruncatedHierarchicalBSpline_fit_level__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TruncatedHierarchicalBSpline_fit_level with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TruncatedHierarchicalBSpline_fit_level_penalized
+
+`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_0` = function(self, level, points, values, lambdas, order, options)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_0', self, level, points, values, lambdas, order, options, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_0`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer', '_p_datamunge__fda__SplineSolveOptions')
+class(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_0`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_0'))
+
+# Start of TruncatedHierarchicalBSpline_fit_level_penalized
+
+`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_1` = function(self, level, points, values, lambdas, order)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_1', self, level, points, values, lambdas, order, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_1`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer')
+class(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_1`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_1'))
+
+# Start of TruncatedHierarchicalBSpline_fit_level_penalized
+
+`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_2` = function(self, level, points, values, lambdas)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  level = as.integer(level);
+  
+  if(length(level) > 1) {
+    warning("using only the first element of level");
+  };
+  
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_2', self, level, points, values, lambdas, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_2`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_2`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'integer', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_2`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_2'))
+
+`TruncatedHierarchicalBSpline_fit_level_penalized` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.list(argv[[3]]) && all(vapply(argv[[3]], is.numeric, logical(1))) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) )) {
+      f <- TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_2; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.list(argv[[3]]) && all(vapply(argv[[3]], is.numeric, logical(1))) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 )) {
+      f <- TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_1; 
+    }
+  } else if (argc == 7) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( is.list(argv[[3]]) && all(vapply(argv[[3]], is.numeric, logical(1))) ) && ( is.numeric(argv[[4]]) ) && ( is.numeric(argv[[5]]) ) && ( (is.integer(argv[[6]]) || is.numeric(argv[[6]])) && length(argv[[6]]) == 1 ) && ( extends(argtypes[7], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[7]]) == 1 )) {
+      f <- TruncatedHierarchicalBSpline_fit_level_penalized__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TruncatedHierarchicalBSpline_fit_level_penalized with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TruncatedHierarchicalBSpline_fit
+
+`TruncatedHierarchicalBSpline_fit__SWIG_0` = function(self, points, values, options)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit__SWIG_0', self, points, values, options, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit__SWIG_0`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'list', '_p_std__vectorT_double_t', '_p_datamunge__fda__SplineSolveOptions')
+class(`TruncatedHierarchicalBSpline_fit__SWIG_0`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit__SWIG_0'))
+
+# Start of TruncatedHierarchicalBSpline_fit
+
+`TruncatedHierarchicalBSpline_fit__SWIG_1` = function(self, points, values)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit__SWIG_1', self, points, values, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit__SWIG_1`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'list', '_p_std__vectorT_double_t')
+class(`TruncatedHierarchicalBSpline_fit__SWIG_1`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit__SWIG_1'))
+
+`TruncatedHierarchicalBSpline_fit` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) )) {
+      f <- TruncatedHierarchicalBSpline_fit__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( extends(argtypes[4], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[4]]) == 1 )) {
+      f <- TruncatedHierarchicalBSpline_fit__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TruncatedHierarchicalBSpline_fit with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TruncatedHierarchicalBSpline_fit_penalized
+
+`TruncatedHierarchicalBSpline_fit_penalized__SWIG_0` = function(self, points, values, lambdas, order, options)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  if (inherits(options, "ExternalReference")) options = slot(options,"ref"); 
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_penalized__SWIG_0', self, points, values, lambdas, order, options, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_0`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_0`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer', '_p_datamunge__fda__SplineSolveOptions')
+class(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_0`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_penalized__SWIG_0'))
+
+# Start of TruncatedHierarchicalBSpline_fit_penalized
+
+`TruncatedHierarchicalBSpline_fit_penalized__SWIG_1` = function(self, points, values, lambdas, order)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  order = as.integer(order);
+  
+  if(length(order) > 1) {
+    warning("using only the first element of order");
+  };
+  
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_penalized__SWIG_1', self, points, values, lambdas, order, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_1`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_1`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t', 'integer')
+class(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_1`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_penalized__SWIG_1'))
+
+# Start of TruncatedHierarchicalBSpline_fit_penalized
+
+`TruncatedHierarchicalBSpline_fit_penalized__SWIG_2` = function(self, points, values, lambdas)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  values = as.numeric(values);
+  lambdas = as.numeric(lambdas);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_fit_penalized__SWIG_2', self, points, values, lambdas, PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_2`, 'returnType') = 'void'
+attr(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_2`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'list', '_p_std__vectorT_double_t', '_p_std__vectorT_double_t')
+class(`TruncatedHierarchicalBSpline_fit_penalized__SWIG_2`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_fit_penalized__SWIG_2'))
+
+`TruncatedHierarchicalBSpline_fit_penalized` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) )) {
+      f <- TruncatedHierarchicalBSpline_fit_penalized__SWIG_2; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 )) {
+      f <- TruncatedHierarchicalBSpline_fit_penalized__SWIG_1; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__fda__TruncatedHierarchicalBSpline') || is.null(argv[[1]]) ) && ( is.list(argv[[2]]) && all(vapply(argv[[2]], is.numeric, logical(1))) ) && ( is.numeric(argv[[3]]) ) && ( is.numeric(argv[[4]]) ) && ( (is.integer(argv[[5]]) || is.numeric(argv[[5]])) && length(argv[[5]]) == 1 ) && ( extends(argtypes[6], '_p_datamunge__fda__SplineSolveOptions') && length(argv[[6]]) == 1 )) {
+      f <- TruncatedHierarchicalBSpline_fit_penalized__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for TruncatedHierarchicalBSpline_fit_penalized with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of TruncatedHierarchicalBSpline_evaluate
+
+`TruncatedHierarchicalBSpline_evaluate` = function(self, point, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  point = as.numeric(point);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_evaluate', self, point, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_evaluate`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_evaluate`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', '_p_std__vectorT_double_t')
+class(`TruncatedHierarchicalBSpline_evaluate`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_evaluate'))
+
+# Start of TruncatedHierarchicalBSpline_evaluate_points
+
+`TruncatedHierarchicalBSpline_evaluate_points` = function(self, points, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  points = lapply(points, as.numeric);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_evaluate_points', self, points, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_evaluate_points`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_evaluate_points`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'list')
+class(`TruncatedHierarchicalBSpline_evaluate_points`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_evaluate_points'))
+
+# Start of TruncatedHierarchicalBSpline_evaluate_grid
+
+`TruncatedHierarchicalBSpline_evaluate_grid` = function(self, axes, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  axes = lapply(axes, as.numeric);
+  ;.Call('R_swig_TruncatedHierarchicalBSpline_evaluate_grid', self, axes, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`TruncatedHierarchicalBSpline_evaluate_grid`, 'returnType') = 'numeric'
+attr(`TruncatedHierarchicalBSpline_evaluate_grid`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline', 'list')
+class(`TruncatedHierarchicalBSpline_evaluate_grid`) = c("SWIGFunction", class('TruncatedHierarchicalBSpline_evaluate_grid'))
+
+# Start of delete_TruncatedHierarchicalBSpline
+
+`delete_TruncatedHierarchicalBSpline` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_TruncatedHierarchicalBSpline', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_TruncatedHierarchicalBSpline`, 'returnType') = 'void'
+attr(`delete_TruncatedHierarchicalBSpline`, "inputTypes") = c('_p_datamunge__fda__TruncatedHierarchicalBSpline')
+class(`delete_TruncatedHierarchicalBSpline`) = c("SWIGFunction", class('delete_TruncatedHierarchicalBSpline'))
+
+# Start of accessor method for datamunge::fda::TruncatedHierarchicalBSpline
+setMethod('$', '_p_datamunge__fda__TruncatedHierarchicalBSpline', function(x, name)
+
+{
+  accessorFuns = list('dimensions' = TruncatedHierarchicalBSpline_dimensions, 'level_count' = TruncatedHierarchicalBSpline_level_count, 'level' = TruncatedHierarchicalBSpline_level, 'cell_count' = TruncatedHierarchicalBSpline_cell_count, 'root' = TruncatedHierarchicalBSpline_root, 'parent' = TruncatedHierarchicalBSpline_parent, 'child' = TruncatedHierarchicalBSpline_child, 'depth' = TruncatedHierarchicalBSpline_depth, 'cell_min' = TruncatedHierarchicalBSpline_cell_min, 'cell_max' = TruncatedHierarchicalBSpline_cell_max, 'locate' = TruncatedHierarchicalBSpline_locate, 'refine' = TruncatedHierarchicalBSpline_refine, 'subdivide' = TruncatedHierarchicalBSpline_subdivide, 'refine_region' = TruncatedHierarchicalBSpline_refine_region, 'support_min' = TruncatedHierarchicalBSpline_support_min, 'support_max' = TruncatedHierarchicalBSpline_support_max, 'is_active' = TruncatedHierarchicalBSpline_is_active, 'active_indices' = TruncatedHierarchicalBSpline_active_indices, 'basis_size' = TruncatedHierarchicalBSpline_basis_size, 'coefficient' = TruncatedHierarchicalBSpline_coefficient, 'set_coefficient' = TruncatedHierarchicalBSpline_set_coefficient, 'truncated_basis' = TruncatedHierarchicalBSpline_truncated_basis, 'fit_level' = TruncatedHierarchicalBSpline_fit_level, 'fit_level_penalized' = TruncatedHierarchicalBSpline_fit_level_penalized, 'fit' = TruncatedHierarchicalBSpline_fit, 'fit_penalized' = TruncatedHierarchicalBSpline_fit_penalized, 'evaluate' = TruncatedHierarchicalBSpline_evaluate, 'evaluate_points' = TruncatedHierarchicalBSpline_evaluate_points, 'evaluate_grid' = TruncatedHierarchicalBSpline_evaluate_grid);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::fda::TruncatedHierarchicalBSpline
+setMethod('delete', '_p_datamunge__fda__TruncatedHierarchicalBSpline', function(obj) {delete_datamunge__fda__TruncatedHierarchicalBSpline(obj)})
 # Start of Task_InvertedPendulum_get
 
 `Task_InvertedPendulum_get` = function(.copy = FALSE)
@@ -78706,6 +82410,1142 @@ setMethod('$', '_p_datamunge__sim__TaskBatch', function(x, name)
 );
 # end of accessor method for datamunge::sim::TaskBatch
 setMethod('delete', '_p_datamunge__sim__TaskBatch', function(obj) {delete_datamunge__sim__TaskBatch(obj)})
+# Start of new_LinalgMatrix
+
+`LinalgMatrix__SWIG_0` = function(values, rows, cols, sparse)
+{
+  values = as.numeric(values);
+  rows = as.integer(rows);
+  
+  if(length(rows) > 1) {
+    warning("using only the first element of rows");
+  };
+  
+  cols = as.integer(cols);
+  
+  if(length(cols) > 1) {
+    warning("using only the first element of cols");
+  };
+  
+  sparse = as.logical(sparse);
+  ;ans = .Call('R_swig_new_LinalgMatrix__SWIG_0', values, rows, cols, sparse, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LinalgMatrix", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_LinalgMatrix);
+  ans
+  
+}
+
+attr(`LinalgMatrix__SWIG_0`, 'returnType') = '_p_datamunge__LinalgMatrix'
+attr(`LinalgMatrix__SWIG_0`, "inputTypes") = c('_p_std__vectorT_double_t', 'integer', 'integer', 'logical')
+class(`LinalgMatrix__SWIG_0`) = c("SWIGFunction", class('LinalgMatrix__SWIG_0'))
+
+# Start of new_LinalgMatrix
+
+`LinalgMatrix__SWIG_1` = function(values, rows, cols)
+{
+  values = as.numeric(values);
+  rows = as.integer(rows);
+  
+  if(length(rows) > 1) {
+    warning("using only the first element of rows");
+  };
+  
+  cols = as.integer(cols);
+  
+  if(length(cols) > 1) {
+    warning("using only the first element of cols");
+  };
+  
+  ;ans = .Call('R_swig_new_LinalgMatrix__SWIG_1', values, rows, cols, PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LinalgMatrix", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_LinalgMatrix);
+  ans
+  
+}
+
+attr(`LinalgMatrix__SWIG_1`, 'returnType') = '_p_datamunge__LinalgMatrix'
+attr(`LinalgMatrix__SWIG_1`, "inputTypes") = c('_p_std__vectorT_double_t', 'integer', 'integer')
+class(`LinalgMatrix__SWIG_1`) = c("SWIGFunction", class('LinalgMatrix__SWIG_1'))
+
+`LinalgMatrix` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 3) {
+    if (( is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 )) {
+      f <- LinalgMatrix__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( is.numeric(argv[[1]]) ) && ( (is.integer(argv[[2]]) || is.numeric(argv[[2]])) && length(argv[[2]]) == 1 ) && ( (is.integer(argv[[3]]) || is.numeric(argv[[3]])) && length(argv[[3]]) == 1 ) && ( is.logical(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- LinalgMatrix__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for LinalgMatrix with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of LinalgMatrix_rows
+
+`LinalgMatrix_rows` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LinalgMatrix_rows', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LinalgMatrix_rows`, 'returnType') = 'integer'
+attr(`LinalgMatrix_rows`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_rows`) = c("SWIGFunction", class('LinalgMatrix_rows'))
+
+# Start of LinalgMatrix_cols
+
+`LinalgMatrix_cols` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LinalgMatrix_cols', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LinalgMatrix_cols`, 'returnType') = 'integer'
+attr(`LinalgMatrix_cols`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_cols`) = c("SWIGFunction", class('LinalgMatrix_cols'))
+
+# Start of LinalgMatrix_is_sparse
+
+`LinalgMatrix_is_sparse` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LinalgMatrix_is_sparse', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LinalgMatrix_is_sparse`, 'returnType') = 'logical'
+attr(`LinalgMatrix_is_sparse`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_is_sparse`) = c("SWIGFunction", class('LinalgMatrix_is_sparse'))
+
+# Start of LinalgMatrix_transpose
+
+`LinalgMatrix_transpose` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LinalgMatrix_transpose', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LinalgMatrix", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LinalgMatrix_transpose`, 'returnType') = '_p_datamunge__LinalgMatrix'
+attr(`LinalgMatrix_transpose`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_transpose`) = c("SWIGFunction", class('LinalgMatrix_transpose'))
+
+# Start of LinalgMatrix_multiply
+
+`LinalgMatrix_multiply` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_LinalgMatrix_multiply', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LinalgMatrix", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LinalgMatrix_multiply`, 'returnType') = '_p_datamunge__LinalgMatrix'
+attr(`LinalgMatrix_multiply`, "inputTypes") = c('_p_datamunge__LinalgMatrix', '_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_multiply`) = c("SWIGFunction", class('LinalgMatrix_multiply'))
+
+# Start of LinalgMatrix_inverse_action
+
+`LinalgMatrix_inverse_action` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LinalgMatrix_inverse_action', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LinalgMatrix", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LinalgMatrix_inverse_action`, 'returnType') = '_p_datamunge__LinalgMatrix'
+attr(`LinalgMatrix_inverse_action`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_inverse_action`) = c("SWIGFunction", class('LinalgMatrix_inverse_action'))
+
+# Start of LinalgMatrix_solve
+
+`LinalgMatrix_solve` = function(self, rhs, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(rhs, "ExternalReference")) rhs = slot(rhs,"ref"); 
+  ;ans = .Call('R_swig_LinalgMatrix_solve', self, rhs, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LinalgMatrix", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LinalgMatrix_solve`, 'returnType') = '_p_datamunge__LinalgMatrix'
+attr(`LinalgMatrix_solve`, "inputTypes") = c('_p_datamunge__LinalgMatrix', '_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_solve`) = c("SWIGFunction", class('LinalgMatrix_solve'))
+
+# Start of LinalgMatrix_eval
+
+`LinalgMatrix_eval` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;ans = .Call('R_swig_LinalgMatrix_eval', self, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__LinalgMatrix", ref=ans);
+  
+  ans
+  
+}
+
+attr(`LinalgMatrix_eval`, 'returnType') = '_p_datamunge__LinalgMatrix'
+attr(`LinalgMatrix_eval`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_eval`) = c("SWIGFunction", class('LinalgMatrix_eval'))
+
+# Start of LinalgMatrix_values
+
+`LinalgMatrix_values` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LinalgMatrix_values', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LinalgMatrix_values`, 'returnType') = 'numeric'
+attr(`LinalgMatrix_values`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_values`) = c("SWIGFunction", class('LinalgMatrix_values'))
+
+# Start of LinalgMatrix_text
+
+`LinalgMatrix_text` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_LinalgMatrix_text', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`LinalgMatrix_text`, 'returnType') = 'character'
+attr(`LinalgMatrix_text`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`LinalgMatrix_text`) = c("SWIGFunction", class('LinalgMatrix_text'))
+
+# Start of delete_LinalgMatrix
+
+`delete_LinalgMatrix` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_LinalgMatrix', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_LinalgMatrix`, 'returnType') = 'void'
+attr(`delete_LinalgMatrix`, "inputTypes") = c('_p_datamunge__LinalgMatrix')
+class(`delete_LinalgMatrix`) = c("SWIGFunction", class('delete_LinalgMatrix'))
+
+# Start of accessor method for datamunge::LinalgMatrix
+setMethod('$', '_p_datamunge__LinalgMatrix', function(x, name)
+
+{
+  accessorFuns = list('rows' = LinalgMatrix_rows, 'cols' = LinalgMatrix_cols, 'is_sparse' = LinalgMatrix_is_sparse, 'transpose' = LinalgMatrix_transpose, 'multiply' = LinalgMatrix_multiply, 'inverse_action' = LinalgMatrix_inverse_action, 'solve' = LinalgMatrix_solve, 'eval' = LinalgMatrix_eval, 'values' = LinalgMatrix_values, 'text' = LinalgMatrix_text);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::LinalgMatrix
+setMethod('delete', '_p_datamunge__LinalgMatrix', function(obj) {delete_datamunge__LinalgMatrix(obj)})
+# Start of CadSolid_box
+
+`CadSolid_box` = function(width, depth, height, .copy = FALSE)
+{
+  ;ans = .Call('R_swig_CadSolid_box', width, depth, height, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_box`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_box`, "inputTypes") = c('numeric', 'numeric', 'numeric')
+class(`CadSolid_box`) = c("SWIGFunction", class('CadSolid_box'))
+
+# Start of CadSolid_cylinder
+
+`CadSolid_cylinder` = function(radius, height, .copy = FALSE)
+{
+  ;ans = .Call('R_swig_CadSolid_cylinder', radius, height, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_cylinder`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_cylinder`, "inputTypes") = c('numeric', 'numeric')
+class(`CadSolid_cylinder`) = c("SWIGFunction", class('CadSolid_cylinder'))
+
+# Start of CadSolid_sphere
+
+`CadSolid_sphere` = function(radius, .copy = FALSE)
+{
+  ;ans = .Call('R_swig_CadSolid_sphere', radius, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_sphere`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_sphere`, "inputTypes") = c('numeric')
+class(`CadSolid_sphere`) = c("SWIGFunction", class('CadSolid_sphere'))
+
+# Start of CadSolid_torus
+
+`CadSolid_torus` = function(major_radius, minor_radius, .copy = FALSE)
+{
+  ;ans = .Call('R_swig_CadSolid_torus', major_radius, minor_radius, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_torus`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_torus`, "inputTypes") = c('numeric', 'numeric')
+class(`CadSolid_torus`) = c("SWIGFunction", class('CadSolid_torus'))
+
+# Start of CadSolid_united
+
+`CadSolid_united` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_CadSolid_united', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_united`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_united`, "inputTypes") = c('_p_datamunge__cad__Solid', '_p_datamunge__cad__Solid')
+class(`CadSolid_united`) = c("SWIGFunction", class('CadSolid_united'))
+
+# Start of CadSolid_subtracted
+
+`CadSolid_subtracted` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_CadSolid_subtracted', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_subtracted`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_subtracted`, "inputTypes") = c('_p_datamunge__cad__Solid', '_p_datamunge__cad__Solid')
+class(`CadSolid_subtracted`) = c("SWIGFunction", class('CadSolid_subtracted'))
+
+# Start of CadSolid_intersected
+
+`CadSolid_intersected` = function(self, other, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(other, "ExternalReference")) other = slot(other,"ref"); 
+  ;ans = .Call('R_swig_CadSolid_intersected', self, other, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_intersected`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_intersected`, "inputTypes") = c('_p_datamunge__cad__Solid', '_p_datamunge__cad__Solid')
+class(`CadSolid_intersected`) = c("SWIGFunction", class('CadSolid_intersected'))
+
+# Start of CadSolid_translated
+
+`CadSolid_translated` = function(self, x, y, z, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  ;ans = .Call('R_swig_CadSolid_translated', self, x, y, z, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_translated`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_translated`, "inputTypes") = c('_p_datamunge__cad__Solid', 'numeric', 'numeric', 'numeric')
+class(`CadSolid_translated`) = c("SWIGFunction", class('CadSolid_translated'))
+
+# Start of CadSolid_rotated
+
+`CadSolid_rotated` = function(self, x, y, z, radians, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  
+  ;ans = .Call('R_swig_CadSolid_rotated', self, x, y, z, radians, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_rotated`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_rotated`, "inputTypes") = c('_p_datamunge__cad__Solid', 'numeric', 'numeric', 'numeric', 'numeric')
+class(`CadSolid_rotated`) = c("SWIGFunction", class('CadSolid_rotated'))
+
+# Start of CadSolid_filleted
+
+`CadSolid_filleted` = function(self, edges, radius, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  edges = as.integer(edges);
+  
+  ;ans = .Call('R_swig_CadSolid_filleted', self, edges, radius, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_filleted`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_filleted`, "inputTypes") = c('_p_datamunge__cad__Solid', '_p_std__vectorT_int_t', 'numeric')
+class(`CadSolid_filleted`) = c("SWIGFunction", class('CadSolid_filleted'))
+
+# Start of CadSolid_chamfered
+
+`CadSolid_chamfered` = function(self, edges, setback, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  edges = as.integer(edges);
+  
+  ;ans = .Call('R_swig_CadSolid_chamfered', self, edges, setback, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_chamfered`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_chamfered`, "inputTypes") = c('_p_datamunge__cad__Solid', '_p_std__vectorT_int_t', 'numeric')
+class(`CadSolid_chamfered`) = c("SWIGFunction", class('CadSolid_chamfered'))
+
+# Start of CadSolid_shelled
+
+`CadSolid_shelled__SWIG_0` = function(self, thickness, open_faces, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  open_faces = as.integer(open_faces);
+  ;ans = .Call('R_swig_CadSolid_shelled__SWIG_0', self, thickness, open_faces, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_shelled__SWIG_0`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_shelled__SWIG_0`, "inputTypes") = c('_p_datamunge__cad__Solid', 'numeric', '_p_std__vectorT_int_t')
+class(`CadSolid_shelled__SWIG_0`) = c("SWIGFunction", class('CadSolid_shelled__SWIG_0'))
+
+# Start of CadSolid_shelled
+
+`CadSolid_shelled__SWIG_1` = function(self, thickness, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;ans = .Call('R_swig_CadSolid_shelled__SWIG_1', self, thickness, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__Solid", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadSolid_shelled__SWIG_1`, 'returnType') = '_p_datamunge__cad__Solid'
+attr(`CadSolid_shelled__SWIG_1`, "inputTypes") = c('_p_datamunge__cad__Solid', 'numeric')
+class(`CadSolid_shelled__SWIG_1`) = c("SWIGFunction", class('CadSolid_shelled__SWIG_1'))
+
+`CadSolid_shelled` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__Solid') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- CadSolid_shelled__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__Solid') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.integer(argv[[3]]) || is.numeric(argv[[3]]) )) {
+      f <- CadSolid_shelled__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CadSolid_shelled with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CadSolid_volume
+
+`CadSolid_volume__SWIG_0` = function(self, chord, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  ;.Call('R_swig_CadSolid_volume__SWIG_0', self, chord, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadSolid_volume__SWIG_0`, 'returnType') = 'numeric'
+attr(`CadSolid_volume__SWIG_0`, "inputTypes") = c('_p_datamunge__cad__Solid', 'numeric')
+class(`CadSolid_volume__SWIG_0`) = c("SWIGFunction", class('CadSolid_volume__SWIG_0'))
+
+# Start of CadSolid_volume
+
+`CadSolid_volume__SWIG_1` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadSolid_volume__SWIG_1', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadSolid_volume__SWIG_1`, 'returnType') = 'numeric'
+attr(`CadSolid_volume__SWIG_1`, "inputTypes") = c('_p_datamunge__cad__Solid')
+class(`CadSolid_volume__SWIG_1`) = c("SWIGFunction", class('CadSolid_volume__SWIG_1'))
+
+`CadSolid_volume` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 1) {
+    if ( extends(argtypes[1], '_p_datamunge__cad__Solid') || is.null(argv[[1]]) ) {
+      f <- CadSolid_volume__SWIG_1; 
+    }
+  } else if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__Solid') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- CadSolid_volume__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CadSolid_volume with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CadSolid_valid
+
+`CadSolid_valid` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadSolid_valid', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadSolid_valid`, 'returnType') = 'logical'
+attr(`CadSolid_valid`, "inputTypes") = c('_p_datamunge__cad__Solid')
+class(`CadSolid_valid`) = c("SWIGFunction", class('CadSolid_valid'))
+
+# Start of CadSolid_edges
+
+`CadSolid_edges` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadSolid_edges', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadSolid_edges`, 'returnType') = 'integer'
+attr(`CadSolid_edges`, "inputTypes") = c('_p_datamunge__cad__Solid')
+class(`CadSolid_edges`) = c("SWIGFunction", class('CadSolid_edges'))
+
+# Start of CadSolid_faces
+
+`CadSolid_faces` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadSolid_faces', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadSolid_faces`, 'returnType') = 'integer'
+attr(`CadSolid_faces`, "inputTypes") = c('_p_datamunge__cad__Solid')
+class(`CadSolid_faces`) = c("SWIGFunction", class('CadSolid_faces'))
+
+# Start of CadSolid_save
+
+`CadSolid_save__SWIG_0` = function(self, path, chord)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  
+  ;.Call('R_swig_CadSolid_save__SWIG_0', self, path, chord, PACKAGE='datamunger');
+  
+}
+
+attr(`CadSolid_save__SWIG_0`, 'returnType') = 'void'
+attr(`CadSolid_save__SWIG_0`, "inputTypes") = c('_p_datamunge__cad__Solid', 'character', 'numeric')
+class(`CadSolid_save__SWIG_0`) = c("SWIGFunction", class('CadSolid_save__SWIG_0'))
+
+# Start of CadSolid_save
+
+`CadSolid_save__SWIG_1` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_CadSolid_save__SWIG_1', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`CadSolid_save__SWIG_1`, 'returnType') = 'void'
+attr(`CadSolid_save__SWIG_1`, "inputTypes") = c('_p_datamunge__cad__Solid', 'character')
+class(`CadSolid_save__SWIG_1`) = c("SWIGFunction", class('CadSolid_save__SWIG_1'))
+
+`CadSolid_save` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 2
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__Solid') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 )) {
+      f <- CadSolid_save__SWIG_1; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__Solid') || is.null(argv[[1]]) ) && ( is.character(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- CadSolid_save__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CadSolid_save with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of delete_CadSolid
+
+`delete_CadSolid` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CadSolid', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CadSolid`, 'returnType') = 'void'
+attr(`delete_CadSolid`, "inputTypes") = c('_p_datamunge__cad__Solid')
+class(`delete_CadSolid`) = c("SWIGFunction", class('delete_CadSolid'))
+
+# Start of accessor method for datamunge::cad::Solid
+setMethod('$', '_p_datamunge__cad__Solid', function(x, name)
+
+{
+  accessorFuns = list('united' = CadSolid_united, 'subtracted' = CadSolid_subtracted, 'intersected' = CadSolid_intersected, 'translated' = CadSolid_translated, 'rotated' = CadSolid_rotated, 'filleted' = CadSolid_filleted, 'chamfered' = CadSolid_chamfered, 'shelled' = CadSolid_shelled, 'volume' = CadSolid_volume, 'valid' = CadSolid_valid, 'edges' = CadSolid_edges, 'faces' = CadSolid_faces, 'save' = CadSolid_save);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::cad::Solid
+setMethod('delete', '_p_datamunge__cad__Solid', function(obj) {delete_datamunge__cad__Solid(obj)})
+# Start of new_CadScene
+
+`CadScene` = function()
+{
+  ;ans = .Call('R_swig_new_CadScene', PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__View", ref=ans);
+  
+  reg.finalizer(ans@ref, delete_CadScene);
+  ans
+  
+}
+
+attr(`CadScene`, 'returnType') = '_p_datamunge__cad__View'
+class(`CadScene`) = c("SWIGFunction", class('CadScene'))
+
+# Start of CadScene_from_file
+
+`CadScene_from_file` = function(path, .copy = FALSE)
+{
+  path = as(path, "character"); 
+  ;ans = .Call('R_swig_CadScene_from_file', path, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__View", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadScene_from_file`, 'returnType') = '_p_datamunge__cad__View'
+attr(`CadScene_from_file`, "inputTypes") = c('character')
+class(`CadScene_from_file`) = c("SWIGFunction", class('CadScene_from_file'))
+
+# Start of CadScene_from_urdf
+
+`CadScene_from_urdf` = function(path, .copy = FALSE)
+{
+  path = as(path, "character"); 
+  ;ans = .Call('R_swig_CadScene_from_urdf', path, as.logical(.copy), PACKAGE='datamunger');
+  ans <- if (is.null(ans)) ans
+  else new("_p_datamunge__cad__View", ref=ans);
+  
+  ans
+  
+}
+
+attr(`CadScene_from_urdf`, 'returnType') = '_p_datamunge__cad__View'
+attr(`CadScene_from_urdf`, "inputTypes") = c('character')
+class(`CadScene_from_urdf`) = c("SWIGFunction", class('CadScene_from_urdf'))
+
+# Start of CadScene_set_joint
+
+`CadScene_set_joint` = function(self, name, value)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  name = as(name, "character"); 
+  
+  ;.Call('R_swig_CadScene_set_joint', self, name, value, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_set_joint`, 'returnType') = 'void'
+attr(`CadScene_set_joint`, "inputTypes") = c('_p_datamunge__cad__View', 'character', 'numeric')
+class(`CadScene_set_joint`) = c("SWIGFunction", class('CadScene_set_joint'))
+
+# Start of CadScene_joint_names
+
+`CadScene_joint_names` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadScene_joint_names', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_joint_names`, 'returnType') = 'character'
+attr(`CadScene_joint_names`, "inputTypes") = c('_p_datamunge__cad__View')
+class(`CadScene_joint_names`) = c("SWIGFunction", class('CadScene_joint_names'))
+
+# Start of CadScene_add
+
+`CadScene_add__SWIG_0` = function(self, solid, color, name, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(solid, "ExternalReference")) solid = slot(solid,"ref"); 
+  color = as(color, "character"); 
+  name = as(name, "character"); 
+  ;.Call('R_swig_CadScene_add__SWIG_0', self, solid, color, name, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_add__SWIG_0`, 'returnType') = 'integer'
+attr(`CadScene_add__SWIG_0`, "inputTypes") = c('_p_datamunge__cad__View', '_p_datamunge__cad__Solid', 'character', 'character')
+class(`CadScene_add__SWIG_0`) = c("SWIGFunction", class('CadScene_add__SWIG_0'))
+
+# Start of CadScene_add
+
+`CadScene_add__SWIG_1` = function(self, solid, color, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(solid, "ExternalReference")) solid = slot(solid,"ref"); 
+  color = as(color, "character"); 
+  ;.Call('R_swig_CadScene_add__SWIG_1', self, solid, color, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_add__SWIG_1`, 'returnType') = 'integer'
+attr(`CadScene_add__SWIG_1`, "inputTypes") = c('_p_datamunge__cad__View', '_p_datamunge__cad__Solid', 'character')
+class(`CadScene_add__SWIG_1`) = c("SWIGFunction", class('CadScene_add__SWIG_1'))
+
+# Start of CadScene_add
+
+`CadScene_add__SWIG_2` = function(self, solid, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  if (inherits(solid, "ExternalReference")) solid = slot(solid,"ref"); 
+  ;.Call('R_swig_CadScene_add__SWIG_2', self, solid, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_add__SWIG_2`, 'returnType') = 'integer'
+attr(`CadScene_add__SWIG_2`, "inputTypes") = c('_p_datamunge__cad__View', '_p_datamunge__cad__Solid')
+class(`CadScene_add__SWIG_2`) = c("SWIGFunction", class('CadScene_add__SWIG_2'))
+
+`CadScene_add` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 2) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__View') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__cad__Solid') && length(argv[[2]]) == 1 )) {
+      f <- CadScene_add__SWIG_2; 
+    }
+  } else if (argc == 3) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__View') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__cad__Solid') && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 )) {
+      f <- CadScene_add__SWIG_1; 
+    }
+  } else if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__View') || is.null(argv[[1]]) ) && ( extends(argtypes[2], '_p_datamunge__cad__Solid') && length(argv[[2]]) == 1 ) && ( is.character(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.character(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- CadScene_add__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CadScene_add with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CadScene_primitive
+
+`CadScene_primitive` = function(self, kind, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  kind = as(kind, "character"); 
+  ;.Call('R_swig_CadScene_primitive', self, kind, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_primitive`, 'returnType') = 'integer'
+attr(`CadScene_primitive`, "inputTypes") = c('_p_datamunge__cad__View', 'character')
+class(`CadScene_primitive`) = c("SWIGFunction", class('CadScene_primitive'))
+
+# Start of CadScene_size
+
+`CadScene_size` = function(self, width, height)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  width = as.integer(width);
+  
+  if(length(width) > 1) {
+    warning("using only the first element of width");
+  };
+  
+  height = as.integer(height);
+  
+  if(length(height) > 1) {
+    warning("using only the first element of height");
+  };
+  
+  ;.Call('R_swig_CadScene_size', self, width, height, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_size`, 'returnType') = 'void'
+attr(`CadScene_size`, "inputTypes") = c('_p_datamunge__cad__View', 'integer', 'integer')
+class(`CadScene_size`) = c("SWIGFunction", class('CadScene_size'))
+
+# Start of CadScene_samples
+
+`CadScene_samples` = function(self, count)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  count = as.integer(count);
+  
+  if(length(count) > 1) {
+    warning("using only the first element of count");
+  };
+  
+  ;.Call('R_swig_CadScene_samples', self, count, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_samples`, 'returnType') = 'void'
+attr(`CadScene_samples`, "inputTypes") = c('_p_datamunge__cad__View', 'integer')
+class(`CadScene_samples`) = c("SWIGFunction", class('CadScene_samples'))
+
+# Start of CadScene_style
+
+`CadScene_style` = function(self, name)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  name = as(name, "character"); 
+  ;.Call('R_swig_CadScene_style', self, name, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_style`, 'returnType') = 'void'
+attr(`CadScene_style`, "inputTypes") = c('_p_datamunge__cad__View', 'character')
+class(`CadScene_style`) = c("SWIGFunction", class('CadScene_style'))
+
+# Start of CadScene_shadows
+
+`CadScene_shadows` = function(self, enabled)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  enabled = as.logical(enabled);
+  ;.Call('R_swig_CadScene_shadows', self, enabled, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_shadows`, 'returnType') = 'void'
+attr(`CadScene_shadows`, "inputTypes") = c('_p_datamunge__cad__View', 'logical')
+class(`CadScene_shadows`) = c("SWIGFunction", class('CadScene_shadows'))
+
+# Start of CadScene_camera
+
+`CadScene_camera` = function(self, x, y, z, target_x, target_y, target_z)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  
+  
+  
+  ;.Call('R_swig_CadScene_camera', self, x, y, z, target_x, target_y, target_z, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_camera`, 'returnType') = 'void'
+attr(`CadScene_camera`, "inputTypes") = c('_p_datamunge__cad__View', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric', 'numeric')
+class(`CadScene_camera`) = c("SWIGFunction", class('CadScene_camera'))
+
+# Start of CadScene_fit
+
+`CadScene_fit` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadScene_fit', self, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_fit`, 'returnType') = 'void'
+attr(`CadScene_fit`, "inputTypes") = c('_p_datamunge__cad__View')
+class(`CadScene_fit`) = c("SWIGFunction", class('CadScene_fit'))
+
+# Start of CadScene_light
+
+`CadScene_light__SWIG_0` = function(self, x, y, z, color, intensity, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  color = as(color, "character"); 
+  
+  ;.Call('R_swig_CadScene_light__SWIG_0', self, x, y, z, color, intensity, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_light__SWIG_0`, 'returnType') = 'integer'
+attr(`CadScene_light__SWIG_0`, "inputTypes") = c('_p_datamunge__cad__View', 'numeric', 'numeric', 'numeric', 'character', 'numeric')
+class(`CadScene_light__SWIG_0`) = c("SWIGFunction", class('CadScene_light__SWIG_0'))
+
+# Start of CadScene_light
+
+`CadScene_light__SWIG_1` = function(self, x, y, z, color, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  color = as(color, "character"); 
+  ;.Call('R_swig_CadScene_light__SWIG_1', self, x, y, z, color, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_light__SWIG_1`, 'returnType') = 'integer'
+attr(`CadScene_light__SWIG_1`, "inputTypes") = c('_p_datamunge__cad__View', 'numeric', 'numeric', 'numeric', 'character')
+class(`CadScene_light__SWIG_1`) = c("SWIGFunction", class('CadScene_light__SWIG_1'))
+
+# Start of CadScene_light
+
+`CadScene_light__SWIG_2` = function(self, x, y, z, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  
+  ;.Call('R_swig_CadScene_light__SWIG_2', self, x, y, z, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_light__SWIG_2`, 'returnType') = 'integer'
+attr(`CadScene_light__SWIG_2`, "inputTypes") = c('_p_datamunge__cad__View', 'numeric', 'numeric', 'numeric')
+class(`CadScene_light__SWIG_2`) = c("SWIGFunction", class('CadScene_light__SWIG_2'))
+
+`CadScene_light` <- function(...) {
+  argtypes <- mapply(class, list(...));
+  argv <- list(...);
+  argc <- length(argtypes);
+  f <- NULL;
+# dispatch functions 3
+  if (argc == 4) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__View') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 )) {
+      f <- CadScene_light__SWIG_2; 
+    }
+  } else if (argc == 5) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__View') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 )) {
+      f <- CadScene_light__SWIG_1; 
+    }
+  } else if (argc == 6) {
+    if (( extends(argtypes[1], '_p_datamunge__cad__View') || is.null(argv[[1]]) ) && ( is.numeric(argv[[2]]) && length(argv[[2]]) == 1 ) && ( is.numeric(argv[[3]]) && length(argv[[3]]) == 1 ) && ( is.numeric(argv[[4]]) && length(argv[[4]]) == 1 ) && ( is.character(argv[[5]]) && length(argv[[5]]) == 1 ) && ( is.numeric(argv[[6]]) && length(argv[[6]]) == 1 )) {
+      f <- CadScene_light__SWIG_0; 
+    }
+  };
+  if (is.null(f)) {
+    stop("cannot find overloaded function for CadScene_light with argtypes (",toString(argtypes),")");
+  };
+  f(...);
+}
+
+# Dispatch function
+# Start of CadScene_render
+
+`CadScene_render` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_CadScene_render', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_render`, 'returnType') = 'void'
+attr(`CadScene_render`, "inputTypes") = c('_p_datamunge__cad__View', 'character')
+class(`CadScene_render`) = c("SWIGFunction", class('CadScene_render'))
+
+# Start of CadScene_save_gltf
+
+`CadScene_save_gltf` = function(self, path)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  path = as(path, "character"); 
+  ;.Call('R_swig_CadScene_save_gltf', self, path, PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_save_gltf`, 'returnType') = 'void'
+attr(`CadScene_save_gltf`, "inputTypes") = c('_p_datamunge__cad__View', 'character')
+class(`CadScene_save_gltf`) = c("SWIGFunction", class('CadScene_save_gltf'))
+
+# Start of CadScene_pick_object
+
+`CadScene_pick_object` = function(self, x, y, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  
+  
+  ;.Call('R_swig_CadScene_pick_object', self, x, y, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_pick_object`, 'returnType') = 'integer'
+attr(`CadScene_pick_object`, "inputTypes") = c('_p_datamunge__cad__View', 'numeric', 'numeric')
+class(`CadScene_pick_object`) = c("SWIGFunction", class('CadScene_pick_object'))
+
+# Start of CadScene_object_count
+
+`CadScene_object_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadScene_object_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_object_count`, 'returnType') = 'integer'
+attr(`CadScene_object_count`, "inputTypes") = c('_p_datamunge__cad__View')
+class(`CadScene_object_count`) = c("SWIGFunction", class('CadScene_object_count'))
+
+# Start of CadScene_triangle_count
+
+`CadScene_triangle_count` = function(self, .copy = FALSE)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_CadScene_triangle_count', self, as.logical(.copy), PACKAGE='datamunger');
+  
+}
+
+attr(`CadScene_triangle_count`, 'returnType') = 'integer'
+attr(`CadScene_triangle_count`, "inputTypes") = c('_p_datamunge__cad__View')
+class(`CadScene_triangle_count`) = c("SWIGFunction", class('CadScene_triangle_count'))
+
+# Start of delete_CadScene
+
+`delete_CadScene` = function(self)
+{
+  if (inherits(self, "ExternalReference")) self = slot(self,"ref"); 
+  ;.Call('R_swig_delete_CadScene', self, PACKAGE='datamunger');
+  
+}
+
+attr(`delete_CadScene`, 'returnType') = 'void'
+attr(`delete_CadScene`, "inputTypes") = c('_p_datamunge__cad__View')
+class(`delete_CadScene`) = c("SWIGFunction", class('delete_CadScene'))
+
+# Start of accessor method for datamunge::cad::View
+setMethod('$', '_p_datamunge__cad__View', function(x, name)
+
+{
+  accessorFuns = list('set_joint' = CadScene_set_joint, 'joint_names' = CadScene_joint_names, 'add' = CadScene_add, 'primitive' = CadScene_primitive, 'size' = CadScene_size, 'samples' = CadScene_samples, 'style' = CadScene_style, 'shadows' = CadScene_shadows, 'camera' = CadScene_camera, 'fit' = CadScene_fit, 'light' = CadScene_light, 'render' = CadScene_render, 'save_gltf' = CadScene_save_gltf, 'pick_object' = CadScene_pick_object, 'object_count' = CadScene_object_count, 'triangle_count' = CadScene_triangle_count);
+  ;        idx = pmatch(name, names(accessorFuns));
+  if(is.na(idx)) 
+  return(callNextMethod(x, name));
+  f = accessorFuns[[idx]];
+  function(...){
+    f(x, ...)
+  };
+}
+
+
+);
+# end of accessor method for datamunge::cad::View
+setMethod('delete', '_p_datamunge__cad__View', function(obj) {delete_datamunge__cad__View(obj)})
 
 defineEnumeration("_datamunge__graphics__DataSeries__Kind",
  .values=c("Scatter" = .Call('R_swig_DataSeries_Kind_Scatter_get',FALSE, PACKAGE='datamunger'),
@@ -78752,6 +83592,11 @@ defineEnumeration("_datamunge__algebra__MonomialOrder",
  .values=c("Lex" = .Call('R_swig_MonomialOrder_Lex_get',FALSE, PACKAGE='datamunger'),
 "Grlex" = .Call('R_swig_MonomialOrder_Grlex_get',FALSE, PACKAGE='datamunger'),
 "Grevlex" = .Call('R_swig_MonomialOrder_Grevlex_get',FALSE, PACKAGE='datamunger')))
+
+defineEnumeration("_datamunge__fda__SplineSolver",
+ .values=c("Automatic" = .Call('R_swig_SplineSolver_Automatic_get',FALSE, PACKAGE='datamunger'),
+"Cholesky" = .Call('R_swig_SplineSolver_Cholesky_get',FALSE, PACKAGE='datamunger'),
+"ConjugateGradient" = .Call('R_swig_SplineSolver_ConjugateGradient_get',FALSE, PACKAGE='datamunger')))
 
 defineEnumeration("_datamunge__sim__Task",
  .values=c("InvertedPendulum" = .Call('R_swig_Task_InvertedPendulum_get',FALSE, PACKAGE='datamunger'),

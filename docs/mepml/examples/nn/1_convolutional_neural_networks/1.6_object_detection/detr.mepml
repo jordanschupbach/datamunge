@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 DETR predicts a fixed set of learned object queries and trains through a bipartite set objective. Tensor geometry and a rectangular primal/dual assignment solver produce detached targets, while every backbone, transformer and shared-head parameter participates in visible Adam fitting.
 
-The editable concept diagram is `diagrams/detr_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/detr_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/detr_concept.tikz > build/detr_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/detr_concept.svg build/detr_concept.dvi > build/detr_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/detr_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "ResNet and sine positions\nPost-norm transformer");
+  diagram.node("n1", {5.2, 0}, "Learned object queries\nTensor set matching");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam fitting\nSet decode without NMS");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/detr_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/detr_concept.svg)
 // result_end
 \caption(DETR tensor bipartite matching and learned object queries)
@@ -603,17 +609,17 @@ int main() {
 // result_begin: markdown
 | epoch | set objective loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 14.887142 | 5.078838 | 9.808303 | 0.000000 |
-| 2 | 13.489287 | 4.612065 | 8.877221 | 0.000000 |
-| 3 | 11.705773 | 4.530373 | 7.175400 | 0.000000 |
-| 4 | 10.273684 | 4.532119 | 5.741565 | 0.000000 |
-| 5 | 9.886096 | 4.514958 | 5.371139 | 0.000000 |
-| 6 | 9.654981 | 4.409544 | 5.245438 | 0.001277 |
-| 7 | 9.526243 | 4.405094 | 5.121149 | 0.000000 |
-| 8 | 9.568698 | 4.393346 | 5.175352 | 0.000794 |
-| 9 | 9.360039 | 4.458553 | 4.901486 | 0.000000 |
-| 10 | 9.670987 | 4.395886 | 5.275101 | 0.000000 |
-357399 learned scalars, 160 Adam updates; selected epoch 6, validation AP50 0.001277. Test: 23 digits in eight scenes, inclusive VOC AP50 0.009259, COCO AP75 0.000000, AP50:95 0.001870, 80 detections. Selected mean absolute first BN state 1.103165; paired learned and BN state restored.
+| 1 | 14.867602 | 5.078642 | 9.788959 | 0.000000 |
+| 2 | 13.395791 | 4.612350 | 8.783441 | 0.000000 |
+| 3 | 11.412404 | 4.524633 | 6.887771 | 0.000000 |
+| 4 | 10.181751 | 4.560612 | 5.621139 | 0.000000 |
+| 5 | 10.566890 | 4.565766 | 6.001124 | 0.000000 |
+| 6 | 9.977077 | 4.425833 | 5.551244 | 0.009633 |
+| 7 | 9.821991 | 4.480271 | 5.341720 | 0.009081 |
+| 8 | 9.584811 | 4.479392 | 5.105420 | 0.003472 |
+| 9 | 9.457179 | 4.393317 | 5.063861 | 0.000000 |
+| 10 | 9.633134 | 4.381623 | 5.251511 | 0.002179 |
+357399 learned scalars, 160 Adam updates; selected epoch 6, validation AP50 0.009633. Test: 23 digits in eight scenes, inclusive VOC AP50 0.000000, COCO AP75 0.000000, AP50:95 0.000000, 80 detections. Selected mean absolute first BN state 0.979237; paired learned and BN state restored.
 \image(figures/detr_training.svg)
 // result_end
 \caption(Visible Adam fitting with explicit detached matching and loss summation at both decoder layers. Weighted CE and L1/GIoU traces sum across layers, excluding the explicit kernel L2 term. Learned/BN checkpoint selection is paired.)

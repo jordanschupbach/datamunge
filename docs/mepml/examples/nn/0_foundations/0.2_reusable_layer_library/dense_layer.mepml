@@ -420,15 +420,15 @@ int main() {
 }
 ```
 // result_begin: markdown
-Network 64 → 128 → 10, N = 256: per-example gradient norms from 6.759 to 14.346; max relative difference, one pass + norms vs 256 backward passes = 5.2e-16; the one-pass route was 10× faster here.
-Layer 1, example 0: second singular value / first of its 64×128 gradient = 9.8e-17 (rank 1). Sum over 8 examples: numerical rank 8 of a possible 64.
+Network 64 → 128 → 10, N = 256: per-example gradient norms from 6.759 to 14.346; max relative difference, one pass + norms vs 256 backward passes = 3.6e-16; the one-pass route was 10× faster here.
+Layer 1, example 0: second singular value / first of its 64×128 gradient = 2.7e-16 (rank 1). Sum over 8 examples: numerical rank 8 of a possible 64.
 
 | input [N, T, in] → out | route | max relative difference vs per-example backward passes |
 | :--- | :--- | ---: |
 | [8, 6, 16] → 8 | Gram matrices | 2.1e-16 |
 | [8, 40, 4] → 3 | per-example gradient | 0.0e+00 |
 
-Clipping at C = 10: 116 of 256 examples clipped; max |reweighted second pass − sum of clipped per-example gradients| = 5.3e-15.
+Clipping at C = 10: 116 of 256 examples clipped; max |reweighted second pass − sum of clipped per-example gradients| = 2.7e-15.
 
 | order α | closed form ε(α) | numerical integration | relative difference | small-q approximation αq²(e^{1/σ²} − 1)/2 |
 | ---: | ---: | ---: | ---: | ---: |

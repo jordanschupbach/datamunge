@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 Evaluation fixes model predictions and applies discrete matching, then tensor overlap, cumulative-count and recall-grid reductions. It needs no optimizer. VOC07 samples eleven recall thresholds and uses strict overlap; COCO-style box AP samples 101, includes equality and averages ten IoU cutoffs. These choices can produce different values for the same predictions.
 
-The editable concept diagram is `diagrams/detection_evaluation_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/detection_evaluation_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/detection_evaluation_concept.tikz > build/detection_evaluation_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/detection_evaluation_concept.svg build/detection_evaluation_concept.dvi > build/detection_evaluation_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/detection_evaluation_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Scored predictions\nAnnotated boxes");
+  diagram.node("n1", {5.2, 0}, "Ignore and match\nPer image and class");
+  diagram.node("n2", {10.4, 0}, "Precision envelope\nTensor AP means");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/detection_evaluation_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/detection_evaluation_concept.svg)
 // result_end
 \caption(VOC and COCO box evaluation)

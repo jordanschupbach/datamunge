@@ -4,9 +4,13 @@
 #include <cstdlib>
 #include <datamunge/compute/context.hpp>
 #include <datamunge/nn/autograd.hpp>
+#include <datamunge/nn/conv.hpp>
 #include <datamunge/nn/io.hpp>
 #include <datamunge/nn/memory.hpp>
 #include <datamunge/nn/ops.hpp>
+#include <datamunge/nn/params.hpp>
+#include <datamunge/nn/resnet_models.hpp>
+#include <datamunge/nn/squeezenet_models.hpp>
 #include <datamunge/nn/tensor.hpp>
 #include <limits>
 namespace nn = datamunge::nn;
@@ -220,10 +224,7 @@ TEST(NnDevice, CudaMatmulTransposesBroadcastViewsAndGradients) {
     GTEST_SKIP() << info.diagnostic;
   }
   c::Context gpu({c::Backend::CUDA, 0}), cpu;
-  if (!gpu.supports_matmul()) {
-    ASSERT_FALSE(std::getenv("DATAMUNGE_REQUIRE_CUDA")) << "cuBLAS is disabled";
-    GTEST_SKIP() << "cuBLAS is disabled";
-  }
+  ASSERT_TRUE(gpu.supports_matmul()) << "CUDA contexts always run the in-house GEMM";
   const auto baseline = nn::live_memory_bytes();
   {
     for (auto dtype : {nn::DType::Float32, nn::DType::Float64}) {
@@ -297,6 +298,163 @@ TEST(NnDevice, CudaMatmulTransposesBroadcastViewsAndGradients) {
     EXPECT_THROW(nn::matmul(i, i), std::invalid_argument);
     c::Context foreign({c::Backend::CUDA, 0});
     EXPECT_THROW(nn::matmul(x, x.to(foreign)), std::invalid_argument);
+  }
+  EXPECT_EQ(gpu.live_bytes(), 0);
+  EXPECT_EQ(nn::live_memory_bytes(), baseline);
+}
+
+namespace {
+/// Maximum absolute difference between a device result and a host reference.
+double max_error(const nn::Tensor& device, const nn::Tensor& host) {
+  EXPECT_EQ(device.shape(), host.shape());
+  const auto a = nn::cast(device.to(c::Context{}), nn::DType::Float64).to_vector<double>();
+  const auto b = nn::cast(host, nn::DType::Float64).to_vector<double>();
+  double     e = 0;
+  for (std::size_t i = 0; i < a.size(); ++i)
+    e = std::max(e, std::abs(a[i] - b[i]));
+  return e;
+}
+} // namespace
+
+TEST(NnDevice, CudaInferenceOpsMatchCpu) {
+  const auto info = c::probe({c::Backend::CUDA, 0});
+  if (!info.available) {
+    ASSERT_FALSE(std::getenv("DATAMUNGE_REQUIRE_CUDA")) << info.diagnostic;
+    GTEST_SKIP() << info.diagnostic;
+  }
+  c::Context gpu({c::Backend::CUDA, 0});
+  ASSERT_TRUE(gpu.supports_matmul()) << "CUDA contexts always run the in-house GEMM";
+  const auto baseline = nn::live_memory_bytes();
+  {
+    nn::NoGradGuard guard;
+    nn::Generator   rng(5);
+    for (auto dtype : {nn::DType::Float32, nn::DType::Float64}) {
+      const double tolerance = dtype == nn::DType::Float32 ? 2e-5 : 1e-12;
+      const auto   x         = nn::normal({3, 9, 7, 5}, 0, 1, rng, dtype);
+      const auto   xd        = x.to(gpu);
+      // Same/valid/explicit padding, strides, dilation and the pointwise GEMM shortcut.
+      std::vector<std::pair<std::int64_t, nn::Conv2DOptions>> cases;
+      cases.push_back({3, nn::conv_options(1)});
+      cases.push_back({3, nn::conv_options(2, nn::Padding::Valid)});
+      cases.push_back({1, nn::conv_options(1)});
+      cases.push_back({1, nn::conv_options(2)});
+      cases.push_back({3, nn::conv_options(1, nn::Padding::Same, 2)});
+      nn::Conv2DOptions explicit_pad = nn::conv_options(2, nn::Padding::Explicit);
+      explicit_pad.explicit_paddings = {1, 2, 0, 1};
+      cases.push_back({5, explicit_pad});
+      for (const auto& [k, options] : cases) {
+        const auto f = nn::normal({k, k, 5, 4}, 0, 1, rng, dtype);
+        EXPECT_LT(max_error(nn::conv2d(xd, f.to(gpu), options), nn::conv2d(x, f, options)),
+                  tolerance * 10);
+      }
+      // A transposed (noncontiguous) device view is packed before the kernel runs.
+      const auto xt = nn::swapaxes(x, 1, 2);
+      const auto f  = nn::normal({3, 3, 5, 2}, 0, 1, rng, dtype);
+      EXPECT_LT(max_error(nn::conv2d(nn::swapaxes(xd, 1, 2), f.to(gpu)), nn::conv2d(xt, f)),
+                tolerance * 10);
+
+      const auto with_nan = nn::concat(
+          {nn::reshape(x, {-1}), nn::full({1}, std::numeric_limits<double>::quiet_NaN(), dtype)}, 0);
+      EXPECT_EQ(max_error(nn::relu(with_nan.to(gpu)), nn::relu(with_nan)), 0);
+
+      const auto bias = nn::normal({5}, 0, 1, rng, dtype), pixel = nn::reshape(bias, {1, 1, 1, 5});
+      const auto y    = nn::normal({3, 9, 7, 5}, 0, 1, rng, dtype);
+      EXPECT_EQ(max_error(nn::add(xd, y.to(gpu)), nn::add(x, y)), 0);
+      EXPECT_EQ(max_error(nn::add(xd, bias.to(gpu)), nn::add(x, bias)), 0);
+      EXPECT_EQ(max_error(nn::add(bias.to(gpu), xd), nn::add(bias, x)), 0);
+      EXPECT_EQ(max_error(nn::bias_add(xd, bias.to(gpu)), nn::bias_add(x, bias)), 0);
+      EXPECT_EQ(max_error(xd + pixel.to(gpu), x + pixel), 0);
+      EXPECT_THROW(nn::add(xd, nn::ones({3, 1, 1, 1}, dtype).to(gpu)), std::logic_error);
+
+      const auto gamma = nn::normal({5}, 1, .2, rng, dtype), beta = nn::normal({5}, 0, 1, rng, dtype);
+      const auto mean = nn::normal({5}, 0, 1, rng, dtype),
+                 variance = nn::abs(nn::normal({5}, 1, .5, rng, dtype));
+      EXPECT_LT(
+          max_error(
+              nn::batch_norm_infer(xd, gamma.to(gpu), beta.to(gpu), mean.to(gpu), variance.to(gpu), 1e-5),
+              nn::batch_norm_infer(x, gamma, beta, mean, variance, 1e-5)),
+          tolerance);
+      for (bool keep : {false, true})
+        EXPECT_LT(max_error(nn::global_avg_pool2d(xd, keep), nn::global_avg_pool2d(x, keep)),
+                  tolerance);
+      EXPECT_THROW(nn::add(xd, x), std::invalid_argument);
+
+      // Concat on every axis, including a transposed (noncontiguous) operand.
+      const auto z = nn::normal({3, 9, 7, 2}, 0, 1, rng, dtype);
+      EXPECT_EQ(max_error(nn::concat({xd, z.to(gpu), xd}, 3), nn::concat({x, z, x}, 3)), 0);
+      EXPECT_EQ(max_error(nn::concat({xd, y.to(gpu)}, 0), nn::concat({x, y}, 0)), 0);
+      EXPECT_EQ(max_error(nn::concat({xd, y.to(gpu)}, 2), nn::concat({x, y}, 2)), 0);
+      EXPECT_EQ(max_error(nn::concat({nn::swapaxes(xd, 1, 2), nn::swapaxes(y.to(gpu), 1, 2)}, 1),
+                          nn::concat({nn::swapaxes(x, 1, 2), nn::swapaxes(y, 1, 2)}, 1)),
+                0);
+      // Constant padding (rank 4 and rank 2), including the -inf used by ceil pooling.
+      // Bit-exact comparison, since infinite values cannot be subtracted.
+      const c::Context host;
+      const auto inf = -std::numeric_limits<double>::infinity();
+      const std::vector<std::pair<std::int64_t, std::int64_t>> p4{{0, 1}, {2, 0}, {0, 1}, {1, 1}};
+      EXPECT_TRUE(nn::equal_bits(nn::pad(xd, p4, nn::PadMode::Constant, 1.5).to(host),
+                                 nn::pad(x, p4, nn::PadMode::Constant, 1.5)));
+      const auto m = nn::normal({4, 6}, 0, 1, rng, dtype);
+      EXPECT_TRUE(nn::equal_bits(nn::pad(m.to(gpu), {{1, 0}, {0, 2}}, nn::PadMode::Constant, inf).to(host),
+                                 nn::pad(m, {{1, 0}, {0, 2}}, nn::PadMode::Constant, inf)));
+      // Max pooling with SAME padding (skipped taps), VALID windows and the ceil-pool pattern,
+      // where -inf padding never beats real data and fully padded channels stay -inf.
+      for (auto padding : {nn::Padding::Same, nn::Padding::Valid})
+        EXPECT_TRUE(nn::equal_bits(nn::max_pool2d(xd, 3, 2, padding).to(host),
+                                   nn::max_pool2d(x, 3, 2, padding)));
+      const auto negative = -nn::abs(x);
+      EXPECT_TRUE(nn::equal_bits(
+          nn::max_pool2d(nn::pad(negative.to(gpu), p4, nn::PadMode::Constant, inf), 3, 2,
+                         nn::Padding::Valid)
+              .to(host),
+          nn::max_pool2d(nn::pad(negative, p4, nn::PadMode::Constant, inf), 3, 2,
+                         nn::Padding::Valid)));
+    }
+    // A complete compact ResNet copied to the GPU with ParameterStore::to.
+    nn::models::ResNetConfig cfg;
+    cfg.depth = 18;
+    cfg.classes = 10;
+    cfg.width_divisor = 8;
+    cfg.small_stem = true;
+    nn::ParameterStore p(3), state(3);
+    const auto images = nn::normal({4, 16, 16, 3}, 0, 1, rng);
+    {
+      nn::EnableGradGuard train;
+      nn::models::ResNet(p, state, images, cfg, true); // non-default moving statistics
+    }
+    auto       dp = p.to(gpu), ds = state.to(gpu);
+    EXPECT_EQ(dp.names(), p.names());
+    EXPECT_EQ(dp.count(), p.count());
+    EXPECT_TRUE(dp.parameters().front().context().shares_with(gpu));
+    const auto expected = nn::models::ResNet(p, state, images, cfg, false).logits;
+    const auto actual   = nn::models::ResNet(dp, ds, images.to(gpu), cfg, false).logits;
+    EXPECT_LT(max_error(actual, expected), 1e-4);
+
+    // A full-width CIFAR SqueezeNet (concat, ceil pooling, biased ReLU convs, class-map head).
+    for (int version : {10, 11}) {
+      nn::models::SqueezeNetConfig sq;
+      sq.version    = version;
+      sq.cifar_stem = true;
+      sq.image_size = 32;
+      sq.classes    = 10;
+      nn::ParameterStore sp(7);
+      const auto         cifar = nn::normal({3, 32, 32, 3}, 0, 1, rng);
+      const auto host_logits = nn::models::SqueezeNet(sp, cifar, sq, false).logits;
+      auto       sp_gpu      = sp.to(gpu);
+      const auto gpu_logits  = nn::models::SqueezeNet(sp_gpu, cifar.to(gpu), sq, false).logits;
+      EXPECT_LT(max_error(gpu_logits, host_logits), 1e-5);
+    }
+  }
+  {
+    // Forward-only: a GPU input that needs gradients is rejected while tracking.
+    auto x = nn::ones({2, 3}).to(gpu);
+    x.requires_grad_();
+    EXPECT_THROW(nn::relu(x), std::logic_error);
+    nn::Conv2DOptions grouped = nn::conv_options(1);
+    grouped.groups = 2;
+    nn::NoGradGuard guard;
+    EXPECT_THROW(nn::conv2d(nn::ones({1, 4, 4, 2}).to(gpu), nn::ones({1, 1, 1, 2}).to(gpu), grouped),
+                 std::logic_error);
   }
   EXPECT_EQ(gpu.live_bytes(), 0);
   EXPECT_EQ(nn::live_memory_bytes(), baseline);

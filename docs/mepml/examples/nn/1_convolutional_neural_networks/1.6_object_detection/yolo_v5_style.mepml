@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 CSP branches, serial spatial pooling and a bidirectional PAN neck produce three prediction scales. Ratio/axial-neighbour assignment and detached-IoU objectness targets train the complete compact graph on explicit fixed-centre mosaics.
 
-The editable concept diagram is `diagrams/yolo_v5_style_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/yolo_v5_style_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/yolo_v5_style_concept.tikz > build/yolo_v5_style_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/yolo_v5_style_concept.svg build/yolo_v5_style_concept.dvi > build/yolo_v5_style_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/yolo_v5_style_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Four fitting scenes\nMosaic and flip");
+  diagram.node("n1", {5.2, 0}, "CSP and PAN\nThree scale heads");
+  diagram.node("n2", {10.4, 0}, "CIoU and BCE\nExplicit Adam loop");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/yolo_v5_style_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/yolo_v5_style_concept.svg)
 // result_end
 \caption(YOLO v5-style CSP features and mosaic fitting)
@@ -674,39 +680,39 @@ int main() {
 // result_begin: markdown
 | epoch | three-head objective loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 8.351129 | 1.854955 | 6.496174 | 0.001923 |
-| 2 | 7.707943 | 1.806902 | 5.901041 | 0.008058 |
-| 3 | 7.750933 | 1.738360 | 6.012572 | 0.000486 |
-| 4 | 7.246678 | 1.706497 | 5.540180 | 0.000927 |
-| 5 | 7.412646 | 1.685458 | 5.727187 | 0.008699 |
-| 6 | 7.028820 | 1.679814 | 5.349007 | 0.019336 |
-| 7 | 7.062083 | 1.673057 | 5.389026 | 0.015801 |
-| 8 | 6.962805 | 1.653299 | 5.309506 | 0.015114 |
-| 9 | 6.686875 | 1.646867 | 5.040008 | 0.020947 |
-| 10 | 7.015867 | 1.631738 | 5.384129 | 0.084989 |
-| 11 | 6.289803 | 1.614236 | 4.675567 | 0.034503 |
-| 12 | 6.932517 | 1.620157 | 5.312360 | 0.034186 |
-| 13 | 6.088745 | 1.608534 | 4.480211 | 0.028260 |
-| 14 | 6.977290 | 1.617560 | 5.359730 | 0.041587 |
-| 15 | 5.890575 | 1.583533 | 4.307042 | 0.049081 |
-| 16 | 6.986082 | 1.625753 | 5.360328 | 0.126376 |
-| 17 | 5.957739 | 1.575214 | 4.382525 | 0.066490 |
-| 18 | 6.706419 | 1.601126 | 5.105293 | 0.067686 |
-| 19 | 6.094209 | 1.586918 | 4.507291 | 0.073430 |
-| 20 | 6.548974 | 1.596366 | 4.952608 | 0.127463 |
-| 21 | 6.185806 | 1.590977 | 4.594829 | 0.063573 |
-| 22 | 6.279122 | 1.585869 | 4.693253 | 0.040180 |
-| 23 | 6.421053 | 1.577965 | 4.843088 | 0.087893 |
-| 24 | 6.048617 | 1.587287 | 4.461330 | 0.090885 |
-| 25 | 6.548491 | 1.589515 | 4.958976 | 0.121320 |
-| 26 | 5.766919 | 1.587119 | 4.179800 | 0.108441 |
-| 27 | 6.545418 | 1.574670 | 4.970748 | 0.111352 |
-| 28 | 5.642621 | 1.562598 | 4.080022 | 0.094282 |
-| 29 | 6.558922 | 1.575791 | 4.983131 | 0.086937 |
-| 30 | 5.489684 | 1.562148 | 3.927536 | 0.106765 |
-| 31 | 6.645297 | 1.579887 | 5.065410 | 0.091169 |
-| 32 | 5.621799 | 1.576191 | 4.045608 | 0.092989 |
-451735 learned scalars, 512 Adam updates; selected epoch 20, validation AP50 0.127463. Test: 23 digits in eight scenes, inclusive VOC AP50 0.063752, COCO AP75 0.002704, AP50:95 0.017808, 718 detections. Selected mean absolute first BN state 1.111025; paired learned and BN state restored.
+| 1 | 8.332344 | 1.843644 | 6.488699 | 0.005037 |
+| 2 | 7.668389 | 1.785394 | 5.882995 | 0.006277 |
+| 3 | 7.745255 | 1.732665 | 6.012590 | 0.000492 |
+| 4 | 7.241729 | 1.712960 | 5.528768 | 0.004365 |
+| 5 | 7.409888 | 1.684667 | 5.725221 | 0.003663 |
+| 6 | 7.035866 | 1.682275 | 5.353591 | 0.011265 |
+| 7 | 7.044003 | 1.656780 | 5.387223 | 0.020715 |
+| 8 | 6.973194 | 1.651182 | 5.322013 | 0.050925 |
+| 9 | 6.672268 | 1.642160 | 5.030108 | 0.046056 |
+| 10 | 7.026253 | 1.632048 | 5.394204 | 0.047162 |
+| 11 | 6.293638 | 1.611002 | 4.682636 | 0.026916 |
+| 12 | 6.938884 | 1.622187 | 5.316696 | 0.016685 |
+| 13 | 6.078048 | 1.601947 | 4.476100 | 0.025969 |
+| 14 | 6.976476 | 1.620291 | 5.356185 | 0.024730 |
+| 15 | 5.908190 | 1.580368 | 4.327822 | 0.056080 |
+| 16 | 6.969009 | 1.622940 | 5.346069 | 0.045722 |
+| 17 | 5.954207 | 1.570865 | 4.383342 | 0.058849 |
+| 18 | 6.698580 | 1.605263 | 5.093317 | 0.066473 |
+| 19 | 6.072187 | 1.583261 | 4.488926 | 0.058203 |
+| 20 | 6.516090 | 1.591702 | 4.924388 | 0.090969 |
+| 21 | 6.138736 | 1.579826 | 4.558910 | 0.094782 |
+| 22 | 6.234803 | 1.581846 | 4.652957 | 0.100707 |
+| 23 | 6.349485 | 1.569938 | 4.779547 | 0.085539 |
+| 24 | 5.998344 | 1.583330 | 4.415014 | 0.137032 |
+| 25 | 6.503112 | 1.583408 | 4.919704 | 0.086555 |
+| 26 | 5.701135 | 1.582130 | 4.119005 | 0.081181 |
+| 27 | 6.506558 | 1.574801 | 4.931757 | 0.094869 |
+| 28 | 5.605697 | 1.561682 | 4.044014 | 0.124203 |
+| 29 | 6.517932 | 1.570315 | 4.947618 | 0.131566 |
+| 30 | 5.430547 | 1.561985 | 3.868562 | 0.166000 |
+| 31 | 6.594511 | 1.580821 | 5.013690 | 0.094964 |
+| 32 | 5.598194 | 1.574660 | 4.023534 | 0.101002 |
+451735 learned scalars, 512 Adam updates; selected epoch 30, validation AP50 0.166000. Test: 23 digits in eight scenes, inclusive VOC AP50 0.076108, COCO AP75 0.013551, AP50:95 0.029904, 719 detections. Selected mean absolute first BN state 1.158445; paired learned and BN state restored.
 \image(figures/yolo_v5_style_training.svg)
 // result_end
 \caption(Visible whole-model Adam on fit-only mosaics/flips and dynamic resolutions. Class BCE is shown with its.5 aggregate weight; the other trace contains CIoU and objectness. Validation selects paired learned/BN checkpoints.)

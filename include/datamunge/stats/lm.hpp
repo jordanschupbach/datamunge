@@ -2,7 +2,7 @@
 
 /// @file lm.hpp
 /// @brief R-`lm()`-style linear models: ordinary and weighted least squares fit from a
-///        DataFrame and a formula, with inference, ANOVA, prediction intervals, influence
+///        DataFrame/formula or dense/CSR matrix, with inference, ANOVA, prediction intervals, influence
 ///        diagnostics and R's four diagnostic plots.
 ///
 /// The model is \f$y = X\beta + \varepsilon\f$ with \f$\varepsilon\sim N(0,\sigma^2 W^{-1})\f$,
@@ -19,6 +19,7 @@
 
 #include <datamunge/dstruct/dataframe.hpp>
 #include <datamunge/linalg/dense_matrix.hpp>
+#include <datamunge/linalg/regression.hpp>
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/stats/formula.hpp>
 
@@ -130,6 +131,43 @@ class LM {
     ///
     /// @see LM(const Formula&, const dstruct::DataFrame&, LmOptions)
     LM(const dstruct::DataFrame& data, const std::string& formula, LmOptions options = {});
+
+    /// @brief Fit a numeric response directly on dense predictor columns with Householder QR.
+    /// Owns the fitted design. Adds an intercept by default; predictors must exclude it.
+    /// Unlike the formula interface, nonfinite values are rejected rather than dropped.
+    /// @param y Finite response values, one per predictor row.
+    /// @param predictors Dense double predictors, in fixed column order.
+    /// @param intercept Add a constant coefficient, default true.
+    /// @throws std::invalid_argument For nonfinite values, incompatible shapes or n <= p.
+    /// @throws std::runtime_error For rank-deficient predictors.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM fit({1, 3, 5, 7}, dm::Mat<>{{0}, {1}, {2}, {3}});
+    /// std::print("{:.0f}\n", fit.predict(dm::Mat<>{{4}})[0]); // 9
+    /// @endcode
+    /// @see LM(const std::vector<double>&, const SpMat<>&, bool, linalg::SparseLinearRegressionOptions)
+    LM(const std::vector<double>& y, const Mat<>& predictors, bool intercept = true);
+
+    /// @brief Fit a numeric response on CSR predictors using native sparse regression.
+    /// Retains CSR storage, including any added intercept. Uses Jacobi-preconditioned
+    /// conjugate gradients on normal equations, whose conditioning squares that of X.
+    /// Inference uses a dense p-by-p Gram/covariance matrix; no dense n-by-p design
+    /// or n-by-n orthogonal factor is created. Requires full column rank and n > p.
+    /// @param y Finite response values, one per predictor row.
+    /// @param predictors CSR double predictors, excluding any requested intercept.
+    /// @param intercept Add a constant coefficient, default true.
+    /// @param options Sparse solver settings: default relative residual tolerance
+    /// 1e-12, 1000 iterations, and Jacobi preconditioning. Applied also to ANOVA refits.
+    /// @throws std::invalid_argument For nonfinite values, invalid solver tolerance or incompatible/insufficient rows.
+    /// @throws std::runtime_error For rank deficiency or failure to converge.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM fit({1, 3, 5, 7}, dm::SpMat<>{{0}, {1}, {2}, {3}});
+    /// std::print("{:.0f}\n", fit.predict(dm::SpMat<>{{4}})[0]); // 9
+    /// @endcode
+    /// @see linalg::sparse_linear_regression()
+    LM(const std::vector<double>& y, const SpMat<>& predictors, bool intercept = true,
+       linalg::SparseLinearRegressionOptions options = {{1e-12, 1000}, true});
 
     /// @brief Fits the same model from a formula object, in R's `(formula, data)` argument order.
     ///
@@ -449,6 +487,26 @@ class LM {
     /// @see predict(const dstruct::DataFrame&, PredictionInterval, double), predict_frame()
     [[nodiscard]] std::vector<double> predict(const dstruct::DataFrame& newdata) const;
 
+    /// @brief Predict a matrix-fitted model from dense predictor columns in training order.
+    /// Adds the fitted intercept automatically, without expecting it in newdata.
+    /// @param newdata Finite predictors with the training predictor-column count; may have zero rows.
+    /// @return One fitted mean per input row.
+    /// @throws std::invalid_argument For a formula-fitted model, column mismatch or nonfinite values.
+    /// @par Example
+    /// See the dense matrix constructor's prediction example.
+    /// @see LM(const std::vector<double>&, const Mat<>&, bool)
+    [[nodiscard]] std::vector<double> predict(const Mat<>& newdata) const;
+
+    /// @brief Predict a matrix-fitted model directly from stored CSR entries.
+    /// Implicit zeros contribute zero; no dense predictor grid is allocated.
+    /// @param newdata Finite CSR predictors in training order, excluding any intercept; zero rows are valid.
+    /// @return One fitted mean per input row, computed in O(rows + nnz) time.
+    /// @throws std::invalid_argument For a formula-fitted model, column mismatch or nonfinite values.
+    /// @par Example
+    /// See the sparse matrix constructor's prediction example.
+    /// @see LM(const std::vector<double>&, const SpMat<>&, bool, linalg::SparseLinearRegressionOptions)
+    [[nodiscard]] std::vector<double> predict(const SpMat<>& newdata) const;
+
     /// @brief Predictions with a confidence or prediction interval, like R's
     ///        `predict(fit, newdata, interval = ..., level = ...)`.
     ///
@@ -612,7 +670,27 @@ class LM {
     /// @param data  The data frame given to the constructor.
     /// @param options  The options given to the constructor.
     void fit(const dstruct::DataFrame& data, LmOptions options);
+    /// @brief Validate a direct matrix model and resolve its numeric column schema.
+    /// @param y Finite response with rows entries.
+    /// @param rows Predictor rows.
+    /// @param cols Predictor columns excluding the intercept.
+    /// @param intercept Whether to add a constant coefficient.
+    /// @throws std::invalid_argument For nonfinite response values or invalid dimensions.
+    void initialise_matrix_design(const std::vector<double>& y, std::size_t rows,
+                                  std::size_t cols, bool intercept);
+    /// @brief Fill inference and diagnostics shared by formula, dense and sparse fits.
+    /// @param result Canonical least-squares coefficients and covariance.
+    /// @param y Unweighted response for fitted rows.
+    /// @param fitted Unweighted fitted values, transferred into the model.
+    /// @throws std::runtime_error If an exact fit's Gram matrix is singular.
+    void finish_fit(linalg::LinearRegressionResult<double> result,
+                    const std::vector<double>& y, std::vector<double> fitted);
+    /// @brief Check that a prediction matrix belongs to a direct matrix model's schema.
+    /// @param cols Predictor count, excluding any intercept.
+    /// @throws std::invalid_argument For formula models or incompatible column counts.
+    void validate_matrix_prediction(std::size_t cols) const;
     /// @brief Fills leverage_, standardized_residuals_, studentized_residuals_ and cooks_distance_.
+    /// Visits stored CSR row entries for sparse models; dense models use their weighted design grid.
     void compute_diagnostics();
     /// @brief Throws if @p newdata has a factor level not seen in fitting.
     /// @param newdata  Rows about to be predicted.
@@ -623,6 +701,9 @@ class LM {
     LmOptions  options_; ///< Options given to the constructor.
 
     linalg::DenseMatrix<double> design_matrix_; ///< Weighted design \f$W^{1/2}X\f$ used to fit.
+    std::optional<linalg::SparseCSR<double>> sparse_design_matrix_; ///< Owned sparse fit design; dense storage stays empty.
+    bool matrix_input_{false}; ///< Whether predictors came from a direct matrix constructor.
+    linalg::SparseLinearRegressionOptions sparse_options_{}; ///< Solver options retained for sparse ANOVA refits.
     std::vector<double>         response_;      ///< Weighted response \f$W^{1/2}y\f$ used to fit.
 
     std::vector<double>         coefficients_;    ///< \f$\hat\beta\f$.

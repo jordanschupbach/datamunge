@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Keep every source T-Net/shared MLP or set abstraction,execute full and compact graphs on original CAD surfaces,and distinguish frozen discrete grouping from differentiable point features. These initialization checks fit no classifier;training remains explicit in the following model reports.
 
-The editable concept diagram is `diagrams/point_models_checks_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/point_models_checks_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/point_models_checks_concept.tikz > build/point_models_checks_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/point_models_checks_concept.svg build/point_models_checks_concept.dvi > build/point_models_checks_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/point_models_checks_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original CAD\n surface points");
+  diagram.node("n1", {5.2, 0}, "Both full\n point networks");
+  diagram.node("n2", {10.4, 0}, "Transforms\n and checks");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/point_models_checks_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/point_models_checks_concept.svg)
 // result_end
 \caption(Point model checks:complete graphs on genuine CAD surfaces)
@@ -97,7 +103,6 @@ int main() {
 }
 ```
 // result_begin:
-// Tensor area/barycentric sampling and unit-ball normalization saved42original surfaces.
 // result_end
 
 Fan triangulation is topology metadata. Double tensors compute triangle areas,
@@ -418,8 +423,8 @@ int main() {
 // result_begin: markdown
 | model | maximum reverse-order logit change | repeat error | zero-cloud change | all arrays immutable |
 |---|---:|---:|---:|---|
-| PointNet | 2.04890966e-08 | 0 | 0.0960100442 | true |
-| PointNet++ | 0.0130864717 | 0 | 0.151500165 | true |
+| PointNet | 0 | 0 | 0.0960100517 | true |
+| PointNet++ | 0.013086468 | 0 | 0.151500151 | true |
 \image(figures/point_models_checks_permutation.svg)
 // result_end
 \caption(All12held-out reverse-order effects for both complete initialized compact graphs. Separate scales expose PointNet roundoff and the disclosed PointNet++discrete ordering policy;zero-cloud sensitivity is not recognition accuracy.)

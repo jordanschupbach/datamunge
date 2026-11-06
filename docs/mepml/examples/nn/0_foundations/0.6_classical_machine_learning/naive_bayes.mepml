@@ -36,18 +36,24 @@ label likelihood. Gaussian Adam fits means and log variances; after each update,
 explicit projection enforces variance at least .001. Fitting is iterative, not a constructor
 side effect. Each full-batch iteration and prediction costs O(ND) and O(QKD), respectively.
 
-The concept diagram has a retained TikZ source in `diagrams/naive_bayes_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/naive_bayes_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/naive_bayes_concept.tikz > build/naive_bayes_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/naive_bayes_concept.svg build/naive_bayes_concept.dvi > build/naive_bayes_concept.render.log 2>&1
-printf 'Rendered build/naive_bayes_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/naive_bayes_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Labelled tensor inputs\nclass-conditional likelihood");
+  diagram.node("n1", {5.2, 0}, "Learnable probability logits\ninclude smoothing objective");
+  diagram.node("n2", {10.4, 0}, "Explicit tensor Adam\ncheck closed-form moments");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/naive_bayes_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/naive_bayes_concept.svg from local TikZ source.
 // \image(figures/naive_bayes_concept.svg)
 // result_end
 \caption(Conditional independence is a model assumption, not a consequence of normalization)

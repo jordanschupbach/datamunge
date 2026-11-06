@@ -31,18 +31,24 @@ and UNK=1. PadTokens right-truncates, right-pads and emits a separate Float32 ma
 zero mask mass; a masked mean must guard its denominator. Neither tokenizer normalises Unicode,
 lowercases text or learns the WordPiece vocabulary.
 
-The concept diagram has a retained TikZ source in `diagrams/text_tokenization_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/text_tokenization_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/text_tokenization_concept.tikz > build/text_tokenization_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/text_tokenization_concept.svg build/text_tokenization_concept.dvi > build/text_tokenization_concept.render.log 2>&1
-printf 'Rendered build/text_tokenization_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/text_tokenization_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Training word counts\nor fixed vocabulary");
+  diagram.node("n1", {5.2, 0}, "Ranked BPE merges\nor greedy WordPiece");
+  diagram.node("n2", {10.4, 0}, "IDs + padding mask\nPAD=0; UNK=1");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/text_tokenization_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/text_tokenization_concept.svg from local TikZ source.
 // \image(figures/text_tokenization_concept.svg)
 // result_end
 \caption(Vocabulary fitting, unknown text and padding masks are separate decisions)

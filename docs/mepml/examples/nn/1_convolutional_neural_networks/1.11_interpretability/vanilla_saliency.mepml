@@ -19,18 +19,24 @@ $$ g_i=\frac{\partial}{\partial x_i}\sum_b s_{c_b}(x_b). $$
 
 A two-pixel fixture makes sign and batch scaling hand-checkable. The shared CNN uses genuine MNIST observations,explicit tensor Adam and validation-only selection;fresh restoration precedes every held-out metric and explanation map.
 
-The editable concept diagram is `diagrams/vanilla_saliency_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/vanilla_saliency_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/vanilla_saliency_concept.tikz > build/vanilla_saliency_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/vanilla_saliency_concept.svg build/vanilla_saliency_concept.dvi > build/vanilla_saliency_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/vanilla_saliency_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original digits\n visible Adam");
+  diagram.node("n1", {5.2, 0}, "Fixed raw logit\n ordinary gradient");
+  diagram.node("n2", {10.4, 0}, "Signed maps\n target and weight controls");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/vanilla_saliency_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/vanilla_saliency_concept.svg)
 // result_end
 \caption(Vanilla saliency:visible MNIST Adam and signed raw-logit derivatives)
@@ -316,7 +322,7 @@ int main() {
 | 1 | 1.953881 | 1.446763 |
 | 2 | 1.048204 | 0.633363 |
 | 3 | 0.564760 | 0.366006 |
-96explicit Adam updates;selected 3,validation 0.366006;fixed fitNLL 2.350038605->0.395236061.
+96explicit Adam updates;selected 3,validation 0.366006;fixed fitNLL 2.350038606->0.395236072.
 \image(figures/vanilla_saliency_training.svg)
 // result_end
 \caption(All96actual classifier updates are explicit,including the final eight-record batch each epoch. Validation selects a checkpoint,while actual initialization is retained unchanged for later sensitivity controls.)
@@ -412,7 +418,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Fresh restore/repeat 0,single/batch 2.86102295e-06within5e-6;all8learned arrays immutable.
+Fresh restore/repeat 0,single/batch 0within5e-6;all8learned arrays immutable.
 | predictor | accuracy | macroF1 | NLL | all ten recalls |
 |---|---:|---:|---:|---|
 | learned | 0.880000 | 0.880701 | 0.443415 | [0.95, 1, 0.9, 0.85, 0.7, 0.85, 0.9, 0.85, 0.8, 1] |
@@ -573,7 +579,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-All7840selected input derivatives:positive 4406,negative 3434;repeat 0,single/batch 2.98023224e-08;target/initial-weight L1 571.481628/449.962189;real FDcoordinate407error 0.000268697739;all16learned/control arrays immutable.
+All7840selected input derivatives:positive 4406,negative 3434;repeat 0,single/batch 0;target/initial-weight L1 571.481628/449.962219;real FDcoordinate407error 0.000745534897;all16learned/control arrays immutable.
 | true digit | original source ID | fixed target | fixed runner |
 |---:|---:|---:|---:|
 | 0 | 66921 | 0 | 2 |

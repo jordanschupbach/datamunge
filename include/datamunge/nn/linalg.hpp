@@ -13,12 +13,14 @@
 /// Like TF, `cholesky` and `eigh` read only the lower triangle of their input,
 /// and `triangular_solve` only the triangle it is told to use.
 ///
-/// Backends: when the library is built with LAPACK (DATAMUNGE_HAVE_LAPACK:
-/// Accelerate on macOS, OpenBLAS's LAPACK or another LAPACK elsewhere), the
-/// decompositions of larger matrices call it (gesdd, syevd, geqrf/orgqr,
-/// potrf, getrf/getrs, trsm, geev); small matrices, where the built-in
-/// kernels are faster, keep using them (see `set_linalg_backend`). Both give
-/// the same results to rounding, with the same sign conventions:
+/// Backends: every decomposition has a built-in kernel, used by default (the
+/// library depends on no BLAS or LAPACK). Builds configured with
+/// DATAMUNGE_USE_LAPACK=ON (DATAMUNGE_HAVE_LAPACK: Accelerate on macOS,
+/// OpenBLAS's LAPACK or another LAPACK elsewhere) send the decompositions of
+/// larger matrices to it instead (gesdd, syevd, geqrf/orgqr, potrf,
+/// getrf/getrs, trsm, geev); small matrices, where the built-in kernels are
+/// faster, keep using them (see `set_linalg_backend`). Both give the same
+/// results to rounding, with the same sign conventions:
 ///  - QR: R's diagonal has the opposite sign of the pivot column's leading
 ///    entry (Householder, as LAPACK and Eigen/TF), unless the column below is
 ///    already zero (then the reflection is skipped).

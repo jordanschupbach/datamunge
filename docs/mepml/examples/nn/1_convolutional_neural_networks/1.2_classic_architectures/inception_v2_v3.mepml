@@ -51,18 +51,24 @@ quarter widths, BN momentum .9, batch eight and 8 epochs (128 updates each, kept
 resize to 64/107 pixels. Each uses 128 fitting, 64 validation and 64 official-test images with tensor crop/flip augmentation.
 Both learned and moving-state stores are checkpointed. Cached CIFAR-10 is required.
 
-The editable concept diagram is `diagrams/inception_v2_v3_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/inception_v2_v3_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/inception_v2_v3_concept.tikz > build/inception_v2_v3_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/inception_v2_v3_concept.svg build/inception_v2_v3_concept.dvi > build/inception_v2_v3_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/inception_v2_v3_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Smaller spatial factors\nnormalised branches");
+  diagram.node("n1", {5.2, 0}, "v2 or asymmetric v3\nall blocks retained");
+  diagram.node("n2", {10.4, 0}, "Explicit smoothed Adam\nsave weights and BN state");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/inception_v2_v3_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/inception_v2_v3_concept.svg)
 // result_end
 \caption(Inception v2 and v3: Factorised Filters, Batch State and Smoothed Targets)
@@ -593,8 +599,8 @@ Inception v3: 128 explicit Adam updates.
 
 | model | parameters | moving_state | best_epoch | validation_NLL | selected_train_NLL | test_NLL | test_accuracy |
 | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Inception v2 | 639825 | 4944 | 1 | 2.359059 | 2.379475 | 2.374140 | 0.109375 |
-| Inception v3 | 1383484 | 9056 | 3 | 2.375061 | 2.337112 | 2.563617 | 0.203125 |
+| Inception v2 | 639825 | 4944 | 1 | 2.249200 | 2.295367 | 2.395787 | 0.109375 |
+| Inception v3 | 1383484 | 9056 | 1 | 2.373746 | 2.255336 | 2.492810 | 0.062500 |
 
 \image(figures/inception_v2_v3_training.svg)
 // result_end

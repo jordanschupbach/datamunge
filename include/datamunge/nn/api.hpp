@@ -187,7 +187,7 @@ class NnModel {
   std::unique_ptr<Impl> impl_;
 };
 
-/// The GEMM backend nn uses ("accelerate", "openblas", "cblas" or "builtin").
+/// The GEMM backend nn uses: "inhouse-<isa>" (e.g. "inhouse-avx512"), or "accelerate", "openblas" or "cblas" in DATAMUNGE_USE_BLAS builds.
 std::string nn_gemm_backend();
 /// Threads used by nn kernels.
 int  nn_get_num_threads();

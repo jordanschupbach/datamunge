@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Observed RGB feeds a complete two-stack depth4 hourglass. Both raw joint heads receive explicit masked Gaussian supervision. The report owns all learned leaves,BN state,SGD reference fitting,Adam minibatches and paired validation checkpoint. Numeric crop preparation,targets,decoding,PCK and skeleton rasterization use tensors;original source identities keep the tiny data experiment interpretable.
 
-The editable concept diagram is `diagrams/stacked_hourglass_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/stacked_hourglass_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/stacked_hourglass_concept.tikz > build/stacked_hourglass_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/stacked_hourglass_concept.svg build/stacked_hourglass_concept.dvi > build/stacked_hourglass_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/stacked_hourglass_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed person RGB\nTrue annotated joints");
+  diagram.node("n1", {5.2, 0}, "Two recursive stacks\nVisible SGD and Adam");
+  diagram.node("n2", {10.4, 0}, "Restore RGB-only net\nInspect every joint");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/stacked_hourglass_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/stacked_hourglass_concept.svg)
 // result_end
 \caption(Stacked hourglass:visible tensor supervision on real person crops)
@@ -652,14 +658,14 @@ int main() {
 110450 learned values/396 tensors,3936 BN values/192 tensors warmed before Adam(.001).
 | epoch | fitting total | first head | final head | validation |
 |---:|---:|---:|---:|---:|
-| 1 | 2.165147 | 1.219496 | 0.945651 | 13.746616 |
-| 2 | 1.658574 | 0.902346 | 0.756228 | 2.271479 |
-| 3 | 1.419976 | 0.761686 | 0.658289 | 1.724545 |
-18 visible updates;selected epoch3,restored validation 1.724545;fixed training-mode fit 2.219143->1.244535.
-RGB-only restored prediction:checkpoint parity 0,single/batch maximum 3.57627869e-06,repeat exact;all396 learned/192 BN tensors immutable;different-crop heatmap change 0.757771.
+| 1 | 2.166006 | 1.220454 | 0.945551 | 15.360256 |
+| 2 | 1.640833 | 0.894115 | 0.746718 | 5.403980 |
+| 3 | 1.420619 | 0.769769 | 0.650851 | 3.680567 |
+18 visible updates;selected epoch3,restored validation 3.680567;fixed training-mode fit 2.219143->1.245077.
+RGB-only restored prediction:checkpoint parity 0,single/batch maximum 0,repeat exact;all396 learned/192 BN tensors immutable;different-crop heatmap change 0.733561.
 | estimate | PCK@.2 box | NME | mean crop pixels | annotated joints |
 |---|---:|---:|---:|---:|
-| learned final head | 0.103448 | 0.589964 | 66.137554 | 116 |
+| learned final head | 0.077586 | 0.571400 | 64.129409 | 116 |
 | visible SGD prior | 0.172414 | 0.365837 | 41.032688 | 116 |
 | fixed crop center | 0.068966 | 0.411891 | 46.302833 | 116 |
 \image(figures/stacked_hourglass_training.svg)

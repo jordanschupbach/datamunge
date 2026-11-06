@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 Faster R-CNN shares image features between an anchor-scoring/refining RPN and a Fast R-CNN head. The training objective sums proposal and region losses. Discrete proposal selection is detached, so the shared backbone receives both tasks while RPN-specific parameters learn from their own targets. The compact source architecture is fitted fully below.
 
-The editable concept diagram is `diagrams/faster_rcnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/faster_rcnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/faster_rcnn_concept.tikz > build/faster_rcnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/faster_rcnn_concept.svg build/faster_rcnn_concept.dvi > build/faster_rcnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/faster_rcnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Shared image features\nScore nine anchors");
+  diagram.node("n1", {5.2, 0}, "Detached proposals\nSample and pool RoIs");
+  diagram.node("n2", {10.4, 0}, "RPN plus head loss\nExplicit joint Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/faster_rcnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/faster_rcnn_concept.svg)
 // result_end
 \caption(Faster R-CNN learned proposals and joint training)
@@ -489,12 +495,12 @@ int main() {
 // result_begin: markdown
 | epoch | joint loss | RPN loss | RoI loss | val AP50 | val RPN recall .5 |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 5.065677 | 2.428689 | 2.636989 | 0.016797 | 0.969697 |
-| 2 | 4.288624 | 1.424145 | 2.864479 | 0.006814 | 1.000000 |
-| 3 | 3.866297 | 1.123286 | 2.743011 | 0.186458 | 0.969697 |
-| 4 | 3.334174 | 0.858848 | 2.475326 | 0.302578 | 1.000000 |
-| 5 | 2.937619 | 0.635285 | 2.302334 | 0.414584 | 1.000000 |
-1026624 learned scalars, 160 Adam updates; selected epoch 5, validation AP50 0.414584. Test: 8 scenes, 23 digits, 100.000 proposals/image, proposal recall .5/.7 1.000000/0.695652; inclusive VOC AP50 0.308554, COCO AP75 0.062168, AP50:95 0.145654; 249 detections. One shared backbone evaluation per image; no moving state.
+| 1 | 4.978257 | 2.432324 | 2.545933 | 0.016724 | 0.939394 |
+| 2 | 4.209412 | 1.420675 | 2.788738 | 0.020348 | 0.969697 |
+| 3 | 3.824490 | 1.090353 | 2.734137 | 0.128993 | 0.969697 |
+| 4 | 3.313250 | 0.794847 | 2.518403 | 0.184654 | 1.000000 |
+| 5 | 2.874996 | 0.657550 | 2.217446 | 0.352982 | 1.000000 |
+1026624 learned scalars, 160 Adam updates; selected epoch 5, validation AP50 0.352982. Test: 8 scenes, 23 digits, 100.000 proposals/image, proposal recall .5/.7 1.000000/0.608696; inclusive VOC AP50 0.407976, COCO AP75 0.052989, AP50:95 0.161036; 238 detections. One shared backbone evaluation per image; no moving state.
 \image(figures/faster_rcnn_training.svg)
 // result_end
 \caption(The visible joint Adam loop fits RPN and RoI objectives, while detached proposals are reused from the same forward pass. Validation AP selects the checkpoint; proposal recall is measured independently at .5 and .7 IoU.)

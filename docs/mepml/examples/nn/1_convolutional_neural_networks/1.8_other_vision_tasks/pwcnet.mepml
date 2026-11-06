@@ -18,18 +18,24 @@ volume measures local matches. Dense estimators predict fixed input-pixel/20
 flow;learned upflow/upfeature connect levels,and a dilated residual context
 refines the finest field. Only observed RGB enters forward inference.
 
-The editable concept diagram is `diagrams/pwcnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/pwcnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/pwcnet_concept.tikz > build/pwcnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/pwcnet_concept.svg build/pwcnet_concept.dvi > build/pwcnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/pwcnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Share feature pyramid\nTwo observed frames");
+  diagram.node("n1", {5.2, 0}, "Warp and match costs\nVisible Adam loop");
+  diagram.node("n2", {10.4, 0}, "Refine dense flow\nInspect real errors");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/pwcnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/pwcnet_concept.svg)
 // result_end
 \caption(PWC-Net: shared pyramids and visible tensor flow fitting)
@@ -657,8 +663,8 @@ int main() {
 | epoch | weighted fit | L2 | L3 | L4 | L5 | L6 | validation |
 |---:|---:|---:|---:|---:|---:|---:|---:|
 | 1 | 0.069799 | 0.171468 | 0.167380 | 0.158362 | 0.160053 | 0.160302 | 0.021812 |
-| 2 | 0.067691 | 0.161961 | 0.160107 | 0.155129 | 0.151326 | 0.156474 | 0.035689 |
-| 3 | 0.067031 | 0.157462 | 0.158331 | 0.155948 | 0.152501 | 0.154191 | 0.026394 |
+| 2 | 0.067693 | 0.161910 | 0.160182 | 0.155165 | 0.151333 | 0.156474 | 0.035724 |
+| 3 | 0.067017 | 0.157363 | 0.158330 | 0.155864 | 0.152353 | 0.154191 | 0.026501 |
 48 visible Adam updates;selected epoch1,restored validation 0.021812;fixed fitting weighted loss 0.050475->0.043961.
 Pair-only deployment parity 0;all126 tensors immutable,repeat exact,single/batch agree;second-image sensitivity 0.020685px.
 | model | EPE px | AAE degrees | bad1 | bad3 | Fl-all |

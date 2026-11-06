@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 EfficientDet combines feature-only EfficientNet, repeated weighted bidirectional feature pyramids and shared separable classification/regression towers. Learned fusion-edge scalars enter tensor optimization alongside convolution and normalization parameters.
 
-The editable concept diagram is `diagrams/efficientdet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/efficientdet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/efficientdet_concept.tikz > build/efficientdet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/efficientdet_concept.svg build/efficientdet_concept.dvi > build/efficientdet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/efficientdet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "EfficientNet endpoints\nRepeated weighted BiFPN");
+  diagram.node("n1", {5.2, 0}, "Shared separable heads\nPer-level BN state");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam fitting\nPaired checkpoints");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/efficientdet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/efficientdet_concept.svg)
 // result_end
 \caption(EfficientDet learned BiFPN fusion and shared separable heads)
@@ -538,31 +544,31 @@ int main() {
 // result_begin: markdown
 | epoch | focal + box loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 6.357488 | 2.408602 | 3.948886 | 0.000000 |
-| 2 | 5.279017 | 1.547422 | 3.731594 | 0.000138 |
-| 3 | 4.512472 | 1.322779 | 3.189693 | 0.000000 |
-| 4 | 4.159177 | 1.275962 | 2.883216 | 0.000000 |
-| 5 | 4.070663 | 1.277504 | 2.793159 | 0.000255 |
-| 6 | 3.688065 | 1.197858 | 2.490208 | 0.000261 |
-| 7 | 3.663479 | 1.197774 | 2.465706 | 0.000319 |
-| 8 | 3.365681 | 1.162243 | 2.203438 | 0.000175 |
-| 9 | 3.184344 | 1.135152 | 2.049192 | 0.000386 |
-| 10 | 3.012106 | 1.131067 | 1.881039 | 0.000000 |
-| 11 | 2.841011 | 1.118849 | 1.722162 | 0.000127 |
-| 12 | 2.692658 | 1.113017 | 1.579642 | 0.001755 |
-| 13 | 2.522884 | 1.075483 | 1.447401 | 0.001262 |
-| 14 | 2.368525 | 1.063096 | 1.305429 | 0.004157 |
-| 15 | 2.350239 | 1.052610 | 1.297629 | 0.000646 |
-| 16 | 2.195088 | 1.029797 | 1.165290 | 0.000794 |
-| 17 | 2.063001 | 1.022661 | 1.040341 | 0.002074 |
-| 18 | 1.995845 | 1.009623 | 0.986221 | 0.010198 |
-| 19 | 1.928610 | 0.985872 | 0.942738 | 0.037739 |
-| 20 | 1.806919 | 0.945956 | 0.860963 | 0.019398 |
-| 21 | 1.754877 | 0.949946 | 0.804930 | 0.037840 |
-| 22 | 1.722949 | 0.926869 | 0.796080 | 0.001110 |
-| 23 | 1.692576 | 0.920752 | 0.771824 | 0.007346 |
-| 24 | 1.650021 | 0.896718 | 0.753303 | 0.013626 |
-342038 learned scalars, 384 Adam updates; selected epoch 21, validation AP50 0.037840. Test: 23 digits in eight scenes, inclusive VOC AP50 0.004607, COCO AP75 0.000000, AP50:95 0.000526, 800 detections. Selected mean absolute first BN state 1.082101; paired learned and BN state restored.
+| 1 | 6.351298 | 2.418445 | 3.932854 | 0.000000 |
+| 2 | 5.301573 | 1.645964 | 3.655609 | 0.000000 |
+| 3 | 4.632309 | 1.336638 | 3.295670 | 0.000218 |
+| 4 | 4.365880 | 1.254394 | 3.111486 | 0.000000 |
+| 5 | 3.916493 | 1.218539 | 2.697954 | 0.000000 |
+| 6 | 3.728856 | 1.183887 | 2.544969 | 0.000000 |
+| 7 | 3.530698 | 1.210074 | 2.320624 | 0.000386 |
+| 8 | 3.315913 | 1.164930 | 2.150983 | 0.001277 |
+| 9 | 3.052977 | 1.122639 | 1.930338 | 0.001157 |
+| 10 | 2.922694 | 1.129762 | 1.792932 | 0.001312 |
+| 11 | 2.667882 | 1.120804 | 1.547079 | 0.001484 |
+| 12 | 2.652842 | 1.093357 | 1.559485 | 0.000750 |
+| 13 | 2.539971 | 1.098179 | 1.441792 | 0.000265 |
+| 14 | 2.340151 | 1.082545 | 1.257606 | 0.000147 |
+| 15 | 2.274209 | 1.034767 | 1.239442 | 0.000000 |
+| 16 | 2.186149 | 1.027391 | 1.158758 | 0.000983 |
+| 17 | 2.073770 | 1.025666 | 1.048104 | 0.001445 |
+| 18 | 2.032635 | 1.002456 | 1.030179 | 0.001059 |
+| 19 | 1.948251 | 0.979082 | 0.969169 | 0.001382 |
+| 20 | 1.806588 | 0.948697 | 0.857892 | 0.001650 |
+| 21 | 1.831486 | 0.984920 | 0.846566 | 0.001370 |
+| 22 | 1.681717 | 0.904547 | 0.777170 | 0.002486 |
+| 23 | 1.662142 | 0.899856 | 0.762286 | 0.006140 |
+| 24 | 1.629497 | 0.900869 | 0.728627 | 0.006656 |
+342038 learned scalars, 384 Adam updates; selected epoch 24, validation AP50 0.006656. Test: 23 digits in eight scenes, inclusive VOC AP50 0.000000, COCO AP75 0.000000, AP50:95 0.000000, 800 detections. Selected mean absolute first BN state 1.073359; paired learned and BN state restored.
 \image(figures/efficientdet_training.svg)
 // result_end
 \caption(Visible Adam fits the full compact EfficientDet, including learned BiFPN edge scalars. Focal and box curves exclude explicit kernel L2. Validation selects and restores both learned weights and all per-level BN statistics.)

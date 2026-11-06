@@ -29,18 +29,24 @@ is different from [1], and a zero-sized axis must retain its dimensions. Native 
 C-order little-endian NPY 1.0; the decoder also accepts supported newer header versions. CRC and
 length checks reject damaged data. No Python pickle or graph code is executed.
 
-The concept diagram has a retained TikZ source in `diagrams/numpy_weights_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/numpy_weights_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/numpy_weights_concept.tikz > build/numpy_weights_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/numpy_weights_concept.svg build/numpy_weights_concept.dvi > build/numpy_weights_concept.render.log 2>&1
-printf 'Rendered build/numpy_weights_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/numpy_weights_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "NPZ named arrays\nweights [2,1], bias [1]");
+  diagram.node("n1", {5.2, 0}, "Validate dtype + shape\nknown affine function");
+  diagram.node("n2", {10.4, 0}, "Native prediction\nY=XW+b");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/numpy_weights_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/numpy_weights_concept.svg from local TikZ source.
 // \image(figures/numpy_weights_concept.svg)
 // result_end
 \caption(Names and array shapes form a model contract beyond the file format)

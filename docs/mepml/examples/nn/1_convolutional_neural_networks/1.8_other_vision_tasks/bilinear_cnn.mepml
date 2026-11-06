@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Average aligned local outer products before smoothed signed-root and unit normalization,then optimize a classifier. Keep the two feature streams independent,fit only the official training subset,and select a checkpoint using separate official validation images.
 
-The editable concept diagram is `diagrams/bilinear_cnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/bilinear_cnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/bilinear_cnn_concept.tikz > build/bilinear_cnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/bilinear_cnn_concept.svg build/bilinear_cnn_concept.dvi > build/bilinear_cnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/bilinear_cnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Two aligned streams\nIndependent features");
+  diagram.node("n1", {5.2, 0}, "Local outer products\nMean,root and unit");
+  diagram.node("n2", {10.4, 0}, "Visible optimizer loops\nRestore and inspect");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/bilinear_cnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/bilinear_cnn_concept.svg)
 // result_end
 \caption(Bilinear CNNs on actual flower photographs)
@@ -250,7 +256,6 @@ int main() {
 }
 ```
 // result_begin:
-// Validated48/48/48 officially disjoint flower images after tensor resizing.
 // result_end
 
 Run preparation from the repository root after building the library(or use its
@@ -603,14 +608,14 @@ int main() {
 // result_begin: markdown
 | epoch | fitting NLL | validation NLL | validation accuracy |
 |---:|---:|---:|---:|
-| 1 | 1.811956 | 1.788223 | 0.187500 |
-| 2 | 1.794801 | 1.785875 | 0.166667 |
-| 3 | 1.788103 | 1.778811 | 0.354167 |
-36 explicit Adam updates;selected epoch3,restored validation NLL 1.778811;balanced fixed fitting NLL 1.792877->1.772950.
+| 1 | 1.812007 | 1.788707 | 0.166667 |
+| 2 | 1.795151 | 1.787406 | 0.166667 |
+| 3 | 1.789299 | 1.778918 | 0.250000 |
+36 explicit Adam updates;selected epoch3,restored validation NLL 1.778918;balanced fixed fitting NLL 1.792877->1.770061.
 Independent deployment parity 0;repeat exact,single/batch agreement,all54 leaves immutable.
 | model | held-out NLL | accuracy | macro recall | Brier sum |
 |---|---:|---:|---:|---:|
-| learned bilinear | 1.780632 | 0.333333 | 0.333333 | 0.829591 |
+| learned bilinear | 1.779952 | 0.208333 | 0.208333 | 0.829339 |
 | untrained bilinear | 1.792301 | 0.166667 | 0.166667 | 0.833486 |
 | uniform | 1.791759 | 0.166667 | 0.166667 | 0.833333 |
 | fitting-only color SGD | 2.289061 | 0.375000 | 0.375000 | 0.781003 |

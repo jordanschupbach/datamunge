@@ -29,18 +29,24 @@ fixed-name 28 by 28 convenience loading. The raw reader accepts gzip by magic by
 channel axis may be added after loading; the same row permutation must gather both tensors.
 Reading and copying cost O(number of elements).
 
-The concept diagram has a retained TikZ source in `diagrams/idx_loader_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/idx_loader_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/idx_loader_concept.tikz > build/idx_loader_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/idx_loader_concept.svg build/idx_loader_concept.dvi > build/idx_loader_concept.render.log 2>&1
-printf 'Rendered build/idx_loader_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/idx_loader_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "IDX header\ntype, rank, dimensions");
+  diagram.node("n1", {5.2, 0}, "Exact tensor payload\nrow-major values");
+  diagram.node("n2", {10.4, 0}, "Paired gather + cast\nimages and labels");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/idx_loader_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/idx_loader_concept.svg from local TikZ source.
 // \image(figures/idx_loader_concept.svg)
 // result_end
 \caption(Big-endian dimensions describe bytes; normalisation is a separate operation)

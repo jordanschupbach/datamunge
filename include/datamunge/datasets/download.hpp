@@ -4,7 +4,7 @@
 /// @brief Downloads and caches the datasets too large to compile into the library.
 ///
 /// Files are stored under data_home() (one subdirectory per dataset) and downloaded at most
-/// once: later calls find them on disk. Each download is checked against a pinned MD5
+/// once: later calls find them on disk. Each download is checked against a pinned MD5 or SHA-256
 /// checksum and moved into place only once complete, so an interrupted download never leaves
 /// a corrupt file behind. Downloads run the `curl` program, which must be on `PATH`.
 ///
@@ -40,7 +40,7 @@ namespace datamunge::datasets {
 std::string data_home();
 
 /// @brief The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100",
-///        "diamonds", "fashion_mnist", "mnist", "sudoku".
+///        "diamonds", "fashion_mnist", "mnist", "rebot_devarm", "sudoku".
 ///
 /// @par Example
 /// @code
@@ -55,12 +55,19 @@ std::vector<std::string> downloadable();
 /// IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
 /// `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
 /// "sudoku" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.
+/// "rebot_devarm" holds 38 pinned Seeed DevArm CAD/URDF/STL files and the
+/// CERN-OHL-W-2.0 source license in their upstream relative directory layout.
+/// DevArm verifies the size and SHA-256 of every cached file on every call;
+/// changed files throw without replacement. Missing files are staged and verified
+/// before publication. It uses the same offline/mirror/cache controls, and works
+/// without the optional native data-preparation dependencies. Hashing uses memory
+/// proportional to the largest source file (about 35 MB).
 /// Approximate download sizes: diamonds 2.7 MB, california_housing 1.4 MB, MNIST 11 MB,
-/// Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB.
+/// Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB, DevArm 56 MB.
 ///
 /// @param name One of downloadable().
 /// @param directory Where the files live; empty means `data_home() + "/" + name`. Files
-///        already present there are used as they are.
+///        already present there are used as they are, except DevArm's verified files.
 /// @return The local path of the CSV file or the dataset directory.
 /// @throws std::invalid_argument for an unknown name.
 /// @throws std::runtime_error if files are missing and downloading is disabled or fails, or
@@ -70,6 +77,9 @@ std::vector<std::string> downloadable();
 /// @code
 /// const auto housing = dm::datasets::read_csv(dm::datasets::fetch("california_housing"));
 /// @endcode
+/// For a complete CAD asset tree, use `dm::datasets::fetch("rebot_devarm")`.
+/// @par References
+/// - Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm
 /// @see data_home(), downloadable(), download_file()
 std::string fetch(const std::string& name, const std::string& directory = "");
 

@@ -4,9 +4,11 @@
 
 #include <algorithm>
 #include <cmath>
+#include <datamunge/nn/blas.hpp>
 #include <datamunge/nn/einsum.hpp>
 #include <datamunge/nn/linalg.hpp>
 #include <datamunge/nn/nn.hpp>
+#include <numbers>
 #include <vector>
 
 namespace nn = datamunge::nn;
@@ -462,6 +464,283 @@ double rel_diff(const std::pair<Tensor, Tensor>& r) {
 }
 
 }  // namespace
+
+TEST(NnLinalgBlocked, LargeFactorizationsAndSolvesMatchTheirDefinitions) {
+  // The triangular solve with several right-hand sides runs blocked from 16,
+  // Cholesky from 65 (both recursive, 64-row leaves) and LU from 96 (64-row
+  // blocks around the GEMM); sizes straddle the switches and the block edges.
+  BackendScope builtin(nn::LinalgBackend::Builtin);
+  for (std::int64_t n : {15, 16, 17, 64, 65, 95, 96, 97, 127, 128, 129, 200, 300}) {
+    const auto rel = [](const Tensor& got, const Tensor& want) {
+      return max_abs_diff(got, want) / std::max(1.0, nn::max(nn::abs(want)).item());
+    };
+    // Cholesky: lower, L L^T = A.
+    const Tensor a = spd({}, n, 900 + n), l = nn::cholesky(a);
+    EXPECT_LT(rel(nn::matmul(l, l, false, true), a), 1e-12) << n;
+    EXPECT_EQ(max_abs_diff(nn::band_part(l, -1, 0), l), 0.0) << n;
+    // Not positive definite: the failing pivot (row 100, or the last row) is
+    // past the first block from n = 65 on.
+    std::vector<double> shift(static_cast<std::size_t>(n), 0.0);
+    shift[static_cast<std::size_t>(std::min<std::int64_t>(100, n - 1))] = -1000.0;
+    EXPECT_THROW(nn::cholesky(nn::add(a, nn::matrix_diag(nn::from_vector(shift)))), std::invalid_argument) << n;
+    // Triangular solves, every orientation, one to many right-hand sides.
+    const Tensor t = nn::add(nn::band_part(nn::mul(rnd({n, n}, 910 + n), 0.1), -1, 0), nn::eye(n, DType::Float64));
+    for (std::int64_t k : {1, 4, 70})
+      for (bool lower : {true, false})
+        for (bool adjoint : {false, true}) {
+          const Tensor tri = lower ? t : nn::matrix_transpose(t);
+          const Tensor b   = rnd({n, k}, 920 + n + k);
+          const Tensor x   = nn::triangular_solve(tri, b, lower, adjoint);
+          const Tensor op  = adjoint ? nn::matrix_transpose(tri) : tri;
+          EXPECT_LT(rel(nn::matmul(op, x), b), 1e-12) << n << " k=" << k << " lower=" << lower << " adjoint=" << adjoint;
+        }
+    // LU: general solves (both orientations) and determinants. Partial pivoting is backward
+    // stable, so the solves are checked by the residual relative to |op(g)| |x| (at most 1.6e-15
+    // here); the plain residual follows the condition number (n = 127: |x| up to 1.5e4, 1e-10).
+    const Tensor g = nn::add(rnd({n, n}, 930 + n), nn::mul(nn::eye(n, DType::Float64), 4.0));
+    for (bool adjoint : {false, true})
+      for (std::int64_t k : {1, 9}) {
+        const Tensor b = rnd({n, k}, 940 + n + k), x = nn::solve(g, b, adjoint);
+        const Tensor op = adjoint ? nn::matrix_transpose(g) : g;
+        const double backward_error =
+            max_abs_diff(nn::matmul(op, x), b) / nn::max(nn::matmul(nn::abs(op), nn::abs(x))).item();
+        EXPECT_LT(backward_error, 1e-13) << n << " k=" << k << " adjoint=" << adjoint;
+      }
+    EXPECT_LT(rel(nn::matmul(g, nn::inverse(g)), nn::eye(n, DType::Float64)), 1e-10) << n;
+    // det(L U) = prod diag(U) for unit-lower L and upper U; one row swap makes the sign -1.
+    const auto strict = [](const Tensor& x, bool lower_part) {
+      return nn::sub(lower_part ? nn::band_part(x, -1, 0) : nn::band_part(x, 0, -1),
+                     nn::matrix_diag(nn::matrix_diag_part(x)));
+    };
+    const Tensor diag  = nn::add(nn::mul(nn::abs(rnd({n}, 960 + n)), 0.1), 0.95);
+    const Tensor unit  = nn::add(strict(nn::mul(rnd({n, n}, 950 + n), 0.05), true), nn::eye(n, DType::Float64));
+    const Tensor upper = nn::add(strict(nn::mul(rnd({n, n}, 970 + n), 0.05), false), nn::matrix_diag(diag));
+    std::vector<std::int64_t> rows(static_cast<std::size_t>(n));
+    for (std::int64_t i = 0; i < n; ++i) rows[static_cast<std::size_t>(i)] = i;
+    std::swap(rows[0], rows[static_cast<std::size_t>(n - 1)]);
+    const Tensor m        = nn::gather(nn::matmul(unit, upper), nn::from_vector(rows), 0);
+    const auto   sd       = nn::slogdet(m);
+    const double expected = nn::sum(nn::log(diag)).item();
+    EXPECT_EQ(sd.sign.item(), -1.0) << n;
+    EXPECT_NEAR(sd.log_abs_det.item(), expected, 1e-10 * n) << n;
+  }
+}
+
+TEST(NnLinalgBlocked, LeafKernelsAgreeOnEveryInstructionSet) {
+  // The 64-row leaves of Cholesky, the triangular solve and LU run in the per-ISA BLAS
+  // kernels (dpotrf_small, dtrsm_rows); n = 200 leaves an 8-row remainder block.
+  BackendScope builtin(nn::LinalgBackend::Builtin);
+  const std::int64_t n = 200;
+  const Tensor a = spd({}, n, 1001), g = nn::add(rnd({n, n}, 1002), nn::mul(nn::eye(n, DType::Float64), 4.0));
+  const Tensor t = nn::add(nn::band_part(nn::mul(rnd({n, n}, 1003), 0.1), -1, 0), nn::eye(n, DType::Float64));
+  const Tensor b = rnd({n, 70}, 1004);
+  const auto   run = [&] {
+    std::vector<Tensor> out{nn::cholesky(a), nn::solve(g, b)};
+    for (bool lower : {true, false})
+      for (bool adjoint : {false, true})
+        out.push_back(nn::triangular_solve(lower ? t : nn::matrix_transpose(t), b, lower, adjoint));
+    return out;
+  };
+  ASSERT_TRUE(nn::blas::set_isa("generic"));
+  const std::vector<Tensor> reference = run();
+  for (const std::string& isa : nn::blas::available_isas()) {
+    ASSERT_TRUE(nn::blas::set_isa(isa)) << isa;
+    const std::vector<Tensor> got = run();
+    for (std::size_t i = 0; i < got.size(); ++i)
+      EXPECT_LT(max_abs_diff(got[i], reference[i]) / nn::max(nn::abs(reference[i])).item(), 1e-12)
+          << "result " << i << " on " << isa;
+  }
+  ASSERT_TRUE(nn::blas::set_isa("auto"));
+}
+
+TEST(NnLinalgBlocked, ResultsDoNotDependOnTheThreadCount) {
+  // The GEMM splits on tile boundaries and the work outside it on fixed column
+  // or row ranges (Cholesky's leaves solve 64-row chunks and update 64-row
+  // diagonal blocks), none of which changes any element's arithmetic; with
+  // several threads LU factors the next panel while the trailing update runs
+  // (four look-ahead steps at n = 450), which does not either.
+  BackendScope builtin(nn::LinalgBackend::Builtin);
+  const int          previous = nn::get_num_threads();
+  const std::int64_t n        = 450;
+  const Tensor a = spd({}, n, 990), g = nn::add(rnd({n, n}, 991), nn::mul(nn::eye(n, DType::Float64), 4.0));
+  const Tensor t = nn::add(nn::band_part(nn::mul(rnd({n, n}, 992), 0.1), -1, 0), nn::eye(n, DType::Float64));
+  const Tensor b = rnd({n, 230}, 993);
+  std::vector<Tensor> first;
+  for (int threads : {1, 3, 8}) {
+    nn::set_num_threads(threads);
+    const std::vector<Tensor> got{nn::cholesky(a),
+                                  nn::solve(g, b),
+                                  nn::solve(g, b, true),
+                                  nn::slogdet(g).log_abs_det,
+                                  nn::triangular_solve(t, b, true, false),
+                                  nn::triangular_solve(t, b, true, true)};
+    if (first.empty()) first = got;
+    for (std::size_t i = 0; i < got.size(); ++i)
+      EXPECT_EQ(max_abs_diff(got[i], first[i]), 0.0) << "result " << i << ", " << threads << " threads";
+  }
+  nn::set_num_threads(previous);
+}
+
+// ---- Householder QR, eigh and SVD ------------------------------------------------------------------
+
+namespace {
+
+/// Q diag(values) Q^T for a random orthogonal Q.
+Tensor with_spectrum(const std::vector<double>& values, std::uint64_t seed) {
+  const auto   n = static_cast<std::int64_t>(values.size());
+  const Tensor q = nn::qr(rnd({n, n}, seed)).q;
+  return sym(nn::matmul(nn::mul(q, nn::from_vector(values)), q, false, true));
+}
+
+/// Qm[:, :k] diag(values) Qn[:, :k]^T [m, n] for random orthogonal Qm, Qn and k = values.size().
+Tensor with_singular_values(std::int64_t m, std::int64_t n, const std::vector<double>& values, std::uint64_t seed) {
+  const auto   k  = static_cast<std::int64_t>(values.size());
+  const Tensor qm = nn::slice_axis(nn::qr(rnd({m, m}, seed)).q, -1, 0, k);
+  const Tensor qn = nn::slice_axis(nn::qr(rnd({n, n}, seed + 1)).q, -1, 0, k);
+  return nn::matmul(nn::mul(qm, nn::from_vector(values)), qn, false, true);
+}
+
+/// The symmetric tridiagonal matrix with diagonal d and off-diagonal e.
+Tensor tridiagonal(const std::vector<double>& d, const std::vector<double>& e) {
+  const auto          n = static_cast<std::int64_t>(d.size());
+  std::vector<double> a(static_cast<std::size_t>(n * n), 0.0);
+  for (std::size_t i = 0; i < d.size(); ++i) {
+    a[i * d.size() + i] = d[i];
+    if (i < e.size()) a[i * d.size() + i + 1] = a[(i + 1) * d.size() + i] = e[i];
+  }
+  return nn::from_vector(a, {n, n});
+}
+
+double scale_of(const Tensor& x) { return std::max(1.0, nn::max(nn::abs(x)).item()); }
+
+bool ordered(const Tensor& x, bool ascending) {
+  const auto v = x.to_vector<double>();
+  for (std::size_t i = 1; i < v.size(); ++i)
+    if (ascending ? v[i - 1] > v[i] : v[i - 1] < v[i]) return false;
+  return true;
+}
+
+}  // namespace
+
+TEST(NnLinalgHouseholder, QrMatchesItsDefinition) {
+  // From 48 columns on, QR runs blocked (32 reflectors per block): sizes straddle the switch
+  // and the blocks.
+  BackendScope builtin(nn::LinalgBackend::Builtin);
+  for (auto [m, n] : std::vector<std::pair<std::int64_t, std::int64_t>>{
+           {33, 32}, {47, 47}, {48, 48}, {60, 49}, {49, 60}, {100, 40}, {130, 97}, {257, 129}}) {
+    std::vector<std::pair<const char*, Tensor>> cases;
+    cases.emplace_back("random", rnd({m, n}, 1000 + m + n));
+    cases.emplace_back("rank 3", nn::matmul(rnd({m, 3}, 1001 + m), rnd({3, n}, 1002 + n)));
+    cases.emplace_back("zero", nn::zeros({m, n}, DType::Float64));
+    for (const auto& [name, a] : cases)
+      for (bool full : {false, true}) {
+        const auto   qr = nn::qr(a, full);
+        const double s  = scale_of(a);
+        EXPECT_LT(max_abs_diff(nn::matmul(qr.q, qr.r), a) / s, 1e-13) << name << " " << m << "x" << n;
+        EXPECT_LT(max_abs_diff(nn::matmul(qr.q, qr.q, true, false), nn::eye(qr.q.size(-1), DType::Float64)), 1e-13)
+            << name << " " << m << "x" << n;
+        EXPECT_EQ(max_abs_diff(nn::band_part(qr.r, 0, -1), qr.r), 0.0) << name;
+      }
+  }
+}
+
+TEST(NnLinalgHouseholder, EighMatchesItsDefinition) {
+  // From 24 (16 for the values only) eigh is a blocked tridiagonal reduction plus divide and
+  // conquer; the spectra exercise deflation (repeated, clustered, graded and zero eigenvalues).
+  BackendScope builtin(nn::LinalgBackend::Builtin);
+  for (std::int64_t n : {16, 23, 24, 33, 65, 100, 257}) {
+    const auto          un = static_cast<std::size_t>(n);
+    std::vector<double> clusters(un), graded(un), wd(un), we(un - 1, 1.0), ld(un, 2.0), le(un - 1, -1.0);
+    for (std::size_t i = 0; i < un; ++i) {
+      clusters[i] = double(i % 3) + 1e-13 * double(i);
+      graded[i]   = std::pow(10.0, -12.0 * double(i) / double(n - 1));
+      wd[i]       = std::abs(double(i) - double(n - 1) / 2);  // Wilkinson: nearly equal pairs
+    }
+    std::vector<std::pair<const char*, Tensor>> cases;
+    cases.emplace_back("random", sym(rnd({n, n}, 1100 + n)));
+    cases.emplace_back("identity", nn::eye(n, DType::Float64));
+    cases.emplace_back("zero", nn::zeros({n, n}, DType::Float64));
+    cases.emplace_back("clusters", with_spectrum(clusters, 1200 + n));
+    cases.emplace_back("graded", with_spectrum(graded, 1300 + n));
+    cases.emplace_back("wilkinson", tridiagonal(wd, we));
+    cases.emplace_back("laplacian", tridiagonal(ld, le));
+    for (const auto& [name, a] : cases) {
+      const auto   r = nn::eigh(a);
+      const double s = scale_of(a);
+      EXPECT_LT(max_abs_diff(nn::matmul(a, r.v), nn::mul(r.v, nn::expand_dims(r.e, -2))) / s, 1e-13) << name << " " << n;
+      EXPECT_LT(max_abs_diff(nn::matmul(r.v, r.v, true, false), nn::eye(n, DType::Float64)), 1e-13) << name << " " << n;
+      EXPECT_TRUE(ordered(r.e, true)) << name << " " << n;
+      EXPECT_LT(max_abs_diff(nn::eigvalsh(a), r.e) / scale_of(r.e), 1e-13) << name << " " << n;
+    }
+    // The path Laplacian's eigenvalues are 2 - 2 cos(k pi / (n + 1)).
+    std::vector<double> expected(un);
+    for (std::size_t k = 0; k < un; ++k) expected[k] = 2.0 - 2.0 * std::cos(double(k + 1) * std::numbers::pi / double(n + 1));
+    EXPECT_LT(max_abs_diff(nn::eigh(cases.back().second).e, nn::from_vector(expected)), 1e-13) << n;
+  }
+}
+
+TEST(NnLinalgHouseholder, SvdMatchesItsDefinition) {
+  // From 16 on, the SVD is a QR (m > n), a blocked bidiagonal reduction and a bidiagonal divide
+  // and conquer; wide matrices go through the transpose.
+  BackendScope builtin(nn::LinalgBackend::Builtin);
+  for (auto [m, n] : std::vector<std::pair<std::int64_t, std::int64_t>>{
+           {15, 15}, {16, 16}, {20, 16}, {16, 25}, {33, 32}, {32, 33}, {100, 40}, {40, 100}, {130, 97}, {200, 200}}) {
+    const std::int64_t  k = std::min(m, n);
+    const auto          uk = static_cast<std::size_t>(k);
+    std::vector<double> repeated(uk), graded(uk);
+    for (std::size_t i = 0; i < uk; ++i) {
+      repeated[i] = double(3 - i % 3);
+      graded[i]   = std::pow(10.0, -12.0 * double(i) / double(k - 1));
+    }
+    std::vector<std::pair<const char*, Tensor>> cases;
+    cases.emplace_back("random", rnd({m, n}, 1400 + m + n));
+    cases.emplace_back("rank 5", nn::matmul(rnd({m, 5}, 1401 + m), rnd({5, n}, 1402 + n)));
+    cases.emplace_back("zero", nn::zeros({m, n}, DType::Float64));
+    cases.emplace_back("repeated", with_singular_values(m, n, repeated, 1500 + m + n));
+    cases.emplace_back("graded", with_singular_values(m, n, graded, 1600 + m + n));
+    for (const auto& [name, a] : cases)
+      for (bool full : {false, true}) {
+        const auto   r = nn::svd(a, true, full);
+        const double s = scale_of(a);
+        EXPECT_EQ(r.u.size(-1), full ? m : k);
+        EXPECT_EQ(r.v.size(-1), full ? n : k);
+        const Tensor u1 = nn::slice_axis(r.u, -1, 0, k), v1 = nn::slice_axis(r.v, -1, 0, k);
+        EXPECT_LT(max_abs_diff(nn::matmul(nn::mul(u1, nn::expand_dims(r.s, -2)), v1, false, true), a) / s, 1e-13)
+            << name << " " << m << "x" << n << " full=" << full;
+        EXPECT_LT(max_abs_diff(nn::matmul(r.u, r.u, true, false), nn::eye(r.u.size(-1), DType::Float64)), 1e-13)
+            << name << " " << m << "x" << n << " full=" << full;
+        EXPECT_LT(max_abs_diff(nn::matmul(r.v, r.v, true, false), nn::eye(r.v.size(-1), DType::Float64)), 1e-13)
+            << name << " " << m << "x" << n << " full=" << full;
+        EXPECT_TRUE(ordered(r.s, false)) << name;
+        EXPECT_LT(max_abs_diff(nn::svd(a, false).s, r.s) / scale_of(r.s), 1e-13) << name << " " << m << "x" << n;
+      }
+    std::sort(repeated.begin(), repeated.end(), std::greater<>());
+    EXPECT_LT(max_abs_diff(nn::svd(cases[3].second, false).s, nn::from_vector(repeated)), 1e-13);
+    EXPECT_LT(max_abs_diff(nn::svd(cases[4].second, false).s, nn::from_vector(graded)), 1e-13);
+  }
+}
+
+TEST(NnLinalgHouseholder, ResultsDoNotDependOnTheThreadCount) {
+  // The products split on tile or cache-line boundaries, the symmetric products of the
+  // tridiagonal reduction sum per-block partial vectors in block order, and the divide and
+  // conquer runs the same merges whichever thread runs them. 520 rows is past the sizes where the
+  // panels' products split, 800 past those where the symmetric product does.
+  BackendScope builtin(nn::LinalgBackend::Builtin);
+  const int    previous = nn::get_num_threads();
+  const Tensor a = rnd({520, 400}, 1700), s = sym(rnd({520, 520}, 1701)), big = sym(rnd({800, 800}, 1702));
+  std::vector<Tensor> first;
+  for (int threads : {1, 3, 8}) {
+    nn::set_num_threads(threads);
+    const auto                qr = nn::qr(a);
+    const auto                e  = nn::eigh(s);
+    const auto                sv = nn::svd(a);
+    const std::vector<Tensor> got{qr.q, qr.r, e.e, e.v, sv.s, sv.u, sv.v, nn::eigvalsh(big), nn::svd(a, false).s};
+    if (first.empty()) first = got;
+    for (std::size_t i = 0; i < got.size(); ++i)
+      EXPECT_EQ(max_abs_diff(got[i], first[i]), 0.0) << "result " << i << ", " << threads << " threads";
+  }
+  nn::set_num_threads(previous);
+}
 
 TEST(NnLinalgBackend, LapackMatchesBuiltin) {
   if (!nn::linalg_has_lapack()) GTEST_SKIP() << "built without LAPACK";

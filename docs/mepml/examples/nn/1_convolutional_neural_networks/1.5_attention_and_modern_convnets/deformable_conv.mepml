@@ -53,18 +53,24 @@ mask predictor, main kernel and backbone leaf enters the optimizer. Validation s
 learned/BN checkpoints separately for v1 and v2. These small fixed-seed fits do not reproduce
 the source's longer training, detection benchmarks or the paper's feature-mimicking objective.
 
-The editable concept diagram is `diagrams/deformable_conv_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/deformable_conv_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/deformable_conv_concept.tikz > build/deformable_conv_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/deformable_conv_concept.svg build/deformable_conv_concept.dvi > build/deformable_conv_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/deformable_conv_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Predict dy and dx\nOptional logistic masks");
+  diagram.node("n1", {5.2, 0}, "Bilinear tap samples\nZeros outside image");
+  diagram.node("n2", {10.4, 0}, "Full compact v1/v2\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/deformable_conv_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/deformable_conv_concept.svg)
 // result_end
 \caption(Deformable Convolution: Learned Sampling and Explicit V1/V2 Fits)
@@ -499,7 +505,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1608764 learned scalars, 13280 moving scalars; 64 explicit Adam updates.
-Selected epoch 2; validation NLL 2.362737; inference training NLL 2.297858; test NLL 2.402730; test accuracy 0.140625.
+Selected epoch 4; validation NLL 2.435277; inference training NLL 2.150926; test NLL 2.516765; test accuracy 0.109375.
 \image(figures/deformable_conv_v1_training.svg)
 // result_end
 \caption(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)
@@ -646,7 +652,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1671053 learned scalars, 13280 moving scalars; 64 explicit Adam updates.
-Selected epoch 1; validation NLL 2.488208; inference training NLL 2.384083; test NLL 2.447731; test accuracy 0.156250.
+Selected epoch 4; validation NLL 2.462551; inference training NLL 2.161708; test NLL 2.404367; test accuracy 0.218750.
 \image(figures/deformable_conv_v2_training.svg)
 // result_end
 \caption(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

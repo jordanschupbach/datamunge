@@ -34,18 +34,24 @@ rows only, then freezes it for all queries. This direct search materialises [Q,N
 differences; pairwise distances cost O(QND), followed by selection. Chunk large queries.
 High dimension can weaken local distance contrast.
 
-The concept diagram has a retained TikZ source in `diagrams/nearest_neighbors_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/nearest_neighbors_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/nearest_neighbors_concept.tikz > build/nearest_neighbors_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/nearest_neighbors_concept.svg build/nearest_neighbors_concept.dvi > build/nearest_neighbors_concept.render.log 2>&1
-printf 'Rendered build/nearest_neighbors_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/nearest_neighbors_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Frozen training metric\nscale from training rows");
+  diagram.node("n1", {5.2, 0}, "Nearest k rows\nstable distance ties");
+  diagram.node("n2", {10.4, 0}, "Votes or target mean\nhandle zero distance");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/nearest_neighbors_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/nearest_neighbors_concept.svg from local TikZ source.
 // \image(figures/nearest_neighbors_concept.svg)
 // result_end
 \caption(Choose the metric and aggregation rule before interpreting a prediction)

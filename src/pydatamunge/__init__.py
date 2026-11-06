@@ -1,6 +1,7 @@
 """Python interface to the datamunge C++ library."""
 
 from . import datamunge
+from .linalg import Mat, SpMat, solve
 
 # Preserve the established submodule API while making tensor entry points convenient.
 NnTensor = datamunge.NnTensor
@@ -11,4 +12,4 @@ def greet():
     return "Hello from the package!"
 
 
-__all__ = ["NnModel", "NnTensor", "datamunge", "greet"]
+__all__ = ["Mat", "SpMat", "solve", "NnModel", "NnTensor", "datamunge", "greet"]

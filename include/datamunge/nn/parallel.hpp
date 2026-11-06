@@ -11,7 +11,11 @@
 namespace datamunge::nn {
 
 /// Number of threads nn kernels may use. Defaults to the environment variable
-/// DATAMUNGE_NUM_THREADS, else the hardware concurrency.
+/// DATAMUNGE_NUM_THREADS, else one per physical core (else the hardware
+/// concurrency). On Linux with several last-level cache domains, the pool's
+/// workers are bound to them in order, the caller's domain first, and a thread
+/// that submits work is bound to that domain unless its affinity was changed
+/// (DATAMUNGE_BIND_THREADS=0 turns all of that off).
 int get_num_threads();
 /// Sets the thread count (1 runs everything on the calling thread). Values
 /// below 1 restore the default.
@@ -23,7 +27,9 @@ void set_num_threads(int threads);
 void parallel_for(std::int64_t begin, std::int64_t end, std::int64_t grain,
                   const std::function<void(std::int64_t, std::int64_t)>& fn);
 
-/// "accelerate", "openblas", "cblas" or "builtin": the GEMM used for float matmul and convolution.
+/// The GEMM used for matmul and convolution: "inhouse-<isa>" (the library's own
+/// kernels, see blas.hpp; the suffix is the instruction set in use) or, when
+/// built with DATAMUNGE_USE_BLAS, "accelerate", "openblas" or "cblas".
 std::string gemm_backend();
 
 }  // namespace datamunge::nn

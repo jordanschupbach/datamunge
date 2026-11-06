@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_c
 
 Use two left-padded weight-normalized convolutions per residual level,dilations1..32,ReLU and explicit-generator dropout. A shared per-time binary head selects the last observed time. Save fitting-only normalization,train with explicit tensor global-norm clipping,and test causal prefixes plus all held-out source records without recomputing statistics.
 
-The editable concept diagram is `diagrams/tcn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/tcn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/tcn_concept.tikz > build/tcn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/tcn_concept.svg build/tcn_concept.dvi > build/tcn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/tcn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original observed\n motion sequence");
+  diagram.node("n1", {5.2, 0}, "Dilated causal\n residual blocks");
+  diagram.node("n2", {10.4, 0}, "Prefix logits\n and held-out checks");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/tcn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/tcn_concept.svg)
 // result_end
 \caption(TCN:causal tensors,weight normalization and visible clipped Adam)
@@ -113,15 +119,6 @@ int main() {
 }
 ```
 // result_begin:
-// "time_series" fit:40 original source rows
-// "time_series" validation:10 original source rows
-// "time_series" test:150 original source rows
-// "ECG200" fit:80 original source rows
-// "ECG200" validation:20 original source rows
-// "ECG200" test:100 original source rows
-// "BasicMotions" fit:32 original source rows
-// "BasicMotions" validation:8 original source rows
-// "BasicMotions" test:40 original source rows
 // result_end
 ```{cpp, results="markdown", file="figures/tcn_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
@@ -323,7 +320,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-All v/g/b adjoint norms 6030.415039/56.663738/92.512138;v*=3 forward max change 1.1920929e-07 including epsilon/Float32 rounding.
+All v/g/b adjoint norms 6030.414062/56.663742/92.512138;v*=3 forward max change 1.1920929e-07 including epsilon/Float32 rounding.
 \image(figures/tcn_weight_normalization.svg)
 // result_end
 \caption(Actual v/g/b derivatives and a declared v scaling intervention. Raw vector norms differ;the effective kernel norm tracks the independent learned gain.)
@@ -744,15 +741,15 @@ int main() {
 Visible dropout derivative probe:all40 learned leaves finite/nonzero before optimizer updates.
 | epoch | dropout fitting CE | validation NLL |
 |---:|---:|---:|
-| 1 | 4.365153 | 0.911958 |
-| 2 | 1.054807 | 0.709836 |
-| 3 | 0.845379 | 0.541272 |
-15 visible Adam updates,15 clipped;selected epoch 3,validation 0.541272;fixed fitting CE 4.985522->0.670643.
-Restored/repeat parity 0,all150-row prefixes max 2.38418579e-07,single/batch 0 within1e-5;42 learned/state leaves unchanged:true.
-Future-only observed perturbation:prefix max 0,later absolute change 394.420254.
+| 1 | 4.067642 | 0.579120 |
+| 2 | 1.508437 | 0.697090 |
+| 3 | 0.851502 | 0.971131 |
+15 visible Adam updates,15 clipped;selected epoch 1,validation 0.579120;fixed fitting CE 4.985522->0.878905.
+Restored/repeat parity 0,all150-row prefixes max 0,single/batch 0 within1e-5;42 learned/state leaves unchanged:true.
+Future-only observed perturbation:prefix max 0,later absolute change 475.970717.
 | predictor | accuracy | raw-score NLL | true-row confusion |
 |---|---:|---:|---|
-| learned | 0.426667 | 0.714699 | int64[2, 2] [[11, 65], [21, 53]] |
+| learned | 0.540000 | 0.761294 | int64[2, 2] [[56, 20], [49, 25]] |
 | untrained | 0.466667 | 4.193172 | int64[2, 2] [[0, 76], [4, 70]] |
 | raw1NN | 0.906667 | 0.406595 | int64[2, 2] [[67, 9], [5, 69]] |
 | SGD centroid | 0.660000 | 0.676829 | int64[2, 2] [[45, 31], [20, 54]] |

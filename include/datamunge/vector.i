@@ -10,13 +10,7 @@
 
 // (Relies on the including module's %{ #include "datamunge/datamunge.hpp" %} block.)
 
-// RGB/RGBA is a plain aggregate, which SWIG only gives a no-argument constructor.
-%extend datamunge::graphics::RGB {
-  RGB() { return new datamunge::graphics::RGB(); }
-  RGB(int r, int g, int b, double alpha = 1.0) {
-    return new datamunge::graphics::RGB{r, g, b, alpha};
-  }
-}
+// RGB/RGBA numeric and string constructors are canonical in plot.hpp.
 
 namespace datamunge {
 

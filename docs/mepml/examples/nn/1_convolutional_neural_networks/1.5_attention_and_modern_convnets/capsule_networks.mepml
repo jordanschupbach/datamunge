@@ -53,18 +53,24 @@ model, losses and updates use tensor operations; host arrays appear only in the 
 small routing oracle and plots. This bounded single-seed fit does not reproduce the paper's
 all-data training, shift augmentation, overlapping-digit results or reported MNIST error.
 
-The editable concept diagram is `diagrams/capsule_networks_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/capsule_networks_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/capsule_networks_concept.tikz > build/capsule_networks_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/capsule_networks_concept.svg build/capsule_networks_concept.dvi > build/capsule_networks_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/capsule_networks_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Vector capsule votes\nThree routing steps");
+  diagram.node("n1", {5.2, 0}, "Margin plus pixel SSE\nTrue class mask");
+  diagram.node("n2", {10.4, 0}, "All capsules retained\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/capsule_networks_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/capsule_networks_concept.svg)
 // result_end
 \caption(Capsule Networks: Differentiable Routing and Explicit Margin/Decoder Fitting)
@@ -479,7 +485,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-64 fit /32 validation /32 official-test rows, 8215568 learned scalars, 40 explicit Adam updates. Selected epoch 5; validation NLL 1.166203, inference fit NLL 0.947312, test NLL 1.491150, test accuracy 0.750000, test margin 0.259784, predicted-mask reconstruction SSE 53.478485.
+64 fit /32 validation /32 official-test rows, 8215568 learned scalars, 40 explicit Adam updates. Selected epoch 5; validation NLL 1.166197, inference fit NLL 0.947302, test NLL 1.491145, test accuracy 0.750000, test margin 0.259784, predicted-mask reconstruction SSE 53.478466.
 \image(figures/capsule_networks_training.svg)
 // result_end
 \caption(The visible optimizer minimizes margin plus .0005 times summed-pixel reconstruction and explicit kernel L2. Normalized-length NLL only monitors and selects checkpoints. The four panels show NLL, optimized data terms, 32 held-out predictions and mean test capsule lengths; the latter are not calibrated class probabilities.)

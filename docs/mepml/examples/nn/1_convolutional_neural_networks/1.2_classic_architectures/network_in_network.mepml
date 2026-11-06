@@ -38,18 +38,24 @@ He initialization and [-1,1] pixels; it does not reproduce original contrast nor
 ZCA preprocessing or the paper's training results. Class maps are scores, not masks or
 spatial class probabilities. Cached CIFAR-10 is required; no download runs here.
 
-The editable concept diagram is `diagrams/network_in_network_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/network_in_network_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/network_in_network_concept.tikz > build/network_in_network_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/network_in_network_concept.svg build/network_in_network_concept.dvi > build/network_in_network_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/network_in_network_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Extract local patches\nshared receptive support");
+  diagram.node("n1", {5.2, 0}, "Nonlinear channel MLP\nspatial then 1×1");
+  diagram.node("n2", {10.4, 0}, "Final class-score maps\nGAP and tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/network_in_network_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/network_in_network_concept.svg)
 // result_end
 \caption(Network in Network: Shared Patch MLPs and Class Maps)
@@ -413,7 +419,7 @@ Final class-map/logit identity discrepancy 0.000000000.
 
 | variant | parameters | test_subset_accuracy | test_subset_NLL | selected_training_NLL |
 | ---: | ---: | ---: | ---: | ---: |
-| 8 | 17058 | 0.21875 | 2.173652 | 1.948784 |
+| 8 | 17058 | 0.140625 | 2.147570 | 2.000902 |
 
 \image(figures/network_in_network_training.svg)
 // result_end

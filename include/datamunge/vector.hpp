@@ -1,11 +1,18 @@
 #pragma once
 
 /// @file vector.hpp
-/// @brief Owned typed vectors with R-style selection, recycling, and numeric operations.
+/// @brief Owned typed vectors and lazy numeric expressions with R-style selection and recycling.
 ///
 /// Provides dm::Vector (an owned std::vector with R semantics), the R-style constructors
 /// c(), seql(), factor(), element-wise arithmetic and math with recycling, summary
 /// statistics (sum(), mean(), sd()), and seeded random sampling (runif(), rnorm()).
+/// Arithmetic and element-wise math build read-only expression templates. Named Vector
+/// leaves are borrowed and must outlive evaluation; temporary vectors and child nodes
+/// are owned. Use Vector<> destination = expression or expression.eval() to keep a
+/// snapshot. Random sampling is eager and happens once, even when its result is owned
+/// by a lazy expression; subsequent evaluations reuse those sampled values.
+/// Functions returning expressions must forward arguments or keep borrowed leaves
+/// alive: returning an expression borrowing a by-value local Vector is invalid.
 /// Vectors format with `std::print("{}", v)` (as `[1, 2, 3]`) and convert implicitly to
 /// `const std::vector<T>&`, so they can be passed straight to the plotting API.
 ///
@@ -30,6 +37,8 @@
 #include <cstdlib>
 #include <functional>
 #include <initializer_list>
+#include <iterator>
+#include <limits>
 #include <ostream>
 #include <stdexcept>
 #include <string>
@@ -39,6 +48,294 @@
 
 /// @brief Core library APIs and their algorithm, data, and numerical submodules.
 namespace datamunge {
+
+template<typename T = double> class Vector;
+
+/// @brief ADL marker for native vector expressions, distinct from matrix expressions.
+struct VectorExpressionTag {};
+
+/// @brief Lifetime-aware vector expression closures and pointwise evaluation helpers.
+namespace vector_expr {
+/// @brief Whether an unqualified type is an owned Vector leaf.
+/// @tparam E Unqualified candidate type.
+template<class E> inline constexpr bool is_vector = false;
+/// @brief Recognise owned Vector leaves for borrowing and temporary ownership.
+/// @tparam T Stored element type.
+template<class T> inline constexpr bool is_vector<Vector<T>> = true;
+
+/// @brief Detect numeric vector expressions without accepting matrices or scalar-only calls.
+/// @tparam E Candidate type, possibly cv/ref-qualified.
+/// @tparam Enable Internal detection parameter.
+template<class E, class Enable = void> struct Numeric : std::false_type {};
+/// @brief Numeric vectors/nodes have the vector marker and double-convertible elements.
+/// @tparam E Candidate type with a value_type member.
+template<class E> struct Numeric<E, std::void_t<typename std::decay_t<E>::value_type>>
+    : std::bool_constant<std::is_base_of_v<VectorExpressionTag, std::decay_t<E>> &&
+                         std::is_convertible_v<typename std::decay_t<E>::value_type, double>> {};
+/// @brief Whether E is a numeric vector leaf or deferred node.
+/// @tparam E Candidate type.
+template<class E> inline constexpr bool numeric = Numeric<E>::value;
+/// @brief Whether E is a deferred numeric node rather than owned storage.
+/// @tparam E Candidate type.
+template<class E> inline constexpr bool is_node = numeric<E> && !is_vector<std::decay_t<E>>;
+/// @brief Enable arithmetic only for vector expressions paired with numeric expressions/scalars.
+/// @tparam L Left operand type.
+/// @tparam R Right operand type.
+template<class L, class R> inline constexpr bool binary_enabled =
+    (numeric<L> || numeric<R>) && (numeric<L> || std::is_convertible_v<L, double>) &&
+    (numeric<R> || std::is_convertible_v<R, double>);
+
+/// @brief Read an owned operand closure.
+/// @tparam E Closure type.
+/// @param value Owned operand.
+/// @return Borrowed const operand.
+template<class E> const E& operand(const E& value) { return value; }
+/// @brief Read a borrowed Vector leaf.
+/// @tparam E Leaf type.
+/// @param value Reference closure whose referent must remain alive.
+/// @return Borrowed const leaf.
+template<class E> const E& operand(const std::reference_wrapper<const E>& value) { return value.get(); }
+
+/// @brief Read-only input iterator computing a node's elements on dereference.
+/// @tparam E Expression type whose lifetime must exceed the iterator's.
+template<class E> class Iterator {
+  const E* owner_ = nullptr; ///< Expression containing all operand closures.
+  std::size_t index_ = 0; ///< Zero-based position.
+public:
+  using value_type = double; ///< Numeric expressions evaluate to double, as the eager API did.
+  using reference = double; ///< Each dereference computes a value, not a mutable reference.
+  using pointer = void; ///< Expression values have no stable element address.
+  using difference_type = std::ptrdiff_t; ///< Standard iterator difference type.
+  using iterator_category = std::input_iterator_tag; ///< Single-pass readable range contract.
+
+  /// @brief Construct a singular iterator.
+  Iterator() = default;
+  /// @brief Construct an iterator into a live expression.
+  /// @param owner Expression borrowed for the iterator's lifetime.
+  /// @param index Initial zero-based position, including size() for the end.
+  Iterator(const E* owner, std::size_t index) : owner_(owner), index_(index) {}
+  /// @brief Compute the current element; the iterator must not equal end().
+  /// @return Current numeric value.
+  double operator*() const { return (*owner_)[index_]; }
+  /// @brief Advance by one position.
+  /// @return This iterator.
+  Iterator& operator++() { ++index_; return *this; }
+  /// @brief Advance, returning the previous position.
+  /// @return Previous iterator.
+  Iterator operator++(int) { auto copy = *this; ++*this; return copy; }
+  /// @brief Compare expression identity and position.
+  /// @param other Iterator to compare.
+  /// @return True for the same expression and index.
+  bool operator==(const Iterator& other) const { return owner_ == other.owner_ && index_ == other.index_; }
+  /// @brief Compare expression identity and position for inequality.
+  /// @param other Iterator to compare.
+  /// @return True if identity or position differs.
+  bool operator!=(const Iterator& other) const { return !(*this == other); }
+};
+
+/// @brief Shared read-only range and materialisation API for lazy numeric nodes.
+/// Lvalue Vector leaves are borrowed; temporary Vectors and all child nodes are
+/// owned. Borrowed leaves must outlive evaluation. Reads see their current values
+/// and lengths. Copies of a node copy any temporary vectors that it owns.
+/// @tparam D Concrete node type.
+template<class D> class Expression : public VectorExpressionTag {
+  /// @brief Access the concrete node.
+  /// @return Borrowed const node.
+  const D& derived() const { return static_cast<const D&>(*this); }
+public:
+  using value_type = double; ///< Preserve the numeric result type of the existing arithmetic API.
+
+  /// @brief Whether the current expression has zero length.
+  /// @return True when size() is zero.
+  bool empty() const { return derived().size() == 0; }
+  /// @brief Begin read-only iteration without materialising storage.
+  /// @return Iterator at the first element.
+  Iterator<D> begin() const { return {&derived(), 0}; }
+  /// @brief End read-only iteration without materialising storage.
+  /// @return Iterator one past the current result length.
+  Iterator<D> end() const { return {&derived(), derived().size()}; }
+  /// @brief Compute one owned snapshot in a single pointwise pass.
+  /// @return Owned numeric Vector; later operand mutations do not affect it.
+  /// @par Example
+  /// @code
+  /// auto x = dm::c(1, 2);
+  /// const auto lazy = x + 1;
+  /// const auto snapshot = lazy.eval();
+  /// x[0] = 10;
+  /// std::print("{} {}\n", lazy[0], snapshot[0]); // 11 2
+  /// @endcode
+  Vector<double> eval() const;
+  /// @brief Materialise standard storage for APIs requiring std::vector<double>.
+  /// @return Owned values, recomputed on each call; no cache or operand mutation.
+  /// @par Example
+  /// @code
+  /// const auto expression = dm::c(1, 2) + 1;
+  /// const std::vector<double> values = expression.values();
+  /// std::print("{}\n", values); // [2, 3]
+  /// @endcode
+  std::vector<double> values() const {
+    std::vector<double> result;
+    const auto n = derived().size(); result.reserve(n);
+    for (std::size_t i = 0; i < n; ++i) result.push_back(derived()[i]);
+    return result;
+  }
+  /// @brief Materialise once at a standard-vector API boundary.
+  /// @return Owned standard storage, with lifetime extended by a receiving const reference.
+  /// @par Example
+  /// @code
+  /// const std::vector<double> values = dm::sin(dm::c(0, 0));
+  /// std::print("{}\n", values); // [0, 0]
+  /// @endcode
+  operator std::vector<double>() const { return values(); }
+  /// @brief Materialise before R-style selection.
+  /// @tparam I Index/mask element type supported by Vector::select().
+  /// @param indices One-based positions, exclusions or logical mask.
+  /// @return Owned selection snapshot.
+  template<class I> auto select(const std::vector<I>& indices) const;
+  /// @brief Materialise before selection by a native index/mask vector.
+  /// @tparam I Index/mask element type.
+  /// @param indices One-based indices or logical mask.
+  /// @return Owned selection snapshot.
+  template<class I> auto select(const Vector<I>& indices) const;
+  /// @brief Materialise before selection by deferred numeric indices.
+  /// @tparam E Deferred numeric index expression.
+  /// @param indices One-based positions or exclusions.
+  /// @return Owned selection snapshot.
+  template<class E, std::enable_if_t<is_node<E>, int> = 0>
+  auto select(const E& indices) const;
+  /// @brief Materialise before selection by an index list.
+  /// @param indices One-based positions or exclusions.
+  /// @return Owned selection snapshot.
+  Vector<double> select(std::initializer_list<std::ptrdiff_t> indices) const;
+  /// @brief Materialise before recycling to an explicit length.
+  /// @param n Requested result length.
+  /// @return Owned recycled snapshot.
+  /// @throws std::invalid_argument For nonzero n and an empty source.
+  Vector<double> recycled(std::size_t n) const;
+};
+
+/// @brief Owned scalar broadcast as a length-one operand.
+struct Scalar {
+  double value; ///< Scalar snapshot, never a borrowed scalar reference.
+
+  /// @brief Return the broadcast operand length.
+  /// @return One.
+  std::size_t size() const { return 1; }
+  /// @brief Read the constant scalar.
+  /// @param index Unused recycled index.
+  /// @return Stored value.
+  double operator[](std::size_t index) const { (void)index; return value; }
+};
+
+/// @brief Borrow lvalue leaves; own temporary leaves, child expressions and scalar values.
+/// @tparam E Forwarded operand type.
+/// @param value Operand whose temporary ownership is transferred when possible.
+/// @return Typed lifetime closure.
+template<class E> auto capture(E&& value) {
+  if constexpr (is_vector<std::decay_t<E>> && std::is_lvalue_reference_v<E>) return std::cref(value);
+  else if constexpr (numeric<E>) return std::decay_t<E>(std::forward<E>(value));
+  else return Scalar{static_cast<double>(std::forward<E>(value))};
+}
+
+/// @brief Deferred unary numeric operation.
+/// @tparam E Captured operand closure.
+/// @tparam F Pointwise numeric operation.
+template<class E, class F> class Unary : public Expression<Unary<E, F>> {
+  E source_; ///< Borrowed leaf or owned child.
+  F operation_; ///< Owned numeric operation and any scalar parameters.
+public:
+  /// @brief Retain an operand and operation without evaluating elements.
+  /// @param source Lifetime closure.
+  /// @param operation Numeric operation.
+  Unary(E source, F operation) : source_(std::move(source)), operation_(std::move(operation)) {}
+  /// @brief Read the current source length.
+  /// @return Source length, without invoking the numeric operation.
+  std::size_t size() const { return operand(source_).size(); }
+  /// @brief Compute one element; index must be below size().
+  /// @param index Zero-based index.
+  /// @return Transformed source value.
+  double operator[](std::size_t index) const { return operation_(static_cast<double>(operand(source_)[index])); }
+};
+
+/// @brief Deferred binary operation retaining recycling at each expression node.
+/// @tparam L Left closure type.
+/// @tparam R Right closure type.
+/// @tparam F Binary numeric operation.
+template<class L, class R, class F> class Binary : public Expression<Binary<L, R, F>> {
+  L left_; ///< Left lifetime closure.
+  R right_; ///< Right lifetime closure.
+  F operation_; ///< Owned operation.
+public:
+  /// @brief Retain operands without computing their elements.
+  /// @param left Left lifetime closure.
+  /// @param right Right lifetime closure.
+  /// @param operation Numeric operation.
+  Binary(L left, R right, F operation) : left_(std::move(left)), right_(std::move(right)), operation_(std::move(operation)) {}
+  /// @brief Recompute the recycled result length from current operand lengths.
+  /// @return Zero for any empty operand; otherwise the longer length.
+  std::size_t size() const {
+    const auto l = operand(left_).size(), r = operand(right_).size();
+    return l == 0 || r == 0 ? 0 : std::max(l, r);
+  }
+  /// @brief Compute a recycled pair; index must be below size().
+  /// @param index Zero-based result index.
+  /// @return Operation applied to each child's own recycled value.
+  double operator[](std::size_t index) const {
+    const auto& l = operand(left_); const auto& r = operand(right_);
+    return operation_(static_cast<double>(l[index % l.size()]), static_cast<double>(r[index % r.size()]));
+  }
+};
+
+/// @brief Construct a unary node using lifetime-safe operand capture.
+/// @tparam E Operand type.
+/// @tparam F Numeric operation type.
+/// @param value Forwarded operand.
+/// @param operation Owned pointwise operation.
+/// @return Deferred unary expression.
+template<class E, class F> auto unary(E&& value, F operation) {
+  auto source = capture(std::forward<E>(value));
+  return Unary<decltype(source), F>(std::move(source), std::move(operation));
+}
+/// @brief Construct a binary node using lifetime-safe operand capture.
+/// @tparam L Left operand type.
+/// @tparam R Right operand type.
+/// @tparam F Numeric operation type.
+/// @param left Forwarded left operand.
+/// @param right Forwarded right operand.
+/// @param operation Owned numeric operation.
+/// @return Deferred binary expression.
+template<class L, class R, class F> auto binary(L&& left, R&& right, F operation) {
+  auto l = capture(std::forward<L>(left)); auto r = capture(std::forward<R>(right));
+  return Binary<decltype(l), decltype(r), F>(std::move(l), std::move(r), std::move(operation));
+}
+
+/// @brief Sum numeric values in left-to-right order without intermediate arrays.
+/// @tparam E Numeric vector or node.
+/// @param values Read-only numeric input.
+/// @return Sum, or zero for empty input.
+template<class E> double sum_values(const E& values) {
+  double result = 0; const auto n = values.size();
+  for (std::size_t i = 0; i < n; ++i) result += static_cast<double>(values[i]);
+  return result;
+}
+/// @brief Welford sample deviation shared by owned and deferred numeric inputs.
+/// @tparam E Numeric vector or node.
+/// @param values Read-only numeric input.
+/// @return Sample deviation, or NaN for fewer than two/nonfinite values.
+template<class E> double sample_sd(const E& values) {
+  const auto n = values.size();
+  if (n < 2) return std::numeric_limits<double>::quiet_NaN();
+  long double center = 0, squared_deviations = 0; std::size_t count = 0;
+  for (std::size_t i = 0; i < n; ++i) {
+    const double value = static_cast<double>(values[i]);
+    if (!std::isfinite(value)) return std::numeric_limits<double>::quiet_NaN();
+    const long double delta = static_cast<long double>(value) - center;
+    center += delta / ++count;
+    squared_deviations += delta * (static_cast<long double>(value) - center);
+  }
+  return static_cast<double>(std::sqrt(squared_deviations / (n - 1)));
+}
+} // namespace vector_expr
 
 /// @brief An owned std::vector<T> with R-style selection and recycling (R's atomic vector).
 ///
@@ -50,8 +347,10 @@ namespace datamunge {
 /// Vectors are usually built with dm::c(), dm::seql(), dm::runif() or dm::rnorm() rather
 /// than constructed directly. They are ranges (begin()/end()), so `std::print("{}", v)`
 /// prints `[a, b, c]` (strings quoted), and they convert implicitly to
-/// `const std::vector<T>&` for APIs such as dm::Plot. The free arithmetic operators
-/// and element-wise math functions are defined for `Vector<double>` (the default `T`).
+/// `const std::vector<T>&` for APIs such as dm::Plot. Free arithmetic and math
+/// functions build lazy double-valued expressions for numeric inputs. `auto y =
+/// x + 1` retains a read-only expression; `Vector<> y = x + 1` computes an owned,
+/// mutable snapshot. Compound assignments remain eager and alias-safe.
 ///
 /// @tparam T  Element type; defaults to double for existing numeric workflows.
 ///
@@ -64,8 +363,8 @@ namespace datamunge {
 /// std::print("{}\n", x * 2.0);                   // [20, 5, 7]
 /// @endcode
 /// @see dm::c(), dm::length(), dm::apply()
-template <typename T = double>
-class Vector {
+template <typename T>
+class Vector : public VectorExpressionTag {
  public:
   /// @brief Type of each owned element.
   using value_type = T;
@@ -120,6 +419,56 @@ class Vector {
   /// @endcode
   template <typename U, std::enable_if_t<std::is_convertible_v<U, T>, int> = 0>
   Vector(const Vector<U>& values) : data_(values.begin(), values.end()) {}
+
+  /// @brief Evaluate a lazy numeric expression once into owned contiguous storage.
+  /// Computes each output element in a single fused pass. Copies values into T;
+  /// the default numeric result type is double. No expression references are retained.
+  /// @tparam E Deferred numeric expression with elements convertible to T.
+  /// @param expression Expression whose borrowed vector leaves must still exist.
+  /// @par Example
+  /// @code
+  /// const auto x = dm::c(1, 2, 3);
+  /// const dm::Vector<> values = x * 2 + 1;
+  /// dm::Vector inferred = dm::sin(x * 0);
+  /// std::print("{} {}\n", values, inferred); // [3, 5, 7] [0, 0, 0]
+  /// @endcode
+  template<class E, std::enable_if_t<vector_expr::is_node<E> &&
+      std::is_convertible_v<typename std::decay_t<E>::value_type, T>, int> = 0>
+  Vector(const E& expression) {
+    const auto n = expression.size();
+    data_.reserve(n);
+    for (std::size_t i = 0; i < n; ++i) data_.push_back(static_cast<T>(expression[i]));
+  }
+
+  /// @brief Evaluate before replacing storage, including aliased/recycled assignments.
+  /// Leaves this vector unchanged if evaluation throws.
+  /// @tparam E Numeric expression with elements convertible to T.
+  /// @param expression Deferred input, possibly borrowing this vector.
+  /// @return This owned vector after evaluation.
+  /// @par Example
+  /// @code
+  /// auto x = dm::c(1, 2);
+  /// x = x + dm::c(10, 20, 30);
+  /// std::print("{}\n", x); // [11, 22, 31]
+  /// @endcode
+  template<class E, std::enable_if_t<vector_expr::is_node<E> &&
+      std::is_convertible_v<typename std::decay_t<E>::value_type, T>, int> = 0>
+  Vector& operator=(const E& expression) {
+    Vector result(expression);
+    data_.swap(result.data_);
+    return *this;
+  }
+
+  /// @brief Copy an owned vector snapshot, matching lazy expressions' eval() spelling.
+  /// @return Independent Vector<T> copy.
+  /// @par Example
+  /// @code
+  /// auto x = dm::c(1, 2);
+  /// const auto snapshot = x.eval();
+  /// x[0] = 3;
+  /// std::print("{}\n", snapshot); // [1, 2]
+  /// @endcode
+  Vector eval() const { return *this; }
 
   /// @brief Returns the number of elements (see also dm::length()).
   std::size_t size() const noexcept { return data_.size(); }
@@ -246,6 +595,20 @@ class Vector {
   /// @endcode
   template <typename I>
   Vector select(const Vector<I>& indices) const { return select(indices.values()); }
+
+  /// @brief Materialise deferred numeric indices before one-based selection.
+  /// @tparam E Numeric index expression.
+  /// @param indices One-based positions or exclusions, evaluated once.
+  /// @return Owned selected values of this vector's element type.
+  /// @throws std::invalid_argument For nonfinite or mixed-sign indices.
+  /// @throws std::out_of_range For a selected position beyond size().
+  /// @par Example
+  /// @code
+  /// const auto labels = dm::c("a", "b", "c");
+  /// std::print("{}\n", labels.select(dm::c(0, 2) + 1)); // ["a", "c"]
+  /// @endcode
+  template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+  Vector select(const E& indices) const { return select(indices.values()); }
   /// @brief Selects one-based integral positions supplied in braces.
   ///
   /// Same rules as select(const std::vector<I>&).
@@ -368,6 +731,37 @@ class Vector {
   std::vector<T> data_;
 };
 
+namespace vector_expr {
+template<class D> Vector<double> Expression<D>::eval() const { return Vector<double>(derived()); }
+template<class D> template<class I>
+auto Expression<D>::select(const std::vector<I>& indices) const { return eval().select(indices); }
+template<class D> template<class I>
+auto Expression<D>::select(const Vector<I>& indices) const { return eval().select(indices); }
+template<class D> template<class E, std::enable_if_t<is_node<E>, int>>
+auto Expression<D>::select(const E& indices) const { return eval().select(indices); }
+template<class D>
+Vector<double> Expression<D>::select(std::initializer_list<std::ptrdiff_t> indices) const { return eval().select(indices); }
+template<class D> Vector<double> Expression<D>::recycled(std::size_t n) const { return eval().recycled(n); }
+} // namespace vector_expr
+
+/// @brief Deduce an owned double Vector from a lazy numeric expression.
+/// @tparam E Deferred node type.
+/// @par Example
+/// See Vector's expression constructor.
+template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+Vector(const E&) -> Vector<double>;
+
+/// @brief Read a deferred vector's current length without evaluating elements.
+/// @tparam E Deferred numeric expression.
+/// @param values Expression whose leaves remain alive.
+/// @return Current recycled result length.
+/// @par Example
+/// @code
+/// std::print("{}\n", dm::length(dm::c(1, 2) + 1)); // 2
+/// @endcode
+template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+std::size_t length(const E& values) { return values.size(); }
+
 /// @brief Deduces element types when constructing from owned standard storage.
 template <typename T> Vector(std::vector<T>) -> Vector<T>;
 /// @brief Keeps brace-initialized numeric vectors double-valued for existing arithmetic APIs.
@@ -439,6 +833,25 @@ auto apply(const Vector<T>& values, F&& callable) {
   result.reserve(values.size());
   for (const auto& value : values) result.push_back(std::invoke(callable, value));
   return Vector<Result>(std::move(result));
+}
+
+/// @brief Materialise a numeric expression before applying an arbitrary eager callback.
+/// Preserves apply()'s side-effect order: input values are computed first, then the
+/// callback runs once per element. Generic vector arithmetic should call a vector-
+/// aware function directly (for example doppler(x)) to retain pointwise fusion.
+/// @tparam E Deferred numeric node.
+/// @tparam F Callable accepted by apply(Vector, callable).
+/// @param values Deferred input, evaluated once before the callback.
+/// @param callable Function applied to each materialised value.
+/// @return Owned vector of callback results.
+/// @par Example
+/// @code
+/// const auto values = dm::apply(dm::c(1, 2) + 1, [](double x) { return x * x; });
+/// std::print("{}\n", values); // [4, 9]
+/// @endcode
+template<class E, class F, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+auto apply(const E& values, F&& callable) {
+  return apply(values.eval(), std::forward<F>(callable));
 }
 
 /// @brief Internal adapters for R-style concatenation and coercion.
@@ -539,6 +952,7 @@ template <typename T>
 Vector<T> c(std::vector<T> values) { return Vector<T>(std::move(values)); }
 /// @brief Combines scalar arguments with the same coercion as the initializer-list overloads (R's `c()`).
 ///
+/// A single lazy expression is materialised as an owned numeric vector.
 /// Text plus numeric/logical scalars becomes strings; other inputs need a common C++ type.
 /// Arithmetic arguments become a `Vector<double>`, all-bool arguments a `Vector<bool>`,
 /// and other types (such as dm::RGB colors) a vector of that type.
@@ -559,7 +973,9 @@ Vector<T> c(std::vector<T> values) { return Vector<T>(std::move(values)); }
 /// @see dm::factor(), Vector::select()
 template <typename First, typename... Rest>
 auto c(First first, Rest... rest) {
-  if constexpr (std::is_convertible_v<First, std::string> || (std::is_convertible_v<Rest, std::string> || ...)) {
+  if constexpr (sizeof...(Rest) == 0 && vector_expr::is_node<First>) {
+    return first.eval();
+  } else if constexpr (std::is_convertible_v<First, std::string> || (std::is_convertible_v<Rest, std::string> || ...)) {
     return c(std::initializer_list<vector_detail::StringValue>{first, rest...});
   } else {
     using R = vector_detail::combined_type<std::common_type_t<First, Rest...>>;
@@ -627,151 +1043,100 @@ template <typename T>
   return Vector<T>(unique(values.values()));
 }
 
-/// @brief Returns element-wise negation of the by-value vector.
-///
-/// @param v  Vector to negate.
-/// @return  `[-v1, -v2, ...]`.
-///
+/// @brief Materialise a lazy numeric expression before collecting distinct values.
+/// @tparam E Deferred numeric node.
+/// @param values Deferred input, unchanged by evaluation.
+/// @return Owned numeric vector of distinct values in first-appearance order.
 /// @par Example
 /// @code
-/// std::print("{}\n", -dm::c(1, 2, 3));         // [-1, -2, -3]
+/// std::print("{}\n", dm::unique(dm::c(1, 1, 2) + 1)); // [2, 3]
 /// @endcode
-Vector<> operator-(Vector<> v);
+/// @see unique(const Vector<T>&)
+template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+Vector<double> unique(const E& values) { return unique(values.eval()); }
 
-/// @brief Returns pairwise sums, recycling the shorter vector; empty inputs give empty.
-///
-/// Like R, the shorter operand is recycled to the longer length, with no warning when
-/// the longer length is not a multiple of the shorter one.
-///
-/// @param lhs  Left operand (taken by value and reused as the result's storage).
-/// @param rhs  Right operand.
-/// @return  A vector of length max(lhs.size(), rhs.size()), or empty if either is empty.
-///
+/// @brief Form a lazy element-wise negation without allocating vector storage.
+/// @tparam E Numeric Vector or expression type.
+/// @param v Borrowed lvalue leaf or owned temporary/expression.
+/// @return Deferred double-valued negation.
+/// @par Example
+/// @code
+/// std::print("{}\n", -dm::c(1, 2, 3)); // [-1, -2, -3]
+/// @endcode
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto operator-(E&& v) { return vector_expr::unary(std::forward<E>(v), std::negate<double>{}); }
+
+/// @brief Form a lazy element-wise sum with R-style recycling and scalar broadcasting.
+/// An empty operand gives an empty result; partial recycling is allowed without a
+/// warning. Each child retains its own recycling length. Numeric values are promoted
+/// to double, as in the earlier eager API. No elements are computed at construction.
+/// Lvalue Vector leaves are borrowed; temporaries and child nodes are owned.
+/// @tparam L Numeric vector/expression or scalar; at least one operand is a vector/expression.
+/// @tparam R Numeric vector/expression or scalar.
+/// @param lhs Forwarded left operand.
+/// @param rhs Forwarded right operand.
+/// @return Deferred sum; eval() or an owned Vector/standard-vector consumer materialises it.
 /// @par Example
 /// @code
 /// const auto x = dm::c(1, 2, 3, 4);
-/// std::print("{}\n", x + dm::c(10, 20));       // [11, 22, 13, 24]
-/// std::print("{}\n", x + dm::c(1, 2, 3));      // [2, 4, 6, 5]   (partial recycle)
+/// std::print("{}\n", x + dm::c(10, 20)); // [11, 22, 13, 24]
+/// std::print("{}\n", x + dm::c(1, 2, 3)); // [2, 4, 6, 5]
+/// std::print("{} {}\n", x + 1, 1 + x); // [2, 3, 4, 5] [2, 3, 4, 5]
 /// @endcode
-/// @see Vector::operator+=()
-Vector<> operator+(Vector<> lhs, const Vector<>& rhs);
-/// @brief Returns pairwise differences with the same recycling as operator+.
-/// @param lhs  Minuend vector.
-/// @param rhs  Subtrahend vector, recycled as needed.
-/// @return  `lhs - rhs` element-wise.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", dm::c(5, 6, 7) - dm::c(1));   // [4, 5, 6]
-/// @endcode
-Vector<> operator-(Vector<> lhs, const Vector<>& rhs);
-/// @brief Returns pairwise products with the same recycling as operator+.
-/// @param lhs  Left factor.
-/// @param rhs  Right factor, recycled as needed.
-/// @return  `lhs * rhs` element-wise.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", dm::c(1, 2, 3, 4) * dm::c(2, 3, 4));   // [2, 6, 12, 8]
-/// @endcode
-Vector<> operator*(Vector<> lhs, const Vector<>& rhs);
-/// @brief Returns pairwise quotients with the same recycling as operator+.
-///
-/// Zero divisors are not checked; IEEE rules apply (`1 / 0` is inf, `0 / 0` is NaN).
-///
-/// @param lhs  Dividends.
-/// @param rhs  Divisors, recycled as needed.
-/// @return  `lhs / rhs` element-wise.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", dm::c(1, 2, 3, 4) / dm::c(2));   // [0.5, 1, 1.5, 2]
-/// @endcode
-Vector<> operator/(Vector<> lhs, const Vector<>& rhs);
+/// @see Vector::eval(), vector_expr::Expression::eval()
+template<class L, class R, std::enable_if_t<vector_expr::binary_enabled<L, R>, int> = 0>
+auto operator+(L&& lhs, R&& rhs) {
+  return vector_expr::binary(std::forward<L>(lhs), std::forward<R>(rhs), std::plus<double>{});
+}
 
-/// @brief Returns each element of @p lhs plus the scalar @p rhs.
-/// @param lhs  Vector operand.
-/// @param rhs  Scalar added to every element.
-/// @return  A vector the same length as @p lhs.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", dm::c(1, 2, 3) + 1);      // [2, 3, 4]
-/// @endcode
-Vector<> operator+(Vector<> lhs, double rhs);
-/// @brief Returns each element of @p lhs minus the scalar @p rhs.
-/// @param lhs  Vector operand.
-/// @param rhs  Scalar subtracted from every element.
-/// @return  A vector the same length as @p lhs.
-///
+/// @brief Form a lazy difference with the recycling/ownership rules of operator+.
+/// @tparam L Numeric vector/expression or scalar; at least one operand is a vector/expression.
+/// @tparam R Numeric vector/expression or scalar.
+/// @param lhs Forwarded left operand.
+/// @param rhs Forwarded right operand.
+/// @return Deferred double-valued difference.
 /// @par Example
 /// @code
 /// const auto x = dm::c(1, 2, 3);
-/// std::print("{}\n", x - dm::mean(x));         // [-1, 0, 1]
+/// std::print("{} {}\n", x - 1, 10 - x); // [0, 1, 2] [9, 8, 7]
 /// @endcode
-Vector<> operator-(Vector<> lhs, double rhs);
-/// @brief Returns each element of @p lhs multiplied by the scalar @p rhs.
-/// @param lhs  Vector operand.
-/// @param rhs  Scalar multiplier.
-/// @return  A vector the same length as @p lhs.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", dm::c(1, 2, 3) * 2);      // [2, 4, 6]
-/// @endcode
-Vector<> operator*(Vector<> lhs, double rhs);
-/// @brief Returns each element of @p lhs divided by @p rhs, without checking zero.
-/// @param lhs  Vector of dividends.
-/// @param rhs  Scalar divisor.
-/// @return  A vector the same length as @p lhs.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", dm::c(1, 2, 3) / 2);      // [0.5, 1, 1.5]
-/// @endcode
-Vector<> operator/(Vector<> lhs, double rhs);
+template<class L, class R, std::enable_if_t<vector_expr::binary_enabled<L, R>, int> = 0>
+auto operator-(L&& lhs, R&& rhs) {
+  return vector_expr::binary(std::forward<L>(lhs), std::forward<R>(rhs), std::minus<double>{});
+}
 
-/// @brief Returns the scalar @p lhs plus each element of @p rhs.
-/// @param lhs  Scalar added to every element.
-/// @param rhs  Vector operand.
-/// @return  A vector the same length as @p rhs.
-///
+/// @brief Form a lazy product with the recycling/ownership rules of operator+.
+/// @tparam L Numeric vector/expression or scalar; at least one operand is a vector/expression.
+/// @tparam R Numeric vector/expression or scalar.
+/// @param lhs Forwarded left operand.
+/// @param rhs Forwarded right operand.
+/// @return Deferred double-valued product.
 /// @par Example
 /// @code
-/// std::print("{}\n", 1 + dm::c(1, 2, 3));      // [2, 3, 4]
+/// const auto x = dm::c(1, 2, 3);
+/// std::print("{} {}\n", x * 2, 2 * x); // [2, 4, 6] [2, 4, 6]
 /// @endcode
-Vector<> operator+(double lhs, Vector<> rhs);
-/// @brief Returns the scalar @p lhs minus each element of @p rhs.
-/// @param lhs  Scalar minuend.
-/// @param rhs  Vector of subtrahends.
-/// @return  A vector the same length as @p rhs.
-///
+template<class L, class R, std::enable_if_t<vector_expr::binary_enabled<L, R>, int> = 0>
+auto operator*(L&& lhs, R&& rhs) {
+  return vector_expr::binary(std::forward<L>(lhs), std::forward<R>(rhs), std::multiplies<double>{});
+}
+
+/// @brief Form a lazy quotient with the recycling/ownership rules of operator+.
+/// Zero divisors follow double arithmetic, producing infinity/NaN without checks.
+/// @tparam L Numeric vector/expression or scalar; at least one operand is a vector/expression.
+/// @tparam R Numeric vector/expression or scalar.
+/// @param lhs Forwarded numerator.
+/// @param rhs Forwarded divisor.
+/// @return Deferred double-valued quotient.
 /// @par Example
 /// @code
-/// std::print("{}\n", 10 - dm::c(1, 2, 3));     // [9, 8, 7]
+/// const auto x = dm::c(1, 2, 4);
+/// std::print("{} {}\n", x / 2, 8 / x); // [0.5, 1, 2] [8, 4, 2]
 /// @endcode
-Vector<> operator-(double lhs, Vector<> rhs);
-/// @brief Returns the scalar @p lhs multiplied by each element of @p rhs.
-/// @param lhs  Scalar multiplier.
-/// @param rhs  Vector operand.
-/// @return  A vector the same length as @p rhs.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", 2 * dm::c(1, 2, 3));      // [2, 4, 6]
-/// @endcode
-Vector<> operator*(double lhs, Vector<> rhs);
-/// @brief Returns @p lhs divided by each element of @p rhs, without checking zero.
-/// @param lhs  Scalar dividend.
-/// @param rhs  Vector of divisors (zero gives inf/NaN).
-/// @return  A vector the same length as @p rhs.
-///
-/// @par Example
-/// @code
-/// const auto x = dm::c(0.5, 0.75);
-/// std::print("{}\n", 20 / (x + 0.25));         // [26.666666666666668, 20]
-/// @endcode
-Vector<> operator/(double lhs, Vector<> rhs);
+template<class L, class R, std::enable_if_t<vector_expr::binary_enabled<L, R>, int> = 0>
+auto operator/(L&& lhs, R&& rhs) {
+  return vector_expr::binary(std::forward<L>(lhs), std::forward<R>(rhs), std::divides<double>{});
+}
 
 /// @brief Prints the vector as `[a, b, c]`.
 ///
@@ -797,6 +1162,22 @@ std::ostream& operator<<(std::ostream& out, const Vector<T>& v) {
   return out << ']';
 }
 
+/// @brief Stream a lazy expression without materialising vector storage.
+/// @tparam E Deferred numeric node.
+/// @param out Destination stream.
+/// @param v Read-only expression with live borrowed leaves.
+/// @return Destination stream after writing bracketed numeric values.
+/// @par Example
+/// @code
+/// std::cout << (dm::c(1, 2) + 1) << '\n'; // [2, 3]
+/// @endcode
+template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+std::ostream& operator<<(std::ostream& out, const E& v) {
+  out << '[';
+  for (std::size_t i = 0; i < v.size(); ++i) { if (i) out << ", "; out << v[i]; }
+  return out << ']';
+}
+
 // Keep the scalar overloads visible alongside the Vector<> ones, so unqualified calls such as
 // `sin(0.5)` inside namespace datamunge still resolve to the <cmath> functions. round() is the
 // exception: the scalar dm::round(double, int = 0) below follows R, so `dm::round(2.5)` is 2.
@@ -810,14 +1191,15 @@ using std::sqrt;
 using std::tan;
 
 /// @name Element-wise math
-/// Vector overloads of the standard math functions. Each takes its input by value, transforms
-/// it in place, and returns it, so the result has the same length as the input. Scalar
+/// Vector overloads build lazy nodes without transforming elements yet. The result
+/// has the same length as its input and evaluates pointwise at a consuming boundary. Scalar
 /// calls such as `dm::sin(0.5)` or `dm::pow(2.0, 3)` resolve to the std:: functions.
 /// @{
 
 /// @brief Returns the sine of each element, interpreting input angles in radians.
+/// @tparam E Numeric Vector or expression, borrowed for lvalues and owned for temporaries.
 /// @param v  Angles in radians.
-/// @return  `[sin(v1), sin(v2), ...]`.
+/// @return Deferred double-valued expression computing `[sin(v1), sin(v2), ...]`.
 ///
 /// @par Example
 /// @code
@@ -825,78 +1207,106 @@ using std::tan;
 /// std::print("{}\n", dm::round(dm::sin(dm::c(0, pi / 2, pi)), 6));   // [0, 1, 0]
 /// @endcode
 /// @see dm::cos(), dm::tan()
-Vector<> sin(Vector<> v);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto sin(E&& v) {
+  return vector_expr::unary(std::forward<E>(v), [](double value) { return std::sin(value); });
+}
 /// @brief Returns the cosine of each element, interpreting input angles in radians.
+/// @tparam E Numeric Vector or expression, borrowed for lvalues and owned for temporaries.
 /// @param v  Angles in radians.
-/// @return  `[cos(v1), cos(v2), ...]`.
+/// @return Deferred double-valued expression computing `[cos(v1), cos(v2), ...]`.
 ///
 /// @par Example
 /// @code
 /// const double pi = 3.141592653589793;
 /// std::print("{}\n", dm::round(dm::cos(dm::c(0, pi / 2, pi)), 6));   // [1, 0, -1]
 /// @endcode
-Vector<> cos(Vector<> v);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto cos(E&& v) {
+  return vector_expr::unary(std::forward<E>(v), [](double value) { return std::cos(value); });
+}
 /// @brief Returns the tangent of each element, interpreting input angles in radians.
+/// @tparam E Numeric Vector or expression, borrowed for lvalues and owned for temporaries.
 /// @param v  Angles in radians.
-/// @return  `[tan(v1), tan(v2), ...]`.
+/// @return Deferred double-valued expression computing `[tan(v1), tan(v2), ...]`.
 ///
 /// @par Example
 /// @code
 /// const double pi = 3.141592653589793;
 /// std::print("{}\n", dm::round(dm::tan(dm::c(0, pi / 4)), 6));   // [0, 1]
 /// @endcode
-Vector<> tan(Vector<> v);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto tan(E&& v) {
+  return vector_expr::unary(std::forward<E>(v), [](double value) { return std::tan(value); });
+}
 /// @brief Returns the base-e exponential of each element using std::exp.
+/// @tparam E Numeric Vector or expression, borrowed for lvalues and owned for temporaries.
 /// @param v  Exponents.
-/// @return  `[e^v1, e^v2, ...]`.
+/// @return Deferred double-valued expression computing `[e^v1, e^v2, ...]`.
 ///
 /// @par Example
 /// @code
 /// std::print("{}\n", dm::round(dm::exp(dm::c(0, 1, 2)), 4));   // [1, 2.7183, 7.3891]
 /// @endcode
 /// @see dm::log()
-Vector<> exp(Vector<> v);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto exp(E&& v) {
+  return vector_expr::unary(std::forward<E>(v), [](double value) { return std::exp(value); });
+}
 /// @brief Returns the natural logarithm of each element using std::log, without domain checks.
 ///
 /// Zero gives -inf and negative inputs give NaN (no exception).
 ///
+/// @tparam E Numeric Vector or expression, borrowed for lvalues and owned for temporaries.
 /// @param v  Positive inputs.
-/// @return  `[ln(v1), ln(v2), ...]`.
+/// @return Deferred double-valued expression computing `[ln(v1), ln(v2), ...]`.
 ///
 /// @par Example
 /// @code
 /// std::print("{}\n", dm::round(dm::log(dm::exp(dm::c(1, 2))), 6));   // [1, 2]
 /// @endcode
 /// @see dm::exp()
-Vector<> log(Vector<> v);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto log(E&& v) {
+  return vector_expr::unary(std::forward<E>(v), [](double value) { return std::log(value); });
+}
 /// @brief Returns each element's square root using std::sqrt, without domain checks.
 ///
 /// Negative inputs give NaN (no exception).
 ///
+/// @tparam E Numeric Vector or expression, borrowed for lvalues and owned for temporaries.
 /// @param v  Non-negative inputs.
-/// @return  `[sqrt(v1), sqrt(v2), ...]`.
+/// @return Deferred double-valued expression computing `[sqrt(v1), sqrt(v2), ...]`.
 ///
 /// @par Example
 /// @code
 /// std::print("{}\n", dm::sqrt(dm::c(4, 9)));   // [2, 3]
 /// @endcode
-Vector<> sqrt(Vector<> v);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto sqrt(E&& v) {
+  return vector_expr::unary(std::forward<E>(v), [](double value) { return std::sqrt(value); });
+}
 /// @brief Returns the absolute value of each element.
+/// @tparam E Numeric Vector or expression, borrowed for lvalues and owned for temporaries.
 /// @param v  Input values.
-/// @return  `[|v1|, |v2|, ...]`.
+/// @return Deferred double-valued expression computing `[|v1|, |v2|, ...]`.
 ///
 /// @par Example
 /// @code
 /// std::print("{}\n", dm::abs(dm::c(-1.5, 0, 2)));   // [1.5, 0, 2]
 /// @endcode
-Vector<> abs(Vector<> v);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto abs(E&& v) {
+  return vector_expr::unary(std::forward<E>(v), [](double value) { return std::abs(value); });
+}
 /// @brief Raises each element to @p exponent using std::pow, without domain checks.
 ///
 /// Like R's `x^p`. Negative bases with fractional exponents give NaN.
 ///
+/// @tparam E Numeric Vector or expression.
 /// @param v  Bases.
 /// @param exponent  Exponent applied to every element.
-/// @return  `[v1^exponent, v2^exponent, ...]`.
+/// @return Deferred expression computing `[v1^exponent, v2^exponent, ...]`.
 ///
 /// @par Example
 /// @code
@@ -905,23 +1315,11 @@ Vector<> abs(Vector<> v);
 /// const auto m3 = dm::sum(dm::pow(x - dm::mean(x), 3)) / dm::length(x);   // 3rd moment
 /// @endcode
 /// @see dm::sqrt()
-Vector<> pow(Vector<> v, double exponent);
-/// @brief Rounds each element to @p digits decimal places; see the scalar round() overload.
-///
-/// Matches R's round(): exact halves go to the even digit (`2.5` -> `2`, `-2.5` -> `-2`).
-///
-/// @param v  Values to round.
-/// @param digits  Decimal places; negative rounds to tens, hundreds, ... (default 0).
-/// @return  The rounded values.
-///
-/// @par Example
-/// @code
-/// std::print("{}\n", dm::round(dm::c(1.2345, 2.71828), 2));   // [1.23, 2.72]
-/// std::print("{}\n", dm::round(dm::c(2.5, -2.5, 3.5)));       // [2, -2, 4]
-/// std::print("{}\n", dm::round(dm::c(1234.5, 1251), -2));     // [1200, 1300]
-/// @endcode
-/// @see dm::round(double, int)
-Vector<> round(Vector<> v, int digits = 0);
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto pow(E&& v, double exponent) {
+  return vector_expr::unary(std::forward<E>(v), [exponent](double value) { return std::pow(value, exponent); });
+}
+
 /// @}
 
 /// @brief Rounds to decimal places exactly like R's round() (R >= 4.0.0).
@@ -945,6 +1343,28 @@ Vector<> round(Vector<> v, int digits = 0);
 /// @endcode
 /// @see dm::round(Vector<>, int)
 double round(double value, int digits = 0);
+
+/// @brief Rounds each element to @p digits decimal places; see the scalar round() overload.
+///
+/// Matches R's round(): exact halves go to the even digit (`2.5` -> `2`, `-2.5` -> `-2`).
+///
+/// @tparam E Numeric Vector or expression.
+/// @param v  Values to round.
+/// @param digits  Decimal places; negative rounds to tens, hundreds, ... (default 0).
+/// @return Deferred double-valued rounded expression.
+///
+/// @par Example
+/// @code
+/// std::print("{}\n", dm::round(dm::c(1.2345, 2.71828), 2));   // [1.23, 2.72]
+/// std::print("{}\n", dm::round(dm::c(2.5, -2.5, 3.5)));       // [2, -2, 4]
+/// std::print("{}\n", dm::round(dm::c(1234.5, 1251), -2));     // [1200, 1300]
+/// @endcode
+/// @see dm::round(double, int)
+template<class E, std::enable_if_t<vector_expr::numeric<E>, int> = 0>
+auto round(E&& v, int digits = 0) {
+  return vector_expr::unary(std::forward<E>(v), [digits](double value) { return datamunge::round(value, digits); });
+}
+
 
 /// @brief Evenly spaced values from @p from to @p to inclusive, like R's `seq(from, to, length.out = n)`.
 ///
@@ -1004,6 +1424,48 @@ double mean(const Vector<>& v);
 /// @endcode
 /// @see dm::mean()
 double sd(const Vector<>& v);
+
+/// @brief Sum a lazy numeric expression directly in a single pass without a result array.
+/// @tparam E Deferred numeric node.
+/// @param v Expression with live borrowed leaves.
+/// @return Left-to-right sum, or zero for empty input; NaN/Inf follow double arithmetic.
+/// @par Example
+/// @code
+/// std::print("{}\n", dm::sum(dm::c(1, 2, 3) * 2)); // 12
+/// @endcode
+/// @see sum(const Vector<>&)
+template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+double sum(const E& v) { return vector_expr::sum_values(v); }
+
+/// @brief Mean of a lazy numeric expression without allocating an intermediate vector.
+/// @tparam E Deferred numeric node.
+/// @param v Expression with live borrowed leaves.
+/// @return Sum divided by length, or NaN for empty input.
+/// @par Example
+/// @code
+/// std::print("{}\n", dm::mean(dm::c(1, 2, 3) + 1)); // 3
+/// @endcode
+/// @see mean(const Vector<>&)
+template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+double mean(const E& v) {
+  const auto n = v.size();
+  return n ? vector_expr::sum_values(v) / static_cast<double>(n) : std::numeric_limits<double>::quiet_NaN();
+}
+
+/// @brief Welford sample standard deviation of a lazy expression, evaluated in one pass.
+/// Uses the same long-double accumulation as sd(Vector), without a result array.
+/// @tparam E Deferred numeric node.
+/// @param v Expression with live borrowed leaves.
+/// @return Sample deviation (denominator n-1), or NaN for fewer than two/nonfinite values.
+/// @par Example
+/// @code
+/// std::print("{:.0f}\n", dm::sd(dm::c(1, 2, 3) * 2)); // 2
+/// @endcode
+/// @see sd(const Vector<>&)
+template<class E, std::enable_if_t<vector_expr::is_node<E>, int> = 0>
+double sd(const E& v) { return vector_expr::sample_sd(v); }
+
+
 
 /// @brief Reseeds the generator shared by unif() and rnorm(), like R's `set.seed()`.
 ///
@@ -1097,5 +1559,37 @@ using RGB = graphics::RGB;
 /// @brief Short name for graphics::RGBA, the same type as RGB, spelled for translucent colors.
 /// @see graphics::RGB
 using RGBA = graphics::RGBA;
+
+/// @brief Create an empty native plot for adding points and lines through chained calls.
+/// Owns its layers and style. Construction opens no display; add a data layer before
+/// rendering or saving. Equivalent to Plot() with the normal canvas and axis defaults.
+/// @return Owned empty RPlot, ready for title(), points(), lines(), xlim() and ylim().
+/// @par Example
+/// @code
+/// auto plt = dm::plot().title("Fit").points(dm::c(0, 1), dm::c(1, 2), "data", "blue")
+///                .ylim(-4, 4).xlim(0, 1);
+/// std::print("{} {}\n", plt.series().size(), plt.y_min()); // 1 -4
+/// @endcode
+/// @see plot(std::vector<double>, std::vector<double>, std::string, RGBA), graphics::RPlot
+inline Plot plot() { return {}; }
+
+/// @brief Create a native scatter plot, like R's plot(x, y), ready for chained lines().
+/// Copies coordinates into owned plot storage; no GUI opens until show() is requested.
+/// @param x Horizontal coordinates.
+/// @param y Vertical coordinates, same length as x.
+/// @param label Legend label, default "Observed".
+/// @param color Point color, default translucent blue.
+/// @return Owned RPlot that can be saved as SVG or PNG.
+/// @throws std::invalid_argument For mismatched coordinate lengths.
+/// @par Example
+/// @code
+/// auto figure = dm::plot(dm::c(0, 1), dm::c(1, 2));
+/// std::print("{}\n", figure.series().size()); // 1
+/// @endcode
+/// @see graphics::RPlot::plot(), graphics::RPlot::lines()
+inline Plot plot(std::vector<double> x, std::vector<double> y, std::string label = "Observed",
+                 RGBA color = {37, 99, 235, 0.3}) {
+  return Plot::plot(std::move(x), std::move(y), "p", std::move(label), color);
+}
 
 } // namespace datamunge

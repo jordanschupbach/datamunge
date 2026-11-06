@@ -90,6 +90,13 @@ struct ConvLayerOptions {
 /// b is "<name>/b" [filters] (tflow's Conv2DLayer).
 Tensor conv2d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
               std::int64_t kernel, const ConvLayerOptions& options = {});
+/// concat({conv2d(store, names[i], x, filters[i], kernels[i], options) ...}, -1):
+/// the same parameters (created in the same order, so a store initialises them
+/// identically) and values. With a bias and ReLU the branches run as one
+/// conv2d_bias_relu_concat op that writes straight into the concatenated output.
+Tensor conv2d_concat(ParameterStore& store, const std::vector<std::string>& names, const Tensor& x,
+                     const std::vector<std::int64_t>& filters, const std::vector<std::int64_t>& kernels,
+                     const ConvLayerOptions& options = {});
 /// 1-D convolution of x [N, L, C]: W is "<name>/W" [1, k, C, filters] (tflow's Conv1DLayer layout).
 Tensor conv1d(ParameterStore& store, const std::string& name, const Tensor& x, std::int64_t filters,
               std::int64_t kernel, const ConvLayerOptions& options = {});

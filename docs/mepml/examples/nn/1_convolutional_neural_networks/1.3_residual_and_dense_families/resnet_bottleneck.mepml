@@ -56,18 +56,24 @@ Adam(.001), explicit kernel L2=.0001/2 and independent tensor crop/flip augmenta
 parameter and moving-state checkpoints restore together. This four-stage CIFAR adaptation
 is a bounded CPU demonstration, not the original ImageNet training recipe or a depth ranking.
 
-The editable concept diagram is `diagrams/resnet_bottleneck_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/resnet_bottleneck_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/resnet_bottleneck_concept.tikz > build/resnet_bottleneck_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/resnet_bottleneck_concept.svg build/resnet_bottleneck_concept.dvi > build/resnet_bottleneck_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/resnet_bottleneck_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Reduce, mix, expand\n1×1, 3×3, 1×1");
+  diagram.node("n1", {5.2, 0}, "50, 101, 152 layers\nshortcut additions");
+  diagram.node("n2", {10.4, 0}, "Tensor Adam loop\nsave weights\nand BN state");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/resnet_bottleneck_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/resnet_bottleneck_concept.svg)
 // result_end
 \caption(ResNet Bottlenecks: Channel Compression, Expansion and Sampling)
@@ -464,9 +470,9 @@ ResNet-152: 20 explicit Adam updates.
 
 | depth | parameters | moving_state | best_epoch | selected_train_NLL | validation_NLL | test_NLL | test_accuracy |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 50 | 375762 | 6640 | 4 | 2.906431 | 2.458331 | 2.527230 | 0.1250 |
-| 101 | 678226 | 13168 | 4 | 3.182935 | 2.324512 | 3.969295 | 0.1250 |
-| 152 | 927698 | 18928 | 4 | 4.880755 | 2.415353 | 2.818557 | 0.0625 |
+| 50 | 375762 | 6640 | 4 | 2.788147 | 2.502186 | 2.522213 | 0.12500 |
+| 101 | 678226 | 13168 | 5 | 2.952476 | 2.267877 | 3.039516 | 0.09375 |
+| 152 | 927698 | 18928 | 4 | 3.548073 | 2.504235 | 2.829926 | 0.06250 |
 
 \image(figures/resnet_bottleneck_training.svg)
 // result_end

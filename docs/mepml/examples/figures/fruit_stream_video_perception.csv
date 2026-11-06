@@ -1,0 +1,4 @@
+mode,stream_seed,id,time,true_class,predicted_class,confidence,box_x,box_y,box_width,box_height
+video,2026113001,1,10.06666667,1,1,0.989100158,57,29,42,12
+video,2026113001,2,40.26250000,0,0,0.999868751,49,63,29,20
+video,2026113001,3,48.44583333,1,1,0.997172177,40,0,29,41

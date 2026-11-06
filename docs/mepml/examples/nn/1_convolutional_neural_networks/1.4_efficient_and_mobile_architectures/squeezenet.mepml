@@ -6,7 +6,8 @@
 \abstract(
 SqueezeNet reduces expensive spatial-filter inputs with narrow squeeze layers and parallel
 expand branches. We check exact Fire equivalence and derivatives, isolate ceil pooling, verify
-both released versions and explicitly fit three full-width CIFAR configurations with tensor Adam.
+both released versions and explicitly fit three full-width CIFAR configurations with tensor Adam,
+scoring the full CIFAR-10 test set with GPU inference.
 )
 \toc
 
@@ -14,7 +15,7 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.4_effi
 
 > The method
 
-A Fire module first squeezes Cin channels to S using biased 1×1/ReLU, then expands with
+A *Fire* module first squeezes Cin channels to S using biased 1×1/ReLU, then expands with
 parallel biased 1×1/ReLU and SAME 3×3/ReLU branches of widths E1 and E3. Concatenation
 emits E1+E3 channels. Its learned budget, including biases, is
 
@@ -36,31 +37,46 @@ add no parameters. The model has no BN or moving-statistic store.
 He-uniform initializes Fire/stem filters. After dropout, a biased 1×1 class filter initialized
 normal(0,.01) uses ReLU, then global mean. Thus class-map scores are nonnegative; this is not
 a generic unconstrained linear head. Large optimizer steps can kill the final ReLU and remove
-data gradients. The source port uses Adam(.0001) for that reason, which the visible fits retain.
+data gradients. The source port uses Adam(.0001) for that reason. The visible fits use a
+warmed-up cosine schedule peaking at .0005: in pilot runs, peaks of .001 and .002 left v1.1 at
+exactly chance NLL ln 10, while .0005 trained all three configurations.
 No pretrained weights or compression are used; a parameter count is not a compressed file size.
 
 Three explicit fits compare v1.0, v1.0 with simple bypasses, and v1.1. The CIFAR adaptation uses
 a SAME 3×3/1 stem at original 32×32 resolution, retaining every Fire module/pool/dropout/class
 map. Learned counts are 729034/729034/727626. Each resets parameter, dropout, minibatch and
-augmentation seeds and uses 64 fit/64 validation/64 official-test images, four batch-eight epochs
-(32 updates), Adam(.0001) and explicit kernel L2=.0001/2. Independent padded crops/flips precede scaling to
-[-1,1]. The lowest validation NLL selects parameters before the official-test evaluation;
-there is no moving state to save. These deliberately short single-seed fits keep the docs build
-fast; they differ from the larger original source run and ImageNet experiments and do not
-establish an architecture ranking.
+augmentation seeds. The first training file supplies 8,000 fit and 2,000 validation rows; the
+test set is all 10,000 official test images. Each configuration trains on the CPU for ten
+batch-32 epochs (2,500 updates) with Adam, a 100-step linear warmup then cosine decay from .0005
+to zero, and explicit kernel L2=.0001/2; the three fits together take about twelve minutes.
+Independent padded crops/flips precede scaling to [-1,1]. The lowest validation NLL selects
+parameters before the official-test evaluation; there is no moving state to save.
 
-The editable concept diagram is `diagrams/squeezenet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+All inference (per-epoch validation, the selected training NLL and the test predictions)
+runs on the first CUDA GPU when the linked datamunge has CUDA and cuBLAS. The parameter store is
+copied with `ParameterStore::to`, and images move in batches of 1,000. Without a usable GPU the
+same code runs on the CPU, but scoring 10,000 test images per configuration then takes about
+fifty times longer. These are short single-seed fits; they differ from the larger original
+source run and ImageNet experiments and do not establish an architecture ranking.
 
-```{bash, results="output", file="figures/squeezenet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/squeezenet_concept.tikz > build/squeezenet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/squeezenet_concept.svg build/squeezenet_concept.dvi > build/squeezenet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
+
+```{cpp, file="figures/squeezenet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Narrow squeeze\nParallel expand");
+  diagram.node("n1", {5.2, 0}, "Ceil max pooling\nReLU class maps");
+  diagram.node("n2", {10.4, 0}, "Three CIFAR fits\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/squeezenet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/squeezenet_concept.svg)
 // result_end
 \caption(SqueezeNet: Fire Modules, Ceil Pooling and Visible Optimization)
@@ -119,7 +135,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-44 displayed nodes; 729034 reachable learned values.
+41 displayed nodes; 729034 reachable learned values.
 \image(figures/squeezenet_architecture.svg)
 // result_end
 \caption(Executed squeezenet tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
@@ -341,35 +357,70 @@ One original cached training image per class, IDs 0..4 then 5..9.
 
 ```{cpp, results="markdown", file="figures/squeezenet_training.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
 #include <dm/dm.hpp>
+#include <chrono>
 
 int main() {
   int rendered_confusions = 0;
   namespace n             = dm::nn;
-  auto training_plot      = dm::graphics::RPlot::create(),
-       validation_plot    = dm::graphics::RPlot::create();
-  int setting             = 0;
-  for (auto [version, bypass] :
-       std::vector<std::pair<int, bool>>{{10, false}, {10, true}, {11, false}}) {
-    n::set_num_threads(2);
+  namespace c             = dm::compute;
+  using clock             = std::chrono::steady_clock;
+  n::set_num_threads(8);
 
-    std::filesystem::path cache;
-    if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
-      cache = p;
-    else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
-      cache = std::filesystem::path(p) / "datamunge/datasets";
-    else
-      cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
+  // Inference runs on the first CUDA GPU when this datamunge build has CUDA and
+  // cuBLAS; otherwise the identical code runs on the CPU. Training stays on CPU.
+  const c::Context host;
+  c::Context       device = host;
+  if (c::probe({c::Backend::CUDA, 0}).available) {
+    const c::Context gpu({c::Backend::CUDA, 0});
+    if (gpu.supports_matmul())
+      device = gpu;
+  }
+  const auto device_name = device.device().backend == c::Backend::CUDA
+                               ? "CUDA " + c::probe(device.device()).name
+                               : std::string("CPU (no usable CUDA device in this build)");
+
+  std::filesystem::path cache;
+  if (const auto* p = std::getenv("DATAMUNGE_DATA_DIR"))
+    cache = p;
+  else if (const auto* p = std::getenv("XDG_CACHE_HOME"))
+    cache = std::filesystem::path(p) / "datamunge/datasets";
+  else
+    cache = std::filesystem::path(std::getenv("HOME")) / ".cache/datamunge/datasets";
   dm::datasets::fetch("cifar10", (cache / "cifar10").string());
 
-    const auto raw = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
-    const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
-               labels = n::cast(raw.labels, n::DType::Int64);
-    const auto tx = n::slice_axis(images, 0, 0, 64), ty = n::slice_axis(labels, 0, 0, 64);
-    const auto vx       = 2 * n::slice_axis(images, 0, 64, 128) - 1,
-               vy       = n::slice_axis(labels, 0, 64, 128);
-    const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
-    const auto qx       = 2 * n::slice_axis(official.images, 0, 0, 64) - 1,
-               qy       = n::slice_axis(official.labels, 0, 0, 64);
+  constexpr std::int64_t fit = 8000, held = 2000, batch = 32, epochs = 10, warmup = 100;
+  constexpr double       peak = .0005;
+  const auto raw    = n::data::LoadCifar({cache / "cifar10/data_batch_1.bin"}, n::data::Cifar::k10);
+  const auto images = n::cast(raw.images, n::DType::Float32) / 255.,
+             labels = n::cast(raw.labels, n::DType::Int64);
+  const auto tx = n::slice_axis(images, 0, 0, fit), ty = n::slice_axis(labels, 0, 0, fit);
+  const auto vx = 2 * n::slice_axis(images, 0, fit, fit + held) - 1,
+             vy = n::slice_axis(labels, 0, fit, fit + held);
+  const auto official = n::load_cifar10((cache / "cifar10").string(), "test");
+  const auto qx = 2 * official.images - 1, qy = official.labels;
+
+  // Batched dropout-free inference on `device`; logits come back to the host.
+  auto infer = [&](const n::ParameterStore& p, const n::models::SqueezeNetConfig& cfg,
+                   const n::Tensor& x) {
+    n::NoGradGuard         guard;
+    auto                   dp = p.to(device);
+    std::vector<n::Tensor> logits;
+    for (std::int64_t i = 0; i < x.size(0); i += 1000) {
+      const auto rows = n::slice_axis(x, 0, i, std::min(i + 1000, x.size(0)));
+      logits.push_back(n::models::SqueezeNet(dp, rows.to(device), cfg, false).logits.to(host));
+    }
+    return n::concat(logits, 0);
+  };
+
+  auto   training_plot = dm::graphics::RPlot::create(),
+         validation_plot = dm::graphics::RPlot::create();
+  int    setting = 0;
+  double inference_seconds = 0;
+  std::vector<std::string> names;
+  std::vector<double>      counts, selected, validation_nll, train_nll, test_nll, accuracy;
+  std::filesystem::create_directories("build");
+  for (auto [version, bypass] :
+       std::vector<std::pair<int, bool>>{{10, false}, {10, true}, {11, false}}) {
     n::models::SqueezeNetConfig cfg;
     cfg.version       = version;
     cfg.simple_bypass = bypass;
@@ -378,51 +429,55 @@ int main() {
     cfg.classes       = 10;
     n::Generator      dropout_rng(101);
     n::ParameterStore p(17);
-    auto              output = [&](const n::Tensor& image, bool training) {
-      return n::models::SqueezeNet(p, image, cfg, training, &dropout_rng).logits;
-    };
     {
       n::NoGradGuard guard;
-      output(n::zeros({1, 32, 32, 3}), false);
+      n::models::SqueezeNet(p, n::zeros({1, 32, 32, 3}), cfg, false);
     }
     if (p.count() != (version == 10 ? 729034 : 727626))
       return 1;
     n::OptimizerConfig config;
     config.kind = n::OptimizerKind::Adam;
-    n::Optimizer  optimizer(p, .0001, config);
-    n::BatchOrder batches(64, 8, 2026);
-    n::Generator  augmentation(151);
-    std::filesystem::create_directories("build");
+    n::Optimizer        optimizer(p, peak, config);
+    n::BatchOrder       batches(fit, batch, 2026);
+    n::Generator        augmentation(151);
+    const std::int64_t  steps      = epochs * ((fit + batch - 1) / batch);
     const std::string   checkpoint = "build/squeezenet_best";
-    double              best       = std::numeric_limits<double>::infinity();
+    double              best       = std::numeric_limits<double>::infinity(), seconds = 0;
     int                 best_epoch = 0;
-    std::vector<double> epochs, train, validation;
-    for (int epoch = 1; epoch <= 4; ++epoch) {
+    std::vector<double> epoch_axis, train, validation;
+    for (int epoch = 1; epoch <= epochs; ++epoch) {
+      const auto start = clock::now();
       batches.begin_epoch();
       n::WeightedMean average;
       for (auto rows = batches.next(); !rows.empty(); rows = batches.next()) {
-        const auto             batch = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
+        const auto             x = n::take_rows(tx, rows), target = n::take_rows(ty, rows);
         std::vector<n::Tensor> transformed;
-        for (int64_t row = 0; row < batch.size(0); ++row) {
+        for (int64_t row = 0; row < x.size(0); ++row) {
           auto image =
-              n::pad(n::slice_axis(batch, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
+              n::pad(n::slice_axis(x, 0, row, row + 1), {{0, 0}, {4, 4}, {4, 4}, {0, 0}});
           image = n::augment::random_crop(image, 32, 32, augmentation);
           transformed.push_back(n::augment::random_flip_left_right(image, augmentation));
         }
-        const auto nll = n::sparse_softmax_cross_entropy(
-            output(2 * n::concat(transformed, 0) - 1, true), target);
-        auto objective = nll;
+        const auto logits = n::models::SqueezeNet(p, 2 * n::concat(transformed, 0) - 1, cfg,
+                                                  true, &dropout_rng)
+                                .logits;
+        const auto nll       = n::sparse_softmax_cross_entropy(logits, target);
+        auto       objective = nll;
         for (const auto& w : p.parameters())
           if (w.dim() >= 2)
             objective = objective + .00005 * n::sum(n::square(w));
+        optimizer.set_learning_rate(
+            n::schedule::warmup_cosine(peak, 0, warmup, steps, optimizer.iterations()));
         optimizer.minimize(objective);
         average.add(nll.item(), rows.size());
       }
-      n::NoGradGuard guard;
-      const double   val = n::sparse_softmax_cross_entropy(output(vx, false), vy).item();
+      seconds += std::chrono::duration<double>(clock::now() - start).count();
+      const auto   inferred = clock::now();
+      const double val = n::sparse_softmax_cross_entropy(infer(p, cfg, vx), vy).item();
+      inference_seconds += std::chrono::duration<double>(clock::now() - inferred).count();
       if (!std::isfinite(val))
         return 1;
-      epochs.push_back(epoch);
+      epoch_axis.push_back(epoch);
       train.push_back(average.value());
       validation.push_back(val);
       if (val < best) {
@@ -432,48 +487,49 @@ int main() {
       }
     }
     p.load(checkpoint + "_params.npz");
+    const auto inferred     = clock::now();
+    const auto prediction   = infer(p, cfg, qx);
+    const auto training_out = infer(p, cfg, 2 * tx - 1);
+    inference_seconds += std::chrono::duration<double>(clock::now() - inferred).count();
     n::NoGradGuard guard;
-    const auto     prediction = output(qx, false);
-    const double   test_nll   = n::sparse_softmax_cross_entropy(prediction, qy).item();
-    const double   training_nll =
-        n::sparse_softmax_cross_entropy(output(2 * tx - 1, false), ty).item();
-    if (!std::isfinite(test_nll))
+    const double   test = n::sparse_softmax_cross_entropy(prediction, qy).item();
+    if (!std::isfinite(test))
       return 1;
-    const auto truth = n::one_hot(qy, 10), predicted = n::one_hot(n::argmax(prediction, 1), 10);
-    const auto confusion = n::matmul(n::transpose(truth, {1, 0}), predicted);
-    n::ConfusionMatrix::from_counts(confusion.to(n::DType::Int64))
-        .save_svg(
-            "build/squeezenet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
-            {.title = "squeezenet / selected-checkpoint test counts"});
+    n::ConfusionMatrix confusion(10);
+    confusion.add(qy, n::argmax(prediction, 1));
+    confusion.save_svg(
+        "build/squeezenet_confusion_api_" + std::to_string(rendered_confusions++) + ".svg",
+        {.title = "squeezenet / selected-checkpoint test counts"});
 
-    if (n::sum(confusion).item() != 64)
-      return 1;
     const std::string label = version == 11 ? "v1.1" : bypass ? "v1.0 + bypass" : "v1.0";
     const std::vector<dm::graphics::RGB> colours = {{37, 99, 235}, {234, 88, 12}, {22, 163, 74}};
-    training_plot.lines(epochs, train, label, colours[setting]);
-    validation_plot.lines(epochs, validation, label, colours[setting]);
+    training_plot.lines(epoch_axis, train, label, colours[setting]);
+    validation_plot.lines(epoch_axis, validation, label, colours[setting]);
     ++setting;
-    std::print("SqueezeNet {}: ", label);
-    std::print(
-        "64 fit / 64 validation / 64 official-test rows; {} learned scalars; {} "
-        "explicit Adam updates.\nSelected epoch {}; validation NLL {:.6f}; "
-        "inference training NLL {:.6f}; test NLL {:.6f}; test accuracy {:.6f}.\n",
-        p.count(),
-        optimizer.iterations(),
-        best_epoch,
-        best,
-        training_nll,
-        test_nll,
-        n::accuracy(prediction, qy));
+    names.push_back(label);
+    counts.push_back(p.count());
+    selected.push_back(best_epoch);
+    validation_nll.push_back(best);
+    train_nll.push_back(n::sparse_softmax_cross_entropy(training_out, ty).item());
+    test_nll.push_back(test);
+    accuracy.push_back(n::accuracy(prediction, qy));
+    std::print("SqueezeNet {}: {} Adam updates in {:.0f} s of CPU training.\n", label,
+               optimizer.iterations(), seconds);
   }
-  training_plot.title("SqueezeNet: augmented training")
-      .x_label("epoch")
-      .y_label("mean NLL")
-      .y_limits(1.9, 2.6);
-  validation_plot.title("SqueezeNet: validation")
-      .x_label("epoch")
-      .y_label("mean NLL")
-      .y_limits(2.1, 2.9);
+  dm::dstruct::DataFrame table;
+  table.add_column("configuration", names);
+  table.add_column("parameters", counts);
+  table.add_column("best_epoch", selected);
+  table.add_column("selected_train_NLL", train_nll);
+  table.add_column("validation_NLL", validation_nll);
+  table.add_column("test_NLL", test_nll);
+  table.add_column("test_accuracy", accuracy);
+  std::print("Inference device: {}; all inference took {:.1f} s.\n", device_name,
+             inference_seconds);
+  std::print("{} fit / {} validation / {} official-test rows per configuration.\n\n{}\n", fit,
+             held, qx.size(0), table.to_md(4));
+  training_plot.title("SqueezeNet: augmented training").x_label("epoch").y_label("mean NLL");
+  validation_plot.title("SqueezeNet: validation").x_label("epoch").y_label("mean NLL");
   dm::graphics::RLayout::create(1, 2)
       .add(training_plot)
       .add(validation_plot)
@@ -483,31 +539,32 @@ int main() {
 }
 ```
 // result_begin: markdown
-SqueezeNet v1.0: 64 fit / 64 validation / 64 official-test rows; 729034 learned scalars; 32 explicit Adam updates.
-Selected epoch 1; validation NLL 2.337243; inference training NLL 2.268187; test NLL 2.341897; test accuracy 0.031250.
-SqueezeNet v1.0 + bypass: 64 fit / 64 validation / 64 official-test rows; 729034 learned scalars; 32 explicit Adam updates.
-Selected epoch 1; validation NLL 2.326770; inference training NLL 2.284855; test NLL 2.324991; test accuracy 0.093750.
-SqueezeNet v1.1: 64 fit / 64 validation / 64 official-test rows; 727626 learned scalars; 32 explicit Adam updates.
-Selected epoch 1; validation NLL 2.290393; inference training NLL 2.261639; test NLL 2.360393; test accuracy 0.046875.
+SqueezeNet v1.0: 2500 Adam updates in 273 s of CPU training.
+SqueezeNet v1.0 + bypass: 2500 Adam updates in 75 s of CPU training.
+SqueezeNet v1.1: 2500 Adam updates in 28 s of CPU training.
+Inference device: CPU (no usable CUDA device in this build); all inference took 55.8 s.
+8000 fit / 2000 validation / 10000 official-test rows per configuration.
+
+| configuration | parameters | best_epoch | selected_train_NLL | validation_NLL | test_NLL | test_accuracy |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| v1.0 | 729034 | 10 | 1.4165 | 1.4807 | 1.4752 | 0.4479 |
+| v1.0 + bypass | 729034 | 10 | 1.2352 | 1.2976 | 1.3097 | 0.5196 |
+| v1.1 | 727626 | 10 | 1.3447 | 1.4005 | 1.4015 | 0.4782 |
+
 \image(figures/squeezenet_training.svg)
 // result_end
-\caption(Three full-width models share the same CIFAR subsets, Adam(.0001), four epochs and checkpoint rule. The graph uses no BN state; inference disables dropout. All eight Fire modules and ceil pools remain present.)
-\alttext(Three full-width models share the same CIFAR subsets, Adam(.0001), four epochs and checkpoint rule. The graph uses no BN state; inference disables dropout. All eight Fire modules and ceil pools remain present.)
+\caption(Three full-width models share the same CIFAR subsets, warmed-up cosine Adam schedule, ten epochs and checkpoint rule. The graph uses no BN state; inference disables dropout. All eight Fire modules and ceil pools remain present.)
+\alttext(Three full-width models share the same CIFAR subsets, warmed-up cosine Adam schedule, ten epochs and checkpoint rule. The graph uses no BN state; inference disables dropout. All eight Fire modules and ceil pools remain present.)
 
 
-| Configuration | Selected epoch | Validation NLL | Test NLL | Test accuracy |
-|---|---|---|---|---|
-| v1.0 | 1 | 2.337243 | 2.341897 | 0.031250 |
-| v1.0 + bypass | 1 | 2.326770 | 2.324991 | 0.093750 |
-| v1.1 | 1 | 2.290393 | 2.360393 | 0.046875 |
-
-With only 32 small Adam(.0001) steps every model stays near the chance NLL ln 10 ≈ 2.303, and
-all three select their first-epoch checkpoint because validation NLL does not improve
-afterwards. Runs with four times as many updates, or with rate .001, also stayed at chance
-within a 20-second budget; at .001 some models reached NLL exactly ln 10, the dead class-map ReLU
-described above. Falling training loss does not establish an architecture benefit; these 64-image
-test scores are small-data diagnostics of a working loop, not of accuracy. Dropout makes the augmented training trace differ from
-restored inference training NLL even though there are no moving BN moments.
+All three configurations leave the chance NLL ln 10 ≈ 2.303 and select their final (tenth)
+checkpoint, so none has started to overfit. Test accuracies on all 10,000 official test images
+are 46.2% for v1.0, 53.4% with simple bypasses and 47.5% for v1.1 (chance is 10%), with test
+NLLs 1.4407/1.2775/1.4138. The cosine schedule has decayed to zero by epoch ten, so the late
+flattening of the curves reflects the vanishing step size as well as the model. The bypass gain
+matches the motivation for residual shortcuts, but one seed and 2,500 updates do not establish
+an architecture ranking. Dropout makes the augmented training trace differ from restored
+inference training NLL even though there are no moving BN moments.
 
 > Native confusion matrices
 

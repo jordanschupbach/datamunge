@@ -34,6 +34,36 @@
 #endif
 
 namespace datamunge::graphics {
+
+RGB::RGB(const std::string& text) {
+  std::string color = text;
+  std::transform(color.begin(), color.end(), color.begin(),
+                 [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+  const std::array<std::pair<std::string_view, RGB>, 11> named{{
+      {"black", {0, 0, 0}}, {"white", {255, 255, 255}}, {"red", {255, 0, 0}},
+      {"green", {0, 128, 0}}, {"blue", {0, 0, 255}}, {"yellow", {255, 255, 0}},
+      {"cyan", {0, 255, 255}}, {"magenta", {255, 0, 255}}, {"gray", {128, 128, 128}},
+      {"grey", {128, 128, 128}}, {"transparent", {0, 0, 0, 0.0}}}};
+  for (const auto& entry : named) {
+    if (color == entry.first) { *this = entry.second; return; }
+  }
+  if ((color.size() == 7 || color.size() == 9) && color.front() == '#') {
+    std::uint32_t value = 0;
+    const auto parsed = std::from_chars(color.data() + 1, color.data() + color.size(), value, 16);
+    if (parsed.ec == std::errc{} && parsed.ptr == color.data() + color.size()) {
+      const double alpha = color.size() == 9 ? (value & 0xff) / 255.0 : 1.0;
+      if (color.size() == 9) value >>= 8;
+      *this = RGB{static_cast<int>((value >> 16) & 0xff),
+                         static_cast<int>((value >> 8) & 0xff),
+                         static_cast<int>(value & 0xff), alpha};
+      return;
+    }
+  }
+  throw std::invalid_argument("RGBA: unknown or malformed color " + color);
+}
+
+RGB::RGB(const char* color) : RGB(std::string(color ? color : "")) {}
+
 namespace {
 
 struct Bounds {
@@ -2166,30 +2196,7 @@ RPlot& RPlot::set_col(RGB color) {
   return *this;
 }
 
-RPlot& RPlot::set_col(std::string color) {
-  std::transform(color.begin(), color.end(), color.begin(),
-                 [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
-  const std::array<std::pair<std::string_view, RGB>, 11> named{{
-      {"black", {0, 0, 0}}, {"white", {255, 255, 255}}, {"red", {255, 0, 0}},
-      {"green", {0, 128, 0}}, {"blue", {0, 0, 255}}, {"yellow", {255, 255, 0}},
-      {"cyan", {0, 255, 255}}, {"magenta", {255, 0, 255}}, {"gray", {128, 128, 128}},
-      {"grey", {128, 128, 128}}, {"transparent", {0, 0, 0, 0.0}}}};
-  for (const auto& entry : named) {
-    if (color == entry.first) return set_col(entry.second);
-  }
-  if ((color.size() == 7 || color.size() == 9) && color.front() == '#') {
-    std::uint32_t value = 0;
-    const auto parsed = std::from_chars(color.data() + 1, color.data() + color.size(), value, 16);
-    if (parsed.ec == std::errc{} && parsed.ptr == color.data() + color.size()) {
-      const double alpha = color.size() == 9 ? (value & 0xff) / 255.0 : 1.0;
-      if (color.size() == 9) value >>= 8;
-      return set_col(RGB{static_cast<int>((value >> 16) & 0xff),
-                         static_cast<int>((value >> 8) & 0xff),
-                         static_cast<int>(value & 0xff), alpha});
-    }
-  }
-  throw std::invalid_argument("RPlot::set_col: unknown color " + color);
-}
+RPlot& RPlot::set_col(std::string color) { return set_col(RGBA(color)); }
 
 RPlot RPlot::plot(std::vector<double> x, std::vector<double> y, std::string type, std::string label, RGB color) {
   require_xy_same_size(x, y, "RPlot::plot");

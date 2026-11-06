@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 CenterNet detects objects as class heatmap centres with learned size and subpixel offsets. Size-adaptive Gaussians supervise peak location, while masked L1 supervises geometric attributes at retained centres.
 
-The editable concept diagram is `diagrams/centernet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/centernet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/centernet_concept.tikz > build/centernet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/centernet_concept.svg build/centernet_concept.dvi > build/centernet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/centernet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Stride-four centres\nGaussian heatmaps");
+  diagram.node("n1", {5.2, 0}, "Heatmap, size, offset\nLearned upsampling");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam loop\nTop100 local peaks");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/centernet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/centernet_concept.svg)
 // result_end
 \caption(CenterNet Gaussian centres and learned upsampling)
@@ -547,39 +553,39 @@ int main() {
 // result_begin: markdown
 | epoch | heat + size + offset loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 4.428185 | 2.974981 | 1.453204 | 0.000000 |
-| 2 | 3.746529 | 2.698313 | 1.048216 | 0.000000 |
-| 3 | 3.385131 | 2.658547 | 0.726584 | 0.000159 |
-| 4 | 3.275929 | 2.590218 | 0.685711 | 0.000000 |
-| 5 | 3.134123 | 2.477964 | 0.656159 | 0.006963 |
-| 6 | 2.949533 | 2.357633 | 0.591900 | 0.009934 |
-| 7 | 2.860109 | 2.290221 | 0.569888 | 0.039899 |
-| 8 | 2.754181 | 2.198366 | 0.555814 | 0.005047 |
-| 9 | 2.692261 | 2.151421 | 0.540841 | 0.006488 |
-| 10 | 2.647717 | 2.136250 | 0.511467 | 0.002132 |
-| 11 | 2.630552 | 2.110372 | 0.520180 | 0.030036 |
-| 12 | 2.602671 | 2.090865 | 0.511806 | 0.013381 |
-| 13 | 2.596740 | 2.090206 | 0.506534 | 0.017592 |
-| 14 | 2.511084 | 2.019819 | 0.491265 | 0.030968 |
-| 15 | 2.497739 | 2.013083 | 0.484655 | 0.012527 |
-| 16 | 2.455258 | 1.981817 | 0.473441 | 0.012160 |
-| 17 | 2.401996 | 1.949775 | 0.452222 | 0.011153 |
-| 18 | 2.390209 | 1.940677 | 0.449532 | 0.015859 |
-| 19 | 2.360094 | 1.915088 | 0.445006 | 0.019953 |
-| 20 | 2.354730 | 1.928915 | 0.425816 | 0.015033 |
-| 21 | 2.345221 | 1.904750 | 0.440470 | 0.025552 |
-| 22 | 2.293864 | 1.874421 | 0.419443 | 0.010555 |
-| 23 | 2.245477 | 1.862851 | 0.382626 | 0.035012 |
-| 24 | 2.236469 | 1.833775 | 0.402694 | 0.022256 |
-| 25 | 2.176568 | 1.819280 | 0.357288 | 0.022077 |
-| 26 | 2.140202 | 1.794383 | 0.345819 | 0.066967 |
-| 27 | 2.110787 | 1.787000 | 0.323787 | 0.025683 |
-| 28 | 2.112951 | 1.801263 | 0.311689 | 0.030958 |
-| 29 | 2.082586 | 1.781049 | 0.301537 | 0.039303 |
-| 30 | 2.037224 | 1.752289 | 0.284934 | 0.020636 |
-| 31 | 2.006385 | 1.739180 | 0.267205 | 0.009105 |
-| 32 | 1.988781 | 1.728917 | 0.259865 | 0.018210 |
-319862 learned scalars, 512 Adam updates; selected epoch 26, validation AP50 0.066967. Test: 23 digits in eight scenes, inclusive VOC AP50 0.025192, COCO AP75 0.000000, AP50:95 0.007186, 800 detections. Selected mean absolute first BN state 1.246062; paired learned and BN state restored.
+| 1 | 4.428176 | 2.973947 | 1.454229 | 0.000000 |
+| 2 | 3.760521 | 2.698309 | 1.062211 | 0.000000 |
+| 3 | 3.364985 | 2.660072 | 0.704913 | 0.000000 |
+| 4 | 3.242782 | 2.569598 | 0.673184 | 0.000000 |
+| 5 | 3.078068 | 2.451815 | 0.626254 | 0.012662 |
+| 6 | 2.908343 | 2.335233 | 0.573110 | 0.001032 |
+| 7 | 2.845962 | 2.276112 | 0.569850 | 0.004541 |
+| 8 | 2.758701 | 2.209480 | 0.549221 | 0.004308 |
+| 9 | 2.698608 | 2.164648 | 0.533959 | 0.011851 |
+| 10 | 2.643727 | 2.132962 | 0.510764 | 0.035159 |
+| 11 | 2.643696 | 2.114219 | 0.529477 | 0.004322 |
+| 12 | 2.606348 | 2.085502 | 0.520847 | 0.012178 |
+| 13 | 2.539533 | 2.045665 | 0.493868 | 0.034975 |
+| 14 | 2.508006 | 2.027259 | 0.480747 | 0.018764 |
+| 15 | 2.466640 | 1.992956 | 0.473684 | 0.008934 |
+| 16 | 2.442810 | 1.979977 | 0.462833 | 0.013053 |
+| 17 | 2.436004 | 1.966418 | 0.469585 | 0.017647 |
+| 18 | 2.417408 | 1.955194 | 0.462214 | 0.035005 |
+| 19 | 2.366764 | 1.919247 | 0.447517 | 0.039824 |
+| 20 | 2.360962 | 1.906607 | 0.454355 | 0.037077 |
+| 21 | 2.326326 | 1.878952 | 0.447375 | 0.031642 |
+| 22 | 2.309193 | 1.884822 | 0.424371 | 0.043829 |
+| 23 | 2.263750 | 1.860285 | 0.403465 | 0.028229 |
+| 24 | 2.248445 | 1.837974 | 0.410471 | 0.023239 |
+| 25 | 2.185540 | 1.827798 | 0.357741 | 0.030204 |
+| 26 | 2.165407 | 1.815387 | 0.350020 | 0.020346 |
+| 27 | 2.135507 | 1.795784 | 0.339723 | 0.039865 |
+| 28 | 2.095457 | 1.795949 | 0.299508 | 0.025165 |
+| 29 | 2.072731 | 1.779161 | 0.293570 | 0.044456 |
+| 30 | 2.062751 | 1.775369 | 0.287382 | 0.023610 |
+| 31 | 1.998743 | 1.744581 | 0.254162 | 0.026014 |
+| 32 | 1.976616 | 1.710613 | 0.266002 | 0.025050 |
+319862 learned scalars, 512 Adam updates; selected epoch 29, validation AP50 0.044456. Test: 23 digits in eight scenes, inclusive VOC AP50 0.054832, COCO AP75 0.001216, AP50:95 0.008599, 800 detections. Selected mean absolute first BN state 1.310985; paired learned and BN state restored.
 \image(figures/centernet_training.svg)
 // result_end
 \caption(Visible whole-network CenterNet Adam fitting, with heatmap and combined size/offset losses, validation AP50 and moving-state history. Both learned and BN-state checkpoints are restored.)

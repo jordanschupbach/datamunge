@@ -16,18 +16,24 @@ A learned convolution kernel is a fixed numerical operator. Its post-ReLU activa
 
 No model or image fitting occurs. All 32 official pretrained convolution arrays remain unchanged while all 16 original-width convolutions and max pools execute. The report retains raw values, independent numeric checks and every channel without selecting visually attractive examples.
 
-The editable concept diagram is `diagrams/filter_activations_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/filter_activations_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/filter_activations_concept.tikz > build/filter_activations_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/filter_activations_concept.svg build/filter_activations_concept.dvi > build/filter_activations_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/filter_activations_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original JPEGs\n official frozen weights");
+  diagram.node("n1", {5.2, 0}, "All16convs\n original MAXpools");
+  diagram.node("n2", {10.4, 0}, "Every channel\n shared and local scales");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/filter_activations_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/filter_activations_concept.svg)
 // result_end
 \caption(Filter activations: full frozen VGG19 and every observed channel)
@@ -190,8 +196,6 @@ int main() {
 }
 ```
 // result_begin: markdown
-Decoded full official VGG16:14714688 unmodified Float32 values,26 arrays.
-Decoded full official VGG19:20024384 unmodified Float32 values,32 arrays.
 Actual RGB shape [2, 64, 64, 3],original JPEG source /home/jordan/.cache/datamunge/datasets/style_transfer/content.jpg and /home/jordan/.cache/datamunge/datasets/style_transfer/style.jpg;unit-channel means float32[2, 3] [[0.649975, 0.662895, 0.477077], [0.553036, 0.44998, 0.394347]].
 \image(figures/filter_activations_inputs.png)
 // result_end
@@ -314,11 +318,11 @@ int main() {
 | canonical tap | actual shape | shared maximum | allzero channels across both images |
 |---|---|---:|---:|
 | block1_conv1 | [2, 64, 64, 64] | 652.734863 | 0 |
-| block2_conv2 | [2, 32, 32, 128] | 5067.97559 | 0 |
-| block3_conv4 | [2, 16, 16, 256] | 15109.4736 | 0 |
-| block4_conv4 | [2, 8, 8, 512] | 4360.46924 | 42 |
-| block5_conv4 | [2, 4, 4, 512] | 196.842499 | 708 |
-All2944actual channel maps;repeat 0,single/batch max 0.00146484375within.005;all32official constants immutable.
+| block2_conv2 | [2, 32, 32, 128] | 5067.9751 | 0 |
+| block3_conv4 | [2, 16, 16, 256] | 15109.4785 | 0 |
+| block4_conv4 | [2, 8, 8, 512] | 4360.46973 | 42 |
+| block5_conv4 | [2, 4, 4, 512] | 196.842468 | 708 |
+All2944actual channel maps;repeat 0,single/batch max 0within.005;all32official constants immutable.
 All64learnedRGBdisplay filters share signed absolute peak 0.650995195;BGRinputweight channels reversed ONLYforRGBdisplay.
 \image(figures/filter_activations_filters.png)
 // result_end
@@ -422,10 +426,10 @@ int main() {
 | layer | dog mean positive fraction | painting mean positive fraction | dog/painting mean response |
 |---|---:|---:|---|
 | block1_conv1 | 0.457344055 | 0.499076843 | 20.5457553/35.7912114 |
-| block2_conv2 | 0.420776367 | 0.412872314 | 135.604305/259.468179 |
-| block3_conv4 | 0.665237427 | 0.712997437 | 702.487691/1289.37703 |
-| block4_conv4 | 0.202148438 | 0.158508301 | 105.030659/84.8191035 |
-| block5_conv4 | 0.104980469 | 0.0709228516 | 3.05069007/1.46050636 |
+| block2_conv2 | 0.420776367 | 0.412872314 | 135.604304/259.468179 |
+| block3_conv4 | 0.665237427 | 0.712997437 | 702.487695/1289.37706 |
+| block4_conv4 | 0.202148438 | 0.158508301 | 105.030657/84.8191046 |
+| block5_conv4 | 0.104980469 | 0.0709228516 | 3.0506897/1.4605064 |
 \image(figures/filter_activations_statistics.svg)
 // result_end
 \caption(All 1,472 channels per genuine observation contribute their positive-spatial fraction, with layer order/means reported explicitly. Layer boundaries retain distinct feature units; the curves are descriptive responses, not class attribution or benchmark predictions.)

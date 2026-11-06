@@ -18,18 +18,24 @@ mean squared chroma error. Targets supervise fitting but never enter inference.
 Color transforms and metrics retain D65/2degree Lab conventions;RGB clipping
 is reserved for display and its declared reconstruction metric.
 
-The editable concept diagram is `diagrams/image_colorization_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/image_colorization_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/image_colorization_concept.tikz > build/image_colorization_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/image_colorization_concept.svg build/image_colorization_concept.dvi > build/image_colorization_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/image_colorization_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed lightness\nOne input channel");
+  diagram.node("n1", {5.2, 0}, "Predict Lab chroma\nVisible SGD and Adam");
+  diagram.node("n2", {10.4, 0}, "Keep measured L\nInspect real colors");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/image_colorization_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/image_colorization_concept.svg)
 // result_end
 \caption(Image colorization: lightness-only tensor regression)

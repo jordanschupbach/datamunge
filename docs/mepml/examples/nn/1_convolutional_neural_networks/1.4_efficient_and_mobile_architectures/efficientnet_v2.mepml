@@ -56,18 +56,24 @@ explicit kernel L2=.0001/2 and independent padded crops/flips. Fixed subsets con
 checkpoints before test scoring. No accuracy threshold is imposed on this small single-seed
 experiment; it is not the published ImageNet training schedule or a latency search.
 
-The editable concept diagram is `diagrams/efficientnet_v2_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/efficientnet_v2_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/efficientnet_v2_concept.tikz > build/efficientnet_v2_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/efficientnet_v2_concept.svg build/efficientnet_v2_concept.dvi > build/efficientnet_v2_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/efficientnet_v2_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Fused early stages\nSE mobile later stages");
+  diagram.node("n1", {5.2, 0}, "All repeats retained\nSeven released designs");
+  diagram.node("n2", {10.4, 0}, "Full base-B0 fit\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/efficientnet_v2_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/efficientnet_v2_concept.svg)
 // result_end
 \caption(EfficientNetV2: Fused Early Blocks and Explicit Base-B0 Fitting)
@@ -297,7 +303,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Complete EfficientNetV2 at 64 pixels: 243 finite parameter-tensor gradients; norm range [0.000000000597,6.056941509], 17 below 1e-6 of maximum. Moving updates frozen; training head dropout retained. No claim that every tensor gradient is nonzero.
+Complete EfficientNetV2 at 64 pixels: 243 finite parameter-tensor gradients; norm range [0.000000000626,5.960178375], 17 below 1e-6 of maximum. Moving updates frozen; training head dropout retained. No claim that every tensor gradient is nonzero.
 // result_end
 
 > Original images and explicit fitting
@@ -481,7 +487,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 5871514 learned scalars, 60608 moving scalars; 64 explicit Adam updates.
-Selected epoch 1; validation NLL 2.536862; inference training NLL 2.413752; test NLL 2.549119; test accuracy 0.031250.
+Selected epoch 1; validation NLL 2.565936; inference training NLL 2.427223; test NLL 2.599308; test accuracy 0.031250.
 \image(figures/efficientnet_v2_training.svg)
 // result_end
 \caption(Explicit 4-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

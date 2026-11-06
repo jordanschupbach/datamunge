@@ -2,7 +2,7 @@
   "schema": 1,
   "total": 415,
   "test_epoch_limit": 5,
-  "api_sha256": "16f4d17cea719136d331c7ef62cad9bc4e37944bbb3145072a71babed780c8f5",
+  "api_sha256": "199bd4079a72eaacb403fce3d6d9c71237f414d02128b04aee84e33dec0db377",
   "examples": {
     "autodiff": {
       "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/autodiff.cpp",
@@ -839,7 +839,7 @@
     },
     "mlp_mnist": {
       "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/mlp_mnist.cpp",
-      "cpp_sha256": "67a7a42087c4ab3826b2658e49e39441296659f3b3364f2b72681c1d3d0bebb4",
+      "cpp_sha256": "93a3aeb5fecf4a1b1074829abc079e4b074e1bcc13af88616a2eced3a9c8a752",
       "classification": true,
       "python": {
         "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/mlp_mnist.py",
@@ -941,7 +941,7 @@
     },
     "softmax_mnist": {
       "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/softmax_mnist.cpp",
-      "cpp_sha256": "19f3722938c3037e805ea8a157778775567e74c0a9db074d97c9d060204a0e02",
+      "cpp_sha256": "c49c82fbede2bb17d7d1f348a1019f5cca2f55304290d420772e5b5839236756",
       "classification": true,
       "python": {
         "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/softmax_mnist.py",
@@ -975,7 +975,7 @@
     },
     "c3d": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.cpp",
-      "cpp_sha256": "483ddf2b7b3093d1ab0fdcfb8bf9ea2bdbd7504c4c2f8ec9525641f59c27a2bb",
+      "cpp_sha256": "576986022806e0583e5ef111e0edcd431e4bf8b919f12a3404c93503df848cbd",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.py",
@@ -992,7 +992,7 @@
     },
     "factorized_video": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/factorized_video.cpp",
-      "cpp_sha256": "78087bdb4e2eb2f72e6b4e3fe9a8f94380090a45f8f5296ae98d0aee0b02f666",
+      "cpp_sha256": "c39ca8ff20be25b2ddf0876515d918eded5504513b5af9be39bd99b754f6372f",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/factorized_video.py",
@@ -1009,7 +1009,7 @@
     },
     "i3d": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/i3d.cpp",
-      "cpp_sha256": "96526ea9932cbeacacd518a31fa42515e3dfed916942f4ea9340a0b980b89352",
+      "cpp_sha256": "b2e31b169f0b3a4e944ab3fee5520230d51d065fba21a21bebbfa57dfa4f7961",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/i3d.py",
@@ -1026,7 +1026,7 @@
     },
     "medical_volume_classification": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/medical_volume_classification.cpp",
-      "cpp_sha256": "853f39be65a1ed0f27d45be2493be581a4471688425e651e42d3ee755564c3b1",
+      "cpp_sha256": "967eb3c64e8be5f30f6363440a8484e756e4ccb0f93a1aae57997a71d014669b",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/medical_volume_classification.py",
@@ -1077,7 +1077,7 @@
     },
     "pointnet": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet.cpp",
-      "cpp_sha256": "ced27581b74e77964297712fce05158d03f694e3e767526bc94562e697928716",
+      "cpp_sha256": "eeacf9827e9f13bec5d2177447876a23a1ad09290f05f7177dd7877ecec92804",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet.py",
@@ -1094,7 +1094,7 @@
     },
     "pointnet_plus_plus": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet_plus_plus.cpp",
-      "cpp_sha256": "3b5736d352d4074543f63bb62d8ad3c06ba5d4dc2c5b7bc582ebbbf069fb0840",
+      "cpp_sha256": "8c352a2f5dd1914393041e6768cd83d96c4d6e7d442ceba9370481e66909f370",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet_plus_plus.py",
@@ -1111,7 +1111,7 @@
     },
     "slowfast": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/slowfast.cpp",
-      "cpp_sha256": "0b3fe64e89e7c1dead6151d57be7040650c78aa7facf4875986e9a39d3209a6d",
+      "cpp_sha256": "4d35d5acaef567e1829741079922a7ad4866efcc0a9df1048df2cdc61a7cf0a8",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/slowfast.py",
@@ -1315,7 +1315,7 @@
     },
     "batch_norm_ablation": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.cpp",
-      "cpp_sha256": "759e2aec6526e65dd065c7f3c50efb52a38af741ebe30ee3822f80434cabc439",
+      "cpp_sha256": "3b9d0b69c1392fd78dca2425c7a7f49eec8a40007ab56d907d08d68680474867",
       "classification": true,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.py",
@@ -1332,7 +1332,7 @@
     },
     "cnn_cifar10": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_cifar10.cpp",
-      "cpp_sha256": "97aed13221f5ab68a7014dece8d909b37dc0d55e8fd7883a35eecedc936e95fb",
+      "cpp_sha256": "6af7c698b4c54f2d3282036d4d545bdebcab8fab869f0887752363f8224a6793",
       "classification": true,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_cifar10.py",
@@ -1349,7 +1349,7 @@
     },
     "cnn_mnist": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.cpp",
-      "cpp_sha256": "ef387694f07f036e6412ba783e0053a2215eb5e836cf32d94a0db4277accdecb",
+      "cpp_sha256": "0d3b7851960cbc9a72663f664923700260c2b166918062890447712a0a4608eb",
       "classification": true,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.py",
@@ -1434,7 +1434,7 @@
     },
     "lenet5": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.cpp",
-      "cpp_sha256": "78d5b23d04d148ed919ab9ee86b45f335a2427038d281bb03ae095922495fe53",
+      "cpp_sha256": "a358348a26220e73c330c4317e568744ec59b45f6f02a1d5ae2c2c7041e7c5f3",
       "classification": true,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.py",
@@ -2012,7 +2012,7 @@
     },
     "capsule_networks": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/capsule_networks.cpp",
-      "cpp_sha256": "737a14296063dc6ec9bcd02a0496171893666bc843cadebac4e524d36fb5459d",
+      "cpp_sha256": "e54c87ef92b40af80f388842772363b17b2b346565bc28729cd86f469264a4f5",
       "classification": true,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/capsule_networks.py",
@@ -2199,7 +2199,7 @@
     },
     "spatial_transformer": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/spatial_transformer.cpp",
-      "cpp_sha256": "e1466c7e2729e08b32270dc2d50d8ac6b98c2335a2955d7cf8b658a04206a849",
+      "cpp_sha256": "468f87dec8931edd9a2b7ef21e20ab46d7ad9977cbb1bf7a688e451bcf7f8d81",
       "classification": true,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/spatial_transformer.py",
@@ -2216,7 +2216,7 @@
     },
     "centernet": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/centernet.cpp",
-      "cpp_sha256": "c442df3856c169fa89eed296f38ed0f39dd287a8a94594edeced780e0424a006",
+      "cpp_sha256": "e5cc478782d54f3783185a0c2bc1a3ec3f7c077a6a98e13b4903c5bf78af04f1",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/centernet.py",
@@ -2233,7 +2233,7 @@
     },
     "detection_baselines": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/detection_baselines.cpp",
-      "cpp_sha256": "610e19687817eac98b011946d6c383be57541e0c741cb6ac858b9c43afd62fc5",
+      "cpp_sha256": "ac454f1e5905b9ed396200338245a06590282c6421644225c8ba0d3d96fb5fcb",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/detection_baselines.py",
@@ -2267,7 +2267,7 @@
     },
     "detr": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/detr.cpp",
-      "cpp_sha256": "b28cf5249d4a7b3ec8a58a0d81324d463127ff41bbf5f0c0ac3213ef031e297b",
+      "cpp_sha256": "18777a7dd6005c988a38cccbad4917b6a2059b62dbbfd2d92906d610aa60e0d7",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/detr.py",
@@ -2284,7 +2284,7 @@
     },
     "efficientdet": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/efficientdet.cpp",
-      "cpp_sha256": "d90b910c75f278b17ab87706f5845484e9ffcdc2e8fff1c581f2e7e7ee21beaa",
+      "cpp_sha256": "24c63465498e46ba3d9620a53f55aa57c3f1d6be1913002ef95299826c1e201d",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/efficientdet.py",
@@ -2301,7 +2301,7 @@
     },
     "fast_rcnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/fast_rcnn.cpp",
-      "cpp_sha256": "a0351940fac9b35b091c25044617e6fd46560b8e0d77425f12c1b86655ca8014",
+      "cpp_sha256": "b83047ca0decce7ea708c4c08aff220b599373b20c5b474741bcdc1e17b828a3",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fast_rcnn.py",
@@ -2318,7 +2318,7 @@
     },
     "faster_rcnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/faster_rcnn.cpp",
-      "cpp_sha256": "a9166336331041e220990c4c018ea737b8beab4bd8b1ce4e04a778a23ff1bff4",
+      "cpp_sha256": "fe1c326f385c39b0bdf9ab27f22f11d2fe1ca415a42a2d39aa3c54904cb9d134",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/faster_rcnn.py",
@@ -2335,7 +2335,7 @@
     },
     "fcos": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/fcos.cpp",
-      "cpp_sha256": "15e30fc14a541eeebc9f803847f089a132bc56fc19459d947f4445aae5708295",
+      "cpp_sha256": "bd3edc1403e8170e29dae7fab00a99c91d183d7b07b5746450680a9febaf7371",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fcos.py",
@@ -2352,7 +2352,7 @@
     },
     "fpn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/fpn.cpp",
-      "cpp_sha256": "cde38e8ce9f83cb8aba5abd20871a546a2193d64daedfab6c31d6e5530a416f8",
+      "cpp_sha256": "60123290848418726b899c6d707161dfe2866d1f6b42f73971def483b740af84",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fpn.py",
@@ -2386,7 +2386,7 @@
     },
     "rcnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/rcnn.cpp",
-      "cpp_sha256": "c072ebc1421da286f3a300d5b14923048a7cfbcb2f6c1d2d5a86ff3cebde2f83",
+      "cpp_sha256": "4a65c448d8f047bad605054d03c677c85bfa267ccc82c203c008a2bbad5bca23",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/rcnn.py",
@@ -2403,7 +2403,7 @@
     },
     "retinanet": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/retinanet.cpp",
-      "cpp_sha256": "2595f02e752213523e4b67ea8f82f5432c36da84ea5a0406e9e63b01af3fbde3",
+      "cpp_sha256": "e5975366901a340724b982fa6c8b0ec8124538c29a184f8a32dfcd97ff83dd62",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/retinanet.py",
@@ -2420,7 +2420,7 @@
     },
     "ssd": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/ssd.cpp",
-      "cpp_sha256": "423a5e1018a6bf622f6f3bd7e53503cc91319f2936989cbbebbef0ba30fffbdb",
+      "cpp_sha256": "a933589a60bd1da1b3c088b73ecad632e62bb2a3eac95beb0712c9c031fa5ed7",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/ssd.py",
@@ -2437,7 +2437,7 @@
     },
     "yolo_v1": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v1.cpp",
-      "cpp_sha256": "4feafe891fa98f657f225e6776f46e71e44a6c512938634cc15e51742611617e",
+      "cpp_sha256": "fb311c0917e716358ac575683d5aa5f5d486bdd37dbccbe64435a0d063439446",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v1.py",
@@ -2454,7 +2454,7 @@
     },
     "yolo_v2": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v2.cpp",
-      "cpp_sha256": "feea98256e55d2ce98b9c80be2893f810d7b18e3336a46bffdf494755402d031",
+      "cpp_sha256": "fb808b1d32f0efa7c09664fb837a9b0a877724e25840fc1a1a047950935f56ac",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v2.py",
@@ -2471,7 +2471,7 @@
     },
     "yolo_v3": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v3.cpp",
-      "cpp_sha256": "759b1c143ad79e537318441dbec5f02c5c40b969c680997d08700cc4579d8b6d",
+      "cpp_sha256": "cc8a3c67ca72c66f28f8089a107a7e00d4e90e7c65c5abd649a0a6211e6244f1",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v3.py",
@@ -2488,7 +2488,7 @@
     },
     "yolo_v5_style": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v5_style.cpp",
-      "cpp_sha256": "b4421b7c472ab263de766116acbdaea6ce1f7ea2f09cb3360dd3029d04128ba6",
+      "cpp_sha256": "f9554127fbb78422174367c2a21a25a8eba471df5c74ec0f65a3c13ae7e73877",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v5_style.py",
@@ -2573,7 +2573,7 @@
     },
     "mask_rcnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segmentation/mask_rcnn.cpp",
-      "cpp_sha256": "05d55e10af3333be5463b2f894212f4ac896a51ad00bbed216ab9cc5375812d9",
+      "cpp_sha256": "1fb26cbbe72ea179bd343b964a79e6df86b6315daa1acf3ac9cedc915bbde99a",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/mask_rcnn.py",
@@ -2743,7 +2743,7 @@
     },
     "bilinear_cnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/bilinear_cnn.cpp",
-      "cpp_sha256": "fa659734462be93eff1ba62244523ba6319878b8afa1af9140b1c463dafc68e6",
+      "cpp_sha256": "94329688422e5650c563382fb4ee59e95b28b385bc93da9fa8646916425eb2cb",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/bilinear_cnn.py",
@@ -2828,7 +2828,7 @@
     },
     "flownets": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/flownets.cpp",
-      "cpp_sha256": "4f50a5b5d9d675e198f0049cffe9896dd4cbd374d515f6a0a44e6403da992e20",
+      "cpp_sha256": "91fa5c7ab964e3f11365acbd2bcac814e50109d1a39981eb319e5ac429b0f427",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/flownets.py",
@@ -2845,7 +2845,7 @@
     },
     "gatys_style_transfer": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/gatys_style_transfer.cpp",
-      "cpp_sha256": "b8fffcba1c4d56cab93d07d05a8bb16c20f142831782fac0d90bf301c4f00d8b",
+      "cpp_sha256": "bfb978cb1901764521cd596c71a8c5c70d679f0b53fc6a0c979722fe1e698aef",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/gatys_style_transfer.py",
@@ -2896,7 +2896,7 @@
     },
     "johnson_fast_style": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/johnson_fast_style.cpp",
-      "cpp_sha256": "56ee69ea8753b4c729f4778a5861e4934c1f0dd9c7f5c5fd3919b7727e8f742b",
+      "cpp_sha256": "f813c1ddab8b0db93d3522549bf3e1d8c854f812c7f2bafb26bd47d961df139c",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/johnson_fast_style.py",
@@ -2913,7 +2913,7 @@
     },
     "monocular_depth": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/monocular_depth.cpp",
-      "cpp_sha256": "c92bd36a54b2a3e07257bb4563c0c7b32eac869adc98b71b20fc226697e7051a",
+      "cpp_sha256": "40b47d4715bd0ba6373c6ae64e9215a99ff1492d4699205e7a3abcf1794e5900",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/monocular_depth.py",
@@ -2930,7 +2930,7 @@
     },
     "multilabel_classification": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/multilabel_classification.cpp",
-      "cpp_sha256": "ddee2716287158350177ff217b09c52da830dbd1c32ac5288fa61368d5abf8cd",
+      "cpp_sha256": "834100315df275ccf465c73ba5d5752782bd0b44a3315539bff1c58959c3c32f",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/multilabel_classification.py",
@@ -2964,7 +2964,7 @@
     },
     "partial_inpainting": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/partial_inpainting.cpp",
-      "cpp_sha256": "a471b9571b6ed2a701e228b197e87931a234bbec1c47f3485fc8057c373d3e17",
+      "cpp_sha256": "ffd6c278572b74614c8c085f26a1f351e97be9489498efe5d5c9f8c7b109c00d",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/partial_inpainting.py",
@@ -2981,7 +2981,7 @@
     },
     "pwcnet": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/pwcnet.cpp",
-      "cpp_sha256": "526f1b02010227621c5652e7fc8ad150fe8184e72c179c6f46947534f14646e1",
+      "cpp_sha256": "e5cd92494dcc4ac4b6c3e55d9b4101b81fe4157122ec7fc7751de68c336edb51",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/pwcnet.py",
@@ -3015,7 +3015,7 @@
     },
     "stacked_hourglass": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/stacked_hourglass.cpp",
-      "cpp_sha256": "4d9aadc9b321e625c73b36a5799c8de68bd3441f4dda15cbbba8d6446f22c816",
+      "cpp_sha256": "f7cc3284eb923cf09834206db39ae93e4a178ef57966661ebd4b250bbce520bf",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/stacked_hourglass.py",
@@ -3049,7 +3049,7 @@
     },
     "vqa_baseline": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/vqa_baseline.cpp",
-      "cpp_sha256": "d3292743126eeea017f55b760d31f568e0065457bac92534162c3a11ffb3c5a6",
+      "cpp_sha256": "0003d6acca9bfaccb45013984950c08e242e70b42a49c1036f610dcdf371ec61",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/vqa_baseline.py",
@@ -3066,7 +3066,7 @@
     },
     "character_cnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/character_cnn.cpp",
-      "cpp_sha256": "14deaa854a7d344b32c9755abf1b4474db5777f33aed5f4732070d45ec4267c1",
+      "cpp_sha256": "ddd63237754c2a8327eb823bd01818bdd2337edea6ac0f11e629bb9ba94119b8",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/character_cnn.py",
@@ -3100,7 +3100,7 @@
     },
     "kim_sentence_cnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.cpp",
-      "cpp_sha256": "a61f87f67936a2e240b8cd64c1658861adac87f02ab0094c3f8e3888cabcbe9a",
+      "cpp_sha256": "8f1421f260c9a997354f0a72afccee2d412ef61ecd2256626e371b1cce5561a8",
       "classification": true,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.py",
@@ -3117,7 +3117,7 @@
     },
     "tcn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/tcn.cpp",
-      "cpp_sha256": "7680d6df687b2c5848ef992c840a23b90a3ec26ad8bee377a43cc7ce461eb9c3",
+      "cpp_sha256": "f294ee8bde80478b4292f4b6b0c64204572de1c819676d47babfc6670b7a6c29",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/tcn.py",
@@ -3134,7 +3134,7 @@
     },
     "time_series_cnn": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/time_series_cnn.cpp",
-      "cpp_sha256": "e134d2bfda4a1e6599f39bdbae4c275b496a2ab91a86cdd99f5f1eb63cf5b704",
+      "cpp_sha256": "7a28009a90d6da4671550fc4f2eb74c9d83f0295ad6b061eab35268825a26495",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/time_series_cnn.py",
@@ -3151,7 +3151,7 @@
     },
     "wavenet_stack": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_convolutions/wavenet_stack.cpp",
-      "cpp_sha256": "58b0464ef6dfc711d0572d890aa98a2f5da794f5d3f51337189fa9e51c52aec2",
+      "cpp_sha256": "6208fafa25939c7ef02b3078eeb5d22711e89dd23b85be911264949862dbe696",
       "classification": null,
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/wavenet_stack.py",

@@ -39,18 +39,24 @@ eight and dense width 32, with He initialization and [-1,1] input scaling. Fit 1
 validate on the next 64 and evaluate 64 official test rows after thirty epochs. These CPU
 subset demonstrations are not full-width ImageNet results or an architecture ranking.
 
-The editable concept diagram is `diagrams/vgg_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/vgg_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/vgg_concept.tikz > build/vgg_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/vgg_concept.svg build/vgg_concept.dvi > build/vgg_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/vgg_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Stack small filters\nfive pooling stages");
+  diagram.node("n1", {5.2, 0}, "Dense classifier weights\nreshape as spatial kernels");
+  diagram.node("n2", {10.4, 0}, "Compact A, D, E models\nexplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/vgg_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/vgg_concept.svg)
 // result_end
 \caption(VGG: Small Kernels, Depth and a Sliding Classifier)
@@ -471,9 +477,9 @@ int main() {
 
 | variant | parameters | test_subset_accuracy | test_subset_NLL | selected_training_NLL |
 | ---: | ---: | ---: | ---: | ---: |
-| 11 | 148026 | 0.046875 | 2.268087 | 2.092929 |
-| 16 | 234034 | 0.078125 | 2.269741 | 1.911210 |
-| 19 | 317138 | 0.046875 | 2.325995 | 2.263820 |
+| 11 | 148026 | 0.12500 | 2.282666 | 2.239603 |
+| 16 | 234034 | 0.06250 | 2.308442 | 1.985459 |
+| 19 | 317138 | 0.03125 | 2.353712 | 2.191271 |
 
 \image(figures/vgg_training.svg)
 // result_end

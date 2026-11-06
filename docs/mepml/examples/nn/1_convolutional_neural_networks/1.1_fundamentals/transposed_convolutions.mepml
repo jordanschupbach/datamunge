@@ -31,18 +31,24 @@ weights can still imbalance phases. Nearest-neighbour resize followed by ordinar
 preserves constants in the interior with a fixed filter. Edges must be analysed separately.
 Each transposed operation has the same multiply-count order as the corresponding forward map.
 
-The editable concept diagram is `diagrams/transposed_convolutions_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/transposed_convolutions_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/transposed_convolutions_concept.tikz > build/transposed_convolutions_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/transposed_convolutions_concept.svg build/transposed_convolutions_concept.dvi > build/transposed_convolutions_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/transposed_convolutions_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Coarse input gradient\nspecified fine shape");
+  diagram.node("n1", {5.2, 0}, "Spread filter responses\nscatter and add");
+  diagram.node("n2", {10.4, 0}, "Fine output phases\ncount interior overlaps");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/transposed_convolutions_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/transposed_convolutions_concept.svg)
 // result_end
 \caption(Transposed Convolution: Adjoint Geometry and Checkerboards)

@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Use actual sampled ModelNet surfaces,keep every source layer,and show the optimizer objective and update directly. Select matching learned/moving arrays on validation,restore XYZ-only inference,and report every held-out object and ordering control.
 
-The editable concept diagram is `diagrams/pointnet_plus_plus_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/pointnet_plus_plus_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/pointnet_plus_plus_concept.tikz > build/pointnet_plus_plus_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/pointnet_plus_plus_concept.svg build/pointnet_plus_plus_concept.dvi > build/pointnet_plus_plus_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/pointnet_plus_plus_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original CAD\n surface observations");
+  diagram.node("n1", {5.2, 0}, "Three complete\n set abstractions");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n and every object error");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/pointnet_plus_plus_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/pointnet_plus_plus_concept.svg)
 // result_end
 \caption(PointNet++SSG:genuine CAD points and visible tensor Adam)
@@ -416,10 +422,10 @@ int main() {
 // result_begin: markdown
 | epoch | dropout fitting objective | moving-moment validation NLL |
 |---:|---:|---:|
-| 1 | 2.050762 | 1.145227 |
-| 2 | 1.426200 | 1.205622 |
-| 3 | 0.990713 | 1.195915 |
-18explicitAdam updates;46finite/46nonzero actual learned gradients;selected epoch 1,val 1.145227;fixed inference fitting NLL 1.100224884->1.137933987.
+| 1 | 1.569438 | 1.117657 |
+| 2 | 1.212641 | 1.174585 |
+| 3 | 1.111088 | 1.160786 |
+18explicitAdam updates;46finite/46nonzero actual learned gradients;selected epoch 1,val 1.117657;fixed inference fitting NLL 1.100224882->1.113268625.
 \image(figures/pointnet_plus_plus_training.svg)
 // result_end
 \caption(All18actual tensor optimizer updates with full source architecture and one moving-state update per fitting forward. Fitting objective and validation inference NLL use different normalization modes;paired checkpoints and the fixed inference probe are explicit.)
@@ -582,14 +588,14 @@ int main() {
 }
 ```
 // result_begin: markdown
-XYZ-only restore/repeat 0;single/batch 1.63912773e-07 within2e-6;all46/22learned/moving immutable:true;reverse max 0.0262378752;zero-cloud change 0.168130994.
+XYZ-only restore/repeat 0;single/batch 0 within2e-6;all46/22learned/moving immutable:true;reverse max 0.0303612053;zero-cloud change 0.175963372.
 
 | predictor | accuracy | macroF1 | NLL | all class recalls | complete true-row confusion |
 |---|---:|---:|---:|---|---|
-| learned | 0.333333 | 0.166667 | 1.141731 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
+| learned | 0.333333 | 0.166667 | 1.112395 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
 | untrained | 0.333333 | 0.166667 | 1.102321 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
 | tie0 | 0.333333 | 0.166667 | 1.098612 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
-| reversed-point control | 0.333333 | 0.166667 | 1.143108 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
+| reversed-point control | 0.333333 | 0.166667 | 1.114532 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
 
 | original OFF source ID | true class0chair/1sofa/2table | learned class |
 |---:|---:|---:|

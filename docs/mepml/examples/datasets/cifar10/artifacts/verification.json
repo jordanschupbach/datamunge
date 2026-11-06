@@ -1,0 +1,22 @@
+{
+  "torch_version": "2.11.0+cu128",
+  "numpy_version": "2.5.4",
+  "test_logit_max_abs": 1.52587890625e-05,
+  "test_argmax_disagreements": 0,
+  "temperature_abs_error": 5.10966158273618e-09,
+  "proper_score_max_abs": 4.1311398746302075e-13,
+  "grad_cam_max_abs": 1.1920928955078125e-06,
+  "integrated_gradients_max_abs": 0.0006161928176879883,
+  "integrated_gradients_rmse": 2.3599863780370146e-05,
+  "native_tests_passed": 9,
+  "documentation_definitions_passed": 35,
+  "header_examples_passed": 12,
+  "definition_hovers_passed": 5,
+  "numerical_artifact_sha256": {
+    "best_parameters.npz": "9201abd926881fe46890fd8b68e38f0e297bd6714874119b25a7359013b9c83e",
+    "best_bn.npz": "0bba84b20f00f1eeae5bf6728b9de724c54bea6b9a5ada7a8ed1c5110bcd9475",
+    "preprocessing.npz": "8cea609be7e9b9ad324c0b56e4b8312cc672299b19f53ee697c7b096b0aeb738",
+    "evaluation.npz": "ce7fc33527f7878198549ab96ecaa3853d5d7e73d9baf1c3a8c4c53045597243",
+    "explanations.npz": "89e0fae83481120db44d818a0f019258d7f036e98bf1ffaecc48bf44eff35df8"
+  }
+}

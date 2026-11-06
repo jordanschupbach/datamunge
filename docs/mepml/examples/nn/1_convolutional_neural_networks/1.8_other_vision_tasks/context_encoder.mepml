@@ -19,18 +19,24 @@ from generated patches. Reconstruction and non-saturating adversarial losses
 supply complementary gradients. The mask determines the information available
 at inference;clean targets appear only in training losses and evaluation.
 
-The editable concept diagram is `diagrams/context_encoder_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/context_encoder_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/context_encoder_concept.tikz > build/context_encoder_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/context_encoder_concept.svg build/context_encoder_concept.dvi > build/context_encoder_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/context_encoder_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Masked RGB image\nNo hidden pixels");
+  diagram.node("n1", {5.2, 0}, "Alternate D and G\nVisible Adam loops");
+  diagram.node("n2", {10.4, 0}, "Restore G and BN\nInspect hole errors");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/context_encoder_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/context_encoder_concept.svg)
 // result_end
 \caption(Context encoders: visible alternating inpainting)
@@ -587,14 +593,14 @@ int main() {
 G/D learned 22523/2745;BN 160/32;warm leaves 24/8.
 | epoch | patch MSE | G adversarial | D objective | validation MSE |
 |---:|---:|---:|---:|---:|
-| 1 | 0.221473 | 0.693969 | 1.220461 | 0.196754 |
-| 2 | 0.200888 | 0.699136 | 1.028782 | 0.197040 |
-| 3 | 0.188582 | 0.712077 | 0.856526 | 0.189386 |
-48 visible D and G updates each;selected epoch3,restored validation MSE 0.189386;fixed fitting MSE 0.248021->0.187083.
+| 1 | 0.221336 | 0.693926 | 1.221638 | 0.196516 |
+| 2 | 0.200581 | 0.698728 | 1.031386 | 0.197555 |
+| 3 | 0.188255 | 0.711843 | 0.851642 | 0.177087 |
+48 visible D and G updates each;selected epoch3,restored validation MSE 0.177087;fixed fitting MSE 0.248021->0.188689.
 All phase-isolation checks pass;deployment has only G/RGB input,exact parity 0,immutable G+BN,single/batch agree.
 | model | hole MSE | mean hole PSNR dB | mean full PSNR dB | known max error |
 |---|---:|---:|---:|---:|
-| learned | 0.052763 | 13.375851 | 19.396451 | 1.49e-08 |
+| learned | 0.051181 | 13.567504 | 19.588103 | 1.49e-08 |
 | visible mean | 0.059099 | 13.411761 | 19.432361 | 0 |
 \image(figures/context_encoder_training.svg)
 // result_end

@@ -1,5 +1,5 @@
 /// @file vector.cpp
-/// @brief Element-wise vector math, summary statistics, and the shared random sampling engine.
+/// @brief Legacy eager vector ABI entry points, scalar kernels, reductions and random sampling.
 
 #include <datamunge/random/random.hpp>
 #include <datamunge/vector.hpp>
@@ -46,6 +46,8 @@ namespace {
 
 /// @brief Replaces every element of a by-value vector with its transformed value.
 /// @tparam F Callable accepting one double and returning its replacement.
+/// @param v Owned vector transformed in place.
+/// @param f Numeric element transform.
 /// @return The transformed vector, reusing the parameter's owned storage.
 template <typename F>
 Vector<> transform_in_place(Vector<> v, F f) {
@@ -68,34 +70,110 @@ random::SplitMix64& generator() {
 
 } // namespace
 
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator-(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return -x; }); }
 
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator+(Vector<> lhs, const Vector<>& rhs) { return lhs += rhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator-(Vector<> lhs, const Vector<>& rhs) { return lhs -= rhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator*(Vector<> lhs, const Vector<>& rhs) { return lhs *= rhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator/(Vector<> lhs, const Vector<>& rhs) { return lhs /= rhs; }
 
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator+(Vector<> lhs, double rhs) { return lhs += rhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator-(Vector<> lhs, double rhs) { return lhs -= rhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator*(Vector<> lhs, double rhs) { return lhs *= rhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator/(Vector<> lhs, double rhs) { return lhs /= rhs; }
 
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator+(double lhs, Vector<> rhs) { return rhs += lhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator-(double lhs, Vector<> rhs) {
   return transform_in_place(std::move(rhs), [lhs](double x) { return lhs - x; });
 }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator*(double lhs, Vector<> rhs) { return rhs *= lhs; }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param lhs Numeric operand consumed by this legacy call.
+/// @param rhs Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> operator/(double lhs, Vector<> rhs) {
   return transform_in_place(std::move(rhs), [lhs](double x) { return lhs / x; });
 }
 
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> sin(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return std::sin(x); }); }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> cos(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return std::cos(x); }); }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> tan(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return std::tan(x); }); }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> exp(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return std::exp(x); }); }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> log(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return std::log(x); }); }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> sqrt(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return std::sqrt(x); }); }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> abs(Vector<> v) { return transform_in_place(std::move(v), [](double x) { return std::abs(x); }); }
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @param exponent Numeric operand consumed by this legacy call.
+/// @return Owned eager numeric result.
 Vector<> pow(Vector<> v, double exponent) {
   return transform_in_place(std::move(v), [exponent](double x) { return std::pow(x, exponent); });
 }
@@ -128,6 +206,10 @@ double round(double value, int digits) {
   return chosen == 0 ? std::copysign(0.0, value) : chosen;
 }
 
+/// @brief Eager ABI compatibility entry point; new C++ calls use lazy header templates.
+/// @param v Numeric operand consumed by this legacy call.
+/// @param digits Decimal places for scalar rounding.
+/// @return Owned eager numeric result.
 Vector<> round(Vector<> v, int digits) {
   return transform_in_place(std::move(v), [digits](double x) { return datamunge::round(x, digits); });
 }
@@ -144,27 +226,14 @@ Vector<> seql(double from, double to, std::size_t n) {
   return v;
 }
 
-double sum(const Vector<>& v) { return std::accumulate(v.begin(), v.end(), 0.0); }
+double sum(const Vector<>& v) { return vector_expr::sum_values(v); }
 
 double mean(const Vector<>& v) {
   if (v.empty()) return std::numeric_limits<double>::quiet_NaN();
   return sum(v) / static_cast<double>(v.size());
 }
 
-double sd(const Vector<>& v) {
-  if (v.size() < 2) return std::numeric_limits<double>::quiet_NaN();
-  // Welford's centered update avoids subtracting large, nearly equal raw moments.
-  long double center = 0;
-  long double squared_deviations = 0;
-  std::size_t count = 0;
-  for (double value : v) {
-    if (!std::isfinite(value)) return std::numeric_limits<double>::quiet_NaN();
-    const long double delta = static_cast<long double>(value) - center;
-    center += delta / ++count;
-    squared_deviations += delta * (static_cast<long double>(value) - center);
-  }
-  return static_cast<double>(std::sqrt(squared_deviations / (v.size() - 1)));
-}
+double sd(const Vector<>& v) { return vector_expr::sample_sd(v); }
 
 void set_seed(std::uint64_t seed) { generator() = random::SplitMix64(seed); }
 

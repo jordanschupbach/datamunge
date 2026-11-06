@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 Dice and Tversky compare soft region overlap; Lovász weights sorted class errors by changes in Jaccard loss; a detached signed-distance map adds boundary geometry. All numerical computation uses tensors, including masks, sorting, Jaccard increments, distance transforms and optimization.
 
-The editable concept diagram is `diagrams/segmentation_losses_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/segmentation_losses_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/segmentation_losses_concept.tikz > build/segmentation_losses_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/segmentation_losses_concept.svg build/segmentation_losses_concept.dvi > build/segmentation_losses_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/segmentation_losses_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Probabilities and labels\nRegion overlap");
+  diagram.node("n1", {5.2, 0}, "Sorted pixel errors\nSigned distances");
+  diagram.node("n2", {10.4, 0}, "Four logit fields\nExplicit Adam loop");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/segmentation_losses_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/segmentation_losses_concept.svg)
 // result_end
 \caption(Segmentation overlap, sorted IoU and boundary losses)

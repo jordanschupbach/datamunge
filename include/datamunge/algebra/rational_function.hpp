@@ -59,6 +59,35 @@ class RationalFunction {
         return out.str();
     }
 
+#ifndef SWIG
+    /// @brief Render the reduced rational function as a composable C++ Tex fraction.
+    ///
+    /// A unit denominator is omitted. Otherwise both polynomials are grouped by a frac
+    /// command. Serialization preserves the stored reduced coefficients and their domain;
+    /// it does not restore excluded points canceled during construction. Uses the polynomial
+    /// serializer's sign/number conventions. The result owns its source without math-mode
+    /// delimiters. Const calls may run concurrently without changing the rational function.
+    /// @param variable Raw nonempty TeX symbol, default "x"; see Polynomial::to_tex().
+    /// @param precision Significant decimal digits, default 7; from 1 to double's max_digits10.
+    /// @return Owned Tex fragment supporting annotations, display() and inline_math().
+    /// @throws std::invalid_argument For an empty variable or unsupported precision.
+    /// @par Example
+    /// @code
+    /// const dm::algebra::RationalFunction r(
+    ///     dm::algebra::Polynomial({1, 1}), dm::algebra::Polynomial({-1, 1}));
+    /// std::print("{}\n", r.to_tex().display());
+    /// @endcode
+    /// @par References
+    /// - American Mathematical Society, User's Guide for the amsmath Package:
+    ///   https://www.latex-project.org/help/documentation/amsldoc.pdf
+    /// @see Polynomial::to_tex(), to_string(), Tex
+    [[nodiscard]] Tex to_tex(const std::string& variable = "x", int precision = 7) const {
+        const auto numerator = numerator_.to_tex(variable, precision);
+        if (denominator_.degree() == 0 && denominator_.coefficient(0) == 1.0) return numerator;
+        return numerator.frac(denominator_.to_tex(variable, precision));
+    }
+#endif
+
  private:
     void reduce() {
         const Polynomial g = poly_gcd(numerator_, denominator_);

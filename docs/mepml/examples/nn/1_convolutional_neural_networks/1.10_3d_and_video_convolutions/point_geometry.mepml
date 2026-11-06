@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Compute distances and input-order ranking with tensors,retain categorical center/neighbor IDs,and differentiate through gathered features and centroid-relative coordinates with those choices frozen. Plot every declared fixture point and verify ties,padding,translation and explicit errors.
 
-The editable concept diagram is `diagrams/point_geometry_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/point_geometry_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/point_geometry_concept.tikz > build/point_geometry_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/point_geometry_concept.svg build/point_geometry_concept.dvi > build/point_geometry_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/point_geometry_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "All fixture\n point coordinates");
+  diagram.node("n1", {5.2, 0}, "Tensor FPS\n and radius groups");
+  diagram.node("n2", {10.4, 0}, "Frozen choices\n and live adjoints");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/point_geometry_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/point_geometry_concept.svg)
 // result_end
 \caption(Point geometry:tensor distances and frozen neighborhood derivatives)

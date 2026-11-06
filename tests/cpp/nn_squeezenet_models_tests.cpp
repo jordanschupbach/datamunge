@@ -1,6 +1,8 @@
 
 #include <datamunge/nn/nn.hpp>
 #include <gtest/gtest.h>
+
+#include <limits>
 namespace n = datamunge::nn;
 TEST(NnSqueezeNetModels, FireExpandValuesAndAllParameterInputDerivatives) {
   const auto type = n::DType::Float64;
@@ -42,6 +44,26 @@ TEST(NnSqueezeNetModels, CeilPoolingPreservesNegativeEdgeWindowsAndSwitchGradien
   const auto z = n::models::CeilMaxPool(n::ones({1, 5, 5, 2}), odd);
   EXPECT_EQ(odd, 2);
   EXPECT_EQ(z.shape(), n::Shape({1, 2, 2, 2}));
+}
+TEST(NnSqueezeNetModels, CeilPoolingMatchesNegativeInfinityPaddingOnEvenSides) {
+  n::Generator gen(7);
+  for (int side : {2, 4, 6, 8, 16, 32}) {
+    const auto x = n::normal({2, side, side, 5}, 0.0, 1.0, gen).requires_grad_();
+    int        size = side;
+    const auto y    = n::models::CeilMaxPool(x, size);
+    const auto padded = n::pad(x, {{0, 0}, {0, 1}, {0, 1}, {0, 0}}, n::PadMode::Constant,
+                               -std::numeric_limits<double>::infinity());
+    const auto reference = n::max_pool2d(padded, 3, 2, n::Padding::Valid);
+    EXPECT_EQ(size, side / 2);
+    ASSERT_EQ(y.shape(), reference.shape());
+    EXPECT_EQ(y.to_vector<double>(), reference.to_vector<double>()) << side;
+    const auto seed = n::normal(y.shape(), 0.0, 1.0, gen);
+    n::GradOptions keep;
+    keep.retain_graph = true;
+    EXPECT_EQ(n::grad({y}, {x}, {seed}, keep)[0].to_vector<double>(),
+              n::grad({reference}, {x}, {seed}, keep)[0].to_vector<double>())
+        << side;
+  }
 }
 TEST(NnSqueezeNetModels, ReleasedCountsAndAllFireSizesIncludingBypasses) {
   n::set_num_threads(2);

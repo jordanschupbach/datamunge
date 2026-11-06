@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 YOLO v3 combines residual Darknet53 features with three top-down prediction scales. A target selects one prior globally; independent class/objectness logistic losses and area-weighted coordinates train all scales in one visible tensor optimization loop.
 
-The editable concept diagram is `diagrams/yolo_v3_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/yolo_v3_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/yolo_v3_concept.tikz > build/yolo_v3_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/yolo_v3_concept.svg build/yolo_v3_concept.dvi > build/yolo_v3_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/yolo_v3_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Nine box priors\nOne global match");
+  diagram.node("n1", {5.2, 0}, "Residual Darknet53\nThree scale heads");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam loop\nIndependent class BCE");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/yolo_v3_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/yolo_v3_concept.svg)
 // result_end
 \caption(YOLO v3 residual features and global three-scale assignment)
@@ -617,39 +623,39 @@ int main() {
 // result_begin: markdown
 | epoch | three-head objective loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 121.864821 | 7.831880 | 114.032941 | 0.000316 |
-| 2 | 205.380010 | 6.070558 | 199.309453 | 0.000000 |
-| 3 | 81.322808 | 5.276969 | 76.045839 | 0.000611 |
-| 4 | 126.858409 | 4.279489 | 122.578921 | 0.000000 |
-| 5 | 60.342057 | 4.179353 | 56.162704 | 0.000000 |
-| 6 | 75.191529 | 3.627282 | 71.564247 | 0.000000 |
-| 7 | 49.614965 | 3.533240 | 46.081725 | 0.000000 |
-| 8 | 50.033596 | 3.500639 | 46.532958 | 0.000000 |
-| 9 | 42.837322 | 3.169707 | 39.667616 | 0.000000 |
-| 10 | 34.160398 | 3.296871 | 30.863527 | 0.000000 |
-| 11 | 34.570528 | 2.798354 | 31.772174 | 0.000000 |
-| 12 | 23.011986 | 2.970392 | 20.041594 | 0.000000 |
-| 13 | 29.455866 | 2.523718 | 26.932148 | 0.000000 |
-| 14 | 16.819872 | 2.922986 | 13.896885 | 0.000000 |
-| 15 | 24.916001 | 2.478283 | 22.437719 | 0.000000 |
-| 16 | 13.561893 | 2.877239 | 10.684654 | 0.002350 |
-| 17 | 20.221668 | 2.242935 | 17.978732 | 0.000000 |
-| 18 | 11.756531 | 2.604709 | 9.151821 | 0.003297 |
-| 19 | 15.994674 | 2.366261 | 13.628413 | 0.000000 |
-| 20 | 10.887176 | 2.551512 | 8.335663 | 0.006305 |
-| 21 | 12.985008 | 2.241462 | 10.743547 | 0.005238 |
-| 22 | 10.331871 | 2.361841 | 7.970031 | 0.009424 |
-| 23 | 11.291779 | 2.211316 | 9.080464 | 0.007674 |
-| 24 | 10.077001 | 2.106582 | 7.970419 | 0.000000 |
-| 25 | 9.374798 | 2.267035 | 7.107764 | 0.001631 |
-| 26 | 9.473718 | 1.973400 | 7.500319 | 0.010361 |
-| 27 | 8.298223 | 2.156228 | 6.141996 | 0.043582 |
-| 28 | 8.672808 | 1.822048 | 6.850761 | 0.006024 |
-| 29 | 7.096057 | 2.149247 | 4.946810 | 0.015996 |
-| 30 | 7.695793 | 1.530234 | 6.165559 | 0.006614 |
-| 31 | 6.357236 | 1.987716 | 4.369520 | 0.012328 |
-| 32 | 7.187553 | 1.374400 | 5.813152 | 0.009106 |
-976795 learned scalars, 512 Adam updates; selected epoch 27, validation AP50 0.043582. Test: 23 digits in eight scenes, inclusive VOC AP50 0.000000, COCO AP75 0.000000, AP50:95 0.000000, 800 detections. Selected mean absolute first BN state 0.865207; paired learned and BN state restored.
+| 1 | 121.809128 | 7.837521 | 113.971607 | 0.000000 |
+| 2 | 205.192025 | 6.091244 | 199.100781 | 0.000281 |
+| 3 | 80.994917 | 5.153389 | 75.841528 | 0.000222 |
+| 4 | 126.455426 | 4.249711 | 122.205716 | 0.000000 |
+| 5 | 60.343771 | 4.111190 | 56.232582 | 0.000000 |
+| 6 | 75.002747 | 3.617229 | 71.385518 | 0.000000 |
+| 7 | 49.408802 | 3.466772 | 45.942029 | 0.000000 |
+| 8 | 49.596441 | 3.444298 | 46.152143 | 0.000000 |
+| 9 | 42.471100 | 3.107426 | 39.363674 | 0.000000 |
+| 10 | 33.919707 | 3.214000 | 30.705707 | 0.000000 |
+| 11 | 34.375490 | 2.775810 | 31.599680 | 0.000000 |
+| 12 | 22.916636 | 3.016641 | 19.899995 | 0.000000 |
+| 13 | 29.146179 | 2.450522 | 26.695657 | 0.003472 |
+| 14 | 16.746735 | 2.898474 | 13.848261 | 0.001389 |
+| 15 | 24.662316 | 2.365484 | 22.296832 | 0.000000 |
+| 16 | 13.483189 | 2.818152 | 10.665038 | 0.004630 |
+| 17 | 20.105328 | 2.137142 | 17.968185 | 0.009259 |
+| 18 | 11.789016 | 2.489401 | 9.299615 | 0.006944 |
+| 19 | 15.822425 | 2.276301 | 13.546124 | 0.006530 |
+| 20 | 10.787109 | 2.462761 | 8.324348 | 0.015212 |
+| 21 | 12.786887 | 2.103143 | 10.683744 | 0.000712 |
+| 22 | 10.008739 | 2.173986 | 7.834753 | 0.007562 |
+| 23 | 11.069486 | 2.069308 | 9.000178 | 0.009178 |
+| 24 | 9.753614 | 1.935720 | 7.817893 | 0.025292 |
+| 25 | 9.155983 | 2.119555 | 7.036428 | 0.013889 |
+| 26 | 9.246781 | 1.749341 | 7.497439 | 0.021605 |
+| 27 | 8.267129 | 2.144118 | 6.123011 | 0.009885 |
+| 28 | 8.618762 | 1.744615 | 6.874147 | 0.004211 |
+| 29 | 7.104952 | 2.131918 | 4.973034 | 0.006385 |
+| 30 | 7.776553 | 1.505826 | 6.270727 | 0.005176 |
+| 31 | 6.304288 | 1.900328 | 4.403959 | 0.017416 |
+| 32 | 6.973939 | 1.340544 | 5.633395 | 0.015853 |
+976795 learned scalars, 512 Adam updates; selected epoch 24, validation AP50 0.025292. Test: 23 digits in eight scenes, inclusive VOC AP50 0.004398, COCO AP75 0.000000, AP50:95 0.000818, 800 detections. Selected mean absolute first BN state 0.876404; paired learned and BN state restored.
 \image(figures/yolo_v3_training.svg)
 // result_end
 \caption(Visible Adam fits every compact Darknet53, route and prediction parameter at cycling input resolutions. Class BCE and combined coordinate/objectness curves exclude explicit kernel L2. Validation selects paired learned/BN checkpoints.)

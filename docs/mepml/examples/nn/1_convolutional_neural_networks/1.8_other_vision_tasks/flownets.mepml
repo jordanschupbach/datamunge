@@ -19,18 +19,24 @@ pyramid supervises all heads through smooth endpoint objectives;only the two
 observed frames enter prediction. Fixed and fitted constant references make
 the small experiment’s generalization limits inspectable.
 
-The editable concept diagram is `diagrams/flownets_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/flownets_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/flownets_concept.tikz > build/flownets_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/flownets_concept.svg build/flownets_concept.dvi > build/flownets_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/flownets_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed frame pair\nJoint RGB centering");
+  diagram.node("n1", {5.2, 0}, "Six encoder scales\nVisible Adam loop");
+  diagram.node("n2", {10.4, 0}, "Learned decoding\nInspect flow and warps");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/flownets_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/flownets_concept.svg)
 // result_end
 \caption(FlowNetS: explicit tensor optical-flow fitting)
@@ -326,7 +332,6 @@ int main() {
 }
 ```
 // result_begin:
-// Validated32/8/24 published-GT crops with disjoint scene families.
 // result_end
 
 C++ validates little-endian PIEH ingress and image dimensions,then uses

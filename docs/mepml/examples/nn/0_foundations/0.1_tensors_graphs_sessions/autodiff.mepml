@@ -377,6 +377,37 @@ x [Leaf] []
 ```
 \image(figures/autodiff_tape.svg)
 // result_end
+```
+Add_4 [Add] [] <- PowScalar_2 Mul_3
+Mul_3 [Mul] [] <- const x
+PowScalar_2 [PowScalar] [] <- x
+x [Leaf] []
+```
+
+| value | forward | adjoint dy/d(value) |
+| :--- | ---: | ---: |
+| y = u + v | 12 | 1 |
+| u = x^3 | 8 | 1 |
+| v = 2 x | 4 | 1 |
+| x | 2 | 14 |
+
+| x | y | dy/dx | expected 3x^2+2 | d2y/dx2 | expected 6x | d3y/dx3 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 1.125 | 2.750 | 2.750 | 3.000 | 3.000 | 6.000 |
+| 1.0 | 3.000 | 5.000 | 5.000 | 6.000 | 6.000 | 6.000 |
+| 2.0 | 12.000 | 14.000 | 14.000 | 12.000 | 12.000 | 6.000 |
+
+The recorded backward pass (dy/dx as a function of x) has 4 ops:
+
+```
+Add_32 [Add] [] <- const Mul_31
+Mul_31 [Mul] [] <- const Mul_30
+Mul_30 [Mul] [] <- PowScalar_29 const
+PowScalar_29 [PowScalar] [] <- x
+x [Leaf] []
+```
+\image(figures/autodiff_tape.svg)
+// result_end
 
 \caption(Left: the tape recorded for \(y=x^3+2x\). The output's node is at the top and the leaf \(x\) at the bottom. Each edge runs from an operation to the node that produced one of its inputs. The constant 2 in \(2x\) has no node. Right: the tape of the recorded backward pass, \(\mathrm dy/\mathrm dx=3x^2\cdot1+2\) as a function of \(x\).)
 \alttext(Left: a diamond-shaped graph with Add_4 at the top joined to Mul_3 on the left and PowScalar_2 on the right, both joined to the blue leaf x at the bottom. Right: a vertical chain from Add_32 at the top through Mul_31, Mul_30 and PowScalar_29 down to the blue leaf x.)
@@ -444,6 +475,11 @@ cos 2 = -0.416147
 - u = (1, 1): jvp gives Ju = [5, 2, -0.416147]
 - d(s·stop(s))/ds at 3 = 3; d(s·s)/ds at 3 = 6
 
+```
+Mul_60 [Mul] [] <- s const
+s [Leaf] []
+```
+// result_end
 ```
 Mul_60 [Mul] [] <- s const
 s [Leaf] []
@@ -668,9 +704,9 @@ int main() {
 
 | n | forward (ms) | forward + gradient (ms) | ratio | central differences, 2n evaluations (ms, estimated) |
 | ---: | ---: | ---: | ---: | ---: |
-| 100 | 0.003 | 0.011 | 3.4 | 0.637 |
-| 10000 | 0.169 | 0.274 | 1.6 | 3.37e+03 |
-| 1000000 | 6.974 | 14.856 | 2.1 | 1.39e+07 |
+| 100 | 0.006 | 0.021 | 3.4 | 1.21 |
+| 10000 | 0.261 | 0.452 | 1.7 | 5.22e+03 |
+| 1000000 | 23.729 | 39.110 | 1.6 | 4.75e+07 |
 // result_end
 
 `gradcheck` and `gradgradcheck` agree with float64 central differences to \(1.5\times10^{-10}\) and \(4.3\times10^{-10}\), near

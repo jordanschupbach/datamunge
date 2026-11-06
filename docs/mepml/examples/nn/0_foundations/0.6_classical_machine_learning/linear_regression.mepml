@@ -28,18 +28,24 @@ Direct dense solving costs O(Np²+p³), while a gradient step costs O(Np). The r
 conditioning assumptions matter; a unique prediction fit need not imply stable individual
 coefficients near collinearity.
 
-The concept diagram has a retained TikZ source in `diagrams/linear_regression_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/linear_regression_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/linear_regression_concept.tikz > build/linear_regression_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/linear_regression_concept.svg build/linear_regression_concept.dvi > build/linear_regression_concept.render.log 2>&1
-printf 'Rendered build/linear_regression_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/linear_regression_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Design + response\nX,y");
+  diagram.node("n1", {5.2, 0}, "Tensor SGD loop\nw← w-η∇ L");
+  diagram.node("n2", {10.4, 0}, "QR optimum check\nX^T(Xw-y)=0");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/linear_regression_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/linear_regression_concept.svg from local TikZ source.
 // \image(figures/linear_regression_concept.svg)
 // result_end
 \caption(Solve for coefficients without forming an explicit inverse)
@@ -101,38 +107,34 @@ The Hessian is diagonal with eigenvalues 1 and 2 for this symmetric design, so r
 #include <dm/dm.hpp>
 
 int main() {
-  namespace n = dm::nn;
-  const auto x = n::linspace(-2, 2, 5, n::DType::Float64).reshape({5, 1});
-  const auto X = n::concat({n::ones_like(x), x}, 1);
-  const auto y = n::tensor({0, 0, 1, 2, 2}, {5, 1}, n::DType::Float64);
-  auto w = n::zeros({2, 1}, n::DType::Float64).requires_grad_();
-  n::OptimizerConfig config;
-  config.kind = n::OptimizerKind::Sgd;
-  n::Optimizer optimizer({w}, .4, config);
-  const auto exact = n::ml::LeastSquaresQr(X, y);
-  std::vector<double> step, loss;
-  for (int i = 0; i <= 30; ++i) {
-    const auto objective = .5 * n::mean(n::square(n::matmul(X, w) - y));
-    step.push_back(i);
-    loss.push_back(objective.item());
-    if (i < 30)
-      optimizer.minimize(objective);
-  }
-  auto p = dm::graphics::RPlot::create();
-  p.lines(step, loss, "SGD loss", {37, 99, 235})
-      .title("Stable SGD approaches the QR optimum")
-      .x_label("step")
-      .y_label("half MSE");
-  std::filesystem::create_directories("build");
-  p.size(820, 420).save_svg("build/linear_regression_descent.svg");
-  if (n::max(n::abs(w - exact)).item() > 1e-6)
-    return 1;
-  std::print("After 30 steps, maximum coefficient error {:.9f}; half MSE {:.9f}.\n",
-             n::max(n::abs(w - exact)).item(), loss.back());
+    namespace n = dm::nn;
+    const auto x = n::linspace(-2, 2, 5, n::DType::Float64).reshape({5, 1});
+    const auto X = n::concat({n::ones_like(x), x}, 1);
+    const auto y = n::tensor({0, 0, 1, 2, 2}, {5, 1}, n::DType::Float64);
+    auto w = n::zeros({2, 1}, n::DType::Float64).requires_grad_();
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Sgd;
+    n::Optimizer optimizer({w}, .4, config);
+    const auto exact = n::ml::LeastSquaresQr(X, y);
+    std::vector<double> step, loss;
+    int epochs = 100;
+    for (int i = 0; i <= epochs; ++i) {
+        const auto objective = .5 * n::mean(n::square(n::matmul(X, w) - y));
+        step.push_back(i);
+        loss.push_back(objective.item());
+        optimizer.minimize(objective);
+    }
+    std::filesystem::create_directories("build");
+    dm::graphics::RPlot::create().lines(step, loss, "SGD loss", {37, 99, 235}).title("Stable SGD approaches the QR optimum").x_label("step").y_label("half MSE").size(820, 420).save_svg("build/linear_regression_descent.svg");
+    if (n::max(n::abs(w - exact)).item() > 1e-6) {
+        return 1;
+    }
+    std::print("After 30 steps, maximum coefficient error {:.9f}; half MSE {:.9f}.\n",
+               n::max(n::abs(w - exact)).item(), loss.back());
 }
 ```
 // result_begin: markdown
-After 30 steps, maximum coefficient error 0.000000221; half MSE 0.040000000.
+After 30 steps, maximum coefficient error 0.000000000; half MSE 0.040000000.
 \image(figures/linear_regression_descent.svg)
 // result_end
 \caption(A fixed stable step contracts the quadratic error toward the direct-solver result.)

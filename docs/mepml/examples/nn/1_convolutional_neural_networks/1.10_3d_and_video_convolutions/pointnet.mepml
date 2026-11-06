@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Use actual sampled ModelNet surfaces,keep every source layer,and show the optimizer objective and update directly. Select matching learned/moving arrays on validation,restore XYZ-only inference,and report every held-out object and ordering control.
 
-The editable concept diagram is `diagrams/pointnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/pointnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/pointnet_concept.tikz > build/pointnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/pointnet_concept.svg build/pointnet_concept.dvi > build/pointnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/pointnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original CAD\n surface observations");
+  diagram.node("n1", {5.2, 0}, "Both learned\n T-Nets");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n and every object error");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/pointnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/pointnet_concept.svg)
 // result_end
 \caption(PointNet:genuine CAD points and visible tensor Adam)
@@ -405,10 +411,10 @@ int main() {
 // result_begin: markdown
 | epoch | dropout fitting objective | moving-moment validation NLL |
 |---:|---:|---:|
-| 1 | 1.357434 | 1.449078 |
-| 2 | 1.430656 | 1.483548 |
-| 3 | 1.023942 | 1.081701 |
-18explicitAdam updates;74finite/74nonzero actual learned gradients;selected epoch 3,val 1.081701;fixed inference fitting NLL 1.099125861->1.128235405.
+| 1 | 1.238042 | 1.522410 |
+| 2 | 1.171748 | 1.756786 |
+| 3 | 1.083537 | 1.513688 |
+18explicitAdam updates;74finite/74nonzero actual learned gradients;selected epoch 3,val 1.513688;fixed inference fitting NLL 1.099125861->1.483019724.
 \image(figures/pointnet_training.svg)
 // result_end
 \caption(All18actual tensor optimizer updates with full source architecture and one moving-state update per fitting forward. Fitting objective and validation inference NLL use different normalization modes;paired checkpoints and the fixed inference probe are explicit.)
@@ -570,29 +576,29 @@ int main() {
 }
 ```
 // result_begin: markdown
-XYZ-only restore/repeat 0;single/batch 4.17232513e-07 within2e-6;all74/34learned/moving immutable:true;reverse max 1.0561198e-06;zero-cloud change 0.74798882.
+XYZ-only restore/repeat 0;single/batch 0 within2e-6;all74/34learned/moving immutable:true;reverse max 0;zero-cloud change 1.82224655.
 
 | predictor | accuracy | macroF1 | NLL | all class recalls | complete true-row confusion |
 |---|---:|---:|---:|---|---|
-| learned | 0.666667 | 0.538721 | 1.089158 | float64[3] [1, 0, 1] | int32[3, 3] [[4, 0, 0], [1, 0, 3], [0, 0, 4]] |
+| learned | 0.250000 | 0.153846 | 1.459125 | float64[3] [0, 0, 0.75] | int32[3, 3] [[0, 0, 4], [2, 0, 2], [1, 0, 3]] |
 | untrained | 0.333333 | 0.166667 | 1.101295 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
 | tie0 | 0.333333 | 0.166667 | 1.098612 | float64[3] [1, 0, 0] | int32[3, 3] [[4, 0, 0], [4, 0, 0], [4, 0, 0]] |
-| reversed-point control | 0.666667 | 0.538721 | 1.089158 | float64[3] [1, 0, 1] | int32[3, 3] [[4, 0, 0], [1, 0, 3], [0, 0, 4]] |
+| reversed-point control | 0.250000 | 0.153846 | 1.459125 | float64[3] [0, 0, 0.75] | int32[3, 3] [[0, 0, 4], [2, 0, 2], [1, 0, 3]] |
 
 | original OFF source ID | true class0chair/1sofa/2table | learned class |
 |---:|---:|---:|
-| 10 | 0 | 0 |
-| 11 | 0 | 0 |
-| 12 | 0 | 0 |
-| 13 | 0 | 0 |
-| 24 | 1 | 2 |
-| 25 | 1 | 0 |
+| 10 | 0 | 2 |
+| 11 | 0 | 2 |
+| 12 | 0 | 2 |
+| 13 | 0 | 2 |
+| 24 | 1 | 0 |
+| 25 | 1 | 2 |
 | 26 | 1 | 2 |
-| 27 | 1 | 2 |
+| 27 | 1 | 0 |
 | 38 | 2 | 2 |
 | 39 | 2 | 2 |
 | 40 | 2 | 2 |
-| 41 | 2 | 2 |
+| 41 | 2 | 0 |
 \image(figures/pointnet_confusion.svg)
 // result_end
 \caption(Every held-out learned and initialized confusion count,sharing0..4. Complete original object predictions and unchanged model-state checks remain visible,without selecting favorable objects or seeds.)

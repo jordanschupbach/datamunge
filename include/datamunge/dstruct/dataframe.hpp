@@ -47,6 +47,7 @@
 #include <utility>
 #include <variant>
 #include <vector>
+#include <datamunge/linalg/matrix.hpp>
 
 #ifdef DATAMUNGE_HAVE_ARROW
 #include <memory>
@@ -710,6 +711,48 @@ class DataFrame {
   /// @endcode
   /// @see add_column()
   DataFrame() = default;
+
+  /// @brief Copy a numeric Mat/SpMat into named DataFrame columns.
+  /// Sparse zeros become explicit values; no source references are retained.
+  /// A zero-column matrix must have zero rows because frames need columns to
+  /// represent a row count. Scalar values are converted to double.
+  /// @tparam S Sparse-storage selector.
+  /// @tparam T Matrix scalar type.
+  /// @param matrix Owned facade matrix, unchanged by conversion.
+  /// @param names Unique nonempty names, one per column; an empty list (default)
+  /// uses matrix.colnames().
+  /// @throws std::invalid_argument For invalid/mismatched names or unrepresentable shape.
+  /// @par Example
+  /// @code
+  /// const dm::dstruct::DataFrame frame(dm::Mat<>{{1, 2}, {3, 4}}, {"x", "y"});
+  /// std::print("{} {:.0f}\n", frame.nrows(), frame.double_at("y", 1)); // 2 4
+  /// @endcode
+  /// @see add_column(), BasicMat::colnames()
+  template<bool S, class T>
+  explicit DataFrame(const BasicMat<S, T>& matrix, std::vector<std::string> names = {}) {
+    if (names.empty()) names = matrix.colnames();
+    if (names.size() != matrix.cols() || (matrix.cols() == 0 && matrix.rows() != 0))
+      throw std::invalid_argument("DataFrame: names/shape do not match matrix columns");
+    for (std::size_t j = 0; j < matrix.cols(); ++j) {
+      std::vector<double> column(matrix.rows());
+      for (std::size_t i = 0; i < matrix.rows(); ++i) column[i] = static_cast<double>(matrix(i, j));
+      add_column(names[j], std::move(column));
+    }
+  }
+
+  /// @brief Copy a numeric vector into a one-column DataFrame.
+  /// @param values Row values; copied, including nonfinite values.
+  /// @param names Exactly one nonempty column name.
+  /// @throws std::invalid_argument If names does not contain exactly one valid name.
+  /// @par Example
+  /// @code
+  /// const dm::dstruct::DataFrame frame(dm::seql(0, 1, 3), {"x"});
+  /// std::print("{}\n", frame.nrows()); // 3
+  /// @endcode
+  explicit DataFrame(const std::vector<double>& values, const std::vector<std::string>& names) {
+    if (names.size() != 1) throw std::invalid_argument("DataFrame: vector requires one column name");
+    add_column(names[0], values);
+  }
 
   /// @brief Builds a frame from `{name, column}` pairs, in the order given (like R's
   ///        `data.frame(x = ..., y = ...)` or `tibble()`).

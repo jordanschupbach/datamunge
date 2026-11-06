@@ -12,10 +12,13 @@
 #include <datamunge/gis/gis.hpp>
 #include <datamunge/image/imaging.hpp>
 #include <datamunge/linalg/tensor.hpp>
+#include <datamunge/linalg/matrix.hpp>
+#include <datamunge/linalg/bindings.hpp>
 #include <datamunge/ode/ode.hpp>
 #include <datamunge/optim/optim.hpp>
 #include <datamunge/plot/ggplot.hpp>
 #include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
 #include <datamunge/plot/figure.hpp>
 #include <datamunge/plot/histogram.hpp>
 #include <datamunge/plot/splom.hpp>
@@ -32,13 +35,38 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
 #include <memory>
 #include <optional>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
 namespace datamunge {
+
+#ifndef SWIG
+/// @brief Create a directory and any missing parent directories.
+/// Accepts native filesystem paths, strings and string literals. An existing
+/// directory is a successful no-op; an existing file at the target or along its
+/// parents is an error. Relative paths use the current working directory, which
+/// this function does not change. Permissions follow the native filesystem and
+/// process defaults. A failed recursive operation may leave created parents.
+/// This C++ convenience forwards to std::filesystem::create_directories().
+/// @param path Directory to create, including any missing parents; must not be empty.
+/// @return True if the target directory was created, false if it already existed.
+/// @throws std::filesystem::filesystem_error For an empty path, a conflicting file,
+/// insufficient permissions or other operating-system filesystem errors.
+/// @par Example
+/// @code
+/// dm::mkdir("build/figs");
+/// std::print("{}\n", std::filesystem::is_directory("build/figs")); // true
+/// @endcode
+/// @see std::filesystem::create_directories()
+inline bool mkdir(const std::filesystem::path& path) {
+  return std::filesystem::create_directories(path);
+}
+#endif
 
 /// @brief Prints a hello message to standard output.
 void hello();
@@ -98,6 +126,37 @@ double sum_dpair(const std::pair<double, double>& values);
 class DataFrame {
  public:
   DataFrame() = default;
+
+#ifndef SWIG
+  /// @brief Copy a native dense/CSR matrix into the canonical DataFrame storage.
+  /// C++ convenience overload; generated languages use their numeric-column APIs.
+  /// @tparam S Sparse-storage selector.
+  /// @tparam T Floating-point scalar, converted to double.
+  /// @param matrix Source facade matrix, unchanged.
+  /// @param names Unique nonempty column names; default empty uses matrix.colnames().
+  /// @throws std::invalid_argument For invalid names or an unrepresentable matrix shape.
+  /// @par Example
+  /// @code
+  /// const dm::DataFrame data(dm::Mat<>{{1, 2}, {3, 4}}, {"x", "y"});
+  /// std::print("{} {}\n", data.nrows(), data.ncols()); // 2 2
+  /// @endcode
+  /// @see dstruct::DataFrame
+  template<bool S, class T>
+  explicit DataFrame(const BasicMat<S, T>& matrix, std::vector<std::string> names = {})
+      : frame_(matrix, std::move(names)) {}
+
+  /// @brief Copy a numeric vector into a one-column DataFrame.
+  /// @param values Copied row values, including nonfinite values.
+  /// @param names Exactly one nonempty column name.
+  /// @throws std::invalid_argument For invalid column names.
+  /// @par Example
+  /// @code
+  /// const dm::DataFrame data(dm::seql(0, 1, 3), {"x"});
+  /// std::print("{}\n", data.nrows()); // 3
+  /// @endcode
+  explicit DataFrame(const std::vector<double>& values, const std::vector<std::string>& names)
+      : frame_(values, names) {}
+#endif
 
   /// @brief Equivalent to the default constructor, exposed as a static factory (like iris()/
   ///        penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
@@ -830,6 +889,50 @@ class LM {
   /// @param weights_column Optional column name enabling weighted least squares; pass "" (the default) for OLS.
   LM(const DataFrame& data, const std::string& formula, const std::string& weights_column = "");
 
+#ifndef SWIG
+  /// @brief Fit directly from a response and dense numeric predictor matrix.
+  /// Copies predictors to the canonical double-precision model. Adds an intercept
+  /// by default; matrix columns must exclude it and remain in the same order for prediction.
+  /// @tparam T Floating-point matrix scalar, converted to double.
+  /// @param y Finite response values, one per predictor row.
+  /// @param predictors Dense predictors with n > p after adding any intercept.
+  /// @param intercept Add a constant coefficient, default true.
+  /// @throws std::invalid_argument For invalid shapes or nonfinite data.
+  /// @throws std::runtime_error For rank deficiency.
+  /// @par Example
+  /// @code
+  /// const dm::LM fit(dm::c(1, 3, 5, 7), dm::Mat<>{{0}, {1}, {2}, {3}});
+  /// std::print("{:.0f}\n", fit.predict(dm::Mat<>{{4}})[0]); // 9
+  /// @endcode
+  /// @see stats::LM
+  template<class T>
+  LM(const std::vector<double>& y, const BasicMat<false, T>& predictors, bool intercept = true)
+      : lm_(y, Mat<>(predictors), intercept) {}
+
+  /// @brief Fit directly from a response and CSR predictors using native sparse regression.
+  /// Keeps the design compressed. The native PCG normal-equation solve uses sparse
+  /// products; covariance is a dense coefficient-sized matrix. Inputs are owned and
+  /// converted to double. Normal equations square the design's condition number.
+  /// @tparam T Floating-point matrix scalar, converted to double.
+  /// @param y Finite response values, one per predictor row.
+  /// @param predictors CSR predictors, excluding any requested intercept; requires n > p.
+  /// @param intercept Add a constant coefficient, default true.
+  /// @param options Solver settings: relative residual tolerance 1e-12, at most
+  /// 1000 iterations, Jacobi preconditioning by default.
+  /// @throws std::invalid_argument For invalid shapes, nonfinite data or invalid tolerance.
+  /// @throws std::runtime_error For rank deficiency or failure to converge.
+  /// @par Example
+  /// @code
+  /// const dm::LM fit(dm::c(1, 3, 5, 7), dm::SpMat<>{{0}, {1}, {2}, {3}});
+  /// std::print("{:.0f}\n", fit.predict(dm::SpMat<>{{4}})[0]); // 9
+  /// @endcode
+  /// @see stats::LM, linalg::SparseLinearRegressionOptions
+  template<class T>
+  LM(const std::vector<double>& y, const BasicMat<true, T>& predictors, bool intercept = true,
+     linalg::SparseLinearRegressionOptions options = {{1e-12, 1000}, true})
+      : lm_(y, SpMat<>(predictors), intercept, options) {}
+#endif
+
   [[nodiscard]] std::string  formula_text() const;
   [[nodiscard]] bool         has_intercept() const;
   [[nodiscard]] std::size_t  observations() const;
@@ -863,6 +966,26 @@ class LM {
 
   [[nodiscard]] std::vector<double> predict(const DataFrame& newdata) const;
 
+#ifndef SWIG
+  /// @brief Predict a matrix-fitted model from dense or CSR columns in training order.
+  /// Adds the fitted intercept automatically. CSR input is visited by stored
+  /// entries; prediction does not allocate a dense predictor grid.
+  /// @tparam S Sparse-storage selector.
+  /// @tparam T Floating-point scalar, converted to double when necessary.
+  /// @param newdata Finite predictors with the training column count, excluding
+  /// the intercept. Empty rows and a different storage policy from fitting are valid.
+  /// @return One fitted mean per row.
+  /// @throws std::invalid_argument For formula-fitted models, wrong columns or nonfinite values.
+  /// @par Example
+  /// See the dense and sparse matrix constructors' prediction examples.
+  /// @see stats::LM::predict()
+  template<bool S, class T>
+  [[nodiscard]] std::vector<double> predict(const BasicMat<S, T>& newdata) const {
+    if constexpr (std::is_same_v<T, double>) return lm_.predict(newdata);
+    else return lm_.predict(BasicMat<S, double>(newdata));
+  }
+#endif
+
   /// @param interval_kind One of "none", "confidence", "prediction". Returned DataFrame has a "fit" column,
   ///                      plus "se_fit"/"lwr"/"upr" when an interval is requested.
   [[nodiscard]] DataFrame* predict_frame(const DataFrame& newdata, const std::string& interval_kind = "none",
@@ -883,6 +1006,33 @@ class LM {
  private:
   stats::LM lm_;
 };
+
+#ifndef SWIG
+/// @brief Fit and return an LM using the lowercase, R-style lm() spelling.
+/// Forwards constructor arguments without changing fitting or ownership. Accepts
+/// (data, formula[, weights_column]), (y, dense_predictors[, intercept]) or
+/// (y, sparse_predictors[, intercept[, options]]). Matrix fits add an intercept
+/// by default. Sparse inputs retain CSR storage and the constructor's solver
+/// defaults. Lazy responses are materialised at the LM constructor boundary;
+/// the returned model owns the data needed for prediction after inputs expire.
+/// @tparam Args Arguments accepted by an LM constructor, including optional settings.
+/// @param args Constructor arguments, forwarded with their original value categories.
+/// @return Owned LM value, equivalent to constructing LM with the same arguments.
+/// @throws std::invalid_argument For invalid shapes, formulas, data or solver settings.
+/// @throws std::runtime_error For rank deficiency or solver failure, as in LM.
+/// @par Example
+/// @code
+/// const auto y = dm::c(1, 3, 5, 7) + 0;
+/// const auto fit = dm::lm(y, dm::SpMat<>{{0}, {1}, {2}, {3}});
+/// std::print("{:.0f}\n", fit.predict(dm::SpMat<>{{4}})[0]); // 9
+/// const auto data = dm::DataFrame(dm::Mat<>{{0, 1}, {1, 3}, {2, 5}, {3, 7}}, {"x", "y"});
+/// const auto formula_fit = dm::lm(data, "y ~ x");
+/// std::print("{:.0f}\n", formula_fit.predict(dm::DataFrame(dm::Mat<>{{4}}, {"x"}))[0]); // 9
+/// @endcode
+/// @see LM, stats::LM
+template<class... Args, std::enable_if_t<std::is_constructible_v<LM, Args&&...>, int> = 0>
+[[nodiscard]] LM lm(Args&&... args) { return LM(std::forward<Args>(args)...); }
+#endif
 
 /// @brief SWIG-friendly facade for datamunge::stats::LMM — a linear mixed model fit by
 ///        (RE)ML, with a single grouping factor, e.g. "score ~ x1 + (1 + x1 | school)".

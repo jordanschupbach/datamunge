@@ -52,18 +52,24 @@ kernel L2=.0001/2, padded crops/flips and paired learned/BN checkpoint selection
 All attention parameters participate in the optimizer. This bounded single-seed run differs
 from the paper's ImageNet schedule and cannot establish attention accuracy superiority.
 
-The editable concept diagram is `diagrams/sknet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/sknet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/sknet_concept.tikz > build/sknet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/sknet_concept.svg build/sknet_concept.dvi > build/sknet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/sknet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Two grouped branches\n3 by 3 and dilated");
+  diagram.node("n1", {5.2, 0}, "Pooled branch sum\nSoftmax selection");
+  diagram.node("n2", {10.4, 0}, "All sixteen blocks\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/sknet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/sknet_concept.svg)
 // result_end
 \caption(Selective Kernels: Normalized Branch Choice and a Complete SKNet Fit)
@@ -252,7 +258,7 @@ int main() {
 ```
 // result_begin: markdown
 Full-width sknet groups 32: 27479784 learned / 84544 moving scalars; sixteen blocks, 64-pixel forward.
-Every 289 parameter-tensor gradient finite; norm range [0.009856181219,408440.906250000], moving state frozen.
+Every 289 parameter-tensor gradient finite; norm range [0.002678415971,16236.588867188], moving state frozen.
 // result_end
 
 > Original pixels and explicit optimization
@@ -438,7 +444,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1728474 learned scalars, 21856 moving scalars; 128 explicit Adam updates.
-Selected epoch 6; validation NLL 2.352759; inference training NLL 2.193492; test NLL 2.369688; test accuracy 0.187500.
+Selected epoch 8; validation NLL 2.404381; inference training NLL 2.243875; test NLL 2.913993; test accuracy 0.093750.
 \image(figures/sknet_training.svg)
 // result_end
 \caption(Explicit 8-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

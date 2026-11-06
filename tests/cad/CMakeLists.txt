@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.20)
+project(DatamungeCADTests LANGUAGES CXX)
+enable_testing()
+find_package(Threads REQUIRED)
+# Build the actual CAD implementation without unrelated optional library
+# integrations, so the complete windowless suite also runs offline.
+file(GLOB_RECURSE cad_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/../../src/datamunge/cad/*.cpp")
+add_library(datamunge_cad_test_core STATIC ${cad_sources})
+target_include_directories(datamunge_cad_test_core PUBLIC "${CMAKE_CURRENT_LIST_DIR}/../../include")
+target_compile_features(datamunge_cad_test_core PUBLIC cxx_std_23)
+target_compile_options(datamunge_cad_test_core PRIVATE
+  "$<$<COMPILE_LANG_AND_ID:CXX,GNU,Clang,AppleClang>:-ffp-contract=off>;$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/fp:strict>")
+target_link_libraries(datamunge_cad_test_core PUBLIC Threads::Threads)
+file(GLOB cad_test_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/../cpp/cad/*_test.cpp")
+foreach(source IN LISTS cad_test_sources)
+  get_filename_component(name "${source}" NAME_WE)
+  add_executable("${name}" "${source}")
+  target_link_libraries("${name}" PRIVATE datamunge_cad_test_core)
+  target_include_directories("${name}" PRIVATE "${CMAKE_CURRENT_LIST_DIR}/../../src/datamunge/cad")
+  target_compile_definitions("${name}" PRIVATE DATAMUNGE_SOURCE_DIR="${CMAKE_CURRENT_LIST_DIR}/../..")
+  add_test(NAME "cad.${name}" COMMAND "${name}")
+endforeach()

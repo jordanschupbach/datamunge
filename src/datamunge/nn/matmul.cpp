@@ -95,7 +95,7 @@ Tensor matmul(const Tensor& a, const Tensor& b, bool transpose_a, bool transpose
     throw std::invalid_argument(
         "matmul: CUDA operands require one context and matching Float32/Float64 dtypes");
   if (native && !a.context().supports_matmul())
-    throw std::logic_error("matmul: CUDA numerical adapter requires DATAMUNGE_ENABLE_CUBLAS");
+    throw std::logic_error("matmul: this device has no GEMM (Context::matmul)");
   Tensor ac = native ? a : as_dtype(a, dt), bc = native ? b : as_dtype(b, dt);
 
   Tensor out;

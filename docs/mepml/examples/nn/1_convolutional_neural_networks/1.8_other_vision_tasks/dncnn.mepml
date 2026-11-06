@@ -19,18 +19,24 @@ Orthogonal convolutions and moving batch normalization retain the source
 operation uses tensors;host containers carry only metadata,RNG draws and
 plot presentation values.
 
-The editable concept diagram is `diagrams/dncnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/dncnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/dncnn_concept.tikz > build/dncnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/dncnn_concept.svg build/dncnn_concept.dvi > build/dncnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/dncnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Noisy grayscale\nUnclipped observations");
+  diagram.node("n1", {5.2, 0}, "Predict signed noise\nVisible Adam loop");
+  diagram.node("n2", {10.4, 0}, "Subtract and restore\nInspect raw errors");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/dncnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/dncnn_concept.svg)
 // result_end
 \caption(DnCNN: explicit tensor residual denoising)
@@ -540,14 +546,14 @@ int main() {
 35344 learned scalars/48 tensors;480 BN scalars/30 tensors.
 | epoch | fitting half-MSE | moving-BN validation half-MSE |
 |---:|---:|---:|
-| 1 | 0.069518 | 0.013081 |
-| 2 | 0.006834 | 0.007720 |
-| 3 | 0.005503 | 0.005227 |
-96 visible Adam updates;selected epoch3,paired validation half-MSE 0.005227. Fixed fitting train-mode 0.287240->0.005109,moving-BN inference 0.004734->0.005051.
+| 1 | 0.071677 | 0.011794 |
+| 2 | 0.007216 | 0.009898 |
+| 3 | 0.005600 | 0.005228 |
+96 visible Adam updates;selected epoch3,paired validation half-MSE 0.005228. Fixed fitting train-mode 0.287240->0.005339,moving-BN inference 0.004734->0.005149.
 Noisy-only independent deployment parity 0;all48 learned+30 moving tensors immutable,repeat exact,single/batch agree.
 | estimate | raw MSE | mean raw PSNR dB | mean clipped PSNR dB | outside fraction |
 |---|---:|---:|---:|---:|
-| learned | 0.010429 | 19.826817 | 20.181874 | 0.053833 |
+| learned | 0.010268 | 19.891563 | 20.270739 | 0.054535 |
 | noisy | 0.009514 | 20.219740 | 20.535529 | 0.048920 |
 | reflected mean | 0.004340 | 24.034324 | 24.051991 | 0.013580 |
 \image(figures/dncnn_training.svg)

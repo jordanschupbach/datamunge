@@ -1,2 +1,8 @@
 exportPattern("^[^.]")
 useDynLib(datamunger, .registration=TRUE)
+S3method(t,Mat)
+S3method("%*%",Mat)
+S3method(solve,Mat)
+S3method(as.matrix,Mat)
+S3method(dim,Mat)
+S3method(print,Mat)

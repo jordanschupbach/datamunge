@@ -29,8 +29,10 @@ Keep symbol documentation current with code changes. The checkable backlog and
 documentation standard live in [docs/documentation-plan.md](docs/documentation-plan.md).
 
 For literate report conversions, follow [docs/mepml/conversion-plan.md](docs/mepml/conversion-plan.md).
-Use a TikZ concept diagram near the introduction when it helps explain the topic;
-retain its editable source and repeatable rendering command. Save rendered images
+Use a native C++ datamunge concept diagram near the introduction when it helps
+explain the topic (`dm::graphics::Diagram` for method diagrams, the plotting API
+for numerical results). Implement missing reusable graphics features in the core
+library. Keep the editable complete C++ program in the report. Save rendered images
 to a local `build/` directory and reference/copy those files into the report. Never
 print SVG XML, data URIs or base64 image content into report result blocks.
 

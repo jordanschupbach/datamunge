@@ -62,18 +62,24 @@ L2=.0001/2 and independent padded crops/flips. Validation selects paired paramet
 moments before test scoring. This bounded single-seed experiment differs from the larger source
 fit and published ImageNet schedules; it cannot establish design-space or benchmark superiority.
 
-The editable concept diagram is `diagrams/regnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/regnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/regnet_concept.tikz > build/regnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/regnet_concept.svg build/regnet_concept.dvi > build/regnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/regnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Linear width rule\nQuantize and group");
+  diagram.node("n1", {5.2, 0}, "X grouped bottlenecks\nY adds input-based SE");
+  diagram.node("n2", {10.4, 0}, "Full Y-400MF fit\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/regnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/regnet_concept.svg)
 // result_end
 \caption(RegNet: A Quantized Width Rule and Complete X/Y Classifiers)
@@ -392,7 +398,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Full-width Y-400MF at 64 pixels: 740 finite nonzero parameter-tensor gradients, norms [0.008265414,80.045578003]. All sixteen blocks, input-based SE and four stage downsamplings retained.
+Full-width Y-400MF at 64 pixels: 740 finite nonzero parameter-tensor gradients, norms [0.008265289,80.051063538]. All sixteen blocks, input-based SE and four stage downsamplings retained.
 // result_end
 
 > Dataset and explicit fitting
@@ -576,7 +582,7 @@ int main() {
 ```
 // result_begin: markdown
 64 fit / 32 validation / 32 official-test rows; 3907554 learned scalars, 27152 moving scalars; 96 explicit Adam updates.
-Selected epoch 1; validation NLL 2.415059; inference training NLL 2.301832; test NLL 2.447884; test accuracy 0.156250.
+Selected epoch 1; validation NLL 2.416464; inference training NLL 2.306770; test NLL 2.393147; test accuracy 0.156250.
 \image(figures/regnet_training.svg)
 // result_end
 \caption(Explicit 12-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 32; IDs follow the original CIFAR-10 order.)

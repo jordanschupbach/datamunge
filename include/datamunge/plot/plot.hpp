@@ -27,6 +27,7 @@
 #include <string>
 #include <limits>
 #include <vector>
+#include <utility>
 
 namespace datamunge {
 class Callback;
@@ -41,12 +42,17 @@ namespace datamunge::graphics {
 /// @brief A plotting color: 8-bit red, green, and blue channels plus an alpha opacity,
 ///        the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.
 ///
-/// An aggregate, so brace-initialize it: `dm::RGB{255, 0, 0}` is opaque red and
+/// Brace-initialize numeric channels: `dm::RGB{255, 0, 0}` is opaque red and
 /// `dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the
 /// library's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep
 /// them in [0, 255] (both the raster and SVG renderers clamp out-of-range channels), and
-/// keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGB by value,
+/// keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGBA (the same type as RGB) by value,
 /// and `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().
+/// Color strings convert implicitly: names are case-insensitive black, white, red, green,
+/// blue, yellow, cyan, magenta, gray/grey and transparent; hex accepts #RRGGBB and
+/// #RRGGBBAA, with alpha last and scaled to [0, 1]. Malformed text throws before a
+/// plot is changed. RGB and RGBA remain the same type, preserving existing palettes
+/// and the binary layout of numeric colors. Parsing owns no reference to the string.
 ///
 /// @par Example
 /// @code
@@ -62,10 +68,60 @@ struct RGB {
   int g{41};         ///< Green channel, 0-255 (default 41).
   int b{55};         ///< Blue channel, 0-255 (default 55).
   double alpha{1.0}; ///< Opacity in [0, 1]; 1 (the default) is opaque, 0 is invisible.
+
+  /// @brief Construct the default opaque dark-slate ink color.
+  /// @par Example
+  /// See the RGB class example.
+  constexpr RGB() = default;
+  /// @brief Construct numeric RGB channels and an optional normalized alpha.
+  /// Channels and alpha are retained; renderers clamp them when drawing.
+  /// @param red Red channel, conventionally 0-255.
+  /// @param green Green channel, conventionally 0-255.
+  /// @param blue Blue channel, conventionally 0-255.
+  /// @param opacity Alpha in [0, 1], default 1 (opaque).
+  /// @par Example
+  /// See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.
+  constexpr RGB(int red, int green, int blue, double opacity = 1.0)
+      : r(red), g(green), b(blue), alpha(opacity) {}
+  /// @brief Preserve direct initialization with a red channel and default remaining channels.
+  /// Explicit so a number cannot accidentally become a color argument.
+  /// @param red Red channel; green remains 41, blue 55 and alpha 1.
+  /// @par Example
+  /// See the numeric constructor; RGB{255} keeps the other default channels.
+  explicit constexpr RGB(int red) : RGB(red, 41, 55) {}
+  /// @brief Preserve direct initialization with red/green and default blue/alpha.
+  /// @param red Red channel, conventionally 0-255.
+  /// @param green Green channel, conventionally 0-255; blue remains 55 and alpha 1.
+  /// @par Example
+  /// See the numeric constructor; RGB{255, 0} keeps the other default channels.
+  explicit constexpr RGB(int red, int green) : RGB(red, green, 55) {}
+  /// @brief Implicitly parse a color name, #RRGGBB or #RRGGBBAA string.
+  /// Names and hexadecimal digits are case-insensitive. Hex alpha is the final
+  /// byte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named
+  /// green is (0, 128, 0); transparent is black with alpha zero. The input is copied
+  /// while parsing and is never borrowed by a plot or palette.
+  /// @param color Color text; supported names are listed in the class description.
+  /// @throws std::invalid_argument For empty text, unknown names or malformed hex.
+  /// @par Example
+  /// @code
+  /// const dm::RGBA glass = std::string("#ff44ff55");
+  /// const auto plt = dm::plot(dm::c(0, 1), dm::c(1, 2), "data", "#ff44ff55");
+  /// std::print("{} {}\n", glass.r, dm::round(glass.alpha, 3)); // 255 0.333
+  /// @endcode
+  RGB(const std::string& color);
+#ifndef SWIG
+  /// @brief Accept a string literal with the same parsing rules as the string constructor.
+  /// @param color Null-terminated color text; must be non-null.
+  /// @throws std::invalid_argument For null, empty or malformed text.
+  /// @par Example
+  /// See the string constructor, whose plot call accepts a literal directly.
+  RGB(const char* color);
+#endif
 };
 
 /// @brief Alias of RGB for colors with a meaningful alpha channel.
 ///
+/// Accepts numeric channels, RGB values, color names and hex strings.
 /// `RGBA{r, g, b, alpha}` reads better than `RGB{r, g, b, alpha}` for translucent colors; the
 /// two names denote the same type and mix freely in palettes.
 ///
@@ -122,14 +178,14 @@ struct DataSeries {
   std::vector<double> x;                 ///< Horizontal data coordinates; meaning depends on kind.
   std::vector<double> y;                 ///< Vertical data coordinates; meaning depends on kind.
   std::string         label;             ///< Legend text (or the drawn text for Kind::Text); empty omits it.
-  RGB                 color{};           ///< Layer color, including alpha (default RGB{}, dark slate).
+  RGBA                 color{};           ///< Layer color, including alpha (default RGBA{}, dark slate).
   double              stroke_width{2.0}; ///< Line, Segment, and outline-Polygon width in pixels (default 2).
   double              marker_size{4.0};  ///< Scatter marker radius, or Text font size, in pixels (default 4).
   double              bar_width{0.8};    ///< Bar or Box width in data units (default 0.8).
   bool                filled{false};     ///< Polygon only: true fills it, false draws its outline (default false).
 
   /// @brief Optional scatter palette, recycled in input order; empty uses color for every point.
-  std::vector<RGB>    point_colors;
+  std::vector<RGBA>    point_colors;
 };
 
 /// @brief A straight reference line across the whole plotting area, as drawn by R's
@@ -158,7 +214,7 @@ struct ABLine {
   double value{0.0}; ///< y-intercept for a sloped/horizontal line; x-position for a vertical line
 
   double slope{0.0};         ///< Change in y per unit x; ignored when vertical (default 0).
-  RGB    color{0, 0, 0};     ///< Line color (default opaque black).
+  RGBA    color{0, 0, 0};     ///< Line color (default opaque black).
   double stroke_width{1.0};  ///< Line width in pixels (default 1).
 };
 
@@ -180,7 +236,7 @@ struct ABLine {
 /// @see RPlot::legend(), dm::legend(), Plot::legend_entries()
 struct LegendEntry {
   std::string label;          ///< Row text.
-  RGB         color{0, 0, 0}; ///< Swatch color, including alpha (default opaque black).
+  RGBA         color{0, 0, 0}; ///< Swatch color, including alpha (default opaque black).
 };
 
 /// @brief Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.
@@ -237,17 +293,17 @@ class Plot {
   /// @param color  Fill for the whole canvas (default white).
   /// @return This plot, for chaining.
   /// @see RPlot::background()
-  Plot& background(RGB color);
+  Plot& background(RGBA color);
   /// @brief Base-class form of RPlot::axis_color(): sets the axis-line and text color.
   /// @param color  Color for axis lines, ticks, axis labels, title, and subtitle.
   /// @return This plot, for chaining.
   /// @see RPlot::axis_color()
-  Plot& axis_color(RGB color);
+  Plot& axis_color(RGBA color);
   /// @brief Base-class form of RPlot::grid_color(): sets the grid-line color.
   /// @param color  Grid-line color (default light gray `{229, 231, 235}`).
   /// @return This plot, for chaining.
   /// @see RPlot::grid_color()
-  Plot& grid_color(RGB color);
+  Plot& grid_color(RGBA color);
   /// @brief Base-class form of RPlot::show_grid(): turns the background grid on or off.
   /// @param enabled  True (the default) draws the grid.
   /// @return This plot, for chaining.
@@ -344,13 +400,13 @@ class Plot {
   const std::vector<DataSeries>& series() const noexcept { return series_; }
   /// @brief Returns the canvas fill color set by background().
   /// @return The background color (default white `{255, 255, 255}`).
-  RGB background_color() const noexcept { return background_; }
+  RGBA background_color() const noexcept { return background_; }
   /// @brief Returns the axis and text color set by axis_color().
   /// @return The axis color (default gray `{55, 65, 81}`).
-  RGB axes_color() const noexcept { return axis_color_; }
+  RGBA axes_color() const noexcept { return axis_color_; }
   /// @brief Returns the grid-line color set by grid_color().
   /// @return The grid color (default light gray `{229, 231, 235}`).
-  RGB major_grid_color() const noexcept { return grid_color_; }
+  RGBA major_grid_color() const noexcept { return grid_color_; }
   /// @brief Reports whether the background grid is drawn (see show_grid()).
   /// @return True (the default) when the grid is drawn.
   bool grid_visible() const noexcept { return show_grid_; }
@@ -542,9 +598,9 @@ class Plot {
   std::string subtitle_;
   std::string x_label_{"x"};              ///< Horizontal-axis label.
   std::string y_label_{"y"};              ///< Vertical-axis label.
-  RGB         background_{255, 255, 255}; ///< Canvas fill color.
-  RGB         axis_color_{55, 65, 81};    ///< Axis lines and default text color.
-  RGB         grid_color_{229, 231, 235}; ///< Grid-line color.
+  RGBA         background_{255, 255, 255}; ///< Canvas fill color.
+  RGBA         axis_color_{55, 65, 81};    ///< Axis lines and default text color.
+  RGBA         grid_color_{229, 231, 235}; ///< Grid-line color.
   bool        show_grid_{true};           ///< Whether the background grid is drawn.
   bool        has_x_limits_{false};       ///< True once x_limits() fixed the x range.
   bool        has_y_limits_{false};       ///< True once y_limits() fixed the y range.
@@ -794,7 +850,7 @@ class RPlot : public Plot {
   /// std::print("{}\n", plt.series()[0].color.r);  // 220
   /// @endcode
   /// @see set_col(std::string), dm::points()
-  RPlot& set_col(RGB color);
+  RPlot& set_col(RGBA color);
   /// @brief Same as set_col(RGB) but takes a color name or hex string, like R's `col = "blue"`.
   ///
   /// Matching is case-insensitive. Names are black, white, red, green, blue, yellow, cyan,
@@ -816,6 +872,15 @@ class RPlot : public Plot {
   /// @endcode
   /// @see set_col(RGB)
   RPlot& set_col(std::string color);
+#ifndef SWIG
+  /// @brief Parse a literal color without ambiguity between the string and RGBA overloads.
+  /// @param color Null-terminated color name or hex text; must be non-null.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For null, empty or malformed color text; leaves the plot unchanged.
+  /// @par Example
+  /// See set_col(std::string), which accepts literals with this overload.
+  RPlot& set_col(const char* color) { return set_col(RGBA(color)); }
+#endif
   /// @brief Sets the fill color of the whole canvas, like R's `par(bg =)`.
   ///
   /// The default is white `{255, 255, 255}`. The color fills the margins as well as the
@@ -837,7 +902,7 @@ class RPlot : public Plot {
   /// - R `par()` (`bg`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
   ///
   /// @see axis_color(), grid_color()
-  RPlot& background(RGB color);
+  RPlot& background(RGBA color);
   /// @brief Sets the color of the axis lines and of all plot-level text: tick labels, axis
   ///        labels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).
   ///
@@ -854,7 +919,7 @@ class RPlot : public Plot {
   /// - R `par()` (`col.axis`, `col.lab`, `col.main`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
   ///
   /// @see background(), grid_color()
-  RPlot& axis_color(RGB color);
+  RPlot& axis_color(RGBA color);
   /// @brief Sets the color of the background grid lines (default light gray `{229, 231, 235}`).
   ///
   /// Has no visible effect while the grid is off (show_grid(false)) or the axes are hidden.
@@ -865,7 +930,7 @@ class RPlot : public Plot {
   /// @par Example
   /// See background(), which builds a dark theme with all three color setters.
   /// @see show_grid(), background()
-  RPlot& grid_color(RGB color);
+  RPlot& grid_color(RGBA color);
   /// @brief Turns the light background grid on or off (on by default), like adding or
   ///        omitting R's `grid()`.
   ///
@@ -931,6 +996,30 @@ class RPlot : public Plot {
   ///
   /// @see x_limits()
   RPlot& y_limits(double min_y, double max_y);
+  /// @brief Short spelling of x_limits(), matching R's xlim plot argument.
+  /// Fixes the horizontal plotting range without automatic padding. Data outside
+  /// the range follows x_limits() rendering behavior; this does not filter layers.
+  /// @param min_x Left edge in data units.
+  /// @param max_x Right edge; must be greater than min_x.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument Unless max_x > min_x (NaN fails); the plot is unchanged.
+  /// @par Example
+  /// @code
+  /// auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);
+  /// std::print("{} {}\n", plt.x_max(), plt.y_min()); // 1 -4
+  /// @endcode
+  /// @see x_limits(), ylim()
+  RPlot& xlim(double min_x, double max_x) { return x_limits(min_x, max_x); }
+  /// @brief Short spelling of y_limits(), matching R's ylim plot argument.
+  /// Fixes the vertical plotting range without automatic padding; layers are retained.
+  /// @param min_y Bottom edge in data units.
+  /// @param max_y Top edge; must be greater than min_y.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument Unless max_y > min_y (NaN fails); the plot is unchanged.
+  /// @par Example
+  /// See xlim(), whose example uses both aliases.
+  /// @see y_limits(), xlim()
+  RPlot& ylim(double min_y, double max_y) { return y_limits(min_y, max_y); }
   /// @brief Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,
   ///        ann = FALSE` (the title and subtitle are still drawn).
   ///
@@ -1140,7 +1229,7 @@ class RPlot : public Plot {
                      std::vector<double> y,
                      std::string         type = "p",
                      std::string         label = "",
-                     RGB                 color = {37, 99, 235});
+                     RGBA                 color = {37, 99, 235});
 
   /// @brief Builds a frequency histogram of @p data with @p bins equal-width bins, like R's
   ///        `hist(x, breaks = bins)`.
@@ -1175,7 +1264,7 @@ class RPlot : public Plot {
   static RPlot hist(std::vector<double> data,
                      std::size_t         bins = 10,
                      std::string         label = "",
-                     RGB                 color = {96, 165, 250});
+                     RGBA                 color = {96, 165, 250});
 
   /// @brief Builds a bar chart with one bar per height, like R's
   ///        `barplot(heights, names.arg = names)`.
@@ -1206,7 +1295,7 @@ class RPlot : public Plot {
   static RPlot barplot(std::vector<double>      heights,
                         std::vector<std::string> names = {},
                         std::string              label = "",
-                        RGB                       color = {22, 163, 74});
+                        RGBA                       color = {22, 163, 74});
 
   /// @brief Builds side-by-side box-and-whisker plots, one per group, like R's
   ///        `boxplot(list(...), names = names)`.
@@ -1247,7 +1336,7 @@ class RPlot : public Plot {
   /// @see box(), x_tick_labels()
   static RPlot boxplot(std::vector<std::vector<double>> groups,
                         std::vector<std::string>         names = {},
-                        RGB                               color = {96, 165, 250});
+                        RGBA                               color = {96, 165, 250});
 
   /// @brief boxplot() with one color per box, like R's `boxplot(..., col = colors)`.
   ///
@@ -1265,7 +1354,7 @@ class RPlot : public Plot {
   /// @see boxplot(std::vector<std::vector<double>>, std::vector<std::string>, RGB)
   static RPlot boxplot(std::vector<std::vector<double>> groups,
                         std::vector<std::string>         names,
-                        std::vector<RGB>                  colors);
+                        std::vector<RGBA>                  colors);
 
   /// @brief Builds a pie chart with one wedge per value, like R's
   ///        `pie(x, labels = names, col = colors, clockwise = TRUE)`.
@@ -1300,7 +1389,7 @@ class RPlot : public Plot {
   /// @see polygon(), text()
   static RPlot pie(std::vector<double>      values,
                     std::vector<std::string> names = {},
-                    std::vector<RGB>         colors = {});
+                    std::vector<RGBA>         colors = {});
 
   /// @brief Plots a function over [@p from, @p to] as a line, like R's `curve(expr, from, to, n)`.
   ///
@@ -1336,7 +1425,7 @@ class RPlot : public Plot {
                       double               to,
                       std::size_t          n = 101,
                       std::string          label = "",
-                      RGB                  color = {220, 38, 38});
+                      RGBA                  color = {220, 38, 38});
 
   /// @brief Builds a normal Q-Q plot: the sorted @p data against standard-normal quantiles,
   ///        like R's `qqnorm(y)`.
@@ -1369,7 +1458,7 @@ class RPlot : public Plot {
   /// - R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html
   ///
   /// @see qqline()
-  static RPlot qqnorm(std::vector<double> data, std::string label = "sample", RGB color = {37, 99, 235});
+  static RPlot qqnorm(std::vector<double> data, std::string label = "sample", RGBA color = {37, 99, 235});
 
   /// @brief Adds a scatter series to this plot, like R's `points(x, y, col = color)`.
   ///
@@ -1401,7 +1490,7 @@ class RPlot : public Plot {
   RPlot& points(std::vector<double> x,
                 std::vector<double> y,
                 std::string         label = "",
-                RGB                 color = {37, 99, 235},
+                RGBA                 color = {37, 99, 235},
                 double              marker_size = 4.0);
   /// @brief Appends scatter points with a recycled per-point RGB(A) palette.
   /// Coordinates must have equal nonzero lengths; colors must not be empty.
@@ -1426,7 +1515,7 @@ class RPlot : public Plot {
   ///
   /// @see dm::points() and Points::set_col(), the pipe-friendly form of this call.
   RPlot& points_colored(std::vector<double> x, std::vector<double> y,
-                       std::vector<RGB> colors, double marker_size = 4.0);
+                       std::vector<RGBA> colors, double marker_size = 4.0);
   /// @brief Adds a line joining the points in input order, like R's `lines(x, y, col = color,
   ///        lwd = stroke_width)`; same as lines().
   ///
@@ -1452,7 +1541,7 @@ class RPlot : public Plot {
   RPlot& line(std::vector<double> x,
               std::vector<double> y,
               std::string         label = "",
-              RGB                 color = {220, 38, 38},
+              RGBA                 color = {220, 38, 38},
               double              stroke_width = 2.0);
   /// @brief Adds a line joining the points in input order, like R's `lines(x, y, col = color,
   ///        lwd = stroke_width)`.
@@ -1484,7 +1573,7 @@ class RPlot : public Plot {
   RPlot& lines(std::vector<double> x,
                std::vector<double> y,
                std::string         label = "",
-               RGB                 color = {220, 38, 38},
+               RGBA                 color = {220, 38, 38},
                double              stroke_width = 2.0);
   /// @brief Same as points(x, y, label, color, marker_size) with an empty label, so the
   ///        series stays out of the automatic legend.
@@ -1501,7 +1590,23 @@ class RPlot : public Plot {
   /// plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);
   /// @endcode
   /// @see points()
-  RPlot& points(std::vector<double> x, std::vector<double> y, RGB color, double marker_size = 4.0);
+  RPlot& points(std::vector<double> x, std::vector<double> y, RGBA color, double marker_size = 4.0);
+#ifndef SWIG
+  /// @brief Preserve a three-argument literal label when colors also accept string literals.
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates, paired with x.
+  /// @param label Legend label, including text that resembles a color; null means empty.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty or mismatched coordinate vectors.
+  /// @par Example
+  /// @code
+  /// auto plt = dm::Plot().points(dm::c(0, 1), dm::c(1, 2), "red");
+  /// std::print("{}\n", plt.series()[0].label); // red
+  /// @endcode
+  RPlot& points(std::vector<double> x, std::vector<double> y, const char* label) {
+    return points(std::move(x), std::move(y), std::string(label ? label : ""));
+  }
+#endif
   /// @brief Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.
   /// @param x  Horizontal coordinates.
   /// @param y  Vertical coordinates, paired with @p x.
@@ -1516,7 +1621,23 @@ class RPlot : public Plot {
   /// std::print("{}\n", plt.series()[0].label.empty());  // true
   /// @endcode
   /// @see lines()
-  RPlot& lines(std::vector<double> x, std::vector<double> y, RGB color, double stroke_width = 2.0);
+  RPlot& lines(std::vector<double> x, std::vector<double> y, RGBA color, double stroke_width = 2.0);
+#ifndef SWIG
+  /// @brief Preserve a three-argument literal label when colors also accept string literals.
+  /// @param x Horizontal coordinates.
+  /// @param y Vertical coordinates, paired with x.
+  /// @param label Legend label, including text that resembles a color; null means empty.
+  /// @return This plot, for chaining.
+  /// @throws std::invalid_argument For empty or mismatched coordinate vectors.
+  /// @par Example
+  /// @code
+  /// auto plt = dm::Plot().lines(dm::c(0, 1), dm::c(1, 2), "red");
+  /// std::print("{}\n", plt.series()[0].label); // red
+  /// @endcode
+  RPlot& lines(std::vector<double> x, std::vector<double> y, const char* label) {
+    return lines(std::move(x), std::move(y), std::string(label ? label : ""));
+  }
+#endif
   /// @brief Adds vertical bars centered at arbitrary x positions, the low-level form behind
   ///        barplot() and hist() (R's `rect()` from 0 to each height).
   ///
@@ -1546,7 +1667,7 @@ class RPlot : public Plot {
   RPlot& bars(std::vector<double> x,
               std::vector<double> y,
               std::string         label = "",
-              RGB                 color = {22, 163, 74},
+              RGBA                 color = {22, 163, 74},
               double              bar_width = 0.8);
   /// @brief Adds one box-and-whisker from precomputed statistics at an arbitrary x position,
   ///        the low-level form behind boxplot() (R's `bxp()`).
@@ -1584,7 +1705,7 @@ class RPlot : public Plot {
              double              q3,
              double              whisker_hi,
              std::vector<double> outliers = {},
-             RGB                 color = {96, 165, 250},
+             RGBA                 color = {96, 165, 250},
              double              width = 0.6);
 
   /// @brief Adds the reference line y = intercept + slope * x across the plotting area, like
@@ -1618,7 +1739,7 @@ class RPlot : public Plot {
   /// - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
   ///
   /// @see abline_h(), abline_v(), qqline(), ABLine
-  RPlot& abline(double intercept, double slope, RGB color = {0, 0, 0}, double stroke_width = 1.0);
+  RPlot& abline(double intercept, double slope, RGBA color = {0, 0, 0}, double stroke_width = 1.0);
   /// @brief Adds a horizontal reference line at y = @p y_value, like R's `abline(h = y_value)`.
   ///
   /// Same as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not
@@ -1639,7 +1760,7 @@ class RPlot : public Plot {
   /// - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
   ///
   /// @see abline(), abline_v()
-  RPlot& abline_h(double y_value, RGB color = {0, 0, 0}, double stroke_width = 1.0);
+  RPlot& abline_h(double y_value, RGBA color = {0, 0, 0}, double stroke_width = 1.0);
   /// @brief Adds a vertical reference line at x = @p x_value, like R's `abline(v = x_value)`.
   ///
   /// Spans the full height of the plotting area beneath the data. Unlike horizontal and
@@ -1660,7 +1781,7 @@ class RPlot : public Plot {
   /// - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
   ///
   /// @see abline(), abline_h()
-  RPlot& abline_v(double x_value, RGB color = {0, 0, 0}, double stroke_width = 1.0);
+  RPlot& abline_v(double x_value, RGBA color = {0, 0, 0}, double stroke_width = 1.0);
 
   /// @brief Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line
   ///        through the first and third quartiles of @p data and of the standard normal.
@@ -1694,7 +1815,7 @@ class RPlot : public Plot {
   ///   Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566
   ///
   /// @see qqnorm(), abline()
-  RPlot& qqline(std::vector<double> data, RGB color = {220, 38, 38}, double stroke_width = 1.5);
+  RPlot& qqline(std::vector<double> data, RGBA color = {220, 38, 38}, double stroke_width = 1.5);
 
   /// @brief Adds manual legend rows, like R's `legend(legend = labels, col = colors)`.
   ///
@@ -1723,7 +1844,7 @@ class RPlot : public Plot {
   /// - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
   ///
   /// @see dm::legend() for the recycling, pipe-friendly layer.
-  RPlot& legend(std::vector<std::string> labels, std::vector<RGB> colors);
+  RPlot& legend(std::vector<std::string> labels, std::vector<RGBA> colors);
   /// @brief Draws @p label centered on the data point (@p x, @p y), like R's
   ///        `text(x, y, labels = label)`.
   ///
@@ -1750,7 +1871,7 @@ class RPlot : public Plot {
   /// - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html
   ///
   /// @see pie(), legend()
-  RPlot& text(double x, double y, std::string label, RGB color = {17, 24, 39}, double font_size = 14.0);
+  RPlot& text(double x, double y, std::string label, RGBA color = {17, 24, 39}, double font_size = 14.0);
   /// @brief Draws the closed polygon through the vertices (x[i], y[i]), like R's
   ///        `polygon(x, y, col = color)`.
   ///
@@ -1780,7 +1901,7 @@ class RPlot : public Plot {
   /// @see pie(), segments()
   RPlot& polygon(std::vector<double> x,
                  std::vector<double> y,
-                 RGB                 color = {37, 99, 235},
+                 RGBA                 color = {37, 99, 235},
                  bool                filled = true);
   /// @brief Draws a grid of coloured rectangles, one per value of @p z, like R's `image(x, y, z)`.
   ///
@@ -1812,7 +1933,7 @@ class RPlot : public Plot {
   RPlot& image(const std::vector<double>&              x,
                const std::vector<double>&              y,
                const std::vector<std::vector<double>>& z,
-               std::vector<RGB>                        palette = {},
+               std::vector<RGBA>                        palette = {},
                double                                  z_min = std::numeric_limits<double>::quiet_NaN(),
                double                                  z_max = std::numeric_limits<double>::quiet_NaN());
   /// @brief Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like
@@ -1847,7 +1968,7 @@ class RPlot : public Plot {
                   std::vector<double> y0,
                   std::vector<double> x1,
                   std::vector<double> y1,
-                  RGB                 color = {0, 0, 0},
+                  RGBA                 color = {0, 0, 0},
                   double              stroke_width = 1.0);
 };
 
@@ -2101,7 +2222,7 @@ class RLayout final {
 /// @param n  Number of colours (at least 1).
 /// @return The palette, low to high.
 /// @throws std::invalid_argument  If @p n is 0.
-std::vector<RGB> terrain_colors(std::size_t n);
+std::vector<RGBA> terrain_colors(std::size_t n);
 
 /// @brief @p n colours from dark blue through white to dark red, a diverging palette for signed
 ///        values such as correlations (ColorBrewer's RdBu, reversed so that low is blue).
@@ -2124,7 +2245,7 @@ std::vector<RGB> terrain_colors(std::size_t n);
 /// - C. Brewer, ColorBrewer 2.0 (RdBu scheme): https://colorbrewer2.org
 ///
 /// @see terrain_colors(), RPlot::image()
-std::vector<RGB> diverging_colors(std::size_t n);
+std::vector<RGBA> diverging_colors(std::size_t n);
 
 /// @brief @p n colours of the viridis scale, from dark purple through blue and green to yellow,
 ///        matching R's `viridisLite::viridis(n)` at n = 10.
@@ -2148,7 +2269,7 @@ std::vector<RGB> diverging_colors(std::size_t n);
 /// - viridisLite: https://sjmgarnier.github.io/viridisLite/
 ///
 /// @see value_colors(), terrain_colors()
-std::vector<RGB> viridis_colors(std::size_t n);
+std::vector<RGBA> viridis_colors(std::size_t n);
 
 /// @brief One colour per value on a continuous scale, for colouring scatter points by a
 ///        numeric variable (ggplot2's `scale_colour_viridis_c()`).
@@ -2170,7 +2291,7 @@ std::vector<RGB> viridis_colors(std::size_t n);
 /// @endcode
 ///
 /// @see viridis_colors(), RPlot::points_colored()
-std::vector<RGB> value_colors(const std::vector<double>& values, std::vector<RGB> palette = {},
+std::vector<RGBA> value_colors(const std::vector<double>& values, std::vector<RGBA> palette = {},
                               double z_min = std::numeric_limits<double>::quiet_NaN(),
                               double z_max = std::numeric_limits<double>::quiet_NaN());
 

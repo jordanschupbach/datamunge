@@ -27,3 +27,16 @@ def test_import_is_an_installed_package():
     assert (
         Path(pydatamunge.__file__).resolve().parent != Path("src/pydatamunge").resolve()
     )
+
+
+def test_formula_model_owns_data_and_uses_current_native_layout():
+    data = dm.DataFrame()
+    data.add_numeric_column("x", [0, 1, 2, 3])
+    data.add_numeric_column("y", [1, 3, 5, 7])
+    model = dm.LM(data, "y ~ x")
+    del data
+    gc.collect()
+    newdata = dm.DataFrame()
+    newdata.add_numeric_column("x", [4, 5])
+    assert list(model.coefficients()) == pytest.approx([1, 2])
+    assert list(model.predict(newdata)) == pytest.approx([9, 11])

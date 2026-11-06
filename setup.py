@@ -31,6 +31,8 @@ class BuildExt(build_ext):
         for extension in self.extensions:
             if self.compiler.compiler_type == "msvc":
                 extension.extra_compile_args += ["/O2", "/std:c++latest", "/EHsc"]
+                if any("/datamunge/cad/" in str(s).replace("\\", "/") for s in extension.sources):
+                    extension.extra_compile_args += ["/fp:strict"]
             else:
                 extension.extra_compile_args += ["-O3", "-std=c++23"]
                 if sys.platform != "darwin":
@@ -96,13 +98,20 @@ class BuildExt(build_ext):
                             return
                         pending.append(
                             pool.submit(
-                                original_single,
+                                compile_single,
                                 obj,
                                 source,
                                 *compile_args,
                                 **compile_kwargs,
                             )
                         )
+
+                    def compile_single(obj, source, ext, cc_args, extra_postargs, pp_opts):
+                        # Robust CAD predicates require separately rounded
+                        # operations in source-built wheels, including ARM.
+                        if "/datamunge/cad/" in source.replace("\\", "/"):
+                            extra_postargs = list(extra_postargs or []) + ["-ffp-contract=off"]
+                        return original_single(obj, source, ext, cc_args, extra_postargs, pp_opts)
 
                     compiler._compile = submit
                     try:
@@ -243,6 +252,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Jordan Schupbach",
     license="Unlicense",
+    license_files=["LICENSE", "third_party_licenses/mep-cad-LICENSE"],
     python_requires=">=3.9",
     packages=["pydatamunge"],
     package_dir={"": "src"},

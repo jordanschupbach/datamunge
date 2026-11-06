@@ -372,3 +372,5 @@
 #include "datamunge/nn/feature_visualization.hpp"
 
 #include "datamunge/nn/visual_features.hpp"
+
+#include <datamunge/nn/mobile_classifier.hpp>

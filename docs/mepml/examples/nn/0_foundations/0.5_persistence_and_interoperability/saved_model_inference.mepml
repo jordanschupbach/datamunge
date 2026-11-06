@@ -29,18 +29,24 @@ inside affine_inference avoids retaining an inference graph. Dense evaluation co
 O(batch times input_width times output_width). Matching outputs on a few queries is a useful
 contract check, not proof of generalization to another population.
 
-The concept diagram has a retained TikZ source in `diagrams/saved_model_inference_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/saved_model_inference_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/saved_model_inference_concept.tikz > build/saved_model_inference_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/saved_model_inference_concept.svg build/saved_model_inference_concept.dvi > build/saved_model_inference_concept.render.log 2>&1
-printf 'Rendered build/saved_model_inference_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/saved_model_inference_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Fit in Native C++\nleast squares coefficients");
+  diagram.node("n1", {5.2, 0}, "Export Float32 NPZ\nweights + bias");
+  diagram.node("n2", {10.4, 0}, "C++ serving contract\ndynamic batch; no grad");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/saved_model_inference_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/saved_model_inference_concept.svg from local TikZ source.
 // \image(figures/saved_model_inference_concept.svg)
 // result_end
 \caption(Native least squares fits the coefficients; C++ supplies and checks the serving function)

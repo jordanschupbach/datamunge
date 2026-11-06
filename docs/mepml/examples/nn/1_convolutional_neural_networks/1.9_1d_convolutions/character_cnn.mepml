@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_c
 
 Reverse the last256 raw source bytes,mask unknown/padded positions,and apply six valid convolutions with three pools and two dense dropout layers. Show tensor Momentum SGD directly,select on validation CE,and restore18 leaves for independent character-only inference.
 
-The editable concept diagram is `diagrams/character_cnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/character_cnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/character_cnn_concept.tikz > build/character_cnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/character_cnn_concept.svg build/character_cnn_concept.dvi > build/character_cnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/character_cnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original review\n bytes");
+  diagram.node("n1", {5.2, 0}, "Six valid\n convolutions");
+  diagram.node("n2", {10.4, 0}, "Visible SGD\n and held-out errors");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/character_cnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/character_cnn_concept.svg)
 // result_end
 \caption(Character CNN:raw review bytes and visible momentum SGD)
@@ -79,7 +85,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-25 displayed nodes; 22162 reachable learned values.
+24 displayed nodes; 22162 reachable learned values.
 \image(figures/character_cnn_architecture.svg)
 // result_end
 \caption(Executed character cnn tensor path with the explicit configuration above. Block dimensions follow output shapes; sampled sheets and the visibility floor are disclosed.)
@@ -103,9 +109,6 @@ int main() {
 }
 ```
 // result_begin:
-// Original MR fit:1000 aligned word/character observations
-// Original MR validation:200 aligned word/character observations
-// Original MR test:200 aligned word/character observations
 // result_end
 
 Take the last256 source bytes,reverse them,and lowercase ASCII letters only.
@@ -550,10 +553,10 @@ int main() {
 // result_begin: markdown
 | epoch | dropout fitting CE | validation CE |
 |---:|---:|---:|
-| 1 | 0.701122 | 0.694219 |
-| 2 | 0.693451 | 0.694602 |
-| 3 | 0.695150 | 0.694529 |
-60 explicit momentum SGD updates;selected epoch 1,validation 0.694219;balanced fitting probe 0.699299->0.696613.
+| 1 | 0.702993 | 0.694377 |
+| 2 | 0.694218 | 0.694446 |
+| 3 | 0.693966 | 0.693909 |
+60 explicit momentum SGD updates;selected epoch 3,validation 0.693909;balanced fitting probe 0.699298->0.694624.
 \image(figures/character_cnn_training.svg)
 // result_end
 \caption(All60 explicit tensor momentum SGD updates,with two dropout masks per forward. Validation-only selection and the fixed fitting probe are visible independently of test accuracy.)
@@ -763,11 +766,11 @@ int main() {
 }
 ```
 // result_begin: markdown
-Character-only restore/repeat parity 0;single/batch 7.4505806e-09 within1e-6;out-of-length change 0;18 learned leaves immutable:true;observed replacement change 0.085985.
+Character-only restore/repeat parity 0;single/batch 0 within1e-6;out-of-length change 0;18 learned leaves immutable:true;observed replacement change 0.026148.
 
 | predictor | accuracy | stable NLL | all true-row confusion counts |
 |---|---:|---:|---|
-| learned CNN | 0.455000 | 0.694620 | int64[2, 2] [[82, 18], [91, 9]] |
+| learned CNN | 0.460000 | 0.694442 | int64[2, 2] [[58, 42], [66, 34]] |
 | untrained | 0.505000 | 0.693648 | int64[2, 2] [[88, 12], [87, 13]] |
 | SGD character | 0.550000 | 0.725349 | int64[2, 2] [[51, 49], [41, 59]] |
 | SGD word | 0.655000 | 0.843006 | int64[2, 2] [[65, 35], [34, 66]] |
@@ -775,10 +778,10 @@ Character-only restore/repeat parity 0;single/batch 7.4505806e-09 within1e-6;out
 
 | original source ID | original text excerpt,first12 whitespace words | true | CNN |
 |---:|---|---|---|
-| 831 | it's just too bad the screenwriters eventually shoot themselves in the feet | negative | negative |
+| 831 | it's just too bad the screenwriters eventually shoot themselves in the feet | negative | positive |
 | 4692 | the film's needlessly opaque intro takes its doe-eyed crudup out of pre-9/11 | negative | positive |
 | 3446 | lazily directed by charles stone iii . . . from a leaden | negative | negative |
-| 9973 | if the very concept makes you nervous . . . you'll have | positive | negative |
+| 9973 | if the very concept makes you nervous . . . you'll have | positive | positive |
 | 10582 | the script's snazzy dialogue establishes a realistic atmosphere that involves us in | positive | negative |
 | 4669 | like mike is a slight and uninventive movie : like the exalted | negative | negative |
 \image(figures/character_cnn_confusion.svg)

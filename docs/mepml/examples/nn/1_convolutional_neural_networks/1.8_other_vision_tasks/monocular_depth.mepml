@@ -19,18 +19,24 @@ holes as edges. Separate fitting-only geometric/spatial log-depth parameters
 provide explicit optimizer-based references. All numeric preprocessing,
 objectives,inference,metrics and display values use tensors.
 
-The editable concept diagram is `diagrams/monocular_depth_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/monocular_depth_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/monocular_depth_concept.tikz > build/monocular_depth_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/monocular_depth_concept.svg build/monocular_depth_concept.dvi > build/monocular_depth_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/monocular_depth_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed RGB only\nTrue sensor supervision");
+  diagram.node("n1", {5.2, 0}, "Global and local depth\nVisible SGD and Adam");
+  diagram.node("n2", {10.4, 0}, "Predict metric meters\nInspect rooms and holes");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/monocular_depth_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/monocular_depth_concept.svg)
 // result_end
 \caption(Monocular depth: explicit tensor metric-depth fitting)
@@ -319,8 +325,6 @@ int main() {
 }
 ```
 // result_begin:
-// Decoded464 original room identities and first-frame metadata.
-// Validated32/8/16 source-room-disjoint RGB/rawDepth sensor pairs.
 // result_end
 
 The preparation needs C++23,pkg-config,datamunge and HDF5 C++ development
@@ -703,7 +707,7 @@ int main() {
 | 1 | 0.773983 | 0.618920 | 0.057662 | 0.746484 | 0.357501 |
 | 2 | 0.301818 | 0.235219 | 0.098293 | 0.283847 | 0.268191 |
 | 3 | 0.223332 | 0.176123 | 0.063925 | 0.204082 | 0.211358 |
-Single/batch maximum absolute difference 1.43051147e-06 m.
+Single/batch maximum absolute difference 0 m.
 24 visible Adam updates;selected epoch3,restored validation 0.211358;fixed fit total 1.173153->0.254808.
 RGB-only deployment parity 0,all16 leaves immutable,repeat exact,single/batch agree;cross-room prediction difference 0.702084m. No GT scale alignment or prediction clipping.
 16 held-out rooms,31808 true sensor samples.

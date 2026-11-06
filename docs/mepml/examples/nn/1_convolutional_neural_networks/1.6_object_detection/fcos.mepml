@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 FCOS replaces anchor shapes with per-point l/t/r/b distances and centerness. Shared group-normalized towers operate over P3–P7, while eligibility ranges and smallest-area matching assign tensor targets.
 
-The editable concept diagram is `diagrams/fcos_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/fcos_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/fcos_concept.tikz > build/fcos_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/fcos_concept.svg build/fcos_concept.dvi > build/fcos_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/fcos_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "P3–P7 points\nSmallest-area targets");
+  diagram.node("n1", {5.2, 0}, "Focal, centre and IoU\nShared GN towers");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam loop\nPaired BN checkpoint");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/fcos_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/fcos_concept.svg)
 // result_end
 \caption(FCOS anchor-free points, centerness and IoU fitting)
@@ -556,39 +562,39 @@ int main() {
 // result_begin: markdown
 | epoch | focal + centre + IoU loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 2.727301 | 1.071076 | 1.656225 | 0.028393 |
-| 2 | 2.310954 | 0.805416 | 1.505538 | 0.033605 |
-| 3 | 2.099330 | 0.682562 | 1.416768 | 0.011168 |
-| 4 | 1.929004 | 0.584555 | 1.344450 | 0.034357 |
-| 5 | 1.915706 | 0.606104 | 1.309602 | 0.026753 |
-| 6 | 1.873126 | 0.568008 | 1.305118 | 0.014230 |
-| 7 | 1.821948 | 0.524389 | 1.297559 | 0.028503 |
-| 8 | 1.795628 | 0.523485 | 1.272142 | 0.026451 |
-| 9 | 1.703307 | 0.482424 | 1.220883 | 0.029471 |
-| 10 | 1.635751 | 0.468999 | 1.166752 | 0.020701 |
-| 11 | 1.574371 | 0.456222 | 1.118148 | 0.029901 |
-| 12 | 1.541163 | 0.441035 | 1.100129 | 0.021246 |
-| 13 | 1.542816 | 0.457154 | 1.085662 | 0.011857 |
-| 14 | 1.490992 | 0.422118 | 1.068874 | 0.010701 |
-| 15 | 1.479335 | 0.402966 | 1.076369 | 0.043993 |
-| 16 | 1.450707 | 0.387356 | 1.063351 | 0.037903 |
-| 17 | 1.361600 | 0.355934 | 1.005665 | 0.021954 |
-| 18 | 1.298575 | 0.341395 | 0.957180 | 0.024054 |
-| 19 | 1.298792 | 0.315312 | 0.983480 | 0.042006 |
-| 20 | 1.243650 | 0.306732 | 0.936918 | 0.028863 |
-| 21 | 1.266987 | 0.311072 | 0.955916 | 0.028507 |
-| 22 | 1.245935 | 0.283206 | 0.962729 | 0.016510 |
-| 23 | 1.223663 | 0.260804 | 0.962859 | 0.019255 |
-| 24 | 1.149756 | 0.223447 | 0.926309 | 0.010618 |
-| 25 | 1.143888 | 0.205265 | 0.938623 | 0.011341 |
-| 26 | 1.076769 | 0.177887 | 0.898882 | 0.009282 |
-| 27 | 1.051426 | 0.170174 | 0.881252 | 0.007652 |
-| 28 | 1.102020 | 0.165890 | 0.936130 | 0.014892 |
-| 29 | 1.063205 | 0.140003 | 0.923202 | 0.010586 |
-| 30 | 1.036184 | 0.145212 | 0.890972 | 0.007999 |
-| 31 | 1.006221 | 0.130713 | 0.875508 | 0.008517 |
-| 32 | 1.010171 | 0.129364 | 0.880808 | 0.007016 |
-314684 learned scalars, 512 Adam updates; selected epoch 15, validation AP50 0.043993. Test: 23 digits in eight scenes, inclusive VOC AP50 0.018984, COCO AP75 0.003507, AP50:95 0.005745, 800 detections. Selected mean absolute first BN state 1.206017; paired learned and BN state restored.
+| 1 | 2.727301 | 1.071077 | 1.656224 | 0.028395 |
+| 2 | 2.310982 | 0.805427 | 1.505555 | 0.062336 |
+| 3 | 2.098255 | 0.682613 | 1.415642 | 0.011833 |
+| 4 | 1.933653 | 0.587588 | 1.346065 | 0.033143 |
+| 5 | 1.883786 | 0.590523 | 1.293263 | 0.019084 |
+| 6 | 1.875504 | 0.574203 | 1.301300 | 0.009407 |
+| 7 | 1.853404 | 0.521398 | 1.332005 | 0.039373 |
+| 8 | 1.809956 | 0.521126 | 1.288830 | 0.006455 |
+| 9 | 1.694580 | 0.480386 | 1.214194 | 0.038442 |
+| 10 | 1.643462 | 0.467799 | 1.175663 | 0.044710 |
+| 11 | 1.596253 | 0.463419 | 1.132835 | 0.032601 |
+| 12 | 1.591561 | 0.439993 | 1.151568 | 0.024423 |
+| 13 | 1.636564 | 0.497214 | 1.139350 | 0.032656 |
+| 14 | 1.542648 | 0.459163 | 1.083485 | 0.029723 |
+| 15 | 1.520757 | 0.433784 | 1.086973 | 0.033798 |
+| 16 | 1.446692 | 0.399574 | 1.047118 | 0.050149 |
+| 17 | 1.396836 | 0.379268 | 1.017567 | 0.040559 |
+| 18 | 1.354231 | 0.354886 | 0.999345 | 0.073119 |
+| 19 | 1.356592 | 0.355982 | 1.000610 | 0.021181 |
+| 20 | 1.274306 | 0.324771 | 0.949535 | 0.073501 |
+| 21 | 1.286221 | 0.312026 | 0.974195 | 0.041082 |
+| 22 | 1.239322 | 0.292963 | 0.946358 | 0.019482 |
+| 23 | 1.247036 | 0.282162 | 0.964874 | 0.037768 |
+| 24 | 1.182752 | 0.252764 | 0.929988 | 0.031948 |
+| 25 | 1.110156 | 0.224168 | 0.885988 | 0.038148 |
+| 26 | 1.110364 | 0.225464 | 0.884900 | 0.029248 |
+| 27 | 1.121392 | 0.225100 | 0.896292 | 0.019146 |
+| 28 | 1.176753 | 0.216765 | 0.959988 | 0.052157 |
+| 29 | 1.105039 | 0.210425 | 0.894614 | 0.051087 |
+| 30 | 1.077186 | 0.184840 | 0.892345 | 0.039584 |
+| 31 | 1.044149 | 0.154085 | 0.890063 | 0.077931 |
+| 32 | 1.037677 | 0.131922 | 0.905755 | 0.036883 |
+314684 learned scalars, 512 Adam updates; selected epoch 31, validation AP50 0.077931. Test: 23 digits in eight scenes, inclusive VOC AP50 0.008923, COCO AP75 0.000000, AP50:95 0.001915, 800 detections. Selected mean absolute first BN state 1.277698; paired learned and BN state restored.
 \image(figures/fcos_training.svg)
 // result_end
 \caption(Explicit whole-network FCOS Adam fitting, with focal and combined centre/IoU terms, validation AP50 and backbone moving-state history. Both checkpoint stores are restored before held-out evaluation.)

@@ -546,3 +546,200 @@ TEST(NnBatchNorm, ParallelPartialsMatchSerialAndRepeatDeterministically) {
     EXPECT_LT(nn::max(nn::abs(nn::sub(serial.variance, parallel.variance))).item(), 1e-12);
   }
 }
+
+namespace {
+
+void expect_close_fused(const Tensor& a, const Tensor& b, double rel) {
+  ASSERT_EQ(a.shape(), b.shape());
+  const auto av = a.to_vector<double>(), bv = b.to_vector<double>();
+  for (std::size_t i = 0; i < av.size(); ++i) EXPECT_NEAR(av[i], bv[i], rel * (1.0 + std::abs(bv[i]))) << "at " << i;
+}
+
+}  // namespace
+
+TEST(NnConv, FusedConvBiasReluMatchesCompositionInValuesAndGradients) {
+  nn::Generator gen(3);
+  struct Case {
+    nn::Shape    x;
+    std::int64_t k, out, stride;
+    nn::Padding  pad;
+  };
+  // 3x3 same; pointwise; strided valid; many small images (more than the
+  // partial count); one image whose rows do not fit one tile (several tiles).
+  for (const Case& c : std::vector<Case>{{{2, 9, 7, 5}, 3, 6, 1, nn::Padding::Same},
+                                         {{3, 8, 8, 6}, 1, 5, 1, nn::Padding::Same},
+                                         {{2, 11, 10, 4}, 3, 7, 2, nn::Padding::Valid},
+                                         {{18, 5, 5, 3}, 3, 4, 1, nn::Padding::Same},
+                                         {{1, 40, 64, 48}, 3, 8, 1, nn::Padding::Same}}) {
+    Tensor x = nn::normal(c.x, 0.0, 1.0, gen), w = nn::normal({c.k, c.k, c.x[3], c.out}, 0.0, 0.3, gen),
+           b = nn::normal({c.out}, 0.0, 1.0, gen);
+    x.requires_grad_(true);
+    w.requires_grad_(true);
+    b.requires_grad_(true);
+    const nn::Conv2DOptions o     = nn::conv_options(c.stride, c.pad);
+    const Tensor            fused = nn::conv2d_bias_relu(x, w, b, o), plain = nn::relu(nn::bias_add(nn::conv2d(x, w, o), b));
+    expect_close_fused(fused, plain, 1e-5);
+    const Tensor    seed = nn::normal(fused.shape(), 0.0, 1.0, gen);
+    nn::GradOptions keep;
+    keep.retain_graph = true;
+    const auto gf = nn::grad({fused}, {x, w, b}, {seed}, keep), gp = nn::grad({plain}, {x, w, b}, {seed}, keep);
+    for (int i = 0; i < 3; ++i) expect_close_fused(gf[i], gp[i], 1e-4);
+    // The gradient of a split of a concatenation is a strided view.
+    const Tensor other = nn::normal(fused.shape(), 0.0, 1.0, gen);
+    const Tensor cat_f = nn::concat({fused, other}, 3), cat_p = nn::concat({plain, other}, 3);
+    const Tensor seed2 = nn::normal(cat_f.shape(), 0.0, 1.0, gen);
+    const auto   hf = nn::grad({cat_f}, {x, w, b}, {seed2}, keep), hp = nn::grad({cat_p}, {x, w, b}, {seed2}, keep);
+    for (int i = 0; i < 3; ++i) expect_close_fused(hf[i], hp[i], 1e-4);
+    // Recording the backward pass takes the differentiable composition.
+    Tensor s3 = nn::normal(fused.shape(), 0.0, 1.0, gen);
+    s3.requires_grad_(true);
+    nn::GradOptions create;
+    create.create_graph = true;
+    const auto   df = nn::grad({fused}, {x, w, b}, {s3}, create), dp = nn::grad({plain}, {x, w, b}, {s3}, create);
+    const Tensor u0 = nn::normal(x.shape(), 0.0, 1.0, gen), u1 = nn::normal(w.shape(), 0.0, 1.0, gen),
+                 u2 = nn::normal(b.shape(), 0.0, 1.0, gen);
+    const Tensor of = nn::sum(nn::mul(df[0], u0)) + nn::sum(nn::mul(df[1], u1)) + nn::sum(nn::mul(df[2], u2)),
+                 op = nn::sum(nn::mul(dp[0], u0)) + nn::sum(nn::mul(dp[1], u1)) + nn::sum(nn::mul(dp[2], u2));
+    expect_close_fused(nn::grad({of}, {s3})[0], nn::grad({op}, {s3})[0], 1e-4);
+  }
+  // Shapes the fused kernels do not take fall back to the composition.
+  Tensor x = nn::normal({2, 6, 6, 4}, 0.0, 1.0, gen), w = nn::normal({3, 3, 2, 6}, 0.0, 0.3, gen),
+         b = nn::normal({6}, 0.0, 1.0, gen);
+  nn::Conv2DOptions grouped = nn::conv_options(1, nn::Padding::Same);
+  grouped.groups            = 2;
+  expect_close_fused(nn::conv2d_bias_relu(x, w, b, grouped), nn::relu(nn::bias_add(nn::conv2d(x, w, grouped), b)), 1e-5);
+  EXPECT_THROW((void)nn::conv2d_bias_relu(x, w, nn::normal({5}, 0.0, 1.0, gen)), std::invalid_argument);
+}
+
+TEST(NnConv, FusedConvBiasReluConcatMatchesCompositionInValuesAndGradients) {
+  nn::Generator gen(4);
+  struct Branch {
+    std::int64_t k, out, stride;
+    nn::Padding  pad;
+  };
+  struct Case {
+    nn::Shape           x;
+    std::vector<Branch> branches;
+  };
+  // Fire expand (1x1 + SAME 3x3); three branches; strided VALID branches of
+  // equal output size; one image too large for one tile (tiled 3x3 path).
+  for (const Case& c : std::vector<Case>{
+           {{2, 7, 6, 5}, {{1, 4, 1, nn::Padding::Same}, {3, 6, 1, nn::Padding::Same}}},
+           {{3, 5, 5, 3}, {{3, 2, 1, nn::Padding::Same}, {1, 5, 1, nn::Padding::Same}, {3, 3, 1, nn::Padding::Same}}},
+           {{2, 11, 10, 4}, {{3, 3, 2, nn::Padding::Valid}, {3, 5, 2, nn::Padding::Valid}}},
+           {{1, 40, 64, 16}, {{1, 8, 1, nn::Padding::Same}, {3, 8, 1, nn::Padding::Same}}}}) {
+    Tensor x = nn::normal(c.x, 0.0, 1.0, gen);
+    x.requires_grad_(true);
+    std::vector<Tensor>            ws, bs, leaves{x};
+    std::vector<nn::Conv2DOptions> os;
+    for (const Branch& br : c.branches) {
+      ws.push_back(nn::normal({br.k, br.k, c.x[3], br.out}, 0.0, 0.3, gen).requires_grad_(true));
+      bs.push_back(nn::normal({br.out}, 0.0, 1.0, gen).requires_grad_(true));
+      os.push_back(nn::conv_options(br.stride, br.pad));
+    }
+    leaves.insert(leaves.end(), ws.begin(), ws.end());
+    leaves.insert(leaves.end(), bs.begin(), bs.end());
+    std::vector<Tensor> parts;
+    for (std::size_t i = 0; i < ws.size(); ++i) parts.push_back(nn::relu(nn::bias_add(nn::conv2d(x, ws[i], os[i]), bs[i])));
+    const Tensor fused = nn::conv2d_bias_relu_concat(x, ws, bs, os), plain = nn::concat(parts, 3);
+    expect_close_fused(fused, plain, 1e-5);
+    nn::GradOptions keep;
+    keep.retain_graph = true;
+    const Tensor seed = nn::normal(fused.shape(), 0.0, 1.0, gen);
+    const auto   gf = nn::grad({fused}, leaves, {seed}, keep), gp = nn::grad({plain}, leaves, {seed}, keep);
+    for (std::size_t i = 0; i < leaves.size(); ++i) expect_close_fused(gf[i], gp[i], 1e-4);
+    // A gradient arriving as a strided view (the output is concatenated again).
+    const Tensor other = nn::normal(fused.shape(), 0.0, 1.0, gen);
+    const Tensor cat_f = nn::concat({other, fused}, 3), cat_p = nn::concat({other, plain}, 3);
+    const Tensor seed2 = nn::normal(cat_f.shape(), 0.0, 1.0, gen);
+    const auto   hf = nn::grad({cat_f}, leaves, {seed2}, keep), hp = nn::grad({cat_p}, leaves, {seed2}, keep);
+    for (std::size_t i = 0; i < leaves.size(); ++i) expect_close_fused(hf[i], hp[i], 1e-4);
+    // Recording the backward pass takes the differentiable composition.
+    Tensor s3 = nn::normal(fused.shape(), 0.0, 1.0, gen);
+    s3.requires_grad_(true);
+    nn::GradOptions create;
+    create.create_graph = true;
+    const auto df = nn::grad({fused}, leaves, {s3}, create), dp = nn::grad({plain}, leaves, {s3}, create);
+    Tensor     of = nn::zeros({}), op = nn::zeros({});
+    for (std::size_t i = 0; i < leaves.size(); ++i) {
+      const Tensor u = nn::normal(leaves[i].shape(), 0.0, 1.0, gen);
+      of             = of + nn::sum(nn::mul(df[i], u));
+      op             = op + nn::sum(nn::mul(dp[i], u));
+    }
+    expect_close_fused(nn::grad({of}, {s3})[0], nn::grad({op}, {s3})[0], 1e-4);
+  }
+  // Grouped branches use the composition; mismatched lists are rejected.
+  Tensor            x = nn::normal({2, 6, 6, 4}, 0.0, 1.0, gen), w = nn::normal({3, 3, 2, 6}, 0.0, 0.3, gen),
+         b = nn::normal({6}, 0.0, 1.0, gen);
+  nn::Conv2DOptions grouped = nn::conv_options(1, nn::Padding::Same);
+  grouped.groups            = 2;
+  expect_close_fused(nn::conv2d_bias_relu_concat(x, {w, w}, {b, b}, {grouped, grouped}),
+                     nn::concat({nn::conv2d_bias_relu(x, w, b, grouped), nn::conv2d_bias_relu(x, w, b, grouped)}, 3),
+                     1e-5);
+  EXPECT_THROW((void)nn::conv2d_bias_relu_concat(x, {w}, {b, b}, {grouped}), std::invalid_argument);
+  EXPECT_THROW((void)nn::conv2d_bias_relu_concat(x, {}, {}, {}), std::invalid_argument);
+}
+
+TEST(NnConv, MaxPoolTapPathMatchesTheGlobalArgmaxPath) {
+  nn::Generator gen(12);
+  struct Case {
+    nn::Shape    x;
+    std::int64_t window, stride;
+    nn::Padding  pad;
+  };
+  // Ties (rounded values), SAME and VALID, overlapping and disjoint windows,
+  // channel counts below and across the 64-channel block.
+  for (const Case& c : std::vector<Case>{{{2, 8, 8, 5}, 3, 2, nn::Padding::Same},
+                                         {{3, 9, 7, 70}, 3, 2, nn::Padding::Valid},
+                                         {{2, 6, 6, 130}, 2, 2, nn::Padding::Valid},
+                                         {{1, 7, 5, 3}, 3, 1, nn::Padding::Same},
+                                         {{2, 5, 5, 4}, 4, 3, nn::Padding::Same}}) {
+    Tensor x = nn::round(nn::mul(nn::normal(c.x, 0.0, 1.0, gen), 2.0));
+    x.requires_grad_(true);
+    const Tensor fast = nn::max_pool2d(x, c.window, c.stride, c.pad);
+    const Tensor old  = nn::max_pool2d_with_argmax(x, {c.window, c.window}, {c.stride, c.stride}, c.pad).output;
+    ASSERT_EQ(fast.shape(), old.shape());
+    EXPECT_EQ(fast.to_vector<double>(), old.to_vector<double>());
+    nn::GradOptions keep;
+    keep.retain_graph = true;
+    const Tensor seed = nn::normal(fast.shape(), 0.0, 1.0, gen);
+    EXPECT_EQ(nn::grad({fast}, {x}, {seed}, keep)[0].to_vector<double>(),
+              nn::grad({old}, {x}, {seed}, keep)[0].to_vector<double>());
+    // Higher order: the gradient of <dx, u> with respect to the seed.
+    Tensor s2 = nn::normal(fast.shape(), 0.0, 1.0, gen);
+    s2.requires_grad_(true);
+    nn::GradOptions create;
+    create.create_graph = true;
+    const Tensor u  = nn::normal(c.x, 0.0, 1.0, gen);
+    const Tensor hf = nn::sum(nn::mul(nn::grad({fast}, {x}, {s2}, create)[0], u));
+    const Tensor ho = nn::sum(nn::mul(nn::grad({old}, {x}, {s2}, create)[0], u));
+    EXPECT_EQ(nn::grad({hf}, {s2})[0].to_vector<double>(), nn::grad({ho}, {s2})[0].to_vector<double>());
+  }
+  // A NaN first tap stays the maximum; a later NaN is ignored.
+  const double nan = std::numeric_limits<double>::quiet_NaN();
+  const Tensor x   = nn::from_vector<double>({nan, 1, 2, 3, 4, nan, 6, 7, 8}, {1, 3, 3, 1});
+  const auto   f = nn::max_pool2d(x, 2, 1, nn::Padding::Valid).to_vector<double>(),
+             o = nn::max_pool2d_with_argmax(x, {2, 2}, {1, 1}, nn::Padding::Valid).output.to_vector<double>();
+  ASSERT_EQ(f.size(), o.size());
+  for (std::size_t i = 0; i < f.size(); ++i) EXPECT_TRUE(f[i] == o[i] || (std::isnan(f[i]) && std::isnan(o[i]))) << i;
+  EXPECT_TRUE(std::isnan(f[0]));
+}
+
+TEST(NnConv, ConcatLayerCreatesTheSameParametersAsSeparateLayers) {
+  nn::ConvLayerOptions o;
+  o.init       = nn::init::he_uniform();
+  o.activation = nn::Activation::Relu;
+  nn::Generator gen(9);
+  const Tensor  x = nn::normal({2, 5, 5, 3}, 0.0, 1.0, gen);
+  nn::ParameterStore fused_store(17), plain_store(17);
+  const Tensor fused = nn::conv2d_concat(fused_store, {"e1", "e3"}, x, {4, 6}, {1, 3}, o);
+  const Tensor plain = nn::concat({nn::conv2d(plain_store, "e1", x, 4, 1, o), nn::conv2d(plain_store, "e3", x, 6, 3, o)}, 3);
+  EXPECT_EQ(fused_store.names(), plain_store.names());
+  for (const auto& name : plain_store.names())
+    EXPECT_EQ(fused_store.at(name).to_vector<double>(), plain_store.at(name).to_vector<double>()) << name;
+  expect_close_fused(fused, plain, 1e-5);
+  // Without ReLU the layer is the composition.
+  o.activation = nn::Activation::None;
+  nn::ParameterStore linear(17);
+  EXPECT_EQ(nn::conv2d_concat(linear, {"e1", "e3"}, x, {4, 6}, {1, 3}, o).shape(), (nn::Shape{2, 5, 5, 10}));
+}

@@ -42,19 +42,24 @@ The examples have no dropout, random operations or sampled batches; exact agreem
 is conditional on that deterministic setup and a compatible environment. No dataset is
 needed for a controlled stopping decision or a state-continuation check.
 
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-The concept diagram is generated from the retained local TikZ source. LaTeX with
-PGF/TikZ and standalone, plus dvisvgm, is needed only to regenerate it.
+```{cpp, file="figures/early_stopping_checkpoints_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
 
-```{bash, results="output", file="figures/early_stopping_checkpoints_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/early_stopping_checkpoints_concept.tikz > build/early_stopping_checkpoints.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/early_stopping_checkpoints_concept.svg build/early_stopping_checkpoints_concept.dvi > build/early_stopping_checkpoints.render.log 2>&1
-printf 'Rendered build/early_stopping_checkpoints_concept.svg from local TikZ source.\n'
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Train one update\nweights / slots / step");
+  diagram.node("n1", {5.5, 0}, "Validate\nimprove or count miss");
+  diagram.node("n2", {11.0, 0}, "Save best / stop\nrestore selected state");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/early_stopping_checkpoints_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/early_stopping_checkpoints_concept.svg from local TikZ source.
 // \image(figures/early_stopping_checkpoints_concept.svg)
 // result_end
 \caption(Validation decisions, best-state restoration and deterministic continuation.)

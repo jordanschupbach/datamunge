@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Original observed RGB and validity are the only forward inputs. Every partial convolution masks,renormalizes and propagates support;both features and masks travel through U-Net skips. The report explicitly owns the complete pixel/perceptual/style/TV objective,optimizer and paired validation checkpoint. Tensor mask geometry,independent native/Keras derivatives and actual image/error previews make the short experiment reproducible.
 
-The editable concept diagram is `diagrams/partial_inpainting_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/partial_inpainting_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/partial_inpainting_concept.tikz > build/partial_inpainting_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/partial_inpainting_concept.svg build/partial_inpainting_concept.dvi > build/partial_inpainting_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/partial_inpainting_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed RGB and mask\nPropagate valid support");
+  diagram.node("n1", {5.2, 0}, "Full source objective\nVisible tensor Adam");
+  diagram.node("n2", {10.4, 0}, "Restore input-only net\nInspect actual holes");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/partial_inpainting_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/partial_inpainting_concept.svg)
 // result_end
 \caption(Partial inpainting:mask propagation and visible full-objective optimization)
@@ -735,15 +741,15 @@ int main() {
 183684 learned values/36 tensors,592 BN values/16 tensors;all warm before Adam(.0002).
 | epoch | total | valid | hole | perceptual | style raw | style composite | TV | validation |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1 | 352.843334 | 0.565205 | 0.168717 | 39.395426 | 2.031515 | 0.879039 | 0.296320 | 1180.692535 |
-| 2 | 216.828444 | 0.501592 | 0.143128 | 31.065296 | 1.236919 | 0.545491 | 0.255808 | 539.202633 |
-| 3 | 149.310572 | 0.438897 | 0.122286 | 25.825359 | 0.855100 | 0.368436 | 0.224104 | 357.555614 |
-48 visible updates;selected epoch3,restored validation 357.555614;fixed fit total 544.770264->176.898010.
-Image+mask-only deployment:checkpoint parity 0,single/batch max 2.07126141e-06,finite hidden-fill difference 0;repeat exact;all36 learned/16 BN tensors and all26 VGG tensors immutable,cached targets unchanged.
+| 1 | 352.878951 | 0.565257 | 0.168723 | 39.398029 | 2.031864 | 0.878985 | 0.296309 | 1181.277363 |
+| 2 | 216.780932 | 0.501080 | 0.142909 | 31.062203 | 1.237884 | 0.544148 | 0.255397 | 548.912010 |
+| 3 | 150.365791 | 0.438759 | 0.122574 | 25.897305 | 0.862371 | 0.369915 | 0.224469 | 367.250704 |
+48 visible updates;selected epoch3,restored validation 367.250704;fixed fit total 544.770813->176.825745.
+Image+mask-only deployment:checkpoint parity 0,single/batch max 0,finite hidden-fill difference 0;repeat exact;all36 learned/16 BN tensors and all26 VGG tensors immutable,cached targets unchanged.
 | estimate | hole MSE | mean hole PSNR dB | pooled hole PSNR dB | full PSNR dB | known max error |
 |---|---:|---:|---:|---:|---:|
-| raw composite | 1.238816 | 0.880180 | -0.930067 | 7.354958 | 0.000000 |
-| metric-clipped | 0.193909 | 7.461787 | 7.124020 | 13.936564 | 0.000000 |
+| raw composite | 1.239984 | 0.870181 | -0.934162 | 7.344959 | 0.000000 |
+| metric-clipped | 0.193704 | 7.465963 | 7.128614 | 13.940740 | 0.000000 |
 | visible mean | 0.041966 | 14.555607 | 13.771022 | 21.030384 | 0.000000 |
 \image(figures/partial_inpainting_training.svg)
 // result_end

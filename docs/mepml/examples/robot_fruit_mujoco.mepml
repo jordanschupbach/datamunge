@@ -1,0 +1,804 @@
+//? Title: Historical MuJoCo sorting benchmark
+//? Exports: both
+//? Lang: en-GB
+
+This is the historical MuJoCo 3.4.0 experiment and its retained results. The
+standard datamunge packages now use the in-house engine. To rerun this reference,
+build `nix build .#datamunge-mujoco` and supply its `lib/pkgconfig` directory via
+`DATAMUNGE_CAD_PKG_CONFIG_PATH` when executing this block. The current native
+experiment is in [playground|file:playground.mepml].
+
+> Robot sorting with articulated contact physics and native RL
+
+This benchmark compares **Q(λ), Double DQN, dueling Double DQN and clipped PPO**
+using datamunge's native C++ learning backend. It selects a method and checkpoint
+on independent validation streams, freezes that choice, then evaluates it on
+held-out streams and renders a **20-second example** of the selected controller.
+The former proxy-trained controller is evaluated as a historical transfer
+reference and remains eligible for deployment if it wins independent validation. A neural controller is not guaranteed to win.
+
+\image(figures/fruit_stream_physics_rl_protocol.svg)
+\caption(The four fresh pipelines share a training curriculum, fixed motor options and frozen vision. Physical screening narrows checkpoints, independent actual-RGB validation selects the deployed policy, and held-out evaluation follows without reselection.)
+\alttext(Four native learning methods feed physical screening, RGB validation, a frozen choice, held-out evaluation and a separately seeded rendered demonstration.)
+
+>> The task and observation
+
+Fruit enters a continuously moving conveyor under an independent **Poisson
+process**, with random position, orientation, size, color and six shape prototypes
+per class. The demonstration and evaluation rate is **0.12 fruit/s**. The belt
+runs at **0.22 m/s**; fruit passing X=0.30 m unhandled is missed. Apples belong in
+the red bin and bananas in the yellow bin. Outcomes require settling with bin
+floor support. Completed fruit clears after two seconds; arrivals at the
+eight-body capacity count as misses. Fruit still moving, held or falling at an exact
+measurement boundary remains pending.
+
+Every pipeline chooses among the same **five variable-duration options**: wait,
+intercept the oldest fruit at either of two gates, or intercept the second-oldest
+fruit at either gate. Feasible-action masks exclude absent targets, blocked
+approaches and expired interception deadlines. Fixed IK options request approach,
+descent, finger closure, transfer and release; **MuJoCo integrates the actual
+motion**. A grasp requires sustained force from both fingers. Fruit remains a
+free dynamic body during transport and can slip or fall. Releases preserve
+velocity. Success requires bin-floor contact, low linear/angular speed and a
+continuous 0.2-second settling interval. Empty-queue waits yield every 0.125
+seconds while the actual wrist turns toward the infeed.
+
+>> Physics audit and numerical checks
+
+The previous simulation interpolated robot joints, attached fruit before finger
+closure, carried it kinematically and zeroed release velocity. Its fast training
+proxy further approximated conveyor transport and settling. Those mechanisms
+could reward behavior that would fail under contact dynamics; earlier performance
+figures are historical proxy-task results.
+
+This experiment uses **MuJoCo 3.4.0**, with the pinned Seeed URDF's joint origins,
+axes, limits, link masses, centers of mass and inertia tensors. Official collision
+meshes become convex hulls; each concave finger pad is split into smaller hulls
+to retain its opening. Apples use ellipsoids and bananas compound tapered
+capsules. Gravity, joint coupling, self-collision except adjacent links, fruit
+rotation, friction, contact forces and actuator effort limits are integrated.
+The moving belt acts through tangential contact constraints; fruit velocity is
+not assigned to belt speed. Rendering and the wrist camera use measured poses.
+
+The task clock is 240 Hz and integration runs at **960 Hz** with full implicit-in-velocity
+integration, elliptic friction cones and an iterative contact solver. Position
+references drive force-limited rate servos. Requested rates are capped at
+1.5 rad/s and 0.08 m/s, but **actual rates can exceed them** under contact and
+backdriving. The report records actual peak rates, penetration and effort-limit
+usage instead of treating requested rates as measured hard limits.
+
+\image(figures/fruit_stream_physics_physics.svg)
+\caption(A separate perfect-perception development stream checks four integration timesteps. Transport error uses the 1920 Hz trajectory as a numerical reference over world time 8–10 s; contact penetration is reported separately. Neither quantity establishes agreement with hardware.)
+\alttext(Two panels show conveyor-position error and maximum contact penetration versus integration timestep.)
+
+Unit checks cover free fall, momentum, rotation, moving-belt traction, bin support,
+spawn/reset invariance and agreement between dynamics and rendered forward
+kinematics. The 960 and 1920 Hz development runs have the same aggregate task
+outcomes; contact trajectories and maximum penetration are not monotonic in the
+step size. MuJoCo can enlarge the contact time constant at coarse timesteps for stability,
+so this is a practical sensitivity check rather than a fixed-equation convergence
+proof. Learned-policy streams below are separate from this development check.
+A torque-free check also shows numerical damping: about 0.08% energy loss over
+two seconds at 5.4 rad/s initial spin, but roughly 50% at an extreme 269 rad/s.
+Stable rapid-tumbling trajectories are therefore not claimed to be accurate.
+
+This is a **nominal rigid-body model, not a hardware-calibrated digital twin**.
+Friction, damping, reflected motor inertia, finger mass and servo gains need
+measurement. Fruit compliance, damage, motor electronics, latency, camera noise
+and manufacturing tolerances remain approximations. The published hardware flyer
+and pinned URDF also differ in some limits. Mesh fidelity alone cannot resolve
+that revision uncertainty. See the [physics audit|file:figures/fruit_stream_physics_audit.md]
+for model assumptions, references and calibration requirements.
+
+The tabular methods use the existing **1,680-state abstraction**. The neural
+methods instead receive **25 bounded features**: queue/release counts, arm and
+finger pose, tool position, the first two targets' presence/position/lateral
+position/age, and the five feasibility flags. Neither representation includes
+true fruit labels, future arrivals or privileged prototype identities. Tracking
+and IK still use simulator geometry. This compares complete representation and
+learning pipelines, rather than isolating network architecture alone. The task
+learns scheduling and interception, rather than joint torques or visual detection.
+These features omit instantaneous velocities and detailed contact state, so the
+scheduler has a partial observation of the physical system. Fixed feedback skills
+use measured poses; this is not presented as a fully observed physical MDP.
+
+The shared reward is **5 correct − 8 wrong − 6 missed**, minus 0.02 per elapsed
+second and 0.25 per failed attempt. Waiting with eligible fruit costs another
+0.5 per second. **All RL training and evaluation use the articulated contact
+backend**, with no analytic transport or ideal attachment. Training and checkpoint
+screening use a class-conditional synthetic prediction-error channel, calibrated
+on independent wrist-camera validation crops. Final selection and held-out tests
+use actual RGB inference. This remaining perception approximation is explicit;
+training is not end-to-end image-based control.
+
+>> Why these learning methods
+
+**Q(λ)** supplies a compact baseline with replacing Watkins eligibility traces
+(decay 0.8). **Double DQN** separates online action selection from target-network
+valuation, using uniform replay, Huber loss and hard target updates.
+[van Hasselt, Guez and Silver (2016)|https://arxiv.org/abs/1509.06461].
+**Dueling Double DQN** adds separate value and centered advantage heads, which
+can share state-value information across interception choices.
+[Wang et al. (2016)|https://arxiv.org/abs/1511.06581].
+**PPO** learns a masked categorical actor and value function with a clipped
+probability ratio, entropy bonus and generalized advantage estimates.
+[Schulman et al. (2017)|https://arxiv.org/abs/1707.06347].
+These methods fit the current discrete option interface. Continuous-control
+methods in `examples/nn/6_deep_reinforcement_learning` would require a different
+motor-action benchmark.
+
+The neural models share two 32-unit hidden layers: ReLU for Q networks, tanh for
+PPO. Native tensors, autograd and Adam implement all learning. DQN uses learning
+rate 0.0005, replay capacity 32,768, batch 64, warm-up 512, an update every eight
+composite decisions and a target copy every 128 updates. PPO uses learning rate
+0.0003, batches of 64, up to 256 rollout decisions, four shuffled epochs,
+clipping radius 0.2, GAE decay 0.95, value coefficient 0.5 and entropy coefficient
+0.01. PPO also flushes at each window boundary. Q(λ) uses step size 0.08; Q methods
+anneal epsilon from 0.35 to 0.01. All use a gradient-norm limit of 10 where applicable.
+
+The discount is **0.995 raised to actual elapsed seconds**. Up to eight trailing
+forced-action steps can be composed with exact discounted rewards; every physics
+step and arrival still runs. Terminal states stop bootstrapping, while time-limit
+boundaries bootstrap from the actual final observation and cut traces across
+resets. Saved NPZ files contain complete inference models; optimizer/replay state
+is not saved for training resumption.
+
+>> Comparison and selection protocol
+
+Each fresh method trains **256 independent windows of at least 120 simulated
+seconds**, with the **same reset-seed schedule** and arrival-rate curriculum
+uniform on 0.08–0.30 fruit/s. A final option may overshoot the budget; the history
+records actual simulated time and update counts. Initialization is deterministic
+and method-specific. This first comparison uses **one training seed per method**
+and fixed settings, not a broad hyperparameter search or a statistical claim of
+universal algorithm superiority.
+
+Checkpoints at 128 and 256 windows are screened on **12 common
+full-physics streams** with synthetic perception. The top two checkpoints per
+fresh method are evaluated on **six separate common actual-RGB validation
+streams**. The method/checkpoint with the largest **5 correct − 8 wrong − 6 missed**
+validation score wins. Checkpoint score ties prefer the earlier checkpoint;
+method ties prefer fewer wrong placements, then more correct placements, then
+the earlier listed method. Evaluation takes the highest-valued feasible action
+(highest actor logit for PPO), with no exploration. All counts are taken at the
+exact 120-second boundary.
+
+The old proxy-trained controller is tested using the same current vision, motors,
+options, arrivals and score. It previously trained 32,768 windows and selected
+window 256; its larger training/search budget and training physics are explicitly different.
+Its larger historical budget is shown separately from the matched fresh comparison. The
+selection is frozen **before** testing all five candidates on **16 new common
+two-minute actual-RGB streams**. Screening seeds start at 63,000,000,000,
+validation at 64,000,000,000 and test at 65,000,000,000; these do not overlap with
+training, vision datasets or the fixed video seed. Held-out results never change
+the selected controller. Wrong placements and pending fruit are retained in the
+raw outcomes, alongside correct sorts and misses.
+
+\image(figures/fruit_stream_physics_rl_learning.svg)
+\caption(Full-dynamics training returns, averaged in nonoverlapping blocks of 32 windows. Horizontal positions use each method's actual simulated training time, including option overshoot. These returns do not select the deployed model.)
+\alttext(Four learning curves show average raw return over the matched training curriculum.)
+
+\image(figures/fruit_stream_physics_rl_selection.svg)
+\caption(Actual-RGB validation scores for each fresh pipeline's selected checkpoint and the old proxy-trained reference. Every candidate is eligible for deployment and sees the same six streams; the reference has a different historical training budget.)
+\alttext(Five bars compare validation reward based on correct sorts, wrong placements and misses.)
+
+\image(figures/fruit_stream_physics_rl_comparison.svg)
+\caption(Held-out full-physics actual-RGB comparison after selection is frozen. All methods see the same sixteen Poisson streams. These results describe this fixed benchmark and training seed.)
+\alttext(Two panels compare correct sorts and missed fruit for the four fresh learning pipelines and historical incumbent.)
+
+The fixed validation rule selects **dueling Double DQN, window 256**. On the
+sixteen held-out streams it records **111 correct, 8 wrong, 73 missed and 15
+pending** from 207 arrivals. The historical controller records 103 correct,
+7 wrong, 84 missed and 13 pending on those same streams. These are results for
+the new contact task; the earlier attached-payload scores are not directly
+comparable. Physical grasp and transfer failures are now represented explicitly.
+
+>> Frozen perception and realistic rendering
+
+The **256×256 rigid wrist camera**, with nominal intrinsics and extrinsics,
+supplies rendered RGB. Registered
+background subtraction finds visible components, and tracked geometry associates
+the intended target. MobileNet receives only the unannotated padded RGB crop;
+its prediction alone chooses red or yellow. Empty crops remain unknown, with no
+true-class fallback. Video bounding boxes and labels are overlays, never inputs.
+The previous classifier initializes a new **12-epoch adaptation** to moving
+views from the contact-driven task: 256 training crops from prototypes 0–3,
+64 validation crops from prototype 4 and 64 test crops from prototype 5.
+These holdouts apply to this adaptation; initial weights retain their previous
+simulation-training history.
+The frozen adaptation checkpoint was collected during physical-model development
+before the arrival-clearance guard; its source fingerprint is retained with the
+audit. All reported controller training and evaluation use the final guard.
+Validation cross entropy selects the checkpoint. Validation errors, with Laplace
+smoothing, set the training prediction channel; test accuracy is reported only
+after selection. The resulting classifier is **frozen across all RL pipelines**.
+
+The exterior retains imported Seeed meshes, joint-following cables, procedural
+fruit skins, factory scenery and distinct metal, rubber and painted materials.
+CUDA can render the overview with 2×2 antialiasing, soft shadows and approximate
+studio reflections. The wrist inset and classifier keep the CPU sensor renderer.
+Geometry tracking, fixed IK skills, nominal contact parameters and automatic bin
+clearing remain benchmark assumptions. This is simulated scheduling and
+interception with contact dynamics, not hardware-ready end-to-end control.
+
+\image(figures/fruit_stream_physics_fruit_materials.png)
+\caption(Procedural presentation materials. These previews do not enter policy selection.)
+\alttext(Apple and banana shape, color and material variants.)
+
+>> Complete executable comparison and demonstration
+
+`just playground` trains the four native pipelines, compares them, freezes the
+winner, evaluates and renders it. It adapts the prior wrist classifier to measured pickup views and evaluates
+the old controller as a transfer baseline, copying the bundled initial assets on
+a clean run. Native asset fetching verifies/downloads the robot CAD as needed.
+`DATAMUNGE_STREAM_LEARN_ONLY=1 just playground` stops after comparison.
+`just playground-preview` reloads the completed comparison; `just playground-gpu`
+uses the CUDA renderer for this frozen replay. Replay validates the protocol,
+backend sources, classifier and selected checkpoint hashes and fails on stale
+inputs rather than silently using an older run. When changing the comparison
+settings in this program, bump its `protocol` string; that string versions the
+training/selection settings while backend-source hashes track core changes.
+
+The default video covers world time **40–60 s** of a separately simulated fixed
+minute (seed 2,026,113,001), at 15 fps. Counters remain cumulative. This is a
+contiguous demonstration excerpt, not additional performance evidence. For quick
+render checks use `DATAMUNGE_VIDEO_SECONDS=5 just playground-gpu`; rendering start,
+duration, worker count and optional frame dumps retain the existing controls.
+The earlier [episodic experiment|file:robot_fruit_episodic.mepml] and
+[simple continuing rendering|file:robot_fruit_continuing_simple.mepml] remain
+separate reports.
+
+```{cpp, results="markdown", nix-shell="git+file:../../..#cpp", cmd="export PKG_CONFIG_PATH=$(printenv DATAMUNGE_CAD_PKG_CONFIG_PATH || printenv PKG_CONFIG_PATH); c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && DATAMUNGE_LINKED_CORE=$(pkg-config --variable=prefix datamunge) OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 {bin}"}
+#include <dm/dm.hpp>
+#include <datamunge/nn/parallel.hpp>
+#include <algorithm>
+#include <array>
+#include <cstdlib>
+#include <chrono>
+#include <charconv>
+#include <iomanip>
+#include <map>
+#include <thread>
+#include <type_traits>
+#include <datamunge/algorithms/sha256.hpp>
+#include <fstream>
+#include <future>
+#include <syncstream>
+#include <iostream>
+#include <numeric>
+#include <sstream>
+#include <stdexcept>
+namespace s=dm::sim;namespace n=dm::nn;namespace c=dm::cad;
+namespace fs=std::filesystem;
+constexpr double arrival_rate=.12;
+constexpr std::uint64_t video_seed=2026113001ULL;
+constexpr int fps=15,simulation_seconds=60;
+std::array<double,2> scheduler_noise{.015625,.1015625};
+int video_start=40,video_seconds=20;
+std::string frame_directory;
+const std::string directory="build/fruit_stream_physics/";
+struct Timings {
+ using Clock=std::chrono::steady_clock;
+ struct Value {double seconds{0};std::size_t calls{0};};
+ Clock::time_point started=Clock::now(),mark=started;
+ std::string active="setup";std::vector<std::pair<std::string,double>> phases;
+ std::map<std::string,Value> detail;
+ void phase(const std::string& next){auto now=Clock::now();phases.emplace_back(active,std::chrono::duration<double>(now-mark).count());mark=now;active=next;}
+ template<class F> auto measure(const std::string& name,F&& fn){
+  auto begin=Clock::now();
+  auto record=[&]{auto& v=detail[name];v.seconds+=std::chrono::duration<double>(Clock::now()-begin).count();++v.calls;};
+  if constexpr(std::is_void_v<std::invoke_result_t<F>>){fn();record();}else{auto result=fn();record();return result;}
+ }
+ void save(){phase("complete");std::ofstream out(directory+"timings.csv");out<<"scope,stage,seconds,calls\n"<<std::setprecision(12);
+  for(const auto& [name,seconds]:phases)out<<"phase,"<<name<<','<<seconds<<",1\n";
+  out<<"phase,total_wall,"<<std::chrono::duration<double>(mark-started).count()<<",1\n";
+  for(const auto& [name,v]:detail)out<<"frame,"<<name<<','<<v.seconds<<','<<v.calls<<'\n';
+ }
+};
+std::string file_hash(const fs::path& path){std::ifstream in(path,std::ios::binary);if(!in)throw std::runtime_error("Cannot fingerprint "+path.string());return dm::algorithms::sha256_hex(std::string(std::istreambuf_iterator<char>(in),{}));}
+int environment_integer(const char* name,int fallback,int lo,int hi){
+ const char* raw=std::getenv(name);if(!raw)return fallback;
+ std::string value(raw);int parsed=0;auto result=std::from_chars(value.data(),value.data()+value.size(),parsed);
+ if(result.ec!=std::errc{}||result.ptr!=value.data()+value.size()||parsed<lo||parsed>hi)throw std::invalid_argument(std::string(name)+" is outside its supported integer range");
+ return parsed;
+}
+s::FruitStreamOptions appearance_options(){
+ s::FruitStreamOptions options;options.visual_style=s::WorkcellVisualStyle::Realistic;
+ options.training_proxy=false;options.articulated_physics=true;options.physics_backend=s::ArticulatedBackend::MuJoCo;options.physics_timestep=1./960;options.active_capacity=8;options.arrival_rate=arrival_rate;
+ options.watch_infeed=true;options.synchronized_grasp=true;
+ options.queued_wait_cost=.5;options.miss_cost=6;options.wrong_cost=8;
+ options.training_error=scheduler_noise;return options;
+}
+
+
+n::Tensor rgb(const c::RenderResult& image){
+ std::vector<float> pixels;pixels.reserve(image.width*image.height*3);
+ for(std::size_t i=0;i<image.rgba.size();i+=4)for(int k=0;k<3;++k)pixels.push_back(image.rgba[i+k]/255.f);
+ return n::from_vector(pixels,{1,image.height,image.width,3});
+}
+const s::StreamFruit& target(const s::StreamFrame& frame,std::uint64_t id){
+ auto it=std::find_if(frame.fruit.begin(),frame.fruit.end(),[&](const auto& p){return p.id==id;});
+ if(it==frame.fruit.end())throw std::runtime_error("Recorded target is absent");return *it;
+}
+c::Vec3d centre(const s::StreamFruit& p){return {p.body.position[0],p.body.position[2],p.body.position[1]};}
+std::uint64_t unresolved(const s::StreamFrame& f){
+ return f.counts.arrivals-f.counts.correct-f.counts.wrong-f.counts.missed;
+}
+struct Data {n::Tensor images,labels;};
+// These are supervised synthetic image-collection streams, not evaluation runs.
+// Quotas use labels, while the exploratory collection routes alternate by ID.
+Data collect(s::FruitStreamEnvironment& env,s::DevArmWristCamera& camera,std::uint64_t first_seed,
+             int lo,int hi,int quota,const std::string& split,std::ostream& manifest){
+ std::array<std::array<int,6>,2> counts{};std::vector<float> pixels;std::vector<std::int64_t> labels;
+ const int needed=2*(hi-lo+1)*quota;std::uint64_t current_seed=first_seed;
+ env.set_perception([&](const s::StreamFrame& frame,std::uint64_t id){
+   const auto& p=target(frame,id);const int truth=p.body.kind==s::FruitKind::Apple?0:1;int prototype=p.body.appearance.prototype;
+   if(prototype>=lo&&prototype<=hi&&counts[truth][prototype]<quota){
+     const auto input=camera.inspect_actors(frame.arm,env.fruit_scene(frame),centre(p));
+     if(!input.crop.rgba.empty()){
+       auto v=rgb(input.crop).to_vector<float>();pixels.insert(pixels.end(),v.begin(),v.end());labels.push_back(truth);++counts[truth][prototype];
+       manifest<<std::format("{},{},{},{},{},{},{:.8f},{:.8f},{:.8f},{:.8f},{:.8f},{},{},{},{}\n",split,current_seed,id,p.seed,truth,prototype,frame.time,p.body.position[0],p.body.position[2],p.body.appearance.yaw,p.body.appearance.scale,input.box.x,input.box.y,input.box.width,input.box.height);
+       if(labels.size()%128==0)std::cerr<<split<<" moving-view crops "<<labels.size()<<"/"<<needed<<'\n';
+     }
+   }
+   return s::StreamPrediction{int(id%2),.5}; // independent of the true label
+ });
+ for(;int(labels.size())<needed;++current_seed){
+   auto f=env.reset(current_seed,.25);std::size_t decisions=0;
+   while(f.time<120&&int(labels.size())<needed)
+     f=env.step(++decisions%3==0?s::StreamAction::LateFront:s::StreamAction::EarlyFront).frame;
+ }
+ env.set_perception({});
+ return {n::from_vector(pixels,{needed,64,64,3}),n::from_vector(labels)};
+}
+struct VisionEvidence {std::size_t epoch{0};int correct{0},test_count{0};std::array<double,2> errors{};};
+VisionEvidence prepare_vision(const std::string& urdf,int threads,bool replay){
+ VisionEvidence evidence;
+ if(replay||std::getenv("DATAMUNGE_STREAM_REUSE_VISION")){
+  std::ifstream cached(directory+"vision_metrics.txt");std::string hash;
+  if(!(cached>>evidence.epoch>>evidence.correct>>evidence.test_count>>evidence.errors[0]>>evidence.errors[1]>>hash)||hash!=file_hash(directory+"mobile.npz"))throw std::runtime_error("Missing/changed physical-view vision checkpoint");
+ }else{
+  auto config=appearance_options();config.arrival_rate=.25;
+  s::FruitStreamEnvironment collector(urdf,config);s::DevArmWristCamera camera(collector.arm_model(),256,95);camera.set_render_threads(threads);
+  std::ofstream manifest(directory+"images.csv");manifest<<"split,stream_seed,id,fruit_seed,true_class,prototype,time,x,y,yaw,scale,box_x,box_y,box_width,box_height\n";
+  auto train=collect(collector,camera,7400000000000ULL,0,3,32,"train",manifest);
+  auto valid=collect(collector,camera,7410000000000ULL,4,4,32,"validation",manifest);
+  auto test=collect(collector,camera,7420000000000ULL,5,5,32,"test",manifest);manifest.close();
+  n::save_image_grid(n::slice_axis(test.images,0,0,24),directory+"camera_samples.png",8,0,1,2,.9,2);
+  auto mobile=n::MobileNetClassifier::load("figures/fruit_stream_realistic_mobile.npz");
+  n::MobileClassifierOptions fit;fit.epochs=12;fit.learning_rate=.0002;fit.grayscale_probability=.25;fit.seed=20261127;
+  auto trained=mobile.fit(train.images,train.labels,valid.images,valid.labels,fit);evidence.epoch=trained.selected_epoch;mobile.save(directory+"mobile.npz");
+  auto labels=valid.labels.to_vector<std::int64_t>(),pred=n::argmax(mobile.predict(valid.images),-1).to_vector<std::int64_t>();std::array<int,2> count{},wrong{};
+  for(std::size_t k=0;k<labels.size();++k){++count[labels[k]];wrong[labels[k]]+=pred[k]!=labels[k];}for(int k=0;k<2;++k)evidence.errors[k]=double(wrong[k]+1)/(count[k]+2);
+  labels=test.labels.to_vector<std::int64_t>();pred=n::argmax(mobile.predict(test.images),-1).to_vector<std::int64_t>();evidence.test_count=labels.size();for(std::size_t k=0;k<labels.size();++k)evidence.correct+=labels[k]==pred[k];
+  std::vector<double> epochs,training,validation;std::ofstream csv(directory+"vision_training.csv");csv<<"epoch,training_loss,validation_loss,validation_accuracy\n";
+  for(const auto& e:trained.history){csv<<e.epoch<<','<<e.training_loss<<','<<e.validation_loss<<','<<e.validation_accuracy<<'\n';epochs.push_back(e.epoch);training.push_back(e.training_loss);validation.push_back(e.validation_loss);}
+  auto plot=dm::Plot().lines(epochs,training,"Training",dm::RGB{37,99,235});plot.lines(epochs,validation,"Validation",dm::RGB{220,38,38});plot.set_title("Adaptation to measured physical pickup views").set_xlab("Epoch").set_ylab("Cross entropy").size(900,340).save_svg(directory+"vision_learning.svg");
+  std::ofstream cached(directory+"vision_metrics.txt");cached<<evidence.epoch<<' '<<evidence.correct<<' '<<evidence.test_count<<' '<<std::setprecision(17)<<evidence.errors[0]<<' '<<evidence.errors[1]<<' '<<file_hash(directory+"mobile.npz")<<'\n';
+ }
+ scheduler_noise=evidence.errors;std::cerr<<"Physical-view classifier "<<evidence.correct<<'/'<<evidence.test_count<<"; proxy perception errors "<<scheduler_noise[0]<<", "<<scheduler_noise[1]<<'\n';return evidence;
+}
+struct Vision {
+ s::FruitStreamEnvironment& env;s::DevArmWristCamera& camera;n::MobileNetClassifier& model;
+ std::ostream& log;std::uint64_t seed{0};std::string mode;
+ s::StreamPrediction operator()(const s::StreamFrame& f,std::uint64_t id){
+   if(f.training_proxy||!f.articulated_physics)throw std::runtime_error("Evaluation requires articulated contact physics");
+   const auto& p=target(f,id);auto input=camera.inspect_actors(f.arm,env.fruit_scene(f),centre(p));
+   s::StreamPrediction prediction;
+   if(!input.crop.rgba.empty()){const auto probabilities=model.predict(rgb(input.crop)).to_vector<float>();prediction.label=probabilities[1]>probabilities[0]?1:0;prediction.confidence=probabilities[prediction.label];}
+   if(mode=="video"?(f.time>=video_start&&f.time<=video_start+video_seconds):f.time<=120)
+     log<<std::format("{},{},{},{:.8f},{},{},{:.9f},{},{},{},{}\n",mode,seed,id,f.time,int(p.body.kind),prediction.label,prediction.confidence,input.box.x,input.box.y,input.box.width,input.box.height);
+   return prediction; // an empty crop stays unknown; there is no true-class fallback
+ }
+};
+s::StreamFrame window(s::FruitStreamEnvironment& env,std::uint64_t seed,double rate,double seconds,
+                      const std::function<s::StreamAction(std::size_t)>& policy){
+ s::StreamFrame endpoint;
+ env.record([&](const auto& f){if(f.time<=seconds+1e-9)endpoint=f;},1);
+ auto f=env.reset(seed,rate);
+ while(f.time<seconds)f=env.step(policy(f.state)).frame;
+ env.record({});
+ if(std::abs(endpoint.time-seconds)>1e-8)throw std::runtime_error("Evaluation did not capture the exact horizon");
+ return endpoint; // final option may complete later; its future outcomes are not counted
+}
+struct Totals {
+ std::uint64_t arrivals{0},correct{0},wrong{0},missed{0},pending{0},inspections{0},classified{0},unknown{0};
+ double penetration{0},effort{0},joint_speed{0},finger_speed{0};
+ void add(const s::StreamFrame& f){const auto& x=f.counts;arrivals+=x.arrivals;correct+=x.correct;wrong+=x.wrong;missed+=x.missed;pending+=unresolved(f);inspections+=x.inspections;classified+=x.classification_correct;unknown+=x.unknown;penetration=std::max(penetration,f.maximum_penetration);effort=std::max(effort,f.maximum_effort_fraction);joint_speed=std::max(joint_speed,f.maximum_joint_speed);finger_speed=std::max(finger_speed,f.maximum_finger_speed);}
+};
+void physical_audit(const std::string& urdf,bool replay){
+ if(replay){if(!fs::exists(directory+"physics.csv")||!fs::exists(directory+"physics.svg"))throw std::runtime_error("Missing physical validation evidence");return;}
+ struct Result{int hz; s::StreamFrame endpoint;std::map<int,c::Vec3d> transport;double rms{0};};std::vector<Result> results;
+ for(int hz:{240,480,960,1920}){
+  auto config=appearance_options();config.physics_timestep=1./hz;config.training_error={0,0};s::FruitStreamEnvironment env(urdf,config);Result result;result.hz=hz;
+  env.record([&](const auto& f){if(f.time>60)return;result.endpoint=f;if(f.time>=8&&f.time<=10)for(const auto& p:f.fruit)if(p.id==1)result.transport[int(std::lround(60*f.time))]=centre(p);},60);
+  auto f=env.reset(video_seed,arrival_rate);while(f.time<60){auto allowed=env.action_mask();f=env.step(allowed[1]?s::StreamAction::EarlyFront:allowed[2]?s::StreamAction::LateFront:s::StreamAction::Wait).frame;}
+  results.push_back(std::move(result));
+ }
+ const auto& reference=results.back().transport;std::vector<double> steps,error,penetration;std::ofstream csv(directory+"physics.csv");csv<<"hz,arrivals,grasped,correct,wrong,missed,pending,max_penetration,max_effort,max_joint_speed,max_finger_speed,transport_rms\n";
+ for(auto& r:results){double mse=0;std::size_t count=0;for(const auto& entry:r.transport)if(auto found=reference.find(entry.first);found!=reference.end()){auto difference=entry.second-found->second;mse+=difference.Dot(difference);++count;}if(count<10)throw std::runtime_error("Missing transport convergence samples");r.rms=std::sqrt(mse/count);const auto& f=r.endpoint;const auto& x=f.counts;
+  csv<<std::format("{},{},{},{},{},{},{},{:.12f},{:.12f},{:.12f},{:.12f},{:.12f}\n",r.hz,x.arrivals,x.grasped,x.correct,x.wrong,x.missed,unresolved(f),f.maximum_penetration,f.maximum_effort_fraction,f.maximum_joint_speed,f.maximum_finger_speed,r.rms);
+  steps.push_back(1000./r.hz);error.push_back(1000*r.rms);penetration.push_back(1000*f.maximum_penetration);
+ }
+ auto convergence=dm::Plot().lines(steps,error,"Transport RMS",dm::RGB{37,99,235});convergence.set_title("Free transport: difference from 1920 Hz").set_xlab("Internal step (ms)").set_ylab("RMS position difference (mm)");
+ auto contacts=dm::Plot().lines(steps,penetration,"Contact maximum",dm::RGB{220,38,38});contacts.set_title("Maximum contact penetration").set_xlab("Internal step (ms)").set_ylab("Penetration (mm)");
+ auto layout=dm::graphics::RLayout::create(1,2).add(convergence).add(contacts).fit_panels();dm::plot(layout).size(1100,360).save_svg(directory+"physics.svg");
+}
+
+namespace r=dm::rl;
+const std::array<std::string,5> method_names{"Q lambda","Double DQN","Dueling DDQN","PPO","Old proxy"};
+const std::array<std::string,4> method_files{"q_lambda","double_dqn","dueling_dqn","ppo"};
+constexpr std::size_t pipeline_windows=256;
+const std::string protocol="articulated-contact-pipelines-v2";
+double selection_score(const Totals& t){return 5.*t.correct-8.*t.wrong-6.*t.missed;}
+void write_totals(std::ostream& out,const Totals& t){out<<t.arrivals<<' '<<t.correct<<' '<<t.wrong<<' '<<t.missed<<' '<<t.pending<<' '<<t.inspections<<' '<<t.classified<<' '<<t.unknown<<' '<<std::setprecision(17)<<t.penetration<<' '<<t.effort<<' '<<t.joint_speed<<' '<<t.finger_speed;}
+void read_totals(std::istream& in,Totals& t){if(!(in>>t.arrivals>>t.correct>>t.wrong>>t.missed>>t.pending>>t.inspections>>t.classified>>t.unknown>>t.penetration>>t.effort>>t.joint_speed>>t.finger_speed))throw std::runtime_error("Incomplete RL evidence");}
+struct Pipeline {
+ std::string file;std::size_t checkpoint{0};double seconds{0};Totals validation,test;
+ std::unique_ptr<r::DiscretePolicy> learned;
+ std::unique_ptr<s::StreamPolicy> incumbent;
+ void load(){if(incumbent) return;if(file.ends_with(".txt"))incumbent=std::make_unique<s::StreamPolicy>(s::StreamPolicy::load(directory+file));else learned=std::make_unique<r::DiscretePolicy>(r::DiscretePolicy::load(directory+file));}
+ s::StreamAction action(s::FruitStreamEnvironment& env)const{return incumbent?incumbent->action(env.observation().state,env.action_mask()):static_cast<s::StreamAction>(learned->action(env.learning_observation()));}
+};
+struct Benchmark {std::array<Pipeline,5> methods;std::size_t winner{0};};
+std::string benchmark_signature(){
+ std::string text=protocol+std::to_string(pipeline_windows)+s::articulated_physics_version()+file_hash(directory+"mobile.npz")+file_hash(directory+"vision_metrics.txt");
+ for(const auto& path:{"src/datamunge/rl/discrete.cpp","src/datamunge/rl/detail.hpp","include/datamunge/rl/discrete.hpp","src/datamunge/sim/fruit_stream.cpp","src/datamunge/sim/stream_dynamics.cpp","src/datamunge/sim/stream_dynamics.hpp","include/datamunge/sim/fruit_stream.hpp","include/datamunge/sim/conveyor.hpp","src/datamunge/sim/conveyor.cpp","src/datamunge/cad/robot.cpp","include/datamunge/cad/robot.hpp"})text+=file_hash(fs::path("../../..")/path);
+ return dm::algorithms::sha256_hex(text);
+}
+void benchmark_plots(const Benchmark& b){
+ dm::graphics::Diagram diagram(48,1100);
+ diagram.node("train",{0,0},"Q lambda / Double DQN\nDueling DDQN / PPO\nMatched training windows")
+ .node("screen",{5,0},"12 physical streams\nShortlist checkpoints")
+ .node("select",{10,0},"6 actual-RGB streams\nSelect and freeze")
+ .node("test",{10,-3},"16 held-out RGB streams\nReport all methods")
+ .node("video",{5,-3},"Selected controller\nSeparate 20-second video")
+ .node("reference",{0,-3},"Old proxy-trained controller\nDifferent historical budget")
+ .edge("reference","select").edge("train","screen").edge("screen","select").edge("select","test").edge("select","video");
+ diagram.save_svg(directory+"rl_protocol.svg");
+
+ std::vector<double> valid,correct,missed;std::vector<std::string> labels;
+ for(std::size_t m=0;m<5;++m){valid.push_back(selection_score(b.methods[m].validation));correct.push_back(b.methods[m].test.correct);missed.push_back(b.methods[m].test.missed);labels.push_back(method_names[m]);}
+ auto v=dm::Plot::barplot(valid,labels);v.set_title("Selection: six actual-RGB validation streams").set_ylab("5 correct - 8 wrong - 6 missed");v.size(1000,360).save_svg(directory+"rl_selection.svg");
+ auto a=dm::Plot::barplot(correct,labels);a.set_title("Held-out actual-RGB correct sorts").set_ylab("Fruit across sixteen two-minute streams");
+ auto z=dm::Plot::barplot(missed,labels,"",dm::RGB{220,38,38});z.set_title("Held-out missed fruit").set_ylab("Misses on the same arrivals");
+ auto layout=dm::graphics::RLayout::create(1,2).add(a).add(z).fit_panels();dm::plot(layout).size(1200,380).save_svg(directory+"rl_comparison.svg");
+}
+Benchmark compare_pipelines(const std::string& urdf,int threads,bool replay,Timings& timings){
+ Benchmark b;fs::create_directories(directory+"rl");
+ const auto signature=benchmark_signature();
+ if(replay){
+  std::ifstream cached(directory+"rl_selection.txt");std::string key;std::size_t budget;
+  if(!(cached>>key>>budget>>b.winner)||key!=signature||budget!=pipeline_windows||b.winner>=5)throw std::runtime_error("Missing/stale RL comparison: run DATAMUNGE_STREAM_LEARN_ONLY=1 just playground");
+  for(auto& p:b.methods){std::string hash;if(!(cached>>p.file>>p.checkpoint>>p.seconds>>hash)||hash!=file_hash(directory+p.file))throw std::runtime_error("Changed RL checkpoint");read_totals(cached,p.validation);read_totals(cached,p.test);p.load();}
+  benchmark_plots(b);return b;
+ }
+ // Keep the existing controller as an explicit reference with a different historical budget.
+ if(!fs::exists(directory+"rl/incumbent.txt"))fs::copy_file(directory+"policy.txt",directory+"rl/incumbent.txt");
+ std::ofstream screen(directory+"rl_screening.csv"),history(directory+"rl_training.csv"),validation(directory+"rl_validation.csv"),evaluation(directory+"rl_evaluation.csv"),perception(directory+"rl_perception.csv");
+ screen<<"method,checkpoint,training_seconds,arrivals,correct,wrong,missed,pending,score\n";
+ history<<"method,window,seconds,return,decisions,environment_steps,updates,loss\n";
+ const std::string columns="method,checkpoint,seed,arrivals,correct,wrong,missed,pending,inspections,classified,unknown,articulated,max_penetration,max_effort,max_joint_speed,max_finger_speed\n";validation<<columns;evaluation<<columns;
+ perception<<"mode,stream_seed,id,time,true_class,predicted_class,confidence,box_x,box_y,box_width,box_height\n";
+ auto model=n::MobileNetClassifier::load(directory+"mobile.npz");s::FruitStreamEnvironment physical(urdf,appearance_options());s::DevArmWristCamera camera(physical.arm_model(),256,95);camera.set_render_threads(threads);
+ Vision vision{physical,camera,model,perception};
+ auto actual=[&](const Pipeline& p,std::size_t m,std::uint64_t first,int count,std::ostream& csv,const std::string& split){
+  physical.set_perception([&](const auto& f,auto id){return vision(f,id);});Totals total;vision.mode=split+"-"+method_names[m];
+  for(int k=0;k<count;++k){vision.seed=first+k;auto f=window(physical,vision.seed,arrival_rate,120,[&](auto){return p.action(physical);});total.add(f);const auto& x=f.counts;
+   csv<<std::format("{},{},{},{},{},{},{},{},{},{},{},{},{:.9f},{:.9f},{:.9f},{:.9f}\n",method_names[m],p.checkpoint,vision.seed,x.arrivals,x.correct,x.wrong,x.missed,unresolved(f),x.inspections,x.classification_correct,x.unknown,int(f.articulated_physics),f.maximum_penetration,f.maximum_effort_fraction,f.maximum_joint_speed,f.maximum_finger_speed);csv.flush();}
+  return total;
+ };
+ auto learning=dm::Plot();const std::array<dm::RGB,4> colors{{{15,140,100},{37,99,235},{180,100,30},{160,60,180}}};
+ timings.phase("parallel_articulated_training");
+ std::array<std::future<r::DiscreteTrainingResult>,4> workers;
+ for(std::size_t m=0;m<4;++m)workers[m]=std::async(std::launch::async,[&,m]{
+  s::FruitStreamEnvironment trainer(urdf,appearance_options());r::DiscreteTrainingOptions fit;fit.model.method=r::DiscreteMethod(m);fit.model.seed=20261121+m;fit.seed=20261121;fit.windows=pipeline_windows;fit.learning_rate=m==3?.0003:.0005;
+  std::ofstream progress(directory+"rl/"+method_files[m]+"_training.csv");progress<<"window,seconds,return,decisions,environment_steps,updates,loss\n";
+  fit.progress=[&](auto k,const auto& v,const auto&){progress<<std::format("{},{:.9f},{:.9f},{},{},{},{:.9f}\n",k,v.seconds,v.reward,v.decisions,v.environment_steps,v.updates,v.loss);if(k%16==0){progress.flush();std::osyncstream(std::cerr)<<method_names[m]<<" physical training "<<k<<'/'<<pipeline_windows<<'\n';}};
+  return r::train_discrete(s::stream_learning_environment(trainer),fit);
+ });
+ for(std::size_t m=0;m<4;++m){
+  auto trained=workers[m].get();
+  for(std::size_t k=0;k<trained.windows.size();++k){const auto& v=trained.windows[k];history<<std::format("{},{},{:.9f},{:.9f},{},{},{},{:.9f}\n",method_names[m],k+1,v.seconds,v.reward,v.decisions,v.environment_steps,v.updates,v.loss);}history.flush();
+  std::vector<double> hours,returns;double seconds=0,block=0;for(std::size_t k=0;k<trained.windows.size();++k){seconds+=trained.windows[k].seconds;block+=trained.windows[k].reward;if((k+1)%32==0){hours.push_back(seconds/3600);returns.push_back(block/32);block=0;}}
+  learning.lines(hours,returns,method_names[m],colors[m]);
+  timings.phase("screening_"+method_files[m]);physical.set_perception({});std::vector<std::pair<double,std::size_t>> order;
+  for(std::size_t k=0;k<trained.checkpoints.size();++k){auto completed=trained.checkpoint_windows[k];Pipeline p;p.file="rl/"+method_files[m]+"_"+std::to_string(completed)+".npz";p.checkpoint=completed;p.seconds=0;for(std::size_t i=0;i<completed;++i)p.seconds+=trained.windows[i].seconds;
+   trained.checkpoints[k].save(directory+p.file);p.load();Totals t;for(int stream=0;stream<12;++stream)t.add(window(physical,63000000000ULL+stream,arrival_rate,120,[&](auto){return p.action(physical);}));
+   const double score=selection_score(t);order.emplace_back(score,k);screen<<std::format("{},{},{:.9f},{},{},{},{},{},{:.9f}\n",method_names[m],completed,p.seconds,t.arrivals,t.correct,t.wrong,t.missed,t.pending,score);screen.flush();}
+  std::stable_sort(order.begin(),order.end(),[](auto a,auto z){return a.first>z.first;});
+  timings.phase("RGB_validation_"+method_files[m]);double best=-1e100;
+  for(std::size_t candidate=0;candidate<std::min<std::size_t>(2,order.size());++candidate){auto k=order[candidate].second;Pipeline p;p.checkpoint=trained.checkpoint_windows[k];p.file="rl/"+method_files[m]+"_"+std::to_string(p.checkpoint)+".npz";for(std::size_t i=0;i<p.checkpoint;++i)p.seconds+=trained.windows[i].seconds;p.load();
+   p.validation=actual(p,m,64000000000ULL,6,validation,"validation");auto score=selection_score(p.validation);
+   if(score>best||(score==best&&p.checkpoint<b.methods[m].checkpoint)){best=score;b.methods[m]=std::move(p);}
+  }
+  std::cerr<<method_names[m]<<" selected window "<<b.methods[m].checkpoint<<" validation score "<<best<<'\n';
+ }
+ learning.set_title("Full-dynamics training returns: 32-window averages").set_xlab("Actual simulated training hours").set_ylab("Raw return per window").size(1000,350).save_svg(directory+"rl_learning.svg");
+ auto& reference=b.methods[4];reference.file="rl/incumbent.txt";reference.checkpoint=256;reference.seconds=3980652.3083328358;reference.load();reference.validation=actual(reference,4,64000000000ULL,6,validation,"validation");
+ // Freeze the choice here, BEFORE any held-out stream or video is run. Exact ties
+ // prefer fewer wrong placements, then more correct, then the earlier method.
+ auto better=[](const Totals& a,const Totals& z){if(selection_score(a)!=selection_score(z))return selection_score(a)>selection_score(z);if(a.wrong!=z.wrong)return a.wrong<z.wrong;return a.correct>z.correct;};
+ for(std::size_t m=1;m<5;++m)if(better(b.methods[m].validation,b.methods[b.winner].validation))b.winner=m;
+ {std::ofstream frozen(directory+"rl_choice.txt");frozen<<b.winner<<' '<<b.methods[b.winner].file<<' '<<file_hash(directory+b.methods[b.winner].file)<<'\n';}
+ timings.phase("held_out_RGB_evaluation");
+ for(std::size_t m=0;m<5;++m){b.methods[m].test=actual(b.methods[m],m,65000000000ULL,16,evaluation,"test");std::cerr<<method_names[m]<<" test correct "<<b.methods[m].test.correct<<" missed "<<b.methods[m].test.missed<<'\n';}
+ {std::ofstream cached(directory+"rl_selection.txt");cached<<signature<<' '<<pipeline_windows<<' '<<b.winner<<'\n'<<std::setprecision(17);for(const auto& p:b.methods){cached<<p.file<<' '<<p.checkpoint<<' '<<p.seconds<<' '<<file_hash(directory+p.file)<<'\n';write_totals(cached,p.validation);cached<<'\n';write_totals(cached,p.test);cached<<'\n';}}
+ benchmark_plots(b);return b;
+}
+
+void append(c::Scene& scene,c::Scene extra){
+ int base=int(scene.meshes.size()),tex=int(scene.textures.size());
+ for(auto& m:extra.meshes)scene.meshes.push_back(std::move(m));for(auto& t:extra.textures)scene.textures.push_back(std::move(t));
+ for(auto o:extra.objects){o.mesh_index+=base;o.parent=-1;for(int* p:{&o.texture_index,&o.normal_map_index,&o.roughness_map_index,&o.metallic_map_index})if(*p>=0)*p+=tex;scene.AddObject(o);}
+}
+c::Scene presentation_robot(s::DevArmPickEnvironment& model,const s::PickObservation& frame){
+ std::vector<c::Vec3d> anchors;
+ for(const std::string link:{"base_link","link1","link2","link3","link4","end_link"})
+  anchors.push_back(model.link_pose(frame,link).TransformPoint({0,.045,.015}));
+ return s::workcell_presentation(model.robot_scene(frame),false,anchors);
+}
+void box(c::RenderResult& image,const s::ImageBox& b){
+ for(int y=b.y;y<b.y+b.height;++y)for(int x=b.x;x<b.x+b.width;++x){
+  if(x>b.x+1&&x<b.x+b.width-2&&y>b.y+1&&y<b.y+b.height-2)continue;
+  auto i=4*(y*image.width+x);image.rgba[i]=30;image.rgba[i+1]=245;image.rgba[i+2]=120;
+ }
+}
+void panel(c::RenderResult& image,int x,int y,int width,int height){
+ for(int yy=y;yy<y+height;++yy)for(int xx=x;xx<x+width;++xx){auto i=4*(yy*image.width+xx);for(int k=0;k<3;++k)image.rgba[i+k]=static_cast<unsigned char>(.18*image.rgba[i+k]+.82*20);}
+}
+void composite(c::RenderResult& dest,const c::RenderResult& actors){
+ for(std::size_t i=0;i<dest.depth.size();++i)if(actors.depth[i]<dest.depth[i]){
+   std::copy_n(actors.rgba.begin()+4*i,4,dest.rgba.begin()+4*i);dest.depth[i]=actors.depth[i];
+ }
+}
+void material_gallery(){
+ s::ConveyorEnvironment fruit(s::FruitVariation::Diverse);fruit.set_visual_style(s::WorkcellVisualStyle::Realistic);
+ std::array<std::array<std::uint64_t,3>,2> seeds{};std::array<std::array<bool,3>,2> seen{};
+ for(std::uint64_t seed=0;seed<1000;++seed){fruit.reset(seed);auto f=fruit.observation();const auto& color=f.appearance.skin;
+  int hue=color[1]>color[0]*1.2?0:color[0]>.65?1:2;int kind=f.kind==s::FruitKind::Apple?0:1;
+  if(!seen[kind][hue]){seen[kind][hue]=true;seeds[kind][hue]=seed;}
+ }
+ c::RenderResult grid;grid.width=960;grid.height=640;grid.rgba.resize(960*640*4);
+ for(int kind=0;kind<2;++kind)for(int hue=0;hue<3;++hue){
+  fruit.reset_for_pick(seeds[kind][hue]);auto f=fruit.observation();f.position[0]=f.position[2]=0;f.position[1]-=.72;
+  auto scene=fruit.dynamic_scene(f);scene.objects.erase(std::remove_if(scene.objects.begin(),scene.objects.end(),[](const auto& o){return !o.name.starts_with("apple")&&!o.name.starts_with("banana");}),scene.objects.end());
+  auto id=c::AddPrimitiveToScene(&scene,c::PrimitiveKind::Cube);auto& ground=*scene.FindObject(id);ground.position={0,0,-.0125f};ground.scale={4,4,.025f};ground.color={.62f,.59f,.54f,1};ground.roughness=.8f;
+  scene=s::workcell_presentation(std::move(scene));c::Camera camera;camera.position={.08,-.24,.18};camera.target={0,0,.035};camera.vertical_fov=38;
+  auto settings=s::workcell_presentation_options(320,320);settings.samples=2;settings.shadow_samples=8;settings.ambient_occlusion_samples=4;
+  const auto image=c::render(scene,camera,settings);
+  for(int y=0;y<320;++y)std::copy_n(image.rgba.begin()+4*y*320,4*320,grid.rgba.begin()+4*((kind*320+y)*960+hue*320));
+  c::draw_text(grid,std::string(kind==0?"APPLE ":"BANANA ")+std::array<std::string,3>{"GREEN","GOLD","RUSSET"}[hue],hue*320+12,kind*320+298,2,{.16f,.18f,.14f,1});
+ }
+ grid.save(directory+"fruit_materials.png");
+}
+void copy_artifacts(){
+ for(const auto& entry:fs::directory_iterator(directory))if(entry.path().filename().string().starts_with("rl_")&&entry.is_regular_file())fs::copy_file(entry.path(),"figures/fruit_stream_physics_"+entry.path().filename().string(),fs::copy_options::overwrite_existing);
+ fs::create_directories("figures/fruit_stream_physics_rl");
+ if(fs::exists(directory+"rl"))for(const auto& entry:fs::directory_iterator(directory+"rl"))if(entry.is_regular_file())fs::copy_file(entry.path(),fs::path("figures/fruit_stream_physics_rl")/entry.path().filename(),fs::copy_options::overwrite_existing);
+
+ for(const std::string name:{"sorting.mp4","poster.png","inspection.png","camera_samples.png","fruit_materials.png","vision_learning.svg","mobile.npz","policy.txt","images.csv","vision_training.csv","video_perception.csv","trajectory.csv","fruit_trajectory.csv","physics.csv","physics.svg","vision_metrics.txt","metrics.json","timings.csv","run_inputs.tsv"})
+   if(fs::exists(directory+name))fs::copy_file(directory+name,"figures/fruit_stream_physics_"+name,fs::copy_options::overwrite_existing);
+}
+int main(){
+ Timings timings;
+ n::set_num_threads(1);fs::create_directories(directory);fs::create_directories("figures");
+ const char* workers=std::getenv("DATAMUNGE_RENDER_THREADS");
+ const int render_threads=workers?std::stoi(workers):int(std::min(16u,std::max(1u,std::thread::hardware_concurrency())));
+ if(render_threads<1||render_threads>256)throw std::invalid_argument("Render threads must be 1..256");
+ const char* keep=std::getenv("DATAMUNGE_STREAM_KEEP_FRAMES");const bool keep_frames=keep&&std::string(keep)!="0";
+ video_start=environment_integer("DATAMUNGE_VIDEO_START",40,0,59);
+ video_seconds=environment_integer("DATAMUNGE_VIDEO_SECONDS",20,1,60);
+ if(video_start+video_seconds>simulation_seconds)throw std::invalid_argument("Preview must lie within the fixed 60-second simulation");
+ frame_directory=directory+((video_start==0&&video_seconds==simulation_seconds)?"frames/":"frames_"+std::to_string(video_start)+"_"+std::to_string(video_seconds)+"/");
+ if(keep_frames)fs::create_directories(frame_directory);
+ const bool replay=std::getenv("DATAMUNGE_STREAM_REPLAY")!=nullptr;
+ const bool learn_only=std::getenv("DATAMUNGE_STREAM_LEARN_ONLY")!=nullptr;
+ if(replay&&learn_only)throw std::invalid_argument("Choose learning or replay, not both");
+ timings.phase("gpu_initialization");
+ const std::string requested_backend=std::getenv("DATAMUNGE_RENDER_BACKEND")?std::getenv("DATAMUNGE_RENDER_BACKEND"):"auto";
+ if(requested_backend!="auto"&&requested_backend!="cpu"&&requested_backend!="cuda")throw std::invalid_argument("DATAMUNGE_RENDER_BACKEND must be auto, cpu or cuda");
+ std::unique_ptr<c::CudaRenderer> gpu;
+ std::string overview_backend="cpu",gpu_device="none";
+ if(requested_backend!="cpu"){
+  auto info=dm::compute::probe({dm::compute::Backend::CUDA,0});
+  if(info.available){gpu=std::make_unique<c::CudaRenderer>();overview_backend="cuda";gpu_device=info.name;}
+  else if(requested_backend=="cuda")throw std::runtime_error("Requested CUDA renderer unavailable: "+info.diagnostic+"; use just playground-gpu for a CUDA-enabled build");
+ }
+ std::cerr<<"Overview renderer: "<<overview_backend<<" ("<<gpu_device<<"); wrist sensor: CPU reference\n";
+ timings.phase("setup");
+ const auto assets=dm::datasets::fetch("rebot_devarm","../../../build/cad-assets/rebot");
+ const auto urdf=(fs::path(assets)/"Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf").string();
+ const auto gallery_key=file_hash("../../../src/datamunge/sim/workcell_visuals.cpp")+file_hash("../../../src/datamunge/cad/render.cpp");
+ std::string old_gallery_key;{std::ifstream cached(directory+"presentation_gallery.key");cached>>old_gallery_key;}
+ if(old_gallery_key!=gallery_key||!fs::exists(directory+"fruit_materials.png")){
+  timings.phase("presentation_material_gallery");material_gallery();std::ofstream cached(directory+"presentation_gallery.key");cached<<gallery_key;
+ }
+ // Freeze wrist perception to isolate control-pipeline differences.
+ if(!fs::exists(directory+"policy.txt"))fs::copy_file("figures/fruit_stream_realistic_policy.txt",directory+"policy.txt");
+ timings.phase("physical_timestep_validation");physical_audit(urdf,replay);
+ timings.phase("physical_view_vision");auto vision_evidence=prepare_vision(urdf,render_threads,replay);
+ timings.phase("RL_pipeline_comparison");auto benchmark=compare_pipelines(urdf,render_threads,replay,timings);
+ if(!replay){timings.save();fs::copy_file(directory+"timings.csv",directory+"rl_training_timings.csv",fs::copy_options::overwrite_existing);}
+ const auto& policy=benchmark.methods[benchmark.winner];
+ auto classifier=n::MobileNetClassifier::load(directory+"mobile.npz");
+ {
+  std::ofstream manifest(directory+"run_inputs.tsv");
+  manifest<<"key\tvalue\ncompiler\t"<<__VERSION__<<"\nrender_threads\t"<<render_threads<<"\nkeep_frames\t"<<keep_frames<<"\noverview\t960x640;6-shadow;3-AO;2x2-primary;studio=0.55\nwrist\t256x256;2-shadow;0-AO;1-primary\nseed\t"<<video_seed<<"\nrate\t"<<arrival_rate<<'\n';
+  if(const char* prefix=std::getenv("DATAMUNGE_LINKED_CORE"))manifest<<"core_prefix\t"<<prefix<<'\n';
+  for(const auto& name:{"mobile.npz","vision_metrics.txt","rl_selection.txt","rl_choice.txt"})manifest<<name<<"_sha256\t"<<file_hash(directory+name)<<'\n';
+  manifest<<"physics_engine\tMuJoCo "<<s::articulated_physics_version()<<"\nphysics_hz\t960\ntraining_proxy\t0\nactive_capacity\t8\n";
+  manifest<<"presentation_profile\tfactory-v2\nprimary_samples_per_axis\t2\nshadow_samples\t6\nao_samples\t3\nstudio_environment\t0.55\n";
+  manifest<<"overview_backend\t"<<overview_backend<<"\ngpu_device\t"<<gpu_device<<"\nwrist_backend\tcpu\n";
+  manifest<<"video_idle_watch_infeed\t1\nevaluation_idle_watch_infeed\t1\nsynchronized_grasp\t1\ntrace_decay\t0.8\nqueued_wait_cost\t0.5\nmiss_cost\t6\nwrong_cost\t8\n";
+  manifest<<"simulation_seconds\t"<<simulation_seconds<<"\nvideo_start\t"<<video_start<<"\nvideo_seconds\t"<<video_seconds<<'\n';
+  manifest<<"urdf_sha256\t"<<file_hash(urdf)<<"\ncpp_source_sha256\t"<<file_hash(__FILE__)<<'\n';
+  for(const auto& name:{"src/datamunge/cad/render.cpp","src/datamunge/cad/detail/ray_box.hpp","src/datamunge/cad/detail/cuda_types.hpp","src/datamunge/cad/detail/render_ptx.hpp","shaders/cad/render.cu","src/datamunge/cad/video.cpp","src/datamunge/sim/devarm_camera.cpp","src/datamunge/sim/workcell_visuals.cpp","src/datamunge/sim/fruit_stream.cpp","include/datamunge/sim/fruit_stream.hpp","src/datamunge/rl/discrete.cpp","src/datamunge/rl/detail.hpp","include/datamunge/rl/discrete.hpp","src/datamunge/sim/stream_dynamics.cpp","src/datamunge/sim/stream_dynamics.hpp","src/datamunge/cad/robot.cpp","include/datamunge/cad/robot.hpp"})manifest<<name<<"_sha256\t"<<file_hash(fs::path("../../..")/name)<<'\n';
+ }
+ if(learn_only){copy_artifacts();timings.save();std::cerr<<"RL comparison complete: "<<method_names[benchmark.winner]<<" selected by validation\n";return 0;}
+ timings.phase("full_physics_actual_rgb_simulation");
+ auto movie_options=appearance_options();movie_options.watch_infeed=true;
+ s::FruitStreamEnvironment movie(urdf,movie_options);
+ s::DevArmWristCamera movie_wrist(movie.arm_model(),256,95);movie_wrist.set_render_threads(render_threads);
+ // Aim telemetry concerns optical direction; queue association still uses tracked geometry.
+ auto infeed_aimed=[&](const s::StreamFrame& frame){auto camera=movie_wrist.pose(frame.arm);
+   return (camera.target-camera.position).Normalized().Dot((c::Vec3d{-.92,0,.86}-camera.position).Normalized())>.97;};
+ // Simulate a fresh complete minute; rendering uses a configurable contiguous excerpt.
+ std::ofstream video_log(directory+"video_perception.csv");video_log<<"mode,stream_seed,id,time,true_class,predicted_class,confidence,box_x,box_y,box_width,box_height\n";
+ Vision video_vision{movie,movie_wrist,classifier,video_log};video_vision.seed=video_seed;video_vision.mode="video";
+ movie.set_perception([&](const auto& frame,auto id){return video_vision(frame,id);});
+ std::vector<s::StreamFrame> frames;
+ movie.record([&](const auto& f){if(f.time<=simulation_seconds+1e-9)frames.push_back(f);},fps);
+ auto f=movie.reset(video_seed,arrival_rate);
+ std::ofstream decisions(directory+"rl_video_decisions.csv");decisions<<"method,time,state,action";for(int k=0;k<5;++k)decisions<<",allowed_"<<k;for(int k=0;k<25;++k)decisions<<",feature_"<<k;decisions<<'\n';
+ while(f.time<simulation_seconds){
+  const auto observed=movie.learning_observation();const auto action=policy.action(movie);
+  decisions<<method_names[benchmark.winner]<<','<<std::setprecision(12)<<f.time<<','<<observed.state<<','<<int(action);for(auto allowed:observed.allowed)decisions<<','<<int(allowed);for(auto value:observed.features)decisions<<','<<value;decisions<<'\n';
+  f=movie.step(action).frame;
+ }
+ decisions.close();
+ movie.record({});
+ if(frames.size()!=fps*simulation_seconds+1||std::abs(frames.back().time-simulation_seconds)>1e-8)throw std::runtime_error("Video horizon/sample count mismatch");
+ const auto simulation_endpoint=frames.back();
+ const auto endpoint=frames.at(fps*(video_start+video_seconds));
+ const auto startpoint=frames.at(fps*video_start);
+ for(const auto& x:frames)if(x.training_proxy||x.synthetic_perception||!x.articulated_physics||!x.arm.measured_joints)throw std::runtime_error("Final video must use full physics and actual RGB predictions");
+ timings.phase("trajectory_output");
+ std::ofstream trajectory(directory+"trajectory.csv");trajectory<<"frame,time,target,arrivals,correct,wrong,missed,pending,grasped,q1,q2,q3,q4,q5,q6,finger,infeed_aimed,articulated,max_penetration,max_effort,max_joint_speed,max_finger_speed\n";
+ std::ofstream fruit_trace(directory+"fruit_trajectory.csv");fruit_trace<<"frame,time,id,seed,scheduled_arrival,status,prediction,confidence,x,y,z,qw,qx,qy,qz,kind,prototype,scale,mass,vx,vy,vz,wx,wy,wz\n";
+ for(std::size_t k=0;k<frames.size();++k){const auto& x=frames[k];
+   trajectory<<std::format("{},{:.8f},{},{},{},{},{},{},{}",k,x.time,x.target,x.counts.arrivals,x.counts.correct,x.counts.wrong,x.counts.missed,unresolved(x),int(x.arm.grasped));for(double q:x.arm.joints)trajectory<<std::format(",{:.9f}",q);trajectory<<std::format(",{:.9f},{},{},{:.9f},{:.9f},{:.9f},{:.9f}\n",x.arm.finger,int(infeed_aimed(x)),int(x.articulated_physics),x.maximum_penetration,x.maximum_effort_fraction,x.maximum_joint_speed,x.maximum_finger_speed);
+   for(const auto& p:x.fruit){fruit_trace<<std::format("{},{:.8f},{},{},{:.9f},{},{},{:.9f},{:.9f},{:.9f},{:.9f}",k,x.time,p.id,p.seed,p.arrival,int(p.status),p.prediction,p.confidence,p.body.position[0],p.body.position[2],p.body.position[1]);const auto& q=p.body.rotation;for(double v:std::array<double,4>{q[0],-q[1],-q[3],-q[2]})fruit_trace<<std::format(",{:.12f}",v);fruit_trace<<std::format(",{},{},{:.12f},{:.12f}",int(p.body.kind),p.body.appearance.prototype,p.body.appearance.scale,p.body.mass);for(int axis:{0,2,1})fruit_trace<<std::format(",{:.12f}",p.body.velocity[axis]);for(int axis:{0,2,1})fruit_trace<<std::format(",{:.12f}",-p.body.angular_velocity[axis]);fruit_trace<<'\n';}
+ }
+ trajectory.close();fruit_trace.close();frames.resize(fps*simulation_seconds);
+ timings.phase("video_setup");
+ c::Camera overview;overview.position={-1.65,-2.25,1.65};overview.target={-.05,0,.6};overview.vertical_fov=40;
+ auto options=s::workcell_presentation_options(960,640);options.threads=render_threads;
+ auto scenery=s::workcell_presentation(movie.arm_model().static_scene(),true);
+
+ bool saved_inspection=false;
+ std::unique_ptr<c::PreparedScene> prepared;
+ std::array<double,6> prepared_joints{};double prepared_finger=0;std::size_t preparations=0;
+ c::VideoWriter video(directory+"sorting.mp4",960,640,fps);
+ timings.phase("render_and_stream");
+ for(std::size_t k=0;k<std::size_t(fps*video_seconds);++k){const auto& x=frames[fps*video_start+k];
+   // Share unchanged validated/transformed geometry. Actor renders rebuild the
+   // exact combined hierarchy, retaining all shadows and equal-depth hit order.
+   auto actors=timings.measure("actors",[&]{return movie.fruit_scene(x);});
+   timings.measure("overview_prepare",[&]{
+    if(!prepared||prepared_joints!=x.arm.joints||prepared_finger!=x.arm.finger){
+     auto fixed=scenery;append(fixed,presentation_robot(movie.arm_model(),x.arm));append(fixed,movie_wrist.housing(x.arm));
+     prepared=std::make_unique<c::PreparedScene>(std::move(fixed));prepared_joints=x.arm.joints;prepared_finger=x.arm.finger;++preparations;
+    }
+   });
+   auto display_actors=timings.measure("presentation_actors",[&]{return s::workcell_presentation(actors);});
+   auto image=timings.measure("overview_render",[&]{return gpu?gpu->render(*prepared,display_actors,overview,options):prepared->render(display_actors,overview,options);});
+   c::RenderResult live;int prediction=-1;double confidence=0;
+   auto focus=std::find_if(x.fruit.begin(),x.fruit.end(),[&](const auto& p){return p.id==x.target;});
+   if(x.target==0)for(auto it=x.fruit.begin();it!=x.fruit.end();++it)
+     if(it->status==s::StreamFruitStatus::Belt&&(focus==x.fruit.end()||it->body.position[0]>focus->body.position[0]))focus=it;
+   timings.measure("wrist_view",[&]{
+   if(focus!=x.fruit.end()){auto inspected=movie_wrist.inspect_actors(x.arm,actors,centre(*focus));box(inspected.rgb,inspected.box);live=std::move(inspected.rgb);prediction=focus->prediction;confidence=focus->confidence;}
+   else live=movie_wrist.capture_actors(x.arm,actors);
+   });
+   timings.measure("overlays",[&]{
+   constexpr int left=20,top=20,scale=1,border=5;
+   std::array<unsigned char,3> color=prediction<0?std::array<unsigned char,3>{145,160,175}:prediction==0?std::array<unsigned char,3>{215,40,35}:std::array<unsigned char,3>{250,210,35};
+   for(int yy=-border;yy<256*scale+border;++yy)for(int xx=-border;xx<256*scale+border;++xx){auto i=4*((top+yy)*image.width+left+xx);bool edge=xx<0||yy<0||xx>=256*scale||yy>=256*scale;for(int ch=0;ch<3;++ch)image.rgba[i+ch]=edge?color[ch]:live.rgba[4*((yy/scale)*256+xx/scale)+ch];image.rgba[i+3]=255;}
+   panel(image,15,281,266,26);c::draw_text(image,prediction<0?(x.target==0?(infeed_aimed(x)?"WATCHING INFEED":"RETURNING TO WATCH"):"WRIST - NOT CLASSIFIED"):std::format("{} P {:.2f}",prediction==0?"APPLE":"BANANA",confidence),26,288,2);
+   panel(image,15,570,650,58);c::draw_text(image,std::format("T {:.1f} S  POISSON {:.2f}/S  ARRIVED {}",x.time,arrival_rate,x.counts.arrivals),25,578,2);
+   c::draw_text(image,std::format("SORTED {}  WRONG {}  MISSED {}  ACTIVE {}",x.counts.correct,x.counts.wrong,x.counts.missed,unresolved(x)),25,602,2);
+   });
+   timings.measure("stream_write",[&]{video.append(image);});
+   if(keep_frames)timings.measure("png_save",[&]{image.save(std::format("{}{:05}.png",frame_directory,k));});
+   timings.measure("still_images",[&]{if(k+1==std::size_t(fps*video_seconds))image.save(directory+"poster.png");if(k==0)image.save(directory+"inspection.png");if(!saved_inspection&&prediction>=0){image.save(directory+"inspection.png");saved_inspection=true;}});
+
+   if(k%150==0)std::cerr<<"Render "<<k<<"/"<<fps*video_seconds<<" frames\n";
+ }
+ video_log.close();
+ timings.phase("encoder_finish");
+ if(video.frames_written()!=std::size_t(fps*video_seconds))throw std::runtime_error("Streamed frame count mismatch");
+ video.finish();timings.phase("artifact_copy");
+ std::ofstream metrics(directory+"metrics.json");
+ metrics<<"{\"articulated_physics\":true,\"training_proxy\":false,\"physics_hz\":960,\"physics_version\":"<<std::quoted(s::articulated_physics_version())<<",\"maximum_penetration\":"<<endpoint.maximum_penetration<<",\"maximum_effort_fraction\":"<<endpoint.maximum_effort_fraction<<",\"maximum_joint_speed\":"<<endpoint.maximum_joint_speed<<",\"maximum_finger_speed\":"<<endpoint.maximum_finger_speed<<",\"protocol\":"<<std::quoted(protocol)<<",\"selected_method\":"<<std::quoted(method_names[benchmark.winner])<<",\"selected_checkpoint\":"<<policy.checkpoint
+ <<",\"windows_per_fresh_method\":"<<pipeline_windows<<",\"actual_rgb_video\":true,\"full_physics_video\":true,\"overview_backend\":"<<std::quoted(overview_backend)<<",\"wrist_backend\":\"cpu\",\"video_start\":"<<video_start<<",\"video_seconds\":"<<video_seconds<<",\"fps\":15,\"frames\":"<<fps*video_seconds
+ <<",\"simulation_seconds\":60,\"trajectory_frames\":901,\"video_seed\":"<<video_seed<<",\"arrival_rate\":"<<arrival_rate<<",\"render_threads\":"<<render_threads
+ <<",\"video_arrivals\":"<<endpoint.counts.arrivals<<",\"video_correct\":"<<endpoint.counts.correct<<",\"video_wrong\":"<<endpoint.counts.wrong<<",\"video_missed\":"<<endpoint.counts.missed<<",\"video_pending\":"<<unresolved(endpoint)<<"}\n";
+ metrics.close();copy_artifacts();timings.save();fs::copy_file(directory+"timings.csv","figures/fruit_stream_physics_timings.csv",fs::copy_options::overwrite_existing);
+ std::println("Selected **{}**, checkpoint **{}**, using only six full-physics actual-RGB validation streams. Held-out data and the demonstration seed do not select the model.\n",method_names[benchmark.winner],policy.checkpoint);
+ for(std::size_t m=0;m<5;++m){const auto& p=benchmark.methods[m];std::println("**{}** — validation score **{:.0f}**; held-out **{} correct, {} wrong, {} missed, {} pending**, from **{} arrivals**.\n",method_names[m],selection_score(p.validation),p.test.correct,p.test.wrong,p.test.missed,p.test.pending,p.test.arrivals);}
+ std::println("Each fresh pipeline trains **{} independent 120-second windows using MuJoCo {} at 960 Hz**, with matched reset seeds and no analytic transport or ideal grasp. The old proxy-trained controller is a transfer reference with a larger historical training budget; independent validation can select it for deployment.\n",pipeline_windows,s::articulated_physics_version());
+ std::println("Physical-view MobileNet: **{}/{}** held-out prototype crops; validation selects epoch **{}**. All control candidates share this frozen classifier.\n",vision_evidence.correct,vision_evidence.test_count,vision_evidence.epoch);
+ std::println("Selected-policy held-out maxima: **{:.2f} mm penetration**, effort fraction **{:.3f}**, actual joint speed **{:.2f} rad/s**, actual finger speed **{:.3f} m/s**. Speed references are bounded, while physical contact/back-drive can cause overshoot. These nominal parameters are not hardware calibration.\n",1000*policy.test.penetration,policy.test.effort,policy.test.joint_speed,policy.test.finger_speed);
+ std::println("Overview: **{}** (`{}`); wrist sensor: **CPU reference**. [Training history|file:figures/fruit_stream_physics_rl_training.csv], [validation|file:figures/fruit_stream_physics_rl_validation.csv], [held-out outcomes|file:figures/fruit_stream_physics_rl_evaluation.csv].\n",overview_backend,gpu_device);
+ std::println("The **{}-second preview** covers world time **{}–{} seconds**, using seed `{}` at **{:.2f} fruit/s**. Counters are cumulative from world time zero, including earlier work and misses. At the preview endpoint: **{} arrivals**, **{} correct**, **{} wrong**, **{} missed**, **{} still in progress**. The simulator still runs the complete minute; the excerpt is for rendering/debugging, not a new policy evaluation.\n",video_seconds,video_start,video_start+video_seconds,video_seed,arrival_rate,endpoint.counts.arrivals,endpoint.counts.correct,endpoint.counts.wrong,endpoint.counts.missed,unresolved(endpoint));
+ std::println("\\video(figures/fruit_stream_physics_sorting.mp4)");
+}
+```
+// result_begin: markdown
+Selected **Dueling DDQN**, checkpoint **256**, using only six full-physics actual-RGB validation streams. Held-out data and the demonstration seed do not select the model.
+
+**Q lambda** — validation score **-12**; held-out **96 correct, 12 wrong, 84 missed, 15 pending**, from **207 arrivals**.
+
+**Double DQN** — validation score **-16**; held-out **110 correct, 9 wrong, 74 missed, 14 pending**, from **207 arrivals**.
+
+**Dueling DDQN** — validation score **36**; held-out **111 correct, 8 wrong, 73 missed, 15 pending**, from **207 arrivals**.
+
+**PPO** — validation score **6**; held-out **107 correct, 14 wrong, 73 missed, 13 pending**, from **207 arrivals**.
+
+**Old proxy** — validation score **-62**; held-out **103 correct, 7 wrong, 84 missed, 13 pending**, from **207 arrivals**.
+
+Each fresh pipeline trains **256 independent 120-second windows using MuJoCo 3.4.0 at 960 Hz**, with matched reset seeds and no analytic transport or ideal grasp. The old proxy-trained controller is a transfer reference with a larger historical training budget; independent validation can select it for deployment.
+
+Physical-view MobileNet: **53/64** held-out prototype crops; validation selects epoch **12**. All control candidates share this frozen classifier.
+
+Selected-policy held-out maxima: **6.09 mm penetration**, effort fraction **1.000**, actual joint speed **5.35 rad/s**, actual finger speed **0.366 m/s**. Speed references are bounded, while physical contact/back-drive can cause overshoot. These nominal parameters are not hardware calibration.
+
+Overview: **cuda** (`NVIDIA GeForce RTX 5080 Laptop GPU`); wrist sensor: **CPU reference**. [Training history|file:figures/fruit_stream_physics_rl_training.csv], [validation|file:figures/fruit_stream_physics_rl_validation.csv], [held-out outcomes|file:figures/fruit_stream_physics_rl_evaluation.csv].
+
+The **20-second preview** covers world time **40–60 seconds**, using seed `2026113001` at **0.12 fruit/s**. Counters are cumulative from world time zero, including earlier work and misses. At the preview endpoint: **4 arrivals**, **2 correct**, **0 wrong**, **2 missed**, **0 still in progress**. The simulator still runs the complete minute; the excerpt is for rendering/debugging, not a new policy evaluation.
+
+\video(figures/fruit_stream_physics_sorting.mp4)
+// result_end
+
+
+\caption(A configured contiguous excerpt of the fixed-minute simulation of the frozen trained scheduler, with continuous Poisson arrivals and actual wrist RGB classification. The HUD reports arrivals, correct/wrong placements, misses and active work. Green boxes show visible target regions; gray means no current prediction, red means predicted apple, and yellow means predicted banana. Completed fruit clears from the bins after two seconds.)
+\alttext(A robot repeatedly intercepts fruit on a continuously moving conveyor and sorts it into red and yellow bins. Multiple fruit can coexist. A wrist-camera inset shows target bounds and current class predictions, while live counters show misses and unfinished work.)
+
+[Open the preview video|file:figures/fruit_stream_physics_sorting.mp4]
+or its [final frame|file:figures/fruit_stream_physics_poster.png].
+The [historical kinematic full-minute rendering|file:figures/fruit_stream_realistic_full_sorting.mp4]
+is retained as a reference to the previous model.
+
+\image(figures/fruit_stream_physics_inspection.png)
+\caption(A wrist-camera frame from the configured preview, preferring the first classified pickup when one occurs. Boxes and text are display annotations and never enter MobileNet.)
+\alttext(The continuing conveyor workcell with its live wrist-camera crop and prediction overlay.)
+
+\image(figures/fruit_stream_physics_camera_samples.png)
+\caption(Unannotated moving-view classifier inputs from held-out prototype 5. These include position, orientation, color and occlusion variation.)
+\alttext(Three rows of eight varied fruit crops captured from the wrist camera.)
+
+\image(figures/fruit_stream_physics_vision_learning.svg)
+\caption(MobileNet fine-tuning on aligned wrist-pickup images. Validation prototype 4 selects the checkpoint before test prototype 5 is evaluated.)
+\alttext(Training and validation cross entropy across twelve epochs.)
+
+Artifacts: [timestep checks|file:figures/fruit_stream_physics_physics.csv],
+[training history|file:figures/fruit_stream_physics_rl_training.csv],
+[physical screening|file:figures/fruit_stream_physics_rl_screening.csv],
+[RGB validation|file:figures/fruit_stream_physics_rl_validation.csv],
+[held-out outcomes|file:figures/fruit_stream_physics_rl_evaluation.csv],
+[RGB inference log|file:figures/fruit_stream_physics_rl_perception.csv],
+[frozen selection and hashes|file:figures/fruit_stream_physics_rl_selection.txt],
+[deployed checkpoint|file:figures/fruit_stream_physics_rl_choice.txt],
+[physical diagnostics|file:figures/fruit_stream_physics_metrics.json],
+[joint trajectory|file:figures/fruit_stream_physics_trajectory.csv],
+[fruit dynamics|file:figures/fruit_stream_physics_fruit_trajectory.csv],
+[demonstration decisions and observations|file:figures/fruit_stream_physics_rl_video_decisions.csv],
+[adapted MobileNet|file:figures/fruit_stream_physics_mobile.npz],
+[stage timings|file:figures/fruit_stream_physics_timings.csv].
+All candidate NPZ checkpoints are exported in `figures/fruit_stream_physics_rl/`.
+
+Trajectory files include the exact 60-second endpoint in addition to the 900
+frame-time states. Fruit positions, quaternions and velocities use CAD Z-up
+coordinates; quaternions are WXYZ, linear velocity is m/s, angular velocity is
+rad/s, and mass is kg. These logs are outputs, never additional policy inputs.

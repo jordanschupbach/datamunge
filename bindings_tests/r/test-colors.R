@@ -1,0 +1,27 @@
+# Native color constructors and exception translation, with the normal R/SWIG boundary.
+test_that("RGB constructors retain numeric calls and parse color strings", {
+  color <- RGB("#ff448855")
+  expect_equal(RGB_r_get(color), 255L)
+  expect_equal(RGB_g_get(color), 68L)
+  expect_equal(RGB_b_get(color), 136L)
+  expect_equal(RGB_alpha_get(color), 85 / 255)
+  expect_equal(RGB_g_get(RGB("GrEeN")), 128L)
+  expect_equal(RGB_alpha_get(RGB(10L, 20L, 30L)), 1)
+  expect_equal(RGB_alpha_get(RGB(10L, 20L, 30L, 0.25)), 0.25)
+  plot <- RPlot_create()$lines(c(0, 1), c(1, 2), "fit", color)
+  rm(color)
+  gc()
+  expect_match(plot$to_svg(), "rgb(255,68,136)", fixed = TRUE)
+  expect_error(RGB("#112233zz"), "color")
+})
+
+test_that("axis alias chains retain the plot and reject invalid ranges", {
+  plot <- RPlot_create()$xlim(0, 1)$ylim(-4, 4)
+  gc()
+  expect_equal(plot$x_max(), 1)
+  expect_equal(plot$y_min(), -4)
+  expect_error(plot$xlim(1, 0))
+  expect_error(plot$ylim(0, NaN))
+  expect_equal(plot$x_max(), 1)
+  expect_equal(plot$y_min(), -4)
+})

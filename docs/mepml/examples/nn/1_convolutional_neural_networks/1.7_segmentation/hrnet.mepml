@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 Persistent high-to-low streams exchange by projected bilinear upsampling or learned stride2 chains. Repeated sum/ReLU fusion supplies every target with every source. Final aligned concatenation predicts image-sized logits;explicit Adam optimizes all routes with paired BN checkpoints.
 
-The editable concept diagram is `diagrams/hrnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/hrnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/hrnet_concept.tikz > build/hrnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/hrnet_concept.svg build/hrnet_concept.dvi > build/hrnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/hrnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Parallel streams\nKeep fine detail");
+  diagram.node("n1", {5.2, 0}, "Repeated exchange\nAll source features");
+  diagram.node("n2", {10.4, 0}, "Visible Adam loop\nRestore and inspect");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/hrnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/hrnet_concept.svg)
 // result_end
 \caption(HRNet persistent resolution and repeated exchange)
@@ -476,40 +482,40 @@ int main() {
 Variant1: 382580 learned scalars, paired BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
-| 1 | 1 | 1.131349 | 0.253991 |
-| 1 | 2 | 0.757414 | 0.372965 |
-| 1 | 3 | 0.578377 | 0.406524 |
-| 1 | 4 | 0.465204 | 0.433368 |
-| 1 | 5 | 0.347087 | 0.469470 |
-| 1 | 6 | 0.304719 | 0.425257 |
-| 1 | 7 | 0.277501 | 0.447971 |
-| 1 | 8 | 0.253310 | 0.434336 |
-| 1 | 9 | 0.210446 | 0.460141 |
-| 1 | 10 | 0.214226 | 0.446792 |
-| 1 | 11 | 0.206788 | 0.459827 |
-| 1 | 12 | 0.181752 | 0.472337 |
-| 1 | 13 | 0.169981 | 0.451718 |
-| 1 | 14 | 0.172377 | 0.416473 |
-| 1 | 15 | 0.157045 | 0.508545 |
-| 1 | 16 | 0.141388 | 0.481582 |
-| 1 | 17 | 0.137362 | 0.458824 |
-| 1 | 18 | 0.134953 | 0.439910 |
-| 1 | 19 | 0.120741 | 0.514050 |
-| 1 | 20 | 0.112160 | 0.465686 |
-| 1 | 21 | 0.119349 | 0.493091 |
-| 1 | 22 | 0.113422 | 0.444314 |
-| 1 | 23 | 0.107943 | 0.495044 |
-| 1 | 24 | 0.098395 | 0.483425 |
-| 1 | 25 | 0.092886 | 0.497073 |
-| 1 | 26 | 0.091360 | 0.496744 |
-| 1 | 27 | 0.087944 | 0.461359 |
-| 1 | 28 | 0.084150 | 0.509841 |
-| 1 | 29 | 0.079655 | 0.508866 |
-| 1 | 30 | 0.080344 | 0.472360 |
-| 1 | 31 | 0.077128 | 0.502315 |
-| 1 | 32 | 0.071670 | 0.481788 |
-Restored four branch mean-activation maps24/12/6/3px,nearest-expanded96px,shared display range[0,7.820256]. These are feature activations,not class scores.
-Variant1 restored epoch19: validation mIoU 0.514050; test pixel accuracy 0.860664, mean IoU 0.480074; per-class IoU(background,circle,rectangle,triangle) 0.952996/0.241481/0.377457/0.348361. 512 explicit Adam updates.
+| 1 | 1 | 1.135228 | 0.276354 |
+| 1 | 2 | 0.779492 | 0.407576 |
+| 1 | 3 | 0.587040 | 0.390809 |
+| 1 | 4 | 0.467753 | 0.444585 |
+| 1 | 5 | 0.361838 | 0.441986 |
+| 1 | 6 | 0.325941 | 0.440022 |
+| 1 | 7 | 0.285882 | 0.476219 |
+| 1 | 8 | 0.249456 | 0.439025 |
+| 1 | 9 | 0.211754 | 0.451361 |
+| 1 | 10 | 0.201638 | 0.438269 |
+| 1 | 11 | 0.202971 | 0.423446 |
+| 1 | 12 | 0.194882 | 0.447435 |
+| 1 | 13 | 0.168048 | 0.448501 |
+| 1 | 14 | 0.176297 | 0.410734 |
+| 1 | 15 | 0.160556 | 0.484039 |
+| 1 | 16 | 0.153448 | 0.496157 |
+| 1 | 17 | 0.148266 | 0.422320 |
+| 1 | 18 | 0.142454 | 0.461209 |
+| 1 | 19 | 0.133351 | 0.515338 |
+| 1 | 20 | 0.120687 | 0.439112 |
+| 1 | 21 | 0.120969 | 0.466161 |
+| 1 | 22 | 0.110530 | 0.431508 |
+| 1 | 23 | 0.106887 | 0.466919 |
+| 1 | 24 | 0.098438 | 0.480190 |
+| 1 | 25 | 0.090083 | 0.487921 |
+| 1 | 26 | 0.091303 | 0.474192 |
+| 1 | 27 | 0.094306 | 0.479757 |
+| 1 | 28 | 0.090513 | 0.490364 |
+| 1 | 29 | 0.083414 | 0.490480 |
+| 1 | 30 | 0.079651 | 0.476787 |
+| 1 | 31 | 0.081365 | 0.489301 |
+| 1 | 32 | 0.077288 | 0.497752 |
+Restored four branch mean-activation maps24/12/6/3px,nearest-expanded96px,shared display range[0,8.714619]. These are feature activations,not class scores.
+Variant1 restored epoch19: validation mIoU 0.515338; test pixel accuracy 0.865024, mean IoU 0.471037; per-class IoU(background,circle,rectangle,triangle) 0.956802/0.305085/0.386132/0.236129. 512 explicit Adam updates.
 \image(figures/hrnet_training.svg)
 // result_end
 \caption(Complete compact HRNet fits512 visible Adam updates. Unregularized weighted CE and validation mean IoU are plotted;paired learned/BN restoration precedes held-out predictions and branch inspection.)

@@ -20,18 +20,24 @@ $$ \widehat g=\frac1K\sum_{k=1}^K\nabla_x s_c(x+\sigma z_k),\qquad SE_i=\sqrt{\w
 
 All points,ordinary derivatives,statistics and plot values remain tensors. The Gaussian bank is explicit,paired controls share it,and clipped inputs define a separate estimator. No new model fit or optimizer is needed for this frozen-model MonteCarlo average.
 
-The editable concept diagram is `diagrams/smoothgrad_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/smoothgrad_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/smoothgrad_concept.tikz > build/smoothgrad_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/smoothgrad_concept.svg build/smoothgrad_concept.dvi > build/smoothgrad_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/smoothgrad_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Actual image\n explicit noise bank");
+  diagram.node("n1", {5.2, 0}, "Fixed raw score\n ordinary gradients");
+  diagram.node("n2", {10.4, 0}, "Signed sample mean\n uncertainty and controls");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/smoothgrad_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/smoothgrad_concept.svg)
 // result_end
 \caption(SmoothGrad:explicit noisy observations and signed gradient means)
@@ -320,17 +326,17 @@ int main() {
 }
 ```
 // result_begin: markdown
-Exact replay 0,sigma0vanilla max 5.21540642e-08;all16selected/controlarrays unchanged;actual source IDs int32[10] [66921, 63380, 68936, 62280, 62094, 65222, 61209, 61721, 69402, 62570],targets int32[10] [0, 1, 2, 3, 9, 5, 6, 7, 8, 9],runners int32[10] [2, 6, 3, 5, 4, 9, 1, 9, 5, 4].
+Exact replay 0,sigma0vanilla max 0;all16selected/controlarrays unchanged;actual source IDs int32[10] [66921, 63380, 68936, 62280, 62094, 65222, 61209, 61721, 69402, 62570],targets int32[10] [0, 1, 2, 3, 9, 5, 6, 7, 8, 9],runners int32[10] [2, 6, 3, 5, 4, 9, 1, 9, 5, 4].
 | group | samples | total L1change from ordinary | mean MonteCarloSE | off-domain noisy coordinates |
 |---|---:|---:|---:|---:|
 | main | 32 | 132.801926 | 0.00376360933 | 114211 |
 | prefix | 8 | 140.654892 | 0.00740645593 | 28531 |
-| second_seed | 32 | 130.415344 | 0.00375977438 | 114561 |
+| second_seed | 32 | 130.415482 | 0.00375977741 | 114561 |
 | large_sigma | 32 | 159.164658 | 0.00431639655 | 118066 |
 | clipped | 32 | 142.401535 | 0.00282231369 | 0 |
 | runner | 32 | 513.364258 | 0.0036435877 | 114211 |
-| initial | 32 | 443.695435 | 0.00111185107 | 114211 |
-| zero | 2 | 2.15146611e-05 | 2.01397432e-09 | 0 |
+| initial | 32 | 443.695465 | 0.00111185107 | 114211 |
+| zero | 2 | 0 | 0 | 0 |
 \image(figures/smoothgrad_maps.png)
 // result_end
 \caption(Columns:true digit0..9. Rows:actual image,ordinary raw-score gradient,then signed means for main32,prefix8,second seed,double sigma,clipped,runner,actual initial,and sigma0. Every gradient row shares one absolute peak,signed zero grey;all standardized/noisy/derivative values remain saved.)
@@ -404,10 +410,10 @@ int main() {
 | ordinary | float64[10] [0.866145, 0.838179, 0.843975, 0.882854, 1.02406, 0.960582, 0.923478, 0.881994, 0.941823, 0.933352] |
 | main_mean | float64[10] [0.836246, 0.850798, 0.812938, 0.865956, 0.970824, 0.922452, 0.87736, 0.891303, 0.91175, 0.903546] |
 | prefix_mean | float64[10] [0.865055, 0.887766, 0.848146, 0.913543, 1.04036, 0.957357, 0.906025, 0.953787, 0.955516, 0.946851] |
-| second_seed_mean | float64[10] [0.834978, 0.857357, 0.823354, 0.865123, 0.963722, 0.922765, 0.884877, 0.895791, 0.909209, 0.911522] |
+| second_seed_mean | float64[10] [0.834978, 0.857357, 0.823354, 0.865123, 0.963722, 0.922765, 0.884877, 0.895791, 0.909207, 0.911522] |
 | large_sigma_mean | float64[10] [0.831305, 0.87378, 0.788654, 0.842831, 0.936441, 0.888467, 0.850271, 0.839471, 0.898007, 0.893971] |
 | clipped_mean | float64[10] [0.788207, 0.764781, 0.725757, 0.790079, 0.888387, 0.870079, 0.836385, 0.804839, 0.869241, 0.844903] |
-All7840meanabs-minus-absmean sum 29.6115341;mean primary MonteCarloSE 0.00376360933;independent-seed signed-mean L1 33.9671936.
+All7840meanabs-minus-absmean sum 29.6115322;mean primary MonteCarloSE 0.00376360933;independent-seed signed-mean L1 33.9672203.
 \image(figures/smoothgrad_diagnostics.svg)
 // result_end
 \caption(Every per-case roughness value remains visible for ordinary and five fixed smoothing controls. Meanabsolute cancellation and MonteCarloSE describe the finite bank;neither sharpness nor smaller roughness certifies explanation quality.)

@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iterator>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 using namespace datamunge::graphics;
@@ -554,4 +555,81 @@ TEST(PlotColors, ValueColorsScalesMissingAndConstantValues) {
   EXPECT_EQ(clamped[0].r, 0);
   EXPECT_EQ(clamped[1].r, 100);
   EXPECT_EQ(clamped[2].r, 200);
+}
+
+TEST(PlotColors, RgbaRetainsRgbCompatibilityAndNumericDefaults) {
+  static_assert(std::is_same_v<RGB, RGBA>);
+  static_assert(std::is_convertible_v<RGB, RGBA>);
+  static_assert(std::is_convertible_v<std::string, RGBA>);
+  static_assert(std::is_convertible_v<const char*, RGBA>);
+  static_assert(!std::is_convertible_v<int, RGBA>);
+  static_assert(!std::is_convertible_v<double, RGBA>);
+  static_assert(std::is_standard_layout_v<RGBA>);
+  constexpr RGB old{10, 20, 30};
+  constexpr RGBA converted = old;
+  static_assert(converted.r == 10 && converted.g == 20 && converted.b == 30 && converted.alpha == 1.0);
+  constexpr RGB ink;
+  static_assert(ink.r == 31 && ink.g == 41 && ink.b == 55 && ink.alpha == 1.0);
+  EXPECT_DOUBLE_EQ((RGB{1, 2, 3, 0.25}.alpha), 0.25);
+  EXPECT_EQ(RGB{1}.g, 41);
+  EXPECT_EQ((RGB{1, 2}.b), 55);
+}
+
+TEST(PlotColors, RgbaParsesOwnedNamesAndHexWithAlphaLast) {
+  const RGBA color = std::string("#fF448855");
+  EXPECT_EQ(color.r, 255);
+  EXPECT_EQ(color.g, 68);
+  EXPECT_EQ(color.b, 136);
+  EXPECT_DOUBLE_EQ(color.alpha, 85.0 / 255);
+  EXPECT_DOUBLE_EQ(RGBA("#112233").alpha, 1.0);
+  EXPECT_DOUBLE_EQ(RGBA("#11223300").alpha, 0.0);
+  EXPECT_DOUBLE_EQ(RGBA("#112233FF").alpha, 1.0);
+  EXPECT_EQ(RGBA("GrEeN").g, 128);
+  EXPECT_EQ(RGBA("GREY").r, RGBA("gray").r);
+  EXPECT_DOUBLE_EQ(RGBA("transparent").alpha, 0);
+  auto text = std::string("blue");
+  const RGBA blue = text;
+  text = "red";
+  EXPECT_EQ(blue.b, 255);
+}
+
+TEST(PlotColors, RgbaRejectsMalformedInputBeforePlotMutation) {
+  auto plot = RPlot().points({0, 1}, {1, 2}, "retained", RGB{1, 2, 3});
+  for (const std::string text : {"", "blurple", "#123", "#12345", "#1234567", "#123456789", "#gg0000",
+                                  "#123456zz", " #112233", "#112233 ", "#-12345"}) {
+    EXPECT_THROW((void)RGBA(text), std::invalid_argument) << text;
+    EXPECT_THROW(plot.lines({0, 1}, {2, 3}, "bad", text), std::invalid_argument) << text;
+    EXPECT_THROW(plot.set_col(text), std::invalid_argument) << text;
+    EXPECT_EQ(plot.series().size(), 1u);
+    EXPECT_EQ(plot.series()[0].color.r, 1);
+  }
+  EXPECT_THROW((void)RGBA(static_cast<const char*>(nullptr)), std::invalid_argument);
+}
+
+TEST(PlotColors, EveryLayerAcceptsStringColorsAndKeepsStringLabels) {
+  auto plot = RPlot().background("white").axis_color(std::string("#111111")).grid_color("gray")
+      .points({0, 1}, {1, 2}, "red")
+      .lines({0, 1}, {2, 3}, std::string("blue"))
+      .lines({0, 1}, {3, 4}, "fit", "#ff44ff55")
+      .points({0, 1}, {4, 5}, "data", std::string("#11448880"))
+      .lines({0, 1}, {5, 6}, "#11223380", 3.0)
+      .lines({0, 1}, {5, 6}, std::string("#11223380"), 3.0)
+      .abline(0, 1, "red").abline_h(1, "blue").abline_v(0, "green")
+      .polygon({0, 1, 0}, {0, 0, 1}, "#11223380")
+      .text(0, 0, "hello", "black");
+  EXPECT_EQ(plot.series()[0].label, "red");
+  EXPECT_EQ(plot.series()[0].color.r, 37); // Default point color, independent of the label.
+  EXPECT_EQ(plot.series()[1].label, "blue");
+  EXPECT_DOUBLE_EQ(plot.series()[2].color.alpha, 85.0 / 255);
+  EXPECT_DOUBLE_EQ(plot.series()[3].color.alpha, 128.0 / 255);
+  EXPECT_TRUE(plot.series()[4].label.empty());
+  EXPECT_DOUBLE_EQ(plot.series()[4].stroke_width, 3.0);
+  EXPECT_NE(plot.to_svg().find("rgb(255,68,255)"), std::string::npos);
+  plot.set_col("red");
+  EXPECT_EQ(plot.series()[0].color.r, 255);
+  plot.set_col(std::string("#12345680"));
+  EXPECT_DOUBLE_EQ(plot.series()[0].color.alpha, 128.0 / 255);
+  const auto bars = RPlot::barplot({1, 2}, {"a", "b"}, "bars", "cyan");
+  EXPECT_EQ(bars.series()[0].color.g, 255);
+  EXPECT_NO_THROW(RPlot::pie({1, 2}, {"a", "b"}, {"#ff000080", "blue"}));
 }

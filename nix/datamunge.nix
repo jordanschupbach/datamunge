@@ -1,6 +1,7 @@
 {
   pkgs ? import <nixpkgs> { config.allowUnfree = true; },
   enableCuda ? false,
+  enableMujoco ? false,
   enableCublas ? false,
   cudaToolkit ? null,
 }:
@@ -26,12 +27,16 @@ let
       pkgs.hdf5-cpp
       pkgs.xorg.libX11.dev
     ]
-    # CBLAS for datamunge::nn GEMM (macOS uses the Accelerate framework instead).
-    ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ pkgs.openblas ]
-    ++ pkgs.lib.optionals enableCublas [ cudaToolkit ];
+    # No BLAS/LAPACK: datamunge::nn ships its own GEMM/GEMV/level-1 kernels
+    # (src/datamunge/nn/blas_kernels.hpp, AVX-512/AVX2/baseline chosen at run
+    # time) and built-in decompositions. DATAMUNGE_USE_BLAS / DATAMUNGE_USE_LAPACK
+    # exist only to compare against an external library.
+    ++ pkgs.lib.optionals enableCublas [ cudaToolkit ]
+    ++ pkgs.lib.optional enableMujoco pkgs.mujoco;
 
     cmakeFlags = [
       "-DCMAKE_CXX_COMPILER=clang++"
+      "-DDATAMUNGE_ENABLE_MUJOCO=${if enableMujoco then "ON" else "OFF"}"
       "-DCMAKE_INSTALL_LIBDIR=lib"
       "-DDATAMUNGE_ENABLE_CUDA=${if enableCuda then "ON" else "OFF"}"
       "-DDATAMUNGE_ENABLE_CUBLAS=${if enableCublas then "ON" else "OFF"}"
@@ -43,7 +48,7 @@ let
     '';
 
     buildPhase = ''
-      cmake --build build -j $NIX_BUILD_CORES
+      cmake --build build -j $NIX_BUILD_CORES -- --jobserver-style=pipe
     '';
 
     installPhase = ''

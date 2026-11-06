@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Normalize feature rows and bias-free class-weight columns,apply a target-only training margin,and optimize explicit softmax CE. Select checkpoints with plain label-free validation logits,then measure seen-class classification separately from class-disjoint verification and retrieval.
 
-The editable concept diagram is `diagrams/angular_margin_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/angular_margin_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/angular_margin_concept.tikz > build/angular_margin_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/angular_margin_concept.svg build/angular_margin_concept.dvi > build/angular_margin_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/angular_margin_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Normalize directions\nFeatures and classes");
+  diagram.node("n1", {5.2, 0}, "Margin on target only\nVisible Adam fitting");
+  diagram.node("n2", {10.4, 0}, "Plain cosine inference\nSeen and unseen tests");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/angular_margin_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/angular_margin_concept.svg)
 // result_end
 \caption(Angular and cosine margins with label-free inference)
@@ -267,8 +273,8 @@ int main() {
 ```
 // result_begin: markdown
 Full220RGB ArcFace:140153664 learned scalars,29 finite gradients;minimum gradient norm 0.493725;training CE 14.123569.
-Full220RGB CosFace:140153664 learned scalars,29 finite gradients;minimum gradient norm 0.533004;training CE 12.689905.
-Compact28 ArcFace:108680 learned scalars,29 finite gradients;minimum gradient norm 0.434624;training CE 4.531538.
+Full220RGB CosFace:140153664 learned scalars,29 finite gradients;minimum gradient norm 0.533004;training CE 12.689908.
+Compact28 ArcFace:108680 learned scalars,29 finite gradients;minimum gradient norm 0.434624;training CE 4.531537.
 Compact28 CosFace:108680 learned scalars,29 finite gradients;minimum gradient norm 0.419334;training CE 2.991476.
 // result_end
 
@@ -593,21 +599,21 @@ int main() {
 ArcFace:margin0.3,scale16;108680 learned parameters.
 | epoch | margin fitting CE | plain validation CE | plain validation accuracy |
 |---:|---:|---:|---:|
-| 1 | 5.395855 | 0.881163 | 0.621875 |
-| 2 | 3.082701 | 0.671635 | 0.887500 |
-| 3 | 0.917931 | 0.567354 | 0.921875 |
-ArcFace:120 Adam steps;selected epoch3,restored plain validation CE 0.567354;fixed fitting margin CE 6.456798->0.114379.
-640 seen test images:plain CE 0.592132,accuracy 0.907813. Unseen validation-only threshold 1.033885;512 unseen pairs accuracy 0.578125/AUC 0.666458,TP/FP/FN/TN 226/186/30/70.
-256 unseen3-way tasks:trained 0.453125,untrained 0.359375,chance1/3. No test updates.
+| 1 | 5.395854 | 0.881163 | 0.621875 |
+| 2 | 3.050640 | 0.643995 | 0.884375 |
+| 3 | 0.998848 | 0.298730 | 0.953125 |
+ArcFace:120 Adam steps;selected epoch3,restored plain validation CE 0.298730;fixed fitting margin CE 6.456798->0.067029.
+640 seen test images:plain CE 0.407499,accuracy 0.931250. Unseen validation-only threshold 0.800496;512 unseen pairs accuracy 0.597656/AUC 0.617691,TP/FP/FN/TN 166/116/90/140.
+256 unseen3-way tasks:trained 0.472656,untrained 0.359375,chance1/3. No test updates.
 CosFace:margin0.2,scale16;108680 learned parameters.
 | epoch | margin fitting CE | plain validation CE | plain validation accuracy |
 |---:|---:|---:|---:|
-| 1 | 4.001276 | 0.947272 | 0.553125 |
-| 2 | 2.232476 | 0.494738 | 0.871875 |
-| 3 | 0.819340 | 0.313994 | 0.925000 |
-CosFace:120 Adam steps;selected epoch3,restored plain validation CE 0.313994;fixed fitting margin CE 4.920526->0.086367.
-640 seen test images:plain CE 0.340600,accuracy 0.918750. Unseen validation-only threshold 0.974165;512 unseen pairs accuracy 0.636719/AUC 0.663422,TP/FP/FN/TN 205/135/51/121.
-256 unseen3-way tasks:trained 0.503906,untrained 0.359375,chance1/3. No test updates.
+| 1 | 4.001275 | 0.947272 | 0.553125 |
+| 2 | 2.230718 | 0.472773 | 0.884375 |
+| 3 | 0.718970 | 0.344831 | 0.921875 |
+CosFace:120 Adam steps;selected epoch3,restored plain validation CE 0.344831;fixed fitting margin CE 4.920526->0.028115.
+640 seen test images:plain CE 0.392162,accuracy 0.909375. Unseen validation-only threshold 1.031119;512 unseen pairs accuracy 0.609375/AUC 0.685165,TP/FP/FN/TN 240/184/16/72.
+256 unseen3-way tasks:trained 0.480469,untrained 0.359375,chance1/3. No test updates.
 \image(figures/angular_margin_training.svg)
 // result_end
 \caption(Each complete compact encoder/head fits120 explicit Adam updates. Margin fitting CE and label-free validation CE are shown with their separate policies;plain validation accuracy accompanies checkpoint selection.)

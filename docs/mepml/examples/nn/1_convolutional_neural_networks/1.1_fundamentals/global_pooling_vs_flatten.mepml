@@ -31,18 +31,24 @@ plus bias recovers the logit. Flattening can distinguish left from right; GAP ca
 those maps have identical channel averages. A forward head costs O(HWC+CK) for GAP or
 O(HWCK) for flattening. The controlled tasks isolate heads, not jointly trained CNNs.
 
-The editable concept diagram is `diagrams/global_pooling_vs_flatten_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/global_pooling_vs_flatten_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/global_pooling_vs_flatten_concept.tikz > build/global_pooling_vs_flatten_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/global_pooling_vs_flatten_concept.svg build/global_pooling_vs_flatten_concept.dvi > build/global_pooling_vs_flatten_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/global_pooling_vs_flatten_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Spatial feature maps\nappearance and location");
+  diagram.node("n1", {5.2, 0}, "GAP or flatten\nshare or retain sites");
+  diagram.node("n2", {10.4, 0}, "Explicit tensor Adam\ncompare held-out tasks");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/global_pooling_vs_flatten_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/global_pooling_vs_flatten_concept.svg)
 // result_end
 \caption(Global Pooling versus Flattening: What the Head Forgets)

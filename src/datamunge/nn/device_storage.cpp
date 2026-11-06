@@ -9,11 +9,6 @@
 
 #include "storage_shader.hpp"
 namespace datamunge::nn::detail {
-/// @brief One retained native pipeline; allocations on its context can share it.
-struct StorageProgram {
-  compute::Context context; ///< Retains the creating execution owner.
-  compute::Program program; ///< Native storage pipeline.
-};
 /// @brief Private portable storage launch layout and pipeline acquisition.
 namespace {
 /// @brief Packed uint32 push constants/by-value CUDA arguments, identical to storage.comp.
@@ -70,7 +65,8 @@ done: ret;
 /// A one-entry thread-local weak cache shares the pipeline across simultaneously live allocations.
 /// @param storage Destination storage on the selected native context.
 /// @return Pipeline retained by that storage, with no allocation ownership cycle.
-StorageProgram& program(Storage& storage) {
+} // namespace
+StorageProgram& storage_program(Storage& storage) {
   if (!storage.program) {
     /// @brief Weak last-context pipeline cache; never keeps a driver/context alive on its own.
     static thread_local std::weak_ptr<StorageProgram> cached;
@@ -84,13 +80,16 @@ StorageProgram& program(Storage& storage) {
       source.local_size      = {64, 1, 1};
       source.ptx             = storage_ptx;
       source.spirv.assign(std::begin(storage_spirv), std::end(storage_spirv));
-      storage.program = std::make_shared<StorageProgram>(
-          StorageProgram{storage.context, storage.context.program(source)});
-      cached = storage.program;
+      auto created     = std::make_shared<StorageProgram>();
+      created->context = storage.context;
+      created->program = storage.context.program(source);
+      storage.program  = std::move(created);
+      cached           = storage.program;
     }
   }
   return *storage.program;
 }
+namespace {
 /// @brief Submit a portable two-dimensional grid, with at most 65535 groups per axis.
 /// @param out Newly allocated packed output.
 /// @param input Input or dummy buffer from the same context.
@@ -104,7 +103,7 @@ void launch(
   if (!args.bytes)
     return;
   auto&      storage  = *out.impl()->storage;
-  auto&      pipeline = program(storage);
+  auto&      pipeline = storage_program(storage);
   const auto count    = ((args.bytes + 3) / 4 + 63) / 64;
   const auto x        = std::min(count, std::uint32_t(65535));
   storage.context.dispatch(

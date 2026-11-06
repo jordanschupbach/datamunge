@@ -1,0 +1,429 @@
+//? Title: Computer algebra system
+//? Subtitle: Symbolic expressions, calculus and TeX in C++, Python and R
+//? Exports: both
+//? Lang: en-GB
+
+Choose a language tab for each example. Code and its results stay together.
+Run each tab independently. Python uses the local package in
+`build/venv/pydatamunge-run`; R uses `build/r/library`. Build these once with
+`just build-python` and `just build-r`, and rebuild after binding changes.
+
+> Computer algebra system
+
+`dm::algebra::Expr` builds symbolic expression trees from named variables and
+numeric constants. In C++, use `+`, `-`, `*`, `/` and `^`, with numeric literals
+on either side; unary `+` and `-` work too. Write `(x ^ 3) - 2 * x + 1`:
+C++ gives `^` lower precedence than the arithmetic operators, so combined powers
+need parentheses. Powers associate to the left; use `x ^ (y ^ z)` to group a
+power on the right. C++ also accepts numeric arguments in named methods, such
+as `x.power(3)`.
+
+The named methods `.add()`, `.subtract()`, `.multiply()`, `.divide()` and
+`.power()` remain available in every language. Elementary functions include
+`.sin()`, `.cos()`, `.exp()` and `.log()`. `.differentiate("x")` and
+`.integrate("x")` return new expressions, while `.evaluate({"x"}, {value})`
+binds a variable to a number. Copies share immutable expression nodes; numeric
+constants use `double`.
+
+Start with $f(x)=x^3-2x+1$. `.to_tex()` renders the actual expression tree as
+an owned `dm::Tex` value in C++: fractions, powers, functions and grouping come from
+the symbolic structure. Chain `.inline_math()` for table cells or `.display()`
+for a standalone equation; annotations such as `.underbrace()` also work.
+Use `.to_tex(precision)` to choose significant digits (seven by default).
+Single-letter variable names render as math symbols; longer logical names are
+escaped literal text. Formatting leaves the symbolic expression unchanged. Python and R return
+raw TeX strings from `.to_tex()`; the examples wrap them in math delimiters.
+
+Here $F$ is one antiderivative; the general one is $F(x)+C$. `.simplify()` folds constants and identities;
+it does not collect like terms or perform general factorization. Symbolic
+integration applies supported rules and throws for unsupported expressions;
+differentiation currently requires constant exponents in powers.
+
+\tabs(
+\tab(C++,
+
+```{cpp, results="markdown", nix-shell="git+file:../../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+#include <dm/dm.hpp>
+
+int main() {
+  using dm::algebra::Expr;
+  const auto x = Expr::variable("x");
+  const auto f = (x ^ 3) - 2 * x + 1;
+  std::print("{}\n", f);
+  const auto padded = f * 1 + 0;
+  const auto derivative = f.differentiate("x").simplify();
+  const auto primitive = f.integrate("x").simplify();
+  const auto wave = (2 * x).sin();
+
+  std::print("| Operation | Rendered expression |\n|---|---|\n");
+  std::print("| Build an expression | {} |\n", padded.to_tex().inline_math());
+  std::print("| Simplify | {} |\n", padded.simplify().to_tex().inline_math());
+  std::print("| Differentiate with respect to x | {} |\n", derivative.to_tex().inline_math());
+  std::print("| Integrate with respect to x | {} |\n", primitive.to_tex().inline_math());
+  std::print("| Trigonometric expression | {} |\n", wave.to_tex().inline_math());
+  std::print("| Chain-rule derivative | {} |\n\n",
+    wave.differentiate("x").simplify().to_tex().inline_math());
+  std::print("{}\n\n", (dm::Tex(R"(\frac{df}{dx} = )") +
+    derivative.to_tex().underbrace("f'(x)")).display());
+
+  std::print("| x | f(x) | f'(x) | F(x) |\n|---:|---:|---:|---:|\n");
+  for (double value : {-1., 0., 1., 2.}) {
+    std::print("| {:.0f} | {:.6f} | {:.6f} | {:.6f} |\n", value,
+      f.evaluate({"x"}, {value}), derivative.evaluate({"x"}, {value}),
+      primitive.evaluate({"x"}, {value}));
+  }
+  const auto symbolic_area = primitive.evaluate({"x"}, {2}) - primitive.evaluate({"x"}, {0});
+  const auto numeric_area = dm::algebra::definite_integral(f, "x", 0, 2);
+  std::print("\n{}\n", dm::Tex(std::format(
+    R"(\int_0^2 f(x)\,dx = {:.6f},\qquad I_{{\mathrm{{quadrature}}}} = {:.6f})",
+    symbolic_area, numeric_area)).display());
+}
+```
+// result_begin: markdown
+(((x ^ 3) - (2 * x)) + 1)
+| Operation | Rendered expression |
+|---|---|
+| Build an expression | $\left(x^{3} - 2 \cdot x + 1\right) \cdot 1 + 0$ |
+| Simplify | $x^{3} - 2 \cdot x + 1$ |
+| Differentiate with respect to x | $3 \cdot x^{2} - 2$ |
+| Integrate with respect to x | $\frac{x^{4}}{4} - 2 \cdot \frac{x^{2}}{2} + x$ |
+| Trigonometric expression | $\sin\left(2 \cdot x\right)$ |
+| Chain-rule derivative | $\cos\left(2 \cdot x\right) \cdot 2$ |
+
+$$
+\frac{df}{dx} = \underbrace{3 \cdot x^{2} - 2}_{f'(x)}
+$$
+
+| x | f(x) | f'(x) | F(x) |
+|---:|---:|---:|---:|
+| -1 | 2.000000 | 1.000000 | -1.750000 |
+| 0 | 1.000000 | -2.000000 | 0.000000 |
+| 1 | 0.000000 | 1.000000 | 0.250000 |
+| 2 | 5.000000 | 10.000000 | 2.000000 |
+
+$$
+\int_0^2 f(x)\,dx = 2.000000,\qquad I_{\mathrm{quadrature}} = 2.000000
+$$
+// result_end
+
+)
+\tab(Python,
+
+```{python, results="markdown", nix-shell="git+file:../../../..#python", cmd="env -u PYTHONPATH ../../../../build/venv/pydatamunge-run/bin/python {file}"}
+from pydatamunge import datamunge as dm
+
+x = dm.Expr.variable("x")
+f = x.power(dm.Expr.constant(3)).subtract(x.multiply(dm.Expr.constant(2))).add(dm.Expr.constant(1))
+padded = f.multiply(dm.Expr.constant(1)).add(dm.Expr.constant(0))
+derivative = f.differentiate("x").simplify()
+primitive = f.integrate("x").simplify()
+wave = x.multiply(dm.Expr.constant(2)).sin()
+
+print("| Operation | Rendered expression |\n|---|---|")
+for label, expression in [
+    ("Build an expression", padded),
+    ("Simplify", padded.simplify()),
+    ("Differentiate with respect to x", derivative),
+    ("Integrate with respect to x", primitive),
+    ("Trigonometric expression", wave),
+    ("Chain-rule derivative", wave.differentiate("x").simplify()),
+]:
+    print(f"| {label} | ${expression.to_tex()}$ |")
+print("\n$$\nf'(x) = " + derivative.to_tex() + "\n$$\n")
+print("| x | f(x) | f'(x) | F(x) |\n|---:|---:|---:|---:|")
+for value in [-1.0, 0.0, 1.0, 2.0]:
+    print(f"| {value:.0f} | {f.evaluate(['x'], [value]):.6f} | "
+          f"{derivative.evaluate(['x'], [value]):.6f} | {primitive.evaluate(['x'], [value]):.6f} |")
+symbolic_area = primitive.evaluate(["x"], [2]) - primitive.evaluate(["x"], [0])
+numeric_area = dm.definite_integral(f, "x", 0, 2)
+print(f"\nAntiderivative difference: {symbolic_area:.6f}; quadrature: {numeric_area:.6f}.")
+```
+// result_begin: markdown
+| Operation | Rendered expression |
+|---|---|
+| Build an expression | $\left(x^{3} - x \cdot 2 + 1\right) \cdot 1 + 0$ |
+| Simplify | $x^{3} - x \cdot 2 + 1$ |
+| Differentiate with respect to x | $3 \cdot x^{2} - 2$ |
+| Integrate with respect to x | $\frac{x^{4}}{4} - \frac{x^{2}}{2} \cdot 2 + x$ |
+| Trigonometric expression | $\sin\left(x \cdot 2\right)$ |
+| Chain-rule derivative | $\cos\left(x \cdot 2\right) \cdot 2$ |
+
+$$
+f'(x) = 3 \cdot x^{2} - 2
+$$
+
+| x | f(x) | f'(x) | F(x) |
+|---:|---:|---:|---:|
+| -1 | 2.000000 | 1.000000 | -1.750000 |
+| 0 | 1.000000 | -2.000000 | 0.000000 |
+| 1 | 0.000000 | 1.000000 | 0.250000 |
+| 2 | 5.000000 | 10.000000 | 2.000000 |
+
+Antiderivative difference: 2.000000; quadrature: 2.000000.
+// result_end
+
+)
+\tab(R,
+
+```{r, results="markdown", nix-shell="git+file:../../../..#r", cmd="env R_LIBS_USER=../../../../build/r/library Rscript {file}"}
+suppressPackageStartupMessages(library(datamunger))
+datamunger::hello()
+
+x <- Expr_variable("x")
+f <- x$power(Expr_constant(3))$subtract(x$multiply(Expr_constant(2)))$add(Expr_constant(1))
+padded <- f$multiply(Expr_constant(1))$add(Expr_constant(0))
+derivative <- f$differentiate("x")$simplify()
+primitive <- f$integrate("x")$simplify()
+wave <- x$multiply(Expr_constant(2))$sin()
+
+expressions <- list(padded, padded$simplify(), derivative, primitive,
+                    wave, wave$differentiate("x")$simplify())
+labels <- c("Build an expression", "Simplify", "Differentiate with respect to x",
+            "Integrate with respect to x", "Trigonometric expression", "Chain-rule derivative")
+cat("| Operation | Rendered expression |\n|---|---|\n")
+for (i in seq_along(expressions)) {
+  cat(sprintf("| %s | $%s$ |\n", labels[i], expressions[[i]]$to_tex()))
+}
+cat("\n$$\nf'(x) = ", derivative$to_tex(), "\n$$\n\n", sep = "")
+cat("| x | f(x) | f'(x) | F(x) |\n|---:|---:|---:|---:|\n")
+for (value in c(-1, 0, 1, 2)) {
+  cat(sprintf("| %.0f | %.6f | %.6f | %.6f |\n", value,
+    f$evaluate("x", value), derivative$evaluate("x", value), primitive$evaluate("x", value)))
+}
+symbolic_area <- primitive$evaluate("x", 2) - primitive$evaluate("x", 0)
+numeric_area <- definite_integral(f, "x", 0, 2)
+cat(sprintf("\nAntiderivative difference: %.6f; quadrature: %.6f.\n", symbolic_area, numeric_area))
+```
+// result_begin: markdown
+Hello datamunge
+NULL
+| Operation | Rendered expression |
+|---|---|
+| Build an expression | $\left(x^{3} - x \cdot 2 + 1\right) \cdot 1 + 0$ |
+| Simplify | $x^{3} - x \cdot 2 + 1$ |
+| Differentiate with respect to x | $3 \cdot x^{2} - 2$ |
+| Integrate with respect to x | $\frac{x^{4}}{4} - \frac{x^{2}}{2} \cdot 2 + x$ |
+| Trigonometric expression | $\sin\left(x \cdot 2\right)$ |
+| Chain-rule derivative | $\cos\left(x \cdot 2\right) \cdot 2$ |
+
+$$
+f'(x) = 3 \cdot x^{2} - 2
+$$
+
+| x | f(x) | f'(x) | F(x) |
+|---:|---:|---:|---:|
+| -1 | 2.000000 | 1.000000 | -1.750000 |
+| 0 | 1.000000 | -2.000000 | 0.000000 |
+| 1 | 0.000000 | 1.000000 | 0.250000 |
+| 2 | 5.000000 | 10.000000 | 2.000000 |
+
+Antiderivative difference: 2.000000; quadrature: 2.000000.
+// result_end
+
+)
+)
+
+`dm::algebra::Polynomial` stores coefficients in ascending degree order:
+`{-1, 0, 1}` represents $x^2-1$. `.divmod()` returns a quotient and remainder,
+`poly_gcd()` returns a monic greatest common divisor, and `RationalFunction`
+cancels common polynomial factors. Their `.to_tex(variable, precision)` methods
+use conventional signs and powers; choose a formal variable such as `"h"` for
+a Taylor polynomial. Rational functions render as fractions, with a unit
+denominator omitted. The block composes the original fraction and its reduced
+form directly from these TeX values.
+
+The reduced rational-function object does not retain the original excluded
+point $x=1$. Polynomial coefficients also use `double` arithmetic.
+
+Finally, `taylor_series(f, "x", center, order)` builds a polynomial in
+$h=x-\mathrm{center}$. The code expands $e^x$ about $x=1$ through degree four
+and evaluates the result at `value - 1`, comparing it with the original
+expression near the expansion point.
+
+\tabs(
+\tab(C++,
+
+```{cpp, results="markdown", nix-shell="git+file:../../../..#cpp", cmd="c++ -std=c++23 -O2 {file} -o {bin} $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge) && {bin}"}
+#include <dm/dm.hpp>
+
+int main() {
+  using dm::algebra::Polynomial;
+  // Coefficients are ordered from the constant term upwards.
+  const Polynomial p({-1, 0, 1}); // x^2 - 1
+  const Polynomial q({-1, 1});    // x - 1
+  const auto [quotient, remainder] = p.divmod(q);
+  const auto gcd = dm::algebra::poly_gcd(p, q);
+  const dm::algebra::RationalFunction reduced(p, q);
+
+  std::print("| Operation | Returned value |\n|---|---|\n");
+  std::print("| Dividend p(x) | {} |\n", p.to_tex().inline_math());
+  std::print("| Divisor q(x) | {} |\n", q.to_tex().inline_math());
+  std::print("| Quotient | {} |\n", quotient.to_tex().inline_math());
+  std::print("| Remainder | {} |\n", remainder.to_tex().inline_math());
+  std::print("| Monic GCD | {} |\n", gcd.to_tex().inline_math());
+  std::print("| Reduced rational function | {} |\n", reduced.to_tex().inline_math());
+  std::print("| Reduced function at x = 2 | `{:.6f}` |\n\n", reduced.evaluate(2));
+  std::print("{}\n\n", (p.to_tex().frac(q.to_tex()) + " = " +
+    reduced.to_tex() + R"(\quad (x\ne 1))").display());
+
+  const auto exponential = dm::algebra::Expr::variable("x").exp();
+  const auto taylor = dm::algebra::taylor_series(exponential, "x", 1., 4);
+  std::print("Taylor approximation about x = 1, evaluated at h = x - 1:\n\n");
+  std::print("{}\n\n", (dm::Tex("T_4(h) = ") + taylor.to_tex("h")).display());
+  std::print("| x | Degree-4 approximation | exp(x) | Absolute error |\n|---:|---:|---:|---:|\n");
+  for (double value : {0.8, 1., 1.2}) {
+    const auto approximation = taylor.evaluate(value - 1.);
+    const auto actual = exponential.evaluate({"x"}, {value});
+    std::print("| {:.1f} | {:.9f} | {:.9f} | {:.3e} |\n",
+      value, approximation, actual, std::abs(approximation - actual));
+  }
+}
+```
+// result_begin: markdown
+| Operation | Returned value |
+|---|---|
+| Dividend p(x) | ${x}^{2} - 1$ |
+| Divisor q(x) | $x - 1$ |
+| Quotient | $x + 1$ |
+| Remainder | $0$ |
+| Monic GCD | $x - 1$ |
+| Reduced rational function | $x + 1$ |
+| Reduced function at x = 2 | `3.000000` |
+
+$$
+\frac{{x}^{2} - 1}{x - 1} = x + 1\quad (x\ne 1)
+$$
+
+Taylor approximation about x = 1, evaluated at h = x - 1:
+
+$$
+T_4(h) = 0.1132617\,{h}^{4} + 0.453047\,{h}^{3} + 1.359141\,{h}^{2} + 2.718282\,h + 2.718282
+$$
+
+| x | Degree-4 approximation | exp(x) | Absolute error |
+|---:|---:|---:|---:|
+| 0.8 | 2.225547942 | 2.225540928 | 7.014e-06 |
+| 1.0 | 2.718281828 | 2.718281828 | 0.000e+00 |
+| 1.2 | 3.320109425 | 3.320116923 | 7.497e-06 |
+// result_end
+
+)
+\tab(Python,
+
+```{python, results="markdown", nix-shell="git+file:../../../..#python", cmd="env -u PYTHONPATH ../../../../build/venv/pydatamunge-run/bin/python {file}"}
+from pydatamunge import datamunge as dm
+
+p = dm.Polynomial([-1, 0, 1])
+q = dm.Polynomial([-1, 1])
+quotient = dm.poly_quotient(p, q)
+remainder = dm.poly_remainder(p, q)
+gcd = dm.poly_gcd(p, q)
+reduced = dm.RationalFunction(p, q)
+
+print("| Operation | Returned value |\n|---|---|")
+for label, value in [("Dividend p(x)", p), ("Divisor q(x)", q),
+                     ("Quotient", quotient), ("Remainder", remainder),
+                     ("Monic GCD", gcd), ("Reduced rational function", reduced)]:
+    print(f"| {label} | ${value.to_tex()}$ |")
+print(f"| Reduced function at x = 2 | `{reduced.evaluate(2):.6f}` |")
+print("\n$$\n\\frac{" + p.to_tex() + "}{" + q.to_tex() + "} = " + reduced.to_tex() + r"\quad (x\ne 1)" + "\n$$\n")
+exponential = dm.Expr.variable("x").exp()
+taylor = dm.taylor_series(exponential, "x", 1, 4)
+print("Taylor approximation about x = 1, evaluated at h = x - 1:\n")
+print("$$\nT_4(h) = " + taylor.to_tex("h") + "\n$$\n")
+print("| x | Degree-4 approximation | exp(x) | Absolute error |\n|---:|---:|---:|---:|")
+for value in [0.8, 1.0, 1.2]:
+    approximation = taylor.evaluate(value - 1)
+    actual = exponential.evaluate(["x"], [value])
+    print(f"| {value:.1f} | {approximation:.9f} | {actual:.9f} | {abs(approximation-actual):.3e} |")
+```
+// result_begin: markdown
+| Operation | Returned value |
+|---|---|
+| Dividend p(x) | ${x}^{2} - 1$ |
+| Divisor q(x) | $x - 1$ |
+| Quotient | $x + 1$ |
+| Remainder | $0$ |
+| Monic GCD | $x - 1$ |
+| Reduced rational function | $x + 1$ |
+| Reduced function at x = 2 | `3.000000` |
+
+$$
+\frac{{x}^{2} - 1}{x - 1} = x + 1\quad (x\ne 1)
+$$
+
+Taylor approximation about x = 1, evaluated at h = x - 1:
+
+$$
+T_4(h) = 0.1132617\,{h}^{4} + 0.453047\,{h}^{3} + 1.359141\,{h}^{2} + 2.718282\,h + 2.718282
+$$
+
+| x | Degree-4 approximation | exp(x) | Absolute error |
+|---:|---:|---:|---:|
+| 0.8 | 2.225547942 | 2.225540928 | 7.014e-06 |
+| 1.0 | 2.718281828 | 2.718281828 | 0.000e+00 |
+| 1.2 | 3.320109425 | 3.320116923 | 7.497e-06 |
+// result_end
+
+)
+\tab(R,
+
+```{r, results="markdown", nix-shell="git+file:../../../..#r", cmd="env R_LIBS_USER=../../../../build/r/library Rscript {file}"}
+suppressPackageStartupMessages(library(datamunger))
+
+p <- Polynomial(c(-1, 0, 1))
+q <- Polynomial(c(-1, 1))
+quotient <- poly_quotient(p, q)
+remainder <- poly_remainder(p, q)
+gcd <- poly_gcd(p, q)
+reduced <- RationalFunction(p, q)
+values <- list(p, q, quotient, remainder, gcd, reduced)
+labels <- c("Dividend p(x)", "Divisor q(x)", "Quotient", "Remainder",
+            "Monic GCD", "Reduced rational function")
+cat("| Operation | Returned value |\n|---|---|\n")
+for (i in seq_along(values)) {
+  cat(sprintf("| %s | $%s$ |\n", labels[i], values[[i]]$to_tex()))
+}
+cat(sprintf("| Reduced function at x = 2 | `%.6f` |\n", reduced$evaluate(2)))
+cat("\n$$\n\\frac{", p$to_tex(), "}{", q$to_tex(), "} = ", reduced$to_tex(), "\\quad (x\\ne 1)\n$$\n\n", sep = "")
+exponential <- Expr_variable("x")$exp()
+taylor <- taylor_series(exponential, "x", 1, 4L)
+cat("Taylor approximation about x = 1, evaluated at h = x - 1:\n\n")
+cat("$$\nT_4(h) = ", taylor$to_tex("h"), "\n$$\n\n", sep = "")
+cat("| x | Degree-4 approximation | exp(x) | Absolute error |\n|---:|---:|---:|---:|\n")
+for (value in c(0.8, 1, 1.2)) {
+  approximation <- taylor$evaluate(value - 1)
+  actual <- exponential$evaluate("x", value)
+  cat(sprintf("| %.1f | %.9f | %.9f | %.3e |\n", value, approximation, actual, abs(approximation-actual)))
+}
+```
+// result_begin: markdown
+| Operation | Returned value |
+|---|---|
+| Dividend p(x) | ${x}^{2} - 1$ |
+| Divisor q(x) | $x - 1$ |
+| Quotient | $x + 1$ |
+| Remainder | $0$ |
+| Monic GCD | $x - 1$ |
+| Reduced rational function | $x + 1$ |
+| Reduced function at x = 2 | `3.000000` |
+
+$$
+\frac{{x}^{2} - 1}{x - 1} = x + 1\quad (x\ne 1)
+$$
+
+Taylor approximation about x = 1, evaluated at h = x - 1:
+
+$$
+T_4(h) = 0.1132617\,{h}^{4} + 0.453047\,{h}^{3} + 1.359141\,{h}^{2} + 2.718282\,h + 2.718282
+$$
+
+| x | Degree-4 approximation | exp(x) | Absolute error |
+|---:|---:|---:|---:|
+| 0.8 | 2.225547942 | 2.225540928 | 7.014e-06 |
+| 1.0 | 2.718281828 | 2.718281828 | 0.000e+00 |
+| 1.2 | 3.320109425 | 3.320116923 | 7.497e-06 |
+// result_end
+
+)
+)

@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
+#include <vector>
+#include <cmath>
+#include <random>
 
 #include <array>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 #include <datamunge/compute/context.hpp>
@@ -93,6 +97,175 @@ TEST(ComputeGpu, CudaNativeBufferAndPtxExecution) {
   std::cout << "CUDA compute device: " << info.name << '\n';
   exercise(c::Backend::CUDA);
 }
+TEST(ComputeGpu, CudaInHouseGemmMatchesHostOnAwkwardShapes) {
+  const auto info = c::probe({c::Backend::CUDA, 0});
+  if (!info.available) {
+    ASSERT_FALSE(std::getenv("DATAMUNGE_REQUIRE_CUDA")) << info.diagnostic;
+    GTEST_SKIP() << info.diagnostic;
+  }
+  c::Context gpu({c::Backend::CUDA, 0});
+  ASSERT_TRUE(gpu.supports_matmul());
+  std::mt19937                           rng(17);
+  std::uniform_real_distribution<double> u(-1, 1);
+  // From {129, 65, 600} on the outputs have few tiles and k is long, so the planner splits every
+  // tile into k chunks (short chunks for {129, 65, 600} and {40, 30, 300}, long ones for the last
+  // three) and reduces them in a second pass; CudaInHouseGemmLargeShapesMatchHost covers the big
+  // tiles and the mixed whole/split plans.
+  const std::size_t shapes[][3] = {{37, 53, 71},   {130, 257, 9},  {1, 300, 40},   {300, 1, 40},
+                                   {1, 1, 1},      {129, 65, 600}, {40, 30, 300},  {300, 130, 520},
+                                   {37, 20, 3001}, {144, 64, 4100}, {5, 7, 70000}};
+  for (const auto& shape : shapes)
+    for (bool ta : {false, true})
+      for (bool tb : {false, true})
+        for (int precision = 0; precision < 2; ++precision) {
+          const std::size_t   m = shape[0], n = shape[1], k = shape[2];
+          std::vector<double> a(m * k), b(k * n);
+          for (auto& v : a) v = u(rng);
+          for (auto& v : b) v = u(rng);
+          std::vector<double> reference(m * n);
+          for (std::size_t i = 0; i < m; ++i)
+            for (std::size_t j = 0; j < n; ++j) {
+              double sum = 0;
+              for (std::size_t l = 0; l < k; ++l)
+                sum += (ta ? a[l * m + i] : a[i * k + l]) * (tb ? b[j * k + l] : b[l * n + j]);
+              reference[i * n + j] = sum;
+            }
+          const c::MatrixProduct product{m, n, k, precision == 0 ? c::MatrixType::Float32 : c::MatrixType::Float64, ta, tb};
+          std::vector<double>    result(m * n);
+          if (precision == 0) {
+            std::vector<float> af(a.begin(), a.end()), bf(b.begin(), b.end()), cf(m * n);
+            // Recompute the float reference from the rounded inputs.
+            for (std::size_t i = 0; i < m; ++i)
+              for (std::size_t j = 0; j < n; ++j) {
+                double sum = 0;
+                for (std::size_t l = 0; l < k; ++l)
+                  sum += double(ta ? af[l * m + i] : af[i * k + l]) * double(tb ? bf[j * k + l] : bf[l * n + j]);
+                reference[i * n + j] = sum;
+              }
+            auto da = gpu.allocate(af.size() * 4), db = gpu.allocate(bf.size() * 4), dc = gpu.allocate(cf.size() * 4);
+            gpu.upload(da, af.data(), af.size() * 4);
+            gpu.upload(db, bf.data(), bf.size() * 4);
+            gpu.matmul(dc, da, db, product);
+            gpu.download(cf.data(), dc, cf.size() * 4);
+            result.assign(cf.begin(), cf.end());
+          } else {
+            auto da = gpu.allocate(a.size() * 8), db = gpu.allocate(b.size() * 8), dc = gpu.allocate(m * n * 8);
+            gpu.upload(da, a.data(), a.size() * 8);
+            gpu.upload(db, b.data(), b.size() * 8);
+            gpu.matmul(dc, da, db, product);
+            gpu.download(result.data(), dc, m * n * 8);
+          }
+          const double tolerance = precision == 0 ? 1e-4 : 1e-10;
+          for (std::size_t i = 0; i < m * n; ++i)
+            ASSERT_NEAR(result[i], reference[i], tolerance * (1 + std::abs(reference[i])) * std::sqrt(double(k)))
+                << "m=" << m << " n=" << n << " k=" << k << " ta=" << ta << " tb=" << tb << " f" << (precision ? 64 : 32)
+                << " element " << i;
+        }
+}
+
+namespace {
+/// One in-house GEMM of random [-1, 1) operands on `gpu`; returns the product and the operands as
+/// the device saw them (rounded to float for Float32).
+struct GemmRun {
+  std::vector<double> a, b, c;
+};
+GemmRun run_gemm(c::Context& gpu, std::size_t m, std::size_t n, std::size_t k, bool ta, bool tb, bool f32,
+                 std::uint32_t seed) {
+  std::mt19937                           rng(seed);
+  std::uniform_real_distribution<double> u(-1, 1);
+  GemmRun                                r{std::vector<double>(m * k), std::vector<double>(k * n), {}};
+  for (auto& v : r.a) v = f32 ? double(float(u(rng))) : u(rng);
+  for (auto& v : r.b) v = f32 ? double(float(u(rng))) : u(rng);
+  const c::MatrixProduct product{m, n, k, f32 ? c::MatrixType::Float32 : c::MatrixType::Float64, ta, tb};
+  r.c.resize(m * n);
+  if (f32) {
+    std::vector<float> af(r.a.begin(), r.a.end()), bf(r.b.begin(), r.b.end()), cf(m * n);
+    auto da = gpu.allocate(af.size() * 4), db = gpu.allocate(bf.size() * 4), dc = gpu.allocate(cf.size() * 4);
+    gpu.upload(da, af.data(), af.size() * 4);
+    gpu.upload(db, bf.data(), bf.size() * 4);
+    gpu.matmul(dc, da, db, product);
+    gpu.download(cf.data(), dc, cf.size() * 4);
+    r.c.assign(cf.begin(), cf.end());
+  } else {
+    auto da = gpu.allocate(r.a.size() * 8), db = gpu.allocate(r.b.size() * 8), dc = gpu.allocate(m * n * 8);
+    gpu.upload(da, r.a.data(), r.a.size() * 8);
+    gpu.upload(db, r.b.data(), r.b.size() * 8);
+    gpu.matmul(dc, da, db, product);
+    gpu.download(r.c.data(), dc, m * n * 8);
+  }
+  return r;
+}
+} // namespace
+
+TEST(ComputeGpu, CudaInHouseGemmLargeShapesMatchHost) {
+  const auto info = c::probe({c::Backend::CUDA, 0});
+  if (!info.available) {
+    ASSERT_FALSE(std::getenv("DATAMUNGE_REQUIRE_CUDA")) << info.diagnostic;
+    GTEST_SKIP() << info.diagnostic;
+  }
+  c::Context gpu({c::Backend::CUDA, 0});
+  // Outputs big enough for the 128 x 256 and 128 x 128 float tiles, with ragged edges (rows,
+  // columns and k not multiples of the tile or of the 4-wide vectors, which also turns off the
+  // 128-bit loads of the row-contiguous operands), and tile counts that are not whole waves, so
+  // the planner computes full waves of tiles whole and splits the leftover tiles in k.
+  const std::size_t shapes[][3] = {{2048, 2048, 512}, {1999, 2001, 999}, {1500, 1700, 1300},
+                                   {3000, 777, 2000}, {1023, 1025, 257}, {640, 2304, 1153}};
+  std::mt19937      pick(5);
+  std::uint32_t     seed = 1;
+  for (const auto& shape : shapes)
+    for (bool ta : {false, true})
+      for (bool tb : {false, true})
+        for (bool f32 : {true, false}) {
+          const std::size_t m = shape[0], n = shape[1], k = shape[2];
+          const auto        r = run_gemm(gpu, m, n, k, ta, tb, f32, seed++);
+          // Every element of the last row and column (tile edges) and 2000 random ones.
+          std::vector<std::size_t> rows, cols;
+          for (std::size_t j = 0; j < n; ++j) rows.push_back(m - 1), cols.push_back(j);
+          for (std::size_t i = 0; i < m; ++i) rows.push_back(i), cols.push_back(n - 1);
+          for (int s = 0; s < 2000; ++s) rows.push_back(pick() % m), cols.push_back(pick() % n);
+          for (std::size_t e = 0; e < rows.size(); ++e) {
+            const std::size_t i = rows[e], j = cols[e];
+            double            sum = 0, mag = 0;
+            for (std::size_t l = 0; l < k; ++l) {
+              const double x = (ta ? r.a[l * m + i] : r.a[i * k + l]) * (tb ? r.b[j * k + l] : r.b[l * n + j]);
+              sum += x;
+              mag += std::abs(x);
+            }
+            // Accumulation error bound of a length-k sum of products in the device precision.
+            const double eps = f32 ? 5.96e-8 : 1.11e-16;
+            ASSERT_LE(std::abs(r.c[i * n + j] - sum), (double(k) + 4) * eps * mag + 1e-300)
+                << "m=" << m << " n=" << n << " k=" << k << " ta=" << ta << " tb=" << tb << " f" << (f32 ? 32 : 64)
+                << " element (" << i << ", " << j << ")";
+          }
+        }
+}
+
+TEST(ComputeGpu, CudaInHouseGemmIsDeterministic) {
+  const auto info = c::probe({c::Backend::CUDA, 0});
+  if (!info.available) {
+    ASSERT_FALSE(std::getenv("DATAMUNGE_REQUIRE_CUDA")) << info.diagnostic;
+    GTEST_SKIP() << info.diagnostic;
+  }
+  c::Context gpu({c::Backend::CUDA, 0});
+  // Whole tiles only, whole waves plus split leftovers, and every tile split into long k chunks:
+  // the same device and shape must give bit-identical results (no atomics, the chunks' partial
+  // sums added in a fixed order: groups of eight chunks, then the groups).
+  const std::size_t shapes[][3] = {{512, 512, 512}, {2048, 2048, 2048}, {1999, 2001, 999}, {144, 64, 8192},
+                                   {5, 7, 70000}};
+  for (const auto& shape : shapes)
+    for (bool f32 : {true, false})
+      for (bool ta : {false, true}) {
+        const bool tb = !ta;
+        const auto first = run_gemm(gpu, shape[0], shape[1], shape[2], ta, tb, f32, 99);
+        for (int repeat = 0; repeat < 2; ++repeat) {
+          const auto again = run_gemm(gpu, shape[0], shape[1], shape[2], ta, tb, f32, 99);
+          ASSERT_EQ(std::memcmp(first.c.data(), again.c.data(), first.c.size() * sizeof(double)), 0)
+              << "m=" << shape[0] << " n=" << shape[1] << " k=" << shape[2] << " ta=" << ta << " f"
+              << (f32 ? 32 : 64);
+        }
+      }
+}
+
 TEST(ComputeGpu, CudaMatrixAdapterValidatesViewsAndEmptyProducts) {
   const auto info = c::probe({c::Backend::CUDA, 0});
   if (!info.available) {
@@ -101,10 +274,8 @@ TEST(ComputeGpu, CudaMatrixAdapterValidatesViewsAndEmptyProducts) {
   }
   c::Context gpu({c::Backend::CUDA, 0});
   if (!gpu.supports_matmul()) {
-    ASSERT_FALSE(std::getenv("DATAMUNGE_REQUIRE_CUDA")) << "cuBLAS is disabled";
-    auto x = gpu.allocate(4);
-    EXPECT_THROW(gpu.matmul(x, x, x, {}), std::logic_error);
-    GTEST_SKIP() << "cuBLAS is disabled";
+    // Every CUDA device runs the in-house GEMM kernels.
+    FAIL() << "CUDA contexts always support matmul";
   }
   auto                       a = gpu.allocate(24), b = gpu.allocate(24), output = gpu.allocate(32);
   const std::array<float, 6> av{1, 2, 3, 4, 5, 6}, bv{7, 8, 9, 10, 11, 12};

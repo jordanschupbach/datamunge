@@ -24,6 +24,16 @@ struct WorldOptions {
   std::size_t substeps{4}; ///< Fixed positive integration/constraint substeps per requested step.
   bool        continuous{true}; ///< Enable swept convex time-of-impact subdivision.
 
+  bool block_joints{
+      false}; ///< Dense bilateral factorization for coupled mechanisms; O(rows³), at most 256 rows.
+  bool persistent_contacts{false}; ///< Retain solved impulses across substep position updates.
+  bool contact_stabilization{
+      false}; ///< Resolve penetration in velocity constraints, preserving joint geometry.
+  bool gyroscopic{
+      false}; ///< Enable midpoint Euler/Cayley rotation; conserves free-body energy and momentum.
+  bool sleeping{true};         ///< Disable for continuously actuated mechanisms.
+  bool clamp_velocities{true}; ///< False rejects excessive speed instead of silently clipping it.
+
   /// @brief Check finite gravity, positive capacities/iterations and correction ranges.
   /// @throws std::invalid_argument Invalid settings.
   /// @par Example
@@ -41,13 +51,15 @@ struct WorldOptions {
 /// std::print("{}\n",contact.sensor); // false
 /// @endcode
 struct Contact {
-  BodyId first{0};        ///< First body.
-  BodyId second{0};       ///< Second body.
-  Vec3   point{0, 0, 0};  ///< World-space contact point in metres.
-  Vec3   normal{1, 0, 0}; ///< Unit normal pointing first to second.
-  double separation{0};   ///< Signed distance along normal, metres.
-  double impulse{0};      ///< Accumulated normal impulse, N s.
-  bool   sensor{false};   ///< Whether either body is a nonresponding sensor.
+  BodyId      first{0};        ///< First body.
+  BodyId      second{0};       ///< Second body.
+  Vec3        point{0, 0, 0};  ///< World-space contact point in metres.
+  Vec3        normal{1, 0, 0}; ///< Unit normal pointing first to second.
+  double      separation{0};   ///< Signed distance along normal, metres.
+  double      impulse{0};      ///< Accumulated normal impulse, N s.
+  bool        sensor{false};   ///< Whether either body is a nonresponding sensor.
+  std::size_t first_shape{0};  ///< Compound component index on first body.
+  std::size_t second_shape{0}; ///< Compound component index on second body.
 };
 /// @brief Private solver state retained by immutable snapshots.
 namespace detail {
@@ -110,7 +122,7 @@ class World {
   /// @brief Destroy all native world state and owned resources.
   ~World();
   /// @brief Disable implicit copying of exclusive mutable runtime state.
-  World(const World&)            = delete;
+  World(const World&) = delete;
   /// @brief Disable copy assignment of exclusive mutable runtime state.
   World& operator=(const World&) = delete;
   /// @brief Add a validated rigid body and allocate a fresh identifier.
@@ -203,6 +215,7 @@ class World {
   /// @brief Remove the joint attached to a child.
   /// @param child Live body with a joint.
   /// @throws std::out_of_range No joint for child.
+  /// @throws std::invalid_argument A gear still references the joint.
   /// @par Example
   /// @code
   /// dm::sim::World world;dm::sim::Body b;b.motion=dm::sim::Motion::Dynamic;
@@ -235,6 +248,61 @@ class World {
   /// j;j.child=world.add_body(b);world.add_joint(j);world.apply_joint_force(j.child,1);
   /// @endcode
   void apply_joint_force(BodyId child, double force);
+  /// @brief Configure an implicit finite-effort joint velocity servo.
+  /// @param child Live hinge/slider child.
+  /// @param velocity Desired relative rad/s or m/s.
+  /// @param gain Nonnegative viscous gain, N m s/rad or N s/m; zero disables.
+  /// @param effort Nonnegative absolute force/torque limit, at most 100000.
+  /// @param feedforward Finite additive torque/force, clipped by the same effort limit.
+  /// @throws std::invalid_argument Invalid parameters or fixed joint.
+  /// @throws std::out_of_range Unknown joint.
+  /// @par Example
+  /// @code
+  /// dm::sim::World w; dm::sim::Body b;b.motion=dm::sim::Motion::Dynamic;
+  /// dm::sim::Joint j;j.child=w.add_body(b);w.add_joint(j);
+  /// w.set_joint_motor(j.child,1,10,2);w.step(1./240);
+  /// @endcode
+  void set_joint_motor(
+      BodyId child,
+      double velocity,
+      double gain,
+      double effort,
+      double feedforward = 0);
+  /// @brief Read last-substep motor effort, excluding passive constraint forces.
+  /// @param child Live joint child.
+  /// @return Signed torque/force, bounded by the configured effort.
+  /// @throws std::out_of_range Unknown joint.
+  /// @par Example
+  /// See set_joint_motor().
+  double joint_motor_effort(BodyId child) const;
+  /// @brief Add a dynamic gear constraint q_slave=ratio*q_master+offset.
+  /// @param master Existing hinge/slider child.
+  /// @param slave Different existing hinge/slider child.
+  /// @param ratio Nonzero finite ratio, absolute value at most 1000.
+  /// @param offset Finite radians/metres, absolute value at most 1000.
+  /// @throws std::invalid_argument Invalid or duplicate gear.
+  /// @throws std::out_of_range Unknown joint.
+  /// @par Example
+  /// @code
+  /// dm::sim::World w;dm::sim::Body b;b.motion=dm::sim::Motion::Dynamic;
+  /// auto a=w.add_body(b),c=w.add_body(b);dm::sim::Joint j;j.child=a;w.add_joint(j);
+  /// j.child=c;w.add_joint(j);w.add_gear(a,c,-1);
+  /// @endcode
+  void add_gear(BodyId master, BodyId slave, double ratio, double offset = 0);
+  /// @brief Remove a gear by its slave joint identifier.
+  /// @param slave Existing gear slave.
+  /// @throws std::out_of_range No such gear.
+  /// @par Example
+  /// See add_gear(); then call w.remove_gear(c).
+  void remove_gear(BodyId slave);
+  /// @brief Compute static gravity compensation for a joint's complete subtree.
+  /// @param child Live hinge/slider child.
+  /// @return Opposing generalized gravity load, N m or N.
+  /// @throws std::out_of_range Unknown joint.
+  /// @par Example
+  /// See set_joint_motor(); use w.joint_gravity_compensation(j.child) as feedforward.
+  double joint_gravity_compensation(BodyId child) const;
+
   /// @brief Teleport a jointed subtree while preserving descendant coordinates.
   /// @param child Live joint child.
   /// @param position Finite angle/displacement within configured limits.
@@ -249,8 +317,10 @@ class World {
   /// @endcode
   void set_joint_state(BodyId child, double position, double velocity);
   /// @brief Advance native physics by a finite positive delta of at most 1/30 second.
-  /// Dynamic linear/angular speed magnitudes are capped at 500 m/s and 100 rad/s
-  /// after force integration and every constraint solve, before swept motion.
+  /// Dynamic speeds are bounded by 500 m/s and each body's angular_speed_limit.
+  /// clamp_velocities=true clips magnitudes; false rejects excess speed.
+  /// block_joints factors up to 256 independent bilateral rows; singular systems
+  /// reject the step. The default sequential solver also supports redundant rows.
   /// @param delta Simulation seconds; forces persist across configured substeps then clear.
   /// @throws std::invalid_argument Invalid delta.
   /// @throws std::runtime_error Solver or capacity failure; pre-step physics state is restored.

@@ -38,19 +38,24 @@ by itself determines utility at a specific operating point. ROC AUC requires bot
 no-positive average precision is zero in this implementation. Inputs are finite scores
 and binary labels in these examples. Averages over batches must respect sample counts.
 
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-The concept diagram is generated from the retained local TikZ source. LaTeX with
-PGF/TikZ and standalone, plus dvisvgm, is needed only to regenerate it.
+```{cpp, file="figures/metrics_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
 
-```{bash, results="output", file="figures/metrics_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/metrics_concept.tikz > build/metrics.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/metrics_concept.svg build/metrics_concept.dvi > build/metrics.render.log 2>&1
-printf 'Rendered build/metrics_concept.svg from local TikZ source.\n'
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Predictions and labels\ndeclare class set");
+  diagram.node("n1", {5.5, 0}, "Counts or score ranks\nhandle ties explicitly");
+  diagram.node("n2", {11.0, 0}, "Aggregate ratios\nkeep sample weights");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/metrics_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/metrics_concept.svg from local TikZ source.
 // \image(figures/metrics_concept.svg)
 // result_end
 \caption(State the class set, tie rule and sample weights before interpreting a score.)

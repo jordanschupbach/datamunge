@@ -1031,3 +1031,41 @@ TEST(NnOps, TiledTransposedBinaryViewsKeepOffsetsEdgesOperandOrderAndIndependent
         EXPECT_EQ(storage.to_vector<double>(), values);
       }
 }
+
+TEST(NnOps, FusedBiasAddReluMatchesUnfusedForwardBackwardAndSplitSeeds) {
+  nn::Generator gen(11);
+  for (const DType dt : {DType::Float32, DType::Float64}) {
+    Tensor x = nn::normal({2, 3, 5, 8}, 0.0, 1.0, gen, dt), b = nn::normal({8}, 0.0, 1.0, gen, dt);
+    x.requires_grad_(true);
+    b.requires_grad_(true);
+    const Tensor fused = nn::bias_add_relu(x, b), plain = nn::relu(nn::bias_add(x, b));
+    expect_vals(fused, vals(plain), 0.0);
+    const Tensor seed = nn::normal(fused.shape(), 0.0, 1.0, gen, dt);
+    nn::GradOptions keep;
+    keep.retain_graph = true;
+    const auto gf = nn::grad({fused}, {x, b}, {seed}, keep), gp = nn::grad({plain}, {x, b}, {seed}, keep);
+    expect_vals(gf[0], vals(gp[0]), 0.0);
+    expect_vals(gf[1], vals(gp[1]), 1e-4);
+    // A split of a concatenation seeds the backward with a strided view.
+    const Tensor other = nn::normal(fused.shape(), 0.0, 1.0, gen, dt);
+    const Tensor cat_f = nn::concat({fused, other}, 3), cat_p = nn::concat({plain, other}, 3);
+    const Tensor seed2 = nn::normal(cat_f.shape(), 0.0, 1.0, gen, dt);
+    const auto   hf = nn::grad({cat_f}, {x, b}, {seed2}, keep), hp = nn::grad({cat_p}, {x, b}, {seed2}, keep);
+    expect_vals(hf[0], vals(hp[0]), 0.0);
+    expect_vals(hf[1], vals(hp[1]), 1e-4);
+    // Second order: the gradient of <s, dx> + <t, db> with respect to the seed.
+    Tensor s3 = nn::normal(fused.shape(), 0.0, 1.0, gen, dt);
+    s3.requires_grad_(true);
+    nn::GradOptions create;
+    create.create_graph = true;
+    const auto   dxf = nn::grad({fused}, {x, b}, {s3}, create), dxp = nn::grad({plain}, {x, b}, {s3}, create);
+    const Tensor w = nn::normal(fused.shape(), 0.0, 1.0, gen, dt), u = nn::normal({8}, 0.0, 1.0, gen, dt);
+    const Tensor of = nn::sum(nn::mul(dxf[0], w)) + nn::sum(nn::mul(dxf[1], u)),
+                 op = nn::sum(nn::mul(dxp[0], w)) + nn::sum(nn::mul(dxp[1], u));
+    expect_vals(nn::grad({of}, {s3})[0], vals(nn::grad({op}, {s3})[0]), 1e-4);
+  }
+  // Layouts the kernel does not take fall back to the unfused ops.
+  Tensor xt = nn::transpose(nn::normal({4, 6}, 0.0, 1.0, gen), {1, 0}), bt = nn::normal({4}, 0.0, 1.0, gen);
+  expect_vals(nn::bias_add_relu(xt, bt), vals(nn::relu(nn::bias_add(xt, bt))), 0.0);
+  EXPECT_THROW(nn::bias_add_relu(xt, nn::normal({3}, 0.0, 1.0, gen)), std::invalid_argument);
+}

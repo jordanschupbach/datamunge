@@ -15,9 +15,12 @@
 }
 %enddef
 
+DATAMUNGE_PLOT_EXCEPTIONS(datamunge::graphics::RGB::RGB)
 DATAMUNGE_PLOT_EXCEPTIONS(datamunge::graphics::RPlot::RPlot)
 DATAMUNGE_PLOT_EXCEPTIONS(datamunge::graphics::RPlot::hist)
 DATAMUNGE_PLOT_EXCEPTIONS(datamunge::graphics::RPlot::set_col)
+DATAMUNGE_PLOT_EXCEPTIONS(datamunge::graphics::RPlot::xlim)
+DATAMUNGE_PLOT_EXCEPTIONS(datamunge::graphics::RPlot::ylim)
 DATAMUNGE_PLOT_EXCEPTIONS(datamunge::runif)
 
 // Dataset loading: unknown names, missing/malformed files and failed downloads.

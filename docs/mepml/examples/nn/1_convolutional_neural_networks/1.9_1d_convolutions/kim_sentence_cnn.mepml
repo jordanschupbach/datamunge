@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_c
 
 Fit token vocabulary only on retained original reviews,keep PAD0 structurally zero,and pool parallel wide word windows. Show the ordinary tensor optimizer and post-step maxnorm projection explicitly. Restore nine learned leaves for words-and-lengths-only inference,then compare every held-out prediction with the unchanged SGD unigram reference.
 
-The editable concept diagram is `diagrams/kim_sentence_cnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/kim_sentence_cnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/kim_sentence_cnn_concept.tikz > build/kim_sentence_cnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/kim_sentence_cnn_concept.svg build/kim_sentence_cnn_concept.dvi > build/kim_sentence_cnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/kim_sentence_cnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original movie\n review words");
+  diagram.node("n1", {5.2, 0}, "Wide3/4/5\n tensor features");
+  diagram.node("n2", {10.4, 0}, "Explicit updates\n and held-out text");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/kim_sentence_cnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/kim_sentence_cnn_concept.svg)
 // result_end
 \caption(Word CNN:real reviews and visible tensor Adadelta)
@@ -691,10 +697,10 @@ int main() {
 // result_begin: markdown
 | epoch | dropout fitting CE | validation CE | maximum projected head norm |
 |---:|---:|---:|---:|
-| 1 | 0.728539 | 0.692641 | 1.413508 |
-| 2 | 0.702490 | 0.690920 | 1.392018 |
-| 3 | 0.663178 | 0.695284 | 1.391930 |
-60 explicit Adadelta+projection updates;18 actual RMS-history arrays;selected epoch 2,validation 0.690920;fixed inference probe 0.806359->0.623513.
+| 1 | 0.726080 | 0.692170 | 1.419861 |
+| 2 | 0.688688 | 0.691233 | 1.398599 |
+| 3 | 0.642366 | 0.696105 | 1.419277 |
+60 explicit Adadelta+projection updates;18 actual RMS-history arrays;selected epoch 2,validation 0.691233;fixed inference probe 0.806359->0.613217.
 \image(figures/kim_sentence_cnn_training.svg)
 // result_end
 \caption(Every Adadelta update and separate head maxnorm projection. The toy fixture activates the constraint;actual training column norms are shown without claiming the cap was necessarily reached.)
@@ -901,18 +907,18 @@ int main() {
 }
 ```
 // result_begin: markdown
-Observed-word-only restore/repeat parity 0;single/batch 0 within1e-6;out-of-length change 0;nine learned leaves immutable:true;observed UNK substitution change 0.425801;head norms float32[2] [1.39202, 1.29442].
+Observed-word-only restore/repeat parity 0;single/batch 0 within1e-6;out-of-length change 0;nine learned leaves immutable:true;observed UNK substitution change 0.421097;head norms float32[2] [1.3986, 1.32187].
 
 | predictor | accuracy | stable NLL | all true-row confusion counts |
 |---|---:|---:|---|
-| learned CNN | 0.565000 | 0.685829 | int64[2, 2] [[40, 60], [27, 73]] |
+| learned CNN | 0.500000 | 0.693469 | int64[2, 2] [[25, 75], [25, 75]] |
 | untrained | 0.500000 | 0.756972 | int64[2, 2] [[100, 0], [100, 0]] |
 | SGD unigram | 0.655000 | 0.843006 | int64[2, 2] [[65, 35], [34, 66]] |
 | class0 tie | 0.500000 | 0.693147 | int64[2, 2] [[100, 0], [100, 0]] |
 
 | original source ID | original text excerpt,first12 whitespace words | true | CNN |
 |---:|---|---|---|
-| 831 | it's just too bad the screenwriters eventually shoot themselves in the feet | negative | negative |
+| 831 | it's just too bad the screenwriters eventually shoot themselves in the feet | negative | positive |
 | 4692 | the film's needlessly opaque intro takes its doe-eyed crudup out of pre-9/11 | negative | positive |
 | 3446 | lazily directed by charles stone iii . . . from a leaden | negative | positive |
 | 9973 | if the very concept makes you nervous . . . you'll have | positive | positive |

@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Learn128D unit embeddings by pulling an anchor toward a same-class positive while requiring a different-class negative to lie beyond a margin. Mine only strict semi-hard negatives from frozen current embeddings,recompute their gradient graph,and choose a checkpoint on unseen validation classes.
 
-The editable concept diagram is `diagrams/facenet_triplet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/facenet_triplet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/facenet_triplet_concept.tikz > build/facenet_triplet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/facenet_triplet_concept.svg build/facenet_triplet_concept.dvi > build/facenet_triplet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/facenet_triplet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Anchor and positive\nDifferent-class negative");
+  diagram.node("n1", {5.2, 0}, "Mine then recompute\nVisible Adam updates");
+  diagram.node("n2", {10.4, 0}, "Unit embeddings\nVerify and retrieve");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/facenet_triplet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/facenet_triplet_concept.svg)
 // result_end
 \caption(Triplet learning with strict semi-hard negatives)
@@ -521,12 +527,12 @@ int main() {
 // result_begin: markdown
 | epoch | selected hinge | mined | missing negatives | fixed fitting | fixed validation |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 0.144919 | 6242 | 2718 | 0.055277 | 0.135473 |
-| 2 | 0.118640 | 3898 | 5062 | 0.068673 | 0.201523 |
-| 3 | 0.127415 | 4286 | 4674 | 0.018558 | 0.089677 |
-96 explicit Adam updates;14426 mined triplets;selected epoch3 with restored validation hinge 0.089677;fixed fitting 0.194942->0.018558.
-Validation-only threshold 0.556712;512 unseen pairs:accuracy 0.609375,AUC 0.678619,TP/FP/FN/TN 199/143/57/113;mean same/different distances 0.366590/0.615701.
-256 unseen3-way tasks:trained 0.511719,untrained 0.386719,chance1/3.
+| 1 | 0.154061 | 6922 | 2038 | 0.063030 | 0.170812 |
+| 2 | 0.117560 | 3558 | 5402 | 0.026769 | 0.153331 |
+| 3 | 0.114425 | 2926 | 6034 | 0.054580 | 0.208965 |
+95 explicit Adam updates;13406 mined triplets;selected epoch2 with restored validation hinge 0.153331;fixed fitting 0.194942->0.026769.
+Validation-only threshold 0.434313;512 unseen pairs:accuracy 0.609375,AUC 0.693741,TP/FP/FN/TN 104/48/152/208;mean same/different distances 0.727994/1.197056.
+256 unseen3-way tasks:trained 0.496094,untrained 0.386719,chance1/3.
 \image(figures/facenet_triplet_training.svg)
 // result_end
 \caption(Fixed fitting/validation triplet objectives and the varying mined-batch objective are plotted separately. Validation checkpoint selection precedes all test verification and retrieval scoring.)

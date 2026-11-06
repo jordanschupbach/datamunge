@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.8_othe
 
 Predict80 independent category-presence bits,weight rare positive fitting targets,and optimize explicit Bernoulli BCE. Keep official source annotations distinct from the custom80/24/24 split,group ranking ties,and select checkpoints and global cutoffs using separate validation images.
 
-The editable concept diagram is `diagrams/multilabel_classification_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/multilabel_classification_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/multilabel_classification_concept.tikz > build/multilabel_classification_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/multilabel_classification_concept.svg build/multilabel_classification_concept.dvi > build/multilabel_classification_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/multilabel_classification_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Observed RGB image\nIndependent presence bits");
+  diagram.node("n1", {5.2, 0}, "Visible SGD and Adam\nFit-only class factors");
+  diagram.node("n2", {10.4, 0}, "Paired BN restore\nCalibrate and inspect");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/multilabel_classification_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/multilabel_classification_concept.svg)
 // result_end
 \caption(Independent multi-label learning on actual COCO photographs)
@@ -733,16 +739,16 @@ int main() {
 180952 learned/1200 BN moving scalars;62 learned/40 moving tensors.
 | epoch | weighted fitting BCE | plain validation BCE | validation mAP |
 |---:|---:|---:|---:|
-| 1 | 1.104923 | 0.669333 | 0.166852 |
-| 2 | 0.940900 | 0.581566 | 0.215402 |
-| 3 | 0.844863 | 0.495729 | 0.185084 |
-30 explicit Adam updates;selected epoch3,paired restored validation BCE 0.495729;fixed training-mode weighted BCE 1.113948->0.750087. Learned/untrained/prior validation cutoffs 0.550000/0.400000/0.400000.
-Independent deployment parity 0;repeat exact,single/batch agree,all62 learned+40 moving tensors immutable;mean image-pair probability difference 0.069572.
+| 1 | 1.104557 | 0.669392 | 0.167008 |
+| 2 | 0.941324 | 0.582035 | 0.210939 |
+| 3 | 0.844719 | 0.498554 | 0.205915 |
+30 explicit Adam updates;selected epoch3,paired restored validation BCE 0.498554;fixed training-mode weighted BCE 1.113948->0.751356. Learned/untrained/prior validation cutoffs 0.550000/0.400000/0.400000.
+Independent deployment parity 0;repeat exact,single/batch agree,all62 learned+40 moving tensors immutable;mean image-pair probability difference 0.072350.
 Test support:38 positive-support/42 absent classes,66 positive bits/1920.
 | model | mAP | microAP | mean bit NLL | mean bit Brier |
 |---|---:|---:|---:|---:|
-| CNN fixed.5 | 0.184866 | 0.041987 | 0.492873 | 0.156816 |
-| CNN calibrated | 0.184866 | 0.041987 | 0.492873 | 0.156816 |
+| CNN fixed.5 | 0.184804 | 0.042995 | 0.494411 | 0.157130 |
+| CNN calibrated | 0.184804 | 0.042995 | 0.494411 | 0.157130 |
 | untrained calibrated | 0.176606 | 0.048440 | 0.807085 | 0.289013 |
 | SGD prior calibrated | 0.072368 | 0.180548 | 0.135835 | 0.030140 |
 | all negative | 0.072368 | 0.034375 | 0.949816 | 0.034375 |
@@ -751,8 +757,8 @@ Thresholded decisions.
 
 | model | cutoff | microF1 | macroF1 | Hamming | exact | TP/FP/FN/TN |
 |---|---:|---:|---:|---:|---:|---|
-| CNN fixed.5 | 0.50 | 0.074074 | 0.037479 | 0.156250 | 0.000000 | 12/246/54/1608 |
-| CNN calibrated | 0.55 | 0.061538 | 0.008750 | 0.095312 | 0.000000 | 6/123/60/1731 |
+| CNN fixed.5 | 0.50 | 0.064103 | 0.027178 | 0.152083 | 0.000000 | 10/236/56/1618 |
+| CNN calibrated | 0.55 | 0.064171 | 0.009028 | 0.091146 | 0.000000 | 6/115/60/1739 |
 | untrained calibrated | 0.40 | 0.073038 | 0.043085 | 0.621354 | 0.000000 | 47/1174/19/680 |
 | SGD prior calibrated | 0.40 | 0.311111 | 0.009211 | 0.032292 | 0.000000 | 14/10/52/1844 |
 | all negative | 0.50 | 0.000000 | 0.000000 | 0.034375 | 0.000000 | 0/0/66/1854 |

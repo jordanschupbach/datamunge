@@ -17,6 +17,8 @@ def main():
         "DESCRIPTION",
         "NAMESPACE",
         "R",
+        "man",
+        "inst",
         "include",
         "lib_sources.txt",
         "src/Makevars",

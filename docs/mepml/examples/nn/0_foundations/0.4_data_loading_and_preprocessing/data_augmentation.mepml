@@ -31,18 +31,24 @@ are nonnegative and sum to one. Explicit Generator objects make random calls rep
 evaluation bypasses augmentation. These preprocessing functions return new values without
 recording an autograd graph. Each transform takes O(NHWC) work.
 
-The concept diagram has a retained TikZ source in `diagrams/data_augmentation_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/data_augmentation_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/data_augmentation_concept.tikz > build/data_augmentation_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/data_augmentation_concept.svg build/data_augmentation_concept.dvi > build/data_augmentation_concept.render.log 2>&1
-printf 'Rendered build/data_augmentation_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/data_augmentation_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Image + target\n(x,y) and (x_π,y_π)");
+  diagram.node("n1", {5.2, 0}, "Blend or paste\nmeasure actual area");
+  diagram.node("n2", {10.4, 0}, "Same target weight\nλ y+(1-λ)y_π");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/data_augmentation_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/data_augmentation_concept.svg from local TikZ source.
 // \image(figures/data_augmentation_concept.svg)
 // result_end
 \caption(CutMix labels follow clipped area; mixup labels follow the same interpolation)

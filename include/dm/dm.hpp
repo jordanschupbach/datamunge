@@ -18,15 +18,23 @@
 #include <datamunge/pipe.hpp>
 #include <datamunge/linalg/linalg.hpp>
 #include <datamunge/nn/nn.hpp>
+#include <datamunge/rl/discrete.hpp>
 #include <datamunge/compute/context.hpp>
 #include <datamunge/sim/world.hpp>
 #include <datamunge/sim/batch.hpp>
 #include <datamunge/sim/tasks.hpp>
+#include <datamunge/sim/conveyor.hpp>
+#include <datamunge/sim/devarm_pick.hpp>
+#include <datamunge/sim/devarm_camera.hpp>
+#include <datamunge/sim/fruit_stream.hpp>
+#include <datamunge/sim/articulation.hpp>
 #include <datamunge/game/clock.hpp>
 #include <datamunge/game/simulation.hpp>
 #include <datamunge/game/io.hpp>
 #include <datamunge/game/courier.hpp>
 #include <datamunge/game/render.hpp>
+#include <datamunge/cad/cad.hpp>
+#include <datamunge/fda/adaptive_pspline.hpp>
 
 // Standard headers an analysis script almost always needs, so `#include <dm/dm.hpp>` is the only
 // include a short program or report block has to write.

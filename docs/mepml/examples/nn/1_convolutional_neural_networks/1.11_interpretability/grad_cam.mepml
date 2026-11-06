@@ -20,18 +20,24 @@ $$ w_k=\operatorname{mean}_{ij}g_{ijk},\quad CAM=ReLU(\sum_k w_k A_k),\quad\alph
 
 The implementation masks irrelevant nonpositive-gradient denominators safely. It does not label first-gradient powers as rawlogit higher derivatives. Every numerical model,derivative,formula,normalization,metric and plotting value uses tensors;the classifier fitting loop is in vanilla_saliency.
 
-The editable concept diagram is `diagrams/grad_cam_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/grad_cam_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/grad_cam_concept.tikz > build/grad_cam_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/grad_cam_concept.svg build/grad_cam_concept.dvi > build/grad_cam_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/grad_cam_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Frozen actual\n last-conv features");
+  diagram.node("n1", {5.2, 0}, "Raw score gradient\n and two formulas");
+  diagram.node("n2", {10.4, 0}, "Coarse maps\n target and weight controls");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/grad_cam_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/grad_cam_concept.svg)
 // result_end
 \caption(Grad-CAM and Grad-CAM++:coarse maps with explicit score assumptions)
@@ -307,12 +313,12 @@ int main() {
 }
 ```
 // result_begin: markdown
-Actual31360lastconvfeature derivatives;logit/repeat 0/0,single/batch 1.1920929e-07;FDcoordinate1089error 0.000205405056;all24selected/controlarrays unchanged.
+Actual31360lastconvfeature derivatives;logit/repeat 0/0,single/batch 0;FDcoordinate1089error 0.000682249665;all24selected/controlarrays unchanged.
 | control | actual raw classic peaks | actual raw plus peaks |
 |---|---|---|
 | trained | float32[10] [0.0239379, 0.00945815, 0.0754602, 0.0331213, 0.0581473, 0.0385796, 0.020549, 0.052932, 0.0213786, 0.0353455] | float32[10] [8.33641, 6.3582, 10.8537, 7.83211, 8.712, 7.11147, 7.94758, 9.81739, 8.44022, 7.88482] |
 | runner | float32[10] [0.0678142, 0.0157335, 0.0527947, 0.0304105, 0.0122783, 0.0420729, 0.00454153, 0.0279493, 0.0500156, 0.0117538] | float32[10] [9.3603, 6.84496, 10.0969, 7.33863, 8.44263, 7.24255, 6.90597, 7.27129, 9.1608, 8.65413] |
-| initial | float32[10] [0.00874452, 0.00236596, 0.00945545, 0.00454335, 0, 0.0105971, 0.000852653, 0.00222184, 0.00650632, 0] | float32[10] [2.78163, 1.56755, 2.9825, 2.05846, 1.2827, 2.46421, 1.89609, 1.96598, 2.51729, 1.46572] |
+| initial | float32[10] [0.00874451, 0.00236596, 0.00945545, 0.00454335, 0, 0.0105971, 0.000852652, 0.00222184, 0.00650632, 0] | float32[10] [2.78163, 1.56755, 2.9825, 2.05846, 1.28271, 2.46421, 1.89609, 1.96598, 2.51729, 1.46572] |
 | head_initial | float32[10] [0.0202616, 0.0101015, 0.0986677, 0.0519587, 0.0323465, 0.0570472, 0.0402944, 0.0449345, 0.0210557, 0.0127401] | float32[10] [7.80319, 5.81862, 10.9669, 8.06107, 7.97718, 7.43509, 8.15259, 9.21648, 8.10636, 7.03724] |
 
 | true digit | original source ID | fixed target | fixed runner |
@@ -407,9 +413,9 @@ int main() {
 // result_begin: markdown
 | control | mean classic cosine | mean plus cosine |
 |---|---:|---:|
-| runner | 0.688794081 | 0.998598319 |
-| initial | 0.53934206 | 0.971336165 |
-| head_initial | 0.960113744 | 0.999975561 |
+| runner | 0.688794064 | 0.998598319 |
+| initial | 0.539342057 | 0.971336168 |
+| head_initial | 0.960113747 | 0.999975561 |
 All1960normalized selectedmethod pixels L1difference 247.787888;allzero classic cases 0;fixed targets int32[10] [0, 1, 2, 3, 9, 5, 6, 7, 8, 9],runners int32[10] [2, 6, 3, 5, 4, 9, 1, 9, 5, 4].
 \image(figures/grad_cam_controls.svg)
 // result_end

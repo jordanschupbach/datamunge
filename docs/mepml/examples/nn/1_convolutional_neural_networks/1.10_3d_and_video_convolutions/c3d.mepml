@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Preserve original annotated video/person/segment identities,resize actual frames with tensors,and execute the complete compact C3D graph. Show every Adam update,select on validation NLL,restore22 learned arrays for RGB-only inference,and compare complete held-out/temporal-control results.
 
-The editable concept diagram is `diagrams/c3d_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/c3d_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/c3d_concept.tikz > build/c3d_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/c3d_concept.svg build/c3d_concept.dvi > build/c3d_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/c3d_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original video\n segments");
+  diagram.node("n1", {5.2, 0}, "Eight3Dconvs\n and ceil pools");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n and every held-out clip");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/c3d_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/c3d_concept.svg)
 // result_end
 \caption(C3D:original video frames and visible tensor Adam)
@@ -99,7 +105,6 @@ int main() {
 }
 ```
 // result_begin:
-// Tensor RGB ingress/32x32bilinear/scaling saved for36original clips.
 // result_end
 
 FFmpeg only decodes source frames;the tensor helper performs Float32 legacy
@@ -518,10 +523,10 @@ int main() {
 // result_begin: markdown
 | epoch | dropout fitting CE | validation NLL |
 |---:|---:|---:|
-| 1 | 1.197516 | 1.099830 |
-| 2 | 1.111317 | 1.101943 |
-| 3 | 1.105983 | 1.102069 |
-36 explicit Adam updates;selected epoch 1,validation 1.099830;fixed fitting inference NLL 1.106528->1.098891.
+| 1 | 1.128928 | 1.105507 |
+| 2 | 1.263409 | 1.101590 |
+| 3 | 1.061902 | 1.097129 |
+36 explicit Adam updates;selected epoch 3,validation 1.097129;fixed fitting inference NLL 1.106528->1.096012.
 \image(figures/c3d_training.svg)
 // result_end
 \caption(Every update uses the full compact eight-convolution graph and both dropout layers. Validation checkpoint selection and fixed fitting inference NLL are separate measurements.)
@@ -675,26 +680,26 @@ int main() {
 }
 ```
 // result_begin: markdown
-Fresh RGB restore/repeat 0;single/batch 1.95577741e-08 within1e-6;22leaves immutable:true;reverse/repeat-first changes 0.097756668/0.229040474.
+Fresh RGB restore/repeat 0;single/batch 0 within1e-6;22leaves immutable:true;reverse/repeat-first changes 0.097271557/0.114336178.
 
 | predictor | accuracy | macroF1 | NLL | all recalls | all true-row confusion counts |
 |---|---:|---:|---:|---|---|
-| learned C3D | 0.333333 | 0.166667 | 1.096773 | float64[3] [0, 1, 0] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 2, 0]] |
+| learned C3D | 0.333333 | 0.166667 | 1.095921 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 | untrained | 0.333333 | 0.166667 | 1.104972 | float64[3] [0, 1, 0] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 2, 0]] |
 | static1NN | 0.333333 | 0.166667 | 1.218111 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 | motion1NN | 0.666667 | 0.555556 | 0.884778 | float64[3] [0, 1, 1] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 0, 2]] |
 | class0 tie | 0.333333 | 0.166667 | 1.098612 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
-| reversed control | 0.333333 | 0.166667 | 1.099732 | float64[3] [0, 1, 0] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 2, 0]] |
-| still control | 0.333333 | 0.190476 | 1.096964 | float64[3] [0, 1, 0] | int32[3, 3] [[0, 1, 1], [0, 2, 0], [0, 2, 0]] |
+| reversed control | 0.333333 | 0.166667 | 1.093349 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
+| still control | 0.333333 | 0.166667 | 1.092713 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 
 | held-out row | true action | learned action |
 |---:|---:|---:|
-| 0 | 0 | 1 |
-| 1 | 0 | 1 |
-| 2 | 1 | 1 |
-| 3 | 1 | 1 |
-| 4 | 2 | 1 |
-| 5 | 2 | 1 |
+| 0 | 0 | 0 |
+| 1 | 0 | 0 |
+| 2 | 1 | 0 |
+| 3 | 1 | 0 |
+| 4 | 2 | 0 |
+| 5 | 2 | 0 |
 \image(figures/c3d_confusion.svg)
 // result_end
 \caption(All six held-out learned and motion1NN confusion counts,sharing0..2 range. Explicit temporal controls establish input dependence without claiming robust action recognition.)

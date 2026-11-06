@@ -19,18 +19,24 @@ $$ L=-\frac1B\sum_{i=1}^{B}\log\operatorname{softmax}(z_i)_{y_i}. $$
 
 The visible Adam loop optimizes every learned leaf;moving BN arrays are updated by fitting forwards and restored with the matching learned checkpoint. Compact execution and the analytical full-reference census are labelled separately.
 
-The editable concept diagram is `diagrams/slowfast_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/slowfast_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/slowfast_concept.tikz > build/slowfast_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/slowfast_concept.svg build/slowfast_concept.dvi > build/slowfast_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/slowfast_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Sparse Slow\n and dense Fast");
+  diagram.node("n1", {5.2, 0}, "Four lateral\n connections");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n paired restoration");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/slowfast_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/slowfast_concept.svg)
 // result_end
 \caption(SlowFast:two complete pathways and visible tensor Adam)
@@ -342,7 +348,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-533524parameters,332learned+220moving arrays;32zero gates,96blocked branch kernels,108active learned tensors.
+533524parameters,332learned+220moving arrays;32zero gates,96blocked branch kernels,107active learned tensors.
 | stage | Slow shape | Fast shape | lateral shape |
 |---:|---|---|---|
 | 0 | [2, 2, 8, 8, 8] | [2, 16, 8, 8, 1] | [2, 2, 8, 8, 2] |
@@ -492,10 +498,10 @@ int main() {
 // result_begin: markdown
 | epoch | batch-moment dropout fit CE | moving-moment validation NLL |
 |---:|---:|---:|
-| 1 | 1.125773 | 1.101417 |
-| 2 | 1.055330 | 1.123988 |
-| 3 | 1.083929 | 1.200249 |
-36explicit Adam updates;selected epoch 1,validation 1.101417;fixed inference fitting NLL 1.098741081->1.097462405.
+| 1 | 1.194484 | 1.101745 |
+| 2 | 1.049668 | 1.151848 |
+| 3 | 1.041386 | 1.245391 |
+36explicit Adam updates;selected epoch 1,validation 1.101745;fixed inference fitting NLL 1.098741080->1.096782328.
 \image(figures/slowfast_training.svg)
 // result_end
 \caption(All36actual tensor Adam updates,dropout and one moving-stat update per fitting batch. Both stores are selected on the same validation epoch;fixed inference fit NLL is reported separately.)
@@ -657,17 +663,17 @@ int main() {
 }
 ```
 // result_begin: markdown
-Fresh RGB restore/repeat 0;single/batch 5.58793545e-09 within1e-6;332learned+220moving leaves immutable:true;reverse/repeat-first changes 0.017159964/0.016396952.
+Fresh RGB restore/repeat 0;single/batch 0 within1e-6;332learned+220moving leaves immutable:true;reverse/repeat-first changes 0.013044732/0.030892069.
 
 | predictor | accuracy | macroF1 | NLL | all recalls | all true-row confusion counts |
 |---|---:|---:|---:|---|---|
-| learned SlowFast | 0.333333 | 0.166667 | 1.099577 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
+| learned SlowFast | 0.333333 | 0.166667 | 1.099375 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
 | untrained | 0.333333 | 0.166667 | 1.098745 | float64[3] [0, 1, 0] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 2, 0]] |
 | static1NN | 0.333333 | 0.166667 | 1.218111 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 | motion1NN | 0.666667 | 0.555556 | 0.884778 | float64[3] [0, 1, 1] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 0, 2]] |
 | class0 tie | 0.333333 | 0.166667 | 1.098612 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
-| reversed control | 0.333333 | 0.166667 | 1.099511 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
-| still control | 0.333333 | 0.166667 | 1.099374 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
+| reversed control | 0.333333 | 0.166667 | 1.098886 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
+| still control | 0.333333 | 0.166667 | 1.099264 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
 
 | held-out row | true action | learned action |
 |---:|---:|---:|
@@ -780,7 +786,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-Raw Slow difference 0;Fast-to-Slow body L1 4.24053049;zero-lateral logit L1 0.242395535;all552arrays unchanged.
+Raw Slow difference 0;Fast-to-Slow body L1 11.3215723;zero-lateral logit L1 0.181506008;all552arrays unchanged.
 \image(figures/slowfast_transfer.svg)
 // result_end
 \caption(Actual Fast-only intervention preserves raw Slow samples exactly. The Slow stem also stays fixed;later Slow stages receive changes through the lateral links. Disabling all lateral links changes held-out logits without updating any model array.)

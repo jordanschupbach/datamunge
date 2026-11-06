@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.7_segm
 
 Adaptive1/2/3/6 bins collect global and regional context. Projected,aligned-corner resized means concatenate with dense ResNet features before class prediction. A separate auxiliary head contributes explicitly to the training objective;test predictions use the main head.
 
-The editable concept diagram is `diagrams/pspnet_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/pspnet_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/pspnet_concept.tikz > build/pspnet_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/pspnet_concept.svg build/pspnet_concept.dvi > build/pspnet_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/pspnet_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Adaptive pyramid bins\nGlobal and local means");
+  diagram.node("n1", {5.2, 0}, "Concatenate context\nTwo supervised heads");
+  diagram.node("n2", {10.4, 0}, "Visible Adam loop\nPaired BN checkpoints");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/pspnet_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/pspnet_concept.svg)
 // result_end
 \caption(PSPNet pyramid context and auxiliary supervision)
@@ -446,39 +452,39 @@ int main() {
 Variant1: 222704 learned scalars, paired BN state. Fit-only weights 1.149431/3.477891/3.045941/4.357872.
 | variant | epoch | weighted pixel CE | validation mIoU |
 |---:|---:|---:|---:|
-| 1 | 1 | 1.325791 | 0.246196 |
-| 1 | 2 | 0.975903 | 0.312910 |
-| 1 | 3 | 0.818399 | 0.374429 |
-| 1 | 4 | 0.701542 | 0.397988 |
-| 1 | 5 | 0.581997 | 0.391246 |
-| 1 | 6 | 0.518350 | 0.362335 |
-| 1 | 7 | 0.457777 | 0.420172 |
-| 1 | 8 | 0.414770 | 0.460461 |
-| 1 | 9 | 0.356382 | 0.404603 |
-| 1 | 10 | 0.324438 | 0.418716 |
-| 1 | 11 | 0.282771 | 0.471555 |
-| 1 | 12 | 0.272174 | 0.447059 |
-| 1 | 13 | 0.242506 | 0.457329 |
-| 1 | 14 | 0.244436 | 0.412541 |
-| 1 | 15 | 0.205225 | 0.450702 |
-| 1 | 16 | 0.197101 | 0.466443 |
-| 1 | 17 | 0.184241 | 0.488761 |
-| 1 | 18 | 0.173064 | 0.466935 |
-| 1 | 19 | 0.157250 | 0.501431 |
-| 1 | 20 | 0.147388 | 0.484543 |
-| 1 | 21 | 0.150292 | 0.513235 |
-| 1 | 22 | 0.144909 | 0.500533 |
-| 1 | 23 | 0.139549 | 0.493154 |
-| 1 | 24 | 0.127730 | 0.506723 |
-| 1 | 25 | 0.117125 | 0.522807 |
-| 1 | 26 | 0.117735 | 0.482282 |
-| 1 | 27 | 0.116152 | 0.503874 |
-| 1 | 28 | 0.115616 | 0.475469 |
-| 1 | 29 | 0.107099 | 0.490863 |
-| 1 | 30 | 0.107758 | 0.484128 |
-| 1 | 31 | 0.102841 | 0.500620 |
-| 1 | 32 | 0.104419 | 0.511725 |
-Variant1 restored epoch25: validation mIoU 0.522807; test pixel accuracy 0.875156, mean IoU 0.547042; per-class IoU(background,circle,rectangle,triangle) 0.945169/0.361144/0.415453/0.466404. 512 explicit Adam updates.
+| 1 | 1 | 1.324623 | 0.242523 |
+| 1 | 2 | 0.965403 | 0.332560 |
+| 1 | 3 | 0.797550 | 0.348120 |
+| 1 | 4 | 0.686700 | 0.390190 |
+| 1 | 5 | 0.562877 | 0.399423 |
+| 1 | 6 | 0.502215 | 0.370501 |
+| 1 | 7 | 0.446814 | 0.416969 |
+| 1 | 8 | 0.400019 | 0.436014 |
+| 1 | 9 | 0.351466 | 0.433271 |
+| 1 | 10 | 0.314237 | 0.450547 |
+| 1 | 11 | 0.274070 | 0.467481 |
+| 1 | 12 | 0.264874 | 0.453870 |
+| 1 | 13 | 0.232063 | 0.454745 |
+| 1 | 14 | 0.237225 | 0.412618 |
+| 1 | 15 | 0.202547 | 0.469986 |
+| 1 | 16 | 0.196543 | 0.444355 |
+| 1 | 17 | 0.183752 | 0.485552 |
+| 1 | 18 | 0.170208 | 0.477362 |
+| 1 | 19 | 0.156568 | 0.503024 |
+| 1 | 20 | 0.147365 | 0.480612 |
+| 1 | 21 | 0.150781 | 0.495903 |
+| 1 | 22 | 0.142964 | 0.503821 |
+| 1 | 23 | 0.136697 | 0.503290 |
+| 1 | 24 | 0.128515 | 0.502531 |
+| 1 | 25 | 0.117459 | 0.497700 |
+| 1 | 26 | 0.116688 | 0.504638 |
+| 1 | 27 | 0.112294 | 0.512158 |
+| 1 | 28 | 0.111873 | 0.490456 |
+| 1 | 29 | 0.102745 | 0.499048 |
+| 1 | 30 | 0.103994 | 0.501810 |
+| 1 | 31 | 0.101885 | 0.505855 |
+| 1 | 32 | 0.106454 | 0.505606 |
+Variant1 restored epoch27: validation mIoU 0.512158; test pixel accuracy 0.894185, mean IoU 0.575966; per-class IoU(background,circle,rectangle,triangle) 0.946453/0.383297/0.530557/0.443557. 512 explicit Adam updates.
 \image(figures/pspnet_training.svg)
 // result_end
 \caption(Visible whole-model512-update Adam with explicit(main CE+.4 auxiliary CE)/1.4 and kernel L2. Paired learned/BN state is validation-selected and restored before testing.)

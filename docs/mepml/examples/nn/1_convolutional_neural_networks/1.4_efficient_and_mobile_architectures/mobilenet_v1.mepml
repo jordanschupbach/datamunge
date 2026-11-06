@@ -45,18 +45,24 @@ L2=.0001/2 and independent padded crops/flips. Validation selects paired weights
 before test evaluation. These tiny CPU fits differ from both the larger source runs and published
 ImageNet schedules. MAC counts are arithmetic budgets from measured output shapes, not latency.
 
-The editable concept diagram is `diagrams/mobilenet_v1_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/mobilenet_v1_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/mobilenet_v1_concept.tikz > build/mobilenet_v1_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/mobilenet_v1_concept.svg build/mobilenet_v1_concept.dvi > build/mobilenet_v1_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/mobilenet_v1_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Depthwise filter\nPointwise mixing");
+  diagram.node("n1", {5.2, 0}, "Measure shapes\nCount arithmetic");
+  diagram.node("n2", {10.4, 0}, "Compare widths\nTensor Adam loop");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/mobilenet_v1_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/mobilenet_v1_concept.svg)
 // result_end
 \caption(MobileNet v1: Separable Filters and Measured Arithmetic)
@@ -337,7 +343,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-MobileNet-v1: 83 finite parameter-tensor gradients; nonredundant minimum 0.001893579, maximum 6.465773106; 0 projection BN shifts removed downstream, max 0.000000000.
+MobileNet-v1: 83 finite parameter-tensor gradients; nonredundant minimum 0.001893592, maximum 6.465662003; 0 projection BN shifts removed downstream, max 0.000000000.
 // result_end
 
 > Dataset and visible fitting
@@ -526,9 +532,9 @@ int main() {
 ```
 // result_begin: markdown
 MobileNet-v1 alpha 1: 64 fit / 64 validation / 64 official-test rows; 3217226 learned scalars, 21888 moving scalars; 64 explicit Adam updates.
-Selected epoch 1; validation NLL 2.386431; inference training NLL 2.372851; test NLL 2.305152; test accuracy 0.125000.
+Selected epoch 1; validation NLL 2.368786; inference training NLL 2.359145; test NLL 2.318404; test accuracy 0.109375.
 MobileNet-v1 alpha 0.5: 64 fit / 64 validation / 64 official-test rows; 823722 learned scalars, 10944 moving scalars; 64 explicit Adam updates.
-Selected epoch 1; validation NLL 2.338466; inference training NLL 2.261600; test NLL 2.352937; test accuracy 0.031250.
+Selected epoch 5; validation NLL 2.331148; inference training NLL 2.174545; test NLL 2.494142; test accuracy 0.062500.
 \image(figures/mobilenet_v1_training.svg)
 // result_end
 \caption(The two width multipliers share fixed CIFAR subsets, eight epochs, batch size and checkpoint rules. Moving BN state is restored alongside weights before scoring.)

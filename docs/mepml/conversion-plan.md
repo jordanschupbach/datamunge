@@ -9,6 +9,11 @@ Use the shared configurable cache, retain verified source provenance, and keep
 independent framework oracle generation in optional development tests.
 
 
+Current graphics policy (2026-10-31): method diagrams use the native C++ datamunge
+graphics library. Complete report blocks are their editable sources. Earlier batch
+notes mentioning TikZ describe historical verification, superseded by the native
+diagram migration. Extend the plotting library for missing reusable features.
+
 This is the working plan for rewriting the 528 literate reports in
 `examples/mepml/*.mepml` as polished reports in `docs/mepml/examples/`, one at a
 time. It is written so the work can stop and resume at any point: the checklist
@@ -26,11 +31,12 @@ at the bottom is the state, and the first unchecked entry is the next report.
   small, hand-checkable examples, each with a figure and the maths it
   illustrates (a few points, a tiny graph, a short sequence), so a reader sees
   the mechanism before any real data.
-- **Use TikZ concept diagrams when appropriate** (user, 2026-10-28): near the
+- **Use native datamunge concept diagrams when appropriate** (user, 2026-10-31): near the
   introduction of a topic, illustrate its mechanism or geometry with a clear diagram
   when that helps (aligned symbols, graphs, state transitions, partitions, etc.). Keep
-  the editable TikZ source and a repeatable rendering command. A diagram should teach
-  the concept; use ordinary plots for measured data and numerical results.
+  the complete editable C++ program in the report. Use `dm::graphics::Diagram`
+  and extend the native graphics library as needed. A diagram should teach the
+  concept; use ordinary plots for measured data and numerical results.
 - **Save images as local files, not inline SVG output** (user, 2026-10-28):
   render into the report's ignored `build/` directory (or another local build directory),
   then reference/copy the image with `file="figures/..."` and `\image(...)`. Do not
@@ -51,7 +57,7 @@ at the bottom is the state, and the first unchecked entry is the next report.
     algorithm or estimator, prove or sketch its key properties (correctness,
     complexity, convergence, bias), and connect the maths to the code's output.
 - Use the existing report as a starting point and expand it.
-- `docs/mepml/examples/iris_lda.mepml` is the model, but each new report should
+- `docs/mepml/examples/ml/classification/iris_lda.mepml` is the model, but each new report should
   be better than it, especially in describing and deriving the method.
 - Keep going until every report is converted.
 
@@ -131,13 +137,12 @@ Never print SVG XML or data URIs into report results.
    **All figure bytes stay in local image files:** use `.save_svg("build/...")` or a
    renderer's file output, never `std::print("{}", plot.to_svg())` or equivalent XML
    dumps. Keep only paths/references and ordinary results in the report.
-   For a useful introductory concept diagram, retain a TikZ `.tex`/`.tikz` source
-   under `diagrams/` and compile it into `build/`; copy/reference the rendered image
-   through `file=` as above. A short shell block may run LaTeX/dvisvgm (it is a
-   figure-build step, exempt from the complete-C++-program rule). Document its tool
-   requirements, preserve compile logs locally, and visually inspect the exported
-   diagram alongside plots. The docs export consumes committed rendered figures and
-   does not require rerunning TeX.
+   For an introductory concept diagram, keep a complete C++ program using
+   `dm::graphics::Diagram` in the report and render into `build/`; copy/reference
+   the rendered image through `file=` as above. Add missing reusable primitives
+   to the native graphics library. Use multiline UTF-8 labels and equal coordinate
+   scales for geometry. Visually inspect the exported diagram alongside plots.
+   The docs export consumes committed rendered figures.
    **Make every figure render well in HTML** (user, 2026-10-28). The Doxygen page
    scales each figure to the width of the text column, about 700 to 1100 px:
    - Multi-panel `RLayout` figures must call `.fit_panels()` after `.size(...)`
@@ -165,8 +170,15 @@ Never print SVG XML or data URIs into report results.
 
 ## Procedure for one report
 
+Choose the output subject and topic using the directory guide in
+[README.md](README.md). Converted reports live under
+`docs/mepml/examples/<subject>/<topic>/` (or directly under a subject for an
+overview), with their own adjacent `figures/` directories and editable C++ diagram blocks. Keep
+the existing `nn/` chapter hierarchy for neural-network reports. The checklist
+below uses report basenames regardless of their destination directory.
+
 1. Read `examples/mepml/<name>.mepml` (and the library code it uses).
-2. Design the simple examples and any useful introductory TikZ diagram first;
+2. Design the simple examples and any useful introductory native datamunge diagram first;
    ensure all rendered images are saved as local build files, not inline output.
    Then decide whether a dataset fits
    (add one to `dm::datasets` if needed) or the report is better without one.
@@ -175,12 +187,12 @@ Never print SVG XML or data URIs into report results.
    `lib_sources.txt` for new `.cpp` files. Keep API names consistent with the
    rest of the library. Python/R bindings are not required for report-only
    helpers.
-4. Write `docs/mepml/examples/<name>.mepml` (keep the file name; drop a
+4. Write `docs/mepml/examples/<subject>/<topic>/<name>.mepml` (keep the file name; drop a
    redundant `_analysis` suffix only if it reads better, and note it below).
 5. Build the working-tree library and run the report:
    ```sh
    nix develop .#cpp-tools --command cmake --build build/debug/tests --target datamunge
-   PKG_CONFIG_PATH=$PWD/build/mepml-pc python3 scripts/mepml_run.py docs/mepml/examples/<name>.mepml
+   PKG_CONFIG_PATH=$PWD/build/mepml-pc python3 scripts/mepml_run.py docs/mepml/examples/<subject>/<topic>/<name>.mepml
    ```
    `build/mepml-pc/datamunge.pc` points `pkg-config` at `include/` and
    `build/debug/tests/_deps/datamunge-build` (the installed copy is stale). The path
@@ -189,13 +201,23 @@ Never print SVG XML or data URIs into report results.
    renders it the way a browser does (clipping included).
 6. Read every result and figure (render figures with inkscape, see 4); check numbers against theory or an
    independent oracle (R, or `sklearn_oracle_env` Python).
-7. Check the export: `mep-mepml convert docs/mepml/examples/<name>.mepml /tmp/x.md`.
+7. Check the export: `mep-mepml convert docs/mepml/examples/<subject>/<topic>/<name>.mepml /tmp/x.md`.
 8. Delete `examples/mepml/<name>.mepml` and any `examples/mepml/figures/<name>*`.
    Also delete `examples/org/<name>.org` (and its `.tex`/`.html`/figure leftovers),
    with `git rm -f`, and repoint `list-of-algorithms.txt`.
 9. Tick the box below (with notes: dataset used or "no dataset", library additions).
 
 ## Notes and decisions
+
+- 2026-10-31: Replaced all 189 external-renderer concept diagrams with complete
+  C++ `dm::graphics::Diagram` blocks. The native graphics API supplies measured
+  multiline labels, glyph outlines, labelled nodes/circles, boundary-anchored
+  arrows and geometric primitives; no diagram needs a TeX toolchain. All changed
+  diagram blocks execute with MEP, their local SVGs were rasterised/reviewed, and
+  all 292 current reports export to HTML/Markdown. Removed superseded diagram
+  sources and restored fifteen stale figure copies from their existing native
+  numerical outputs. Historical batch notes below describe the earlier pipeline.
+  Validation and API documentation evidence: `build/diagram-migration/`.
 
 - 2026-10-29: Converted the nine remaining continuous-optimization reports, one
   at a time: adaptive gradient, overview, constrained, coordinate/CG,
@@ -514,7 +536,7 @@ Never print SVG XML or data URIs into report results.
   `just mepml-from-org`. The user decided (2026-10-27) to delete each report's
   org source when it is converted, so that recipe cannot recreate it. Repoint
   any `report examples/org/<name>.org` line in `list-of-algorithms.txt` to
-  `docs/mepml/examples/<name>.mepml`.
+  `docs/mepml/examples/<subject>/<topic>/<name>.mepml`.
 - `index`, `plot`, `pspline`, `random_generation`, `dense_linear_algebra`,
   `chacha20`, `pcg32`, `sfc64`, `mersenne_twister64`, `xoroshiro128plus`,
   `xoshiro256starstar` do not follow the `_analysis` naming; decide per file
@@ -1150,3 +1172,22 @@ Sieve of Atkin: parity theorem derived from Jacobi r2; new sieve_of_atkin.hpp (f
 - [x] zhu_takaoka_analysis — titanic Name; compiled ZhuTakaoka matcher, actual scan counters/trace and record-wise naive/Horspool/ZT comparison. Five blocks, two inspected SVGs, Markdown export; seven focused tests (16,000 random cases), ten compiled header examples, 27/27 Doxygen definitions; independent Python brute-force suffix/str.find oracle reproduces all 15 query/method totals.
 - [x] ziggurat_analysis — eight_schools; ZigguratNormal draw/table/plot_envelope/diagnostics/simulate_measurements, supported-layer validation and finite uniform endpoint fix. Seven blocks, four inspected SVGs, Markdown export; six focused tests, eight compiled header examples, 24/24 Doxygen definitions; independent R checks of both million-draw samples and all school probabilities.
 - [x] zobrist_analysis — digits (64 categorical pixels); zobrist_boards, zobrist_transition, zobrist_collision_profile; checked indices/shapes. Seven blocks, three SVGs, Markdown export, five focused tests, seven compiled header examples, 16/16 Doxygen definitions; independent Python XOR/pair-count oracle matches all nine widths.
+
+- 2026-10-30: Started the `examples/datasets/` collection with the complete
+  CIFAR-10 study (`datasets/cifar10/cifar10.mepml`). Native acquisition, exact
+  source fingerprints, disjoint stratified 45000/5000 splitting and fitting-only
+  RGB moments precede two full-data learning-rate pilots and a 90-epoch compact
+  ResNet-18 run. A nonzero-rate plateau check passes; validation accuracy selects
+  between the raw-NLL minimum and converged endpoint before any test scoring.
+  All 10000 official test images give 90.21% accuracy; validation-only temperature
+  scaling reduces test NLL from .444357 to .302002. The report retains both
+  checkpoint candidates, selected weights/BN, split IDs, full logits, reliability
+  bins, prediction examples and raw Grad-CAM/IG/occlusion arrays. There are no
+  exact decoded-image duplicates in the three partitions; near duplicates remain
+  outside the audit. IG quadrature, a black-baseline alternative, head randomisation
+  and matched-size deletion controls qualify the explanations.
+  All 26 executable blocks, fifteen reviewed figures, Markdown and website HTML
+  exports pass. Independent NumPy/PyTorch agrees on every test decision/count;
+  maximum logit difference 1.53e-5 and IG RMSE 2.36e-5. Nine native tests, twelve
+  header examples, five clangd hovers and 35/35 new-header documentation definitions
+  pass. No legacy algorithm report is replaced. Evidence: `build/cifar10-report/`.

@@ -486,9 +486,9 @@ int main() {
 ```
 // result_begin: markdown
 Jacobians at x ∈ R^16: max |closed form − autodiff| = 1.1e-16 (layer norm), 1.1e-16 (RMSNorm).
-Layer norm: σ = 1.6055; singular values: 0.622849 (×14) then 2.416e-06 and 1.6e-17; predicted 1/σ = 0.622849 and ε/σ³ = 2.416e-06.
+Layer norm: σ = 1.6055; singular values: 0.622849 (×14) then 2.416e-06 and 1.5e-18; predicted 1/σ = 0.622849 and ε/σ³ = 2.416e-06.
 RMSNorm: r = 1.7079; singular values: 0.585528 (×15) then 2.007e-06; predicted 1/r = 0.585528 and ε/r³ = 2.007e-06.
-Largest deviation of the repeated singular values from 1/σ, 1/r: 2.2e-16, 3.3e-16.
+Largest deviation of the repeated singular values from 1/σ, 1/r: 4.4e-16, 1.1e-16.
 
 Upstream gradient of L = Σ r ⊙ LN(h) for 32 rows: max |Σ_j ∂L/∂h_j| = 6.7e-16; max cosine with the centred row = 7.2e-06.
 Weight W [10, 8] feeding layer norm (ε = 0): cos(∇W, W) = -2.7e-17; L(3W) − L(W) = 5.3e-15; max |∇L(3W) − ∇L(W)/3| = 1.1e-15.
@@ -671,22 +671,22 @@ int main() {
 // result_begin: markdown
 | normaliser | batch 64: train loss | batch 64: test accuracy % | batch 4: train loss | batch 4: test accuracy % |
 | :--- | ---: | ---: | ---: | ---: |
-| none | 0.037, 0.006 | 95.0, 96.4 | 1.197, 0.744 | 57.8, 66.7 |
-| batch norm | 0.100, 0.102 | 89.4, 90.6 | 2.356, 2.303 | 9.7, 10.8 |
-| layer norm | 0.056, 0.122 | 92.2, 90.8 | 0.925, 0.826 | 66.7, 71.9 |
-| RMSNorm | 0.041, 0.035 | 94.7, 95.6 | 1.578, 0.722 | 55.0, 72.8 |
-| ScaleNorm | 0.102, 0.051 | 93.9, 94.7 | 1.409, 1.490 | 52.5, 38.3 |
-| Dynamic Tanh | 1.850, 0.651 | 16.4, 61.9 | 1.850, 2.303 | 20.8, 8.6 |
-| weight standardisation | 0.006, 0.041 | 95.0, 95.8 | 0.468, 0.635 | 80.0, 69.2 |
-none: training loss (batch 64, mean of 2 seeds) 0.853 at step 50, 0.0214 at step 500; first below 0.1 at step 250.
-batch norm: training loss (batch 64, mean of 2 seeds) 2.224 at step 50, 0.1014 at step 500; first below 0.1 at step never.
-layer norm: training loss (batch 64, mean of 2 seeds) 0.800 at step 50, 0.0885 at step 500; first below 0.1 at step 250.
-RMSNorm: training loss (batch 64, mean of 2 seeds) 0.796 at step 50, 0.0379 at step 500; first below 0.1 at step 250.
-ScaleNorm: training loss (batch 64, mean of 2 seeds) 0.762 at step 50, 0.0762 at step 500; first below 0.1 at step 350.
-Dynamic Tanh: training loss (batch 64, mean of 2 seeds) 2.252 at step 50, 1.2505 at step 500; first below 0.1 at step never.
-weight standardisation: training loss (batch 64, mean of 2 seeds) 0.779 at step 50, 0.0232 at step 500; first below 0.1 at step 200.
+| none | 0.012, 0.013 | 94.7, 95.0 | 0.714, 0.841 | 65.6, 66.4 |
+| batch norm | 0.105, 0.111 | 92.8, 88.9 | 2.308, 2.330 | 12.5, 9.7 |
+| layer norm | 0.073, 0.097 | 91.9, 93.1 | 0.963, 1.139 | 59.4, 58.9 |
+| RMSNorm | 0.020, 0.060 | 95.6, 93.1 | 0.837, 0.658 | 63.3, 77.2 |
+| ScaleNorm | 0.073, 0.023 | 92.5, 94.7 | 0.906, 0.938 | 70.3, 54.2 |
+| Dynamic Tanh | 1.754, 0.933 | 18.6, 43.1 | 1.841, 2.302 | 21.1, 8.6 |
+| weight standardisation | 0.102, 0.012 | 93.6, 95.6 | 0.578, 0.574 | 74.7, 75.6 |
+none: training loss (batch 64, mean of 2 seeds) 0.854 at step 50, 0.0124 at step 500; first below 0.1 at step 250.
+batch norm: training loss (batch 64, mean of 2 seeds) 2.237 at step 50, 0.1079 at step 500; first below 0.1 at step never.
+layer norm: training loss (batch 64, mean of 2 seeds) 0.864 at step 50, 0.0848 at step 500; first below 0.1 at step 350.
+RMSNorm: training loss (batch 64, mean of 2 seeds) 0.799 at step 50, 0.0399 at step 500; first below 0.1 at step 200.
+ScaleNorm: training loss (batch 64, mean of 2 seeds) 0.799 at step 50, 0.0477 at step 500; first below 0.1 at step 250.
+Dynamic Tanh: training loss (batch 64, mean of 2 seeds) 2.252 at step 50, 1.3437 at step 500; first below 0.1 at step never.
+weight standardisation: training loss (batch 64, mean of 2 seeds) 0.819 at step 50, 0.0569 at step 500; first below 0.1 at step 200.
 
-Batch norm trained with batches of 4, test accuracy when each test batch of 4 is normalised with its own statistics: 10.6%, 12.5%.
+Batch norm trained with batches of 4, test accuracy when each test batch of 4 is normalised with its own statistics: 10.8%, 11.9%.
 RMS of the last hidden layer at initialisation (seed 1, 256 training images): none 5.49e-01, batch norm 7.25e-01, layer norm 7.19e-01, RMSNorm 8.13e-01, ScaleNorm 8.13e-01, Dynamic Tanh 7.41e-06, weight standardisation 1.96e-02.
 \image(figures/normalization_digits.svg)
 // result_end

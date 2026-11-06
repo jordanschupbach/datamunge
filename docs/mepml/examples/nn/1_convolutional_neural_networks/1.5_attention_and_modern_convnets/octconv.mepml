@@ -58,18 +58,24 @@ checkpoints selected only by validation NLL. Every path and both stream BN leave
 optimizer. All numerical preprocessing, paths, losses and updates use tensors; host images
 below serve only as independent oracles. This bounded run does not reproduce paper benchmarks.
 
-The editable concept diagram is `diagrams/octconv_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/octconv_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/octconv_concept.tikz > build/octconv_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/octconv_concept.svg build/octconv_concept.dvi > build/octconv_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/octconv_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "High and low maps\nFour tensor paths");
+  diagram.node("n1", {5.2, 0}, "Merge to high stream\nKeep odd geometry");
+  diagram.node("n2", {10.4, 0}, "All sixteen blocks\nExplicit tensor Adam");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/octconv_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/octconv_concept.svg)
 // result_end
 \caption(Octave Convolution: Frequency Exchange, Exact Geometry and Explicit Fitting)
@@ -390,7 +396,7 @@ int main() {
 }
 ```
 // result_begin: markdown
-All sixteen compact Oct-ResNet-50 bottlenecks retained: 369 finite parameter-tensor gradients, norms [0.043716400862,87.430145264], both stream moving moments frozen; nominal 32-pixel budget 60081152 MACs.
+All sixteen compact Oct-ResNet-50 bottlenecks retained: 369 finite parameter-tensor gradients, norms [0.043716635555,87.778823853], both stream moving moments frozen; nominal 32-pixel budget 60081152 MACs.
 // result_end
 
 > Original images and explicit fitting
@@ -575,7 +581,7 @@ int main() {
 ```
 // result_begin: markdown
 128 fit / 64 validation / 64 official-test rows; 1484186 learned scalars, 13280 moving scalars; 160 explicit Adam updates.
-Selected epoch 9; validation NLL 2.255711; inference training NLL 1.650308; test NLL 2.585061; test accuracy 0.234375.
+Selected epoch 5; validation NLL 2.864287; inference training NLL 2.337190; test NLL 2.732414; test accuracy 0.156250.
 \image(figures/octconv_training.svg)
 // result_end
 \caption(Explicit 10-epoch Adam fit and a tensor-computed true/predicted-class count matrix at the selected checkpoint. Training uses augmentation and batch BN moments; validation/test use saved moving moments. Counts sum to 64; IDs follow the original CIFAR-10 order.)

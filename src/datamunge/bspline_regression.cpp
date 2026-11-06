@@ -1,6 +1,10 @@
+/// @file bspline_regression.cpp
+/// @brief Reusable clamped B-spline designs and ordinary least-squares spline fits.
 #include <datamunge/bspline_regression.hpp>
 
 #include <algorithm>
+#include <cmath>
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -78,6 +82,67 @@ Vector<> BSplineRegression::predict(const Vector<>& x) const {
   Vector<> clamped = x;
   for (double& v : clamped) v = std::clamp(v, lo, hi);
   return fit_.predict(clamped.values());
+}
+
+Bspline::Bspline(
+    double                     lower,
+    double                     upper,
+    const std::vector<double>& knots,
+    std::size_t                degree,
+    bool                       intercept)
+    : intercept_(intercept) {
+  if (!std::isfinite(lower) || !std::isfinite(upper) || !(lower < upper))
+    throw std::invalid_argument("Bspline: require finite lower < upper");
+  if (degree > std::numeric_limits<std::size_t>::max() / 2 - 1)
+    throw std::invalid_argument("Bspline: degree is too large");
+  std::vector<double> full(degree + 1, lower);
+  for (std::size_t i = 0; i < knots.size(); ++i) {
+    const auto knot = knots[i];
+    if (!std::isfinite(knot) || knot < lower || knot > upper || (i && !(knots[i - 1] < knot)))
+      throw std::invalid_argument(
+          "Bspline: knots must be finite, increasing and within boundaries");
+    if (knot > lower && knot < upper)
+      full.push_back(knot);
+  }
+  full.insert(full.end(), degree + 1, upper);
+  basis_ = fda::BSplineBasis(degree, std::move(full));
+}
+
+Mat<> Bspline::eval(const std::vector<double>& x) const {
+  const auto [lower, upper] = basis_.domain();
+  const std::size_t skip    = intercept_ ? 0 : 1;
+  Mat<> out(x.size(), basis_.basis_size() - skip);
+  for (std::size_t i = 0; i < x.size(); ++i) {
+    if (!std::isfinite(x[i]) || x[i] < lower || x[i] > upper)
+      throw std::invalid_argument(
+          "Bspline: coordinates must be finite and within the fitted domain");
+    const auto local = basis_.evaluate_point(x[i]);
+    for (std::size_t k = 0; k < local.indices.size(); ++k)
+      if (local.indices[k] >= skip)
+        out.set(i, local.indices[k] - skip, local.values[k]);
+  }
+  return out;
+}
+
+SpMat<> Bspline::speval(const std::vector<double>& x) const {
+  const auto [lower, upper] = basis_.domain();
+  const std::size_t skip = intercept_ ? 0 : 1;
+  linalg::SparseCSR<double> out;
+  out.nrows = x.size();
+  out.ncols = basis_.basis_size() - skip;
+  out.row_ptr.push_back(0);
+  for (double coordinate : x) {
+    if (!std::isfinite(coordinate) || coordinate < lower || coordinate > upper)
+      throw std::invalid_argument("Bspline: coordinates must be finite and within the fitted domain");
+    const auto local = basis_.evaluate_point(coordinate);
+    for (std::size_t k = 0; k < local.indices.size(); ++k)
+      if (local.indices[k] >= skip) {
+        out.col_idx.push_back(local.indices[k] - skip);
+        out.values.push_back(local.values[k]);
+      }
+    out.row_ptr.push_back(out.values.size());
+  }
+  return SpMat<>(std::move(out));
 }
 
 } // namespace datamunge

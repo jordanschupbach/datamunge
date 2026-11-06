@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.9_1d_c
 
 Preserve original source records,channels and class order. Compute normalization and class weights only on fitting tensors,then train three strided residual stages with an explicit weighted objective. Restore paired learned/channel state for raw-signal-only prediction,and compare fixed SGD references with full confusion,balanced recall,macroF1 and tie-aware binary AUROC.
 
-The editable concept diagram is `diagrams/ecg_sensor_cnn_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/ecg_sensor_cnn_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/ecg_sensor_cnn_concept.tikz > build/ecg_sensor_cnn_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/ecg_sensor_cnn_concept.svg build/ecg_sensor_cnn_concept.dvi > build/ecg_sensor_cnn_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/ecg_sensor_cnn_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original ECG\n and six-axis records");
+  diagram.node("n1", {5.2, 0}, "Strided residual\n tensor stages");
+  diagram.node("n2", {10.4, 0}, "All source classes\n and held-out checks");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/ecg_sensor_cnn_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/ecg_sensor_cnn_concept.svg)
 // result_end
 \caption(ECG and smartwatch CNNs:original channels and visible tensor fits)
@@ -787,8 +793,8 @@ int main() {
 }
 ```
 // result_begin: markdown
-ECG200:restore/repeat error 0;single/batch 0 within2e-6;22 learned/state arrays unchanged:true;reversal change 0.996276669.
-ECG200 observed-channel replacement changes:float64[1] [0.150435]
+ECG200:restore/repeat error 0;single/batch 0 within2e-6;22 learned/state arrays unchanged:true;reversal change 0.996276774.
+ECG200 observed-channel replacement changes:float64[1] [0.150436]
 
 ECG200:source indices ECG[-1,+1] or Basic[Standing,Running,Walking,Badminton].
 
@@ -800,8 +806,8 @@ ECG200:source indices ECG[-1,+1] or Basic[Standing,Running,Walking,Badminton].
 | SGD centroid | 0.750000 | 0.750000 | 0.738466 | 0.596660 | 0.884115 | float64[2] [0.75, 0.75] | int32[2, 2] [[27, 9], [16, 48]] |
 | SGD counts | 0.640000 | 0.500000 | 0.390244 | 0.657579 | 0.500000 | float64[2] [0, 1] | int32[2, 2] [[0, 36], [0, 64]] |
 
-BasicMotions:restore/repeat error 0;single/batch 0 within2e-6;22 learned/state arrays unchanged:true;reversal change 0.632113844.
-BasicMotions observed-channel replacement changes:float64[6] [0.05637, 0.100093, 0.134089, 0.0417562, 0.0221467, 0.022233]
+BasicMotions:restore/repeat error 0;single/batch 0 within2e-6;22 learned/state arrays unchanged:true;reversal change 0.632114291.
+BasicMotions observed-channel replacement changes:float64[6] [0.0563701, 0.100093, 0.134089, 0.0417564, 0.0221466, 0.0222331]
 
 BasicMotions:source indices ECG[-1,+1] or Basic[Standing,Running,Walking,Badminton].
 

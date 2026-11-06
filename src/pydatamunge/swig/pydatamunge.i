@@ -1,5 +1,9 @@
 %module(directors="1") datamunge
 
+%{
+#include "datamunge/linalg/bindings.hpp"
+%}
+
 %include <stdint.i>
 %include <std_vector.i>
 %include <std_string.i>
@@ -215,6 +219,8 @@
 %pythonappend datamunge::graphics::RPlot::show_grid %{ val = self %}
 %pythonappend datamunge::graphics::RPlot::x_limits %{ val = self %}
 %pythonappend datamunge::graphics::RPlot::y_limits %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::xlim %{ val = self %}
+%pythonappend datamunge::graphics::RPlot::ylim %{ val = self %}
 %pythonappend datamunge::graphics::RPlot::hide_axes %{ val = self %}
 %pythonappend datamunge::graphics::RPlot::x_tick_labels %{ val = self %}
 %pythonappend datamunge::graphics::RPlot::xlab %{ val = self %}
@@ -541,6 +547,7 @@ RGBA = RGB
 %include "datamunge/algebra/groebner.hpp"
 
 %include "datamunge/algebra/expression.hpp"
+%include "datamunge/algebra/tex.i"
 
 %template(ComplexVector) std::vector<datamunge::algebra::Complex>;
 %include "datamunge/algebra/polynomial_roots.hpp"
@@ -616,3 +623,14 @@ RGBA = RGB
 }
 %include "prebindings/simulation/src/tasks.i"
 %exception;
+
+%exception {
+  try { $action }
+  catch (const std::invalid_argument& e) { SWIG_exception(SWIG_ValueError, e.what()); }
+  catch (const std::exception& e) { SWIG_exception(SWIG_RuntimeError, e.what()); }
+}
+%include "datamunge/linalg/bindings.hpp"
+%exception;
+
+// Code-driven CAD modelling, import and headless rendering.
+%include "datamunge/cad/bindings.i"

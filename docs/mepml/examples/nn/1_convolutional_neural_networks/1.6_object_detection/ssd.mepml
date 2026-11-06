@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.6_obje
 
 SSD predicts several default shapes from each cell of six feature maps. Class-agnostic offsets refine those defaults, while per-image3:1 hard-negative mining balances the classification objective. Background is the last class in this source port. The full VGG16 SSD300 architecture is checked separately from the explicitly adapted64-pixel model that is fitted below.
 
-The editable concept diagram is `diagrams/ssd_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/ssd_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/ssd_concept.tikz > build/ssd_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/ssd_concept.svg build/ssd_concept.dvi > build/ssd_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/ssd_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Six feature scales\nAligned default boxes");
+  diagram.node("n1", {5.2, 0}, "Class and offset heads\nTensor hard negatives");
+  diagram.node("n2", {10.4, 0}, "Explicit Adam fitting\nDecode and suppress");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/ssd_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/ssd_concept.svg)
 // result_end
 \caption(SSD multiscale predictions and hard-negative mining)
@@ -368,7 +374,7 @@ int main() {
 | 4 | 5x5 | 256 | 6 | 150 |
 | 5 | 3x3 | 256 | 4 | 36 |
 | 6 | 1x1 | 256 | 4 | 4 |
-Full SSD300: 26285486 learned scalars, 8732 predictions, 71 learned tensor gradients all finite/nonzero; L2 norms[0.000053089,28.780021667]. This is an initialized architecture check, not a fitted benchmark.
+Full SSD300: 26285486 learned scalars, 8732 predictions, 71 learned tensor gradients all finite/nonzero; L2 norms[0.000053089,28.780025482]. This is an initialized architecture check, not a fitted benchmark.
 // result_end
 
 > Data and explicit compact SSD fitting
@@ -639,39 +645,39 @@ int main() {
 // result_begin: markdown
 | epoch | multibox loss | CE | regression | val AP50 |
 |---:|---:|---:|---:|---:|
-| 1 | 15.725380 | 12.642122 | 3.083258 | 0.005040 |
-| 2 | 7.922913 | 5.711837 | 2.211076 | 0.072712 |
+| 1 | 15.725380 | 12.642122 | 3.083258 | 0.005010 |
+| 2 | 7.922913 | 5.711837 | 2.211075 | 0.072686 |
 | 3 | 6.303242 | 4.570053 | 1.733190 | 0.098963 |
 | 4 | 5.393195 | 3.989365 | 1.403831 | 0.137438 |
 | 5 | 4.687283 | 3.536729 | 1.150553 | 0.155712 |
 | 6 | 3.971835 | 3.047543 | 0.924292 | 0.171336 |
 | 7 | 3.548932 | 2.691045 | 0.857887 | 0.219639 |
-| 8 | 3.008637 | 2.265620 | 0.743017 | 0.230057 |
-| 9 | 2.527813 | 1.923453 | 0.604360 | 0.223854 |
-| 10 | 2.144484 | 1.602821 | 0.541663 | 0.242426 |
-| 11 | 1.798457 | 1.364570 | 0.433887 | 0.228472 |
-| 12 | 1.519911 | 1.132263 | 0.387648 | 0.209325 |
-| 13 | 1.336226 | 0.984228 | 0.351999 | 0.260838 |
-| 14 | 1.185009 | 0.868315 | 0.316694 | 0.232914 |
-| 15 | 1.033893 | 0.749734 | 0.284160 | 0.231691 |
-| 16 | 0.906731 | 0.673204 | 0.233526 | 0.234610 |
-| 17 | 0.811227 | 0.589022 | 0.222205 | 0.246759 |
-| 18 | 0.763910 | 0.565071 | 0.198839 | 0.310301 |
-| 19 | 0.675104 | 0.498576 | 0.176528 | 0.266471 |
-| 20 | 0.611397 | 0.441301 | 0.170096 | 0.262120 |
-| 21 | 0.542659 | 0.380963 | 0.161696 | 0.276204 |
-| 22 | 0.505043 | 0.346418 | 0.158624 | 0.249074 |
-| 23 | 0.481312 | 0.317368 | 0.163945 | 0.232209 |
-| 24 | 0.439228 | 0.278594 | 0.160634 | 0.233138 |
-| 25 | 0.446740 | 0.287466 | 0.159274 | 0.229376 |
-| 26 | 0.410868 | 0.255438 | 0.155430 | 0.253425 |
-| 27 | 0.353191 | 0.232163 | 0.121028 | 0.212482 |
-| 28 | 0.340805 | 0.213444 | 0.127361 | 0.276829 |
-| 29 | 0.338798 | 0.201018 | 0.137780 | 0.221208 |
-| 30 | 0.302870 | 0.186063 | 0.116806 | 0.239690 |
-| 31 | 0.262525 | 0.167766 | 0.094759 | 0.256292 |
-| 32 | 0.270463 | 0.155400 | 0.115062 | 0.260240 |
-1167362 learned scalars, 512 Adam updates; selected epoch 18, validation AP50 0.310301. Test: 23 digits in eight scenes, inclusive VOC AP50 0.203434, COCO AP75 0.069719, AP50:95 0.089794, 105 detections. Selected mean learned L2 scale 10.035564; no moving model state.
+| 8 | 3.008637 | 2.265619 | 0.743017 | 0.230057 |
+| 9 | 2.527812 | 1.923453 | 0.604359 | 0.223854 |
+| 10 | 2.144483 | 1.602821 | 0.541663 | 0.242426 |
+| 11 | 1.798453 | 1.364568 | 0.433885 | 0.228472 |
+| 12 | 1.519963 | 1.132264 | 0.387699 | 0.209325 |
+| 13 | 1.336052 | 0.984215 | 0.351837 | 0.260838 |
+| 14 | 1.185020 | 0.868128 | 0.316893 | 0.237257 |
+| 15 | 1.035994 | 0.749683 | 0.286311 | 0.230897 |
+| 16 | 0.909438 | 0.674019 | 0.235418 | 0.234610 |
+| 17 | 0.817525 | 0.591472 | 0.226053 | 0.250231 |
+| 18 | 0.768209 | 0.565919 | 0.202291 | 0.308819 |
+| 19 | 0.680505 | 0.497558 | 0.182947 | 0.253179 |
+| 20 | 0.613037 | 0.441737 | 0.171300 | 0.252949 |
+| 21 | 0.553354 | 0.381742 | 0.171613 | 0.221726 |
+| 22 | 0.507647 | 0.345346 | 0.162302 | 0.252469 |
+| 23 | 0.483189 | 0.316098 | 0.167091 | 0.227291 |
+| 24 | 0.445489 | 0.281152 | 0.164337 | 0.259329 |
+| 25 | 0.447890 | 0.286243 | 0.161648 | 0.235565 |
+| 26 | 0.399662 | 0.256090 | 0.143573 | 0.255894 |
+| 27 | 0.340591 | 0.229915 | 0.110676 | 0.202809 |
+| 28 | 0.331193 | 0.212139 | 0.119054 | 0.222757 |
+| 29 | 0.328120 | 0.200865 | 0.127255 | 0.226189 |
+| 30 | 0.294957 | 0.186161 | 0.108796 | 0.228658 |
+| 31 | 0.259945 | 0.166375 | 0.093570 | 0.211341 |
+| 32 | 0.262341 | 0.153276 | 0.109065 | 0.259212 |
+1167362 learned scalars, 512 Adam updates; selected epoch 18, validation AP50 0.308819. Test: 23 digits in eight scenes, inclusive VOC AP50 0.202209, COCO AP75 0.069719, AP50:95 0.089861, 104 detections. Selected mean learned L2 scale 10.035559; no moving model state.
 \image(figures/ssd_training.svg)
 // result_end
 \caption(The explicit compact SSD Adam loop fits every prediction head and the first-map L2 scale. Classification/regression are normalized by batch positives. Validation selects the parameter checkpoint; the plotted training loss excludes explicit kernel L2.)

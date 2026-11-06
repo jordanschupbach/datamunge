@@ -18,18 +18,24 @@ its width into26 sequence positions;two projected bidirectional LSTMs supply
 true variable-length word. Greedy decoding selects each time’s class before
 collapsing repeats/blanks,so it need not maximize total target-word mass.
 
-The editable concept diagram is `diagrams/crnn_ctc_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/crnn_ctc_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/crnn_ctc_concept.tikz > build/crnn_ctc_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/crnn_ctc_concept.svg build/crnn_ctc_concept.dvi > build/crnn_ctc_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/crnn_ctc_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Word image\nNo split into letters");
+  diagram.node("n1", {5.2, 0}, "7 convs + 2 BLSTMs\nVisible CTC Adam");
+  diagram.node("n2", {10.4, 0}, "Collapse paths\nInspect word errors");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/crnn_ctc_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/crnn_ctc_concept.svg)
 // result_end
 \caption(CRNN and CTC: visible tensor word recognition)
@@ -263,8 +269,6 @@ int main() {
 }
 ```
 // result_begin:
-// Validated80/24/24 unique source images and tensor OR-presence targets.
-// Validated43/7/6 tensor word crops and source-image-disjoint human targets.
 // result_end
 
 Sixty legible annotations on16 cached photographs pass the lowercase ASCII
@@ -543,11 +547,11 @@ int main() {
 133285 learned scalars/36 tensors;320 BN scalars/6 tensors.
 | epoch | mean fitting CTC | validation CTC |
 |---:|---:|---:|
-| 1 | 77.609507 | 74.021767 |
-| 2 | 67.885649 | 61.916454 |
-| 3 | 46.669541 | 33.693634 |
-18 visible Adam updates;selected epoch3,paired restored validation CTC 33.693634;fixed fitting CTC 78.655991->36.410206.
-Image-only deployment parity 0,all36 learned+6 moving tensors immutable,repeat exact,single/batch agree;image inversion changes mean logit 0.078535.
+| 1 | 77.609614 | 74.019279 |
+| 2 | 67.889929 | 61.887184 |
+| 3 | 46.683845 | 33.652500 |
+18 visible Adam updates;selected epoch3,paired restored validation CTC 33.652500;fixed fitting CTC 78.655991->36.455894.
+Image-only deployment parity 0,all36 learned+6 moving tensors immutable,repeat exact,single/batch agree;image inversion changes mean logit 0.079400.
 | predictor | exact words | total words | character edits | reference characters | character error rate |
 |---|---:|---:|---:|---:|---:|
 | trained greedy | 0 | 6 | 27 | 27 | 1.000000 |

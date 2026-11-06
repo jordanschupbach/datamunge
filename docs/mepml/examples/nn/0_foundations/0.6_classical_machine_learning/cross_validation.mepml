@@ -29,18 +29,24 @@ rows, and evaluate a separate test set once. The selected CV score has selection
 Random folds are inappropriate for temporal dependence or grouped observations that must remain
 together. The split helper validates coverage but does not enforce callback leakage discipline.
 
-The concept diagram has a retained TikZ source in `diagrams/cross_validation_concept.tikz`.
-Regeneration requires LaTeX with PGF/TikZ and standalone, and dvisvgm.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/cross_validation_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/cross_validation_concept.tikz > build/cross_validation_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/cross_validation_concept.svg build/cross_validation_concept.dvi > build/cross_validation_concept.render.log 2>&1
-printf 'Rendered build/cross_validation_concept.svg from local TikZ source.\n'
+```{cpp, file="figures/cross_validation_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Partition development rows\neach held out once");
+  diagram.node("n1", {5.2, 0}, "Refit inside each fold\ntraining-only state");
+  diagram.node("n2", {10.4, 0}, "Weighted validation loss\nselect, refit, final test");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/cross_validation_concept.svg");
+}
 ```
 // result_begin:
-// Rendered build/cross_validation_concept.svg from local TikZ source.
 // \image(figures/cross_validation_concept.svg)
 // result_end
 \caption(Weight fold losses by validation size and refit after selecting)

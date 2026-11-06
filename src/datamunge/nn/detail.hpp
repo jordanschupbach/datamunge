@@ -151,15 +151,24 @@ void parallel_strided_rows(const Shape& shape, const std::array<const Shape*, K>
                  sub[0]    = hi - lo;
                  std::array<std::int64_t, K> off = base;
                  for (std::size_t k = 0; k < K; ++k) off[k] += lo * (*strides[k])[0];
-                 strided_rows<K>(sub, strides, off, f);
+                 // A local copy of the row functor (see parallel_elements).
+                 auto body = f;
+                 strided_rows<K>(sub, strides, off, body);
                });
 }
 
 /// out[i] = f(i) for i in [0, n), in parallel for large n.
+///
+/// The chunk callback crosses a std::function boundary, so inside it the
+/// compiler only sees the functor through a reference and must assume the
+/// loop's stores may alias its captured scalars (a leaky-ReLU slope, a bias
+/// value...), which blocks vectorisation. Running a local copy of the functor
+/// keeps those captures in registers; kernels therefore capture by value.
 template <typename F>
 void parallel_elements(std::int64_t n, F&& f) {
   parallel_for(0, n, kParallelGrain, [&](std::int64_t lo, std::int64_t hi) {
-    for (std::int64_t i = lo; i < hi; ++i) f(i);
+    auto body = f;
+    for (std::int64_t i = lo; i < hi; ++i) body(i);
   });
 }
 
@@ -181,13 +190,21 @@ Tensor map_unary(const Tensor& x, DType out_dtype, F&& f) {
   const In*  src = raw_data<In>(x);
   if (x.is_contiguous()) {
     const In* s = src + x.offset();
-    parallel_elements(x.numel(), [&](std::int64_t i) { dst[i] = f(s[i]); });
+    parallel_elements(x.numel(), [dst, s, f](std::int64_t i) { dst[i] = f(s[i]); });
     return out;
   }
   const Shape                         out_strides = contiguous_strides(x.shape());
   const std::array<const Shape*, 2> st{&out_strides, &x.strides()};
-  parallel_strided_rows<2>(x.shape(), st, {0, x.offset()}, [&](const auto& off, std::int64_t n, const auto& step) {
-    for (std::int64_t j = 0; j < n; ++j) dst[off[0] + j] = f(src[off[1] + j * step[1]]);
+  parallel_strided_rows<2>(x.shape(), st, {0, x.offset()}, [dst, src, f](const auto& off, std::int64_t n, const auto& step) {
+    Out*      d = dst + off[0];
+    const In* s = src + off[1];
+    const auto k = step[1];
+    auto       op = f;  // local copy, see map_binary
+    // A unit inner stride (a sliced view) is the common case: a plain loop that vectorises.
+    if (k == 1)
+      for (std::int64_t j = 0; j < n; ++j) d[j] = op(s[j]);
+    else
+      for (std::int64_t j = 0; j < n; ++j) d[j] = op(s[j * k]);
   });
   return out;
 }
@@ -204,7 +221,7 @@ Tensor map_binary(const Tensor& a, const Tensor& b, DType out_dtype, F&& f) {
   if (a.shape() == shape && b.shape() == shape && a.is_contiguous() && b.is_contiguous()) {
     const In* sa = pa + a.offset();
     const In* sb = pb + b.offset();
-    parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(sa[i], sb[i]); });
+    parallel_elements(out.numel(), [dst, sa, sb, f](std::int64_t i) { dst[i] = f(sa[i], sb[i]); });
     return out;
   }
   // A broadcast scalar keeps its logical shape but every stride is zero.
@@ -221,13 +238,13 @@ Tensor map_binary(const Tensor& a, const Tensor& b, DType out_dtype, F&& f) {
   if (scalar_storage(b) && a.shape() == shape && a.is_contiguous()) {
     const In  vb = pb[b.offset()];
     const In* sa = pa + a.offset();
-    parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(sa[i], vb); });
+    parallel_elements(out.numel(), [dst, sa, vb, f](std::int64_t i) { dst[i] = f(sa[i], vb); });
     return out;
   }
   if (scalar_storage(a) && b.shape() == shape && b.is_contiguous()) {
     const In  va = pa[a.offset()];
     const In* sb = pb + b.offset();
-    parallel_elements(out.numel(), [&](std::int64_t i) { dst[i] = f(va, sb[i]); });
+    parallel_elements(out.numel(), [dst, va, sb, f](std::int64_t i) { dst[i] = f(va, sb[i]); });
     return out;
   }
   const Shape out_strides = contiguous_strides(shape);
@@ -269,11 +286,47 @@ Tensor map_binary(const Tensor& a, const Tensor& b, DType out_dtype, F&& f) {
       shape,
       st,
       {0, a.offset(), b.offset()},
-      [&](const auto& off, std::int64_t n, const auto& step) {
-        for (std::int64_t j = 0; j < n; ++j)
-          dst[off[0] + j] = f(pa[off[1] + j * step[1]], pb[off[2] + j * step[2]]);
+      [dst, pa, pb, f](const auto& off, std::int64_t n, const auto& step) {
+        Out*       d  = dst + off[0];
+        const In*  x  = pa + off[1];
+        const In*  y  = pb + off[2];
+        const auto kx = step[1], ky = step[2];
+        // A local copy of the op: this closure is reached through a reference
+        // inside strided_rows, so the op's captured scalars could otherwise
+        // alias the stores and the loops would not vectorise (23x slower).
+        auto op = f;
+        // Unit inner strides (sliced views) and an inner broadcast (a bias, a
+        // reduced gradient) are the common cases: plain loops that vectorise.
+        if (kx == 1 && ky == 1) {
+          for (std::int64_t j = 0; j < n; ++j) d[j] = op(x[j], y[j]);
+        } else if (kx == 1 && ky == 0) {
+          const In yv = *y;
+          for (std::int64_t j = 0; j < n; ++j) d[j] = op(x[j], yv);
+        } else if (kx == 0 && ky == 1) {
+          const In xv = *x;
+          for (std::int64_t j = 0; j < n; ++j) d[j] = op(xv, y[j]);
+        } else {
+          for (std::int64_t j = 0; j < n; ++j) d[j] = op(x[j * kx], y[j * ky]);
+        }
       });
   return out;
+}
+
+/// Row stride of a [..., C] view whose rows are evenly spaced with unit inner
+/// stride (a contiguous tensor, or one piece of a split along the last axis),
+/// or -1 for any other layout. Kernels that take a row stride can consume
+/// such a view (the gradient of a concat, say) without a contiguous copy.
+inline std::int64_t uniform_row_stride(const Tensor& t) {
+  const auto&       shape   = t.shape();
+  const auto&       strides = t.strides();
+  const std::size_t rank    = shape.size();
+  if (rank == 0 || strides[rank - 1] != 1) return -1;
+  if (rank == 1) return shape[0];
+  const std::int64_t ld = strides[rank - 2];
+  if (ld < shape[rank - 1]) return -1;
+  for (std::size_t i = 0; i + 2 < rank; ++i)
+    if (strides[i] != shape[i + 1] * strides[i + 1]) return -1;
+  return ld;
 }
 
 /// The same tensor without history, for use inside kernels.

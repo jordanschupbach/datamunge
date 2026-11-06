@@ -1,5 +1,7 @@
 #pragma once
 
+#include <datamunge/algebra/tex.hpp>
+
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
@@ -132,6 +134,33 @@ class Polynomial {
         }
         return out.str();
     }
+
+#ifndef SWIG
+    /// @brief Render this polynomial in descending powers as a composable C++ Tex value.
+    ///
+    /// Omits zero terms and unit coefficients of nonconstant terms, groups powers, and
+    /// prints conventional signs. Coefficients use locale-independent decimal/scientific
+    /// notation; infinity and NaN have explicit math commands. Returns owned source without
+    /// math-mode delimiters, leaving coefficients unchanged. Serialization may run concurrently.
+    /// @param variable Raw TeX symbol for the formal variable, default "x"; e.g. "h" or
+    ///                 "\\theta". Must not be empty; supply one math atom rather than a sum.
+    /// @param precision Significant decimal digits, default 7; from 1 to double's max_digits10.
+    /// @return Owned Tex fragment supporting annotations, display() and inline_math().
+    /// @throws std::invalid_argument For an empty variable or unsupported precision.
+    /// @par Example
+    /// @code
+    /// const dm::algebra::Polynomial p({-1, 0, 1});
+    /// std::print("{}\n", p.to_tex().display());
+    /// std::print("{}\n", p.to_tex("h").underbrace("p(h)"));
+    /// @endcode
+    /// @par References
+    /// - American Mathematical Society, User's Guide for the amsmath Package:
+    ///   https://www.latex-project.org/help/documentation/amsldoc.pdf
+    /// @see to_string(), Tex, Expr::to_tex()
+    [[nodiscard]] Tex to_tex(const std::string& variable = "x", int precision = 7) const {
+        return Tex(detail::polynomial_tex(coeffs_, variable, precision));
+    }
+#endif
 
     /// @brief Member (not free-function) equality, matching Point2D's convention -- SWIG maps
     ///        a free `operator==` to a single module-level `__eq__` in the Python backend,

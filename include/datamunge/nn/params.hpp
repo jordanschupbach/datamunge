@@ -114,6 +114,21 @@ class ParameterStore {
   void copy_from(const ParameterStore& src, double tau = 1.0);
   /// Deep copy with the same names, values and seed state.
   [[nodiscard]] ParameterStore clone() const;
+  /// @brief Copy every value to an explicit device, keeping names, order, dtype and seed state.
+  /// The copies are detached, so a GPU copy is ready for inference under NoGradGuard;
+  /// training continues on the original store. Copy back with copy_from() if needed.
+  /// @param context Destination execution context, e.g. dm::compute::Context({Backend::CUDA, 0}).
+  /// @return Independent store whose tensors live on `context`.
+  /// @throws std::runtime_error Native transfer failure.
+  /// @par Example
+  /// @code
+  /// namespace n = dm::nn;
+  /// n::ParameterStore p(17);
+  /// p.get("w", {2, 2}, n::init::ones());
+  /// const auto copy = p.to(dm::compute::Context{});
+  /// std::print("{}\n", copy.count()); // 4
+  /// @endcode
+  [[nodiscard]] ParameterStore to(const compute::Context& context) const;
 
   /// All parameters concatenated in creation order (for black-box optimizers
   /// such as CMA-ES or CEM in `datamunge::optim`).

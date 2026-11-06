@@ -14,18 +14,24 @@ Source example: `examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_
 
 Preserve both full block sequences and source symmetric borders/P3D mixtures. Use explicit tensor Adam for each compact network,update moving BN only in fitting forwards,select paired checkpoints on validation,and restore RGB-only inference before complete held-out comparisons.
 
-The editable concept diagram is `diagrams/factorized_video_concept.tikz`. Regeneration uses
-LaTeX with PGF/TikZ and standalone, plus dvisvgm; exports use the saved SVG.
+The concept diagram below is drawn by `dm::graphics::Diagram`. Its editable C++
+source is the complete block below; regeneration uses the same datamunge toolchain
+as the numerical examples. Exports consume the saved local SVG.
 
-```{bash, results="output", file="figures/factorized_video_concept.svg"}
-set -eu
-mkdir -p build
-latex -interaction=batchmode -halt-on-error -output-directory=build diagrams/factorized_video_concept.tikz > build/factorized_video_concept.compile.log 2>&1
-dvisvgm --no-fonts --bbox=10 --output=build/factorized_video_concept.svg build/factorized_video_concept.dvi > build/factorized_video_concept.render.log 2>&1
-printf 'Rendered local concept diagram.\n'
+```{cpp, file="figures/factorized_video_concept.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("n0", {0.0, 0}, "Original annotated\n RGB clips");
+  diagram.node("n1", {5.2, 0}, "Spatial/temporal\n residual factors");
+  diagram.node("n2", {10.4, 0}, "Visible Adam\n and paired BN state");
+  diagram.edge("n0", "n1").edge("n1", "n2");
+  diagram.save_svg("build/factorized_video_concept.svg");
+}
 ```
 // result_begin:
-// Rendered local concept diagram.
 // \image(figures/factorized_video_concept.svg)
 // result_end
 \caption(Factorized video:complete R(2+1)D and P3D tensor fits)
@@ -507,8 +513,8 @@ int main() {
 // result_begin: markdown
 | model | no-update moving change | update moving change | repeated inference error |
 |---|---:|---:|---:|
-| R(2+1)D-18 | 0 | 71.784901 | 0 |
-| P3D-199 | 0 | 4586.143324 | 0 |
+| R(2+1)D-18 | 0 | 71.784900 | 0 |
+| P3D-199 | 0 | 4586.140169 | 0 |
 \image(figures/factorized_video_state.svg)
 // result_end
 \caption(Actual first-minibatch moving-state changes across74/404arrays. Train-without-update and repeated inference are exact checks;the two separate model stores are not deployed checkpoints.)
@@ -653,17 +659,17 @@ int main() {
 // result_begin: markdown
 | R(2+1)D-18 epoch | batch-moment fitting CE | moving-moment validation NLL |
 |---:|---:|---:|
-| 1 | 1.135874 | 1.100650 |
-| 2 | 1.092717 | 1.099605 |
-| 3 | 1.089530 | 1.102173 |
-R(2+1)D-18:36 explicit Adam updates;selected epoch 2,val 1.099605;fixed inference fitting NLL 1.098353->1.094324.
+| 1 | 1.135434 | 1.100644 |
+| 2 | 1.093542 | 1.102548 |
+| 3 | 1.091566 | 1.094799 |
+R(2+1)D-18:36 explicit Adam updates;selected epoch 3,val 1.094799;fixed inference fitting NLL 1.098353->1.057403.
 
 | P3D-199 epoch | batch-moment fitting CE | moving-moment validation NLL |
 |---:|---:|---:|
-| 1 | 1.228437 | 1.117813 |
-| 2 | 1.195967 | 1.095704 |
-| 3 | 1.134816 | 1.136505 |
-P3D-199:36 explicit Adam updates;selected epoch 2,val 1.095704;fixed inference fitting NLL 10287.326152->1.116260.
+| 1 | 1.188252 | 1.117722 |
+| 2 | 1.106870 | 1.072347 |
+| 3 | 1.202723 | 1.031962 |
+P3D-199:36 explicit Adam updates;selected epoch 3,val 1.031962;fixed inference fitting NLL 10287.325765->1.131286.
 \image(figures/factorized_video_training.svg)
 // result_end
 \caption(Every Adam step and BN-state update for both full-depth compact models. Batch-moment fitting CE and moving-moment validation NLL use different modes;their gap is not hidden.)
@@ -839,17 +845,17 @@ int main() {
 }
 ```
 // result_begin: markdown
-R(2+1)D-18:RGB-only restore/repeat 0;single/batch 2.98023224e-08 within1e-6;113/74learned/moving leaves immutable:true;reverse/repeat changes 0.119245425/0.143999757.
+R(2+1)D-18:RGB-only restore/repeat 0;single/batch 0 within1e-6;113/74learned/moving leaves immutable:true;reverse/repeat changes 0.356415864/0.732673561.
 
 | R(2+1)D-18 predictor | accuracy | macroF1 | ordinary NLL | all recalls | complete true-row confusion |
 |---|---:|---:|---:|---|---|
-| learned | 0.500000 | 0.412698 | 1.094525 | float64[3] [1, 0, 0.5] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [1, 0, 1]] |
+| learned | 0.500000 | 0.412698 | 1.082862 | float64[3] [1, 0, 0.5] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [1, 0, 1]] |
 | untrained | 0.333333 | 0.166667 | 1.098187 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
 | static1NN | 0.333333 | 0.166667 | 1.218111 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 | motion1NN | 0.666667 | 0.555556 | 0.884778 | float64[3] [0, 1, 1] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 0, 2]] |
 | tie0 | 0.333333 | 0.166667 | 1.098612 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
-| reverse control | 0.500000 | 0.412698 | 1.095142 | float64[3] [1, 0, 0.5] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [1, 0, 1]] |
-| still control | 0.500000 | 0.388889 | 1.092180 | float64[3] [1, 0, 0.5] | int32[3, 3] [[2, 0, 0], [1, 0, 1], [1, 0, 1]] |
+| reverse control | 0.500000 | 0.388889 | 1.092157 | float64[3] [1, 0, 0.5] | int32[3, 3] [[2, 0, 0], [1, 0, 1], [1, 0, 1]] |
+| still control | 0.666667 | 0.533333 | 1.071376 | float64[3] [1, 0, 1] | int32[3, 3] [[2, 0, 0], [1, 0, 1], [0, 0, 2]] |
 
 | R(2+1)D-18 held-out row | true | predicted |
 |---:|---:|---:|
@@ -859,26 +865,26 @@ R(2+1)D-18:RGB-only restore/repeat 0;single/batch 2.98023224e-08 within1e-6;113/
 | 3 | 1 | 0 |
 | 4 | 2 | 2 |
 | 5 | 2 | 0 |
-P3D-199:RGB-only restore/repeat 0;single/batch 4.02331352e-07 within1e-6;608/404learned/moving leaves immutable:true;reverse/repeat changes 0.710639759/0.871223575.
+P3D-199:RGB-only restore/repeat 0;single/batch 0 within1e-6;608/404learned/moving leaves immutable:true;reverse/repeat changes 1.783101709/1.748730399.
 
 | P3D-199 predictor | accuracy | macroF1 | ordinary NLL | all recalls | complete true-row confusion |
 |---|---:|---:|---:|---|---|
-| learned | 0.333333 | 0.166667 | 1.122472 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
-| untrained | 0.333333 | 0.166667 | 8386.219564 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
+| learned | 0.333333 | 0.166667 | 1.160190 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
+| untrained | 0.333333 | 0.166667 | 8386.218343 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
 | static1NN | 0.333333 | 0.166667 | 1.218111 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 | motion1NN | 0.666667 | 0.555556 | 0.884778 | float64[3] [0, 1, 1] | int32[3, 3] [[0, 2, 0], [0, 2, 0], [0, 0, 2]] |
 | tie0 | 0.333333 | 0.166667 | 1.098612 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
-| reverse control | 0.333333 | 0.166667 | 1.104178 | float64[3] [0, 0, 1] | int32[3, 3] [[0, 0, 2], [0, 0, 2], [0, 0, 2]] |
-| still control | 0.500000 | 0.388889 | 1.082003 | float64[3] [0.5, 0, 1] | int32[3, 3] [[1, 0, 1], [1, 0, 1], [0, 0, 2]] |
+| reverse control | 0.333333 | 0.166667 | 1.106468 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
+| still control | 0.333333 | 0.166667 | 1.088768 | float64[3] [1, 0, 0] | int32[3, 3] [[2, 0, 0], [2, 0, 0], [2, 0, 0]] |
 
 | P3D-199 held-out row | true | predicted |
 |---:|---:|---:|
-| 0 | 0 | 2 |
-| 1 | 0 | 2 |
-| 2 | 1 | 2 |
-| 3 | 1 | 2 |
-| 4 | 2 | 2 |
-| 5 | 2 | 2 |
+| 0 | 0 | 0 |
+| 1 | 0 | 0 |
+| 2 | 1 | 0 |
+| 3 | 1 | 0 |
+| 4 | 2 | 0 |
+| 5 | 2 | 0 |
 \image(figures/factorized_video_confusion.svg)
 // result_end
 \caption(Every learned confusion count across all six held-out original clips for each model,sharing0..2. Temporal sensitivity,paired restoration and actual action accuracy remain separate checks.)

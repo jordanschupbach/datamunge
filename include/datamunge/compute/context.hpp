@@ -60,7 +60,7 @@ enum class MatrixType {
 
 /// @brief Packed row-major C[m,n] = op(A)[m,k] op(B)[k,n], with no host evaluation.
 /// Stored A is [m,k] or [k,m]; stored B is [k,n] or [n,k], according to the
-/// transpose flags. Each dimension must fit a signed 32-bit cuBLAS dimension.
+/// transpose flags. Each dimension must fit a signed 32-bit integer.
 /// Zero output dimensions do no work; zero inner dimension writes exact zeros.
 /// @par Example
 /// @code
@@ -68,7 +68,7 @@ enum class MatrixType {
 /// product.rows=2; product.columns=4; product.inner=3;
 /// @endcode
 /// @par References
-/// - NVIDIA cuBLAS: https://docs.nvidia.com/cuda/archive/12.8.0/cublas/index.html
+/// - Kernels: shaders/compute/blas.cu (in-house tiled GEMM; cuBLAS only as an opt-in comparison)
 /// @see Context::matmul()
 struct MatrixProduct {
   std::size_t rows{0};                   ///< Logical output rows m, default zero.
@@ -325,7 +325,7 @@ class Context {
   /// @endcode
   void download(void* destination, const Buffer& source, std::size_t bytes) const;
   /// @brief Test whether this build/context provides the native matrix adapter.
-  /// @return True for CUDA with DATAMUNGE_ENABLE_CUBLAS; false for CPU/Vulkan.
+  /// @return True for CUDA (the library's own GEMM kernels); false for CPU/Vulkan.
   /// No device allocation or numerical computation is performed.
   bool supports_matmul() const noexcept;
   /// @brief Synchronously overwrite a packed matrix using native GPU arithmetic.
@@ -342,7 +342,7 @@ class Context {
   /// dimension above INT_MAX, or overlapping output/input ranges.
   /// @throws std::overflow_error Requested byte counts overflow size_t.
   /// @throws std::out_of_range A buffer is too small.
-  /// @throws std::runtime_error CUDA/cuBLAS failure.
+  /// @throws std::runtime_error CUDA driver failure.
   /// @par Example
   /// @code
   /// const dm::compute::Device device{dm::compute::Backend::CUDA,0};
@@ -359,9 +359,9 @@ class Context {
   ///   }
   /// }
   /// @endcode
-  /// @par References
-  /// - NVIDIA cuBLAS GEMM:
-  /// https://docs.nvidia.com/cuda/archive/12.8.0/cublas/index.html#cublas-t-gemm
+  /// Runs the in-house tiled GEMM (shaders/compute/blas.cu, fused multiply-add, one fixed
+  /// summation order per element). Builds with DATAMUNGE_ENABLE_CUBLAS use cuBLAS instead
+  /// when DATAMUNGE_CUDA_GEMM=cublas is set as the device is created, for comparison.
   /// @see MatrixProduct, supports_matmul()
   void matmul(Buffer& destination, const Buffer& a, const Buffer& b, const MatrixProduct& product)
       const;

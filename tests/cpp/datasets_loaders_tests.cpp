@@ -323,7 +323,22 @@ TEST(DatasetsDownload, OfflineModeAndDataHome) {
     EXPECT_EQ(ds::diamonds().nrows(), 1u);
   }
   EXPECT_THROW((void)ds::fetch("not-a-dataset"), std::invalid_argument);
-  EXPECT_EQ(ds::downloadable().size(), 7u);
+  EXPECT_EQ(ds::downloadable().size(), 8u);
+}
+
+TEST(DatasetsDownload, RebotRejectsCorruptCacheAndOfflineMisses) {
+  TempDir dir;
+  EnvGuard offline("DATAMUNGE_DATA_OFFLINE", "1");
+  EXPECT_THROW((void)ds::fetch("rebot_devarm", dir.path.string()), std::runtime_error);
+  EXPECT_FALSE(fs::exists(dir.path / "LICENSE"));
+  write_text(dir.path / "LICENSE", "truncated");
+  EXPECT_THROW((void)ds::fetch("rebot_devarm", dir.path.string()), std::runtime_error);
+  // Correct size but incorrect SHA-256 must also be rejected and preserved.
+  write_text(dir.path / "LICENSE", std::string(14392, 'x'));
+  EXPECT_THROW((void)ds::fetch("rebot_devarm", dir.path.string()), std::runtime_error);
+  EXPECT_EQ(read_text(dir.path / "LICENSE"), std::string(14392, 'x'));
+  const auto names = ds::downloadable();
+  EXPECT_NE(std::find(names.begin(), names.end(), "rebot_devarm"), names.end());
 }
 
 // ---------------------------------------------------------------------------- ImageLoader
