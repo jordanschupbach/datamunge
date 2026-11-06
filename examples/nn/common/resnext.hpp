@@ -5,8 +5,8 @@
 #include "common/resnet.hpp"
 namespace resnext {
 namespace nn=datamunge::nn;
-using nn::models::ResNeXtBlock;
-using nn::models::ResNeXtConfig;
-using nn::models::ResNeXtOutputs;
-using nn::models::ResNeXt;
+using datamunge::nn::models::ResNeXtBlock;
+using datamunge::nn::models::ResNeXtConfig;
+using datamunge::nn::models::ResNeXtOutputs;
+using datamunge::nn::models::ResNeXt;
 }

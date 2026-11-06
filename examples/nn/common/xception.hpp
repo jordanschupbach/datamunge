@@ -4,9 +4,9 @@
 #include "common/normalized_conv.hpp"
 namespace xception {
 namespace nn=datamunge::nn;
-using nn::models::ConvNormConfig;
-using nn::models::XceptionConfig;
-using nn::models::XceptionOutputs;
-using nn::models::XceptionSeparable;
-using nn::models::Xception;
+using datamunge::nn::models::ConvNormConfig;
+using datamunge::nn::models::XceptionConfig;
+using datamunge::nn::models::XceptionOutputs;
+using datamunge::nn::models::XceptionSeparable;
+using datamunge::nn::models::Xception;
 }

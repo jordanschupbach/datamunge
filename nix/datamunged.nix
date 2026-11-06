@@ -49,7 +49,7 @@ pkgs.stdenv.mkDerivation rec {
         export LIBRARY_PATH="$DATAMUNGE_LIBDIR''${LIBRARY_PATH:+:}$LIBRARY_PATH"
         export LD_LIBRARY_PATH="$DATAMUNGE_LIBDIR''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
 
-        c++ -shared -fPIC \
+        c++ -std=c++23 -shared -fPIC \
           $DATAMUNGE_CFLAGS \
           -o src/datamunged/source/libdatamunge_wrap.so \
           src/datamunged/source/datamunged_wrap.cpp \

@@ -2,11 +2,11 @@
 #include "datamunge/nn/segmentation_losses.hpp"
 namespace seg {
 namespace nn = datamunge::nn;
-using nn::models::BoundaryLoss;
-using nn::models::LovaszSoftmaxLoss;
-using nn::models::SignedBoundaryDistances;
-using nn::models::SoftDiceLoss;
-using nn::models::SoftTverskyLoss;
+using datamunge::nn::models::BoundaryLoss;
+using datamunge::nn::models::LovaszSoftmaxLoss;
+using datamunge::nn::models::SignedBoundaryDistances;
+using datamunge::nn::models::SoftDiceLoss;
+using datamunge::nn::models::SoftTverskyLoss;
 inline std::vector<double> SquaredDistance1D(const std::vector<double> &f) {
   return nn::models::SquaredDistance1D(nn::from_vector(f)).to_vector<double>();
 }

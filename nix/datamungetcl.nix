@@ -33,7 +33,7 @@ pkgs.stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-        tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
+        tclVersionDir="$(basename "$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]')")"
         if [ -z "$tclVersionDir" ]; then
           echo "Could not determine Tcl version directory from [info library]" >&2
           exit 1

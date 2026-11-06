@@ -4,13 +4,13 @@
 #include "common/inception23.hpp"
 namespace inception4 {
 namespace nn=datamunge::nn;
-using nn::models::ConvFeature;
-using nn::models::Inception23Config;
-using nn::models::Inception23Outputs;
-using nn::models::InceptionBuilder;
-using nn::models::Inception4Config;
-using nn::models::Inception4B;
-using nn::models::Inception4C;
-using nn::models::InceptionResidual;
-using nn::models::Inception4;
+using datamunge::nn::models::ConvFeature;
+using datamunge::nn::models::Inception23Config;
+using datamunge::nn::models::Inception23Outputs;
+using datamunge::nn::models::InceptionBuilder;
+using datamunge::nn::models::Inception4Config;
+using datamunge::nn::models::Inception4B;
+using datamunge::nn::models::Inception4C;
+using datamunge::nn::models::InceptionResidual;
+using datamunge::nn::models::Inception4;
 }

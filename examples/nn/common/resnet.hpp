@@ -3,14 +3,14 @@
 #include <datamunge/nn/resnet_models.hpp>
 namespace resnet {
 namespace nn = datamunge::nn;
-using ConvNormConfig = nn::models::ResNetNormConfig;
-using nn::models::ResNet;
-using nn::models::ResNetBlock;
-using nn::models::ResNetBlockCounts;
-using nn::models::ResNetBlockOutputs;
-using nn::models::ResNetConfig;
-using nn::models::ResNetConv;
-using nn::models::ResNetOutputs;
+using ConvNormConfig = datamunge::nn::models::ResNetNormConfig;
+using datamunge::nn::models::ResNet;
+using datamunge::nn::models::ResNetBlock;
+using datamunge::nn::models::ResNetBlockCounts;
+using datamunge::nn::models::ResNetBlockOutputs;
+using datamunge::nn::models::ResNetConfig;
+using datamunge::nn::models::ResNetConv;
+using datamunge::nn::models::ResNetOutputs;
 /// @copydoc datamunge::nn::models::ResNetNormalizedConv
 inline nn::Tensor NormalizedConv(nn::ParameterStore &p, nn::ParameterStore &state,
                                  const std::string &name, const nn::Tensor &input,

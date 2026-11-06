@@ -37,15 +37,15 @@ namespace nn = datamunge::nn;
 
 // ---- nn/facenet.h -------------------------------------------------------------------
 
-using nn::models::FaceNetCensus;
-using nn::models::FaceNetConfig;
-using nn::models::FaceNetKernels;
-using nn::models::FaceNetNN1;
-using nn::models::FaceNetOutputs;
-using nn::models::FaceNetWidths;
-using nn::models::MaxoutPairs;
-using nn::models::UnitEmbedding;
-using nn::models::WeightSquares;
+using datamunge::nn::models::FaceNetCensus;
+using datamunge::nn::models::FaceNetConfig;
+using datamunge::nn::models::FaceNetKernels;
+using datamunge::nn::models::FaceNetNN1;
+using datamunge::nn::models::FaceNetOutputs;
+using datamunge::nn::models::FaceNetWidths;
+using datamunge::nn::models::MaxoutPairs;
+using datamunge::nn::models::UnitEmbedding;
+using datamunge::nn::models::WeightSquares;
 // ---- ml/facenet.h -------------------------------------------------------------------
 
 /// Compact NN1 on MNIST, mean semi-hard triplet + .00005 sum W^2, Adam .001.
@@ -122,8 +122,8 @@ inline DigitEmbeddingPool EmbedDigitPool(Model &model, const nn::ImageDataset &d
 }
 
 /// P classes x K = `each` distinct rows, shuffled.
-using nn::models::FixedMetricTriplets;
-using nn::models::MetricBatchRows;
+using datamunge::nn::models::FixedMetricTriplets;
+using datamunge::nn::models::MetricBatchRows;
 struct FixedTripletScore {
   double loss = 0, margin_fraction = 0;
 };

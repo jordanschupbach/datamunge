@@ -15,7 +15,7 @@ inline nn::Tensor IndexUnpool(const nn::Tensor &values, const IndexedPool &recor
   return nn::models::SegNetIndexUnpool(
       values, {record.values, nn::from_vector(record.indices, values.shape()), record.shape});
 }
-using nn::models::SegNetConfig;
+using datamunge::nn::models::SegNetConfig;
 struct SegNetOutputs {
   nn::Tensor logits;
   std::vector<IndexedPool> pooling;

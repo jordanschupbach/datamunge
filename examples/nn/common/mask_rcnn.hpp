@@ -20,7 +20,7 @@ inline nn::Tensor RoiAlign(const nn::Tensor &feature, const std::vector<Box> &bo
       nn::from_vector(std::vector<std::int64_t>(indices.begin(), indices.end())), stride,
       bins);
 }
-using nn::models::MaskRcnnHead;
+using datamunge::nn::models::MaskRcnnHead;
 inline nn::Tensor MaskHead(nn::ParameterStore &p, const nn::Tensor &pooled, int width = 256,
                            int classes = 80) {
   return nn::models::MaskRcnnHead(p, pooled, width, classes);

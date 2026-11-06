@@ -5,9 +5,9 @@
 #include "common/lrn.hpp"
 namespace googlenet {
 namespace nn=datamunge::nn;
-using nn::models::GoogLeNetWidths;
-using nn::models::GoogLeNetConfig;
-using nn::models::GoogLeNetOutputs;
-using nn::models::GoogLeNetAuxiliary;
-using nn::models::GoogLeNet;
+using datamunge::nn::models::GoogLeNetWidths;
+using datamunge::nn::models::GoogLeNetConfig;
+using datamunge::nn::models::GoogLeNetOutputs;
+using datamunge::nn::models::GoogLeNetAuxiliary;
+using datamunge::nn::models::GoogLeNet;
 }

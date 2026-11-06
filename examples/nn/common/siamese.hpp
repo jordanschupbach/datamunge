@@ -27,10 +27,10 @@ namespace metric {
 
 // ---- nn/siamese.h --------------------------------------------------------------------
 
-using nn::models::SiameseConfig;
-using nn::models::SiameseEncoder;
-using nn::models::SiameseFeatures;
-using nn::models::SiameseLogit;
+using datamunge::nn::models::SiameseConfig;
+using datamunge::nn::models::SiameseEncoder;
+using datamunge::nn::models::SiameseFeatures;
+using datamunge::nn::models::SiameseLogit;
 inline nn::Tensor BinaryCrossEntropy(const nn::Tensor &logits, const nn::Tensor &labels) {
   return nn::models::SiameseBinaryCrossEntropy(logits, labels);
 }

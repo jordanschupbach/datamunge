@@ -2,16 +2,16 @@
 #include "common/yolo_v3.hpp"
 #include "datamunge/nn/yolo_v5_models.hpp"
 namespace yolo {
-using nn::models::BoxQuality;
-using nn::models::CompleteBoxQuality;
-using nn::models::CspBlock;
-using nn::models::CspContext;
-using nn::models::CspConv;
-using nn::models::CspOutputs;
-using nn::models::SpatialPyramidFast;
-using nn::models::YoloV5;
-using nn::models::YoloV5Config;
-using nn::models::YoloV5Outputs;
+using datamunge::nn::models::BoxQuality;
+using datamunge::nn::models::CompleteBoxQuality;
+using datamunge::nn::models::CspBlock;
+using datamunge::nn::models::CspContext;
+using datamunge::nn::models::CspConv;
+using datamunge::nn::models::CspOutputs;
+using datamunge::nn::models::SpatialPyramidFast;
+using datamunge::nn::models::YoloV5;
+using datamunge::nn::models::YoloV5Config;
+using datamunge::nn::models::YoloV5Outputs;
 inline nn::Tensor DecodeYoloV5Boxes(const nn::Tensor &raw,
                                     const std::vector<Dimension> &priors, int level) {
   return nn::models::DecodeYoloV5Boxes(raw, DimensionTensor(priors), level);

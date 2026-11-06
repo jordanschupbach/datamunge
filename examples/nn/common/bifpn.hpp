@@ -3,9 +3,9 @@
 #include "datamunge/nn/bifpn_models.hpp"
 namespace bifpn {
 namespace nn=datamunge::nn;
-using nn::models::Swish;
-using nn::models::FastFeatureFusion;
-using nn::models::DetSeparable;
-using nn::models::DetBatchNorm;
-using nn::models::BiFpnCell;
+using datamunge::nn::models::Swish;
+using datamunge::nn::models::FastFeatureFusion;
+using datamunge::nn::models::DetSeparable;
+using datamunge::nn::models::DetBatchNorm;
+using datamunge::nn::models::BiFpnCell;
 }

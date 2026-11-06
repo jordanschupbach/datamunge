@@ -8,11 +8,11 @@ namespace nn = datamunge::nn;
 using detector::Box;
 using detector::DetectionScenes;
 using Dimension = std::array<float, 2>;
-using nn::models::DarknetConv;
-using nn::models::YoloV2;
-using nn::models::YoloV2Config;
-using nn::models::YoloV2Outputs;
-using nn::models::YoloV2Probabilities;
+using datamunge::nn::models::DarknetConv;
+using datamunge::nn::models::YoloV2;
+using datamunge::nn::models::YoloV2Config;
+using datamunge::nn::models::YoloV2Outputs;
+using datamunge::nn::models::YoloV2Probabilities;
 inline nn::Tensor DimensionTensor(const std::vector<Dimension> &x) {
   std::vector<float> v;
   for (const auto &d : x)

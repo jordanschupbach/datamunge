@@ -159,7 +159,12 @@
 %feature("director") datamunge::optim::BayesianSurrogate;
 
 %{
+// ruby.h defines a function-like StringValue(v) macro, which would rewrite the constructors of
+// datamunge::StringValue; hide it while the library headers are parsed.
+#pragma push_macro("StringValue")
+#undef StringValue
 #include "datamunge/datamunge.hpp"
+#pragma pop_macro("StringValue")
 %}
 
 %include "datamunge/datamunge.hpp"

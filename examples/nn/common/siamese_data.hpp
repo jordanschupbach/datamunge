@@ -3,16 +3,16 @@
 #include "datamunge/nn/metric_learning_data.hpp"
 namespace metric {
 namespace nn = datamunge::nn;
-using nn::models::DigitBuckets;
-using nn::models::MakeSiameseBatch;
-using nn::models::OneShotTask;
-using nn::models::SiameseBatch;
-using nn::models::SiameseBuckets;
-using nn::models::SiameseClasses;
-using nn::models::SiameseImages;
-using nn::models::SiamesePairs;
-using nn::models::SiameseTasks;
-using nn::models::VerificationPair;
+using datamunge::nn::models::DigitBuckets;
+using datamunge::nn::models::MakeSiameseBatch;
+using datamunge::nn::models::OneShotTask;
+using datamunge::nn::models::SiameseBatch;
+using datamunge::nn::models::SiameseBuckets;
+using datamunge::nn::models::SiameseClasses;
+using datamunge::nn::models::SiameseImages;
+using datamunge::nn::models::SiamesePairs;
+using datamunge::nn::models::SiameseTasks;
+using datamunge::nn::models::VerificationPair;
 inline std::vector<int> Labels(const nn::ImageDataset &data) {
   return nn::models::MetricDatasetLabels(data);
 }

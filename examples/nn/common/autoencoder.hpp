@@ -33,7 +33,7 @@ namespace nn = datamunge::nn;
 
 // ---- data ----------------------------------------------------------------------------
 
-using SaliencyData=nn::models::SaliencyData;
+using SaliencyData=datamunge::nn::models::SaliencyData;
 
 inline SaliencyData Rows(const SaliencyData& d, const std::vector<std::int64_t>& rows) {
   return {nn::take_rows(d.images, rows), nn::take_rows(d.labels, rows), nn::take_rows(d.source, rows)};

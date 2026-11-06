@@ -5,8 +5,8 @@
 #include "common/bifpn.hpp"
 namespace efficientdet {
 namespace nn=datamunge::nn;
-using nn::models::EfficientDetSpec;
-using nn::models::EfficientDetScaling;
-using nn::models::EfficientDetConfig;
-using nn::models::EfficientDet;
+using datamunge::nn::models::EfficientDetSpec;
+using datamunge::nn::models::EfficientDetScaling;
+using datamunge::nn::models::EfficientDetConfig;
+using datamunge::nn::models::EfficientDet;
 }

@@ -5,9 +5,9 @@
 #include "common/lrn.hpp"
 namespace alexnet {
 namespace nn=datamunge::nn;
-using nn::models::AlexNetConfig;
-using nn::models::AlexNetOutputs;
-using nn::models::AlexNet;
-using nn::models::AlexNetLrn;
-using nn::models::KeepDropout;
+using datamunge::nn::models::AlexNetConfig;
+using datamunge::nn::models::AlexNetOutputs;
+using datamunge::nn::models::AlexNet;
+using datamunge::nn::models::AlexNetLrn;
+using datamunge::nn::models::KeepDropout;
 }

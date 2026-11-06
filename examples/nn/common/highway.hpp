@@ -3,8 +3,8 @@
 #include <datamunge/nn/highway_models.hpp>
 namespace highway {
 namespace nn=datamunge::nn;
-using nn::models::HighwayOutputs;
-using nn::models::HighwayMix;
-using nn::models::HighwayDense;
-using nn::models::HighwayConv2D;
+using datamunge::nn::models::HighwayOutputs;
+using datamunge::nn::models::HighwayMix;
+using datamunge::nn::models::HighwayDense;
+using datamunge::nn::models::HighwayConv2D;
 }

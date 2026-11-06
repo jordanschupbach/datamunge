@@ -4,10 +4,10 @@
 #include <datamunge/nn/preactivation_densenet_models.hpp>
 namespace densenet {
 namespace nn = datamunge::nn;
-using nn::models::DenseGrowthLayer;
-using nn::models::DenseGrowthOutputs;
-using nn::models::DenseNet;
-using nn::models::DenseNetConfig;
-using nn::models::DenseNetOutputs;
-using nn::models::DenseTransition;
+using datamunge::nn::models::DenseGrowthLayer;
+using datamunge::nn::models::DenseGrowthOutputs;
+using datamunge::nn::models::DenseNet;
+using datamunge::nn::models::DenseNetConfig;
+using datamunge::nn::models::DenseNetOutputs;
+using datamunge::nn::models::DenseTransition;
 } // namespace densenet

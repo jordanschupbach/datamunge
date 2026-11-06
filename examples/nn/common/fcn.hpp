@@ -2,10 +2,10 @@
 #include "datamunge/nn/fcn_models.hpp"
 namespace fcn {
 namespace nn = datamunge::nn;
-using nn::models::Fcn;
-using nn::models::FcnConfig;
-using nn::models::FcnFuseSkip;
-using nn::models::FcnOutputs;
+using datamunge::nn::models::Fcn;
+using datamunge::nn::models::FcnConfig;
+using datamunge::nn::models::FcnFuseSkip;
+using datamunge::nn::models::FcnOutputs;
 inline nn::Tensor SpatialCrop(const nn::Tensor &source, const nn::Tensor &reference,
                               std::int64_t offset = 0) {
   return nn::models::FcnSpatialCrop(source, reference, offset);

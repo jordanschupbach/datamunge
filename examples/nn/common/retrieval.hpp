@@ -24,10 +24,10 @@
 
 namespace metric {
 
-using nn::models::DescriptorUnit;
-using nn::models::GeneralizedMean;
-using nn::models::RetrievalEncoder;
-using nn::models::RetrievalResult;
+using datamunge::nn::models::DescriptorUnit;
+using datamunge::nn::models::GeneralizedMean;
+using datamunge::nn::models::RetrievalEncoder;
+using datamunge::nn::models::RetrievalResult;
 using RetrievalSnapshot = std::vector<std::vector<float>>;
 
 /// Compact GeM retrieval model (divisor 8, 32-D descriptors, Adam .0005).

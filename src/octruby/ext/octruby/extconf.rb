@@ -63,6 +63,6 @@ unless configured
   end
 end
 
-$CXXFLAGS << " -std=c++17"
+$CXXFLAGS << " -std=c++23"
 
 create_makefile("octruby/octruby")

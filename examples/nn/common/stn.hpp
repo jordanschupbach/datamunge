@@ -3,11 +3,11 @@
 #include <datamunge/nn/spatial_transformer_models.hpp>
 namespace stn {
 namespace nn=datamunge::nn;
-using nn::models::SpatialTransformerOutputs;
-using nn::models::AffineSample;
-using nn::models::SpatialTransformer;
-using nn::models::DistortedMnistOutputs;
-using nn::models::DistortMnist;
-using nn::models::StnClassifierOutputs;
-using nn::models::StnMnistClassifier;
+using datamunge::nn::models::SpatialTransformerOutputs;
+using datamunge::nn::models::AffineSample;
+using datamunge::nn::models::SpatialTransformer;
+using datamunge::nn::models::DistortedMnistOutputs;
+using datamunge::nn::models::DistortMnist;
+using datamunge::nn::models::StnClassifierOutputs;
+using datamunge::nn::models::StnMnistClassifier;
 }

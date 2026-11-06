@@ -2,9 +2,9 @@
 #include "common/segmentation.hpp"
 #include "datamunge/nn/dense_crf_models.hpp"
 namespace seg {
-using nn::models::DenseCrfConfig;
-using nn::models::DenseCrfKernel;
-using nn::models::DenseCrfMeanField;
+using datamunge::nn::models::DenseCrfConfig;
+using datamunge::nn::models::DenseCrfKernel;
+using datamunge::nn::models::DenseCrfMeanField;
 inline void DenseCrfPreview(const LogitsFn &logits_of, const SegmentationData &data,
                             const std::filesystem::path &directory) {
   nn::NoGradGuard guard;

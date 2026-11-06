@@ -5,8 +5,8 @@
 #include "common/deconvnet.hpp"
 namespace zfnet {
 namespace nn=datamunge::nn;
-using nn::models::ZFNetConfig;
-using nn::models::ZFNetOutputs;
-using nn::models::ZFNet;
-using nn::models::ZFNetDeconvolution;
+using datamunge::nn::models::ZFNetConfig;
+using datamunge::nn::models::ZFNetOutputs;
+using datamunge::nn::models::ZFNet;
+using datamunge::nn::models::ZFNetDeconvolution;
 }

@@ -57,7 +57,7 @@ pkgs.stdenv.mkDerivation rec {
     if [ "$(uname)" = "Darwin" ]; then
       # On macOS the Nix-built dylib carries an absolute install_name, so the module
       # resolves it without rpath patching; just add an rpath for robustness.
-      ${pkgs.darwin.cctools}/bin/install_name_tool -add_rpath "$datamungeLibDir" "$soPath" || true
+      ${pkgs.lib.optionalString pkgs.stdenv.isDarwin "${pkgs.darwin.cctools}/bin/"}install_name_tool -add_rpath "$datamungeLibDir" "$soPath" || true
     else
       existingRpath="$(${pkgs.patchelf}/bin/patchelf --print-rpath "$soPath" || true)"
       if [ -n "$existingRpath" ]; then

@@ -76,7 +76,7 @@ inline std::pair<nn::Tensor, nn::Tensor> SegmentationBatch(const SegmentationDat
 // ---- loss -----------------------------------------------------------------------------------
 
 /// Class-weighted pixel cross-entropy sum(w_y CE) / sum(w_y); logits [..., classes], labels [...] int.
-using nn::models::SegmentationCrossEntropy;
+using datamunge::nn::models::SegmentationCrossEntropy;
 
 inline void SegmentationLossChecks() {
   nn::Tensor logits = nn::zeros({1, 1, 2, 3});

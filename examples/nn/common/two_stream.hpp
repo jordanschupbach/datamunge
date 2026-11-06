@@ -2,7 +2,7 @@
 #include <datamunge/nn/two_stream_models.hpp>
 #include "common/c3d.hpp"
 #include "common/tf_replay.hpp"
-namespace two_stream{namespace nn=datamunge::nn;using nn::Tensor;using A=nn::models::TwoStreamData;using Config=nn::models::TwoStreamConfig;using Stream=nn::models::TwoStreamBranch;using Path=nn::models::TwoStreamOutput;
+namespace two_stream{namespace nn=datamunge::nn;using nn::Tensor;using A=datamunge::nn::models::TwoStreamData;using Config=datamunge::nn::models::TwoStreamConfig;using Stream=datamunge::nn::models::TwoStreamBranch;using Path=datamunge::nn::models::TwoStreamOutput;
 inline auto FinalSide(int image){return nn::models::TwoStreamFinalSide(image);}
 inline auto FlowStack(const Tensor&x,int image,int fields=10){return nn::models::TwoStreamFlowStack(x,image,fields);}
 inline auto Fusion(const Tensor&a,const Tensor&b){return nn::models::TwoStreamFusion(a,b);}

@@ -7,13 +7,13 @@ namespace centernet {
 namespace nn = datamunge::nn;
 using detector::Box;
 using detector::DetectionScenes;
-using nn::models::CenterHead;
-using nn::models::CenterHeatmapFocal;
-using nn::models::CenterLoss;
-using nn::models::CenterNet;
-using nn::models::CenterNetConfig;
-using nn::models::CenterNetOutputs;
-using nn::models::CenterPeaks;
+using datamunge::nn::models::CenterHead;
+using datamunge::nn::models::CenterHeatmapFocal;
+using datamunge::nn::models::CenterLoss;
+using datamunge::nn::models::CenterNet;
+using datamunge::nn::models::CenterNetConfig;
+using datamunge::nn::models::CenterNetOutputs;
+using datamunge::nn::models::CenterPeaks;
 inline double CenterGaussianRadius(double h, double w, double overlap = .7) {
   return nn::models::CenterGaussianRadius(nn::full({}, h, nn::DType::Float64),
                                           nn::full({}, w, nn::DType::Float64), overlap)

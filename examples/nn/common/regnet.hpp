@@ -5,12 +5,12 @@
 #include "common/mobilenet.hpp"
 namespace regnet {
 namespace nn=datamunge::nn;
-using nn::models::RegNetParams;
-using nn::models::RegNetModel;
-using nn::models::RegNetStages;
-using nn::models::RegNetDesign;
-using nn::models::RegNetConfig;
-using nn::models::RegNet;
+using datamunge::nn::models::RegNetParams;
+using datamunge::nn::models::RegNetModel;
+using datamunge::nn::models::RegNetStages;
+using datamunge::nn::models::RegNetDesign;
+using datamunge::nn::models::RegNetConfig;
+using datamunge::nn::models::RegNet;
 /// @copydoc nn::models::RegNetConvBN
 inline nn::Tensor ConvBN(mobilenet::MobileContext& c,const std::string& name,nn::Tensor x,int out,int kernel,int stride,int groups,bool relu){return nn::models::RegNetConvBN(c,name,x,out,kernel,stride,groups,relu);}
 /// @copydoc nn::models::RegNetBlock

@@ -2,9 +2,9 @@
 #include "datamunge/nn/word_tree_models.hpp"
 namespace wordtree {
 namespace nn = datamunge::nn;
-using nn::models::WordTree;
-using nn::models::WordTreeOutputs;
-using nn::models::WordTreeProbabilities;
+using datamunge::nn::models::WordTree;
+using datamunge::nn::models::WordTreeOutputs;
+using datamunge::nn::models::WordTreeProbabilities;
 inline nn::Tensor WordTreeLoss(const WordTreeOutputs &output, const std::vector<int> &labels,
                                const WordTree &tree) {
   return nn::models::WordTreeLoss(

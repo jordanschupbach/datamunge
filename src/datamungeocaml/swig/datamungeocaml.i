@@ -1,5 +1,6 @@
 %module(directors="1") datamunge
 
+%include <stdint.i>
 %include <std_vector.i>
 %include <std_string.i>
 %include <std_pair.i>

@@ -5,9 +5,9 @@
 #include "common/resnet.hpp"
 namespace res2net {
 namespace nn=datamunge::nn;
-using nn::models::Res2ScaleOutputs;
-using nn::models::Res2ScaleTransform;
-using nn::models::Res2NetBlock;
-using nn::models::Res2NetConfig;
-using nn::models::Res2Net;
+using datamunge::nn::models::Res2ScaleOutputs;
+using datamunge::nn::models::Res2ScaleTransform;
+using datamunge::nn::models::Res2NetBlock;
+using datamunge::nn::models::Res2NetConfig;
+using datamunge::nn::models::Res2Net;
 }

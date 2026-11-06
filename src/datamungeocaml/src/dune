@@ -8,7 +8,7 @@
   (language cxx)
   (names datamunge_ocaml_wrap)
   (flags
-   (:standard -std=c++17 -I%{env:DATAMUNGE_PREFIX=/no-such-prefix}/include/datamunge-0.0.1)))
+   (:standard -std=c++23 -I%{env:DATAMUNGE_PREFIX=/no-such-prefix}/include/datamunge-0.0.1)))
  (c_library_flags
   (:standard -L%{env:DATAMUNGE_PREFIX=/no-such-prefix}/lib/datamunge-0.0.1 -ldatamunge
    -Wl,-rpath,%{env:DATAMUNGE_PREFIX=/no-such-prefix}/lib/datamunge-0.0.1)))

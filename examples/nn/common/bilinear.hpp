@@ -18,12 +18,12 @@
 
 namespace fine {
 
-using nn::models::BilinearCNN;
-using nn::models::BilinearResult;
-using nn::models::BilinearRoot;
-using nn::models::BilinearUnit;
-using nn::models::FlowerCrossEntropy;
-using nn::models::SpatialBilinear;
+using datamunge::nn::models::BilinearCNN;
+using datamunge::nn::models::BilinearResult;
+using datamunge::nn::models::BilinearRoot;
+using datamunge::nn::models::BilinearUnit;
+using datamunge::nn::models::FlowerCrossEntropy;
+using datamunge::nn::models::SpatialBilinear;
 /// Compact (divisor 16) six-way bilinear classifier, Adam .001.
 class BilinearModel {
 public:

@@ -340,7 +340,7 @@ class DataFrame {
   [[nodiscard]] static DataFrame* parse_csv(const std::string& text, char delimiter = ',');
   /// @brief An ImageLoader batch as a table (`pixel_0`.., `label`, `index`); see
   ///        datasets::to_dataframe().
-  [[nodiscard]] static DataFrame* from_image_batch(const datasets::ImageBatch& batch);
+  [[nodiscard]] static DataFrame* from_image_batch(const datamunge::datasets::ImageBatch& batch);
 
  private:
   friend class LM;

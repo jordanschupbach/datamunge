@@ -65,8 +65,8 @@ inline void SaveArrays(const std::filesystem::path& file, const Arrays& arrays) 
 // ---- model (common/nn/saliency.h) ------------------------------------------------------
 
 /// The post-activation function of conv1/conv2/hidden: ReLU, or guided_backprop's GuidedRelu.
-using Gate=nn::models::SaliencyGate;
-using nn::models::SaliencyCnnOutput;using nn::models::SaliencyConvFeatures;using nn::models::SaliencyCnn;using nn::models::SaliencyScore;using nn::models::VanillaInputGradient;
+using Gate=datamunge::nn::models::SaliencyGate;
+using datamunge::nn::models::SaliencyCnnOutput;using datamunge::nn::models::SaliencyConvFeatures;using datamunge::nn::models::SaliencyCnn;using datamunge::nn::models::SaliencyScore;using datamunge::nn::models::VanillaInputGradient;
 // ---- classifier wrapper (common/ml/saliency.h) -----------------------------------------
 
 inline void CheckTargets(const Tensor& classes, std::int64_t n) {
@@ -150,7 +150,7 @@ inline void SaliencyMetrics(const std::string& name, const SaliencyData& d, cons
 }
 
 /// Fit-only 7x7 mean-intensity 1-nearest-neighbour reference (one-hot "logits").
-using nn::models::SaliencyNearest;
+using datamunge::nn::models::SaliencyNearest;
 // ---- gallery rendering -----------------------------------------------------------------
 
 inline std::uint8_t SaliencyByte(double x) { return std::uint8_t(std::lround(std::clamp(x, 0., 255.))); }

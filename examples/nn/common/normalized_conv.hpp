@@ -2,7 +2,7 @@
 #include <datamunge/nn/vision_architecture_components.hpp>
 namespace normalized_conv {
 namespace nn=datamunge::nn;
-using nn::models::ConvNormConfig;
-using nn::models::ParsePadding;
-using nn::models::NormalizedConv;
+using datamunge::nn::models::ConvNormConfig;
+using datamunge::nn::models::ParsePadding;
+using datamunge::nn::models::NormalizedConv;
 }

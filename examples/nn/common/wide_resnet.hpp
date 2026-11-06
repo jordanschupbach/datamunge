@@ -5,9 +5,9 @@
 #include "common/resnet.hpp"
 namespace wide_resnet {
 namespace nn=datamunge::nn;
-using nn::models::WideBlockOutputs;
-using nn::models::WideBasicBlock;
-using nn::models::WideResNetConfig;
-using nn::models::WideResNetOutputs;
-using nn::models::WideResNet;
+using datamunge::nn::models::WideBlockOutputs;
+using datamunge::nn::models::WideBasicBlock;
+using datamunge::nn::models::WideResNetConfig;
+using datamunge::nn::models::WideResNetOutputs;
+using datamunge::nn::models::WideResNet;
 }

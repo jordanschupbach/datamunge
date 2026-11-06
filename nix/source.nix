@@ -9,7 +9,17 @@
 # than an allowlist so that new build files (a new binding dir, a new top-level packaging file)
 # are picked up without editing this file; when you add a new docs/examples-style directory,
 # add it here.
-{ lib }:
+#
+# `keep` re-includes paths a particular package needs from the excluded set (pydatamunge binds the
+# nn example components under examples/). Only that package then rebuilds when they change.
+# `only`, when set, narrows the source to the listed paths: the core library uses it so that
+# editing a binding (src/<binding>, scripts/, ...) doesn't rebuild the core and with it every
+# other binding.
+{
+  lib,
+  keep ? [ ],
+  only ? null,
+}:
 let
   fs = lib.fileset;
   root = ../.;
@@ -76,5 +86,9 @@ let
 in
 fs.toSource {
   inherit root;
-  fileset = fs.difference root notBuildInputs;
+  fileset =
+    let
+      all = fs.union (fs.difference root notBuildInputs) (fs.unions (map under keep));
+    in
+    if only == null then all else fs.intersection all (fs.unions (map under only));
 }

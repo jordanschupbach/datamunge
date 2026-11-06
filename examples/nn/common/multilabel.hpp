@@ -20,8 +20,8 @@
 
 namespace multilabel {
 
-using nn::models::MultilabelConfig;
-using nn::models::MultilabelObjective;
+using datamunge::nn::models::MultilabelConfig;
+using datamunge::nn::models::MultilabelObjective;
 using MultilabelSnapshot = std::vector<std::vector<float>>;
 
 class MultilabelModel {

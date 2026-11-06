@@ -11,7 +11,19 @@ let
     pname = "datamunge";
     version = "0.0.1";
 
-    src = import ./source.nix { lib = pkgs.lib; };
+    # Only what the core's CMake build reads; binding and tooling edits never rebuild the core.
+    src = import ./source.nix {
+      lib = pkgs.lib;
+      only = [
+        "CMakeLists.txt"
+        "cmake"
+        "include"
+        "src/datamunge"
+        "datamunge.pc.in"
+        "third_party_licenses"
+        "tools/prepare_example_data.cpp"
+      ];
+    };
 
     nativeBuildInputs = [
       pkgs.cmake

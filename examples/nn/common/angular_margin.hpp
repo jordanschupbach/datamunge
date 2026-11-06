@@ -14,12 +14,12 @@ namespace metric {
 
 namespace nn = datamunge::nn;
 
-using nn::models::AngularCrossEntropy;
-using nn::models::AngularHead;
-using nn::models::AngularMarginConfig;
-using nn::models::AngularMarginKind;
-using nn::models::ApplyAngularMargin;
-using nn::models::NormalizedAngularHead;
+using datamunge::nn::models::AngularCrossEntropy;
+using datamunge::nn::models::AngularHead;
+using datamunge::nn::models::AngularMarginConfig;
+using datamunge::nn::models::AngularMarginKind;
+using datamunge::nn::models::ApplyAngularMargin;
+using datamunge::nn::models::NormalizedAngularHead;
 /// Compact NN1 + normalized 128x5 head, scale 16, ArcFace m .3 / CosFace m .2.
 class AngularModel {
 public:
@@ -81,7 +81,7 @@ public:
   }
 };
 
-using nn::models::AngularLabels;
+using datamunge::nn::models::AngularLabels;
 struct AngularClassScore {
   double loss = 0, accuracy = 0;
   int confusion[5][5] = {};

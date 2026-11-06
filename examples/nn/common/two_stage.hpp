@@ -40,7 +40,7 @@ struct RoiBatch {
   std::vector<float> mask;
 };
 
-using RoiHeadOutputs = nn::models::DetectionRoiOutputs;
+using RoiHeadOutputs = datamunge::nn::models::DetectionRoiOutputs;
 inline RoiHeadOutputs RoiHead(nn::ParameterStore &p, const nn::Tensor &features,
                               const nn::Tensor &rois, const nn::Tensor &indices, int classes,
                               int hidden = 256) {

@@ -14,7 +14,14 @@ buildPythonPackage rec {
   pname = "pydatamunge";
   version = "0.0.1";
   pyproject = true;
-  src = import ./source.nix { inherit lib; };
+  src = import ./source.nix {
+    inherit lib;
+    # nn_components.i and the example component headers it binds (see setup.py).
+    keep = [
+      "examples/bindings"
+      "examples/nn/common"
+    ];
+  };
   build-system = [ setuptools ];
   meta = {
     description = "Python bindings to the datamunge library.";

@@ -7,13 +7,13 @@ namespace yolo {
 namespace nn = datamunge::nn;
 using detector::Box;
 using detector::DetectionScenes;
-using nn::models::YoloV1;
-using nn::models::YoloV1Backbone;
-using nn::models::YoloV1Config;
-using nn::models::YoloV1Layers;
-using nn::models::YoloV1LossOutputs;
-using nn::models::YoloV1Outputs;
-using nn::models::YoloV1PretrainingLogits;
+using datamunge::nn::models::YoloV1;
+using datamunge::nn::models::YoloV1Backbone;
+using datamunge::nn::models::YoloV1Config;
+using datamunge::nn::models::YoloV1Layers;
+using datamunge::nn::models::YoloV1LossOutputs;
+using datamunge::nn::models::YoloV1Outputs;
+using datamunge::nn::models::YoloV1PretrainingLogits;
 struct YoloV1Targets {
   std::vector<float> object, boxes;
   std::vector<int> labels;

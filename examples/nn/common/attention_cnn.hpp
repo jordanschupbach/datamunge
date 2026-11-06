@@ -5,19 +5,19 @@
 #include "common/deformable.hpp"
 namespace attention_cnn {
 namespace nn=datamunge::nn;
-using nn::models::GateOutputs;
-using nn::models::CbamOutputs;
-using nn::models::AttentionResNetConfig;
-using nn::models::AttentionResNetOutputs;
-using nn::models::SelectiveKernelOutputs;
-using nn::models::ChannelAttention;
-using nn::models::Conv2Hook;
-using nn::models::AfterBlockHook;
-using nn::models::SqueezeExcitationModule;
-using nn::models::Cbam;
-using nn::models::EcaKernel;
-using nn::models::Eca;
-using nn::models::AttentionResNet;
-using nn::models::SelectiveKernel;
-using nn::models::SelectiveKernelHook;
+using datamunge::nn::models::GateOutputs;
+using datamunge::nn::models::CbamOutputs;
+using datamunge::nn::models::AttentionResNetConfig;
+using datamunge::nn::models::AttentionResNetOutputs;
+using datamunge::nn::models::SelectiveKernelOutputs;
+using datamunge::nn::models::ChannelAttention;
+using datamunge::nn::models::Conv2Hook;
+using datamunge::nn::models::AfterBlockHook;
+using datamunge::nn::models::SqueezeExcitationModule;
+using datamunge::nn::models::Cbam;
+using datamunge::nn::models::EcaKernel;
+using datamunge::nn::models::Eca;
+using datamunge::nn::models::AttentionResNet;
+using datamunge::nn::models::SelectiveKernel;
+using datamunge::nn::models::SelectiveKernelHook;
 }

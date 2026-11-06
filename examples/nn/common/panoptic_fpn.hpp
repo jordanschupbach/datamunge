@@ -6,9 +6,9 @@
 namespace panoptic {
 namespace nn = datamunge::nn;
 using detector::Box;
-using nn::models::PanopticBackbone;
-using nn::models::PanopticConfig;
-using nn::models::PanopticFeatures;
+using datamunge::nn::models::PanopticBackbone;
+using datamunge::nn::models::PanopticConfig;
+using datamunge::nn::models::PanopticFeatures;
 inline std::vector<int> PanopticLevels(const std::vector<Box> &boxes, float canonical) {
   return nn::models::PanopticLevels(nn::boxes_from_vector(boxes), canonical).to_vector<int>();
 }

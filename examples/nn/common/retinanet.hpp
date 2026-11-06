@@ -29,17 +29,17 @@ namespace nn = datamunge::nn;
 using detector::Box;
 using detector::DetectionScenes;
 
-using nn::models::RetinaConv;
+using datamunge::nn::models::RetinaConv;
 inline nn::Tensor PadSpatial(const nn::Tensor &x, std::int64_t pad) {
   return nn::models::RetinaPadSpatial(x, pad);
 }
-using nn::models::RetinaLoss;
-using nn::models::RetinaNet;
-using nn::models::RetinaNetConfig;
-using nn::models::RetinaNetOutputs;
-using nn::models::RetinaPyramid;
-using nn::models::RetinaTargets;
-using nn::models::SigmoidFocalLoss;
+using datamunge::nn::models::RetinaLoss;
+using datamunge::nn::models::RetinaNet;
+using datamunge::nn::models::RetinaNetConfig;
+using datamunge::nn::models::RetinaNetOutputs;
+using datamunge::nn::models::RetinaPyramid;
+using datamunge::nn::models::RetinaTargets;
+using datamunge::nn::models::SigmoidFocalLoss;
 inline std::vector<Box> RetinaAnchors(const std::vector<int> &cells, float first_size = 32) {
   return nn::boxes_to_vector(nn::models::RetinaAnchors(cells, first_size));
 }

@@ -3,9 +3,9 @@
 #include <datamunge/nn/classic_cnn_models.hpp>
 namespace vgg {
 namespace nn=datamunge::nn;
-using nn::models::VggBlockDepths;
-using nn::models::VggConfig;
-using nn::models::VggOutputs;
-using nn::models::Vgg;
-using nn::models::VggConvolutionalHead;
+using datamunge::nn::models::VggBlockDepths;
+using datamunge::nn::models::VggConfig;
+using datamunge::nn::models::VggOutputs;
+using datamunge::nn::models::Vgg;
+using datamunge::nn::models::VggConvolutionalHead;
 }

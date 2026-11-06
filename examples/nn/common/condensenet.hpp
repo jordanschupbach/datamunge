@@ -5,18 +5,18 @@
 #include "common/mobilenet.hpp"
 namespace condensenet {
 namespace nn=datamunge::nn;
-using nn::models::MobileLayer;
-using nn::models::CondenseContext;
-using nn::models::LearnedGroupConvOutputs;
-using nn::models::UpdateCondensation;
-using nn::models::LearnedGroupConv;
-using nn::models::CondenseNetConfig;
-using nn::models::CondenseNetOutputs;
-using nn::models::CondenseNet;
-using nn::models::CondensedConv;
-using nn::models::Condense;
-using nn::models::CondenseNetConvertedCost;
-using nn::models::ConvertedCondenseNetCost;
+using datamunge::nn::models::MobileLayer;
+using datamunge::nn::models::CondenseContext;
+using datamunge::nn::models::LearnedGroupConvOutputs;
+using datamunge::nn::models::UpdateCondensation;
+using datamunge::nn::models::LearnedGroupConv;
+using datamunge::nn::models::CondenseNetConfig;
+using datamunge::nn::models::CondenseNetOutputs;
+using datamunge::nn::models::CondenseNet;
+using datamunge::nn::models::CondensedConv;
+using datamunge::nn::models::Condense;
+using datamunge::nn::models::CondenseNetConvertedCost;
+using datamunge::nn::models::ConvertedCondenseNetCost;
 /// @copydoc nn::models::CondenseBNReLU
 inline nn::Tensor BNReLU(CondenseContext& c,const std::string& name,const nn::Tensor& x){return nn::models::CondenseBNReLU(c,name,x);}
 }

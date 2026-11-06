@@ -7,13 +7,13 @@ namespace detr {
 namespace nn = datamunge::nn;
 using detector::Box;
 using detector::DetectionScenes;
-using nn::models::Detr;
-using nn::models::DetrAttention;
-using nn::models::DetrConfig;
-using nn::models::DetrLinear;
-using nn::models::DetrOutputs;
-using nn::models::DetrPositions;
-using nn::models::GeneralizedIou;
+using datamunge::nn::models::Detr;
+using datamunge::nn::models::DetrAttention;
+using datamunge::nn::models::DetrConfig;
+using datamunge::nn::models::DetrLinear;
+using datamunge::nn::models::DetrOutputs;
+using datamunge::nn::models::DetrPositions;
+using datamunge::nn::models::GeneralizedIou;
 inline Box DetrCorners(const float *b) {
   const auto p = nn::unstack(nn::from_vector(std::vector<float>(b, b + 4)), 0);
   const auto t =

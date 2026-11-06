@@ -12,8 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def generate(language, reference=False):
     if language == 'python':
-        from nn_migration_status import refresh
-        refresh()
+        from nn_migration_status import STATUS, refresh
+        # The port audit reads the whole examples tree. Package builds (nix) use a source tree
+        # without it, and don't need the audit's catalog.
+        if STATUS.exists():
+            refresh()
     directory = ROOT / ('src/pydatamunge' if language == 'python' else 'prebindings/nn/r/R')
     directory.mkdir(parents=True, exist_ok=True)
     wrapper = ROOT / ('src/nn_python_wrap.cpp' if language == 'python' else 'build/nn-r/api/nn_r_wrap.cpp')

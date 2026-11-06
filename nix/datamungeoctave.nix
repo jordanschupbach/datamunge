@@ -55,7 +55,7 @@ pkgs.stdenv.mkDerivation rec {
     fi
 
     if [ "$(uname)" = "Darwin" ]; then
-      ${pkgs.darwin.cctools}/bin/install_name_tool -add_rpath "$datamungeLibDir" "$octFilePath" || true
+      ${pkgs.lib.optionalString pkgs.stdenv.isDarwin "${pkgs.darwin.cctools}/bin/"}install_name_tool -add_rpath "$datamungeLibDir" "$octFilePath" || true
     else
       existingRpath="$(${pkgs.patchelf}/bin/patchelf --print-rpath "$octFilePath" || true)"
       if [ -n "$existingRpath" ]; then

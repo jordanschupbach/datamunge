@@ -4,12 +4,12 @@
 #include "common/resnet.hpp"
 namespace stochastic_depth {
 namespace nn=datamunge::nn;
-using nn::models::DropPathScaling;
-using nn::models::SurvivalProbabilities;
-using nn::models::DropPathOutputs;
-using nn::models::DropPath;
-using nn::models::CifarIdentityShortcut;
-using nn::models::StochasticCifarConfig;
-using nn::models::StochasticCifarOutputs;
-using nn::models::StochasticCifarResNet;
+using datamunge::nn::models::DropPathScaling;
+using datamunge::nn::models::SurvivalProbabilities;
+using datamunge::nn::models::DropPathOutputs;
+using datamunge::nn::models::DropPath;
+using datamunge::nn::models::CifarIdentityShortcut;
+using datamunge::nn::models::StochasticCifarConfig;
+using datamunge::nn::models::StochasticCifarOutputs;
+using datamunge::nn::models::StochasticCifarResNet;
 }

@@ -3,6 +3,6 @@
 #include <datamunge/nn/deformable_models.hpp>
 namespace deformable {
 namespace nn=datamunge::nn;
-using nn::models::DeformableOutputs;
-using nn::models::DeformableConv2D;
+using datamunge::nn::models::DeformableOutputs;
+using datamunge::nn::models::DeformableConv2D;
 }

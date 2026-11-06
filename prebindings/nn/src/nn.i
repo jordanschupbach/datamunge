@@ -102,6 +102,7 @@ using EarlyStoppingDecision = EarlyStopping::Decision;
 %ignore datamunge::nn::Tensor::device;
 %ignore datamunge::nn::Tensor::context;
 %ignore datamunge::nn::Tensor::to(const compute::Context&) const;
+%ignore datamunge::nn::ParameterStore::to(const compute::Context&) const;
 %ignore datamunge::nn::empty(const Shape&, DType, const compute::Context&);
 %ignore datamunge::nn::zeros(const Shape&, DType, const compute::Context&);
 %ignore datamunge::nn::full(const Shape&, double, DType, const compute::Context&);

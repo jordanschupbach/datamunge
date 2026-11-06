@@ -41,9 +41,9 @@ inline std::vector<Box> SsdDefaultBoxes(const std::vector<int> &cells,
       nn::models::SsdDefaultBoxes(cells, std::vector<double>(sizes.begin(), sizes.end()),
                                   std::vector<double>(steps.begin(), steps.end()), per_cell));
 }
-using nn::models::SSD;
-using nn::models::SsdNormalize;
-using nn::models::SsdOutputs;
+using datamunge::nn::models::SSD;
+using datamunge::nn::models::SsdNormalize;
+using datamunge::nn::models::SsdOutputs;
 struct SsdLossOutputs {
   nn::Tensor loss;
   std::vector<char> selected_negatives;

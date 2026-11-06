@@ -31,6 +31,13 @@ buildNpmPackage (finalAttrs: {
     description = "JavaScript (N-API) bindings for the datamunge C++ library.";
     license = lib.licenses.unlicense;
   };
+  # npm pack honours .gitignore (which ignores build/), so the compiled addon that index.js
+  # loads is left out of the installed package; copy it in.
+  postInstall = ''
+    addonDir="$out/lib/node_modules/@datamunge/datamungejs/build/Release"
+    mkdir -p "$addonDir"
+    cp build/Release/datamungejs.node "$addonDir/"
+  '';
   production = true;
   bypassCache = true;
   reconstructLock = true;

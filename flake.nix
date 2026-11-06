@@ -297,6 +297,37 @@
         ++ opt (has "luacheck" pkgs) [ pkgs.luacheck ]
         ++ opt (has "dscanner" pkgs) [ pkgs.dscanner ];
 
+        # Report shells (nix/report/<lang>.nix): a language runtime plus its nix-built binding, for
+        # mepml report blocks (`nix-shell="git+file:../..#report-<lang>"`). Unlike the dev shells
+        # these do carry the binding packages; they are never activated by direnv, so a C++ edit
+        # only rebuilds a binding when a report in that language is next run.
+        reportShellArgs = {
+          inherit
+            pkgs
+            lib
+            datamunge
+            swigPkg
+            bindingPkgs
+            lua
+            phpPackage
+            phpDev
+            dotnetSdk
+            gradleWrapped
+            jdatamungeGradleDeps
+            pydatamunge
+            datamunger
+            datamungejs
+            octruby
+            datamungelua
+            datamungetcl
+            datamungeoctave
+            datamungeguile
+            datamungeocaml
+            datamunged
+            ;
+        };
+        reportShell = language: import (./nix/report + "/${language}.nix") reportShellArgs;
+
       in
       {
         checks = {
@@ -481,7 +512,7 @@
             ];
             doCheck = true;
             checkPhase = ''
-              tclVersionDir="$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]' | sed -E 's|.*/(tcl[0-9]+\\.[0-9]+).*|\\1|')"
+              tclVersionDir="$(basename "$(${pkgs.tcl}/bin/tclsh <<< 'puts [info library]')")"
               export TCLLIBPATH="${datamungetcl}/lib/$tclVersionDir"
               tclsh tests/tcl/test_datamunge.tcl
             '';
@@ -1304,6 +1335,23 @@
             export NIX_LDFLAGS="-rpath $datamungeLibDir"
           '';
         };
+
+        devShells.report-cpp = reportShell "cpp";
+        devShells.report-python = reportShell "python";
+        devShells.report-r = reportShell "r";
+        devShells.report-csharp = reportShell "csharp";
+        devShells.report-d = reportShell "d";
+        devShells.report-go = reportShell "go";
+        devShells.report-guile = reportShell "guile";
+        devShells.report-java = reportShell "java";
+        devShells.report-javascript = reportShell "javascript";
+        devShells.report-lua = reportShell "lua";
+        devShells.report-ocaml = reportShell "ocaml";
+        devShells.report-octave = reportShell "octave";
+        devShells.report-perl = reportShell "perl";
+        devShells.report-php = reportShell "php";
+        devShells.report-ruby = reportShell "ruby";
+        devShells.report-tcl = reportShell "tcl";
 
         devShells.docs-pages = pkgs.mkShell {
           packages = [

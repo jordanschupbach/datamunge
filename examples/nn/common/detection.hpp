@@ -283,10 +283,10 @@ inline std::vector<int> MatchSsd(const std::vector<Box> &anchors,
       nn::box_iou(nn::boxes_from_vector(anchors), nn::boxes_from_vector(truth)));
   return matched.to_vector<int>();
 }
-using nn::models::BuildRpn;
-using nn::models::Rpn;
-using nn::models::RpnLevel;
-using nn::models::RpnLoss;
+using datamunge::nn::models::BuildRpn;
+using datamunge::nn::models::Rpn;
+using datamunge::nn::models::RpnLevel;
+using datamunge::nn::models::RpnLoss;
 inline nn::Tensor SmoothL1(const nn::Tensor &difference) {
   return nn::models::DetectorSmoothL1(difference);
 }

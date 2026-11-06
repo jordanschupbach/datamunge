@@ -4,16 +4,16 @@
 #include "common/mbconv.hpp"
 namespace convnext {
 namespace nn=datamunge::nn;
-using nn::models::ConvNeXtSize;
-using nn::models::GrnOutputs;
-using nn::models::ConvNeXtBlockOutputs;
-using nn::models::ConvNeXtConfig;
-using nn::models::ConvNeXtOutputs;
-using nn::models::ConvNeXtLayout;
-using nn::models::ConvNeXtConv;
-using nn::models::GlobalResponseNorm;
-using nn::models::ConvNeXtBlock;
-using nn::models::ConvNeXt;
-using nn::models::ConvNeXtMacs;
-using nn::models::ConvNeXtParameters;
+using datamunge::nn::models::ConvNeXtSize;
+using datamunge::nn::models::GrnOutputs;
+using datamunge::nn::models::ConvNeXtBlockOutputs;
+using datamunge::nn::models::ConvNeXtConfig;
+using datamunge::nn::models::ConvNeXtOutputs;
+using datamunge::nn::models::ConvNeXtLayout;
+using datamunge::nn::models::ConvNeXtConv;
+using datamunge::nn::models::GlobalResponseNorm;
+using datamunge::nn::models::ConvNeXtBlock;
+using datamunge::nn::models::ConvNeXt;
+using datamunge::nn::models::ConvNeXtMacs;
+using datamunge::nn::models::ConvNeXtParameters;
 }

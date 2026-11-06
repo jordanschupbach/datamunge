@@ -3,10 +3,10 @@
 #include "datamunge/nn/flower_data.hpp"
 namespace fine {
 namespace nn = datamunge::nn;
-using nn::models::FlowerData;
-using nn::models::FlowerRows;
-using nn::models::FlowerSplits;
-using nn::models::LoadFlowers;
+using datamunge::nn::models::FlowerData;
+using datamunge::nn::models::FlowerRows;
+using datamunge::nn::models::FlowerSplits;
+using datamunge::nn::models::LoadFlowers;
 struct FlowerMetrics {
   double nll = 0, accuracy = 0, macro_accuracy = 0, brier = 0;
   std::array<int, 36> confusion{};
@@ -26,5 +26,5 @@ inline FlowerMetrics ScoreFlowers(const nn::Tensor &probability, const nn::Tenso
 inline std::vector<float> FlowerColorMeans(const FlowerData &data) {
   return nn::models::FlowerColorMeans(data).to_vector<float>();
 }
-using nn::models::FlowerColorBaseline;
+using datamunge::nn::models::FlowerColorBaseline;
 } // namespace fine

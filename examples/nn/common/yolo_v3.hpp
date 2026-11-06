@@ -2,9 +2,9 @@
 #include "common/yolo_v2.hpp"
 #include "datamunge/nn/yolo_v3_models.hpp"
 namespace yolo {
-using nn::models::YoloV3;
-using nn::models::YoloV3Config;
-using nn::models::YoloV3Outputs;
+using datamunge::nn::models::YoloV3;
+using datamunge::nn::models::YoloV3Config;
+using datamunge::nn::models::YoloV3Outputs;
 inline nn::Tensor LogisticCrossEntropy(const nn::Tensor &x, const nn::Tensor &y) {
   return nn::models::YoloLogisticCrossEntropy(x, y);
 }

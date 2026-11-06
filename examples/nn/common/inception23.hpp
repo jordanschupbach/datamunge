@@ -4,11 +4,11 @@
 #include "common/normalized_conv.hpp"
 namespace inception23 {
 namespace nn=datamunge::nn;
-using nn::models::Inception23Config;
-using nn::models::Inception23Outputs;
-using nn::models::ConvFeature;
-using nn::models::InceptionBuilder;
-using nn::models::InceptionClassifier;
-using nn::models::InceptionAuxiliary;
-using nn::models::Inception23;
+using datamunge::nn::models::Inception23Config;
+using datamunge::nn::models::Inception23Outputs;
+using datamunge::nn::models::ConvFeature;
+using datamunge::nn::models::InceptionBuilder;
+using datamunge::nn::models::InceptionClassifier;
+using datamunge::nn::models::InceptionAuxiliary;
+using datamunge::nn::models::Inception23;
 }

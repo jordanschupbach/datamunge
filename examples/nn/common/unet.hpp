@@ -2,11 +2,11 @@
 #include "datamunge/nn/unet_models.hpp"
 namespace unet {
 namespace nn = datamunge::nn;
-using nn::models::Unet;
-using nn::models::UnetCenterCropTo;
-using nn::models::UnetConfig;
-using nn::models::UnetOutputs;
-using nn::models::UnetOutputSide;
+using datamunge::nn::models::Unet;
+using datamunge::nn::models::UnetCenterCropTo;
+using datamunge::nn::models::UnetConfig;
+using datamunge::nn::models::UnetOutputs;
+using datamunge::nn::models::UnetOutputSide;
 inline nn::Tensor CenterCropTo(const nn::Tensor &source, const nn::Tensor &reference) {
   return UnetCenterCropTo(source, reference);
 }

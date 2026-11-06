@@ -1493,6 +1493,9 @@ def matmul(a, b, transpose_a=False, transpose_b=False):
 def bias_add(x, bias):
     return _nn_native.bias_add(x, bias)
 
+def bias_add_relu(x, bias):
+    return _nn_native.bias_add_relu(x, bias)
+
 def dot(a, b):
     return _nn_native.dot(a, b)
 
@@ -1788,6 +1791,12 @@ def conv_options(*args):
 def conv_output_size(_in, kernel, stride, dilation, padding, pad_before=0, pad_after=0):
     return _nn_native.conv_output_size(_in, kernel, stride, dilation, padding, pad_before, pad_after)
 
+def conv2d_bias_relu(*args):
+    return _nn_native.conv2d_bias_relu(*args)
+
+def conv2d_bias_relu_concat(x, filters, biases, options):
+    return _nn_native.conv2d_bias_relu_concat(x, filters, biases, options)
+
 def conv2d_backprop_input(*args):
     return _nn_native.conv2d_backprop_input(*args)
 
@@ -1955,6 +1964,9 @@ _nn_native.ConvLayerOptions_swigregister(ConvLayerOptions)
 
 def conv2d(*args):
     return _nn_native.conv2d(*args)
+
+def conv2d_concat(*args):
+    return _nn_native.conv2d_concat(*args)
 
 def conv1d(*args):
     return _nn_native.conv1d(*args)
@@ -4456,7 +4468,7 @@ class condensenet__CondenseContextHandle(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     layers = property(_nn_native.condensenet__CondenseContextHandle_layers_get, _nn_native.condensenet__CondenseContextHandle_layers_set)
-    context = property(_nn_native.condensenet__CondenseContextHandle_context_get, _nn_native.condensenet__CondenseContextHandle_context_set)
+    context = property(_nn_native.condensenet__CondenseContextHandle_context_get)
 
     def __init__(self, p, state, training, momentum=.9, progress=0):
         _nn_native.condensenet__CondenseContextHandle_swiginit(self, _nn_native.new_condensenet__CondenseContextHandle(p, state, training, momentum, progress))
@@ -4483,7 +4495,7 @@ class shufflenet__ShuffleContextHandle(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
     layers = property(_nn_native.shufflenet__ShuffleContextHandle_layers_get, _nn_native.shufflenet__ShuffleContextHandle_layers_set)
-    context = property(_nn_native.shufflenet__ShuffleContextHandle_context_get, _nn_native.shufflenet__ShuffleContextHandle_context_set)
+    context = property(_nn_native.shufflenet__ShuffleContextHandle_context_get)
 
     def __init__(self, p, state, training, momentum=.9, update_stats=True, record_layers=False):
         _nn_native.shufflenet__ShuffleContextHandle_swiginit(self, _nn_native.new_shufflenet__ShuffleContextHandle(p, state, training, momentum, update_stats, record_layers))
@@ -9186,7 +9198,7 @@ def yolo__DecodeYoloV5(raw, offset, row, col, cells, prior, stride, height, widt
 class yolo__CspContextHandle(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    context = property(_nn_native.yolo__CspContextHandle_context_get, _nn_native.yolo__CspContextHandle_context_set)
+    context = property(_nn_native.yolo__CspContextHandle_context_get)
 
     def __init__(self, parameters, state, training=False, update_stats=True):
         _nn_native.yolo__CspContextHandle_swiginit(self, _nn_native.new_yolo__CspContextHandle(parameters, state, training, update_stats))

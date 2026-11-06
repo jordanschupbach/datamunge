@@ -4,12 +4,12 @@
 #include "common/resnet.hpp"
 namespace octconv {
 namespace nn=datamunge::nn;
-using nn::models::OctaveMaps;
-using nn::models::OctaveCost;
-using nn::models::OctResNetConfig;
-using nn::models::OctResNetOutputs;
-using nn::models::LowChannels;
-using nn::models::OctaveConv;
-using nn::models::OctaveNorm;
-using nn::models::OctResNet;
+using datamunge::nn::models::OctaveMaps;
+using datamunge::nn::models::OctaveCost;
+using datamunge::nn::models::OctResNetConfig;
+using datamunge::nn::models::OctResNetOutputs;
+using datamunge::nn::models::LowChannels;
+using datamunge::nn::models::OctaveConv;
+using datamunge::nn::models::OctaveNorm;
+using datamunge::nn::models::OctResNet;
 }

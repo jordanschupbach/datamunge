@@ -4,16 +4,16 @@
 #include "common/grouped.hpp"
 namespace shufflenet {
 namespace nn=datamunge::nn;
-using nn::models::ReshapeChannels;
-using nn::models::ChannelShuffle;
-using nn::models::PaperChannelShuffle;
-using nn::models::PadSpatial;
-using nn::models::ShuffleContext;
-using nn::models::ShuffleConv;
-using nn::models::AveragePoolWithPadding;
-using nn::models::ShuffleV1Unit;
-using nn::models::ShuffleV2Unit;
-using nn::models::ShuffleNetConfig;
-using nn::models::ShuffleNetOutputs;
-using nn::models::ShuffleNet;
+using datamunge::nn::models::ReshapeChannels;
+using datamunge::nn::models::ChannelShuffle;
+using datamunge::nn::models::PaperChannelShuffle;
+using datamunge::nn::models::PadSpatial;
+using datamunge::nn::models::ShuffleContext;
+using datamunge::nn::models::ShuffleConv;
+using datamunge::nn::models::AveragePoolWithPadding;
+using datamunge::nn::models::ShuffleV1Unit;
+using datamunge::nn::models::ShuffleV2Unit;
+using datamunge::nn::models::ShuffleNetConfig;
+using datamunge::nn::models::ShuffleNetOutputs;
+using datamunge::nn::models::ShuffleNet;
 }

@@ -5,16 +5,16 @@
 #include <datamunge/nn/dual_path_models.hpp>
 namespace dpn {
 namespace nn = datamunge::nn;
-using nn::models::DPN;
-using nn::models::DPNBlock;
-using nn::models::DPNBlockOutputs;
-using nn::models::DPNConfig;
-using nn::models::DPNJoin;
-using nn::models::DPNLayout;
-using nn::models::DPNLayoutFor;
-using nn::models::DPNOutputs;
-using nn::models::DPNPaths;
-using nn::models::DPNPreActConv;
+using datamunge::nn::models::DPN;
+using datamunge::nn::models::DPNBlock;
+using datamunge::nn::models::DPNBlockOutputs;
+using datamunge::nn::models::DPNConfig;
+using datamunge::nn::models::DPNJoin;
+using datamunge::nn::models::DPNLayout;
+using datamunge::nn::models::DPNLayoutFor;
+using datamunge::nn::models::DPNOutputs;
+using datamunge::nn::models::DPNPaths;
+using datamunge::nn::models::DPNPreActConv;
 /// @copydoc datamunge::nn::models::DPNChannelSlice
 inline nn::Tensor ChannelSlice(const nn::Tensor &x, std::int64_t start, std::int64_t count) {
   return nn::models::DPNChannelSlice(x, start, count);

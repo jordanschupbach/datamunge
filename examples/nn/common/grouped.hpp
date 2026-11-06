@@ -3,6 +3,6 @@
 #include <datamunge/nn/classic_cnn_components.hpp>
 namespace grouped {
 namespace nn=datamunge::nn;
-using nn::models::GroupedConv2D;
-using nn::models::FusedGroupedConv2D;
+using datamunge::nn::models::GroupedConv2D;
+using datamunge::nn::models::FusedGroupedConv2D;
 }

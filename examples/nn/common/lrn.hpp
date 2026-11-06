@@ -3,5 +3,5 @@
 #include <datamunge/nn/classic_cnn_components.hpp>
 namespace lrn {
 namespace nn=datamunge::nn;
-using nn::models::LocalResponseNorm;
+using datamunge::nn::models::LocalResponseNorm;
 }

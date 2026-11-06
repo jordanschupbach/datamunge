@@ -3,11 +3,11 @@
 #include "datamunge/nn/metric_learning.hpp"
 namespace metric {
 namespace nn = datamunge::nn;
-using nn::models::MeanTriplet;
-using nn::models::MineSemiHard;
-using nn::models::TripletHinge;
-using nn::models::TripletIndex;
-using nn::models::TripletMining;
+using datamunge::nn::models::MeanTriplet;
+using datamunge::nn::models::MineSemiHard;
+using datamunge::nn::models::TripletHinge;
+using datamunge::nn::models::TripletIndex;
+using datamunge::nn::models::TripletMining;
 /// Host copy of an embedding matrix [B, D].
 struct HostEmbeddings {
   std::vector<float> values;

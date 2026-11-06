@@ -3,6 +3,6 @@
 #include <datamunge/nn/cnn_models.hpp>
 namespace cnn_baselines {
 namespace nn = datamunge::nn;
-using nn::models::MnistCnnOutputs;
-using nn::models::MnistCnn;
+using datamunge::nn::models::MnistCnnOutputs;
+using datamunge::nn::models::MnistCnn;
 }

@@ -5,7 +5,7 @@
 #include "datamunge/nn/panoptic_models.hpp"
 namespace panoptic {
 namespace nn = datamunge::nn;
-using nn::models::PanopticSegment;
+using datamunge::nn::models::PanopticSegment;
 struct PanopticMap {
   std::vector<int> ids;
   std::map<int, PanopticSegment> segments;

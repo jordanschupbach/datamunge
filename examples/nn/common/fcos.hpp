@@ -6,12 +6,12 @@ namespace fcos {
 namespace nn = datamunge::nn;
 using detector::Box;
 using detector::DetectionScenes;
-using nn::models::Fcos;
-using nn::models::FcosConfig;
-using nn::models::FcosIouLoss;
-using nn::models::FcosLoss;
-using nn::models::FcosOutputs;
-using nn::models::FcosTargets;
+using datamunge::nn::models::Fcos;
+using datamunge::nn::models::FcosConfig;
+using datamunge::nn::models::FcosIouLoss;
+using datamunge::nn::models::FcosLoss;
+using datamunge::nn::models::FcosOutputs;
+using datamunge::nn::models::FcosTargets;
 struct FcosPoint {
   float y, x, stride, minimum, maximum;
 };

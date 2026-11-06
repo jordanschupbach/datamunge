@@ -5,9 +5,9 @@
 #include "common/resnet.hpp"
 namespace pyramidnet {
 namespace nn=datamunge::nn;
-using nn::models::PyramidShortcut;
-using nn::models::PyramidBlock;
-using nn::models::PyramidNetConfig;
-using nn::models::PyramidNetOutputs;
-using nn::models::PyramidNet;
+using datamunge::nn::models::PyramidShortcut;
+using datamunge::nn::models::PyramidBlock;
+using datamunge::nn::models::PyramidNetConfig;
+using datamunge::nn::models::PyramidNetOutputs;
+using datamunge::nn::models::PyramidNet;
 }

@@ -9,10 +9,10 @@ namespace yolact {
 namespace nn = datamunge::nn;
 using detector::Box;
 using detector::Detection;
-using nn::models::Yolact;
-using nn::models::YolactCells;
-using nn::models::YolactConfig;
-using nn::models::YolactOutputs;
+using datamunge::nn::models::Yolact;
+using datamunge::nn::models::YolactCells;
+using datamunge::nn::models::YolactConfig;
+using datamunge::nn::models::YolactOutputs;
 inline nn::Tensor LinearMasks(const nn::Tensor &prototypes, const nn::Tensor &coefficients) {
   return nn::models::LinearInstanceMasks(prototypes, coefficients);
 }

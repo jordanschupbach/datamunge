@@ -41,7 +41,7 @@ add_custom_command(
 add_custom_command(
   OUTPUT "${GENERATED_OCTFILE}"
   COMMAND
-    "${MKOCTFILE_EXECUTABLE}" -v -std=c++17 ${DATAMUNGE_CXX_INCLUDE_FLAGS}
+    "${MKOCTFILE_EXECUTABLE}" -v -std=c++23 ${DATAMUNGE_CXX_INCLUDE_FLAGS}
     -L$<TARGET_FILE_DIR:datamunge::datamunge> -Wl,-rpath,$<TARGET_FILE_DIR:datamunge::datamunge> -ldatamunge -o
     "${GENERATED_OCTFILE}" "${GENERATED_WRAPPER}"
   DEPENDS "${GENERATED_WRAPPER}"

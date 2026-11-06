@@ -3,10 +3,10 @@
 #include <datamunge/nn/squeezenet_models.hpp>
 namespace squeezenet {
 namespace nn=datamunge::nn;
-using nn::models::FireOutputs;
-using nn::models::Fire;
-using nn::models::CeilMaxPool;
-using nn::models::SqueezeNetConfig;
-using nn::models::SqueezeNetOutputs;
-using nn::models::SqueezeNet;
+using datamunge::nn::models::FireOutputs;
+using datamunge::nn::models::Fire;
+using datamunge::nn::models::CeilMaxPool;
+using datamunge::nn::models::SqueezeNetConfig;
+using datamunge::nn::models::SqueezeNetOutputs;
+using datamunge::nn::models::SqueezeNet;
 }
