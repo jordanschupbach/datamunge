@@ -1,24 +1,11 @@
 #include <datamunge/algorithms/permutations.hpp>
 
-#include <datamunge/random/random.hpp>
-
 #include <cstddef>
 #include <cstdint>
 #include <utility>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-std::vector<int> fisher_yates_shuffle(const std::vector<int>& items, std::uint64_t seed) {
-    std::vector<int>             a = items;
-    datamunge::random::SplitMix64 rng(seed);
-    // Durstenfeld's in-place form: for i from n-1 down to 1, swap a[i] with a uniform j in [0, i].
-    for (std::size_t i = a.size(); i-- > 1;) {
-        const std::uint64_t j = rng.uniform_u64(0, i); // inclusive of both ends
-        std::swap(a[i], a[static_cast<std::size_t>(j)]);
-    }
-    return a;
-}
 
 namespace {
 

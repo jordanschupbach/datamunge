@@ -24,6 +24,7 @@ import sys
 import tempfile
 import time
 from collections import defaultdict
+from pathlib import Path
 
 BODY = re.compile(r"<body[^>]*>(.*)</body>", re.S)
 CODE = re.compile(r'<pre><code class="language-([\w+#-]+)">(.*?)</code></pre>', re.S)
@@ -98,7 +99,7 @@ def validate_cpp_toolchain(paths, env=None):
 class Report:
     def __init__(self, path, rel):
         self.path = path            # the .mepml
-        self.rel = rel              # its path under docs/mepml/examples
+        self.rel = rel              # its path within either documentation report collection
         self.url = "reports/" + os.path.splitext(rel)[0] + ".html"
         self.title = os.path.splitext(os.path.basename(rel))[0].replace("_", " ")
         self.subtitle = ""
@@ -310,8 +311,34 @@ def pch_fresh(pch, dep):
         return False
 
 
+def example_roots(root):
+    """Current report collection followed by the earlier documentation collection."""
+    return [os.path.join(root, "docs", "examples", "mepml"),
+            os.path.join(root, "docs", "mepml", "examples")]
+
+
 def report_rel(path, examples_root):
-    return os.path.relpath(os.path.abspath(path), os.path.abspath(examples_root)).replace(os.sep, "/")
+    """Stable site path relative to whichever report collection owns the source."""
+    roots = [examples_root] if isinstance(examples_root, (str, os.PathLike)) else examples_root
+    source = os.path.abspath(path)
+    for root in roots:
+        root = os.path.abspath(root)
+        if os.path.commonpath([source, root]) == root:
+            return os.path.relpath(source, root).replace(os.sep, "/")
+    return os.path.relpath(source, os.path.abspath(roots[0])).replace(os.sep, "/")
+
+
+def discover_reports(root):
+    """Find both collections; reject duplicate output paths before exporting."""
+    roots = example_roots(root)
+    found = {}
+    for collection in roots:
+        for path in sorted(Path(collection).rglob("*.mepml")):
+            relative = report_rel(path, roots)
+            if relative in found:
+                raise ToolchainError(f"Duplicate report path {relative}: {found[relative]} and {path}")
+            found[relative] = str(path)
+    return [found[key] for key in sorted(found)]
 
 
 FIGURE_REF = re.compile(r'\\(?:image|video)\(([^)\s]+)\)|```\{[^\n}]*?\bfile="([^"]+)"')

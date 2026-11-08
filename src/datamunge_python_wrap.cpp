@@ -152762,7 +152762,17 @@ SWIGINTERN PyObject *_wrap_closest_pair(PyObject *self, PyObject *args) {
     }
     arg1 = ptr;
   }
-  result = datamunge::geometry::closest_pair((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1);
+  {
+    try {
+      result = datamunge::geometry::closest_pair((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1);
+    } catch (const std::invalid_argument& error) {
+      SWIG_exception_fail(SWIG_ValueError, error.what());
+    } catch (const std::overflow_error& error) {
+      SWIG_exception_fail(SWIG_OverflowError, error.what());
+    } catch (const std::exception& error) {
+      SWIG_exception_fail(SWIG_RuntimeError, error.what());
+    }
+  }
   resultobj = SWIG_NewPointerObj((new datamunge::geometry::ClosestPairResult(result)), SWIGTYPE_p_datamunge__geometry__ClosestPairResult, SWIG_POINTER_OWN |  0 );
   if (SWIG_IsNewObj(res1)) delete arg1;
   return resultobj;
@@ -235303,8 +235313,8 @@ static PyMethodDef SwigMethods[] = {
 	 { "Plot_to_svg", _wrap_Plot_to_svg, METH_O, "\n"
 		"Renders the plot as a standalone SVG document and returns it as a string.\n"
 		"\n"
-		"The document starts with an XML declaration and embeds the plot font, so it displays\n"
-		"identically in any browser. The plot is not modified, and no file or display is used.\n"
+		"The document starts with an XML declaration and draws text as embedded Computer Modern\n"
+		"glyph outlines, so it displays identically in any SVG viewer, with or without web fonts. The plot is not modified, and no file or display is used.\n"
 		"\n"
 		":rtype: string\n"
 		":return: The complete SVG text.\n"
@@ -243627,10 +243637,10 @@ static PyMethodDef SwigMethods[] = {
 		"       the \"strict\" convex hull convention. Fewer than 3 distinct input points are\n"
 		"       returned as-is (there's no well-defined polygon to build).\n"
 		""},
-	 { "ClosestPairResult_a_set", _wrap_ClosestPairResult_a_set, METH_VARARGS, NULL},
-	 { "ClosestPairResult_a_get", _wrap_ClosestPairResult_a_get, METH_O, NULL},
-	 { "ClosestPairResult_b_set", _wrap_ClosestPairResult_b_set, METH_VARARGS, NULL},
-	 { "ClosestPairResult_b_get", _wrap_ClosestPairResult_b_get, METH_O, NULL},
+	 { "ClosestPairResult_a_set", _wrap_ClosestPairResult_a_set, METH_VARARGS, "Owned coordinate copy of the lower-index selected input record."},
+	 { "ClosestPairResult_a_get", _wrap_ClosestPairResult_a_get, METH_O, "Owned coordinate copy of the lower-index selected input record."},
+	 { "ClosestPairResult_b_set", _wrap_ClosestPairResult_b_set, METH_VARARGS, "Owned coordinate copy of the higher-index selected input record."},
+	 { "ClosestPairResult_b_get", _wrap_ClosestPairResult_b_get, METH_O, "Owned coordinate copy of the higher-index selected input record."},
 	 { "ClosestPairResult_distance_set", _wrap_ClosestPairResult_distance_set, METH_VARARGS, NULL},
 	 { "ClosestPairResult_distance_get", _wrap_ClosestPairResult_distance_get, METH_O, NULL},
 	 { "new_ClosestPairResult", _wrap_new_ClosestPairResult, METH_NOARGS, NULL},
@@ -243638,11 +243648,28 @@ static PyMethodDef SwigMethods[] = {
 	 { "ClosestPairResult_swigregister", ClosestPairResult_swigregister, METH_O, NULL},
 	 { "ClosestPairResult_swiginit", ClosestPairResult_swiginit, METH_VARARGS, NULL},
 	 { "closest_pair", _wrap_closest_pair, METH_O, "\n"
-		"The closest pair of points by brute-force all-pairs comparison, O(n^2). The classic\n"
-		"       divide-and-conquer algorithm for this problem is O(n log n); this simpler version\n"
-		"       is the deliberate choice for a \"basic\" library component (easy to verify correct,\n"
-		"       no merge-step edge cases to get subtly wrong) -- fine for the modest point counts\n"
-		"       this module targets, not a competitive replacement for CGAL at scale.\n"
+		"Return the closest point copies and finite-double distance using the checked all-pairs kernel.\n"
+		"Validates at least two finite points, visits every original i<j pair and compares\n"
+		"widened hypot distances. Equal rounded distances keep the lexicographically\n"
+		"first index pair. Duplicates are valid distinct records and can yield zero.\n"
+		"No early stop, sorting or spatial pruning; O(n^2) work and O(1) auxiliary storage.\n"
+		"No input mutation/shared state. Widened comparison can change former false\n"
+		"zero/infinite results and last-bit ties; it is not an exact-real predicate.\n"
+		"The old call/result layout remains; indexed/traced variants retain input ids.\n"
+		":type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":param points: Borrowed original finite planar coordinates, length at least two.\n"
+		":rtype: :py:class:`ClosestPairResult`\n"
+		":return: Owned selected point copies and checked finite-double measured distance.\n"
+		":raises: std::invalid_argument If point count is too small or any coordinate is nonfinite.\n"
+		":raises: std::length_error If complete pair count cannot fit size_t.\n"
+		":raises: std::overflow_error If arithmetic/counters or the selected legacy distance cannot fit.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto r=dm::geometry::closest_pair({{0,0},{3,4},{0,1}});\n"
+		"    std::print(\"{}\\n\",r.distance); // 1\n"
+		"See also: closest_pair_indexed(), closest_pair_trace()\n"
 		""},
 	 { "point_in_polygon", _wrap_point_in_polygon, METH_VARARGS, "\n"
 		"True if ``point`` lies strictly inside the simple polygon ``vertices`` (given in\n"

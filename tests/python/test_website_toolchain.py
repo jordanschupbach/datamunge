@@ -25,6 +25,49 @@ def document(path, code="#include <dm/dm.hpp>\nint main() {}"):
     return str(path)
 
 
+def test_report_collections_keep_stable_urls_and_discover_both(tmp_path):
+    current, earlier = map(Path, reports.example_roots(tmp_path))
+    for collection, name in [(current, "graph/search/new"), (earlier, "math/old")]:
+        source = collection / (name + ".mepml")
+        source.parent.mkdir(parents=True)
+        source.write_text("Report")
+    found = reports.discover_reports(tmp_path)
+    assert [reports.report_rel(p, [current, earlier]) for p in found] == [
+        "graph/search/new.mepml", "math/old.mepml"]
+    assert reports.Report(found[0], reports.report_rel(found[0], [current, earlier])).url == (
+        "reports/graph/search/new.html")
+
+
+def test_report_collections_reject_duplicate_site_paths(tmp_path):
+    for collection in reports.example_roots(tmp_path):
+        source = Path(collection) / "same.mepml"
+        source.parent.mkdir(parents=True)
+        source.write_text("Report")
+    with pytest.raises(reports.ToolchainError, match="Duplicate report path same.mepml"):
+        reports.discover_reports(tmp_path)
+
+
+@pytest.mark.parametrize("collection", ["docs/examples/mepml", "docs/mepml/examples"])
+def test_report_source_link_uses_its_actual_collection(tmp_path, monkeypatch, collection):
+    pytest.importorskip("markdown_it", reason="website rendering uses the docs shell dependencies")
+    monkeypatch.setitem(sys.modules, "reports", reports)
+    spec = importlib.util.spec_from_file_location("website_source_link_check", ROOT / "scripts/website/build.py")
+    website = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(website)
+    monkeypatch.setattr(website, "ROOT", str(tmp_path))
+    source = tmp_path / collection / "graph/search/example.mepml"
+    report = reports.Report(str(source), "graph/search/example.mepml")
+    site = website.Site.__new__(website.Site)
+    site.report_uses = {}
+    site.source_url = lambda path: "https://example.test/source/" + path
+    site.reports_sidebar = lambda *args: ""
+    rendered = []
+    site.write = lambda page, title, content, *args, **kwargs: rendered.append((page, content))
+    site.write_report(report)
+    assert rendered[0][0] == "reports/graph/search/example.html"
+    assert f'https://example.test/source/{collection}/graph/search/example.mepml' in rendered[0][1]
+
+
 @pytest.fixture
 def package(tmp_path, monkeypatch):
     """Build a small real shared library and package to isolate discovery/link checks."""

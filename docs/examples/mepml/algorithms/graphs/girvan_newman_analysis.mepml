@@ -1,0 +1,534 @@
+//? Title: Girvan–Newman: shortest-path shares and batch community cuts
+//? Subtitle: Actual Brandes states, tied removals, original-graph modularity and Zachary’s karate network
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A bridge between two triangles carries every shortest path between their two
+sides. Removing that bridge reveals two components. Girvan–Newman repeatedly
+recalculates edge betweenness to find such boundaries, but the details of removal
+and arithmetic matter. This report begins with hand-checkable bridge and equal-path
+examples, then follows the native implementation’s simultaneous near-maximum
+batches. A four-cycle overshoots a requested two-way split. The original karate-club
+graph supplies a real network, with every visited partition evaluated against the
+original edges. Actual primitive histories, independent exact-path fixtures and
+explicit floating-count and record limits distinguish the method from guarantees
+it does not provide.
+)
+
+\toc
+
+> Nine cross-pairs must use the bridge
+
+Join triangles {0,1,2} and {3,4,5} by edge 2–3, as in the original example. Each
+of the three left vertices can pair with each of the three right vertices. All
+nine cross-pair shortest paths use the bridge, so its conventional undirected
+betweenness is 9. Edge 0–1 is used only by its own endpoint pair and has score 1.
+The four other triangle edges have score 4. Native raw accumulation visits both
+source directions, producing twice these conventional values.
+
+```{cpp, results="markdown", file="figures/gn_bridge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto graph=dm::algorithms::clique_bridge_graph();const auto b=dm::algorithms::edge_betweenness(graph.vertex_count,graph.edges);
+ std::print("| edge | actual raw source sum | conventional undirected score |\n| --- | ---: | ---: |\n");
+ for(std::size_t i=0;i<b.edges.size();++i)std::print("| {}–{} | {:.1f} | {:.1f} |\n",b.edges[i].first,b.edges[i].second,b.raw_scores[i],b.scores[i]);
+ const std::array<dm::graphics::DiagramPoint,6> pos{{{-5,-1.5},{-5,1.5},{-1.5,0},{1.5,0},{5,1.5},{5,-1.5}}};
+ dm::graphics::Diagram d(65,1100);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=.7;node.height=.7;node.padding=8;node.font_size=22;
+ for(std::size_t u=0;u<pos.size();++u){node.fill=u<3?dm::graphics::RGB{219,234,254}:dm::graphics::RGB{254,226,226};d.node(std::to_string(u),pos[u],std::to_string(u),node);}
+ for(std::size_t i=0;i<b.edges.size();++i){const auto [u,v]=b.edges[i];dm::graphics::DiagramStroke stroke;stroke.color=(u==2&&v==3)?dm::graphics::RGB{220,38,38}:dm::graphics::RGB{71,85,105};stroke.width=(u==2&&v==3)?4:2;d.link(std::to_string(u),std::to_string(v),std::format("{:.0f}",b.scores[i]),stroke);}
+ d.text({0,3.4},"Conventional edge scores: the bridge carries 3 × 3 cross-pairs",24).text({0,-3.1},"Raw native source sums are twice the labels",23).save_svg("build/gn_bridge.svg");
+ if(b.raw_scores.at(3)!=18||b.scores.at(3)!=9)throw std::runtime_error("bridge pair count");
+}
+```
+// result_begin: markdown
+| edge | actual raw source sum | conventional undirected score |
+| --- | ---: | ---: |
+| 0–1 | 2.0 | 1.0 |
+| 0–2 | 8.0 | 4.0 |
+| 1–2 | 8.0 | 4.0 |
+| 2–3 | 18.0 | 9.0 |
+| 3–4 | 8.0 | 4.0 |
+| 3–5 | 8.0 | 4.0 |
+| 4–5 | 2.0 | 1.0 |
+\image(figures/gn_bridge.svg)
+// result_end
+\caption(Edge labels are conventional unordered-pair betweenness, not distances or raw native source sums. The table retains both scales; the original triangles and bridge are produced by a reusable native graph generator.)
+\alttext(Two native triangles joined at vertices 2 and 3 show conventional bridge score nine, four adjacent scores four and the two remaining scores one. A table prints the actual raw values, including bridge eighteen.)
+
+For a simple unweighted undirected graph, let σst be the number of shortest paths
+from s to t, and σst(e) the number using edge e. Disconnected pairs contribute zero:
+
+$$
+B(e)=\sum_{s<t,\;\sigma_{st}>0}\frac{\sigma_{st}(e)}{\sigma_{st}},
+\qquad R(e)=2B(e).
+$$
+\alttext(Conventional undirected betweenness sums each connected unordered pair’s fraction of shortest paths using the edge. The native source-summed raw value is twice that.)
+
+Equal shortest paths share a pair’s unit weight; they are not each counted as a
+whole independent pair. [Girvan and Newman’s original paper](https://doi.org/10.1073/pnas.122653799)
+removes a highest-betweenness edge and recalculates after removal. Here the preserved
+native variant removes every edge within an absolute 10^-12 of the maximum RAW
+score in one batch, then recalculates. It may therefore follow a different hierarchy
+and return more communities than requested. All edges and paths are unweighted.
+
+> Follow the two equal routes through a diamond
+
+In the diamond 0–1–3 and 0–2–3, source 0 has two shortest paths to vertex 3.
+Each predecessor receives a contribution of 1/2 from that endpoint. After those
+contributions, vertices 1 and 2 each pass 1+1/2 back to the source. The records
+below come from the actual executing BFS and reverse accumulation.
+
+```{cpp, results="markdown", file="figures/gn_diamond.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1},{0,2},{1,3},{2,3}};const auto t=dm::algorithms::edge_betweenness_trace(4,edges);using K=dm::algorithms::GirvanNewmanEventKind;
+ std::print("| source-0 popped vertex | actual distance | actual shortest-path count |\n| ---: | ---: | ---: |\n");
+ for(const auto&e:t.events)if(e.kind==K::pop&&e.source==0)std::print("| {} | {} | {:.0f} |\n",e.u,e.distance,e.paths_u);
+ std::print("\n| predecessor u | successor v | paths to u | paths to v | successor dependency before | actual contribution |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");std::vector<double> contribution(edges.size());
+ for(const auto&e:t.events)if(e.kind==K::dependency&&e.source==0){std::print("| {} | {} | {:.0f} | {:.0f} | {:.1f} | {:.1f} |\n",e.u,e.v,e.paths_u,e.paths_v,e.dependency_v,e.contribution);contribution[e.index]=e.contribution;}
+ std::print("\nActual source initializations {}; path updates {}; dependency updates {}; conservative integer-count guarantee {}.\n",t.result.work.source_initializations,t.result.work.path_updates,t.result.work.dependency_updates,t.result.path_counts_integer_guaranteed);
+ const std::array<dm::graphics::DiagramPoint,4> pos{{{0,0},{3,1.7},{3,-1.7},{6,0}}};dm::graphics::Diagram d(80,1000);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=.8;node.height=.8;node.padding=9;node.font_size=22;
+ for(std::size_t u=0;u<4;++u)d.node(std::to_string(u),pos[u],std::to_string(u),node);
+ for(std::size_t i=0;i<t.result.edges.size();++i)d.link(std::to_string(t.result.edges[i].first),std::to_string(t.result.edges[i].second),std::format("{:.1f}",contribution[i]));
+ d.text({3,3.2},"Actual source-0 contributions, not all-source scores",23).text({3,-3.1},"Two routes to vertex 3 split its unit weight equally",23).save_svg("build/gn_diamond.svg");
+ if(contribution[0]!=1.5||contribution[2]!=.5)throw std::runtime_error("equal-route fractions");
+}
+```
+// result_begin: markdown
+| source-0 popped vertex | actual distance | actual shortest-path count |
+| ---: | ---: | ---: |
+| 0 | 0 | 1 |
+| 1 | 1 | 1 |
+| 2 | 1 | 1 |
+| 3 | 2 | 2 |
+
+| predecessor u | successor v | paths to u | paths to v | successor dependency before | actual contribution |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 3 | 1 | 2 | 0.0 | 0.5 |
+| 2 | 3 | 1 | 2 | 0.0 | 0.5 |
+| 0 | 2 | 1 | 1 | 0.5 | 1.5 |
+| 0 | 1 | 1 | 1 | 0.5 | 1.5 |
+
+Actual source initializations 4; path updates 16; dependency updates 16; conservative integer-count guarantee true.
+\image(figures/gn_diamond.svg)
+// result_end
+\caption(The diagram labels only source 0’s actual predecessor contributions. Summing all sources and halving gives the separate conventional edge scores; these two quantities are not interchangeable.)
+\alttext(A diamond has two routes from source zero to vertex three. The actual source-zero contributions are one-half on the two edges entering vertex three and one-and-a-half on the two edges leaving source zero. Tables retain actual distances, path counts and dependencies.)
+
+BFS stores distances, predecessor lists and counts σs(v). A shortest path to v ends
+at one predecessor, so its count is the sum of predecessor counts. Accumulating
+in reverse BFS order assigns the edge u–v the contribution
+
+$$
+a_s(u,v)=\frac{\sigma_s(u)}{\sigma_s(v)}[1+\delta_s(v)],\qquad
+\delta_s(u)\mathrel{+}=a_s(u,v),\qquad R(u,v)\mathrel{+}=a_s(u,v).
+$$
+\alttext(The predecessor’s fraction of paths to a successor multiplies one plus the successor dependency; that actual contribution increments predecessor dependency and raw edge score.)
+
+The term 1 accounts for v itself; δs(v) accounts for farther targets. Positive
+unweighted distances make the predecessor graph acyclic, so reverse order has the
+successor dependencies ready. [Brandes’s original dependency derivation](https://doi.org/10.1080/0022250X.2001.9990249)
+is the basis of this shared native recurrence. Counts and dependencies here remain
+ordered double arithmetic; the later numeric example states their limitations.
+
+> A target is a minimum, and tied batches can overshoot
+
+The original bridge is uniquely maximal. Its one-edge batch yields {0,1,2} and
+{3,4,5}, preserving the original example. A four-cycle instead has equal scores
+on all four edges. The native batch deletes all four at once: requesting two
+communities returns four singleton components. An already disconnected graph can
+meet its target without any betweenness computation.
+
+```{cpp, results="markdown", file="figures/gn_batch.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto graph=dm::algorithms::clique_bridge_graph();const auto original=dm::algorithms::girvan_newman_run(6,graph.edges,2);
+ std::print("Original communities:");for(const auto& group:original.groups){std::print("\n");for(auto u:group)std::print("{} ",u);}std::print("\nOriginal scored batches {}; removed edges {}; component passes {}.\n",original.work.rounds,original.work.removed_edges,original.work.component_passes);
+ const std::vector<std::pair<std::size_t,std::size_t>> cycle{{0,1},{1,2},{2,3},{3,0}};const auto t=dm::algorithms::girvan_newman_trace(4,cycle,2);const auto b=dm::algorithms::edge_betweenness(4,cycle);const auto disconnected=dm::algorithms::girvan_newman_run(4,{{0,1},{2,3}},2);
+ std::print("\n| case | target | returned components | scored batches | removed edges |\n| --- | ---: | ---: | ---: | ---: |\n| Two triangles and bridge | 2 | {} | {} | {} |\n| Four-cycle, equal maxima | 2 | {} | {} | {} |\n| Already disconnected pairs | 2 | {} | {} | {} |\n",original.groups.size(),original.work.rounds,original.work.removed_edges,t.run.groups.size(),t.run.work.rounds,t.run.work.removed_edges,disconnected.groups.size(),disconnected.work.rounds,disconnected.work.removed_edges);
+ std::print("\nCycle raw score per edge {:.1f}; conventional {:.1f}; native keep test uses raw score < maximum - 1e-12.\n",b.raw_scores[0],b.scores[0]);
+ dm::graphics::Diagram d(65,1100);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=.7;node.height=.7;node.padding=8;node.font_size=22;const std::array<dm::graphics::DiagramPoint,4> pos{{{0,0},{2,0},{2,2},{0,2}}};
+ for(std::size_t u=0;u<4;++u){d.node("before"+std::to_string(u),pos[u],std::to_string(u),node);d.node("after"+std::to_string(u),{pos[u].x+8,pos[u].y},std::to_string(u),node);}for(auto [u,v]:cycle)d.link("before"+std::to_string(u),"before"+std::to_string(v));
+ d.text({1,3.6},"Before: one component",23).text({9,3.6},std::format("After: {} components",t.run.groups.size()),23).text({5,1},std::format("Delete all {} ties\nin one batch\ntarget = 2",t.run.work.removed_edges),22).text({5,-1.5},"Simultaneous deletion can skip the requested component count",24).save_svg("build/gn_batch.svg");
+ if(original.groups.size()!=2||t.run.groups.size()!=4||disconnected.work.rounds!=0)throw std::runtime_error("batch semantics");
+}
+```
+// result_begin: markdown
+Original communities:
+0 1 2 
+3 4 5 
+Original scored batches 1; removed edges 1; component passes 2.
+
+| case | target | returned components | scored batches | removed edges |
+| --- | ---: | ---: | ---: | ---: |
+| Two triangles and bridge | 2 | 2 | 1 | 1 |
+| Four-cycle, equal maxima | 2 | 4 | 1 | 4 |
+| Already disconnected pairs | 2 | 2 | 0 | 0 |
+
+Cycle raw score per edge 4.0; conventional 2.0; native keep test uses raw score < maximum - 1e-12.
+\image(figures/gn_batch.svg)
+// result_end
+\caption(The cycle’s four equal raw scores are all removed in one batch. This deliberately preserves the existing near-maximum policy; it is not a demonstration of single-edge recomputation or an exactly-k partitioner.)
+\alttext(A cycle of four labelled vertices is shown before deletion and as four isolated vertices afterward. The table preserves the original bridge result and the zero-scoring early stop for already disconnected pairs.)
+
+The exact native keep condition is R(e)<max R−10^-12. Thus its half-score scale
+would have a 5×10^-13 threshold, not 10^-12. Directions and duplicates are ignored,
+self-loops discarded, and the remaining edges sorted before adjacency construction.
+Output components follow ascending roots and BFS member order; they are not
+promised to have sorted members. The empty graph accepts only target 1, returning
+no groups; its default target 2 is invalid. These are API contracts, not evidence
+of any particular social grouping.
+
+> A genuine friendship graph, acquired through the native library
+
+[Mark Newman’s original network collection](https://websites.umich.edu/~mejn/netdata/)
+provides the friendship topology from [Zachary’s 1977 study](https://doi.org/10.1086/jar.33.4.3629752).
+The native accessor verifies the source ZIP, GML and README checksums and maps
+original ids 1..34 to native ids 0..33. It returns 34 vertices and 78 undirected,
+unweighted edges. The source archive contains no faction labels; colours below
+mean algorithm components and are not a claimed comparison with observed factions.
+The layout is a separate seeded native drawing, not an input to community detection.
+
+```{cpp, results="markdown", file="figures/gn_karate.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto data=dm::datasets::karate_club();const auto n=data.node_ids.size();const auto r=dm::algorithms::girvan_newman_run(n,data.edges,2);const auto q=dm::algorithms::graph_modularity(n,data.edges,r.groups);
+ std::print("Verified original graph: {} vertices, {} source edges, directed {}; original ids {}..{}; native id = original id - 1.\n",n,data.edges.size(),data.directed,data.node_ids.front(),data.node_ids.back());
+ std::print("First at-least-two split: {} groups after {} scored batches and {} removals; original-graph modularity {:.12f}.\n\n| component | vertices | original source ids in actual BFS order |\n| ---: | ---: | --- |\n",r.groups.size(),r.work.rounds,r.work.removed_edges,q);
+ for(std::size_t c=0;c<r.groups.size();++c){std::string ids;for(auto u:r.groups[c])ids+=std::format("{} ",data.node_ids[u]);std::print("| {} | {} | {} |\n",c,r.groups[c].size(),ids);}
+ const auto pos=dm::algorithms::force_directed_layout(n,data.edges,400,7);auto plot=dm::graphics::RPlot::create();for(auto [u,v]:data.edges)plot.lines({pos[u].x,pos[v].x},{pos[u].y,pos[v].y},"",{148,163,184},1);
+ const std::array<dm::graphics::RGB,2> colours{{{37,99,235},{220,38,38}}};for(std::size_t c=0;c<r.groups.size();++c){std::vector<double>x,y;for(auto u:r.groups[c]){x.push_back(pos[u].x);y.push_back(pos[u].y);}plot.points(x,y,std::format("Component {}",c),colours.at(c),7);}
+ plot.legend({"Component 0","Component 1"},{{37,99,235},{220,38,38}}).title("Karate friendship graph: native first split").xlab("Native layout x").ylab("Native layout y").x_limits(-1.15,1.15).y_limits(-1.15,1.15).size(850,850).save_svg("build/gn_karate.svg");
+ if(n!=34||data.edges.size()!=78||r.groups.size()!=2||r.work.rounds!=10||r.work.removed_edges!=11)throw std::runtime_error("pinned karate first split");
+}
+```
+// result_begin: markdown
+Verified original graph: 34 vertices, 78 source edges, directed false; original ids 1..34; native id = original id - 1.
+First at-least-two split: 2 groups after 10 scored batches and 11 removals; original-graph modularity 0.359960552268.
+
+| component | vertices | original source ids in actual BFS order |
+| ---: | ---: | --- |
+| 0 | 15 | 1 2 4 5 6 7 8 11 12 13 14 18 20 22 17  |
+| 1 | 19 | 3 9 10 28 29 31 33 34 24 25 32 15 16 19 21 23 30 27 26  |
+\image(figures/gn_karate.svg)
+// result_end
+\caption(All original edges remain visible, including edges removed by the detection algorithm. The native mapping retains original source ids in the table. Layout seed and drawing geometry have no role in the betweenness or modularity calculations.)
+\alttext(The complete verified 34-node,78-edge friendship graph is drawn with native force-directed coordinates and coloured by the first two returned components. The actual BFS source-id lists, ten scored batches, eleven removals and original-graph modularity are printed.)
+
+> Score every visited partition against the original graph
+
+A divisive method always produces some partition, including on graphs without a
+meaningful community interpretation. Modularity compares internal edges with a
+degree-based baseline. For group c, let Lc be its internal ORIGINAL edges and Kc its
+sum of ORIGINAL degrees, with m original edges:
+
+$$
+Q=\sum_c\left[\frac{L_c}{m}-\left(\frac{K_c}{2m}\right)^2\right].
+$$
+\alttext(Modularity sums each group’s fraction of original internal edges minus the square of its original degree share. Removed algorithm edges still count in this diagnostic.)
+
+[Newman and Girvan’s modularity definition](https://doi.org/10.1103/PhysRevE.69.026113)
+uses the full original network even after detection removes edges. The native
+helper therefore receives the original edge list each time. It validates a complete,
+disjoint partition and defines Q=0 for an edgeless graph. Maximizing Q over the
+visited batch stages does not prove global optimality or a true community count.
+Every actual stage below is retained, including unchanged component counts and
+worse late partitions.
+
+```{cpp, results="markdown", file="figures/gn_modularity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto data=dm::datasets::karate_club();const auto n=data.node_ids.size();const auto t=dm::algorithms::girvan_newman_trace(n,data.edges,n,200000);using K=dm::algorithms::GirvanNewmanEventKind;
+ std::vector<std::vector<std::size_t>> groups,best_groups;std::vector<double>x,qs,counts;std::size_t active=0;double best=-std::numeric_limits<double>::infinity();std::size_t best_round=0;
+ std::print("| actual round | active edges before cut | components | original-graph modularity | maximum raw edge score |\n| ---: | ---: | ---: | ---: | ---: |\n");
+ for(const auto&e:t.events){if(e.kind==K::round)active=e.count;else if(e.kind==K::components)groups.assign(e.count,{});else if(e.kind==K::vertex)groups.at(e.index).push_back(e.u);else if(e.kind==K::maximum||e.kind==K::stop){const double q=dm::algorithms::graph_modularity(n,data.edges,groups);x.push_back(e.round);qs.push_back(q);counts.push_back(groups.size());if(q>best){best=q;best_round=e.round;best_groups=groups;}if(e.kind==K::maximum)std::print("| {} | {} | {} | {:.12f} | {:.9f} |\n",e.round,active,groups.size(),q,e.maximum);else std::print("| {} | {} | {} | {:.12f} | no scored cut |\n",e.round,active,groups.size(),q);}}
+ std::print("\nMaximum among visited stages: round {}; groups {}; original-graph Q {:.12f}. Complete records {}; scored batches {}; actual removed edges {}.\n",best_round,best_groups.size(),best,t.events.size(),t.run.work.rounds,t.run.work.removed_edges);
+ auto qplot=dm::graphics::RPlot::create();qplot.lines(x,qs,"Q",{37,99,235},2).points(x,qs,"",{37,99,235},3).title("Original-graph modularity").xlab("Actual batch stage").ylab("Q on original 78 edges").y_limits(-.1,.45);
+ auto cplot=dm::graphics::RPlot::create();cplot.lines(x,counts,"Components",{220,38,38},2).points(x,counts,"",{220,38,38},3).title("Actual component count").xlab("Actual batch stage").ylab("Components").y_limits(0,38);
+ dm::graphics::RLayout::create(1,2).add(qplot).add(cplot).size(1100,540).title("All actual stages retained; peak Q is only among visited partitions").fit_panels().save_svg("build/gn_modularity.svg");
+ if(t.events.size()!=174531||best_round!=21||best_groups.size()!=5||std::abs(best-.4012984878369494)>1e-14)throw std::runtime_error("independent karate trajectory");
+}
+```
+// result_begin: markdown
+| actual round | active edges before cut | components | original-graph modularity | maximum raw edge score |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 78 | 1 | 0.000000000000 | 142.785714286 |
+| 1 | 77 | 1 | 0.000000000000 | 133.790354090 |
+| 2 | 76 | 1 | 0.000000000000 | 154.634798535 |
+| 3 | 75 | 1 | 0.000000000000 | 164.005811835 |
+| 4 | 74 | 1 | 0.000000000000 | 246.465834166 |
+| 5 | 73 | 1 | 0.000000000000 | 200.411111111 |
+| 6 | 72 | 1 | 0.000000000000 | 287.253968254 |
+| 7 | 71 | 1 | 0.000000000000 | 218.500000000 |
+| 8 | 70 | 1 | 0.000000000000 | 215.333333333 |
+| 9 | 69 | 1 | 0.000000000000 | 285.500000000 |
+| 10 | 67 | 2 | 0.359960552268 | 33.666666667 |
+| 11 | 66 | 2 | 0.359960552268 | 36.366666667 |
+| 12 | 65 | 2 | 0.359960552268 | 36.000000000 |
+| 13 | 64 | 3 | 0.348783694938 | 30.666666667 |
+| 14 | 62 | 3 | 0.348783694938 | 50.000000000 |
+| 15 | 60 | 4 | 0.363247863248 | 29.000000000 |
+| 16 | 59 | 4 | 0.363247863248 | 44.738095238 |
+| 17 | 58 | 4 | 0.363247863248 | 51.233333333 |
+| 18 | 57 | 4 | 0.363247863248 | 59.300000000 |
+| 19 | 56 | 4 | 0.363247863248 | 81.333333333 |
+| 20 | 55 | 4 | 0.363247863248 | 144.000000000 |
+| 21 | 54 | 5 | 0.401298487837 | 18.000000000 |
+| 22 | 52 | 6 | 0.392504930966 | 22.000000000 |
+| 23 | 51 | 7 | 0.376232741617 | 11.000000000 |
+| 24 | 50 | 7 | 0.376232741617 | 16.000000000 |
+| 25 | 49 | 8 | 0.358316896778 | 10.000000000 |
+| 26 | 39 | 13 | 0.272024983563 | 9.000000000 |
+| 27 | 37 | 14 | 0.263149243918 | 7.000000000 |
+| 28 | 31 | 17 | 0.210552268245 | 6.000000000 |
+| 29 | 29 | 18 | 0.189842209073 | 4.000000000 |
+| 30 | 19 | 22 | 0.117932281394 | 2.666666667 |
+| 31 | 13 | 24 | 0.065581854043 | 2.000000000 |
+| 32 | 0 | 34 | -0.049802761341 | no scored cut |
+
+Maximum among visited stages: round 21; groups 5; original-graph Q 0.401298487837. Complete records 174531; scored batches 32; actual removed edges 78.
+\image(figures/gn_modularity.svg)
+// result_end
+\caption(Each plotted row comes from actual recorded component vertices and a native modularity call on the original edges. The final edgeless state has no scored cut. The peak is five components at stage 21, not a ground-truth or global optimization claim.)
+\alttext(Two plots retain all 33 actual karate stages: original-graph Q rises to about0.401298 at stage21 with five groups and becomes negative near all singletons; component count reaches34. The full native trace has174531 complete records and32 scored batches.)
+
+An independent development oracle uses all-pairs distances, enumerates shortest
+paths explicitly and splits exact rational pair weights. It agrees with all 78
+initial edge scores and all 34 target requests for this pinned graph. Separate
+fixtures cover every simple graph through five vertices and every valid target.
+Those checks establish implementation agreement on the checked inputs; they do
+not turn modularity or shortest-path communities into sociological ground truth.
+
+> Selected operation counts reveal implementation costs
+
+The textbook unweighted dependency traversal can run in O(nm). This preserved
+implementation additionally initializes n-slot working arrays for every source
+and uses a binary search to find each edge’s score slot. One scored pass therefore
+has an O(n²+n m log(m+1)) bound. Input normalization adds O(r log(r+1)) for r raw
+records; connected-component passes add O(n+m). At most m scored batches give
+O(r log(r+1)+m n²+n m² log(m+1)), plus terminal component work. Scoring scratch is
+O(n+m). Normalization can retain capacity for r copied records after duplicates
+collapse, so total ordinary auxiliary storage is O(r+n+m), excluding the caller
+input and final result. Retained history is additional storage.
+
+The following family has two equal cliques and one bridge. The bridge carries
+size² unordered cross-pairs. Each example needs one scored batch to split, so
+source slots grow as n². Counted binary-search comparisons expose an extra cost
+that is absent from a claim based only on BFS visits. These selected counts exclude
+allocation, sorting comparisons, validation and arithmetic FLOPs; they are not timings.
+
+```{cpp, results="markdown", file="figures/gn_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::vector<double>x,slots,searches;std::print("| clique size | vertices | edges | bridge conventional score | scored batches | source slots | dependency contributions | actual edge-search comparisons |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t size:std::array<std::size_t,6>{2,3,4,6,8,12}){const auto g=dm::algorithms::clique_bridge_graph(size,size);const auto r=dm::algorithms::girvan_newman_run(g.vertex_count,g.edges,2);const auto b=dm::algorithms::edge_betweenness(g.vertex_count,g.edges);const auto found=std::lower_bound(b.edges.begin(),b.edges.end(),std::pair<std::size_t,std::size_t>{size-1,size});const auto i=std::size_t(found-b.edges.begin());std::print("| {} | {} | {} | {:.0f} | {} | {} | {} | {} |\n",size,g.vertex_count,g.edges.size(),b.scores.at(i),r.work.rounds,r.work.source_slots,r.work.dependency_updates,r.work.edge_search_comparisons);x.push_back(g.vertex_count);slots.push_back(std::log2(r.work.source_slots));searches.push_back(std::log2(r.work.edge_search_comparisons));if(b.scores.at(i)!=double(size*size)||r.work.rounds!=1)throw std::runtime_error("clique bridge family");}
+ auto plot=dm::graphics::RPlot::create();plot.lines(x,slots,"Source slots",{37,99,235},2).points(x,slots,"",{37,99,235},5).lines(x,searches,"Edge searches",{220,38,38},2).points(x,searches,"",{220,38,38},5).legend({"Source slots","Search comparisons"},{{37,99,235},{220,38,38}}).title("Actual work in one scored batch, with separate units").xlab("Vertices").ylab("log2 positive selected operation count").y_limits(0,17).size(1100,570).save_svg("build/gn_work.svg");
+}
+```
+// result_begin: markdown
+| clique size | vertices | edges | bridge conventional score | scored batches | source slots | dependency contributions | actual edge-search comparisons |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 4 | 3 | 4 | 1 | 16 | 12 | 24 |
+| 3 | 6 | 7 | 9 | 1 | 36 | 30 | 90 |
+| 4 | 8 | 13 | 16 | 1 | 64 | 56 | 216 |
+| 6 | 12 | 31 | 36 | 1 | 144 | 132 | 660 |
+| 8 | 16 | 57 | 64 | 1 | 256 | 240 | 1408 |
+| 12 | 24 | 133 | 144 | 1 | 576 | 552 | 3912 |
+\image(figures/gn_work.svg)
+// result_end
+\caption(Counts describe only the Girvan–Newman call in each row. The separate betweenness query checks the bridge’s size-squared score. All plotted counts are positive; logarithms do not replace zeros with an invented floor.)
+\alttext(A generated two-clique family of4,6,8,12,16 and24 vertices shows n-squared initialized source slots and actual binary-search comparisons. Tables retain graph sizes, bridge scores, dependency counts and the one scored batch for every example.)
+
+> Floating path counts need a numeric boundary
+
+A double can represent every nonnegative integer only through 2^53. The native
+flag path_counts_integer_guaranteed becomes false once an actual count exceeds
+that range. False is conservative: a power of two above the threshold can still
+be exactly represented. The guard checks the integer bound before rounding:
+an exact count of 2^53+1 can round back to 2^53 and must still clear the guarantee.
+True concerns path counts only, not exact dependency
+fractions, tie rankings or an error certificate.
+
+Consecutive width-two complete-bipartite layers create exponentially many shortest
+paths. Sixty layers produce finite counts beyond the integer guarantee. With 1030
+layers, the original unchecked kernel generated nonfinite counts, dependencies and
+a maximum, then NaN comparisons deleted all edges. The updated core throws on a
+nonfinite update before propagation or deletion. It preserves the original finite
+double order and does not silently switch to exact arithmetic or long double.
+
+```{cpp, results="markdown", file="figures/gn_numeric.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto finite_graph=dm::algorithms::layered_graph(60,2);const auto finite=dm::algorithms::girvan_newman_run(finite_graph.vertex_count,finite_graph.edges,2);const auto large=dm::algorithms::layered_graph(1030,2);const auto original_edges=large.edges;bool rejected=false;
+ try{(void)dm::algorithms::girvan_newman_run(large.vertex_count,large.edges,2);}catch(const std::overflow_error&){rejected=true;}
+ std::print("| layers | vertices | edges | outcome |\n| ---: | ---: | ---: | --- |\n| 60 | {} | {} | finite result, {} components |\n| 1030 | {} | {} | nonfinite update rejected: {} |\n",finite_graph.vertex_count,finite_graph.edges.size(),finite.groups.size(),large.vertex_count,large.edges.size(),rejected);
+ std::print("\nLargest actual finite path count {:.12e}; integer-count guarantee {}; caller edges unchanged {}. No large trace is requested.\n",finite.max_paths,finite.path_counts_integer_guaranteed,large.edges==original_edges);
+ dm::graphics::Diagram d(64,1100);dm::graphics::DiagramNodeStyle box;box.width=4.9;box.height=2;box.font_size=22;
+ d.node("finite",{0,0},"60 width-two layers\n120 vertices / 236 edges",box).node("flag",{7,0},std::format("Finite path counts\ninteger guarantee: {}",finite.path_counts_integer_guaranteed),box)
+ .node("large",{0,-3.4},"1030 width-two layers\n2060 vertices / 4116 edges",box).node("error",{7,-3.4},std::format("Nonfinite update rejected\nno result returned: {}",rejected),box)
+ .edge("finite","flag","run").edge("large","error","run").text({3.5,2.3},"Finite arithmetic and exact-integer guarantees are different",24).save_svg("build/gn_numeric.svg");
+ if(finite.path_counts_integer_guaranteed||!rejected||large.edges!=original_edges)throw std::runtime_error("numeric guard");
+}
+```
+// result_begin: markdown
+| layers | vertices | edges | outcome |
+| ---: | ---: | ---: | --- |
+| 60 | 120 | 236 | finite result, 2 components |
+| 1030 | 2060 | 4116 | nonfinite update rejected: true |
+
+Largest actual finite path count 2.882303761517e+17; integer-count guarantee false; caller edges unchanged true. No large trace is requested.
+\image(figures/gn_numeric.svg)
+// result_end
+\caption(The first case reports actual maximum path count and its conservative guarantee flag. The second checks the new exception without retaining a huge history. Frozen development evidence records the old NaN/delete-all behaviour separately.)
+\alttext(Two native diagram rows distinguish a finite60-layer result with a false integer-count guarantee from the1030-layer overflow exception. Printed counts retain120/236 and2060/4116 vertices/edges and unchanged caller input.)
+
+> Complete online records and whole generated graphs have distinct limits
+
+Primitive traces count fixed-schema canonical edges, round/component metadata,
+source initializations, actual BFS/path/dependency operations, score rows and
+removal decisions. The positive quota is checked before each whole-record append;
+its default is one million, and zero disables only that optional quota. Earlier
+local work may occur before a later append rejects. No partial trace returns,
+no numerical replay reconstructs it, and no caller input is mutated or truncated.
+
+Input vectors, root/work metadata, final ordinary output, working predecessor/BFS
+arrays and queues, and allocator storage are excluded. Complete records are not
+numeric entries or bytes; this is not a peak RAM limit. Ordinary/run APIs have no
+trace quota. Even empty early-stop calls retain their actual metadata records.
+Graph generators separately admit whole vertex counts before allocation; that
+quota has different units from history records. Numeric and container guards remain
+when optional quotas are zero.
+
+All endpoints are validated before target and history checks. Counts must fit the
+legacy int distance range; target is positive and valid for the vertex count.
+Modularity requires a complete disjoint partition, including isolated vertices.
+The GML reader separately validates original ids, endpoints, syntax and bounded
+source/node/edge ingress; the verified dataset accessor does not invent missing data.
+
+```{cpp, results="markdown", file="figures/gn_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
+#include <datamunge/datasets/network_data.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::girvan_newman_trace(2,{{0,1}},2,33);bool rejected=false,empty_rejected=false,whole_rejected=false,invalid=false,target=false;
+ try{(void)dm::algorithms::girvan_newman_trace(2,{{0,1}},2,32);}catch(const std::length_error&){rejected=true;}
+ const auto empty=dm::algorithms::girvan_newman_trace(0,{},1,4);try{(void)dm::algorithms::girvan_newman_trace(0,{},1,3);}catch(const std::length_error&){empty_rejected=true;}
+ try{(void)dm::algorithms::clique_bridge_graph(3,3,1,5);}catch(const std::length_error&){whole_rejected=true;}
+ try{(void)dm::algorithms::girvan_newman_trace(2,{{0,1},{0,99}},1,1);}catch(const std::invalid_argument&){invalid=true;}
+ try{(void)dm::algorithms::girvan_newman_trace(0,{},2,1);}catch(const std::invalid_argument&){target=true;}
+ auto copy=t;copy.events[0].count=999;copy.run.groups[0][0]=999;const bool owned=t.events[0].count!=999&&t.run.groups[0][0]!=999;
+ const auto graph=dm::algorithms::clique_bridge_graph(3,3,1,6);
+ std::print("| admitted resource | complete count | rejected cap | rejection observed |\n| --- | ---: | ---: | --- |\n| Two-vertex actual trace | {} | 32 | {} |\n| Empty early-stop metadata | {} | 3 | {} |\n| Whole generated vertices | {} | 5 | {} |\n",t.events.size(),rejected,empty.events.size(),empty_rejected,graph.vertex_count,whole_rejected);
+ std::print("\nIndependent owned copies {}; invalid final endpoint before history quota {}; empty invalid target before quota {}; zero optional history quota retains {} records.\n",owned,invalid,target,dm::algorithms::girvan_newman_trace(2,{{0,1}},2,0).events.size());
+ auto a=dm::graphics::RPlot::barplot({double(t.events.size()),32.},{"Captured","Rejected cap"});a.title("Online primitive history").xlab("").ylab("Complete records, not bytes").y_limits(0,40);
+ auto g=dm::graphics::RPlot::barplot({double(graph.vertex_count),5.},{"Admitted","Rejected cap"});g.title("Whole graph generation").xlab("").ylab("Vertices").y_limits(0,8);
+ dm::graphics::RLayout::create(1,2).add(a).add(g).size(1100,500).title("Primitive-record quotas and generated-vertex quotas have different units").fit_panels().save_svg("build/gn_controls.svg");
+ if(!rejected||!empty_rejected||!whole_rejected||!invalid||!target||!owned)throw std::runtime_error("admission and ownership");
+}
+```
+// result_begin: markdown
+| admitted resource | complete count | rejected cap | rejection observed |
+| --- | ---: | ---: | --- |
+| Two-vertex actual trace | 33 | 32 | true |
+| Empty early-stop metadata | 4 | 3 | true |
+| Whole generated vertices | 6 | 5 | true |
+
+Independent owned copies true; invalid final endpoint before history quota true; empty invalid target before quota true; zero optional history quota retains 33 records.
+\image(figures/gn_controls.svg)
+// result_end
+\caption(The two-vertex graph needs33 complete actual records, while the empty early stop needs4 metadata records. The six-vertex generated graph uses a separate whole-vertex bound. Rejection returns no partial result and copies own their data.)
+\alttext(Two bar charts compare33 captured history records with rejected cap32 and six admitted generated vertices with rejected cap5. A table also retains empty metadata4 versus rejected cap3 and prints ownership, invalid-input and optional-quota controls.)
+
+Bridge and diamond calculations explain the shortest-path fractions. The cycle
+states the batch policy’s target overshoot, and the verified karate graph shows a
+complete trajectory with original-edge modularity. None of these partitions is
+a universal or statistical certificate of community truth. Native actual work,
+conservative numeric flags and complete-record controls make the implementation’s
+costs and finite-arithmetic limits visible alongside its useful results.

@@ -1,4 +1,5 @@
 #pragma once
+#include <datamunge/datasets/network_data.hpp>
 #include "datamunge/datasets/assets.hpp"
 
 /// @file datasets.hpp
@@ -13,7 +14,8 @@
 ///   ImageLoader (image_loader.hpp) and never held in memory whole. CsvReader (csv.hpp) does
 ///   the same for any CSV file too big to load.
 ///
-/// Every function returns a fresh DataFrame that the caller owns and may freely modify.
+/// Built-in dataset loaders return a fresh owned DataFrame. Synthetic generators
+/// document their result type; gaussian_blobs() returns owned numeric arrays.
 ///
 /// @code
 /// const auto iris = dm::datasets::iris();
@@ -24,6 +26,8 @@
 #include <datamunge/datasets/csv.hpp>
 #include <datamunge/datasets/download.hpp>
 #include <datamunge/datasets/generators.hpp>
+#include <datamunge/datasets/gaussian_blobs.hpp>
+#include <datamunge/datasets/translated_grid_2d.hpp>
 #include <datamunge/datasets/image_loader.hpp>
 #include <datamunge/dstruct/dataframe.hpp>
 
@@ -397,10 +401,11 @@ dstruct::DataFrame sudoku();
 ///        or "wine".
 ///
 /// The image datasets are not tables; open them with ImageLoader instead.
+/// The karate_club graph is not a DataFrame; use karate_club() for topology and original ids.
 ///
 /// @param name A dataset name as listed in catalog().
 /// @return A new DataFrame, as the dataset's own function returns it.
-/// @throws std::invalid_argument for an unknown name, or an image dataset's name.
+/// @throws std::invalid_argument for an unknown name, an image dataset's name or karate_club.
 /// @throws std::runtime_error if a downloaded dataset cannot be fetched.
 ///
 /// @par Example
@@ -414,8 +419,8 @@ dstruct::DataFrame load(const std::string& name);
 /// @brief A table describing every dataset available here, one row each, sorted by name.
 ///
 /// Columns: `name`; `rows` and `columns` (for image datasets: train + test images, and
-/// pixels per image); `storage` -- "built-in", "download" (fetched once, then loaded into
-/// memory) or "stream" (read in batches by ImageLoader); `size_mb`, the approximate download
+/// pixels per image; for graphs:edges and endpoint columns); `storage` -- "built-in", "download" (fetched once, then loaded into
+/// memory), "stream" (read in batches by ImageLoader), or "graph" (use karate_club()); `size_mb`, the approximate download
 /// size (0 for built-in data); and a one-line `description`. Building it needs no files.
 ///
 /// @return A new DataFrame owned by the caller.
@@ -424,7 +429,7 @@ dstruct::DataFrame load(const std::string& name);
 /// @code
 /// std::print("{}\n", dm::datasets::catalog());
 /// @endcode
-/// @see load(), ImageLoader
+/// @see load(), ImageLoader, karate_club()
 dstruct::DataFrame catalog();
 
 /// @brief An ImageBatch as a DataFrame: one row per image, columns `pixel_0`.. (each image's

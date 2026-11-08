@@ -1,0 +1,385 @@
+//? Title: FP-growth: actual prefix trees and weighted conditional patterns
+//? Subtitle: Preserve the original groceries, inspect Titanic baskets and count the work behind compact trees
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+FP-growth aggregates shared transaction prefixes and extends frequent patterns
+through weighted conditional databases. A four-basket example makes every node
+and count checkable. Owned native traces then replace the original grocery
+report's hand-drawn schematic with its actual tree and conditional paths.
+On Titanic passenger attributes, the three native miners agree at a positive
+threshold. Dense and disjoint controls show why a small initial tree can still
+have exponentially many answers. Actual work and online history admission keep
+compression, output size and memory limits distinct.
+)
+
+\toc
+
+> Four baskets, three frequent sets
+
+Take baskets {bread,milk}, {bread,milk}, {bread} and {milk}, with minimum count two.
+Each singleton occurs in three rows; their pair occurs in two. Baskets are sets,
+so repeated IDs inside one row count once, while repeated rows remain separate
+observations. Empty rows also retain their identities. The native miner sorts
+frequent items by support descending, breaking ties by ascending numeric ID.
+Bread0 therefore precedes milk1 in this example.
+
+The first two baskets share the path bread→milk; the third increments bread;
+the last creates a separate milk node at the root. The following diagram uses
+the actual created nodes, counts and parent indices. Its coordinates come from
+the reusable native rooted-tree drawing method, rather than a hand-coded layout.
+
+```{cpp, results="markdown", file="figures/fp_growth_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/fp_growth.hpp>
+#include <datamunge/algorithms/eclat.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <numeric>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<std::size_t>> rows{{0,1},{0,1},{0},{1}};const std::vector<std::string> names{"bread","milk"};const auto t=dm::algorithms::fp_growth_trace(rows,2,38);
+  std::print("| frequent set | support |\n| --- | ---: |\n");for(const auto&f:t.itemsets)std::print("| {} | {} |\n",dm::algorithms::itemset_label(f.items,names),f.support);
+  std::print("\n| header item | actual node indices | summed support |\n| --- | --- | ---: |\n");for(const auto&h:t.trees[0].header){std::size_t total=0;for(auto id:h.nodes)total+=t.trees[0].nodes[id].count;std::print("| {} | {} | {} |\n",names[h.item],h.nodes,total);}
+  const auto&pair=t.steps.at(1);std::print("\nMilk step: actual pattern {}; conditional path {} with weight {}; child tree {}; pair emitted as {} with support {}.\n",pair.pattern,pair.base.at(0).items,pair.base[0].weight,pair.child,t.steps.at(2).pattern,t.steps[2].support);
+  std::vector<std::size_t> parents;std::vector<std::string> labels;for(std::size_t i=0;i<t.trees[0].nodes.size();++i){const auto&n=t.trees[0].nodes[i];parents.push_back(n.parent);labels.push_back(i?std::format("n{} {}\ncount{}",i,names[n.item],n.count):"n0 root");}
+  dm::graphics::Diagram::rooted_tree(parents,labels,"Actual tiny FP-tree; minimum count2").save_svg("build/fp_growth_tiny.svg");
+  if(t.itemsets.size()!=3||t.captured_entries!=38||pair.base[0].weight!=2)throw std::runtime_error("tiny weighted prefix control");
+}
+```
+// result_begin: markdown
+| frequent set | support |
+| --- | ---: |
+| {bread} | 3 |
+| {milk} | 3 |
+| {bread, milk} | 2 |
+
+| header item | actual node indices | summed support |
+| --- | --- | ---: |
+| bread | [1] | 3 |
+| milk | [2, 3] | 3 |
+
+Milk step: actual pattern [1]; conditional path [0] with weight 2; child tree 1; pair emitted as [1, 0] with support 2.
+\image(figures/fp_growth_tiny.svg)
+// result_end
+\caption(The shared bread→milk path counts two baskets, while a separate root milk node counts one. Milk’s two header nodes sum to support three; only the shared node contributes the conditional bread path of weight two.)
+\alttext(A native rooted tree has root n0, bread n1 with count three, milk n2 below bread with count two and a separate root milk n3 with count one.)
+
+> Why target-node counts give conditional supports
+
+For a target item x, the header lists every tree node labelled x. Those nodes
+partition its weighted occurrences by their shared prefix, so summing their counts
+gives support(x). For each such node, walk toward the root and keep its ancestors,
+excluding x and the root. Weight that entire path by the target node's count.
+An ancestor can have a larger count because other baskets stop early or branch
+elsewhere; using its count would overstate co-occurrence with x.
+
+The tiny milk node under bread has count two even though bread has count three.
+Its conditional base therefore contains bread with weight two. The separate root
+milk node has no ancestors and contributes no nonempty conditional path. Mining
+the base emits the pair with support two. Native paths are stored nearest ancestor
+first; each child builder orders them again by its own weighted frequencies.
+
+More generally, for a current suffix P and a nonempty extension set X drawn from its
+retained ancestors, the conditional occurrence accounting gives
+
+$$
+\operatorname{support}_{D}(P\cup X)
+=\sum_{\substack{\text{conditional paths }B\\X\subseteq B}}\operatorname{weight}(B).
+$$
+\alttext(The support of a suffix extended by an ancestor itemset equals the sum of target-node weights of conditional paths containing that extension.)
+
+Filtering any conditional item whose weighted support is below the threshold
+cannot remove a frequent extension: every superset has no greater support.
+A fixed item order within each tree assigns patterns to suffix branches, avoiding duplicates;
+a result is finally sorted into ascending IDs and then cardinality/lexicographic
+order. The actual emission sequence can differ from this final presentation:
+the tiny trace emits {0}, then {1}, then {1,0}, while the returned pair is {0,1}.
+
+Han, Pei and Yin's
+[Mining Frequent Patterns without Candidate Generation](https://sigmodrecord.org/2000/06/07/mining-frequent-patterns-without-candidate-generation/),
+SIGMOD2000,1–12,
+[doi:10.1145/342009.335372](https://doi.org/10.1145/342009.335372), develops the
+FP-tree, target-weighted conditional bases and pattern-growth argument.
+This implementation uses owned vectors of header node IDs and explicit DFS frames.
+It rebuilds conditional trees directly and omits the paper's single-path shortcut.
+Avoiding Apriori's candidate join does not mean that counting, filtering or
+combinatorial output disappears.
+
+> Preserve the original eight grocery baskets
+
+The native fixture retains the original five item names and all eight baskets.
+At minimum count two it returns the same eleven supports as before. Here we
+execute the comparison with both Apriori and Eclat, rather than inferring agreement.
+All five singleton items survive this threshold; twenty-one retained incidences
+share ten nonroot initial-tree nodes. Root count zero is an internal placeholder,
+so the drawing labels the root without presenting it as a basket count.
+
+The old schematic put milk at a root of count five. The actual tie rule puts
+bread0 before milk1: bread is a root child of count five, its milk child counts
+four, and another root milk node counts one. The diagram below comes directly
+from those native records.
+
+```{cpp, results="markdown", file="figures/fp_growth_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/fp_growth.hpp>
+#include <datamunge/algorithms/eclat.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <numeric>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto rows=dm::algorithms::fp_growth_example_transactions();const auto names=dm::algorithms::fp_growth_example_labels();const auto t=dm::algorithms::fp_growth_trace(rows,2);const auto a=dm::algorithms::apriori_frequent_itemsets(rows,2),e=dm::algorithms::eclat_frequent_itemsets(rows,2);
+  const auto equal=[](const auto&x,const auto&y){return x.size()==y.size()&&std::equal(x.begin(),x.end(),y.begin(),[](const auto&l,const auto&r){return l.items==r.items&&l.support==r.support;});};
+  const bool apriori=equal(t.itemsets,a),eclat=equal(t.itemsets,e);
+  std::print("Original groceries: {} baskets; {} unique incidences; {} initial nonroot nodes; {} frequent sets. Apriori agrees {}; Eclat agrees {}.\n",t.work.transactions,t.work.incidences,t.trees[0].nodes.size()-1,t.itemsets.size(),apriori,eclat);
+  std::print("| frequent grocery itemset | support |\n| --- | ---: |\n");for(const auto&f:t.itemsets)std::print("| {} | {} |\n",dm::algorithms::itemset_label(f.items,names),f.support);
+  const auto diaper=std::find_if(t.steps.begin(),t.steps.end(),[](const auto&s){return s.tree==0&&s.item==4;});if(diaper==t.steps.end())throw std::runtime_error("missing original suffix");
+  std::print("\n| actual diapers ancestor path, nearest first | item names in that order | weight |\n| --- | --- | ---: |\n");for(const auto&path:diaper->base)std::print("| {} | {} | {} |\n",path.items,dm::algorithms::itemset_label(path.items,names),path.weight);
+  const auto&child=t.trees.at(diaper->child);std::print("\nDiapers conditional tree: retained item IDs {}; beer count {}; all actual builds {}; retained history entries {}.\n",child.order,child.nodes.at(1).count,t.work.trees_built,t.captured_entries);
+  std::vector<std::size_t>parents;std::vector<std::string>labels;for(std::size_t i=0;i<t.trees[0].nodes.size();++i){const auto&n=t.trees[0].nodes[i];parents.push_back(n.parent);labels.push_back(i?std::format("n{} {}\ncount{}",i,names[n.item],n.count):"n0 root");}
+  dm::graphics::Diagram::rooted_tree(parents,labels,"Original actual tree; support descending, ID ties ascending").save_svg("build/fp_growth_original.svg");
+  if(t.itemsets.size()!=11||!apriori||!eclat||child.order!=std::vector<std::size_t>{3})throw std::runtime_error("original canonical supports");
+}
+```
+// result_begin: markdown
+Original groceries: 8 baskets; 21 unique incidences; 10 initial nonroot nodes; 11 frequent sets. Apriori agrees true; Eclat agrees true.
+| frequent grocery itemset | support |
+| --- | ---: |
+| {bread} | 5 |
+| {milk} | 5 |
+| {butter} | 4 |
+| {beer} | 4 |
+| {diapers} | 3 |
+| {bread, milk} | 4 |
+| {bread, butter} | 3 |
+| {bread, beer} | 2 |
+| {milk, butter} | 4 |
+| {beer, diapers} | 3 |
+| {bread, milk, butter} | 3 |
+
+| actual diapers ancestor path, nearest first | item names in that order | weight |
+| --- | --- | ---: |
+| [3] | {beer} | 2 |
+| [3, 0] | {beer, bread} | 1 |
+
+Diapers conditional tree: retained item IDs [3]; beer count 3; all actual builds 6; retained history entries 150.
+\image(figures/fp_growth_original.svg)
+// result_end
+\caption(The actual original tree has ten nonroot nodes. Diapers’ conditional base contains beer with weight two and beer,bread with weight one; beer survives at three, while conditional bread count one is pruned.)
+\alttext(A native rooted tree draws every original grocery prefix with its actual node index and count: bread five, root milk one and root beer two, with their shared descendant paths.)
+
+Beer accompanies diapers in all three relevant baskets, but that is not the
+entire conditional base: bread also appears in one of its weighted paths. Its
+conditional support one falls below two, leaving only beer at count three.
+The base must preserve the target-specific weights even when prefixes are shared.
+
+> Passenger baskets from the canonical Titanic table
+
+Use all891 rows of the built-in Titanic table, selecting Pclass, Sex and Survived.
+The native encoder creates one column=value item for each non-null selected cell;
+repeated passengers with the same selected attributes remain separate rows.
+The encoded rows contain2,673 unique incidences over seven observed items.
+At minimum count45, all seven singletons survive and the three miners agree on
+32 sets: seven singletons, sixteen pairs and nine triples.
+
+The initial FP-tree uses23 nonroot nodes; all conditional builds together create58.
+Those are structural counts, not byte savings or timing results. Attribute
+combinations describe this table; support alone does not establish causation or a
+predictive rule. The trace and figures are computed from the canonical dataset,
+with no separately supplied data file.
+
+```{cpp, results="markdown", file="figures/fp_growth_titanic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/fp_growth.hpp>
+#include <datamunge/algorithms/eclat.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <numeric>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto encoded=dm::algorithms::encode_transactions(dm::datasets::titanic(),{"Pclass","Sex","Survived"});const auto t=dm::algorithms::fp_growth_trace(encoded.transactions,45);const auto a=dm::algorithms::apriori_frequent_itemsets(encoded.transactions,45),e=dm::algorithms::eclat_frequent_itemsets(encoded.transactions,45);
+  const auto equal=[](const auto&x,const auto&y){return x.size()==y.size()&&std::equal(x.begin(),x.end(),y.begin(),[](const auto&l,const auto&r){return l.items==r.items&&l.support==r.support;});};const bool apriori=equal(t.itemsets,a),eclat=equal(t.itemsets,e);
+  std::print("Titanic: {} rows; {} incidences; {} observed items; minimum count45; {} frequent sets. Apriori agrees {}; Eclat agrees {}.\n",t.work.transactions,t.work.incidences,encoded.labels.size(),t.itemsets.size(),apriori,eclat);
+  std::print("Actual structure: {} initial nonroot nodes; {} builds; {} nonroot creations across builds; {} parent hops; {} peak frames; {} retained history entries.\n",t.trees[0].nodes.size()-1,t.work.trees_built,t.work.nodes_created,t.work.parent_hops,t.work.peak_frames,t.captured_entries);
+  std::print("| frequent triple of passenger attributes | support | share of891 |\n| --- | ---: | ---: |\n");std::vector<double> sizes(3),heights;std::vector<std::string>labels;
+  for(const auto&f:t.itemsets){sizes.at(f.items.size()-1)++;if(f.items.size()==1){labels.push_back(encoded.labels.at(f.items[0]));heights.push_back(double(f.support));}if(f.items.size()==3)std::print("| {} | {} | {:.4f} |\n",dm::algorithms::itemset_label(f.items,encoded.labels),f.support,double(f.support)/double(t.work.transactions));}
+  std::print("\nFrequent set counts by size: one {:.0f}; two {:.0f}; three {:.0f}.\n",sizes[0],sizes[1],sizes[2]);
+  auto singles=dm::graphics::RPlot::barplot(heights,labels,"",{37,99,235}).title("Retained passenger attributes").xlab("Observed column=value item").ylab("Absolute support").y_limits(0,700);
+  auto cardinality=dm::graphics::RPlot::barplot(sizes,{"1 item","2 items","3 items"},"",{22,163,74}).title("Frequent sets by cardinality").xlab("Itemset size").ylab("Number of frequent sets").y_limits(0,20);
+  dm::graphics::RLayout::create(2,1).add(singles).add(cardinality).size(1000,850).title("Titanic: three selected columns, minimum count45").fit_panels().save_svg("build/fp_growth_titanic.svg");
+  if(t.work.transactions!=891||t.work.incidences!=2673||t.itemsets.size()!=32||!apriori||!eclat)throw std::runtime_error("canonical passenger evidence");
+}
+```
+// result_begin: markdown
+Titanic: 891 rows; 2673 incidences; 7 observed items; minimum count45; 32 frequent sets. Apriori agrees true; Eclat agrees true.
+Actual structure: 23 initial nonroot nodes; 17 builds; 58 nonroot creations across builds; 43 parent hops; 3 peak frames; 3976 retained history entries.
+| frequent triple of passenger attributes | support | share of891 |
+| --- | ---: | ---: |
+| {Pclass=3, Sex=male, Survived=0} | 300 | 0.3367 |
+| {Pclass=3, Sex=male, Survived=1} | 47 | 0.0527 |
+| {Pclass=3, Survived=0, Sex=female} | 72 | 0.0808 |
+| {Pclass=3, Sex=female, Survived=1} | 72 | 0.0808 |
+| {Sex=male, Survived=0, Pclass=1} | 77 | 0.0864 |
+| {Sex=male, Survived=0, Pclass=2} | 91 | 0.1021 |
+| {Sex=male, Pclass=1, Survived=1} | 45 | 0.0505 |
+| {Pclass=1, Sex=female, Survived=1} | 91 | 0.1021 |
+| {Sex=female, Survived=1, Pclass=2} | 70 | 0.0786 |
+
+Frequent set counts by size: one 7; two 16; three 9.
+\image(figures/fp_growth_titanic.svg)
+// result_end
+\caption(All seven encoded attributes meet count45. The nine printed triples and the two plots come from the native FP output; the positive-threshold output agrees exactly with Apriori and Eclat.)
+\alttext(Two stacked native bar plots show seven Titanic attribute supports and the counts seven, sixteen and nine of frequent one-, two- and three-item sets.)
+
+> A compact initial tree can have exponentially many answers
+
+Repeat the same U-item basket R times and set the threshold to R. Every nonempty
+subset is frequent, so there are F=2^U−1 results despite only U nonroot initial
+nodes. Their item payload alone has U*2^(U−1) IDs, because each item belongs to
+half of all subsets. No miner returning every itemset can avoid that output size.
+
+For this direct conditional-tree implementation, the dense family also gives
+checkable work identities: aggregate nonroot node creations F, builds2^(U−1),
+parent hops F−U, peak active frames U and peak frame-resident node records
+U*(U+3)/2. The latter sum counts ancestor trees together with the current tree,
+including their roots; it excludes temporary child buffers, retained history and
+ordinary output. These are exact counts for this family, not general memory bounds.
+
+As a contrast, U disjoint one-item baskets at threshold one have the same U
+initial nonroot nodes but only U frequent sets, one build and no parent hops.
+The following table reads the executing kernel's counters; the plot's vertical
+axis explicitly shows log2 of the untransformed result counts.
+
+```{cpp, results="markdown", file="figures/fp_growth_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/fp_growth.hpp>
+#include <datamunge/algorithms/eclat.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <numeric>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::vector<double>x,dense_y,disjoint_y;
+  std::print("| observed items U | initial dense nodes | dense itemsets | disjoint itemsets | dense created nodes | dense builds | dense parent hops | peak frames | peak frame nodes | output item IDs |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t u=1;u<=10;++u){std::vector<std::vector<std::size_t>>dense(5,std::vector<std::size_t>(u)),disjoint(u);for(auto&row:dense)std::iota(row.begin(),row.end(),0);for(std::size_t i=0;i<u;++i)disjoint[i]={i};const auto t=dm::algorithms::fp_growth_trace(dense,5);const auto d=dm::algorithms::fp_growth_frequent_itemsets_work(disjoint,1);
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",u,t.trees[0].nodes.size()-1,t.itemsets.size(),d.itemsets.size(),t.work.nodes_created,t.work.trees_built,t.work.parent_hops,t.work.peak_frames,t.work.peak_live_nodes,t.work.emitted_items);
+    x.push_back(double(u));dense_y.push_back(std::log2(double(t.itemsets.size())));disjoint_y.push_back(std::log2(double(d.itemsets.size())));if(t.itemsets.size()!=(std::size_t(1)<<u)-1||d.itemsets.size()!=u)throw std::runtime_error("dense/disjoint pattern counts");}
+  auto plot=dm::graphics::RPlot::create();plot.lines(x,dense_y,"Repeated dense baskets",{220,38,38},2).points(x,dense_y,"",{220,38,38},4).lines(x,disjoint_y,"Disjoint singletons",{37,99,235},2).points(x,disjoint_y,"",{37,99,235},4).legend({"Repeated dense baskets","Disjoint singletons"},{{220,38,38},{37,99,235}}).title("Same initial nonroot node count U; different output sizes").xlab("Observed item count U").ylab("log2 of returned nonempty itemset count").size(1000,520).save_svg("build/fp_growth_work.svg");
+}
+```
+// result_begin: markdown
+| observed items U | initial dense nodes | dense itemsets | disjoint itemsets | dense created nodes | dense builds | dense parent hops | peak frames | peak frame nodes | output item IDs |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 1 | 1 | 1 | 1 | 0 | 1 | 2 | 1 |
+| 2 | 2 | 3 | 2 | 3 | 2 | 1 | 2 | 5 | 4 |
+| 3 | 3 | 7 | 3 | 7 | 4 | 4 | 3 | 9 | 12 |
+| 4 | 4 | 15 | 4 | 15 | 8 | 11 | 4 | 14 | 32 |
+| 5 | 5 | 31 | 5 | 31 | 16 | 26 | 5 | 20 | 80 |
+| 6 | 6 | 63 | 6 | 63 | 32 | 57 | 6 | 27 | 192 |
+| 7 | 7 | 127 | 7 | 127 | 64 | 120 | 7 | 35 | 448 |
+| 8 | 8 | 255 | 8 | 255 | 128 | 247 | 8 | 44 | 1024 |
+| 9 | 9 | 511 | 9 | 511 | 256 | 502 | 9 | 54 | 2304 |
+| 10 | 10 | 1023 | 10 | 1023 | 512 | 1013 | 10 | 65 | 5120 |
+\image(figures/fp_growth_work.svg)
+// result_end
+\caption(Repeated dense baskets share prefixes well but produce exponentially many sets. Disjoint baskets have the same initial nonroot node count and only linear output. The table also counts all conditional builds and active ancestor-tree nodes.)
+\alttext(A native plot compares log-base-two result counts for repeated dense baskets and disjoint singleton baskets with one through ten items; the dense curve reaches log2 of1023 while the disjoint curve reaches log2 of ten.)
+
+The initial tree has at most one nonroot node per retained normalized incidence,
+since inserting an item can create at most one node. This does not bound all
+simultaneously active ancestor trees, output records or captured history by the
+size of one initial tree. Prefix sharing stores the frequent-item projection with
+counts; it is not a lossless copy of raw transaction order, duplicate IDs or
+discarded items.
+
+Normalization sorts each raw basket. Each build counts weighted item visits,
+sorts retained items by support, filters every weighted row, sorts its retained
+IDs by rank and inserts them. Hash-map access has expected rather than universal
+constant cost. Repeating those operations over conditional databases and copying
+all emitted IDs means that an unsorted build is not simply O(N*width), and the
+entire mining process is not completed by two scans of the original database.
+Two logical passes describe each tree build, after normalization, rather than
+every conditional construction combined. The native counters count visits and
+records; they exclude sort comparisons, hash internals, allocation and capture copies.
+
+> Online history admission, ownership and threshold zero
+
+FP-growth cannot cheaply know all future conditional trees in advance. Its trace
+therefore admits retained history online. The raw base N+raw item occurrences is
+checked before copying or normalization. Later records are admitted before their
+history copies; a working tree or conditional base may have to be formed first
+to determine its size. Failure returns no partial trace.
+
+For the tiny fixture, raw input costs ten entries, tree snapshots nineteen and
+step records with their paths nine: total38. This cap covers retained history,
+not ordinary canonical output, active working trees, normalized input, conditional
+buffers or allocator bytes. The units are records and array entries, not bytes or
+peak RAM. The default is one million entries; zero disables only the optional cap,
+while checked arithmetic and container bounds remain.
+
+Threshold zero preserves the historical FP API: only positive-support co-occurring
+sets are returned. Apriori and Eclat instead include all nonempty observed-universe
+subsets meeting zero, including unsupported combinations. The disjoint two-item
+control below therefore gives two FP sets and three from each other miner.
+Their complete-output equivalence claim requires a positive threshold.
+
+```{cpp, results="markdown", file="figures/fp_growth_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/fp_growth.hpp>
+#include <datamunge/algorithms/eclat.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <numeric>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::vector<std::vector<std::size_t>> rows{{0,1},{0,1},{0},{1}};const auto original=rows;const auto bound=std::size_t(38);bool rejected=false;try{dm::algorithms::fp_growth_trace(rows,2,bound-1);}catch(const std::length_error&){rejected=true;}const auto t=dm::algorithms::fp_growth_trace(rows,2,bound);rows[0].clear();const bool owned=t.transactions==original&&t.steps[1].base[0].weight==2;
+  std::print("Online tiny history: raw base {}; captured {}; one below rejected {}; trees {}; steps {}; owned after caller edits {}.\n",dm::algorithms::fp_growth_trace_base_entries(original),t.captured_entries,rejected,t.trees.size(),t.steps.size(),owned);
+  const auto big=std::numeric_limits<std::size_t>::max();const auto wide=dm::algorithms::fp_growth_trace({{big,big},{},{0,big},{0}},0);const bool real_item=std::any_of(wide.trees[0].nodes.begin()+1,wide.trees[0].nodes.end(),[&](const auto&n){return n.item==big;});
+  std::print("Full-width item control: real SIZE_MAX node {}; frequent sets {}; empty trace entries {}; above-row-count result size {}.\n",real_item,wide.itemsets.size(),dm::algorithms::fp_growth_trace({},0,2).captured_entries,dm::algorithms::fp_growth_frequent_itemsets(original,big).size());
+  const std::vector<std::vector<std::size_t>> disjoint{{0},{1}};const std::vector<std::vector<dm::algorithms::FrequentItemset>> results{dm::algorithms::fp_growth_frequent_itemsets(disjoint,0),dm::algorithms::apriori_frequent_itemsets(disjoint,0),dm::algorithms::eclat_frequent_itemsets(disjoint,0)};const std::vector<std::string> names{"FP-growth","Apriori","Eclat"};std::vector<double>counts;
+  std::print("| miner at threshold0 | returned nonempty sets | returned zero-support sets |\n| --- | ---: | ---: |\n");for(std::size_t i=0;i<results.size();++i){const auto zero=std::count_if(results[i].begin(),results[i].end(),[](const auto&f){return f.support==0;});std::print("| {} | {} | {} |\n",names[i],results[i].size(),zero);counts.push_back(double(results[i].size()));}
+  auto plot=dm::graphics::RPlot::barplot(counts,names);plot.title("Historical threshold0 behavior on two disjoint items").xlab("Native miner").ylab("Returned nonempty itemsets").y_limits(0,3.5).size(1000,500).save_svg("build/fp_growth_controls.svg");
+  if(!rejected||!owned||!real_item||results[0].size()!=2||results[1].size()!=3||results[2].size()!=3)throw std::runtime_error("owned history and zero support controls");
+}
+```
+// result_begin: markdown
+Online tiny history: raw base 10; captured 38; one below rejected true; trees 2; steps 3; owned after caller edits true.
+Full-width item control: real SIZE_MAX node true; frequent sets 3; empty trace entries 2; above-row-count result size 0.
+| miner at threshold0 | returned nonempty sets | returned zero-support sets |
+| --- | ---: | ---: |
+| FP-growth | 2 | 0 |
+| Apriori | 3 | 1 |
+| Eclat | 3 | 1 |
+\image(figures/fp_growth_controls.svg)
+// result_end
+\caption(The tiny history fits exactly38 retained entries and rejects37. Full-width item IDs remain distinct from the dummy root by node index. The bars expose the preserved zero-threshold API difference, rather than claiming universal three-miner equivalence.)
+\alttext(A native bar chart shows two returned itemsets for FP-growth and three each for Apriori and Eclat on the disjoint baskets {0} and {1} at threshold zero.)
+
+The trace captures these states in the same executing kernel, with no replay.
+The trace owns raw rows, nodes, headers, emitted sequences and conditional paths.
+Caller edits cannot change those records. The ordinary result and work-only API
+use the same executing kernel without retaining this history or imposing its
+optional quota. Captured raw inputs preserve duplicates; mining still counts
+each item once per row. Opaque SIZE_MAX item IDs remain valid because only node
+index zero denotes the root.
+
+Every figure is regenerated by the complete native C++ program beside it. The
+canonical passenger table is the only real dataset used; the tiny, grocery,
+dense and disjoint controls have explicitly constructed inputs.

@@ -4,23 +4,12 @@
 /// @brief Binary GCD, Tonelli-Shanks square roots, Karatsuba multiplication, and Shanks's
 ///        baby-step giant-step discrete logarithm with its instrumented variant.
 
+#include <datamunge/algorithms/binary_gcd.hpp>
 #include <cstdint>
 #include <string>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// @brief The *binary GCD algorithm* (Stein, 1967) for the greatest common divisor of @p a and
-///        @p b. Unlike the Euclidean algorithm it uses no division or modulo -- only subtraction and
-///        bit shifts (both cheap in hardware) -- via three rules: @c gcd(a,b) removes common factors
-///        of two, halves any even operand, and replaces the larger of two odds by their difference
-///        (which is even). It runs in @c O(log(max(a,b))) arithmetic operations. By convention
-///        @c gcd(0,0)=0 and @c gcd(x,0)=x.
-///
-/// @param a the first operand.
-/// @param b the second operand.
-/// @return the greatest common divisor of @p a and @p b.
-std::uint64_t binary_gcd(std::uint64_t a, std::uint64_t b);
 
 /// @brief The result of a modular square root: whether a root @ref exists, and if so one @ref root
 ///        @c r (the smaller of the two, @c r <= p-r) with @c r*r ≡ n (mod p).

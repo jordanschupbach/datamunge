@@ -140,19 +140,6 @@ std::vector<int> karatsuba(const std::vector<int>& x, const std::vector<int>& y)
 
 } // namespace
 
-std::uint64_t binary_gcd(std::uint64_t a, std::uint64_t b) {
-    if (a == 0) return b;
-    if (b == 0) return a;
-    const int shift = std::countr_zero(a | b); // common factors of two
-    a >>= std::countr_zero(a);
-    do {
-        b >>= std::countr_zero(b);
-        if (a > b) std::swap(a, b);
-        b -= a; // both odd here, so the difference is even
-    } while (b != 0);
-    return a << shift;
-}
-
 ModSqrt tonelli_shanks(std::uint64_t n, std::uint64_t p) {
     n %= p;
     if (n == 0) return ModSqrt{true, 0};

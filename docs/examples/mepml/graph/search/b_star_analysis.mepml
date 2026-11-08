@@ -1,0 +1,219 @@
+//? Title: Multi-Goal Best-First Search
+//? Subtitle: Lower bounds, queue removals and reopening with datamunge's b_star_search
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a directed graph with nonnegative edge costs, find the cheapest route from
+one start to any vertex in a goal set. The first goal discovered need not be the
+cheapest. We derive the lower-bound stopping rule, inspect a four-vertex example
+by hand, and show why inconsistent estimates require reopening vertices.
+The historical `b_star_search` API implements multi-goal A*: its result is optimal
+when the supplied estimate never exceeds the distance to the nearest goal and
+is zero at every goal. An overestimating example demonstrates the limit.
+)
+
+\toc
+
+> The method
+
+Let \(T\) be a nonempty goal set. For each vertex retain the best discovered
+cost \(g(v)\) from the start and a parent pointer. Queue vertices by
+
+$$
+f(v)=g(v)+h(v),\qquad h(v)\le d(v,T)=\min_{t\in T}d(v,t),\qquad h(t)=0\quad(t\in T).
+$$
+\alttext(The queue key is discovered path cost plus a lower bound to the nearest goal. Every goal has estimate zero.)
+
+Remove the smallest key, ignoring obsolete entries. If the vertex is a goal,
+return its parent path. Otherwise relax every outgoing edge: a strictly smaller
+cost replaces the stored label and queues another entry, even if this vertex
+was expanded earlier. Equal priorities prefer the smaller vertex identifier;
+equal-cost alternatives retain their original parent.
+
+For an optimal path of cost \(C^*\), before termination there is a frontier
+vertex reached with its optimal prefix cost. Its key is at most \(C^*\).
+A removed goal has key equal to its route cost, so a goal costing more than
+\(C^*\) cannot precede that frontier. This proves the stopping rule in exact
+arithmetic. Discovery alone gives no such comparison.
+
+The API name is retained for compatibility. Its queue rule is the A* method of
+Hart, Nilsson and Raphael (1968), extended to a goal set. Berliner's 1979 paper,
+*The B* tree search algorithm: A best-first proof procedure*, instead separates
+optimistic and pessimistic game-tree bounds. This report studies the actual
+datamunge graph API.
+
+> Simple example: two possible destinations
+
+Vertex 0 has a route to goal 2 costing \(1+5=6\), and a direct route to goal 3
+costing 2. The lower bounds \((2,5,0,0)\) are exact. After removing 0, the queue
+contains vertex 1 with key 6 and goal 3 with key 2; removing 3 proves the answer.
+
+```{cpp, file="figures/b_star_goals.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  dm::graphics::DiagramNodeStyle style;
+  style.width = 2.4;
+  diagram.node("s", {0,0}, "0: start\nh = 2", style)
+         .node("a", {5,2}, "1\nh = 5", style)
+         .node("b", {10,2}, "2: goal\ncost = 6", style)
+         .node("c", {5,-2}, "3: goal\ncost = 2", style)
+         .edge("s","a","1").edge("a","b","5").edge("s","c","2")
+         .text({5,-4}, "Choose the cheapest removed goal.");
+  diagram.save_svg("build/b_star_goals.svg");
+}
+```
+// result_begin:
+// \image(figures/b_star_goals.svg)
+// result_end
+\caption(A hand-checkable directed graph. Both destinations are allowed, and only the route through vertex 3 costs 2.)
+\alttext(Start 0 points to vertex 1 with weight 1 and goal 3 with weight 2. Vertex 1 points to goal 2 with weight 5.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto trace = dm::algorithms::b_star_search_trace(
+      4, {{0,1,1},{1,2,5},{0,3,2}}, 0, {2,3}, {2,5,0,0});
+  std::print("| removed vertex | g | g+h | entries left |\n| ---: | ---: | ---: | ---: |\n");
+  for (const auto& step : trace.expansions)
+    std::print("| {} | {} | {} | {} |\n", step.vertex, step.path_cost, step.priority, step.queued);
+  std::print("\nPath: {}; cost: {}; expanded: {}.\n",
+             trace.result.path, trace.result.cost, trace.result.expanded);
+}
+```
+// result_begin: markdown
+| removed vertex | g | g+h | entries left |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 2 | 0 |
+| 3 | 2 | 2 | 1 |
+
+Path: [0, 3]; cost: 2; expanded: 2.
+// result_end
+\caption(Actual non-stale queue removals. The expansion count includes the returned goal; queued entries may include obsolete labels.)
+
+> Reopening when the bound is inconsistent
+
+A bound is consistent when \(h(u)\le w(u,v)+h(v)\) on every edge. Consistency
+means queue keys cannot decrease along an improving route and each vertex needs
+at most one expansion. Admissibility alone still permits an estimate to fall
+sharply across an edge; reopening then preserves the optimal-path frontier used
+in the proof.
+
+Consider edges \(0\to1\) costing 3, \(0\to2\) costing 1,
+\(2\to1\) costing 1, and \(1\to3\) costing 3. Goal 4 is isolated.
+The bound \((0,0,4,0,0)\) is admissible but inconsistent on \(2\to1\):
+\(4>1+0\). Vertex 1 first expands with cost 3, then again with cost 2.
+Its improved route reaches goal 3 at cost \(1+1+3=5\).
+
+```{cpp, file="figures/b_star_reopen.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  dm::graphics::DiagramNodeStyle style;
+  style.width = 2.3;
+  diagram.node("s", {0,0}, "0: start", style)
+         .node("a", {6,2}, "1: reopen\ng: 3 then 2", style)
+         .node("b", {3,-2}, "2\nh = 4", style)
+         .node("t", {11,2}, "3: goal\ncost = 5", style)
+         .node("u", {11,-2}, "4: isolated\ngoal", style)
+         .edge("s","a","3").edge("s","b","1")
+         .edge("b","a","1").edge("a","t","3");
+  diagram.save_svg("build/b_star_reopen.svg");
+}
+```
+// result_begin:
+// \image(figures/b_star_reopen.svg)
+// result_end
+\caption(A later improvement to vertex 1 must propagate to goal 3. An unreachable extra goal does not prevent finding a reachable one.)
+\alttext(A direct edge to vertex 1 costs 3; reaching it through vertex 2 costs only 2. Vertex 1 then leads to goal 3 at additional cost 3.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto trace = dm::algorithms::b_star_search_trace(
+      5, {{0,1,3},{0,2,1},{2,1,1},{1,3,3}}, 0, {3,4}, {0,0,4,0,0});
+  std::print("| vertex | g | g+h |\n| ---: | ---: | ---: |\n");
+  for (const auto& step : trace.expansions)
+    std::print("| {} | {} | {} |\n", step.vertex, step.path_cost, step.priority);
+  std::print("\nPath: {}; cost: {}.\n", trace.result.path, trace.result.cost);
+}
+```
+// result_begin: markdown
+| vertex | g | g+h |
+| ---: | ---: | ---: |
+| 0 | 0 | 0 |
+| 1 | 3 | 3 |
+| 2 | 1 | 5 |
+| 1 | 2 | 2 |
+| 3 | 5 | 5 |
+
+Path: [0, 2, 1, 3]; cost: 5.
+// result_end
+\caption(Vertex 1 is counted twice. The key decreases after vertex 2, as an inconsistent estimate allows.)
+
+> Checking the theory and its limits
+
+Keeping the same graph, increase only \(h(2)\). The exact remaining cost there
+is 4. Values through 4 are admissible; sufficiently larger values delay vertex 2
+until after the cost-6 goal is removed. The library checks dimensions and finite
+values, but cannot establish admissibility without solving the path problem.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| h(2) | admissible | cost | expansions |\n| ---: | :--- | ---: | ---: |\n");
+  for (double h : {0.,1.,2.,3.,4.,5.,6.,10.}) {
+    const auto r = dm::algorithms::b_star_search(
+        5, {{0,1,3},{0,2,1},{2,1,1},{1,3,3}}, 0, {3,4}, {0,0,h,0,0});
+    std::print("| {} | {} | {} | {} |\n", h, h <= 4, r.cost, r.expanded);
+  }
+  const auto missing = dm::algorithms::b_star_search(2, {}, 0, {1}, {0,0});
+  const auto already = dm::algorithms::b_star_search(1, {}, 0, {0,0}, {0});
+  std::print("\nUnreachable: found={}, path={}. Start is a goal: path={}, cost={}.\n",
+             missing.found, missing.path, already.path, already.cost);
+}
+```
+// result_begin: markdown
+| h(2) | admissible | cost | expansions |
+| ---: | :--- | ---: | ---: |
+| 0 | true | 5 | 4 |
+| 1 | true | 5 | 4 |
+| 2 | true | 5 | 5 |
+| 3 | true | 5 | 5 |
+| 4 | true | 5 | 5 |
+| 5 | false | 5 | 5 |
+| 6 | false | 6 | 3 |
+| 10 | false | 6 | 3 |
+
+Unreachable: found=false, path=[]. Start is a goal: path=[0], cost=0.
+// result_end
+\caption(A controlled estimate sweep. An inadmissible estimate can still happen to succeed, so success at one value does not validate the bound.)
+
+With \(n\) vertices and \(m\) edges, a consistent estimate gives at most one
+non-stale removal per vertex and at most one successful relaxation per edge.
+The lazy binary heap therefore costs \(O((n+m)\log(n+m))\) time and
+\(O(n+m)\) storage. An inconsistent bound may produce exponentially many
+re-expansions and queued improvements. The returned count measures queue removals,
+including the goal, rather than distinct vertices or elapsed time.
+
+No observed dataset is needed: these small directed graphs isolate the stopping
+rule, disconnected goals, and reopening without introducing modelling assumptions.
+All costs use double precision. Nonfinite weights or estimates are rejected;
+overflowing accumulated costs or keys raise an error. Floating-point ties can
+still affect which equally good path is returned.
+
+> Conclusion
+
+The four-vertex graph returns the cheaper goal after two removals. The second
+graph demonstrates that admissible but inconsistent estimates can expand a vertex
+twice while retaining the cheaper answer. Overestimation removes the guarantee.
+Use zero bounds when a justified lower bound is unavailable; this is uniform-cost
+search and remains optimal for nonnegative costs.
+
+> References
+
+- Hart, P. E., Nilsson, N. J. and Raphael, B. (1968). *A Formal Basis for the Heuristic Determination of Minimum Cost Paths*. IEEE Transactions on Systems Science and Cybernetics, 4(2), 100–107. https://doi.org/10.1109/TSSC.1968.300136
+- Berliner, H. (1979). *The B* tree search algorithm: A best-first proof procedure*. Artificial Intelligence, 12(1), 23–40. https://doi.org/10.1016/0004-3702(79)90003-1

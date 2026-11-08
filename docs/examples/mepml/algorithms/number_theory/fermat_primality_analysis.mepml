@@ -1,0 +1,375 @@
+//? Title: Fermat Primality: Witnesses, Base Populations and Actual Rounds
+//? Subtitle: Exact modular powers, native liar censuses and the limits of a seeded probable-prime result
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Decide whether an unsigned integer can be ruled out as prime without first
+finding all of its factors. Fermat's little theorem supplies a cheap
+compositeness certificate: one failed modular congruence. Passing bases
+provide no converse certificate. We begin with four exact base tests for
+15, retain the original prime/composite/Carmichael examples and their five
+coprime-liar fractions, then inspect actual seeded rounds. Native APIs
+replace the report-local powering and census loops. The report distinguishes
+conditional coprime fractions, the sampler's full support and hypothetical
+independent draws, and checks full-width arithmetic and capture limits.
+)
+
+\toc
+
+> A failure proves compositeness; a pass does not prove primality
+
+For a prime p and 1≤a<p, multiplication by a permutes the nonzero residues.
+Multiplying all residues before and after the permutation and cancelling
+(p−1)! gives a^(p−1)=1 modulo p. Thus a^(n−1)≠1 modulo n proves n
+composite. A pass is only consistency with that necessary condition.
+For 15, base two gives 2^14 modulo 15 equal to four: a witness with gcd one.
+Base ten also fails, and its gcd five directly gives a factor. Bases four
+and eleven pass despite 15=3 times five being composite.
+
+The native single-base API computes the exact modular power through mod_pow
+and the actual gcd. The diagram and table use its returned records. The
+explicit-base range is [1,n); the seeded sampler later uses [2,n−2].
+
+```{cpp, results="markdown", file="figures/fermat_primality_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/miller_rabin.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| n | base a | actual gcd | a^(n-1) mod n | passes | conclusion |\n| ---: | ---: | ---: | ---: | :--- | :--- |\n");dm::graphics::Diagram g(56,1100);dm::graphics::DiagramNodeStyle box;box.width=3.8;box.height=1.6;box.font_size=24;int i=0;
+  for(std::uint64_t a:{2,4,10,11}){const auto r=dm::algorithms::fermat_base_test(15,a);std::print("| {} | {} | {} | {} | {} | {} |\n",r.n,r.base,r.common_divisor,r.residue,r.passes,r.passes?"inconclusive":"composite witness");const double y=-2.8*i++;box.fill={219,234,254};const auto id=std::to_string(a);g.node(id+"a",{0,y},std::format("n={}  a={}\ngcd={}",r.n,r.base,r.common_divisor),box);box.fill=r.passes?dm::graphics::RGB{254,243,199}:dm::graphics::RGB{254,226,226};g.node(id+"b",{6,y},std::format("residue={}\n{}",r.residue,r.passes?"passes":"fails"),box).edge(id+"a",id+"b","exact power");g.text({11.7,y},r.passes?"No primality proof":r.common_divisor>1?"Factor five found":"Composite; gcd is one",22);}
+  const auto c=dm::algorithms::fermat_base_census(15,1,15);std::print("\nFull 15 census: bases {}; coprime {}; passes {}; failing bases {}.\n",c.total,c.coprime,c.passes,c.total-c.passes);g.text({5.8,2.3},"One failed congruence is an exact compositeness certificate",25).save_svg("build/fermat_primality_tiny.svg");if(c.total!=14||c.coprime!=8||c.passes!=4)throw std::runtime_error("tiny census failed");
+}
+```
+// result_begin: markdown
+| n | base a | actual gcd | a^(n-1) mod n | passes | conclusion |
+| ---: | ---: | ---: | ---: | :--- | :--- |
+| 15 | 2 | 1 | 4 | false | composite witness |
+| 15 | 4 | 1 | 1 | true | inconclusive |
+| 15 | 10 | 5 | 10 | false | composite witness |
+| 15 | 11 | 1 | 1 | true | inconclusive |
+
+Full 15 census: bases 14; coprime 8; passes 4; failing bases 10.
+\image(figures/fermat_primality_tiny.svg)
+// result_end
+\caption(Four native base records distinguish an inconclusive pass, a coprime witness and a witness whose gcd exposes a factor. The complete interval census counts fourteen tested bases.)
+\alttext(A native four-row diagram shows bases two,four,ten,eleven for fifteen, their actual gcd and modular residues. Two and ten fail and prove compositeness; four and eleven pass inconclusively. Base ten also reveals factor five.)
+
+> Preserve the original five liar fractions, with explicit denominators
+
+A “liar” is a passing base for a known composite. For a prime, passing bases
+are expected, so the table uses the neutral label “passes”. The original
+report considered 2≤a<n and counted only coprime bases in its denominator.
+That interval excludes one but includes n−1. The new native census makes
+both interval endpoints explicit and returns integer counts first.
+
+For 45 the original fraction is 7/23; for 91 it is 35/71. The Carmichael
+numbers 561 and 1105 have conditional fraction one, as does prime 97.
+The plot deliberately conditions on coprimality and labels that choice.
+It does not depict the probability that the native sampler passes a round.
+No census or modular exponentiation is reimplemented in the report.
+
+```{cpp, results="markdown", file="figures/fermat_primality_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/miller_rabin.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| original n | default seeded result | actual rounds | stop |\n| ---: | :--- | ---: | :--- |\n");for(std::uint64_t n:{97,91,561}){const auto o=dm::algorithms::fermat_probable_prime_work(n);std::print("| {} | {} | {} | {} |\n",n,o.probable_prime,o.completed_rounds,dm::algorithms::fermat_primality_stop_name(o.stop));}
+  const std::vector<std::uint64_t>ns{97,45,91,561,1105};const std::vector<std::string>labels{"97 prime","45 composite","91 composite","561 Carmichael","1105 Carmichael"};std::vector<double>x,y;std::print("\n| original case | interval | total bases | coprime bases | passing bases | original conditional fraction |\n| :--- | :--- | ---: | ---: | ---: | ---: |\n");for(std::size_t i=0;i<ns.size();++i){const auto c=dm::algorithms::fermat_base_census(ns[i],2,ns[i]);const double f=double(c.passes)/c.coprime;std::print("| {} | [2,{}) | {} | {} | {} | {:.6g} |\n",labels[i],ns[i],c.total,c.coprime,c.passes,f);x.push_back(i);y.push_back(f);}
+  auto plot=dm::graphics::RPlot::create();plot.bars(x,y,"Conditional passes",{37,99,235}).x_tick_labels(labels).abline_h(1,{148,163,184},1).title("Original census: condition on coprimality in [2,n)").x_label("Known input classification").y_label("Passing bases / coprime bases").y_limits(0,1.15).size(1100,580).save_svg("build/fermat_primality_original.svg");if(y[1]!=7./23||y[2]!=35./71||y[3]!=1||y[4]!=1)throw std::runtime_error("original census checks failed");
+}
+```
+// result_begin: markdown
+| original n | default seeded result | actual rounds | stop |
+| ---: | :--- | ---: | :--- |
+| 97 | true | 20 | rounds passed |
+| 91 | false | 1 | witness |
+| 561 | false | 2 | witness |
+
+| original case | interval | total bases | coprime bases | passing bases | original conditional fraction |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| 97 prime | [2,97) | 95 | 95 | 95 | 1 |
+| 45 composite | [2,45) | 43 | 23 | 7 | 0.304348 |
+| 91 composite | [2,91) | 89 | 71 | 35 | 0.492958 |
+| 561 Carmichael | [2,561) | 559 | 319 | 319 | 1 |
+| 1105 Carmichael | [2,1105) | 1103 | 767 | 767 | 1 |
+\image(figures/fermat_primality_original.svg)
+// result_end
+\caption(All original default decisions and five coprime fractions are retained. The integer numerators and denominators expose exactly which population the bars describe.)
+\alttext(A native bar plot shows conditional passing fractions for ninety-seven,forty-five,ninety-one,five-hundred-sixty-one and eleven-hundred-five. The prime and both Carmichael cases reach one; ordinary composites are below one half.)
+
+> Carmichael numbers fool coprime tests, not every sampled base
+
+A passing residue must be coprime: if a prime divisor of n divides a,
+it divides a^(n−1), so that residue cannot be one. Carmichael numbers pass
+for every coprime base, while their noncoprime bases still fail. For 561,
+the factors 3,11,17 are distinct primes and each p−1 divides 560. Applying
+the prime congruence in each factor and combining residues explains why
+every coprime base passes modulo 561. The report checks these factors and
+divisibilities, then computes the actual two populations.
+
+The native sampler draws from [2,n−2], represented as the half-open
+interval [2,n−1). For odd n this removes the always-passing endpoints one
+and n−1. For 561, there are 318 passes among 558 possible sampled bases,
+whereas all 318 coprime bases in that support pass. Those are different
+fractions. Native exact censuses below make the distinction visible.
+
+The seeded sequence uses SplitMix64 words reduced modulo n−3. A fixed
+seed is deterministic; modulo reduction generally introduces bias, and
+this generator does not establish independent uniform draws. Therefore
+neither the following population fractions nor powers of them are a
+rigorous error bound for the actual seeded API. They describe specified
+populations and, later, an explicitly hypothetical iid sampling model.
+
+```{cpp, results="markdown", file="figures/fermat_primality_population.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/miller_rabin.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto factors=dm::algorithms::trial_division_factorize(561);std::print("| factor p of 561 | p is prime | (p-1) divides 560 |\n| ---: | :--- | :--- |\n");for(auto p:factors){const bool prime=dm::algorithms::is_probable_prime(p),divides=560%(p-1)==0;std::print("| {} | {} | {} |\n",p,prime,divides);if(!prime||!divides)throw std::runtime_error("561 factor controls failed");}
+  std::print("\n| sampler n | interval | all bases | coprime bases | passes | passes / coprime | passes / all |\n| ---: | :--- | ---: | ---: | ---: | ---: | ---: |\n");for(std::uint64_t n:{45,91,97,561,1105}){const auto c=dm::algorithms::fermat_base_census(n,2,n-1);std::print("| {} | [2,{}) | {} | {} | {} | {:.9f} | {:.9f} |\n",n,n-1,c.total,c.coprime,c.passes,double(c.passes)/c.coprime,double(c.passes)/c.total);}
+  dm::graphics::Diagram g(55,1100);dm::graphics::DiagramNodeStyle box;box.width=1.65;box.height=1.05;box.font_size=19;std::size_t pass=0,fail=0;for(std::uint64_t a=1;a<=40;++a){const auto r=dm::algorithms::fermat_base_test(561,a);pass+=r.passes;fail+=!r.passes;box.fill=r.passes?dm::graphics::RGB{187,247,208}:dm::graphics::RGB{254,226,226};const auto column=(a-1)%10,row=(a-1)/10;g.node(std::to_string(a),{1.85*column,-1.65*row},std::format("{}\ngcd {}",a,r.common_divisor),box);}std::print("\nDisplayed 561 base window [1,41): actual passes {}; failures {}; all failures noncoprime.\n",pass,fail);g.text({8.3,2},"561: actual bases 1 through 40",27).text({8.3,-7},"Green passes; red fails with an actual shared divisor",25).save_svg("build/fermat_primality_population.svg");
+}
+```
+// result_begin: markdown
+| factor p of 561 | p is prime | (p-1) divides 560 |
+| ---: | :--- | :--- |
+| 3 | true | true |
+| 11 | true | true |
+| 17 | true | true |
+
+| sampler n | interval | all bases | coprime bases | passes | passes / coprime | passes / all |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 45 | [2,44) | 42 | 22 | 6 | 0.272727273 | 0.142857143 |
+| 91 | [2,90) | 88 | 70 | 34 | 0.485714286 | 0.386363636 |
+| 97 | [2,96) | 94 | 94 | 94 | 1.000000000 | 1.000000000 |
+| 561 | [2,560) | 558 | 318 | 318 | 1.000000000 | 0.569892473 |
+| 1105 | [2,1104) | 1102 | 766 | 766 | 1.000000000 | 0.695099819 |
+
+Displayed 561 base window [1,41): actual passes 23; failures 17; all failures noncoprime.
+\image(figures/fermat_primality_population.svg)
+// result_end
+\caption(The sampler support has noncoprime witnesses even for a Carmichael number. The small displayed base window uses actual single-base results; the complete support fractions come from exact native censuses.)
+\alttext(A native ten-column,four-row grid shows bases one through forty for five-hundred-sixty-one. Each box gives its actual gcd. Green coprime bases pass; red bases sharing a factor fail.)
+
+> Inspect actual seeded rounds and early termination
+
+The ordinary bool API, work API and trace API share one kernel. The
+positive-round base stream is unchanged: each actual round draws a base,
+computes gcd and the exact canonical modular power, and stops on failure.
+Adding the gcd makes the diagnostic factor visible without replacing the
+congruence with a different primality test. Small/even filters draw no bases.
+Zero and one are not prime, but are not composite either.
+
+The next program retains the original default decisions for 97,91,561
+and prints every actual default-561 row. It also finds the first seed in
+0..63 for which one round passes 561 and then examines that same seed's
+20-round run. Passing one round remains inconclusive. Records are the
+actual executed prefix, including a failing final row when one occurs.
+The diagram uses at most the first four captured rows, explicitly labelled.
+
+```{cpp, results="markdown", file="figures/fermat_primality_rounds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/miller_rabin.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  constexpr auto default_seed=0x9E3779B97F4A7C15ULL;const auto original=dm::algorithms::fermat_probable_prime_trace(561);std::print("| default-561 actual round | base | gcd | residue | passes |\n| ---: | ---: | ---: | ---: | :--- |\n");for(std::size_t i=0;i<original.rows.size();++i){const auto&r=original.rows[i];std::print("| {} | {} | {} | {} | {} |\n",i+1,r.base,r.common_divisor,r.residue,r.passes);}
+  std::uint64_t selected=0;while(selected<64&&!dm::algorithms::fermat_probable_prime(561,1,selected))++selected;if(selected==64)throw std::runtime_error("no one-round pass seed found");const auto short_run=dm::algorithms::fermat_probable_prime_work(561,1,selected);const auto t=dm::algorithms::fermat_probable_prime_trace(561,20,selected);std::print("\nSelected seed {}: one-round result {}; twenty-round result {}; actual rounds {}; stop {}.\n",selected,short_run.probable_prime,t.outcome.probable_prime,t.outcome.completed_rounds,dm::algorithms::fermat_primality_stop_name(t.outcome.stop));
+  std::print("| filter input | actual rounds | result | stop |\n| ---: | ---: | :--- | :--- |\n");for(std::uint64_t n:{0,1,2,3,4,6}){const auto o=dm::algorithms::fermat_probable_prime_work(n);std::print("| {} | {} | {} | {} |\n",n,o.completed_rounds,o.probable_prime,dm::algorithms::fermat_primality_stop_name(o.stop));}
+  const auto wide=dm::algorithms::fermat_base_test(UINT64_MAX,UINT64_MAX-1);std::print("\nFull-width explicit base: n {}; base {}; gcd {}; residue {}; passes {}.\n",wide.n,wide.base,wide.common_divisor,wide.residue,wide.passes);
+  dm::graphics::Diagram g(55,1100);dm::graphics::DiagramNodeStyle box;box.width=3.9;box.height=1.7;box.font_size=23;const auto shown=std::min<std::size_t>(4,t.rows.size());for(std::size_t i=0;i<shown;++i){const auto&r=t.rows[i];const double x=5.4*i;box.fill=r.passes?dm::graphics::RGB{254,243,199}:dm::graphics::RGB{254,226,226};const auto id=std::to_string(i);g.node(id,{x,0},std::format("Round {}: a={}\ngcd={}  r={}",i+1,r.base,r.common_divisor,r.residue),box);if(i)g.edge(std::to_string(i-1),id,"next draw");}const double center=2.7*(shown-1);g.text({center,2.5},std::format("Actual seed {}: first {} of {} executed rounds",selected,shown,t.rows.size()),25).text({center,-2.5},std::format("One-round pass: {}; full outcome: {}",short_run.probable_prime,dm::algorithms::fermat_primality_stop_name(t.outcome.stop)),24).save_svg("build/fermat_primality_rounds.svg");if(original.outcome.probable_prime||original.outcome.seed!=default_seed||!short_run.probable_prime)throw std::runtime_error("seeded controls failed");
+}
+```
+// result_begin: markdown
+| default-561 actual round | base | gcd | residue | passes |
+| ---: | ---: | ---: | ---: | :--- |
+| 1 | 182 | 1 | 1 | true |
+| 2 | 345 | 3 | 375 | false |
+
+Selected seed 1: one-round result true; twenty-round result false; actual rounds 2; stop witness.
+| filter input | actual rounds | result | stop |
+| ---: | ---: | :--- | :--- |
+| 0 | 0 | false | below two |
+| 1 | 0 | false | below two |
+| 2 | 0 | true | small prime |
+| 3 | 0 | true | small prime |
+| 4 | 0 | false | even |
+| 6 | 0 | false | even |
+
+Full-width explicit base: n 18446744073709551615; base 18446744073709551614; gcd 1; residue 1; passes true.
+\image(figures/fermat_primality_rounds.svg)
+// result_end
+\caption(The captured prefix includes the actual first failing residue and exposes its gcd. Filters perform zero modular-power rounds, and the high-width explicit base uses exact arithmetic.)
+\alttext(A native sequence diagram shows up to four actual rounds for a seed whose first round passes five-hundred-sixty-one. Passing rows are yellow and a failing row red; labels state the executed prefix length and actual final stop.)
+
+> A conditional error model, not a posterior probability
+
+For a fixed odd non-Carmichael composite, the coprime passing residues
+form a proper subgroup of the unit group. Its size is at most half the
+unit-group size. Removing always-passing endpoints does not increase that
+fraction. With independent uniform draws from a specified population with
+passing fraction f, all k rounds pass with probability f^k. Carmichael
+numbers have f=1 under conditioning on coprimality, so that conditioned
+model has no decreasing bound. On the unconditioned sampler support,
+noncoprime witnesses make f smaller. These statements concern a fixed
+composite under an ideal draw model; f^k is not the probability that an
+input is composite given a pass. The native deterministic stream has no
+such iid guarantee. See Shoup, Theorem10.1 and the following discussion.
+
+The plotted curves use actual census numerators/denominators but then
+apply this hypothetical iid model. They are neither observed frequencies
+from the native generator nor a security claim. Native same-base
+Miller–Rabin checks are included as a stronger comparison; they do not
+change the Fermat algorithm being studied.
+
+Optional trace history stores C=completed_rounds whole records. Default
+quota1000000 and the requested round count are independent; zero quota
+argument disables only capture quota. A record is admitted before its
+draw/gcd/power, and failures return no partial trace. Metadata, vector
+capacity, allocators and runtime storage are excluded from C: it is not
+peak memory. Work calls use constant auxiliary storage and no history
+quota. Copies own their rows independently.
+
+A round uses O(log(n)) modular products for this fixed-width representation,
+plus a gcd. R actual rounds take O(R log(n)) word work and a trace keeps
+O(R) records. An exhaustive B-base census takes O(B log(n)) word work,
+constant storage, and a default one-million-base work cap checked before
+any test. Arbitrary-precision bit costs differ. These routines expose
+branches and values and are educational numerical APIs, not constant-time
+cryptographic primitives.
+
+```{cpp, results="markdown", file="figures/fermat_primality_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/primality.hpp>
+#include <datamunge/algorithms/modular_exponentiation.hpp>
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/miller_rabin.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto c=dm::algorithms::fermat_base_census(561,2,560);const double conditional=double(c.passes)/c.coprime,unconditional=double(c.passes)/c.total;std::vector<double>x,unit,all;std::print("| hypothetical iid rounds k | coprime-conditioned 561 pass probability | uniform-support 561 pass probability |\n| ---: | ---: | ---: |\n");for(int k:{1,2,4,8,16,20}){x.push_back(k);unit.push_back(std::pow(conditional,k));all.push_back(std::pow(unconditional,k));std::print("| {} | {:.9f} | {:.9f} |\n",k,unit.back(),all.back());}
+  std::print("\n| n | base | Fermat passes | same-base strong probable-prime passes |\n| ---: | ---: | :--- | :--- |\n");for(const auto& pair:std::vector<std::pair<std::uint64_t,std::uint64_t>>{{97,2},{341,2},{561,2},{1105,2}}){const auto r=dm::algorithms::fermat_base_test(pair.first,pair.second);std::print("| {} | {} | {} | {} |\n",pair.first,pair.second,r.passes,dm::algorithms::is_strong_probable_prime_base(pair.first,pair.second));}
+  bool trace_cap=false,census_cap=false;try{(void)dm::algorithms::fermat_probable_prime_trace(97,3,0,2);}catch(const std::length_error&){trace_cap=true;}try{(void)dm::algorithms::fermat_base_census(561,1,561,559);}catch(const std::length_error&){census_cap=true;}const auto exact=dm::algorithms::fermat_probable_prime_trace(97,3,0,3),off=dm::algorithms::fermat_probable_prime_trace(97,3,0,0);auto edited=exact;const auto owned=edited;edited.rows.front().base=0;std::print("\nCapture controls: too-small quota rejects {}; exact quota {}; disabled quota {}; owned first base {}; edited first base {}.\n",trace_cap,exact.captured_entries,off.captured_entries,owned.rows.front().base,edited.rows.front().base);std::print("Census controls: too-small work cap rejects {}; empty interval total {}.\n",census_cap,dm::algorithms::fermat_base_census(561,561,561).total);
+  int invalid=0;try{(void)dm::algorithms::fermat_probable_prime(9,0);}catch(const std::invalid_argument&){++invalid;}try{(void)dm::algorithms::fermat_base_test(7,7);}catch(const std::invalid_argument&){++invalid;}try{(void)dm::algorithms::fermat_base_census(7,4,3);}catch(const std::invalid_argument&){++invalid;}std::print("Invalid zero-round/base/interval controls rejected {}/3.\n",invalid);
+  auto plot=dm::graphics::RPlot::create();plot.line(x,unit,"Coprime only",{220,38,38},2).points(x,unit,"",{220,38,38},5).line(x,all,"Uniform support",{37,99,235},2).points(x,all,"",{37,99,235},5).title("561 under a hypothetical independent uniform model").x_label("Hypothetical rounds k").y_label("Model probability that all k rounds pass").y_limits(0,1.15).size(1100,560).save_svg("build/fermat_primality_limits.svg");if(!trace_cap||!census_cap||invalid!=3||owned.rows.front().base==0)throw std::runtime_error("limit controls failed");
+}
+```
+// result_begin: markdown
+| hypothetical iid rounds k | coprime-conditioned 561 pass probability | uniform-support 561 pass probability |
+| ---: | ---: | ---: |
+| 1 | 1.000000000 | 0.569892473 |
+| 2 | 1.000000000 | 0.324777431 |
+| 4 | 1.000000000 | 0.105480380 |
+| 8 | 1.000000000 | 0.011126110 |
+| 16 | 1.000000000 | 0.000123790 |
+| 20 | 1.000000000 | 0.000013057 |
+
+| n | base | Fermat passes | same-base strong probable-prime passes |
+| ---: | ---: | :--- | :--- |
+| 97 | 2 | true | true |
+| 341 | 2 | true | false |
+| 561 | 2 | true | false |
+| 1105 | 2 | true | false |
+
+Capture controls: too-small quota rejects true; exact quota 3; disabled quota 3; owned first base 45; edited first base 0.
+Census controls: too-small work cap rejects true; empty interval total 0.
+Invalid zero-round/base/interval controls rejected 3/3.
+\image(figures/fermat_primality_limits.svg)
+// result_end
+\caption(The native census supplies the population fractions; the curves apply an explicitly hypothetical independent uniform sampling model. Executed quota,ownership,domain and same-base stronger-test controls accompany the model.)
+\alttext(A native plot for five-hundred-sixty-one keeps the coprime-conditioned passing probability at one while a hypothetical uniform-support probability decays as its measured census fraction is raised to the number of independent rounds.)
+
+> API contracts and verification
+
+The bool entry retains its compiled signature, defaults and original positive
+round stream. It now rejects nonpositive round counts before filtering;
+the old vacuous odd-input true for zero rounds was not evidence. The work
+and trace variants expose actual filters, round counts and residues. The
+single-base API requires n≥2 and 1≤base<n. The census requires a valid
+half-open interval 1≤first≤last≤n; [n,n) is a valid empty interval. It
+returns integer counts and leaves empty-denominator fractions undefined.
+
+Development checks preserve 19200 frozen positive-round decisions, including
+all original inputs, full-width values and seeded cases, and all 13 lines
+of original program stdout. Strict sanitizer tests compare small powers
+against repeated multiplication, split exact censuses into disjoint ranges,
+check golden seeded prefixes, actual early stops, capture/work caps and
+ownership. An optional independent Python pow/gcd oracle checks 42710
+base results; it is not a report runtime dependency. The public Doxygen
+examples are compiled and their output checked separately.
+
+Keith Conrad, [Fermat's Test](https://kconrad.math.uconn.edu/blurbs/ugradnumthy/fermattest.pdf),
+sections1–3, explains congruence witnesses and why shared divisors can expose
+compositeness. The native single-base records show both tests explicitly.
+
+Victor Shoup, [A Computational Introduction to Number Theory and Algebra,
+version2](https://shoup.net/ntb/ntb-v2.pdf), 2008, section10.2, Theorem10.1
+and the Carmichael discussion on pp.307–308, supplies the subgroup setting
+for the conditional counting argument. Native modulo-reduced seeded draws
+are distinguished from the book's ideal random-sampling model.

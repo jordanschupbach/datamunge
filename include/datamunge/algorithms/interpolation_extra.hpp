@@ -1,4 +1,5 @@
 #pragma once
+#include <datamunge/algorithms/bilinear_interpolation.hpp>
 
 #include <vector>
 
@@ -44,19 +45,5 @@ double hermite_interpolate(const std::vector<double>& xs, const std::vector<doub
 /// @param x the query point (clamped to the node range).
 /// @return the interpolated value at @p x.
 double monotone_cubic_interpolate(const std::vector<double>& xs, const std::vector<double>& ys, double x);
-
-/// @brief *Bilinear interpolation*: extend linear interpolation to a function sampled on a *regular
-///        2-D grid*. It interpolates linearly in @c x along the two grid rows bracketing the query,
-///        then linearly in @c y between those two results (the order does not matter). It is exact for
-///        any bilinear function @c a+bx+cy+dxy, reduces to ordinary linear interpolation along a grid
-///        line, and is the standard cheap image/texture resampler.
-///
-/// @param xs the grid abscissae, strictly increasing (size @c nx >= 2).
-/// @param ys the grid ordinates, strictly increasing (size @c ny >= 2).
-/// @param z the grid values in row-major order: @c z[i*ny + j] is the value at @c (xs[i], ys[j]).
-/// @param x,y the query point (clamped to the grid).
-/// @return the interpolated value at @c (x,y).
-double bilinear_interpolate(const std::vector<double>& xs, const std::vector<double>& ys,
-                            const std::vector<double>& z, double x, double y);
 
 } // namespace datamunge::algorithms

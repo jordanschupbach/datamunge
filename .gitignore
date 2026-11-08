@@ -88,6 +88,9 @@ plans/
 docs/mepml/examples/**/figures/*.png
 docs/mepml/examples/**/figures/*.jpg
 docs/mepml/examples/**/figures/*.gif
+docs/examples/mepml/**/figures/*.png
+docs/examples/mepml/**/figures/*.jpg
+docs/examples/mepml/**/figures/*.gif
 
 # Compiled binding/test binaries (Ruby/Perl bundles, Perl blib, D and root test executables).
 *.bundle

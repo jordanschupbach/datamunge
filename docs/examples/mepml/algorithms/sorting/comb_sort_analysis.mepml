@@ -1,0 +1,359 @@
+//? Title: Comb Sort: Gaps, Actual Work and Unstable Identities
+//? Subtitle: The original seven integers and seed-four experiment, with exact gap arithmetic and a named bubble baseline
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Sorting a sequence by adjacent forward exchanges can leave a small value moving
+left only one position per scan. Comb sort permits distant exchanges first,
+then finishes with adjacent scans. We retain the original seven integers and
+the seed-four, forty-size shuffle experiment, using actual counters from the
+native sorting kernels. The report distinguishes measured comparison savings
+from an asymptotic guarantee, identifies the original full-width bubble baseline,
+and shows that already sorted input still traverses the wide gaps. Carried
+original identities expose instability even though equal keys never swap directly.
+Gap arithmetic is exact for the complete size_t range without multiplying a
+possibly huge gap by ten.
+)
+
+\toc
+
+> One wide exchange, then a shrinking gap
+
+For the original [5,3,8,1,9,2,7], the first gap is floor(7×10/13)=5. The pass
+compares positions (0,5) and (1,6), swapping values 5 and 2 in the first pair.
+The small value jumps five positions left. Each subsequent pass uses
+
+\[
+g_{k+1}=\max\left(1,\left\lfloor\frac{10g_k}{13}\right\rfloor\right),\qquad g_0=n.
+\]
+\alttext(The next gap is the greater of one and the integer floor of ten times the current gap divided by thirteen. The initial gap equals the input length.)
+
+The gap is shrunk before scanning, and pairs are visited in ascending left-index
+order. One pass costs n−g key comparisons. A zero-swap pass with g>1 does not
+stop the algorithm: smaller gaps still have work to do. Only a zero-swap gap-one
+scan certifies the complete sequence as sorted. This is the plain 10/13 schedule;
+it does not replace a computed gap of 9 or 10 by 11.
+
+```{cpp, results="markdown", file="figures/comb_gap_exchange.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::comb_sort_trace({5,3,8,1,9,2,7});
+  if(t.work.output!=std::vector<int>{1,2,3,5,7,8,9} || t.work.key_comparisons!=23 || t.work.swaps!=6)return 1;
+  std::print("| pass | actual gap | key comparisons | swaps | actual values after pass |\n| ---: | ---: | ---: | ---: | :--- |\n");
+  for(std::size_t i=0;i<t.passes.size();++i) {
+    const auto& p=t.passes[i];
+    std::print("| {} | {} | {} | {} | {} |\n",i+1,p.gap,p.key_comparisons,p.swaps,p.values);
+  }
+  std::print("\nActual comparisons {}; swaps {}; complete passes {}; gap-one passes {}.\n",t.work.key_comparisons,t.work.swaps,t.work.pass_count,t.work.gap_one_passes);
+  dm::graphics::Diagram d(65,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=1.25;box.height=1.15;box.font_size=17;
+  for(std::size_t i=0;i<t.input.size();++i) {
+    box.fill=(i==0 || i==5)?dm::graphics::RGB{255,237,213}:dm::graphics::RGB{239,246,255};
+    d.node(std::format("in{}",i),{1.6*i,0},std::format("index {}\n{}",i,t.input[i]),box);
+    box.fill=(i==0 || i==5)?dm::graphics::RGB{220,252,231}:dm::graphics::RGB{239,246,255};
+    d.node(std::format("after{}",i),{1.6*i,-2},std::format("index {}\n{}",i,t.passes[0].values[i]),box);
+  }
+  dm::graphics::DiagramStroke jump;jump.arrow=true;jump.color={234,88,12};jump.width=3;
+  d.path({{8,.75},{8,1.4},{0,1.4},{0,.75}},jump)
+   .text({4,1.95},"Value 2 jumps five positions left at gap 5",20)
+   .text({4.8,3.1},"Actual first pass: compare (0,5), then (1,6)",23)
+   .text({4.8,-3.6},std::format("After the actual gap-5 pass: {}",t.passes[0].values),19)
+   .save_svg("build/comb_gap_exchange.svg");
+}
+```
+// result_begin: markdown
+| pass | actual gap | key comparisons | swaps | actual values after pass |
+| ---: | ---: | ---: | ---: | :--- |
+| 1 | 5 | 2 | 1 | [2, 3, 8, 1, 9, 5, 7] |
+| 2 | 3 | 4 | 2 | [1, 3, 5, 2, 9, 8, 7] |
+| 3 | 2 | 5 | 2 | [1, 2, 5, 3, 7, 8, 9] |
+| 4 | 1 | 6 | 1 | [1, 2, 3, 5, 7, 8, 9] |
+| 5 | 1 | 6 | 0 | [1, 2, 3, 5, 7, 8, 9] |
+
+Actual comparisons 23; swaps 6; complete passes 5; gap-one passes 2.
+\image(figures/comb_gap_exchange.svg)
+// result_end
+\caption(The native trace supplies all five pass states and the diagram's actual first-pass result. The final gap-one pass has no swaps and still performs six comparisons.)
+\alttext(Seven indexed boxes show the input above its actual gap-five output. An arrow carries value two from original position five to position zero, exchanging it with five.)
+
+The gaps are 5,3,2,1,1, so comparisons total 2+4+5+6+6=23. The first gap-one
+pass finishes the ordering; the second certifies it. Records come from the
+same executing kernel as comb_sort(), rather than a report-side replay.
+
+> Correctness, inversions and what the bound says
+
+Every exchange preserves the input multiset. The gap strictly decreases while
+it exceeds one, so a logarithmic number of wide scans leads to gap one. From
+then on this is ordinary full-width forward bubble sorting: the largest
+remaining misplaced value reaches its final rightmost position on each successful
+scan. At most n−1 successful adjacent scans and one zero-swap scan suffice.
+That last scan tests every adjacent pair and establishes nondecreasing order.
+
+A wide scan alone does not completely sort every gap-separated subsequence;
+it makes one bubbling traversal. This distinction matters when comparing comb
+sort with Shell sort's gapped insertion passes.
+
+Wide scans take O(n log n) key tests in total; the final adjacent phase has
+the upper bound n(n−1). Hence an O(n²) worst-case upper bound follows for this
+implementation. The random experiment below does not establish a sharper
+universal rate. On sorted input there are no swaps, but every wide gap is still
+visited before one gap-one scan stops. The geometric schedule has Θ(log n)
+scans, most costing a constant fraction of n, so sorted-input work is Θ(n log n).
+Sorted bubble input needs just n−1 comparisons. A benefit on one input family
+is not a guarantee of adaptivity to all nearly ordered inputs.
+
+> The original seed-four shuffle experiment
+
+Keep one local mt19937 engine seeded with four. For n=10,20,...,400, construct
+[0,...,n−1] and consume the next std::shuffle permutation from that same engine.
+This retains the original workload sequence. A seed repeats for this standard
+library; the shuffle mapping is not promised identical across implementations.
+
+Both comparison counts now come from datamunge. The original bubble helper
+scanned all n−1 adjacent pairs every time, with no shrinking right boundary,
+and included the final zero-swap scan. bubble_sort_work() deliberately preserves
+that baseline. Its comparisons equal (n−1) times its actual scan count. The
+ratio below compares those two exact kernels, rather than every optimized bubble
+variant or elapsed wall-clock time. No sorting loop remains in the report.
+
+```{cpp, results="markdown", file="figures/comb_sort.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::mt19937 engine(4);
+  std::vector<double> sizes,comb_counts,bubble_counts;
+  std::print("| n | actual comb comparisons | actual full-width bubble comparisons | comb gap-one scans | bubble scans |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n=10;n<=400;n+=10) {
+    std::vector<int> input(n);std::iota(input.begin(),input.end(),0);
+    std::shuffle(input.begin(),input.end(),engine);
+    const auto comb=dm::algorithms::comb_sort_work(input),bubble=dm::algorithms::bubble_sort_work(input);
+    if(comb.output!=bubble.output || !std::is_sorted(comb.output.begin(),comb.output.end()) || bubble.key_comparisons!=(n-1)*bubble.pass_count)return 1;
+    sizes.push_back(n);comb_counts.push_back(comb.key_comparisons);bubble_counts.push_back(bubble.key_comparisons);
+    if(n==10 || n==50 || n==100 || n==200 || n==400)
+      std::print("| {} | {} | {} | {} | {} |\n",n,comb.key_comparisons,bubble.key_comparisons,comb.gap_one_passes,bubble.pass_count);
+  }
+  std::print("\nAt n=400, measured full-width-bubble/comb comparison ratio: {:.6f}.\n",bubble_counts.back()/comb_counts.back());
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(sizes,bubble_counts,"full-width bubble",{220,38,38},2)
+      .line(sizes,comb_counts,"comb",{37,99,235},2)
+      .legend({"full-width bubble","comb"},{{220,38,38},{37,99,235}})
+      .title("Original seed-four shuffles: actual key comparisons")
+      .x_label("input length n").y_label("strict-greater key tests")
+      .x_limits(0,420).y_limits(0,180000).size(900,580)
+      .save_svg("build/comb_sort.svg");
+}
+```
+// result_begin: markdown
+| n | actual comb comparisons | actual full-width bubble comparisons | comb gap-one scans | bubble scans |
+| ---: | ---: | ---: | ---: | ---: |
+| 10 | 41 | 54 | 2 | 6 |
+| 50 | 457 | 2352 | 2 | 48 |
+| 100 | 1201 | 8118 | 3 | 82 |
+| 200 | 3363 | 37611 | 5 | 189 |
+| 400 | 7106 | 155610 | 3 | 390 |
+
+At n=400, measured full-width-bubble/comb comparison ratio: 21.898396.
+\image(figures/comb_sort.svg)
+// result_end
+\caption(The original forty-size experiment uses native counters and an explicitly full-width bubble baseline. Curve labels identify measured methods without attaching an unproved random-case asymptotic rate.)
+\alttext(A red full-width bubble comparison curve rises far above a blue comb comparison curve over the original forty shuffled sizes from ten to four hundred.)
+
+This build gives 7,106 comb and 155,610 full-width bubble comparisons at n=400.
+The old report's frozen bubble total was 147,630. A compatibility test runs its
+original counting loops on all forty currently generated inputs and agrees with
+the native counters. The executable result above follows that verified code;
+the seed and generator procedure are preserved, without a cross-library promise
+for std::shuffle's permutation mapping. One shuffled input per size also does
+not estimate a distributional average.
+
+> Sorted and turtle controls
+
+Generated families isolate claims that a random curve cannot settle. Sorted
+input verifies comb's compulsory gap schedule and bubble's single scan. A
+turtle [1,2,...,n−1,0] makes zero travel left only once per full-width bubble
+scan: n−1 swapping scans and one stopping scan give exactly n(n−1) comparisons.
+Comb can carry it left by wide exchanges, but its remaining gap-one scan count
+is measured rather than assumed to be one.
+
+The table uses both families. The plot divides sorted-input comparisons by n
+and places log2(n) on the horizontal axis, making comb's compulsory logarithmic
+scan growth visible beside bubble's count just below one per item. This plotting
+transformation changes the axes, not the native counters. No external dataset
+is useful for these exact-order controls.
+
+```{cpp, results="markdown", file="figures/comb_sorted_control.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> log_sizes,comb_per_item,bubble_per_item;
+  std::print("| n | sorted comb comparisons | sorted bubble comparisons | turtle comb comparisons | turtle bubble comparisons | turtle comb gap-one scans |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const std::size_t n:{8,16,32,64,128,256,512}) {
+    std::vector<int> input(n);std::iota(input.begin(),input.end(),0);
+    const auto sorted=dm::algorithms::comb_sort_work(input),sorted_bubble=dm::algorithms::bubble_sort_work(input);
+    std::iota(input.begin(),input.end()-1,1);input.back()=0;
+    const auto turtle=dm::algorithms::comb_sort_work(input),turtle_bubble=dm::algorithms::bubble_sort_work(input);
+    if(sorted.swaps!=0 || sorted.gap_one_passes!=1 || sorted_bubble.key_comparisons!=n-1 || turtle_bubble.key_comparisons!=n*(n-1))return 1;
+    log_sizes.push_back(std::log2(double(n)));
+    comb_per_item.push_back(double(sorted.key_comparisons)/n);bubble_per_item.push_back(double(sorted_bubble.key_comparisons)/n);
+    std::print("| {} | {} | {} | {} | {} | {} |\n",n,sorted.key_comparisons,sorted_bubble.key_comparisons,turtle.key_comparisons,turtle_bubble.key_comparisons,turtle.gap_one_passes);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(log_sizes,comb_per_item,"comb",{37,99,235},2).points(log_sizes,comb_per_item,"",{37,99,235},5)
+      .line(log_sizes,bubble_per_item,"full-width bubble",{220,38,38},2)
+      .legend({"comb","full-width bubble"},{{37,99,235},{220,38,38}})
+      .title("Already sorted inputs still traverse the comb gaps")
+      .x_label("log2(input length n)").y_label("actual key comparisons / n")
+      .y_limits(0,25).size(900,580).save_svg("build/comb_sorted_control.svg");
+}
+```
+// result_begin: markdown
+| n | sorted comb comparisons | sorted bubble comparisons | turtle comb comparisons | turtle bubble comparisons | turtle comb gap-one scans |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 8 | 24 | 7 | 31 | 56 | 2 |
+| 16 | 75 | 15 | 90 | 240 | 2 |
+| 32 | 205 | 31 | 236 | 992 | 2 |
+| 64 | 580 | 63 | 643 | 4032 | 2 |
+| 128 | 1400 | 127 | 1527 | 16256 | 2 |
+| 256 | 3535 | 255 | 3790 | 65280 | 2 |
+| 512 | 8577 | 511 | 9088 | 261632 | 2 |
+\image(figures/comb_sorted_control.svg)
+// result_end
+\caption(Sorted input is a useful counter-control: comb performs the wide passes despite zero swaps. Bubble needs one scan. The table separately measures the turtle's full-width quadratic baseline.)
+\alttext(On sorted inputs of length eight through five hundred twelve, comb's comparisons per item rise with log-two length, while full-width bubble's count per item stays below one.)
+
+> Strict comparisons still allow unstable equal-key identities
+
+Label the two equal values in [2a,2b,1] by their original positions zero and one.
+The first gap is two. Exchanging 2a with 1 gives [1,2b,2a]; the following
+gap-one scan makes no swap, so the equal twos finish reversed. They never swapped
+with each other. Nonadjacent exchanges let one pass the other indirectly.
+
+```{cpp, results="markdown", file="figures/comb_instability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::comb_sort_trace({2,2,1});
+  if(t.original_indices!=std::vector<std::size_t>{2,1,0} || t.work.swaps!=1)return 1;
+  std::print("| final position | value | actual original position |\n| ---: | ---: | ---: |\n");
+  dm::graphics::Diagram d(90,950);
+  dm::graphics::DiagramNodeStyle box;box.width=1.8;box.height=1.1;box.font_size=18;
+  for(std::size_t i=0;i<t.input.size();++i) {
+    box.fill=t.input[i]==2?dm::graphics::RGB{219,234,254}:dm::graphics::RGB{220,252,231};
+    d.node(std::format("in{}",i),{3.*i,1.5},std::format("{}\nsource {}",t.input[i],i),box);
+    box.fill=t.work.output[i]==2?dm::graphics::RGB{219,234,254}:dm::graphics::RGB{220,252,231};
+    d.node(std::format("out{}",i),{3.*i,-1.5},std::format("{}\nsource {}",t.work.output[i],t.original_indices[i]),box);
+    std::print("| {} | {} | {} |\n",i,t.work.output[i],t.original_indices[i]);
+  }
+  for(std::size_t i=0;i<t.input.size();++i)
+    d.edge(std::format("in{}",t.original_indices[i]),std::format("out{}",i));
+  d.text({3,3},"One gapped swap reverses the two equal-key identities",22)
+   .text({3,-3},"Twos start with sources [0,1] and finish [1,0]",21)
+   .save_svg("build/comb_instability.svg");
+  std::print("\nActual exchanges {}; initial strict inversions 2.\n",t.work.swaps);
+}
+```
+// result_begin: markdown
+| final position | value | actual original position |
+| ---: | ---: | ---: |
+| 0 | 1 | 2 |
+| 1 | 2 | 1 |
+| 2 | 2 | 0 |
+
+Actual exchanges 1; initial strict inversions 2.
+\image(figures/comb_instability.svg)
+// result_end
+\caption(Original positions follow the actual native exchanges. One wide swap removes both initial inversions, while reversing the two equal-key identities.)
+\alttext(Three input boxes with values two, two and one connect to sorted output boxes. The equal twos finish with original identities one then zero, proving instability.)
+
+More generally, exchange x>y at positions i<j. Their mutual inversion disappears.
+An intervening z strictly between y and x removes two more inversions; z equal
+to either endpoint removes one; other z values contribute no change. Thus
+
+\[
+I_{\rm before}-I_{\rm after}
+=1+2\#\{k:i<k<j,\ y<a_k<x\}
++\#\{k:i<k<j,\ a_k=x\text{ or }a_k=y\}.
+\]
+\alttext(The inversion decrease is one, plus twice the number of intervening strictly-between keys, plus the number of intervening keys equal to either exchanged endpoint.)
+
+Every gapped strict swap removes at least one inversion, so total swaps are
+at most the input's strict inversion count. Equality is guaranteed for adjacent
+swaps, as in the bubble baseline, but not for comb: this example needs one
+exchange for two inversions. Swap count and comparison count measure different work.
+
+> Exact gap arithmetic and API costs
+
+The former expression (gap×10)/13 can overflow before dividing, even when the
+result fits. Write gap=13q+r, with 0≤r<13. Then
+
+\[
+\left\lfloor\frac{10g}{13}\right\rfloor
+=10q+\left\lfloor\frac{10r}{13}\right\rfloor.
+\]
+\alttext(Dividing the gap into quotient q and remainder r modulo thirteen gives an exact next gap as ten q plus the floor of ten r divided by thirteen.)
+
+The first product and final sum are at most the original gap; the remainder
+product is at most 120. This is exact size_t arithmetic, with no floating-point
+shrink factor or larger integer type in the library. The helper also accepts
+zero and returns one, though empty/singleton sorts skip their pass loops.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto maximum=std::numeric_limits<std::size_t>::max();
+  std::print("| supplied gap | exact native next gap |\n| ---: | ---: |\n");
+  for(const auto gap:std::vector<std::size_t>{0,1,7,12,13,maximum}) {
+    const auto next=dm::algorithms::comb_sort_next_gap(gap);
+    if(next<1 || (gap>1 && next>=gap))return 1;
+    std::print("| {} | {} |\n",gap,next);
+  }
+  const std::vector<int> input{5,3,8,1,9,2,7};
+  const auto complete=dm::algorithms::comb_sort_trace(input,5);
+  bool limited=false,invalid=false;
+  try{(void)dm::algorithms::comb_sort_trace(input,4);}catch(const std::length_error&){limited=true;}
+  try{(void)dm::algorithms::comb_sort_trace({},0);}catch(const std::invalid_argument&){invalid=true;}
+  if(!limited || !invalid || input.front()!=5 || complete.passes.size()!=5)return 1;
+  std::print("\nFive records succeed; four throw length_error. Zero cap throws invalid_argument, even for empty input. Caller input is unchanged.\n");
+}
+```
+// result_begin: markdown
+| supplied gap | exact native next gap |
+| ---: | ---: |
+| 0 | 1 |
+| 1 | 1 |
+| 7 | 5 |
+| 12 | 9 |
+| 13 | 10 |
+| 18446744073709551615 | 14189803133622732011 |
+
+Five records succeed; four throw length_error. Zero cap throws invalid_argument, even for empty input. Caller input is unchanged.
+// result_end
+\caption(The exact helper supports SIZE_MAX without allocating a vector of that size. The trace cap counts the final zero-swap scan; work-only and legacy calls have no record cap.)
+
+The legacy and work-only calls sort an owned input buffer with constant extra
+state; an lvalue call copies the caller's vector. “In-place” describes the
+internal exchanges, not caller mutation. Work counters exclude vector copies,
+gap calculations, loop conditions and elapsed time, and throw on overflow.
+The optional trace owns input, final identities and two length-n snapshots per
+pass. With p passes it adds O(np) time/storage. Its positive default cap of
+1024 records is checked online, before each pass, and throws without returning
+a partial trace. All calls use independent state. Signed extreme integers are
+valid because comparisons and exchanges never subtract key values.
+
+> Conclusion
+
+The original example takes gaps 5,3,2,1,1, twenty-three key comparisons and six
+exchanges. Wide gaps help the original shuffled and turtle inputs, while sorted
+inputs expose compulsory work that a single bubble scan avoids. Actual counters
+support these comparisons without turning one sample curve into a universal
+linearithmic claim. Carried identities show why strict gapped exchanges remain
+unstable, and exact quotient/remainder arithmetic makes the gap schedule safe
+throughout size_t's range.
+
+> References
+
+- W. Dobosiewicz (1980), [An efficient variation of bubble sort](https://doi.org/10.1016/0020-0190(80)90022-8), Information Processing Letters 11(1), 5–6. Historical diminishing-gap exchange variant; the exact schedule in this report is stated explicitly above.
+- P. E. Black (2022), [Comb sort](https://xlinux.nist.gov/dads/HTML/combSort.html), NIST Dictionary of Algorithms and Data Structures. Distinguishes one bubbling traversal per gap from fully sorting each gapped subsequence.
+- P. E. Black and B. Bockholt, [Bubble sort](https://xlinux.nist.gov/dads/HTML/bubblesort.html), NIST Dictionary of Algorithms and Data Structures. The comparison baseline here deliberately scans the full width, as in the original report.

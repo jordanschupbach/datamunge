@@ -1,0 +1,383 @@
+//? Title: Gauss–Jordan elimination: actual inverse construction and its cost
+//? Subtitle: Full augmented reduction, two-sided inverse diagnostics, actual work and honest cutoff failures
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a square matrix and a right-hand side, compute both a solution of the
+linear equations and a candidate matrix inverse. Row reduction must keep three
+blocks consistent, while floating-point arithmetic can introduce error or reject
+a pivot. Gauss–Jordan elimination carries an identity block through the same
+operations as the equations. This report follows actual native snapshots on a
+two-equation example, reruns the original three-equation system and checks both
+inverse products without snapping small entries to zero. Measured work, a large
+above-pivot clearing factor and cutoff/history controls expose the method's cost
+and limits.
+)
+
+\toc
+
+> Carry the identity block through a tiny solve
+
+For x+y=3 and 2x+3y=8, swap row 1 above row 0 to select the larger first pivot.
+Divide that row by 2, then clear the first column of the other row. Its second
+pivot is -0.5. Normalizing it gives y=2; clearing above it gives x=1.
+Every operation is also applied to an initially separate identity matrix.
+
+The native trace records pivot after all row interchanges, normalize after the
+whole pivot-row division, and eliminate after a complete other-row update.
+It stores the actual evolving identity block, named transform, as well as the
+coefficient matrix, RHS and row-interchange IDs. It does not replay the algorithm.
+
+```{cpp, results="markdown", file="figures/jordan_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_jordan.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::gauss_jordan_trace({{1,1},{2,3}},{3,8},110);
+ std::print("| event | column | selected/updated row | pivot/divisor/raw factor | coefficient block | evolving identity block | RHS |\n| --- | ---: | ---: | ---: | --- | --- | --- |\n");
+ for(const auto&e:t.events)std::print("| {} | {} | {} | {:.2f} | {} | {} | {} |\n",e.kind,e.column,e.row,e.value,e.matrix,e.transform,e.rhs);
+ std::print("\nSolution {}; inverse {}; events {}; swaps {}; normalizations {}; other-row updates {}; retained entries {}.\n",t.run.result.x,t.run.result.inverse,t.events.size(),t.run.work.row_swaps,t.run.work.normalizations,t.run.work.eliminations,t.captured_entries);
+ const auto& norm=t.events.at(1);const auto& lower=t.events.at(2);const auto& finish=t.events.back();
+ dm::graphics::Diagram d(63,1100);dm::graphics::DiagramNodeStyle box;box.width=4.4;box.height=2.35;box.font_size=21;
+ d.node("normalize",{0,0},std::format("Swap, then divide by {:.1f}\nx + {:.1f}y = {:.1f}\nidentity row {}",norm.value,norm.matrix[0][1],norm.rhs[0],norm.transform[0]),box)
+  .node("lower",{6,0},std::format("Clear below pivot\n{:.1f}y = {:.1f}\nidentity row {}",lower.matrix[1][1],lower.rhs[1],lower.transform[1]),box)
+  .node("above",{12,0},std::format("Normalize and clear above\nx = {:.1f}, y = {:.1f}\nInverse row 0: {}",finish.rhs[0],finish.rhs[1],finish.transform[0]),box)
+  .edge("normalize","lower","subtract").edge("lower","above","second pivot")
+  .text({6,2.5},"The same row operations act on [A | I | b]",27).save_svg("build/jordan_tiny.svg");
+ if(t.run.result.x!=std::vector<double>{1,2}||t.run.result.inverse!=dm::algorithms::GaussianMatrix{{3,-1},{-2,1}}||t.events.size()!=6)throw std::runtime_error("actual tiny inverse");
+}
+```
+// result_begin: markdown
+| event | column | selected/updated row | pivot/divisor/raw factor | coefficient block | evolving identity block | RHS |
+| --- | ---: | ---: | ---: | --- | --- | --- |
+| pivot | 0 | 1 | 2.00 | [[2, 3], [1, 1]] | [[0, 1], [1, 0]] | [8, 3] |
+| normalize | 0 | 0 | 2.00 | [[1, 1.5], [1, 1]] | [[0, 0.5], [1, 0]] | [4, 3] |
+| eliminate | 0 | 1 | 1.00 | [[1, 1.5], [0, -0.5]] | [[0, 0.5], [1, -0.5]] | [4, -1] |
+| pivot | 1 | 1 | -0.50 | [[1, 1.5], [0, -0.5]] | [[0, 0.5], [1, -0.5]] | [4, -1] |
+| normalize | 1 | 1 | -0.50 | [[1, 1.5], [-0, 1]] | [[0, 0.5], [-2, 1]] | [4, 2] |
+| eliminate | 1 | 0 | 1.50 | [[1, 0], [-0, 1]] | [[3, -1], [-2, 1]] | [1, 2] |
+
+Solution [1, 2]; inverse [[3, -1], [-2, 1]]; events 6; swaps 1; normalizations 2; other-row updates 2; retained entries 110.
+\image(figures/jordan_tiny.svg)
+// result_end
+\caption(The evolving identity block becomes the inverse when reduction succeeds in exact arithmetic. Snapshots keep the actual floating states; row IDs record swaps, not a permutation of solution coordinates.)
+\alttext(Three native boxes show normalization by 2, below-pivot reduction to minus0.5y equals minus1, then normalization and clearing above to yield x1,y2. The evolving first identity row finishes at3,minus1.)
+
+> Why carrying I constructs an inverse
+
+A row interchange, multiplication of one row by a nonzero number and subtraction
+of a multiple of another row are reversible. Let T be the product of these
+row-operation matrices. In exact arithmetic they act on all three blocks:
+
+$$
+T[A\mid I\mid b]=[TA\mid T\mid Tb].
+$$
+\alttext(The accumulated row transformation acts equally on the coefficient matrix, identity block and right-hand side.)
+
+If the coefficient block reduces to I, then TA=I. For a square matrix this makes
+T the inverse, and Tb solves Ax=b. Thus the fully reduced augmented system is
+[I | A^-1 | x]. For a failed pivot, T is only a partial row transformation; it
+must not be labelled an inverse. Computed floating-point blocks need not be an
+exact identity, even when the exact-arithmetic argument applies.
+
+At column k the implementation selects the earliest largest absolute pivot among
+remaining rows, swaps all three blocks, and applies
+
+$$
+\begin{aligned}
+(A_{k,:},T_{k,:},b_k)&\leftarrow(A_{k,:},T_{k,:},b_k)/d,\qquad d=A_{kk},\\
+(A_{r,:},T_{r,:},b_r)&\leftarrow(A_{r,:},T_{r,:},b_r)
+ -f(A_{k,:},T_{k,:},b_k),\quad r\ne k,\quad f=A_{rk}.
+\end{aligned}
+$$
+\alttext(Normalize the whole pivot row of all three blocks by its saved pivot, then subtract the current column entry times that normalized row from every other row.)
+
+All columns of both matrix blocks are updated, including earlier columns and
+zero clearing factors. No exact zero or identity is manufactured afterwards.
+This is a square inverse-and-solve API, not a general rectangular rank or RREF
+classifier. The related GJ presentation in
+[Tsao (1989), NASA TM101466, Section3](https://ntrs.nasa.gov/citations/19890011339)
+reduces to diagonal form under a no-pivoting assumption. Our variant normalizes
+pivot rows, uses partial pivoting and carries an explicit identity block.
+Its operation ordering and storage are therefore stated directly rather than
+borrowing another implementation's cost or a general error guarantee.
+
+> The original three-equation system, with unsnapped products
+
+Reuse 2x+y-z=8, -3x-y+2z=-11 and -2x+y+2z=-3. Their exact mathematical solution is
+(2,3,-1); the exact inverse has rows (4,3,-1),(-2,-2,1),(5,4,-1).
+Native fixtures and diagnostics replace the old report's local matrix-product
+loop. Diagnostics recompute both A*V and V*A in checked long-double arithmetic,
+where V is the supplied inverse candidate. They do not assume V is correct.
+The figure shows the actual inverse and A*V-I, retaining small residual values.
+
+```{cpp, results="markdown", file="figures/jordan_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_jordan.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto f=dm::algorithms::gaussian_elimination_example();const auto t=dm::algorithms::gauss_jordan_trace(f.a,f.b);
+ const auto d=dm::algorithms::inverse_residual_summary(f.a,t.run.result.inverse);const auto r=dm::algorithms::gaussian_residual_summary(f.a,f.b,t.run.result.x);
+ std::print("| row | computed inverse row | widened A*V row | widened V*A row |\n| ---: | --- | --- | --- |\n");
+ for(std::size_t i=0;i<3;++i)std::print("| {} | {} | {} | {} |\n",i,t.run.result.inverse[i],d.left_product[i],d.right_product[i]);
+ std::print("\nComputed solution at 17 significant digits: [{:.17g}, {:.17g}, {:.17g}].\n",t.run.result.x[0],t.run.result.x[1],t.run.result.x[2]);
+ std::print("Actual row swaps {}; accepted pivots {}; normalization rows {}; other-row updates {}; events {}; retained {}; whole bound {}.\n",t.run.work.row_swaps,t.run.accepted_pivots,t.run.work.normalizations,t.run.work.eliminations,t.events.size(),t.captured_entries,dm::algorithms::gauss_jordan_trace_entries(3));
+ std::print("Infinity errors: A*V-I {:.6e}; V*A-I {:.6e}; solve residual {:.6e}; normwise solve backward error {:.6e}.\n",d.left_error_inf,d.right_error_inf,r.residual_inf,r.backward_error);
+ std::print("Supplied norm product {:.6f}; cumulative row-interchange IDs {}.\n",d.norm_product,t.run.row_order);
+ dm::graphics::Diagram diagram(68,1100);
+ diagram.text({1.7,1.2},"Computed inverse V",25).text({10.7,1.2},"Unsnapped A*V - I",25);
+ for(std::size_t i=0;i<3;++i)for(std::size_t j=0;j<3;++j){diagram.text({1.7*double(j),-double(i)},std::format("{:.3f}",t.run.result.inverse[i][j]),23);diagram.text({9+1.7*double(j),-double(i)},std::format("{:.2e}",d.left_product[i][j]-(i==j?1.L:0.L)),19,{37,99,235});}
+ diagram.text({6.2,-3.1},"Small product residuals are computed evidence; labels are rounded.",22).save_svg("build/jordan_original.svg");
+ if(!t.run.result.solved||d.left_error_inf>1e-12L||d.right_error_inf>1e-12L||r.residual_inf>1e-12L)throw std::runtime_error("original solve and inverse");
+}
+```
+// result_begin: markdown
+| row | computed inverse row | widened A*V row | widened V*A row |
+| ---: | --- | --- | --- |
+| 0 | [4.000000000000003, 3.000000000000002, -1.0000000000000007] | [1, 4.4408920985006261617e-16, 0] | [1, -2.2204460492503130808e-16, 4.4408920985006261617e-16] |
+| 1 | [-2.0000000000000018, -2.0000000000000013, 1.0000000000000004] | [8.8817841970012523234e-16, 1, -2.2204460492503130808e-16] | [-4.4408920985006261617e-16, 1, 0] |
+| 2 | [5.0000000000000036, 4.000000000000003, -1.0000000000000009] | [0, -4.4408920985006261617e-16, 1] | [8.8817841970012523234e-16, 0, 1] |
+
+Computed solution at 17 significant digits: [2, 3, -0.99999999999999989].
+Actual row swaps 2; accepted pivots 3; normalization rows 3; other-row updates 6; events 12; retained 387; whole bound 387.
+Infinity errors: A*V-I 1.110223e-15; V*A-I 8.881784e-16; solve residual 2.220446e-16; normwise solve backward error 7.656711e-18.
+Supplied norm product 60.000000; cumulative row-interchange IDs [1, 2, 0].
+\image(figures/jordan_original.svg)
+// result_end
+\caption(The original report displayed a product snapped to the identity below a threshold. This figure instead labels the actual widened residual, so small floating errors stay visible.)
+\alttext(The computed inverse has rows approximately4,3,minus1; minus2,minus2,1; and5,4,minus1. A second grid shows scientific-notation values of A times V minus I without threshold snapping.)
+
+For a product P, the diagnostic infinity error is max_i sum_j |P_ij-I_ij|.
+The product of the supplied matrix norms is ||A||inf ||V||inf. It is a condition
+number only when V is the true inverse; an arbitrary candidate's norm product
+cannot certify conditioning. These computed residuals are not interval proofs
+of inverse accuracy. Long double may have the same range and precision as double
+on some platforms, so widening is checked rather than promised extra precision.
+
+The same limitation applies to a solve residual: a small ||b-Ax|| alone needs a
+conditioning argument before it bounds forward error. The
+[LAPACK Users' Guide](https://netlib.org/lapack/lug/node81.html)
+distinguishes normwise backward error from conditioning and forward error.
+[G. Peters and J. H. Wilkinson (1975), On the Stability of Gauss-Jordan Elimination with Pivoting](https://doi.org/10.1145/360569.360653)
+is the original focused stability reference; this report makes no unconditional
+accuracy claim for the native implementation.
+
+> The inverse block has an explicit cost
+
+The old report described the inverse as free and quoted roughly 50% more work.
+That description does not fit this full-block implementation. At each of n
+columns it normalizes n entries in A, n entries in the identity block and one
+RHS entry. It then clears n-1 other rows, updating all n entries of both blocks:
+
+$$
+\begin{aligned}
+C_{A\rm\ updates}&=C_{T\rm\ updates}=n^2(n-1),\\
+C_{A\rm\ divisions}&=C_{T\rm\ divisions}=n^2,\\
+C_{\rm RHS\ updates}&=n(n-1),\qquad C_{\rm RHS\ divisions}=n.
+\end{aligned}
+$$
+\alttext(Each matrix block receives n squared times n minus one multiply-subtract assignments and n squared normalization divisions; RHS updates are n times n minus one, with n divisions.)
+
+One update means one multiply-subtract assignment, not one floating operation.
+The native Gaussian solver's coefficient-update count is n(n-1)(n+1)/3. Comparing
+that count with the two Gauss–Jordan matrix blocks gives a ratio 6n/(n+1) for n>1.
+This compares these implementations performing different tasks: inverse-and-solve
+versus solve-only. It is not a universal ratio, benchmark or timing claim.
+Counts exclude validation, finite checks, allocation, diagnostics and trace copies.
+Ordinary arithmetic is O(n³) and storage O(n²). Full histories retain O(n²)
+events of O(n²) entries each, giving O(n⁴) copying and retained storage.
+
+```{cpp, results="markdown", file="figures/jordan_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_jordan.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::vector<double>x,gaussian,jordan,history;
+ std::print("| n | Gaussian coefficient updates | GJ coefficient updates | GJ identity-block updates | total GJ/Gaussian ratio | normalization divisions, both blocks | whole GJ trace entries |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t n:std::array<std::size_t,7>{4,8,16,32,64,128,256}){
+  const auto a=dm::algorithms::gaussian_elimination_growth_matrix(n);const std::vector<double>b(n,1);
+  const auto g=dm::algorithms::gaussian_elimination_solve(a,b);const auto j=dm::algorithms::gauss_jordan_solve(a,b);const auto total=j.work.a_updates+j.work.transform_updates;const auto bound=dm::algorithms::gauss_jordan_trace_entries(n);
+  std::print("| {} | {} | {} | {} | {:.6f} | {} | {} |\n",n,g.work.coefficient_updates,j.work.a_updates,j.work.transform_updates,double(total)/g.work.coefficient_updates,j.work.a_divisions+j.work.transform_divisions,bound);
+  x.push_back(std::log2(double(n)));gaussian.push_back(std::log2(double(g.work.coefficient_updates)));jordan.push_back(std::log2(double(total)));history.push_back(std::log2(double(bound)));
+  if(!g.solution.solved||!j.result.solved||j.work.a_updates!=n*n*(n-1)||j.work.transform_updates!=n*n*(n-1))throw std::runtime_error("full block work");
+ }
+ auto plot=dm::graphics::RPlot::create();plot.lines(x,gaussian,"Gaussian updates",{37,99,235},2).points(x,gaussian,"",{37,99,235},4)
+  .lines(x,jordan,"GJ block updates",{220,38,38},2).points(x,jordan,"",{220,38,38},4)
+  .lines(x,history,"History entries",{22,163,74},2).legend({"Gaussian updates","GJ block updates","History entries"},{{37,99,235},{220,38,38},{22,163,74}})
+  .title("Counted arithmetic for different outputs, plus virtual history admission").xlab("log2 matrix order").ylab("log2 actual updates or virtual retained entries").y_limits(2,40).size(1100,540).save_svg("build/jordan_work.svg");
+}
+```
+// result_begin: markdown
+| n | Gaussian coefficient updates | GJ coefficient updates | GJ identity-block updates | total GJ/Gaussian ratio | normalization divisions, both blocks | whole GJ trace entries |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 4 | 20 | 48 | 48 | 4.800000 | 32 | 1004 |
+| 8 | 168 | 448 | 448 | 5.333333 | 128 | 11672 |
+| 16 | 1360 | 3840 | 3840 | 5.647059 | 512 | 157232 |
+| 32 | 10912 | 31744 | 31744 | 5.818182 | 2048 | 2300000 |
+| 64 | 87360 | 258048 | 258048 | 5.907692 | 8192 | 35152064 |
+| 128 | 699008 | 2080768 | 2080768 | 5.953488 | 32768 | 549552512 |
+| 256 | 5592320 | 16711680 | 16711680 | 5.976654 | 131072 | 8690991872 |
+\image(figures/jordan_work.svg)
+// result_end
+\caption(Both solvers run on the same nonsingular generated matrices. The trace bound is calculated without allocating those large histories; its units differ from arithmetic updates.)
+\alttext(Two actual update-count curves grow cubically, with Gauss–Jordan carrying both full matrix blocks. A higher quartic curve shows virtual whole-history entries. The plot reports counts, not timings.)
+
+> Clearing above a normalized pivot can use a large factor
+
+Partial pivoting selects among the remaining rows in the current column.
+The native elimination event records raw f=A[r][k] after the pivot row has been
+normalized. This is not Gaussian elimination's ratio to an unnormalized pivot.
+It need not be bounded by 1, and earlier rows above the pivot are not candidates
+in that pivot search.
+
+For A=[[1,100],[0,1]], the second pivot is 1 and its row needs no scaling change.
+Clearing row 0 uses raw factor 100. This is an exact, hand-checkable illustration;
+a large raw clearing factor alone is not a proof that the computed answer is bad.
+The native inverse is [[1,-100],[0,1]], and both products are exactly I for these
+representable inputs. Supplying I as a deliberately wrong inverse gives large
+product errors, even though its supplied norm product is much smaller.
+
+```{cpp, results="markdown", file="figures/jordan_above.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_jordan.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const dm::algorithms::GaussianMatrix a{{1,100},{0,1}};const auto t=dm::algorithms::gauss_jordan_trace(a,{101,1});
+ std::vector<double>factors;std::vector<std::string>labels;
+ std::print("| elimination column | cleared row | raw factor | resulting RHS |\n| ---: | ---: | ---: | --- |\n");
+ for(const auto&e:t.events)if(e.kind=="eliminate"){std::print("| {} | {} | {:.1f} | {} |\n",e.column,e.row,e.value,e.rhs);factors.push_back(std::fabs(e.value));labels.push_back(std::format("column {}, row {}",e.column,e.row));}
+ const auto correct=dm::algorithms::inverse_residual_summary(a,t.run.result.inverse);const auto wrong=dm::algorithms::inverse_residual_summary(a,{{1,0},{0,1}});
+ std::print("\nSolution {}; inverse {}; largest raw clearing factor {:.1f}; swaps {}.\n",t.run.result.x,t.run.result.inverse,t.run.max_clear_factor,t.run.work.row_swaps);
+ std::print("| supplied inverse | A*V-I infinity error | V*A-I infinity error | supplied norm product |\n| --- | ---: | ---: | ---: |\n| Native result | {:.1f} | {:.1f} | {:.1f} |\n| Deliberately wrong identity | {:.1f} | {:.1f} | {:.1f} |\n",correct.left_error_inf,correct.right_error_inf,correct.norm_product,wrong.left_error_inf,wrong.right_error_inf,wrong.norm_product);
+ auto plot=dm::graphics::RPlot::barplot(factors,labels);plot.title("An actual above-pivot clearing factor can exceed 1").xlab("Actual other-row update").ylab("Absolute raw f used against the normalized pivot row").y_limits(0,115).size(1050,520).save_svg("build/jordan_above.svg");
+ if(t.run.max_clear_factor!=100||correct.left_error_inf!=0||correct.right_error_inf!=0||wrong.left_error_inf!=100||wrong.right_error_inf!=100)throw std::runtime_error("above pivot and candidate controls");
+}
+```
+// result_begin: markdown
+| elimination column | cleared row | raw factor | resulting RHS |
+| ---: | ---: | ---: | --- |
+| 0 | 1 | 0.0 | [101, 1] |
+| 1 | 0 | 100.0 | [1, 1] |
+
+Solution [1, 1]; inverse [[1, -100], [0, 1]]; largest raw clearing factor 100.0; swaps 0.
+| supplied inverse | A*V-I infinity error | V*A-I infinity error | supplied norm product |
+| --- | ---: | ---: | ---: |
+| Native result | 0.0 | 0.0 | 10201.0 |
+| Deliberately wrong identity | 100.0 | 100.0 | 101.0 |
+\image(figures/jordan_above.svg)
+// result_end
+\caption(The first clearing factor is 0 and the later above-pivot factor is 100. Both correct inverse products have zero residual here; this example distinguishes the factor from an error guarantee.)
+\alttext(The second of two bars reaches100 for clearing row 0 in column1; the first has zero height. A computed table contrasts the native inverse with a deliberately wrong identity candidate.)
+
+> Cutoff failure leaves a partial transformation, not an inverse
+
+The legacy absolute threshold remains 1e-12. Selected pivots strictly below it
+return solved=false with empty solution and inverse arrays; equality is accepted.
+This does not distinguish inconsistent from underdetermined systems and is not
+a rank certificate. A uniformly scaled 1e-13 identity matrix is well conditioned
+yet fails the default cutoff. New APIs expose an explicit positive finite cutoff;
+choosing 1e-15 accepts that system without changing the legacy default.
+
+All matrix and RHS shapes and finite entries are checked before pivoting,
+including entries beyond an early zero pivot. Nonfinite stored arithmetic throws;
+rounding, underflow and loss of accuracy can still occur. A thrown exception
+returns no partial trace and does not mutate the caller.
+
+A trace admits its whole conservative history before copies or inverse/state
+allocation. With at most E=n²+n actual pivot/normalize/eliminate events:
+
+$$
+H(n)=n^2+2n+(n^2+n)(1+2n^2+4n).
+$$
+\alttext(History entries comprise the original matrix rows and cells plus RHS, then every possible event's metadata, two matrix blocks with row records, RHS and permutation.)
+
+The count includes input and event matrix row records. It excludes ordinary final
+output, root/work metadata, working state and allocator bytes: entries are not
+bytes or peak RAM. Default cap is one million; zero disables only the optional
+cap, while arithmetic, container and work-counter checks remain.
+Successful two-row traces retain exactly the whole bound 110. A first-pivot
+rejection retains only 25 entries, but still needs admission 110; cap 25 cannot
+request an early-stop discount. There is no replay, truncation or partial output.
+Inverse diagnostics use a separate product-row/cell quota with different units.
+
+```{cpp, results="markdown", file="figures/jordan_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_jordan.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto singular=dm::algorithms::gauss_jordan_trace({{1,2},{2,4}},{1,3});
+ const auto partial=dm::algorithms::inverse_residual_summary(singular.input,singular.events.back().transform);
+ std::print("Singular/inconsistent example: solved {}; legacy solution size {}; legacy inverse rows {}; accepted pivots {}; final event {}; partial-transform inverse errors {:.1f}, {:.1f}.\n",singular.run.result.solved,singular.run.result.x.size(),singular.run.result.inverse.size(),singular.run.accepted_pivots,singular.events.back().kind,partial.left_error_inf,partial.right_error_inf);
+ const dm::algorithms::GaussianMatrix tiny{{1e-13,0},{0,1e-13}};const std::vector<double>bsmall{1e-13,2e-13};const auto rejected=dm::algorithms::gauss_jordan_solve(tiny,bsmall);const auto accepted=dm::algorithms::gauss_jordan_solve(tiny,bsmall,1e-15);
+ std::print("Scaled identity: default cutoff accepted {}; explicit 1e-15 accepted {}; solution {}.\n",rejected.result.solved,accepted.result.solved,accepted.result.x);
+ dm::algorithms::GaussianMatrix zero{{0,0},{0,0}};std::vector<double>b{0,0};bool denied=false;try{(void)dm::algorithms::gauss_jordan_trace(zero,b,25);}catch(const std::length_error&){denied=true;}
+ auto early=dm::algorithms::gauss_jordan_trace(zero,b,110);zero.clear();b.clear();early.events[0].transform[0][0]=99;
+ auto full=dm::algorithms::gauss_jordan_trace({{1,1},{2,3}},{3,8});full.events[0].transform[0][0]=99;
+ const bool owned=early.input[0][0]==0&&early.run.reduced[0][0]==0&&full.events[1].transform[0][0]!=99&&full.run.result.inverse[0][0]!=99;
+ bool shape=false,later_nan=false,arithmetic=false,virtual_count=false,product_quota=false;
+ try{(void)dm::algorithms::gauss_jordan_trace({{1,2},{3}},{1,2},1);}catch(const std::invalid_argument&){shape=true;}
+ try{(void)dm::algorithms::gauss_jordan_trace({{0,0},{0,std::numeric_limits<double>::quiet_NaN()}},{0,0},1);}catch(const std::invalid_argument&){later_nan=true;}
+ const double m=std::numeric_limits<double>::max();try{(void)dm::algorithms::gauss_jordan({{m,m},{-m,m}},{m,m});}catch(const std::overflow_error&){arithmetic=true;}
+ try{(void)dm::algorithms::gauss_jordan_trace_entries(std::numeric_limits<std::size_t>::max());}catch(const std::length_error&){virtual_count=true;}
+ try{(void)dm::algorithms::inverse_residual_summary({{1,0},{0,1}},{{1,0},{0,1}},11);}catch(const std::length_error&){product_quota=true;}
+ const auto empty=dm::algorithms::gauss_jordan_trace({},{});
+ std::print("History upper {}; successful actual {}; early-rejected actual {}; cap 25 rejected {}; cap 110 admitted true; independent owned copies {}.\n",dm::algorithms::gauss_jordan_trace_entries(2),full.captured_entries,early.captured_entries,denied,owned);
+ std::print("Checks: shape before quota {}; later NaN before early pivot/quota {}; stored arithmetic overflow {}; virtual count overflow {}; independent product quota {}.\n",shape,later_nan,arithmetic,virtual_count,product_quota);
+ std::print("Empty: solved {}; inverse rows {}; events {}; retained {}; inverse-product error {}.\n",empty.run.result.solved,empty.run.result.inverse.size(),empty.events.size(),empty.captured_entries,dm::algorithms::inverse_residual_summary({},{}).left_error_inf);
+ auto plot=dm::graphics::RPlot::barplot({110.,double(full.captured_entries),double(early.captured_entries),25.},{"Whole admission","Successful history","Early rejection","Rejected cap"});plot.title("Successful histories attain the bound; early failure is not discounted").xlab("Two-row full augmented trace").ylab("Retained-history entries, not bytes").y_limits(0,130).size(1100,520).save_svg("build/jordan_controls.svg");
+ if(!denied||!owned||!shape||!later_nan||!arithmetic||!virtual_count||!product_quota||rejected.result.solved||!accepted.result.solved)throw std::runtime_error("cutoff and resource controls");
+}
+```
+// result_begin: markdown
+Singular/inconsistent example: solved false; legacy solution size 0; legacy inverse rows 0; accepted pivots 1; final event reject; partial-transform inverse errors 6.0, 2.0.
+Scaled identity: default cutoff accepted false; explicit 1e-15 accepted true; solution [1, 2].
+History upper 110; successful actual 110; early-rejected actual 25; cap 25 rejected true; cap 110 admitted true; independent owned copies true.
+Checks: shape before quota true; later NaN before early pivot/quota true; stored arithmetic overflow true; virtual count overflow true; independent product quota true.
+Empty: solved true; inverse rows 0; events 0; retained 0; inverse-product error 0.
+\image(figures/jordan_controls.svg)
+// result_end
+\caption(Successful histories attain their bound because all event blocks have full size. A much shorter failed trace still needs conservative admission; its partial transformation is not returned as a legacy inverse.)
+\alttext(Four bars show whole admission 110, successful history110, early rejection25 and a rejected cap 25. Computed controls cover partial inverse state, scaled cutoff, owned copies, full validation and empty input.)
+
+The native trace makes inverse construction inspectable while keeping the exact
+operation ordering of the original implementation. It also makes the costs and
+failure semantics visible. Inverse products, solve residuals, partial-pivot
+choices and resource admission answer separate questions; none supplies an
+unconditional certificate of accuracy. These exact generated systems need no
+external dataset and do not make an elapsed-time claim.

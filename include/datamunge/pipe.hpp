@@ -23,10 +23,12 @@
 /// @endcode
 
 #include <datamunge/dstruct/dataframe.hpp>
+#include <datamunge/vector.hpp>
 
 #include <algorithm>
 #include <cstddef>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -184,6 +186,29 @@ template <typename... Keys,
 template <typename Func>
 [[nodiscard]] SummariseEach<std::decay_t<Func>> summarise_each(Func&& func) {
   return SummariseEach<std::decay_t<Func>>{std::forward<Func>(func)};
+}
+
+/// @brief Resolve overloaded native vector reductions for summarise_each(), like dplyr's across().
+/// Gives dm::sum, dm::mean, dm::sd and dm::median a concrete function-pointer
+/// target, while the generic overload retains lambdas and captured callables.
+/// The step owns the pointer, borrows no data and invokes it only when piped
+/// into grouped data. Reduction/null semantics follow the primary overload.
+/// @param func Non-null reduction accepting a read-only dm::Vector<> and returning double.
+/// @return Owned SummariseEach step with the selected native reduction pointer.
+/// @throws std::invalid_argument If func is null.
+/// @par Example
+/// @code
+/// dm::dstruct::DataFrame frame;
+/// frame.add_column("group",std::vector<std::string>{"a","a"});
+/// frame.add_column("value",std::vector<double>{2,4});
+/// const auto totals=frame | dm::group_by("group") | dm::summarise_each(dm::sum);
+/// std::print("{}\n",totals.double_at("value",0)); // 6
+/// @endcode
+/// @see summarise_each(Func&&), dm::sum(), dm::mean(), dm::median()
+[[nodiscard]] inline SummariseEach<double (*)(const Vector<>&)> summarise_each(
+    double (*func)(const Vector<>&)) {
+  if (!func) throw std::invalid_argument("summarise_each: null native reduction");
+  return {func};
 }
 
 /// @brief Keeps the rows where `predicate(row)` is true, like dplyr::filter().

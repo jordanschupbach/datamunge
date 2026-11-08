@@ -1,24 +1,12 @@
 #pragma once
 
+#include <datamunge/algorithms/fisher_yates.hpp>
+
 #include <cstddef>
 #include <cstdint>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// @brief The *Fisher-Yates shuffle* (Fisher & Yates 1938; Durstenfeld's modern in-place form 1964,
-///        popularized by Knuth), which returns a *uniformly random* permutation of @p items: every
-///        one of the @c n! orderings is equally likely. Iterating @c i from the last index down to
-///        1, it swaps element @c i with a uniformly chosen element in @c [0, i]; because each swap
-///        draws from an interval that shrinks by one, the map from the @c n! possible draw sequences
-///        to permutations is a bijection, which is exactly what makes the result unbiased. Runs in
-///        @c O(n) time using a single pass and the library's seedable =random::SplitMix64= engine,
-///        so a given @p seed reproduces the same permutation.
-///
-/// @param items the elements to shuffle (any values; duplicates are permitted and preserved).
-/// @param seed  the seed for the internal SplitMix64 generator; equal seeds give equal results.
-/// @return a permutation of @p items.
-std::vector<int> fisher_yates_shuffle(const std::vector<int>& items, std::uint64_t seed);
 
 /// @brief *Heap's algorithm* (B. R. Heap, 1963): generates *all* @c n! permutations of @p items,
 ///        each obtained from the previous by a *single swap of two elements*, so the total number of

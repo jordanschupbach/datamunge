@@ -1,0 +1,386 @@
+//? Title: Forward–backward: evidence, filtering and smoothed state marginals
+//? Subtitle: Sum hidden paths, preserve the original fourteen-step example and expose the limits of scaled arithmetic
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A hidden Markov model assigns a probability to an observation sequence by summing
+its hidden state paths. Forward–backward reuses partial sums to compute that evidence
+and every time-specific state marginal. A two-time example makes the sum and the
+influence of future evidence visible. The original fourteen-symbol illustrative
+stream retains its likelihood, smoothed probabilities and Viterbi decode. Actual
+scaled tables and work counts then distinguish filtering, smoothing and joint-path
+decoding, while impossible sequences and tiny probabilities delimit the numerical contract.
+)
+
+\toc
+
+> Four hidden paths explain two observations
+
+Use two hidden states0 and1, each initially equally likely. Staying has probability
+0.8 and switching0.2. State0 emits symbol0 with probability0.9 and symbol1 with
+probability0.1; state1 reverses those probabilities. Observe symbols0,1.
+For each possible state path q_0,q_1, multiply its initial, emission, transition
+and emission probabilities. The four joint masses are0.036,0.081,0.001 and0.036,
+which sum to evidence0.154. Direct enumeration below is a bounded native reference;
+the report does not implement a second inference algorithm.
+
+```{cpp, results="markdown", file="figures/forward_backward_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/forward_backward.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <print>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::HiddenMarkovModel h{{.5,.5},{{.8,.2},{.2,.8}},{{.9,.1},{.1,.9}}};const std::vector<std::size_t> obs{0,1};const auto r=dm::algorithms::forward_backward(h,obs);const auto e=dm::algorithms::hmm_enumerate_paths(h,obs);
+  std::print("| hidden path | joint mass |\n| --- | ---: |\n");
+  for(const std::vector<std::size_t> q:std::vector<std::vector<std::size_t>>{{0,0},{0,1},{1,0},{1,1}})std::print("| {} | {:.3f} |\n",q,dm::algorithms::hmm_path_probability(h,obs,q));
+  std::print("\nEvidence: enumeration {:.6f}; scaled recursion {:.6f}; {} paths.\n",e.probability,std::exp(r.log_likelihood),e.paths);
+  std::print("| time | filtered P(state1) | smoothed P(state1) | reciprocal scale | sum(alpha*beta) |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t t=0;t<2;++t){double norm=0;for(std::size_t i=0;i<2;++i)norm+=r.alpha[t][i]*r.beta[t][i];std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",t,r.alpha[t][1],r.gamma[t][1],r.scale[t],norm);}
+  dm::graphics::Diagram d(62,1100);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=1;node.height=1;node.font_size=23;
+  d.node("a0",{0,3},"0",node).node("a1",{0,0},"1",node).node("b0",{8,3},"0",node).node("b1",{8,0},"1",node);
+  dm::graphics::DiagramStroke arrow;arrow.color={37,99,235};arrow.width=2.5;
+  d.edge("a0","b0","",arrow).edge("a0","b1","",arrow).edge("a1","b0","",arrow).edge("a1","b1","",arrow);
+  d.label({4,3.45},std::format("joint {:.3f}",dm::algorithms::hmm_path_probability(h,obs,{0,0})),21)
+   .label({2.65,2.0},std::format("joint {:.3f}",dm::algorithms::hmm_path_probability(h,obs,{0,1})),21)
+   .label({5.35,2.0},std::format("joint {:.3f}",dm::algorithms::hmm_path_probability(h,obs,{1,0})),21)
+   .label({4,-.45},std::format("joint {:.3f}",dm::algorithms::hmm_path_probability(h,obs,{1,1})),21)
+   .text({0,4.8},"time0, symbol0",23).text({8,4.8},"time1, symbol1",23)
+   .text({4,-1.7},std::format("Sum all four joint masses: evidence {:.3f}",e.probability),24)
+   .text({4,-2.8},std::format("Future symbol changes P(q0=1): {:.2f} → {:.6f}",r.alpha[0][1],r.gamma[0][1]),23).save_svg("build/forward_backward_tiny.svg");
+  if(std::abs(e.probability-.154L)>1e-15L||std::abs(r.gamma[0][1]-.037/.154)>1e-14)throw std::runtime_error("tiny path sum");
+}
+```
+// result_begin: markdown
+| hidden path | joint mass |
+| --- | ---: |
+| [0, 0] | 0.036 |
+| [0, 1] | 0.081 |
+| [1, 0] | 0.001 |
+| [1, 1] | 0.036 |
+
+Evidence: enumeration 0.154000; scaled recursion 0.154000; 4 paths.
+| time | filtered P(state1) | smoothed P(state1) | reciprocal scale | sum(alpha*beta) |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.100000 | 0.240260 | 2.000000 | 2.000000 |
+| 1 | 0.759740 | 0.759740 | 3.246753 | 3.246753 |
+\image(figures/forward_backward_tiny.svg)
+// result_end
+\caption(Each arrow represents one entire two-time hidden path, and its label is that path’s joint mass with both observations. Conditioning on the future symbol raises the first-time state1 marginal from0.1 to about0.24026.)
+\alttext(A native two-column state trellis labels the four joint masses0.036,0.081,0.001 and0.036. Their sum is0.154, and future evidence changes the first state-one probability.)
+
+> Reuse prefix and suffix sums
+
+A discrete model has initial probabilities pi_i, transitions A_ij from state i to j,
+and emissions B_i,k. Conditional on the current state, the next state follows A;
+conditional on each state, its observation follows B. For fixed model parameters,
+write alpha_t(i)=P(o_0..o_t,q_t=i) and beta_t(i)=P(o_(t+1)..o_(T−1) given q_t=i).
+Grouping the joint path sum by its boundary state gives
+
+$$
+\alpha_0(i)=\pi_i B_{i,o_0},\qquad
+\alpha_{t+1}(j)=B_{j,o_{t+1}}\sum_i\alpha_t(i)A_{ij},
+$$
+\alttext(The forward variable sums all prefix paths ending in each state, then multiplies by the next emission probability.)
+
+$$
+\beta_{T-1}(i)=1,\qquad
+\beta_t(i)=\sum_j A_{ij}B_{j,o_{t+1}}\beta_{t+1}(j),\qquad
+\gamma_t(i)=\frac{\alpha_t(i)\beta_t(i)}{\sum_j\alpha_t(j)\beta_t(j)}.
+$$
+\alttext(The backward variable sums future paths from each current state; multiplying prefix and suffix evidence and normalizing gives the smoothed state marginal.)
+
+The likelihood is the sum of the last unscaled forward row. Filtering conditions on
+the observed prefix; smoothing conditions on the whole sequence. The tiny example
+therefore changes its first-time belief when the later symbol is revealed, while its
+last filtered and smoothed marginals agree up to rounding.
+
+Rabiner's [A tutorial on hidden Markov models and selected applications in speech
+recognition](https://www.cs.ubc.ca/~murphyk/Software/HMM/rabiner.pdf),
+Proceedings of the IEEE77(2),257–286(1989),
+[doi:10.1109/5.18626](https://doi.org/10.1109/5.18626), develops the path sum,
+forward/backward recursions and marginal-state criterion in SectionIII. SectionV.A
+explains scaling and log evidence. The notation here uses zero-based time and state IDs.
+
+> The library's precise scaling convention
+
+Before normalizing forward row t, let z_t be its sum and c_t=1/z_t. The scaled
+forward row a_t has sum approximately one and is the filtering distribution. It
+satisfies a_t=(product of c_0 through c_t) times the unscaled alpha_t. The native
+backward table b uses terminal b_(T−1)=c_(T−1) and multiplies its recurrence by c_t.
+Thus b_t=(product of c_t through c_(T−1)) times the unscaled beta_t. Consequently,
+in exact arithmetic for positive evidence,
+
+$$
+\sum_i a_t(i)b_t(i)=c_t,\qquad
+\gamma_t(i)=\frac{a_t(i)b_t(i)}{\sum_j a_t(j)b_t(j)},\qquad
+\log P(O)=-\sum_{t=0}^{T-1}\log c_t.
+$$
+\alttext(The scaled forward-backward product sums to the current reciprocal scale, not necessarily one. Normalizing it gives state marginals, and negative log scales sum to log evidence.)
+
+The backward rows are not probability distributions and can contain values larger
+than one. The first table checks the product sum against c_t rather than assuming
+unit normalization. Equivalent backward scaling conventions exist; mixing their
+terminal values and recurrence factors would change the computation.
+
+> Preserve the original illustrative stream
+
+The original two-state model names its states Healthy and Fever and its three
+symbols normal, cold and dizzy. These are labels in a synthetic example, with fixed
+parameters supplied by the native fixture. The short sequence normal,cold,dizzy,dizzy
+has sixteen hidden paths. Its direct path sum and scaled evidence agree to numeric
+precision. The fourteen-symbol stream retains every original smoothed state1 value,
+Viterbi state and log-likelihood. The extra filtering column shows which changes
+come from future observations.
+
+```{cpp, results="markdown", file="figures/forward_backward_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/forward_backward.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <print>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto h=dm::algorithms::forward_backward_example_model();const auto obs=dm::algorithms::forward_backward_example_observations();const auto short_result=dm::algorithms::forward_backward(h,{0,1,2,2});const auto short_sum=dm::algorithms::hmm_enumerate_paths(h,{0,1,2,2});const auto r=dm::algorithms::forward_backward(h,obs);const auto v=dm::algorithms::viterbi(h,obs);
+  std::print("Original short sequence: scaled evidence {:.7f}; native path sum {:.7f}; log evidence {:.5f}; paths {}.\n",std::exp(short_result.log_likelihood),short_sum.probability,short_result.log_likelihood,short_sum.paths);
+  std::print("| day | symbol | filtered P(Fever) | smoothed P(Fever) | Viterbi state |\n| ---: | --- | ---: | ---: | --- |\n");
+  const std::vector<std::string> symbols{"normal","cold","dizzy"},states{"Healthy","Fever"};std::vector<double> days,filtered,smoothed,hard;
+  for(std::size_t t=0;t<obs.size();++t){std::print("| {} | {} | {:.7f} | {:.7f} | {} |\n",t+1,symbols[obs[t]],r.alpha[t][1],r.gamma[t][1],states[v.states[t]]);days.push_back(double(t+1));filtered.push_back(r.alpha[t][1]);smoothed.push_back(r.gamma[t][1]);hard.push_back(double(v.states[t]));}
+  std::print("\nOriginal fourteen-step log evidence {:.4f}; forward-backward product terms {}.\n",r.log_likelihood,dm::algorithms::forward_backward_work(h,obs).work.forward_transition_terms);
+  auto future=dm::graphics::RPlot::create();future.lines(days,filtered,"Filtered",{37,99,235},2).points(days,filtered,"",{37,99,235},3).lines(days,smoothed,"Smoothed",{220,38,38},2).points(days,smoothed,"",{220,38,38},3).legend({"Prefix only","Whole stream"},{{37,99,235},{220,38,38}}).title("Filtering versus smoothing").xlab("Day, one based").ylab("Conditional probability of state Fever");
+  auto decode=dm::graphics::RPlot::create();decode.lines(days,smoothed,"Smoothed",{220,38,38},2).lines(days,hard,"Viterbi",{37,99,235},1.5).abline_h(.5,{148,163,184},1).legend({"Smoothed marginal","Viterbi state0/1"},{{220,38,38},{37,99,235}}).title("A marginal versus one joint path").xlab("Day, one based").ylab("Probability or decoded state indicator");
+  dm::graphics::RLayout::create(1,2).add(future).add(decode).size(1100,540).title("Original fixed model and fourteen-symbol stream").fit_panels().save_svg("build/forward_backward_original.svg");
+  if(std::abs(std::exp(short_result.log_likelihood)-short_sum.probability)>1e-15L)throw std::runtime_error("original likelihood control");
+}
+```
+// result_begin: markdown
+Original short sequence: scaled evidence 0.0133576; native path sum 0.0133576; log evidence -4.31567; paths 16.
+| day | symbol | filtered P(Fever) | smoothed P(Fever) | Viterbi state |
+| ---: | --- | ---: | ---: | --- |
+| 1 | normal | 0.1176471 | 0.0845595 | Healthy |
+| 2 | normal | 0.0916399 | 0.0984974 | Healthy |
+| 3 | cold | 0.2675218 | 0.3879704 | Healthy |
+| 4 | dizzy | 0.7863898 | 0.8631101 | Fever |
+| 5 | dizzy | 0.8738762 | 0.9145533 | Fever |
+| 6 | dizzy | 0.8851067 | 0.8649627 | Fever |
+| 7 | cold | 0.4939909 | 0.4032957 | Healthy |
+| 8 | normal | 0.1397467 | 0.1490818 | Healthy |
+| 9 | cold | 0.2804130 | 0.4001659 | Healthy |
+| 10 | dizzy | 0.7891283 | 0.8521262 | Fever |
+| 11 | dizzy | 0.8742399 | 0.8505206 | Fever |
+| 12 | cold | 0.4906775 | 0.3852784 | Healthy |
+| 13 | normal | 0.1392642 | 0.0996693 | Healthy |
+| 14 | normal | 0.0940793 | 0.0940793 | Healthy |
+
+Original fourteen-step log evidence -14.9452; forward-backward product terms 52.
+\image(figures/forward_backward_original.svg)
+// result_end
+\caption(The left panel compares prefix-only filtering with whole-stream smoothing. The right contrasts smoothed marginals with the original hard Viterbi path; their threshold agreement here is a property of this fixture.)
+\alttext(Two native plots retain the original fourteen-day state-one marginal and Viterbi decode, with an additional filtering curve showing how future observations change current beliefs.)
+
+A marginal probability describes uncertainty conditional on the chosen model and
+parameters. It does not establish empirical calibration or account for parameter
+uncertainty. Thresholding these marginals happens to agree with Viterbi in the
+original example; that is not a general identity between the two objectives.
+
+> Marginal modes can fail to form an admissible path
+
+Smoothing returns one distribution per time. Choosing the most probable state
+independently at each time maximizes the expected number of correctly labelled
+positions, because that expected count is the sum of the selected marginals.
+It need not maximize whole-path probability or respect a positive-probability
+transition at every step. Viterbi optimizes a joint path score instead.
+
+For a concrete positive-evidence control, take initial probabilities0.4,0.3,0.3.
+State0 goes to2; states1 and2 go to1; each allowed transition has probability one.
+Every state emits the single observed symbol with probability one, so the two-time
+evidence is one. The first marginal mode is0 and the second is1, but0→1 is forbidden.
+The most likely joint path is0→2 with mass0.4. The program queries both path masses
+through the same native joint-probability API.
+
+```{cpp, results="markdown", file="figures/forward_backward_modes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/forward_backward.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <print>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::HiddenMarkovModel h{{.4,.3,.3},{{0,0,1},{0,1,0},{0,1,0}},{{1},{1},{1}}};const std::vector<std::size_t>obs{0,0};const auto r=dm::algorithms::forward_backward(h,obs);const auto v=dm::algorithms::viterbi(h,obs);std::vector<std::size_t> modes;
+  std::print("| time | P(state0) | P(state1) | P(state2) | marginal mode |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t t=0;t<2;++t){const auto&row=r.gamma[t];const auto mode=std::size_t(std::max_element(row.begin(),row.end())-row.begin());modes.push_back(mode);std::print("| {} | {:.1f} | {:.1f} | {:.1f} | {} |\n",t,row[0],row[1],row[2],mode);}
+  const auto marginal_mass=dm::algorithms::hmm_path_probability(h,obs,modes),joint_mass=dm::algorithms::hmm_path_probability(h,obs,v.states);
+  std::print("\nMarginal modes {}; joint mass {:.1f}. Viterbi {}; joint mass {:.1f}. Evidence {:.1f}.\n",modes,marginal_mass,v.states,joint_mass,std::exp(r.log_likelihood));
+  dm::graphics::Diagram d(65,1050);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=1;node.height=1;node.font_size=23;
+  for(std::size_t t=0;t<2;++t)for(std::size_t i=0;i<3;++i)d.node(std::to_string(t)+"_"+std::to_string(i),{7*double(t),4-2*double(i)},std::to_string(i),node);
+  dm::graphics::DiagramStroke ordinary,chosen,forbidden;ordinary.color={148,163,184};chosen.color={22,163,74};chosen.width=3.5;forbidden.color={220,38,38};forbidden.dashed=true;
+  d.edge("0_0","1_2","",chosen).edge("0_1","1_1","",ordinary).edge("0_2","1_1","",ordinary).edge("0_0","1_1","",forbidden)
+   .label({3.5,.7},"Viterbi: joint mass0.4",22,{22,101,52}).label({4.5,3.8},"Marginal modes: forbidden",21,{185,28,28})
+   .text({0,5.5},"time0",24).text({7,5.5},"time1",24).text({3.5,-1.5},"Solid links are allowed; dashed red link has probability0",23).save_svg("build/forward_backward_modes.svg");
+  if(marginal_mass!=0||std::abs(joint_mass-.4L)>1e-15L)throw std::runtime_error("marginal mode counterexample");
+}
+```
+// result_begin: markdown
+| time | P(state0) | P(state1) | P(state2) | marginal mode |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.4 | 0.3 | 0.3 | 0 |
+| 1 | 0.0 | 0.6 | 0.4 | 1 |
+
+Marginal modes [0, 1]; joint mass 0.0. Viterbi [0, 2]; joint mass 0.4. Evidence 1.0.
+\image(figures/forward_backward_modes.svg)
+// result_end
+\caption(All solid transitions are allowed. The dashed red marginal-mode link0→1 has probability zero, whereas the green Viterbi path0→2 has positive joint mass0.4.)
+\alttext(A native two-time three-state trellis shows solid allowed transitions zero to two, one to one and two to one, with a dashed forbidden zero-to-one link for the independently selected marginal modes.)
+
+> Scaling helps long products but has explicit numeric limits
+
+For one state with transition probability one and two equiprobable symbols,
+T repetitions of symbol0 have probability2^(−T). Every forward marginal is one,
+every reciprocal scale is two and every backward entry under this convention is two.
+The native log-likelihood remains finite when converting it back to an ordinary
+double probability underflows to zero. The table separates those two operations.
+
+```{cpp, results="markdown", file="figures/forward_backward_numerics.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/forward_backward.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <print>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::HiddenMarkovModel h{{1},{{1}},{{.5,.5}}};std::vector<double>x,y;
+  std::print("| observations | log evidence | exp(log evidence), double | last scale | last marginal |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t T:{1u,10u,100u,1000u,10000u}){const auto r=dm::algorithms::forward_backward(h,std::vector<std::size_t>(T,0));std::print("| {} | {:.6f} | {:.6g} | {:.0f} | {:.0f} |\n",T,r.log_likelihood,std::exp(r.log_likelihood),r.scale.back(),r.gamma.back()[0]);x.push_back(double(T));y.push_back(-r.log_likelihood);if(std::abs(r.log_likelihood+double(T)*std::log(2.))>1e-8)throw std::runtime_error("long scaled evidence");}
+  const auto impossible=dm::algorithms::forward_backward(dm::algorithms::HiddenMarkovModel{{1},{{1}},{{1,0}}},{0,1});bool reciprocal=false,underflow=false;
+  try{dm::algorithms::forward_backward(dm::algorithms::HiddenMarkovModel{{1},{{1}},{{1,1e-320}}},{1});}catch(const std::overflow_error&){reciprocal=true;}
+  const auto tiny=std::numeric_limits<double>::denorm_min();try{dm::algorithms::forward_backward(dm::algorithms::HiddenMarkovModel{{.5,.5},{{1,0},{0,1}},{{1,tiny},{1,0}}},{0,1});}catch(const std::underflow_error&){underflow=true;}
+  std::print("\nImpossible sequence: negative-infinite log evidence {}; gamma placeholders [{:.0f}, {:.0f}]. Tiny reciprocal overflow rejected {}; positive-support underflow rejected {}.\n",std::isinf(impossible.log_likelihood)&&impossible.log_likelihood<0,impossible.gamma[0][0],impossible.gamma[1][0],reciprocal,underflow);
+  auto plot=dm::graphics::RPlot::create();plot.lines(x,y,"Native scaled result",{37,99,235},2).points(x,y,"",{37,99,235},5).title("One-state evidence: negative log likelihood grows as T log(2)").xlab("Observation count T; linear scale").ylab("Negative log likelihood; natural-log units").size(1000,520).save_svg("build/forward_backward_numerics.svg");
+  if(!reciprocal||!underflow||!std::isinf(impossible.log_likelihood))throw std::runtime_error("numerical boundary controls");
+}
+```
+// result_begin: markdown
+| observations | log evidence | exp(log evidence), double | last scale | last marginal |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | -0.693147 | 0.5 | 2 | 1 |
+| 10 | -6.931472 | 0.000976562 | 2 | 1 |
+| 100 | -69.314718 | 7.88861e-31 | 2 | 1 |
+| 1000 | -693.147181 | 9.33264e-302 | 2 | 1 |
+| 10000 | -6931.471806 | 0 | 2 | 1 |
+
+Impossible sequence: negative-infinite log evidence true; gamma placeholders [0, 0]. Tiny reciprocal overflow rejected true; positive-support underflow rejected true.
+\image(figures/forward_backward_numerics.svg)
+// result_end
+\caption(The scaled log evidence remains finite for this ten-thousand-observation control, while its double exponential is zero. Separate executed controls distinguish impossible evidence, reciprocal overflow and lost positive support.)
+\alttext(A native linear plot shows negative log evidence versus sequence length for a one-state fair-symbol model, ending near6931.47 at ten thousand observations.)
+
+Impossible evidence is a mathematical zero: no positive-weight state path explains
+the sequence, so its log-likelihood is negative infinity and conditioning on it has
+no posterior distribution. The returned zero gamma rows are placeholders for an undefined posterior. They must not be read as certain absence of every state.
+The old implementation incorrectly retained a finite prefix log score in this case;
+the canonical function now reports the impossible sequence correctly.
+
+A different case has positive support but an actual predictive sum rounds to zero.
+A Boolean support probe distinguishes that numeric failure from impossibility and
+throws an underflow error. Nonfinite reciprocal scales, accumulators or updates
+throw overflow errors. Smaller individual terms may still round away, so these
+checks do not establish arbitrary precision or accuracy for all rare states.
+Scaling does not promise to work unchanged for sequences of any length: table
+capacity, memory, summation error and representable intermediate values still matter.
+The widened enumerator also checks its positive prefix products for underflow;
+it is a small-model reference rather than an unlimited-precision oracle.
+
+> Actual work, admission and ownership
+
+With N states, M symbols and T positive observations, the two recursions each
+visit (T−1)*N² transition terms. A forward term has one multiplication before its
+accumulation; a backward term has two. Initialization, scaling and gamma formation
+add O(TN). Full model validation adds O(N²+NM), including when T=0, and observation
+validation adds O(T). Total time is O(N²+NM+T+TN²); owned arrays use O(TN+T).
+The ordinary result already stores actual alpha, beta, gamma and scale tables, so
+no replay or redundant full-history interface is needed.
+
+The next fixed-two-state control compares actual transition terms from both passes
+with the checked count2^T of paths an enumerator would visit. The large reference
+counts are forecasts, not executed enumerations or elapsed-time measurements.
+
+```{cpp, results="markdown", file="figures/forward_backward_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/forward_backward.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <print>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  auto h=dm::algorithms::forward_backward_example_model();std::vector<double>x,terms,paths;std::vector<std::string>labels;
+  std::print("| observations | forward terms | backward terms | enumeration path forecast |\n| ---: | ---: | ---: | ---: |\n");
+  for(std::size_t T:{2u,4u,8u,16u,32u}){const auto w=dm::algorithms::forward_backward_work(h,std::vector<std::size_t>(T,0)).work;const auto count=dm::algorithms::hmm_enumeration_paths(h.num_states(),T);std::print("| {} | {} | {} | {} |\n",T,w.forward_transition_terms,w.backward_transition_terms,count);x.push_back(double(x.size()));terms.push_back(std::log2(double(w.forward_transition_terms+w.backward_transition_terms)));paths.push_back(std::log2(double(count)));labels.push_back(std::to_string(T));}
+  const auto bound=dm::algorithms::forward_backward_entries(2,2);bool quota=false,domain=false,enum_cap=false,huge=false;try{dm::algorithms::forward_backward_work(h,{0,1},bound-1);}catch(const std::length_error&){quota=true;}
+  auto bad=h;bad.emission.back().clear();try{dm::algorithms::forward_backward_work(bad,{0,1},1);}catch(const std::invalid_argument&){domain=true;}
+  try{dm::algorithms::hmm_enumerate_paths(h,{0,1,2,2},15);}catch(const std::length_error&){enum_cap=true;}
+  try{dm::algorithms::hmm_enumeration_paths(2,std::numeric_limits<std::size_t>::max());}catch(const std::length_error&){huge=true;}
+  std::vector<std::size_t>obs{0,1};const auto result=dm::algorithms::forward_backward_work(h,obs,bound);const double before=result.result.gamma[0][1];h.initial={1,0};obs[0]=2;const bool owned=result.result.gamma[0][1]==before;
+  std::print("\nWhole inference entries {}; one below rejected {}; exact bound forward rows {}; original fourteen-step entries {}.\n",bound,quota,result.result.alpha.size(),dm::algorithms::forward_backward_entries(2,14));
+  std::print("Checked controls: ragged model before quota {}; sixteen-path enumeration cap15 rejected {}; virtual path-count overflow {}; owned result after caller edits {}.\n",domain,enum_cap,huge,owned);
+  std::print("Empty model and sequence: inference entries {}; enumeration paths {}; log evidence {:.0f}.\n",dm::algorithms::forward_backward_entries(0,0),dm::algorithms::hmm_enumeration_paths(0,0),dm::algorithms::forward_backward({},{}).log_likelihood);
+  auto plot=dm::graphics::RPlot::create();plot.lines(x,terms,"Both recursion passes",{37,99,235},2).points(x,terms,"",{37,99,235},4).lines(x,paths,"Enumeration forecast",{220,38,38},2).points(x,paths,"",{220,38,38},4).x_tick_labels(labels).legend({"Actual transition terms","Forecast hidden paths"},{{37,99,235},{220,38,38}}).title("Fixed N=2: actual recursion visits versus path forecast").xlab("Observations T; consecutive powers of two").ylab("log2 of count; different operation units").size(1000,520).save_svg("build/forward_backward_work.svg");
+  if(!quota||!domain||!enum_cap||!huge||!owned)throw std::runtime_error("validated admission and ownership");
+}
+```
+// result_begin: markdown
+| observations | forward terms | backward terms | enumeration path forecast |
+| ---: | ---: | ---: | ---: |
+| 2 | 4 | 4 | 4 |
+| 4 | 12 | 12 | 16 |
+| 8 | 28 | 28 | 256 |
+| 16 | 60 | 60 | 65536 |
+| 32 | 124 | 124 | 4294967296 |
+
+Whole inference entries 20; one below rejected true; exact bound forward rows 2; original fourteen-step entries 140.
+Checked controls: ragged model before quota true; sixteen-path enumeration cap15 rejected true; virtual path-count overflow true; owned result after caller edits true.
+Empty model and sequence: inference entries 0; enumeration paths 1; log evidence 0.
+\image(figures/forward_backward_work.svg)
+// result_end
+\caption(The blue series counts actual pair terms in both recursion passes; the red series forecasts whole hidden paths. Units differ, and neither curve measures runtime. The log2 axis keeps the exponential reference visible.)
+\alttext(A native line plot compares log-base-two actual transition-term counts with log-base-two hidden-path forecasts for two states and sequence lengths two, four, eight, sixteen and thirty-two.)
+
+All shapes are checked before probability values. Initial probabilities, every
+transition row and every emission row must have finite entries in[0,1] summing to
+one within absolute1e−12 in widened arithmetic. There must be N transition rows of
+length N and N equal, nonempty emission rows. Parameters are never silently
+normalized. Observations and supplied state-path IDs are zero based and validated
+in full before indexing. The entirely empty model with empty observations has
+likelihood one, log-likelihood zero and empty inference tables. Invalid models are
+still rejected for empty observations.
+
+For N,T>0 the work API admits the whole result using C=4T+3TN entry records:
+three row records and one scale value per time, plus three N-scalar rows. The
+bound is zero if either dimension is zero. These are entries, not bytes or peak
+RAM; container objects and exceptional support scratch are additional. The default
+cap is one million entries; zero disables only the optional cap and retains all
+representability checks. The historical two-argument function has no optional cap.
+Both paths share the executing kernel, and every returned table owns its storage.
+Full validation happens before admission, allocation or empty shortcuts. Failures
+return no partial result and leave caller parameters and observations untouched.
+
+Enumeration has a separate default cap of one million paths, with zero disabling
+only that cap. Checked integer N^T and T*N^T bounds remain; there is no floating
+pow-to-integer conversion. Its time is O(T*N^T) after model validation, with O(TN+T)
+output and O(T) path scratch. Empty observations enumerate one empty path of mass
+one. A strict best-weight comparison keeps the first enumerated tie; that tie
+policy need not match Viterbi's predecessor policy.
+
+The fixed illustrative models require no external dataset. All figures are native
+C++ outputs saved locally, and the complete programs above are their editable sources.

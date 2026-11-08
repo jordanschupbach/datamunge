@@ -415,7 +415,7 @@ TEST(AlgorithmsFormat, ValueInitialisedRecords) {
     EXPECT_EQ(std::format("{}", alg::NFA{}),
               R"x(NFA(num_states=0, num_symbols=0, delta=[], start_states=[], accept=[]))x");
     EXPECT_EQ(std::format("{}", alg::DFA{}),
-              R"x(DFA(num_states=0, num_symbols=0, delta=[], start=0, accept=[]))x");
+              R"x(DFA(num_states=0, num_symbols=0, delta=[], start=-1, accept=[]))x");
     EXPECT_EQ(std::format("{}", alg::BakeryTicket{}),
               R"x(BakeryTicket(number=0, id=0))x");
     EXPECT_EQ(std::format("{}", alg::SafetyResult{}),

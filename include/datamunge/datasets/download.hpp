@@ -40,7 +40,7 @@ namespace datamunge::datasets {
 std::string data_home();
 
 /// @brief The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100",
-///        "diamonds", "fashion_mnist", "mnist", "rebot_devarm", "sudoku".
+///        "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".
 ///
 /// @par Example
 /// @code
@@ -55,6 +55,8 @@ std::vector<std::string> downloadable();
 /// IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
 /// `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
 /// "sudoku" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.
+/// "karate_club" holds the970-byte original ZIP, GML topology and source README;
+/// every cached archive/member is checksum-verified. karate_club() reads34nodes/78edges.
 /// "rebot_devarm" holds 38 pinned Seeed DevArm CAD/URDF/STL files and the
 /// CERN-OHL-W-2.0 source license in their upstream relative directory layout.
 /// DevArm verifies the size and SHA-256 of every cached file on every call;
@@ -67,7 +69,7 @@ std::vector<std::string> downloadable();
 ///
 /// @param name One of downloadable().
 /// @param directory Where the files live; empty means `data_home() + "/" + name`. Files
-///        already present there are used as they are, except DevArm's verified files.
+///        already present there are used as they are, except DevArm and karate_club's verified files.
 /// @return The local path of the CSV file or the dataset directory.
 /// @throws std::invalid_argument for an unknown name.
 /// @throws std::runtime_error if files are missing and downloading is disabled or fails, or
@@ -80,7 +82,7 @@ std::vector<std::string> downloadable();
 /// For a complete CAD asset tree, use `dm::datasets::fetch("rebot_devarm")`.
 /// @par References
 /// - Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm
-/// @see data_home(), downloadable(), download_file()
+/// @see data_home(), downloadable(), download_file(), karate_club()
 std::string fetch(const std::string& name, const std::string& directory = "");
 
 /// @brief Downloads @p url to @p destination with curl, unless the destination already exists.

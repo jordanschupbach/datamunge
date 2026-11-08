@@ -7,6 +7,7 @@
 //
 // Graphs are given as adjacency lists over vertices 0..n-1.
 
+#include <datamunge/algorithms/bron_kerbosch.hpp>
 #include <algorithm>
 #include <vector>
 
@@ -112,55 +113,6 @@ inline std::vector<int> tarjan_scc(int n, const std::vector<std::vector<int>>& a
         }
     }
     return comp;
-}
-
-namespace detail {
-
-inline void bron_kerbosch_rec(std::vector<int> R, std::vector<int> P, std::vector<int> X,
-                              const std::vector<std::vector<char>>& adjmat,
-                              std::vector<std::vector<int>>&         cliques) {
-    if (P.empty() && X.empty()) {
-        cliques.push_back(R);
-        return;
-    }
-    // Choose a pivot u from P union X maximising |P ∩ N(u)| to prune branches.
-    int pivot = -1, best = -1;
-    for (int u : P) { int cnt = 0; for (int v : P) if (adjmat[u][v]) ++cnt; if (cnt > best) { best = cnt; pivot = u; } }
-    for (int u : X) { int cnt = 0; for (int v : P) if (adjmat[u][v]) ++cnt; if (cnt > best) { best = cnt; pivot = u; } }
-
-    std::vector<int> candidates;
-    for (int v : P)
-        if (pivot < 0 || !adjmat[pivot][v]) candidates.push_back(v);
-
-    for (int v : candidates) {
-        std::vector<int> R2 = R;
-        R2.push_back(v);
-        std::vector<int> P2, X2;
-        for (int w : P) if (adjmat[v][w]) P2.push_back(w);
-        for (int w : X) if (adjmat[v][w]) X2.push_back(w);
-        bron_kerbosch_rec(std::move(R2), std::move(P2), std::move(X2), adjmat, cliques);
-        // move v from P to X
-        P.erase(std::remove(P.begin(), P.end(), v), P.end());
-        X.push_back(v);
-    }
-}
-
-} // namespace detail
-
-// Bron-Kerbosch with pivoting: all maximal cliques of an undirected graph, each
-// returned as a sorted vertex list.
-inline std::vector<std::vector<int>> bron_kerbosch(int n, const std::vector<std::vector<int>>& adj) {
-    std::vector<std::vector<char>> adjmat(n, std::vector<char>(n, 0));
-    for (int u = 0; u < n; ++u)
-        for (int v : adj[u])
-            if (u != v) { adjmat[u][v] = 1; adjmat[v][u] = 1; }
-
-    std::vector<int> P(n);
-    for (int i = 0; i < n; ++i) P[i] = i;
-    std::vector<std::vector<int>> cliques;
-    detail::bron_kerbosch_rec({}, P, {}, adjmat, cliques);
-    for (auto& cl : cliques) std::sort(cl.begin(), cl.end());
-    return cliques;
 }
 
 } // namespace datamunge::algorithms

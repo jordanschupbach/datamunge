@@ -8,22 +8,48 @@
 
 namespace datamunge::algorithms {
 
-/// @brief The result of a direct linear solve: whether the system was @ref solved (a unique solution
-///        exists) and the solution vector @ref x.
+/// @brief Owned legacy direct-solve result: computed cutoff success and solution.
+/// For gaussian_elimination(), solved=false means an absolute pivot fell below
+/// 1e-12, not a mathematical singularity certificate. No unique-solution or
+/// forward-accuracy guarantee follows from solved=true. Empty valid input succeeds.
+/// Field order and aggregate layout are unchanged; no caller storage is borrowed.
+/// @par Example
+/// @code
+/// const auto s = dm::algorithms::gaussian_elimination({{2}}, {4});
+/// std::cout << s.solved << ' ' << s.x[0]; // 1 2
+/// @endcode
+/// @see gaussian_elimination_solve()
 struct LinearSolution {
-    bool                solved{false}; ///< false if the matrix is singular / no unique solution.
-    std::vector<double> x;             ///< the solution (empty when @c solved is false).
+    bool                solved{false}; ///< True when the selected direct method completed.
+    std::vector<double> x;             ///< Owned solution, empty on Gaussian cutoff failure.
 };
 
-/// @brief *Gaussian elimination* with *partial pivoting*: the standard direct method for @c A x = b.
-///        It reduces the augmented matrix to upper-triangular form by row operations -- at each step
-///        swapping in the row with the largest pivot magnitude for numerical stability -- then solves
-///        by back substitution. Runs in @c O(n^3). Reports failure when the matrix is singular (a
-///        vanishing pivot).
-///
-/// @param a the coefficient matrix (@c n x @c n; taken by value and overwritten internally).
-/// @param b the right-hand side (length @c n).
-/// @return the @ref LinearSolution.
+/// @brief Checked legacy Gaussian elimination with earliest-tie partial pivoting.
+/// Full square shapes, matching RHS and finite entries are validated before
+/// indexing or arithmetic (by-value argument copies can precede validation).
+/// Preserves original ordered double operations and absolute pivot test <1e-12;
+/// equality is accepted. A cutoff failure returns solved=false/empty x and is not
+/// a rank certificate: uniform scaling can change acceptance. Empty valid input
+/// succeeds. Nonfinite stored arithmetic throws; roundoff/underflow and element
+/// growth remain possible. O(n³) time/O(n²) owned storage, no caller mutation.
+/// @param a Finite n-by-n coefficient rows, taken by value.
+/// @param b Finite length-n RHS, taken by value.
+/// @return Owned legacy-layout result, approximate x on success.
+/// @throws std::invalid_argument Non-square, size mismatch or nonfinite input.
+/// @throws std::length_error Container or work-counter capacities exceeded.
+/// @throws std::overflow_error A stored assignment or widened growth becomes nonfinite.
+/// @throws std::bad_alloc Argument copies, working state or output allocation fail.
+/// @par Example
+/// @code
+/// const auto s = dm::algorithms::gaussian_elimination({{0,1},{2,1}}, {1,3});
+/// std::cout << s.x[0] << ' ' << s.x[1]; // 1 1
+/// @endcode
+/// @par References
+/// - LAPACK DGETRF, partial-pivot row interchanges (blocked variant):
+///   https://netlib.org/lapack/explore-html/d3/d6a/dgetrf_8f_source.html .
+/// - J. H. Wilkinson (1961), Error Analysis of Direct Methods of Matrix Inversion,
+///   Journal of the ACM8(3),281–330, doi:10.1145/321075.321076 .
+/// @see gaussian_elimination_solve(), gaussian_elimination_trace(), LinearSolution
 LinearSolution gaussian_elimination(std::vector<std::vector<double>> a, std::vector<double> b);
 
 /// @brief The result of an iterative linear solve: whether it @ref converged to the tolerance, the
@@ -36,32 +62,57 @@ struct IterativeSolution {
     double              residual{0.0};    ///< Final residual norm ||A x - b||.
 };
 
-/// @brief The *Gauss-Seidel method*: a stationary iterative solver for @c A x = b. It sweeps the
-///        equations, solving the @c i-th for @c x_i using the *most recently updated* values of the
-///        other unknowns (in-place, unlike Jacobi's simultaneous update), which typically converges
-///        about twice as fast. It is guaranteed to converge when @c A is strictly diagonally
-///        dominant or symmetric positive-definite. Each sweep costs @c O(n^2).
-///
-/// @param a the coefficient matrix (@c n x @c n).
-/// @param b the right-hand side.
-/// @param max_iter the iteration cap.
-/// @param tol the convergence tolerance on the residual norm.
-/// @return the @ref IterativeSolution.
+/// @brief Checked forward in-place Gauss-Seidel from a zero initial iterate.
+/// Validates full finite square shape, matching RHS, nonzero diagonal and controls
+/// before any sweep. Uses the newest coordinates with widened sums and checked
+/// double assignments. Inclusive absolute recomputed residual stopping; empty/zero
+/// RHS can converge without a sweep. General matrices need not converge. O(kn²)
+/// time and O(n) scratch; no input mutation. Layout/signature remain unchanged.
+/// @param a Finite square coefficient matrix with nonzero diagonal.
+/// @param b Finite matching right-hand side.
+/// @param max_iter Nonnegative sweep budget, default 1000.
+/// @param tol Finite nonnegative absolute residual threshold, default 1e-10.
+/// @return Owned legacy-layout solution; zero-budget residual is ||b||.
+/// @throws std::invalid_argument Invalid shape, entries, diagonal or controls.
+/// @throws std::overflow_error Computed arithmetic cannot fit its format.
+/// @par Example
+/// @code
+/// const auto s = dm::algorithms::gauss_seidel({{2}}, {4});
+/// std::cout << s.x[0] << ' ' << s.converged; // 2 1
+/// @endcode
+/// @par References
+/// - Barrett et al., Templates for the Solution of Linear Systems, 2nd ed.,
+///   https://netlib.org/templates/templates.html , forward Gauss-Seidel.
+/// @see gauss_seidel_trace(), IterativeSolution
 IterativeSolution gauss_seidel(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
                                int max_iter = 1000, double tol = 1e-10);
 
-/// @brief The *conjugate gradient* method: the classic Krylov-subspace iterative solver for a
-///        *symmetric positive-definite* @c A. It minimizes the quadratic @c 1/2 x^T A x - b^T x along
-///        a sequence of mutually @c A-conjugate search directions, so that in exact arithmetic it
-///        reaches the exact solution in at most @c n steps -- and far fewer when the eigenvalues are
-///        clustered. Each iteration costs one matrix-vector product, @c O(n^2) for a dense matrix
-///        (much less for a sparse one, which is CG's real domain).
-///
-/// @param a a symmetric positive-definite matrix (@c n x @c n).
-/// @param b the right-hand side.
-/// @param max_iter the iteration cap.
-/// @param tol the convergence tolerance on the residual norm.
-/// @return the @ref IterativeSolution.
+/// @brief Checked dense conjugate gradient for a symmetric positive-definite system.
+/// Full finite/square/size and exact stored symmetry validation precedes solving.
+/// Positive definiteness is a precondition, not certified: encountered nonpositive
+/// curvature returns unconverged. Starts at zero and uses inclusive absolute
+/// recomputed residual stopping, including initially. Norms/inner products widen
+/// to long double; vector assignments round to checked double. Two products per
+/// completed step include a true-residual check. Recursive convergence without
+/// true convergence returns unconverged; conjugate_gradient_solve() exposes why.
+/// Exact-arithmetic n-step termination is not a floating guarantee. O(kn²) work,
+/// O(n) scratch, no input mutation; original result fields/signature are preserved.
+/// @param a Finite exactly symmetric square matrix, SPD by contract.
+/// @param b Finite matching right-hand side.
+/// @param max_iter Nonnegative iteration budget, default 1000.
+/// @param tol Finite nonnegative absolute true-residual cutoff, default 1e-10.
+/// @return Owned iterate with recomputed final residual, including zero-budget runs.
+/// @throws std::invalid_argument Invalid shape, entries, symmetry or controls.
+/// @throws std::overflow_error Computed arithmetic cannot fit its format.
+/// @par Example
+/// @code
+/// const auto s = dm::algorithms::conjugate_gradient({{2}}, {4});
+/// std::cout << s.x[0] << ' ' << s.iterations; // 2 1
+/// @endcode
+/// @par References
+/// - Hestenes and Stiefel (1952), Methods of Conjugate Gradients for Solving Linear
+///   Systems, https://doi.org/10.6028/jres.049.044 .
+/// @see conjugate_gradient_solve(), conjugate_gradient_trace(), IterativeSolution
 IterativeSolution conjugate_gradient(const std::vector<std::vector<double>>& a, const std::vector<double>& b,
                                      int max_iter = 1000, double tol = 1e-10);
 
@@ -80,25 +131,50 @@ IterativeSolution conjugate_gradient(const std::vector<std::vector<double>>& a, 
 std::vector<double> thomas_solve(std::vector<double> sub, std::vector<double> diag,
                                  std::vector<double> super, std::vector<double> rhs);
 
-/// @brief The result of @ref gauss_jordan: whether the system was @ref solved, the solution @ref x,
-///        and the full matrix @ref inverse (a by-product of reducing @c A to the identity).
+/// @brief Owned legacy Gauss–Jordan result: computed cutoff success, solution and inverse.
+/// Both arrays are empty on cutoff failure. Successful arrays contain floating
+/// approximations, not exact arithmetic certificates. Field order and aggregate
+/// layout are preserved. Empty valid square input succeeds with empty arrays.
+/// @par Example
+/// @code
+/// const auto s = dm::algorithms::gauss_jordan({{2}}, {4});
+/// std::cout << s.x[0] << ' ' << s.inverse[0][0]; // 2 0.5
+/// @endcode
+/// @see gauss_jordan_solve()
 struct GaussJordanResult {
-    bool                             solved{false}; ///< false when A is singular.
-    std::vector<double>              x;       ///< the solution to @c A x = b.
-    std::vector<std::vector<double>> inverse; ///< @c A^{-1} (empty when singular).
+    bool                             solved{false}; ///< True when all selected pivots passed the cutoff.
+    std::vector<double>              x;             ///< Owned approximate solution; empty on failure.
+    std::vector<std::vector<double>> inverse;        ///< Owned approximate inverse; empty on failure.
 };
 
-/// @brief *Gauss-Jordan elimination*: reduces the augmented matrix @c [A | I | b] all the way to
-///        *reduced* row-echelon form @c [I | A^{-1} | x] using full forward and backward
-///        elimination with partial pivoting. Unlike plain Gaussian elimination (which stops at
-///        upper-triangular and back-substitutes), Gauss-Jordan clears above the pivots too, so it
-///        yields the *matrix inverse* alongside the solution. Runs in @c O(n^3) (about 50% more
-///        arithmetic than Gaussian elimination, which is why it is preferred only when the inverse
-///        itself is wanted).
-///
-/// @param a the coefficient matrix (@c n x @c n; taken by value).
-/// @param b the right-hand side.
-/// @return the @ref GaussJordanResult with the solution and the inverse.
+/// @brief Checked legacy full augmented Gauss–Jordan reduction with partial pivoting.
+/// Validates all finite square rows and matching finite RHS before indexing or
+/// inverse allocation; by-value argument copies can precede validation. Preserves
+/// strict earliest pivot ties, absolute pivot test <1e-12 (equality accepted),
+/// and ordered full-block double divisions/updates. Failure is not a rank or
+/// conditioning certificate: uniform scaling can change acceptance. Empty valid
+/// input succeeds. Stored nonfinite arithmetic throws; rounding/underflow and
+/// inaccurate inverses remain possible. O(n³) time/O(n²) storage. The explicit
+/// identity block adds arithmetic cost; no caller mutation or shared state.
+/// @param a Finite square coefficients, taken by value.
+/// @param b Finite matching RHS, taken by value.
+/// @return Owned legacy-layout solution and inverse, both arrays empty on cutoff failure.
+/// @throws std::invalid_argument Invalid complete shape, size or nonfinite entry.
+/// @throws std::length_error Count/container/work-counter capacity exceeded.
+/// @throws std::overflow_error A stored computed assignment is nonfinite.
+/// @throws std::bad_alloc Argument, inverse, working or result allocation fails.
+/// @par Example
+/// @code
+/// const auto s = dm::algorithms::gauss_jordan({{2}}, {4});
+/// std::cout << s.solved << ' ' << s.inverse[0][0]; // 1 0.5
+/// @endcode
+/// @par References
+/// - Tsao (1989), On the Equivalence of Gaussian Elimination and Gauss-Jordan
+///   Reduction in Solving Linear Equations, NASA TM101466, Section3 (related
+///   diagonal-reduction variant), https://ntrs.nasa.gov/citations/19890011339 .
+/// - Peters and Wilkinson (1975), On the Stability of Gauss-Jordan Elimination
+///   with Pivoting, Communications of the ACM18(1),20–24, doi:10.1145/360569.360653 .
+/// @see gauss_jordan_solve(), gauss_jordan_trace(), GaussJordanResult
 GaussJordanResult gauss_jordan(std::vector<std::vector<double>> a, std::vector<double> b);
 
 /// @brief *Successive over-relaxation* (SOR): accelerates Gauss-Seidel by *over-shooting* each update

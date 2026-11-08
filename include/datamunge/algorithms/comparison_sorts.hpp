@@ -1,5 +1,8 @@
 #pragma once
+/// @file comparison_sorts.hpp
+/// @brief Integer insertion, selection, Shell and comb sorting entry points.
 
+#include <datamunge/algorithms/comb_sort.hpp>
 #include <vector>
 
 namespace datamunge::algorithms {
@@ -35,15 +38,30 @@ std::vector<int> selection_sort(std::vector<int> a);
 /// @return a sorted (non-decreasing) copy of @p a.
 std::vector<int> shell_sort(std::vector<int> a);
 
-/// @brief *Comb sort* (Dobosiewicz 1980; Lacey & Box 1991): generalizes bubble sort the way Shell
-///        sort generalizes insertion sort. It compares and swaps elements a *gap* apart, shrinking
-///        the gap each pass by the empirically good factor 1.3, until the gap is 1 and a final pass
-///        makes no swaps. The large early gaps kill "turtles" -- small values stranded near the end
-///        that bubble sort moves only one step per pass -- lifting the typical cost from bubble
-///        sort's @c O(n^2) to roughly @c O(n log n) in practice. It is in-place and not stable.
+/// @brief Return a nondecreasing integer copy using the plain 10/13 comb-gap schedule.
+/// Same executing kernel as comb_sort_work()/comb_sort_trace(), with counters
+/// and snapshots disabled. Strict nonadjacent swaps are not stable. Initial
+/// gap=n is shrunk before each pass by exact max(1,floor(10*gap/13)), without
+/// overflowing gap multiplication or applying a special gap adjustment. Sorting
+/// stops only after a zero-swap gap-one scan. Empty/singleton inputs return
+/// immediately. Worst-case upper bound O(n^2), sorted-input Theta(n log n);
+/// a measured random curve is not a universal O(n log n) guarantee. The owned
+/// input buffer is sorted with constant auxiliary state; lvalue callers keep
+/// their vector. Full signed integer range, no shared state or extra allocation.
 ///
-/// @param a the input values.
-/// @return a sorted (non-decreasing) copy of @p a.
+/// @param a Owned integer input; an lvalue is copied by the call.
+/// @return Owned sorted values preserving multiplicities.
+/// @throws std::length_error If requested vector storage exceeds capacity.
+/// @throws std::bad_alloc If the by-value input copy cannot be allocated.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::comb_sort({3,1,2})); // [1, 2, 3]
+/// @endcode
+/// @par References
+/// - W. Dobosiewicz (1980), An efficient variation of bubble sort, Information
+///   Processing Letters 11(1), 5-6, doi:10.1016/0020-0190(80)90022-8 (historical variant).
+/// - P. E. Black (2022), Comb sort, https://xlinux.nist.gov/dads/HTML/combSort.html.
+/// @see comb_sort_work(), comb_sort_trace(), comb_sort_next_gap()
 std::vector<int> comb_sort(std::vector<int> a);
 
 } // namespace datamunge::algorithms

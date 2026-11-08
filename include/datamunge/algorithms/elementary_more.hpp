@@ -1,29 +1,10 @@
 #pragma once
+#include <datamunge/algorithms/binary_splitting.hpp>
 
 #include <cstdint>
 #include <string>
 
 namespace datamunge::algorithms {
-
-/// @brief The exact rational value of a truncated series computed by *binary splitting*, plus its
-///        @ref value as a @c double.
-struct BinSplitResult {
-    std::uint64_t num{0}; ///< numerator of the exact partial sum.
-    std::uint64_t den{1}; ///< denominator of the exact partial sum.
-    double        value{0.0}; ///< the value @c num/den as a double.
-};
-
-/// @brief *Binary splitting* evaluation of @c e = sum_{k=0}^{N} 1/k!. Instead of accumulating the
-///        series term by term (which loses accuracy and, in exact arithmetic, does redundant work),
-///        binary splitting *recursively* combines the left and right halves of the range into a
-///        single exact fraction @c P/Q, so the many small rational terms are merged with balanced,
-///        divide-and-conquer multiplication. This is the technique that lets constants like @c e,
-///        @c pi, and @c zeta(3) be computed to millions of digits: with fast (FFT) multiplication it
-///        runs in near-linear time in the number of digits.
-///
-/// @param terms the number of terms @c N (kept small enough that @c N! fits a 64-bit integer).
-/// @return the exact @ref BinSplitResult partial sum @c P/Q for @c e.
-BinSplitResult binary_splitting_e(int terms);
 
 /// @brief A *spigot algorithm* for the decimal digits of @c e (Rabinowitz-Wagon style): it produces
 ///        the digits *one at a time* from a mixed-radix (factorial-base) representation, using only

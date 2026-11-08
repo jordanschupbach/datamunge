@@ -1,0 +1,247 @@
+//? Title: Blum–Blum–Shub: Modular States, Low Bits and Packed Words
+//? Subtitle: A four-state worked cycle, exact seed-period counts and bounded orbit inspection
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Produce a reproducible bit stream by repeatedly squaring a state modulo a
+composite number. The low bit of each new state is the output, and sixty-four
+such bits form one native word. We retain the original seed-three example,
+expose its actual state transitions, and enumerate every admissible seed for
+the small modulus 77. This fixed-width teaching engine makes the arithmetic
+checkable; its known small factors, short demonstrated cycles and at-most-64-bit
+modulus do not supply cryptographic security.
+)
+
+\toc
+
+> The method
+
+For distinct primes \(p\equiv q\equiv3\pmod4\), set N=pq and choose
+a seed s coprime to N. The engine starts at a quadratic residue and emits a bit
+after each further square:
+
+$$
+x_0=s^2\bmod N,\qquad x_{i+1}=x_i^2\bmod N,\qquad
+b_i=x_{i+1}\bmod2.
+$$
+\alttext(The initial state is the seed squared modulo N. Each subsequent state is the preceding state squared modulo N, and its low bit is emitted.)
+
+The constructor reduces s modulo N before squaring. Unsigned 128-bit
+intermediates preserve the product and square before modulo reduction; merely
+wrapping a 64-bit multiplication would implement a different recurrence.
+`next_bit()`, `next_u64()` and the trace helper use one canonical transition.
+
+The mathematical BBS construction studies unpredictability under computational
+assumptions and suitable parameter generation. Here the caller supplies the
+parameters, the default factors are public and small, and state inspection is
+deliberate. The constructor checks factor congruences, unequal factors, product
+range and seed coprimality. It does not test primality; primality remains a
+caller precondition for the number-theoretic conclusions below.
+
+> Simple example: the original four-state cycle
+
+With p=7, q=11 and s=3, N=77 and x0=9. The next states are 4,16,25,9,
+with low bits 0,0,1,1. The diagram and table use actual transition and bounded
+orbit records. Orbit inspection copies the engine; bit tracing advances it.
+
+```{cpp, results="markdown", file="figures/bbs_cycle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::random::BlumBlumShub rng(3,7,11);
+  const auto orbit=dm::random::blum_blum_shub_orbit(rng,4);
+  const auto trace=dm::random::blum_blum_shub_trace(rng,4);
+  if (!orbit.closed || orbit.period!=4 || orbit.transient!=0) return 1;
+  dm::graphics::Diagram diagram(65,1100);
+  const std::vector<dm::graphics::DiagramPoint> position{{0,1.5},{4,1.5},{4,-1.5},{0,-1.5}};
+  dm::graphics::DiagramNodeStyle state;state.circle=true;state.width=1;state.height=1;
+  for (std::size_t i=0;i<4;++i)
+    diagram.node(std::format("state{}",i),position[i],std::to_string(orbit.states[i]),state);
+  for (std::size_t i=0;i<4;++i)
+    diagram.edge(std::format("state{}",i),std::format("state{}",(i+1)%4),std::format("bit {}",trace[i].bit));
+  dm::graphics::DiagramNodeStyle seed;seed.width=2.2;seed.height=1;
+  diagram.node("seed",{-4.5,1.5},"seed s = 3",seed).edge("seed","state0","initial square")
+      .text({0,3},"Square modulo 77; emit the new state's low bit")
+      .text({0,-3},"Four emitted bits 0,0,1,1 become hexadecimal c, least-significant bit first.");
+  diagram.save_svg("build/bbs_cycle.svg");
+  std::print("| emitted bit index | state before | state after | low bit |\n| ---: | ---: | ---: | ---: |\n");
+  for (std::size_t i=0;i<trace.size();++i)
+    std::print("| {} | {} | {} | {} |\n",i,trace[i].before,trace[i].after,trace[i].bit);
+}
+```
+// result_begin: markdown
+| emitted bit index | state before | state after | low bit |
+| ---: | ---: | ---: | ---: |
+| 0 | 9 | 4 | 0 |
+| 1 | 4 | 16 | 0 |
+| 2 | 16 | 25 | 1 |
+| 3 | 25 | 9 | 1 |
+\image(figures/bbs_cycle.svg)
+// result_end
+\caption(The initial square produces x0 but emits no bit. Each subsequent arrow emits its destination's low bit. The closing state is included in the bounded orbit.)
+\alttext(Seed three is squared into state nine. Directed arrows form the cycle nine to four to sixteen to twenty-five to nine, emitting zero, zero, one and one.)
+
+> Bit order and the original hexadecimal result
+
+The raw word is \(W=\sum_{i=0}^{63}b_i2^i\). Thus bits 0,0,1,1
+occupy the low nibble as \(0+0+4+8=12\), hexadecimal c, reproducing the
+original report. Repeating that four-bit cycle sixteen times gives the full
+word cccccccccccccccc.
+
+If a modular-state cycle has length L, sampling its state every 64 steps has
+period \(L/\gcd(L,64)\): this is the least positive word count t with
+\(64t\equiv0\pmod L\). The emitted word sequence can have a smaller
+period if its output map merges states. Here L=4, so each word returns to the
+same modular state and every raw word is identical. A mathematically defined
+generator need not provide useful simulation output for every admissible seed
+and small parameter choice.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::random::BlumBlumShub rng(3,7,11);
+  std::print("| word index | state before | full 64-bit word (hex) | low nibble (hex) | state after |\n"
+             "| ---: | ---: | :--- | :--- | ---: |\n");
+  for (int i=0;i<4;++i) {
+    const auto before=rng.state(),word=rng.next_u64();
+    std::print("| {} | {} | {:016x} | {:x} | {} |\n",i,before,word,word&15,rng.state());
+    if (word!=0xccccccccccccccccULL || rng.state()!=9) return 1;
+  }
+}
+```
+// result_begin: markdown
+| word index | state before | full 64-bit word (hex) | low nibble (hex) | state after |
+| ---: | ---: | :--- | :--- | ---: |
+| 0 | 9 | cccccccccccccccc | c | 9 |
+| 1 | 9 | cccccccccccccccc | c | 9 |
+| 2 | 9 | cccccccccccccccc | c | 9 |
+| 3 | 9 | cccccccccccccccc | c | 9 |
+// result_end
+\caption(The displayed repeat is a consequence of the actual four-state orbit and 64-bit packing. It is not a randomness or security test.)
+
+> Checking the theory over every unit seed modulo 77
+
+The quadratic-residue groups modulo p and q have odd orders (p-1)/2 and
+(q-1)/2. Squaring is invertible on an odd-order group: exponent two has an
+inverse modulo the group order. The Chinese remainder correspondence therefore
+makes squaring a permutation of the unit quadratic residues modulo N. Every
+admissible initial state is purely periodic, with no transient prefix.
+
+For 7 and 11, these groups have orders three and five, so their product is a
+cyclic group of order fifteen. A state of multiplicative order r returns under
+repeated squaring when \(2^L\equiv1\pmod r\). The possible r are
+1,3,5,15, containing respectively 1,2,4,8 states. Their state periods are
+1,2,4,4, taking the identity's period as one. Each residue has four unit square
+roots, so the sixty unit seeds must split into 4 seeds of period one, 8 of
+period two, and 48 of period four.
+
+```{cpp, results="markdown", file="figures/bbs_periods.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <map>
+#include <numeric>
+#include <set>
+int main() {
+  std::filesystem::create_directories("build");
+  std::map<std::size_t,std::size_t> frequency;std::set<std::uint64_t> initial;
+  std::size_t seeds=0;
+  for (std::uint64_t seed=0;seed<77;++seed) if (std::gcd(seed,std::uint64_t{77})==1) {
+    dm::random::BlumBlumShub rng(seed,7,11);initial.insert(rng.state());++seeds;
+    const auto orbit=dm::random::blum_blum_shub_orbit(rng,15);
+    if (!orbit.closed || orbit.transient!=0) return 1;
+    ++frequency[orbit.period];
+  }
+  if (seeds!=60 || initial.size()!=15 || frequency!=std::map<std::size_t,std::size_t>{{1,4},{2,8},{4,48}}) return 1;
+  std::print("Unit seeds checked: {}; distinct initial quadratic residues: {}.\n\n",seeds,initial.size());
+  std::print("| modular-state period | unit seeds | distinct initial residues |\n| ---: | ---: | ---: |\n");
+  std::vector<double> periods,counts,zero;
+  for (const auto& [period,count]:frequency) {
+    std::print("| {} | {} | {} |\n",period,count,count/4);
+    periods.push_back(period);counts.push_back(count);zero.push_back(0);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.segments(periods,zero,periods,counts,dm::RGB{37,99,235},3)
+      .points(periods,counts,"unit seeds",dm::RGB{37,99,235},6)
+      .title("State periods of all 60 unit seeds modulo 77")
+      .x_label("modular-state period").y_label("number of admissible seeds")
+      .x_limits(0,5).y_limits(0,70).size(900,480).save_svg("build/bbs_periods.svg");
+}
+```
+// result_begin: markdown
+Unit seeds checked: 60; distinct initial quadratic residues: 15.
+
+| modular-state period | unit seeds | distinct initial residues |
+| ---: | ---: | ---: |
+| 1 | 4 | 1 |
+| 2 | 8 | 2 |
+| 4 | 48 | 12 |
+\image(figures/bbs_periods.svg)
+// result_end
+\caption(The exact counts agree with the group-order derivation. These are modular-state periods; projected low-bit and packed-word periods may be smaller.)
+\alttext(Three stems show four admissible seeds with state period one, eight with state period two and forty-eight with state period four.)
+
+> Bounded inspection and parameter preconditions
+
+An orbit budget counts transitions, including any closing transition. Three
+steps from initial state nine have not yet shown a repeat; four steps close
+the cycle. An open record means that the budget ended, with period still
+unknown. Seed one is coprime and accepted, but produces the fixed state one.
+
+The final control deliberately supplies composite p=15 with q=7. It satisfies
+the constructor's structural checks, but violates the primality precondition.
+Its state path 4,16,46,16 has a transient of length one. This explains why the
+pure-period theorem requires prime factors; the engine does not establish that
+precondition on the caller's behalf.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| control | seed | p | q | transition budget | closed | transient | period | observed states |\n"
+             "| :--- | ---: | ---: | ---: | ---: | :--- | :--- | :--- | :--- |\n");
+  for (const auto& [label,seed,p,q,budget]:std::vector<std::tuple<std::string,std::uint64_t,std::uint64_t,std::uint64_t,std::size_t>>{
+       {"budget ends",3,7,11,3},{"cycle closes",3,7,11,4},{"fixed point",1,7,11,1},{"composite factor",2,15,7,3}}) {
+    dm::random::BlumBlumShub rng(seed,p,q);
+    const auto orbit=dm::random::blum_blum_shub_orbit(rng,budget);
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",label,seed,p,q,budget,orbit.closed,
+        orbit.closed?std::to_string(orbit.transient):"unknown",orbit.closed?std::to_string(orbit.period):"unknown",orbit.states);
+  }
+}
+```
+// result_begin: markdown
+| control | seed | p | q | transition budget | closed | transient | period | observed states |
+| :--- | ---: | ---: | ---: | ---: | :--- | :--- | :--- | :--- |
+| budget ends | 3 | 7 | 11 | 3 | false | unknown | unknown | [9, 4, 16, 25] |
+| cycle closes | 3 | 7 | 11 | 4 | true | 0 | 4 | [9, 4, 16, 25, 9] |
+| fixed point | 1 | 7 | 11 | 1 | true | 0 | 1 | [1, 1] |
+| composite factor | 2 | 15 | 7 | 3 | true | 1 | 2 | [4, 16, 46, 16] |
+// result_end
+\caption(Zero-valued lengths in an open API result are rendered as unknown. Orbit inspection leaves the supplied engine and its inherited distribution cache unchanged.)
+
+Native tests compare individual bits, traces and packed words using an independent
+overflow-free add/double modular multiplication oracle, including a modulus near
+UINT64_MAX. A separate Python arbitrary-integer check verifies the recorded
+squares and bit packing. Further controls cover invalid seeds, unsupported
+congruences, product overflow, zero budgets, failed trace allocation and copied
+normal caches. Neither those correctness checks nor a seed-period enumeration
+establish unpredictability for real-world use.
+
+> Conclusion
+
+The original hexadecimal c is preserved and expanded into its actual four-state
+cycle and full repeated word. Exact seed-period counts connect the implemented
+recurrence with the quadratic-residue group. Budget and composite-factor controls
+separate observed closure from a theorem's parameter assumptions.
+
+The engine stores constant fixed-width state and uses 64 modular squares per raw
+word. Recording B bits uses O(B) work and storage. Bounded orbit inspection uses
+expected O(B) work/storage and stops early at a repeat; its records own their
+data. Generated arithmetic examples suffice here, so no observed dataset is needed.
+
+The public small defaults, deterministic seed and fixed-width arithmetic define
+a teaching implementation. Cryptographic parameter generation, large-integer
+security and statistical quality of arbitrary user parameters are outside its
+contract.
+
+> References
+
+- Blum, L., Blum, M. and Shub, M. (1986). *A Simple Unpredictable Pseudo-Random Number Generator*. SIAM Journal on Computing, 15(2), 364–383. https://doi.org/10.1137/0215025. The fixed-width state inspection and small-cycle analysis above describe this implementation separately from the paper's security setting.

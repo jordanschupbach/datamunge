@@ -4,6 +4,7 @@
 #include "datamunge/nn/image_io.hpp"
 #include "datamunge/nn/ops.hpp"
 #include "datamunge/plot/plot.hpp"
+#include "datamunge/plot/diagram.hpp"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -11,6 +12,32 @@
 #include <stdexcept>
 
 namespace datamunge::nn {
+/// @brief Draw numeric tensor images as square pixel cells in a native equal-scale diagram.
+/// Presentation only: copies finite host values, clips each channel to [low,high]
+/// and maps low to black/high to white (independent RGB channels for RGB inputs).
+/// Diagram uses one scale on both axes, so images/filters cannot stretch with the
+/// canvas aspect. First image row is at the top. Tiles have two-cell horizontal
+/// gaps and four-cell row gaps; optional unwrapped labels sit above each tile.
+/// Empty labels select original row numbers. No raster/base64 payload or tensor
+/// graph is retained. Work/storage O(NHWC); use small image/contact-sheet batches.
+/// @param batch Finite numeric positive [N,H,W,1] or [N,H,W,3] image tensor.
+/// @param columns Positive tiles per row, default four.
+/// @param labels Empty or exactly N short unwrapped tile labels.
+/// @param low Finite lower colour limit, default zero.
+/// @param high Finite strictly greater upper limit, default one; widened span must be finite.
+/// @param pixel_size Finite positive screen pixels per image pixel before uniform fitting, default twelve.
+/// @param max_width Finite positive maximum diagram width, default 1200.
+/// @return Owned editable equal-scale diagram; caller saves it to a local file.
+/// @throws std::invalid_argument If image/label geometry, values, limits or diagram controls are invalid.
+/// @throws std::length_error If figure storage capacity is exceeded.
+/// @throws std::bad_alloc If allocation fails.
+/// @par Example
+/// @code
+/// const auto picture=dm::nn::diagram_tensor_images(dm::nn::ones({2,3,3,1}),2,{"first","second"});
+/// std::print("{}\n",picture.to_svg().empty()); // false
+/// @endcode
+/// @see plot_tensor_images(), graphics::Diagram
+graphics::Diagram diagram_tensor_images(const Tensor& batch,std::int64_t columns=4,const std::vector<std::string>& labels={},double low=0,double high=1,double pixel_size=12,double max_width=1200);
 /// @brief Plot a floating matrix as an image with the first row at the top.
 ///
 /// Presentation only: detaches values to host coordinates, retaining no graph.

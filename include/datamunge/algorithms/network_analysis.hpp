@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <datamunge/linalg/csr.hpp>
+#include <datamunge/algorithms/girvan_newman.hpp>
 
 namespace datamunge::algorithms {
 
@@ -94,16 +95,5 @@ HITSResult hits(
     const std::vector<std::pair<std::size_t, std::size_t>>& directed_edges,
     double tolerance = 1e-12, std::size_t max_iterations = 1000);
 
-/// @brief Girvan–Newman community detection by repeatedly removing the edges of highest betweenness.
-///
-/// @param vertex_count Number of vertices n.
-/// @param undirected_edges Edges; direction, duplicates and self-loops are ignored.
-/// @param target_communities Stop once there are at least this many connected components.
-/// @return The connected components (communities) when the target is reached or no edges remain.
-/// @throws std::invalid_argument for an out-of-range vertex or a target outside [1, n].
-std::vector<std::vector<std::size_t>> girvan_newman(
-    std::size_t vertex_count,
-    const std::vector<std::pair<std::size_t, std::size_t>>& undirected_edges,
-    std::size_t target_communities = 2);
 
 } // namespace datamunge::algorithms

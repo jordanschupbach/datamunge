@@ -1,0 +1,250 @@
+//? Title: Bilinear Interpolation: Four Corners, Two Linear Blends
+//? Subtitle: Hand-checked weights, exactness, extrapolation and a second-order error bound
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given values on a rectangular grid, estimate the value between grid nodes
+without fitting a global surface. Four nearby samples determine a continuous
+interpolant that is linear in each coordinate separately. We derive its weights,
+check one uneven cell by hand, reconstruct the original sine–cosine example,
+and verify an exact quadratic error formula. The datamunge API also extrapolates
+outside the grid, where its in-cell range and error guarantees no longer apply.
+)
+
+\toc
+
+> The method
+
+For a cell \([x_i,x_{i+1}]\times[y_j,y_{j+1}]\), define fractional coordinates
+
+$$
+t=\frac{x-x_i}{x_{i+1}-x_i},\qquad u=\frac{y-y_j}{y_{j+1}-y_j}.
+$$
+\alttext(t and u are the query's relative positions along the cell's x and y directions.)
+
+Interpolate along the lower and upper rows, then between them:
+
+$$
+a=(1-t)z_{00}+tz_{10},\quad b=(1-t)z_{01}+tz_{11},\quad
+I(x,y)=(1-u)a+ub=\sum_{r,s\in\{0,1\}}w_{rs}z_{rs},
+$$
+\alttext(Blend the two lower-row corners, blend the two upper-row corners, then blend those results in y.)
+
+The weights, in corner order \(00,10,01,11\), are
+\(((1-t)(1-u),t(1-u),(1-t)u,tu)\). Their sum is one. Inside the
+cell they are nonnegative, so interpolation cannot leave the range of the four
+corner values. The rule reproduces \(1,x,y,xy\) separately, hence every
+\(a+bx+cy+dxy\). Reversing the order of the two linear blends gives the same
+formula, apart from floating-point rounding.
+
+Adjacent cells agree along their shared edge because both reduce to the same
+one-dimensional interpolation there. Values are continuous, but derivatives can
+jump across grid lines. Uneven spacing is allowed; the grid need only be
+rectangular with strictly increasing axes.
+
+> Simple example: an uneven cell
+
+Take \(x\in[0,2]\), \(y\in[0,4]\), corners
+\((z_{00},z_{10},z_{01},z_{11})=(0,2,4,10)\), and query \((0.5,3)\).
+Then \(t=1/4\), \(u=3/4\), and the four weights are
+\((3,1,9,3)/16\). The lower and upper row blends are \(a=0.5\) and \(b=5.5\),
+so the final result is \(0.25(0.5)+0.75(5.5)=4.25\).
+
+```{cpp, file="figures/bilinear_cell.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram(100,800);
+  diagram.path({{0,0},{2,0},{2,4},{0,4},{0,0}})
+         .path({{0,3},{2,3}}).path({{.5,0},{.5,4}})
+         .ellipse({.5,3},.07,.07,{220,38,38})
+         .text({1,4.6}, "(0,4): z = 4            (2,4): z = 10")
+         .text({1,-.6}, "(0,0): z = 0            (2,0): z = 2")
+         .text({3.8,3}, "Query (0.5,3)\nt = 1/4, u = 3/4\nI = 4.25");
+  diagram.save_svg("build/bilinear_cell.svg");
+}
+```
+// result_begin:
+// \image(figures/bilinear_cell.svg)
+// result_end
+\caption(The unequal physical cell widths and heights share one coordinate scale. Crossing lines locate the query, three quarters of the way up and one quarter across.)
+\alttext(A two-by-four rectangular cell has corner values zero, two, four and ten. A red dot at x one half and y three marks the interpolation query.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| query x | query y | interpolated value |\n| ---: | ---: | ---: |\n");
+  for (const auto& [x,y] : std::vector<std::pair<double,double>>{{.5,3},{0,0},{2,4},{1,0},{3,3}})
+    std::print("| {} | {} | {} |\n", x,y,
+        dm::algorithms::bilinear_interpolate({0,2},{0,4},{0,4,2,10},x,y));
+}
+```
+// result_begin: markdown
+| query x | query y | interpolated value |
+| ---: | ---: | ---: |
+| 0.5 | 3 | 4.25 |
+| 0 | 0 | 0 |
+| 2 | 4 | 10 |
+| 1 | 0 | 1 |
+| 3 | 3 | 10.5 |
+// result_end
+\caption(The samples use x-major storage: `{0,4,2,10}`. At x=3 the library extrapolates; the value can exceed every corner.)
+
+The stored sequence is \(z_{00},z_{01},z_{10},z_{11}\), since
+`z[i*ys.size()+j]` varies y fastest. This differs from the order used when
+listing the four weights above. At the outside query \((3,3)\), \(t=1.5\),
+so two weights are negative and the result is 10.5. To clamp a query instead,
+explicitly clamp its coordinates before calling the API.
+
+> Checking exactness and the original smooth reconstruction
+
+The original report sampled \(f(x,y)=\sin x\cos y\) on a \(6\times6\) grid
+over \([0,\pi]^2\), then evaluated the diagonal \(x=y=s\). The complete
+program below retains that experiment. It also checks the original bilinear
+polynomial \(1-2x+0.5y+0.3xy\) at \((1.7,2.3)\), whose exact value is
+\(-0.077\). The polynomial check is a numerical exactness check; the sinusoid
+has curvature that a bilinear patch cannot reproduce.
+
+```{cpp, results="markdown", file="figures/bilinear_diagonal.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const double pi=std::acos(-1.);
+  std::vector<double> axis,z,polynomial;
+  for (int i=0;i<6;++i) axis.push_back(pi*i/5);
+  for (double x:axis) for (double y:axis) {
+    z.push_back(std::sin(x)*std::cos(y));
+    polynomial.push_back(1-2*x+.5*y+.3*x*y);
+  }
+  std::vector<double> s,truth,interpolated;
+  double maximum=0;
+  for (int i=0;i<=300;++i) {
+    const double x=pi*i/300;
+    s.push_back(x);
+    truth.push_back(std::sin(x)*std::cos(x));
+    interpolated.push_back(dm::algorithms::bilinear_interpolate(axis,axis,z,x,x));
+    maximum=std::max(maximum,std::abs(interpolated.back()-truth.back()));
+  }
+  std::print("| check | value |\n| :--- | ---: |\n| polynomial at (1.7,2.3) | {:.12f} |\n"
+             "| largest sampled diagonal error | {:.9f} |\n| whole-cell smooth bound h squared / 4 | {:.9f} |\n",
+             dm::algorithms::bilinear_interpolate(axis,axis,polynomial,1.7,2.3), maximum,pi*pi/100);
+  dm::graphics::RPlot::create()
+      .lines(s,truth,"exact",dm::RGB{16,150,100},2)
+      .lines(s,interpolated,"bilinear",dm::RGB{220,38,38},2)
+      .title("Sine–cosine diagonal from a 6 by 6 grid")
+      .x_label("s, where x = y = s").y_label("value").size(800,440)
+      .save_svg("build/bilinear_diagonal.svg");
+}
+```
+// result_begin: markdown
+| check | value |
+| :--- | ---: |
+| polynomial at (1.7,2.3) | -0.077000000000 |
+| largest sampled diagonal error | 0.045609230 |
+| whole-cell smooth bound h squared / 4 | 0.098696044 |
+\image(figures/bilinear_diagonal.svg)
+// result_end
+\caption(The diagonal samples are compared with the exact sinusoid. The reported sampled maximum is not a certified continuous maximum.)
+\alttext(The bilinear reconstruction follows the sine–cosine diagonal, with visible differences near its positive and negative peaks.)
+
+> Deriving and checking the error rate
+
+Write the two one-dimensional interpolation operators as \(I_x,I_y\).
+The identity \(f-I_xI_yf=(f-I_xf)+I_x(f-I_yf)\), the one-dimensional
+linear interpolation remainder, and nonnegative interpolation weights give
+
+$$
+|f-I_xI_yf|\le\frac{h_x^2}{8}\sup|f_{xx}|+
+                     \frac{h_y^2}{8}\sup|f_{yy}|.
+$$
+\alttext(The in-cell absolute error is bounded by one eighth of each squared cell width times the largest second derivative in that direction.)
+
+Thus smooth functions have second-order error as the cell widths decrease.
+For the sinusoid, both second derivatives are bounded in magnitude by 1, so
+equal widths \(h\) give the bound \(h^2/4\) printed above.
+For \(q(x,y)=x^2+y^2\), the identity is sharper and exact:
+
+$$
+I q-q=(x-x_i)(x_{i+1}-x)+(y-y_j)(y_{j+1}-y),
+\qquad (I q-q)_{\mathrm{midpoint}}=\frac{h_x^2+h_y^2}{4}.
+$$
+\alttext(The quadratic interpolation error is the sum of two products of distances to the cell edges. At a cell midpoint it equals one quarter of the sum of squared cell widths.)
+
+On a uniform unit-square grid with \(m\) intervals in each direction, every
+cell midpoint has error \(1/(2m^2)\). Doubling m must divide the error by four.
+
+```{cpp, results="markdown", file="figures/bilinear_error.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> resolution,measured,predicted;
+  std::print("| intervals per axis | largest midpoint error | exact error | ratio to previous |\n"
+             "| ---: | ---: | ---: | ---: |\n");
+  double previous=0;
+  for (int m:{1,2,4,8,16,32}) {
+    std::vector<double> axis,z;
+    for (int i=0;i<=m;++i) axis.push_back(double(i)/m);
+    for (double x:axis) for (double y:axis) z.push_back(x*x+y*y);
+    double error=0;
+    for (int i=0;i<m;++i) for (int j=0;j<m;++j) {
+      const double x=(i+.5)/m,y=(j+.5)/m;
+      error=std::max(error,std::abs(dm::algorithms::bilinear_interpolate(axis,axis,z,x,y)-x*x-y*y));
+    }
+    resolution.push_back(m); measured.push_back(error); predicted.push_back(.5/(m*m));
+    std::print("| {} | {:.10f} | {:.10f} | {} |\n",m,error,predicted.back(),previous?previous/error:0);
+    previous=error;
+  }
+  dm::graphics::RPlot::create()
+      .lines(resolution,predicted,"exact 1 / (2m squared)",dm::RGB{148,163,184},3)
+      .lines(resolution,measured,"measured",dm::RGB{37,99,235},1.5)
+      .title("Quadratic midpoint error")
+      .x_label("intervals per axis").y_label("absolute error").size(800,440)
+      .save_svg("build/bilinear_error.svg");
+}
+```
+// result_begin: markdown
+| intervals per axis | largest midpoint error | exact error | ratio to previous |
+| ---: | ---: | ---: | ---: |
+| 1 | 0.5000000000 | 0.5000000000 | 0 |
+| 2 | 0.1250000000 | 0.1250000000 | 4 |
+| 4 | 0.0312500000 | 0.0312500000 | 4 |
+| 8 | 0.0078125000 | 0.0078125000 | 4 |
+| 16 | 0.0019531250 | 0.0019531250 | 4 |
+| 32 | 0.0004882812 | 0.0004882812 | 4 |
+\image(figures/bilinear_error.svg)
+// result_end
+\caption(The exact formula and observed errors coincide. The first ratio is zero because there is no previous grid; every later ratio is four.)
+\alttext(Quadratic interpolation error decreases from one half on a single cell to about 0.000488 on a grid with 32 intervals per axis.)
+
+> API and numerical limits
+
+`bilinear_interpolate` rejects axes with fewer than two points, repeated or
+decreasing coordinates, nonfinite data or queries, and a sample count other than
+`xs.size()*ys.size()`. It checks the full grid on each call, costing
+\(O(n_xn_y+n_x+n_y)\) validation time and constant auxiliary storage.
+After validation, binary cell lookup costs \(O(\log n_x+\log n_y)\) and
+the two blends use four samples. This distinguishes the interpolation kernel's
+constant work from the checked API's preprocessing cost.
+
+The implementation uses stable linear blends so a finite in-cell result can
+survive corner differences that would overflow ordinary subtraction. An
+unrepresentable coordinate or result raises an overflow error. Near-duplicate
+coordinates can still amplify data and coordinate noise; rescale poorly
+conditioned axes. Extrapolation uses the nearest end cell and can overshoot.
+Neither the convex-hull statement nor the interior smoothness bound applies
+outside the sampled rectangle.
+
+> Conclusion
+
+The uneven-cell calculation gives 4.25 and confirms the sample layout. The
+original smooth reconstruction retains its approximation error, while the
+quadratic control exactly exhibits a factor-of-four improvement on each grid
+refinement. These generated controls make a separate observed dataset unnecessary.
+Bilinear interpolation provides continuity and a second-order smooth-data error
+bound, with derivative jumps and potentially unstable extrapolation as limits.
+
+> References
+
+- Weiser, A. and Zarantonello, S. E. (1988). *A note on piecewise linear and multilinear table interpolation in many dimensions*. Mathematics of Computation, 50(181), 189–196. https://doi.org/10.1090/S0025-5718-1988-0917826-0
+- SciPy. *RegularGridInterpolator*. The comparable configuration is linear interpolation with bounds_error=False and fill_value=None; datamunge accepts only finite values and increasing axes. https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RegularGridInterpolator.html

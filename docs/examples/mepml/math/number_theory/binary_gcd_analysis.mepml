@@ -1,0 +1,238 @@
+//? Title: Binary GCD: Exact Integer Reduction with Shifts and Subtractions
+//? Subtitle: Stein's invariant, canonical execution traces and full-width checks
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given two nonnegative integers, find their greatest common divisor, for example
+to reduce a fraction to lowest terms. Both inputs can span the full unsigned
+64-bit range, and zero needs an explicit convention. Binary GCD removes powers
+of two and subtracts odd operands, avoiding division. We derive the invariant,
+work through 54 and 24, retain the original 1071 and 462 example, and compare
+generated cases with an independent reference. The report uses execution states
+recorded by the same core loop that computes the public function's answer.
+)
+
+\toc
+
+> The method
+
+For positive integers, common divisors satisfy three useful identities:
+
+$$
+\gcd(2a,2b)=2\gcd(a,b),\qquad
+\gcd(a,2b)=\gcd(a,b)\quad(a\text{ odd}),\qquad
+\gcd(a,b)=\gcd(a,b-a)\quad(0<a\le b).
+$$
+\alttext(Common factors of two can be saved and restored. An unshared factor of two can be removed. Subtracting the smaller integer from the larger preserves the greatest common divisor.)
+
+The first identity follows by dividing every shared divisor and both inputs by
+two. In the second identity, every common divisor is odd because a is odd, so
+the factor of two in b cannot matter. For subtraction, an integer divides both
+a and b exactly when it divides both a and b minus a.
+
+For nonzero inputs, save the shared power \(s=\min(v_2(a),v_2(b))\), computed
+as the trailing-zero count of `a | b`. Make a odd. Each round strips all trailing
+zeros from b, orders the odd operands so \(a\le b\), then sets \(b\leftarrow b-a\).
+The invariant is that the original GCD equals \(2^s\gcd(a,b)\).
+When b becomes zero the answer is \(a2^s\).
+
+The library returns \(\gcd(0,b)=b\), \(\gcd(a,0)=a\), and
+\(\gcd(0,0)=0\), without entering the loop. No trailing-zero count is used
+as a shift on a zero word. Ordered subtraction avoids unsigned underflow;
+the restored GCD fits because it cannot exceed either positive original input.
+
+> Simple example: 54 and 24
+
+The common power is \(s=1\). The first operand becomes 27. Stripping the three
+trailing zero bits of 24 gives 3, so the first ordered odd pair is \((3,27)\).
+Subtract to get \((3,24)\), strip three zero bits again, and subtract the equal
+odd pair \((3,3)\). The terminal odd value is 3; restoring the saved factor gives 6.
+
+```{cpp, file="figures/binary_gcd_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::binary_gcd_trace(54,24);
+  const auto first=trace.steps.front(),last=trace.steps.back();
+  dm::graphics::Diagram diagram;
+  diagram.node("input",{0,0},"54, 24\nSave common factor 2")
+         .node("first",{6,0},std::format("Odd pair\n{}, {}",first.smaller_odd,first.larger_odd))
+         .node("difference",{6,-3},std::format("After subtraction\n{}, {}",first.smaller_odd,first.difference))
+         .node("equal",{0,-3},std::format("Odd pair\n{}, {}",last.smaller_odd,last.larger_odd))
+         .node("zero",{0,-6},std::format("After subtraction\n{}, {}",last.smaller_odd,last.difference))
+         .node("answer",{6,-6},std::format("Restore factor 2\nGCD = {}",trace.gcd))
+         .edge("input","first","strip twos; order")
+         .edge("first","difference","subtract")
+         .edge("difference","equal","strip twos")
+         .edge("equal","zero","subtract")
+         .edge("zero","answer","stop");
+  diagram.save_svg("build/binary_gcd_method.svg");
+}
+```
+// result_begin:
+// \image(figures/binary_gcd_method.svg)
+// result_end
+\caption(The native diagram labels use the recorded core states. The two subtraction rounds are separated from the saved common factor.)
+\alttext(A six-stage diagram follows 54 and 24 through odd pairs three and 27, then three and three, terminating at three and zero and restoring the factor two to obtain six.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+int main() {
+  const auto largest=std::numeric_limits<std::uint64_t>::max();
+  std::print("| a | b | binary GCD | standard GCD | subtraction rounds |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (const auto& [a,b]:std::vector<std::pair<std::uint64_t,std::uint64_t>>{
+      {54,24},{1071,462},{0,0},{0,7},{9,0},{largest,largest},{largest,largest-1}}) {
+    const auto trace=dm::algorithms::binary_gcd_trace(a,b);
+    std::print("| {} | {} | {} | {} | {} |\n",a,b,trace.gcd,std::gcd(a,b),trace.steps.size());
+  }
+}
+```
+// result_begin: markdown
+| a | b | binary GCD | standard GCD | subtraction rounds |
+| ---: | ---: | ---: | ---: | ---: |
+| 54 | 24 | 6 | 6 | 2 |
+| 1071 | 462 | 21 | 21 | 5 |
+| 0 | 0 | 0 | 0 | 0 |
+| 0 | 7 | 7 | 7 | 0 |
+| 9 | 0 | 9 | 9 | 0 |
+| 18446744073709551615 | 18446744073709551615 | 18446744073709551615 | 18446744073709551615 | 1 |
+| 18446744073709551615 | 18446744073709551614 | 1 | 1 | 64 |
+// result_end
+\caption(Exact integer answers, including zero and the unsigned 64-bit limit. The standard-library comparison checks results, without assuming a particular algorithm inside std::gcd.)
+
+> The original example: 1071 and 462
+
+Because 1071 is odd, no shared power of two is saved. The recorded post-subtraction
+states are \((231,840),(105,126),(63,42),(21,42),(21,0)\).
+Each row below reports the odd pair before subtraction as well as the resulting
+difference. The number of removed twos refers to the incoming second operand
+before any swap; it is not a factor removed from both inputs.
+
+```{cpp, results="markdown", file="figures/binary_gcd_trace.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::binary_gcd_trace(1071,462);
+  std::vector<double> round{0},a{double(trace.initial_odd_a)},b{462};
+  std::print("| round | twos removed from incoming b | smaller odd | larger odd | difference |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (const auto& step:trace.steps) {
+    round.push_back(round.size());
+    a.push_back(step.smaller_odd); b.push_back(step.difference);
+    std::print("| {} | {} | {} | {} | {} |\n",round.size()-1,step.removed_twos,
+               step.smaller_odd,step.larger_odd,step.difference);
+  }
+  std::print("\nGCD: {}; saved exponent: {}.\n",trace.gcd,trace.common_twos);
+  dm::graphics::RPlot::create()
+      .lines(round,a,"a after subtraction",dm::RGB{37,99,235},2)
+      .points(round,a,"",dm::RGB{37,99,235},6)
+      .lines(round,b,"b after subtraction",dm::RGB{220,38,38},2)
+      .points(round,b,"",dm::RGB{220,38,38},6)
+      .title("Binary GCD of 1071 and 462")
+      .x_label("subtraction rounds; zero is the initial state").y_label("operand value")
+      .size(850,460).save_svg("build/binary_gcd_trace.svg");
+}
+```
+// result_begin: markdown
+| round | twos removed from incoming b | smaller odd | larger odd | difference |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 231 | 1071 | 840 |
+| 2 | 3 | 105 | 231 | 126 |
+| 3 | 1 | 63 | 105 | 42 |
+| 4 | 1 | 21 | 63 | 42 |
+| 5 | 1 | 21 | 21 | 0 |
+
+GCD: 21; saved exponent: 0.
+\image(figures/binary_gcd_trace.svg)
+// result_end
+\caption(The same original operand curves now come from the canonical trace API. An individual operand can rise after swapping; the pair's reduction is what matters.)
+\alttext(The blue operand drops from 1071 to 21. The red operand initially rises from 462 to 840 after a swap and subtraction, then falls to zero in the fifth round.)
+
+> Checking the round bound
+
+Consider successive ordered odd pairs \((a,b)\), with \(a\le b\), before
+subtraction. Unless this round terminates, \(b-a\) is positive and even. Before
+the next subtraction it is replaced by \(c=(b-a)/2^k\) for some \(k\ge1\).
+Ordering does not affect the product, and
+
+$$
+ac=\frac{a(b-a)}{2^k}<\frac{ab}{2}.
+$$
+\alttext(From one nonterminal odd pair to the next, its product decreases by more than a factor of two.)
+
+For w-bit positive inputs the first product is less than \(2^{2w}\), while
+every nonterminal odd product is at least one. There are at most \(2w\)
+subtraction rounds. Each round uses a fixed number of word operations, so this
+is \(O(w)\) word work. For multiprecision inputs, counting each arbitrary-width
+shift or subtraction as constant work would be wrong; no such complexity claim
+is made here.
+
+```{cpp, results="markdown", file="figures/binary_gcd_rounds.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+#include <random>
+int main() {
+  std::filesystem::create_directories("build");
+  std::mt19937_64 rng(20261106);
+  std::vector<double> width,average,maximum,bound;
+  std::print("| input bits | pairs | mean rounds | largest rounds | bound 2w | reference mismatches |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (unsigned bits:{4,8,12,16,24,32,48,64}) {
+    const std::uint64_t mask=bits==64?~std::uint64_t{0}:(std::uint64_t{1}<<bits)-1;
+    std::size_t total=0,most=0,mismatches=0;
+    for (int trial=0;trial<1000;++trial) {
+      const std::uint64_t a=rng()&mask,b=rng()&mask;
+      const auto trace=dm::algorithms::binary_gcd_trace(a,b);
+      total+=trace.steps.size(); most=std::max(most,trace.steps.size());
+      mismatches+=trace.gcd!=std::gcd(a,b);
+    }
+    std::print("| {} | 1000 | {:.3f} | {} | {} | {} |\n",bits,total/1000.,most,2*bits,mismatches);
+    if (mismatches || most>2*bits) return 1;
+    width.push_back(bits); average.push_back(total/1000.); maximum.push_back(most); bound.push_back(2*bits);
+  }
+  dm::graphics::RPlot::create()
+      .lines(width,bound,"proved upper bound",dm::RGB{148,163,184},2)
+      .lines(width,maximum,"largest of 1000 pairs",dm::RGB{220,38,38},2)
+      .lines(width,average,"mean of 1000 pairs",dm::RGB{37,99,235},2)
+      .title("Binary GCD subtraction rounds")
+      .x_label("maximum input bit width").y_label("subtraction rounds").size(850,460)
+      .save_svg("build/binary_gcd_rounds.svg");
+}
+```
+// result_begin: markdown
+| input bits | pairs | mean rounds | largest rounds | bound 2w | reference mismatches |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 4 | 1000 | 2.222 | 4 | 8 | 0 |
+| 8 | 1000 | 5.136 | 8 | 16 | 0 |
+| 12 | 1000 | 7.837 | 11 | 24 | 0 |
+| 16 | 1000 | 10.714 | 16 | 32 | 0 |
+| 24 | 1000 | 16.430 | 22 | 48 | 0 |
+| 32 | 1000 | 22.013 | 28 | 64 | 0 |
+| 48 | 1000 | 33.465 | 40 | 96 | 0 |
+| 64 | 1000 | 44.617 | 55 | 128 | 0 |
+\image(figures/binary_gcd_rounds.svg)
+// result_end
+\caption(The reproducible sweep counts subtraction rounds, not CPU cycles. Random samples support the checks but do not replace the product-shrink proof.)
+\alttext(Mean and maximum observed rounds grow with bit width and remain below the straight-line bound of twice the bit width.)
+
+> Conclusion
+
+The shared core loop reproduces both hand calculations, handles zero without
+entering the reduction loop, and agrees with the reference across generated
+input widths. Native tests additionally compare it with a separate modulo-based
+Euclidean implementation, exhaust all byte-sized operand pairs, and check
+20,000 full-width random pairs and their trace invariants. No observed dataset
+is needed for these exact arithmetic properties.
+
+Avoiding division does not by itself establish a speed advantage: the machine's
+instruction costs, branches, compiler and input distribution matter. The
+unrecorded function uses constant auxiliary storage; the diagnostic trace owns
+one record per subtraction. This implementation is limited to unsigned 64-bit
+integers and does not provide a multiprecision or constant-time cryptographic API.
+
+> References
+
+- Stein, J. (1967). *Computational problems associated with Racah algebra*. Journal of Computational Physics, 1(3), 397–405. https://doi.org/10.1016/0021-9991(67)90047-2

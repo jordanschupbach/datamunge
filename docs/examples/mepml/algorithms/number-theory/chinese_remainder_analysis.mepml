@@ -1,0 +1,394 @@
+//? Title: Chinese Remainders: Compatible Congruences and Checked Periods
+//? Subtitle: Actual merge certificates, non-coprime moduli and fixed-width limits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Several remainder measurements may describe one unknown integer, but they can
+also contradict each other. Generalised Chinese remainder reconstruction finds
+the unique compatible class modulo the least common multiple, or detects a
+contradiction. We follow actual sequential merges for a small example, retain
+the original coprime residue grid and non-coprime controls, and enumerate the
+fraction of compatible residue pairs. The canonical C++ solver records its
+Bezout coefficients and wide candidates, checks periods before narrowing, and
+distinguishes mathematical inconsistency from a fixed-width range failure.
+)
+
+\toc
+
+> A small reconstruction, one merge at a time
+
+Find an integer with remainders 2, 3 and 2 modulo 3, 5 and 7 respectively.
+Starting from every integer, represented by 0 modulo 1, the first condition
+leaves 2 modulo 3. The second leaves 8 modulo 15: 8 has remainders 2 and 3.
+The third leaves 23 modulo 105. These are actual accumulator states from the
+native solver, rather than a second implementation of its merge rule.
+
+```{cpp, results="markdown", file="figures/crt_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::chinese_remainder_trace({2,3,2},{3,5,7});
+  if(trace.status!=dm::algorithms::CrtStatus::Complete || !trace.solution || trace.solution->remainder!=23 || trace.solution->modulus!=105)return 1;
+  std::print("| merge | before | target | gcd | Bezout P,Q | t | candidate |\n| ---: | :--- | :--- | ---: | :--- | ---: | :--- |\n");
+  for(const auto& s:trace.steps)
+    std::print("| {} | {} mod {} | {} mod {} | {} | {},{} | {} | {} mod {} |\n",s.index+1,s.before.remainder,s.before.modulus,
+        s.normalized_remainder,s.input_modulus,s.gcd,dm::algorithms::int128_text(s.bezout_first),dm::algorithms::int128_text(s.bezout_second),
+        s.multiplier,dm::algorithms::int128_text(s.candidate_remainder),dm::algorithms::int128_text(s.candidate_modulus));
+  std::print("\nActual attempts: {}. Euclidean quotient/remainder steps: {}.\n",trace.work.attempted_merges,trace.work.euclidean_steps);
+  dm::graphics::Diagram diagram(60,1100);
+  dm::graphics::DiagramNodeStyle node;node.width=5.1;node.height=2.2;node.font_size=20;
+  const std::array<dm::graphics::DiagramPoint,4> positions{{{0,0},{8,0},{8,-4},{0,-4}}};
+  for(std::size_t i=0;i<=trace.steps.size();++i) {
+    const auto state=i<trace.steps.size()?trace.steps[i].before:trace.prefix;
+    if(i==trace.steps.size())node.fill={220,252,231};
+    const auto id=std::format("state{}",i);
+    diagram.node(id,positions[i],std::format("prefix {}\nx = {} mod {}",i,state.remainder,state.modulus),node);
+    if(i) {
+      const auto& step=trace.steps[i-1];
+      diagram.edge(std::format("state{}",i-1),id,std::format("add {} mod {}",step.normalized_remainder,step.input_modulus));
+    }
+  }
+  diagram.text({4,2.3},"Actual CRT states: retain one compatible residue class",20)
+      .text({4,-6.3},"Final class: 23 + 105k, for every integer k",19).save_svg("build/crt_method.svg");
+}
+```
+// result_begin: markdown
+| merge | before | target | gcd | Bezout P,Q | t | candidate |
+| ---: | :--- | :--- | ---: | :--- | ---: | :--- |
+| 1 | 0 mod 1 | 2 mod 3 | 1 | 1,0 | 2 | 2 mod 3 |
+| 2 | 2 mod 3 | 3 mod 5 | 1 | 2,-1 | 2 | 8 mod 15 |
+| 3 | 8 mod 15 | 2 mod 7 | 1 | 1,-2 | 1 | 23 mod 105 |
+
+Actual attempts: 3. Euclidean quotient/remainder steps: 8.
+\image(figures/crt_method.svg)
+// result_end
+\caption(Three actual merges reconstruct 23 modulo 105; the table retains the coefficients used by the kernel.)
+\alttext(Four boxes show 0 modulo 1, 2 modulo 3, 8 modulo 15 and 23 modulo 105. Arrows add one congruence at a time.)
+
+> Deriving the general merge
+
+Suppose the current class is x=R modulo M and the next target is x=r modulo
+m, with positive moduli and canonical remainders. Every member of the first
+class has the form x=R+Mt. The new condition becomes Mt=r−R modulo m.
+Let g=gcd(M,m), and obtain the actual Bezout coefficients P and Q from the
+extended Euclidean algorithm:
+
+$$
+MP+mQ=g.
+$$
+\alttext(M times P plus m times Q equals their greatest common divisor g.)
+
+A solution exists exactly when g divides r−R. Necessity follows because g
+divides both M and m. When divisibility holds, divide the identity by g to
+make P an inverse of M/g modulo m/g. Then choose
+
+$$
+t=\left(\frac{r-R}{g}P\right)\bmod(m/g),\qquad
+L=M(m/g),\qquad R'=(R+Mt)\bmod L.
+$$
+\alttext(The correction t is the divided remainder difference times the Bezout coefficient, reduced modulo m divided by g. The merged period L is the least common multiple, and the new remainder is R plus M times t reduced modulo L.)
+
+This construction satisfies both congruences. The difference between any two
+solutions is divisible by M and m, hence by L=lcm(M,m). The class is therefore
+unique modulo L. Applying the argument inductively proves the sequential
+solver correct whenever each compatible intermediate period is representable.
+An inconsistent prefix proves the whole system inconsistent. A range failure
+alone gives no such verdict about unvisited constraints.
+
+The second merge above has M=3, m=5, P=2, Q=−1 and r−R=1, so t=2 and
+R'=2+3·2=8. The third has M=15, m=7, P=1 and Q=−2. Its difference is −6,
+so t=−6 modulo 7=1 and R'=8+15=23. Non-coprime moduli use the same rule;
+the period is their least common multiple rather than their product.
+
+For an arbitrary collection, compatibility is equivalent to
+
+$$
+\gcd(m_i,m_j)\mid(r_i-r_j)\quad\hbox{for every pair }i,j.
+$$
+\alttext(Every pair of input remainders must agree modulo the greatest common divisor of its moduli.)
+
+Necessity follows by subtracting any two congruences. For sufficiency, consider
+each prime separately and select an input containing its largest power among
+the moduli. Pairwise agreement forces every smaller power to have the same
+residue. The selected prime powers are mutually coprime, so the coprime theorem
+combines them into one class modulo their product, which is the full least
+common multiple. This argument establishes the mathematical condition without
+requiring factorisation in the implementation.
+
+> The original controls and the residue grid
+
+For x=2 modulo 6 and x=8 modulo 12, the difference 6 is divisible by
+gcd(6,12)=6, giving 8 modulo 12. For x=1 modulo 2 and x=0 modulo 4,
+the difference −1 is not divisible by 2, so no integer works.
+The following program retains these controls and the original coprime grid.
+Every cell calls the native solver for its displayed pair of remainders.
+
+```{cpp, results="markdown", file="figures/chinese_remainder_grid.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <set>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<std::int64_t>> residues{{2,3,2},{2,8},{1,0}};
+  const std::vector<std::vector<std::int64_t>> moduli{{3,5,7},{6,12},{2,4}};
+  const std::array<std::string,3> names{"classic","compatible non-coprime","inconsistent"};
+  std::print("| system | solvable | remainder | period | representative satisfies input |\n| :--- | :--- | ---: | ---: | :--- |\n");
+  for(std::size_t i=0;i<names.size();++i) {
+    const auto s=dm::algorithms::chinese_remainder(residues[i],moduli[i]);
+    const auto check=s.solvable?dm::algorithms::crt_residue_satisfies(s.remainder,residues[i],moduli[i]):false;
+    if(s.solvable && !check)return 1;
+    std::print("| {} | {} | {} | {} | {} |\n",names[i],s.solvable,s.remainder,s.modulus,s.solvable?(check?"true":"false"):"not applicable");
+  }
+  dm::graphics::Diagram diagram(65,1000);
+  dm::graphics::DiagramNodeStyle node;node.width=1.15;node.height=0.95;node.font_size=22;
+  std::set<std::int64_t> representatives;
+  for(std::int64_t a=0;a<3;++a) {
+    diagram.text({-1.6,2.0*a},std::format("a={}",a),20);
+    for(std::int64_t b=0;b<5;++b) {
+      const auto s=dm::algorithms::chinese_remainder({a,b},{3,5});
+      representatives.insert(s.remainder);node.fill=(a==2 && b==3)?dm::graphics::RGBA{254,240,138}:dm::graphics::RGBA{219,234,254};
+      diagram.node(std::format("cell{}_{}",a,b),{2.0*b,2.0*a},std::format("{}",s.remainder),node);
+    }
+  }
+  if(representatives.size()!=15)return 1;
+  for(int b=0;b<5;++b)diagram.text({2.0*b,5.5},std::format("b={}",b),20);
+  diagram.text({4,7},"Coprime residues: one x for each pair (a,b)",21)
+      .text({4,-1.6},"a = x mod 3, b = x mod 5; highlighted cell: x = 8 mod 15",18)
+      .save_svg("build/chinese_remainder_grid.svg");
+  std::print("\nDistinct canonical representatives in the grid: {} of 15.\n",representatives.size());
+}
+```
+// result_begin: markdown
+| system | solvable | remainder | period | representative satisfies input |
+| :--- | :--- | ---: | ---: | :--- |
+| classic | true | 23 | 105 | true |
+| compatible non-coprime | true | 8 | 12 | true |
+| inconsistent | false | 0 | 0 | not applicable |
+
+Distinct canonical representatives in the grid: 15 of 15.
+\image(figures/chinese_remainder_grid.svg)
+// result_end
+\caption(The original three controls and the bijection between fifteen coprime residue pairs and fifteen classes modulo 15.)
+\alttext(Columns are remainders zero through four modulo five; rows are remainders zero through two modulo three. Each cell gives its unique representative from zero through fourteen. The highlighted pair two and three gives eight.)
+
+The map x modulo 15 to (x modulo 3,x modulo 5) is a bijection. This is the
+coprime Chinese remainder theorem. With non-coprime moduli, some target pairs
+are incompatible: the two components must agree modulo their shared gcd.
+
+> Counting compatible pairs
+
+Among the m·n canonical pairs, each of the g=gcd(m,n) common residue classes
+contains (m/g)(n/g) pairs whose components agree modulo g. Therefore
+
+$$
+N_{\rm compatible}=g(m/g)(n/g)=mn/g=\operatorname{lcm}(m,n),\qquad
+\Pr(\hbox{compatible})=1/g.
+$$
+\alttext(The number of compatible canonical pairs is the least common multiple of the moduli. For uniformly enumerated pairs, the compatible fraction is one divided by their greatest common divisor.)
+
+This is an exact finite count, not a probabilistic model for arbitrary input
+data. We enumerate every pair for five small modulus choices, compare actual
+solver verdicts with the formula, and plot observed fractions against 1/g.
+There is no natural observational dataset for these arithmetic identities.
+
+```{cpp, results="markdown", file="figures/crt_compatibility.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::array<std::pair<std::int64_t,std::int64_t>,5> pairs{{{3,5},{4,6},{6,12},{8,12},{12,18}}};
+  std::vector<double> x,observed,theory;std::vector<std::string> labels;
+  std::print("| moduli | gcd | all pairs | compatible pairs | predicted lcm | fraction |\n| :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto [m,n]:pairs) {
+    std::int64_t compatible=0;const auto g=std::gcd(m,n);
+    for(std::int64_t a=0;a<m;++a)for(std::int64_t b=0;b<n;++b)
+      compatible+=dm::algorithms::chinese_remainder({a,b},{m,n}).solvable;
+    if(compatible*g!=m*n)return 1;
+    x.push_back(x.size());observed.push_back(double(compatible)/(m*n));theory.push_back(1.0/g);labels.push_back(std::format("{}/{}",m,n));
+    std::print("| {}/{} | {} | {} | {} | {} | {:.6f} |\n",m,n,g,m*n,compatible,std::lcm(m,n),observed.back());
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars(x,observed,"enumeration",{37,99,235}).points(x,theory,"1/g",{234,88,12},6)
+      .x_tick_labels(labels).legend({"enumerated fraction","1/g"},{{37,99,235},{234,88,12}})
+      .title("Compatible pairs: shared factors impose constraints")
+      .x_label("modulus pair").y_label("compatible fraction").y_limits(0,1.3)
+      .save_svg("build/crt_compatibility.svg");
+}
+```
+// result_begin: markdown
+| moduli | gcd | all pairs | compatible pairs | predicted lcm | fraction |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| 3/5 | 1 | 15 | 15 | 15 | 1.000000 |
+| 4/6 | 2 | 24 | 12 | 12 | 0.500000 |
+| 6/12 | 6 | 72 | 12 | 12 | 0.166667 |
+| 8/12 | 4 | 96 | 24 | 24 | 0.250000 |
+| 12/18 | 6 | 216 | 36 | 36 | 0.166667 |
+\image(figures/crt_compatibility.svg)
+// result_end
+\caption(Exhaustive small-pair counts agree with 1/g; the orange theory markers coincide with the observed bar heights.)
+\alttext(Fractions are one for moduli three and five, one half for four and six, one sixth for six and twelve, one quarter for eight and twelve, and one sixth for twelve and eighteen.)
+
+> Widened intermediates do not make the result arbitrary precision
+
+The public CrtSolution layout remains a boolean and two signed 64-bit integers.
+A successful result has 0≤R<M and 1≤M≤INT64_MAX. Merely calculating with
+128-bit intermediates before an unchecked cast could wrap the returned period.
+The solver now checks the wide candidate period before narrowing it.
+
+There are two separate boundaries. The product used to find t can exceed
+64 bits even when the final period fits. Conversely, compatible congruences
+can require a period outside the result type. The trace retains the first wide
+candidate and the last representable prefix in that case. Its status is
+Overflow and its optional solution is absent. The ordinary API throws
+std::overflow_error. Neither response means that the congruences conflict.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using dm::algorithms::CrtStatus;
+  constexpr auto limit=std::numeric_limits<std::int64_t>::max();const auto b=limit/2;
+  const auto fit=dm::algorithms::chinese_remainder_trace({0,b-1},{2,b});
+  if(fit.status!=CrtStatus::Complete || fit.steps.back().correction_product>=-static_cast<__int128>(limit))return 1;
+  std::print("Wide correction product, fitting final period: {}.\n",dm::algorithms::int128_text(fit.steps.back().correction_product));
+  std::print("Fitting result: {} mod {}.\n\n",fit.solution->remainder,fit.solution->modulus);
+  const auto wide=dm::algorithms::chinese_remainder_trace({0,0},{limit,limit-1});
+  if(wide.status!=CrtStatus::Overflow || wide.solution)return 1;
+  std::print("Range failure: prefix {} mod {}; wide candidate {} mod {}.\n",wide.prefix.remainder,wide.prefix.modulus,
+      dm::algorithms::int128_text(wide.steps.back().candidate_remainder),dm::algorithms::int128_text(wide.steps.back().candidate_modulus));
+  std::print("Candidate zero satisfies both congruences: {}.\n",dm::algorithms::crt_residue_satisfies(0,{0,0},{limit,limit-1}));
+  bool threw=false;try{(void)dm::algorithms::chinese_remainder({0,0},{limit,limit-1});}catch(const std::overflow_error&){threw=true;}
+  if(!threw)return 1;std::print("Ordinary API throws for the oversized period: {}.\n\n",threw);
+  const auto conflict=dm::algorithms::chinese_remainder_trace({0,1},{limit-1,limit-3});
+  if(conflict.status!=CrtStatus::Inconsistent)return 1;
+  std::print("Large incompatible pair: gcd {}, difference {}; candidate period was not formed: {}.\n",conflict.steps.back().gcd,
+      conflict.steps.back().difference,conflict.steps.back().candidate_modulus==0);
+  const auto unseen=dm::algorithms::chinese_remainder_trace({0,0,1},{limit,limit-1,2});
+  const auto reordered=dm::algorithms::chinese_remainder_trace({0,1,0},{limit-1,2,limit});
+  if(unseen.status!=CrtStatus::Overflow || reordered.status!=CrtStatus::Inconsistent)return 1;
+  std::print("Late contradiction: original order stops with range failure after {} of {} merges; reordered input detects inconsistency after {}.\n",
+      unseen.steps.size(),unseen.work.validated_moduli,reordered.steps.size());
+  const auto edge=dm::algorithms::chinese_remainder({-1,-1},{7,limit});
+  if(!edge.solvable || edge.modulus!=limit || edge.remainder!=limit-1)return 1;
+  std::print("Largest representable period: {} mod {}.\n",edge.remainder,edge.modulus);
+  std::print("INT64_MIN normalized modulo INT64_MAX: {}.\n",dm::algorithms::crt_normalize(std::numeric_limits<std::int64_t>::min(),limit));
+}
+```
+// result_begin: markdown
+Wide correction product, fitting final period: -10633823966279326974007084445387980802.
+Fitting result: 4611686018427387902 mod 9223372036854775806.
+
+Range failure: prefix 0 mod 9223372036854775807; wide candidate 0 mod 85070591730234615838173535747377725442.
+Candidate zero satisfies both congruences: true.
+Ordinary API throws for the oversized period: true.
+
+Large incompatible pair: gcd 2, difference 1; candidate period was not formed: true.
+Late contradiction: original order stops with range failure after 2 of 3 merges; reordered input detects inconsistency after 2.
+Largest representable period: 9223372036854775806 mod 9223372036854775807.
+INT64_MIN normalized modulo INT64_MAX: 9223372036854775806.
+// result_end
+\caption(Checked wide candidates separate a fitting result, period overflow, a genuine gcd contradiction and an unvisited late contradiction.)
+
+With canonical R<M, 0≤t<m/g and M,m≤B=INT64_MAX, the candidate period
+is at most B²<2¹²⁶ and 0≤R+Mt<L. Reducing each factor of the correction
+product modulo m/g bounds its magnitude below B² as well. These operations
+fit signed 128-bit intermediates. The returned period must additionally fit
+signed 64 bits. Bezout coefficient updates use the widened type too.
+Normalisation reduces first and adds a modulus only to a negative remainder;
+it never forms the potentially overflowing expression (r%m+m)%m for a
+positive remainder near the limit.
+
+The mathematical solution set is independent of merge order. A fixed-width
+sequential interface can encounter a range boundary before discovering a later
+contradiction. The three-condition example demonstrates that limit: full input
+validation succeeds, but only two conditions are merged. The trace is not an
+arbitrary-precision continuation through the remaining system.
+The representative checker tests a particular integer against the conditions;
+it does not certify a claimed solution period or uniqueness.
+
+> Work budgets, input validation and boundary cases
+
+The default positive-modulus contract includes modulus one. No conditions
+leave every integer, represented by 0 modulo 1. All residue/modulus lengths and
+all moduli are validated before the first arithmetic operation or work cap.
+CrtOptions uses zero for an unlimited cap; positive values bound the actual
+attempted merges and extended-gcd quotient/remainder steps across the whole
+call. The initial zero quotient when M<m counts as a Euclidean step.
+A cap failure throws std::length_error and returns no partial trace.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::algorithms::CrtOptions exact;exact.max_merges=3;exact.max_euclidean_steps=8;
+  const auto t=dm::algorithms::chinese_remainder_trace({2,3,2},{3,5,7},exact);
+  std::print("| actual operation | count |\n| :--- | ---: |\n| validated moduli | {} |\n| attempted merges | {} |\n| completed merges | {} |\n| Euclidean steps | {} |\n| correction products | {} |\n| period products | {} |\n| residue displacement products | {} |\n",
+      t.work.validated_moduli,t.work.attempted_merges,t.work.completed_merges,t.work.euclidean_steps,
+      t.work.correction_products,t.work.period_products,t.work.residue_products);
+  auto low_merges=exact;low_merges.max_merges=2;bool merge_cap=false;
+  try{(void)dm::algorithms::chinese_remainder_with_options({2,3,2},{3,5,7},low_merges);}catch(const std::length_error&){merge_cap=true;}
+  auto low_steps=exact;low_steps.max_euclidean_steps=7;bool step_cap=false;
+  try{(void)dm::algorithms::chinese_remainder_trace({2,3,2},{3,5,7},low_steps);}catch(const std::length_error&){step_cap=true;}
+  bool invalid=false;try{(void)dm::algorithms::chinese_remainder_trace({1,0,0},{2,4,0},low_merges);}catch(const std::invalid_argument&){invalid=true;}
+  if(!merge_cap || !step_cap || !invalid)return 1;
+  const auto empty=dm::algorithms::chinese_remainder({},{});
+  const auto units=dm::algorithms::chinese_remainder({-7,19,std::numeric_limits<std::int64_t>::min()},{1,1,1});
+  std::print("\nOne-below merge cap rejects: {}. One-below division cap rejects: {}.\n",merge_cap,step_cap);
+  std::print("Invalid trailing modulus rejects before an earlier contradiction: {}.\n",invalid);
+  std::print("Empty system: {} mod {}. Unit moduli: {} mod {}.\n",empty.remainder,empty.modulus,units.remainder,units.modulus);
+  std::print("Empty representative check: {}. Candidate 22 satisfies the classic system: {}.\n",
+      dm::algorithms::crt_residue_satisfies(42,{},{}),dm::algorithms::crt_residue_satisfies(22,{2,3,2},{3,5,7}));
+}
+```
+// result_begin: markdown
+| actual operation | count |
+| :--- | ---: |
+| validated moduli | 3 |
+| attempted merges | 3 |
+| completed merges | 3 |
+| Euclidean steps | 8 |
+| correction products | 3 |
+| period products | 3 |
+| residue displacement products | 3 |
+
+One-below merge cap rejects: true. One-below division cap rejects: true.
+Invalid trailing modulus rejects before an earlier contradiction: true.
+Empty system: 0 mod 1. Unit moduli: 0 mod 1.
+Empty representative check: true. Candidate 22 satisfies the classic system: false.
+// result_end
+\caption(Actual kernel counters determine exact caps; validation, empty input and unit moduli have explicit contracts.)
+
+For n inputs, full validation costs O(n) visits. Each attempted merge performs
+an extended gcd and a constant number of widened arithmetic operations; its
+division count is logarithmic in the positive modulus magnitudes. The ordinary
+solver uses constant numeric working state beyond the borrowed input. The
+trace owns O(a) merge records for a attempts, including the first rejected
+attempt. These are operation counts for bounded integer arithmetic, not a
+bit-complexity analysis for unbounded integers or a wall-clock benchmark.
+Calls have independent state; inputs are borrowed without mutation and trace
+records own their values.
+
+The native tests independently enumerate 12,286 small two- and three-condition
+systems and compare all verdicts, periods and representatives with a brute-force
+oracle. They check each actual Bezout identity, candidate and counter. Another
+1,000 signed random systems and 1,000 constructed near-limit systems cover
+normalisation and representable periods. Wide correction products, Fibonacci
+Euclidean chains, first-overflow versus first-contradiction ordering, exact and
+one-below caps, malformed trailing input, owned traces and 100,000 unit
+constraints exercise the boundaries. Existing reconstruction and inconsistent
+random tests remain. All 24 CRT tests pass with AddressSanitizer and UBSan.
+
+> What the reconstruction establishes
+
+Compatible congruences determine one class modulo the least common multiple.
+The gcd test explains non-coprime failure, and the residue-pair census verifies
+its exact compatible fraction. Actual merge certificates expose how the solver
+reaches its answer. Checked narrowing prevents a wide compatible period from
+becoming a wrapped 64-bit result; range failure, work-budget failure and a
+mathematical contradiction remain separate outcomes.
+
+> References
+
+- Victor Shoup (2008), *A Computational Introduction to Number Theory and Algebra*,
+  version 2.5, sections 2.3–2.4 on congruences and Chinese remainders, and 4.3 on
+  computing inverses and Chinese remainders. https://www.shoup.net/ntb/ntb-v2_5.pdf
+  The report derives the sequential gcd-compatible extension and documents the
+  library's bounded-integer checks separately.

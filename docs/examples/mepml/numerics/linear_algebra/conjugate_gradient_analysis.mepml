@@ -1,0 +1,386 @@
+//? Title: Conjugate Gradient: Directions, Residuals and Reliable Stopping
+//? Subtitle: Actual Krylov histories, a Dirichlet Laplacian and the limits of finite termination
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a symmetric positive-definite matrix or linear operator A and a right-hand
+side b, find x with Ax=b without factoring the matrix. Large sparse systems make
+repeated matrix-vector products attractive, but a small recursively updated
+residual can conceal error in floating arithmetic. Conjugate gradient builds
+conjugate search directions and minimises the quadratic over growing Krylov
+spaces. This report works through two-dimensional steps, separates energy error
+from residual norm, reproduces the original twenty-unknown Laplacian comparison
+and checks the role of the spectrum. Native datamunge execution histories retain
+the actual operands and count both recurrence and residual-check products.
+)
+
+\toc
+
+> The method: minimise a positive quadratic
+
+For a real symmetric positive-definite A, the unique minimiser of
+
+\[
+\phi(x)=\tfrac12 x^\top Ax-b^\top x
+\]
+\alttext(The quadratic is half x transpose A x minus b transpose x.)
+
+solves Ax=b. Its gradient is Ax−b=−r, correcting the sign in the original report.
+For an iterate x and direction p, differentiating φ(x+αp) gives the exact line
+minimiser α=pᵀr/(pᵀAp). CG starts with x₀=0, r₀=p₀=b and uses
+
+\[
+\alpha_k=\frac{r_k^\top r_k}{p_k^\top Ap_k},\qquad
+x_{k+1}=x_k+\alpha_kp_k,\qquad
+r_{k+1}=r_k-\alpha_kAp_k,
+\]
+\alttext(The step coefficient is the squared residual norm divided by directional curvature; the iterate and residual receive their corresponding updates.)
+\[
+\beta_k=\frac{r_{k+1}^\top r_{k+1}}{r_k^\top r_k},\qquad
+p_{k+1}=r_{k+1}+\beta_kp_k.
+\]
+\alttext(The ratio of successive squared residual norms supplies the previous-direction contribution to the new direction.)
+
+In exact arithmetic, the residuals are mutually orthogonal and the nonzero
+directions are A-conjugate: pᵢᵀApⱼ=0 for i≠j. Inductively, rₖ is orthogonal
+to the preceding Krylov space Kₖ(A,b)=span(b,Ab,…,Aᵏ⁻¹b), and xₖ minimises
+φ over that space. SPD curvature makes the minimiser unique. There are at most
+n independent directions, proving termination within n steps in exact arithmetic.
+This proof does not give a floating-point iteration guarantee.
+
+> Two directions that can be checked by hand
+
+Take A=diag(1,4) and b=(1,1). The answer is x*=(1,1/4).
+The first α is 2/5, so x₁=(0.4,0.4), r₁=(0.6,−0.6), β₀=0.36 and
+p₁=(0.96,−0.24). Its curvature product with p₀ is 0.96−0.96=0;
+the second line minimisation reaches the answer in exact arithmetic. The diagram
+draws level sets of the squared energy error (x−x*)ᵀA(x−x*) and the actual
+recorded path, rather than reconstructing a separate CG run for plotting.
+
+```{cpp, results="markdown", file="figures/cg_directions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<double>> a{{1,0},{0,4}};
+  const auto t=dm::algorithms::conjugate_gradient_trace(a,{1,1});
+  dm::graphics::Diagram d(240,1000);
+  dm::graphics::DiagramStroke contour;contour.color={148,163,184};contour.width=1.1;
+  dm::graphics::DiagramStroke path;path.color={37,99,235};path.width=2.4;
+  for(double level:{.05,.2,.8,2.})
+    d.ellipse({1,.25},std::sqrt(level),std::sqrt(level)/2,{255,255,255,0},contour);
+  std::vector<dm::graphics::DiagramPoint> points{{0,0}};
+  for(const auto& step:t.steps) points.push_back({step.x[0],step.x[1]});
+  d.path(points,path);
+  for(const auto& point:points) d.ellipse(point,.025,.025,{37,99,235},path);
+  dm::graphics::DiagramStroke leader;leader.color={100,116,139};leader.width=.8;
+  d.path({{0,0},{-.2,-.61}},leader)
+   .path({{.4,.4},{.05,1.02}},leader)
+   .path({{1,.25},{1.9,-.61}},leader)
+   .text({-.2,-.73},"x0 = (0, 0)",18)
+   .text({.05,1.14},"x1 = (0.4, 0.4)",18)
+   .text({1.9,-.73},"x* = (1, 0.25)",18)
+   .text({1,1.6},"Actual CG steps on an SPD quadratic",24)
+   .text({1,-1.1},"Contours: squared energy error; directions are A-conjugate",20)
+   .save_svg("build/cg_directions.svg");
+  std::print("| step | alpha | beta used | x[0] | x[1] | recursive norm | recomputed norm |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto& s:t.steps)
+    std::print("| {} | {:.6f} | {} | {:.6f} | {:.6f} | {:.3e} | {:.3e} |\n",s.iteration,s.alpha,s.has_next_direction?std::format("{:.6f}",s.beta):"none",s.x[0],s.x[1],s.recursive_residual,s.true_residual);
+  long double conjugacy=0;
+  for(std::size_t i=0;i<2;++i) conjugacy+=static_cast<long double>(t.steps[0].p[i])*t.steps[1].ap[i];
+  std::print("\nActual p0^T A p1 = {:.3e}; {} completed steps, {} operator products.\n",conjugacy,t.solution.iterations,t.products);
+}
+```
+// result_begin: markdown
+| step | alpha | beta used | x[0] | x[1] | recursive norm | recomputed norm |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.400000 | 0.360000 | 0.400000 | 0.400000 | 8.485e-01 | 8.485e-01 |
+| 2 | 0.625000 | none | 1.000000 | 0.250000 | 0.000e+00 | 0.000e+00 |
+
+Actual p0^T A p1 = 0.000e+00; 2 completed steps, 4 operator products.
+\image(figures/cg_directions.svg)
+// result_end
+\caption(Two actual line-minimising steps on A=diag(1,4). Equal coordinate scales preserve the geometry; grey ellipses are energy-error level sets.)
+\alttext(A blue two-segment path goes from the origin through point 0.4,0.4 to the ellipse centre at 1,0.25. The contour ellipses are twice as wide as they are tall.)
+
+The recorded last β is absent because no next direction is constructed. The
+history contains owned vectors x, r, p and Ap from the executing kernel; changing
+the caller's matrix or a different snapshot cannot alter them.
+
+> Energy error decreases; the residual norm can rise
+
+Writing e=x−x*, subtracting the minimum quadratic value yields
+φ(x)−φ(x*)=½eᵀAe. Exact CG therefore decreases the energy norm ||e||A.
+It does not minimise the Euclidean residual norm ||b−Ax||₂ at every step.
+For A=diag(1,100), b=(1,0.1), the first α=1.01/2=0.505 makes
+r₁=(0.495,−4.95): the residual grows while the energy error falls.
+
+```{cpp, results="markdown", file="figures/cg_energy_residual.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::conjugate_gradient_trace(
+    std::vector<std::vector<double>>{{1,0},{0,100}},{1,.1});
+  const double initial_energy=std::hypot(1.,.01);
+  std::vector<double> iteration{0},residual{1},energy{1};
+  std::print("| step | recomputed residual / initial | energy error / initial |\n| ---: | ---: | ---: |\n| 0 | 1 | 1 |\n");
+  for(const auto& s:t.steps) {
+    iteration.push_back(s.iteration);
+    residual.push_back(double(s.true_residual/t.initial_residual));
+    energy.push_back(std::hypot(s.x[0]-1,10*(s.x[1]-.001))/initial_energy);
+    std::print("| {} | {:.6e} | {:.6e} |\n",s.iteration,residual.back(),energy.back());
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(iteration,residual,"relative to initial residual",{220,38,38},2)
+      .points(iteration,residual,"",{220,38,38},5)
+      .line(iteration,energy,"relative to initial energy error",{37,99,235},2)
+      .points(iteration,energy,"",{37,99,235},5)
+      .legend({"residual norm / initial","energy error / initial"},{{220,38,38},{37,99,235}})
+      .title("Residual growth can accompany energy improvement")
+      .x_label("completed CG step").y_label("norm divided by its own initial value")
+      .y_limits(0,6.2).size(900,560).save_svg("build/cg_energy_residual.svg");
+}
+```
+// result_begin: markdown
+| step | recomputed residual / initial | energy error / initial |
+| ---: | ---: | ---: |
+| 0 | 1 | 1 |
+| 1 | 4.950000e+00 | 7.000007e-01 |
+| 2 | 3.866496e-16 | 3.902933e-17 |
+\image(figures/cg_energy_residual.svg)
+// result_end
+\caption(The first residual norm increases by nearly a factor of five, while the energy error decreases. Each curve is normalised by its own initial norm; the quantities have different meanings.)
+\alttext(The red normalised residual rises from one to almost five before falling close to zero. The blue normalised energy error falls from one at each step.)
+
+For SPD A, λmin||e||₂≤||r||₂≤λmax||e||₂ in exact arithmetic.
+A small residual alone therefore gives no scale-free small forward-error claim.
+The familiar exact-arithmetic energy bound, with κ=λmax/λmin, is
+
+\[
+\frac{\|e_k\|_A}{\|e_0\|_A}
+\le 2\left(\frac{\sqrt\kappa-1}{\sqrt\kappa+1}\right)^k.
+\]
+\alttext(The relative energy error is bounded by twice a condition-number-dependent factor to the kth power.)
+
+To see why, any Krylov iterate has error qₖ(A)e₀ for a polynomial of degree
+at most k with qₖ(0)=1. CG chooses the smallest energy error in that space.
+Bounding ||qₖ(A)e₀||A by max over the spectrum of |qₖ| times ||e₀||A and
+choosing a scaled Chebyshev polynomial on [λmin,λmax] gives this bound.
+It is a worst-case envelope; eigenvalue locations and active RHS components
+can make observed convergence much faster. Rounding can invalidate exact
+orthogonality, conjugacy and the finite-termination argument.
+
+> Original example: twenty interior Dirichlet unknowns
+
+The unscaled matrix L=tridiag(−1,2,−1) with homogeneous boundary values is SPD:
+xᵀLx=Σ from i=0 to n of (xᵢ₊₁−xᵢ)² with x₀=xₙ₊₁=0; only the zero
+vector makes every term vanish. For unit RHS its exact discrete solution is
+xᵢ=i(n+1−i)/2, using one-based interior i. Substitution into the second
+difference proves the formula and supplies an independent answer.
+
+Both displayed histories below come from native execution. CG and the legacy
+conjugate_gradient call share a kernel; Gauss-Seidel and gauss_seidel_trace share
+a forward in-place sweep. The latter performs forty sweeps unless it attains an
+exact computed zero. Both use a zero starting point. No separate report solver
+reconstructs the plotted results.
+
+```{cpp, results="markdown", file="figures/conjugate_gradient.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto a=dm::algorithms::laplacian_1d_matrix(20);
+  const std::vector<double> b(20,1);
+  const auto cg=dm::algorithms::conjugate_gradient_trace(a,b);
+  const auto gs=dm::algorithms::gauss_seidel_trace(a,b,40,0);
+  const auto exact=dm::algorithms::laplacian_1d_unit_solution(20);
+  const auto legacy=dm::algorithms::conjugate_gradient(a,b);
+  std::print("| method | completed updates | final recomputed norm | converged |\n| :--- | ---: | ---: | :--- |\n");
+  std::print("| CG | {} | {:.6e} | {} |\n| forward Gauss-Seidel | {} | {:.6e} | {} |\n",cg.solution.iterations,cg.solution.residual,cg.solution.converged,gs.solution.iterations,gs.solution.residual,gs.solution.converged);
+  std::print("\nLegacy call equals trace solution: {}. CG operator products: {}.\n",legacy.x==cg.solution.x,cg.products);
+  std::print("\n| interior index | CG x | analytical x | GS after 40 sweeps |\n| ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i:{0,4,9,10,15,19})
+    std::print("| {} | {:.6f} | {:.6f} | {:.6f} |\n",i+1,cg.solution.x[i],exact[i],gs.solution.x[i]);
+  std::vector<double> ci{0},cr{std::log10(double(cg.initial_residual))},gi,gr;
+  for(const auto& s:cg.steps) {
+    ci.push_back(s.iteration);cr.push_back(std::log10(std::max(double(s.true_residual),1e-16)));
+  }
+  for(std::size_t k=0;k<gs.residuals.size();++k) {
+    gi.push_back(k);gr.push_back(std::log10(std::max(gs.residuals[k],1e-16)));
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(gi,gr,"Gauss-Seidel",{220,38,38},2)
+      .line(ci,cr,"CG",{37,99,235},2).points(ci,cr,"",{37,99,235},5)
+      .legend({"forward Gauss-Seidel","CG: checked residual"},{{220,38,38},{37,99,235}})
+      .title("Original 20-unknown Laplacian, unit right-hand side")
+      .x_label("completed step or forward sweep").y_label("log10 recomputed residual; display floor 1e-16")
+      .y_limits(-17,3).size(900,580).save_svg("build/conjugate_gradient.svg");
+}
+```
+// result_begin: markdown
+| method | completed updates | final recomputed norm | converged |
+| :--- | ---: | ---: | :--- |
+| CG | 10 | 0.000000e+00 | true |
+| forward Gauss-Seidel | 40 | 1.712176e+00 | false |
+
+Legacy call equals trace solution: true. CG operator products: 20.
+
+| interior index | CG x | analytical x | GS after 40 sweeps |
+| ---: | ---: | ---: | ---: |
+| 1 | 10.000000 | 10.000000 | 6.173436 |
+| 5 | 40.000000 | 40.000000 | 23.242285 |
+| 10 | 55.000000 | 55.000000 | 31.625006 |
+| 11 | 55.000000 | 55.000000 | 31.858480 |
+| 16 | 40.000000 | 40.000000 | 25.013389 |
+| 20 | 10.000000 | 10.000000 | 6.857625 |
+\image(figures/conjugate_gradient.svg)
+// result_end
+\caption(CG reaches the analytical solution in ten steps for this special RHS. Forty forward sweeps leave a substantial residual. Values below 1e−16, including computed zero, share a plotting floor; the table retains the actual returned norm.)
+\alttext(A blue CG curve initially rises and then reaches the display floor at step ten. A red Gauss-Seidel curve declines slowly through forty sweeps.)
+
+The original report printed a recursively updated CG residual near 2.3e−16.
+The current API reports a separately recomputed norm and uses widened sums and
+coefficients. It returns a computed zero for this exactly represented solution
+on this toolchain. This change in measured arithmetic is explicit: it is not a
+claim of universal machine-zero or ten-step convergence.
+
+Why ten rather than twenty? The Laplacian eigenvectors have components
+sin(ijπ/(n+1)) and eigenvalues λⱼ=2−2cos(jπ/(n+1)). For even n and a unit
+RHS, reflection symmetry removes all even-j modes: only n/2 distinct
+eigenvalues are active. A degree-n/2 polynomial can vanish on those eigenvalues,
+giving at most n/2 steps in exact arithmetic. An arbitrary RHS can activate all n.
+
+> Checking active spectra and sparse work
+
+With m distinct active eigenvalues, the polynomial product over those roots
+proves an exact-arithmetic m-step upper bound. A repeated-eigenvalue diagonal
+control and a single-coordinate eigenvector make this mechanism hand-checkable.
+The matrix-free Laplacian uses three-point O(n) products and O(n) vector scratch;
+it never allocates a dense n-by-n matrix.
+
+```{cpp, results="markdown", file="figures/cg_laplacian_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<double>> repeated{{1,0,0,0},{0,1,0,0},{0,0,4,0},{0,0,0,4}};
+  const auto two=dm::algorithms::conjugate_gradient_trace(repeated,std::vector<double>(4,1));
+  const auto one=dm::algorithms::conjugate_gradient_trace(repeated,{0,2,0,0});
+  std::print("Repeated spectrum {{1,4}} with all modes: {} steps; one active eigenvalue: {} step.\n\n",two.solution.iterations,one.solution.iterations);
+  const dm::algorithms::LinearOperator laplacian=dm::algorithms::laplacian_1d_apply;
+  std::vector<double> sizes,products;
+  std::print("| n | CG steps | all operator products | true residual | max analytical error |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:{20,40,80,160}) {
+    const auto r=dm::algorithms::conjugate_gradient_solve(laplacian,std::vector<double>(n,1),{1000,1e-9,1});
+    const auto exact=dm::algorithms::laplacian_1d_unit_solution(n);
+    double error=0;for(std::size_t i=0;i<n;++i) error=std::max(error,std::abs(r.solution.x[i]-exact[i]));
+    std::print("| {} | {} | {} | {:.3e} | {:.3e} |\n",n,r.solution.iterations,r.products,r.solution.residual,error);
+    if(!r.solution.converged) return 1;
+    sizes.push_back(n);products.push_back(r.products);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(sizes,products,"all checked-CG products",{37,99,235},2)
+      .points(sizes,products,"",{37,99,235},5)
+      .title("Unit RHS: actual matrix-free operator requests")
+      .x_label("interior unknowns n").y_label("A p plus diagnostic A x requests")
+      .y_limits(0,190).size(900,550).save_svg("build/cg_laplacian_work.svg");
+}
+```
+// result_begin: markdown
+Repeated spectrum {1,4} with all modes: 2 steps; one active eigenvalue: 1 step.
+
+| n | CG steps | all operator products | true residual | max analytical error |
+| ---: | ---: | ---: | ---: | ---: |
+| 20 | 10 | 20 | 0.000e+00 | 0.000e+00 |
+| 40 | 20 | 40 | 0.000e+00 | 0.000e+00 |
+| 80 | 40 | 80 | 0.000e+00 | 0.000e+00 |
+| 160 | 80 | 160 | 0.000e+00 | 0.000e+00 |
+\image(figures/cg_laplacian_work.svg)
+// result_end
+\caption(The unit-RHS symmetry control takes n/2 steps and n total operator requests in these runs. Each product is O(n), so this particular unpreconditioned sequence has quadratic total work; the plot does not establish constant iteration counts.)
+\alttext(A single blue line records total matrix-free requests for twenty, forty, eighty and one hundred sixty unknowns. The requests increase proportionally with dimension.)
+
+The general implementation performs one Ap for the recurrence and one Ax to
+check the resulting iterate at every completed step. Those diagnostic products
+are included in products. An unsuccessful curvature attempt adds one Ap without
+a completed step. Thus dense checked solving costs O(n²+kn²) after input
+validation, and a sparse operator with product cost T(n) costs O(k(T(n)+n)).
+The solve-only path retains O(n) vector scratch; a trace stores four n-vectors
+per step, O(kn) additional entries. The displayed work is not a wall-clock
+ranking or a complete operation-by-operation equality between CG and GS.
+
+For this Laplacian κ=cot²(π/(2(n+1))) grows quadratically in n. Preconditioning
+is often needed for larger problems; this API demonstrates unpreconditioned CG.
+No external dataset is needed: the analytic solution and controllable spectrum
+give stronger checks of the numerical claims.
+
+> Input contracts, stopping and honest failure
+
+The tolerance is absolute and inclusive. A zero RHS or empty system can converge
+initially; a zero iteration budget returns x=0 with residual ||b||, without
+claiming convergence unless that norm is within tolerance. All finite entries,
+dimensions, controls and exact stored symmetry are validated before dense work.
+SPD remains a precondition: detecting positive curvature on visited directions
+does not certify the entire matrix. A matrix-free callback must itself be a
+deterministic linear SPD map and return a finite matching vector.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  using namespace dm::algorithms;
+  const std::vector<std::vector<double>> a{{4,1},{1,3}};
+  const auto zero=conjugate_gradient_trace(a,{0,0});
+  const auto capped=conjugate_gradient_trace(a,{1,2},{1,0,0});
+  const auto negative=conjugate_gradient_trace(std::vector<std::vector<double>>{{-1}},{1});
+  std::print("| control | completed steps | operator requests | converged | recomputed residual |\n| :--- | ---: | ---: | :--- | ---: |\n");
+  for(const auto& [name,r]:std::array<std::pair<std::string_view,ConjugateGradientRun>,3>{{{"zero RHS",zero},{"one-step budget",capped},{"negative curvature",negative}}})
+    std::print("| {} | {} | {} | {} | {:.6f} |\n",name,r.solution.iterations,r.products,r.solution.converged,r.solution.residual);
+  std::print("\nNegative curvature has explicit reason: {}.\n",negative.stop==CGStop::nonpositive_curvature);
+  try { (void)conjugate_gradient_trace(a,{1,2},{100,1e-10,15});return 1; }
+  catch(const std::length_error&) { std::print("A 15-entry trace cap rejects the 16-entry two-step history.\n"); }
+  try { (void)conjugate_gradient_trace(std::vector<std::vector<double>>{{2,1},{0,2}},{0,0});return 1; }
+  catch(const std::invalid_argument&) { std::print("Nonsymmetry is rejected even for zero RHS.\n"); }
+  const auto tiny=conjugate_gradient_solve(std::vector<std::vector<double>>{{2}},{1e-200},{4,0,0});
+  std::print("Tiny RHS solves without squared-double underflow: {}; x={:.1e}.\n",tiny.solution.converged,tiny.solution.x[0]);
+}
+```
+// result_begin: markdown
+| control | completed steps | operator requests | converged | recomputed residual |
+| :--- | ---: | ---: | :--- | ---: |
+| zero RHS | 0 | 0 | true | 0.000000 |
+| one-step budget | 1 | 2 | false | 0.559017 |
+| negative curvature | 0 | 1 | false | 1.000000 |
+
+Negative curvature has explicit reason: true.
+A 15-entry trace cap rejects the 16-entry two-step history.
+Nonsymmetry is rejected even for zero RHS.
+Tiny RHS solves without squared-double underflow: true; x=5.0e-201.
+// result_end
+
+The recursive vector r is separately retained from the recomputed b−Ax norm.
+If the former reaches tolerance or collapses to zero while the latter does not,
+CGStop::residual_gap stops unconverged. This implementation does not silently
+restart, replace residuals or use a relative stopping rule. Nonfinite or
+unrepresentable arithmetic throws. Inner products and norms widen to long
+double; vector/operator output remains double. The recomputed norm is based on
+the rounded returned Ax and widened differences: it is a floating diagnostic,
+not an interval certificate of the mathematical residual.
+
+A positive max_trace_values caps actual stored scalar entries, checked after
+positive curvature and before updating the next iterate. A cap failure returns
+no partial result; callback effects already performed are not rolled back. Zero
+means unlimited. Solve-only calls ignore this optional storage cap. Histories
+are actual execution records and never obtain their states by rerunning prefixes.
+
+> Conclusion
+
+Conjugate directions explain the small worked solution and the ten-step unit-RHS
+Laplacian result. The energy interpretation and active-spectrum polynomial explain
+more than an assertion that every residual must decrease. Native histories now
+show the actual recurrence and recomputed residual, with complete operator costs,
+validated contracts and explicit unconverged stops. Finite termination belongs
+to exact arithmetic; the residual check and analytic controls establish what
+these particular floating runs achieved.
+
+> References
+
+- M. R. Hestenes and E. Stiefel (1952), *Methods of Conjugate Gradients for Solving Linear Systems*, Journal of Research of the National Bureau of Standards 49, 409–436. [Original NIST paper](https://math.nist.gov/mcsd/Reports/2002/hestenes-steifel-52.pdf), [DOI](https://doi.org/10.6028/jres.049.044).
+- R. Barrett et al., *Templates for the Solution of Linear Systems: Building Blocks for Iterative Methods*, second edition. [Author-maintained Netlib text](https://netlib.org/templates/templates.html), sections on CG, Gauss–Seidel and stopping in floating arithmetic. The explicit true-residual checks and owned histories here are documented implementation additions.

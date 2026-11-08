@@ -1,0 +1,331 @@
+//? Title: Floyd–Warshall: actual intermediate stages and bounded shortest paths
+//? Subtitle: Preserve the original five-vertex matrix and route; distinguish finite, unreachable and negative-cycle-unbounded pairs
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Floyd–Warshall computes a directed cost matrix for every source and destination.
+It admits intermediate vertices one at a time, updating distances and first hops
+with a compact in-place recurrence. This report preserves the original five-vertex
+example, all25 distances and the cost-minus-three route0→4→3→2. Native traces expose
+actual stage matrices and strict improvements. A separate negative-cycle control
+shows why a global cycle flag does not make every pair unbounded, while validated,
+bounded reconstruction prevents malformed next-hop data from causing an endless walk.
+)
+
+\toc
+
+> One admitted intermediate can improve a direct route
+
+A graph has vertices0 through n−1 and directed edges carrying finite double costs.
+Negative edge weights are allowed. An absent route is represented by positive
+infinity, while the zero-length route from a vertex to itself starts at cost zero.
+Parallel edges keep the smallest weight; equal-cost candidates retain the existing
+first hop. The native API preserves its original matrix layout and strict tie policy.
+
+Start with a three-vertex graph: direct0→2 costs9, while0→1→2 costs2+3=5.
+The following method diagram reads that strict improvement from the actual kernel.
+Stage0 is the seeded matrix; stage k+1 has completed the sweep admitting vertex k.
+
+```{cpp, results="markdown", file="figures/floyd_warshall_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::floyd_warshall_trace(3,{{0,1,2.},{1,2,3.},{0,2,9.}});
+  std::print("| admitted intermediates | D[0][2] | first hop |\n| ---: | ---: | ---: |\n");
+  for(const auto&stage:t.stages)std::print("| {} | {:.0f} | {} |\n",stage.admitted,stage.distance[0][2],stage.next[0][2]);
+  const auto&r=t.relaxations.at(0);std::print("\nActual improvement: k {}; pair {} to {}; previous {:.0f}; left {:.0f}; right {:.0f}; candidate {:.0f}; first hop {}.\n",r.k,r.from,r.to,r.previous,r.left,r.right,r.candidate,r.next);
+  dm::graphics::Diagram d(65,1000);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=1.4;node.height=1.4;node.font_size=27;
+  dm::graphics::DiagramStroke old,chosen;old.color={148,163,184};chosen.color={220,38,38};chosen.width=3;
+  d.node("0",{0,0},"0",node).node("1",{4,3},"1",node).node("2",{8,0},"2",node)
+   .edge("0","2",std::format("direct {:.0f}",r.previous),old).edge("0","1",std::format("{:.0f}",r.left),chosen).edge("1","2",std::format("{:.0f}",r.right),chosen)
+   .text({4,-2},std::format("Admit {}: {:.0f} + {:.0f} = {:.0f}; first hop {}",r.k,r.left,r.right,r.candidate,r.next),26).save_svg("build/floyd_warshall_tiny.svg");
+  if(t.relaxations.size()!=1||r.k!=1||r.candidate!=5)throw std::runtime_error("actual intermediate control");
+}
+```
+// result_begin: markdown
+| admitted intermediates | D[0][2] | first hop |
+| ---: | ---: | ---: |
+| 0 | 9 | 2 |
+| 1 | 9 | 2 |
+| 2 | 5 | 1 |
+| 3 | 5 | 1 |
+
+Actual improvement: k 1; pair 0 to 2; previous 9; left 2; right 3; candidate 5; first hop 1.
+\image(figures/floyd_warshall_tiny.svg)
+// result_end
+\caption(The seeded direct cost9 stays unchanged after admitting vertex0. Admitting vertex1 replaces it with5 and changes the first hop from2 to1.)
+\alttext(A directed native triangle shows the direct0-to2 edge of cost nine and the highlighted two-edge route through vertex one with costs two and three.)
+
+> The recurrence and the in-place condition
+
+Let D^(k)[i,j] be the least cost using only intermediates0 through k−1. Initially,
+it contains direct edge minima and diagonal zeros. With no relevant negative cycle,
+an optimum can be chosen without repeated vertices: removing a nonnegative cycle
+cannot make a walk more expensive. Admitting k either keeps the old route or uses
+an i-to-k piece followed by a k-to-j piece:
+
+$$
+D^{(k+1)}[i,j]=\min\bigl(D^{(k)}[i,j],D^{(k)}[i,k]+D^{(k)}[k,j]\bigr).
+$$
+\alttext(The next distance is the smaller of the current distance and the route through the newly admitted intermediate vertex.)
+
+The outer loop must control the admitted set. In exact arithmetic without negative
+cycles, D[k,k]=0 and the k-th row and column cannot improve during their own sweep,
+so the in-place reads give the staged recurrence. This is an existence-of-a-simple-
+optimum argument, not a claim that every optimal walk avoids zero-cost cycles.
+With negative cycles, raw in-place numbers are retained as execution evidence;
+they must not be interpreted as finite shortest costs for affected pairs.
+
+The historical sources are Floyd's
+[Algorithm97: Shortest path](https://doi.org/10.1145/367766.368168),CACM5(6),345(1962),
+and Warshall's related Boolean reachability result,
+[A Theorem on Boolean Matrices](https://doi.org/10.1145/321105.321107),JACM9(1),11–12(1962).
+The API here uses positive infinity for absence, finite input weights, strict double
+comparisons and explicit next hops; it is not an exact-real arithmetic certificate.
+
+> Preserve the original five-vertex result
+
+The native fixture retains the original nine edges and their order. Its negative
+edges create cheaper detours without creating a negative cycle. The entire printed
+matrix and route below come from the canonical function. Directed arrows and weight
+labels make the original highlighted graph unambiguous.
+
+```{cpp, results="markdown", file="figures/floyd_warshall_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto edges=dm::algorithms::floyd_warshall_example_edges();const auto result=dm::algorithms::floyd_warshall(5,edges);const auto path=dm::algorithms::reconstruct_path(result,0,2);
+  std::print("| from / to | 0 | 1 | 2 | 3 | 4 |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<5;++i){std::print("| {} |",i);for(double cost:result.distance[i])std::print(" {:.0f} |",cost);std::print("\n");}
+  std::print("\nOriginal route0 to2: {}; cost {:.0f}; negative-cycle flag {}.\n",path,result.distance[0][2],result.has_negative_cycle);
+  dm::graphics::Diagram d(80,1100);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=1.3;node.height=1.3;node.font_size=27;
+  const std::vector<dm::graphics::DiagramPoint> position{{0,4},{4,1.3},{2.5,-3.2},{-2.5,-3.2},{-4,1.3}};
+  for(std::size_t v=0;v<5;++v)d.node(std::to_string(v),position[v],std::to_string(v),node);
+  for(const auto&[u,v,w]:edges){bool selected=false;for(std::size_t k=1;k<path.size();++k)selected|=path[k-1]==u&&path[k]==v;dm::graphics::DiagramStroke stroke;stroke.color=selected?dm::graphics::RGB{220,38,38}:dm::graphics::RGB{148,163,184};stroke.width=selected?3.5:1.7;d.edge(std::to_string(u),std::to_string(v),std::format("{:.0f}",w),stroke);}
+  d.text({0,-5.1},"Highlighted0 → 4 → 3 → 2 has cost -4 + 6 - 5 = -3",26).save_svg("build/floyd_warshall_original.svg");
+  if(path!=std::vector<std::size_t>{0,4,3,2}||result.distance[0][2]!=-3||result.has_negative_cycle)throw std::runtime_error("original shortest route");
+}
+```
+// result_begin: markdown
+| from / to | 0 | 1 | 2 | 3 | 4 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | -3 | 2 | -4 |
+| 1 | 3 | 0 | -4 | 1 | -1 |
+| 2 | 7 | 4 | 0 | 5 | 3 |
+| 3 | 2 | -1 | -5 | 0 | -2 |
+| 4 | 8 | 5 | 1 | 6 | 0 |
+
+Original route0 to2: [0, 4, 3, 2]; cost -3; negative-cycle flag false.
+\image(figures/floyd_warshall_original.svg)
+// result_end
+\caption(All25 original distances are preserved. The red directed route0→4→3→2 costs−3, improving on the direct0→2 edge of cost8.)
+\alttext(A native five-vertex directed graph prints all nine edge weights. The highlighted route follows the negative-cost edge from zero to four, then four to three and three to two.)
+
+`next[i][j]` stores the first vertex after i on the chosen route. A strict improvement
+through k takes the current `next[i][k]`. Repeatedly following first hops for a fixed
+destination recovers the route. Cost and hop count are different objectives: the
+three-edge detour is cheaper than the one-edge direct route. Equal costs retain
+the earlier route; the library does not promise minimum hops or lexicographic paths.
+
+> Actual stage histories expose when an improvement becomes available
+
+The full trace contains the seeded matrix and every post-k matrix, captured during
+the same kernel. Each strict improvement records the actual left/right values read,
+the replaced cost, the candidate and both old/new first hops. It stores no failed
+comparisons as improvements and does not rerun the algorithm to make a history.
+The next table and plots query that evidence for the original0-to2 pair.
+
+```{cpp, results="markdown", file="figures/floyd_warshall_stages.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::floyd_warshall_trace(5,dm::algorithms::floyd_warshall_example_edges());std::vector<double> stage_x,cost,phase_x,counts;std::vector<std::string> labels;
+  std::print("| admitted | most recent k | D[0][2] | first hop | strict improvements in that sweep |\n| ---: | --- | ---: | ---: | ---: |\n");
+  for(const auto&s:t.stages){const auto count=s.admitted?std::count_if(t.relaxations.begin(),t.relaxations.end(),[&](const auto&r){return r.k==s.admitted-1;}):0;
+    std::print("| {} | {} | {:.0f} | {} | {} |\n",s.admitted,s.admitted?std::to_string(s.admitted-1):"seed",s.distance[0][2],s.next[0][2],count);stage_x.push_back(double(s.admitted));cost.push_back(s.distance[0][2]);labels.push_back(s.admitted?"after"+std::to_string(s.admitted-1):"seed");if(s.admitted){phase_x.push_back(double(s.admitted-1));counts.push_back(double(count));}}
+  const auto&w=t.work;std::print("\nOriginal actual work: row guards {}; skipped rows {}; column guards {}; skipped columns {}; finite additions {}; strict sweep improvements {}; final diagonal tests {}.\n",w.row_checks,w.skipped_rows,w.column_checks,w.skipped_columns,w.candidates,w.relaxations,w.diagonal_checks);
+  auto history=dm::graphics::RPlot::create();history.lines(stage_x,cost,"Cost",{37,99,235},2).points(stage_x,cost,"",{37,99,235},5).x_tick_labels(labels).title("Actual0-to2 boundary costs").xlab("Seed and completed sweeps").ylab("Raw cost; graph has no negative cycle");
+  auto changes=dm::graphics::RPlot::barplot(counts,{"0","1","2","3","4"}).title("Strict improvements per sweep").xlab("New intermediate k").ylab("Actual improvement records");
+  dm::graphics::RLayout::create(1,2).add(history).add(changes).size(1100,540).title("Complete snapshots and actual strict update records").fit_panels().save_svg("build/floyd_warshall_stages.svg");
+}
+```
+// result_begin: markdown
+| admitted | most recent k | D[0][2] | first hop | strict improvements in that sweep |
+| ---: | --- | ---: | ---: | ---: |
+| 0 | seed | 8 | 2 | 0 |
+| 1 | 0 | 8 | 2 | 2 |
+| 2 | 1 | 8 | 2 | 3 |
+| 3 | 2 | 8 | 2 | 1 |
+| 4 | 3 | -1 | 1 | 9 |
+| 5 | 4 | -3 | 4 | 3 |
+
+Original actual work: row guards 25; skipped rows 6; column guards 95; skipped columns 13; finite additions 82; strict sweep improvements 18; final diagonal tests 5.
+\image(figures/floyd_warshall_stages.svg)
+// result_end
+\caption(The0-to2 cost changes only when the required intermediates have been admitted. The second panel counts actual successful sweep updates, excluding edge seeding.)
+\alttext(Two native plots show the original0-to2 cost at the seed and after each intermediate sweep, and the number of strict improvements in each of the five sweeps.)
+
+> A negative cycle affects particular ordered pairs
+
+A negative cycle makes the cost unbounded below for an i-to-j query exactly when i
+can reach a negative-cycle vertex and that vertex can reach j. Repeating the cycle
+then lowers the walk cost without limit. The global flag detects existence; it does
+not claim every pair can travel through that cycle. Native classification tests
+negative diagonals together with the two reachability entries, without rewriting
+raw costs to negative infinity or trusting an externally supplied flag alone.
+
+Use a five-vertex control with0→1 cost1,1→2 cost−3,2→1 cost1 and2→3 cost1;
+vertex4 is isolated. The cycle1→2→1 costs−2. Sources0,1,2 have unbounded routes
+to destinations1,2,3. The diagonal routes0-to0,3-to3 and4-to4 remain finite, while
+3-to0 is unreachable. Affected raw matrix entries are diagnostics, not shortest costs.
+
+```{cpp, results="markdown", file="figures/floyd_warshall_negative.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto r=dm::algorithms::floyd_warshall(5,{{0,1,1.},{1,2,-3.},{2,1,1.},{2,3,1.}});const auto mask=dm::algorithms::floyd_warshall_unbounded_pairs(r);std::size_t affected=0;for(const auto&row:mask)affected+=std::count(row.begin(),row.end(),true);
+  std::print("| source / destination | 0 | 1 | 2 | 3 | 4 |\n| ---: | --- | --- | --- | --- | --- |\n");
+  dm::graphics::Diagram d(48,900);dm::graphics::DiagramStroke border;border.color={148,163,184};border.width=.7;
+  for(std::size_t j=0;j<5;++j)d.text({1.6*double(j),1.4},std::to_string(j),24);
+  for(std::size_t i=0;i<5;++i){d.text({-1.4,-1.6*double(i)},std::to_string(i),24);std::print("| {} |",i);
+    for(std::size_t j=0;j<5;++j){const auto status=dm::algorithms::floyd_warshall_pair_status(r,i,j);const bool bad=status==dm::algorithms::FloydWarshallPairStatus::Unbounded,unreachable=status==dm::algorithms::FloydWarshallPairStatus::Unreachable;const std::string label=bad?"X":unreachable?"U":"F";const auto fill=bad?dm::graphics::RGB{254,202,202}:unreachable?dm::graphics::RGB{255,255,255}:dm::graphics::RGB{191,219,254};const double x=1.6*j,y=-1.6*double(i);
+      d.polygon({{x-.7,y-.7},{x+.7,y-.7},{x+.7,y+.7},{x-.7,y+.7}},fill,border).text({x,y},label,25);std::print(" {} |",label);}
+    std::print("\n");}
+  bool rejected=false;try{(void)dm::algorithms::reconstruct_path(r,0,3);}catch(const std::domain_error&){rejected=true;}
+  std::print("\nCycle flag {}; unbounded pairs {}; affected0-to3 path rejected {}.\n",r.has_negative_cycle,affected,rejected);
+  std::print("Unaffected4-to4 route {}; unreachable3-to0 route size {}.\n",dm::algorithms::reconstruct_path(r,4,4),dm::algorithms::reconstruct_path(r,3,0).size());
+  std::print("Raw negative-diagonal diagnostics: D[1][1] {:.0f}; D[2][2] {:.0f}.\n",r.distance[1][1],r.distance[2][2]);
+  d.text({3.2,3},"Source row → destination column",25).text({3.2,-8.1},"F finite; U unreachable; X unbounded",25).save_svg("build/floyd_warshall_negative.svg");
+  if(affected!=9||!rejected)throw std::runtime_error("pair-specific negative-cycle control");
+}
+```
+// result_begin: markdown
+| source / destination | 0 | 1 | 2 | 3 | 4 |
+| ---: | --- | --- | --- | --- | --- |
+| 0 | F | X | X | X | U |
+| 1 | U | X | X | X | U |
+| 2 | U | X | X | X | U |
+| 3 | U | U | U | F | U |
+| 4 | U | U | U | U | F |
+
+Cycle flag true; unbounded pairs 9; affected0-to3 path rejected true.
+Unaffected4-to4 route [4]; unreachable3-to0 route size 0.
+Raw negative-diagonal diagnostics: D[1][1] -2; D[2][2] -4.
+\image(figures/floyd_warshall_negative.svg)
+// result_end
+\caption(The nine red X pairs are unbounded through the negative cycle. Finite blue diagonal controls and unreachable white pairs remain distinct despite the global cycle flag.)
+\alttext(A native five-by-five status matrix marks rows zero through two and columns one through three as unbounded X; three unaffected diagonal cells are finite F, with the remaining cells unreachable U.)
+
+Pair queries validate complete distance/next shapes and values before examining a
+particular pair, so they cost O(n squared) validation plus O(n) querying. The native
+whole unbounded-pair mask validates once and uses O(n cubed) worst-case work.
+The small display above queries statuses for clarity; it is not a timing benchmark.
+In exact arithmetic a negative diagonal certifies a negative cycle. Here the test is
+a strict double comparison, so near-zero floating cycles require attention to rounding.
+
+> Guarded work, bounded reconstruction and complete trace admission
+
+The ordinary kernel uses O(n squared+E+n cubed) worst-case work and O(n squared)
+owned storage. It skips rows/columns with unreachable operands before addition.
+A dense unit-cost graph performs n cubed additions even with no sweep improvements;
+a graph with only diagonal reachability performs n additions. Both are actual counts,
+not elapsed times. Reuse the native complete-directed-arc generator for the dense
+control, with a constant cost attached to each generated arc.
+
+```{cpp, results="markdown", file="figures/floyd_warshall_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  using Edges=std::vector<std::tuple<std::size_t,std::size_t,double>>;std::vector<double> x,dense_y,empty_y;std::vector<std::string> labels;
+  std::print("| vertices | dense additions | disconnected additions | dense improvements | disconnected skipped rows |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:{1u,2u,4u,8u,16u,32u}){Edges edges;for(auto[u,v]:dm::algorithms::complete_directed_graph_edges(n))edges.emplace_back(u,v,1.);const auto a=dm::algorithms::floyd_warshall_work(n,edges),b=dm::algorithms::floyd_warshall_work(n,{});
+    std::print("| {} | {} | {} | {} | {} |\n",n,a.work.candidates,b.work.candidates,a.work.relaxations,b.work.skipped_rows);x.push_back(double(x.size()));dense_y.push_back(std::log2(double(a.work.candidates)));empty_y.push_back(std::log2(double(b.work.candidates)));labels.push_back(std::to_string(n));}
+  auto edges=dm::algorithms::floyd_warshall_example_edges();const auto bound=dm::algorithms::floyd_warshall_trace_entries(5,edges.size());bool quota=false,nonfinite=false,cyclic=false,overflow=false,huge=false;
+  try{dm::algorithms::floyd_warshall_trace(5,edges,bound-1);}catch(const std::length_error&){quota=true;}
+  try{dm::algorithms::floyd_warshall_trace(2,{{0,1,std::numeric_limits<double>::quiet_NaN()}},1);}catch(const std::invalid_argument&){nonfinite=true;}
+  auto malformed=dm::algorithms::floyd_warshall(3,{{0,1,1.},{1,2,1.}});malformed.next[0][2]=0;try{(void)dm::algorithms::reconstruct_path(malformed,0,2);}catch(const std::invalid_argument&){cyclic=true;}
+  const auto max=std::numeric_limits<double>::max();try{dm::algorithms::floyd_warshall(3,{{0,1,max},{1,2,max}});}catch(const std::overflow_error&){overflow=true;}
+  try{dm::algorithms::floyd_warshall_trace_entries(std::numeric_limits<std::size_t>::max(),0);}catch(const std::length_error&){huge=true;}
+  const auto t=dm::algorithms::floyd_warshall_trace(5,edges,bound);const auto first=edges[0];edges[0]={4,4,99.};const bool owned=t.edges[0]==first;
+  std::print("\nComplete trace admission: upper entries {}; one below rejected {}; exact bound stages {}; actual improvements {}.\n",bound,quota,t.stages.size(),t.relaxations.size());
+  std::print("Checked controls: NaN before quota {}; cyclic external hop chain bounded {}; finite candidate overflow rejected {}; virtual full-width bound rejected {}.\n",nonfinite,cyclic,overflow,huge);
+  std::print("Owned graph after caller edit {}; original distance still {:.0f}; empty-graph trace bound {}.\n",owned,t.result.distance[0][2],dm::algorithms::floyd_warshall_trace_entries(0,0));
+  auto plot=dm::graphics::RPlot::create();plot.lines(x,dense_y,"Dense",{220,38,38},2).points(x,dense_y,"",{220,38,38},4).lines(x,empty_y,"Disconnected",{37,99,235},2).points(x,empty_y,"",{37,99,235},4).x_tick_labels(labels).title("Actual additions: dense n cubed versus disconnected n").xlab("Vertex count; consecutive powers of two").ylab("log2 of completed finite additions").legend({"Dense unit costs","Disconnected"},{{220,38,38},{37,99,235}}).size(900,520).save_svg("build/floyd_warshall_controls.svg");
+  if(!quota||!nonfinite||!cyclic||!overflow||!huge||!owned)throw std::runtime_error("bounded checked controls");
+}
+```
+// result_begin: markdown
+| vertices | dense additions | disconnected additions | dense improvements | disconnected skipped rows |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 1 | 0 | 0 |
+| 2 | 8 | 2 | 0 | 2 |
+| 4 | 64 | 4 | 0 | 12 |
+| 8 | 512 | 8 | 0 | 56 |
+| 16 | 4096 | 16 | 0 | 240 |
+| 32 | 32768 | 32 | 0 | 992 |
+
+Complete trace admission: upper entries 560; one below rejected true; exact bound stages 6; actual improvements 18.
+Checked controls: NaN before quota true; cyclic external hop chain bounded true; finite candidate overflow rejected true; virtual full-width bound rejected true.
+Owned graph after caller edit true; original distance still -3; empty-graph trace bound 1.
+\image(figures/floyd_warshall_controls.svg)
+// result_end
+\caption(Dense and disconnected controls count actual finite additions. The vertical scale is explicitly log2; the table gives the untransformed counts. Validation and capture controls execute in the same complete program.)
+\alttext(A native line plot shows log-base-two addition counts across vertex counts one to thirty-two, with dense counts rising three units per doubling and disconnected counts rising one.)
+
+Reconstruction validates both full square matrices, all finite-or-positive-infinity
+costs and every hop ID before shortcuts. An affected pair throws a domain error;
+unreachable or broken sentinel chains return empty, while an unaffected diagonal
+returns its single vertex. External cyclic chains throw after at most n moves.
+Shape/value validation protects access but does not prove that externally supplied
+matrices contain optimal costs. Validation makes reconstruction O(n squared+path
+length), with O(path length) returned storage.
+
+Input edges must have valid endpoints and finite weights. Every attempted finite
+candidate addition must remain finite, including a candidate that would not improve
+a route. Checked counters and matrix/container bounds precede allocations; overflow
+is reported rather than silently turning a reachable route into the infinity sentinel.
+
+For full history, define A=2n+2n squared. The complete upper entry bound is
+
+$$
+C=E+A+(n+1)(1+A)+n^3.
+$$
+\alttext(The complete trace bound counts E edge tuples, A final-matrix row and cell entries, n plus one stage records with their A matrix entries, and at most n cubed improvement records.)
+
+The units are owned tuples, outer-row entries, cells, stage objects and improvement
+records, not bytes or peak RAM. The conservative bound is checked before copies or
+execution, with a default one-million-entry cap. Zero disables only that optional
+cap. Arithmetic/container limits remain, and a graph with few improvements can still
+need large full-stage storage. No replay, truncation or partial trace is returned.
+Inputs and captured matrices/edges are independent owned values.
+
+The standard all-pairs scope and negative-cycle return convention are also described
+in the official
+[Boost.Graph documentation](https://www.boost.org/doc/libs/latest/libs/graph/doc/html/graph/algorithms/shortest_paths/floyd_warshall_shortest.html).
+The present API adds its own validated matrix/path contracts and actual evidence;
+this report makes no claim of cross-library floating-point or performance equivalence.
+All five complete editable programs use native APIs and deterministic graph fixtures,
+with no external dataset. Independent edge-list Bellman–Ford tests check finite and
+unbounded pairs; frozen records preserve matrices, next hops, valid routes, stage
+boundaries and strict updates, alongside address/undefined-behavior sanitizers.

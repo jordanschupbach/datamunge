@@ -69,7 +69,7 @@ TEST(BoyerMoore, NeedleInAHaystack) {
 }
 
 TEST(BoyerMoore, WorstCaseLikePatterns) {
-    // The textbook worst case for right-to-left scanning: pattern a^(m-1)b over a run of a's.
+    // Right-end mismatches cost one comparison per alignment; matching repeated bytes are the all-match worst case.
     const std::string text(200, 'a');
     EXPECT_TRUE(boyer_moore_search(text, "aaaaab").empty());
     const std::string t2 = std::string(30, 'a') + "aaaaab" + std::string(30, 'a') + "aaaaab";

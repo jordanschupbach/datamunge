@@ -5,7 +5,7 @@
 ///
 /// Provides dm::Vector (an owned std::vector with R semantics), the R-style constructors
 /// c(), seql(), factor(), element-wise arithmetic and math with recycling, summary
-/// statistics (sum(), mean(), sd()), and seeded random sampling (runif(), rnorm()).
+/// statistics (sum(), mean(), median(), sd()), and seeded random sampling (runif(), rnorm()).
 /// Arithmetic and element-wise math build read-only expression templates. Named Vector
 /// leaves are borrowed and must outlive evaluation; temporary vectors and child nodes
 /// are owned. Use Vector<> destination = expression or expression.eval() to keep a
@@ -1408,6 +1408,21 @@ double sum(const Vector<>& v);
 /// @endcode
 /// @see dm::sum(), dm::sd()
 double mean(const Vector<>& v);
+/// @brief Sample median, like R's median(x, na.rm=FALSE), without mutating the input.
+/// Returns NaN for empty input or any NaN. Infinities are ordered normally;
+/// an even middle pair of opposite infinities gives NaN. Finite middle pairs
+/// use an overflow-safe midpoint. Copies the data, then selects the middle:
+/// O(n) average work and O(n) owned temporary storage, with no shared writes.
+/// @param v Observations, possibly empty; missing values are not removed.
+/// @return Middle ordered value, or midpoint of the two middle values for even n.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::median(dm::c(9,1,4,2))); // 3
+/// @endcode
+/// @par References
+/// - R stats::median, https://stat.ethz.ch/R-manual/R-devel/library/stats/html/median.html.
+/// @see dm::mean(), dm::sd()
+double median(const Vector<>& v);
 /// @brief Sample standard deviation, using the n - 1 denominator (R's `sd()`).
 ///
 /// Returns NaN for fewer than two observations or any non-finite observation.

@@ -1,0 +1,461 @@
+//? Title: DPLL: Actual Propagation, Restored Backtracking and Finite Random-SAT Experiments
+//? Subtitle: Two-variable proofs, the original model and 25-variable sweep, checked CNF inputs and an iterative search stack
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a Boolean formula in conjunctive normal form, we want either a
+true/false assignment satisfying every clause or a decision that no such
+assignment exists. Enumerating all assignments can require exponentially
+many cases. DPLL combines forced unit assignments, satisfiability-preserving
+pure choices and true/false branching to reduce that search. We begin
+with a two-variable implication and a complete three-node refutation,
+then retain the original satisfiable formula, contradiction and random
+25-variable experiment. Actual owned event traces expose propagation
+reasons and restored parent states. Measured search work and sampling
+intervals qualify the finite sweep; it is not a proof of an asymptotic
+3-SAT threshold. The canonical core validates all CNF literals and uses
+an explicit heap stack rather than recursion by decision depth.
+)
+
+\toc
+
+> Begin with two forced assignments
+
+Let C₀=(x₁) and C₁=(¬x₁∨x₂). A satisfying model must set x₁=true
+because C₀ is a unit clause. C₁ then has only x₂ unassigned, forcing
+x₂=true. No split is needed. The total returned model is [0,+1,+1];
+index zero is deliberately unused. Event snapshots use zero for
+unassigned variables, while the final SAT model uses only +1 or −1
+at variable positions.
+
+The program records actual states from the same kernel as the original
+solver. Clause indices in unit/conflict events refer to the original
+input. All other events use the clause-count sentinel, displayed as a
+dash in this table.
+
+```{cpp, results="markdown", file="figures/dpll_units.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::dpll_sat_trace(2,{{1},{-1,2}});
+  const std::array<const char*,7> names{"enter","unit","pure","conflict","backtrack","exhausted","satisfied"};
+  std::print("| event | literal | original reason clause | partial assignment |\n| :--- | ---: | :--- | :--- |\n");
+  for(const auto& e:t.events)
+    std::print("| {} | {} | {} | {} |\n",names[static_cast<int>(e.kind)],e.literal,e.clause<t.clauses.size()?std::to_string(e.clause):"—",e.assignment);
+  std::print("\nSAT {}; total model {}; nodes {}; unit assignments {}; decisions {}; captured entries {}.\n",t.solve.result.satisfiable,t.solve.result.assignment,t.solve.work.nodes,t.solve.work.unit_steps,t.solve.work.decisions,t.captured_entries);
+  dm::graphics::Diagram d(80,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=3.8;box.height=1.1;box.font_size=23;
+  d.node("first",{0,1.5},"C₀ = (x₁)\nforce x₁ = true",box)
+   .node("second",{5.5,1.5},"C₁ = (¬x₁ ∨ x₂)\nforce x₂ = true",box)
+   .node("model",{2.75,-1},std::format("SAT: model {}\n{} search node; no split",t.solve.result.assignment,t.solve.work.nodes),box)
+   .edge("first","second","propagate")
+   .edge("second","model")
+   .text({2.75,2.8},"Unit clauses give necessary assignments",26)
+   .save_svg("build/dpll_units.svg");
+}
+```
+// result_begin: markdown
+| event | literal | original reason clause | partial assignment |
+| :--- | ---: | :--- | :--- |
+| enter | 0 | — | [0, 0, 0] |
+| unit | 1 | 0 | [0, 1, 0] |
+| unit | 2 | 1 | [0, 1, 1] |
+| satisfied | 0 | — | [0, 1, 1] |
+
+SAT true; total model [0, 1, 1]; nodes 1; unit assignments 2; decisions 0; captured entries 22.
+\image(figures/dpll_units.svg)
+// result_end
+\caption(The actual root trace forces x1 from clause zero and x2 from clause one, then satisfies both clauses without a branch.)
+\alttext(A native implication diagram connects the unit x1 to the forced x2 and the returned total model, with one search node.)
+
+> The search rules and their proof obligations
+
+A CNF formula is an AND of clauses, each an OR of signed literals.
+Literal +v means xᵥ, and −v means ¬xᵥ. If a clause contains one
+unassigned literal and every other literal is false, satisfying the
+formula requires that literal to be true. Repeating this rule yields
+unit propagation.
+
+A pure literal appears in only one polarity among currently unsatisfied
+clauses. Choosing that polarity can satisfy those clauses without
+breaking a clause already satisfied by another assigned variable.
+It therefore preserves existence of a model. Unlike a unit assignment,
+a pure choice is not necessarily logically forced. The example below
+will exhibit another model with a different pure-variable value.
+
+When neither rule applies, split on an unassigned variable v:
+
+\[
+\operatorname{SAT}(F\mid A)=
+\operatorname{SAT}(F\mid A,v=\mathrm{true})\ \lor\
+\operatorname{SAT}(F\mid A,v=\mathrm{false}).
+\]
+
+The two branches exhaust all possible values of v. A clause with every
+literal false proves the current branch inconsistent. Both branches
+failing proves their parent inconsistent. Each new assignment fixes a
+previously unassigned variable, so decision depth is at most n. A
+partial state already satisfying every clause can be completed by
+setting all remaining don't-cares true, as the original API does.
+Together these facts establish soundness, completeness and termination.
+Worst-case search remains exponential; this implementation does not
+include clause learning, watched literals, restarts or a timeout.
+
+> A complete two-variable UNSAT tree
+
+Take all four binary clauses:
+C₀=(x₁∨x₂), C₁=(x₁∨¬x₂), C₂=(¬x₁∨x₂), C₃=(¬x₁∨¬x₂).
+There is no initial unit or pure literal. The solver splits x₁ true
+first. Clause C₂ forces x₂=true, falsifying C₃. It returns to the
+unchanged parent assignment [0,0,0], then tries x₁=false. Clause C₀
+forces x₂=true, falsifying C₁. Both branches fail, so the root is
+exhausted. The root itself has no falsified clause under its empty
+partial assignment; its justification is the completed split.
+
+The actual event sequence makes these distinct failure reasons explicit.
+The tree has one decision, two attempted branches, three entered nodes,
+two conflicting leaves and two restored-parent backtracks.
+
+```{cpp, results="markdown", file="figures/dpll_refutation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::dpll_sat_trace(2,{{1,2},{1,-2},{-1,2},{-1,-2}});
+  const std::array<const char*,7> names{"enter","unit","pure","conflict","backtrack","exhausted","satisfied"};
+  std::vector<dm::algorithms::DpllEvent> conflicts;
+  std::print("| event | node | depth | literal | reason clause | partial assignment |\n| :--- | ---: | ---: | ---: | :--- | :--- |\n");
+  for(const auto& e:t.events) {
+    std::print("| {} | {} | {} | {} | {} | {} |\n",names[static_cast<int>(e.kind)],e.node,e.depth,e.literal,e.clause<t.clauses.size()?std::to_string(e.clause):"—",e.assignment);
+    if(e.kind==dm::algorithms::DpllEventKind::conflict) conflicts.push_back(e);
+  }
+  const auto& w=t.solve.work;
+  std::print("\nSAT {}; nodes {}; decisions {}; branches {}; conflicts {}; backtracks {}; captured entries {}.\n",t.solve.result.satisfiable,w.nodes,w.decisions,w.branches,w.conflicts,w.backtracks,t.captured_entries);
+  dm::graphics::Diagram d(80,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=4.8;box.height=1.2;box.font_size=21;
+  d.node("root",{0,2},"node 0: split x₁\nparent state [0,0,0]",box);
+  for(std::size_t i=0;i<conflicts.size();++i) {
+    const auto& e=conflicts[i];const std::string key=std::to_string(e.node);
+    d.node(key,{i?3.4:-3.4,-.7},std::format("node {}: x₁={}, x₂={}\nconflict in C{}",e.node,e.assignment[1]>0,e.assignment[2]>0,e.clause),box)
+     .edge("root",key,i?"try false":"try true");
+  }
+  d.text({0,3.4},"Both actual branches fail",27)
+   .text({0,-2.1},"Restore the parent after each failure; exhaust the root → UNSAT",21)
+   .save_svg("build/dpll_refutation.svg");
+}
+```
+// result_begin: markdown
+| event | node | depth | literal | reason clause | partial assignment |
+| :--- | ---: | ---: | ---: | :--- | :--- |
+| enter | 0 | 0 | 0 | — | [0, 0, 0] |
+| enter | 1 | 1 | 1 | — | [0, 1, 0] |
+| unit | 1 | 1 | 2 | 2 | [0, 1, 1] |
+| conflict | 1 | 1 | 0 | 3 | [0, 1, 1] |
+| backtrack | 0 | 0 | 1 | — | [0, 0, 0] |
+| enter | 2 | 1 | -1 | — | [0, -1, 0] |
+| unit | 2 | 1 | 2 | 0 | [0, -1, 1] |
+| conflict | 2 | 1 | 0 | 1 | [0, -1, 1] |
+| backtrack | 0 | 0 | -1 | — | [0, 0, 0] |
+| exhausted | 0 | 0 | 0 | — | [0, 0, 0] |
+
+SAT false; nodes 3; decisions 1; branches 2; conflicts 2; backtracks 2; captured entries 53.
+\image(figures/dpll_refutation.svg)
+// result_end
+\caption(Actual conflicts in original clauses three and one close the true and false branches. Restored parent snapshots and the exhausted root justify UNSAT.)
+\alttext(A three-node native tree splits x1, forces x2 true in each child and marks the two conflicting original clauses, then declares the root exhausted.)
+
+> Retain the original model and distinguish a pure choice from a forced value
+
+The original formula is
+(x₁∨x₂)∧(¬x₁∨x₃)∧(¬x₂∨¬x₃)∧(x₁∨¬x₃).
+Its deterministic returned model remains x₁=true,x₂=false,x₃=true.
+The original direct contradiction (x₁)∧(¬x₁) remains UNSAT.
+The total-model checker below validates the original clauses rather
+than trusting the solver's verdict alone.
+
+For a separate tiny pure-literal example, use
+G=(x₁∨x₂)∧(¬x₁∨x₃). Variable x₂ initially appears only positively,
+so the solver chooses x₂=true. The remaining clause permits the pure
+choice x₁=false, after which x₃ is a don't-care filled true. But
+x₁=true,x₂=false,x₃=true also satisfies G. Thus the initial pure choice
+preserves satisfiability without being entailed by G.
+
+```{cpp, results="markdown", file="figures/dpll_models.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<int>> original{{1,2},{-1,3},{-2,-3},{1,-3}};
+  const auto s=dm::algorithms::dpll_sat_trace(3,original);
+  const auto u=dm::algorithms::dpll_sat(1,{{1},{-1}});
+  std::print("Original formula: SAT {}; model {}; model check {}.\n",s.solve.result.satisfiable,s.solve.result.assignment,dm::algorithms::cnf_assignment_satisfies(3,original,s.solve.result.assignment));
+  std::print("Original contradiction: SAT {}; model size {}.\n",u.satisfiable,u.assignment.size());
+  const std::vector<std::vector<int>> g{{1,2},{-1,3}};
+  const auto t=dm::algorithms::dpll_sat_trace(3,g);
+  const std::vector<int> other{0,1,-1,1};
+  std::print("\n| pure assignment | partial state after choice |\n| ---: | :--- |\n");
+  for(const auto& e:t.events) if(e.kind==dm::algorithms::DpllEventKind::pure)
+    std::print("| {} | {} |\n",e.literal,e.assignment);
+  const bool solver_ok=dm::algorithms::cnf_assignment_satisfies(3,g,t.solve.result.assignment);
+  const bool other_ok=dm::algorithms::cnf_assignment_satisfies(3,g,other);
+  std::print("\nPure-choice model {}; check {}. Alternative model {}; check {}.\n",t.solve.result.assignment,solver_ok,other,other_ok);
+  dm::graphics::Diagram d(78,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=4.8;box.height=1.2;box.font_size=23;
+  d.node("formula",{0,2},"G = (x₁ ∨ x₂) ∧ (¬x₁ ∨ x₃)\nx₂ appears only positively",box)
+   .node("solver",{-3.4,-.6},"solver: (false,true,true)\nx₂ chosen true",box)
+   .node("other",{3.4,-.6},"also valid: (true,false,true)\nx₂ is false",box)
+   .edge("formula","solver","pure choice").edge("formula","other","another model")
+   .text({0,3.35},"A pure choice is safe, but need not be forced",26)
+   .save_svg("build/dpll_models.svg");
+}
+```
+// result_begin: markdown
+Original formula: SAT true; model [0, 1, -1, 1]; model check true.
+Original contradiction: SAT false; model size 0.
+
+| pure assignment | partial state after choice |
+| ---: | :--- |
+| 2 | [0, 0, 1, 0] |
+| -1 | [0, -1, 1, 0] |
+
+Pure-choice model [0, -1, 1, 1]; check true. Alternative model [0, 1, -1, 1]; check true.
+\image(figures/dpll_models.svg)
+// result_end
+\caption(The original model and contradiction are retained. Two checked models of the pure-literal example give different values to x2, demonstrating that a pure choice need not be forced.)
+\alttext(A native formula node branches to two satisfying models, one choosing pure x2 true and another with x2 false.)
+
+> Repeat the original finite random 3-SAT sweep and measure search work
+
+Retain n=25 variables, seed 4242, 120 trials per ratio and all 21 requested
+ratios from 2 to 7 in quarter steps. The canonical generator preserves
+the original mt19937 stream: draw an id by rng()%n, reject repeated
+variables within a clause before drawing its sign, and allow repeated
+clauses. This has a tiny modulo bias, so it is a reproducible legacy
+sampling scheme rather than an exactly uniform mathematical sampler.
+The stream is continuous across trials and ratios; it is not reset.
+
+The original code uses m=floor(requested_ratio·25). Some requested
+quarter ratios therefore differ from the actual integer-clause ratio:
+for example,2.25 gives56 clauses and actual m/n=2.24. The table and
+plots below use those exact counts. Every sampled SAT model is checked.
+The workload panel records median entered nodes using the same solver
+and instances, which makes its difficulty claim directly testable.
+
+Wilson 95% intervals come from the existing proportion-test API and
+summarize binomial sampling uncertainty under an independent-trial
+interpretation. They are not confidence limits for an asymptotic
+threshold. The historical4.26 number is not drawn as a proven boundary:
+a single n=25 sample cannot establish a limiting threshold, convergence
+with n, or a universal solver-hardness location. Measured medians also
+depend on this first-variable, true-first, unit/pure implementation.
+
+```{cpp, results="markdown", file="figures/dpll_random.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::mt19937 engine(4242);
+  std::vector<double> ratio,fraction,lower,upper,median_nodes;
+  std::print("| requested ratio | clauses | actual m/n | SAT / 120 | fraction | Wilson low | Wilson high | median nodes |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(int quarter=8;quarter<=28;++quarter) {
+    const int m=quarter*25/4;std::size_t sat=0;
+    std::vector<double> nodes;
+    for(int trial=0;trial<120;++trial) {
+      const auto f=dm::algorithms::random_3sat_formula(25,m,engine);
+      const auto r=dm::algorithms::dpll_sat_work(25,f);
+      if(r.result.satisfiable) {
+        if(!dm::algorithms::cnf_assignment_satisfies(25,f,r.result.assignment)) throw std::runtime_error("sample model invalid");
+        ++sat;
+      }
+      nodes.push_back(r.work.nodes);
+    }
+    const auto ci=dm::stats::proportion_test_one_sample(sat,120);
+    const double median=dm::median(nodes);
+    ratio.push_back(m/25.0);fraction.push_back(sat/120.0);
+    lower.push_back(ci.conf_int_lower);upper.push_back(ci.conf_int_upper);median_nodes.push_back(median);
+    std::print("| {:.2f} | {} | {:.2f} | {} | {:.4f} | {:.4f} | {:.4f} | {:.1f} |\n",quarter/4.0,m,m/25.0,sat,sat/120.0,ci.conf_int_lower,ci.conf_int_upper,median);
+  }
+  auto p=dm::graphics::RPlot::create();
+  p.line(ratio,fraction,"SAT fraction",{124,58,237})
+   .points(ratio,fraction,"",{124,58,237},5)
+   .segments(ratio,lower,ratio,upper,{148,163,184},1.4)
+   .title("Finite sample: n=25, 120 trials per point")
+   .x_label("actual clauses / variables").y_label("observed SAT fraction; Wilson 95% bars").y_limits(-.02,1.22);
+  auto q=dm::graphics::RPlot::create();
+  q.line(ratio,median_nodes,"median nodes",{37,99,235}).points(ratio,median_nodes,"",{37,99,235},5)
+   .title("Actual search work on these same samples")
+   .x_label("actual clauses / variables").y_label("median entered search nodes")
+   .y_limits(0,*std::max_element(median_nodes.begin(),median_nodes.end())*1.35+1);
+  dm::graphics::RLayout::create(1,2).add(p).add(q).size(1100,550)
+   .title("Original random experiment: measured finite-size behavior, not a threshold proof")
+   .fit_panels().save_svg("build/dpll_random.svg");
+}
+```
+// result_begin: markdown
+| requested ratio | clauses | actual m/n | SAT / 120 | fraction | Wilson low | Wilson high | median nodes |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2.00 | 50 | 2.00 | 120 | 1.0000 | 0.9690 | 1.0000 | 7.0 |
+| 2.25 | 56 | 2.24 | 120 | 1.0000 | 0.9690 | 1.0000 | 7.0 |
+| 2.50 | 62 | 2.48 | 120 | 1.0000 | 0.9690 | 1.0000 | 8.0 |
+| 2.75 | 68 | 2.72 | 120 | 1.0000 | 0.9690 | 1.0000 | 9.0 |
+| 3.00 | 75 | 3.00 | 120 | 1.0000 | 0.9690 | 1.0000 | 10.0 |
+| 3.25 | 81 | 3.24 | 120 | 1.0000 | 0.9690 | 1.0000 | 11.0 |
+| 3.50 | 87 | 3.48 | 119 | 0.9917 | 0.9543 | 0.9985 | 13.5 |
+| 3.75 | 93 | 3.72 | 114 | 0.9500 | 0.8952 | 0.9769 | 15.5 |
+| 4.00 | 100 | 4.00 | 107 | 0.8917 | 0.8234 | 0.9356 | 23.0 |
+| 4.25 | 106 | 4.24 | 85 | 0.7083 | 0.6216 | 0.7822 | 40.5 |
+| 4.50 | 112 | 4.48 | 58 | 0.4833 | 0.3958 | 0.5719 | 54.5 |
+| 4.75 | 118 | 4.72 | 44 | 0.3667 | 0.2858 | 0.4558 | 47.0 |
+| 5.00 | 125 | 5.00 | 26 | 0.2167 | 0.1524 | 0.2985 | 47.0 |
+| 5.25 | 131 | 5.24 | 18 | 0.1500 | 0.0970 | 0.2247 | 48.0 |
+| 5.50 | 137 | 5.48 | 9 | 0.0750 | 0.0400 | 0.1364 | 41.0 |
+| 5.75 | 143 | 5.72 | 4 | 0.0333 | 0.0130 | 0.0826 | 39.0 |
+| 6.00 | 150 | 6.00 | 0 | 0.0000 | 0.0000 | 0.0310 | 35.0 |
+| 6.25 | 156 | 6.24 | 2 | 0.0167 | 0.0046 | 0.0587 | 33.0 |
+| 6.50 | 162 | 6.48 | 0 | 0.0000 | 0.0000 | 0.0310 | 31.0 |
+| 6.75 | 168 | 6.72 | 0 | 0.0000 | 0.0000 | 0.0310 | 31.0 |
+| 7.00 | 175 | 7.00 | 1 | 0.0083 | 0.0015 | 0.0457 | 27.0 |
+\image(figures/dpll_random.svg)
+// result_end
+\caption(All 2520 original-stream formulas are re-solved with checked SAT models. Observed SAT fractions, approximate Wilson intervals and median nodes describe these finite samples rather than proving a limiting threshold.)
+\alttext(Two panels show observed SAT fractions with sampling intervals and median entered nodes across the original twenty-one integer-clause ratios.)
+
+In this executed sample, the largest median is 54.5 entered nodes at actual
+ratio 112/25=4.48, where 58 of 120 formulas are SAT. The curve later has
+small nonzero fractions again: 2/120 at 156/25=6.24 and 1/120 at 7.00.
+Each ratio samples fresh formulas, so finite observed fractions need
+not decrease monotonically. Those counts are retained rather than
+replaced by the old abbreviated prose's “remains zero” summary.
+
+> Validate inputs, bound capture and expose a deliberately unreduced family
+
+The canonical solver validates every literal before any verdict or dense
+allocation, even after an empty clause or inside a tautology. The bound
+must be nonnegative; literals must be nonzero signed ids within 1…n,
+with INT_MIN rejected before absolute-value arithmetic. Empty CNF is
+true, including n=0; an empty clause is false. Returned SAT models have
+n+1 entries and fill don't-cares true; UNSAT returns an empty model.
+
+Original clause/literal order, duplicate occurrences and tautologies
+are retained to preserve deterministic behavior. A raw duplicate can
+delay unit detection because it has more than one unassigned occurrence.
+Presence bits avoid polarity-counter overflow. Search still finds an
+exact result. Its explicit frame stack avoids native recursion depth,
+but dense assignments cost n+1 entries per live frame and can require
+O(n²) live model storage along a deep branch.
+
+The trace's default cap is one million logical entries. Input costs
+1+number_of_clauses+number_of_literals. Each event costs 1+(n+1) for
+its record and complete partial assignment. The cap is checked before
+the affected copy, and input/root capacity before allocating the initial
+dense state. Zero disables only this optional cap. It is not a byte,
+time or total working-memory quota. An exceeded cap throws without a
+partial SAT/UNSAT verdict. The two-unit example has 22 entries, so 22
+passes and 21 fails.
+
+To make the effect of preserving raw clauses visible, construct n
+clauses (xᵢ∨¬xᵢ). They are all tautologies, but this implementation does
+not remove them. It enters a true-first chain until all variables are
+assigned: n+1 nodes, depth n, no unit/pure assignments or conflicts.
+At depth k, the status and unit scans each inspect2n−k literals; the
+pure scan inspects4n−3k. Including the final satisfied scan gives
+
+\[
+\text{literal visits}=\frac{11n^2+7n}{2},\qquad
+\text{clause visits}=3n^2+n.
+\]
+
+The following family verifies those exact counts. Linear node count
+alone would obscure quadratic repeated scan work; neither plot is an
+elapsed-time benchmark.
+
+```{cpp, results="markdown", file="figures/dpll_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto exact=dm::algorithms::dpll_sat_trace(2,{{1},{-1,2}},22);
+  int caps=0,invalid=0;
+  try {(void)dm::algorithms::dpll_sat_trace(2,{{1},{-1,2}},21);} catch(const std::length_error&) {++caps;}
+  try {(void)dm::algorithms::dpll_sat_trace(std::numeric_limits<int>::max(),{},1);} catch(const std::length_error&) {++caps;}
+  for(const auto f:std::vector<std::vector<std::vector<int>>>{{{0}},{{3}},{{std::numeric_limits<int>::min()}},{{},{0}}}) {
+    try {(void)dm::algorithms::dpll_sat(2,f);} catch(const std::invalid_argument&) {++invalid;}
+  }
+  try {(void)dm::algorithms::dpll_sat(-1,{});} catch(const std::invalid_argument&) {++invalid;}
+  std::print("Exact capture entries {}; expected cap rejections {}/2; input rejections {}/5.\n",exact.captured_entries,caps,invalid);
+  const auto zero=dm::algorithms::dpll_sat(0,{}),empty=dm::algorithms::dpll_sat(0,{{}});
+  std::print("Zero-variable empty CNF: SAT {}, model {}. Empty clause: SAT {}, model {}.\n\n",zero.satisfiable,zero.assignment,empty.satisfiable,empty.assignment);
+  std::vector<double> width,lit_ratio,clause_ratio;
+  std::print("| variables | nodes | max depth | literal visits | derived visits | clause visits |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(int n:{16,32,64,128,256,512,1024}) {
+    std::vector<std::vector<int>> f;
+    for(int v=1;v<=n;++v) f.push_back({v,-v});
+    const auto r=dm::algorithms::dpll_sat_work(n,f);const auto& w=r.work;
+    const std::size_t size=n,expected=(11*size*size+7*size)/2;
+    if(!r.result.satisfiable || w.literal_visits!=expected || w.clause_visits!=3*size*size+size || w.nodes!=size+1 || w.max_depth!=size || w.unit_steps || w.pure_steps || w.conflicts)
+      throw std::runtime_error("tautology-family work mismatch");
+    std::print("| {} | {} | {} | {} | {} | {} |\n",n,w.nodes,w.max_depth,w.literal_visits,expected,w.clause_visits);
+    width.push_back(std::log2(n));lit_ratio.push_back(w.literal_visits/(1.0*n*n));clause_ratio.push_back(w.clause_visits/(1.0*n*n));
+  }
+  auto p=dm::graphics::RPlot::create();
+  p.line(width,lit_ratio,"literal visits",{37,99,235}).points(width,lit_ratio,"",{37,99,235},5)
+   .line(width,clause_ratio,"clause visits",{220,38,38}).points(width,clause_ratio,"",{220,38,38},5)
+   .title("Unreduced tautologies: measured scans / n²")
+   .x_label("log2(number of variables)").y_label("visits divided by n²").y_limits(0,7)
+   .size(1100,570).save_svg("build/dpll_limits.svg");
+}
+```
+// result_begin: markdown
+Exact capture entries 22; expected cap rejections 2/2; input rejections 5/5.
+Zero-variable empty CNF: SAT true, model [0]. Empty clause: SAT false, model [].
+
+| variables | nodes | max depth | literal visits | derived visits | clause visits |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 16 | 17 | 16 | 1464 | 1464 | 784 |
+| 32 | 33 | 32 | 5744 | 5744 | 3104 |
+| 64 | 65 | 64 | 22752 | 22752 | 12352 |
+| 128 | 129 | 128 | 90560 | 90560 | 49280 |
+| 256 | 257 | 256 | 361344 | 361344 | 196864 |
+| 512 | 513 | 512 | 1443584 | 1443584 | 786944 |
+| 1024 | 1025 | 1024 | 5770752 | 5770752 | 3146752 |
+\image(figures/dpll_limits.svg)
+// result_end
+\caption(Exact versus one-short capture limits and complete input rejection are executed before an iterative tautology-family sweep. Measured literal/clause scans agree with the derived quadratic formulas through depth1024.)
+\alttext(Two normalized scan curves approach5.5 literal visits and3 clause visits per n-squared over powers-of-two variable counts, while the printed table records actual node counts and depth.)
+
+> Verification and limits
+
+Native tests compare all 512 canonical two-variable clause sets and all
+19,683 ordered three-clause formulas over the 27 canonical three-variable
+clauses against exhaustive model enumeration. They also check 800 seeded
+raw formulas with duplicates, tautologies, empty clauses and unused
+variables. Actual event certificates validate entered child states,
+unit reasons, pure polarity, falsified clauses, unchanged restored parents,
+both-failed exhaustion and the final checked total model. Counter identities
+include nodes=branches+1 and, on a complete UNSAT tree, nodes=2·decisions+1
+and conflicting_leaves=decisions+1.
+
+Additional tests cover invalid ids/counts, model shape and totality,
+exact/one-short/disabled capture limits, validation priority, owned copies,
+the unchanged generator's draw order/state and a 1024-decision iterative
+chain. Ordinary, work-only and traced results agree. Separate unchanged-
+source probes reproduce an invalid-literal bounds failure and signed
+num_vars+1 overflow in the old implementation; negative counts were also
+accepted rather than rejected.
+
+This is a transparent deterministic DPLL solver for propositional CNF.
+A SAT result supplies a directly checkable model. UNSAT follows from the
+completed search; the event sequence is not a standardized DRAT/LRAT
+certificate. The random sweep measures this solver on this small sampling
+scheme and cannot establish a general threshold or solver-independent
+hardness claim.
+
+> References
+
+M. Davis, G. Logemann and D. Loveland (1962),
+[A machine program for theorem-proving](https://doi.org/10.1145/368273.368557),
+Communications of the ACM 5(7),394–397, introduces the backtracking
+procedure. D. Mitchell, B. Selman and H. Levesque (1992),
+[Hard and Easy Distributions of SAT Problems](https://cdn.aaai.org/AAAI/1992/AAAI 92-071.pdf),
+AAAI 92,459–465, studies finite random-SAT distributions and search work.
+The raw-occurrence ordering, pure choices, heap frames, event accounting,
+validation and legacy modulo-based generator here describe the executed
+datamunge variant.
+

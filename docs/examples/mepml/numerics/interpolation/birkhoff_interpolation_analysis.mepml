@@ -1,0 +1,282 @@
+//? Title: Birkhoff Interpolation: Values, Derivatives and Uniqueness
+//? Subtitle: A hand-solvable cubic, nonpoised families and numerical scaling limits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given scattered values and derivatives of a function, find a polynomial that
+satisfies all the conditions. Missing derivative orders are allowed, but the
+conditions may be redundant, inconsistent or nearly dependent. We derive the
+linear system, recover the original cubic from values and curvatures, and
+exhibit both infinitely many solutions and a family that becomes singular.
+Datamunge exposes the constraint matrix and derivative evaluator, and its
+scaled solver reports numerical failure separately from a successful fit.
+)
+
+\toc
+
+> The method
+
+For N constraints, seek \(p(x)=\sum_{k=0}^{N-1}c_kx^k\), of degree **at most**
+\(N-1\). A condition \(p^{(d_i)}(x_i)=v_i\) becomes row i of
+
+$$
+A c=v,\qquad A_{ik}=\begin{cases}
+\dfrac{k!}{(k-d_i)!}x_i^{k-d_i},&k\ge d_i,\\0,&k<d_i.
+\end{cases}
+$$
+\alttext(Each matrix row evaluates a specified derivative of every monomial. Columns below that derivative order are zero.)
+
+Derivative orders need not be consecutive at a node. This is the lacunary
+feature of Birkhoff interpolation: unlike Hermite data, a value and a second
+derivative need not come with a first derivative.
+
+In exact arithmetic, the fixed-node problem is poised when A is nonsingular:
+every right-hand side then has one unique coefficient vector. A singular A may
+have no solution or infinitely many for a particular v. A numerical solver also
+has a third practical limit: coefficients may be extremely sensitive to small
+changes even when the exact matrix is nonsingular.
+
+```{cpp, file="figures/birkhoff_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram diagram;
+  diagram.node("left",{0,1.6},"At x = -1\nvalue and curvature")
+         .node("right",{0,-1.6},"At x = 1\nvalue and curvature")
+         .node("system",{6,0},"Four linear equations\nA c = v")
+         .node("answer",{12,0},"Unique cubic\nc = (1, 2, 3, 4)")
+         .edge("left","system").edge("right","system")
+         .edge("system","answer","full rank")
+         .text({6,-3},"No first derivatives were prescribed.");
+  diagram.save_svg("build/birkhoff_method.svg");
+}
+```
+// result_begin:
+// \image(figures/birkhoff_method.svg)
+// result_end
+\caption(The original example's two values and two curvatures determine four coefficients, despite the missing first-derivative data.)
+\alttext(Value and curvature measurements at minus one and plus one feed a four-equation linear system, yielding cubic coefficients one, two, three and four.)
+
+> Simple example: recover the original cubic
+
+The conditions are \(p(-1)=-2\), \(p''(-1)=-18\), \(p(1)=10\), and
+\(p''(1)=30\). Since \(p''(x)=2c_2+6c_3x\), adding and subtracting the
+curvature equations gives \(c_2=3\), \(c_3=4\). The value equations then
+give \(c_0=1\), \(c_1=2\). Thus \(p(x)=1+2x+3x^2+4x^3\).
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<dm::algorithms::BirkhoffConstraint> conditions{
+      {-1,0,-2},{-1,2,-18},{1,0,10},{1,2,30}};
+  const auto matrix=dm::algorithms::birkhoff_matrix(conditions);
+  const auto c=dm::algorithms::birkhoff_polynomial(conditions);
+  if (c.empty()) return 1;
+  std::print("| node | order | c0 factor | c1 factor | c2 factor | c3 factor | target | fitted |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t i=0;i<conditions.size();++i) {
+    const auto& condition=conditions[i];
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {:.10f} |\n",condition.node,condition.order,
+        matrix[i][0],matrix[i][1],matrix[i][2],matrix[i][3],condition.value,
+        dm::algorithms::birkhoff_eval_derivative(c,condition.node,condition.order));
+  }
+  std::print("\nRecovered coefficients: {:.8f}, {:.8f}, {:.8f}, {:.8f}.\n",c[0],c[1],c[2],c[3]);
+}
+```
+// result_begin: markdown
+| node | order | c0 factor | c1 factor | c2 factor | c3 factor | target | fitted |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| -1 | 0 | 1 | -1 | 1 | -1 | -2 | -2.0000000000 |
+| -1 | 2 | 0 | 0 | 2 | -6 | -18 | -18.0000000000 |
+| 1 | 0 | 1 | 1 | 1 | 1 | 10 | 10.0000000000 |
+| 1 | 2 | 0 | 0 | 2 | 6 | 30 | 30.0000000000 |
+
+Recovered coefficients: 1.00000000, 2.00000000, 3.00000000, 4.00000000.
+// result_end
+\caption(The matrix and fitted derivative values are returned by the core API. A curvature constraint is checked against the second derivative, not plotted as if it were a function value.)
+
+```{cpp, file="figures/birkhoff_cubic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto c=dm::algorithms::birkhoff_polynomial({{-1,0,-2},{-1,2,-18},{1,0,10},{1,2,30}});
+  if (c.empty()) return 1;
+  std::vector<double> x,value,curvature;
+  for (int i=0;i<=150;++i) {
+    const double point=-1.5+3.*i/150;
+    x.push_back(point);
+    value.push_back(dm::algorithms::birkhoff_eval(c,point));
+    curvature.push_back(dm::algorithms::birkhoff_eval_derivative(c,point,2));
+  }
+  auto p=dm::graphics::RPlot::create();
+  p.lines(x,value,"p(x)",dm::RGB{124,58,237},2)
+   .points({-1,1},{-2,10},"values",dm::RGB{220,38,38},7)
+   .title("Recovered cubic").x_label("x").y_label("p(x)");
+  auto d=dm::graphics::RPlot::create();
+  d.lines(x,curvature,"p second derivative",dm::RGB{37,99,235},2)
+   .points({-1,1},{-18,30},"curvatures",dm::RGB{220,38,38},7)
+   .title("Prescribed curvatures").x_label("x").y_label("second derivative");
+  dm::graphics::RLayout::create(1,2).add(p).add(d).size(1100,470).fit_panels()
+      .save_svg("build/birkhoff_cubic.svg");
+}
+```
+// result_begin:
+// \image(figures/birkhoff_cubic.svg)
+// result_end
+\caption(The original curve is retained, with function values and derivative observations shown on separate axes. Extrapolation beyond the nodes is displayed, without a general approximation guarantee.)
+\alttext(The left panel shows the cubic with constrained values at minus one and plus one. The right panel shows its linear second derivative passing through curvatures minus eighteen and thirty.)
+
+> A nonpoised problem has more than one possible outcome
+
+For a quadratic, prescribe \(p(-1)=p(1)=0\) and \(p'(0)=0\).
+Every \(p_\lambda(x)=\lambda(x^2-1)\) satisfies these conditions, so there is
+no unique interpolant. Changing only the derivative target to 1 makes the same
+matrix inconsistent: the endpoint conditions force \(c_1=0\), whereas
+\(p'(0)=1\) demands \(c_1=1\). The API returns an empty vector in both cases;
+an empty result does not distinguish these two mathematical situations.
+
+```{cpp, results="markdown", file="figures/birkhoff_nonunique.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::print("| midpoint derivative target | numerical fit returned |\n| ---: | :--- |\n");
+  for (double target:{0.,1.})
+    std::print("| {} | {} |\n",target,
+        !dm::algorithms::birkhoff_polynomial({{-1,0,0},{1,0,0},{0,1,target}}).empty());
+  std::vector<double> x;
+  for (int i=0;i<=100;++i) x.push_back(-1.2+2.4*i/100);
+  auto plot=dm::graphics::RPlot::create();
+  const std::vector<dm::RGB> colors{{37,99,235},{148,163,184},{220,38,38}};
+  int color=0;
+  for (double lambda:{-1.,0.,1.}) {
+    std::vector<double> y;
+    for (double point:x) y.push_back(dm::algorithms::birkhoff_eval({-lambda,0,lambda},point));
+    plot.lines(x,y,std::format("lambda = {}",lambda),colors[color++],2);
+  }
+  plot.points({-1,1},{0,0},"endpoint values",dm::RGB{17,24,39},6)
+      .title("Three members of an infinite solution family")
+      .x_label("x").y_label("p(x)").y_limits(-1.3,1.6).size(850,460)
+      .save_svg("build/birkhoff_nonunique.svg");
+}
+```
+// result_begin: markdown
+| midpoint derivative target | numerical fit returned |
+| ---: | :--- |
+| 0 | false |
+| 1 | false |
+\image(figures/birkhoff_nonunique.svg)
+// result_end
+\caption(Three distinct polynomials meet the zero endpoint values and zero midpoint slope. The slope is a derivative condition, not an extra zero value at the midpoint.)
+\alttext(An upward parabola, a downward parabola and the zero polynomial all pass through zero at the endpoints minus one and plus one and have zero slope at the centre.)
+
+The original report's second rejected scheme, \(p'(0)=p''(-1)=p''(1)=0\),
+is also nonpoised for degree at most two: the constant coefficient is unconstrained,
+and the curvature rows are identical. Rejection is appropriate even though the
+zero polynomial itself satisfies the conditions.
+
+> Checking the theory: approach to singularity
+
+Move the derivative node to t and prescribe \(p'(t)=1\), retaining the zero
+endpoint values. The matrix and its determinant are
+
+$$
+A(t)=\begin{pmatrix}1&-1&1\\1&1&1\\0&1&2t\end{pmatrix},\qquad
+\det A(t)=4t,\qquad p_t(x)=\frac{x^2-1}{2t}\quad(t\ne0).
+$$
+\alttext(The derivative-node matrix has determinant four times t. For nonzero t the unique polynomial is x squared minus one divided by twice t.)
+
+The coefficient size grows as \(1/(2|t|)\), while a perturbation delta in the
+derivative target changes \(c_2\) by \(\delta/(2t)\). Thus the geometry itself
+amplifies measurement error as t approaches zero. A numerically returned answer
+cannot make this sensitivity disappear.
+
+```{cpp, results="markdown", file="figures/birkhoff_sensitivity.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::print("| derivative node t | determinant 4t | numerical fit | recovered c2 | exact c2 |\n"
+             "| ---: | ---: | :--- | ---: | ---: |\n");
+  for (double t:{.5,.1,.01,.001,1e-6,1e-12,1e-16,0.}) {
+    const auto c=dm::algorithms::birkhoff_polynomial({{-1,0,0},{1,0,0},{t,1,1}});
+    if (c.empty()) std::print("| {:.2e} | {:.2e} | unresolved | — | {} |\n",t,4*t,t?std::format("{:.4e}",.5/t):"none");
+    else std::print("| {:.2e} | {:.2e} | returned | {:.4e} | {:.4e} |\n",t,4*t,c[2],.5/t);
+  }
+  std::vector<double> x;
+  for (int i=0;i<=120;++i) x.push_back(-1.+2.*i/120);
+  auto plot=dm::graphics::RPlot::create();
+  const std::vector<dm::RGB> colors{{37,99,235},{217,119,6},{220,38,38}};
+  int color=0;
+  for (double t:{.5,.1,.02}) {
+    const auto c=dm::algorithms::birkhoff_polynomial({{-1,0,0},{1,0,0},{t,1,1}});
+    if (c.empty()) return 1;
+    std::vector<double> y;
+    for (double point:x) y.push_back(dm::algorithms::birkhoff_eval(c,point));
+    plot.lines(x,y,std::format("t = {}",t),colors[color++],2);
+  }
+  plot.title("The unique solution becomes sensitive")
+      .x_label("x").y_label("p(x)").y_limits(-28,6).size(850,460)
+      .save_svg("build/birkhoff_sensitivity.svg");
+}
+```
+// result_begin: markdown
+| derivative node t | determinant 4t | numerical fit | recovered c2 | exact c2 |
+| ---: | ---: | :--- | ---: | ---: |
+| 5.00e-01 | 2.00e+00 | returned | 1.0000e+00 | 1.0000e+00 |
+| 1.00e-01 | 4.00e-01 | returned | 5.0000e+00 | 5.0000e+00 |
+| 1.00e-02 | 4.00e-02 | returned | 5.0000e+01 | 5.0000e+01 |
+| 1.00e-03 | 4.00e-03 | returned | 5.0000e+02 | 5.0000e+02 |
+| 1.00e-06 | 4.00e-06 | returned | 5.0000e+05 | 5.0000e+05 |
+| 1.00e-12 | 4.00e-12 | returned | 5.0000e+11 | 5.0000e+11 |
+| 1.00e-16 | 4.00e-16 | unresolved | — | 5.0000e+15 |
+| 0.00e+00 | 0.00e+00 | unresolved | — | none |
+\image(figures/birkhoff_sensitivity.svg)
+// result_end
+\caption(The formula and fitted coefficients can be compared directly. The exact matrix is nonsingular at t=1e-16, but the numerical pivot threshold cannot establish a unique fit there.)
+\alttext(Three downward-shifted parabolas have the same zero endpoint values; their centres grow in magnitude as the derivative constraint moves towards zero.)
+
+> Scaling and numerical limits
+
+The solver equilibrates each matrix row and column before pivoted elimination.
+This removes the old absolute pivot cutoff's dependence on a single coefficient's
+units. For example, the valid line through \((0,1)\) and \((10^{-16},2)\)
+has coefficients \((1,10^{16})\): column scaling resolves it even though the
+unscaled slope column is tiny.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto c=dm::algorithms::birkhoff_polynomial({{0,0,1},{1e-16,0,2}});
+  if (c.empty()) return 1;
+  std::print("| intercept | slope | value at 0 | value at 1e-16 |\n| ---: | ---: | ---: | ---: |\n"
+             "| {} | {:.6e} | {} | {} |\n",c[0],c[1],
+             dm::algorithms::birkhoff_eval(c,0),dm::algorithms::birkhoff_eval(c,1e-16));
+}
+```
+// result_begin: markdown
+| intercept | slope | value at 0 | value at 1e-16 |
+| ---: | ---: | ---: | ---: |
+| 1 | 1.000000e+16 | 1 | 2 |
+// result_end
+\caption(An exact affine control distinguishes a change of coordinate scale from genuine dependence among constraints.)
+
+Scaling does not guarantee a well-conditioned monomial basis. Pivots at most
+\(64N\epsilon\) on the equilibrated matrix are treated as numerically singular;
+this is an implementation threshold rather than an exact rank theorem.
+The routine uses \(O(N^3)\) work and \(O(N^2)\) storage. Negative orders and
+nonfinite conditions are rejected, and nonrepresentable arithmetic raises an
+overflow error. Empty coefficients evaluate as the zero polynomial, so callers
+must check for an empty fit before interpreting it as an interpolant.
+
+> Conclusion
+
+The original cubic is recovered from values and second derivatives, with the
+matrix and fitted derivatives visible. The quadratic controls distinguish
+nonuniqueness, inconsistency, exact poisedness and numerical resolution. Scaling
+fixes the tiny-coordinate affine control, while the approaching-singularity
+example retains its unavoidable sensitivity. Generated polynomial controls are
+sufficient here; an observed dataset would not establish these exact properties.
+
+> References
+
+- Birkhoff, G. D. (1906). *General Mean Value and Remainder Theorems with Applications to Mechanical Differentiation and Quadrature*. Transactions of the American Mathematical Society, 7(1), 107–136. https://www.jstor.org/stable/1986339

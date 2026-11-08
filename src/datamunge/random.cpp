@@ -1,5 +1,7 @@
 #include <datamunge/random/random.hpp>
 #include <datamunge/random/mt19937_64_analysis.hpp>
+#include <datamunge/random/chacha20_analysis.hpp>
+#include <datamunge/algorithms/chacha20.hpp>
 
 #include <cmath>
 #include <algorithm>
@@ -14,9 +16,6 @@ constexpr std::uint64_t rotl(std::uint64_t value, int shift) {
   return (value << shift) | (value >> (64 - shift));
 }
 
-constexpr std::uint32_t rotl32(std::uint32_t value, int shift) {
-  return (value << shift) | (value >> (32 - shift));
-}
 
 std::uint64_t splitmix64_step(std::uint64_t& state) {
   std::uint64_t value = (state += 0x9E3779B97F4A7C15ULL);
@@ -192,9 +191,11 @@ std::uint64_t BlumBlumShub::step() {
 
 std::uint64_t BlumBlumShub::next_u64() {
   std::uint64_t word = 0;
-  for (unsigned bit = 0; bit < 64; ++bit) word |= (step() & 1ULL) << bit;
+  for (unsigned bit = 0; bit < 64; ++bit) word |= next_bit() << bit;
   return word;
 }
+
+std::uint64_t BlumBlumShub::next_bit() { return step() & 1ULL; }
 
 LaggedFibonacci64::LaggedFibonacci64(std::uint64_t seed, std::size_t short_lag,
                                      std::size_t long_lag)
@@ -364,17 +365,7 @@ std::uint64_t Sfc64::next_u64() {
   return result;
 }
 
-ChaCha20::ChaCha20(std::uint64_t seed) {
-  std::array<std::uint32_t, 8> key{};
-  for (std::size_t i = 0; i < key.size(); i += 2) {
-    const std::uint64_t word = splitmix64_step(seed);
-    key[i] = static_cast<std::uint32_t>(word);
-    key[i + 1] = static_cast<std::uint32_t>(word >> 32U);
-  }
-  state_ = {0x61707865U, 0x3320646eU, 0x79622d32U, 0x6b206574U,
-            key[0], key[1], key[2], key[3], key[4], key[5], key[6], key[7],
-            0U, 0U, 0U, 0U};
-}
+ChaCha20::ChaCha20(std::uint64_t seed) : ChaCha20(chacha20_seed_key(seed)) {}
 
 ChaCha20::ChaCha20(const std::array<std::uint32_t, 8>& key,
                    const std::array<std::uint32_t, 3>& nonce,
@@ -384,26 +375,18 @@ ChaCha20::ChaCha20(const std::array<std::uint32_t, 8>& key,
              initial_counter, nonce[0], nonce[1], nonce[2]} {}
 
 void ChaCha20::refill() {
+  if (counter_exhausted_) throw std::length_error("ChaCha20: fixed-nonce block counter exhausted");
   auto work = state_;
-  const auto quarter_round = [](std::uint32_t& a, std::uint32_t& b, std::uint32_t& c, std::uint32_t& d) {
-    a += b; d ^= a; d = rotl32(d, 16);
-    c += d; b ^= c; b = rotl32(b, 12);
-    a += b; d ^= a; d = rotl32(d, 8);
-    c += d; b ^= c; b = rotl32(b, 7);
-  };
-  for (int round = 0; round < 10; ++round) {
-    quarter_round(work[0], work[4], work[8], work[12]);
-    quarter_round(work[1], work[5], work[9], work[13]);
-    quarter_round(work[2], work[6], work[10], work[14]);
-    quarter_round(work[3], work[7], work[11], work[15]);
-    quarter_round(work[0], work[5], work[10], work[15]);
-    quarter_round(work[1], work[6], work[11], work[12]);
-    quarter_round(work[2], work[7], work[8], work[13]);
-    quarter_round(work[3], work[4], work[9], work[14]);
-  }
+  algorithms::detail::chacha_permute(work);
   for (std::size_t i = 0; i < work.size(); ++i) buffer_[i] = work[i] + state_[i];
-  if (++state_[12] == 0U) ++state_[13];
+  if (state_[12] == std::numeric_limits<std::uint32_t>::max()) counter_exhausted_ = true;
+  else ++state_[12];
   buffer_index_ = 0;
+}
+
+std::uint64_t ChaCha20::remaining_u64() const noexcept {
+  const auto ungenerated = counter_exhausted_ ? 0 : (std::uint64_t{1} << 32) - state_[12];
+  return ungenerated * 8 + (buffer_.size() - buffer_index_) / 2;
 }
 
 std::uint64_t ChaCha20::next_u64() {

@@ -1,0 +1,369 @@
+//? Title: Exp-Golomb: Length Prefixes, Orders and Exact Bit Boundaries
+//? Subtitle: Full-range unsigned coding, actual word spans and safe bounded-prefix parsing in native C++
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A sequence of nonnegative integers needs recoverable word boundaries without
+assigning every value the width of the largest one. Exp-Golomb uses a short
+length prefix and a binary payload, favouring small values while still allowing
+large ones. We begin with the five-bit order-two encoding of ten, preserve the
+original codewords and mixed-sequence round trip, and measure how order and
+magnitude affect payload size. Actual emission/parsing spans expose the boundary;
+checked native arithmetic supports all uint64 values, including a 129-bit word.
+The caller supplies the order and message framing.
+)
+
+\toc
+
+> Start with ten at order two
+
+Order k splits n into a quotient q=floor(n/2^k) and its k low bits.
+For n=10 and k=2, q=2 and the low bits are 10. Encode q+1=3 as binary
+11 with one leading zero, then append 10. The actual word is 01110.
+Its three fields have lengths one, two and two. The diagram reads captured
+indices from the same kernel that emitted the bits; decoding records them too.
+
+```{cpp, results="markdown", file="figures/exp_golomb_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const auto e=dm::algorithms::exp_golomb_encode_trace({10},2);
+  const auto d=dm::algorithms::exp_golomb_decode_trace(e.bits,1,2);
+  const auto& w=e.words.at(0);const auto& v=d.words.at(0);
+  if(d.values!=e.values||v.begin!=w.begin||v.payload_begin!=w.payload_begin||v.suffix_begin!=w.suffix_begin||v.end!=w.end)throw std::runtime_error("actual span mismatch");
+  std::print("Tiny: n {}; order {}; code {}; zeros [{},{}); quotient [{},{}); low bits [{},{}).\n\n",w.value,e.order,dm::algorithms::exp_golomb_bit_string(e.bits),w.begin,w.payload_begin,w.payload_begin,w.suffix_begin,w.suffix_begin,w.end);
+  std::print("| actual run | values | zeros | quotient bits | low bits | bit visits | captured entries |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto& [name,t]:std::vector<std::pair<std::string,dm::algorithms::ExpGolombTrace>>{{"encode",e},{"decode",d}})
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",name,t.work.values,t.work.zero_prefix_bits,t.work.quotient_bits,t.work.suffix_bits,t.work.bit_visits,t.captured_entries);
+  dm::graphics::Diagram g(64,1100);dm::graphics::DiagramNodeStyle box;box.width=1.15;box.height=1;box.font_size=30;
+  for(std::size_t i=w.begin;i<w.end;++i){box.fill=i<w.payload_begin?dm::graphics::RGB{191,219,254}:i<w.suffix_begin?dm::graphics::RGB{187,247,208}:dm::graphics::RGB{254,215,170};
+    g.node(std::to_string(i),{1.8*double(i),0},e.bits[i]?"1":"0",box).text({1.8*double(i),-1.1},std::to_string(i),18);}
+  g.text({0,1.5},"one zero",21).text({2.7,1.5},"q+1 = 11",21).text({6.3,1.5},"low bits = 10",21)
+   .text({3.6,3.1},"Ten at order two: actual word 01110",27).save_svg("build/exp_golomb_tiny.svg");
+}
+```
+// result_begin: markdown
+Tiny: n 10; order 2; code 01110; zeros [0,1); quotient [1,3); low bits [3,5).
+
+| actual run | values | zeros | quotient bits | low bits | bit visits | captured entries |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| encode | 1 | 1 | 2 | 2 | 5 | 7 |
+| decode | 1 | 1 | 2 | 2 | 5 | 7 |
+\image(figures/exp_golomb_tiny.svg)
+// result_end
+\caption(The encoder and bounded-prefix decoder return identical actual field boundaries. Five bits plus one value entry and one word record give seven logical capture entries.)
+\alttext(Five native bit cells show a blue zero, green one-one and orange one-zero. Their indices zero through four and field labels expose the order-two word for ten.)
+
+> Derive the code and its inverse
+
+For a known order k>=0, write n=q·2^k+r, with 0<=r<2^k.
+Let m=floor(log2(q+1)) mathematically. Emit m zeros, binary(q+1)
+in m+1 bits, then r in exactly k bits, most significant bit first:
+
+\[
+L_k(n)=m+(m+1)+k=2\lfloor\log_2(\lfloor n/2^k\rfloor+1)\rfloor+1+k.
+\]
+
+After seeing m zeros and the first one, the decoder knows that m+k
+further bits complete this word. If their combined unsigned value is z,
+then n=(2^m−1)·2^k+z. Equivalently, recover the quotient from the m
+bits after the one, then attach the low k bits. This is the order-k
+inverse in ITU-T H.274 section 9.1, equation (72).
+
+For fixed k, two different zero-run lengths first differ where one word
+has reached its leading one and the other still has zero. Equal zero-run
+lengths imply equal total word lengths. Hence no distinct word is a
+prefix of another. Each fixed-length field is preserved exactly, so
+concatenated complete words have a unique inverse. The outer message
+still needs a stopping rule: prefix-free words alone do not identify
+where one message ends and another begins.
+
+The mathematical construction admits arbitrarily large integers. This API
+accepts every uint64 value and orders 0 through 63. It avoids forming
+q+1 when that would equal 2^64, and never shifts a uint64 by 64.
+Order zero is gamma coding of n+1, so zero is valid and encodes as 1.
+This differs from positive-integer gamma coding of n itself.
+
+A vector<bool> stores the logical bit sequence using its specialised
+container representation. The API defines neither a packed-byte format
+nor byte endianness. exp_golomb_bit_string produces ASCII debug text;
+its one-character-per-bit storage is different again. All comparisons
+below count payload bits, excluding order, count, width and other framing.
+
+> Preserve the original examples and find the exact threshold
+
+The original report lists zero through eight and round-trips
+{0,1,3,7,15,100,1000,65535}. These codewords remain unchanged.
+Its eight values occupy 90 order-zero bits against 128 bits for a
+16-bit common field. Here 16 is also the smallest common width,
+because 65535 occurs in the sample.
+
+Length is a staircase in n, including on a log2(n+1) axis. It is constant
+for 2^m−1<=n<=2^(m+1)−2 and increases by two at each threshold.
+L_0(n)<16 exactly when 0<=n<=254; at 255 the length jumps to 17.
+The native length helper obtains this from integer widths without
+encoding an unnecessary temporary word.
+
+```{cpp, results="markdown", file="figures/exp_golomb_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| n | original order-zero word | bits |\n| ---: | :--- | ---: |\n");
+  for(std::uint64_t n=0;n<=8;++n)std::print("| {} | {} | {} |\n",n,dm::algorithms::exp_golomb_bit_string(dm::algorithms::exp_golomb_encode({n})),dm::algorithms::exp_golomb_code_length(n));
+  const std::vector<std::uint64_t> values{0,1,3,7,15,100,1000,65535};
+  const auto e=dm::algorithms::exp_golomb_encode_trace(values);const auto d=dm::algorithms::exp_golomb_decode_work(e.bits,int(values.size()));const auto s=dm::algorithms::exp_golomb_size(values);
+  if(d.values!=values||s.bits!=90||s.fixed_bits!=128||d.consumed_bits!=e.bits.size())throw std::runtime_error("original sample failed");
+  std::print("\nOriginal mixed sequence: {} values; {} coded bits; fixed width {}; {} fixed bits; actual capture {}; round trip {}; fully consumed {}.\n",s.values,s.bits,s.fixed_width,s.fixed_bits,e.captured_entries,d.values==values,d.consumed_bits==e.bits.size());
+  std::print("\n| original sampled n | exact length | declared fixed bits |\n| ---: | ---: | ---: |\n");
+  for(std::uint64_t n:std::vector<std::uint64_t>{0,1,3,7,15,63,255,1023,4095,65535})std::print("| {} | {} | 16 |\n",n,dm::algorithms::exp_golomb_code_length(n));
+  std::size_t shorter=0;std::vector<double>x,lengths,fixed;
+  for(std::uint64_t n=0;n<=1023;++n){if(dm::algorithms::exp_golomb_code_length(n)<16)++shorter;x.push_back(n);lengths.push_back(dm::algorithms::exp_golomb_code_length(n));fixed.push_back(16);}
+  std::print("\nExact comparison over 0..1023: {} values use fewer than 16 bits; length(254) {}; length(255) {}.\n",shorter,dm::algorithms::exp_golomb_code_length(254),dm::algorithms::exp_golomb_code_length(255));
+  auto p=dm::graphics::RPlot::create();p.line(x,lengths,"Order zero",{37,99,235}).line(x,fixed,"Fixed 16 bits",{220,38,38})
+    .title("Discrete code lengths: the jump at 255").x_label("Value n").y_label("Payload bits per value").y_limits(0,23).size(1000,530).save_svg("build/exp_golomb_original.svg");
+}
+```
+// result_begin: markdown
+| n | original order-zero word | bits |
+| ---: | :--- | ---: |
+| 0 | 1 | 1 |
+| 1 | 010 | 3 |
+| 2 | 011 | 3 |
+| 3 | 00100 | 5 |
+| 4 | 00101 | 5 |
+| 5 | 00110 | 5 |
+| 6 | 00111 | 5 |
+| 7 | 0001000 | 7 |
+| 8 | 0001001 | 7 |
+
+Original mixed sequence: 8 values; 90 coded bits; fixed width 16; 128 fixed bits; actual capture 106; round trip true; fully consumed true.
+
+| original sampled n | exact length | declared fixed bits |
+| ---: | ---: | ---: |
+| 0 | 1 | 16 |
+| 1 | 3 | 16 |
+| 3 | 5 | 16 |
+| 7 | 7 | 16 |
+| 15 | 9 | 16 |
+| 63 | 13 | 16 |
+| 255 | 17 | 16 |
+| 1023 | 21 | 16 |
+| 4095 | 25 | 16 |
+| 65535 | 33 | 16 |
+
+Exact comparison over 0..1023: 255 values use fewer than 16 bits; length(254) 15; length(255) 17.
+\image(figures/exp_golomb_original.svg)
+// result_end
+\caption(The original codewords and all ten sampled lengths execute unchanged. Plotting each integer reveals the staircase and the exact transition from fifteen to seventeen bits.)
+\alttext(A native plot shows order-zero lengths rising in two-bit steps across values zero to 1023, crossing a horizontal sixteen-bit reference at value 255.)
+
+> Choose an order for the source magnitudes
+
+For n<2^k, q=0, so every word has length k+1. Increasing k
+therefore penalises very small values but can reduce the doubled
+quotient prefix for large ones. No single order wins on every source.
+For example zero costs one bit at order zero but 64 bits at order 63;
+UINT64_MAX costs 129 bits at order zero and 66 at order 63.
+
+We compare three controlled sequences: 128 zeros; 127 zeros followed
+by 65535; and all integers 0..127. These inputs isolate magnitude
+patterns without claiming a measured production distribution. Each plotted
+point is an exact native size calculation and is checked against actual
+encoding and decoding. Order selection is external; its transmission
+cost is excluded. Nonempty all-zero sequences use one bit per field
+under the explicitly positive-width fixed-field convention.
+
+```{cpp, results="markdown", file="figures/exp_golomb_orders.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  std::vector<std::uint64_t> zeros(128,0),rare=zeros,ramp;rare.back()=65535;for(std::uint64_t n=0;n<128;++n)ramp.push_back(n);
+  const std::vector<std::pair<std::string,std::vector<std::uint64_t>>> inputs{{"zeros",zeros},{"rare large",rare},{"0..127",ramp}};
+  auto p=dm::graphics::RPlot::create();const std::vector<dm::graphics::RGB> colors{{37,99,235},{22,163,74},{124,58,237}};
+  std::print("| fixture | N | order k | coded bits | positive fixed width | fixed bits | round trip |\n| :--- | ---: | ---: | ---: | ---: | ---: | :--- |\n");
+  for(std::size_t i=0;i<inputs.size();++i){const auto& [name,values]=inputs[i];std::vector<double>x,b;
+    for(int k=0;k<=8;++k){const auto s=dm::algorithms::exp_golomb_size(values,k);const auto e=dm::algorithms::exp_golomb_encode_work(values,k);const auto d=dm::algorithms::exp_golomb_decode_work(e.bits,int(values.size()),k);
+      if(s.bits!=e.bits.size()||d.values!=values||d.consumed_bits!=e.bits.size())throw std::runtime_error("size/codec mismatch");
+      std::print("| {} | {} | {} | {} | {} | {} | {} |\n",name,s.values,k,s.bits,s.fixed_width,s.fixed_bits,d.values==values);x.push_back(k);b.push_back(s.bits);}
+    p.line(x,b,name,colors[i]).points(x,b,"",colors[i],4);}
+  p.title("The useful order depends on the magnitudes").x_label("Common order k (known to decoder)").y_label("Exact coded payload bits for N = 128").size(1000,540).save_svg("build/exp_golomb_orders.svg");
+}
+```
+// result_begin: markdown
+| fixture | N | order k | coded bits | positive fixed width | fixed bits | round trip |
+| :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| zeros | 128 | 0 | 128 | 1 | 128 | true |
+| zeros | 128 | 1 | 256 | 1 | 128 | true |
+| zeros | 128 | 2 | 384 | 1 | 128 | true |
+| zeros | 128 | 3 | 512 | 1 | 128 | true |
+| zeros | 128 | 4 | 640 | 1 | 128 | true |
+| zeros | 128 | 5 | 768 | 1 | 128 | true |
+| zeros | 128 | 6 | 896 | 1 | 128 | true |
+| zeros | 128 | 7 | 1024 | 1 | 128 | true |
+| zeros | 128 | 8 | 1152 | 1 | 128 | true |
+| rare large | 128 | 0 | 160 | 16 | 2048 | true |
+| rare large | 128 | 1 | 286 | 16 | 2048 | true |
+| rare large | 128 | 2 | 412 | 16 | 2048 | true |
+| rare large | 128 | 3 | 538 | 16 | 2048 | true |
+| rare large | 128 | 4 | 664 | 16 | 2048 | true |
+| rare large | 128 | 5 | 790 | 16 | 2048 | true |
+| rare large | 128 | 6 | 916 | 16 | 2048 | true |
+| rare large | 128 | 7 | 1042 | 16 | 2048 | true |
+| rare large | 128 | 8 | 1168 | 16 | 2048 | true |
+| 0..127 | 128 | 0 | 1426 | 7 | 896 | true |
+| 0..127 | 128 | 1 | 1312 | 7 | 896 | true |
+| 0..127 | 128 | 2 | 1208 | 7 | 896 | true |
+| 0..127 | 128 | 3 | 1120 | 7 | 896 | true |
+| 0..127 | 128 | 4 | 1056 | 7 | 896 | true |
+| 0..127 | 128 | 5 | 1024 | 7 | 896 | true |
+| 0..127 | 128 | 6 | 1024 | 7 | 896 | true |
+| 0..127 | 128 | 7 | 1024 | 7 | 896 | true |
+| 0..127 | 128 | 8 | 1152 | 7 | 896 | true |
+\image(figures/exp_golomb_orders.svg)
+// result_end
+\caption(Every cost is measured through the native scalar summary and checked against actual codec output. Changing the order trades larger low-bit fields for a shorter quotient prefix.)
+\alttext(Three native curves show exact payload costs over orders zero through eight for zeros, a rare large outlier and the integers zero through 127.)
+
+> Measure actual work and optional retained history
+
+For N copies of ten at order two, the kernel actually visits N zero
+positions, 2N quotient positions and 2N low-bit positions, for B=5N.
+These counters describe logical bit positions, excluding scalar preflight,
+allocation, copies and validation; they are not CPU instruction counts.
+Both encoding and parsing take O(N+B) time. Ordinary encoding owns
+O(B) output, while decoding owns O(actual values) output and borrows
+its input. Ordinary/work calls keep no optional word history.
+
+A trace owns B bits, N value entries and N whole word records, so the
+defined logical capture is C=B+2N=7N for this family. Scalar metadata,
+capacity, runtime temporaries and allocator/container bytes are excluded;
+C is not peak RAM. Encoding checks known C before copies or emission.
+Decoding first reserves its whole input B, including any unread tail,
+then two entries before each completed value/span append. The quota
+defaults to one million; zero disables only this optional quota.
+Checked arithmetic and container limits remain, and exceptions expose no
+partial trace.
+
+```{cpp, results="markdown", file="figures/exp_golomb_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::vector<double>x,zeros,quotient,low,visits,capture;
+  std::print("| N | actual zeros | actual quotient | actual low bits | actual bit visits | encode capture | decode capture |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:std::vector<std::size_t>{0,1,2,4,8,16,32,64,128}){
+    const std::vector<std::uint64_t> values(n,10);const auto e=dm::algorithms::exp_golomb_encode_trace(values,2);const auto d=dm::algorithms::exp_golomb_decode_trace(e.bits,int(n),2);
+    if(d.values!=values||e.work.zero_prefix_bits!=n||e.work.quotient_bits!=2*n||e.work.suffix_bits!=2*n||e.work.bit_visits!=5*n||d.work.bit_visits!=5*n||e.captured_entries!=7*n||d.captured_entries!=7*n)throw std::runtime_error("actual linear work identity failed");
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",n,e.work.zero_prefix_bits,e.work.quotient_bits,e.work.suffix_bits,e.work.bit_visits,e.captured_entries,d.captured_entries);
+    x.push_back(n);zeros.push_back(e.work.zero_prefix_bits);quotient.push_back(e.work.quotient_bits);low.push_back(e.work.suffix_bits);visits.push_back(e.work.bit_visits);capture.push_back(e.captured_entries);}
+  auto a=dm::graphics::RPlot::create();a.line(x,zeros,"Zero prefix N",{37,99,235}).line(x,quotient,"Quotient 2N",{22,163,74}).points(x,low,"Low bits 2N",{234,88,12},4)
+    .title("Actual field counts").x_label("Repeated values N").y_label("Bit positions");
+  auto b=dm::graphics::RPlot::create();b.line(x,visits,"Visited bits 5N",{37,99,235}).line(x,capture,"Capture entries 7N",{124,58,237})
+    .title("Output and retained history").x_label("Repeated values N").y_label("Logical bits or entries");
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,530).title("Repeated ten at order two: exact kernel and capture counts").fit_panels().save_svg("build/exp_golomb_work.svg");
+}
+```
+// result_begin: markdown
+| N | actual zeros | actual quotient | actual low bits | actual bit visits | encode capture | decode capture |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 2 | 2 | 5 | 7 | 7 |
+| 2 | 2 | 4 | 4 | 10 | 14 | 14 |
+| 4 | 4 | 8 | 8 | 20 | 28 | 28 |
+| 8 | 8 | 16 | 16 | 40 | 56 | 56 |
+| 16 | 16 | 32 | 32 | 80 | 112 | 112 |
+| 32 | 32 | 64 | 64 | 160 | 224 | 224 |
+| 64 | 64 | 128 | 128 | 320 | 448 | 448 |
+| 128 | 128 | 256 | 256 | 640 | 896 | 896 |
+\image(figures/exp_golomb_work.svg)
+// result_end
+\caption(The actual emitter and parser satisfy every displayed linear identity, including neutral empty input. Low-bit counts coincide with quotient counts in this specific order-two family.)
+\alttext(Two native panels show one and two bit positions per repeated value, then five visited bits and seven logical capture entries per value.)
+
+> Full range, framing and invalid attempted words
+
+At UINT64_MAX and order zero, q+1 is mathematically 2^64.
+Its binary representation is a one followed by 64 zeros: a real
+65-bit payload. The entire word has 64 prefix zeros and 129 bits.
+The implementation emits that representation without wrapping n+1.
+The saved old implementation instead encoded UINT64_MAX as the single
+bit zero, and sanitizer probes exposed shifts by 64, negative shifts
+and truncated-stream reads beyond the bit vector. Those cases now have
+specified results or errors.
+
+The decoder's count is a nonnegative upper limit, preserving the legacy
+bounded-prefix contract. It returns fewer values when the input ends at
+a complete-word boundary, and reads nothing for count zero. Once the
+limit is met it leaves any tail unread and unvalidated. Every attempted
+word must be complete, however: a partial zero run, quotient or suffix
+throws invalid_argument. An overwide prefix or value beyond uint64
+throws overflow_error. Invalid order or negative count is rejected even
+on empty input. Exact-count/full-frame callers must additionally check
+values.size()==requested_count and consumed_bits==bits.size().
+
+Appending one word preserves any existing bit prefix without parsing it.
+It validates/reserves complete append geometry before writing. Trace
+results own their input/output, values and word records independently.
+The next program exercises prefix framing, append mutation, native limits
+and exact/one-short capture quotas.
+
+```{cpp, results="markdown", file="figures/exp_golomb_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const auto max=std::numeric_limits<std::uint64_t>::max();
+  const auto e=dm::algorithms::exp_golomb_encode_trace({max});const auto d=dm::algorithms::exp_golomb_decode_trace(e.bits,1);const auto& w=e.words.at(0);
+  if(d.values!=e.values||e.bits.size()!=129||std::count(e.bits.begin(),e.bits.end(),true)!=1)throw std::runtime_error("maximum word failed");
+  std::print("Maximum: {} bits; prefix [{},{}); quotient [{},{}); low bits [{},{}); true bits {}; capture {}; round trip {}.\n",e.bits.size(),w.begin,w.payload_begin,w.payload_begin,w.suffix_begin,w.suffix_begin,w.end,std::count(e.bits.begin(),e.bits.end(),true),e.captured_entries,d.values==e.values);
+  std::print("Order 63: zero length {}; maximum length {}.\n",dm::algorithms::exp_golomb_code_length(0,63),dm::algorithms::exp_golomb_code_length(max,63));
+  const std::vector<bool> frame{true,false};const auto prefix=dm::algorithms::exp_golomb_decode_trace(frame,1,0,4);const auto none=dm::algorithms::exp_golomb_decode_trace(frame,0,0,2);
+  std::print("Prefix limit 1: value {}; consumed {}; input bits {}; capture {}. Limit 0: values {}; consumed {}; capture {}.\n",prefix.values.at(0),prefix.consumed_bits,prefix.bits.size(),prefix.captured_entries,none.values.size(),none.consumed_bits,none.captured_entries);
+  std::print("Complete one-bit frame with limit 2: {} values. Empty frame with positive limit: {} values.\n",dm::algorithms::exp_golomb_decode({true},2).size(),dm::algorithms::exp_golomb_decode({},2).size());
+  int malformed=0;for(const auto& [b,k]:std::vector<std::pair<std::vector<bool>,int>>{{{false},0},{{false,true},0},{{true,false},2}})try{(void)dm::algorithms::exp_golomb_decode(b,1,k);}catch(const std::invalid_argument&){++malformed;}
+  try{(void)dm::algorithms::exp_golomb_decode(frame,2);}catch(const std::invalid_argument&){++malformed;}
+  int invalid=0;for(int k:{-1,64})try{(void)dm::algorithms::exp_golomb_encode({},k);}catch(const std::invalid_argument&){++invalid;}
+  try{(void)dm::algorithms::exp_golomb_decode({},-1);}catch(const std::invalid_argument&){++invalid;}
+  int wide=0;try{(void)dm::algorithms::exp_golomb_decode(std::vector<bool>(65,false),1);}catch(const std::overflow_error&){++wide;}
+  std::print("Incomplete attempted-word rejections {}/4; invalid-parameter rejections {}/3; overwide-prefix rejections {}/1.\n",malformed,invalid,wide);
+  std::vector<bool> out{true,false};const auto appended=dm::algorithms::exp_golomb_append_work(10,out,2);
+  std::print("Append: {}; new values {}; new bit visits {}.\n",dm::algorithms::exp_golomb_bit_string(out),appended.values,appended.bit_visits);
+  const auto tiny=dm::algorithms::exp_golomb_encode_trace({10},2,7);int caps=0;
+  try{(void)dm::algorithms::exp_golomb_encode_trace({10},2,6);}catch(const std::length_error&){++caps;}
+  for(std::size_t cap:{4,6})try{(void)dm::algorithms::exp_golomb_decode_trace(tiny.bits,1,2,cap);}catch(const std::length_error&){++caps;}
+  std::print("Tiny exact encode/decode entries {}/{}; base/one-short rejections {}/3; disabled-quota entries {}.\n",tiny.captured_entries,dm::algorithms::exp_golomb_decode_trace(tiny.bits,1,2,7).captured_entries,caps,dm::algorithms::exp_golomb_encode_trace({10},2,0).captured_entries);
+  if(malformed!=4||invalid!=3||wide!=1||caps!=3)throw std::runtime_error("boundary rejection check failed");
+  dm::graphics::Diagram g(64,1100);dm::graphics::DiagramNodeStyle box;box.width=4.5;box.height=1.8;box.font_size=23;box.fill={191,219,254};
+  g.node("prefix",{0,0},std::format("{} prefix zeros\n[{},{})",w.payload_begin-w.begin,w.begin,w.payload_begin),box);box.fill={187,247,208};
+  g.node("quotient",{6,0},std::format("1 then 64 zeros\n[{},{})",w.payload_begin,w.suffix_begin),box);box.fill={254,215,170};
+  g.node("boundary",{12,0},std::format("k = 0: no low bits\nend {}\ncapture {}",w.end,e.captured_entries),box).edge("prefix","quotient").edge("quotient","boundary")
+    .text({6,2.8},"UINT64_MAX: a real 65-bit quotient payload",27).save_svg("build/exp_golomb_limits.svg");
+}
+```
+// result_begin: markdown
+Maximum: 129 bits; prefix [0,64); quotient [64,129); low bits [129,129); true bits 1; capture 131; round trip true.
+Order 63: zero length 64; maximum length 66.
+Prefix limit 1: value 0; consumed 1; input bits 2; capture 4. Limit 0: values 0; consumed 0; capture 2.
+Complete one-bit frame with limit 2: 1 values. Empty frame with positive limit: 0 values.
+Incomplete attempted-word rejections 4/4; invalid-parameter rejections 3/3; overwide-prefix rejections 1/1.
+Append: 1001110; new values 1; new bit visits 5.
+Tiny exact encode/decode entries 7/7; base/one-short rejections 3/3; disabled-quota entries 7.
+\image(figures/exp_golomb_limits.svg)
+// result_end
+\caption(The maximum value uses 129 bits and 131 logical capture entries. The decoder consumes only the requested complete prefix; extending the request into the incomplete tail raises an error.)
+\alttext(A native three-box diagram shows 64 zero-prefix bits, a 65-bit quotient payload and an empty order-zero suffix ending at bit 129, with capture count 131.)
+
+> Scope and reference
+
+Short word boundaries solve integer delimiting for a known order. They
+do not select a source model, choose the best order, frame a message,
+or pack a byte stream. A complete codec must supply those layers.
+The executed examples preserve the original nine codewords, eight-value
+round trip and ten sampled lengths, while checking full-width arithmetic,
+actual spans, distribution-dependent costs and malformed attempted words.
+
+- ITU-T H.274 (05/2022), *Versatile supplemental enhancement information
+  messages for coded video bitstreams*, section 9.1, equation (72) and
+  Table 21. [Official English specification](https://www.itu.int/rec/dologin_pub.asp?id=T-REC-H.274-202205-S!!PDF-E&lang=e&type=items).
+  The native API follows the unsigned order-k mathematical coding rule
+  on uint64 with checked framing parameters and complete attempted words.
+  Field-specific video syntax constraints, signed mappings, NAL framing
+  and full video bitstream conformance are outside this API.
+

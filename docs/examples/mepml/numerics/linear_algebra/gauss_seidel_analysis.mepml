@@ -1,0 +1,385 @@
+//? Title: Gauss–Seidel: use each new coordinate immediately
+//? Subtitle: Actual in-place updates, convergence conditions, residual growth and dense work
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Solve a square linear system by improving an approximate solution through repeated
+sweeps, avoiding a full factorization. Whether those sweeps converge depends on
+the coefficient matrix and its ordering. Gauss–Seidel updates each coordinate
+using the latest available values. This report opens with two hand-checkable
+assignments, solves the original three-equation example and tests an exactly
+analysable family that both converges and diverges. Actual native histories show
+that a residual can increase even for a strictly diagonally dominant system.
+Counted dense work and explicit history limits distinguish computational cost,
+stopping tests and the mathematical convergence guarantee.
+)
+
+\toc
+
+> Two equations show what “use the latest value” means
+
+Solve 2x−y=1 and −x+2y=1, whose exact solution is (1,1). Start at (0,0).
+The first equation sets x=1/2. The second immediately reads that new x, so
+y=(1+1/2)/2=3/4. A simultaneous Jacobi sweep would instead produce (1/2,1/2).
+The diagram and table use snapshots captured by the executing C++ solver;
+there is no local reimplementation of its recurrence.
+
+```{cpp, results="markdown", file="figures/seidel_first.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_seidel.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::gauss_seidel_history({{2,-1},{-1,2}}, {1,1},1,0,16);
+ std::print("| coordinate | numerator used | previous value | assigned value | mixed vector before | vector after |\n| ---: | ---: | ---: | ---: | --- | --- |\n");
+ for(const auto&e:t.coordinates)std::print("| {} | {:.3f} | {:.3f} | {:.3f} | ({:.3f}, {:.3f}) | ({:.3f}, {:.3f}) |\n",e.row+1,e.numerator,e.previous,e.value,e.before[0],e.before[1],e.after[0],e.after[1]);
+ std::print("\nAfter one sweep: x=({:.3f}, {:.3f}); residual {:.3f}; converged {}; coordinate updates {}; history entries {}.\n",t.run.solution.x[0],t.run.solution.x[1],t.run.solution.residual,t.run.solution.converged,t.run.work.coordinate_updates,t.captured_entries);
+ const auto&e=t.coordinates.at(0);const auto&f=t.coordinates.at(1);
+ dm::graphics::Diagram d(65,1100);dm::graphics::DiagramNodeStyle box;box.width=4.1;box.height=2.2;box.font_size=22;
+ d.node("start",{0,0},std::format("Zero initial vector\nx = {:.2f}\ny = {:.2f}",e.before[0],e.before[1]),box)
+  .node("x",{5.7,0},std::format("Solve the first row\nx = {:.2f}\ny still {:.2f}",e.after[0],e.after[1]),box)
+  .node("y",{11.4,0},std::format("Read the NEW x\nx = {:.2f}\ny = {:.2f}",f.after[0],f.after[1]),box)
+  .edge("start","x","x = (1+y)/2").edge("x","y","y = (1+x)/2")
+  .text({5.7,2.4},"One sweep: later rows read earlier assignments immediately",24)
+  .save_svg("build/seidel_first.svg");
+ if(t.coordinates.size()!=2||f.before[0]!=.5||f.value!=.75)throw std::runtime_error("actual mixed read state");
+}
+```
+// result_begin: markdown
+| coordinate | numerator used | previous value | assigned value | mixed vector before | vector after |
+| ---: | ---: | ---: | ---: | --- | --- |
+| 1 | 1.000 | 0.000 | 0.500 | (0.000, 0.000) | (0.500, 0.000) |
+| 2 | 1.500 | 0.000 | 0.750 | (0.500, 0.000) | (0.500, 0.750) |
+
+After one sweep: x=(0.500, 0.750); residual 0.750; converged false; coordinate updates 2; history entries 16.
+\image(figures/seidel_first.svg)
+// result_end
+\caption(The second coordinate reads the first coordinate’s new value. After one sweep the residual is 0.75, so a zero-tolerance request has exhausted its one-sweep budget without converging.)
+\alttext(Three boxes show (0,0), then (0.5,0), then (0.5,0.75). Arrows identify the two row solves and emphasize that the second reads the new first coordinate.)
+
+> From scalar updates to a triangular solve
+
+Let A be a real n-by-n matrix with nonzero diagonal and b a matching vector.
+Write A=D+L+U with diagonal D and strictly lower/upper parts L,U.
+With row indices increasing through a sweep, the exact-arithmetic update is
+
+$$
+x_i^{(k+1)}=\frac{b_i-\sum_{j<i}a_{ij}x_j^{(k+1)}-\sum_{j>i}a_{ij}x_j^{(k)}}{a_{ii}},
+\qquad (D+L)x^{(k+1)}=b-Ux^{(k)}.
+$$
+\alttext(Each coordinate uses newly updated lower-index coordinates and old higher-index coordinates; the complete sweep solves a lower triangular system with the old upper contribution on the right.)
+
+This is an ordered triangular operation. A generic matrix-vector callback alone
+does not expose the diagonal and lower part needed by this API.
+[Barrett and coauthors, Templates for the Solution of Linear Systems, second edition,
+Gauss–Seidel subsection](https://netlib.org/linalg/html_templates/node14.html)
+describe the immediate-update dependency and its sensitivity to ordering.
+The library implements a dense scalar version: zero start, ordered long-double
+sums and checked double assignments. Its recomputed stopping norm is formed from
+a dense A x whose row results have first been rounded to double. All input rows,
+RHS values, controls and nonzero diagonal entries are validated even when the
+initial residual already meets the tolerance.
+
+If x* solves the system, subtraction gives the error recurrence
+
+$$
+e^{(k+1)}=T e^{(k)},\qquad T=-(D+L)^{-1}U,\qquad e^{(k)}=x^{(k)}-x^*.
+$$
+\alttext(The next error is the Gauss-Seidel iteration matrix times the old error; the iteration matrix is minus the inverse lower triangular part times the strictly upper part.)
+
+In exact arithmetic, convergence from every initial vector is equivalent to
+spectral radius rho(T)<1: T^k then tends to zero. Eigenvalues inside the unit
+circle give decaying Jordan-block powers; any eigenvalue outside or on the unit
+circle prevents decay for some initial vector. This criterion does not promise
+monotone Euclidean residuals or a perfectly straight logarithmic residual plot.
+Transient effects, multiple modes, finite termination and rounding all matter.
+
+Strict row diagonal dominance is sufficient. To see why, let
+q=max_i sum_(j≠i)|a_ij|/|a_ii|<1 and E=||e_old||∞. In the first row the new error
+is at most qE. Inductively, previously updated errors are at most qE≤E and all
+remaining old errors are at most E; the next new error is therefore also at
+most qE. Thus a complete sweep contracts the infinity norm by at most q.
+For symmetric positive-definite A, each coordinate update instead minimizes the
+strictly convex quadratic f(x)=xᵀAx/2−bᵀx along that coordinate: the exact decrease
+is a_ii times the squared coordinate change divided by 2. A full nontrivial
+homogeneous error sweep strictly reduces its A-norm; compactness of the A-unit
+sphere supplies a contraction factor below 1. Neither proof certifies a particular
+floating-point residual decrease at every sweep.
+
+> The original three-equation system, using the solver’s actual history
+
+The original equations are 4x−y+z=7, 4x−8y+z=−21 and −2x+y+5z=15.
+Their exact solution is (2,4,3), and every row is strictly diagonally dominant.
+The old scalar call used absolute tolerance 10^-10; its separate plotting loop
+used 10^-12 and double-only intermediate sums. This report keeps the scalar
+call’s semantics and plots the actual native recomputed residuals at 10^-10.
+Those are different experiments, so the old local plotting replay is removed.
+The source’s cached residual was 3.72223e−11. Running its unchanged scalar program
+against the pre-conversion core gives 3.72241e−11; this conversion preserves that
+executed result exactly.
+
+```{cpp, results="markdown", file="figures/seidel_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_seidel.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const std::vector<std::vector<double>> a{{4,-1,1},{4,-8,1},{-2,1,5}};const std::vector<double>b{7,-21,15};
+ const auto t=dm::algorithms::gauss_seidel_history(a,b);const auto s=dm::algorithms::gauss_seidel(a,b);
+ std::print("| sweep | x | y | z | actual stopping residual |\n| ---: | ---: | ---: | ---: | ---: |\n| 0 | 0 | 0 | 0 | {:.9e} |\n",t.initial_residual);
+ std::vector<double>k{0},logs{std::log10(t.initial_residual)};
+ for(const auto&e:t.sweeps){std::print("| {} | {:.9f} | {:.9f} | {:.9f} | {:.9e} |\n",e.number,e.x[0],e.x[1],e.x[2],e.residual);if(e.residual>0){k.push_back(e.number);logs.push_back(std::log10(e.residual));}}
+ std::print("\nConverged {}; sweeps {}; residual {:.12e}; off-diagonal products {}; residual products {}; norm evaluations {}; legacy result identical {}.\n",s.converged,s.iterations,s.residual,t.run.work.off_diagonal_products,t.run.work.residual_products,t.run.work.residual_evaluations,s.x==t.run.solution.x&&s.residual==t.run.solution.residual);
+ auto plot=dm::graphics::RPlot::create();plot.lines(k,logs,"Actual native residual",{37,99,235},2).points(k,logs,"",{37,99,235},5)
+  .title("Original system: actual residuals at absolute tolerance 1e-10").xlab("Completed sweeps; zero is the initial state").ylab("log10 positive recomputed Euclidean residual").size(1100,540).save_svg("build/seidel_original.svg");
+ if(!s.converged||s.iterations!=13||s.x!=t.run.solution.x)throw std::runtime_error("preserved original solve");
+}
+```
+// result_begin: markdown
+| sweep | x | y | z | actual stopping residual |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0 | 2.673948391e+01 |
+| 1 | 1.750000000 | 3.500000000 | 3.000000000 | 3.041381265e+00 |
+| 2 | 1.875000000 | 3.937500000 | 2.962500000 | 4.764779638e-01 |
+| 3 | 1.993750000 | 3.992187500 | 2.999062500 | 4.080847989e-02 |
+| 4 | 1.998281250 | 3.999023438 | 2.999507813 | 6.406121378e-03 |
+| 5 | 1.999878906 | 3.999877930 | 2.999975977 | 6.069818857e-04 |
+| 6 | 1.999975488 | 3.999984741 | 2.999993247 | 9.119135880e-05 |
+| 7 | 1.999997874 | 3.999998093 | 2.999999531 | 9.457148754e-06 |
+| 8 | 1.999999640 | 3.999999762 | 2.999999904 | 1.348557283e-06 |
+| 9 | 1.999999964 | 3.999999970 | 2.999999992 | 1.493340488e-07 |
+| 10 | 1.999999995 | 3.999999996 | 2.999999999 | 2.040535133e-08 |
+| 11 | 1.999999999 | 4.000000000 | 3.000000000 | 2.360446076e-09 |
+| 12 | 2.000000000 | 4.000000000 | 3.000000000 | 3.128652057e-10 |
+| 13 | 2.000000000 | 4.000000000 | 3.000000000 | 3.722410354e-11 |
+
+Converged true; sweeps 13; residual 3.722410353787e-11; off-diagonal products 78; residual products 117; norm evaluations 14; legacy result identical true.
+\image(figures/seidel_original.svg)
+// result_end
+\caption(Thirteen actual sweeps reproduce the original scalar result. The line joins positive measured residuals without inventing a logarithmic floor or asserting an exactly constant reduction factor.)
+\alttext(A plotted native residual history starts near 27 and falls to about 3.72 times 10^-11 in 13 sweeps, with the computed coordinate values and dense product counts printed in the table.)
+
+The stopping test is inclusive: computed residual≤tol. It is an absolute,
+unscaled test, so rescaling both A and b can change when the same tolerance is
+met even though the mathematical solution is unchanged. A small residual is
+also not a forward-error certificate: in exact arithmetic e=−A^-1r for r=b−Ax,
+so the inverse matrix can amplify a small residual. Rounding in the stored A x
+adds another distinction between this implementation’s stopping norm and an
+exact real-number residual. A zero computed residual is reported as zero and
+has no logarithm; no plotted value is substituted for it.
+
+> An exactly analysable family shows decay and divergence
+
+Choose A=[[1,−q],[−q,1]], b=(1−q,1−q), q>0, q≠1. The exact solution is (1,1).
+For a zero start, the error after k≥1 sweeps and the exact residual norm are
+
+$$
+e^{(k)}=(-q^{2k-1},-q^{2k}),\quad
+T=\begin{pmatrix}0&q\\0&q^2\end{pmatrix},\quad
+\|b-Ax^{(k)}\|_2=|q^{2k-1}(1-q^2)|.
+$$
+\alttext(The two error coordinates are minus successive odd and even powers of q; the iteration matrix has eigenvalues zero and q squared; the residual is the absolute odd power times one minus q squared.)
+
+These expressions follow by substituting the first coordinate assignment into
+the second. Hence rho(T)=q². Jacobi’s matrix has eigenvalues ±q and spectral
+radius q. The square relation explains the commonly observed “twice the rate”
+for this particular family in exact asymptotic sweep counts. It is not a universal
+speed ratio, does not compare wall-clock time and says nothing about a general
+matrix’s Jacobi convergence. Here q<1 gives strict diagonal dominance and decay;
+q>1 makes this particular zero-start error grow. All requested eight sweeps are
+kept below, so a false converged flag means the zero-tolerance budget was exhausted.
+The Jacobi column is the derived exact spectral radius; no Jacobi solver is run.
+
+```{cpp, results="markdown", file="figures/seidel_rates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_seidel.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::print("| q | exact Jacobi radius | exact Seidel radius | observed first residual ratio | residual after eight sweeps | converged |\n| ---: | ---: | ---: | ---: | ---: | --- |\n");
+ auto plot=dm::graphics::RPlot::create();std::vector<std::string>labels;std::vector<dm::graphics::RGB>colors;
+ const std::array<double,4>qs{.25,.5,.75,1.25};const std::array<dm::graphics::RGB,4>palette{{{37,99,235},{5,150,105},{147,51,234},{220,38,38}}};
+ for(std::size_t i=0;i<qs.size();++i){const double q=qs[i];const auto t=dm::algorithms::gauss_seidel_history({{1,-q},{-q,1}}, {1-q,1-q},8,0,0);const auto label=std::format("q = {:.2f}",q);
+  std::vector<double>k,logs;for(const auto&e:t.sweeps)if(e.residual>0){k.push_back(e.number);logs.push_back(std::log10(e.residual));}
+  std::print("| {:.2f} | {:.4f} | {:.4f} | {:.4f} | {:.9e} | {} |\n",q,std::abs(q),q*q,t.sweeps[1].residual/t.sweeps[0].residual,t.run.solution.residual,t.run.solution.converged);
+  plot.lines(k,logs,label,palette[i],2).points(k,logs,"",palette[i],4);labels.push_back(label);colors.push_back(palette[i]);
+ }
+ plot.legend(labels,colors).title("Binary 2 by 2 family: three decaying errors and one divergent error").xlab("Completed sweeps").ylab("log10 positive actual residual").y_limits(-11,5).size(1100,560).save_svg("build/seidel_rates.svg");
+}
+```
+// result_begin: markdown
+| q | exact Jacobi radius | exact Seidel radius | observed first residual ratio | residual after eight sweeps | converged |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| 0.25 | 0.2500 | 0.0625 | 0.0625 | 8.731149137e-10 | false |
+| 0.50 | 0.5000 | 0.2500 | 0.2500 | 2.288818359e-05 | false |
+| 0.75 | 0.7500 | 0.5625 | 0.5625 | 5.846514192e-03 | false |
+| 1.25 | 1.2500 | 1.5625 | 1.5625 | 1.598721155e+01 | false |
+\image(figures/seidel_rates.svg)
+// result_end
+\caption(For these binary inputs the observed first post-sweep residual ratio equals q². The growing q 1.25 curve is an actual finite run; a valid nonzero diagonal alone does not ensure convergence.)
+\alttext(Four log-residual curves show fast decay for q 0.25, slower decay for 0.5 and 0.75, and growth for 1.25. The table compares analytic radii with the measured first ratio and all eight-sweep outcomes.)
+
+> A residual can rise before convergence, and order changes the intermediate state
+
+For A=[[1,1/2],[0,1/128]], b=(0,1), both rows are strictly diagonally dominant.
+The exact solution is (−64,128). Starting at zero, the first row remains zero;
+the second becomes 128. This makes the first equation’s residual 64. The next
+sweep sets the first coordinate to −64 and reaches the solution exactly in binary
+arithmetic. The sequence of Euclidean residuals is 1,64,0 despite rho(T)=0.
+This is a nilpotent, nonnormal iteration: finite termination after two sweeps
+coexists with a large transient residual. It directly disproves an unconditional
+monotone-residual or straight-log-line claim.
+
+The second panel returns to the symmetric two-equation example. Reverse both
+the row and variable ordering, run one forward sweep, then map coordinates back.
+Its first state becomes (3/4,1/2) rather than (1/2,3/4). In this symmetric example
+the rate is unchanged, but the intermediate iterates differ; other matrices can
+also change rate under reordering. A row-only permutation does not perform this
+same transformation and may introduce a zero diagonal.
+
+```{cpp, results="markdown", file="figures/seidel_transient.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_seidel.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::gauss_seidel_history({{1,.5},{0,1./128}}, {0,1},10,0,0);
+ std::vector<double>k{0},r{t.initial_residual};std::print("| sweep | first coordinate | second coordinate | residual |\n| ---: | ---: | ---: | ---: |\n| 0 | 0 | 0 | {:.0f} |\n",t.initial_residual);
+ for(const auto&e:t.sweeps){k.push_back(e.number);r.push_back(e.residual);std::print("| {} | {:.0f} | {:.0f} | {:.0f} |\n",e.number,e.x[0],e.x[1],e.residual);}
+ const auto f=dm::algorithms::gauss_seidel_solve({{2,-1},{-1,2}},{1,1},1,0);
+ const auto reverse=dm::algorithms::gauss_seidel_solve({{2,-1},{-1,2}},{1,1},1,0);
+ const std::vector<double>mapped{reverse.solution.x[1],reverse.solution.x[0]};
+ std::print("\nForward one-sweep vector ({:.2f}, {:.2f}); reversed order mapped back ({:.2f}, {:.2f}); triangular example converged {} in {} sweeps.\n",f.solution.x[0],f.solution.x[1],mapped[0],mapped[1],t.run.solution.converged,t.run.solution.iterations);
+ auto growth=dm::graphics::RPlot::create();growth.lines(k,r,"",{220,38,38},2).points(k,r,"",{220,38,38},6).title("Strict dominance, transient growth").xlab("Completed sweeps").ylab("Actual residual, linear scale").y_limits(0,75);
+ auto order=dm::graphics::RPlot::create();order.lines({1,2},f.solution.x,"Forward",{37,99,235},2).points({1,2},f.solution.x,"",{37,99,235},6)
+  .lines({1,2},mapped,"Reverse, mapped back",{220,38,38},2).points({1,2},mapped,"",{220,38,38},6).legend({"Forward","Reverse, mapped back"},{{37,99,235},{220,38,38}})
+  .title("Order changes the first iterate").xlab("Original variable index").ylab("Value after one sweep").y_limits(0,1.1);
+ dm::graphics::RLayout::create(1,2).add(growth).add(order).size(1100,500).title("Convergence need not mean monotone residuals or identical ordered iterates").fit_panels().save_svg("build/seidel_transient.svg");
+ if(t.sweeps.size()!=2||r!=std::vector<double>{1,64,0}||mapped==f.solution.x)throw std::runtime_error("transient and ordering");
+}
+```
+// result_begin: markdown
+| sweep | first coordinate | second coordinate | residual |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 1 |
+| 1 | 0 | 128 | 64 |
+| 2 | -64 | 128 | 0 |
+
+Forward one-sweep vector (0.50, 0.75); reversed order mapped back (0.75, 0.50); triangular example converged true in 2 sweeps.
+\image(figures/seidel_transient.svg)
+// result_end
+\caption(The left panel retains the genuine zero residual on a linear scale. The right panel identifies the coordinate mapping explicitly; the reversed run uses the same symmetric array in reversed variable labels.)
+\alttext(The first panel shows residuals 1,64,0 at sweep 0,1,2. The second joins coordinate values 0.5,0.75 for forward ordering and 0.75,0.5 for reversed ordering mapped to the original variables.)
+
+> Count dense work and admit complete histories before execution
+
+After k completed sweeps on n unknowns, the dense implementation has assigned kn
+coordinates, divided kn times and executed kn(n−1) off-diagonal products. Its
+post-sweep residual checks add kn² dense products and k+1 norm evaluations,
+including the initial norm of b without a matrix product. Zero coefficients are
+still visited. These are algorithmic counts, not floating-operation counts or
+elapsed time. This dense API uses O(kn²) arithmetic and O(n) extra ordinary storage
+beyond the input matrix; a sparse implementation would need its own storage and
+traversal contract.
+
+Full histories copy two n-vectors per coordinate and one per completed sweep,
+so their extra storage is O(kn²). Admission for a requested maximum K is
+
+$$
+H(n,K)=n+1+K\{n(1+2n)+(1+n)\}\quad(n>0),\qquad H(0,K)=1.
+$$
+\alttext(Count the initial n-vector and one residual, then for every requested sweep count n coordinate metadata records with two n-vectors each and one sweep metadata record with its n-vector; an empty system needs one residual entry.)
+
+The units mix vector values and fixed-schema metadata records as documented by
+the API; they are not bytes or peak RAM. Root/work metadata, final ordinary output,
+original A and b, working state and allocator storage are excluded. The default
+entry cap is one million; zero disables only the optional quota. Complete count,
+capacity and quota checks precede initialization or history allocation. Even a
+zero RHS receives no early-success discount from the requested nonempty-system
+bound. The actual retained count can be smaller when convergence occurs early.
+There is no truncation, numerical replay or partial returned history, and inputs
+and snapshots have independent ownership. The older residual-only trace keeps
+its separate online cap on actual residual entries, including the initial one.
+
+```{cpp, results="markdown", file="figures/seidel_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_seidel.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::vector<double>dims,off,resprod;std::print("| n | assigned coordinates | off-diagonal products | residual products | norm evaluations | actual history entries |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t n:std::array<std::size_t,7>{1,2,4,8,16,32,64}){const auto t=dm::algorithms::gauss_seidel_history(dm::algorithms::laplacian_1d_matrix(n),std::vector<double>(n,1),1,0,0);const auto&w=t.run.work;
+  std::print("| {} | {} | {} | {} | {} | {} |\n",n,w.coordinate_updates,w.off_diagonal_products,w.residual_products,w.residual_evaluations,t.captured_entries);dims.push_back(n);off.push_back(w.off_diagonal_products);resprod.push_back(w.residual_products);}
+ bool denied=false,early=false,bad=false,online=false;try{(void)dm::algorithms::gauss_seidel_history({{2,-1},{-1,2}},{1,1},1,0,15);}catch(const std::length_error&){denied=true;}
+ auto t=dm::algorithms::gauss_seidel_history({{2,-1},{-1,2}},{1,1},1,0,16);const auto final=t.run.solution.x;t.coordinates[0].after[0]=999;const bool owned=t.coordinates[1].before[0]==.5&&t.run.solution.x==final;
+ try{(void)dm::algorithms::gauss_seidel_history({{2}},{0},5,0,2);}catch(const std::length_error&){early=true;}
+ try{(void)dm::algorithms::gauss_seidel_history({{0}},{0},0,0,1);}catch(const std::invalid_argument&){bad=true;}
+ try{(void)dm::algorithms::gauss_seidel_trace({{2}},{4},5,0,1);}catch(const std::length_error&){online=true;}
+ const auto oldzero=dm::algorithms::gauss_seidel_trace({{2}},{0},5,0,1);const auto empty=dm::algorithms::gauss_seidel_history({},{},std::numeric_limits<int>::max(),0,1);
+ std::print("\nWhole entries required {}; actual {}; cap 15 rejected {}; cap 16 admitted true; independent owned copies {}.\n",dm::algorithms::gauss_seidel_history_entries(2,1),t.captured_entries,denied,owned);
+ std::print("Zero-RHS whole budget requires {}; cap 2 rejected {}; old online cap 1 admits initial success {}; old online cap 1 rejects a needed sweep {}.\n",dm::algorithms::gauss_seidel_history_entries(1,5),early,oldzero.solution.converged,online);
+ std::print("Validation before quota {}; empty history entries {}; empty initially converged {}; empty coordinates {}.\n",bad,empty.captured_entries,empty.run.solution.converged,empty.coordinates.size());
+ auto work=dm::graphics::RPlot::create();work.lines(dims,off,"Off-diagonal",{37,99,235},2).lines(dims,resprod,"Residual",{220,38,38},2).legend({"Off-diagonal","Residual"},{{37,99,235},{220,38,38}})
+  .title("One dense sweep plus residual").xlab("Number of unknowns n").ylab("Executed products, including zeros").y_limits(0,5000);
+ auto quota=dm::graphics::RPlot::barplot({16.,double(t.captured_entries),15.},{"Required","Captured","Rejected cap"});quota.title("Whole one-sweep history").xlab("").ylab("Entries, not bytes").y_limits(0,21);
+ dm::graphics::RLayout::create(1,2).add(work).add(quota).size(1100,500).title("Counted arithmetic and history admission measure different resources").fit_panels().save_svg("build/seidel_work.svg");
+ if(!denied||!owned||!early||!bad||!online||empty.captured_entries!=1)throw std::runtime_error("work, quota and ownership");
+}
+```
+// result_begin: markdown
+| n | assigned coordinates | off-diagonal products | residual products | norm evaluations | actual history entries |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 0 | 1 | 2 | 7 |
+| 2 | 2 | 2 | 4 | 2 | 16 |
+| 4 | 4 | 12 | 16 | 2 | 46 |
+| 8 | 8 | 56 | 64 | 2 | 154 |
+| 16 | 16 | 240 | 256 | 2 | 562 |
+| 32 | 32 | 992 | 1024 | 2 | 2146 |
+| 64 | 64 | 4032 | 4096 | 2 | 8386 |
+
+Whole entries required 16; actual 16; cap 15 rejected true; cap 16 admitted true; independent owned copies true.
+Zero-RHS whole budget requires 27; cap 2 rejected true; old online cap 1 admits initial success true; old online cap 1 rejects a needed sweep true.
+Validation before quota true; empty history entries 1; empty initially converged true; empty coordinates 0.
+\image(figures/seidel_work.svg)
+// result_end
+\caption(The scaling inputs are the native one-dimensional Laplacian matrices. Product counts include their stored zeros. The right panel’s 16-entry admission is exact for a nonconverged two-coordinate one-sweep history.)
+\alttext(Two panels show quadratic off-diagonal and residual product counts through 64 variables and complete-history entry counts 16 required,16 captured and 15 rejected. Printed controls distinguish whole admission from online residual caps.)
+
+The native histories preserve the original solver result and make each dependency
+visible. Exact convergence theory explains the diagonal-dominant example and the
+q-family’s decay, while the triangular counterexample shows why residual monotonicity
+cannot be assumed. Ordering, absolute stopping, arithmetic precision and explicit
+dense storage all shape the computation a user actually receives. These constructed
+linear systems test the mathematical claims directly; no external dataset or timing
+benchmark is needed.

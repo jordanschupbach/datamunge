@@ -1,0 +1,392 @@
+//? Title: Diffie–Hellman: Agreement, Exact Arithmetic and What the Transcript Does Not Prove
+//? Subtitle: Retain both original exchanges, inspect actual exponent bits, and expose small-group structure and unauthenticated substitution
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Two parties want to compute the same value while exchanging only public
+messages. They need an algebraic agreement rule, and they must distinguish
+that rule from secrecy and peer authentication. Finite-field Diffie–Hellman
+uses modular powers so that both parties obtain g^(ab) modulo p. We retain
+the original p=23 example and the larger 31-bit exchange, then actually
+recover the latter's sample exponent with an existing core discrete-log
+solver. Native traces expose square-and-multiply states and exact operation
+counts. Bounded group cycles show periods and tiny subgroups rather than
+using a scattered plot as evidence of hardness. A two-session substitution
+demonstrates the missing authentication. All computations use the canonical
+uint64 core; these reproducible, variable-time examples are arithmetic
+illustrations, not a secure key-agreement implementation.
+)
+
+\toc
+
+> The original agreement, with visible public messages
+
+Take p=23, g=5, Alice's private exponent a=6 and Bob's b=15. Alice publishes
+A=5^6 mod 23=8; Bob publishes B=5^15 mod 23=19. Alice computes B^6 mod 23=2,
+and Bob computes A^15 mod 23=2. The exponents are shown here so the worked
+example can be checked; an actual protocol keeps them private.
+
+For a prime p and a nonzero group element g,
+
+$$
+B^a=(g^b)^a=g^{ab}=(g^a)^b=A^b\pmod p.
+$$
+\alttext(B raised to a equals g raised to b times a, which equals g raised to a times b and A raised to b, modulo p.)
+
+The identity establishes agreement. It does not establish that an observer
+cannot compute the value or that either peer has the expected identity.
+Recovering a discrete logarithm suffices to break the exchange; the passive
+computational target is the shared value given g, p, A and B. We do not infer
+that recovering an exponent is the only possible route to that target.
+[Diffie and Hellman's original paper](https://web.mit.edu/6.857/OldStuff/Fall03/ref/diffie76new.pdf)
+itself distinguishes the known direction from its unproved converse.
+
+The program also retains the original 31-bit prime p=2^31−1 with g=7.
+The same public values and shared residue reappear. The existing
+baby_step_giant_step_trace() takes only that public generator, modulus and
+Alice's public value, recovers the sample exponent, and recomputes the shared
+value. No private exponent is passed to the recovery call.
+
+```{cpp, results="markdown", file="figures/dh_exchange.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto x=dm::algorithms::dh_exchange(5,6,15,23),large=dm::algorithms::dh_exchange(7,123456,987654,2147483647);
+  if(x.alice_public!=8 || x.bob_public!=19 || x.alice_shared!=2 || x.bob_shared!=2 || large.alice_shared!=large.bob_shared)return 1;
+  dm::graphics::Diagram d(80,1100);dm::graphics::DiagramNodeStyle box;box.width=3.5;box.height=2;box.font_size=23;
+  d.node("alice",{0,0},std::format("Alice: a = 6\nPublish A = {}\nB^a mod p = {}",x.alice_public,x.alice_shared),box)
+   .node("bob",{8,0},std::format("Bob: b = 15\nPublish B = {}\nA^b mod p = {}",x.bob_public,x.bob_shared),box)
+   .edge("alice","bob",std::format("A = {}",x.alice_public)).edge("bob","alice",std::format("B = {}",x.bob_public))
+   .text({4,2.4},"Public parameters p = 23, g = 5; agreed raw residue = 2",24)
+   .text({4,-2.4},"The messages carry A and B; the private exponents are displayed only for this example",20)
+   .save_svg("build/dh_exchange.svg");
+  std::print("| original exchange | p | g | Alice public | Bob public | Alice raw shared | Bob raw shared |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::print("| textbook | {} | {} | {} | {} | {} | {} |\n",x.modulus,x.generator,x.alice_public,x.bob_public,x.alice_shared,x.bob_shared);
+  std::print("| 31-bit prime | {} | {} | {} | {} | {} | {} |\n\n",large.modulus,large.generator,large.alice_public,large.bob_public,large.alice_shared,large.bob_shared);
+  const auto recovered=dm::algorithms::baby_step_giant_step_trace(large.generator,large.alice_public,large.modulus);
+  if(!recovered.exists || dm::algorithms::dh_public_key(large.generator,recovered.exponent,large.modulus)!=large.alice_public)return 1;
+  const auto shared=dm::algorithms::dh_shared_secret(large.bob_public,recovered.exponent,large.modulus);
+  if(shared!=large.alice_shared)return 1;
+  std::print("Public-input recovery on the 31-bit example: exponent {}; baby products {}; giant lookups {}; recomputed shared {}.\n",recovered.exponent,recovered.baby_steps,recovered.giant_steps,shared);
+}
+```
+// result_begin: markdown
+| original exchange | p | g | Alice public | Bob public | Alice raw shared | Bob raw shared |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| textbook | 23 | 5 | 8 | 19 | 2 | 2 |
+| 31-bit prime | 2147483647 | 7 | 744111946 | 1598667707 | 490982923 | 490982923 |
+
+Public-input recovery on the 31-bit example: exponent 123456; baby products 46341; giant lookups 3; recomputed shared 490982923.
+\image(figures/dh_exchange.svg)
+// result_end
+\caption(Both original exchanges reproduce their exact values. The diagram distinguishes public messages from the private exponents displayed for the toy calculation; a public-input search also breaks the 31-bit sample.)
+\alttext(Alice and Bob boxes show private exponents six and fifteen, outgoing public values eight and nineteen, and equal raw shared residue two. Opposite arrows carry the two public values.)
+
+> Follow the actual square-and-multiply states
+
+Write e as a sum of binary powers. At each low-bit-first step, the running
+base represents g^(2^i) modulo m. When bit i is set, multiply it into the
+accumulator; then square the running base and shift the remaining exponent.
+The invariant is
+
+$$
+\text{accumulator}\times\text{running}^{\text{remaining}}
+\equiv g^e\pmod m.
+$$
+\alttext(The accumulator times the running base raised to the remaining exponent is congruent to the original power g to e modulo m.)
+
+For e=6, binary110, the low bits are zero, one, one. The running residues
+are 5,2,4 and the accumulator becomes 1,2,8. The existing loop also computes
+a final, unused running-base square 16. The trace retains that actual work;
+it does not silently substitute an optimized loop. Raising Bob's public 19
+to the same exponent instead ends at the shared residue 2.
+
+```{cpp, results="markdown", file="figures/dh_bit_trace.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::mod_pow_trace(5,6,23),shared=dm::algorithms::mod_pow_trace(19,6,23);
+  if(t.result!=8 || shared.result!=2 || t.work.products!=5 || t.steps.back().squared_base!=16)return 1;
+  std::print("| bit index | remaining exponent | multiply | running before | accumulator before | accumulator after | squared base |\n| ---: | ---: | :--- | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> bits,running,accumulator,squares;
+  for(const auto& s:t.steps) {
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",s.bit_index,s.remaining_before,s.multiply,s.running_before,s.accumulator_before,s.accumulator_after,s.squared_base);
+    bits.push_back(s.bit_index);running.push_back(s.running_before);accumulator.push_back(s.accumulator_after);squares.push_back(s.squared_base);
+  }
+  std::print("\nPublic power result {}; shared power result {}; actual squares {}; accumulator products {}; total products {}.\n",t.result,shared.result,t.work.squarings,t.work.accumulator_products,t.work.products);
+  auto p=dm::graphics::RPlot::create();p.line(bits,running,"running before",{37,99,235},2).points(bits,running,"running before",{37,99,235},5)
+   .line(bits,accumulator,"accumulator after",{22,163,74},2).points(bits,accumulator,"accumulator after",{22,163,74},5)
+   .line(bits,squares,"squared base",{124,58,237},2).points(bits,squares,"squared base",{124,58,237},5)
+   .legend({"running before","accumulator after","squared base"},{{37,99,235},{22,163,74},{124,58,237}})
+   .title("Actual low-bit-first states for 5^6 modulo 23").x_label("processed bit index, least significant first")
+   .y_label("exact residue").x_ticks({0,1,2},{"0: skip","1: multiply","2: multiply"}).y_limits(0,26).size(1100,570).save_svg("build/dh_bit_trace.svg");
+}
+```
+// result_begin: markdown
+| bit index | remaining exponent | multiply | running before | accumulator before | accumulator after | squared base |
+| ---: | ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | 6 | false | 5 | 1 | 1 | 2 |
+| 1 | 3 | true | 2 | 1 | 2 | 4 |
+| 2 | 1 | true | 4 | 2 | 8 | 16 |
+
+Public power result 8; shared power result 2; actual squares 3; accumulator products 2; total products 5.
+\image(figures/dh_bit_trace.svg)
+// result_end
+\caption(The complete actual trace includes the skipped first multiply and the final unused square. Three squares plus two accumulator products give five modular products.)
+\alttext(Three labelled residue curves show running bases five-two-four, accumulators one-two-eight and squared bases two-four-sixteen across the three processed exponent bits.)
+
+The full product of two uint64 values fits in unsigned 128 bits. Reducing that
+complete product avoids an intermediate 64-bit wrap. This is exact integer
+arithmetic on the supported compiler, including moduli near 2^64; it says
+nothing about secrecy. The scalar helpers and trace share one kernel.
+
+> A small power plot has visible group structure
+
+For an element of order r, g^(x+r)=g^x. The full generator 5 modulo23 has
+order 22: exponents 0 through 21 enumerate all nonzero residues exactly once.
+The original plot used 0 through 22 and therefore included the identity twice.
+With g=4, the order is11; with g=22 it is2; g=1 has order 1. These are exact
+periods, not evidence of random behavior. A tiny table immediately inverts
+the original public values 8 and 19 to exponents 6 and 15 modulo 22.
+
+The bounded cycle API validates primality and the element range, then emits
+actual successive powers until the first return to one. Its quoted cycle
+products exclude the separate primality check. Large groups need a different
+order-analysis strategy; the default cap prevents unbounded enumeration.
+
+```{cpp, results="markdown", file="figures/dh_cycles.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::print("| element g | exact order | enumeration products | first residue | last before identity repeats |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::uint64_t g:{1,4,5,22}) {
+    const auto c=dm::algorithms::dh_power_cycle(g,23);std::print("| {} | {} | {} | {} | {} |\n",g,c.order,c.order,c.values.front(),c.values.back());
+  }
+  const auto full=dm::algorithms::dh_power_cycle(5,23),sub=dm::algorithms::dh_power_cycle(4,23);
+  const auto a=std::find(full.values.begin(),full.values.end(),8)-full.values.begin(),b=std::find(full.values.begin(),full.values.end(),19)-full.values.begin();
+  if(a!=6 || b!=15 || full.order!=22 || sub.order!=11)return 1;
+  std::print("\nSmall-table inverse: public 8 gives exponent {}; public 19 gives exponent {}. Exponents 6 and 28 both publish {}.\n\n",a,b,dm::algorithms::dh_public_key(5,28,23));
+  std::vector<double> xs,five,four;std::print("| exponent x | 5^x mod 23 | 4^x mod 23 |\n| ---: | ---: | ---: |\n");
+  for(std::size_t x=0;x<=22;++x) {
+    xs.push_back(x);five.push_back(full.values[x%full.values.size()]);four.push_back(sub.values[x%sub.values.size()]);
+    std::print("| {} | {} | {} |\n",x,full.values[x%full.values.size()],sub.values[x%sub.values.size()]);
+  }
+  auto p=dm::graphics::RPlot::create();p.points(xs,five,"g=5",{37,99,235},5).title("Full order 22; identity repeats at x=22")
+   .x_label("integer exponent x").y_label("5^x modulo23").y_limits(0,26);
+  auto q=dm::graphics::RPlot::create();q.points(xs,four,"g=4",{234,88,12},5).title("Subgroup order 11; the period repeats twice")
+   .x_label("integer exponent x").y_label("4^x modulo23").y_limits(0,26);
+  dm::graphics::RLayout::create(1,2).add(p).add(q).size(1100,520).title("Power maps are periodic group maps, not a security test").fit_panels().save_svg("build/dh_cycles.svg");
+}
+```
+// result_begin: markdown
+| element g | exact order | enumeration products | first residue | last before identity repeats |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 1 | 1 | 1 |
+| 4 | 11 | 11 | 1 | 6 |
+| 5 | 22 | 22 | 1 | 14 |
+| 22 | 2 | 2 | 1 | 22 |
+
+Small-table inverse: public 8 gives exponent 6; public 19 gives exponent 15. Exponents 6 and 28 both publish 8.
+
+| exponent x | 5^x mod 23 | 4^x mod 23 |
+| ---: | ---: | ---: |
+| 0 | 1 | 1 |
+| 1 | 5 | 4 |
+| 2 | 2 | 16 |
+| 3 | 10 | 18 |
+| 4 | 4 | 3 |
+| 5 | 20 | 12 |
+| 6 | 8 | 2 |
+| 7 | 17 | 8 |
+| 8 | 16 | 9 |
+| 9 | 11 | 13 |
+| 10 | 9 | 6 |
+| 11 | 22 | 1 |
+| 12 | 18 | 4 |
+| 13 | 21 | 16 |
+| 14 | 13 | 18 |
+| 15 | 19 | 3 |
+| 16 | 3 | 12 |
+| 17 | 15 | 2 |
+| 18 | 6 | 8 |
+| 19 | 7 | 9 |
+| 20 | 12 | 13 |
+| 21 | 14 | 6 |
+| 22 | 1 | 1 |
+\image(figures/dh_cycles.svg)
+// result_end
+\caption(The original 23 exponent positions include a repeated identity. The second panel exposes the smaller order-eleven subgroup; matching table entries recover the toy private exponents modulo the group order.)
+\alttext(Two fitted point plots show full-order powers of five and the repeating subgroup powers of four modulo23. Both include exponent22, where the identity repeats.)
+
+> Matching residues do not authenticate a peer
+
+An active intermediary can replace each public message and establish two
+separate arithmetic sessions. In this control Alice keeps a=6 and Bob b=15.
+The intermediary sends 5^13=21 to Alice and 5^7=17 to Bob, all modulo23.
+Alice agrees on 18 with the intermediary; Bob agrees on 15 with the same
+intermediary. Both local agreement checks pass, while Alice and Bob have
+different values. The arithmetic alone never established whom they reached.
+
+```{cpp, results="markdown", file="figures/dh_unauthenticated.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto left=dm::algorithms::dh_exchange(5,6,13,23),right=dm::algorithms::dh_exchange(5,7,15,23);
+  if(left.alice_shared!=left.bob_shared || right.alice_shared!=right.bob_shared || left.alice_shared==right.bob_shared)return 1;
+  dm::graphics::Diagram d(70,1100);dm::graphics::DiagramNodeStyle box;box.width=3.3;box.height=1.7;box.font_size=22;
+  d.node("alice",{0,0},std::format("Alice\nRaw shared = {}",left.alice_shared),box);
+  box.fill={254,226,226};d.node("middle",{5.5,0},std::format("Intermediary knows\nleft {}; right {}",left.bob_shared,right.alice_shared),box);
+  box.fill={239,246,255};d.node("bob",{11,0},std::format("Bob\nRaw shared = {}",right.bob_shared),box)
+   .edge("alice","middle","session1").edge("middle","bob","session2")
+   .text({5.5,2.2},"Unauthenticated messages permit two separate agreements",24)
+   .text({5.5,-2.2},std::format("Substituted public values: {} to Alice; {} to Bob",left.bob_public,right.alice_public),23)
+   .save_svg("build/dh_unauthenticated.svg");
+  std::print("| participant/session | published value | received value | raw shared |\n| :--- | ---: | ---: | ---: |\n");
+  std::print("| Alice / left | {} | {} | {} |\n| intermediary / left | {} | {} | {} |\n",left.alice_public,left.bob_public,left.alice_shared,left.bob_public,left.alice_public,left.bob_shared);
+  std::print("| intermediary / right | {} | {} | {} |\n| Bob / right | {} | {} | {} |\n\n",right.alice_public,right.bob_public,right.alice_shared,right.bob_public,right.alice_public,right.bob_shared);
+  std::print("| unvalidated received value | secret6 result | secret15 result |\n| ---: | ---: | ---: |\n");
+  for(std::uint64_t peer:{0,1,22})std::print("| {} | {} | {} |\n",peer,dm::algorithms::dh_shared_secret(peer,6,23),dm::algorithms::dh_shared_secret(peer,15,23));
+  std::print("\nThe legacy wrappers accept these bases and perform arithmetic; they do not authenticate or validate peers.\n");
+}
+```
+// result_begin: markdown
+| participant/session | published value | received value | raw shared |
+| :--- | ---: | ---: | ---: |
+| Alice / left | 8 | 21 | 18 |
+| intermediary / left | 21 | 8 | 18 |
+| intermediary / right | 17 | 19 | 15 |
+| Bob / right | 19 | 17 | 15 |
+
+| unvalidated received value | secret6 result | secret15 result |
+| ---: | ---: | ---: |
+| 0 | 0 | 0 |
+| 1 | 1 | 1 |
+| 22 | 1 | 22 |
+
+The legacy wrappers accept these bases and perform arithmetic; they do not authenticate or validate peers.
+\image(figures/dh_unauthenticated.svg)
+// result_end
+\caption(Two valid arithmetic exchanges give the intermediary two different shared residues. The legacy wrappers also accept zero, identity and order-two peer values; successful powering is not protocol validation.)
+\alttext(Three native boxes show Alice with raw shared 18, an intermediary knowing 18 and 15, and Bob with raw shared 15. The footer gives the substituted public values 21 and 17.)
+
+A received zero can force zero for positive exponents; one always gives one;
+p−1 reveals exponent parity in these examples. Range and subgroup validation
+belong to a fully specified group/protocol. For known safe-prime FFDHE groups,
+[RFC 7919 section 5.1](https://www.rfc-editor.org/rfc/rfc7919.html#section-5.1)
+specifies 1<Y<p−1; its discussion of unknown groups requires more than that
+range check. Our toy full-group generator and arithmetic APIs do not claim to
+implement that RFC. Authenticating the exchange and deriving a usable key
+are separate tasks absent from this demonstration.
+
+> Count actual work and check the full-width arithmetic
+
+For m>1 and positive exponent e, let L=bit_width(e) and w=popcount(e). The
+retained right-to-left loop performs exactly L squares and w accumulator
+products, including its final unused square:
+
+$$
+N_{\mathrm{products}}=L+w.
+$$
+\alttext(The number of modular products equals the exponent bit width plus its number of one bits.)
+
+At the same L, a power-of-two exponent takes L+1 products while an all-one
+exponent takes 2L. Thus the implementation is not constant-time; this plot
+counts operations, without treating them as measured processor timings.
+Exponent zero has no products and returns one for m>1; m=1 returns zero
+without products for any exponent. Both scalar and trace reject m=0.
+The work sweep uses modulus 2^64−1 as an arithmetic control, not a prime field.
+
+```{cpp, results="markdown", file="figures/dh_power_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> bits,sparse,dense;const auto maximum=std::numeric_limits<std::uint64_t>::max();
+  std::print("| exponent bits | sparse one bits | sparse products | dense one bits | dense products |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(unsigned k:{1,2,4,8,16,32,64}) {
+    const auto e1=std::uint64_t{1}<<(k-1),e2=maximum>>(64-k);
+    const auto a=dm::algorithms::mod_pow_trace(maximum-1,e1,maximum),b=dm::algorithms::mod_pow_trace(maximum-1,e2,maximum);
+    if(a.work.products!=k+1 || b.work.products!=2*k)return 1;
+    bits.push_back(k);sparse.push_back(a.work.products);dense.push_back(b.work.products);
+    std::print("| {} | {} | {} | {} | {} |\n",k,a.work.accumulator_products,a.work.products,b.work.accumulator_products,b.work.products);
+  }
+  auto p=dm::graphics::RPlot::create();p.line(bits,sparse,"one set bit",{37,99,235},2).points(bits,sparse,"one set bit",{37,99,235},5)
+   .line(bits,dense,"all bits set",{234,88,12},2).points(bits,dense,"all bits set",{234,88,12},5)
+   .legend({"one set bit","all bits set"},{{37,99,235},{234,88,12}})
+   .title("Same exponent width, different actual modular-product counts").x_label("exponent bit width L").y_label("actual modular products, including final square")
+   .y_limits(0,160).size(1100,570).save_svg("build/dh_power_work.svg");
+  const auto exact=dm::algorithms::mul_mod(maximum-1,maximum-2,maximum),wrapped=((maximum-1)*(maximum-2))%maximum;
+  std::print("\nFull-width product modulo UINT64_MAX: exact {}; prematurely wrapped 64-bit arithmetic {}.\n\n",exact,wrapped);if(exact!=2 || wrapped!=6)return 1;
+  const auto zero=dm::algorithms::mod_pow_trace(0,0,23),unit=dm::algorithms::mod_pow_trace(maximum,maximum,1,1);
+  std::print("Zero exponent: result {}; products {}. Unit modulus: result {}; products {}.\n\n",zero.result,zero.work.products,unit.result,unit.work.products);
+  int rejected=0;
+  try{dm::algorithms::mul_mod(1,1,0);}catch(const std::invalid_argument&){++rejected;}
+  try{dm::algorithms::mod_pow_trace(5,6,23,2);}catch(const std::length_error&){++rejected;}
+  try{dm::algorithms::dh_power_cycle(5,23,21);}catch(const std::length_error&){++rejected;}
+  try{dm::algorithms::dh_power_cycle(1,15,1);}catch(const std::invalid_argument&){++rejected;}
+  const auto exact_bits=dm::algorithms::mod_pow_trace(5,6,23,3),uncapped_bits=dm::algorithms::mod_pow_trace(5,6,23,0);
+  const auto exact_cycle=dm::algorithms::dh_power_cycle(5,23,22);
+  if(rejected!=4 || exact_bits.result!=uncapped_bits.result || exact_cycle.order!=22)return 1;
+  std::print("Four expected modulus/cap/composite rejections: {}. Exact caps 3 bits and 22 cycle values succeed; zero disables optional caps.\n",rejected);
+}
+```
+// result_begin: markdown
+| exponent bits | sparse one bits | sparse products | dense one bits | dense products |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 2 | 1 | 2 |
+| 2 | 1 | 3 | 2 | 4 |
+| 4 | 1 | 5 | 4 | 8 |
+| 8 | 1 | 9 | 8 | 16 |
+| 16 | 1 | 17 | 16 | 32 |
+| 32 | 1 | 33 | 32 | 64 |
+| 64 | 1 | 65 | 64 | 128 |
+
+Full-width product modulo UINT64_MAX: exact 2; prematurely wrapped 64-bit arithmetic 6.
+
+Zero exponent: result 1; products 0. Unit modulus: result 0; products 0.
+
+Four expected modulus/cap/composite rejections: 4. Exact caps 3 bits and 22 cycle values succeed; zero disables optional caps.
+\image(figures/dh_power_work.svg)
+// result_end
+\caption(Actual product counts follow L+popcount(e), reaching 65 versus 128 at 64 bits. Full-width product, zero-work edge cases and exact cap controls use the same canonical arithmetic.)
+\alttext(Two numeric curves show L plus one products for a single set bit and twice L for all bits set, reaching 65 and128 at exponent width64. Legends sit above the largest observations.)
+
+> Contracts and verification
+
+The established dh_public_key(), dh_shared_secret(), mod_pow() and mul_mod()
+names remain available through the original include. The power wrappers
+retain arithmetic-only behavior, including composite moduli, zero exponents,
+zero bases and modulus one. The modular product now rejects a zero modulus
+before remainder evaluation. These raw APIs do not sample private exponents,
+validate a protocol group or peer, authenticate messages, supply a KDF or
+provide constant-time arithmetic. The trace deliberately exposes exponent
+bits. Matching residues on p=1 or on a composite modulus are algebraic
+results, not a validated prime-field agreement.
+
+A complete effective bit count is checked before trace allocation/powering;
+its default cap is 64, and modulus one has zero effective bits. The cycle
+API separately checks a prime p>=2 and 1<=g<p, then applies an online default
+one-million-value cap. It emits the identity once and performs a closing
+product; enumeration costs O(order) storage/products plus its primality
+check. Zero disables only optional caps; vector capacity checks remain.
+The scalar powering driver uses O(1) storage and O(log(e)+1) fixed-word
+operations; traces own O(log(e)+1) records. Multiprecision bit-operation cost
+is not measured here. No random dataset fits these exact finite controls.
+
+Nine native tests check 72,900 small exchanges, including composite rings,
+and 103,275 complete small power traces against repeated multiplication and
+the state invariant. Addition-only multiplication with an independent
+left-to-right power driver checks 5,000 full-width products and 500 powers.
+Every nonzero element of every prime through 127 is enumerated independently;
+a full-width prime's order-two element tests the closing product near 2^64.
+An optional Python development oracle separately verifies 20,000 arbitrary-
+precision product/power controls, including zero and full-width moduli.
+Original values, periods, subgroup collapse, two-session substitution,
+complete trace caps, online cycle caps, edge conventions and owned copies
+are checked. These validations establish arithmetic and report behavior;
+they do not turn the toy implementation into a secure cryptographic protocol.
+
+> References
+
+1. W. Diffie and M. E. Hellman (1976), “New Directions in Cryptography”, IEEE Transactions on Information Theory 22(6), 644–654. [Primary paper](https://web.mit.edu/6.857/OldStuff/Fall03/ref/diffie76new.pdf), [DOI](https://doi.org/10.1109/TIT.1976.1055638). Algebraic agreement, repeated squaring and the distinction between logarithm recovery and the shared-value target.
+2. D. Gillmor (2016), RFC 7919, “Negotiated Finite Field Diffie-Hellman Ephemeral Parameters for Transport Layer Security (TLS)”. [Primary specification, section 5.1](https://www.rfc-editor.org/rfc/rfc7919.html#section-5.1). Peer checks in the context of its specified groups; this report's raw arithmetic is not an implementation of the RFC.

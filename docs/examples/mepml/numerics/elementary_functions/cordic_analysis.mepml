@@ -1,0 +1,393 @@
+//? Title: CORDIC: Rotations, Gain and Floating Precision
+//? Subtitle: Actual circular-mode states, the original four angles and the limits of rounded-period reduction
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given an angle in radians, approximate its sine and cosine together using a
+sequence of rotations with binary scales. The recurrence is simple, but its
+vector length changes, floating arithmetic limits useful precision, and reducing
+a large angle by a rounded period can lose its phase. This report derives the
+circular CORDIC updates and compensation, follows actual native before/after
+states, reproduces the original four-angle comparison and twelve-step path, and
+measures errors as the stage count grows. The canonical C++ implementation now
+shares one producing kernel with its trace and uses an immutable prepared table.
+It is a floating model whose operations and numerical limits are explicit.
+)
+
+\toc
+
+> The method: a rotation multiplied by a known gain
+
+A true rotation by dα, for d in {−1,+1}, maps (x,y) to
+(x cos α−d y sin α, y cos α+d x sin α). Choose αᵢ=atan(2⁻ⁱ) and drop the
+common cos αᵢ factor. With sᵢ=2⁻ⁱ the resulting pseudo-rotation is
+
+\[
+x_{i+1}=x_i-d_i s_i y_i,\qquad
+y_{i+1}=y_i+d_i s_i x_i,\qquad
+z_{i+1}=z_i-d_i\alpha_i.
+\]
+\alttext(Each step updates both coordinates from the previous pair and subtracts a signed fixed angle from the residual.)
+
+Start at x₀=1, y₀=0 and the reduced target z₀=φ. Choose dᵢ=+1 when zᵢ≥0,
+including zero, and −1 otherwise. The two coordinate updates are simultaneous:
+y's update uses the old x. The sign corrects an angular overshoot without
+restarting. This API executes the requested count; reaching a zero residual does
+not stop the next fixed rotation.
+
+The omitted cosine is not free. Squaring and adding the two coordinate updates
+gives xᵢ₊₁²+yᵢ₊₁²=(1+sᵢ²)(xᵢ²+yᵢ²). Thus the raw length is amplified by
+
+\[
+A_N=\prod_{i=0}^{N-1}\sqrt{1+2^{-2i}},\qquad
+K_N=A_N^{-1}=\prod_{i=0}^{N-1}(1+2^{-2i})^{-1/2}.
+\]
+\alttext(A is the amplification larger than one; K is its reciprocal compensation smaller than one.)
+
+In ideal arithmetic A∞≈1.646760258 and K∞≈0.607252935. The final compensated
+coordinates are cos≈K_N x_N and sin≈K_N y_N, with the range-reduction sign
+restored afterwards. Use the finite product for the chosen N. The old report
+called the reciprocal the gain; here A denotes amplification and K denotes
+compensation consistently.
+
+> First worked updates at one radian
+
+The first direction is positive: (1,0) becomes raw (1,1), whose norm is √2.
+Its compensated or normalized direction is (1/√2,1/√2), at 45 degrees. Since
+1−π/4 is still positive, the next raw state is (0.5,1.5). The third direction
+is negative, giving (0.875,1.375). These exact dyadic coordinates can be checked
+without evaluating a trigonometric function.
+
+```{cpp, results="markdown", file="figures/cordic_gain.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::cordic_sincos_trace(1,3);
+  const auto& first=t.steps[0];
+  dm::graphics::Diagram d(150,900);
+  dm::graphics::DiagramStroke circle;circle.color={148,163,184};circle.width=1.2;
+  dm::graphics::DiagramStroke blue;blue.color={37,99,235};blue.width=2;blue.arrow=true;
+  dm::graphics::DiagramStroke dark;dark.color={51,65,85};dark.width=1.8;dark.arrow=true;
+  dm::graphics::DiagramStroke gold;gold.color={202,138,4};gold.width=1.5;
+  d.ellipse({0,0},1,1,{255,255,255,0},circle)
+   .path({{0,0},{first.x_before,first.y_before}},dark)
+   .path({{0,0},{first.x,first.y}},blue)
+   .ellipse({first.x,first.y},.04,.04,{37,99,235},circle)
+   .ellipse({first.unit_x,first.unit_y},.04,.04,{202,138,4},gold)
+   .path({{first.unit_x,first.unit_y},{.05,1.35}},circle)
+   .path({{first.x,first.y},{1.35,1.35}},circle)
+   .text({-.7,1.65},"normalised direction\non the unit circle",17)
+   .text({1.65,1.58},"raw state (1, 1)",18)
+   .text({1.75,-.35},"start (1, 0)",18)
+   .text({-.3,-.2},"origin",16)
+   .text({.3,2.4},"The first update changes direction and length",22)
+   .text({.3,-1.55},std::format("raw norm {:.6f}; compensation K1 = {:.6f}",std::hypot(first.x,first.y),first.inverse_gain),18)
+   .save_svg("build/cordic_gain.svg");
+  std::print("| stage i | direction | scale | raw x | raw y | residual z | accumulated K |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto& s:t.steps)
+    std::print("| {} | {} | {:.3f} | {:.6f} | {:.6f} | {:.9f} | {:.9f} |\n",s.constant.index,s.direction,s.constant.shift,s.x,s.y,s.z,s.inverse_gain);
+  std::print("\n{} actual rotations, {} constant lookups, {} compensation products and {} trace normalizations.\n",t.analysis.work.rotations,t.analysis.work.constant_lookups,t.analysis.work.inverse_gain_products,t.analysis.work.normalizations);
+}
+```
+// result_begin: markdown
+| stage i | direction | scale | raw x | raw y | residual z | accumulated K |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 1.000 | 1.000000 | 1.000000 | 0.214601837 | 0.707106781 |
+| 1 | 1 | 0.500 | 0.500000 | 1.500000 | -0.249045772 | 0.632455532 |
+| 2 | -1 | 0.250 | 0.875000 | 1.375000 | -0.004067109 | 0.613571991 |
+
+3 actual rotations, 3 constant lookups, 3 compensation products and 3 trace normalizations.
+\image(figures/cordic_gain.svg)
+// result_end
+\caption(The first actual raw state lies outside the unit circle. Its normalized direction and the initial vector are shown at equal coordinate scales; compensation corrects the known length amplification.)
+\alttext(A dark vector points from the origin to one comma zero. A longer blue vector points to one comma one. A gold dot on that ray lies on the grey unit circle.)
+
+Binary scales can be implemented as shifts in a chosen fixed-point format. This
+C++ model uses floating multiplication, subtraction and addition. Its shared
+immutable table is lazily prepared with 1,075 atan/sqrt records, then reused.
+Each call still accumulates compensation products and performs two final
+multiplications; each recorded normalized direction adds hypot and division.
+These are algorithmic evaluation counts, not a count of FPGA gates or CPU
+instructions, and the report makes no hardware-throughput comparison.
+
+> Folding a half turn: both output signs change
+
+The implementation first computes r=remainder(θ,2πd), using a double constant
+πd. If r>πd/2 set φ=r−πd; if r<−πd/2 set φ=r+πd. Either fold removes a
+half turn, so both sine and cosine are negated at output. Otherwise φ=r with
+no sign change. Inclusive endpoints ±πd/2 are not folded.
+
+For θ=2.5, φ≈−0.641592654. The folded vector is in the fourth quadrant, and
+negating both coordinates places the answer in the second. This is the same
+fold used for the original four angles.
+
+```{cpp, results="markdown", file="figures/cordic_fold.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::print("| theta | principal remainder | folded target | negate both |\n| ---: | ---: | ---: | :--- |\n");
+  for(double theta:{.5,1.,2.5,-1.2,-3.14159265358979323846,3.14159265358979323846}) {
+    const auto r=dm::algorithms::cordic_reduce(theta);
+    std::print("| {:.9f} | {:.9f} | {:.9f} | {} |\n",theta,r.principal,r.reduced,r.flipped);
+  }
+  const auto a=dm::algorithms::cordic_sincos_analyze(2.5,44);
+  const double sign=a.reduction.flipped?-1:1;
+  const dm::graphics::DiagramPoint restored{a.result.cos,a.result.sin};
+  const dm::graphics::DiagramPoint folded{sign*a.result.cos,sign*a.result.sin};
+  dm::graphics::Diagram d(190,900);
+  dm::graphics::DiagramStroke edge;edge.color={148,163,184};edge.width=1.2;
+  dm::graphics::DiagramStroke arrow;arrow.color={100,116,139};arrow.width=1.5;arrow.arrow=true;
+  d.ellipse({0,0},1,1,{255,255,255,0},edge)
+   .path({folded,restored},arrow)
+   .ellipse(folded,.035,.035,{37,99,235},edge)
+   .ellipse(restored,.035,.035,{220,38,38},edge)
+   .path({folded,{1.25,-1.1}},edge).path({restored,{-1.25,1.1}},edge)
+   .text({1.25,-1.4},"folded direction",18)
+   .text({-1.25,1.4},"restored theta = 2.5",18)
+   .text({0,2.2},"Half-turn restoration negates both coordinates",22)
+   .text({0,-2.1},"Blue: (cos phi, sin phi); red: (-cos phi, -sin phi)",18)
+   .save_svg("build/cordic_fold.svg");
+}
+```
+// result_begin: markdown
+| theta | principal remainder | folded target | negate both |
+| ---: | ---: | ---: | :--- |
+| 0.500000000 | 0.500000000 | 0.500000000 | false |
+| 1.000000000 | 1.000000000 | 1.000000000 | false |
+| 2.500000000 | 2.500000000 | -0.641592654 | true |
+| -1.200000000 | -1.200000000 | -1.200000000 | false |
+| -3.141592654 | -3.141592654 | 0.000000000 | true |
+| 3.141592654 | 3.141592654 | 0.000000000 | true |
+\image(figures/cordic_fold.svg)
+// result_end
+\caption(The folded approximation and the restored approximation are opposite vectors. The cached rotation kernel works only on the folded target; the final sign correction handles the removed half turn.)
+\alttext(A blue point in the fourth quadrant and a red point in the second quadrant lie opposite one another on a unit circle, joined by an arrow.)
+
+This is reduction modulo a rounded period, not a high-precision reduction modulo
+mathematical 2π. An error in the period is multiplied by the number of removed
+turns. Very large finite angles can therefore have large phase error before any
+CORDIC stage executes. The final numerical controls below expose that limitation.
+
+> Original comparison and the actual twelve-step path
+
+The four original inputs are 0.5, 1, 2.5 and −1.2 radians, each with 44 stages.
+The native trace supplies the original twelve normalized states for θ=1 directly.
+The initial state is also drawn. Every normalized point is already on the unit
+circle; the connected states zig-zag in angle. The raw radius approaches A_N,
+while the accumulated compensation corrects that length.
+
+```{cpp, results="markdown", file="figures/cordic.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::print("| original theta | native sine | native cosine | abs sine error to std | abs cosine error to std |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(double theta:{.5,1.,2.5,-1.2}) {
+    const auto s=dm::algorithms::cordic_sincos(theta,44);
+    std::print("| {:.1f} | {:.12f} | {:.12f} | {:.3e} | {:.3e} |\n",theta,s.sin,s.cos,std::abs(s.sin-std::sin(theta)),std::abs(s.cos-std::cos(theta)));
+  }
+  const auto t=dm::algorithms::cordic_sincos_trace(1,12);
+  std::vector<dm::graphics::DiagramPoint> path{{t.steps.front().x_before,t.steps.front().y_before}};
+  std::print("\n| stage i | direction | residual | raw norm | K prefix | normalised x | normalised y |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto& s:t.steps) {
+    path.push_back({s.unit_x,s.unit_y});
+    std::print("| {} | {} | {:.9f} | {:.9f} | {:.9f} | {:.9f} | {:.9f} |\n",s.constant.index,s.direction,s.z,std::hypot(s.x,s.y),s.inverse_gain,s.unit_x,s.unit_y);
+  }
+  dm::graphics::Diagram d(220,900);
+  dm::graphics::DiagramStroke circle;circle.color={148,163,184};circle.width=1.2;
+  dm::graphics::DiagramStroke blue;blue.color={37,99,235};blue.width=1.5;
+  dm::graphics::DiagramStroke target;target.color={202,138,4};target.width=2;
+  d.ellipse({0,0},1,1,{255,255,255,0},circle).path(path,blue);
+  for(const auto& p:path) d.ellipse(p,.014,.014,{37,99,235},blue);
+  d.ellipse({std::cos(1.),std::sin(1.)},.045,.045,{255,255,255,0},target)
+   .text({0,1.6},"One radian: twelve actual normalized updates",21)
+   .text({0,-1.5},"Blue: recorded directions; gold ring: std target",18)
+   .save_svg("build/cordic.svg");
+  std::print("\nFinal 12-stage pair: sine {:.12f}, cosine {:.12f}; gain compensation {:.12f}.\n",t.analysis.result.sin,t.analysis.result.cos,t.analysis.inverse_gain);
+}
+```
+// result_begin: markdown
+| original theta | native sine | native cosine | abs sine error to std | abs cosine error to std |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 0.479425538604 | 0.877582561890 | 5.990e-14 | 3.209e-14 |
+| 1.0 | 0.841470984808 | 0.540302305868 | 4.152e-14 | 6.362e-14 |
+| 2.5 | 0.598472144104 | -0.801143615547 | 7.616e-14 | 5.695e-14 |
+| -1.2 | -0.932039085967 | 0.362357754477 | 2.487e-14 | 6.323e-14 |
+
+| stage i | direction | residual | raw norm | K prefix | normalised x | normalised y |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 0.214601837 | 1.414213562 | 0.707106781 | 0.707106781 | 0.707106781 |
+| 1 | 1 | -0.249045772 | 1.581138830 | 0.632455532 | 0.316227766 | 0.948683298 |
+| 2 | -1 | -0.004067109 | 1.629800601 | 0.613571991 | 0.536875492 | 0.843661488 |
+| 3 | -1 | 0.120287885 | 1.642484066 | 0.608833913 | 0.637373002 | 0.770555421 |
+| 4 | 1 | 0.057869075 | 1.645688916 | 0.607648256 | 0.588065842 | 0.808813060 |
+| 5 | 1 | 0.026629242 | 1.646492279 | 0.607351770 | 0.562515835 | 0.826786512 |
+| 6 | 1 | 0.011005513 | 1.646693254 | 0.607277644 | 0.549530218 | 0.835473841 |
+| 7 | 1 | 0.003193172 | 1.646743507 | 0.607259112 | 0.542986508 | 0.839741419 |
+| 8 | 1 | -0.000713058 | 1.646756070 | 0.607254479 | 0.539702151 | 0.841856038 |
+| 9 | -1 | 0.001240065 | 1.646759211 | 0.607253321 | 0.541345369 | 0.840800328 |
+| 10 | 1 | 0.000263502 | 1.646759996 | 0.607253032 | 0.540524017 | 0.841328585 |
+| 11 | 1 | -0.000224779 | 1.646760193 | 0.607252959 | 0.540113147 | 0.841592412 |
+
+Final 12-stage pair: sine 0.841592412079, cosine 0.540113147342; gain compensation 0.607252959139.
+\image(figures/cordic.svg)
+// result_end
+\caption(The original twelve normalized states come from the producing native kernel; the initial direction is included. Late points cluster around the target ring. The adjacent table retains their separate residuals and coordinates.)
+\alttext(A blue sequence begins at the rightmost point of a unit circle, goes to 45 degrees, overshoots above the one-radian target and then alternates more closely around it.)
+
+The complete former kernel agrees with the new cached implementation over
+multiple stage counts and seeded angles on this toolchain. The former report's
+normalization loop agrees with every recorded coordinate of the twelve-step
+example. The result-only and traced APIs share the same recurrence and final
+compensation; extra trace normalization does not change the result.
+
+> Finite-stage error and the floating floor
+
+In ideal real arithmetic the unit direction has angle φ−z_N. For N≥1,
+|z_N|≤α_(N−1) follows by induction. The first step maps |φ|≤π/2 to
+|z₁|≤π/4=α₀. If |zᵢ|≤α_(i−1), the next magnitude is
+||zᵢ|−αᵢ|. Concavity of atan gives α_(i−1)≤2αᵢ, so that magnitude is at
+most αᵢ. Sine and cosine are one-Lipschitz, giving an ideal per-component
+truncation bound α_(N−1), approximately 2^(1−N) radians.
+
+This bound assumes exact rotation arithmetic, exact constants and exact gain
+compensation relative to the reduced target. It does not bound all rounding or
+input-period reduction errors of the floating program. Small residual and small
+unit-norm defect also do not certify the direction for a huge original angle.
+
+```{cpp, results="markdown", file="figures/cordic_error.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto grid=dm::seql(-10,10,2001);
+  const std::vector<double> angles(grid.begin(),grid.end());
+  const auto rows=dm::algorithms::cordic_error_sweep(angles,{0,1,2,4,8,12,20,32,40,44,52,64});
+  std::vector<double> n,error,bound_n,bound;
+  std::print("| stages N | original angles | max sine error | max cosine error | max norm defect | first worst angle |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto& r:rows) {
+    std::print("| {} | {} | {:.3e} | {:.3e} | {:.3e} | {:.6f} |\n",r.iterations,r.samples,r.max_sin_error,r.max_cos_error,r.max_norm_error,r.worst_angle);
+    n.push_back(r.iterations);error.push_back(std::log10(std::max(r.max_component_error,1e-20)));
+    if(r.iterations) {
+      bound_n.push_back(r.iterations);
+      bound.push_back(std::log10(std::atan(std::ldexp(1.,1-r.iterations))));
+    }
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(n,error,"measured max",{37,99,235},2).points(n,error,"",{37,99,235},4)
+      .line(bound_n,bound,"ideal bound",{220,38,38},1.5)
+      .legend({"measured max","ideal bound"},{{37,99,235},{220,38,38}})
+      .title("More rotations meet a binary64 rounding floor")
+      .x_label("requested circular stages N").y_label("log10 component error; display floor 1e-20")
+      .y_limits(-21,1).size(900,560).save_svg("build/cordic_error.svg");
+}
+```
+// result_begin: markdown
+| stages N | original angles | max sine error | max cosine error | max norm defect | first worst angle |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 2001 | 1.000e+00 | 9.992e-01 | 0.000e+00 | -1.570000 |
+| 1 | 2001 | 7.071e-01 | 7.063e-01 | 1.110e-16 | 0.000000 |
+| 2 | 2001 | 3.904e-01 | 3.899e-01 | 1.110e-16 | -8.640000 |
+| 4 | 2001 | 1.230e-01 | 1.235e-01 | 0.000e+00 | -7.930000 |
+| 8 | 2001 | 7.746e-03 | 7.747e-03 | 2.220e-16 | -7.900000 |
+| 12 | 2001 | 4.856e-04 | 4.813e-04 | 4.441e-16 | -6.340000 |
+| 20 | 2001 | 1.889e-06 | 1.852e-06 | 4.441e-16 | -9.480000 |
+| 32 | 2001 | 4.641e-10 | 4.513e-10 | 8.882e-16 | 6.260000 |
+| 40 | 2001 | 1.785e-12 | 1.775e-12 | 1.110e-15 | -2.960000 |
+| 44 | 2001 | 1.130e-13 | 1.132e-13 | 1.110e-15 | -1.620000 |
+| 52 | 2001 | 9.992e-16 | 9.992e-16 | 1.110e-15 | -9.300000 |
+| 64 | 2001 | 9.992e-16 | 1.110e-15 | 1.110e-15 | -8.730000 |
+\image(figures/cordic_error.svg)
+// result_end
+\caption(A fixed 2,001-angle grid shows falling error followed by a floating floor. The ideal bound is for truncation at the reduced target; the measured curve compares the full floating result to std::sin/cos of the original input.)
+\alttext(A blue maximum-error curve initially falls with the red ideal finite-stage line and then flattens near binary64 precision, while the red ideal line continues downwards.)
+
+Each successful call performs one range reduction, N table lookups and N raw
+updates/compensation products, followed by two final compensation products.
+Analysis uses O(1) call scratch after the one-time shared preparation; a trace
+owns N constant-size records, O(N) extra storage. The optional complete trace cap
+counts all requested records before allocation. The sweep checks its complete
+angle-count product before running and uses bounded stage counts, retaining first
+worst-angle ties in input order. These counts describe the model, not a runtime
+comparison with a tuned libm or a fixed-point hardware implementation.
+
+> Large angles, zero stages and checked contracts
+
+The rounded-period policy is retained explicitly. More rotations can reduce the
+kernel residual while leaving a large input phase error unchanged. The following
+controls use 64 stages, enough to expose that reduction error separately from the
+finite-stage error in the moderate examples.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| original angle | folded target | sine error to std | cosine error to std | norm defect |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(double theta:{1.,1e6,1e12,1e16,1e100,std::numeric_limits<double>::max()}) {
+    const auto a=dm::algorithms::cordic_sincos_analyze(theta,64);
+    std::print("| {:.3e} | {:.9f} | {:.3e} | {:.3e} | {:.3e} |\n",theta,a.reduction.reduced,std::abs(a.result.sin-std::sin(theta)),std::abs(a.result.cos-std::cos(theta)),std::abs(std::hypot(a.result.sin,a.result.cos)-1));
+  }
+  const auto zero=dm::algorithms::cordic_sincos_trace(1,0);
+  std::print("\nZero stages at theta=1: sine {}, cosine {}, residual {}; no recorded rotations.\n",zero.analysis.result.sin,zero.analysis.result.cos,zero.analysis.residual);
+  const auto max=dm::algorithms::cordic_stage_constants(dm::algorithms::cordic_rotation_limit);
+  std::print("Stage limit {}; last scale is denorm_min: {}.\n",dm::algorithms::cordic_rotation_limit,max.back().shift==std::numeric_limits<double>::denorm_min());
+  try { (void)dm::algorithms::cordic_sincos_trace(1,12,11);return 1; }
+  catch(const std::length_error&) {std::print("One-below complete trace cap rejects twelve records.\n");}
+  try { (void)dm::algorithms::cordic_sincos(std::numeric_limits<double>::infinity(),0);return 1; }
+  catch(const std::invalid_argument&) {std::print("Nonfinite angles are rejected even for zero stages.\n");}
+  try { (void)dm::algorithms::cordic_sincos(0,1076);return 1; }
+  catch(const std::invalid_argument&) {std::print("Stage 1076 is rejected beyond the nonzero-scale domain.\n");}
+  const auto empty=dm::algorithms::cordic_error_sweep({},{0,44});
+  std::print("Empty sweeps retain explicit absent extrema: {}.\n",!empty[0].has_samples && !empty[1].has_samples);
+}
+```
+// result_begin: markdown
+| original angle | folded target | sine error to std | cosine error to std | norm defect |
+| ---: | ---: | ---: | ---: | ---: |
+| 1.000e+00 | 1.000000000 | 6.661e-16 | 0.000e+00 | 6.661e-16 |
+| 1.000e+06 | -0.357564167 | 3.652e-11 | 1.364e-11 | 6.661e-16 |
+| 1.000e+12 | -0.657585777 | 3.085e-05 | 2.383e-05 | 0.000e+00 |
+| 1.000e+16 | -0.504350221 | 2.964e-01 | 2.493e-01 | 2.220e-16 |
+| 1.000e+100 | 0.748627653 | 1.061e+00 | 1.921e-01 | 2.220e-16 |
+| 1.798e+308 | 0.580653152 | 5.436e-01 | 1.836e+00 | 4.441e-16 |
+
+Zero stages at theta=1: sine 0, cosine 1, residual 1; no recorded rotations.
+Stage limit 1075; last scale is denorm_min: true.
+One-below complete trace cap rejects twelve records.
+Nonfinite angles are rejected even for zero stages.
+Stage 1076 is rejected beyond the nonzero-scale domain.
+Empty sweeps retain explicit absent extrema: true.
+// result_end
+
+The supported count is 0..1075: stages i=0..1074 cover every nonzero binary64
+scale 2⁻ⁱ. Beyond that the scale is zero. Counts outside the domain and nonfinite
+angles are rejected before reduction/table access; zero stages remains an explicit
+unrotated approximation. The original SinCos two-double field layout and default
+count forty remain. There is no early convergence flag, automatic identity fix,
+signed-zero sine promise or global guarantee of increasing accuracy with N.
+
+The native implementation assumes the ordinary floating environment. Constants
+are prepared once and then read only; returned constants and traces own copies.
+Separate calls use independent work state. Analysis and result-only calls retain
+no step vectors. Large-angle accuracy to mathematical sin(θ),cos(θ) would require
+a more accurate reduction policy, which this API does not claim to supply.
+
+Independent checks compare the rounded-period reduction and the kernel with a
+standard-library Decimal oracle at 430-digit working precision. Machin's formula
+supplies π and Taylor series supply reference sine/cosine for both the exact
+represented input and the actual folded target. This distinguishes a faithful
+CORDIC approximation of the folded target from an accurate approximation of a
+huge original angle. The optional CTest oracle requires Python's standard library
+and no numerical package or language binding.
+
+> Conclusion
+
+The gain derivation, hand-checked updates and native trace explain the actual
+circular recurrence. The original four angles and twelve normalized states are
+preserved, while tables show stage error, compensation and a floating precision
+floor. The large-angle controls demonstrate that a unit-length answer and a tiny
+kernel residual can still point in the wrong direction for the original input.
+Prepared constants, checked budgets and one shared producing kernel make this
+floating model inspectable with explicit numerical scope.
+
+> Reference
+
+- J. E. Volder (1959), *The CORDIC Trigonometric Computing Technique*, IRE Transactions on Electronic Computers EC-8(3), 330–334. [Original paper](https://www.ece.ucdavis.edu/~vojin/CLASSES/EPFL/Papers/3-Volder_CORDIC.pdf), [DOI](https://doi.org/10.1109/TEC.1959.5222693). The current implementation demonstrates circular rotation in floating arithmetic; prepared runtime constants, execution histories and error diagnostics are documented additions.

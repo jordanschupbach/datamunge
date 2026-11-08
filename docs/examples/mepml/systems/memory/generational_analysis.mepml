@@ -1,0 +1,390 @@
+//? Title: Generational collection: retain the young across an old boundary
+//? Subtitle: Actual graph traces, conservative floating garbage and a maintained reference-write barrier
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Identify young objects that can be reclaimed while leaving old objects outside
+the collected generation. References from old to young objects must still protect
+their targets, including young descendants reached through those targets.
+This report follows the native collector’s actual events, reproduces the original
+seven-object example and distinguishes young-object visits from total work.
+A conservative boundary can retain young garbage that a full trace would reject.
+A second native heap model maintains exact old-to-young slots on checked writes,
+allowing sparse young-only analysis after setup. All results describe graph
+candidates: no real objects, ages or memory are changed by collection.
+)
+
+\toc
+
+> A rooted old object can protect a young object
+
+Object 0 is old and rooted. Its one field points to young object 1, while young
+object 2 is isolated. The minor analysis records old source 0, marks young target 1,
+visits 1, proposes its promotion and lists 2 as a reclamation candidate. It does
+not need to traverse the old source during the young marking phase. The legacy
+API nevertheless pays for old-field discovery and a separate full comparison.
+
+```{cpp, results="markdown", file="figures/generation_first.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/generational.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const dm::algorithms::ObjectGraph g{3,{{1},{},{}},{0},{}};const std::vector<int>ages{1,0,0};const auto t=dm::algorithms::minor_gc_trace(g,ages,0);
+ std::print("| actual event | source or object | target | accepted | stack size |\n| --- | ---: | ---: | --- | ---: |\n");
+ for(const auto&e:t.events)if(e.kind=="old_field"||e.kind=="remember"||e.kind=="visit"||e.kind=="promote"||e.kind=="free")std::print("| {} | {} | {} | {} | {} |\n",e.kind,e.object,e.target,e.accepted,e.stack_size);
+ std::print("\nRetained young {}; full-root live {}; remembered source {}; freed candidate {}; inspected old fields {}; validation fields {}.\n",t.run.result.minor_scanned,t.run.result.full_scanned,t.run.result.remembered_set.at(0),t.run.result.young_freed.at(0),t.run.work.old_fields,t.run.work.validation.references);
+ dm::graphics::Diagram d(62,1050);dm::graphics::DiagramNodeStyle old,young,dead;old.width=4.7;old.height=2.1;old.font_size=22;old.fill={241,245,249};young=old;young.fill={219,234,254};dead=old;dead.fill={255,237,213};
+ d.node("old",{0,0},std::format("Rooted OLD source {}\nfield points into young",t.run.result.remembered_set[0]),old)
+  .node("young",{6.3,0},std::format("YOUNG object {}\nretained through boundary",1),young)
+  .node("garbage",{6.3,-3.2},std::format("YOUNG object {}\nunreached: free candidate",t.run.result.young_freed[0]),dead)
+  .edge("old","young","boundary")
+  .text({3.1,2.5},"Minor tracing stops at old objects but preserves their young targets",24).save_svg("build/generation_first.svg");
+ if(t.run.result.promoted!=std::vector<char>{0,1,0}||t.run.result.young_freed!=std::vector<int>{2})throw std::runtime_error("boundary toy example");
+}
+```
+// result_begin: markdown
+| actual event | source or object | target | accepted | stack size |
+| --- | ---: | ---: | --- | ---: |
+| old_field | 0 | 1 | true | 0 |
+| remember | 0 | -1 | true | 0 |
+| visit | 1 | 1 | true | 0 |
+| promote | 1 | 1 | true | 0 |
+| free | 2 | 2 | false | 0 |
+
+Retained young 1; full-root live 2; remembered source 0; freed candidate 2; inspected old fields 1; validation fields 1.
+\image(figures/generation_first.svg)
+// result_end
+\caption(Only young object 1 is popped by the minor traversal. The printed old-field and validation counts expose additional work rather than equating one young visit with total cost.)
+\alttext(A rooted old source 0 points to retained young 1; isolated young 2 is a free candidate. The actual event table includes old-field discovery, remembering, visiting, promotion proposal and freeing proposal.)
+
+> Restrict traversal to young objects, while retaining all boundary targets
+
+The input graph has dense ids 0,…,N−1, ordered root slots and ordered reference
+fields. Binary ages classify every object as young 0 or old 1. Let Y be the young
+set, R the graph roots and B the targets of all old-to-young fields. The retained
+young set is the restricted-graph closure
+
+$$
+M=\operatorname{Reach}_{G[Y]}\bigl((R\cap Y)\cup B\bigr),
+\qquad B=\{v\in Y:\exists u\notin Y,\ (u,v)\in E\}.
+$$
+\alttext(Retain the young objects reachable using only young-to-young edges from either direct young roots or targets of any old-to-young reference.)
+
+All seeds are marked before the LIFO stack is processed. Marking on push prevents
+cycles, shared targets and duplicate fields from adding duplicate stack entries.
+Targets that are old stop the young traversal. Returned young survivor and garbage
+ids are ascending; legacy promoted flags are dense over all N ids.
+
+[Ungar’s 1984 Generation Scavenging paper](https://doi.org/10.1145/800020.808261),
+Section 8.1, printed 161, describes remembering old objects that reference new ones
+as a side effect of stores, then traversing new space from those sources. Its
+[original algorithm](https://prl.khoury.northeastern.edu/img/u-sde-1984.pdf)
+uses copying, survivor spaces and later tenuring. This report’s fixed-age graph
+model omits those runtime policies. It also treats the empirical tendency for
+objects to die young as workload-dependent; these constructed heaps do not measure
+real object lifetimes. No pause-time or production-runtime claim follows here.
+
+Two native interfaces have deliberately different costs. minor_gc rebuilds boundary
+sources on every call and computes a full-root comparison. GenerationalHeap validates
+and indexes once, maintains exact reference slots when existing fields change,
+and returns a sparse young-only result from collect. Neither collection call
+changes object ages, deletes objects or invokes language finalizers. The legacy
+names promoted and young_freed describe proposals; they do not apply those changes.
+
+> Reproduce the original seven-object heap
+
+The rooted old chain 0→1→2→3 ends at a field into young 5. Young 4 is a second,
+direct root; young 6 is isolated garbage. The generator below reproduces exactly
+the original graph and ages. Its native trace supplies both the young marks and
+the full comparison. The remembered source is 3, even though the young traversal
+never pops it.
+
+```{cpp, results="markdown", file="figures/generation_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/generational.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto input=dm::algorithms::generational_chain_example(4,1,7);const auto t=dm::algorithms::minor_gc_trace(input.graph,input.generations,0);const auto legacy=dm::algorithms::minor_gc(input.graph,input.generations);
+ std::print("| object | age | full-root reachable | retained young | free candidate |\n| ---: | --- | --- | --- | --- |\n");
+ for(int i=0;i<input.graph.num_objects;++i)std::print("| {} | {} | {} | {} | {} |\n",i,input.generations[i]?"old":"young",bool(t.run.full_reachable[i]),bool(t.run.result.promoted[i]),std::find(t.run.result.young_freed.begin(),t.run.result.young_freed.end(),i)!=t.run.result.young_freed.end());
+ const auto&w=t.run.work;std::print("\nYoung visits {}; full visits {}; remembered source {}; old fields inspected {}; full fields inspected {}; validation references {}; dense promotion slots {}; legacy result identical {}.\n",legacy.minor_scanned,legacy.full_scanned,legacy.remembered_set.at(0),w.old_fields,w.full_fields,w.validation.references,w.dense_result_slots,legacy.promoted==t.run.result.promoted&&legacy.young_freed==t.run.result.young_freed);
+ dm::graphics::Diagram d(66,1100);dm::graphics::DiagramNodeStyle old,young,dead;old.width=2.6;old.height=1.9;old.font_size=21;old.fill={241,245,249};young=old;young.fill={219,234,254};dead=old;dead.fill={255,237,213};
+ for(int i=0;i<4;++i){d.node(std::to_string(i),{double(i)*3.6,0},std::format("OLD {}\n{}",i,i==0?"root":"chain"),old);if(i)d.edge(std::to_string(i-1),std::to_string(i));}
+ d.node("4",{0,-3.2},"YOUNG 4\ndirect root",young).node("5",{10.8,-3.2},"YOUNG 5\nold boundary",young).node("6",{5.4,-3.2},"YOUNG 6\nfree candidate",dead)
+  .edge("3","5","remembered")
+  .text({5.4,2.3},"Original heap: retain young 4 and 5; propose freeing young 6",24).save_svg("build/generation_original.svg");
+ if(legacy.minor_scanned!=2||legacy.full_scanned!=6||legacy.remembered_set!=std::vector<int>{3}||legacy.young_freed!=std::vector<int>{6})throw std::runtime_error("original seven-object output");
+}
+```
+// result_begin: markdown
+| object | age | full-root reachable | retained young | free candidate |
+| ---: | --- | --- | --- | --- |
+| 0 | old | true | false | false |
+| 1 | old | true | false | false |
+| 2 | old | true | false | false |
+| 3 | old | true | false | false |
+| 4 | young | true | true | false |
+| 5 | young | true | true | false |
+| 6 | young | false | false | true |
+
+Young visits 2; full visits 6; remembered source 3; old fields inspected 4; full fields inspected 4; validation references 4; dense promotion slots 7; legacy result identical true.
+\image(figures/generation_original.svg)
+// result_end
+\caption(The original output is preserved: two young visits, six full-root visits, survivor proposals 4 and 5, free candidate 6 and remembered source 3. Total work also includes validation, boundary discovery, dense output and full tracing.)
+\alttext(Four rooted old-chain objects lead to young 5. Young 4 is directly rooted and young 6 isolated. Computed marks distinguish old full-root liveness from young retention proposals.)
+
+Safety does not require the minor result to equal full-root liveness. If a full
+root-to-young path contains no old object, its entire path begins at a young root
+and lies in G[Y]. Otherwise take its last old-to-young crossing: that target is in
+B, and the remaining suffix contains only young objects. Therefore
+
+$$
+\operatorname{Reach}_{G}(R)\cap Y\ \subseteq\ M.
+$$
+\alttext(Every young object reachable from a real root is retained by the conservative minor analysis, but the retained set may be larger.)
+
+This proves retention safety for the graph model, including paths that pass
+through old objects between young segments. It does not prove that all retained
+young objects are truly live, or that a candidate is physically freed.
+
+> An unreachable old source can preserve floating garbage
+
+Now remove all roots from old 0→young 1→young 2. A full trace reaches nothing.
+A conservative minor collection still treats old 0 as a boundary source and
+retains young 1 and 2. This is floating garbage: young objects survive this minor
+analysis even though a full collection could reclaim the entire component.
+Remembered-set membership is evidence of an old-to-young field, not of the old
+source’s root reachability. Minor retention can consequently exceed full liveness.
+
+```{cpp, results="markdown", file="figures/generation_floating.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/generational.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ dm::algorithms::ObjectGraph g{3,{{1},{2},{}},{0},{}};const std::vector<int>ages{1,0,0};
+ std::array<double,2>minor{},full{};std::print("| configuration | root slots | young visits | full-root visits | retained young without root path |\n| --- | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t k=0;k<2;++k){if(k)g.roots.clear();const auto r=dm::algorithms::minor_gc_run(g,ages);std::size_t floating=0;for(std::size_t i=0;i<ages.size();++i)if(r.result.promoted[i]&&!r.full_reachable[i])++floating;minor[k]=r.result.minor_scanned;full[k]=r.result.full_scanned;
+  std::print("| {} | {} | {} | {} | {} |\n",k?"No roots":"Rooted old source",g.roots.size(),r.result.minor_scanned,r.result.full_scanned,floating);}
+ auto rooted=dm::graphics::RPlot::barplot({minor[0],full[0]},{"Minor young","Full-root"});rooted.title("Rooted old source").xlab("").ylab("Objects visited").y_limits(0,4);
+ auto unrooted=dm::graphics::RPlot::barplot({minor[1],full[1]},{"Minor young","Full-root"});unrooted.title("Unreachable old source").xlab("").ylab("Objects visited").y_limits(0,4);
+ dm::graphics::RLayout::create(1,2).add(rooted).add(unrooted).size(1100,500).title("Conservative young retention can outlive root reachability").fit_panels().save_svg("build/generation_floating.svg");
+ if(minor[1]!=2||full[1]!=0)throw std::runtime_error("floating young garbage");
+}
+```
+// result_begin: markdown
+| configuration | root slots | young visits | full-root visits | retained young without root path |
+| --- | ---: | ---: | ---: | ---: |
+| Rooted old source | 1 | 2 | 3 | 0 |
+| No roots | 0 | 2 | 0 | 2 |
+\image(figures/generation_floating.svg)
+// result_end
+\caption(The no-roots case visits two young objects but zero full-root objects. This is permitted conservative retention, so “a minor collection always visits fewer objects” is false.)
+\alttext(Two panels compare minor/full visits 2/3 for a rooted source and 2/0 after removing every root. The table identifies two retained young objects lacking any root path.)
+
+> Maintain remembered slots at the actual write boundary
+
+The new heap model owns its graph, fixed binary ages, a sparse young-id table and
+an exact ordered set of old-to-young (source,field) slots. Checked set_reference
+replaces an existing field and updates that one slot’s membership. Two fields from
+the same source are distinct entries; changing one must not erase the other.
+Replacing a young target with an old one removes that slot. Writing through a
+young source never creates an old-to-young entry.
+
+This invariant is preserved locally because ages and field counts are fixed:
+only the replaced slot can change category. A new set node is allocated before
+the graph changes, so invalid indices or failed insertion leave the model intact.
+Ordered-set maintenance costs O(log(W+1)) per replacement for W boundary slots.
+This is a modeled write barrier, not a claim about runtime machine instructions.
+The model deliberately does not apply the collector’s promotion proposals: changing
+ages would require rebuilding or updating the boundary index under a separate API.
+
+```{cpp, results="markdown", file="figures/generation_barrier.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/generational.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const dm::algorithms::ObjectGraph g{4,{{0,0},{2},{},{}},{0},{}};const std::vector<int>ages{1,0,0,1};dm::algorithms::GenerationalHeap heap(g,ages);
+ const std::array<std::array<int,2>,4>writes{{{0,1},{1,2},{0,3},{1,3}}};std::vector<double>step,slots,survivors;
+ std::print("| step | replaced field | new target | boundary after write | remembered slots | retained young | free candidates | old fields scanned by collect |\n| ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t k=0;k<=writes.size();++k){int field=-1,target=-1;bool tracked=false;if(k){field=writes[k-1][0];target=writes[k-1][1];tracked=heap.set_reference(0,field,target);}const auto r=heap.collect();const auto check=dm::algorithms::minor_gc(heap.snapshot(),ages);
+  std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",k,field,target,tracked,r.work.remembered_fields,r.survivors.size(),r.freed.size(),r.work.old_fields);step.push_back(k);slots.push_back(r.work.remembered_fields);survivors.push_back(r.survivors.size());
+  if(r.survivors.size()!=std::size_t(check.minor_scanned)||r.freed!=check.young_freed||heap.remembered_sources()!=check.remembered_set)throw std::runtime_error("maintained barrier versus explicit rebuilt check");}
+ std::print("\nConstructor old-field checks {}; current remembered sources {}; original first field {}; model final first field {}.\n",heap.preparation_work().old_fields,heap.remembered_sources().size(),g.refs[0][0],heap.snapshot().refs[0][0]);
+ auto plot=dm::graphics::RPlot::create();plot.lines(step,slots,"Remembered slots",{37,99,235},2).points(step,slots,"",{37,99,235},6)
+  .lines(step,survivors,"Retained young",{220,38,38},2).points(step,survivors,"",{220,38,38},6).legend({"Remembered slots","Retained young"},{{37,99,235},{220,38,38}})
+  .title("Checked writes maintain exact boundary slots without an old-field rescan").xlab("Write number; zero is the initial model").ylab("Slots or young objects, distinct counted units").y_limits(-.1,3.2).size(1100,540).save_svg("build/generation_barrier.svg");
+}
+```
+// result_begin: markdown
+| step | replaced field | new target | boundary after write | remembered slots | retained young | free candidates | old fields scanned by collect |
+| ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |
+| 0 | -1 | -1 | false | 0 | 0 | 2 | 0 |
+| 1 | 0 | 1 | true | 1 | 2 | 0 | 0 |
+| 2 | 1 | 2 | true | 2 | 2 | 0 | 0 |
+| 3 | 0 | 3 | false | 1 | 1 | 1 | 0 |
+| 4 | 1 | 3 | false | 0 | 0 | 2 | 0 |
+
+Constructor old-field checks 2; current remembered sources 0; original first field 0; model final first field 3.
+\image(figures/generation_barrier.svg)
+// result_end
+\caption(Initial field/target−1 values mean no write yet. The explicit snapshot-and-rebuild call is a separate correctness check; its copy/full-trace cost is excluded from the sparse collect counters shown. Caller input remains unchanged.)
+\alttext(Four writes produce remembered-slot counts 0,1,2,1,0 and young-survivor counts 0,2,2,1,0. Collect inspects zero old fields at every stage; duplicate source fields retain independent memberships.)
+
+> Separate paid setup from repeated young-only work
+
+For the legacy API, complete validation checks the whole graph and ages. Boundary
+discovery tests every object and scans old fields; the collector then marks young
+objects, constructs dense output and runs a full-root comparison. Its total is
+O(N+E+R), with N objects, E fields and R root slots. The two-visit number in the
+original example does not describe this total cost.
+
+The maintained model pays O(N+E+R) construction once and stores the graph/index.
+Each collect then needs
+
+$$
+T_{\mathrm{collect}}=O(Y+R+W+E_y),
+$$
+\alttext(A maintained collection visits the young-id table, root slots, remembered old-to-young slots and fields of retained young objects, rather than all old objects.)
+
+Here Y is the number of young objects, W the exact remembered slots, and E_y
+fields of retained young objects, including their old targets. It initializes
+only Y marks and returns sparse young ids, avoiding a dense N-entry result.
+The explicit graph snapshot method copies the whole graph; it is not part of this
+bound. Constructors, checked writes and any separate full comparison must still
+be accounted for. A large W or many surviving young fields can make a minor
+collection expensive even with few young objects.
+
+```{cpp, results="markdown", file="figures/generation_scaling.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/generational.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::vector<double>x,eager_y,maintained_y;std::print("| old objects | eager old fields | eager full visits | setup old fields | maintained slots | maintained young visits | maintained young classifications |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t old:std::array<std::size_t,9>{1,2,4,8,16,64,256,1024,4096}){const auto input=dm::algorithms::generational_chain_example(old);const auto eager=dm::algorithms::minor_gc_run(input.graph,input.generations);dm::algorithms::GenerationalHeap heap(input.graph,input.generations);const auto young=heap.collect();
+  std::print("| {} | {} | {} | {} | {} | {} | {} |\n",old,eager.work.old_fields,eager.work.full_objects,heap.preparation_work().old_fields,young.work.remembered_fields,young.work.young_objects,young.work.classified_young);x.push_back(std::log2(double(old)));eager_y.push_back(std::log2(double(eager.work.old_fields)));maintained_y.push_back(std::log2(double(young.work.remembered_fields)));
+  if(eager.result.minor_scanned!=2||young.work.remembered_fields!=1||young.work.old_fields||young.work.full_objects||young.work.validation.rows||young.work.dense_result_slots||young.work.classified_young!=3)throw std::runtime_error("sparse boundary scaling");}
+ auto plot=dm::graphics::RPlot::create();plot.lines(x,eager_y,"Rebuilt old fields",{37,99,235},2).points(x,eager_y,"",{37,99,235},5)
+  .lines(x,maintained_y,"Maintained slots",{5,150,105},2).points(x,maintained_y,"",{5,150,105},5).legend({"Rebuilt old fields","Maintained slots"},{{37,99,235},{5,150,105}})
+  .title("Old-chain growth: rebuilt discovery grows; maintained boundary stays at one").xlab("log2 old-chain length").ylab("log2 actual fields or slots examined").y_limits(-1,16).size(1100,560).save_svg("build/generation_scaling.svg");
+}
+```
+// result_begin: markdown
+| old objects | eager old fields | eager full visits | setup old fields | maintained slots | maintained young visits | maintained young classifications |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 3 | 1 | 1 | 2 | 3 |
+| 2 | 2 | 4 | 2 | 1 | 2 | 3 |
+| 4 | 4 | 6 | 4 | 1 | 2 | 3 |
+| 8 | 8 | 10 | 8 | 1 | 2 | 3 |
+| 16 | 16 | 18 | 16 | 1 | 2 | 3 |
+| 64 | 64 | 66 | 64 | 1 | 2 | 3 |
+| 256 | 256 | 258 | 256 | 1 | 2 | 3 |
+| 1024 | 1024 | 1026 | 1024 | 1 | 2 | 3 |
+| 4096 | 4096 | 4098 | 4096 | 1 | 2 | 3 |
+\image(figures/generation_scaling.svg)
+// result_end
+\caption(Three young ids and one old-to-young slot remain fixed while the old chain grows. Setup and eager full tracing grow with it; repeated maintained collection visits two surviving young objects and classifies three young ids.)
+\alttext(A log-base-two plot shows eager old-field discovery growing from 1 to 4096 while maintained boundary-slot visits stay 1. The table separately records constructor work and eager full visits.)
+
+These are counted graph operations, not timings, instruction counts or measured
+runtime pause reductions. The examples test a chosen age partition and reference
+pattern; they do not establish an empirical survival distribution. Sizes are
+ignored because this model counts object slots, not bytes.
+
+> Validation, ownership and resource units remain explicit
+
+Complete graph/id and exact binary-age validation precede every eager analysis,
+including trivial/empty outcomes and trace quota checks. The maintained model
+validates before copying/indexing and admits only checked existing-field writes.
+This closes the original unchecked short-age, high-root, high-child and short-row
+accesses. Ages other than 0 or 1 are rejected rather than silently omitting an object
+from both categories. Slot-based collection still ignores all size metadata.
+
+The trace checks each actual primitive record online: default one million,
+zero disables only that optional quota. Records are not numeric entries or bytes,
+and this is not a peak RAM limit. Owned input vectors, root/work metadata, final
+ordinary output, working tables/stacks and allocator storage are excluded. No
+partial trace, truncation, numerical replay or caller mutation is returned on
+quota failure. The family generator uses a separate whole-object bound before
+allocation; one original seven-object example requires cap 7 and rejects 6.
+
+```{cpp, results="markdown", file="figures/generation_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/generational.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const dm::algorithms::ObjectGraph one{1,{{}},{0},{}};const auto observed=dm::algorithms::minor_gc_trace(one,{0},0);bool trace_denied=false;try{(void)dm::algorithms::minor_gc_trace(one,{0},7);}catch(const std::length_error&){trace_denied=true;}
+ auto t=dm::algorithms::minor_gc_trace(one,{0},8);t.graph.refs[0].push_back(0);t.generations[0]=1;t.events[0].kind="changed";const bool owned=t.run.result.promoted[0]&&t.events[1].kind=="seed"&&t.run.full_reachable[0];
+ bool objects_denied=false,ages_first=false,shape_first=false;try{(void)dm::algorithms::generational_chain_example(4,1,6);}catch(const std::length_error&){objects_denied=true;}const auto input=dm::algorithms::generational_chain_example(4,1,7);
+ try{(void)dm::algorithms::minor_gc_trace({2,{{1},{}},{0},{}},{2,0},1);}catch(const std::invalid_argument&){ages_first=true;}try{(void)dm::algorithms::minor_gc_trace({2,{{99},{}},{0},{}},{1,0},1);}catch(const std::invalid_argument&){shape_first=true;}
+ dm::algorithms::GenerationalHeap heap({2,{{0},{}},{0},{}},{1,0});const auto before=heap.snapshot().refs;bool invalid_write=false;try{(void)heap.set_reference(0,0,2);}catch(const std::out_of_range&){invalid_write=true;}const bool atomic=invalid_write&&heap.snapshot().refs==before;
+ const auto empty=dm::algorithms::minor_gc_trace({},{},1);
+ std::print("| resource | observed or required | admitted or copied | rejected cap | rejection observed |\n| --- | ---: | ---: | ---: | --- |\n| Actual event records | {} | {} | 7 | {} |\n| Whole generated objects | 7 | {} | 6 | {} |\n",observed.events.size(),t.events.size(),trace_denied,input.graph.num_objects,objects_denied);
+ std::print("\nIndependent owned trace copies {}; invalid ages before quota {}; invalid graph before quota {}; invalid write leaves model unchanged {}; empty events {}; empty young visits {}; empty full visits {}.\n",owned,ages_first,shape_first,atomic,empty.events.size(),empty.run.result.minor_scanned,empty.run.result.full_scanned);
+ auto events=dm::graphics::RPlot::barplot({double(observed.events.size()),double(t.events.size()),7.},{"Observed","Admitted","Rejected cap"});events.title("Online primitive records").xlab("").ylab("Complete event records").y_limits(0,10);
+ auto objects=dm::graphics::RPlot::barplot({7.,double(input.graph.num_objects),6.},{"Required","Created","Rejected cap"});objects.title("Whole generated graph").xlab("").ylab("Objects, not bytes").y_limits(0,10);
+ dm::graphics::RLayout::create(1,2).add(events).add(objects).size(1100,500).title("Actual trace capture and known-size graph admission use different units").fit_panels().save_svg("build/generation_controls.svg");
+ if(!trace_denied||!objects_denied||!owned||!ages_first||!shape_first||!atomic||!empty.events.empty())throw std::runtime_error("validation, ownership and quota controls");
+}
+```
+// result_begin: markdown
+| resource | observed or required | admitted or copied | rejected cap | rejection observed |
+| --- | ---: | ---: | ---: | --- |
+| Actual event records | 8 | 8 | 7 | true |
+| Whole generated objects | 7 | 7 | 6 | true |
+
+Independent owned trace copies true; invalid ages before quota true; invalid graph before quota true; invalid write leaves model unchanged true; empty events 0; empty young visits 0; empty full visits 0.
+\image(figures/generation_controls.svg)
+// result_end
+\caption(The singleton run contains eight actual events; cap 7 rejects the next record and cap 8 admits it. The generated original graph independently needs seven object slots. Neither quota is a memory-byte guarantee.)
+\alttext(Two panels show event records 8 observed,8 admitted and 7 rejected, and graph objects 7 required,7 created and 6 rejected. Computed flags verify validation precedence, independent snapshots and atomic invalid writes.)
+
+The original result survives unchanged, while its interpretation becomes more
+precise: two young visits coexist with whole-graph discovery and comparison work.
+The sparse maintained model makes write-side bookkeeping explicit and avoids that
+repeated old scan under a fixed age partition. Conservative retention protects
+all root-reachable young objects but can preserve floating garbage. These graph
+invariants, actual traces and selected operation counts explain the method without
+claiming a complete runtime collector or universal generational performance.

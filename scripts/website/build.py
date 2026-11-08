@@ -3,7 +3,7 @@
 
 The site is the project's own; its pieces come from:
   - Doxygen's XML (docs/Doxyfile, the GenerateDocsXml target): the API reference;
-  - mep (`mep-mepml`): the mepml reports in docs/mepml/examples, optionally run
+  - mep (`mep-mepml`): reports in docs/examples/mepml and docs/mepml/examples, optionally run
     first (--run) so their results are current, with a page saying how every
     report's code blocks went;
   - Markdown: README.md as the home page and the guides docs/website.toml lists.
@@ -184,8 +184,8 @@ class Site:
     # -- reports -----------------------------------------------------------------
     def build_reports(self):
         a = self.args
-        examples = os.path.join(ROOT, "docs", "mepml", "examples")
-        files = a.reports or sorted(glob.glob(os.path.join(examples, "**", "*.mepml"), recursive=True))
+        examples = rep.example_roots(ROOT)
+        files = a.reports or rep.discover_reports(ROOT)
         self.reports = []
         if a.no_reports or not files:
             return []
@@ -275,7 +275,7 @@ class Site:
             items = "".join(f'<a class="chip" href="{rel(u, page)}"><code>{E(label)}</code></a>'
                             for u, label in sorted(uses.items(), key=lambda kv: kv[1].lower()))
             tail.append(f'<h2 id="api-used">API used here</h2><div class="chips">{items}</div>')
-        src = self.source_url("docs/mepml/examples/" + r.rel)
+        src = self.source_url(os.path.relpath(r.path, ROOT).replace(os.sep, "/"))
         st = r.status
         meta = []
         if st and not st.get("error"):
@@ -726,7 +726,7 @@ def main():
     ap.add_argument("--project-name", help="the site's title (default: the CMake project name)")
     ap.add_argument("--version", help="the version shown (default: the CMake project version)")
     ap.add_argument("--namespace", help="the C++ root namespace (default: the CMake project name)")
-    ap.add_argument("reports", nargs="*", help="the reports (default: docs/mepml/examples/**/*.mepml)")
+    ap.add_argument("reports", nargs="*", help="the reports (default: both docs/examples/mepml and docs/mepml/examples)")
     args = ap.parse_args()
     site = Site(args)
     try:

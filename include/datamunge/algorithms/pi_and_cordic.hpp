@@ -5,6 +5,7 @@
 ///        CORDIC sine and cosine.
 
 #include <string>
+#include <datamunge/algorithms/chudnovsky.hpp>
 
 namespace datamunge::algorithms {
 
@@ -50,44 +51,68 @@ std::string bbp_pi_hex_digits(int n, int count);
 /// @throws std::invalid_argument if @p count is outside [1, 1000000].
 std::string pi_hex_digits(int count);
 
-/// @brief The *Gauss-Legendre algorithm* for pi: an arithmetic-geometric-mean iteration that
-///        *doubles* the number of correct digits each step (quadratic convergence). Starting from
-///        @c a=1, @c b=1/sqrt2, @c t=1/4, @c p=1, it repeats
-///        @c a'=(a+b)/2, @c b=sqrt(a b), @c t-=p(a-a')^2, @c p*=2, and returns
-///        @c pi ~ (a+b)^2/(4t). In double precision three to four iterations already reach full
-///        machine accuracy; more iterations need arbitrary precision to show further digits.
-///
-/// @param iterations the number of AGM iterations.
-/// @return the estimate of pi (double precision saturates after ~4 iterations).
+/// @brief Legacy fixed-count double AGM pi estimate, with bounded weight use.
+/// Preserves ordered arithmetic and initialization(1,1/sqrt2,1/4,1), including
+/// left-associated p*delta*delta. Negative counts retain zero-stage compatibility.
+/// Counts above gauss_legendre_pi_limit() are rejected before work instead of
+/// returning a NaN suffix after weight overflow. Executes every admitted stage;
+/// stagnation is not early stopping or a correct-rounding certificate. At the
+/// maximum count the final unused p overflows, while all used weights/estimate
+/// remain finite. Requires radix-two double at build time. Only one final
+/// estimate expression is evaluated; O(max(0,N)) work/O(1) storage, no shared
+/// mutable state. Zero stages returns the initialized approximation, not pi.
+/// @param iterations Stage count; negatives act as0, positive bound is format-dependent.
+/// @return Actual final rounded estimate; no last-bit or mathematical-error guarantee.
+/// @throws std::invalid_argument Count exceeds the safe used-weight range.
+/// @throws std::overflow_error A used arithmetic result or estimate is nonfinite.
+/// @par Example
+/// @code
+/// std::cout << (dm::algorithms::gauss_legendre_pi(-1)==dm::algorithms::gauss_legendre_pi(0)); // 1
+/// @endcode
+/// @par References
+/// - R. P. Brent(1976), Fast Multiple-Precision Evaluation of Elementary Functions,
+///   J. ACM23(2),242–251, Section5, doi:10.1145/321941.321944,
+///   https://maths-people.anu.edu.au/~brent/pd/rpb034.pdf . Fixed-count double
+///   variant; the paper instead discusses precision stopping and variable precision.
+/// @see gauss_legendre_pi_run(), gauss_legendre_pi_trace()
 double gauss_legendre_pi(int iterations);
 
-/// @brief The *Chudnovsky algorithm* for pi: sums the rapidly converging hypergeometric series
-///        @c 1/pi = 12 sum_k (-1)^k (6k)! (545140134 k + 13591409) / ( (3k)! (k!)^3 640320^{3k+3/2} ),
-///        each term of which adds about 14 decimal digits -- the method behind modern record pi
-///        computations. Evaluated here in double precision, so a couple of terms already saturate
-///        the ~15-16 significant digits a @c double can hold.
-///
-/// @param terms the number of series terms to sum (>= 1).
-/// @return the estimate of pi.
-double chudnovsky_pi(int terms);
-
-/// @brief Sine and cosine returned together by @ref cordic_sincos.
+/// @brief Owned sine/cosine approximation pair returned by the circular CORDIC model.
+/// Original fields and their order/defaults are preserved. Default storage alone
+/// has no associated angle; producing calls document count and reduction limits.
+/// @par Example
+/// @code
+/// const auto s=dm::algorithms::cordic_sincos(0,0);
+/// std::cout << s.sin << ' ' << s.cos; // 0 1
+/// @endcode
+/// @see cordic_sincos(), cordic_sincos_trace()
 struct SinCos {
-    double sin{0.0}; ///< Sine of the angle.
-    double cos{0.0}; ///< Cosine of the angle.
+    double sin{0.0}; ///< Computed sine component, default zero storage.
+    double cos{0.0}; ///< Computed cosine component, default zero storage.
 };
 
-/// @brief *CORDIC* (COordinate Rotation DIgital Computer) in circular rotation mode: computes
-///        @c sin and @c cos of @p theta using only *additions, subtractions, and bit shifts* plus a
-///        small table of arctangents -- no multiplies or divides, which is why it powered early
-///        calculators and lives in FPGA/DSP hardware. It rotates the vector @c (1/K, 0) by a sum of
-///        ever-smaller angles @c atan(2^{-i}), each step choosing the sign that drives a running
-///        angle accumulator toward @p theta; @c K is the fixed gain of the pseudo-rotations. The
-///        input is range-reduced into @c [-pi/2, pi/2] first.
-///
-/// @param theta the angle in radians.
-/// @param iterations the number of CORDIC rotations (more -> more accurate; ~40 for double).
-/// @return the @ref SinCos of @p theta.
-SinCos cordic_sincos(double theta, int iterations = 40);
+/// @brief Compute circular CORDIC sine/cosine with checked floating-model controls.
+/// Preserves the original recurrence/result layout: raw initial (1,0), residual
+/// sign >=0 selects +1, N dyadic pseudo-rotations, accumulated inverse gain and
+/// final simultaneous sine/cosine sign restoration. Finite theta and counts in
+/// [0,1075] are required; zero stages is an unrotated approximation, not an error
+/// certificate. No early stop or exact-identity special cases. Uses floating
+/// multiplications and cached atan/sqrt constants, not an integer shift engine.
+/// Reduction uses remainder(theta,2*pi_double); large angles can have large phase
+/// error against true sin(theta)/cos(theta). Theta(1+N) time/O(1) call scratch,
+/// after thread-safe one-time immutable table construction. No input mutation.
+/// @param theta Finite angle in radians.
+/// @param iterations Completed stage count in [0,1075], default forty.
+/// @return Owned compensated approximation pair, with original field layout.
+/// @throws std::invalid_argument Nonfinite theta or count outside [0,1075].
+/// @par Example
+/// @code
+/// std::cout << dm::algorithms::cordic_sincos(0,0).cos; // 1
+/// @endcode
+/// @par References
+/// - J. E. Volder (1959), The CORDIC Trigonometric Computing Technique,
+///   https://doi.org/10.1109/TEC.1959.5222693 . This API is a floating circular model.
+/// @see cordic_sincos_analyze(), cordic_sincos_trace(), cordic_reduce()
+SinCos cordic_sincos(double theta,int iterations=40);
 
 } // namespace datamunge::algorithms

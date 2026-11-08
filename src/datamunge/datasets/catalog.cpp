@@ -75,9 +75,9 @@ namespace {
 /// @brief One catalog() row.
 struct Entry {
   const char* name;         ///< Dataset name, as load()/ImageLoader take it.
-  double rows;              ///< Rows (image datasets: train + test images).
-  double columns;           ///< Columns (image datasets: values per image).
-  const char* storage;      ///< "built-in", "download" or "stream".
+  double rows;              ///< Rows (image datasets: train + test images; graph datasets: edges).
+  double columns;           ///< Columns (image datasets: values per image; graph datasets: endpoints).
+  const char* storage;      ///< "built-in", "download", "stream" or "graph".
   double size_mb;           ///< Approximate download size.
   const char* description;  ///< One-line summary.
 };
@@ -97,6 +97,7 @@ const std::vector<Entry> kEntries = {
     {"faithful", 272, 2, "built-in", 0, "Old Faithful geyser eruption and waiting times (R)"},
     {"fashion_mnist", 70000, 784, "stream", 30, "28x28 grayscale clothing images in 10 classes"},
     {"iris", 150, 5, "built-in", 0, "Fisher's iris flower measurements, 3 species (R)"},
+    {"karate_club", 78, 2, "graph", 0.000970, "Zachary friendship topology:34nodes/78edges; karate_club(), no faction labels"},
     {"mnist", 70000, 784, "stream", 11, "28x28 grayscale handwritten digits"},
     {"misra1a", 14, 2, "built-in", 0, "NIST Misra1a monomolecular adsorption, observed pressure and volume"},
     {"mtcars", 32, 12, "built-in", 0, "Motor Trend 1974 road tests of 32 cars (R)"},
@@ -131,6 +132,8 @@ dstruct::DataFrame load(const std::string& name) {
   if (name == "tooth_growth") return tooth_growth();
   if (name == "volcano") return volcano();
   if (name == "wine") return wine();
+  if (name == "karate_club")
+    throw std::invalid_argument("karate_club is a graph dataset; read it with datasets::karate_club()");
   if (name == "mnist" || name == "fashion_mnist" || name == "cifar10" || name == "cifar100")
     throw std::invalid_argument("\"" + name + "\" is an image dataset; read it in batches with ImageLoader(\"" +
                                 name + "\")");

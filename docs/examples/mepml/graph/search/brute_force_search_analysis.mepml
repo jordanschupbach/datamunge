@@ -1,0 +1,312 @@
+//? Title: Brute-Force Path Search: Incumbents, Pruning and Factorial Work
+//? Subtitle: Actual simple-path visits, minimum-edge ties and an explicit-stack native search
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a directed unweighted graph, find a start-to-goal path with the fewest
+edges. Backtracking can solve this by exploring simple path prefixes, but
+many prefixes can reach the same vertex and the search can require factorial
+work. This implementation retains the shortest path found so far and prunes
+prefixes that cannot improve it. We inspect that actual search, retain the
+original three-vertex chain, and verify a closed-form dense unreachable case.
+The canonical native loop supplies the paths, visit records, bounds and counts.
+)
+
+\toc
+
+> A worked graph: a long incumbent, a shorter replacement and a tie
+
+Start at zero and seek five. Input order first follows 0→1→2→5, a three-edge
+path. The edge 2→0 is rejected because zero is already on that live path.
+The next root branch finds 0→3→5, which has two edges and replaces the
+incumbent. The last root branch first reaches prefix 0→4→1. That prefix
+already has three vertices, as many as the incumbent, and is cut off.
+Path 0→4→5 also has two edges; a strict-improvement tie rule retains 0→3→5.
+
+The graph highlights the returned path in green. The table lists the two
+actual incumbent changes; it does not reconstruct them using another search.
+
+```{cpp, results="markdown", file="figures/brute_force_incumbents.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1},{1,2},{2,0},{2,5},{0,3},{3,5},{0,4},{4,1},{4,5}};
+  const auto trace=dm::algorithms::brute_force_search_trace(6,edges,0,5);
+  const std::vector<dm::graphics::DiagramPoint> position{{0,0},{3,2},{6,2},{4.5,0},{3,-2},{9,0}};
+  dm::graphics::Diagram diagram(75,1100);
+  dm::graphics::DiagramNodeStyle style;style.circle=true;style.width=.8;style.height=.8;style.padding=7;
+  for (std::size_t v=0;v<position.size();++v) {
+    const bool selected=std::find(trace.result.path.begin(),trace.result.path.end(),v)!=trace.result.path.end();
+    style.fill=selected?dm::RGB{220,252,231}:dm::RGB{219,234,254};
+    diagram.node(std::format("v{}",v),position[v],std::format("{}",v),style);
+  }
+  for (const auto& [u,v]:edges) {
+    bool selected=false;
+    for (std::size_t i=1;i<trace.result.path.size();++i)
+      if (trace.result.path[i-1]==u && trace.result.path[i]==v) selected=true;
+    dm::graphics::DiagramStroke stroke;stroke.color=selected?dm::RGB{22,163,74}:dm::RGB{148,163,184};
+    stroke.width=selected?3:2;
+    diagram.edge(std::format("v{}",u),std::format("v{}",v),"",stroke);
+  }
+  diagram.text({4.5,3.5},"DFS tries the route through one before the route through three")
+      .text({4.5,-3.4},std::format("returned path: {}; {} edges",trace.result.path,trace.result.path.size()-1))
+      .save_svg("build/brute_force_incumbents.svg");
+  std::print("| visit | new incumbent | vertices | edges |\n| ---: | :--- | ---: | ---: |\n");
+  for (const auto& row:trace.steps) if (row.improved)
+    std::print("| {} | {} | {} | {} |\n",row.id,row.path,row.path.size(),row.depth);
+  std::print("\nFinal path: {}; entered prefixes: {}; cycle rejections: {}; bound prunes: {}.\n",
+      trace.result.path,trace.result.expanded,trace.cycle_rejections,trace.bound_prunes);
+}
+```
+// result_begin: markdown
+| visit | new incumbent | vertices | edges |
+| ---: | :--- | ---: | ---: |
+| 3 | [0, 1, 2, 5] | 4 | 3 |
+| 5 | [0, 3, 5] | 3 | 2 |
+
+Final path: [0, 3, 5]; entered prefixes: 9; cycle rejections: 1; bound prunes: 1.
+\image(figures/brute_force_incumbents.svg)
+// result_end
+\caption(The same vertex can be entered through different simple prefixes: one is expanded on the first route and pruned when reached through four later. Edge crossings without labelled circles are not extra vertices.)
+\alttext(A directed graph offers a long route zero-one-two-five and two shorter routes zero-three-five and zero-four-five. The route through three is green. An edge from two back to zero forms a cycle, and four can also reach one.)
+
+> The search space and the safe bound
+
+Mark only vertices on the current path. On descent, append a new vertex and
+mark it; on return, remove it and clear its mark. Rejecting an arc to a marked
+vertex keeps every explored prefix simple. A vertex can still be revisited
+through another prefix after backtracking. A shortest path in a unit-cost
+graph can always be simple: deleting a repeated-vertex cycle shortens a walk.
+
+Let L be the incumbent's vertex count and let a current prefix have l vertices.
+Every extension has at least l vertices. Thus a non-goal prefix with l≥L
+cannot lead to a strict improvement and can be pruned. Goals are handled
+first: the first goal path or a strictly shorter goal path replaces the
+incumbent, while an equal-length goal leaves it unchanged. This retains the
+first shortest alternative in the directed adjacency order.
+
+Before the first incumbent, the search explores every permitted prefix. After
+finding one, it can omit longer goal paths under pruned prefixes. The original
+claim that the implementation enumerates every simple start–goal path is
+therefore too strong. Optimality follows instead from the combination of simple
+path coverage and the safe length bound: no pruned prefix can contain a better
+solution. The bound is tested once on entry to a non-goal prefix; an already
+active parent's successor scan continues after a descendant improves the
+incumbent, preserving the historical traversal and visit count.
+
+> Actual visit records and the shrinking incumbent
+
+The legacy result field expanded counts entered prefixes, including goals and
+bound-pruned visits. It does not count distinct vertices or only visits whose
+outgoing arcs are inspected. Each table row captures the actual prefix and
+incumbent around its own entry decision. Arc counts accumulate over that
+visit's lifetime; descendant improvements do not rewrite its entry fields.
+
+```{cpp, results="markdown", file="figures/brute_force_incumbent_length.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1},{1,2},{2,0},{2,5},{0,3},{3,5},{0,4},{4,1},{4,5}};
+  const auto trace=dm::algorithms::brute_force_search_trace(6,edges,0,5);
+  const auto fifo=dm::algorithms::breadth_first_search(6,edges,0,5);
+  if (!fifo.found || trace.result.path.size()!=fifo.path.size()) return 1;
+  std::vector<double> visit,incumbent;std::size_t absent=0;
+  std::print("| visit | actual prefix | depth in edges | incumbent vertices before | after own decision | decision | arcs inspected |\n"
+             "| ---: | :--- | ---: | ---: | ---: | :--- | ---: |\n");
+  for (const auto& row:trace.steps) {
+    const std::string decision=row.improved?"improve":row.goal?"goal, no improvement":row.pruned?"bound prune":"scan successors";
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",row.id,row.path,row.depth,
+        row.incumbent_vertices_before,row.incumbent_vertices_after,decision,row.edges_examined);
+    if (row.incumbent_vertices_after) {visit.push_back(row.id);incumbent.push_back(row.incumbent_vertices_after);}
+    else ++absent;
+  }
+  const double optimal_vertices=fifo.path.size();
+  dm::graphics::RPlot::create().lines(visit,incumbent,"incumbent vertices",dm::RGB{37,99,235},2)
+      .points(visit,incumbent,"",dm::RGB{37,99,235},4)
+      .lines({0,8},{optimal_vertices,optimal_vertices},"optimal vertices (BFS)",dm::RGB{148,163,184},1)
+      .title("An incumbent improves from four vertices to three")
+      .x_label("actual DFS prefix visit id").y_label("vertices in incumbent path")
+      .y_limits(0,6).size(900,480).save_svg("build/brute_force_incumbent_length.svg");
+  std::print("\nNo incumbent at {} initial visits; those zero sentinels are omitted from the curve.\n",absent);
+  std::print("Entered prefixes: {}; inspected arcs: {}; rejected cycle arcs: {}; goal visits: {}; incumbent changes: {}.\n",
+      trace.result.expanded,trace.edges_examined,trace.cycle_rejections,trace.goal_visits,trace.improvements);
+}
+```
+// result_begin: markdown
+| visit | actual prefix | depth in edges | incumbent vertices before | after own decision | decision | arcs inspected |
+| ---: | :--- | ---: | ---: | ---: | :--- | ---: |
+| 0 | [0] | 0 | 0 | 0 | scan successors | 3 |
+| 1 | [0, 1] | 1 | 0 | 0 | scan successors | 1 |
+| 2 | [0, 1, 2] | 2 | 0 | 0 | scan successors | 2 |
+| 3 | [0, 1, 2, 5] | 3 | 0 | 4 | improve | 0 |
+| 4 | [0, 3] | 1 | 4 | 4 | scan successors | 1 |
+| 5 | [0, 3, 5] | 2 | 4 | 3 | improve | 0 |
+| 6 | [0, 4] | 1 | 3 | 3 | scan successors | 2 |
+| 7 | [0, 4, 1] | 2 | 3 | 3 | bound prune | 0 |
+| 8 | [0, 4, 5] | 2 | 3 | 3 | goal, no improvement | 0 |
+
+No incumbent at 3 initial visits; those zero sentinels are omitted from the curve.
+Entered prefixes: 9; inspected arcs: 9; rejected cycle arcs: 1; goal visits: 3; incumbent changes: 2.
+\image(figures/brute_force_incumbent_length.svg)
+// result_end
+\caption(Visit seven is a non-goal bound prune. Visit eight reaches the goal with an equal-length path and leaves the incumbent unchanged. Joined integer visit samples show actual entry decisions, rather than interpolated search events.)
+\alttext(The incumbent appears at visit three with four vertices, remains four at visit four, then drops to three at visit five and remains there. A grey line marks the independently computed BFS path's three vertices.)
+
+BFS provides an efficient native reference for the final minimum number of
+edges; it is the preferable algorithm when this is the only required result.
+Here the backtracking search is useful for inspecting search-space repetition
+and incumbent bounds. A full trace copies each live prefix; recording can
+omit those path copies while retaining ids, parents, depths and decisions.
+
+> Original chain and boundary controls
+
+The original report's three-vertex chain is retained. It returns [0,1,2],
+which has three vertices and two edges, after three entered prefixes. Input
+pairs are directed arcs. Reversing the terminals does not insert reverse
+arcs. Self-loops are rejected by live-path membership; parallel arcs retain
+their original order and can cause repeated visits to the same labelled prefix.
+All terminals and arc endpoints are validated before adjacency allocation,
+even when start equals goal. An empty graph has no valid terminals.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  struct Example {std::string name;std::size_t n;std::vector<std::pair<std::size_t,std::size_t>> edges;std::size_t start,goal;};
+  const std::vector<Example> cases{
+    {"original chain",3,{{0,1},{1,2}},0,2},{"reverse directed chain",3,{{0,1},{1,2}},2,0},
+    {"start equals goal",3,{{0,1},{1,2}},1,1},
+    {"parallel arcs and a loop",3,{{0,0},{0,1},{0,1},{1,2}},0,2},
+    {"first equal shortest alternative",6,{{0,4},{4,5},{0,3},{3,5}},0,5}};
+  std::print("| case | found | path | entered prefixes | inspected arcs | cycle rejections |\n"
+             "| :--- | :--- | :--- | ---: | ---: | ---: |\n");
+  for (const auto& example:cases) {
+    const auto trace=dm::algorithms::brute_force_search_trace(example.n,example.edges,example.start,example.goal);
+    const auto ordinary=dm::algorithms::brute_force_search(example.n,example.edges,example.start,example.goal);
+    if (ordinary.path!=trace.result.path || ordinary.expanded!=trace.result.expanded) return 1;
+    std::print("| {} | {} | {} | {} | {} | {} |\n",example.name,trace.result.found,trace.result.path,
+        trace.result.expanded,trace.edges_examined,trace.cycle_rejections);
+  }
+  try {
+    dm::algorithms::brute_force_search(3,{{0,3}},0,0);return 1;
+  } catch (const std::invalid_argument&) {
+    std::print("\nAn invalid arc is rejected even for a start-equals-goal call.\n");
+  }
+  const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1},{1,2},{2,0},{2,5},{0,3},{3,5},{0,4},{4,1},{4,5}};
+  try {
+    dm::algorithms::brute_force_search_trace(6,edges,0,5,{4,false});return 1;
+  } catch (const std::runtime_error&) {
+    std::print("A four-visit budget stops after the long incumbent, without returning it as an optimum.\n");
+  }
+}
+```
+// result_begin: markdown
+| case | found | path | entered prefixes | inspected arcs | cycle rejections |
+| :--- | :--- | :--- | ---: | ---: | ---: |
+| original chain | true | [0, 1, 2] | 3 | 2 | 0 |
+| reverse directed chain | false | [] | 1 | 0 | 0 |
+| start equals goal | true | [1] | 1 | 0 | 0 |
+| parallel arcs and a loop | true | [0, 1, 2] | 5 | 5 | 1 |
+| first equal shortest alternative | true | [0, 4, 5] | 5 | 4 | 0 |
+
+An invalid arc is rejected even for a start-equals-goal call.
+A four-visit budget stops after the long incumbent, without returning it as an optimum.
+// result_end
+\caption(The visit budget counts entered prefixes, not unique vertices. A positive limit throws before an excess visit; zero means unlimited. It limits search visits rather than graph allocation and returns no partial result.)
+
+> A factorial family: dense reachable component, isolated goal
+
+Place the start in a complete directed graph on k vertices and leave goal k
+isolated in a graph of k+1 vertices. No incumbent can be found, so no length
+bound activates. Every ordered subset of the k−1 other reachable vertices is
+a simple prefix from the start. The exact number of entered prefixes is
+
+$$
+V_k=\sum_{j=0}^{k-1}\frac{(k-1)!}{(k-1-j)!},\qquad
+V_1=1,\qquad V_k=1+(k-1)V_{k-1}.
+$$
+
+Every visited endpoint has k−1 outgoing arcs and all are scanned. Hence
+A_k=(k−1)V_k, with A_k−V_k+1 rejected cycle arcs. The native generator supplies
+all directed non-loop arcs within the component. A trace without prefix copies
+measures this search, while BFS exhausts only k vertices on the same input.
+The table and figure compare these different logical visit events, not runtimes.
+
+```{cpp, results="markdown", file="figures/brute_force_factorial_visits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> component,dfs_log,fifo_log;
+  std::size_t expected=1;
+  std::print("| component k | actual DFS prefix visits | factorial-sum reference | inspected arcs | (k-1)*V_k | cycle rejections | BFS dequeues |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t k=1;k<=9;++k) {
+    if (k>1) expected=1+(k-1)*expected;
+    const auto edges=dm::algorithms::complete_directed_graph_edges(k);
+    const auto trace=dm::algorithms::brute_force_search_trace(k+1,edges,0,k,{0,false});
+    const auto fifo=dm::algorithms::breadth_first_search_trace(k+1,edges,0,k);
+    if (trace.result.found || fifo.result.found || trace.result.expanded!=expected ||
+        trace.edges_examined!=(k-1)*expected || trace.cycle_rejections!=trace.edges_examined-expected+1 ||
+        fifo.result.order.size()!=k) return 1;
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",k,trace.result.expanded,expected,
+        trace.edges_examined,(k-1)*expected,trace.cycle_rejections,fifo.result.order.size());
+    component.push_back(k);dfs_log.push_back(std::log10(double(trace.result.expanded)));
+    fifo_log.push_back(std::log10(double(fifo.result.order.size())));
+  }
+  dm::graphics::RPlot::create().lines(component,dfs_log,"DFS prefixes",dm::RGB{37,99,235},2)
+      .points(component,dfs_log,"",dm::RGB{37,99,235},4)
+      .lines(component,fifo_log,"BFS dequeues",dm::RGB{22,163,74},2)
+      .points(component,fifo_log,"",dm::RGB{22,163,74},4)
+      .title("Isolated goal: factorially many DFS prefixes")
+      .x_label("vertices k in the reachable complete directed component").y_label("log10(actual visit count)")
+      .y_limits(-.2,6.5).size(900,500).save_svg("build/brute_force_factorial_visits.svg");
+}
+```
+// result_begin: markdown
+| component k | actual DFS prefix visits | factorial-sum reference | inspected arcs | (k-1)*V_k | cycle rejections | BFS dequeues |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 1 | 0 | 0 | 0 | 1 |
+| 2 | 2 | 2 | 2 | 2 | 1 | 2 |
+| 3 | 5 | 5 | 10 | 10 | 6 | 3 |
+| 4 | 16 | 16 | 48 | 48 | 33 | 4 |
+| 5 | 65 | 65 | 260 | 260 | 196 | 5 |
+| 6 | 326 | 326 | 1630 | 1630 | 1305 | 6 |
+| 7 | 1957 | 1957 | 11742 | 11742 | 9786 | 7 |
+| 8 | 13700 | 13700 | 95900 | 95900 | 82201 | 8 |
+| 9 | 109601 | 109601 | 876808 | 876808 | 767208 | 9 |
+\image(figures/brute_force_factorial_visits.svg)
+// result_end
+\caption(At k=9, DFS enters 109,601 prefixes and inspects 876,808 arcs, while BFS dequeues nine vertices. The ordinate is explicitly log10 of positive measured counts, with no artificial floor.)
+\alttext(The logarithm of DFS prefix visits accelerates upwards to about five at component size nine. The logarithm of BFS dequeues grows slowly to just below one.)
+
+The explicit stack has at most n live frames, and it avoids native recursion
+depth limits. Ordinary search uses O(n+m) live storage. With V entered prefixes,
+A inspected arcs and I vertex ids copied into improving incumbents, its work
+is O(n+m+V+A+I). A trace adds O(V) record storage and, by default, the total
+length of copied prefixes. Disabling those copies preserves every other field.
+The factorial argument above assumes unique arcs; duplicate arcs can repeat
+equivalent prefixes and add more work.
+
+The search maintains only a unit-edge length objective. It does not solve a
+weighted shortest-path problem, and the bound is too weak to prevent factorial
+work when no incumbent is available. These limitations explain why the example
+is a study of exhaustive search with bounding rather than a replacement for BFS.
+
+> References and verification
+
+[NIST's Dictionary of Algorithms and Data Structures](https://xlinux.nist.gov/dads/HTML/exhaustiveSearch.html)
+uses exhaustive search for trying every possibility. This library's existing
+brute_force_search name denotes the more specific incumbent-bound path-prefix
+method described here. A. H. Land and A. G. Doig (1960), *An Automatic Method
+of Solving Discrete Programming Problems*, Econometrica 28(3), 497–520,
+[doi:10.2307/1910129](https://doi.org/10.2307/1910129), is general branch-and-bound
+background; the simple graph bound here is derived directly from prefix length.
+
+The original chain and worked graph are fully specified; the dense family is
+generated in the core without a dataset or random seed. Native tests compare
+all directed graphs through four vertices and every terminal pair with independent
+Floyd–Warshall distances and first-adjacency shortest-path recovery. They also
+check actual incumbent history, counters, ordered loops/duplicates, the factorial
+family, complete-call limits, invalid inputs and a 50,000-vertex chain with path
+snapshots omitted. Every report block is an editable complete C++ programme;
+figures are local SVG files rather than XML printed into the results.

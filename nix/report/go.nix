@@ -21,6 +21,9 @@ pkgs.mkShell {
   # already carries its link flags. GOCACHE is a writable copy seeded from the package's cache,
   # so the first `go run` doesn't spend minutes compiling the generated datamunge.go.
   shellHook = ''
+    # The module carries its own link flags. CGO_* inherited from an outer shell (the default
+    # dev shell exports them for its own datamunge build) would be linked first and win.
+    unset CGO_CPPFLAGS CGO_CFLAGS CGO_CXXFLAGS CGO_LDFLAGS
     reportGoDir="''${XDG_CACHE_HOME:-$HOME/.cache}/datamunge-report-go"
     export GOCACHE="$reportGoDir/gocache"
     mkdir -p "$GOCACHE"

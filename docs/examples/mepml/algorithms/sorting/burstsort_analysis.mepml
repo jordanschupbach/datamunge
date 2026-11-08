@@ -1,0 +1,354 @@
+//? Title: Burstsort: Actual Buckets, Bursts and Prefix Depth
+//? Subtitle: The original nineteen words, configurable thresholds and explicit-stack native tracing
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Burstsort keeps related strings in leaf buckets and creates deeper trie nodes
+only when a bucket exceeds its capacity. We retain the original nineteen-word
+example and its first-letter plot, but inspect actual native nodes, slots and
+burst events instead of inferring the trie from first-letter counts. The core
+now uses string-index buckets, flat node ownership and explicit work stacks,
+so long prefixes do not require recursive insertion, collection or destruction.
+Measured controls show why the trie is not always shallow: eight identical
+strings stay in a bucket, while nine can create one node per prefix byte.
+The report discusses locality without claiming an unmeasured cache-speed win.
+)
+
+\toc
+
+> The original words: one real burst under a
+
+The input contains nine words beginning with a. The default capacity is eight,
+and overflow means strictly *greater than* eight. The ninth a-word, almond,
+arrives at original index eighteen and creates a child for prefix a. Its
+second-byte slots are l, p, r and v; the p bucket contains six strings and
+remains a leaf. Other first-byte slots remain root buckets.
+
+```{cpp, results="markdown", file="figures/burstsort_trie.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::string> words{
+      "banana","apple","apricot","avocado","blueberry","cherry","cranberry","coconut",
+      "date","elderberry","fig","grape","guava","apple","apex","april","apply","arc","almond"};
+  const auto trace=dm::algorithms::burstsort_trace(words);
+  auto expected=words;std::sort(expected.begin(),expected.end());
+  if (trace.output!=expected || trace.nodes.size()!=2 || trace.bursts.size()!=1 ||
+      dm::algorithms::burstsort_prefix(trace,1)!="a") return 1;
+  std::print("Sorted {} strings: {}.\nOriginal input ids in output: {}.\n\n",trace.output.size(),trace.output,trace.output_input_indices);
+  std::print("| node id | actual prefix | depth | subtree strings | terminal input ids |\n"
+             "| ---: | :--- | ---: | ---: | :--- |\n");
+  for (std::size_t id=0;id<trace.nodes.size();++id) {
+    const auto prefix=dm::algorithms::burstsort_prefix(trace,id);
+    std::print("| {} | {} | {} | {} | {} |\n",id,prefix.empty()?"(root)":prefix,trace.nodes[id].depth,
+        trace.nodes[id].strings,trace.nodes[id].terminal_input_indices);
+  }
+  std::print("\n| owning node | slot byte | strings | child id (0 = leaf) | leaf input ids before sort | leaf ids after sort |\n"
+             "| ---: | :--- | ---: | ---: | :--- | :--- |\n");
+  for (const auto& slot:trace.slots)
+    std::print("| {} | {} | {} | {} | {} | {} |\n",slot.node,static_cast<char>(slot.value),slot.strings,slot.child,
+        slot.input_indices,slot.sorted_indices);
+  dm::graphics::Diagram diagram(65,1100);
+  dm::graphics::DiagramNodeStyle node;node.width=3.4;node.height=1.8;
+  diagram.node("root",{0,0},std::format("root, depth 0\n{} strings",trace.nodes[0].strings),node);
+  diagram.node("a",{-6,-3},std::format("prefix {}\ndepth {}\n{} strings",dm::algorithms::burstsort_prefix(trace,1),
+      trace.nodes[1].depth,trace.nodes[1].strings),node).edge("root","a","a");
+  dm::graphics::DiagramNodeStyle bucket;bucket.width=1.6;bucket.height=1.15;bucket.padding=6;bucket.font_size=15;bucket.fill={220,252,231};
+  double root_x=-1,child_x=-9;
+  for (const auto& slot:trace.slots) if (!slot.child) {
+    const auto prefix=dm::algorithms::burstsort_prefix(trace,slot.node)+static_cast<char>(slot.value);
+    const auto id=std::format("bucket_{}_{}",slot.node,static_cast<unsigned int>(slot.value));
+    const double x=slot.node==0?root_x:child_x;
+    if (slot.node==0) root_x+=2;else child_x+=3;
+    diagram.node(id,{x,slot.node==0?-3.0:-6.0},std::format("{}\n{} strings",prefix,slot.strings),bucket)
+        .edge(slot.node==0?"root":"a",id);
+  }
+  diagram.text({0,-7.5},"blue = actual trie nodes; green = actual leaf buckets",18)
+      .save_svg("build/burstsort_trie.svg");
+  const auto& burst=trace.bursts[0];
+  std::print("\nActual burst: parent {}, slot {}, child {}, redistributed {} ids; trigger input {} = {}.\n",
+      burst.node,static_cast<char>(burst.value),burst.child,burst.strings,burst.trigger_input_index,trace.input[burst.trigger_input_index]);
+}
+```
+// result_begin: markdown
+Sorted 19 strings: ["almond", "apex", "apple", "apple", "apply", "apricot", "april", "arc", "avocado", "banana", "blueberry", "cherry", "coconut", "cranberry", "date", "elderberry", "fig", "grape", "guava"].
+Original input ids in output: [18, 14, 1, 13, 16, 2, 15, 17, 3, 0, 4, 5, 7, 6, 8, 9, 10, 11, 12].
+
+| node id | actual prefix | depth | subtree strings | terminal input ids |
+| ---: | :--- | ---: | ---: | :--- |
+| 0 | (root) | 0 | 19 | [] |
+| 1 | a | 1 | 9 | [] |
+
+| owning node | slot byte | strings | child id (0 = leaf) | leaf input ids before sort | leaf ids after sort |
+| ---: | :--- | ---: | ---: | :--- | :--- |
+| 0 | a | 9 | 1 | [] | [] |
+| 1 | l | 1 | 0 | [18] | [18] |
+| 1 | p | 6 | 0 | [1, 2, 13, 14, 15, 16] | [14, 1, 13, 16, 2, 15] |
+| 1 | r | 1 | 0 | [17] | [17] |
+| 1 | v | 1 | 0 | [3] | [3] |
+| 0 | b | 2 | 0 | [0, 4] | [0, 4] |
+| 0 | c | 3 | 0 | [5, 6, 7] | [5, 7, 6] |
+| 0 | d | 1 | 0 | [8] | [8] |
+| 0 | e | 1 | 0 | [9] | [9] |
+| 0 | f | 1 | 0 | [10] | [10] |
+| 0 | g | 2 | 0 | [11, 12] | [11, 12] |
+
+Actual burst: parent 0, slot a, child 1, redistributed 9 ids; trigger input 18 = almond.
+\image(figures/burstsort_trie.svg)
+// result_end
+\caption(The diagram shows actual final metadata: two trie nodes and ten leaf buckets. The root a slot is a child edge, not a nine-string leaf that somehow remains after its burst. Equal apple strings retain their original input-id order.)
+\alttext(A blue root points to a blue child for prefix a and six green root buckets for b through g. The a child points to green buckets al, ap, ar and av, with counts one, six, one and one.)
+
+Insertion follows one byte at a time. A leaf slot holds original string ids;
+when it overflows, a new child consumes the slot byte and receives those ids
+in their actual encounter order. Strings ending at a node go into its separate
+terminal list. Collection emits terminals first, then slots in unsigned byte
+order. A leaf is sorted by full string value, with original id breaking equal
+value ties; a child is traversed before the next byte slot. This produces
+ordinary byte-lexicographic order, with prefixes before their extensions.
+
+The old sorting_dist include remains a compatibility entry point. The ordinary
+one-argument API keeps its threshold eight. A separate configured entry point
+accepts a positive capacity and an optional whole-call node cap. No overload
+ambiguity is introduced for existing function-pointer or callback uses.
+
+> Preserve the first-letter plot and vary capacity
+
+The root slot's strings field counts its actual represented subtree, whether
+it is a leaf or a child. It reproduces the original counts a:9, b:2, c:3,
+d:1, e:1, f:1 and g:2. The child field independently confirms which slot
+burst; the report does not turn a histogram into a guessed trie.
+
+```{cpp, results="markdown", file="figures/burstsort.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::string> words{
+      "banana","apple","apricot","avocado","blueberry","cherry","cranberry","coconut",
+      "date","elderberry","fig","grape","guava","apple","apex","april","apply","arc","almond"};
+  const auto original=dm::algorithms::burstsort_trace(words);
+  std::vector<double> heights;std::vector<std::string> labels;
+  std::print("| actual root byte slot | represented strings | child exists |\n"
+             "| :--- | ---: | :--- |\n");
+  for (const auto& slot:original.slots) if (slot.node==0) {
+    heights.push_back(slot.strings);labels.push_back(std::string(1,static_cast<char>(slot.value)));
+    std::print("| {} | {} | {} |\n",static_cast<char>(slot.value),slot.strings,slot.child!=0);
+  }
+  dm::graphics::RPlot::barplot(heights,labels,"root slot count",dm::RGB{124,58,237})
+      .abline_h(8.0,dm::RGB{220,38,38},1.5)
+      .title("Original root slots: only a bursts at capacity eight")
+      .x_label("first byte").y_label("strings represented by root slot").y_limits(0,12)
+      .size(1100,520).save_svg("build/burstsort.svg");
+  std::print("\n| capacity B | trie nodes | actual bursts | deepest node | routing byte reads | leaf sort calls | directory slot checks |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const std::size_t capacity:{1,2,4,8,16}) {
+    dm::algorithms::BurstSortOptions options;options.bucket_capacity=capacity;
+    const auto trace=dm::algorithms::burstsort_trace(words,options);
+    if (trace.output!=original.output) return 1;
+    for (const auto& slot:trace.slots) if (!slot.child && slot.strings>capacity) return 1;
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",capacity,trace.nodes.size(),trace.bursts.size(),trace.max_depth,
+        trace.byte_routes,trace.leaf_comparisons,trace.collection_slot_scans);
+  }
+}
+```
+// result_begin: markdown
+| actual root byte slot | represented strings | child exists |
+| :--- | ---: | :--- |
+| a | 9 | true |
+| b | 2 | false |
+| c | 3 | false |
+| d | 1 | false |
+| e | 1 | false |
+| f | 1 | false |
+| g | 2 | false |
+
+| capacity B | trie nodes | actual bursts | deepest node | routing byte reads | leaf sort calls | directory slot checks |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 11 | 10 | 5 | 51 | 0 | 2816 |
+| 2 | 6 | 5 | 4 | 43 | 8 | 1536 |
+| 4 | 3 | 2 | 2 | 34 | 15 | 768 |
+| 8 | 2 | 1 | 1 | 28 | 21 | 512 |
+| 16 | 1 | 0 | 0 | 19 | 30 | 256 |
+\image(figures/burstsort.svg)
+// result_end
+\caption(The original purple root-slot counts and red capacity-eight line are retained. Bursting is strict: a slot of size eight remains a leaf, while size nine creates a child. The capacity sweep measures structure and logical work, not cache misses or elapsed speed.)
+\alttext(The a root slot has nine strings and exceeds the red line at eight. The other root slots contain two, three, one, one, one and two strings, with no child nodes.)
+
+Smaller capacities create more structure and more directory scans, while
+larger capacities leave more full-string sorting inside leaves. The counts
+alone cannot select a universal fastest threshold. In this implementation,
+full string comparisons may revisit already shared prefixes; their invocation
+count is not a byte-inspection count. std::sort call counts can also differ
+between toolchains. The published [Sinha and Zobel study](https://people.eng.unimelb.edu.au/jzobel/fulltext/acmjea04.pdf)
+examines cache-conscious implementations and workloads; its measured speedups
+are not measurements of this C++ variant or these nineteen strings.
+
+> A discontinuity: eight copies versus nine copies of a long string
+
+For capacity B=8, eight identical strings remain in one root bucket. For nine
+copies of a length-L string, each occupied slot overflows, creating another
+child until the strings terminate. The final chain has L+1 nodes, including
+the root, L bursts, and nine terminal ids at depth L. It is not a shallow trie.
+
+Each original id consumes each routed prefix byte only once, including later
+redistribution. For this duplicate family the actual counts are
+
+\[
+Q=L+1,\qquad R=9L,\qquad V=9(L+1),\qquad S=256(L+1),
+\]
+
+where Q is node count, R is routing-byte reads, V is insertion work items,
+and S is collection directory checks. The factor 256 comes from this variant's
+dense byte directories, even when a node has only one occupied slot.
+
+```{cpp, results="markdown", file="figures/burstsort_prefix_depth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> length,flat_nodes,chain_nodes;
+  std::print("| shared string length L | nodes for 8 copies | nodes for 9 copies | 9-copy bursts | 8-copy routes | 9-copy routes | 9-copy visits | 9-copy directory checks |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for (const std::size_t n:{1,2,4,8,16,32,64,128,256,512}) {
+    const auto eight=dm::algorithms::burstsort_trace(std::vector<std::string>(8,std::string(n,'q')));
+    const auto nine=dm::algorithms::burstsort_trace(std::vector<std::string>(9,std::string(n,'q')));
+    if (eight.nodes.size()!=1 || !eight.bursts.empty() || eight.byte_routes!=8 ||
+        nine.nodes.size()!=n+1 || nine.bursts.size()!=n || nine.max_depth!=n || nine.byte_routes!=9*n ||
+        nine.insertion_visits!=9*(n+1) || nine.collection_slot_scans!=256*(n+1) || nine.leaf_comparisons!=0) return 1;
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",n,eight.nodes.size(),nine.nodes.size(),nine.bursts.size(),
+        eight.byte_routes,nine.byte_routes,nine.insertion_visits,nine.collection_slot_scans);
+    length.push_back(std::log2(static_cast<double>(n)));
+    flat_nodes.push_back(std::log2(static_cast<double>(eight.nodes.size())));
+    chain_nodes.push_back(std::log2(static_cast<double>(nine.nodes.size())));
+  }
+  dm::graphics::RPlot::create()
+      .lines(length,flat_nodes,"8 copies",dm::RGB{37,99,235},2).points(length,flat_nodes,"",dm::RGB{37,99,235},4)
+      .lines(length,chain_nodes,"9 copies",dm::RGB{220,38,38},2).points(length,chain_nodes,"",dm::RGB{220,38,38},4)
+      .title("Eight copies stay flat; nine build a prefix chain")
+      .x_label("log2(shared string length L)").y_label("log2(actual trie node count)").y_limits(-0.5,12)
+      .size(1100,520).save_svg("build/burstsort_prefix_depth.svg");
+}
+```
+// result_begin: markdown
+| shared string length L | nodes for 8 copies | nodes for 9 copies | 9-copy bursts | 8-copy routes | 9-copy routes | 9-copy visits | 9-copy directory checks |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 2 | 1 | 8 | 9 | 18 | 512 |
+| 2 | 1 | 3 | 2 | 8 | 18 | 27 | 768 |
+| 4 | 1 | 5 | 4 | 8 | 36 | 45 | 1280 |
+| 8 | 1 | 9 | 8 | 8 | 72 | 81 | 2304 |
+| 16 | 1 | 17 | 16 | 8 | 144 | 153 | 4352 |
+| 32 | 1 | 33 | 32 | 8 | 288 | 297 | 8448 |
+| 64 | 1 | 65 | 64 | 8 | 576 | 585 | 16640 |
+| 128 | 1 | 129 | 128 | 8 | 1152 | 1161 | 33024 |
+| 256 | 1 | 257 | 256 | 8 | 2304 | 2313 | 65792 |
+| 512 | 1 | 513 | 512 | 8 | 4608 | 4617 | 131328 |
+\image(figures/burstsort_prefix_depth.svg)
+// result_end
+\caption(The program explicitly logs positive node counts. The blue curve stays at log2(1)=0, while the red curve follows log2(L+1). This is a threshold effect, not evidence of a particular cache speed or an asymptotic latency measurement.)
+\alttext(For eight identical strings, node count remains one at all lengths. For nine strings it grows from two nodes at length one to 513 nodes at length 512.)
+
+The native implementation uses a flat node arena, occupied-slot records and
+explicit insertion/collection stacks. Child relationships are indices, so
+unwinding and destruction do not recursively follow a deep chain. Buckets
+hold input ids rather than full string copies; after collection each full
+string is copied once into output, followed by a final swap for the in-place
+API. Tracing additionally owns the input and actual records. Parent links
+avoid storing every complete node prefix; a requested prefix is materialized
+in linear work in that prefix's depth.
+
+Writing D for total input bytes, n for string count and Q for actual nodes,
+routing and directory work is O(D+n+256Q), plus the cost of full-string leaf
+comparisons. A leaf of k strings has O(k log(k+1)) comparison calls; the byte
+cost of one call depends on those strings. Algorithm storage is
+O(D+n+256Q), with O(D+n+Q) additional owned trace data. This accounting does
+not claim that a root bucket or its string data necessarily fits a hardware
+cache, or that the trie depth is bounded independently of input length.
+
+> Terminals, binary bytes and failure boundaries
+
+Ending a string is distinct from encountering byte zero. The empty string
+terminates at the root; a terminates at prefix a before aa and ab are
+collected. Embedded zero and high-bit bytes remain ordinary data. Sorting
+is byte-lexicographic, without Unicode normalization or language collation.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::algorithms::BurstSortOptions small;small.bucket_capacity=1;
+  const auto tiny=dm::algorithms::burstsort_trace({"ab","aa","a",""},small);
+  if (tiny.output_input_indices!=std::vector<std::size_t>{3,2,1,0}) return 1;
+  std::print("Tiny output ids: {}.\n\n| node prefix | actual terminal input ids |\n| :--- | :--- |\n",tiny.output_input_indices);
+  for (std::size_t id=0;id<tiny.nodes.size();++id) {
+    const auto prefix=dm::algorithms::burstsort_prefix(tiny,id);
+    std::print("| {} | {} |\n",prefix.empty()?"(root)":prefix,tiny.nodes[id].terminal_input_indices);
+  }
+  const std::vector<std::string> binary{std::string(1,static_cast<char>(255)),"a",std::string{'\0','a'},"",std::string(1,'\0')};
+  const auto bytes=dm::algorithms::burstsort_trace(binary,small);
+  if (bytes.output_input_indices!=std::vector<std::size_t>{3,4,2,1,0}) return 1;
+  std::print("\nBinary case sorted original ids: {}. Byte zero is not a terminator.\n",bytes.output_input_indices);
+  const std::vector<std::string> deep_input(9,std::string(10000,'q'));
+  const auto deep=dm::algorithms::burstsort_trace(deep_input);
+  const auto prefix=dm::algorithms::burstsort_prefix(deep,deep.nodes.size()-1);
+  if (deep.output!=deep_input || deep.nodes.size()!=10001 || prefix.size()!=10000) return 1;
+  std::print("Deep shared prefix: {} bytes; actual nodes: {}; insertion visits: {}; directory checks: {}.\n",
+      prefix.size(),deep.nodes.size(),deep.insertion_visits,deep.collection_slot_scans);
+  std::vector<std::string> bounded(9,"abcd");const auto preserved=bounded;
+  dm::algorithms::BurstSortOptions limit;limit.max_nodes=4;
+  bool node_limit=false,zero_capacity=false,absent_node=false;
+  try {dm::algorithms::burstsort_with_options(bounded,limit);}
+  catch (const std::length_error&) {node_limit=true;}
+  dm::algorithms::BurstSortOptions invalid;invalid.bucket_capacity=0;
+  try {(void)dm::algorithms::burstsort_trace({},invalid);}
+  catch (const std::invalid_argument&) {zero_capacity=true;}
+  try {(void)dm::algorithms::burstsort_prefix(tiny,tiny.nodes.size());}
+  catch (const std::out_of_range&) {absent_node=true;}
+  if (!node_limit || !zero_capacity || !absent_node || bounded!=preserved) return 1;
+  limit.max_nodes=5;dm::algorithms::burstsort_with_options(bounded,limit);
+  std::print("Node cap, zero capacity and absent prefix rejected: {}, {}, {}. Failed sort preserved caller: {}.\n",
+      node_limit,zero_capacity,absent_node,bounded==preserved);
+  std::print("Exact five-node cap succeeds; sorted strings: {}.\n",bounded.size());
+  const auto shortcut=dm::algorithms::burstsort_trace({"one"});
+  std::print("Singleton shortcut: {}; actual trie nodes: {}.\n",shortcut.shortcut,shortcut.nodes.size());
+}
+```
+// result_begin: markdown
+Tiny output ids: [3, 2, 1, 0].
+
+| node prefix | actual terminal input ids |
+| :--- | :--- |
+| (root) | [3] |
+| a | [2] |
+
+Binary case sorted original ids: [3, 4, 2, 1, 0]. Byte zero is not a terminator.
+Deep shared prefix: 10000 bytes; actual nodes: 10001; insertion visits: 90009; directory checks: 2560256.
+Node cap, zero capacity and absent prefix rejected: true, true, true. Failed sort preserved caller: true.
+Exact five-node cap succeeds; sorted strings: 9.
+Singleton shortcut: true; actual trie nodes: 0.
+// result_end
+
+A positive node cap includes the root and throws before a new child would
+exceed it. No partial output is swapped into the caller's vector. Host
+allocation failures likewise preserve its original values: an isolated native
+test injects failures at all 103 allocation positions across default and
+configured sorts, checks the unchanged input, then retries successfully.
+Empty/singleton inputs preserve the original shortcut and do not fabricate
+root nodes or routing work. A zero configured capacity is always rejected.
+
+The native tests compare 19,531 exhaustive small arrays at three capacities
+with stable global string order and an independent static prefix-frequency
+partition. The (B+1)-th arrival sharing a prefix independently determines its
+burst time, so the checker verifies actual chronological events as well as
+final topology. Further tests cover 1,000 random binary/duplicate arrays,
+all 256 byte slots, exact threshold and node limits, malformed prefix paths,
+the 10,000-byte chain, existing distribution-sort cases and UBSan. These
+explicit and generated inputs explain the mechanism without a forced dataset.
+
+> References
+
+- R. Sinha and J. Zobel (2004), [Cache-Conscious Sorting of Large Sets of Strings with Dynamic Tries](https://people.eng.unimelb.edu.au/jzobel/fulltext/acmjea04.pdf),
+  ACM Journal of Experimental Algorithmics 9, article 1.5. The present variant
+  uses index buckets, dense byte directories and full-string leaf comparisons;
+  the report does not reproduce that paper's performance experiments.
+- C++ working draft, [char_traits<char>](https://eel.is/c++draft/char.traits.specializations.char),
+  for unsigned-byte character ordering in the standard string comparison used
+  by leaf sorting.

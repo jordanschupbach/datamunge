@@ -7,40 +7,6 @@
 
 namespace datamunge::algorithms {
 
-std::vector<int> gnome_sort(std::vector<int> a) {
-    const std::size_t n = a.size();
-    std::size_t       i = 0;
-    while (i < n) {
-        if (i == 0 || a[i - 1] <= a[i]) {
-            ++i; // in order: step forward
-        } else {
-            std::swap(a[i - 1], a[i]);
-            --i; // out of order: swap and step back
-        }
-    }
-    return a;
-}
-
-std::vector<int> cocktail_shaker_sort(std::vector<int> a) {
-    const std::size_t n = a.size();
-    if (n < 2) return a;
-    std::size_t lo      = 0;
-    std::size_t hi      = n - 1;
-    bool        swapped = true;
-    while (swapped) {
-        swapped = false;
-        for (std::size_t i = lo; i < hi; ++i) // forward: push the largest to hi
-            if (a[i] > a[i + 1]) { std::swap(a[i], a[i + 1]); swapped = true; }
-        if (!swapped) break;
-        --hi;
-        swapped = false;
-        for (std::size_t i = hi; i > lo; --i) // backward: push the smallest to lo
-            if (a[i - 1] > a[i]) { std::swap(a[i - 1], a[i]); swapped = true; }
-        ++lo;
-    }
-    return a;
-}
-
 std::vector<int> odd_even_sort(std::vector<int> a) {
     const std::size_t n = a.size();
     bool              sorted = false;

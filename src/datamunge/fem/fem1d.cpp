@@ -1,306 +1,525 @@
-#include <datamunge/fem/fem1d.hpp>
-
+/// @file fem1d.cpp
+/// @brief P1 interval assembly, local named sources and checked-time backward-Euler solves.
+#include <algorithm>
 #include <cmath>
+#include <datamunge/fem/fem1d.hpp>
+#include <limits>
 #include <stdexcept>
 
 namespace datamunge::fem {
 
+/// @brief Private P1 assembly, source selection and direct-solve helpers.
 namespace {
 
-// Caller must have already validated the size via check_coefficient_size().
+/// @brief Read a scalar or per-element coefficient after its length has been checked.
+/// @param coeff Borrowed coefficient vector of length1 or one per element.
+/// @param element_index Valid zero-based element index.
+/// @return Selected coefficient by value.
 double resolve_coefficient(const std::vector<double>& coeff, std::size_t element_index) {
-    return coeff.size() == 1 ? coeff[0] : coeff[element_index];
+  return coeff.size() == 1 ? coeff[0] : coeff[element_index];
 }
 
-void check_coefficient_size(const std::vector<double>& coeff, std::size_t num_elements, const char* name) {
-    if (coeff.empty() || (coeff.size() != 1 && coeff.size() != num_elements)) {
-        throw std::invalid_argument(std::string("FEM1D: ") + name +
-                                     " must have size 1 (constant) or mesh.num_elements()");
-    }
+/// @brief Reject empty or mismatched scalar/per-element coefficient storage.
+/// @param coeff Borrowed coefficient vector.
+/// @param num_elements Number of interval elements.
+/// @param name Parameter name for the diagnostic.
+/// @throws std::invalid_argument If coeff has neither length1 nor num_elements, or is empty.
+void check_coefficient_size(
+    const std::vector<double>& coeff,
+    std::size_t                num_elements,
+    const char*                name) {
+  if (coeff.empty() || (coeff.size() != 1 && coeff.size() != num_elements)) {
+    throw std::invalid_argument(
+        std::string("FEM1D: ") + name + " must have size 1 (constant) or mesh.num_elements()");
+  }
 }
 
-// 3-point Gauss-Legendre quadrature on [-1, 1]; exact through degree 5, plenty for the smooth
-// source terms this "basic" solver targets.
+/// @brief Three-point Gauss-Legendre abscissae on the reference interval [-1,1].
 constexpr double kGaussPoints[3] = {-0.7745966692414834, 0.0, 0.7745966692414834};
+/// @brief Matching reference quadrature weights, exact through degree5 of the integrand.
 constexpr double kGaussWeights[3] = {5.0 / 9.0, 8.0 / 9.0, 5.0 / 9.0};
 
-// Assembles the tridiagonal system for -(p u')' + q u = f (no boundary terms yet).
+/// @brief Owned tridiagonal coefficients and load before/after boundary elimination.
 struct TridiagonalSystem {
-    std::vector<double> lower, diag, upper, rhs;
+  std::vector<double> lower; ///< Owned subdiagonal, with unused entry0.
+  std::vector<double> diag;  ///< Owned diagonal.
+  std::vector<double> upper; ///< Owned superdiagonal, with unused last entry.
+  std::vector<double> rhs;   ///< Owned assembled load/known-boundary contributions.
 };
 
-TridiagonalSystem assemble_interior(const Mesh1D& mesh, const std::vector<double>& p, const std::vector<double>& q,
-                                     ScalarField1D& f) {
-    const std::size_t n = mesh.num_nodes();
-    const std::size_t ne = mesh.num_elements();
-    TridiagonalSystem sys;
-    sys.lower.assign(n, 0.0);
-    sys.diag.assign(n, 0.0);
-    sys.upper.assign(n, 0.0);
-    sys.rhs.assign(n, 0.0);
+/// @brief Assemble actual P1 diffusion/reaction/load contributions without boundary terms.
+/// @param mesh Valid finite increasing interval mesh, borrowed unchanged.
+/// @param p Prechecked scalar/per-element diffusion coefficient.
+/// @param q Prechecked scalar/per-element reaction coefficient.
+/// @param f Spatial source, called three times per element; exceptions propagate.
+/// @return Owned unconditioned tridiagonal system; O(N) work/storage.
+/// @throws std::bad_alloc If coefficient/load storage cannot be allocated.
+TridiagonalSystem assemble_interior(
+    const Mesh1D&              mesh,
+    const std::vector<double>& p,
+    const std::vector<double>& q,
+    ScalarField1D&             f) {
+  const std::size_t n  = mesh.num_nodes();
+  const std::size_t ne = mesh.num_elements();
+  TridiagonalSystem sys;
+  sys.lower.assign(n, 0.0);
+  sys.diag.assign(n, 0.0);
+  sys.upper.assign(n, 0.0);
+  sys.rhs.assign(n, 0.0);
 
-    for (std::size_t e = 0; e < ne; ++e) {
-        const double x_l = mesh.nodes[e];
-        const double x_r = mesh.nodes[e + 1];
-        const double h = x_r - x_l;
-        const double p_e = resolve_coefficient(p, e);
-        const double q_e = resolve_coefficient(q, e);
+  for (std::size_t e = 0; e < ne; ++e) {
+    const double x_l = mesh.nodes[e];
+    const double x_r = mesh.nodes[e + 1];
+    const double h   = x_r - x_l;
+    const double p_e = resolve_coefficient(p, e);
+    const double q_e = resolve_coefficient(q, e);
 
-        // Local stiffness (p/h * [[1,-1],[-1,1]]) plus local mass (q*h/6 * [[2,1],[1,2]]).
-        const double k_diag = p_e / h;
-        const double m_diag = q_e * h / 3.0;
-        const double m_off = q_e * h / 6.0;
+    // Local stiffness (p/h * [[1,-1],[-1,1]]) plus local mass (q*h/6 * [[2,1],[1,2]]).
+    const double k_diag = p_e / h;
+    const double m_diag = q_e * h / 3.0;
+    const double m_off  = q_e * h / 6.0;
 
-        sys.diag[e] += k_diag + m_diag;
-        sys.diag[e + 1] += k_diag + m_diag;
-        sys.upper[e] += -k_diag + m_off; // coupling node e -> e+1
-        sys.lower[e + 1] += -k_diag + m_off; // coupling node e+1 -> e
+    sys.diag[e] += k_diag + m_diag;
+    sys.diag[e + 1] += k_diag + m_diag;
+    sys.upper[e] += -k_diag + m_off;     // coupling node e -> e+1
+    sys.lower[e + 1] += -k_diag + m_off; // coupling node e+1 -> e
 
-        // Local load vector via 3-point Gauss-Legendre quadrature.
-        const double mid = 0.5 * (x_l + x_r);
-        const double half = 0.5 * h;
-        double f_left = 0.0, f_right = 0.0;
-        for (int g = 0; g < 3; ++g) {
-            const double x = mid + half * kGaussPoints[g];
-            const double w = kGaussWeights[g] * half;
-            const double fx = f.evaluate(x);
-            f_left += w * fx * (x_r - x) / h;
-            f_right += w * fx * (x - x_l) / h;
-        }
-        sys.rhs[e] += f_left;
-        sys.rhs[e + 1] += f_right;
+    // Local load vector via 3-point Gauss-Legendre quadrature.
+    const double mid    = 0.5 * (x_l + x_r);
+    const double half   = 0.5 * h;
+    double       f_left = 0.0, f_right = 0.0;
+    for (int g = 0; g < 3; ++g) {
+      const double x  = mid + half * kGaussPoints[g];
+      const double w  = kGaussWeights[g] * half;
+      const double fx = f.evaluate(x);
+      f_left += w * fx * (x_r - x) / h;
+      f_right += w * fx * (x - x_l) / h;
     }
+    sys.rhs[e] += f_left;
+    sys.rhs[e + 1] += f_right;
+  }
 
-    return sys;
+  return sys;
 }
 
-// Applies the left/right boundary conditions in place, keeping the system tridiagonal and
-// symmetric (Dirichlet elimination folds the removed row/column into the neighbor's rhs).
-void apply_boundary_conditions(TridiagonalSystem& sys, const BoundaryCondition1D& left,
-                                const BoundaryCondition1D& right) {
-    const std::size_t n = sys.diag.size();
-    const std::size_t last = n - 1;
+/// @brief Apply natural terms and symmetric Dirichlet row/column elimination in place.
+/// @param sys Owned system with at least two rows, modified in place.
+/// @param left Supported finite left boundary data, outward normal -1.
+/// @param right Supported finite right boundary data, outward normal +1.
+void apply_boundary_conditions(
+    TridiagonalSystem&         sys,
+    const BoundaryCondition1D& left,
+    const BoundaryCondition1D& right) {
+  const std::size_t n    = sys.diag.size();
+  const std::size_t last = n - 1;
 
-    // Natural (Neumann/Robin) terms first -- both are additive and safe to apply before or
-    // after Dirichlet elimination, but must be applied before we potentially overwrite a
-    // Dirichlet row below.
-    if (left.type == BCType::Neumann) {
-        sys.rhs[0] += left.value;
-    } else if (left.type == BCType::Robin) {
-        sys.diag[0] += left.robin_coefficient;
-        sys.rhs[0] += left.robin_coefficient * left.value;
-    }
-    if (right.type == BCType::Neumann) {
-        sys.rhs[last] += right.value;
-    } else if (right.type == BCType::Robin) {
-        sys.diag[last] += right.robin_coefficient;
-        sys.rhs[last] += right.robin_coefficient * right.value;
-    }
+  // Natural (Neumann/Robin) terms first -- both are additive and safe to apply before or
+  // after Dirichlet elimination, but must be applied before we potentially overwrite a
+  // Dirichlet row below.
+  if (left.type == BCType::Neumann) {
+    sys.rhs[0] += left.value;
+  } else if (left.type == BCType::Robin) {
+    sys.diag[0] += left.robin_coefficient;
+    sys.rhs[0] += left.robin_coefficient * left.value;
+  }
+  if (right.type == BCType::Neumann) {
+    sys.rhs[last] += right.value;
+  } else if (right.type == BCType::Robin) {
+    sys.diag[last] += right.robin_coefficient;
+    sys.rhs[last] += right.robin_coefficient * right.value;
+  }
 
-    if (left.type == BCType::Dirichlet) {
-        if (n > 1) {
-            sys.rhs[1] -= sys.lower[1] * left.value;
-            sys.lower[1] = 0.0;
-        }
-        sys.diag[0] = 1.0;
-        sys.upper[0] = 0.0;
-        sys.rhs[0] = left.value;
+  if (left.type == BCType::Dirichlet) {
+    if (n > 1) {
+      sys.rhs[1] -= sys.lower[1] * left.value;
+      sys.lower[1] = 0.0;
     }
-    if (right.type == BCType::Dirichlet) {
-        if (n > 1) {
-            sys.rhs[last - 1] -= sys.upper[last - 1] * right.value;
-            sys.upper[last - 1] = 0.0;
-        }
-        sys.diag[last] = 1.0;
-        sys.lower[last] = 0.0;
-        sys.rhs[last] = right.value;
+    sys.diag[0]  = 1.0;
+    sys.upper[0] = 0.0;
+    sys.rhs[0]   = left.value;
+  }
+  if (right.type == BCType::Dirichlet) {
+    if (n > 1) {
+      sys.rhs[last - 1] -= sys.upper[last - 1] * right.value;
+      sys.upper[last - 1] = 0.0;
     }
+    sys.diag[last]  = 1.0;
+    sys.lower[last] = 0.0;
+    sys.rhs[last]   = right.value;
+  }
 }
 
-std::vector<double> thomas_solve(std::vector<double> lower, std::vector<double> diag, std::vector<double> upper,
-                                  std::vector<double> rhs) {
-    const std::size_t n = diag.size();
-    for (std::size_t i = 1; i < n; ++i) {
-        const double m = lower[i] / diag[i - 1];
-        diag[i] -= m * upper[i - 1];
-        rhs[i] -= m * rhs[i - 1];
-    }
-    std::vector<double> u(n);
-    u[n - 1] = rhs[n - 1] / diag[n - 1];
-    for (std::size_t i = n - 1; i-- > 0;) {
-        u[i] = (rhs[i] - upper[i] * u[i + 1]) / diag[i];
-    }
-    return u;
+/// @brief Solve a nonempty tridiagonal system by Thomas forward elimination/back substitution.
+/// Requires finite arithmetic/nonzero pivots; no pivoting or conditioning certificate.
+/// Owns and modifies argument copies; O(N) work and auxiliary storage.
+/// @param lower Owned subdiagonal, aligned with diag.
+/// @param diag Owned diagonal, modified by elimination.
+/// @param upper Owned superdiagonal, aligned with diag.
+/// @param rhs Owned load, modified by elimination.
+/// @return Owned nodal solution.
+/// @throws std::bad_alloc If argument copies or output cannot be allocated.
+std::vector<double> thomas_solve(
+    std::vector<double> lower,
+    std::vector<double> diag,
+    std::vector<double> upper,
+    std::vector<double> rhs) {
+  const std::size_t n = diag.size();
+  for (std::size_t i = 1; i < n; ++i) {
+    const double m = lower[i] / diag[i - 1];
+    diag[i] -= m * upper[i - 1];
+    rhs[i] -= m * rhs[i - 1];
+  }
+  std::vector<double> u(n);
+  u[n - 1] = rhs[n - 1] / diag[n - 1];
+  for (std::size_t i = n - 1; i-- > 0;) {
+    u[i] = (rhs[i] - upper[i] * u[i + 1]) / diag[i];
+  }
+  return u;
 }
 
+/// @brief Zero spatial source, with no parameter storage.
 class ZeroSource : public ScalarField1D {
-public:
-    double evaluate(double) override { return 0.0; }
+ public:
+  /// @brief Return the constant zero source without state or allocation.
+  /// @param x Unused spatial coordinate.
+  /// @return Zero.
+  double evaluate(double x) override {
+    (void)x;
+    return 0.0;
+  }
 };
 
+/// @brief Owned constant spatial source.
 class ConstantSource : public ScalarField1D {
-public:
-    explicit ConstantSource(double c) : c_(c) {}
-    double evaluate(double) override { return c_; }
+ public:
+  /// @brief Copy the constant source parameter.
+  /// @param c Finite constant value in source units.
+  explicit ConstantSource(double c) : c_(c) {}
+  /// @brief Read the constant source value.
+  /// @param x Unused spatial coordinate.
+  /// @return Owned constant value.
+  double evaluate(double x) override {
+    (void)x;
+    return c_;
+  }
 
-private:
-    double c_;
+ private:
+  double c_; ///< Owned constant source value.
 };
 
+/// @brief Owned affine spatial source.
 class LinearSource : public ScalarField1D {
-public:
-    LinearSource(double m, double c) : m_(m), c_(c) {}
-    double evaluate(double x) override { return m_ * x + c_; }
+ public:
+  /// @brief Copy affine source slope and intercept.
+  /// @param m Slope in source-per-coordinate units.
+  /// @param c Intercept in source units.
+  LinearSource(double m, double c) : m_(m), c_(c) {}
+  /// @brief Evaluate the original affine expression at one coordinate.
+  /// @param x Finite spatial coordinate.
+  /// @return m*x+c with ordinary floating arithmetic.
+  double evaluate(double x) override { return m_ * x + c_; }
 
-private:
-    double m_, c_;
+ private:
+  double m_; ///< Owned slope.
+  double c_; ///< Owned intercept.
 };
 
+/// @brief Owned ascending-power polynomial spatial source.
 class PolynomialSource : public ScalarField1D {
-public:
-    explicit PolynomialSource(std::vector<double> coeffs) : coeffs_(std::move(coeffs)) {}
-    double evaluate(double x) override {
-        double result = 0.0;
-        double power = 1.0;
-        for (double c : coeffs_) {
-            result += c * power;
-            power *= x;
-        }
-        return result;
+ public:
+  /// @brief Own coefficients in increasing power order.
+  /// @param coeffs Source coefficients; empty denotes zero.
+  explicit PolynomialSource(std::vector<double> coeffs) : coeffs_(std::move(coeffs)) {}
+  /// @brief Evaluate the original ascending-power polynomial sum.
+  /// @param x Finite spatial coordinate.
+  /// @return Sum(coeffs[i]*x^i), zero for an empty coefficient vector.
+  double evaluate(double x) override {
+    double result = 0.0;
+    double power  = 1.0;
+    for (double c : coeffs_) {
+      result += c * power;
+      power *= x;
     }
+    return result;
+  }
 
-private:
-    std::vector<double> coeffs_;
+ private:
+  std::vector<double> coeffs_; ///< Owned coefficients in increasing power order.
 };
 
+/// @brief Owned amplitude/frequency/phase sinusoidal spatial source.
 class SineSource : public ScalarField1D {
-public:
-    SineSource(double amplitude, double freq, double phase) : amplitude_(amplitude), freq_(freq), phase_(phase) {}
-    double evaluate(double x) override { return amplitude_ * std::sin(freq_ * x + phase_); }
+ public:
+  /// @brief Copy sinusoidal source amplitude, angular frequency and phase.
+  /// @param amplitude Source amplitude.
+  /// @param freq Angular frequency per coordinate unit.
+  /// @param phase Phase in radians.
+  SineSource(double amplitude, double freq, double phase)
+      : amplitude_(amplitude), freq_(freq), phase_(phase) {}
+  /// @brief Evaluate the original sinusoidal expression.
+  /// @param x Finite spatial coordinate.
+  /// @return amplitude*sin(freq*x+phase).
+  double evaluate(double x) override { return amplitude_ * std::sin(freq_ * x + phase_); }
 
-private:
-    double amplitude_, freq_, phase_;
+ private:
+  double amplitude_; ///< Owned amplitude.
+  double freq_;      ///< Owned angular frequency.
+  double phase_;     ///< Owned phase in radians.
 };
 
+/// @brief Read a positional source parameter or its documented trailing default.
+/// @param params Borrowed parameter vector.
+/// @param index Requested zero-based position.
+/// @param fallback Value when that position is absent.
+/// @return Existing parameter by value, otherwise fallback.
 double param_or_default(const std::vector<double>& params, std::size_t index, double fallback) {
-    return index < params.size() ? params[index] : fallback;
+  return index < params.size() ? params[index] : fallback;
+}
+
+/// @brief Construct one local named source and invoke the selected solver synchronously.
+/// Uses the original five source classes/defaults for both steady and transient
+/// entry points. No source reference may escape; the consumer returns an owned result.
+/// @tparam Consume Callable accepting ScalarField1D& and returning one owned result type.
+/// @param source Exact native source name.
+/// @param source_params Borrowed positional source data; omitted entries use defaults.
+/// @param consume Synchronous solve operation; its exceptions propagate.
+/// @return The consumer's owned steady or transient result.
+/// @throws std::invalid_argument For an unknown source name.
+/// @throws std::bad_alloc If copied polynomial/source or solver storage cannot be allocated.
+template<class Consume>
+auto with_builtin_source(
+    const std::string&         source,
+    const std::vector<double>& source_params,
+    Consume                    consume) {
+  if (source == "zero") {
+    ZeroSource f;
+    return consume(f);
+  }
+  if (source == "constant") {
+    ConstantSource f(param_or_default(source_params, 0, 1.0));
+    return consume(f);
+  }
+  if (source == "linear") {
+    LinearSource f(
+        param_or_default(source_params, 0, 1.0), param_or_default(source_params, 1, 0.0));
+    return consume(f);
+  }
+  if (source == "polynomial") {
+    PolynomialSource f(source_params);
+    return consume(f);
+  }
+  if (source == "sine") {
+    SineSource f(
+        param_or_default(source_params, 0, 1.0),
+        param_or_default(source_params, 1, 1.0),
+        param_or_default(source_params, 2, 0.0));
+    return consume(f);
+  }
+  throw std::invalid_argument("FEM1D: unknown source '" + source + "'");
+}
+
+/// @brief Validate finite positive time controls and representable complete output counts.
+/// Checks before mass assembly, output allocation or source callbacks; no optional
+/// quota is introduced. A rounded zero ratio still requires one actual advance.
+/// @param nodes Number of existing spatial nodes, required at least two.
+/// @param end Positive finite requested final time.
+/// @param dt Positive finite nominal step.
+/// @return Safe upper bound on actual advances; rounding may reach end earlier.
+/// @throws std::invalid_argument For too few nodes or malformed time controls.
+/// @throws std::length_error If division/frame/container/total-scalar counts cannot be represented.
+std::size_t checked_time_steps(std::size_t nodes, double end, double dt) {
+  if (nodes < 2 || !std::isfinite(end) || !std::isfinite(dt) || end <= 0 || dt <= 0)
+    throw std::invalid_argument(
+        "FEM1D transient needs at least two nodes and positive finite times");
+  if (dt < 1 && end > std::numeric_limits<double>::max() * dt)
+    throw std::length_error("FEM1D transient frame ratio exceeds finite range");
+  const double count = std::max(1., std::ceil(end / dt));
+  const auto   maximum =
+      std::min(std::vector<double>{}.max_size(), std::vector<std::vector<double>>{}.max_size());
+  if (!std::isfinite(count) || count >= static_cast<double>(maximum))
+    throw std::length_error("FEM1D transient frame count exceeds vector capacity");
+  const auto steps = static_cast<std::size_t>(count);
+  if (steps + 1 > std::numeric_limits<std::size_t>::max() / nodes)
+    throw std::length_error("FEM1D transient total scalar count exceeds index range");
+  return steps;
 }
 
 } // namespace
 
-FEM1DResult FEM1D::solve(const Mesh1D& mesh, const std::vector<double>& p, const std::vector<double>& q,
-                          ScalarField1D& f, const BoundaryCondition1D& left, const BoundaryCondition1D& right) {
-    const std::size_t ne = mesh.num_elements();
-    check_coefficient_size(p, ne, "p");
-    check_coefficient_size(q, ne, "q");
+/// @brief Assemble, impose boundary conditions and solve the canonical steady P1 system.
+/// @param mesh Borrowed valid increasing mesh.
+/// @param p Borrowed scalar/per-element diffusion values.
+/// @param q Borrowed scalar/per-element reaction values.
+/// @param f Spatial source, invoked during actual quadrature.
+/// @param left Left boundary data.
+/// @param right Right boundary data.
+/// @return Owned nodal result; public declaration specifies preconditions/errors.
+FEM1DResult FEM1D::solve(
+    const Mesh1D&              mesh,
+    const std::vector<double>& p,
+    const std::vector<double>& q,
+    ScalarField1D&             f,
+    const BoundaryCondition1D& left,
+    const BoundaryCondition1D& right) {
+  const std::size_t ne = mesh.num_elements();
+  check_coefficient_size(p, ne, "p");
+  check_coefficient_size(q, ne, "q");
 
+  TridiagonalSystem sys = assemble_interior(mesh, p, q, f);
+  apply_boundary_conditions(sys, left, right);
+
+  FEM1DResult result;
+  result.nodes = mesh.nodes;
+  result.u     = thomas_solve(sys.lower, sys.diag, sys.upper, sys.rhs);
+  return result;
+}
+
+/// @brief Solve with one locally constructed named source through the canonical steady loop.
+/// @param mesh Borrowed valid interval mesh.
+/// @param p Borrowed scalar/per-element diffusion coefficient.
+/// @param q Borrowed scalar/per-element reaction coefficient.
+/// @param source Exact native source name.
+/// @param source_params Positional source data with documented trailing defaults.
+/// @param left Left boundary condition.
+/// @param right Right boundary condition.
+/// @return Owned nodal solution; public declaration gives full preconditions/errors.
+FEM1DResult FEM1D::solve_builtin(
+    const Mesh1D&              mesh,
+    const std::vector<double>& p,
+    const std::vector<double>& q,
+    const std::string&         source,
+    const std::vector<double>& source_params,
+    const BoundaryCondition1D& left,
+    const BoundaryCondition1D& right) {
+  // The visitor borrows the local source only for this synchronous solve.
+  return with_builtin_source(source, source_params, [&](ScalarField1D& field) {
+    return solve(mesh, p, q, field, left, right);
+  });
+}
+
+/// @brief Advance the actual backward-Euler system with finite controls and unique terminal time.
+/// @param mesh Borrowed valid interval mesh.
+/// @param p Borrowed scalar/per-element diffusion values.
+/// @param q Borrowed scalar/per-element reaction values.
+/// @param f Spatial source reevaluated during each actual step's assembly.
+/// @param left Fixed left boundary data.
+/// @param right Fixed right boundary data.
+/// @param u0 Borrowed initial nodal values, retained as supplied in frame0.
+/// @param t_end Positive finite final time.
+/// @param dt Positive finite nominal step, shortened at the endpoint.
+/// @return Owned actual time history; public declaration specifies errors/preconditions.
+FEM1DTimeSeries FEM1D::solve_transient(
+    const Mesh1D&              mesh,
+    const std::vector<double>& p,
+    const std::vector<double>& q,
+    ScalarField1D&             f,
+    const BoundaryCondition1D& left,
+    const BoundaryCondition1D& right,
+    const std::vector<double>& u0,
+    double                     t_end,
+    double                     dt) {
+  const std::size_t n  = mesh.num_nodes();
+  const std::size_t ne = mesh.num_elements();
+  check_coefficient_size(p, ne, "p");
+  check_coefficient_size(q, ne, "q");
+  if (u0.size() != n) {
+    throw std::invalid_argument("FEM1D::solve_transient: u0 must have one value per mesh node");
+  }
+  const std::size_t num_steps = checked_time_steps(n, t_end, dt);
+
+  // Pure mass matrix (coefficient 1, not q) for the u_t term, assembled once since the mesh
+  // never changes across time steps.
+  std::vector<double> mass_lower(n, 0.0), mass_diag(n, 0.0), mass_upper(n, 0.0);
+  for (std::size_t e = 0; e < ne; ++e) {
+    const double h = mesh.element_length(e);
+    mass_diag[e] += h / 3.0;
+    mass_diag[e + 1] += h / 3.0;
+    mass_upper[e] += h / 6.0;
+    mass_lower[e + 1] += h / 6.0;
+  }
+
+  FEM1DTimeSeries series;
+  series.nodes = mesh.nodes;
+  series.times.reserve(num_steps + 1);
+  series.u.reserve(num_steps + 1);
+  series.times.push_back(0.0);
+  series.u.push_back(u0);
+
+  std::vector<double> u_prev = u0;
+  for (std::size_t step = 1; step <= num_steps; ++step) {
+    const double index = static_cast<double>(step);
+    const double t =
+        step == num_steps || (dt > 1 && index > std::numeric_limits<double>::max() / dt)
+            ? t_end
+            : std::min(index * dt, t_end);
+    if (!(t > series.times.back()))
+      throw std::overflow_error("FEM1D transient rounded time cannot advance");
+    const double actual_dt = t - series.times.back();
+
+    // (M/dt + K) u^{n+1} = M/dt u^n + F, where K/F come from the same steady-state
+    // assembly (stiffness + reaction + boundary terms) used by solve().
     TridiagonalSystem sys = assemble_interior(mesh, p, q, f);
+    for (std::size_t i = 0; i < n; ++i) {
+      sys.diag[i] += mass_diag[i] / actual_dt;
+      if (i > 0)
+        sys.lower[i] += mass_lower[i] / actual_dt;
+      if (i + 1 < n)
+        sys.upper[i] += mass_upper[i] / actual_dt;
+    }
+
+    std::vector<double> mass_dot_u(n, 0.0);
+    for (std::size_t i = 0; i < n; ++i) {
+      mass_dot_u[i] += mass_diag[i] * u_prev[i];
+      if (i > 0)
+        mass_dot_u[i] += mass_lower[i] * u_prev[i - 1];
+      if (i + 1 < n)
+        mass_dot_u[i] += mass_upper[i] * u_prev[i + 1];
+    }
+    for (std::size_t i = 0; i < n; ++i) {
+      sys.rhs[i] += mass_dot_u[i] / actual_dt;
+    }
+
     apply_boundary_conditions(sys, left, right);
 
-    FEM1DResult result;
-    result.nodes = mesh.nodes;
-    result.u = thomas_solve(sys.lower, sys.diag, sys.upper, sys.rhs);
-    return result;
+    std::vector<double> u_next = thomas_solve(sys.lower, sys.diag, sys.upper, sys.rhs);
+    series.times.push_back(t);
+    series.u.push_back(u_next);
+    u_prev = std::move(u_next);
+    if (t == t_end)
+      break;
+  }
+
+  return series;
 }
 
-FEM1DResult FEM1D::solve_builtin(const Mesh1D& mesh, const std::vector<double>& p, const std::vector<double>& q,
-                                  const std::string& source, const std::vector<double>& source_params,
-                                  const BoundaryCondition1D& left, const BoundaryCondition1D& right) {
-    if (source == "zero") {
-        ZeroSource f;
-        return solve(mesh, p, q, f, left, right);
-    }
-    if (source == "constant") {
-        ConstantSource f(param_or_default(source_params, 0, 1.0));
-        return solve(mesh, p, q, f, left, right);
-    }
-    if (source == "linear") {
-        LinearSource f(param_or_default(source_params, 0, 1.0), param_or_default(source_params, 1, 0.0));
-        return solve(mesh, p, q, f, left, right);
-    }
-    if (source == "polynomial") {
-        PolynomialSource f(source_params);
-        return solve(mesh, p, q, f, left, right);
-    }
-    if (source == "sine") {
-        SineSource f(param_or_default(source_params, 0, 1.0), param_or_default(source_params, 1, 1.0),
-                     param_or_default(source_params, 2, 0.0));
-        return solve(mesh, p, q, f, left, right);
-    }
-    throw std::invalid_argument("FEM1D::solve_builtin: unknown source '" + source + "'");
-}
-
-FEM1DTimeSeries FEM1D::solve_transient(const Mesh1D& mesh, const std::vector<double>& p,
-                                        const std::vector<double>& q, ScalarField1D& f,
-                                        const BoundaryCondition1D& left, const BoundaryCondition1D& right,
-                                        const std::vector<double>& u0, double t_end, double dt) {
-    const std::size_t n = mesh.num_nodes();
-    const std::size_t ne = mesh.num_elements();
-    check_coefficient_size(p, ne, "p");
-    check_coefficient_size(q, ne, "q");
-    if (u0.size() != n) {
-        throw std::invalid_argument("FEM1D::solve_transient: u0 must have one value per mesh node");
-    }
-    if (dt <= 0.0) {
-        throw std::invalid_argument("FEM1D::solve_transient: dt must be positive");
-    }
-    if (t_end <= 0.0) {
-        throw std::invalid_argument("FEM1D::solve_transient: t_end must be positive");
-    }
-
-    // Pure mass matrix (coefficient 1, not q) for the u_t term, assembled once since the mesh
-    // never changes across time steps.
-    std::vector<double> mass_lower(n, 0.0), mass_diag(n, 0.0), mass_upper(n, 0.0);
-    for (std::size_t e = 0; e < ne; ++e) {
-        const double h = mesh.element_length(e);
-        mass_diag[e] += h / 3.0;
-        mass_diag[e + 1] += h / 3.0;
-        mass_upper[e] += h / 6.0;
-        mass_lower[e + 1] += h / 6.0;
-    }
-
-    const std::size_t num_steps = static_cast<std::size_t>(std::ceil(t_end / dt));
-
-    FEM1DTimeSeries series;
-    series.nodes = mesh.nodes;
-    series.times.reserve(num_steps + 1);
-    series.u.reserve(num_steps + 1);
-    series.times.push_back(0.0);
-    series.u.push_back(u0);
-
-    std::vector<double> u_prev = u0;
-    for (std::size_t step = 1; step <= num_steps; ++step) {
-        const double t = std::min(static_cast<double>(step) * dt, t_end);
-        const double actual_dt = t - series.times.back();
-
-        // (M/dt + K) u^{n+1} = M/dt u^n + F, where K/F come from the same steady-state
-        // assembly (stiffness + reaction + boundary terms) used by solve().
-        TridiagonalSystem sys = assemble_interior(mesh, p, q, f);
-        for (std::size_t i = 0; i < n; ++i) {
-            sys.diag[i] += mass_diag[i] / actual_dt;
-            if (i > 0) sys.lower[i] += mass_lower[i] / actual_dt;
-            if (i + 1 < n) sys.upper[i] += mass_upper[i] / actual_dt;
-        }
-
-        std::vector<double> mass_dot_u(n, 0.0);
-        for (std::size_t i = 0; i < n; ++i) {
-            mass_dot_u[i] += mass_diag[i] * u_prev[i];
-            if (i > 0) mass_dot_u[i] += mass_lower[i] * u_prev[i - 1];
-            if (i + 1 < n) mass_dot_u[i] += mass_upper[i] * u_prev[i + 1];
-        }
-        for (std::size_t i = 0; i < n; ++i) {
-            sys.rhs[i] += mass_dot_u[i] / actual_dt;
-        }
-
-        apply_boundary_conditions(sys, left, right);
-
-        std::vector<double> u_next = thomas_solve(sys.lower, sys.diag, sys.upper, sys.rhs);
-        series.times.push_back(t);
-        series.u.push_back(u_next);
-        u_prev = std::move(u_next);
-    }
-
-    return series;
+/// @brief Invoke the actual transient loop with the same local named-source visitor as steady
+/// solves.
+/// @param mesh Borrowed valid interval mesh.
+/// @param p Borrowed scalar/per-element diffusion coefficient.
+/// @param q Borrowed scalar/per-element reaction coefficient.
+/// @param source Exact native source name.
+/// @param source_params Positional source parameters with documented defaults.
+/// @param left Fixed left boundary condition.
+/// @param right Fixed right boundary condition.
+/// @param u0 Borrowed initial nodal values.
+/// @param t_end Positive finite final time.
+/// @param dt Positive finite nominal step.
+/// @return Owned actual time history; public declaration gives full preconditions/errors.
+FEM1DTimeSeries FEM1D::solve_transient_builtin(
+    const Mesh1D&              mesh,
+    const std::vector<double>& p,
+    const std::vector<double>& q,
+    const std::string&         source,
+    const std::vector<double>& source_params,
+    const BoundaryCondition1D& left,
+    const BoundaryCondition1D& right,
+    const std::vector<double>& u0,
+    double                     t_end,
+    double                     dt) {
+  // The visitor never retains the local source; the canonical loop owns all output.
+  return with_builtin_source(source, source_params, [&](ScalarField1D& field) {
+    return solve_transient(mesh, p, q, field, left, right, u0, t_end, dt);
+  });
 }
 
 } // namespace datamunge::fem

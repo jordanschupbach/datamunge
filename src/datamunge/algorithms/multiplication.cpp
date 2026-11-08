@@ -246,27 +246,4 @@ std::string ntt_mul(const std::string& a, const std::string& b) {
     return to_string(r);
 }
 
-BoothResult booth_multiply(std::int32_t multiplicand, std::int32_t multiplier) {
-    // Radix-2 Booth: scan the multiplier's bits with an implicit -1 bit below
-    // the LSB, acting on each 0->1 (subtract) / 1->0 (add) transition of the
-    // running (b_i, b_{i-1}) pair. The accumulator is the exact product.
-    const std::int64_t m = multiplicand;
-    std::int64_t       acc = 0;
-    BoothResult        out;
-    int                prev = 0; // b_{-1}
-    for (int i = 0; i < 32; ++i) {
-        const int cur = (static_cast<std::uint32_t>(multiplier) >> i) & 1u;
-        if (prev == 1 && cur == 0) { // 10 : add multiplicand * 2^i
-            acc += m << i;
-            ++out.additions;
-        } else if (prev == 0 && cur == 1) { // 01 : subtract multiplicand * 2^i
-            acc -= m << i;
-            ++out.subtractions;
-        }
-        prev = cur;
-    }
-    out.product = acc;
-    return out;
-}
-
 } // namespace datamunge::algorithms

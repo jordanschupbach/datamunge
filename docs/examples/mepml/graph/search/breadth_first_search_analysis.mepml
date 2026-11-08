@@ -1,0 +1,264 @@
+//? Title: Breadth-First Search: FIFO Layers and Minimum-Edge Paths
+//? Subtitle: Native queue records, first-discovery predecessors and the cost of recording a frontier
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Breadth-first search removes vertices from a FIFO queue, marking each vertex
+when it is first enqueued. That ordering makes every discovered distance a
+minimum number of edges from the start. We inspect a small graph's actual
+queue and predecessor choices, retain the original three-vertex example,
+and distinguish a discovered vertex from one already dequeued. Generated
+four-neighbour grids provide a closed-form distance check and exact adjacency
+work counts. Path, distance and queue records come from one canonical C++ loop.
+)
+
+\toc
+
+> A small graph: the first predecessor fixes the path
+
+Start at vertex zero and seek vertex five. The start enqueues one before two.
+They subsequently enqueue three and four, so three is processed first and
+claims five's predecessor. When four later reaches five, that vertex is
+already marked and is not enqueued again. Both routes have three edges;
+the input adjacency order selects path 0–1–3–5 deterministically.
+
+The graph shows that selected path in green. Node distances and every row of
+the table are read from the native trace. Queue snapshots show the active FIFO
+immediately before removal; discoveries are the new entries appended by that
+vertex. The final goal dequeue is included but its successors are not expanded.
+
+```{cpp, results="markdown", file="figures/bfs_queue_path.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1},{0,2},{1,3},{2,4},{4,5},{3,5}};
+  const auto trace=dm::algorithms::breadth_first_search_trace(6,edges,0,5);
+  const std::vector<dm::graphics::DiagramPoint> position{{0,0},{4,1.7},{4,-1.7},{8,1.7},{8,-1.7},{12,0}};
+  dm::graphics::Diagram diagram(65,1100);
+  for (std::size_t v=0;v<position.size();++v) {
+    dm::graphics::DiagramNodeStyle style;style.width=1.8;style.height=1.2;
+    if (std::find(trace.result.path.begin(),trace.result.path.end(),v)!=trace.result.path.end()) style.fill={220,252,231};
+    diagram.node(std::format("v{}",v),position[v],std::format("v{}\nd = {}",v,trace.distance[v]),style);
+  }
+  for (const auto& [u,v]:edges) {
+    bool selected=false;
+    for (std::size_t i=1;i<trace.result.path.size();++i)
+      if (trace.result.path[i-1]==u && trace.result.path[i]==v) selected=true;
+    dm::graphics::DiagramStroke stroke;stroke.color=selected?dm::RGB{22,163,74}:dm::RGB{148,163,184};stroke.width=selected?3:2;
+    diagram.edge(std::format("v{}",u),std::format("v{}",v),"",stroke);
+  }
+  diagram.text({6,-3.4},std::format("minimum-edge path: {}; d counts edges, not vertices",trace.result.path))
+      .save_svg("build/bfs_queue_path.svg");
+  std::print("| removed vertex | depth | queue before removal | newly enqueued | adjacency entries inspected | goal stop |\n"
+             "| ---: | ---: | :--- | :--- | ---: | :--- |\n");
+  for (const auto& step:trace.steps)
+    std::print("| {} | {} | {} | {} | {} | {} |\n",step.vertex,step.depth,step.queue_before,step.discovered,step.edges_examined,step.reached_goal);
+  std::print("\nPredecessors: {} (sentinel 6). Layer counts: {}. Maximum queue length: {}.\n",
+      trace.predecessor,trace.layer_counts,trace.max_queue_size);
+}
+```
+// result_begin: markdown
+| removed vertex | depth | queue before removal | newly enqueued | adjacency entries inspected | goal stop |
+| ---: | ---: | :--- | :--- | ---: | :--- |
+| 0 | 0 | [0] | [1, 2] | 2 | false |
+| 1 | 1 | [1, 2] | [3] | 1 | false |
+| 2 | 1 | [2, 3] | [4] | 1 | false |
+| 3 | 2 | [3, 4] | [5] | 1 | false |
+| 4 | 2 | [4, 5] | [] | 1 | false |
+| 5 | 3 | [5] | [] | 0 | true |
+
+Predecessors: [6, 0, 0, 1, 2, 3] (sentinel 6). Layer counts: [1, 2, 2, 1]. Maximum queue length: 2.
+\image(figures/bfs_queue_path.svg)
+// result_end
+\caption(Marking on enqueue prevents parallel routes from creating repeated queue entries. Edge 4–5 appears earlier in the input list than 3–5, but vertex three is processed first.)
+\alttext(A directed graph splits into routes zero-one-three-five and zero-two-four-five. Both have three edges. The first route is highlighted because vertex three discovers the goal before vertex four is removed.)
+
+> Why first discovery gives a shortest-hop distance
+
+The start has distance zero. When a vertex at distance k is removed, each
+new neighbour is assigned distance k+1 and appended to the queue's tail.
+All earlier entries remain ahead of those discoveries. Inductively, dequeue
+distances never decrease, and a vertex cannot first receive distance k+1 if
+a shorter path exists: its predecessor on that shorter path would already
+have been removed and would have discovered it earlier.
+
+Store the first-discovery predecessor once and follow those links backwards
+from the goal to reconstruct a minimum-edge path. This solves a unit-cost
+problem. It does not minimise arbitrary edge weights. Different input orders
+can select different equally short paths while preserving the hop distance.
+Loops and parallel edges are allowed; they are inspected but cannot re-enqueue
+vertices whose distances have already been assigned.
+
+> Original example and stopping-time controls
+
+The original chain has three vertices and edges 0→1→2. Its returned path has
+three vertices and two edges. Input is directed by default; setting directed
+false inserts both orientations. An unreachable goal returns an empty path,
+while start=goal returns the single starting vertex after its dequeue.
+
+The final control shows why the trace's distance sentinel means undiscovered
+at stopping time. For edges 0→1, 0→2, 1→3 and 2→4, seeking goal two removes
+zero, one and two. Vertex three has already been discovered at depth two and
+remains queued. Vertex four is still undiscovered because the goal's outgoing
+edge is not expanded, even though four is reachable in the full graph.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto original=dm::algorithms::breadth_first_search(3,{{0,1},{1,2}},0,2);
+  std::print("Original path: {}; vertex count {}; edge count {}.\n\n",
+      original.path,original.path.size(),original.path.size()-1);
+  struct Example {std::string name;std::size_t n;std::vector<std::pair<std::size_t,std::size_t>> edges;
+    std::size_t start,goal;bool directed;};
+  const std::vector<Example> examples{
+    {"original directed chain",3,{{0,1},{1,2}},0,2,true},
+    {"reverse directed chain",3,{{0,1},{1,2}},2,0,true},
+    {"reverse undirected chain",3,{{0,1},{1,2}},2,0,false},
+    {"start equals goal",3,{{0,1},{1,2}},1,1,true},
+    {"loops, duplicates, unreachable goal",4,{{0,0},{0,1},{0,1},{1,1},{1,2},{2,0}},0,3,false},
+    {"goal pop leaves a deeper discovery",5,{{0,1},{0,2},{1,3},{2,4}},0,2,true}};
+  std::print("| case | found | path | dequeue order | discovered distances (n = sentinel) | edge inspections |\n"
+             "| :--- | :--- | :--- | :--- | :--- | ---: |\n");
+  for (const auto& example:examples) {
+    const auto trace=dm::algorithms::breadth_first_search_trace(example.n,example.edges,example.start,example.goal,example.directed);
+    std::print("| {} | {} | {} | {} | {} | {} |\n",example.name,trace.result.found,trace.result.path,
+        trace.result.order,trace.distance,trace.edges_examined);
+  }
+}
+```
+// result_begin: markdown
+Original path: [0, 1, 2]; vertex count 3; edge count 2.
+
+| case | found | path | dequeue order | discovered distances (n = sentinel) | edge inspections |
+| :--- | :--- | :--- | :--- | :--- | ---: |
+| original directed chain | true | [0, 1, 2] | [0, 1, 2] | [0, 1, 2] | 2 |
+| reverse directed chain | false | [] | [2] | [3, 3, 0] | 0 |
+| reverse undirected chain | true | [2, 1, 0] | [2, 1, 0] | [2, 1, 0] | 3 |
+| start equals goal | true | [1] | [1] | [3, 0, 3] | 0 |
+| loops, duplicates, unreachable goal | false | [] | [0, 1, 2] | [0, 1, 1, 4] | 12 |
+| goal pop leaves a deeper discovery | true | [0, 2] | [0, 1, 2] | [0, 1, 1, 2, 5] | 3 |
+// result_end
+\caption(Stopping on removal preserves the historical traversal order. The goal can be discovered before it is removed; other queued vertices may be processed in between.)
+
+Predecessor sentinel n is used for the start and for undiscovered vertices.
+Distance sentinel n is not a valid finite hop distance: any shortest simple
+path has at most n-1 edges. If the goal is unreachable, queue exhaustion does
+explore every vertex reachable from the start. Every discovered
+vertex then has its full-graph minimum distance, and all other vertices are
+unreachable. Both terminals and every edge endpoint must lie in [0,n);
+an empty graph therefore has no valid call. Validation still checks every
+edge when start=goal.
+
+> Grid layers and complete adjacency work
+
+The existing native grid generator labels cell (r,c) as r*cols+c and connects
+horizontal/vertical neighbours. From the upper-left corner, the minimum-hop
+distance is r+c: each step changes at most one coordinate by one, and a path
+with r downward and c rightward moves attains that lower bound.
+
+Use an 8 by 10 grid and request the native full traversal from its upper-left
+corner. This entry point exhausts all reachable vertices without a target.
+The histogram counts actual discoveries at each distance. Full queue snapshots
+default off for this linear-cost traversal; queue lengths and discovery events
+are still recorded.
+
+```{cpp, results="markdown", file="figures/bfs_grid_layers.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::size_t rows=8,cols=10,vertices=rows*cols;
+  const auto edges=dm::algorithms::grid_graph_edges(rows,cols);
+  const auto trace=dm::algorithms::breadth_first_traversal(vertices,edges,0,false);
+  for (std::size_t r=0;r<rows;++r) for (std::size_t c=0;c<cols;++c)
+    if (trace.distance[r*cols+c]!=r+c) return 1;
+  if (trace.goal_requested || trace.vertices_enqueued!=vertices || trace.edges_examined!=2*edges.size()) return 1;
+  std::vector<double> depth,count;
+  std::print("| depth | discovered grid vertices |\n| ---: | ---: |\n");
+  for (std::size_t d=0;d<trace.layer_counts.size();++d) {
+    depth.push_back(d);count.push_back(trace.layer_counts[d]);std::print("| {} | {} |\n",d,trace.layer_counts[d]);
+  }
+  std::print("\nGrid vertices: {}; input edges: {}; adjacency entries inspected: {}; maximum queue: {}.\n",
+      vertices,edges.size(),trace.edges_examined,trace.max_queue_size);
+  dm::graphics::RPlot::create().bars(depth,count,"discovered vertices",dm::RGB{37,99,235},.8)
+      .title("An 8 by 10 grid: actual shortest-hop layer counts")
+      .x_label("minimum edge distance from the corner").y_label("discovered grid vertices")
+      .y_limits(0,12).size(900,480).save_svg("build/bfs_grid_layers.svg");
+  std::print("\n| grid side | reachable vertices | input edges | actual adjacency inspections | 2E reference |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t side:{4,8,16,32}) {
+    const auto n=side*side;const auto grid=dm::algorithms::grid_graph_edges(side,side);
+    const auto work=dm::algorithms::breadth_first_traversal(n,grid,0,false);
+    if (work.edges_examined!=2*grid.size() || work.result.order.size()!=n) return 1;
+    std::print("| {} | {} | {} | {} | {} |\n",side,work.vertices_enqueued,grid.size(),work.edges_examined,2*grid.size());
+  }
+}
+```
+// result_begin: markdown
+| depth | discovered grid vertices |
+| ---: | ---: |
+| 0 | 1 |
+| 1 | 2 |
+| 2 | 3 |
+| 3 | 4 |
+| 4 | 5 |
+| 5 | 6 |
+| 6 | 7 |
+| 7 | 8 |
+| 8 | 8 |
+| 9 | 8 |
+| 10 | 7 |
+| 11 | 6 |
+| 12 | 5 |
+| 13 | 4 |
+| 14 | 3 |
+| 15 | 2 |
+| 16 | 1 |
+
+Grid vertices: 80; input edges: 142; adjacency entries inspected: 284; maximum queue: 9.
+
+| grid side | reachable vertices | input edges | actual adjacency inspections | 2E reference |
+| ---: | ---: | ---: | ---: | ---: |
+| 4 | 16 | 24 | 48 | 48 |
+| 8 | 64 | 112 | 224 | 224 |
+| 16 | 256 | 480 | 960 | 960 |
+| 32 | 1024 | 1984 | 3968 | 3968 |
+\image(figures/bfs_grid_layers.svg)
+// result_end
+\caption(The undirected rectangular grid has rows*(cols-1)+cols*(rows-1) input edges and twice that many stored adjacency entries. Full traversal inspects each entry once. Counts describe logical work, not elapsed time.)
+\alttext(Layer sizes rise from one to eight, remain eight for the middle layers of the rectangle, then fall to one at the opposite corner.)
+
+> Time, memory and the cost of a trace
+
+Each vertex is enqueued at most once and removed at most once. Scanning a
+removed vertex examines its adjacency entries, including duplicates and loops;
+the goal's entries are excluded because removal stops the search. Validation
+and graph construction still inspect the complete input edge list. Thus total
+work is O(n+E), with E directed entries or 2E entries for undirected input.
+
+Queue, distance, predecessor and result arrays use O(n) storage. Because this
+API accepts an edge list and builds its own adjacency lists, total owned
+working storage is O(n+E), rather than only the search arrays' O(n). The
+ordinary function allocates no trace events. A trace without queue snapshots
+adds only linear event storage: total discoveries are at most n-1.
+
+By default, a trace also copies the active queue before every removal. If Q
+is the sum of those queue lengths, this adds O(Q) time and storage; a wide
+star can make Q quadratic. Passing capture_queue=false preserves the linear
+bound while retaining actual lengths, discoveries, distances and counters.
+All returned data are owned, inputs are unchanged, and independent calls share
+no mutable state. Generated graphs provide the hand-checkable structural
+examples here; no observational dataset is required.
+
+> References
+
+- E. F. Moore (1959), The shortest path through a maze, Proceedings of the
+  International Symposium on the Theory of Switching, Part II, 285–292,
+  Harvard University Press.
+- C. Y. Lee (1961), An Algorithm for Path Connections and Its Applications,
+  IRE Transactions on Electronic Computers EC-10(3), 346–365.
+  [Original paper](https://doi.org/10.1109/TEC.1961.5219222),
+  [primary-paper copy](https://janders.eecg.utoronto.ca/1387/readings/lee.pdf).
+
+This implementation uses explicit unweighted adjacency lists and FIFO discovery;
+it does not implement every routing objective discussed in Lee's paper.

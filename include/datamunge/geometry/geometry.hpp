@@ -13,6 +13,7 @@
 #include <datamunge/geometry/cone_algorithm.hpp>
 #include <datamunge/geometry/convex_hull.hpp>
 #include <datamunge/geometry/delaunay.hpp>
+#include <datamunge/geometry/distance_transform.hpp>
 #include <datamunge/geometry/de_boor.hpp>
 #include <datamunge/geometry/dtw.hpp>
 #include <datamunge/geometry/frechet.hpp>

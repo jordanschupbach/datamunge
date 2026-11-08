@@ -1,0 +1,407 @@
+//? Title: Cycle Sort: Minimum Value-Cell Writes, Quadratic Rank Searches
+//? Subtitle: Actual placement traces, duplicate-key identities and the original seed-three experiment
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Cycle sort pays for repeated rank searches to avoid repeatedly overwriting
+array cells. The comparison-based variant here writes precisely those cells
+whose initial keys differ from the nondecreasing target sequence, once each.
+We begin with a three-item cycle, derive that minimum and the quadratic search
+cost, expose duplicate-key instability, then retain the original seven-key
+example and forty-size seed-three experiment. Datamunge's sorting, work-only
+and trace APIs share one executing core: the report no longer measures a
+separate reimplementation. Logical writes exclude argument copies, held-item
+stores and tracing; they do not predict flash erase cycles or device lifetime.
+A final cost model contrasts an efficient sorted-input bubble scan with a
+write-heavy reversal, showing why fewer writes alone need not mean less work.
+)
+
+\toc
+
+> Three cells and one held item
+
+For A=(3,1,2), the ascending target is S=(1,2,3). Item 3 belongs at index 2,
+where it displaces 2; item 2 belongs at index 1, where it displaces 1; item 1
+then closes the cycle at index 0. There are three changed value-cells and
+three writes. The program draws the actual core placements, retaining each
+item's original identity. A write means one assignment to a cell of the working
+value vector, not the assignments involved in keeping the displaced item.
+
+```{cpp, results="markdown", file="figures/cycle_sort_cycle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::cycle_sort_trace({3,1,2});
+  if(t.work.output!=std::vector<int>{1,2,3} || t.work.array_writes!=3 || t.work.rank_comparisons!=7) return 1;
+  std::print("| write | cycle start | held value | original identity | destination | displaced value | closes cycle |\n| ---: | ---: | ---: | ---: | ---: | ---: | :--- |\n");
+  dm::graphics::Diagram d(80,1000);dm::graphics::DiagramNodeStyle box;box.width=2.4;box.height=1.6;box.font_size=19;box.fill={219,234,254};
+  const std::vector<dm::graphics::DiagramPoint> positions{{0,2},{3,-2},{6,2}};
+  for(std::size_t i=0;i<3;++i) d.node(std::to_string(i),positions[i],std::format("cell {}\ninitial {}\nfinal {}",i,t.input[i],t.work.output[i]),box);
+  for(std::size_t k=0;k<t.placements.size();++k) {
+    const auto& e=t.placements[k];
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",k+1,e.cycle_start,e.value,e.original_index,e.target,e.displaced_value,e.closes_cycle);
+    d.edge(std::to_string(e.original_index),std::to_string(e.target),std::format("write {}: place {}",k+1,e.value));
+  }
+  d.text({3,4},"One cycle: hold the displaced item, write its final cell",22)
+   .text({3,-3.8},std::format("{} value-cell writes; {} rank tests; {} equality tests",t.work.array_writes,t.work.rank_comparisons,t.work.equality_comparisons),20)
+   .save_svg("build/cycle_sort_cycle.svg");
+  std::print("\nOutput {}; final original identities {}; independent minimum {}.\n",t.work.output,t.original_indices,dm::algorithms::cycle_sort_write_lower_bound(t.input));
+}
+```
+// result_begin: markdown
+| write | cycle start | held value | original identity | destination | displaced value | closes cycle |
+| ---: | ---: | ---: | ---: | ---: | ---: | :--- |
+| 1 | 0 | 3 | 0 | 2 | 2 | false |
+| 2 | 0 | 2 | 2 | 1 | 1 | false |
+| 3 | 0 | 1 | 1 | 0 | 3 | true |
+
+Output [1, 2, 3]; final original identities [1, 2, 0]; independent minimum 3.
+\image(figures/cycle_sort_cycle.svg)
+// result_end
+\caption(The arrows follow original item identities to their final cells. During a rotation, the array alone is not the complete multiset: include the held item and exclude the still-unwritten start cell until closure.)
+\alttext(Three boxes show cells zero, two and one around a triangle. Three directed edges place values three, two and one in that order.)
+
+> Derive the ranks and the minimum number of writes
+
+At an outer start s, all earlier positions are final. Hold item=A[s]. Counting
+strictly smaller values in A[s+1..n) gives its first remaining target position
+
+\[
+r=s+\sum_{i=s+1}^{n-1}\mathbf{1}\{A[i]<\mathrm{item}\}.
+\]
+\alttext(The first target position is the current start plus the number of suffix keys strictly smaller than the held item.)
+
+If this initial r equals s, the start already has a minimum remaining key and
+needs no write. Otherwise, advance past any equal keys already in the target
+block, then place the held item at the first different cell. Keep its displaced
+value as the next held item and repeat the rank search, closing the rotation
+when the destination is s. The start cell is unchanged during the active
+rotation. The conceptual multiset is the held item together with A[s+1..n),
+which remains exactly the original remaining multiset after each placement.
+This explains why the rank search remains valid even though a physical
+intermediate array may temporarily duplicate a value at the start.
+
+Let S be the unique nondecreasing sequence of input key values. The invariant
+above makes r the first position of the held key's target block in S[s..n).
+Skipping equal candidates leaves already-correct cells alone; the chosen cell
+has the wrong key and becomes final after this write. Every open cycle has an
+unfilled cell in the held key's block, so the duplicate skip stays in range.
+A final cell is never overwritten: another copy of the same key skips it,
+and a different key has a disjoint target block. Each write therefore removes
+exactly one mismatch. There are finitely many mismatches, so rotations close;
+then the outer loop advances a correct prefix. The last cell is forced by the
+remaining multiset. Consequently
+
+\[
+M(A)=\sum_{i=0}^{n-1}\mathbf{1}\{A_i\ne S_i\},\qquad
+W_{\rm cycle}(A)=M(A)\le n.
+\]
+\alttext(The minimum logical value-cell writes equals the number of input positions whose key differs from the sorted sequence, and cycle sort writes exactly that many.)
+
+Every correct key-sort must change all M mismatching cells, so M is a lower
+bound independent of the method. The invariant shows that this algorithm
+attains it, including repeated keys. For distinct items, the rearrangement is
+a permutation decomposed into disjoint cycles; a nontrivial cycle of length k
+requires and receives k writes, and a fixed point receives none. With repeated
+keys, there are multiple valid identity permutations, even though S as a key
+sequence is unique. The write minimum above does not prescribe their order.
+
+The legacy API takes its vector by value. An lvalue argument is copied before
+sorting, while an owned temporary can be moved. The kernel then uses constant
+auxiliary storage. Work-only calls add checked counters; traced calls own two
+value vectors, final identities and at most n compact placement records. None
+of these extra copies, identity stores, allocations or held-item assignments
+are charged as value-cell writes. Physical persistent-memory instructions,
+transaction logging, cache writebacks and flash page/block operations are
+separate cost models.
+
+> Duplicate keys: write minimal does not imply stable
+
+Use original identities to distinguish equal values: A=(2a,2b,1c). Its key
+sequence target is (1,2,2). The middle value 2 is already correct, so the
+minimum is two writes. The rank of held 2a begins at index 1, skips the equal
+2b, and places 2a at index 2. Then 1c closes at index 0. The final record order
+is (1c,2b,2a): equal keys have reversed their original order. A stable target
+would instead be (1c,2a,2b), changing all three record positions. Comparing
+value-cell and stable-record lower bounds without specifying the requirement
+would mix two different problems.
+
+```{cpp, results="markdown", file="figures/cycle_sort_duplicates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::cycle_sort_trace({2,2,1});
+  if(t.original_indices!=std::vector<std::size_t>{2,1,0} || t.work.array_writes!=2 || t.work.duplicate_skips!=1) return 1;
+  std::print("| write | held key | rank begins | equal cells skipped | destination | original identity | displaced identity |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t k=0;k<t.placements.size();++k) {
+    const auto& e=t.placements[k];std::print("| {} | {} | {} | {} | {} | {} | {} |\n",k+1,e.value,e.rank_begin,e.duplicate_skips,e.target,e.original_index,e.displaced_original_index);
+  }
+  dm::graphics::Diagram d(75,1050);dm::graphics::DiagramNodeStyle box;box.width=2;box.height=1.1;box.font_size=20;
+  const std::vector<std::string> labels{"a","b","c"};
+  for(std::size_t i=0;i<3;++i) {
+    box.fill={254,243,199};d.node("before"+std::to_string(i),{3.8*i,2},std::format("{}{}",t.input[i],labels[i]),box);
+    box.fill={220,252,231};d.node("after"+std::to_string(i),{3.8*i,-1.5},std::format("{}{}",t.work.output[i],labels[t.original_indices[i]]),box);
+    const bool written=std::any_of(t.placements.begin(),t.placements.end(),[i](const auto& e){return e.target==i;});
+    d.edge("before"+std::to_string(i),"after"+std::to_string(i),written?"write cell":"no value write");
+  }
+  d.text({3.8,3.8},"Input: distinguish equal keys by original identities",22)
+   .text({3.8,-3.2},"Output: 2b stays in its correct cell; 2a moves past it",21)
+   .save_svg("build/cycle_sort_duplicates.svg");
+  std::print("\nFinal keys {}; identities {}; value-cell minimum {}; actual writes {}.\n",t.work.output,t.original_indices,dm::algorithms::cycle_sort_write_lower_bound(t.input),t.work.array_writes);
+  std::print("Rank tests {}; equality tests {}; successful equal-value skips {}.\n",t.work.rank_comparisons,t.work.equality_comparisons,t.work.duplicate_skips);
+}
+```
+// result_begin: markdown
+| write | held key | rank begins | equal cells skipped | destination | original identity | displaced identity |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2 | 1 | 1 | 2 | 0 | 2 |
+| 2 | 1 | 0 | 0 | 0 | 2 | 0 |
+
+Final keys [1, 2, 2]; identities [2, 1, 0]; value-cell minimum 2; actual writes 2.
+Rank tests 5; equality tests 3; successful equal-value skips 1.
+\image(figures/cycle_sort_duplicates.svg)
+// result_end
+\caption(Each column compares a cell before and after sorting. Letters retain original item identities and expose the reversed equal-key order; the middle cell receives no value write.)
+\alttext(An upper row reads 2a, 2b, 1c. A lower row reads 1c, 2b, 2a. The middle arrow says no value write; the two outer cell-state arrows say write cell.)
+
+> Retain the original example and sweep, measuring the executing core
+
+The original input (5,3,8,1,9,2,7) has no matching target positions, so it
+needs seven value-cell writes. The actual cycles have starts 0, 1 and 4,
+and lengths 2, 3 and 2. Its original count of 39 comparisons counted only
+strict less-than rank tests, excluding duplicate equality tests; the new
+work API exposes those separately. The original seed-three experiment below
+still generates every size from 5 to 200 in steps of 5, consuming the same
+std::mt19937 outputs modulo 100000. This engine sequence and reduction are
+explicit; no platform-specific shuffle or real data preparation is involved.
+
+```{cpp, results="markdown", file="figures/cycle_sort.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <random>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto first=dm::algorithms::cycle_sort_trace({5,3,8,1,9,2,7});
+  std::print("Original sorted values {}; writes {}; rank comparisons {}; equality comparisons {}; cycles {}.\n\n",first.work.output,first.work.array_writes,first.work.rank_comparisons,first.work.equality_comparisons,first.work.cycle_count);
+  std::print("| size | value-cell writes | independent minimum | rank comparisons | equality comparisons | cycles |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::mt19937 rng(3);std::vector<double> sizes,writes,ranks,equalities,minima;dm::algorithms::CycleSortWork last;
+  for(int n=5;n<=200;n+=5) {
+    std::vector<int> a(n);for(int& v:a) v=static_cast<int>(rng()%100000);
+    const auto w=dm::algorithms::cycle_sort_work(a);const auto minimum=dm::algorithms::cycle_sort_write_lower_bound(a);
+    if(w.array_writes!=minimum || w.array_writes>static_cast<std::size_t>(n)) return 1;
+    std::print("| {} | {} | {} | {} | {} | {} |\n",n,w.array_writes,minimum,w.rank_comparisons,w.equality_comparisons,w.cycle_count);
+    sizes.push_back(n);writes.push_back(w.array_writes);minima.push_back(minimum);ranks.push_back(w.rank_comparisons);equalities.push_back(w.equality_comparisons);last=w;
+  }
+  if(last.array_writes!=199 || last.rank_comparisons!=57301) return 1;
+  auto write_plot=dm::graphics::RPlot::create();
+  write_plot.line(sizes,writes,"actual writes",{37,99,235},2)
+            .points(sizes,minima,"independent minimum",{31,41,55},3)
+            .legend({"actual writes","minimum"},{{37,99,235},{31,41,55}})
+            .title("Value-cell writes attain the lower bound").x_label("size n").y_label("writes")
+            .x_limits(0,210).y_limits(0,250).size(550,490);
+  auto rank_plot=dm::graphics::RPlot::create();
+  rank_plot.line(sizes,ranks,"rank less-than tests",{220,38,38},2)
+           .line(sizes,equalities,"equality tests",{234,88,12},2)
+           .legend({"rank tests","equality tests"},{{220,38,38},{234,88,12}})
+           .title("Repeated scans dominate key tests").x_label("size n").y_label("key tests")
+           .x_limits(0,210).y_limits(0,75000).size(550,490);
+  dm::graphics::RLayout::create(1,2).add(write_plot).add(rank_plot).size(1150,550)
+    .title("Original forty-size experiment: separate scales preserve the write curve")
+    .save_svg("build/cycle_sort.svg");
+  std::print("\nOriginal endpoint retained: n=200, writes={}, rank comparisons={}.\n",last.array_writes,last.rank_comparisons);
+}
+```
+// result_begin: markdown
+Original sorted values [1, 2, 3, 5, 7, 8, 9]; writes 7; rank comparisons 39; equality comparisons 7; cycles 3.
+
+| size | value-cell writes | independent minimum | rank comparisons | equality comparisons | cycles |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 5 | 5 | 5 | 21 | 5 | 2 |
+| 10 | 10 | 10 | 96 | 10 | 3 |
+| 15 | 14 | 14 | 287 | 14 | 1 |
+| 20 | 18 | 18 | 401 | 18 | 5 |
+| 25 | 23 | 23 | 792 | 23 | 2 |
+| 30 | 29 | 29 | 1146 | 29 | 3 |
+| 35 | 35 | 35 | 1491 | 35 | 6 |
+| 40 | 37 | 37 | 2121 | 37 | 2 |
+| 45 | 45 | 45 | 2592 | 45 | 5 |
+| 50 | 49 | 49 | 3305 | 49 | 5 |
+| 55 | 55 | 55 | 3928 | 55 | 5 |
+| 60 | 60 | 60 | 4927 | 60 | 4 |
+| 65 | 64 | 64 | 5875 | 64 | 4 |
+| 70 | 70 | 70 | 7044 | 70 | 2 |
+| 75 | 74 | 74 | 7929 | 74 | 3 |
+| 80 | 80 | 80 | 8856 | 80 | 6 |
+| 85 | 85 | 85 | 10230 | 85 | 4 |
+| 90 | 88 | 88 | 11056 | 88 | 6 |
+| 95 | 94 | 94 | 12925 | 94 | 3 |
+| 100 | 99 | 99 | 14652 | 99 | 1 |
+| 105 | 104 | 104 | 15697 | 104 | 4 |
+| 110 | 108 | 108 | 17142 | 109 | 4 |
+| 115 | 115 | 115 | 18991 | 115 | 4 |
+| 120 | 119 | 119 | 20245 | 119 | 6 |
+| 125 | 123 | 123 | 21478 | 123 | 7 |
+| 130 | 128 | 128 | 23504 | 128 | 7 |
+| 135 | 134 | 134 | 25607 | 134 | 7 |
+| 140 | 139 | 139 | 28321 | 139 | 4 |
+| 145 | 143 | 143 | 30477 | 143 | 3 |
+| 150 | 150 | 150 | 32981 | 150 | 3 |
+| 155 | 155 | 155 | 35226 | 155 | 3 |
+| 160 | 160 | 160 | 37273 | 160 | 4 |
+| 165 | 164 | 164 | 39058 | 164 | 6 |
+| 170 | 169 | 169 | 42220 | 169 | 3 |
+| 175 | 174 | 174 | 45327 | 174 | 1 |
+| 180 | 176 | 176 | 46134 | 176 | 6 |
+| 185 | 185 | 185 | 49465 | 185 | 4 |
+| 190 | 189 | 189 | 52472 | 190 | 5 |
+| 195 | 194 | 194 | 55508 | 194 | 3 |
+| 200 | 199 | 199 | 57301 | 199 | 5 |
+
+Original endpoint retained: n=200, writes=199, rank comparisons=57301.
+\image(figures/cycle_sort.svg)
+// result_end
+\caption(The write count is linear in size, rather than constant or flat. Its separate panel makes it visible instead of compressing it beneath the quadratic comparison curve. Independent minima overlap the actual writes at all forty sizes.)
+\alttext(Two panels show writes and key tests against array size. The first rises roughly linearly to 199 writes, and the second rises quadratically to 57301 rank comparisons.)
+
+> Why the comparison count remains quadratic
+
+For n≥2, each outer start s=0,...,n−2 scans exactly n−s−1 keys even when it
+opens no cycle. These initial scans alone contribute
+
+\[
+B(n)=\sum_{s=0}^{n-2}(n-s-1)=\frac{n(n-1)}2.
+\]
+\alttext(The mandatory initial suffix scans sum to n times n minus one divided by two.)
+
+If a nontrivial cycle at start s has k_s writes, its initial scan already
+accounts for the first placement. Each remaining k_s−1 placement repeats that
+same-length scan. Writing C for the number of nontrivial cycles and W for
+writes gives the exact rank-test count and the total number of rank scans:
+
+\[
+R=B(n)+\sum_{s\,\mathrm{opening\ a\ cycle}}(k_s-1)(n-s-1),\qquad
+N_{\rm scans}=n-1+W-C.
+\]
+\alttext(The rank-test count adds one same-length suffix scan for each extra placement of every cycle. The number of scans is n minus one plus writes minus nontrivial cycles.)
+
+For the original seven keys, B=21 and the extra scans contribute
+(2−1)6+(3−1)5+(2−1)2=18, giving R=39. For n≥2, W≤n and a nonzero W implies
+C≥1, so
+
+\[
+B(n)\le R\le B(n)+(n-1)^2.
+\]
+\alttext(Rank comparisons lie between the mandatory quadratic base and that base plus n minus one squared.)
+
+Sorted and all-equal inputs attain the lower bound, with zero writes and no
+duplicate equality tests. A one-step left rotation of distinct sorted keys
+forms one full cycle at start zero and attains the upper bound. Thus this
+rank-scan variant has Θ(n²) rank comparisons on every growing input family,
+including its best case. Equal-candidate searches add equality tests: precisely
+W+D, where D is the number of successful duplicate skips. Each search skips
+at most n−1 candidates, so they also fit an O(n²) bound. The measured old
+“comparisons” column is R; a total key-test count must include both categories.
+Empty and singleton inputs perform no scans, cycles or writes.
+
+> A cost model separates cheap sorted input from expensive writes
+
+For a transparent model, charge one unit per key test and ρ units per logical
+value-cell write, ignoring copies and other instructions. Then
+T_cycle=R+E+ρW. The existing native bubble_sort_work counts actual strict
+comparisons and exchanges; charge two value-cell writes per exchange for
+T_bubble=Q+2ρX. This is a chosen model, not a wall-clock or endurance result.
+The following comparison fixes n=200 and varies ρ. Sorted input lets bubble
+sort terminate after 199 comparisons with no writes; cycle sort still performs
+19900 rank comparisons. For a reversal, cycle sort uses 200 writes while
+bubble sort performs 19900 exchanges, modelled as 39800 writes. This native
+bubble baseline scans all 199 adjacent pairs on every pass, including its
+terminating zero-swap pass: the reversal takes 200 passes and 39800 key tests.
+Its model cost therefore exceeds cycle sort even at rho zero for this input,
+and the difference grows with the assumed write price. Sorted input favours
+the bubble early exit regardless of that price because both methods write
+zero cells. The input structure and chosen kernel both matter.
+
+```{cpp, results="markdown", file="figures/cycle_sort_cost.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<int> sorted(200);std::iota(sorted.begin(),sorted.end(),0);auto reversed=sorted;std::reverse(reversed.begin(),reversed.end());
+  const auto cs=dm::algorithms::cycle_sort_work(sorted),cr=dm::algorithms::cycle_sort_work(reversed);
+  const auto bs=dm::algorithms::bubble_sort_work(sorted),br=dm::algorithms::bubble_sort_work(reversed);
+  if(cs.rank_comparisons!=19900 || cs.array_writes!=0 || bs.key_comparisons!=199 || cr.array_writes!=200 || br.swaps!=19900) return 1;
+  std::print("| input | cycle rank tests | cycle equality tests | cycle writes | bubble key tests | bubble exchanges | bubble model writes |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::print("| sorted | {} | {} | {} | {} | {} | {} |\n",cs.rank_comparisons,cs.equality_comparisons,cs.array_writes,bs.key_comparisons,bs.swaps,2*bs.swaps);
+  std::print("| reversed | {} | {} | {} | {} | {} | {} |\n",cr.rank_comparisons,cr.equality_comparisons,cr.array_writes,br.key_comparisons,br.swaps,2*br.swaps);
+  std::vector<double> prices,cycle_costs,bubble_costs;
+  std::print("\n| write price rho | cycle reversal model cost | bubble reversal model cost |\n| ---: | ---: | ---: |\n");
+  for(int rho:{0,1,2,5,10,20,50,100}) {
+    const double c=cr.rank_comparisons+cr.equality_comparisons+rho*static_cast<double>(cr.array_writes);
+    const double b=br.key_comparisons+2*rho*static_cast<double>(br.swaps);
+    prices.push_back(rho);cycle_costs.push_back(c);bubble_costs.push_back(b);std::print("| {} | {:.0f} | {:.0f} |\n",rho,c,b);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(prices,cycle_costs,"cycle",{37,99,235},2.5).points(prices,cycle_costs,"",{37,99,235},4)
+      .line(prices,bubble_costs,"bubble",{220,38,38},2.5).points(prices,bubble_costs,"",{220,38,38},4)
+      .legend({"cycle","bubble"},{{37,99,235},{220,38,38}})
+      .title("Chosen reversal cost model: key tests + rho times logical writes")
+      .x_label("assumed write price rho").y_label("model cost units")
+      .x_limits(0,105).y_limits(0,5200000).size(950,570).save_svg("build/cycle_sort_cost.svg");
+  int rejected=0;try {dm::algorithms::cycle_sort_trace({3,1,2},2);} catch(const std::length_error&) {++rejected;}
+  const auto uncapped=dm::algorithms::cycle_sort_trace({3,1,2},0);
+  if(rejected!=1 || uncapped.placements.size()!=3) return 1;
+  std::print("\nComplete trace cap: {} expected rejection; zero-cap trace retained all {} placements. Empty/singleton sorting requires zero work.\n",rejected,uncapped.placements.size());
+}
+```
+// result_begin: markdown
+| input | cycle rank tests | cycle equality tests | cycle writes | bubble key tests | bubble exchanges | bubble model writes |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| sorted | 19900 | 0 | 0 | 199 | 0 | 0 |
+| reversed | 34850 | 200 | 200 | 39800 | 19900 | 39800 |
+
+| write price rho | cycle reversal model cost | bubble reversal model cost |
+| ---: | ---: | ---: |
+| 0 | 35050 | 39800 |
+| 1 | 35250 | 79600 |
+| 2 | 35450 | 119400 |
+| 5 | 36050 | 238800 |
+| 10 | 37050 | 437800 |
+| 20 | 39050 | 835800 |
+| 50 | 45050 | 2029800 |
+| 100 | 55050 | 4019800 |
+
+Complete trace cap: 1 expected rejection; zero-cap trace retained all 3 placements. Empty/singleton sorting requires zero work.
+\image(figures/cycle_sort_cost.svg)
+// result_end
+\caption(Relative costs follow the explicitly chosen prices and actual kernel counts. It says nothing by itself about a storage controller's write amplification, erase granularity or whole-program copy costs.)
+\alttext(The reversal cost plot compares a shallow blue cycle-sort line with a steeper red bubble-sort line as the assumed write price rises from zero to one hundred.)
+
+The trace's default complete input cap is 4096 elements. It rejects an oversized
+input before copying, allocating identity/history storage or sorting, even if
+the input is already sorted and would emit no placements. Zero disables only
+this optional cap. Work-only and legacy calls are uncapped; checked aggregate
+work counters throw length_error rather than wrap. Results own their values
+and identities; they retain no caller views and no shared mutable state.
+
+Permanent tests replay actual trace records against an independent std::sort
+target, check unique destination cells, preserve every initially correct cell,
+validate held/displaced identities, and reconstruct exact comparison/scan
+counts. All 88,573 ternary sequences through length ten and all 46,234 distinct
+permutations through length eight pass, alongside 1000 seeded mixed/full-range
+inputs, signed extremes, exact sorted/equal/reverse/full-cycle formulas,
+empty/singleton/ownership/cap cases and the original forty-size experiment.
+The new cases also run under AddressSanitizer and UBSan. These algorithmic
+controls need no unrelated external dataset.
+
+> References and reproducibility
+
+- B. K. Haddon (1990), “Cycle-Sort: A Linear Sorting Method,” The Computer
+  Journal 33(4), pp. 365–367: https://doi.org/10.1093/comjnl/33.4.365 . The
+  paper describes cycle-based methods with conditional linear-time applicability.
+  Datamunge's variant repeatedly counts smaller keys to obtain ranks; the paper's
+  title does not turn these repeated scans into a linear-time algorithm.
+
+Every block is a complete editable C++23 program including dm/dm.hpp. All
+sorting, counters, trace capture and independent minimum-write references are
+canonical native APIs. Images are saved locally under build/ and copied into
+figures/; exported results contain tables and image paths, not SVG XML.

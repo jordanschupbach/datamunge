@@ -108,8 +108,10 @@ TEST(HmmViterbi, MatchesBruteForceOnRandomModels) {
         const auto got  = viterbi(h, obs);
         const auto want = brute_force_viterbi(h, obs);
         EXPECT_NEAR(got.log_probability, want.second, 1e-9);
-        // The recovered path must achieve the same joint probability (there may be ties).
-        EXPECT_EQ(got.states, want.first);
+        // Different tied or rounding-equivalent paths can attain the same optimum.
+        // Check the recovered path's joint score independently of predecessor tie policy.
+        const long double recovered = datamunge::algorithms::hmm_path_probability(h, obs, got.states);
+        EXPECT_NEAR(static_cast<double>(std::log(recovered)), want.second, 1e-12);
     }
 }
 

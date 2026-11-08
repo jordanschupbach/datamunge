@@ -1,0 +1,275 @@
+//? Title: The Bootstrap: Standard Errors and Four Confidence Intervals
+//? Subtitle: Replacement sampling, finite-distribution calibration and the iris median
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+The nonparametric bootstrap replaces an unknown distribution by the empirical
+distribution of the observations, then repeatedly samples from it with
+replacement. We show a small draw, check the mean against its exact conditional
+bootstrap variance, and retain the original iris Sepal.Length median experiment
+with 4,000 resamples. Native C++ computes the statistics, bias, standard error
+and percentile, basic, normal and BCa intervals. The final experiment separates
+Monte Carlo error from the difference between the bootstrap and textbook mean
+standard errors. Bootstrap validity depends on the statistic and sampling model;
+increasing the resample count cannot establish that validity.
+)
+
+\toc
+
+> The empirical distribution and a possible draw
+
+For observations x1,...,xn, the empirical distribution puts mass 1/n on each
+row, including repeated values. An ordinary bootstrap sample consists of n
+independent draws from those rows with replacement. Evaluating the same
+statistic on each sample gives replicates theta-star1,...,theta-starB.
+This conditional distribution is used to approximate how the estimator would
+vary across new samples from the unknown population. Whether that substitution
+works requires assumptions beyond the computation itself.
+
+The diagram shows one possible index sequence for {1,2,4}: {0,2,2}.
+It is an illustration, rather than a trace of the random engine used below.
+Repeated selection of the third row is allowed, and the second row is absent.
+The program computes both statistics through the core API.
+
+```{cpp, file="figures/bootstrap_draw.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<double> sample{1,2,4};
+  const std::vector<std::size_t> indices{0,2,2};
+  std::vector<double> resample;for (auto i:indices) resample.push_back(sample[i]);
+  dm::graphics::Diagram diagram(65,1100);
+  dm::graphics::DiagramNodeStyle style;style.width=3.0;style.height=1.3;
+  for (std::size_t i=0;i<sample.size();++i) {
+    const double y=3.0-3.0*i;
+    diagram.node(std::format("x{}",i),{0,y},std::format("row {}: {}\nmass 1/3",i,sample[i]),style);
+    style.fill={220,252,231};
+    diagram.node(std::format("r{}",i),{5,y},std::format("draw {}: {}\nindex {}",i+1,resample[i],indices[i]),style);
+    style.fill={255,255,255};
+  }
+  for (std::size_t i=0;i<indices.size();++i)
+    diagram.edge(std::format("x{}",indices[i]),std::format("r{}",i));
+  style.width=3.4;style.height=2.1;style.fill={219,234,254};
+  diagram.node("stat",{10,0},std::format("resample: 1, 4, 4\nmean = {}\nmedian = {}",
+      dm::mean(resample),dm::median(resample)),style);
+  for (std::size_t i=0;i<sample.size();++i) diagram.edge(std::format("r{}",i),"stat");
+  diagram.text({5,5},"One possible draw with replacement; the original median is 2.")
+      .save_svg("build/bootstrap_draw.svg");
+}
+```
+// result_begin:
+// \image(figures/bootstrap_draw.svg)
+// result_end
+\caption(A possible resample from three equally weighted rows. The chosen indices are explicit; the later experiments use Bootstrap's random draws.)
+\alttext(The original values are one, two and four. Row zero is selected once, row two twice and row one never. The resample one, four, four has mean three and median four.)
+
+> Checking the theory on three observations
+
+Let s be the sample standard deviation with denominator n-1. Conditional on
+the observed sample, a single bootstrap draw has variance
+(n-1)s²/n. Averaging n independent such draws gives the exact identity
+
+$$
+\operatorname{Var}_*(\bar X^*)=\frac{1}{n^2}\sum_{i=1}^n(x_i-\bar x)^2
+=\frac{n-1}{n^2}s^2,\qquad
+\operatorname{se}_*(\bar X^*)=\frac{s\sqrt{n-1}}{n}.
+$$
+\alttext(The exact conditional bootstrap standard error of the mean is s times the square root of n minus one, divided by n.)
+
+The usual estimated standard error s/sqrt(n) for a population mean is a
+different quantity. The bootstrap reference is smaller by sqrt((n-1)/n).
+For three observations the distinction is visible. The finite-B estimate is
+the sample standard deviation of the replicates and fluctuates around the
+conditional reference. No random seed can make it an exact identity.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<double> sample{1,2,4};
+  const auto result=dm::stats::Bootstrap({20000,0.95,7}).run(sample,[](const auto& values){return dm::mean(values);});
+  const double n=sample.size(),s=dm::sd(sample);
+  std::print("| quantity | value |\n| :--- | ---: |\n"
+             "| original mean | {:.8f} |\n| bootstrap mean bias | {:.8f} |\n"
+             "| bootstrap SE, B=20000 | {:.8f} |\n| exact conditional bootstrap SE | {:.8f} |\n"
+             "| textbook mean SE | {:.8f} |\n",
+      result.estimate,result.bias,result.standard_error,s*std::sqrt(n-1)/n,s/std::sqrt(n));
+}
+```
+// result_begin: markdown
+| quantity | value |
+| :--- | ---: |
+| original mean | 2.33333333 |
+| bootstrap mean bias | -0.00543333 |
+| bootstrap SE, B=20000 | 0.71202859 |
+| exact conditional bootstrap SE | 0.72008230 |
+| textbook mean SE | 0.88191710 |
+// result_end
+\caption(The conditional bootstrap reference is exact for this observed sample; the resampling estimate has Monte Carlo error.)
+
+> Bias, standard error and interval definitions
+
+Write theta-hat for the statistic on the original observations and m-star for
+the mean of the B replicates. The estimated bias is m-star minus theta-hat.
+The bootstrap SE uses the B-1 sample-variance denominator; B=1 is accepted
+with SE zero, although one replicate cannot estimate variability reliably.
+For level 1-alpha, let Q(p) denote a replicate quantile and z(p) a standard
+normal quantile. Four intervals are returned:
+
+- Percentile: [Q(alpha/2), Q(1-alpha/2)].
+- Basic: [2 theta-hat - Q(1-alpha/2), 2 theta-hat - Q(alpha/2)].
+- Normal: theta-hat - estimated bias, plus or minus z(1-alpha/2) times SE.
+- BCa: [Q(p-low), Q(p-high)], using the adjustment below.
+
+Quantiles linearly interpolate the sorted replicates at index (B-1)p, the
+R type-7 convention. Finite-sample interpolation and discrete statistics mean
+these endpoints do not give exact coverage simply by construction. Basic
+reflection does not remove bias automatically; the normal interval also
+assumes that a symmetric normal approximation is useful.
+
+For BCa, theta-(i) denotes the statistic with row i removed, and
+theta-dot their mean. The core uses strict replicate < theta-hat counts,
+so ties affect the bias correction:
+
+$$
+z_0=\Phi^{-1}\left(\frac{\#\{\theta_b^*<\hat\theta\}}{B}\right),\qquad
+a=\frac{\sum_i(\theta_{\cdot}-\theta_{(i)})^3}
+{6\left[\sum_i(\theta_{\cdot}-\theta_{(i)})^2\right]^{3/2}},\qquad
+p(q)=\Phi\left(z_0+\frac{z_0+z(q)}{1-a[z_0+z(q)]}\right).
+$$
+\alttext(BCa uses the normal quantile of the fraction of replicates strictly below the estimate, jackknife acceleration from centred cubed and squared deviations, and an adjusted normal probability for each nominal endpoint.)
+
+Use p(alpha/2) and p(1-alpha/2) for the two endpoints. A constant jackknife
+sequence uses a=0. BCa falls back to the percentile interval if the strict
+fraction is zero or one, fewer than two jackknife values are available, or
+the adjustment is nonfinite, singular, crosses its pole or reverses the
+endpoint probabilities. Its higher-order accuracy theory needs regularity
+conditions; this tied median example is not a demonstration of those conditions.
+
+`Bootstrap::run` owns the resamples and delegates interval construction to
+`stats::bootstrap_summary`, which also accepts externally generated finite
+replicates and optional jackknife values. Original, resampled and jackknife
+statistics must all be finite; observations themselves are left to the
+callback's missing-value policy. Scaled jackknife deviations and widened
+centred sums reduce numeric overflow, and unrepresentable summary endpoints
+raise an exception instead of silently returning infinities.
+
+> Original experiment: the iris Sepal.Length median
+
+The built-in iris dataset supplies 150 complete sepal lengths in centimetres,
+pooled across three species. This preserves the original univariate experiment:
+B=4000, level=0.95 and seed=20240915. Treating the pooled rows as i.i.d. is
+an illustrative resampling model; the calculation neither models species
+structure nor establishes a sampling design for population inference.
+`dm::median` copies the values and selects the middle order statistics without
+changing the input. For even n it uses an overflow-safe midpoint.
+
+```{cpp, results="markdown", file="figures/bootstrap_iris_median.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris=dm::datasets::iris();std::vector<double> x;
+  for (std::size_t i=0;i<iris.nrows();++i) x.push_back(iris.double_at("Sepal.Length",i));
+  const auto result=dm::stats::Bootstrap({4000,0.95,20240915}).run(x,dm::median);
+  std::print("| quantity | value |\n| :--- | ---: |\n"
+             "| observations | {} |\n| mean, cm | {:.8f} |\n| median, cm | {:.8f} |\n"
+             "| sample SD, cm | {:.8f} |\n| bootstrap median bias, cm | {:.8f} |\n"
+             "| bootstrap median SE, cm | {:.8f} |\n",
+      x.size(),dm::mean(x),result.estimate,dm::sd(x),result.bias,result.standard_error);
+  std::print("\n| nominal 95% interval | lower, cm | upper, cm |\n| :--- | ---: | ---: |\n");
+  for (const auto& [name,interval]:std::vector<std::pair<std::string,std::pair<double,double>>>{
+      {"percentile",result.percentile_interval},{"basic",result.basic_interval},
+      {"normal, bias-adjusted centre",result.normal_interval},{"BCa",result.bca_interval}})
+    std::print("| {} | {:.8f} | {:.8f} |\n",name,interval.first,interval.second);
+  dm::graphics::RPlot::hist(result.replicates,24,"median replicates",dm::RGB{37,99,235})
+      .title("Iris sepal-length median: 4,000 bootstrap replicates")
+      .x_label("resampled median, cm").y_label("replicate count")
+      .size(900,480).save_svg("build/bootstrap_iris_median.svg");
+}
+```
+// result_begin: markdown
+| quantity | value |
+| :--- | ---: |
+| observations | 150 |
+| mean, cm | 5.84333333 |
+| median, cm | 5.80000000 |
+| sample SD, cm | 0.82806613 |
+| bootstrap median bias, cm | -0.01116250 |
+| bootstrap median SE, cm | 0.10177727 |
+
+| nominal 95% interval | lower, cm | upper, cm |
+| :--- | ---: | ---: |
+| percentile | 5.60000000 | 6.00000000 |
+| basic | 5.60000000 | 6.00000000 |
+| normal, bias-adjusted centre | 5.61168271 | 6.01064229 |
+| BCa | 5.60000000 | 6.00000000 |
+\image(figures/bootstrap_iris_median.svg)
+// result_end
+\caption(The histogram uses the same retained replicates as every interval in the table. Rounded measurements and the median statistic create ties; a histogram bin is not a distinct population outcome.)
+\alttext(A histogram of four thousand resampled iris sepal-length medians, centred around the observed median of 5.8 centimetres.)
+
+> Calibration at increasing resample counts
+
+The mean provides a reference without needing a coverage simulation. Each
+row starts the same seeded engine and therefore uses a nested prefix of its
+replicates on this toolchain. The solid reference is the exact conditional
+bootstrap SE derived above. The second reference is s/sqrt(n), the usual
+estimated mean SE. Monte Carlo deviations need not shrink monotonically with
+B; their long-run limit is the conditional bootstrap reference.
+
+```{cpp, results="markdown", file="figures/bootstrap_mean_calibration.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris=dm::datasets::iris();std::vector<double> x;
+  for (std::size_t i=0;i<iris.nrows();++i) x.push_back(iris.double_at("Sepal.Length",i));
+  const double n=x.size(),s=dm::sd(x),conditional=s*std::sqrt(n-1)/n,textbook=s/std::sqrt(n);
+  std::vector<double> log_b,observed,exact,analytic;
+  std::print("| B | estimated bias | bootstrap SE | exact conditional SE | textbook SE |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t b:{200,1000,4000,16000}) {
+    const auto result=dm::stats::Bootstrap({b,0.95,20240915}).run(x,[](const auto& values){return dm::mean(values);});
+    log_b.push_back(std::log10(double(b)));observed.push_back(result.standard_error);
+    exact.push_back(conditional);analytic.push_back(textbook);
+    std::print("| {} | {:.8f} | {:.8f} | {:.8f} | {:.8f} |\n",
+        b,result.bias,result.standard_error,conditional,textbook);
+  }
+  dm::graphics::RPlot::create()
+      .lines(log_b,observed,"finite-B SE",dm::RGB{37,99,235},2)
+      .points(log_b,observed,"",dm::RGB{37,99,235},4)
+      .lines(log_b,exact,"conditional SE",dm::RGB{22,163,74},2)
+      .lines(log_b,analytic,"textbook SE",dm::RGB{220,38,38},2)
+      .title("Mean calibration against the conditional bootstrap law")
+      .x_label("log10(B); B = 200, 1000, 4000, 16000").y_label("standard error, cm")
+      .y_limits(0.062,0.074).size(900,480).save_svg("build/bootstrap_mean_calibration.svg");
+}
+```
+// result_begin: markdown
+| B | estimated bias | bootstrap SE | exact conditional SE | textbook SE |
+| ---: | ---: | ---: | ---: | ---: |
+| 200 | 0.00602000 | 0.06552946 | 0.06738557 | 0.06761132 |
+| 1000 | 0.00316467 | 0.06543574 | 0.06738557 | 0.06761132 |
+| 4000 | -0.00004100 | 0.06701348 | 0.06738557 | 0.06761132 |
+| 16000 | -0.00015863 | 0.06697893 | 0.06738557 | 0.06761132 |
+\image(figures/bootstrap_mean_calibration.svg)
+// result_end
+\caption(Replicate dispersion is a conditional bootstrap quantity. The table reports both reference values to avoid confusing finite-n plug-in error with simulation error.)
+\alttext(The estimated bootstrap standard error at four increasing resample counts is plotted against horizontal conditional-bootstrap and textbook mean standard-error references.)
+
+The default overload uses a local MT19937-64 and the standard library's uniform
+integer distribution. A fixed seed reproduces a run with the same implementation;
+different C++ standard libraries may map raw engine words to indices differently.
+A caller-owned `RandomGenerator` overload is also available. Neither overload
+automatically handles dependence, clusters, informative sampling or a statistic
+whose bootstrap distribution is inconsistent. Increasing B only improves the
+Monte Carlo approximation to the selected conditional law.
+
+> References
+
+- B. Efron (1979), Bootstrap Methods: Another Look at the Jackknife,
+  Annals of Statistics 7(1), 1–26. [Primary paper](https://doi.org/10.1214/aos/1176344552).
+- B. Efron (1987), Better Bootstrap Confidence Intervals,
+  Journal of the American Statistical Association 82(397), 171–185.
+  [Primary paper](https://doi.org/10.1080/01621459.1987.10478410).
+- R stats, [median](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/median.html),
+  for the familiar empty, missing and even-length median conventions.

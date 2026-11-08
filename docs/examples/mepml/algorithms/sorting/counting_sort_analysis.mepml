@@ -1,0 +1,325 @@
+//? Title: Counting Sort: Frequencies, End Cursors and Stable Identities
+//? Subtitle: The original eight integers and named records, with actual native bucket and placement traces
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Counting sort uses a bounded integer key as an address. Frequencies determine
+contiguous output blocks, cumulative counts supply their end cursors, and a
+reverse scan places each input identity into its own slot. We retain the
+original eight integers and eight named records, derive why this particular
+placement is stable, and expose the actual native histogram, boundaries and
+assignments. The record example sorts equal keys directly: arrival indices
+travel as identities instead of being packed into larger, distinct keys.
+Measured logical work separates the input length from the bucket range; checked
+budgets expose the space cost before allocation. Narrow ranges near either
+signed 64-bit endpoint work without overflowing signed subtraction.
+)
+
+\toc
+
+> An eight-element problem with six addressable keys
+
+Start with [2,5,3,0,2,3,0,3]. The inclusive range [0,5] contains six buckets,
+although only four keys occur. Buckets for absent keys still take space and
+prefix work. The sorted output should be [0,0,2,2,3,3,3,5].
+
+Let L and U be the inclusive key bounds, k=U−L+1 and n the input length.
+For bucket b=0,...,k−1 define its frequency, start and end:
+
+\[
+c_b=\#\{i:a_i=L+b\},\qquad
+s_b=\sum_{r<b}c_r,\qquad e_b=s_b+c_b.
+\]
+\alttext(The frequency counts occurrences of a bucket's key. Its start is the sum of all earlier frequencies and its end is the start plus its own frequency.)
+
+All copies of key L+b belong in the half-open interval [s_b,e_b). An empty
+bucket has s_b=e_b. Here key 1 has interval [2,2), and key 2 begins at that same
+position; there is no unused output slot between them.
+
+The following complete program asks datamunge for the actual execution. Every
+number in the native method diagram comes from that kernel's owned result.
+
+```{cpp, results="markdown", file="figures/counting_sort_blocks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::counting_sort_trace({2,5,3,0,2,3,0,3},0,5);
+  const auto& a=t.analysis;
+  if(a.output!=std::vector<std::int64_t>{0,0,2,2,3,3,3,5} ||
+     a.original_indices!=std::vector<std::size_t>{3,6,0,4,2,5,7,1}) return 1;
+  std::print("| key | frequency | first output slot | initial end cursor |\n| ---: | ---: | ---: | ---: |\n");
+  dm::graphics::Diagram d(65,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=1.6;box.height=1.1;box.font_size=18;
+  d.text({4.75,3.3},"Count keys, accumulate ends, then place backwards",23);
+  for(std::size_t b=0;b<a.counts.size();++b) {
+    std::print("| {} | {} | {} | {} |\n",b,a.counts[b],a.starts[b],a.ends[b]);
+    box.fill=a.counts[b]?dm::graphics::RGB{219,234,254}:dm::graphics::RGB{243,244,246};
+    d.node(std::format("count{}",b),{1.9*b,1.4},std::format("key {}\ncount {}",b,a.counts[b]),box);
+    box.fill={254,243,199};
+    d.node(std::format("end{}",b),{1.9*b,-.3},std::format("end {}",a.ends[b]),box);
+    box.fill={220,252,231};
+    d.node(std::format("block{}",b),{1.9*b,-2},std::format("[{}, {})",a.starts[b],a.ends[b]),box);
+    d.edge(std::format("count{}",b),std::format("end{}",b));
+    d.edge(std::format("end{}",b),std::format("block{}",b));
+  }
+  d.text({4.75,-3.5},"Half-open output intervals: absent keys have zero width",19)
+   .save_svg("build/counting_sort_blocks.svg");
+  std::print("\nSorted keys: {}. Original indices: {}.\n",a.output,a.original_indices);
+}
+```
+// result_begin: markdown
+| key | frequency | first output slot | initial end cursor |
+| ---: | ---: | ---: | ---: |
+| 0 | 2 | 0 | 2 |
+| 1 | 0 | 2 | 2 |
+| 2 | 2 | 2 | 4 |
+| 3 | 3 | 4 | 7 |
+| 4 | 0 | 7 | 7 |
+| 5 | 1 | 7 | 8 |
+
+Sorted keys: [0, 0, 2, 2, 3, 3, 3, 5]. Original indices: [3, 6, 0, 4, 2, 5, 7, 1].
+\image(figures/counting_sort_blocks.svg)
+// result_end
+\caption(The six native bucket columns retain absent keys 1 and 4. Ends are cumulative counts before placement, and intervals identify the exact output blocks.)
+\alttext(Six columns show each key's frequency, initial cumulative end cursor and half-open output interval. The zero-frequency columns are shaded grey.)
+
+> Actual end cursors and the stability proof
+
+Initialize each mutable cursor p_b=e_b. Visit input indices i=n−1,...,0 and
+assign the item to j=−−p_(a_i−L). The cursor is decremented before the write.
+After t items of a particular key have been placed, its cursor equals e_b−t;
+those items occupy the final t slots of its block. Since exactly c_b items have
+that key, its last assignment reaches s_b and cannot underflow or collide with
+another bucket. Every input index is visited exactly once. This proves the
+output is a permutation with ascending keys.
+
+For equal-key indices i<j, the reverse scan visits j first and gives it a
+larger output position. It visits i later and gives it a smaller position.
+Thus the order of equal keys is preserved. Using a forward scan with these
+same decrementing end cursors would reverse ties. A different valid design
+can scan forwards with incrementing start cursors; stability depends on the
+combination of cursor convention and scan direction.
+
+```{cpp, results="markdown", file="figures/counting_sort_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::counting_sort_trace({2,5,3,0,2,3,0,3},0,5,6,8);
+  std::print("| execution step | input index | actual key | end before | actual output slot |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t e=0;e<t.placements.size();++e) {
+    const auto& p=t.placements[e];
+    if(p.cursor_before!=p.output_index+1 || t.analysis.original_indices[p.output_index]!=p.input_index) return 1;
+    std::print("| {} | {} | {} | {} | {} |\n",e+1,p.input_index,p.key,p.cursor_before,p.output_index);
+  }
+  std::vector<double> keys,frequencies;
+  for(std::size_t b=0;b<t.analysis.counts.size();++b) {
+    keys.push_back(b);frequencies.push_back(t.analysis.counts[b]);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars(keys,frequencies,"actual frequency",{37,99,235},.75)
+      .title("Original input: the native count array")
+      .x_label("integer key").y_label("frequency")
+      .x_limits(-.6,5.6).y_limits(0,3.5).size(900,540)
+      .save_svg("build/counting_sort_counts.svg");
+  std::print("\nEqual key 3: input indices 7,5,2 are visited in that order; output slots are 6,5,4.\n");
+}
+```
+// result_begin: markdown
+| execution step | input index | actual key | end before | actual output slot |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 7 | 3 | 7 | 6 |
+| 2 | 6 | 0 | 2 | 1 |
+| 3 | 5 | 3 | 6 | 5 |
+| 4 | 4 | 2 | 4 | 3 |
+| 5 | 3 | 0 | 1 | 0 |
+| 6 | 2 | 3 | 5 | 4 |
+| 7 | 1 | 5 | 8 | 7 |
+| 8 | 0 | 2 | 3 | 2 |
+
+Equal key 3: input indices 7,5,2 are visited in that order; output slots are 6,5,4.
+\image(figures/counting_sort_counts.svg)
+// result_end
+\caption(The histogram preserves the original report's six buckets. The accompanying table records all eight actual writes; no second sorting loop reconstructs the trace.)
+\alttext(A bar chart has frequencies two, zero, two, three, zero and one at keys zero through five.)
+
+The first write takes the last input 3, changes its cursor 7→6 and writes slot
+6. The next 3 changes it 6→5, and the earliest 3 finally goes to slot 4.
+Reading the finished key-3 block forwards therefore gives original indices
+[2,5,7]. This is an observable stability test because identities remain distinct.
+
+> Named records with genuinely equal sorting keys
+
+Retain the original records Ann(1), Bob(0), Cy(2), Dan(1), Eve(0), Fay(1),
+Gil(2), Hal(0). Supply only [1,0,2,1,0,1,2,0] as keys. The returned
+output-to-input permutation gathers their names without making arrival index
+part of the key. A comparison against std::stable_sort uses key alone too.
+
+Packing key×100+arrival into distinct integers, as the former report did,
+would test ordinary numeric sorting but could not establish stability:
+an unstable numeric sort could produce the same packed result.
+
+```{cpp, results="markdown", file="figures/counting_sort_stability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::string> names{"Ann","Bob","Cy","Dan","Eve","Fay","Gil","Hal"};
+  const std::vector<std::int64_t> keys{1,0,2,1,0,1,2,0};
+  const auto a=dm::algorithms::counting_sort_analyze(keys);
+  std::vector<std::size_t> reference(keys.size());std::iota(reference.begin(),reference.end(),0);
+  std::stable_sort(reference.begin(),reference.end(),[&](auto i,auto j){return keys[i]<keys[j];});
+  if(a.original_indices!=reference) return 1;
+  std::print("| output slot | name | unchanged sorting key | original index |\n| ---: | :--- | ---: | ---: |\n");
+  dm::graphics::Diagram d(65,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=1.45;box.height=1.45;box.font_size=17;
+  const std::vector<dm::graphics::RGB> colors{{220,252,231},{219,234,254},{254,243,199}};
+  d.text({5.95,2.1},"Input: arrival order",23);
+  for(std::size_t j=0;j<keys.size();++j) {
+    box.fill=colors[keys[j]];
+    d.node(std::format("in{}",j),{1.7*j,.4},std::format("{} ({})\nindex {}",names[j],keys[j],j),box);
+    const auto i=a.original_indices[j];box.fill=colors[keys[i]];
+    d.node(std::format("out{}",j),{1.7*j,-2.8},std::format("{} ({})\nindex {}",names[i],keys[i],i),box);
+    std::print("| {} | {} | {} | {} |\n",j,names[i],keys[i],i);
+  }
+  d.text({5.95,-1.2},"Stable output: indices increase inside each colour group",20)
+   .text({5.95,-4.4},"Bob, Eve, Hal  |  Ann, Dan, Fay  |  Cy, Gil",20)
+   .save_svg("build/counting_sort_stability.svg");
+  std::print("\nUnpacked equal-key identities match std::stable_sort: yes.\n");
+}
+```
+// result_begin: markdown
+| output slot | name | unchanged sorting key | original index |
+| ---: | :--- | ---: | ---: |
+| 0 | Bob | 0 | 1 |
+| 1 | Eve | 0 | 4 |
+| 2 | Hal | 0 | 7 |
+| 3 | Ann | 1 | 0 |
+| 4 | Dan | 1 | 3 |
+| 5 | Fay | 1 | 5 |
+| 6 | Cy | 2 | 2 |
+| 7 | Gil | 2 | 6 |
+
+Unpacked equal-key identities match std::stable_sort: yes.
+\image(figures/counting_sort_stability.svg)
+// result_end
+\caption(Colour identifies the actual unchanged sorting key. Each output group retains its original arrival order, as checked against an independent stable comparison sort.)
+\alttext(Two rows show the eight named records before and after sorting. Green key-zero records Bob, Eve and Hal keep their order; blue key-one Ann, Dan and Fay do too; yellow Cy and Gil follow.)
+
+A stable digit pass is useful in least-significant-digit radix sorting: after a
+pass on a more significant digit, ties retain the order already established
+by less significant digits. This report demonstrates the primitive, rather
+than asserting that every radix implementation calls these particular overloads.
+
+> Work is controlled by the whole range
+
+Under the usual fixed-width integer RAM model, counting and placing cost n
+iterations each, prefixing costs k, and zeroing the bucket arrays also costs
+O(k). Bounds checks, optional automatic range discovery, owned result copies
+and identity writes add O(n+k). Thus time and auxiliary storage are Θ(n+k)
+for nonempty input; n=0 is a constant-time no-bucket case here. These counters
+are logical work, not timings, total machine instructions or all memory writes.
+
+Comparison sorting needs Ω(n log n) comparisons in the worst case over arbitrary
+permutations of distinct keys. That lower bound does not say every input takes
+that much work. Counting sort uses key values as addresses, so the comparison
+model does not apply. Its range restriction is the price of that access.
+
+```{cpp, results="markdown", file="figures/counting_sort_range_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> ranges,prefix,selected;
+  std::print("| n | allocated buckets k | actual prefix steps | actual count + prefix + placement steps |\n| ---: | ---: | ---: | ---: |\n");
+  for(const std::size_t k:{1,2,4,8,16,32,64,128,256,512,1024}) {
+    std::vector<std::int64_t> input(128);
+    for(std::size_t i=0;i<input.size();++i) input[i]=i%k;
+    const auto a=dm::algorithms::counting_sort_analyze(input,0,static_cast<std::int64_t>(k-1),k);
+    const auto operations=a.work.count_increments+a.work.prefix_steps+a.work.placements;
+    if(operations!=256+k || a.work.range_items!=0) return 1;
+    ranges.push_back(k);prefix.push_back(a.work.prefix_steps);selected.push_back(operations);
+    std::print("| 128 | {} | {} | {} |\n",k,a.work.prefix_steps,operations);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(ranges,selected,"count + prefix + place",{37,99,235},2)
+      .line(ranges,prefix,"prefix only",{234,88,12},2)
+      .legend({"count + prefix + place","prefix only"},{{37,99,235},{234,88,12}})
+      .title("Fixed n=128: unused buckets still cost prefix work")
+      .x_label("explicit inclusive range width k").y_label("selected logical operations")
+      .x_limits(0,1060).y_limits(0,1400).size(900,560)
+      .save_svg("build/counting_sort_range_work.svg");
+  const auto lo=std::numeric_limits<std::int64_t>::min();
+  const auto endpoint=dm::algorithms::counting_sort_analyze({lo+2,lo,lo+2});
+  if(endpoint.original_indices!=std::vector<std::size_t>{1,0,2}) return 1;
+  std::print("\nNarrow INT64_MIN range: k={}, permutation {}.\n",endpoint.counts.size(),endpoint.original_indices);
+  bool buckets=false,events=false,invalid=false;
+  try { (void)dm::algorithms::counting_sort_analyze({0,2},2); }
+  catch(const std::length_error&) { buckets=true; }
+  try { (void)dm::algorithms::counting_sort_trace({0,1,0},0,1,2,2); }
+  catch(const std::length_error&) { events=true; }
+  try { (void)dm::algorithms::counting_sort_trace({0,4},0,3,1,1); }
+  catch(const std::invalid_argument&) { invalid=true; }
+  if(!buckets || !events || !invalid) return 1;
+  std::print("Complete bucket cap, complete event cap and full key validation: pass.\n");
+}
+```
+// result_begin: markdown
+| n | allocated buckets k | actual prefix steps | actual count + prefix + placement steps |
+| ---: | ---: | ---: | ---: |
+| 128 | 1 | 1 | 257 |
+| 128 | 2 | 2 | 258 |
+| 128 | 4 | 4 | 260 |
+| 128 | 8 | 8 | 264 |
+| 128 | 16 | 16 | 272 |
+| 128 | 32 | 32 | 288 |
+| 128 | 64 | 64 | 320 |
+| 128 | 128 | 128 | 384 |
+| 128 | 256 | 256 | 512 |
+| 128 | 512 | 512 | 768 |
+| 128 | 1024 | 1024 | 1280 |
+
+Narrow INT64_MIN range: k=3, permutation [1, 0, 2].
+Complete bucket cap, complete event cap and full key validation: pass.
+\image(figures/counting_sort_range_work.svg)
+// result_end
+\caption(The two observed curves are k and 256+k for n=128. For k>128 many buckets are empty, yet the explicit range still receives a complete prefix scan.)
+\alttext(Two straight curves rise with explicit bucket count. Prefix work equals k, while the selected total remains 256 above it.)
+
+A trillion-wide range is unsuitable even for two input values. The legacy
+sorting overloads keep their inclusive hard ceiling of 1,000,000,000 buckets;
+this is a compatibility limit, not a practical memory recommendation. Their
+two size_t bucket arrays alone would require about 16 GB at that ceiling on
+a 64-bit platform. Analysis and tracing default to at most 1,000,000 buckets;
+tracing additionally defaults to 100,000 placement events. A zero optional cap
+disables that cap only, leaving the hard ceiling and container limits in force.
+Returned diagnostics retain three bucket arrays and n identities as well as
+sorted keys. Temporary arrays and optional events add further peak storage.
+Allocation can still throw std::bad_alloc below any cap.
+
+All bounds and keys are validated before bucket allocation or budget checks.
+The mathematical width is checked using unsigned differences, avoiding signed
+overflow for extreme bounds and rejecting a full signed-64-bit span safely.
+Every accepted nonempty diagnostic call returns complete results; it never
+silently truncates events. Inverted ranges fail even for empty input. Valid
+empty explicit input retains its bounds but allocates no buckets and skips
+span and bucket-budget checks, preserving the legacy no-op convention.
+
+The original deterministic example needs no external dataset: tiny duplicate
+keys make each cursor and identity inspectable. Exhaustive sequences and random
+oracle checks test sorting and stability independently of the report figures.
+
+> References and verification scope
+
+Pat Morin's [Open Data Structures, Section 11.2](https://opendatastructures.org/ods-cpp/11_2_Counting_Sort_Radix_So.html)
+gives a reverse-placement implementation and its stability/radix connection.
+The [NIST counting-sort entry](https://xlinux.nist.gov/dads/HTML/countingsort.html)
+provides the histogram interpretation. The signed bounds, ownership, complete
+budgets and work definitions above are datamunge contracts.
+
+Native tests compare all 29,524 ternary sequences through length nine with
+std::stable_sort on original indices, plus 1,000 random duplicate-heavy inputs.
+Every actual event is checked on the worked example and random fixtures.
+Additional controls cover both signed endpoints, all-equal/empty/singleton
+inputs, exact and one-below budgets, disabled optional caps, full invalid-key
+validation and unchanged legacy input on failure. Sanitizers check the focused
+suite. These establish the reported integer properties; no elapsed-time or
+universal speed advantage is inferred from the operation-count plot.

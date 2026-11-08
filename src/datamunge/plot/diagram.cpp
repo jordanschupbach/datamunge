@@ -272,6 +272,12 @@ Diagram& Diagram::text(DiagramPoint centre, std::string label, double font_size,
   return *this;
 }
 
+Diagram& Diagram::label(DiagramPoint centre, std::string label, double font_size, RGB ink) {
+  text(centre, std::move(label), font_size, ink);
+  items_.back().fill = {255, 255, 255};
+  return *this;
+}
+
 Diagram& Diagram::path(std::vector<DiagramPoint> points, DiagramStroke stroke) {
   check_stroke(stroke);
   for (auto& point : points) {
@@ -339,6 +345,23 @@ Diagram& Diagram::edge(
     const std::string& to,
     std::string        label,
     DiagramStroke      stroke) {
+  return connect(from, to, std::move(label), stroke, true);
+}
+
+Diagram& Diagram::link(
+    const std::string& from,
+    const std::string& to,
+    std::string        label,
+    DiagramStroke      stroke) {
+  return connect(from, to, std::move(label), stroke, false);
+}
+
+Diagram& Diagram::connect(
+    const std::string& from,
+    const std::string& to,
+    std::string        label,
+    DiagramStroke      stroke,
+    bool               arrow) {
   check_stroke(stroke);
   const auto find = [&](const std::string& id) -> const Item& {
     const auto found = std::find_if(items_.begin(), items_.end(), [&](const auto& item) {
@@ -362,7 +385,7 @@ Diagram& Diagram::edge(
   const auto start = boundary(a, 1), end = boundary(b, -1);
   if ((end.x - start.x) * dx + (end.y - start.y) * dy <= 0)
     throw std::invalid_argument("Diagram: connected node boxes overlap");
-  stroke.arrow = true;
+  stroke.arrow = arrow;
   path({start, end}, stroke);
   if (!label.empty()) {
     const double length = std::hypot(dx, dy);
@@ -500,6 +523,82 @@ void Diagram::save_svg(const std::string& path) const {
   file.flush();
   if (!file)
     throw std::runtime_error("Diagram: cannot write " + path);
+}
+
+Diagram Diagram::rooted_tree(
+    const std::vector<std::size_t>& parents,
+    const std::vector<std::string>& labels,
+    const std::string&              title,
+    std::size_t                     max_nodes) {
+  const auto n = parents.size();
+  if (labels.size() != n)
+    throw std::invalid_argument("Diagram tree: parent/label sizes differ");
+  const auto none = std::numeric_limits<std::size_t>::max();
+  if (n && parents[0] != none)
+    throw std::invalid_argument("Diagram tree: index0 must be the root");
+  for (std::size_t i = 1; i < n; ++i)
+    if (parents[i] >= n || parents[i] == i)
+      throw std::invalid_argument("Diagram tree: invalid parent");
+  if (n > (none - 2) / 2 || 2 * n + 2 > std::vector<Item>().max_size() ||
+      n > std::vector<std::vector<std::size_t>>().max_size())
+    throw std::length_error("Diagram tree: primitive capacity");
+  std::vector<std::vector<std::size_t>> children(n);
+  for (std::size_t i = 1; i < n; ++i)
+    children[parents[i]].push_back(i);
+  std::vector<std::size_t> order, stack, depth(n);
+  order.reserve(n);
+  stack.reserve(n);
+  if (n)
+    stack.push_back(0);
+  while (!stack.empty()) {
+    const auto id = stack.back();
+    stack.pop_back();
+    order.push_back(id);
+    for (auto i = children[id].rbegin(); i != children[id].rend(); ++i) {
+      depth[*i] = depth[id] + 1;
+      stack.push_back(*i);
+    }
+  }
+  if (order.size() != n)
+    throw std::invalid_argument("Diagram tree: disconnected cycle");
+  if (max_nodes && n > max_nodes)
+    throw std::length_error("Diagram tree: node cap");
+  Diagram d(1, 1100);
+  if (!n) {
+    d.text({0, 0}, "Empty tree", 24);
+    if (!title.empty())
+      d.text({0, 60}, title, 28);
+    return d;
+  }
+  DiagramNodeStyle style;
+  style.width     = 160;
+  style.height    = 65;
+  style.font_size = 20;
+  style.padding   = 8;
+  double width = 0, height = 0;
+  for (std::size_t i = 0; i < n; ++i) {
+    d.node(std::to_string(i), {0, 0}, labels[i], style);
+    width  = std::max(width, d.items_.back().width);
+    height = std::max(height, d.items_.back().height);
+  }
+  std::vector<double> left(n), right(n);
+  std::size_t         leaves = 0;
+  for (auto id : order)
+    if (children[id].empty())
+      left[id] = right[id] = double(leaves++) * (width + 40);
+  for (auto i = order.rbegin(); i != order.rend(); ++i) {
+    const auto id = *i;
+    if (!children[id].empty()) {
+      left[id]  = left[children[id].front()];
+      right[id] = right[children[id].back()];
+    }
+    d.items_[id].centre = {(left[id] + right[id]) / 2, -double(depth[id]) * (height + 50)};
+  }
+  for (std::size_t i = 1; i < n; ++i)
+    d.edge(std::to_string(parents[i]), std::to_string(i));
+  if (!title.empty())
+    d.text({d.items_[0].centre.x, height / 2 + 60}, title, 28);
+  return d;
 }
 
 } // namespace datamunge::graphics

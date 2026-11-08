@@ -6,8 +6,8 @@ using datamunge::algorithms::blossom_maximum_matching;
 using datamunge::algorithms::kGeneralMatchingUnmatched;
 
 TEST(Blossom, ContractsOddCycleToFindMaximumMatching) {
-  // The triangle 0-1-2 is a blossom. The stem and two outside vertices permit
-  // three pairs, but a search that never contracts the triangle can get stuck at two.
+  // Retain the original report's triangle, stem and outside vertices. The trace
+  // suite separately checks a four-vertex case whose lifted route uses the blossom.
   const auto result = blossom_maximum_matching(
       6, {{0, 1}, {1, 2}, {2, 0}, {1, 3}, {3, 4}, {2, 5}});
   EXPECT_EQ(result.size, 3U);

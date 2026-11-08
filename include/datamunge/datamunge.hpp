@@ -19,11 +19,14 @@
 #include <datamunge/plot/ggplot.hpp>
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/plot/diagram.hpp>
+#include <datamunge/plot/label_images.hpp>
 #include <datamunge/plot/figure.hpp>
 #include <datamunge/plot/histogram.hpp>
 #include <datamunge/plot/splom.hpp>
 #include <datamunge/plot/class_regions.hpp>
 #include <datamunge/random/random.hpp>
+#include <datamunge/random/blum_blum_shub_analysis.hpp>
+#include <datamunge/random/chacha20_analysis.hpp>
 #include <datamunge/random/mt19937_64_analysis.hpp>
 #include <datamunge/random/distributions.hpp>
 #include <datamunge/random/quality.hpp>

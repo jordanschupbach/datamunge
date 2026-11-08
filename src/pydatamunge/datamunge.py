@@ -1591,8 +1591,8 @@ class Plot(object):
         r"""
         Renders the plot as a standalone SVG document and returns it as a string.
 
-        The document starts with an XML declaration and embeds the plot font, so it displays
-        identically in any browser. The plot is not modified, and no file or display is used.
+        The document starts with an XML declaration and draws text as embedded Computer Modern
+        glyph outlines, so it displays identically in any SVG viewer, with or without web fonts. The plot is not modified, and no file or display is used.
 
         :rtype: string
         :return: The complete SVG text.
@@ -15836,10 +15836,24 @@ def convex_hull(points):
     """
     return _datamunge.convex_hull(points)
 class ClosestPairResult(object):
+    r"""
+    Owned closest-point coordinate copies and legacy finite-double distance.
+    Original field order/types are retained. Equal measured distances keep the
+    earliest original index pair in the scan. Default storage alone is not a
+    valid search result. No input references or global mutable state are retained.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::geometry::closest_pair({{0,0},{3,4}});
+        std::print("{}\n",r.distance); // 5
+    See also: closest_pair(), ClosestPairSelection
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    a = property(_datamunge.ClosestPairResult_a_get, _datamunge.ClosestPairResult_a_set)
-    b = property(_datamunge.ClosestPairResult_b_get, _datamunge.ClosestPairResult_b_set)
+    a = property(_datamunge.ClosestPairResult_a_get, _datamunge.ClosestPairResult_a_set, doc=r"""Owned coordinate copy of the lower-index selected input record.""")
+    b = property(_datamunge.ClosestPairResult_b_get, _datamunge.ClosestPairResult_b_set, doc=r"""Owned coordinate copy of the higher-index selected input record.""")
     distance = property(_datamunge.ClosestPairResult_distance_get, _datamunge.ClosestPairResult_distance_set)
 
     def __init__(self):
@@ -15851,11 +15865,28 @@ _datamunge.ClosestPairResult_swigregister(ClosestPairResult)
 
 def closest_pair(points):
     r"""
-    The closest pair of points by brute-force all-pairs comparison, O(n^2). The classic
-           divide-and-conquer algorithm for this problem is O(n log n); this simpler version
-           is the deliberate choice for a "basic" library component (easy to verify correct,
-           no merge-step edge cases to get subtly wrong) -- fine for the modest point counts
-           this module targets, not a competitive replacement for CGAL at scale.
+    Return the closest point copies and finite-double distance using the checked all-pairs kernel.
+    Validates at least two finite points, visits every original i<j pair and compares
+    widened hypot distances. Equal rounded distances keep the lexicographically
+    first index pair. Duplicates are valid distinct records and can yield zero.
+    No early stop, sorting or spatial pruning; O(n^2) work and O(1) auxiliary storage.
+    No input mutation/shared state. Widened comparison can change former false
+    zero/infinite results and last-bit ties; it is not an exact-real predicate.
+    The old call/result layout remains; indexed/traced variants retain input ids.
+    :type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :param points: Borrowed original finite planar coordinates, length at least two.
+    :rtype: :py:class:`ClosestPairResult`
+    :return: Owned selected point copies and checked finite-double measured distance.
+    :raises: std::invalid_argument If point count is too small or any coordinate is nonfinite.
+    :raises: std::length_error If complete pair count cannot fit size_t.
+    :raises: std::overflow_error If arithmetic/counters or the selected legacy distance cannot fit.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::geometry::closest_pair({{0,0},{3,4},{0,1}});
+        std::print("{}\n",r.distance); // 1
+    See also: closest_pair_indexed(), closest_pair_trace()
     """
     return _datamunge.closest_pair(points)
 

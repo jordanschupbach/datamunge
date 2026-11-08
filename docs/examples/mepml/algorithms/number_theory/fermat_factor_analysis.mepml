@@ -1,0 +1,386 @@
+//? Title: Fermat Factorization: Exact Squares and Actual Trial Counts
+//? Subtitle: Close factor pairs, finite budgets, full-width integer roots and owned same-pass history
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given an integer, find a proper factor pair whose product recovers the input.
+Divisors are easy to verify but can be expensive to discover. Fermat searches
+for a difference of squares, making nearby odd factors especially accessible.
+We begin with the three actual square tests that split 5959 into 59 times 101,
+then retain the original two factorizations and seven factor-gap examples.
+The native solver supplies exact states and counts directly. Prime inputs,
+composite factors, a capped composite, large near-squares and optional capture
+limits show precisely what each returned result establishes. Every figure is
+produced by its complete editable C++ program.
+)
+
+\toc
+
+> Three square tests and one rectangle
+
+For odd n, test integer a from the exact ceiling square root upward. Put
+d=a²−n and b=floor(sqrt(d)). The trial succeeds exactly when b²=d, giving
+n=(a−b)(a+b). For n=5959, start at 78: 78²−5959=125 is not a square.
+The next difference is 282, and the third is 441=21². Thus 80²−21²=5959
+and the factors are 59 and 101. This takes three square tests and two
+increments. Zero increments still means one test.
+
+The native diagram uses the actual successful a and b for its equal-scale
+geometry. The remaining L-shaped area can be rearranged into a rectangle
+of sides a−b and a+b. Its area agrees with the factor certificate below.
+The three boxes are actual captured solver rows, rather than a local search.
+
+```{cpp, results="markdown", file="figures/fermat_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::fermat_factor_trace(5959,3,3);const auto& o=t.outcome;
+  std::print("| actual test | a | a squared minus n | floor root b | square hit |\n| ---: | ---: | ---: | ---: | :--- |\n");for(std::size_t i=0;i<t.rows.size();++i){const auto& r=t.rows[i];std::print("| {} | {} | {} | {} | {} |\n",i+1,r.a,dm::algorithms::uint128_text(r.difference),r.b,r.square);}
+  std::print("\nTiny split: {} = {} x {}; actual tests {}; increments {}; stop {}.\n",o.n,o.returned_factor,o.cofactor,o.trials,o.increments,dm::algorithms::fermat_stop_name(o.stop));
+  const auto product=static_cast<unsigned __int128>(o.returned_factor)*o.cofactor;std::print("Exact factor-product certificate: {}.\n",product==o.n);
+  const double scale=.06,a=o.last_a*scale,b=o.last_b*scale;dm::graphics::Diagram g(62,1100);dm::graphics::DiagramStroke stroke;stroke.width=2;
+  g.polygon({{0,0},{a,0},{a,a-b},{a-b,a-b},{a-b,a},{0,a}},{191,219,254},stroke).polygon({{a-b,a-b},{a,a-b},{a,a},{a-b,a}},{254,226,226},stroke);
+  const double x=8.4,y=.6,w=o.cofactor*scale,h=o.returned_factor*scale;g.polygon({{x,y},{x+w,y},{x+w,y+h},{x,y+h}},{187,247,208},stroke);
+  g.text({a/2,a+1},std::format("{}² minus {}²",o.last_a,o.last_b),26).text({a-b/2,a-b/2},std::format("{}²",o.last_b),20).text({a/2,-.8},"Remaining area = 5959",23);
+  g.text({x+w/2,y+h+1},std::format("{} × {}",o.returned_factor,o.cofactor),26).text({x+w/2,-.8},"Equal-area factor rectangle",23);
+  dm::graphics::DiagramNodeStyle box;box.width=3.7;box.height=1.5;box.font_size=22;
+  for(std::size_t i=0;i<t.rows.size();++i){const auto& r=t.rows[i];box.fill=r.square?dm::graphics::RGB{187,247,208}:dm::graphics::RGB{226,232,240};const auto id=std::to_string(i);g.node(id,{2+5.1*i,-3.6},std::format("a={}  b={}\nd={}{}",r.a,r.b,dm::algorithms::uint128_text(r.difference),r.square?"  hit":""),box);if(i)g.edge(std::to_string(i-1),id,"increment");}
+  g.text({7.1,-5.6},std::format("{} actual tests, {} increments",o.trials,o.increments),25).save_svg("build/fermat_tiny.svg");if(!o.proper_split||product!=o.n||o.trials!=3)throw std::runtime_error("tiny certificate failed");
+}
+```
+// result_begin: markdown
+| actual test | a | a squared minus n | floor root b | square hit |
+| ---: | ---: | ---: | ---: | :--- |
+| 1 | 78 | 125 | 11 | false |
+| 2 | 79 | 282 | 16 | false |
+| 3 | 80 | 441 | 21 | true |
+
+Tiny split: 5959 = 59 x 101; actual tests 3; increments 2; stop factor.
+Exact factor-product certificate: true.
+\image(figures/fermat_tiny.svg)
+// result_end
+\caption(Actual rows give differences 125,282,441. The final blue square minus red square and green factor rectangle have equal area; the successful native row yields 59 times 101.)
+\alttext(A native equal-scale diagram shows an eighty-square with a twenty-one-square removed, a fifty-nine by one-hundred-one rectangle, and the actual three trial records for a equal to seventy-eight,seventy-nine,eighty. The final record is highlighted green.)
+
+> Why the search finds the closest pair
+
+An odd factorization n=pq, 1≤p≤q, gives integer
+A=(p+q)/2 and B=(q−p)/2 with A²−B²=n. Conversely, a square hit gives
+positive odd factors a−b and a+b. Every pair has A≥sqrt(n). Scanning
+integer a in ascending order therefore finds the pair with minimum A,
+equivalently the closest factor pair. That pair can contain composite
+factors: for 945, the first split is 27 times 35. This is a splitting
+algorithm, not a complete prime factorization.
+
+Let A_min denote that first pair's A, and a0=ceil(sqrt(n)). Without a
+trial cap, the exact number of increments is D=A_min−a0 and the number
+of tests is T=D+1. The continuous excess A_min−sqrt(n) is not D; because
+A_min is an integer, D=floor(A_min−sqrt(n)). For the returned pair,
+
+\[
+A-\sqrt n
+=\frac{(\sqrt q-\sqrt p)^2}{2}
+=\frac{(q-p)^2}{2(\sqrt q+\sqrt p)^2}
+\approx\frac{(q-p)^2}{8p}\qquad(q-p\ll p).
+\]
+
+The approximation explains a small-gap quadratic trend at roughly fixed
+p. It is neither an exact integer count nor a universal complexity formula
+for any chosen factorization: a different pair may be closer.
+
+> The original factorizations and seven gaps
+
+These are the original two inputs and the original p=10007 with seven q
+values. Small fixture primes are checked through native trial division;
+this check is restricted to these small values. Native outcomes give the
+actual factor and actual count. The integer formula uses the returned pair
+and the library's exact ceiling root; it does not run a second search.
+
+The first four gap cases take one test each. The old report called their
+zero increments “steps”, obscuring that the square test still occurred.
+The continuous guide below uses the stable rational expression above.
+It is explicitly separate from the measured integer test counts.
+
+```{cpp, results="markdown", file="figures/fermat_gaps.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| original n | actual factor | cofactor | actual tests | increments |\n| ---: | ---: | ---: | ---: | ---: |\n");for(std::uint64_t n:{5959ULL,100000007ULL*100000037ULL}){const auto o=dm::algorithms::fermat_factor_work(n);std::print("| {} | {} | {} | {} | {} |\n",n,o.returned_factor,o.cofactor,o.trials,o.increments);if(!o.proper_split||static_cast<unsigned __int128>(o.returned_factor)*o.cofactor!=n)throw std::runtime_error("original split failed");}
+  const std::uint64_t p=10007;bool primes=dm::algorithms::trial_division_factorize(p)==std::vector<std::uint64_t>{p};std::vector<double>gaps,tests,increments,surplus;std::print("\n| p | q | gap | n | actual increments D | actual tests T | integer formula D | continuous excess |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::uint64_t q:{10009,10037,10091,10259,10501,11003,12007}){primes=primes&&(dm::algorithms::trial_division_factorize(q)==std::vector<std::uint64_t>{q});const auto n=p*q;const auto o=dm::algorithms::fermat_factor_work(n);const auto a=(o.returned_factor+o.cofactor)/2;const auto predicted=a-(dm::algorithms::integer_sqrt_u64(n-1)+1);const double gap=q-p,den=std::sqrt(double(q))+std::sqrt(double(p)),continuous=gap*gap/(2*den*den);std::print("| {} | {} | {} | {} | {} | {} | {} | {:.6f} |\n",p,q,q-p,n,o.increments,o.trials,predicted,continuous);gaps.push_back(gap);tests.push_back(o.trials);increments.push_back(o.increments);surplus.push_back(continuous);if(o.returned_factor!=p||o.cofactor!=q||predicted!=o.increments)throw std::runtime_error("original gap check failed");}
+  std::print("\nOriginal small prime fixtures verified: {}.\n",primes);if(!primes)throw std::runtime_error("prime fixtures failed");auto plot=dm::graphics::RPlot::create();plot.line(gaps,tests,"Actual tests",{37,99,235},2).points(gaps,tests,"",{37,99,235},5).line(gaps,increments,"Increments",{220,38,38},2).points(gaps,increments,"",{220,38,38},5).line(gaps,surplus,"Continuous excess",{22,163,74},2).title("Original gap cases: tests include the successful trial").x_label("Factor gap q - p").y_label("Count or continuous excess").size(1100,580).save_svg("build/fermat_gaps.svg");
+}
+```
+// result_begin: markdown
+| original n | actual factor | cofactor | actual tests | increments |
+| ---: | ---: | ---: | ---: | ---: |
+| 5959 | 59 | 101 | 3 | 2 |
+| 10000004400000259 | 100000007 | 100000037 | 1 | 0 |
+
+| p | q | gap | n | actual increments D | actual tests T | integer formula D | continuous excess |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 10007 | 10009 | 2 | 100160063 | 0 | 1 | 0 | 0.000050 |
+| 10007 | 10037 | 30 | 100440259 | 0 | 1 | 0 | 0.011225 |
+| 10007 | 10091 | 84 | 100980637 | 0 | 1 | 0 | 0.087770 |
+| 10007 | 10259 | 252 | 102661813 | 0 | 1 | 0 | 0.783411 |
+| 10007 | 10501 | 494 | 105083507 | 2 | 3 | 2 | 2.975320 |
+| 10007 | 11003 | 996 | 110107021 | 11 | 12 | 11 | 11.810733 |
+| 10007 | 12007 | 2000 | 120154049 | 45 | 46 | 45 | 45.519762 |
+
+Original small prime fixtures verified: true.
+\image(figures/fermat_gaps.svg)
+// result_end
+\caption(The original seven inputs execute through the actual solver. Counts of tests exceed increments by one; the continuous arithmetic-geometric mean excess is fractional and its floor gives increments for the first pair.)
+\alttext(A native plot of the original seven gaps shows blue actual tests,red increments one lower,and a green continuous excess near the integer counts. Four small-gap inputs all require one actual test.)
+
+> A trial limit says nothing about primality
+
+Every odd n has the trivial pair 1 times n at a=(n+1)/2. If an exact
+ascending search reaches it without an earlier hit, n has no nontrivial
+pair and is prime. The TrialLimit stop says only that the allowed tests
+ended first. Returning n alone cannot distinguish these two outcomes.
+For 13, the first three tests miss and the fourth reaches the trivial pair.
+For 5959, a budget of two misses and three finds 59 times 101.
+
+The preserved legacy entry point uses a five-million-test cap. The composite
+3000000021=3 times 1000000007 still returns n at that cap. There is no need
+to run until its distant pair merely to know it is composite: the small
+factor three is already an exact certificate.
+
+The even branch returns two with zero square tests. For n=2 the other
+factor is one, so proper_split is false. Integers congruent to two modulo
+four cannot be a difference of integer squares; the even shortcut is a
+separate operation. Odd squares succeed immediately with b=0.
+
+```{cpp, results="markdown", file="figures/fermat_stops.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<std::uint64_t,std::size_t>> cases{{2,1},{10,1},{49,1},{945,1},{13,3},{13,4},{5959,1},{5959,2},{5959,3},{3000000021ULL,5000000}};std::print("| n | trial budget | stop | returned factor | known cofactor | proper split | actual tests | increments |\n| ---: | ---: | :--- | ---: | ---: | :--- | ---: | ---: |\n");for(const auto& [n,cap]:cases){const auto o=dm::algorithms::fermat_factor_work(n,cap);std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",n,cap,dm::algorithms::fermat_stop_name(o.stop),o.returned_factor,o.cofactor,o.proper_split,o.trials,o.increments);}
+  const auto hard=dm::algorithms::fermat_factor_work(3000000021ULL);std::print("\nCapped composite: divisible by 3 {}; legacy return {}; outcome {}.\n",3000000021ULL%3==0,dm::algorithms::fermat_factor(3000000021ULL),dm::algorithms::fermat_stop_name(hard.stop));
+  const auto first=dm::algorithms::fermat_factor_trace(945,1);std::print("First 945 pair: {} x {}; its factors are both composite.\n",first.outcome.returned_factor,first.outcome.cofactor);
+  auto plot=dm::graphics::RPlot::create();const std::vector<dm::graphics::RGB>colours{{37,99,235},{220,38,38}};int c=0;for(std::uint64_t n:{5959,13}){const auto t=dm::algorithms::fermat_factor_trace(n,10);std::vector<double>x,y;for(std::size_t i=0;i<t.rows.size();++i){const auto& r=t.rows[i];x.push_back(i+1);y.push_back(static_cast<double>(r.difference-static_cast<unsigned __int128>(r.b)*r.b));}const auto label=std::format("n={}",n);plot.line(x,y,label,colours[c],2).points(x,y,"",colours[c],6);++c;}plot.title("Actual square remainder: zero marks a hit").x_label("Actual test number").y_label("(a squared - n) minus floor-root squared").size(1100,560).save_svg("build/fermat_stops.svg");if(hard.stop!=dm::algorithms::FermatStop::TrialLimit||first.outcome.returned_factor!=27)throw std::runtime_error("stop controls failed");
+}
+```
+// result_begin: markdown
+| n | trial budget | stop | returned factor | known cofactor | proper split | actual tests | increments |
+| ---: | ---: | :--- | ---: | ---: | :--- | ---: | ---: |
+| 2 | 1 | even | 2 | 1 | false | 0 | 0 |
+| 10 | 1 | even | 2 | 5 | true | 0 | 0 |
+| 49 | 1 | factor | 7 | 7 | true | 1 | 0 |
+| 945 | 1 | factor | 27 | 35 | true | 1 | 0 |
+| 13 | 3 | trial limit | 13 | 0 | false | 3 | 2 |
+| 13 | 4 | trivial pair | 13 | 1 | false | 4 | 3 |
+| 5959 | 1 | trial limit | 5959 | 0 | false | 1 | 0 |
+| 5959 | 2 | trial limit | 5959 | 0 | false | 2 | 1 |
+| 5959 | 3 | factor | 59 | 101 | true | 3 | 2 |
+| 3000000021 | 5000000 | trial limit | 3000000021 | 0 | false | 5000000 | 4999999 |
+
+Capped composite: divisible by 3 true; legacy return 3000000021; outcome trial limit.
+First 945 pair: 27 x 35; its factors are both composite.
+\image(figures/fermat_stops.svg)
+// result_end
+\caption(Each table row states its finite budget and actual stop. The plot uses actual recorded square remainders; 5959 hits on test three, whereas 13 reaches its trivial pair on test four.)
+\alttext(A native plot compares actual nonnegative square remainders for 5959 and thirteen. The first reaches zero on the third test and gives a proper split; the second reaches zero on the fourth and gives the trivial pair. A capped miss remains inconclusive.)
+
+> Exact roots at the width boundary
+
+A uint64 input can need a=2^32, whose square is 2^64. Keeping a²−n in
+uint64 would lose that value. The core uses unsigned 128-bit differences
+and the reusable integer_sqrt_u128 API. It brackets the root using bit
+width and compares middle≤n/middle in an integer binary search. The
+exclusive upper sentinel can be 2^64 in the wider type, so even the
+maximum unsigned 128-bit value is handled without squaring that sentinel.
+
+For odd uint64 n≥3, the trivial pair is reached by a=(n+1)/2≤2^63.
+Every earlier tested a is no larger, b fits uint64, and the difference
+fits unsigned 128 bits. The implementation checks the budget before
+advancing an unused next a or trial count. These are fixed-width exact
+integer statements, not floating error tolerances.
+
+The former report's independent counter used ceil(sqrt(double(n))). At
+n=(2^32−1)²+2=18446744065119617027, that expression rounds its starting
+a down to 2^32−1. Its subtraction then wraps in unsigned 128 bits, and
+its floating square root converts out of uint64 range. A strict sanitizer
+probe reproduces that failure. This was a report-local counter defect;
+the former core already corrected its initial integer root. The new report
+has no local counter and reads every count from the solver.
+
+The diagnostic floating ceiling below only displays that starting-value
+mismatch; it never performs the unsafe wrapped subtraction or cast. The
+exact wide API also handles arbitrary differences beyond Fermat's input
+range, as shown by the final 2^128−1 root check.
+
+```{cpp, results="markdown", file="figures/fermat_width.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::uint64_t p=4294967295ULL,near=p*p+2;const std::vector<std::uint64_t> ns{p*p,near,UINT64_MAX};std::print("| n | exact start a | first exact difference | first floor root | stop after one test |\n| ---: | ---: | ---: | ---: | :--- |\n");for(auto n:ns){const auto t=dm::algorithms::fermat_factor_trace(n,1);const auto& r=t.rows.front();std::print("| {} | {} | {} | {} | {} |\n",n,t.outcome.start_a,dm::algorithms::uint128_text(r.difference),r.b,dm::algorithms::fermat_stop_name(t.outcome.stop));}
+  const auto floating=static_cast<std::uint64_t>(std::ceil(std::sqrt(static_cast<double>(near))));const auto exact=dm::algorithms::integer_sqrt_u64(near-1)+1;std::print("\nNear-square start: diagnostic double ceiling {}; exact ceiling {}; floating candidate squared below n {}.\n",floating,exact,static_cast<unsigned __int128>(floating)*floating<near);
+  const auto maximum=~static_cast<unsigned __int128>(0);const auto root=dm::algorithms::integer_sqrt_u128(maximum);std::print("Full uint128 maximum: {}; exact floor root {}.\n",dm::algorithms::uint128_text(maximum),root);
+  const auto t=dm::algorithms::fermat_factor_trace(UINT64_MAX,1);std::print("Full uint64 split: {} x {}; exact product valid {}.\n",t.outcome.returned_factor,t.outcome.cofactor,static_cast<unsigned __int128>(t.outcome.returned_factor)*t.outcome.cofactor==UINT64_MAX);
+  dm::graphics::Diagram g(58,1100);dm::graphics::DiagramNodeStyle box;box.width=5.8;box.height=1.7;box.font_size=23;box.fill={254,226,226};g.node("floating",{0,0},std::format("double diagnostic\na = {}",floating),box);box.fill={187,247,208};g.node("exact",{8,0},std::format("native exact ceiling\na = {}",exact),box);g.text({4,2.5},"Near-square input: 18446744065119617027",26).text({0,-2},"Candidate is below the root",22).text({8,-2},"First difference = 8589934589",22).text({4,-4},"Actual trials and square roots stay in exact integer arithmetic",24).save_svg("build/fermat_width.svg");if(root!=UINT64_MAX||exact!=4294967296ULL||t.outcome.returned_factor!=4294967295ULL)throw std::runtime_error("width controls failed");
+}
+```
+// result_begin: markdown
+| n | exact start a | first exact difference | first floor root | stop after one test |
+| ---: | ---: | ---: | ---: | :--- |
+| 18446744065119617025 | 4294967295 | 0 | 0 | factor |
+| 18446744065119617027 | 4294967296 | 8589934589 | 92681 | trial limit |
+| 18446744073709551615 | 4294967296 | 1 | 1 | factor |
+
+Near-square start: diagnostic double ceiling 4294967295; exact ceiling 4294967296; floating candidate squared below n true.
+Full uint128 maximum: 340282366920938463463374607431768211455; exact floor root 18446744073709551615.
+Full uint64 split: 4294967295 x 4294967297; exact product valid true.
+\image(figures/fermat_width.svg)
+// result_end
+\caption(The large near-square separates a displayed floating diagnostic from the actual exact starting state. Maximum-width square roots and the uint64 maximum factor certificate execute through native APIs.)
+\alttext(A native diagram shows the diagnostic floating ceiling 4294967295 beside the exact ceiling 4294967296 for the same large near-square. The first is below the required root; the exact trial difference is 8589934589.)
+
+> Work, optional history and explicit limits
+
+fermat_factor retains its compiled one-argument signature and five-million
+square-test default. fermat_factor_work returns the same solver's counts
+without optional history. fermat_factor_trace captures one whole FermatStep
+per actual odd square test, in the same pass. All inputs require n≥2 and
+a positive trial budget; the historical meaningless returns for zero and
+one are now rejected. Even fast paths validate the controls too.
+
+C=captured_entries=rows.size() counts whole records. The trace admits each
+record before its square/root work. Its default one-million-record quota
+is independent of the five-million-test budget. A zero max_entries disables
+only that quota; it does not disable the trial budget. A failed admission
+or allocation throws without returning a partial trace. This is a count
+of owned records, excluding scalar metadata, vector capacity, allocators
+and runtime storage, so it is not a peak-memory guarantee.
+
+For this fixed uint64/uint128 representation, each root uses at most 63
+division comparisons. Ordinary/work calls take O(T) such fixed-word work
+and constant auxiliary storage; a successful trace takes O(T) records.
+With arbitrary-size integers, root and multiplication costs depend on the
+bit length and cannot be folded into a unit-cost claim. In the prime case,
+reaching (n+1)/2 takes order n tests, exponential in input bit length.
+The budget bounds actual work, while the optional quota bounds captured
+records. Factor-gap plots are measured work on selected inputs, not timing
+benchmarks or a claim that this beats general factorization methods.
+
+```{cpp, results="markdown", file="figures/fermat_capture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/number_theory_extra.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  bool quota=false;try{(void)dm::algorithms::fermat_factor_trace(5959,3,2);}catch(const std::length_error&){quota=true;}const auto admitted=dm::algorithms::fermat_factor_trace(5959,3,3);const auto noquota=dm::algorithms::fermat_factor_trace(5959,3,0);const auto work=dm::algorithms::fermat_factor_work(5959,3);
+  std::print("Quota controls: two-record quota rejects third trial {}; exact quota captures {}; disabled quota captures {}; ordinary work tests {}.\n",quota,admitted.captured_entries,noquota.captured_entries,work.trials);
+  auto edited=admitted;const auto owned=edited;edited.rows.front().a=0;std::print("Owned copy: retained first a {}; edited first a {}; stored outcome factor {}.\n",owned.rows.front().a,edited.rows.front().a,edited.outcome.returned_factor);
+  int invalid=0;try{(void)dm::algorithms::fermat_factor(0);}catch(const std::invalid_argument&){++invalid;}try{(void)dm::algorithms::fermat_factor_trace(1);}catch(const std::invalid_argument&){++invalid;}try{(void)dm::algorithms::fermat_factor_work(10,0);}catch(const std::invalid_argument&){++invalid;}std::print("Invalid zero/one/zero-budget controls rejected {}/3.\n",invalid);
+  std::print("\n| actual-history family | odd n | first factor | actual tests | captured records |\n| :--- | ---: | ---: | ---: | ---: |\n");auto plot=dm::graphics::RPlot::create();const std::vector<dm::graphics::RGB>colours{{37,99,235},{220,38,38},{22,163,74}};const std::vector<std::string>names{"Odd squares","p=101, q=1009","Prime 9973"};for(int family=0;family<3;++family){std::vector<double>x,y;for(std::uint64_t n:family==0?std::vector<std::uint64_t>{9,49,121}:family==1?std::vector<std::uint64_t>{101ULL*1009}:std::vector<std::uint64_t>{9973}){const auto t=dm::algorithms::fermat_factor_trace(n,5000,5000);std::print("| {} | {} | {} | {} | {} |\n",names[family],n,t.outcome.returned_factor,t.outcome.trials,t.captured_entries);x.push_back(t.outcome.trials);y.push_back(t.captured_entries);}plot.points(x,y,names[family],colours[family],7);}plot.line({1,5000},{1,5000},"C = T",{100,116,139},1).title("Optional history stores one record per actual odd test").x_label("Actual square tests T").y_label("Captured whole records C").size(1100,560).save_svg("build/fermat_capture.svg");if(!quota||invalid!=3||owned.rows.front().a!=78)throw std::runtime_error("capture controls failed");
+}
+```
+// result_begin: markdown
+Quota controls: two-record quota rejects third trial true; exact quota captures 3; disabled quota captures 3; ordinary work tests 3.
+Owned copy: retained first a 78; edited first a 0; stored outcome factor 59.
+Invalid zero/one/zero-budget controls rejected 3/3.
+
+| actual-history family | odd n | first factor | actual tests | captured records |
+| :--- | ---: | ---: | ---: | ---: |
+| Odd squares | 9 | 3 | 1 | 1 |
+| Odd squares | 49 | 7 | 1 | 1 |
+| Odd squares | 121 | 11 | 1 | 1 |
+| p=101, q=1009 | 101909 | 101 | 236 | 236 |
+| Prime 9973 | 9973 | 9973 | 4888 | 4888 |
+\image(figures/fermat_capture.svg)
+// result_end
+\caption(Quota,ownership and domain checks execute before comparing actual histories. Every completed odd trace has C=T; ordinary work obtains the same counts with no optional records.)
+\alttext(A native count plot places actual odd-square,unequal-factor and prime histories on the diagonal C equals T,where C counts captured whole records and T counts actual square tests. Scalar metadata and allocation overhead are excluded.)
+
+> Interpretation and sources
+
+The native API preserves the original factor outputs and original full-program
+stdout on their valid fixtures, while replacing the report-local counter with
+actual solver work. The development tests freeze 4626 legacy factor lines and
+compare independent divisor-pair counts, every captured square identity,
+full-width root boundaries, budgets, quotas and ownership. An optional Python
+math.isqrt oracle checks exact roots using arbitrary-precision integers; it
+is a development check and is not a report runtime dependency.
+
+The reusable additions live in number_theory_extra.hpp and
+integer_arithmetic.hpp. Trial division and Pollard p-minus-one are unchanged.
+Fermat's splitting method is distinct from Fermat's congruence-based probable
+primality test. The next report covers that separate test.
+
+C. Pomerance, [A Tale of Two Sieves](https://math.dartmouth.edu/~carlp/PDF/paper109.pdf),
+Notices of the American Mathematical Society 43(12), 1996, pp.1473–1485,
+particularly “Fermat and Kraitchik” on p.1474, gives the difference-of-squares
+identity and its close-divisor advantage. The identity motivates this native
+finite-budget variant; the count derivation, exact-width guards and capture
+contract above describe this implementation.
+
+Python 3.14's [official math.isqrt contract](https://docs.python.org/3.14/library/math.html#math.isqrt)
+specifies the exact floor root used for the independent development oracle.
+The native division-based implementation has the same mathematical root
+contract over unsigned 128-bit inputs and uses no Python dependency.

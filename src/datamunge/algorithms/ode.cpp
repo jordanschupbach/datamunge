@@ -92,23 +92,6 @@ Vec implicit_euler_step(const OdeSystem& f, double t, const Vec& y, double h, do
 
 } // namespace
 
-OdeSolution euler_method(const OdeSystem& f, std::vector<double> y0, double t0, double t1, int steps) {
-    OdeSolution   sol;
-    const double  h = (t1 - t0) / steps;
-    Vec           y = std::move(y0);
-    double        t = t0;
-    sol.t.push_back(t);
-    sol.y.push_back(y);
-    for (int n = 0; n < steps; ++n) {
-        const Vec k = f(t, y);
-        y           = axpy(y, h, k); // y += h * f(t, y)
-        t           = t0 + (n + 1) * h;
-        sol.t.push_back(t);
-        sol.y.push_back(y);
-    }
-    return sol;
-}
-
 OdeSolution runge_kutta4(const OdeSystem& f, std::vector<double> y0, double t0, double t1, int steps) {
     OdeSolution  sol;
     const double h = (t1 - t0) / steps;

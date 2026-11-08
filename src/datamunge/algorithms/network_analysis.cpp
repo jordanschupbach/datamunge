@@ -25,18 +25,7 @@ double normalize(std::vector<double>& values) {
   if (norm > 0) for (double& x : values) x /= norm;
   return norm;
 }
-/// Connected components of an adjacency list, by breadth-first search.
-std::vector<std::vector<std::size_t>> components(
-    const std::vector<std::vector<std::size_t>>& adjacency) {
-  std::vector<bool> seen(adjacency.size());
-  std::vector<std::vector<std::size_t>> result;
-  for (std::size_t root = 0; root < adjacency.size(); ++root) if (!seen[root]) {
-    result.emplace_back(); std::queue<std::size_t> q; q.push(root); seen[root] = true;
-    while (!q.empty()) { auto u=q.front(); q.pop(); result.back().push_back(u);
-      for (auto v:adjacency[u]) if(!seen[v]) {seen[v]=true;q.push(v);} }
-  }
-  return result;
-}
+
 } // namespace
 
 /// Power iteration with uniform redistribution of dangling mass.
@@ -126,40 +115,6 @@ HITSResult hits(std::size_t n, const std::vector<Edge>& edges,
   return result;
 }
 
-/// Brandes edge betweenness from every source, removing all maximal edges each round.
-std::vector<std::vector<std::size_t>> girvan_newman(
-    std::size_t n, const std::vector<Edge>& edges, std::size_t target) {
-  validate(n,edges);
-  if(target==0 || target>std::max<std::size_t>(1,n))
-    throw std::invalid_argument("girvan_newman: invalid target community count");
-  std::vector<Edge> active;
-  for(auto [u,v]:edges) if(u!=v) active.push_back(std::minmax(u,v));
-  std::sort(active.begin(),active.end()); active.erase(std::unique(active.begin(),active.end()),active.end());
-  while(true) {
-    std::vector<std::vector<std::size_t>> adjacency(n);
-    for(auto [u,v]:active){adjacency[u].push_back(v);adjacency[v].push_back(u);}
-    auto groups=components(adjacency); if(groups.size()>=target || active.empty()) return groups;
-    std::vector<double> score(active.size());
-    for(std::size_t source=0;source<n;++source) {
-      std::vector<std::vector<std::size_t>> pred(n);
-      std::vector<int> dist(n,-1); std::vector<double> paths(n), dependency(n);
-      std::vector<std::size_t> order; std::queue<std::size_t> q;
-      dist[source]=0;paths[source]=1;q.push(source);
-      while(!q.empty()){auto u=q.front();q.pop();order.push_back(u);for(auto v:adjacency[u]){
-        if(dist[v]<0){dist[v]=dist[u]+1;q.push(v);}
-        if(dist[v]==dist[u]+1){paths[v]+=paths[u];pred[v].push_back(u);}
-      }}
-      for(auto it=order.rbegin();it!=order.rend();++it){auto v=*it;for(auto u:pred[v]){
-        double contribution=(paths[u]/paths[v])*(1+dependency[v]);dependency[u]+=contribution;
-        Edge e=std::minmax(u,v);auto pos=std::lower_bound(active.begin(),active.end(),e);
-        score[static_cast<std::size_t>(pos-active.begin())]+=contribution;
-      }}
-    }
-    const double maximum=*std::max_element(score.begin(),score.end());
-    std::vector<Edge> kept; for(std::size_t i=0;i<active.size();++i)
-      if(score[i]<maximum-1e-12) kept.push_back(active[i]);
-    active.swap(kept);
-  }
-}
+
 
 } // namespace datamunge::algorithms

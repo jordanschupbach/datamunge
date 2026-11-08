@@ -1,0 +1,368 @@
+//? Title: DDA Line Drawing: Actual Accumulators, Rational Samples and Visible Rounding Limits
+//? Subtitle: Preserve the original shallow and steep examples while checking ties, drift, work and full-width geometry
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Rasterizing an integer-endpoint segment means choosing pixel centres near a
+continuous line. A major-axis sampling rule gives one position per column
+or row, but rounding and floating accumulation determine which minor-axis
+centre is selected. This report derives the digital differential analyzer
+(DDA), begins with a five-sample example, and retains the original fifteen-
+and eleven-centre rasters. Native traces expose the actual double values
+before rounding, while an integer rational-sample API supplies an independent
+mathematical comparison. Tiny accumulated errors change exact halfway choices;
+large coordinate origins can produce errors greater than half a pixel.
+We distinguish these effects from Bresenham's directed ties, measure actual
+additions and rounds, and check complete allocation limits and full-width
+endpoint arithmetic without attempting an enormous allocation.
+)
+
+\toc
+
+> Five samples make the rounding rule visible
+
+For (0,0)→(4,2), the major extent is four and the exact increments are
+(1,1/2). These increments are representable in binary, so the actual
+accumulators agree with the exact rational samples. At x=1 and x=3, the
+height lies halfway between two integer rows. This API rounds halfway away
+from zero, selecting heights one and two. The diagram uses equal coordinate
+scales; filled blue centres are returned pixels, and hollow red marks are
+the actual pre-rounding half-height samples. Points near the line need not
+lie on it, correcting the original report's description of rounded samples.
+
+```{cpp, results="markdown", file="figures/dda_samples.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::dda_line_trace(0,0,4,2);
+  dm::graphics::Diagram d(160,1100);dm::graphics::DiagramStroke grid;grid.color={226,232,240};grid.width=1;
+  for(int x=0;x<=4;++x)d.path({{double(x),-.25},{double(x),2.25}},grid);
+  for(int y=0;y<=2;++y)d.path({{-.25,double(y)},{4.25,double(y)}},grid);
+  dm::graphics::DiagramStroke ideal;ideal.color={148,163,184};ideal.width=3;ideal.dashed=true;d.path({{0,0},{4,2}},ideal);
+  dm::graphics::DiagramStroke blue;blue.color={37,99,235};blue.width=2;
+  dm::graphics::DiagramStroke red;red.color={220,38,38};red.width=2;red.arrow=true;
+  std::print("| sample i | actual x | actual y | rounded centre | rational nearest centre | y error |\n| ---: | ---: | ---: | :--- | :--- | ---: |\n");
+  for(const auto& s:t.samples) {
+    const auto [x,y]=s.point;d.ellipse({double(x),double(y)},.045,.045,{37,99,235},blue);
+    if(s.y!=y) {d.ellipse({s.x,s.y},.04,.04,{255,255,255},red);d.path({{s.x,s.y},{double(x),double(y)-.06}},red);}
+    std::print("| {} | {} | {} | {} | {} | {} |\n",s.index,s.x,s.y,s.point,s.exact_point,s.y_error);
+  }
+  if(t.points.size()!=5 || t.differing_samples || t.max_coordinate_error!=.5)return 1;
+  d.text({2,2.7},"DDA samples (1, 0.5) apart; blue centres round halfway away from zero",22)
+   .text({0,-.15},"(0,0)",18).text({4,2.17},"(4,2)",18)
+   .text({1,1.2},"(1,1)",18).text({3,2.2},"(3,2)",18)
+   .text({2,-.65},std::format("{} samples; {} coordinate additions; {} rounds; maximum coordinate error {}",t.points.size(),t.coordinate_additions,t.roundings,t.max_coordinate_error),21)
+   .save_svg("build/dda_samples.svg");
+}
+```
+// result_begin: markdown
+| sample i | actual x | actual y | rounded centre | rational nearest centre | y error |
+| ---: | ---: | ---: | :--- | :--- | ---: |
+| 0 | 0 | 0 | (0, 0) | (0, 0) | 0 |
+| 1 | 1 | 0.5 | (1, 1) | (1, 1) | 0.5 |
+| 2 | 2 | 1 | (2, 1) | (2, 1) | 0 |
+| 3 | 3 | 1.5 | (3, 2) | (3, 2) | 0.5 |
+| 4 | 4 | 2 | (4, 2) | (4, 2) | 0 |
+\image(figures/dda_samples.svg)
+// result_end
+\caption(The arrows join actual half-height accumulators to their rounded centres. Their lengths are half a grid unit. This binary-exact example illustrates the intended sampling rule before floating drift is introduced.)
+\alttext(A dashed line rises from zero-zero to four-two. Blue pixel centres include one-one and three-two. Hollow samples at one-half and three-one-and-a-half connect vertically to their rounded centres.)
+
+> Derive the major-axis recurrence and separate its two errors
+
+For signed endpoint differences Δx and Δy, let N=max(|Δx|,|Δy|). If N=0,
+return the single coincident endpoint; dividing by N would be undefined.
+Otherwise the exact parameter samples are
+
+\[
+p_i=\left(x_0+\frac{i\Delta x}{N},\ y_0+\frac{i\Delta y}{N}\right),
+\qquad i=0,\ldots,N,\qquad
+h=\left(\frac{\Delta x}{N},\frac{\Delta y}{N}\right).
+\]
+\alttext(Sample i is the initial point plus i divided by N times the endpoint difference, for all indices zero through N. The exact increment is the difference divided by N.)
+
+At least one component of h is +1 or −1, so that major coordinate visits
+each integer between its endpoints once. Both components have magnitude at
+most one. The floating implementation computes each increment once, begins
+at the integer coordinates represented as doubles, rounds both current
+accumulators, and adds the two increments before each nonterminal sample.
+The final unused addition in the old loop is omitted without changing its
+returned points. These are *two coordinate additions per transition and two
+coordinate rounds per sample*, rather than one of each for the whole point.
+
+For exact samples, nearest-integer rounding gives coordinate error at most
+one half. The major coordinate has zero error, so the selected centre is
+within half a unit of its sampled point and hence of the segment. Consecutive
+exact centres are 8-connected and the major coordinate makes them distinct.
+For a minor increment strictly smaller than one, nearest rounding cannot
+cross two distinct half-integer boundaries in a single step; when its
+magnitude is exactly one, the integer start makes every minor sample integer.
+Reversing the endpoints enumerates the same rational samples in reverse,
+including the same signed tie choices. These are guarantees of
+`dda_line_exact`, not universal claims about a double accumulator.
+
+To see the distinction, write the stored increment as h+δ and let ρ_j be
+the real error introduced by the jth floating addition in one coordinate.
+Then the actual accumulator a_i obeys
+
+\[
+a_i-p_i=i\delta+\sum_{j=1}^{i}\rho_j,\qquad
+|\operatorname{round}(a_i)-p_i|
+\le\frac12+|a_i-p_i|.
+\]
+\alttext(Accumulation error equals i times the increment error plus the sum of addition errors. Rounded error is no more than half a unit plus accumulation error.)
+
+The first identity follows by expanding the recurrence and cancelling the
+exact additions; the inequality is the triangle inequality. Even very small
+drift can cross a halfway threshold. Its magnitude also depends on coordinate
+scale because the spacing of representable doubles grows with that scale.
+The trace retains actual pre-rounding x and y, exact-rational nearest centres,
+and approximate error diagnostics. Diagnostics subtract an integer quotient
+part first and then the signed fractional remainder, avoiding cancellation
+against a large rounded ideal coordinate. They are ordinary double
+approximations, not certified error intervals. No accumulator is repaired,
+clamped or replaced by its reference, and the final minor endpoint is not
+forced into the ordinary result.
+
+> Retain both original rasters with undistorted geometry
+
+The original shallow segment (0,0)→(14,6) returns fifteen centres; its steep
+control (0,0)→(3,10) returns eleven. The complete shallow sequence remains
+visible in the computed output. Each panel below uses the same horizontal
+and vertical unit scale. Joining centres is a visual guide; the API selects
+centres, without cell supercoverage, intensity, antialiasing or clipping.
+The report code only arranges and labels native trace data.
+
+```{cpp, results="markdown", file="figures/dda_line.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::array<int,4>> lines{{0,0,14,6},{0,0,3,10}};
+  const std::vector<dm::algorithms::DdaTrace> traces{dm::algorithms::dda_line_trace(0,0,14,6),dm::algorithms::dda_line_trace(0,0,3,10)};
+  dm::graphics::Diagram d(40,1100);dm::graphics::DiagramStroke grid;grid.color={226,232,240};grid.width=1;
+  dm::graphics::DiagramStroke ideal;ideal.color={148,163,184};ideal.width=3;ideal.dashed=true;
+  dm::graphics::DiagramStroke blue;blue.color={37,99,235};blue.width=2;
+  std::print("| original segment | centres | exact-reference differences | max coordinate error | additions | rounds |\n| :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t k=0;k<lines.size();++k) {
+    const auto& a=lines[k];const auto& t=traces[k];const double shift=k?20:0;
+    for(int x=0;x<=a[2];++x)d.path({{shift+x,-.3},{shift+x,double(a[3])+.3}},grid);
+    for(int y=0;y<=a[3];++y)d.path({{shift-.3,double(y)},{shift+a[2]+.3,double(y)}},grid);
+    d.path({{shift,0},{shift+a[2],double(a[3])}},ideal);
+    std::vector<dm::graphics::DiagramPoint> points;for(const auto& [x,y]:t.points)points.push_back({shift+x,double(y)});
+    d.path(points,blue);for(const auto& p:points)d.ellipse(p,.10,.10,{37,99,235},blue);
+    d.text({shift+a[2]/2.,a[3]+1.3},std::format("(0,0) to ({},{})",a[2],a[3]),22)
+     .text({shift+a[2]/2.,-1.2},std::format("{} centres; N={}",t.points.size(),t.steps),21);
+    if(t.points.size()!=(k?11:15))return 1;
+    std::print("| (0,0) to ({},{}) | {} | {} | {:.9f} | {} | {} |\n",a[2],a[3],t.points.size(),t.differing_samples,t.max_coordinate_error,t.coordinate_additions,t.roundings);
+  }
+  for(std::size_t k=0;k<traces.size();++k)std::print("\nOriginal {} centres: {}.\n",k?"steep":"shallow",traces[k].points);
+  d.text({11.5,-3},"Grey dashed: geometric segment. Blue: actual accumulated-DDA centres. Equal x/y scales.",21)
+   .save_svg("build/dda_line.svg");
+}
+```
+// result_begin: markdown
+| original segment | centres | exact-reference differences | max coordinate error | additions | rounds |
+| :--- | ---: | ---: | ---: | ---: | ---: |
+| (0,0) to (14,6) | 15 | 0 | 0.428571429 | 28 | 30 |
+| (0,0) to (3,10) | 11 | 0 | 0.500000000 | 20 | 22 |
+
+Original shallow centres: [(0, 0), (1, 0), (2, 1), (3, 1), (4, 2), (5, 2), (6, 3), (7, 3), (8, 3), (9, 4), (10, 4), (11, 5), (12, 5), (13, 6), (14, 6)].
+
+Original steep centres: [(0, 0), (0, 1), (1, 2), (1, 3), (1, 4), (2, 5), (2, 6), (2, 7), (2, 8), (3, 9), (3, 10)].
+\image(figures/dda_line.svg)
+// result_end
+\caption(The original inputs are preserved, with complete native point sequences and measured error/work diagnostics. Native geometric units avoid stretching the steep segment into a shallow-looking slope.)
+\alttext(The left raster rises six rows over fourteen columns and has fifteen centres. The right rises ten rows over three columns and has eleven centres. Grey ideal segments and blue raster paths share equal geometric scales.)
+
+> Observe a missed tie, a reversal difference and coordinate-scale drift
+
+For (0,0)→(12,1), the exact midpoint height is 1/2. Repeated additions of
+1/12 put the current double slightly below that value, so rounding returns
+row zero, while exact signed halfway rounding returns row one. Both centres
+are half a unit from that *exact* midpoint, so this example shows a tie-rule
+mismatch rather than a strict geometric-error violation.
+
+The segment (0,0)→(10,7) exposes direction dependence of accumulation: the
+forward and reverse additions approach the same rational height 7/2 from
+different floating sides. The exact-sample API remains reversal symmetric.
+Its tie policy differs from the existing Bresenham implementation: for the
+reverse segment (2,1)→(0,0), exact signed rounding keeps (1,1), while
+Bresenham's directed tie chooses (1,0). Negative halves round away from zero,
+so integer translations across zero can also change exact tie selections.
+None of these policies is claimed to be universally interchangeable.
+
+Finally, translate the minor coordinate of a 10,000-step height-one line
+close to INT_MAX. Increment quantization during addition now produces a
+visible count of reference differences and a maximum coordinate error
+strictly greater than half a pixel. The trace computes this diagnostic
+against rational pieces; it does not obtain it by subtracting two almost
+equal large ideal-coordinate doubles. The displayed decimal accumulators
+are observations from this build under ordinary floating evaluation.
+
+```{cpp, results="markdown", file="figures/dda_rounding.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <climits>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::dda_line_trace(0,0,12,1),f=dm::algorithms::dda_line_trace(0,0,10,7),r=dm::algorithms::dda_line_trace(10,7,0,0);
+  const auto small=dm::algorithms::dda_line_trace(0,0,10000,1),large=dm::algorithms::dda_line_trace(0,INT_MAX-1,10000,INT_MAX);
+  if(t.samples[6].point==t.samples[6].exact_point || f.samples[5].point==r.samples[5].point || large.max_coordinate_error<=.5)return 1;
+  dm::graphics::Diagram d(70,1100);dm::graphics::DiagramNodeStyle box;box.width=5.3;box.height=1.9;box.font_size=21;box.fill={219,234,254};
+  d.node("acc",{0,4},std::format("Actual 12-step midpoint\ny = {:.17g}\nrounded {}",t.samples[6].y,t.samples[6].point),box);
+  box.fill={220,252,231};d.node("ref",{8,4},std::format("Exact rational midpoint\ny = 1/2\nrounded {}",t.samples[6].exact_point),box);
+  box.fill={219,234,254};d.node("forward",{0,0},std::format("10-step forward midpoint\ny = {:.17g}\nrounded {}",f.samples[5].y,f.samples[5].point),box);
+  box.fill={254,226,226};d.node("reverse",{8,0},std::format("10-step reverse midpoint\ny = {:.17g}\nrounded {}",r.samples[5].y,r.samples[5].point),box);
+  d.text({4,6},"Rounding actual accumulators and rational samples can select different centres",22)
+   .text({4,2},"Same rational height 7/2; opposite traversal accumulates differently",21)
+   .text({4,-2},std::format("Large-origin control: {} changed samples; max coordinate error {:.6f}",large.differing_samples,large.max_coordinate_error),22)
+   .save_svg("build/dda_rounding.svg");
+  std::print("| control | sample | actual y | actual centre | rational nearest | y drift |\n| :--- | ---: | ---: | :--- | :--- | ---: |\n");
+  for(const auto& [label,s]:std::vector<std::pair<std::string,dm::algorithms::DdaSample>>{{"12-step midpoint",t.samples[6]},{"10-step forward",f.samples[5]},{"10-step reverse",r.samples[5]},{"large-origin midpoint",large.samples[5000]}})
+    std::print("| {} | {} | {:.17g} | {} | {} | {:.9g} |\n",label,s.index,s.y,s.point,s.exact_point,s.y_drift);
+  std::print("\nOrigin comparison: low max error {:.6f}, changed samples {}; large max error {:.6f}, changed samples {}.\n",small.max_coordinate_error,small.differing_samples,large.max_coordinate_error,large.differing_samples);
+  std::print("Reverse (2,1)->(0,0): exact midpoint {}; Bresenham midpoint {}. Negative half: {}.\n",dm::algorithms::dda_exact_sample(2,1,0,0,1),dm::algorithms::bresenham_line(2,1,0,0)[1],dm::algorithms::dda_exact_sample(0,0,2,-1,1));
+}
+```
+// result_begin: markdown
+| control | sample | actual y | actual centre | rational nearest | y drift |
+| :--- | ---: | ---: | :--- | :--- | ---: |
+| 12-step midpoint | 6 | 0.49999999999999994 | (6, 0) | (6, 1) | -5.55111512e-17 |
+| 10-step forward | 5 | 3.5 | (5, 4) | (5, 4) | 0 |
+| 10-step reverse | 5 | 3.4999999999999991 | (5, 3) | (5, 4) | -8.8817842e-16 |
+| large-origin midpoint | 5000 | 2147483646.4994869 | (5000, 2147483646) | (5000, 2147483647) | -0.000513076782 |
+
+Origin comparison: low max error 0.500000, changed samples 1; large max error 0.500500, changed samples 6.
+Reverse (2,1)->(0,0): exact midpoint (1, 1); Bresenham midpoint (1, 0). Negative half: (1, -1).
+\image(figures/dda_rounding.svg)
+// result_end
+\caption(The first row separates a tiny accumulated tie mismatch from exact rational selection. The second shows a different accumulated choice under reversal. The large-origin table/diagnostic additionally exhibits coordinate error greater than one half.)
+\alttext(The twelve-step midpoint accumulates slightly below one half and rounds to six-zero, whereas the rational reference selects six-one. Forward and reverse ten-step midpoints round to five-four and five-three. A large-origin diagnostic reports its computed error and changed-sample count.)
+
+> Exact rational selection without a wider-than-64-bit core product
+
+For one coordinate, write Δ=s d with d≥0 and s∈{−1,+1}. At sample i, divide
+the unsigned product d i by N into quotient q and remainder r:
+
+\[
+d i=qN+r,\quad 0\le r<N,\qquad
+p_i=(x_0+s q)+s\frac rN.
+\]
+\alttext(The unsigned distance times index is quotient times N plus remainder. The exact coordinate is the integer initial value plus signed quotient, followed by the signed remainder fraction.)
+
+The integer part stays within endpoint bounds. If 2r<N, keep it; if 2r>N,
+move one unit in direction s. If 2r=N, move only when that direction points
+away from zero at the integer part. This last condition rounds the *whole
+signed coordinate*, rather than incorrectly rounding the unsigned offset
+and then translating it. For all 32-bit int endpoints, d and i are at most
+2^32−1, so their product fits uint64; the doubled remainder also fits.
+The production quantizer needs no signed overflowing product, floating
+selection or nonstandard integer type. A separate test oracle uses a signed
+128-bit weighted-endpoint numerator, supplying a different arithmetic route.
+
+> Count actual work and reject whole oversized outputs
+
+For N nonterminal transitions, this implementation performs 2N coordinate
+additions and 2(N+1) rounds, returning N+1 centres. Total counted coordinate
+operations are 4N+2. The trace's rational comparisons, diagnostics, vector
+allocation and copies are additional work. The ordinary API omits trace and
+reference calculations. Both output size and running time are O(N+1); only
+the recurrence's auxiliary state is O(1), so the old report's constant-space
+claim does not describe the returned vector. Coincidence still costs one
+point and two rounds, with no additions.
+
+`dda_line_trace` and `dda_line_exact` default to a complete one-million-point
+cap; a positive cap is inclusive and checked before allocation, while zero
+disables that optional cap. Container capacity checks remain. The legacy
+four-argument `dda_line` has no optional cap. Every coordinate difference is
+widened before subtraction, and sample/count loops cannot overflow an int.
+An ordinary rounded accumulator outside int now raises overflow_error before
+conversion; it is neither silently wrapped nor clipped. A successful call
+returns its complete sequence, and errors return no partial raster.
+The random-access exact sample API lets us inspect enormous spans without
+walking or allocating them. No external dataset is appropriate for these
+geometric and arithmetic controls.
+
+```{cpp, results="markdown", file="figures/dda_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <climits>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> sizes,points,operations,theory;
+  std::print("| N | points | actual coordinate adds | actual rounds | sum | 4N+2 | max drift |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(int n:{0,8,16,32,64,128,256,512,1024}) {
+    const auto t=dm::algorithms::dda_line_trace(0,0,n,n/2);const auto sum=t.coordinate_additions+t.roundings;
+    if(sum!=4*static_cast<std::uint64_t>(n)+2 || t.differing_samples || t.max_accumulator_drift!=0)return 1;
+    sizes.push_back(n);points.push_back(t.points.size());operations.push_back(sum);theory.push_back(4*n+2);
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",n,t.points.size(),t.coordinate_additions,t.roundings,sum,4*n+2,t.max_accumulator_drift);
+  }
+  int rejected=0;
+  try{(void)dm::algorithms::dda_line_trace(0,0,14,6,14);}catch(const std::length_error&){++rejected;}
+  try{(void)dm::algorithms::dda_line_exact(0,0,14,6,14);}catch(const std::length_error&){++rejected;}
+  try{(void)dm::algorithms::dda_line_trace(INT_MIN,0,INT_MAX,1);}catch(const std::length_error&){++rejected;}
+  try{(void)dm::algorithms::dda_line_exact(INT_MIN,0,INT_MAX,1);}catch(const std::length_error&){++rejected;}
+  try{(void)dm::algorithms::dda_exact_sample(0,0,12,1,13);}catch(const std::out_of_range&){++rejected;}
+  const auto count=dm::algorithms::dda_point_count(INT_MIN,0,INT_MAX,1);
+  const auto a=dm::algorithms::dda_exact_sample(INT_MIN,0,INT_MAX,1,2147483647ULL),b=dm::algorithms::dda_exact_sample(INT_MIN,0,INT_MAX,1,2147483648ULL);
+  if(rejected!=5 || count!=4294967296ULL || dm::algorithms::dda_line_trace(0,0,14,6,15).points.size()!=15 || dm::algorithms::dda_line_exact(0,0,14,6,0).size()!=15)return 1;
+  std::print("\nComplete point caps and sample index: {} expected rejections. Exact inclusive cap 15 succeeds; zero-disabled cap also succeeds.\n",rejected);
+  std::print("Full int span: {} inclusive samples; two middle exact centres {} and {}. Count and random access allocate no raster.\n",count,a,b);
+  auto p=dm::graphics::RPlot::create();
+  p.line(sizes,points,"output points",{220,38,38},2).line(sizes,operations,"adds + rounds",{37,99,235},2)
+   .points(sizes,theory,"4N + 2",{31,41,55},4).legend({"output points","adds + rounds","4N + 2"},{{220,38,38},{37,99,235},{31,41,55}})
+   .title("Counted coordinate work matches 4N + 2 exactly")
+   .x_label("major-axis steps N").y_label("returned centres or counted coordinate operations")
+   .x_limits(0,1100).y_limits(0,5000).size(1100,580).save_svg("build/dda_work.svg");
+}
+```
+// result_begin: markdown
+| N | points | actual coordinate adds | actual rounds | sum | 4N+2 | max drift |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 0 | 2 | 2 | 2 | 0 |
+| 8 | 9 | 16 | 18 | 34 | 34 | 0 |
+| 16 | 17 | 32 | 34 | 66 | 66 | 0 |
+| 32 | 33 | 64 | 66 | 130 | 130 | 0 |
+| 64 | 65 | 128 | 130 | 258 | 258 | 0 |
+| 128 | 129 | 256 | 258 | 514 | 514 | 0 |
+| 256 | 257 | 512 | 514 | 1026 | 1026 | 0 |
+| 512 | 513 | 1024 | 1026 | 2050 | 2050 | 0 |
+| 1024 | 1025 | 2048 | 2050 | 4098 | 4098 | 0 |
+
+Complete point caps and sample index: 5 expected rejections. Exact inclusive cap 15 succeeds; zero-disabled cap also succeeds.
+Full int span: 4294967296 inclusive samples; two middle exact centres (-1, 0) and (0, 1). Count and random access allocate no raster.
+\image(figures/dda_work.svg)
+// result_end
+\caption(Binary-exact half-slope controls isolate operation counts from drift. Markers for 4N+2 coincide with the recorded additions-plus-rounds curve. These counts exclude the extra reference work retained only by tracing.)
+\alttext(Output centres grow as N plus one, while coordinate additions plus rounds grow as four N plus two. At N equal to 1024, the table has 1025 centres, 2048 additions and 2050 rounds.)
+
+> Verification and limits
+
+Nine new native tests pass AddressSanitizer and UndefinedBehaviorSanitizer.
+All 14,641 endpoint quadruples in the signed grid −5…5 compare exact rasters
+with the independent signed-128-bit weighted-endpoint oracle, and verify
+actual accumulator replay, diagnostics, work, endpoint inclusion, exact
+reversal and 8-connectivity. One thousand seeded short lines at varied
+coordinate origins check additional octants and drift. Another 25,000 full-
+range endpoint/index samples and 2,500 extreme-grid/index combinations check
+random access without allocating huge rasters. Tests retain both original
+rasters, signed global ties, the measured halfway and reversal counterexamples,
+the translated half-pixel violation, coincidence at int extremes, ownership,
+complete caps and invalid indices. A five-million-step control near INT_MAX
+confirms that actual accumulated overshoot raises overflow_error before an
+out-of-range conversion; its exact endpoint sample remains valid. Both directions of the twelve-step example miss its tie in the same
+direction, while the ten-step height-seven example exposes the traversal
+difference.
+
+The native tests support the implementation; the derivation explains the
+mathematical rational rule. The accumulated API deliberately preserves its
+original floating recurrence, including visible drift and tie differences.
+The exact comparison API supplies a separate precise sampling contract.
+Neither implements clipping, antialiasing, supercover rasterization or a GPU
+rasterization specification. No timing experiment here establishes that
+floating DDA is slower than integer Bresenham on a particular machine; the
+report compares arithmetic, rounding contracts and measured counts instead.
+
+> References
+
+- Colin Flanagan, *Line Drawing on Raster Displays*, sections “Digital Differential Analyser” and “Avoiding Duplicate Plotting”. [Author's teaching material](https://www.cs.helsinki.fi/group/goa/mallinnus/lines/gsoft2.html). The implementation uses the incremental major-axis idea, with both coordinates, doubles, inclusive sampling and signed halfway-away-from-zero rounding; the cited code uses different rounding and screen-coordinate conventions.
+- Jack E. Bresenham (1965), *Algorithm for computer control of a digital plotter*, IBM Systems Journal 4(1), 25–30. [Original paper DOI](https://doi.org/10.1147/sj.41.0025). The comparison uses this library's documented directed all-octant variant.

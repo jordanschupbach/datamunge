@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <datamunge/algorithms/cipolla.hpp>
 #include <vector>
 
 namespace datamunge::algorithms {
@@ -28,17 +29,6 @@ double goldschmidt_division(double numerator, double denominator);
 /// @param n an odd modulus.
 /// @return @c (a·b) mod n, computed by Montgomery reduction.
 std::uint64_t montgomery_multiply(std::uint64_t a, std::uint64_t b, std::uint64_t n);
-
-/// @brief *Cipolla's algorithm*: finds a *square root modulo a prime* -- an @c r with
-///        @c r^2 ≡ n (mod p) -- by computing in the quadratic field @c F_{p^2}. It picks @c a so that
-///        @c a^2-n is a *non-residue*, then raises @c (a+\sqrt{a^2-n}) to the power @c (p+1)/2 in
-///        @c F_{p^2}; the result is a real (residue-class) square root. It is an elegant alternative to
-///        Tonelli-Shanks and is often faster when @c p-1 is divisible by a large power of two.
-///
-/// @param n the value whose square root mod @p p is sought (@c 0 <= n < p).
-/// @param p an odd prime.
-/// @return an @c r with @c r^2 ≡ n (mod p) if @p n is a quadratic residue, else @c -1.
-long long cipolla_sqrt(std::uint64_t n, std::uint64_t p);
 
 /// @brief *Addition-chain exponentiation*: computes @c x^e using a short *addition chain* -- a
 ///        sequence @c 1=c_0,c_1,\dots,c_L=e in which each term is a sum of two earlier terms, so each

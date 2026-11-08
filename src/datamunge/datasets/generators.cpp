@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cmath>
 #include <numbers>
+#include <random>
 #include <string>
 #include <stdexcept>
 #include <utility>
@@ -45,6 +46,25 @@ dstruct::DataFrame swiss_roll(std::size_t n, double noise, std::uint64_t seed) {
     for (std::size_t i = 0; i < n; ++i) s[i] = 0.5 * (t[i] * std::sqrt(1.0 + t[i] * t[i]) + std::asinh(t[i]));
     out.add_column("arc_length", s);
     return out;
+}
+
+dstruct::DataFrame swiss_roll(std::size_t n,double noise,std::uint64_t seed,SwissRollEngine engine){
+    if(!std::isfinite(noise) || noise<0)throw std::invalid_argument("swiss_roll: finite nonnegative noise required");
+    if(engine==SwissRollEngine::Xoshiro)return swiss_roll(n,noise,seed);
+    if(engine!=SwissRollEngine::Mt19937)throw std::invalid_argument("swiss_roll: unknown engine");
+    std::mt19937_64 rng(seed);std::uniform_real_distribution<double> uniform(0,1);
+    std::normal_distribution<double> normal(0,1);
+    std::vector<double> x(n),y(n),z(n),t(n),h(n),arc(n);
+    for(std::size_t i=0;i<n;++i){
+        t[i]=1.5*std::numbers::pi*(1+2*uniform(rng));h[i]=21*uniform(rng);
+    }
+    for(std::size_t i=0;i<n;++i){
+        x[i]=t[i]*std::cos(t[i]);y[i]=h[i];z[i]=t[i]*std::sin(t[i]);
+        arc[i]=0.5*(t[i]*std::hypot(1.0,t[i])+std::asinh(t[i]));
+        if(noise>0){x[i]+=noise*normal(rng);y[i]+=noise*normal(rng);z[i]+=noise*normal(rng);}
+    }
+    dstruct::DataFrame out;out.add_column("x",x);out.add_column("y",y);out.add_column("z",z);
+    out.add_column("t",t);out.add_column("height",h);out.add_column("arc_length",arc);return out;
 }
 
 /// @brief Shared code of the two-class benchmark generators.

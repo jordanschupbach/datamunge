@@ -1,0 +1,322 @@
+//? Title: Continuous Gain-Ratio Trees: A Checked C4.5-Inspired Learner
+//? Subtitle: Actual threshold candidates, iris cross-validation and the original three Gaussian clouds
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A continuous decision tree asks binary threshold questions until it reaches a
+class label. We derive information gain and gain ratio on four hand-checkable
+rows, inspect the candidates actually considered by datamunge, and evaluate
+five-fold predictions on the native iris dataset. The original 180-point,
+three-cloud experiment remains as a training-fit control. The existing c45_train
+API implements a restricted, unpruned, maximum-ratio learner inspired by C4.5;
+it omits C4.5's average-gain filter, categorical and missing-value machinery,
+pruning and later threshold penalties. New native tracing exposes actual row
+memberships, candidate scores and stopping reasons, without replaying training.
+)
+
+\toc
+
+> Four rows: derive the first split
+
+Use two identical numeric features with rows (0,0), (1,1), (2,2), (3,3),
+and labels 0,0,1,1. Parent class entropy is one bit. For class proportions p_c,
+with zero terms omitted, define
+
+\[
+H(S)=-\sum_c p_c\log_2 p_c,\qquad
+G(S,t)=H(S)-p_LH(L)-p_RH(R),
+\]
+\[
+I(S,t)=-p_L\log_2p_L-p_R\log_2p_R,\qquad R(S,t)=G(S,t)/I(S,t).
+\]
+
+At t=1.5 each child is pure, so G=I=R=1. At t=0.5 the left child
+has one class-zero row and the right has labels 0,1,1: conditional entropy
+is three quarters times H(1/3,2/3), giving G about 0.311278 and ratio about
+0.383689. Every boundary splits nonempty groups, so I is positive. Both
+features offer identical candidates; the first strict maximum chooses feature
+zero. The diagram uses the actual model and trace memberships.
+
+```{cpp, results="markdown", file="figures/c45_threshold.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::c45_train_trace({{0,0},{1,1},{2,2},{3,3}},{0,0,1,1},{1,2,0});
+  const auto& root=trace.tree.nodes[0];
+  if(root.feature!=0 || root.threshold!=1.5 || trace.candidates.size()!=6) return 1;
+  std::print("| feature | threshold | left rows | right rows | conditional entropy | gain | split information | ratio | selected |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :--- |\n");
+  for(const auto& c:trace.candidates)
+    std::print("| {} | {:.1f} | {} | {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {} |\n",
+        c.feature,c.threshold,c.left_count,c.right_count,c.conditional_entropy,c.gain,c.split_info,c.ratio,c.selected);
+  dm::graphics::Diagram diagram(70,1000);
+  dm::graphics::DiagramNodeStyle node;node.width=4.4;node.height=1.8;
+  diagram.node("root",{0,0},std::format("feature {} <= {}\nrows {}\nH = {} bit",root.feature,root.threshold,
+      trace.nodes[0].rows,trace.nodes[0].entropy),node);
+  node.fill={220,252,231};node.width=4.2;
+  for(auto [id,x,name]:std::vector<std::tuple<int,double,std::string>>{{root.left,-3.5,"left"},{root.right,3.5,"right"}}) {
+    const auto& child=trace.tree.nodes[id];
+    diagram.node(name,{x,-3},std::format("predict class {}\nrows {}\nH = {} bits",child.prediction,trace.nodes[id].rows,
+        trace.nodes[id].entropy),node).edge("root",name,name=="left"?"true":"false");
+  }
+  diagram.text({0,-4.6},"gain = 1 bit; split information = 1 bit; gain ratio = 1",18)
+      .save_svg("build/c45_threshold.svg");
+  std::print("\nActual candidates: {}; candidate row tests: {}; owned model nodes: {}.\n",
+      trace.candidate_count,trace.candidate_row_tests,trace.tree.nodes.size());
+}
+```
+// result_begin: markdown
+| feature | threshold | left rows | right rows | conditional entropy | gain | split information | ratio | selected |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | :--- |
+| 0 | 0.5 | 1 | 3 | 0.688722 | 0.311278 | 0.811278 | 0.383689 | false |
+| 0 | 1.5 | 2 | 2 | 0.000000 | 1.000000 | 1.000000 | 1.000000 | true |
+| 0 | 2.5 | 3 | 1 | 0.688722 | 0.311278 | 0.811278 | 0.383689 | false |
+| 1 | 0.5 | 1 | 3 | 0.688722 | 0.311278 | 0.811278 | 0.383689 | false |
+| 1 | 1.5 | 2 | 2 | 0.000000 | 1.000000 | 1.000000 | 1.000000 | false |
+| 1 | 2.5 | 3 | 1 | 0.688722 | 0.311278 | 0.811278 | 0.383689 | false |
+
+Actual candidates: 6; candidate row tests: 24; owned model nodes: 3.
+\image(figures/c45_threshold.svg)
+// result_end
+\caption(Six actual candidates: three adjacent-value boundaries for each of two features. Only the first feature's midpoint at 1.5 is selected.)
+\alttext(A root testing feature zero at one point five sends original rows zero and one to class zero, and rows two and three to class one. Both child entropies are zero.)
+
+At each node the learner sorts distinct observed values per feature, considers
+all adjacent boundaries, and chooses the first strictly positive maximum ratio.
+An explicit work stack grows the left subtree before the right. Every split
+has two nonempty children, so each path has fewer rows after a split and the
+unlimited tree terminates. Majority labels use the smallest integer to break
+class ties. A node without a positive computed ratio stays a majority leaf.
+
+Gain ratio normalizes by the entropy of the partition, rather than by its number
+of children. It does not universally remove attribute-selection bias. Quinlan's
+account restricts selection to tests with at least average gain; the later
+continuous-attribute modification also charges a threshold-description penalty
+and changes threshold selection. This API retains its original unrestricted
+maximum-ratio rule. All tests here are binary, and the report does not claim to
+implement the full C4.5 system. See the [original paper](https://arxiv.org/abs/cs/9603103).
+
+> Iris: measure predictions on flowers excluded from fitting
+
+The native iris frame contains 150 flowers, 50 per species, with four measurements
+in centimetres. We use every measurement and code setosa, versicolor and virginica
+as 0,1,2. Row index modulo five defines fixed folds, each containing ten flowers
+per species. Every prediction in the cross-validation column comes from a model
+fitted on the other 120 flowers. This deterministic fold rule depends on dataset
+order; it is a reproducible illustration, not an independent external validation.
+Dataset structure follows the [R iris documentation](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/iris.html).
+
+The separate full-data training fraction measures fit on the model's own 150
+rows. Looking at all six depth settings uses the same folds repeatedly; selecting
+a depth from this table and treating its maximum as an unbiased final estimate
+would require a further outer evaluation. There is no imputation, scaling or
+feature selection. Classification uses only coordinate ordering.
+
+```{cpp, results="markdown", file="figures/c45_iris.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto iris=dm::datasets::iris();
+  const std::vector<std::string> names{"Sepal.Length","Sepal.Width","Petal.Length","Petal.Width"};
+  const std::vector<std::string> species{"setosa","versicolor","virginica"};
+  std::vector<std::vector<double>> x(iris.nrows());std::vector<int> y;
+  const auto& labels=iris.string_column("Species").values();
+  for(std::size_t i=0;i<iris.nrows();++i) {
+    for(const auto& name:names) x[i].push_back(iris.double_at(name,i));
+    auto position=std::find(species.begin(),species.end(),labels[i]);
+    if(position==species.end()) return 1;
+    y.push_back(static_cast<int>(position-species.begin()));
+  }
+  std::vector<double> depths,training,validation;
+  std::print("| depth cap | full-data nodes | training correct / 150 | five-fold correct / 150 | training fraction | cross-validation fraction |\n"
+             "| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t depth=1;depth<=6;++depth) {
+    const auto tree=dm::algorithms::c45_train(x,y,depth,2);std::size_t fit_hits=0,cv_hits=0;
+    for(std::size_t i=0;i<x.size();++i) fit_hits+=dm::algorithms::c45_predict(tree,x[i])==y[i];
+    for(std::size_t fold=0;fold<5;++fold) {
+      std::vector<std::vector<double>> train;std::vector<int> target;
+      for(std::size_t i=0;i<x.size();++i) if(i%5!=fold) {train.push_back(x[i]);target.push_back(y[i]);}
+      if(train.size()!=120) return 1;
+      const auto model=dm::algorithms::c45_train(train,target,depth,2);
+      for(std::size_t i=0;i<x.size();++i) if(i%5==fold) cv_hits+=dm::algorithms::c45_predict(model,x[i])==y[i];
+    }
+    depths.push_back(depth);training.push_back(static_cast<double>(fit_hits)/x.size());validation.push_back(static_cast<double>(cv_hits)/x.size());
+    std::print("| {} | {} | {} | {} | {:.6f} | {:.6f} |\n",depth,tree.nodes.size(),fit_hits,cv_hits,training.back(),validation.back());
+  }
+  const auto trace=dm::algorithms::c45_train_trace(x,y,{1,2,0});
+  for(const auto& c:trace.candidates) if(c.selected)
+    std::print("\nFull-data root: {} <= {:.3f}; gain {:.6f}, ratio {:.6f}; sizes {} and {}.\n",
+        names[c.feature],c.threshold,c.gain,c.ratio,c.left_count,c.right_count);
+  std::print("Root candidates: {}; actual candidate row tests: {}.\n",trace.candidate_count,trace.candidate_row_tests);
+  dm::graphics::RPlot::create().line(depths,training,"training",{37,99,235},2.5)
+      .points(depths,training,"",{37,99,235},4).line(depths,validation,"five-fold held-out",{220,38,38},2.5)
+      .points(depths,validation,"",{220,38,38},4).title("Iris: training fit and five-fold predictions")
+      .x_label("maximum split depth (root depth zero)").y_label("correct fraction").y_limits(0.5,1.06)
+      .save_svg("build/c45_iris.svg");
+}
+```
+// result_begin: markdown
+| depth cap | full-data nodes | training correct / 150 | five-fold correct / 150 | training fraction | cross-validation fraction |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 3 | 100 | 100 | 0.666667 | 0.666667 |
+| 2 | 5 | 144 | 137 | 0.960000 | 0.913333 |
+| 3 | 9 | 146 | 138 | 0.973333 | 0.920000 |
+| 4 | 13 | 147 | 140 | 0.980000 | 0.933333 |
+| 5 | 17 | 150 | 141 | 1.000000 | 0.940000 |
+| 6 | 17 | 150 | 141 | 1.000000 | 0.940000 |
+
+Full-data root: Petal.Length <= 2.450; gain 0.918296, ratio 1.000000; sizes 50 and 100.
+Root candidates: 119; actual candidate row tests: 17850.
+\image(figures/c45_iris.svg)
+// result_end
+\caption(Full-data training fit and five-fold held-out predictions at each depth cap. The held-out curve need not improve as the tree grows.)
+\alttext(Two curves compare correct training and cross-validation fractions across depth limits one through six, with the numerical values printed in the table.)
+
+The depth cap is a growth control, not statistical pruning. With a fixed root
+and deterministic search, relaxing it only refines leaves. Child majorities
+cannot have fewer total correct training labels than retaining the parent's
+majority at those rows. Thus training fit cannot decrease solely from deeper
+growth; this argument places no lower bound on held-out accuracy.
+
+> Retain the original three-cloud experiment
+
+The original report generated sixty points per centre at (0,0), (6,0) and
+(3,6), coordinate standard deviation 0.6, with mt19937_64 seed five. That
+reusable generator now lives in dm::datasets::gaussian_blobs(). It preserves
+centre/row/coordinate draw order and has no shared RNG state. The C++ normal
+distribution can differ across standard libraries, so the seed is a same-toolchain
+repeatability guarantee, not a promise of portable bit-identical coordinates.
+The current program prints the actual full tree as flat nodes, then recreates
+the original training-accuracy-versus-depth plot.
+
+```{cpp, results="markdown", file="figures/c45_accuracy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto data=dm::datasets::gaussian_blobs({{0,0},{6,0},{3,6}},60,.6,5);
+  std::vector<double> depths,accuracy;
+  std::print("| depth cap | nodes | training correct / 180 | training fraction |\n| ---: | ---: | ---: | ---: |\n");
+  for(std::size_t depth=1;depth<=6;++depth) {
+    const auto model=dm::algorithms::c45_train(data.features,data.labels,depth,2);std::size_t correct=0;
+    for(std::size_t i=0;i<data.labels.size();++i) correct+=dm::algorithms::c45_predict(model,data.features[i])==data.labels[i];
+    depths.push_back(depth);accuracy.push_back(static_cast<double>(correct)/data.labels.size());
+    std::print("| {} | {} | {} | {:.6f} |\n",depth,model.nodes.size(),correct,accuracy.back());
+  }
+  const auto trace=dm::algorithms::c45_train_trace(data.features,data.labels);
+  if(data.features.size()!=180 || trace.tree.nodes.size()!=5 || accuracy.back()!=1) return 1;
+  std::print("\n| node | depth | row count | majority / leaf label | kind | feature | threshold | left | right |\n"
+             "| ---: | ---: | ---: | ---: | :--- | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t id=0;id<trace.tree.nodes.size();++id) {
+    const auto& node=trace.tree.nodes[id];
+    std::print("| {} | {} | {} | {} | {} | {} | {:.6f} | {} | {} |\n",id,trace.nodes[id].depth,trace.nodes[id].rows.size(),
+        node.prediction,node.leaf?"leaf":"split",node.feature,node.threshold,node.left,node.right);
+  }
+  std::print("\nActual whole-tree candidates: {}; candidate row tests: {}.\n",trace.candidate_count,trace.candidate_row_tests);
+  dm::graphics::RPlot::create().line(depths,accuracy,"training fit",{37,99,235},2.5)
+      .points(depths,accuracy,"",{37,99,235},4).abline_h(1,{22,163,74},1)
+      .title("Original three Gaussian clouds: training accuracy")
+      .x_label("maximum split depth").y_label("training correct fraction").y_limits(.5,1.08)
+      .save_svg("build/c45_accuracy.svg");
+}
+```
+// result_begin: markdown
+| depth cap | nodes | training correct / 180 | training fraction |
+| ---: | ---: | ---: | ---: |
+| 1 | 3 | 120 | 0.666667 |
+| 2 | 5 | 180 | 1.000000 |
+| 3 | 5 | 180 | 1.000000 |
+| 4 | 5 | 180 | 1.000000 |
+| 5 | 5 | 180 | 1.000000 |
+| 6 | 5 | 180 | 1.000000 |
+
+| node | depth | row count | majority / leaf label | kind | feature | threshold | left | right |
+| ---: | ---: | ---: | ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | 0 | 180 | 0 | split | 0 | 1.529433 | 1 | 2 |
+| 1 | 1 | 60 | 0 | leaf | 0 | 0.000000 | -1 | -1 |
+| 2 | 1 | 120 | 1 | split | 1 | 3.014126 | 3 | 4 |
+| 3 | 2 | 60 | 1 | leaf | 0 | 0.000000 | -1 | -1 |
+| 4 | 2 | 60 | 2 | leaf | 0 | 0.000000 | -1 | -1 |
+
+Actual whole-tree candidates: 596; candidate row tests: 93000.
+\image(figures/c45_accuracy.svg)
+// result_end
+\caption(The original well-separated 180-point control reaches perfect training fit with two split levels. This is not a held-out generalization result.)
+\alttext(Training accuracy rises from two thirds at depth one to one at depth two, then remains at one through depth six.)
+
+> Stopping, numeric boundaries and complete-call budgets
+
+A parent with at least min_samples rows may split off a single row. This
+parameter is not a minimum leaf size. Identical feature rows with contradictory
+labels cannot be separated by a threshold. Pure XOR also has zero gain at every
+root test, so this greedy learner stops at a majority leaf with half the labels
+correct; two levels of a manually chosen XOR tree would classify all four.
+
+The old midpoint expression could overflow on finite values or round to the
+upper boundary and discard a valid separating test. The checked implementation
+uses std::midpoint and falls back to the lower observed value if necessary.
+Training rejects nonfinite features, mismatched labels and ragged rows before
+purity shortcuts. Prediction checks the visited path, including tested feature
+availability, finite tests/values, child indices and cycles. Unvisited branches
+and unused query values are deliberately not a whole-model validation.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto xor_trace=dm::algorithms::c45_train_trace({{0,0},{0,1},{1,0},{1,1}},{0,1,1,0});
+  if(xor_trace.nodes[0].reason!=dm::algorithms::C45StopReason::no_positive_gain) return 1;
+  std::print("XOR: {} root candidates; model nodes {}; majority label {}.\n",xor_trace.candidate_count,
+      xor_trace.tree.nodes.size(),xor_trace.tree.nodes[0].prediction);
+  const double lo=1,hi=std::nextafter(1.0,2.0);
+  const auto adjacent=dm::algorithms::c45_train_trace({{lo},{hi}},{3,7});
+  std::print("Adjacent doubles: threshold {:.17g}, at lower -> {}, at upper -> {}.\n",adjacent.tree.nodes[0].threshold,
+      dm::algorithms::c45_predict(adjacent.tree,{lo}),dm::algorithms::c45_predict(adjacent.tree,{hi}));
+  const std::vector<std::vector<double>> x{{0},{1},{2},{3}};const std::vector<int> y{0,1,0,1};
+  const auto full=dm::algorithms::c45_train_trace(x,y);
+  bool rejected=false;try {(void)dm::algorithms::c45_train_trace(x,y,{0,2,full.candidate_count-1});}
+  catch(const std::length_error&) {rejected=true;}
+  const auto exact=dm::algorithms::c45_train_trace(x,y,{0,2,full.candidate_count});
+  if(!rejected || exact.tree.nodes.size()!=full.tree.nodes.size()) return 1;
+  std::print("Alternating four labels: {} candidates, {} row tests, {} nodes; one-short budget rejected: {}.\n",
+      full.candidate_count,full.candidate_row_tests,full.tree.nodes.size(),rejected);
+  bool invalid=false;try {(void)dm::algorithms::c45_train({{std::numeric_limits<double>::quiet_NaN()}},{1});}
+  catch(const std::invalid_argument&) {invalid=true;}
+  bool short_query=false;try {(void)dm::algorithms::c45_predict(adjacent.tree,{});}
+  catch(const std::invalid_argument&) {short_query=true;}
+  if(!invalid || !short_query) return 1;
+  std::print("Nonfinite singleton training rejected: {}; short visited query rejected: {}.\n",invalid,short_query);
+}
+```
+// result_begin: markdown
+XOR: 2 root candidates; model nodes 1; majority label 0.
+Adjacent doubles: threshold 1, at lower -> 3, at upper -> 7.
+Alternating four labels: 6 candidates, 20 row tests, 7 nodes; one-short budget rejected: true.
+Nonfinite singleton training rejected: true; short visited query rejected: true.
+// result_end
+
+The complete-call candidate budget includes zero-gain tests and throws before
+partitioning an excess candidate. It returns no partial model. candidate_row_tests
+counts only row/threshold comparisons used to evaluate candidates; it excludes
+sorting, class-map operations, the final selected repartition and prediction.
+Neither counter is a timing or a full operation count.
+
+At a searched node of m rows and d features there are at most d(m-1) candidates.
+This implementation repartitions all m rows and recomputes ordered-map entropies
+for each, giving the upper bound O(d*m*m*log(m)) per searched node, summed over
+the tree. It does not use a prefix-count threshold sweep. Ordinary training keeps
+no provenance records. Tracing additionally stores node row memberships and every
+actual candidate, requiring O(n*h+c) storage for reached depth h and c candidates.
+All construction and ownership use flat arrays and explicit pending partitions.
+
+Native verification compares 37,324 exhaustive small one-dimensional training
+configurations and 1,000 random multifeature/multiclass cases against a separate
+recursive, materialized-label trainer. Additional cases check exact scores and
+ties, original cloud draw order, ownership, stopping reasons, whole-call budgets,
+invalid training and visited prediction paths, extreme finite midpoints,
+adjacent representable values and subnormals. The tests check the implemented
+restricted learner; they do not establish equivalence to a full C4.5 release.
+
+> References
+
+- J. R. Quinlan (1996). [Improved Use of Continuous Attributes in C4.5](https://arxiv.org/abs/cs/9603103). Journal of Artificial Intelligence Research 4, 77-90. The paper describes gain ratio, the average-gain restriction and the later continuous-threshold correction; the latter two are not implemented here.
+- R Core Team. [Edgar Anderson's Iris Data](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/iris.html). Dataset measurements, species, provenance and original references.

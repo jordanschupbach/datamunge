@@ -1,0 +1,371 @@
+//? Title: Extended Euclid: Actual Remainders, Bezout Witnesses and Safe Inverses
+//? Subtitle: Signed-input quotient paths, full int64 certificates and checked legacy result ranges
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Find the greatest common divisor of two integers and coefficients that express
+it as their integer combination. Those coefficients also identify modular
+inverses when the inputs are coprime. We begin with 240 and 46, inspect every
+actual quotient/coefficient row, and retain the original 100,000-pair check.
+Signed examples, a Fibonacci family and full-width boundary cases separate
+mathematical identities from machine-integer range limits. One widened native
+C++ kernel serves ordinary results, unsigned-gcd certificates and optional
+owned traces; inverse traces capture their actual solve in the same pass.
+)
+
+\toc
+
+> Begin with 240 and 46
+
+Dividing 240 by 46 gives quotient five and remainder ten. Applying that
+same row operation to coefficients gives 10=1·240−5·46. Continuing produces
+remainders 6,4,2,0, and the last nonzero row is
+2=−9·240+47·46. The zero row is still part of the actual execution:
+0=23·240−120·46. The five quotients are 5,4,1,1,2.
+
+The following program reads the two initial rows and every derived row
+from the native trace. It checks s·a+t·b=r with widened arithmetic and
+renders the same stored values. The final sign-normalised result is
+separate from the raw rows; in this positive example no sign flip occurs.
+
+```{cpp, results="markdown", file="figures/euclid_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const auto t=dm::algorithms::extended_gcd_trace(240,46);const auto& c=t.outcome.certificate;
+  std::print("| row | actual quotient | raw remainder | s | t | exact s*a+t*b |\n| ---: | :--- | ---: | ---: | ---: | ---: |\n");
+  dm::graphics::Diagram g(52,1100);dm::graphics::DiagramNodeStyle box;box.width=2.6;box.height=.85;box.font_size=22;
+  g.text({0,1.8},"remainder r",23).text({4,1.8},"coefficient s",23).text({8,1.8},"coefficient t",23);
+  for(std::size_t i=0;i<t.rows.size();++i){const auto& r=t.rows[i];const __int128 check=static_cast<__int128>(t.a)*r.s+static_cast<__int128>(t.b)*r.t;if(check!=r.remainder)throw std::runtime_error("actual row identity failed");const auto q=r.divided?dm::algorithms::int128_text(r.quotient):"initial";
+    std::print("| {} | {} | {} | {} | {} | {} |\n",i,q,dm::algorithms::int128_text(r.remainder),dm::algorithms::int128_text(r.s),dm::algorithms::int128_text(r.t),dm::algorithms::int128_text(check));
+    box.fill=i==t.rows.size()-2?dm::graphics::RGB{187,247,208}:i==t.rows.size()-1?dm::graphics::RGB{226,232,240}:dm::graphics::RGB{191,219,254};
+    g.text({-4,-1.5*double(i)},"q = "+q,20);const std::vector<__int128> values{r.remainder,r.s,r.t};for(int col=0;col<3;++col)g.node(std::format("{}:{}",i,col),{4.*col,-1.5*double(i)},dm::algorithms::int128_text(values[col]),box);}
+  g.text({3,3.4},"Actual rows maintain r = 240s + 46t",27).text({3,-11.2},std::format("{} divisions; {} coefficient updates; {} retained row records",t.outcome.work.divisions,t.outcome.work.coefficient_updates,t.captured_entries),22).save_svg("build/euclid_tiny.svg");
+  std::print("\nOriginal result: gcd {}; x {}; y {}; actual divisions {}; rows {}; normalized {}.\n",c.gcd,c.x,c.y,t.outcome.work.divisions,t.captured_entries,t.outcome.work.sign_normalized);
+  if(!dm::algorithms::bezout_certificate_valid(t.a,t.b,c))throw std::runtime_error("gcd certificate failed");
+}
+```
+// result_begin: markdown
+| row | actual quotient | raw remainder | s | t | exact s*a+t*b |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | initial | 240 | 1 | 0 | 240 |
+| 1 | initial | 46 | 0 | 1 | 46 |
+| 2 | 5 | 10 | 1 | -5 | 10 |
+| 3 | 4 | 6 | -4 | 21 | 6 |
+| 4 | 1 | 4 | 5 | -26 | 4 |
+| 5 | 1 | 2 | -9 | 47 | 2 |
+| 6 | 2 | 0 | 23 | -120 | 0 |
+
+Original result: gcd 2; x -9; y 47; actual divisions 5; rows 7; normalized false.
+\image(figures/euclid_tiny.svg)
+// result_end
+\caption(Seven actual rows include both initial states and the terminal zero. The green row is the final nonzero remainder and the gray row explains the final unused coefficient update.)
+\alttext(A native seven-row matrix shows actual remainders 240,46,10,6,4,2,0 and their two Bezout coefficients, beside the actual quotients. The remainder-two row is green and the terminal zero row gray.)
+
+> Why the row operations certify a greatest common divisor
+
+For any integer quotient q, a common divisor of r_old and r also divides
+r_old−q·r, and the reverse implication follows by adding q·r back.
+Thus the set of common divisors is unchanged. A nonzero divisor produces a
+remainder whose absolute value is smaller; repeated division terminates.
+The last nonzero remainder has the gcd's magnitude.
+
+Track two coefficient rows. Initially, 1·a+0·b=a and 0·a+1·b=b.
+When q=old_r/r is the actual truncating quotient, update
+
+\[
+r'=r_{old}-qr,\qquad s'=s_{old}-qs,\qquad t'=t_{old}-qt.
+\]
+
+Linearity preserves r'=s'a+t'b. At termination, negate the surviving
+remainder and both coefficients if that remainder is negative. The returned
+gcd is nonnegative and its coefficients satisfy a·x+b·y=gcd.
+The consecutive coefficient rows also retain determinant +1 or −1;
+each subtract-and-swap step reverses its sign, which tests their integer
+unimodular structure independently of a plotted remainder curve.
+
+The core's certificate checker verifies both the identity and that the
+claimed positive gcd divides both input magnitudes. If d divides a and b,
+then d divides a·x+b·y=g; together with g being a common divisor this
+certifies greatestness. An identity alone is insufficient: 6·1+10·0=6
+does not make six a common divisor of six and ten. For two zero inputs,
+gcd zero is the explicit convention. Actual legacy coefficients are (1,0),
+correcting the old comment that promised (0,0).
+
+The implementation retains input order and C++ truncation toward zero,
+including an initial quotient zero when needed. It is a signed-input
+variant of the usual nonnegative ordered presentation. The Handbook of
+Applied Cryptography's algorithms 2.107 and 2.142 supply the standard
+extended-gcd and inverse construction; their input conventions differ
+from this native signed interface.
+
+> Retain the original results and the 100,000-pair check
+
+The original compiled result is ExtendedGcd{2,−9,47}. Its three signed
+int64 fields and compiled signature remain. The original seeded random
+check below still uses 100,000 pairs in [−100000,100000]. That range is
+safe for std::gcd's signed-magnitude precondition. The native certificate
+checker handles the Bezout products without a report-local Euclid loop.
+
+The book's example 2.109, (4864,3458), supplies a second known answer:
+38=32·4864−45·3458. Counts distinguish it from the original pair and
+show that reversed input order can add a genuine zero-quotient division.
+
+```{cpp, results="markdown", file="figures/euclid_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const auto original=dm::algorithms::extended_gcd(240,46);std::print("Legacy worked result: gcd {}; x {}; y {}; inverse(3,11) {}.\n",original.gcd,original.x,original.y,dm::algorithms::modular_inverse(3,11));
+  std::mt19937_64 rng(20240927);std::uniform_int_distribution<std::int64_t> dist(-100000,100000);std::size_t good=0;
+  for(int i=0;i<100000;++i){const auto a=dist(rng),b=dist(rng);const auto e=dm::algorithms::extended_gcd(a,b);const dm::algorithms::ExtendedGcdCertificate c{static_cast<std::uint64_t>(e.gcd),e.x,e.y};if(e.gcd==std::gcd(a,b)&&dm::algorithms::bezout_certificate_valid(a,b,c))++good;}
+  std::print("Original randomized check: {}/100000 pairs satisfy the Bezout certificate and match std::gcd.\n\n",good);if(good!=100000)throw std::runtime_error("original randomized check failed");
+  std::vector<double> counts;std::vector<std::string> labels;std::print("| a | b | gcd | x | y | actual divisions | captured rows |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto& [a,b]:std::vector<std::pair<std::int64_t,std::int64_t>>{{240,46},{4864,3458},{46,240},{-240,46},{0,0}}){const auto t=dm::algorithms::extended_gcd_trace(a,b);const auto& c=t.outcome.certificate;std::print("| {} | {} | {} | {} | {} | {} | {} |\n",a,b,c.gcd,c.x,c.y,t.outcome.work.divisions,t.captured_entries);counts.push_back(t.outcome.work.divisions);labels.push_back(std::format("{},{}",a,b));}
+  auto p=dm::graphics::RPlot::barplot(counts,labels,"actual divisions",{37,99,235});p.title("Actual Euclidean division counts").x_label("Input pair in its supplied order").y_label("Quotient/remainder iterations").y_limits(0,7).size(1000,530).save_svg("build/euclid_original.svg");
+}
+```
+// result_begin: markdown
+Legacy worked result: gcd 2; x -9; y 47; inverse(3,11) 4.
+Original randomized check: 100000/100000 pairs satisfy the Bezout certificate and match std::gcd.
+
+| a | b | gcd | x | y | actual divisions | captured rows |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 240 | 46 | 2 | -9 | 47 | 5 | 7 |
+| 4864 | 3458 | 38 | 32 | -45 | 6 | 8 |
+| 46 | 240 | 2 | 47 | -9 | 6 | 8 |
+| -240 | 46 | 2 | 9 | 47 | 5 | 7 |
+| 0 | 0 | 0 | 1 | 0 | 0 | 2 |
+\image(figures/euclid_original.svg)
+// result_end
+\caption(The original coefficient and inverse examples and all 100,000 seeded random checks execute through the checked native API. Counts include zero quotients and terminal zero remainders.)
+\alttext(A native bar chart compares actual division counts for 240/46, the book example 4864/3458, reversed inputs, a signed pair and two zeros.)
+
+> From the same-pass certificate to an inverse
+
+If a·x+m·y=1, reducing modulo m gives a·x congruent to one.
+Conversely, an inverse implies the gcd divides one, so coprimality is
+necessary and sufficient. Reduce the actual coefficient x into [0,m).
+The implementation first takes x%m, then adds m only if that remainder
+is negative, avoiding an overflowing unreduced x+m expression.
+
+modular_inverse_trace captures the actual Euclid rows during that inverse
+computation, rather than reconstructing them afterward. Positive m is
+validated before history admission. A nonunit throws when its gcd is
+known; use an ordinary gcd certificate to inspect that failure separately.
+The legacy API permits m=1 and returns its sole residue zero, including
+for a=0 or INT64_MIN. In that degenerate modulus, one and zero are
+congruent; it should not be checked by demanding a raw remainder of one.
+
+For 3 modulo 11, four modular additions of three reach residue one.
+The circle below is a conceptual residue check using the existing safe
+modular-multiplication API. The Euclidean trace, not the circle, computes
+the inverse. No claim about cryptographic constant-time execution is made.
+
+```{cpp, results="markdown", file="figures/euclid_inverse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::print("| a | m | gcd | inverse or nonunit | coefficient x | coefficient y | actual divisions |\n| ---: | ---: | ---: | :--- | ---: | ---: | ---: |\n");
+  for(const auto& [a,m]:std::vector<std::pair<std::int64_t,std::int64_t>>{{3,11},{-3,11},{7,26},{0,1},{std::numeric_limits<std::int64_t>::min(),1},{6,9}}){try{const auto t=dm::algorithms::modular_inverse_trace(a,m);const auto& c=t.euclid.outcome.certificate;const __int128 residue=((static_cast<__int128>(a)*t.inverse)%m+m)%m;if(residue!=1%m)throw std::runtime_error("inverse certificate failed");std::print("| {} | {} | {} | {} | {} | {} | {} |\n",a,m,c.gcd,t.inverse,c.x,c.y,t.euclid.outcome.work.divisions);}catch(const std::invalid_argument&){const auto e=dm::algorithms::extended_gcd_work(a,m);std::print("| {} | {} | {} | nonunit | {} | {} | {} |\n",a,m,e.certificate.gcd,e.certificate.x,e.certificate.y,e.work.divisions);}}
+  const auto inverse=dm::algorithms::modular_inverse_trace(3,11);dm::graphics::Diagram g(64,1100);dm::graphics::DiagramNodeStyle box;box.width=1.1;box.height=1.1;box.circle=true;box.font_size=23;
+  std::print("\nResidues for 3*k modulo 11, k=0..10:");
+  for(std::uint64_t k=0;k<11;++k){const auto r=dm::algorithms::mul_mod(3,k,11);std::print(" {}",r);const double angle=std::numbers::pi/2-2*std::numbers::pi*k/11;box.fill=k==static_cast<std::uint64_t>(inverse.inverse)?dm::graphics::RGB{254,215,170}:dm::graphics::RGB{191,219,254};g.node(std::to_string(k),{4*std::cos(angle),4*std::sin(angle)},std::to_string(r),box);}
+  for(int k=0;k<11;++k)g.edge(std::to_string(k),std::to_string((k+1)%11),"+3");g.text({0,6},"Four modular additions of three reach one",25).text({0,-6},std::format("Actual inverse: {}; Euclid divisions: {}; captured rows: {}",inverse.inverse,inverse.euclid.outcome.work.divisions,inverse.euclid.captured_entries),22).save_svg("build/euclid_inverse.svg");std::print("\nActual inverse trace: inverse {}; divisions {}; rows {}.\n",inverse.inverse,inverse.euclid.outcome.work.divisions,inverse.euclid.captured_entries);
+}
+```
+// result_begin: markdown
+| a | m | gcd | inverse or nonunit | coefficient x | coefficient y | actual divisions |
+| ---: | ---: | ---: | :--- | ---: | ---: | ---: |
+| 3 | 11 | 1 | 4 | 4 | -1 | 4 |
+| -3 | 11 | 1 | 7 | -4 | -1 | 4 |
+| 7 | 26 | 1 | 15 | -11 | 3 | 5 |
+| 0 | 1 | 1 | 0 | 0 | 1 | 1 |
+| -9223372036854775808 | 1 | 1 | 0 | 0 | 1 | 1 |
+| 6 | 9 | 3 | nonunit | -1 | 1 | 3 |
+
+Residues for 3*k modulo 11, k=0..10: 0 3 6 9 1 4 7 10 2 5 8
+Actual inverse trace: inverse 4; divisions 4; rows 6.
+\image(figures/euclid_inverse.svg)
+// result_end
+\caption(The inverse table comes from actual same-pass Euclid results. The highlighted residue one is reached at k=4 in the conceptual modular-addition cycle, verifying the inverse of three.)
+\alttext(A native directed circle shows residues zero,three,six,nine,one,four,seven,ten,two,five,eight under repeated addition of three modulo eleven. Residue one is highlighted.)
+
+> Signed quotients and sign normalisation are separate facts
+
+C++ division truncates toward zero: −240/46 gives quotient −5 and
+remainder −10. A floor quotient would be −6 with positive remainder six;
+that is a different row path. Both can express the gcd, but this API
+preserves the truncating path and its canonical coefficients.
+
+The actual signed remainder can change sign along a path. Its magnitude
+still follows the decreasing unsigned Euclidean sequence. A final sign
+flip occurs only when the surviving raw gcd is negative, not whenever
+any input is negative. The mixed-sign pair (−240,46) and the pair
+(−240,−46) illustrate that distinction. Raw trace rows are retained before
+normalisation; result coefficients are the sign-normalised certificate.
+
+```{cpp, results="markdown", file="figures/euclid_signed.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");auto raw=dm::graphics::RPlot::create(),magnitude=dm::graphics::RPlot::create();int index=0;
+  for(const auto& [a,b]:std::vector<std::pair<std::int64_t,std::int64_t>>{{-240,46},{-240,-46}}){const auto t=dm::algorithms::extended_gcd_trace(a,b);const auto& c=t.outcome.certificate;std::vector<double>x,values,absolute;
+    std::print("Signed ({},{}): gcd {}; x {}; y {}; final sign normalized {}; actual divisions {}.\n",a,b,c.gcd,c.x,c.y,t.outcome.work.sign_normalized,t.outcome.work.divisions);
+    std::print("| actual row | quotient or initial | raw remainder | s | t |\n| ---: | :--- | ---: | ---: | ---: |\n");
+    for(std::size_t i=0;i<t.rows.size();++i){const auto& r=t.rows[i];if(static_cast<__int128>(a)*r.s+static_cast<__int128>(b)*r.t!=r.remainder)throw std::runtime_error("signed row identity failed");std::print("| {} | {} | {} | {} | {} |\n",i,r.divided?dm::algorithms::int128_text(r.quotient):"initial",dm::algorithms::int128_text(r.remainder),dm::algorithms::int128_text(r.s),dm::algorithms::int128_text(r.t));x.push_back(i);values.push_back(static_cast<double>(r.remainder));absolute.push_back(std::abs(static_cast<double>(r.remainder)));}std::print("\n");
+    const auto colour=index++?dm::graphics::RGB{220,38,38}:dm::graphics::RGB{37,99,235};const auto label=std::format("{},{}",a,b);raw.line(x,values,label,colour).points(x,values,"",colour,4);magnitude.line(x,absolute,label,colour).points(x,absolute,"",colour,4);}
+  raw.title("Raw signed rows").x_label("Captured row index").y_label("Actual remainder");magnitude.title("Magnitudes coincide").x_label("Captured row index").y_label("Absolute remainder");dm::graphics::RLayout::create(1,2).add(raw).add(magnitude).size(1100,530).title("Truncating division preserves identities despite signed remainders").fit_panels().save_svg("build/euclid_signed.svg");
+}
+```
+// result_begin: markdown
+Signed (-240,46): gcd 2; x 9; y 47; final sign normalized false; actual divisions 5.
+| actual row | quotient or initial | raw remainder | s | t |
+| ---: | :--- | ---: | ---: | ---: |
+| 0 | initial | -240 | 1 | 0 |
+| 1 | initial | 46 | 0 | 1 |
+| 2 | -5 | -10 | 1 | 5 |
+| 3 | -4 | 6 | 4 | 21 |
+| 4 | -1 | -4 | 5 | 26 |
+| 5 | -1 | 2 | 9 | 47 |
+| 6 | -2 | 0 | 23 | 120 |
+
+Signed (-240,-46): gcd 2; x 9; y -47; final sign normalized true; actual divisions 5.
+| actual row | quotient or initial | raw remainder | s | t |
+| ---: | :--- | ---: | ---: | ---: |
+| 0 | initial | -240 | 1 | 0 |
+| 1 | initial | -46 | 0 | 1 |
+| 2 | 5 | -10 | 1 | -5 |
+| 3 | 4 | -6 | -4 | 21 |
+| 4 | 1 | -4 | 5 | -26 |
+| 5 | 1 | -2 | -9 | 47 |
+| 6 | 2 | 0 | 23 | -120 |
+
+\image(figures/euclid_signed.svg)
+// result_end
+\caption(The two paths differ in remainder signs and final normalisation. Their magnitude curves coincide, and every printed row satisfies the original signed-input identity.)
+\alttext(Two native panels compare signed raw remainder paths for minus-240 with plus or minus 46, and their identical absolute-magnitude paths.)
+
+> Division counts, Fibonacci inputs and bit complexity
+
+Remainder magnitudes are nonnegative and decrease until zero. Over two
+successive positive remainder reductions, the magnitude falls by at least a
+factor of two: either the next remainder is already at most half the current
+one, or the following subtraction leaves less than half. This gives a
+logarithmic division count. Zero inputs are constant-work cases; an initial
+zero quotient can add one division when input order is reversed.
+
+Consecutive Fibonacci numbers approach the slowest shrinkage because most
+quotients are one. The native counts below include the terminal zero step.
+F_92=7540113804746346429 and F_91=4660046610375530309 fit signed int64;
+they require ninety divisions in that order and ninety-one in reverse.
+A similarly wide input paired with one needs only one division, showing
+that bit width alone does not determine a particular run's work.
+
+These are fixed-word operation counts on int64 inputs with signed128-bit
+intermediates. They are not an O(log n) bit-operation claim for unbounded
+integers: larger divisions have their own cost, and the Handbook gives a
+quadratic logarithmic bit bound for its basic arithmetic model. Ordinary
+calls use constant auxiliary state. An owned trace stores C=2+D whole row
+records for D divisions; metadata, capacities, allocator bytes and runtime
+temporaries are excluded, so C is not peak memory.
+
+```{cpp, results="markdown", file="figures/euclid_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::vector<std::int64_t> f{0,1};const auto maximum=std::numeric_limits<std::int64_t>::max();while(f.back()<=maximum-f[f.size()-2])f.push_back(f.back()+f[f.size()-2]);std::vector<double> n,divisions,rows;
+  std::print("| Fibonacci n | F_n | F_(n-1) | actual divisions | coefficient updates | captured rows |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i=3;i<f.size();++i){const auto t=dm::algorithms::extended_gcd_trace(f[i],f[i-1]);if(t.outcome.work.divisions!=i-2||t.captured_entries!=t.outcome.work.divisions+2)throw std::runtime_error("Fibonacci division/row identity failed");n.push_back(i);divisions.push_back(t.outcome.work.divisions);rows.push_back(t.captured_entries);if(i==5||i==10||i==20||i==40||i==60||i==80||i==92)std::print("| {} | {} | {} | {} | {} | {} |\n",i,f[i],f[i-1],t.outcome.work.divisions,t.outcome.work.coefficient_updates,t.captured_entries);}
+  const auto forward=dm::algorithms::extended_gcd_work(f.back(),f[f.size()-2]),reverse=dm::algorithms::extended_gcd_work(f[f.size()-2],f.back()),one=dm::algorithms::extended_gcd_work(maximum,1);
+  std::print("\nLargest displayed Fibonacci pair: forward {} divisions; reversed {} divisions; INT64_MAX with one {} division.\n",forward.work.divisions,reverse.work.divisions,one.work.divisions);
+  auto p=dm::graphics::RPlot::create();p.line(n,divisions,"Actual divisions D",{37,99,235},2).line(n,rows,"Captured rows D+2",{124,58,237},2).title("Consecutive Fibonacci inputs: measured work and history").x_label("Fibonacci index n").y_label("Actual divisions or whole row records").size(1000,530).save_svg("build/euclid_work.svg");
+}
+```
+// result_begin: markdown
+| Fibonacci n | F_n | F_(n-1) | actual divisions | coefficient updates | captured rows |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 5 | 5 | 3 | 3 | 6 | 5 |
+| 10 | 55 | 34 | 8 | 16 | 10 |
+| 20 | 6765 | 4181 | 18 | 36 | 20 |
+| 40 | 102334155 | 63245986 | 38 | 76 | 40 |
+| 60 | 1548008755920 | 956722026041 | 58 | 116 | 60 |
+| 80 | 23416728348467685 | 14472334024676221 | 78 | 156 | 80 |
+| 92 | 7540113804746346429 | 4660046610375530309 | 90 | 180 | 92 |
+
+Largest displayed Fibonacci pair: forward 90 divisions; reversed 91 divisions; INT64_MAX with one 1 division.
+\image(figures/euclid_work.svg)
+// result_end
+\caption(The actual native trace counts satisfy D=n−2 and C=D+2 for every displayed consecutive Fibonacci pair. Reversing inputs adds its initial zero quotient.)
+\alttext(A native plot shows actual divisions and retained row records increasing linearly with Fibonacci index, with the record curve always two above the division curve.)
+
+> Full int64 inputs, narrow results and terminal-row overflow
+
+INT64_MIN has magnitude 2^63, which is not representable as a positive
+int64. The legacy three-signed-field result therefore throws overflow for
+(INT64_MIN,0), (0,INT64_MIN) and (INT64_MIN,INT64_MIN). The new certificate
+stores its nonnegative gcd in uint64 and supports all three while retaining
+signed canonical coefficients. The certificate checker uses safe unsigned
+magnitudes and checked widened product addition, including malformed claims.
+
+Even a final gcd of one can require wider intermediate arithmetic.
+INT64_MIN divided by −1 has quotient +2^63. With divisor one, a terminal
+zero row has coefficient +2^63 even though the returned coefficient is
+small. Signed128-bit working rows avoid both failures, including updates
+that are discarded from the legacy result. Strict old-source sanitizer
+probes reproduce division, negation and terminal-coefficient overflows.
+
+Calling std::gcd on signed INT64_MIN violates its representable-magnitude
+precondition, even if the final gcd would be small. The boundary program
+uses the native certificate checker; independent tests use unsigned
+magnitudes and Python arbitrary-precision integers. Ordinary int64
+multiplication a*x+b*y is also unsafe for general full-width certificates.
+Use widened arithmetic for actual bounded rows or the native checker for
+arbitrary claimed int64-coefficient certificates.
+
+Optional trace admission checks its initial two records before allocation
+and each next record before its division. The default row cap is one million;
+zero disables only that optional quota. Exact and one-short limits are
+checked below. Ordinary and work-only calls keep no optional history or
+quota. Exceptions expose no partial trace; returned rows own their values.
+
+```{cpp, results="markdown", file="figures/euclid_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const auto minimum=std::numeric_limits<std::int64_t>::min(),maximum=std::numeric_limits<std::int64_t>::max();
+  std::print("| a | b | unsigned gcd | x | y | legacy fits | valid certificate |\n| ---: | ---: | ---: | ---: | ---: | :--- | :--- |\n");int overflows=0;
+  for(const auto& [a,b]:std::vector<std::pair<std::int64_t,std::int64_t>>{{minimum,0},{0,minimum},{minimum,minimum},{minimum,-1},{minimum,1},{minimum,maximum}}){const auto c=dm::algorithms::extended_gcd_certificate(a,b);bool fits=true;try{(void)dm::algorithms::extended_gcd(a,b);}catch(const std::overflow_error&){fits=false;++overflows;}std::print("| {} | {} | {} | {} | {} | {} | {} |\n",a,b,c.gcd,c.x,c.y,fits,dm::algorithms::bezout_certificate_valid(a,b,c));}
+  const auto q=dm::algorithms::extended_gcd_trace(minimum,-1),terminal=dm::algorithms::extended_gcd_trace(minimum,1);const auto wide=dm::algorithms::extended_gcd_certificate(minimum,0);
+  std::print("\nWide actual quotient {}; wide actual terminal coefficient {}; legacy gcd overflow rejections {}.\n",dm::algorithms::int128_text(q.rows.back().quotient),dm::algorithms::int128_text(terminal.rows.back().t),overflows);
+  bool malformed_safe=!dm::algorithms::bezout_certificate_valid(minimum,minimum,{1,minimum,minimum});int limits=0;try{(void)dm::algorithms::extended_gcd_trace(240,46,6);}catch(const std::length_error&){++limits;}try{(void)dm::algorithms::extended_gcd_trace(0,0,1);}catch(const std::length_error&){++limits;}
+  const auto exact=dm::algorithms::extended_gcd_trace(240,46,7),disabled=dm::algorithms::extended_gcd_trace(240,46,0);std::print("Capture exact {}; disabled {}; one-short/base-short rejections {}/2; overflowing malformed-certificate sum rejected safely {}.\n",exact.captured_entries,disabled.captured_entries,limits,malformed_safe);
+  int invalid=0;try{(void)dm::algorithms::modular_inverse(3,0);}catch(const std::invalid_argument&){++invalid;}try{(void)dm::algorithms::modular_inverse(6,9);}catch(const std::invalid_argument&){++invalid;}
+  const auto zero=dm::algorithms::extended_gcd(0,0);std::print("Invalid inverse rejections {}/2; inverse(INT64_MIN,1) {}; actual zero-pair coefficients {},{}.\n",invalid,dm::algorithms::modular_inverse(minimum,1),zero.x,zero.y);if(overflows!=3||limits!=2||invalid!=2||!malformed_safe)throw std::runtime_error("boundary/quotas failed");
+  dm::graphics::Diagram g(58,1100);dm::graphics::DiagramNodeStyle box;box.width=5.2;box.height=2.1;box.font_size=21;box.fill={191,219,254};g.node("gcd",{0,0},std::format("Unsigned gcd\n{}\nlegacy field overflows",wide.gcd),box);box.fill={254,215,170};g.node("quotient",{7,0},"Actual quotient\n"+dm::algorithms::int128_text(q.rows.back().quotient)+"\nfrom INT64_MIN / -1",box);box.fill={187,247,208};g.node("terminal",{14,0},"Actual terminal t\n"+dm::algorithms::int128_text(terminal.rows.back().t)+"\nzero-row coefficient",box)
+    .text({7,3.3},"Three distinct reasons to distinguish math from int64 storage",25).save_svg("build/euclid_limits.svg");
+}
+```
+// result_begin: markdown
+| a | b | unsigned gcd | x | y | legacy fits | valid certificate |
+| ---: | ---: | ---: | ---: | ---: | :--- | :--- |
+| -9223372036854775808 | 0 | 9223372036854775808 | -1 | 0 | false | true |
+| 0 | -9223372036854775808 | 9223372036854775808 | 0 | -1 | false | true |
+| -9223372036854775808 | -9223372036854775808 | 9223372036854775808 | 0 | -1 | false | true |
+| -9223372036854775808 | -1 | 1 | 0 | -1 | true | true |
+| -9223372036854775808 | 1 | 1 | 0 | 1 | true | true |
+| -9223372036854775808 | 9223372036854775807 | 1 | -1 | -1 | true | true |
+
+Wide actual quotient 9223372036854775808; wide actual terminal coefficient 9223372036854775808; legacy gcd overflow rejections 3.
+Capture exact 7; disabled 7; one-short/base-short rejections 2/2; overflowing malformed-certificate sum rejected safely true.
+Invalid inverse rejections 2/2; inverse(INT64_MIN,1) 0; actual zero-pair coefficients 1,0.
+\image(figures/euclid_limits.svg)
+// result_end
+\caption(The unsigned gcd, widened quotient and terminal coefficient all equal 2^63 in different actual executions. Safe certificates remain available when the legacy gcd field cannot hold the mathematical value.)
+\alttext(Three native boxes show the actual unsigned gcd, quotient and terminal coefficient 9223372036854775808, explaining their different roles and the legacy storage boundary.)
+
+> References
+
+- Menezes, van Oorschot and Vanstone (1996), *Handbook of Applied Cryptography*,
+  CRC Press, chapter 2, algorithms 2.104, 2.107 and 2.142; example 2.109.
+  [Official chapter](https://cacr.uwaterloo.ca/hac/about/chap2.pdf).
+  The signed native variant retains input order, truncating quotients,
+  final normalisation and checked fixed-width result ranges.
+- C++ working draft, [numeric.ops.gcd](https://eel.is/c%2B%2Bdraft/numeric.ops.gcd),
+  representable-magnitude precondition. Its unsigned-input form is used in
+  native boundary tests; the original small signed random fixture is safe.
+

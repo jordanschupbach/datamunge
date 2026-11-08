@@ -1,0 +1,339 @@
+//? Title: Chien Search: Actual Coefficient States over a Prime Field
+//? Subtitle: Multiplicative order, complete root sets, shortcut paths and checked sweep limits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Finding every root of a polynomial over a finite field requires covering the
+field without missing candidates or overflowing modular arithmetic. Chien search
+visits nonzero elements in primitive-root order and updates each coefficient's
+contribution by a fixed multiplier. We inspect actual states in a small example,
+retain the original GF(13) cubic and plot, and count the operations this native
+implementation really performs. Canonical C++ now records generator rejections,
+coefficient states and shortcut paths without replay, with explicit limits for
+field sweeps and generator discovery. Prime fields, binary extension fields,
+formal zero polynomials and repeated roots have different contracts; those
+distinctions matter before using root search inside a decoder.
+)
+
+\toc
+
+> GF(7): roots in discovery order, not numeric order
+
+Take f(x)=x²+2x+6=(x−2)(x−3) over GF(7). The smallest primitive root
+is g=3. It visits [1,3,2,6,4,5], covering every nonzero element once.
+Starting with coefficient contributions [6,2,1], the fixed multipliers
+[1,3,2] produce [6,6,2] at x=3, then [6,4,4] at x=2. Both sums are
+zero modulo seven. The returned roots are therefore [3,2], rather than [2,3].
+
+```{cpp, results="markdown", file="figures/chien_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::chien_search_trace({6,2,1},7);
+  if(trace.roots!=std::vector<std::int64_t>{3,2} || trace.steps.size()!=6)return 1;
+  std::print("| exponent i | point g^i | actual terms | modular sum | root |\n| ---: | ---: | :--- | ---: | :--- |\n");
+  for(const auto& s:trace.steps)std::print("| {} | {} | {} | {} | {} |\n",s.exponent,s.point,s.terms,s.value,s.root);
+  std::print("\nNative root order: {}. After the closing update: point {}, terms {}.\n",trace.roots,trace.final_point,trace.final_terms);
+  dm::graphics::Diagram diagram(55,1100);
+  dm::graphics::DiagramNodeStyle node;node.width=5.1;node.height=2.6;node.font_size=20;
+  for(std::size_t i=0;i<3;++i) {
+    const auto& s=trace.steps[i];if(s.root)node.fill={220,252,231};
+    const auto id=std::format("state{}",i);
+    diagram.node(id,{7.5*i,0},std::format("i={}, x={}\nterms {}\nsum={} mod 7",s.exponent,s.point,s.terms,s.value),node);
+    if(i)diagram.edge(std::format("state{}",i-1),id,"update terms");
+  }
+  diagram.text({7.5,2.7},std::format("GF(7), primitive generator {}: update terms, then sum",trace.generator),20)
+      .text({7.5,-2.7},std::format("fixed multipliers {}; point advances by multiplication by {}",trace.multipliers,trace.generator),18)
+      .save_svg("build/chien_method.svg");
+}
+```
+// result_begin: markdown
+| exponent i | point g^i | actual terms | modular sum | root |
+| ---: | ---: | :--- | ---: | :--- |
+| 0 | 1 | [6, 2, 1] | 2 | false |
+| 1 | 3 | [6, 6, 2] | 0 | true |
+| 2 | 2 | [6, 4, 4] | 0 | true |
+| 3 | 6 | [6, 5, 1] | 5 | false |
+| 4 | 4 | [6, 1, 2] | 2 | false |
+| 5 | 5 | [6, 3, 4] | 6 | false |
+
+Native root order: [3, 2]. After the closing update: point 1, terms [6, 2, 1].
+\image(figures/chien_method.svg)
+// result_end
+\caption(Three actual successive coefficient states; the first two roots occur at points three and two.)
+\alttext(Three boxes show points one, three and two with term vectors [6,2,1], [6,6,2] and [6,4,4]. The latter two sum to zero modulo seven.)
+
+For normalized coefficients c_j and point g^i, maintain
+
+$$
+t_j^{(i)}=c_jg^{ij},\qquad f(g^i)=\sum_jt_j^{(i)}\pmod p,
+\qquad t_j^{(i+1)}=t_j^{(i)}g^j\pmod p.
+$$
+\alttext(Term j is coefficient j times g to the product i times j. Summing the terms gives the value; the next term multiplies by the fixed g to the j.)
+
+At i=0, g^0=1, so the initial terms are the normalized coefficients.
+Multiplying by g^j preserves the displayed invariant by induction. A primitive
+generator has order p−1, so its p−1 powers are distinct and exhaust the
+nonzero field. Checking c0=f(0) separately completes the field coverage.
+The modular sum is therefore zero exactly at each returned candidate root.
+This proves the recurrence and coverage, not the existence of an error-locator
+polynomial or the correctness of a complete decoding pipeline.
+
+> Preserve the GF(13) cubic and check its values in numeric order
+
+The original polynomial is x³+2x²+3x+4 over GF(13). Keep all thirteen
+values and the root x=2. The search visits powers of g=2; the table and plot
+below use numeric x order for readability. Native poly_evaluate_gf() supplies
+the separate Horner evaluation path, replacing the report's unchecked local
+multiply/add helper. Independent unsigned-arithmetic oracles are used in the
+native tests rather than treating two shared-library calls as independent proof.
+
+```{cpp, results="markdown", file="figures/chien_search.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <set>
+int main() {
+  std::filesystem::create_directories("build");
+  const dm::algorithms::GFPoly f{4,3,2,1};const std::int64_t p=13;
+  const auto trace=dm::algorithms::chien_search_trace(f,p);
+  std::vector<double> xs,ys,rx,ry;std::vector<std::int64_t> horner_roots;
+  std::set<std::int64_t> distinct;
+  std::print("Polynomial: {}. Actual primitive generator: {}.\n\n",dm::algorithms::poly_string_gf(f,p),trace.generator);
+  std::print("| x | native Horner f(x) | root |\n| ---: | ---: | :--- |\n");
+  for(std::int64_t x=0;x<p;++x) {
+    const auto value=dm::algorithms::poly_evaluate_gf(f,x,p);distinct.insert(value);
+    xs.push_back(x);ys.push_back(value);if(!value)horner_roots.push_back(x);
+    std::print("| {} | {} | {} |\n",x,value,value==0);
+  }
+  auto sorted=trace.roots;std::sort(sorted.begin(),sorted.end());if(sorted!=horner_roots)return 1;
+  for(const auto root:trace.roots){rx.push_back(root);ry.push_back(0);}
+  std::print("\nSorted roots: {}. Native Horner agrees: {}. Distinct observed values: {} of {}.\n",sorted,sorted==horner_roots,distinct.size(),p);
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(xs,ys,"values",{37,99,235},1.5).points(xs,ys,"values",{37,99,235},4)
+      .points(rx,ry,"roots",{220,38,38},8).abline_h(0,{100,116,139},1)
+      .legend({"f(x) mod 13","roots"},{{37,99,235},{220,38,38}})
+      .title("Original GF(13) cubic: one root, nine values")
+      .x_label("field element x").y_label("f(x) mod 13").x_limits(-0.5,12.5).y_limits(-0.7,14)
+      .save_svg("build/chien_search.svg");
+}
+```
+// result_begin: markdown
+Polynomial: x^3 + 2x^2 + 3x + 4. Actual primitive generator: 2.
+
+| x | native Horner f(x) | root |
+| ---: | ---: | :--- |
+| 0 | 4 | false |
+| 1 | 10 | false |
+| 2 | 0 | true |
+| 3 | 6 | false |
+| 4 | 8 | false |
+| 5 | 12 | false |
+| 6 | 11 | false |
+| 7 | 11 | false |
+| 8 | 5 | false |
+| 9 | 12 | false |
+| 10 | 12 | false |
+| 11 | 11 | false |
+| 12 | 2 | false |
+
+Sorted roots: [2]. Native Horner agrees: true. Distinct observed values: 9 of 13.
+\image(figures/chien_search.svg)
+// result_end
+\caption(The original thirteen evaluations with their root highlighted; repeated outputs mean the polynomial is not a permutation.)
+\alttext(A discrete value plot over zero through twelve has a single root at two and only nine distinct residue values.)
+
+The old report said the polynomial takes every residue. It takes only nine
+of the thirteen possible values, with repetitions. Visiting every input does
+not imply producing every output. Connections between discrete plot points
+guide the eye; they do not express continuity, interpolation or an
+unpredictable random process over a finite field.
+
+> A primitive root must pass its order tests; operation counts include the code actually run
+
+For each distinct prime divisor q of p−1, a candidate generator must satisfy
+g^((p−1)/q)≠1 modulo p. If its order were a proper divisor of p−1, at least
+one such exponent would be a multiple of that order, causing rejection.
+Passing every test therefore certifies full order. In GF(7), g=2 fails
+2³=1 and cycles through only [1,2,4], missing both roots of the worked
+quadratic. The next candidate, g=3, passes the two required tests.
+
+The table records those actual tests. The degree sweep then counts the native
+implementation's coefficient-state products. For degree at least two, it
+updates all d+1 coefficient terms, including the constant, at every one of the
+p−1 nonzero points. It also preserves the final unused update that closes the
+orbit, advances the point, and computes each multiplier g^j separately.
+Consequently, a degree-only count is not the complete executed operation count.
+
+```{cpp, results="markdown", file="figures/chien_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto worked=dm::algorithms::chien_search_trace({6,2,1},7);
+  std::print("| generator candidate | prime divisor q | actual power value | passes this test |\n| ---: | ---: | ---: | :--- |\n");
+  for(const auto& test:worked.generator_tests)std::print("| {} | {} | {} | {} |\n",test.candidate,test.q,test.value,test.value!=1);
+  std::print("\n| degree | branch | field checks | term products | point products | multiplier setup products |\n| ---: | :--- | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> degrees,actual,degree_only;
+  for(std::size_t degree=0;degree<=8;++degree) {
+    const dm::algorithms::GFPoly f(degree+1,1);const auto trace=dm::algorithms::chien_search_trace(f,13);
+    std::print("| {} | {} | {} | {} | {} | {} |\n",degree,trace.path==dm::algorithms::ChienPath::Incremental?"sweep":"shortcut",
+        trace.work.field_points,trace.work.term_products,trace.work.point_products,trace.work.setup_products);
+    degrees.push_back(degree);actual.push_back(trace.work.term_products);degree_only.push_back(12*degree);
+  }
+  const auto cubic=dm::algorithms::chien_search_trace({4,3,2,1},13);
+  std::print("\nOriginal cubic: {} generator steps, {} generator products, {} setup products, {} term products, {} point products, {} sum additions.\n",
+      cubic.work.generator_steps,cubic.work.generator_products,cubic.work.setup_products,cubic.work.term_products,cubic.work.point_products,cubic.work.sum_additions);
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(degrees,actual,"actual",{37,99,235},1.5).points(degrees,actual,"actual",{37,99,235},4)
+      .line(degrees,degree_only,"formula",{234,88,12},1.5).points(degrees,degree_only,"formula",{234,88,12},4)
+      .legend({"actual term updates","degree-only formula"},{{37,99,235},{234,88,12}})
+      .title("GF(13): actual coefficient-state products")
+      .x_label("normalized polynomial degree").y_label("modular products").y_limits(-2,135)
+      .save_svg("build/chien_work.svg");
+}
+```
+// result_begin: markdown
+| generator candidate | prime divisor q | actual power value | passes this test |
+| ---: | ---: | ---: | :--- |
+| 2 | 2 | 1 | false |
+| 3 | 2 | 6 | true |
+| 3 | 3 | 2 | true |
+
+| degree | branch | field checks | term products | point products | multiplier setup products |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 0 | shortcut | 0 | 0 | 0 | 0 |
+| 1 | shortcut | 0 | 0 | 0 | 0 |
+| 2 | sweep | 13 | 36 | 12 | 3 |
+| 3 | sweep | 13 | 48 | 12 | 6 |
+| 4 | sweep | 13 | 60 | 12 | 9 |
+| 5 | sweep | 13 | 72 | 12 | 13 |
+| 6 | sweep | 13 | 84 | 12 | 17 |
+| 7 | sweep | 13 | 96 | 12 | 22 |
+| 8 | sweep | 13 | 108 | 12 | 26 |
+
+Original cubic: 3 generator steps, 7 generator products, 6 setup products, 48 term products, 12 point products, 48 sum additions.
+\image(figures/chien_work.svg)
+// result_end
+\caption(Actual coefficient-state products and the abstract 12·degree formula; the orange line is a formula, not a second measured implementation.)
+\alttext(Actual products are zero for constant and linear shortcuts, then thirty-six at degree two and increase by twelve per degree. The degree-only formula lies twelve below the sweep counts.)
+
+The original cubic performs 48 term updates, 12 point updates and six setup
+products, plus seven products in generator tests. It also makes 48 modular
+sum additions. Prime testing, normalization, allocations and integer operations
+while factoring p−1 are outside those named counters. A generator step means
+one trial-divisor attempt or one generator power test; repeated successful
+divisions and products within a test are not extra generator steps.
+
+The plot's shortcut discontinuity is deliberate: nonzero constants return no
+roots, and linears use an inverse rather than sweeping the field. The orange
+12d formula models one nonconstant-term update per point; the blue sweep
+includes the constant term. Removing that identity multiply or the closing
+update would change the counts. No elapsed times or speedup are claimed.
+Fixed multipliers are useful to hardware architectures, but integer prime-field
+modular products here are not binary-extension-field gate counts.
+
+> Zero polynomials, multiplicities and field representations
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto zero=dm::algorithms::chien_search_trace({},13);
+  const auto repeated=dm::algorithms::chien_search_trace({4,-4,1},13);
+  dm::algorithms::GFPoly function_zero(14,0);function_zero[1]=-1;function_zero[13]=1;
+  const auto all=dm::algorithms::chien_search_trace(function_zero,13);
+  const auto binary=dm::algorithms::chien_search_trace({0,1,1},2);
+  bool composite=false;try {(void)dm::algorithms::chien_search({},256);}catch(const std::invalid_argument&){composite=true;}
+  if(zero.path!=dm::algorithms::ChienPath::Zero || all.roots.size()!=13 || !composite)return 1;
+  std::print("Formal zero polynomial: legacy roots {}, recorded points {}.\n",zero.roots,zero.work.field_points);
+  std::print("Repeated polynomial {}: distinct roots {}, squarefree={}.\n",dm::algorithms::poly_string_gf({4,-4,1},13),repeated.roots,
+      dm::algorithms::poly_is_squarefree_gf({4,-4,1},13));
+  std::print("Nonzero formal polynomial {}: {} distinct roots, all nonzero evaluations zero={}.\n",dm::algorithms::poly_string_gf(function_zero,13),all.roots.size(),
+      std::all_of(all.steps.begin(),all.steps.end(),[](const auto& s){return s.value==0;}));
+  std::print("GF(2) roots of x^2+x: {}; generator {}. Composite p=256 rejected: {}.\n",binary.roots,binary.generator,composite);
+}
+```
+// result_begin: markdown
+Formal zero polynomial: legacy roots [], recorded points 0.
+Repeated polynomial x^2 + 9x + 4: distinct roots [2], squarefree=false.
+Nonzero formal polynomial x^13 + 12x: 13 distinct roots, all nonzero evaluations zero=true.
+GF(2) roots of x^2+x: [0, 1]; generator 1. Composite p=256 rejected: true.
+// result_end
+
+Mathematically the zero polynomial vanishes everywhere. The legacy API instead
+returns an empty root vector for its normalized zero representation; the trace
+marks that sentinel path explicitly. An empty result on that path does not mean
+there are no mathematical roots. Nonzero constants have none, while a linear
+polynomial has exactly one. The repeated quadratic (x−2)² returns root 2 once,
+without its multiplicity. Root search is not squarefree factorization.
+
+A nonzero formal polynomial of degree at least p can also vanish at every
+field element: x^p−x is an example. This does not contradict the degree bound
+on roots, since it has degree p and exactly p distinct roots. Its incremental
+trace is different from the formal-zero sentinel.
+
+The modulus here must be prime; arithmetic is ordinary residue arithmetic in
+GF(p). A binary extension field GF(2^m), with m>1, requires a polynomial basis
+and reduction polynomial (or an equivalent representation). Passing 256 as p
+does not request GF(256). This report constructs no syndrome, error-locator
+polynomial or inverse-power mapping from roots to codeword error positions.
+It demonstrates the root-finding recurrence on prime-field examples.
+
+> Complete-call limits and the direct-linear path
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::algorithms::ChienOptions options;options.max_points=7;options.max_term_products=18;options.max_generator_steps=4;
+  const auto exact=dm::algorithms::chien_search_trace({6,2,1},7,options);
+  bool points=false,products=false,generator=false,huge=false;
+  auto low=options;low.max_points=6;
+  try {(void)dm::algorithms::chien_search_trace({6,2,1},7,low);}catch(const std::length_error&){points=true;}
+  low=options;low.max_term_products=17;
+  try {(void)dm::algorithms::chien_search_trace({6,2,1},7,low);}catch(const std::length_error&){products=true;}
+  low=options;low.max_generator_steps=3;
+  try {(void)dm::algorithms::chien_search_trace({6,2,1},7,low);}catch(const std::length_error&){generator=true;}
+  dm::algorithms::ChienOptions bounded_generator;bounded_generator.max_generator_steps=1;
+  try {(void)dm::algorithms::chien_search_trace({1,0,1},1000000007,bounded_generator);}catch(const std::length_error&){huge=true;}
+  dm::algorithms::ChienOptions tiny;tiny.max_points=tiny.max_term_products=tiny.max_generator_steps=1;
+  const auto linear=dm::algorithms::chien_search_trace({-1,1},9223372036854775783LL,tiny);
+  if(!points || !products || !generator || !huge || linear.roots!=std::vector<std::int64_t>{1})return 1;
+  std::print("Exact caps succeed: roots {}, {} field checks, {} term updates, {} generator steps.\n",exact.roots,exact.work.field_points,exact.work.term_products,exact.work.generator_steps);
+  std::print("One-below caps reject: points={}, term products={}, generator steps={}.\n",points,products,generator);
+  std::print("Billion-point trace rejected by generator cap before giant record reservation: {}.\n",huge);
+  std::print("Near-INT64_MAX linear root {}, with {} field-point checks and {} generator steps.\n",linear.roots,linear.work.field_points,linear.work.generator_steps);
+}
+```
+// result_begin: markdown
+Exact caps succeed: roots [3, 2], 7 field checks, 18 term updates, 4 generator steps.
+One-below caps reject: points=true, term products=true, generator steps=true.
+Billion-point trace rejected by generator cap before giant record reservation: true.
+Near-INT64_MAX linear root [1], with 0 field-point checks and 0 generator steps.
+// result_end
+
+Positive point and term-product caps are forecast from normalized degree and
+checked before generator search or sweep allocation. Generator-step caps apply
+to the actual search; trace-state reservation follows successful generator
+discovery. Zero caps mean no explicit limit. All failed calls return no partial
+root set or trace and leave input coefficients unchanged. Linear shortcuts use
+inversion products, which are counted separately and do not consume sweep or
+generator budgets. Unbounded high-degree searches remain intended for small p.
+
+The nonzero sweep costs O((p−1)n) fixed-word operations for n coefficients,
+with trial-factoring/generator discovery and multiplier setup in addition.
+Ordinary calls retain O(n) state plus roots and factor-search metadata; tracing
+adds (p−1)n coefficient values and generator-test records. These are not arbitrary-
+precision bit-complexity or machine-time bounds. No observational dataset is
+needed for exact field arithmetic and controlled conformance examples.
+
+Native tests exhaust all 23,941 coefficient vectors through length five over
+GF(2), GF(3), GF(5) and GF(7), including zero/trailing-zero representations.
+An independent Horner oracle and a generator-order walk check values, coverage,
+root order, every actual term state and operation counters. Another 1,000 signed
+random polynomials and 1,000 near-limit linear cases test widened arithmetic.
+Exact budgets, early huge-sweep rejection, malformed fields, retained closing
+updates, copied ownership and the original polynomial/formatting cases remain
+regression checks. AddressSanitizer and UBSan exercise the new cases.
+
+> References
+
+- R. T. Chien (1964). [Cyclic Decoding Procedures for Bose-Chaudhuri-Hocquenghem Codes](https://doi.org/10.1109/TIT.1964.1053699), IEEE Transactions on Information Theory 10(4), 357–363. The present implementation adapts the recurrence to prime-field integer residues.
+- MathWorks. [gfroots: finite-field polynomial roots and representations](https://www.mathworks.com/help/comm/ref/gfroots.html). Its extension-field representation illustrates why a field characteristic and extension degree differ; it is not the API contract of this native prime-field implementation.

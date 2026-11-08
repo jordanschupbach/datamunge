@@ -1,0 +1,358 @@
+//? Title: Forward Euler: Actual Tangents, Error and Stability Limits
+//? Subtitle: Checked vector ODE integration with native C++ trajectories, derivative histories and exact work counts
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given an initial state and its rate of change, forward Euler advances
+along the current derivative once per fixed step. We begin with two
+hand-checkable decay steps, retain the original coarse trajectory and
+error-refinement experiment, and distinguish first-order accuracy from
+stability. The same core execution returns actual states, derivatives
+and work counts. Scalar decay, an oscillator, time-dependent forcing
+and finite numerical boundaries expose what this simple method can and
+cannot establish. Successful execution supplies no adaptive error bound.
+)
+
+\toc
+
+> Two actual tangent steps
+
+For y'=-y with y(0)=1 and h=1/2, the first derivative is -1, giving
+y[1]=1+(1/2)(-1)=1/2. At this approximate state, the next derivative is
+-1/2, giving y[2]=1/2+(1/2)(-1/2)=1/4. The exact value at t=1 is
+exp(-1), about 0.367879. The second step uses the derivative of the
+ODE field at the approximate state, not a tangent to the exact curve
+at that time. Both derivatives below come from the actual solver call.
+
+```{cpp, results="markdown", file="figures/euler_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::euler_method_trace([](double,const std::vector<double>& y){return std::vector<double>{-y[0]};},{1},0,1,2);
+  const auto& s=t.outcome.solution;
+  std::print("Tiny Euler: h {}; samples {}; derivative calls {}; scalar updates {}; entries {}; final y {}; exact {:.12f}.\n\n",t.outcome.step_size,s.t.size(),t.outcome.work.rhs_calls,t.outcome.work.scalar_updates,t.captured_entries,s.y.back()[0],std::exp(-1.));
+  std::print("| actual step | time before | state before | returned derivative | time after | state after |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  dm::graphics::Diagram d(430,1100);dm::graphics::DiagramStroke green;green.color={22,163,74};green.width=3;
+  dm::graphics::DiagramStroke blue;blue.color={37,99,235};blue.width=4;std::vector<dm::graphics::DiagramPoint> exact;
+  for(int i=0;i<=100;++i){const double x=i/100.;exact.push_back({x,std::exp(-x)});}d.path(exact,green);
+  for(std::size_t i=0;i<t.derivatives.size();++i){std::print("| {} | {} | {} | {} | {} | {} |\n",i,s.t[i],s.y[i][0],t.derivatives[i][0],s.t[i+1],s.y[i+1][0]);d.path({{s.t[i],s.y[i][0]},{s.t[i+1],s.y[i+1][0]}},blue);}
+  for(std::size_t i=0;i<s.t.size();++i)d.ellipse({s.t[i],s.y[i][0]},.015,.015,{37,99,235});
+  d.path({{0,0},{1.1,0}}).path({{0,0},{0,1.15}}).text({-.1,1},"1",20).text({.5,-.1},"t=0.5",20).text({1,-.1},"t=1",20)
+   .label({.25,.82},"slope -1",20).label({.8,.22},"slope -0.5",20).text({.5,1.38},"Actual Euler steps and exact decay",26)
+   .text({.5,-.32},"Blue Euler states; green exp(-t)",22).save_svg("build/euler_tiny.svg");
+}
+```
+// result_begin: markdown
+Tiny Euler: h 0.5; samples 3; derivative calls 2; scalar updates 2; entries 10; final y 0.25; exact 0.367879441171.
+
+| actual step | time before | state before | returned derivative | time after | state after |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | -1 | 0.5 | 0.5 |
+| 1 | 0.5 | 0.5 | -0.5 | 1 | 0.25 |
+\image(figures/euler_tiny.svg)
+// result_end
+\caption(The two blue segments use the actual returned derivatives -1 and -1/2. Equal native coordinate scales show how each step advances in time and state.)
+\alttext(A native coordinate diagram overlays two blue Euler segments and three recorded states with the green exact exponential curve, labeling the actual step slopes.)
+
+> Derive the update and the first-order error claim
+
+For a first-order system y'=f(t,y), take N fixed steps with nominal
+h=(t1-t0)/N. Forward Euler uses
+
+\[
+y_{n+1}=y_n+h f(t_n,y_n).
+\]
+
+If the exact solution is twice continuously differentiable, Taylor's
+formula over a step beginning at the exact state gives the one-step
+defect y(t+h)-y(t)-h f(t,y(t))=O(h^2). Some texts divide this defect
+by h when defining local truncation error, obtaining O(h); the
+normalisation must be stated. Here "one-step defect" means the
+unnormalised O(h^2) quantity.
+
+Suppose f is Lipschitz in y with constant L on the relevant region,
+and the solution's second derivative is bounded by M. With e[n]
+the global state error and positive h, its norm obeys
+
+\[
+\|e_{n+1}\|\le(1+hL)\|e_n\|+\frac M2h^2.
+\]
+
+Starting with exact initial data and summing this geometric bound
+gives ||e[N]|| <= M h ((1+hL)^N-1)/(2L) for L>0, bounded by
+M h (exp(L T)-1)/(2L) on a fixed interval of length T. The L=0
+limit is M T h/2. These assumptions give first-order global error,
+not accuracy for an arbitrary black-box callback or an arbitrarily
+large step. Finite arithmetic introduces additional rounding effects.
+
+> Preserve the original coarse decay and error family
+
+The original experiment integrates y'=-y from zero to four with
+eight steps. Its endpoint is (1-1/2)^8=1/256, far below exp(-4).
+For the refinement experiment over [0,1], with h=1/N,
+
+\[
+y_N=(1-h)^{1/h},\quad
+\log y_N=-1-\frac h2+O(h^2),\quad
+\frac{\exp(-1)-y_N}{h}\longrightarrow\frac1{2e}.
+\]
+
+The program measures this error directly and prints its ratio to the
+preceding refinement. The displayed log-log error points come from
+actual trajectories, not a prewritten power-law curve. For this decay
+and 0<h<1, 1-h<exp(-h) explains undershooting at sample times; that
+sign is not a general property of Euler errors on other equations.
+
+```{cpp, results="markdown", file="figures/euler_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const auto f=[](double,const std::vector<double>& y){return std::vector<double>{-y[0]};};const auto coarse=dm::algorithms::euler_method_work(f,{1},0,4,8);
+  std::print("Original coarse decay: final Euler {}; exact {:.12g}; actual calls {}.\n\n",coarse.solution.y.back()[0],std::exp(-4.),coarse.work.rhs_calls);
+  std::print("| steps | h | endpoint error | error/h | previous error / current |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> logh,logerror,tx,yx,te,ye;double previous=0;
+  for(int n=10;n<=2560;n*=2){const auto r=dm::algorithms::euler_method_work(f,{1},0,1,n);const auto h=r.step_size,error=std::exp(-1.)-r.solution.y.back()[0];std::print("| {} | {:.9f} | {:.12g} | {:.9f} | {:.9f} |\n",n,h,error,error/h,previous?previous/error:0);previous=error;logh.push_back(std::log10(h));logerror.push_back(std::log10(error));}
+  std::print("\nPredicted limit error/h {:.12f}.\n",1/(2*std::exp(1.)));
+  for(std::size_t i=0;i<coarse.solution.t.size();++i){te.push_back(coarse.solution.t[i]);ye.push_back(coarse.solution.y[i][0]);}for(int i=0;i<=200;++i){tx.push_back(4.*i/200);yx.push_back(std::exp(-tx.back()));}
+  auto a=dm::graphics::RPlot::create();a.line(tx,yx,"exact",{22,163,74}).line(te,ye,"Euler h=0.5",{37,99,235}).points(te,ye,"",{37,99,235},5).title("Original eight steps over [0,4]").x_label("t").y_label("State y");
+  auto b=dm::graphics::RPlot::create();b.line(logh,logerror,"actual error",{220,38,38}).points(logh,logerror,"",{220,38,38},5).title("Endpoint error approaches first order").x_label("log10(nominal h)").y_label("log10(endpoint absolute error)");
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,520).title("Original decay: coarse bias and measured refinement error").fit_panels().save_svg("build/euler_original.svg");
+}
+```
+// result_begin: markdown
+Original coarse decay: final Euler 0.00390625; exact 0.0183156388887; actual calls 8.
+
+| steps | h | endpoint error | error/h | previous error / current |
+| ---: | ---: | ---: | ---: | ---: |
+| 10 | 0.100000000 | 0.0192010010714 | 0.192010011 | 0.000000000 |
+| 20 | 0.050000000 | 0.0093935187629 | 0.187870375 | 2.044069060 |
+| 40 | 0.025000000 | 0.00464700128356 | 0.185880051 | 2.021415143 |
+| 80 | 0.012500000 | 0.00231129712433 | 0.184903770 | 2.010559886 |
+| 160 | 0.006250000 | 0.00115262645284 | 0.184420232 | 2.005243866 |
+| 320 | 0.003125000 | 0.000575561250983 | 0.184179600 | 2.002613016 |
+| 640 | 0.001562500 | 0.000287593072885 | 0.184059567 | 2.001304292 |
+| 1280 | 0.000781250 | 0.000143749703278 | 0.183999620 | 2.000651593 |
+| 2560 | 0.000390625 | 7.18631502112e-05 | 0.183969665 | 2.000325659 |
+
+Predicted limit error/h 0.183939720586.
+\image(figures/euler_original.svg)
+// result_end
+\caption(The original coarse endpoint is exactly 1/256. The refined error divided by h approaches 1/(2e); a zero previous-error ratio in the first row means there is no preceding refinement.)
+\alttext(Two plots show the actual coarse Euler states against exact exponential decay, followed by measured endpoint error on log-log axes for nine step counts.)
+
+> Stability is different from accuracy
+
+On the scalar test equation y'=lambda y, Euler multiplies the state
+by R(z)=1+z, with z=h lambda. Absolute stability means |1+z|<=1,
+the closed disk centered at -1 with radius one in the complex plane.
+Strict decay of the numerical homogeneous solution requires |1+z|<1.
+For real decay y'=-a y with a>0 and positive h, put q=h a. Then
+0<q<2 gives decay; 0<q<1 stays positive, 1<q<2 alternates sign,
+q=2 alternates without damping, and q>2 grows. q=1 reaches zero
+in one step. Stability alone supplies no desired accuracy tolerance.
+
+The table evaluates actual integrations and the existing native
+stability_function API. The disk is a mathematical concept diagram;
+its marked real-axis points correspond to the measured q values.
+
+```{cpp, results="markdown", file="figures/euler_stability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::print("| q=h*a | R(-q) | absolute amplification | actual y after 8 | closed discrete y after 8 |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  dm::graphics::Diagram d(240,1100);dm::graphics::DiagramStroke border;border.color={37,99,235};border.width=3;
+  d.ellipse({-1,0},1,1,{219,234,254},border).path({{-2.9,0},{.45,0}}).path({{0,-1.3},{0,1.3}});
+  for(double q:{.5,1.,1.5,2.,2.5}){const auto r=dm::algorithms::euler_method_work([q](double,const std::vector<double>& y){return std::vector<double>{-2*q*y[0]};},{1},0,4,8);const auto z=dm::algorithms::stability_function(dm::algorithms::OdeMethod::ForwardEuler,{-q,0});std::print("| {} | {} | {} | {} | {} |\n",q,z.real(),std::abs(z),r.solution.y.back()[0],std::pow(z.real(),8));d.ellipse({-q,0},.025,.025,q<2?dm::graphics::RGB{37,99,235}:dm::graphics::RGB{220,38,38}).text({-q,q==1||q==2?.2:-.2},std::format("z=-{}",q),19);}
+  d.text({-1,.55},"|1+z| <= 1",26).text({-.05,1.5},"Im z",22).text({.5,-.2},"Re z",22).text({-1.2,1.9},"Forward Euler absolute stability disk",26).text({-1.2,-1.7},"Boundary q=2 is neutral; q>2 grows",22).save_svg("build/euler_stability.svg");
+}
+```
+// result_begin: markdown
+| q=h*a | R(-q) | absolute amplification | actual y after 8 | closed discrete y after 8 |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 0.5 | 0.5 | 0.00390625 | 0.00390625 |
+| 1 | 0 | 0 | 0 | 0 |
+| 1.5 | -0.5 | 0.5 | 0.00390625 | 0.00390625 |
+| 2 | -1 | 1 | 1 | 1 |
+| 2.5 | -1.5 | 1.5 | 25.62890625 | 25.62890625 |
+\image(figures/euler_stability.svg)
+// result_end
+\caption(The same scalar multiplier explains the actual eight-step outputs. The q=2 boundary is neutral alternating behavior, distinct from asymptotic decay inside the disk.)
+\alttext(A native complex-plane diagram shades the radius-one disk centered at minus one and marks five tested negative real points, including the neutral boundary and an unstable exterior point.)
+
+> Oscillations expose the imaginary-axis limitation
+
+For the harmonic oscillator x'=v, v'=-x, exact energy
+E=(x^2+v^2)/2 is constant. Forward Euler instead maps
+(x,v) to (x+h v,v-h x), so
+
+\[
+x_{n+1}^2+v_{n+1}^2=(1+h^2)(x_n^2+v_n^2),\qquad
+E_n/E_0=(1+h^2)^n.
+\]
+
+Every nonzero real h therefore pumps energy into this oscillator.
+Its eigenvalues are imaginary, and |1+i h|>1 places them outside the
+Euler stability disk. Reducing h reduces the growth over a fixed
+finite interval, but does not turn the method into an energy-preserving
+integrator. The following plot uses the actual two-component trace;
+the energy formula is an independent closed discrete check.
+
+```{cpp, results="markdown", file="figures/euler_oscillator.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const auto t=dm::algorithms::euler_method_trace([](double,const std::vector<double>& y){return std::vector<double>{y[1],-y[0]};},{1,0},0,20,2000);const auto& s=t.outcome.solution;const double h=t.outcome.step_size;
+  std::vector<double> x,v,exact_x,exact_v,energy,theory;double maxerror=0;
+  for(std::size_t i=0;i<s.t.size();++i){const auto& y=s.y[i];x.push_back(y[0]);v.push_back(y[1]);exact_x.push_back(std::cos(s.t[i]));exact_v.push_back(-std::sin(s.t[i]));energy.push_back(std::log(y[0]*y[0]+y[1]*y[1]));theory.push_back(i*std::log1p(h*h));maxerror=std::max(maxerror,std::abs(energy.back()-theory.back()));}
+  std::print("Oscillator: h {}; actual calls {}; scalar updates {}; final x {:.12g}; final v {:.12g}.\n",h,t.outcome.work.rhs_calls,t.outcome.work.scalar_updates,x.back(),v.back());
+  std::print("Energy ratio measured {:.12f}; discrete formula {:.12f}; max log-ratio error {:.3g}.\n",std::exp(energy.back()),std::exp(theory.back()),maxerror);
+  auto a=dm::graphics::RPlot::create();a.line(exact_x,exact_v,"exact",{22,163,74}).line(x,v,"Euler",{37,99,235}).title("Actual Euler orbit spirals outward").x_label("Position x").y_label("Velocity v");
+  auto b=dm::graphics::RPlot::create();b.line(s.t,theory,"n*log(1+h*h)",{220,38,38}).line(s.t,energy,"actual energy",{37,99,235}).title("Energy grows at every nonzero step").x_label("Time t").y_label("Natural log(E / initial E)");
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,520).title("First-order accuracy does not imply long-time energy conservation").fit_panels().save_svg("build/euler_oscillator.svg");
+}
+```
+// result_begin: markdown
+Oscillator: h 0.01; actual calls 2000; scalar updates 4000; final x 0.451670668441; final v -1.00865462487.
+Energy ratio measured 1.221390545008; discrete formula 1.221390545008; max log-ratio error 3.89e-15.
+\image(figures/euler_oscillator.svg)
+// result_end
+\caption(The actual phase trajectory grows in radius while the exact oscillator remains on a unit circle. The measured energy ratio follows the independent factor (1+h^2)^n; phase-panel axis scales are independent.)
+\alttext(Two plots show an actual outward Euler phase spiral against the exact periodic orbit, then actual log energy growth overlaid with its closed discrete formula.)
+
+> Actual time-dependent callbacks and dimension-dependent work
+
+For y'=t, y(0)=0, the exact solution is t^2/2. On [0,1] with
+N steps, Euler is the left-endpoint quadrature
+h sum(i=0,...,N-1) i h=(N-1)/(2N). For eight steps the endpoint
+is 7/16, whereas the exact endpoint is 1/2. The callback below saves
+the times and states it actually receives. The trace is checked
+against those observations and contains no extra query at the final
+time, since no further step begins there.
+
+Each step invokes the vector callback once regardless of dimension d,
+and performs d scalar state updates. Intrinsic output has N+1 state
+samples. Optional derivative capture has
+C=(N+1)(d+1)+N(d+1)=(2N+1)(d+1) logical entries under the slot
+convention described below. Constant forcing supplies independently
+known endpoints for dimension/work controls; the numerical integration
+loop belongs entirely to the core.
+
+```{cpp, results="markdown", file="figures/euler_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::vector<double> times;std::vector<std::vector<double>> states;
+  const auto t=dm::algorithms::euler_method_trace([&](double time,const std::vector<double>& y){times.push_back(time);states.push_back(y);return std::vector<double>{time};},{0},0,1,8);
+  bool observed=times.size()==t.derivatives.size();for(std::size_t i=0;i<times.size();++i)observed=observed&&times[i]==t.outcome.solution.t[i]&&states[i]==t.outcome.solution.y[i]&&t.derivatives[i][0]==times[i];
+  std::print("Time forcing: endpoint {}; exact {}; callback records {}; last queried time {}; final stored time {}; actual history agrees {}.\n\n",t.outcome.solution.y.back()[0],.5,times.size(),times.back(),t.outcome.solution.t.back(),observed);
+  std::print("| dimension d | steps N | actual callbacks | scalar updates | samples | capture C |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t d:{1,2,4,8}){const auto r=dm::algorithms::euler_method_trace([](double,const std::vector<double>& y){return std::vector<double>(y.size(),1);},std::vector<double>(d,0),0,1,8);if(!std::all_of(r.outcome.solution.y.back().begin(),r.outcome.solution.y.back().end(),[](double value){return value==1;}))throw std::runtime_error("constant forcing endpoint failed");std::print("| {} | 8 | {} | {} | {} | {} |\n",d,r.outcome.work.rhs_calls,r.outcome.work.scalar_updates,r.outcome.solution.t.size(),r.captured_entries);}
+  std::vector<double> sizes,calls,updates,capture;
+  for(int n:{8,16,32,64,128}){const auto r=dm::algorithms::euler_method_trace([](double,const std::vector<double>& y){return std::vector<double>(y.size(),1);},{0,0,0,0},0,1,n);sizes.push_back(n);calls.push_back(r.outcome.work.rhs_calls);updates.push_back(r.outcome.work.scalar_updates);capture.push_back(r.captured_entries);}
+  auto a=dm::graphics::RPlot::create();a.line(sizes,calls,"callbacks N",{37,99,235}).points(sizes,calls,"",{37,99,235},5).line(sizes,updates,"updates 4N",{22,163,74}).title("Four components, one callback per step").x_label("Number of steps N").y_label("Actual calls or scalar updates");
+  auto b=dm::graphics::RPlot::create();b.line(sizes,capture,"C=5*(2N+1)",{124,58,237}).points(sizes,capture,"",{124,58,237},5).title("Actual derivative history has known size").x_label("Number of steps N").y_label("Logical captured slots and entries");
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,520).title("Actual callbacks, scalar work and optional history are separate counts").fit_panels().save_svg("build/euler_work.svg");
+}
+```
+// result_begin: markdown
+Time forcing: endpoint 0.4375; exact 0.5; callback records 8; last queried time 0.875; final stored time 1; actual history agrees true.
+
+| dimension d | steps N | actual callbacks | scalar updates | samples | capture C |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 8 | 8 | 8 | 9 | 34 |
+| 2 | 8 | 8 | 16 | 9 | 51 |
+| 4 | 8 | 8 | 32 | 9 | 85 |
+| 8 | 8 | 8 | 64 | 9 | 153 |
+\image(figures/euler_work.svg)
+// result_end
+\caption(Time-dependent forcing is queried at eight actual pre-step times, with no final-time derivative call. Dimension increases scalar work and retained entries while callback count stays eight.)
+\alttext(Two numerical panels show actual callback and component-update counts and complete optional history entries for a four-dimensional constant-forcing family.)
+
+> Input contracts and finite time grids
+
+Euler requires a nonempty finite initial state, a nonempty callback,
+finite endpoints and a positive integer step count. Every returned
+derivative must have exactly the state dimension and contain only
+finite values. Products h*f[i] and updated double states must remain
+finite. Invalid shapes and arithmetic failures throw explicitly;
+user callback exceptions propagate unchanged. A successful integration
+can still have a large truncation error or an unstable solution.
+
+Reverse integration uses negative h. Equal endpoints are supported:
+h=0, N callbacks and N+1 repeated-time unchanged states are retained.
+For a nonzero interval, the whole rounded time grid must advance
+strictly before any callback is invoked. Nominal h is converted from
+an extended-precision endpoint difference divided by N; interior times
+use extended t0+i*h, and the last time is exactly the requested endpoint.
+Adjacent rounded times need not differ by exactly h; all state updates
+use the same nominal h. This policy avoids a hidden overflow in a
+large endpoint subtraction, and rejects a step too small to advance
+at the represented time scale. Refining indefinitely cannot bypass
+floating-point resolution or state-update rounding.
+
+Ordinary result/work calls return their intrinsic O((N+1)d) trajectory
+and keep no optional derivative history or capture quota. Trace capture
+counts each of N+1 sample slots with d state entries, and each of N
+derivative slots with d derivative entries. Since C=(2N+1)(d+1) is
+known upfront, the full quota is checked before history copies or any
+callback. Default one million; zero disables that quota. Other outcome
+metadata, runtime state/callback storage, vector headers, capacities
+and allocator bytes are excluded. C is not a peak-memory estimate.
+Returned samples and derivatives own their storage. Exceptions return
+no partial result, although a later callback failure can follow earlier
+callback side effects.
+
+```{cpp, results="markdown", file="figures/euler_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");int calls=0;auto decay=[&](double,const std::vector<double>& y){++calls;return std::vector<double>{-y[0]};};
+  const auto t=dm::algorithms::euler_method_trace(decay,{1},0,1,2,10);calls=0;int rejections=0;
+  for(std::size_t cap=1;cap<10;++cap)try{(void)dm::algorithms::euler_method_trace(decay,{1},0,1,2,cap);}catch(const std::length_error&){++rejections;}
+  const int quota_failure_calls=calls;const auto disabled=dm::algorithms::euler_method_trace(decay,{1},0,1,2,0);
+  std::print("Capture: exact entries {}; insufficient quotas rejected {}/9; callbacks during quota failures {}; disabled-quota entries {}.\n",t.captured_entries,rejections,quota_failure_calls,disabled.captured_entries);
+  const auto reverse=dm::algorithms::euler_method_work([](double,const std::vector<double>&){return std::vector<double>{2};},{1},2,-2,8);const auto zero=dm::algorithms::euler_method_work([](double,const std::vector<double>&){return std::vector<double>{2};},{1},2,2,3);
+  std::print("Reverse interval: h {}; final time {}; final state {}. Zero interval: h {}; samples {}; actual callbacks {}; final state {}.\n",reverse.step_size,reverse.solution.t.back(),reverse.solution.y.back()[0],zero.step_size,zero.solution.t.size(),zero.work.rhs_calls,zero.solution.y.back()[0]);
+  int domain=0;bool underflow=false,grid=false;const double nan=std::numeric_limits<double>::quiet_NaN();
+  try{(void)dm::algorithms::euler_method_work(decay,{1},0,1,0);}catch(const std::invalid_argument&){++domain;}
+  try{(void)dm::algorithms::euler_method_work([](double,const std::vector<double>&){return std::vector<double>{};},{1},0,1,1);}catch(const std::invalid_argument&){++domain;}
+  try{(void)dm::algorithms::euler_method_work([nan](double,const std::vector<double>&){return std::vector<double>{nan};},{1},0,1,1);}catch(const std::invalid_argument&){++domain;}
+  calls=0;try{(void)dm::algorithms::euler_method_work(decay,{1},0,std::numeric_limits<double>::denorm_min(),2);}catch(const std::underflow_error&){underflow=true;}
+  try{(void)dm::algorithms::euler_method_work(decay,{1},1e100,std::nextafter(1e100,std::numeric_limits<double>::infinity()),4);}catch(const std::runtime_error&){grid=true;}
+  std::print("Controls: step-zero/wrong-shape/NaN-derivative rejected {}/3; step underflow {}; rounded-grid failure {}; calls during time failures {}.\n",domain,underflow,grid,calls);
+  dm::graphics::Diagram d(65,1100);dm::graphics::DiagramNodeStyle box;box.width=4.1;box.height=1.6;box.font_size=23;
+  d.node("samples",{0,0},std::format("{} sample slots\n{} state entries",t.outcome.solution.t.size(),t.outcome.solution.y.size()),box).node("derivatives",{5.5,0},std::format("{} derivative slots\n{} derivative entries",t.derivatives.size(),t.derivatives.size()),box)
+   .edge("samples","derivatives").text({2.75,2},std::format("Logical capture: (3 + 2) * (1 + 1) = {}",t.captured_entries),26).text({2.75,-1.8},"Full quota checked before the first callback",22).save_svg("build/euler_limits.svg");
+}
+```
+// result_begin: markdown
+Capture: exact entries 10; insufficient quotas rejected 9/9; callbacks during quota failures 0; disabled-quota entries 10.
+Reverse interval: h -0.5; final time -2; final state -7. Zero interval: h 0; samples 4; actual callbacks 3; final state 1.
+Controls: step-zero/wrong-shape/NaN-derivative rejected 3/3; step underflow true; rounded-grid failure true; calls during time failures 0.
+\image(figures/euler_limits.svg)
+// result_end
+\caption(The complete ten-entry quota succeeds; all nine positive insufficient quotas fail before any callback. Reverse, zero-time and unrepresentable-grid cases have separate explicit outcomes.)
+\alttext(A native two-box diagram separates three intrinsic sample slots and three state entries from two actual derivative slots and two derivative entries, totaling ten logical entries.)
+
+The test suite verifies closed discrete scalar/vector solutions,
+nonautonomous quadrature, oscillator evolution and energy, actual
+stateful callback order, ownership, exact quotas, strict domains and
+floating limits. All 132 frozen legacy state trajectories, totaling
+16,268 samples, retain exactly the same state values and callback/sample
+counts. Two time grids change by at most 1.4211e-14 through the documented
+rounding policy; all other grids are exact matches. The old malformed
+callback probe triggered an out-of-bounds access, and its nonpositive
+step/NaN/rounded-grid probes were accepted; those unsafe cases now fail.
+Explicit ODE oracles are the natural inputs for these checks, so no
+external dataset or independent solver setup is required by the report.
+
+> References
+
+E. Hairer and C. Lubich, Numerical solution of ordinary differential
+equations, sections 1.1 and the consistency/stability discussion,
+https://www.unige.ch/~hairer/preprints/pcam-ode.pdf.
+
+C. Moler, Numerical Computing with MATLAB, chapter 7, Ordinary
+Differential Equations, PDF version dated September 17, 2013,
+https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/moler/odes.pdf.
+
+These sources describe explicit Euler and its accuracy/stability
+framework. The algebraic decay and oscillator checks above are shown
+explicitly; finite validation, grid rounding and bounded actual-history
+capture are datamunge implementation choices.

@@ -1,0 +1,298 @@
+//? Title: Cocktail Shaker Sort: Direction, Inversions and Actual Work
+//? Subtitle: The original seven integers, real pass records, stable identities and exact comparison families
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Sorting an integer sequence means producing nondecreasing values while retaining
+every occurrence. Adjacent exchanges make that task easy to inspect, but a small
+value near the end can move left only one position per forward scan. Cocktail
+shaker sort alternates forward and backward scans. We retain the original
+seven-integer example and obtain every snapshot from the executing C++ kernel.
+The actual bounds stop at [2,4], rather than meeting; a final zero-swap scan
+certifies sortedness. Generated families verify linear best-case and quadratic
+worst-case comparisons, exact inversion counts and stable duplicate identities.
+Two directions help some inputs, without a universal factor-of-two work saving.
+)
+
+\toc
+
+> Two directions, one adjacent-exchange rule
+
+The input [5,3,8,1,9,2,7] contains ten strict inversions: pairs of original
+positions i<j with a[i]>a[j]. A forward scan compares adjacent pairs in increasing
+index order and swaps only if the left value is greater. Its running maximum
+reaches the right boundary. A backward scan visits the pairs in reverse order
+and carries the running minimum to the left boundary.
+
+The inclusive unsorted window starts at [lo,hi]=[0,n−1]. A forward scan with
+swaps lowers hi by one; a backward scan raises lo by one. Either scan stops the
+run when it makes no swaps. The library retains the historical one-position
+bound updates, including a possible empty final scan. It does not jump to the
+last swap position. The native records below come from that same kernel as
+cocktail_shaker_sort(); the report does not run a second sorting loop.
+
+```{cpp, results="markdown", file="figures/cocktail_passes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::cocktail_shaker_sort_trace({5,3,8,1,9,2,7});
+  if(t.output!=std::vector<int>{1,2,3,5,7,8,9} || t.key_comparisons!=20 || t.swaps!=10)return 1;
+  std::print("| pass | direction | entry window | next window | comparisons | swaps | actual values |\n| ---: | :--- | :--- | :--- | ---: | ---: | :--- |\n");
+  for(std::size_t i=0;i<t.passes.size();++i) {
+    const auto& p=t.passes[i];
+    std::print("| {} | {}{} | [{},{}] | [{},{}] | {} | {} | {} |\n",i+1,p.forward?"forward":"backward",p.stopped?"; stop":"",p.lo,p.hi,p.next_lo,p.next_hi,p.key_comparisons,p.swaps,p.values);
+  }
+  std::print("\nSorted: {}. Total comparisons {}; adjacent swaps {}.\n",t.output,t.key_comparisons,t.swaps);
+  dm::graphics::Diagram d(65,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=4.8;box.height=2.0;box.font_size=17;
+  d.node("input",{0,0},std::format("Original input\n{}\nwindow [0,6]",t.input),box);
+  box.fill={219,234,254};
+  d.node("forward",{6.5,0},std::format("First forward pass\n{}\n9 fixed on the right",t.passes[0].values),box);
+  box.fill={220,252,231};
+  d.node("backward",{13,0},std::format("First backward pass\n{}\n1 fixed on the left",t.passes[1].values),box)
+   .edge("input","forward","6 comparisons")
+   .edge("forward","backward","5 comparisons")
+   .text({6.5,2.1},"One cycle contains two directional passes",23)
+   .text({6.5,-2.1},"Every strict adjacent swap removes exactly one inversion",20)
+   .save_svg("build/cocktail_passes.svg");
+}
+```
+// result_begin: markdown
+| pass | direction | entry window | next window | comparisons | swaps | actual values |
+| ---: | :--- | :--- | :--- | ---: | ---: | :--- |
+| 1 | forward | [0,6] | [0,5] | 6 | 4 | [3, 5, 1, 8, 2, 7, 9] |
+| 2 | backward | [0,5] | [1,5] | 5 | 3 | [1, 3, 5, 2, 8, 7, 9] |
+| 3 | forward | [1,5] | [1,4] | 4 | 2 | [1, 3, 2, 5, 7, 8, 9] |
+| 4 | backward | [1,4] | [2,4] | 3 | 1 | [1, 2, 3, 5, 7, 8, 9] |
+| 5 | forward; stop | [2,4] | [2,4] | 2 | 0 | [1, 2, 3, 5, 7, 8, 9] |
+
+Sorted: [1, 2, 3, 5, 7, 8, 9]. Total comparisons 20; adjacent swaps 10.
+\image(figures/cocktail_passes.svg)
+// result_end
+\caption(The first complete cycle fixes 9 on the right and 1 on the left. The table also retains the second cycle and the final two-comparison stopping scan.)
+\alttext(Three native boxes show the original sequence, the actual first forward state and the actual first backward state. Arrows label six then five comparisons.)
+
+Why is the result correct? Before a pass, the prefix before lo and suffix after
+hi are already in their final sorted positions, with every middle value between
+them. The running maximum or minimum justifies the next boundary update, so
+the invariant persists. A zero-swap scan has inspected every adjacent pair in
+the current window and found it ordered. Together with the invariant, that
+makes the entire sequence ordered. An empty scan also certifies its singleton
+window. Every successful pass shortens the window, so termination follows.
+
+Swapping adjacent x>y removes their mutual inversion. Every third item is on
+the same side of both before and after, so its total inversion contribution
+does not change. Therefore, if I(a) is the initial strict inversion count,
+
+\[
+\text{total swaps}=I(a),\qquad
+0\le I(a)\le\frac{n(n-1)}2.
+\]
+\alttext(The number of actual adjacent swaps equals the input's strict inversion count, between zero and n times n-minus-one divided by two.)
+
+> The original window plot, including the stopping scan
+
+Two complete cycles perform four directional passes and fix two positions at
+each end. After the fourth pass the values are already sorted, but the kernel
+has not yet certified that. It scans [2,4] forward, performs two comparisons
+and stops. Thus five passes perform 6+5+4+3+2=20 comparisons and ten swaps.
+The bounds need not meet. A directional pass and a full two-pass cycle are
+different units; counting cycles alone hides the stopping work.
+
+```{cpp, results="markdown", file="figures/cocktail_window.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::cocktail_shaker_sort_trace({5,3,8,1,9,2,7});
+  std::vector<double> pass{0},lower{0},upper{6};
+  std::size_t completed_cycles=0;
+  for(const auto& p:t.passes) {
+    pass.push_back(pass.size());lower.push_back(p.next_lo);upper.push_back(p.next_hi);
+    if(!p.forward)++completed_cycles;
+  }
+  std::print("| quantity | measured value |\n| :--- | ---: |\n| complete forward/backward cycles | {} |\n| directional passes including stop | {} |\n| final lo | {} |\n| final hi | {} |\n| comparisons in stopping scan | {} |\n",completed_cycles,t.passes.size(),t.passes.back().next_lo,t.passes.back().next_hi,t.passes.back().key_comparisons);
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(pass,lower,"lo",{37,99,235},2).points(pass,lower,"lo",{37,99,235},6)
+      .line(pass,upper,"hi",{220,38,38},2).points(pass,upper,"hi",{220,38,38},6)
+      .legend({"lower bound","upper bound"},{{37,99,235},{220,38,38}})
+      .title("Actual inclusive bounds: final scan leaves [2,4]")
+      .x_label("completed directional passes; zero is input").y_label("array index")
+      .x_limits(0,5.3).y_limits(-0.5,7).size(900,580)
+      .save_svg("build/cocktail_window.svg");
+}
+```
+// result_begin: markdown
+| quantity | measured value |
+| :--- | ---: |
+| complete forward/backward cycles | 2 |
+| directional passes including stop | 5 |
+| final lo | 2 |
+| final hi | 4 |
+| comparisons in stopping scan | 2 |
+\image(figures/cocktail_window.svg)
+// result_end
+\caption(Actual post-pass bounds include the unchanged terminal interval. The unsorted-window invariant permits early termination before the bounds meet.)
+\alttext(The lower blue bound rises from zero to two and the upper red bound falls from six to four. Both remain constant on the fifth, zero-swap pass.)
+
+> Exact best, worst and misplaced-end families
+
+For n≥2, the first pass performs n−1 key comparisons. If the input is already
+sorted, including an all-equal input, none swap and that is the complete cost.
+Each subsequent pass has one fewer comparison. Hence the worst possible count
+is the triangular sum below. Reverse distinct input attains it and also has
+that many inversions. The historical kernel records a final zero-comparison
+pass in this case; that record changes pass counts, but not key work.
+
+\[
+n-1\le C(a)\le(n-1)+(n-2)+\cdots+1=\frac{n(n-1)}2.
+\]
+\alttext(For at least two items, key comparisons lie between n-minus-one and the triangular sum n times n-minus-one divided by two. Sorted input attains the lower bound and reversed distinct input the upper bound.)
+
+Now fix n≥3. A turtle input [1,2,...,n−1,0] has just n−1 inversions. The first
+forward pass moves zero left one position, the backward pass carries it all
+the way to the start, and a final forward scan certifies the remaining window.
+The lengths n−1, n−2 and n−3 give C=3n−6. A forward-only bubble sort that
+shrinks its right end by one and stops after a zero-swap pass needs n−1 swapping
+passes on this turtle, with n(n−1)/2 comparisons. This follows because zero can
+move left only once per forward pass. Here reversing direction changes
+quadratic work into linear work, rather than merely halving it.
+
+For the rabbit [n−1,0,1,...,n−2], the first forward pass already sorts the input;
+the following backward scan stops, giving C=2n−3. A forward-only variant's
+second forward scan has the same length, so it has the same comparison count.
+Reverse order is quadratic for both methods. There is no uniform work ratio.
+Even one inversion can require a second linear scan; inversion count determines
+swaps, while the placement of inversions also influences comparisons.
+
+The next experiment constructs these exact integer families with standard
+sequence operations. No external dataset is useful for isolating these bounds.
+The tables and plots use actual native counters, with assertions against all
+four closed forms; values are key comparisons, excluding loop tests, copies
+and trace allocation.
+
+```{cpp, results="markdown", file="figures/cocktail_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> sizes,best,worst,turtle_work,rabbit_work;
+  std::print("| n | sorted comparisons | reverse comparisons | turtle comparisons | rabbit comparisons | turtle swaps |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const std::size_t n:{8,16,32,64,128}) {
+    std::vector<int> a(n);std::iota(a.begin(),a.end(),0);
+    const auto sorted=dm::algorithms::cocktail_shaker_sort_trace(a);
+    std::reverse(a.begin(),a.end());const auto reversed=dm::algorithms::cocktail_shaker_sort_trace(a);
+    std::iota(a.begin(),a.end()-1,1);a.back()=0;
+    const auto turtle=dm::algorithms::cocktail_shaker_sort_trace(a);
+    a[0]=static_cast<int>(n-1);std::iota(a.begin()+1,a.end(),0);
+    const auto rabbit=dm::algorithms::cocktail_shaker_sort_trace(a);
+    if(sorted.key_comparisons!=n-1 || reversed.key_comparisons!=n*(n-1)/2 || turtle.key_comparisons!=3*n-6 || rabbit.key_comparisons!=2*n-3 || turtle.swaps!=n-1)return 1;
+    sizes.push_back(n);best.push_back(sorted.key_comparisons);worst.push_back(reversed.key_comparisons);
+    turtle_work.push_back(turtle.key_comparisons);rabbit_work.push_back(rabbit.key_comparisons);
+    std::print("| {} | {} | {} | {} | {} | {} |\n",n,sorted.key_comparisons,reversed.key_comparisons,turtle.key_comparisons,rabbit.key_comparisons,turtle.swaps);
+  }
+  auto quadratic=dm::graphics::RPlot::create(),linear=dm::graphics::RPlot::create();
+  quadratic.line(sizes,worst,"reverse",{220,38,38},2).points(sizes,worst,"reverse",{220,38,38},5)
+      .legend({"reverse"},{{220,38,38}}).y_limits(0,10000)
+      .title("Reverse: n(n-1)/2 comparisons").x_label("input length n").y_label("key comparisons");
+  linear.line(sizes,best,"sorted",{22,163,74},2).line(sizes,turtle_work,"turtle",{37,99,235},2)
+      .line(sizes,rabbit_work,"rabbit",{234,88,12},2)
+      .legend({"sorted","turtle","rabbit"},{{22,163,74},{37,99,235},{234,88,12}})
+      .title("Three linear families").x_label("input length n").y_label("key comparisons").y_limits(0,450);
+  auto layout=dm::graphics::RLayout::create(1,2);
+  layout.add(quadratic).add(linear).size(1100,470).fit_panels().save_svg("build/cocktail_work.svg");
+}
+```
+// result_begin: markdown
+| n | sorted comparisons | reverse comparisons | turtle comparisons | rabbit comparisons | turtle swaps |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 8 | 7 | 28 | 18 | 13 | 7 |
+| 16 | 15 | 120 | 42 | 29 | 15 |
+| 32 | 31 | 496 | 90 | 61 | 31 |
+| 64 | 63 | 2016 | 186 | 125 | 63 |
+| 128 | 127 | 8128 | 378 | 253 | 127 |
+\image(figures/cocktail_work.svg)
+// result_end
+\caption(Measured reverse work is quadratic; the sorted, turtle and rabbit families have different linear constants. Panels use different vertical scales, shown explicitly.)
+\alttext(Left: reversed distinct inputs rise to 8128 comparisons at length 128. Right: length-128 sorted, turtle and rabbit inputs take 127, 378 and 253 comparisons respectively.)
+
+> Stability is about identities, not only equal integers
+
+An integer-only sorted vector cannot distinguish repeated occurrences. The
+trace therefore carries original zero-based positions through the very same
+swaps. For [2,1,2,1,2], the two ones must emerge with original positions [1,3]
+and the three twos with [0,2,4]. Equal values can change position when a smaller
+or larger value crosses them, but two equal occurrences can reverse their order
+only by crossing each other. The strict comparison never exchanges such a pair,
+so their order is stable throughout the run.
+
+```{cpp, results="markdown", file="figures/cocktail_stability.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::cocktail_shaker_sort_trace({2,1,2,1,2});
+  if(t.original_indices!=std::vector<std::size_t>{1,3,0,2,4})return 1;
+  std::print("| sorted position | value | original position |\n| ---: | ---: | ---: |\n");
+  dm::graphics::Diagram d(70,1000);
+  dm::graphics::DiagramNodeStyle box;box.width=1.6;box.height=1;box.font_size=18;
+  for(std::size_t i=0;i<t.input.size();++i) {
+    box.fill=t.input[i]==1?dm::graphics::RGB{220,252,231}:dm::graphics::RGB{219,234,254};
+    d.node(std::format("in{}",i),{2.3*i,1.5},std::format("{}\nsource {}",t.input[i],i),box);
+    box.fill=t.output[i]==1?dm::graphics::RGB{220,252,231}:dm::graphics::RGB{219,234,254};
+    d.node(std::format("out{}",i),{2.3*i,-1.5},std::format("{}\nsource {}",t.output[i],t.original_indices[i]),box);
+    std::print("| {} | {} | {} |\n",i,t.output[i],t.original_indices[i]);
+  }
+  for(std::size_t i=0;i<t.output.size();++i)
+    d.edge(std::format("in{}",t.original_indices[i]),std::format("out{}",i));
+  d.text({4.6,3},"Actual source identities survive the adjacent exchanges",22)
+   .text({4.6,-3},"Ones retain [1,3]; twos retain [0,2,4]",21)
+   .save_svg("build/cocktail_stability.svg");
+  std::print("\nStrict inversion count and measured swaps: {}.\n",t.swaps);
+}
+```
+// result_begin: markdown
+| sorted position | value | original position |
+| ---: | ---: | ---: |
+| 0 | 1 | 1 |
+| 1 | 1 | 3 |
+| 2 | 2 | 0 |
+| 3 | 2 | 2 |
+| 4 | 2 | 4 |
+
+Strict inversion count and measured swaps: 3.
+\image(figures/cocktail_stability.svg)
+// result_end
+\caption(The arrows connect actual original identities to final positions. Equal-key groups preserve their original relative order.)
+\alttext(Five labelled input boxes connect to sorted output boxes. The two green ones retain source identities one and three; the blue twos retain zero, two and four.)
+
+> Costs and limits of the API
+
+The legacy output-only call takes its vector by value: an lvalue caller keeps
+the original, while the kernel sorts its owned buffer with constant auxiliary
+state. Calling it “in-place” describes the internal swaps, not a promise to
+mutate the caller or avoid its input copy. Signed extreme integers are valid
+because the kernel compares and exchanges values without subtracting them.
+
+The optional trace owns every full value snapshot and original-index snapshot.
+For p directional passes it uses O(np) storage and snapshot-copy work, in
+addition to the sorting comparisons; p≤n, so tracing can use quadratic memory.
+Counters do not measure those copies or elapsed time. Its default positive cap
+of 1024 records is checked before each pass, including an empty terminal pass;
+zero is invalid even for empty input. Exceeding the cap throws without returning
+a partial trace. Callers can supply a different positive cap. The legacy
+output-only call has no such cap. Empty/singleton inputs execute no passes.
+Returned vectors own their contents and retain no references to the input.
+
+> Conclusion
+
+The original sequence needs two full cycles plus one stopping scan, with twenty
+comparisons and ten swaps. Actual bounds stop before meeting. The mechanism
+preserves sorted outer regions and equal-key identity order; every adjacent
+swap removes exactly one inversion. Direction matters for comparison work:
+the turtle family becomes linear, while reverse order remains quadratic and
+the rabbit gains no comparison saving over a matched forward-only variant.
+The evidence concerns exact key operations on controlled inputs, rather than
+a claim about practical speed or every nearly sorted sequence.
+
+> References
+
+- P. E. Black and B. Bockholt, [Bidirectional bubble sort](https://xlinux.nist.gov/dads/HTML/bidirectionalBubbleSort.html), NIST Dictionary of Algorithms and Data Structures. The implementation here uses one-position bound updates and stops on the first zero-swap directional pass. The exact counts and identity arguments above are derived for the executing native kernel.

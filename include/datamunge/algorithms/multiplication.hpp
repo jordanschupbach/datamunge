@@ -12,6 +12,7 @@
 
 #include <cstdint>
 #include <string>
+#include <datamunge/algorithms/booth_multiplication.hpp>
 
 namespace datamunge::algorithms {
 
@@ -22,14 +23,5 @@ std::string toom3_mul(const std::string& a, const std::string& b);
 // Schoenhage-Strassen-style multiplication via a number-theoretic transform:
 // the product's digit convolution is computed by NTT in O(n log n).
 std::string ntt_mul(const std::string& a, const std::string& b);
-
-// Booth's multiplication: multiplies two signed two's-complement values by
-// radix-2 recoding of the multiplier. Returns the exact 64-bit product.
-struct BoothResult {
-    std::int64_t product{0};
-    int          additions{0};    // add steps triggered by 01 transitions
-    int          subtractions{0}; // subtract steps triggered by 10 transitions
-};
-BoothResult booth_multiply(std::int32_t multiplicand, std::int32_t multiplier);
 
 } // namespace datamunge::algorithms

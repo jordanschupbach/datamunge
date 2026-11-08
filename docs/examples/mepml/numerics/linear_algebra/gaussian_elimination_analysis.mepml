@@ -1,0 +1,417 @@
+//? Title: Gaussian elimination: actual row reduction and numerical limits
+//? Subtitle: Partial pivoting, original-system evidence, element growth, backward error and safe owned histories
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a square coefficient matrix and a right-hand side, find the unknowns that
+satisfy their simultaneous linear equations. Floating-point row operations can
+introduce rounding error, and some systems have no unique solution.
+Gaussian elimination first reduces the system to a triangle, then substitutes
+backwards. This report follows actual core snapshots on a two-equation example
+and the original three-equation system. Measured work and a maximal-growth family
+show what partial pivoting controls and what it cannot guarantee. Residuals,
+absolute pivot cutoffs and history admission provide separate, explicit checks.
+)
+
+\toc
+
+> A swap, one elimination, then back substitution
+
+Start with x+y=3 and 2x+3y=8. The larger first-column coefficient is 2, so row 1
+moves above row 0. Subtract half of the new first row from the second:
+its equation becomes -0.5y=-1. Thus y=2, followed by x=(8-3y)/2=1.
+The native trace records accepted pivot choices, completed row eliminations and
+back-substitution assignments at their actual time. A pivot snapshot follows
+its row interchange; it is not a separate swap event. IDs are zero-based.
+Before substitution the solution vector is empty; during it, earlier unsolved
+coordinates are zero placeholders.
+
+```{cpp, results="markdown", file="figures/gaussian_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gaussian_elimination.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::gaussian_elimination_trace({{1,1},{2,3}},{3,8},73);
+ std::print("| event | column | selected/updated row | pivot/factor/solution value | transformed RHS | solution state |\n| --- | ---: | ---: | ---: | --- | --- |\n");
+ for(const auto&e:t.events)std::print("| {} | {} | {} | {:.3f} | {} | {} |\n",e.kind,e.column,e.row,e.value,e.rhs,e.x);
+ std::print("\nSolution {}; row order {}; swaps {}; eliminations {}; retained entries {}; growth {:.1Lf}.\n",t.run.solution.x,t.run.row_order,t.run.work.row_swaps,t.run.work.eliminations,t.captured_entries,t.run.growth);
+ const auto& pivot=t.events.at(0);const auto& eliminate=t.events.at(1);const auto& last=t.events.back();
+ dm::graphics::Diagram d(65,1100);dm::graphics::DiagramNodeStyle box;box.width=4.4;box.height=2.25;box.font_size=21;
+ d.node("pivot",{0,0},std::format("Swap row 0 with row {}\n{:.1f}x + {:.1f}y = {:.1f}\nrow order {}",pivot.row,pivot.matrix[0][0],pivot.matrix[0][1],pivot.rhs[0],pivot.row_order),box)
+  .node("eliminate",{6,0},std::format("Subtract {:.1f} times row 0\n{:.1f}y = {:.1f}\nbelow-pivot entry {:.1f}",eliminate.value,eliminate.matrix[1][1],eliminate.rhs[1],eliminate.matrix[1][0]),box)
+  .node("back",{12,0},std::format("Substitute backwards\ny = {:.1f}, then x = {:.1f}\nactual result {}",last.x[1],last.x[0],last.x),box)
+  .edge("pivot","eliminate","row update").edge("eliminate","back","triangle")
+  .text({6,2.4},"Actual partial pivoting and row reduction",27).save_svg("build/gaussian_tiny.svg");
+ if(t.run.solution.x!=std::vector<double>{1,2}||t.events.size()!=5)throw std::runtime_error("tiny actual solve");
+}
+```
+// result_begin: markdown
+| event | column | selected/updated row | pivot/factor/solution value | transformed RHS | solution state |
+| --- | ---: | ---: | ---: | --- | --- |
+| pivot | 0 | 1 | 2.000 | [8, 3] | [] |
+| eliminate | 0 | 1 | 0.500 | [8, -1] | [] |
+| pivot | 1 | 1 | -0.500 | [8, -1] | [] |
+| back | 1 | 1 | 2.000 | [8, -1] | [0, 2] |
+| back | 0 | 0 | 1.000 | [8, -1] | [1, 2] |
+
+Solution [1, 2]; row order [1, 0]; swaps 1; eliminations 1; retained entries 67; growth 1.0.
+\image(figures/gaussian_tiny.svg)
+// result_end
+\caption(All numbers come from the single native solve. Partial pivoting changes row order; the unknowns remain in their original order.)
+\alttext(Three boxes show a swap selecting row 1 with coefficients2 and3, elimination with factor0.5 producing minus0.5y equals minus1, and backward substitution yielding y2 then x1.)
+
+> Row operations preserve the equations in exact arithmetic
+
+For a nonzero selected pivot in column k, eliminating a later row i uses
+
+$$
+m_{ik}=a_{ik}/a_{kk},\qquad
+ a_{ij}\leftarrow a_{ij}-m_{ik}a_{kj}\ (j\ge k),\qquad
+ b_i\leftarrow b_i-m_{ik}b_k.
+$$
+\alttext(The multiplier is the below-pivot coefficient divided by the pivot. Subtract that multiple of the pivot row from both the coefficient row and its right-hand side.)
+
+A row swap and subtraction of a multiple of another row are reversible, so they
+preserve the solution set in exact arithmetic. Once U is triangular, solve
+
+$$
+x_i=\frac{c_i-\sum_{j=i+1}^{n-1}U_{ij}x_j}{U_{ii}},\qquad i=n-1,\ldots,0.
+$$
+\alttext(Back substitution starts at the last equation and divides the remaining right-hand side by its diagonal coefficient.)
+
+The [official LAPACK DGETRF specification](https://netlib.org/lapack/explore-html/d3/d6a/dgetrf_8f_source.html)
+also uses partial pivoting with row interchanges. Its blocked LU factorization
+stores multipliers and tests for exactly zero diagonal entries. Our scalar core
+keeps actual reduced coefficients and transformed RHS, uses an absolute cutoff,
+and does not return a packed L factor or implement blocked BLAS operations.
+A current-to-original row permutation describes equation order, not a permutation
+of solution coordinates.
+
+> Rerun the original three-equation system without a second elimination
+
+The original equations are 2x+y-z=8, -3x-y+2z=-11 and -2x+y+2z=-3.
+Their exact mathematical solution is (2,3,-1). The old report replayed Gaussian
+elimination locally to display U; the new report reads the actual core output.
+The diagram keeps decimal values rather than rounding every coefficient to an
+integer, which would hide entries such as 0.2 and 0.667.
+
+```{cpp, results="markdown", file="figures/gaussian_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gaussian_elimination.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto f=dm::algorithms::gaussian_elimination_example();
+ const auto t=dm::algorithms::gaussian_elimination_trace(f.a,f.b);
+ const auto r=dm::algorithms::gaussian_residual_summary(f.a,f.b,t.run.solution.x);
+ std::print("| current row | original row | actual U row | transformed RHS |\n| ---: | ---: | --- | ---: |\n");
+ for(std::size_t i=0;i<f.a.size();++i)std::print("| {} | {} | {} | {:.17g} |\n",i,t.run.row_order[i],t.run.upper[i],t.run.rhs[i]);
+ std::print("\nComputed x at 17 significant digits: [{:.17g}, {:.17g}, {:.17g}].\n",t.run.solution.x[0],t.run.solution.x[1],t.run.solution.x[2]);
+ std::print("Swaps {}; accepted pivots {}; coefficient updates {}; events {}; actual retained {}; whole bound {}.\n",t.run.work.row_swaps,t.run.accepted_pivots,t.run.work.coefficient_updates,t.events.size(),t.captured_entries,dm::algorithms::gaussian_elimination_trace_entries(3));
+ std::print("Widened residual infinity norm {:.6Le}; normwise infinity backward error {:.6Le}; observed coefficient growth {:.6Lf}.\n",r.residual_inf,r.backward_error,t.run.growth);
+ dm::graphics::Diagram d(68,1050);
+ for(std::size_t side=0;side<2;++side){const auto& a=side?t.run.upper:f.a;const auto& b=side?t.run.rhs:f.b;const double offset=side?9.:0.;
+  d.text({offset+1.8,1.25},side?"Actual [U | c]":"Original [A | b]",25);
+  for(std::size_t i=0;i<3;++i){for(std::size_t j=0;j<3;++j)d.text({offset+1.2*double(j),-double(i)},std::format("{:.3f}",a[i][j]),22);d.text({offset+4.3,-double(i)},std::format("{:.3f}",b[i]),22,{37,99,235});}
+ }
+ d.text({6.3,-3.15},std::format("Original row order after reduction: {}",t.run.row_order),24).save_svg("build/gaussian_original.svg");
+ if(!t.run.solution.solved||r.residual_inf>1e-12L||t.run.row_order!=std::vector<std::size_t>{1,2,0})throw std::runtime_error("original fixture");
+}
+```
+// result_begin: markdown
+| current row | original row | actual U row | transformed RHS |
+| ---: | ---: | --- | ---: |
+| 0 | 1 | [-3, -1, 2] | -11 |
+| 1 | 2 | [0, 1.6666666666666665, 0.6666666666666667] | 4.333333333333333 |
+| 2 | 0 | [0, 0, 0.19999999999999987] | -0.19999999999999984 |
+
+Computed x at 17 significant digits: [2, 3.0000000000000004, -0.99999999999999989].
+Swaps 2; accepted pivots 3; coefficient updates 8; events 9; actual retained 195; whole bound 213.
+Widened residual infinity norm 6.661338e-16; normwise infinity backward error 2.297013e-17; observed coefficient growth 1.000000.
+\image(figures/gaussian_original.svg)
+// result_end
+\caption(The final state follows two row swaps. Displayed decimals are rounded labels; the table and residual calculation retain the computed doubles.)
+\alttext(Two augmented matrices show the original rows and actual upper triangle. The reduced diagonal is about minus3,1.667,0.2 and the transformed RHS about minus11,4.333,minus0.2. Final original-row order is1,2,0.)
+
+Printing six digits previously hid rounding: the computed second coordinate is
+slightly above 3 and the third slightly above -1. The result is an approximation,
+not an exact-arithmetic solution. The library preserves the actual pre-edit
+execution, including its cancellation signs. The old cached report displayed a
+minus sign on a zero that the unchanged program in this toolchain prints as plus.
+Neither sign changes the represented equation or residual.
+
+> Count the implemented work, including the cancelled entry
+
+At column k, the implementation updates n-k coefficients in each of n-k-1 later
+rows. It includes the entry being eliminated and does not overwrite a tiny
+cancellation residue with a manufactured exact zero. For a successful solve:
+
+$$
+\begin{aligned}
+C_{\rm rows}&=C_{\rm comparisons}=C_{\rm RHS}=C_{\rm back\ products}=n(n-1)/2,\\
+C_{\rm coefficient\ updates}&=\sum_{q=1}^{n}q(q-1)=n(n-1)(n+1)/3,\\
+C_{\rm back\ divisions}&=n.
+\end{aligned}
+$$
+\alttext(A successful solve performs a triangular number of row updates, candidate comparisons, RHS updates and back-substitution products; coefficient updates grow cubically as n times n minus one times n plus one divided by three.)
+
+One coefficient update is a multiply-subtract, not one floating-point operation.
+These counters exclude validation, allocation, finite checks and snapshot copies.
+The ordinary solve needs O(n³) arithmetic and O(n²) storage. A full trace stores
+O(n²) states of O(n²) entries each, so its worst-case history and copying cost
+are O(n⁴). The following plot measures counts, not elapsed time.
+
+```{cpp, results="markdown", file="figures/gaussian_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gaussian_elimination.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::vector<double>x,updates,pairs,history;
+ std::print("| n | pivot comparisons | row eliminations | coefficient updates | RHS updates | back products | back divisions | whole trace entries |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t n:std::array<std::size_t,7>{4,8,16,32,64,128,256}){
+  const auto a=dm::algorithms::gaussian_elimination_growth_matrix(n);const auto s=dm::algorithms::gaussian_elimination_solve(a,std::vector<double>(n,1));const auto bound=dm::algorithms::gaussian_elimination_trace_entries(n);
+  std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",n,s.work.pivot_comparisons,s.work.eliminations,s.work.coefficient_updates,s.work.rhs_updates,s.work.back_products,s.work.back_divisions,bound);
+  x.push_back(std::log2(double(n)));updates.push_back(std::log2(double(s.work.coefficient_updates)));pairs.push_back(std::log2(double(s.work.eliminations)));history.push_back(std::log2(double(bound)));
+  if(!s.solution.solved||s.work.coefficient_updates!=n*(n-1)*(n+1)/3)throw std::runtime_error("actual cubic work");
+ }
+ auto plot=dm::graphics::RPlot::create();plot.lines(x,pairs,"Row updates",{37,99,235},2).points(x,pairs,"",{37,99,235},4)
+  .lines(x,updates,"Coefficient updates",{220,38,38},2).points(x,updates,"",{220,38,38},4)
+  .lines(x,history,"Whole trace entries",{22,163,74},2).legend({"Row updates","Coefficient updates","Whole trace entries"},{{37,99,235},{220,38,38},{22,163,74}})
+  .title("Measured ordinary work versus virtual whole-history admission").xlab("log2 matrix order").ylab("log2 actual work counts or virtual retained entries").y_limits(1,38).size(1100,540).save_svg("build/gaussian_work.svg");
+}
+```
+// result_begin: markdown
+| n | pivot comparisons | row eliminations | coefficient updates | RHS updates | back products | back divisions | whole trace entries |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 4 | 6 | 6 | 20 | 6 | 6 | 4 | 486 |
+| 8 | 28 | 28 | 168 | 28 | 28 | 8 | 4348 |
+| 16 | 120 | 120 | 1360 | 120 | 120 | 16 | 49080 |
+| 32 | 496 | 496 | 10912 | 496 | 496 | 32 | 646768 |
+| 64 | 2016 | 2016 | 87360 | 2016 | 2016 | 64 | 9337056 |
+| 128 | 8128 | 8128 | 699008 | 8128 | 8128 | 128 | 141681088 |
+| 256 | 32640 | 32640 | 5592320 | 32640 | 32640 | 256 | 2206696320 |
+\image(figures/gaussian_work.svg)
+// result_end
+\caption(The growth family supplies nonsingular inputs of each order. Whole-history entries are computed without allocating those traces; they use different units from arithmetic work.)
+\alttext(Three log2 curves show quadratic row-update counts, cubic coefficient-update counts and a quartic conservative trace-entry bound for orders 4 through 256. These are counts, not timings.)
+
+> Bounded multipliers do not prevent element growth
+
+Selecting the largest absolute pivot in its column gives |m|≤1 in exact
+arithmetic. But an updated coefficient may be as large as |a|+|m| |pivot-row entry|,
+so the maximum can double at a stage. Repeating this argument gives the classical
+partial-pivot growth bound 2^(n-1). The native growth counter measures the largest
+absolute stored coefficient, including the input, divided by the input maximum;
+it excludes the RHS. Floating rounding and underflow are outside that exact bound.
+
+The native Wilkinson growth family has diagonal 1, strict lower triangle -1,
+last column 1 and other entries 0. Equal magnitudes retain the earliest pivot,
+so there are no swaps and each multiplier is -1. The last column doubles after
+each stage, attaining the bound. This is not the symmetric Wilkinson matrix
+used in eigenvalue examples. The construction follows
+[Higham and Higham (1989), Large Growth Factors in Gaussian Elimination with Pivoting](https://doi.org/10.1137/0610012),
+with an [explicit matrix from the author's own explanation](https://nhigham.com/2020/07/14/what-is-the-growth-factor-for-gaussian-elimination/).
+The original error-analysis reference is
+[Wilkinson (1961), Error Analysis of Direct Methods of Matrix Inversion](https://doi.org/10.1145/321075.321076).
+The worst-case growth is a possibility, not a claim about every input or the error
+for every RHS. The selected RHS below can have very small backward error even
+when coefficient growth is large.
+
+```{cpp, results="markdown", file="figures/gaussian_growth.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gaussian_elimination.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::vector<double>x,observed,formula;
+ std::print("| n | nontrivial row swaps | largest absolute multiplier | measured coefficient growth | exact family growth | normwise infinity backward error |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+ for(std::size_t n:std::array<std::size_t,7>{2,4,8,12,16,24,32}){
+  const auto a=dm::algorithms::gaussian_elimination_growth_matrix(n);const std::vector<double>b(n,1);const auto s=dm::algorithms::gaussian_elimination_solve(a,b);const auto r=dm::algorithms::gaussian_residual_summary(a,b,s.solution.x);const auto theory=std::ldexp(1.L,int(n-1));
+  std::print("| {} | {} | {:.1f} | {:.0Lf} | {:.0Lf} | {:.3Le} |\n",n,s.work.row_swaps,s.max_multiplier,s.growth,theory,r.backward_error);
+  x.push_back(double(n));observed.push_back(std::log2(double(s.growth)));formula.push_back(double(n-1));if(s.growth!=theory||s.max_multiplier!=1||s.work.row_swaps!=0)throw std::runtime_error("growth family");
+ }
+ auto plot=dm::graphics::RPlot::create();plot.lines(x,formula,"Exact n-1",{220,38,38},2).points(x,observed,"Measured log2 growth",{37,99,235},5)
+  .legend({"Exact n-1","Measured log2 growth"},{{220,38,38},{37,99,235}}).title("Partial pivoting can attain exponential coefficient growth")
+  .xlab("Matrix order n").ylab("log2 coefficient growth; multipliers stay at magnitude 1").y_limits(0,40).size(1050,520).save_svg("build/gaussian_growth.svg");
+}
+```
+// result_begin: markdown
+| n | nontrivial row swaps | largest absolute multiplier | measured coefficient growth | exact family growth | normwise infinity backward error |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 0 | 1.0 | 2 | 2 | 0.000e+00 |
+| 4 | 0 | 1.0 | 8 | 8 | 0.000e+00 |
+| 8 | 0 | 1.0 | 128 | 128 | 0.000e+00 |
+| 12 | 0 | 1.0 | 2048 | 2048 | 0.000e+00 |
+| 16 | 0 | 1.0 | 32768 | 32768 | 0.000e+00 |
+| 24 | 0 | 1.0 | 8388608 | 8388608 | 0.000e+00 |
+| 32 | 0 | 1.0 | 2147483648 | 2147483648 | 0.000e+00 |
+\image(figures/gaussian_growth.svg)
+// result_end
+\caption(Observed growth follows2^(n-1), while the multiplier magnitude stays1. This particular RHS does not turn the large coefficient growth into a large backward error.)
+\alttext(Blue measured log2 growth points lie on the red n minus one line through order 32. The table reports zero swaps, multiplier magnitude 1 and the independently recomputed backward error.)
+
+> A small residual still needs a conditioning argument
+
+Recompute r=b-Ax in widened arithmetic, using the original coefficients. The
+native summary returns infinity norms and the normwise backward-error expression
+from the [LAPACK Users' Guide](https://netlib.org/lapack/lug/node81.html):
+
+$$
+\eta_\infty=\frac{\lVert b-A\widehat{x}\rVert_\infty}
+ {\lVert A\rVert_\infty\lVert\widehat{x}\rVert_\infty+\lVert b\rVert_\infty}.
+$$
+\alttext(Normwise infinity backward error is the residual infinity norm divided by matrix infinity norm times candidate infinity norm plus RHS infinity norm.)
+
+The all-zero denominator convention is 0/0=0. A small value describes a nearby
+system solved by the candidate; it alone does not bound the candidate's distance
+from the true solution. That inference also needs conditioning.
+For A=diag(1,10^-10) and b=(1,10^-10), the exact solution is (1,1).
+The deliberately inaccurate candidate(1,2) has second-coordinate error 1 but only
+a 10^-10 residual and a small normwise backward error. The example below contrasts
+this candidate with the solver output; it does not silently label a residual as
+forward accuracy. This infinity-norm diagnostic differs from the existing
+linalg::backward_error(), which uses Frobenius/2-norm units.
+
+```{cpp, results="markdown", file="figures/gaussian_residual.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gaussian_elimination.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const dm::algorithms::GaussianMatrix a{{1,0},{0,1e-10}};const std::vector<double>b{1,1e-10};
+ const auto s=dm::algorithms::gaussian_elimination_solve(a,b);const std::vector<double>bad{1,2};const auto r=dm::algorithms::gaussian_residual_summary(a,b,bad);const auto good=dm::algorithms::gaussian_residual_summary(a,b,s.solution.x);
+ std::print("| candidate | coordinates | residual infinity norm | normwise infinity backward error | second-coordinate absolute error |\n| --- | --- | ---: | ---: | ---: |\n");
+ std::print("| Native solve | {} | {:.3Le} | {:.3Le} | {:.3f} |\n",s.solution.x,good.residual_inf,good.backward_error,std::fabs(s.solution.x[1]-1));
+ std::print("| Deliberately inaccurate | {} | {:.3Le} | {:.3Le} | {:.3f} |\n",bad,r.residual_inf,r.backward_error,std::fabs(bad[1]-1));
+ std::print("\nNative pivot acceptance {}; matrix infinity norm {:.1Lf}; candidate infinity norm {:.1Lf}; RHS infinity norm {:.1Lf}.\n",s.solution.solved,r.matrix_inf,r.x_inf,r.b_inf);
+ // These quantities have different units: logs display their orders of magnitude explicitly.
+ auto logs=dm::graphics::RPlot::barplot({std::log10(double(r.residual_inf)),std::log10(double(r.backward_error)),std::log10(std::fabs(bad[1]-1))},{"Residual norm","Backward error","Coordinate error"});
+ logs.title("A small residual can coexist with a wrong coordinate").xlab("Deliberately inaccurate candidate (1,2)").ylab("log10 magnitude; quantities have different units").y_limits(-12,1).size(1050,520).save_svg("build/gaussian_residual.svg");
+ if(r.backward_error>=4e-11L||std::fabs(bad[1]-1)!=1||!s.solution.solved)throw std::runtime_error("conditioning contrast");
+}
+```
+// result_begin: markdown
+| candidate | coordinates | residual infinity norm | normwise infinity backward error | second-coordinate absolute error |
+| --- | --- | ---: | ---: | ---: |
+| Native solve | [1, 1] | 0.000e+00 | 0.000e+00 | 0.000 |
+| Deliberately inaccurate | [1, 2] | 1.000e-10 | 3.333e-11 | 1.000 |
+
+Native pivot acceptance true; matrix infinity norm 1.0; candidate infinity norm 2.0; RHS infinity norm 1.0.
+\image(figures/gaussian_residual.svg)
+// result_end
+\caption(For this diagonal system, the inaccurate second coordinate barely affects the residual. Negative bar values are log10 magnitudes, not negative errors; the table supplies the actual values.)
+\alttext(Three log10 bars show residual about minus10, backward error about minus10.48 and coordinate error0, meaning a coordinate error of1 despite tiny residual and backward error.)
+
+> Absolute cutoffs, invalid inputs and whole-history admission
+
+The legacy Gaussian API keeps its original absolute pivot cutoff 1e-12.
+A selected pivot strictly below it returns solved=false and an empty solution;
+equality is accepted. This does not classify inconsistent versus underdetermined
+systems, and a uniformly tiny but perfectly conditioned identity matrix also
+fails. New solve/trace APIs expose an explicit positive finite absolute cutoff;
+they do not silently change the meaning to a relative threshold.
+
+All row lengths, RHS length and finite entries are checked before pivoting,
+including entries beyond an early zero pivot. Nonfinite stored arithmetic throws.
+These checks prevent malformed access and false success with NaN/Inf, while
+leaving the limits of finite precision explicit.
+
+History admission counts the entire conservative request before copying inputs
+or allocating solver state. With E=n(n-1)/2+2n possible events, its bound is
+
+$$
+H(n)=n^2+2n+E(1+n^2+4n).
+$$
+\alttext(History admission counts the original matrix rows and cells plus RHS, then all possible events with one metadata record, matrix rows and cells, RHS, row permutation and up to n solution entries.)
+
+Each event owns its matrix, RHS, permutation and solution state. Input rows/cells
+and event matrix row records count too. Ordinary final output, work/root metadata,
+working storage and allocator bytes are excluded: entries are not bytes or peak
+RAM. The default cap is one million; zero disables only the optional cap, while
+arithmetic and container limits remain. A failure cannot return a partial trace,
+and caller inputs remain unchanged. Rejected pivots do not get an early-stop
+quota discount. Shape/finite/control validation precedes admission.
+
+```{cpp, results="markdown", file="figures/gaussian_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gaussian_elimination.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const dm::algorithms::GaussianMatrix tiny{{1e-13,0},{0,1e-13}};const std::vector<double>rhs{1e-13,2e-13};
+ const auto rejected=dm::algorithms::gaussian_elimination_solve(tiny,rhs);const auto accepted=dm::algorithms::gaussian_elimination_solve(tiny,rhs,1e-15);
+ std::print("| scaled identity | cutoff | accepted | solution |\n| --- | ---: | --- | --- |\n| A=1e-13 I | 1e-12 | {} | {} |\n| A=1e-13 I | 1e-15 | {} | {} |\n",rejected.solution.solved,rejected.solution.x,accepted.solution.solved,accepted.solution.x);
+ dm::algorithms::GaussianMatrix a{{1,1},{2,3}};std::vector<double>b{3,8};bool denied=false;try{(void)dm::algorithms::gaussian_elimination_trace(a,b,67);}catch(const std::length_error&){denied=true;}
+ auto t=dm::algorithms::gaussian_elimination_trace(a,b,73);a[0].clear();b.clear();t.events[0].matrix[0][0]=99;
+ const bool owned=t.input[0]==std::vector<double>{1,1}&&t.events[1].matrix[0][0]==2&&t.run.upper[0][0]==2;
+ bool shape=false,finite=false,overflow=false,virtual_count=false;
+ try{(void)dm::algorithms::gaussian_elimination_trace({{1,2},{3}},{1,2},1);}catch(const std::invalid_argument&){shape=true;}
+ try{(void)dm::algorithms::gaussian_elimination_trace({{0,0},{0,std::numeric_limits<double>::quiet_NaN()}},{0,0},1);}catch(const std::invalid_argument&){finite=true;}
+ const double m=std::numeric_limits<double>::max();try{(void)dm::algorithms::gaussian_elimination({{m,m},{-m,m}},{m,m});}catch(const std::overflow_error&){overflow=true;}
+ try{(void)dm::algorithms::gaussian_elimination_trace_entries(std::numeric_limits<std::size_t>::max());}catch(const std::length_error&){virtual_count=true;}
+ const auto empty=dm::algorithms::gaussian_elimination_trace({},{});
+ std::print("\nHistory upper {}; observed {}; cap 67 rejected {}; cap 73 admitted true; independent owned copies {}.\n",dm::algorithms::gaussian_elimination_trace_entries(2),t.captured_entries,denied,owned);
+ std::print("Checks: shape before quota {}; later NaN before early pivot/quota {}; finite arithmetic overflow {}; virtual count overflow {}.\n",shape,finite,overflow,virtual_count);
+ std::print("Empty: solved {}; coordinates {}; events {}; retained {}; residual infinity {}.\n",empty.run.solution.solved,empty.run.solution.x.size(),empty.events.size(),empty.captured_entries,dm::algorithms::gaussian_residual_summary({}, {},{}).residual_inf);
+ auto plot=dm::graphics::RPlot::barplot({73.,double(t.captured_entries),67.},{"Whole admission","Actual retained","Rejected cap"});plot.title("Admit the whole trace, even when observed history is smaller").xlab("Two-equation owned history").ylab("Retained-history entries, not bytes").y_limits(0,85).size(1100,520).save_svg("build/gaussian_controls.svg");
+ if(!denied||!owned||!shape||!finite||!overflow||!virtual_count||rejected.solution.solved||accepted.solution.x!=std::vector<double>{1,2})throw std::runtime_error("domain and quota controls");
+}
+```
+// result_begin: markdown
+| scaled identity | cutoff | accepted | solution |
+| --- | ---: | --- | --- |
+| A=1e-13 I | 1e-12 | false | [] |
+| A=1e-13 I | 1e-15 | true | [1, 2] |
+
+History upper 73; observed 67; cap 67 rejected true; cap 73 admitted true; independent owned copies true.
+Checks: shape before quota true; later NaN before early pivot/quota true; finite arithmetic overflow true; virtual count overflow true.
+Empty: solved true; coordinates 0; events 0; retained 0; residual infinity 0.
+\image(figures/gaussian_controls.svg)
+// result_end
+\caption(The scale example changes acceptance without changing conditioning. The history cap 73 admits a trace that retains 67 entries; a cap equal to the observed 67 still rejects the conservative request.)
+\alttext(Three bars show whole admission73, actual retained67 and a rejected cap 67. Computed controls verify changed-cutoff acceptance, independent snapshots, full validation, arithmetic overflow and empty input.)
+
+The native solve now supplies the row-reduction evidence that previously needed
+a second implementation in the report. Partial pivoting controls multipliers,
+while growth, conditioning, residuals and an absolute cutoff answer different
+questions. These exact generated systems expose those distinctions without an
+external dataset or a timing claim.

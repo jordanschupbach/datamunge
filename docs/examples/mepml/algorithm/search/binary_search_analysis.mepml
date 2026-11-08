@@ -1,0 +1,247 @@
+//? Title: Binary Search: Closed Intervals and Exact Probe Counts
+//? Subtitle: The original four-probe example, canonical traces, duplicates and perfect-tree averages
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given an ascending integer sequence and a key, find a matching index or establish
+that the key is absent. Sorted order lets one comparison discard half of the
+remaining candidates. We prove the interval invariant, inspect the original
+four-probe search for 13, and measure exact probe-count formulas on perfect
+search trees. The core trace API records the same loop used by binary_search;
+the report does not reimplement the algorithm to draw its execution.
+)
+
+\toc
+
+> The method
+
+The input must be sorted in nondecreasing order. For a vector of n elements,
+maintain the **closed** candidate interval \([\ell,r]\), initially
+\([0,n-1]\). An empty vector has \(r=-1\), so its loop is never entered.
+The invariant is: if the key is present and has not already been returned,
+at least one matching index lies inside the candidate interval.
+
+Inspect the lower midpoint
+
+$$
+m=\ell+\left\lfloor\frac{r-\ell}{2}\right\rfloor.
+$$
+\alttext(The midpoint is the lower index plus half the nonnegative distance to the upper index, rounded down.)
+
+This avoids forming the potentially overflowing sum of the two indices.
+If \(a_m=k\), return m. If \(a_m<k\), sortedness excludes every index
+through m, so set \(\ell=m+1\). If \(a_m>k\), exclude m and all larger
+indices by setting \(r=m-1\). Each step preserves the invariant and either
+returns or strictly shrinks the interval. When \(\ell>r\), the invariant
+proves absence.
+
+`SearchResult::probes` counts inspected elements. A probe can involve an equality
+test and an ordering test, so probes are not a count of primitive comparisons or
+CPU cycles. With duplicate keys, the first equal midpoint encountered is returned;
+this need not be the first or last matching index.
+
+> Simple example: find 13 among ten odd integers
+
+Use \((1,3,5,7,9,11,13,15,17,19)\). The successive closed intervals are
+\([0,9],[5,9],[5,6],[6,6]\). Their midpoints are \(4,7,5,6\), holding
+values \(9,15,11,13\). The final interval includes both endpoints, which are
+the same index. It therefore still contains one candidate.
+
+```{cpp, results="markdown", file="figures/binary_search_intervals.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::binary_search_trace({1,3,5,7,9,11,13,15,17,19},13);
+  const std::vector<dm::graphics::DiagramPoint> position{{0,0},{6,0},{6,-3},{0,-3}};
+  dm::graphics::Diagram diagram;
+  std::print("| probe | lower index | upper index | midpoint | value |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t i=0;i<trace.probes.size();++i) {
+    const auto& step=trace.probes[i];
+    diagram.node(std::to_string(i),position[i],std::format("Closed interval [{}, {}]\nProbe {}: value {}",
+        step.lo,step.hi,step.index,step.value));
+    std::print("| {} | {} | {} | {} | {} |\n",i+1,step.lo,step.hi,step.index,step.value);
+  }
+  diagram.edge("0","1","discard indices 0..4")
+         .edge("1","2","discard indices 7..9")
+         .edge("2","3","discard index 5");
+  diagram.save_svg("build/binary_search_intervals.svg");
+}
+```
+// result_begin: markdown
+| probe | lower index | upper index | midpoint | value |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0 | 9 | 4 | 9 |
+| 2 | 5 | 9 | 7 | 15 |
+| 3 | 5 | 6 | 5 | 11 |
+| 4 | 6 | 6 | 6 | 13 |
+\image(figures/binary_search_intervals.svg)
+// result_end
+\caption(The four recorded intervals and values come from the canonical core loop. A closed singleton interval is inspected rather than discarded.)
+\alttext(Four boxes show candidate intervals zero to nine, five to nine, five to six, and six to six, with midpoint values nine, fifteen, eleven and thirteen.)
+
+```{cpp, results="markdown", file="figures/binary_search_probes.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<int> a{1,3,5,7,9,11,13,15,17,19};
+  std::print("| key | found | index | probes |\n| ---: | :--- | ---: | ---: |\n");
+  for (int key:{13,1,19,8,20}) {
+    const auto r=dm::algorithms::binary_search(a,key);
+    std::print("| {} | {} | {} | {} |\n",key,r.found,r.index,r.probes);
+  }
+  std::vector<double> x,y,px,py;
+  for (std::size_t i=0;i<a.size();++i) { x.push_back(i); y.push_back(a[i]); }
+  const auto trace=dm::algorithms::binary_search_trace(a,13);
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(x,y,"array values",dm::RGB{148,163,184},7);
+  for (std::size_t i=0;i<trace.probes.size();++i) {
+    const auto& step=trace.probes[i];
+    px.push_back(step.index); py.push_back(step.value);
+    plot.text(step.index,step.value+1.1,std::to_string(i+1),dm::RGB{220,38,38},14);
+  }
+  plot.points(px,py,"probes for key 13",dm::RGB{220,38,38},10)
+      .title("Find 13: probe indices 4, 7, 5, 6")
+      .x_label("input index").y_label("integer value")
+      .x_limits(-.5,9.5).y_limits(0,24).size(850,460)
+      .save_svg("build/binary_search_probes.svg");
+}
+```
+// result_begin: markdown
+| key | found | index | probes |
+| ---: | :--- | ---: | ---: |
+| 13 | true | 6 | 4 |
+| 1 | true | 0 | 3 |
+| 19 | true | 9 | 4 |
+| 8 | false | -1 | 4 |
+| 20 | false | -1 | 4 |
+\image(figures/binary_search_probes.svg)
+// result_end
+\caption(The original report's present and absent keys, plus its probe-position figure. Numeric labels show inspection order rather than sorted index order.)
+\alttext(Ten grey points show the sorted odd integers. Red points at indices four, seven, five and six are numbered one through four.)
+
+> Empty inputs, duplicates and integer limits
+
+Sortedness is a precondition, with no linear scan to validate it. A wrong ordering
+can hide a present key. An empty vector returns `found=false`, `index=-1`, and
+zero probes; a singleton needs one probe. Integer values are compared directly,
+without subtracting them, so the minimum and maximum int values are supported.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const int low=std::numeric_limits<int>::min(),high=std::numeric_limits<int>::max();
+  std::print("| input | key | found | index | probes |\n| :--- | ---: | :--- | ---: | ---: |\n");
+  const std::vector<std::vector<int>> inputs{{},{42},{2,2,2,2},{low,0,high}};
+  const std::vector<int> keys{42,42,2,high};
+  for (std::size_t i=0;i<inputs.size();++i) {
+    const auto r=dm::algorithms::binary_search(inputs[i],keys[i]);
+    std::print("| {} | {} | {} | {} | {} |\n",inputs[i],keys[i],r.found,r.index,r.probes);
+  }
+}
+```
+// result_begin: markdown
+| input | key | found | index | probes |
+| :--- | ---: | :--- | ---: | ---: |
+| [] | 42 | false | -1 | 0 |
+| [42] | 42 | true | 0 | 1 |
+| [2, 2, 2, 2] | 2 | true | 1 | 1 |
+| [-2147483648, 0, 2147483647] | 2147483647 | true | 2 | 2 |
+// result_end
+\caption(The duplicate example returns index 1, although equal keys also occur at indices 0, 2 and 3. Use a lower-bound operation when the first occurrence is required.)
+
+> Checking the theory: worst-case and average probes
+
+After an unsuccessful midpoint inspection, at most \(\lfloor n/2\rfloor\)
+candidates remain. Thus the worst-case number of probes for \(n>0\) is
+
+$$
+P(n)=1+P(\lfloor n/2\rfloor)=\lfloor\log_2 n\rfloor+1
+     =\lceil\log_2(n+1)\rceil,\qquad P(0)=0.
+$$
+\alttext(The maximum probe count is the bit width of the positive input size, and is zero for an empty input.)
+
+For a perfect search tree with \(n=2^d-1\) distinct keys, level j contains
+\(2^{j-1}\) keys and each requires j probes. If each present key is equally
+likely, the exact mean is
+
+$$
+\overline P_{\mathrm{present}}=
+\frac{\sum_{j=1}^{d}j2^{j-1}}{2^d-1}
+=\frac{(d-1)2^d+1}{2^d-1}.
+$$
+\alttext(The mean successful-search depth is the sum of each level's depth times its population, divided by the total number of keys.)
+
+This is a mean over a specified key distribution, not a universal average-case
+claim. Every absent gap on this perfect tree requires d probes. Using odd keys
+leaves one even integer in each gap, allowing all present keys and all absent
+gaps to be checked without random sampling.
+
+```{cpp, results="markdown", file="figures/binary_search_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> depth,mean,formula,worst;
+  std::print("| tree depth | keys | mean present probes | exact mean | largest absent probes |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (unsigned d=1;d<=12;++d) {
+    const std::size_t n=(std::size_t{1}<<d)-1;
+    std::vector<int> a(n);
+    for (std::size_t i=0;i<n;++i) a[i]=2*i+1;
+    std::size_t total=0,largest=0;
+    for (int key:a) total+=dm::algorithms::binary_search(a,key).probes;
+    for (std::size_t i=0;i<=n;++i)
+      largest=std::max(largest,dm::algorithms::binary_search(a,2*i).probes);
+    const std::size_t predicted=(d-1)*(n+1)+1;
+    if (total!=predicted || largest!=d) return 1;
+    depth.push_back(d); mean.push_back(double(total)/n);
+    formula.push_back(double(predicted)/n); worst.push_back(largest);
+    std::print("| {} | {} | {:.6f} | {:.6f} | {} |\n",d,n,mean.back(),formula.back(),largest);
+  }
+  dm::graphics::RPlot::create()
+      .lines(depth,worst,"all absent gaps",dm::RGB{220,38,38},2)
+      .lines(depth,formula,"exact present mean",dm::RGB{148,163,184},3)
+      .points(depth,mean,"measured present mean",dm::RGB{37,99,235},6)
+      .title("Exhaustive probe counts on perfect trees")
+      .x_label("tree depth d; key count is 2 to d minus 1").y_label("element probes")
+      .size(850,460).save_svg("build/binary_search_counts.svg");
+}
+```
+// result_begin: markdown
+| tree depth | keys | mean present probes | exact mean | largest absent probes |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 1.000000 | 1.000000 | 1 |
+| 2 | 3 | 1.666667 | 1.666667 | 2 |
+| 3 | 7 | 2.428571 | 2.428571 | 3 |
+| 4 | 15 | 3.266667 | 3.266667 | 4 |
+| 5 | 31 | 4.161290 | 4.161290 | 5 |
+| 6 | 63 | 5.095238 | 5.095238 | 6 |
+| 7 | 127 | 6.055118 | 6.055118 | 7 |
+| 8 | 255 | 7.031373 | 7.031373 | 8 |
+| 9 | 511 | 8.017613 | 8.017613 | 9 |
+| 10 | 1023 | 9.009775 | 9.009775 | 10 |
+| 11 | 2047 | 10.005374 | 10.005374 | 11 |
+| 12 | 4095 | 11.002930 | 11.002930 | 12 |
+\image(figures/binary_search_counts.svg)
+// result_end
+\caption(The observed successful-search means coincide with the exact formula. Every absent gap has the maximum depth; the curve is not a wall-clock benchmark.)
+\alttext(The mean successful probe count approaches one less than tree depth. Absent keys take exactly the full tree depth.)
+
+> Conclusion
+
+The original search finds index 6 after probes 4, 7, 5 and 6. The corrected
+closed-interval description explains why the final singleton is inspected.
+The perfect-tree experiment verifies both the worst-case bound and the exact
+mean under uniform successful queries, with native tests covering duplicate
+arrays, empty inputs, integer extremes and independent linear membership checks.
+
+The unrecorded API uses constant auxiliary storage; recording takes one owned
+snapshot per probe. Sortedness is essential and unchecked. A probe count measures
+algorithmic access work, while cache behavior, branch costs and data layout
+still determine runtime. Generated integer sequences suffice for these exact
+properties, so no observed dataset is introduced.
+
+> References
+
+- C++ working draft, *Binary search*, [alg.binary.search]. The standard membership API and its partitioned-range preconditions are related; datamunge additionally returns an index and counts midpoint inspections. https://eel.is/c++draft/alg.binary.search

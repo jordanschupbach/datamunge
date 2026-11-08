@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -253,6 +254,39 @@ dstruct::DataFrame DecisionTreeClassifier::node_frame() const {
 
 std::size_t DecisionTreeClassifier::leaf_count() const {
     return static_cast<std::size_t>(std::count_if(nodes_.begin(), nodes_.end(), [](const Node& n) { return n.is_leaf; }));
+}
+
+graphics::Diagram DecisionTreeClassifier::plot_tree(std::size_t max_nodes) const {
+    if (nodes_.empty()) throw std::logic_error("DecisionTreeClassifier::plot_tree: no fitted nodes");
+    if (max_nodes && nodes_.size()>max_nodes)
+        throw std::length_error("DecisionTreeClassifier::plot_tree: complete-node cap exceeded");
+    std::vector<std::pair<double,double>> spans(nodes_.size());
+    double leaf=0;
+    for (std::size_t i=0;i<nodes_.size();++i)
+        if (nodes_[i].is_leaf) {spans[i]={leaf,leaf};leaf+=4.8;}
+    // Fitting stores parents before both children, so reverse order is postorder.
+    for (std::size_t i=nodes_.size();i-->0;)
+        if (!nodes_[i].is_leaf) spans[i]={spans[nodes_[i].left].first,spans[nodes_[i].right].second};
+    graphics::Diagram picture(64,1100);
+    graphics::DiagramNodeStyle style;style.width=4.0;style.height=1.4;style.font_size=24;
+    for (std::size_t i=0;i<nodes_.size();++i) {
+        const auto& node=nodes_[i];
+        std::string question=node.is_leaf?classes_[node.predicted_class_index]
+            :std::format("{} <= {}",predictor_names_[node.feature_index],node.threshold);
+        style.fill=node.is_leaf?kSeriesColors[node.predicted_class_index%std::size(kSeriesColors)]
+                               :graphics::RGB{239,246,255};
+        if (node.is_leaf) {style.fill.r=static_cast<std::uint8_t>(style.fill.r+(255-style.fill.r)*3/4);
+            style.fill.g=static_cast<std::uint8_t>(style.fill.g+(255-style.fill.g)*3/4);
+            style.fill.b=static_cast<std::uint8_t>(style.fill.b+(255-style.fill.b)*3/4);}
+        picture.node(std::to_string(i),{(spans[i].first+spans[i].second)/2,-3.4*node.depth},
+            std::format("#{} {}\nn={}; {}={:.3f}",i,question,node.n_samples,
+                options_.criterion==SplitCriterion::Gini?"Gini":"entropy",node.impurity),style);
+    }
+    for (std::size_t i=0;i<nodes_.size();++i) if (!nodes_[i].is_leaf) {
+        picture.edge(std::to_string(i),std::to_string(nodes_[i].left),"<=");
+        picture.edge(std::to_string(i),std::to_string(nodes_[i].right),">");
+    }
+    return picture;
 }
 
 std::size_t DecisionTreeClassifier::depth() const {

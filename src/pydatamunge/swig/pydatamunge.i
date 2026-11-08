@@ -395,6 +395,19 @@ RGBA = RGB
 %include "datamunge/geometry/point2d.hpp"
 %template(Point2DVector) std::vector<datamunge::geometry::Point2D>;
 %include "datamunge/geometry/convex_hull.hpp"
+// Keep the checked legacy closest-pair failures as Python exceptions.
+// The new indexed/trace API is C++-only through an ordinary included header.
+%exception datamunge::geometry::closest_pair {
+  try {
+    $action
+  } catch (const std::invalid_argument& error) {
+    SWIG_exception_fail(SWIG_ValueError, error.what());
+  } catch (const std::overflow_error& error) {
+    SWIG_exception_fail(SWIG_OverflowError, error.what());
+  } catch (const std::exception& error) {
+    SWIG_exception_fail(SWIG_RuntimeError, error.what());
+  }
+}
 %include "datamunge/geometry/closest_pair.hpp"
 %include "datamunge/geometry/polygon.hpp"
 %include "datamunge/geometry/segment_intersection.hpp"

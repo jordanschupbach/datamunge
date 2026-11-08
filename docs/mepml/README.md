@@ -1,5 +1,10 @@
 # mepml reports in the docs
 
+New conversions from `examples/mepml/` live in [`../examples/mepml/`](../examples/mepml/).
+The website and `just docs-mepml-run` discover that collection together with the
+earlier `docs/mepml/examples/` collection. Both keep the subject/topic hierarchy
+below; each report's source link points to its actual location.
+
 `examples/**/*.mepml` are literate reports written in mepml (mep's document
 format): prose plus small C++ programs built on datamunge, with each program's
 output stored under it. The documentation website (`just docs`,

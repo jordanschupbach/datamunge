@@ -1,0 +1,365 @@
+//? Title: Sørensen–Dice Similarity: Shared Byte Bigrams, Multiplicity and Lost Order
+//? Subtitle: Preserve the five original word pairs, trace each consumed occurrence, and test the limits of the score
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given two strings, we want a small score describing how much adjacent local
+structure they share. Repeated pieces must count correctly, and a high score
+must not be confused with string equality or semantic equivalence. The
+Sørensen–Dice coefficient normalizes multiset bigram overlap into a similarity
+between zero and one. We first expose the actual shared pair in night/nacht,
+then reproduce all five original word-pair scores. Native count and consumption
+APIs reveal why aa/aaaa scores one half, why different strings can score one,
+and why one minus Dice is not a metric. Literal-byte and short-string controls
+make the encoding convention explicit. A repeated-byte family checks the
+closed forms for Dice, multiset Jaccard and occurrence-level work without
+claiming those counts measure hash probes or elapsed time.
+)
+
+\toc
+
+> Begin with one shared pair
+
+The string night has four adjacent byte pairs: ni, ig, gh, ht. The string
+nacht has na, ac, ch, ht. Only ht is shared. Each side has four occurrences,
+so their multiset intersection has size one and
+
+$$
+D(\texttt{night},\texttt{nacht})=\frac{2\times1}{4+4}=\frac14.
+$$
+\alttext(Dice similarity of night and nacht is twice one shared occurrence divided by four plus four, which equals one quarter.)
+
+The native trace builds left counts, then looks up right occurrences in input
+order. A successful lookup consumes one remaining left occurrence. Its rows
+are sorted by an unsigned two-byte key; its events retain the actual right
+positions and before/after counts. Nothing is recovered by replaying the
+algorithm. This first input has no repeated keys, so its one successful
+consumption is especially easy to check.
+
+```{cpp, results="markdown", file="figures/dice_shared_bigram.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::dice_coefficient_trace("night","nacht");
+  if(t.overlap.shared!=1 || t.events.size()!=4 || !t.events[3].matched || t.events[3].key!=0x6874)return 1;
+  dm::graphics::Diagram d(80,1100);dm::graphics::DiagramNodeStyle box;box.width=1.3;box.height=.9;box.font_size=23;
+  d.text({3,3},"night / nacht: one shared occurrence among eight",25)
+   .text({-1.9,1.2},t.left,23).text({-1.9,-1.2},t.right,23);
+  for(std::size_t i=0;i<4;++i) {
+    box.fill=i==3&&t.events[i].matched?dm::graphics::RGB{220,252,231}:dm::graphics::RGB{241,245,249};
+    d.node(std::format("a{}",i),{2.0*i,1.2},t.left.substr(i,2),box)
+     .node(std::format("b{}",i),{2.0*i,-1.2},t.right.substr(i,2),box);
+  }
+  dm::graphics::DiagramStroke match;match.color={22,163,74};match.width=3;
+  d.edge("a3","b3","consume once",match)
+   .text({3,-3},std::format("Left {}; right {}; shared {}; Dice = {:.2f}",t.overlap.left_bigrams,t.overlap.right_bigrams,t.overlap.shared,t.overlap.coefficient),23)
+   .save_svg("build/dice_shared_bigram.svg");
+  std::print("| bigram | left count | right count | shared count |\n| :--- | ---: | ---: | ---: |\n");
+  for(const auto& row:t.counts)std::print("| {}{} | {} | {} | {} |\n",char(row.key>>8),char(row.key&255),row.left_count,row.right_count,row.shared_count);
+  std::print("\n| right offset | bigram | remaining before | remaining after | consumed |\n| ---: | :--- | ---: | ---: | :--- |\n");
+  for(const auto& e:t.events)std::print("| {} | {}{} | {} | {} | {} |\n",e.right_offset,char(e.key>>8),char(e.key&255),e.remaining_before,e.remaining_after,e.matched);
+  std::print("\nActual left updates {}; right lookups {}; matches {}; misses {}.\n",t.work.left_updates,t.work.right_lookups,t.work.matches,t.work.misses);
+}
+```
+// result_begin: markdown
+| bigram | left count | right count | shared count |
+| :--- | ---: | ---: | ---: |
+| ac | 0 | 1 | 0 |
+| ch | 0 | 1 | 0 |
+| gh | 1 | 0 | 0 |
+| ht | 1 | 1 | 1 |
+| ig | 1 | 0 | 0 |
+| na | 0 | 1 | 0 |
+| ni | 1 | 0 | 0 |
+
+| right offset | bigram | remaining before | remaining after | consumed |
+| ---: | :--- | ---: | ---: | :--- |
+| 0 | na | 0 | 0 | false |
+| 1 | ac | 0 | 0 | false |
+| 2 | ch | 0 | 0 | false |
+| 3 | ht | 1 | 0 | true |
+
+Actual left updates 4; right lookups 4; matches 1; misses 3.
+\image(figures/dice_shared_bigram.svg)
+// result_end
+\caption(The actual trace consumes the final ht once. Seven sorted count rows and four ordered lookup events explain the score.)
+\alttext(Two horizontal rows contain the four bigrams of night and nacht. Only their final ht boxes are green, joined by an arrow labelled consume once. The footer reports four occurrences on each side, one shared occurrence and Dice one quarter.)
+
+> Derive the multiset normalization
+
+For each possible byte pair g, let c_a(g) and c_b(g) be its occurrence counts.
+Use A and B for their totals, I for the intersection and U for the union:
+
+$$
+A=\sum_g c_a(g),\quad B=\sum_g c_b(g),\quad
+I=\sum_g\min(c_a(g),c_b(g)),\quad
+U=\sum_g\max(c_a(g),c_b(g))=A+B-I.
+$$
+\alttext(A and B are total occurrence counts; the intersection sums per-key minima and the union sums per-key maxima, equalling A plus B minus I.)
+
+A byte string of length k contributes max(k−1,0) occurrences, without boundary
+padding. When A+B is positive, Dice and multiset Jaccard are
+
+$$
+D=\frac{2I}{A+B},\qquad J=\frac I{A+B-I},\qquad
+D=\frac{2J}{1+J},\qquad J=\frac D{2-D}.
+$$
+\alttext(Dice is twice the intersection over the sum; multiset Jaccard is the intersection over the union. Dice equals two J over one plus J, and J equals D over two minus D.)
+
+Because I≤min(A,B), the exact ratio lies between zero and one. For positive
+combined size, score one means equal occurrence counts at every key; it does
+not recover global character order. The same fact follows by rewriting
+
+$$
+D=1-\frac{\sum_g|c_a(g)-c_b(g)|}{A+B}.
+$$
+\alttext(Dice is one minus the absolute count difference summed over keys and divided by the combined occurrence count.)
+
+For nonzero I, treating I/B as precision and I/A as recall gives D as their
+harmonic mean. The algebra concerns these counted features, without asserting
+that either string is a correct label or that the result is a match probability.
+The Dice/Jaccard transform is increasing, so it preserves pair rankings when
+both scores use the same multiset features and the same empty convention.
+Using sets of distinct bigrams would change the features and the answers.
+
+Two zero-sized bigram bags need an explicit convention. The established scalar
+API gives one for identical strings, including empty and one-byte strings,
+and zero for any other comparison involving a string shorter than two bytes.
+In particular a/b scores zero although both bigram bags are empty. The trace
+retains that string-level convention. The count-only API cannot know the
+original strings, so its empty_equal argument explicitly chooses zero or one.
+
+[Dice's 1945 paper](https://doi.org/10.2307/1932409) introduced an ecological
+coincidence index with the normalization 2h/(a+b). The byte-bigram construction
+here is a later lexical use, not a claim about that paper's original algorithm.
+[Kondrak, Marcu and Knight](https://aclanthology.org/N03-2016/) use character
+bigrams for word similarity; datamunge specifies literal bytes and multiplicity
+explicitly. The historical name Sørensen–Dice does not imply Unicode handling.
+
+> Retain the five original word pairs
+
+The original scores span zero to one: night/nacht shares ht; france/french
+shares fr and nc; healed/sealed shares ea, al, le and ed. The identical and
+disjoint controls reach the two endpoints. The new trace and the established
+scalar call must agree on every row. Jaccard below uses maximum multiplicities
+for the union, not the number of distinct keys.
+
+```{cpp, results="markdown", file="figures/dice_original_pairs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<std::string,std::string>> inputs{{"night","nacht"},{"france","french"},{"healed","sealed"},{"night","night"},{"abc","xyz"}};
+  std::vector<std::string> labels;std::vector<double> scores;
+  std::print("| original pair | A | B | intersection | multiset union | Dice | Jaccard |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto& [a,b]:inputs) {
+    const auto t=dm::algorithms::dice_coefficient_trace(a,b);const auto& s=t.overlap;
+    if(s.coefficient!=dm::algorithms::dice_coefficient(a,b))return 1;
+    labels.push_back(a+"/"+b);scores.push_back(s.coefficient);
+    std::print("| {} | {} | {} | {} | {} | {:.6f} | {:.6f} |\n",labels.back(),s.left_bigrams,s.right_bigrams,s.shared,s.union_count,s.coefficient,s.jaccard);
+  }
+  auto p=dm::graphics::RPlot::create();p.barplot(scores,labels,"Dice",{37,99,235})
+   .title("The five original bigram-overlap examples").x_label("literal byte-string pair")
+   .y_label("multiset Dice coefficient").y_limits(0,1.18).size(1100,570).save_svg("build/dice_original_pairs.svg");
+}
+```
+// result_begin: markdown
+| original pair | A | B | intersection | multiset union | Dice | Jaccard |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| night/nacht | 4 | 4 | 1 | 7 | 0.250000 | 0.142857 |
+| france/french | 5 | 5 | 2 | 8 | 0.400000 | 0.250000 |
+| healed/sealed | 5 | 5 | 4 | 6 | 0.800000 | 0.666667 |
+| night/night | 4 | 4 | 4 | 4 | 1.000000 | 1.000000 |
+| abc/xyz | 2 | 2 | 0 | 4 | 0.000000 | 0.000000 |
+\image(figures/dice_original_pairs.svg)
+// result_end
+\caption(All five original scalar scores are retained; the trace adds exact overlap counts and the matching multiset Jaccard score.)
+\alttext(Five labelled bars show similarities one quarter, two fifths, four fifths, one and zero for the original word pairs.)
+
+> Multiplicity, lost order and a failed triangle inequality
+
+The string aa has one occurrence of aa, while aaaa has three. Only one can
+be consumed from the left, giving D=2/(1+3)=1/2 and J=1/3. Treating the
+bigrams as sets would instead produce one. Conversely, abaca and acaba have
+the same four bigrams, ab, ba, ac and ca, in different orders: their score is
+one despite different strings. This is a feature collision, not a numerical
+error. Literal case, spaces, punctuation and embedded NULs also remain part
+of the input. Canonically equivalent UTF-8 spellings can have different byte
+bigrams; neither character decoding nor normalization is performed here.
+
+The dissimilarity d=1−D is symmetric and nonnegative but is not a metric.
+Besides the equality collision, three tiny strings violate the triangle
+inequality: ab and bc share no bigram, while each shares one of abc's two.
+The following diagram's edge values come from actual scalar calls.
+
+```{cpp, results="markdown", file="figures/dice_nonmetric.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const double direct=1-dm::algorithms::dice_coefficient("ab","bc");
+  const double left=1-dm::algorithms::dice_coefficient("ab","abc"),right=1-dm::algorithms::dice_coefficient("abc","bc");
+  if(!(direct>left+right))return 1;
+  dm::graphics::Diagram d(85,1100);dm::graphics::DiagramNodeStyle box;box.width=1.4;box.height=1;box.font_size=25;
+  d.node("a",{0,0},"ab",box).node("b",{4,-3},"abc",box).node("c",{8,0},"bc",box)
+   .edge("a","c",std::format("d = {:.6f}",direct)).edge("a","b",std::format("d = {:.6f}",left)).edge("b","c",std::format("d = {:.6f}",right))
+   .text({4,1.8},"One minus Dice fails the triangle inequality",25)
+   .text({4,-4.6},std::format("Direct {:.6f} > two-leg sum {:.6f}",direct,left+right),23)
+   .save_svg("build/dice_nonmetric.svg");
+  const std::vector<std::pair<std::string,std::string>> cases{{"aa","aaaa"},{"abaca","acaba"},{"",""},{"","a"},{"a","b"},{"a","a"},{"a","aa"},{"night","Night"},{"night","night "},{std::string("a\0a",3),std::string("a\0b",3)},{"\xc3\xa9","e\xcc\x81"}};
+  const std::vector<std::string> labels{"repeat counts","lost order","both empty","empty vs one byte","different one-byte","same one-byte","one vs two bytes","literal case","trailing space","embedded NUL","UTF8 accent spellings"};
+  std::print("| control | left bytes | right bytes | A | B | shared | Dice | Jaccard |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t k=0;k<cases.size();++k) {
+    const auto t=dm::algorithms::dice_coefficient_trace(cases[k].first,cases[k].second);const auto& s=t.overlap;
+    std::print("| {} | {} | {} | {} | {} | {} | {:.6f} | {:.6f} |\n",labels[k],t.left.size(),t.right.size(),s.left_bigrams,s.right_bigrams,s.shared,s.coefficient,s.jaccard);
+  }
+  const auto repeated=dm::algorithms::dice_coefficient_trace("aa","aaaa");
+  std::print("\n| aa right offset | remaining before | remaining after | consumed |\n| ---: | ---: | ---: | :--- |\n");
+  for(const auto& e:repeated.events)std::print("| {} | {} | {} | {} |\n",e.right_offset,e.remaining_before,e.remaining_after,e.matched);
+  std::print("\nTriangle control: direct {:.6f}; two-leg sum {:.6f}; violation {}.\n",direct,left+right,direct>left+right);
+}
+```
+// result_begin: markdown
+| control | left bytes | right bytes | A | B | shared | Dice | Jaccard |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| repeat counts | 2 | 4 | 1 | 3 | 1 | 0.500000 | 0.333333 |
+| lost order | 5 | 5 | 4 | 4 | 4 | 1.000000 | 1.000000 |
+| both empty | 0 | 0 | 0 | 0 | 0 | 1.000000 | 1.000000 |
+| empty vs one byte | 0 | 1 | 0 | 0 | 0 | 0.000000 | 0.000000 |
+| different one-byte | 1 | 1 | 0 | 0 | 0 | 0.000000 | 0.000000 |
+| same one-byte | 1 | 1 | 0 | 0 | 0 | 1.000000 | 1.000000 |
+| one vs two bytes | 1 | 2 | 0 | 1 | 0 | 0.000000 | 0.000000 |
+| literal case | 5 | 5 | 4 | 4 | 3 | 0.750000 | 0.600000 |
+| trailing space | 5 | 6 | 4 | 5 | 4 | 0.888889 | 0.800000 |
+| embedded NUL | 3 | 3 | 2 | 2 | 1 | 0.500000 | 0.333333 |
+| UTF8 accent spellings | 2 | 3 | 1 | 2 | 0 | 0.000000 | 0.000000 |
+
+| aa right offset | remaining before | remaining after | consumed |
+| ---: | ---: | ---: | :--- |
+| 0 | 1 | 0 | true |
+| 1 | 0 | 0 | false |
+| 2 | 0 | 0 | false |
+
+Triangle control: direct 1.000000; two-leg sum 0.666667; violation true.
+\image(figures/dice_nonmetric.svg)
+// result_end
+\caption(One minus Dice gives a direct distance one and a two-leg sum two thirds. Separate controls expose multiplicity, equal-feature collisions and the literal-byte/short-input conventions.)
+\alttext(Three native boxes labelled ab, abc and bc form a triangle. The direct ab-to-bc arrow has distance one; the two edges through abc each have distance one third. A footer reports the strict triangle-inequality violation.)
+
+> Check work and closed forms on repeated occurrences
+
+Take a=a repeated k times and b=a repeated 3k times, with k≥2. There is only
+one distinct bigram key. Its multiplicities are A=k−1 and B=3k−1, so I=k−1,
+U=3k−1 and
+
+$$
+D_k=\frac{k-1}{2k-1}\longrightarrow\frac12,\qquad
+J_k=\frac{k-1}{3k-1}\longrightarrow\frac13.
+$$
+\alttext(For repeated a strings of lengths k and three k, Dice is k minus one over two k minus one and tends to one half; Jaccard is k minus one over three k minus one and tends to one third.)
+
+The trace's actual occurrence-level operations are k−1 left updates and
+3k−1 right lookups, totaling 4k−2. It consumes k−1 occurrences and records
+2k misses, even though all right bigrams have the same key. Its event list
+has 3k−1 entries; complete A+B caps include both sides. The plot explicitly
+transforms its horizontal axis to log2(k), and its work axis to log2(count).
+The table keeps untransformed integers. These are dictionary operations at
+the occurrence level, excluding hash probes, collisions, rehashing, copying
+and trace sorting; they are not elapsed-time measurements.
+
+```{cpp, results="markdown", file="figures/dice_repeat_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> log_k,dice,jaccard,actual,theory,events;double residual=0;
+  std::print("| k left bytes | right bytes | distinct union keys | shared | Dice | Jaccard | actual updates + lookups | 4k-2 | actual events |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t k:{2,4,8,16,64,256,1024,4096}) {
+    const auto t=dm::algorithms::dice_coefficient_trace(std::string(k,'a'),std::string(3*k,'a'));const auto& s=t.overlap;
+    residual=std::max(residual,std::abs(s.coefficient-double(k-1)/double(2*k-1)));
+    residual=std::max(residual,std::abs(s.jaccard-double(k-1)/double(3*k-1)));
+    const auto work=t.work.left_updates+t.work.right_lookups;
+    if(work!=4*k-2 || t.events.size()!=3*k-1 || t.counts.size()!=1)return 1;
+    std::print("| {} | {} | {} | {} | {:.6f} | {:.6f} | {} | {} | {} |\n",k,t.right.size(),t.counts.size(),s.shared,s.coefficient,s.jaccard,work,4*k-2,t.events.size());
+    log_k.push_back(std::log2(double(k)));dice.push_back(s.coefficient);jaccard.push_back(s.jaccard);
+    actual.push_back(std::log2(double(work)));theory.push_back(std::log2(double(4*k-2)));events.push_back(std::log2(double(t.events.size())));
+  }
+  auto score=dm::graphics::RPlot::create();score.line(log_k,dice,"Dice",{37,99,235},2).line(log_k,jaccard,"Jaccard",{234,88,12},2)
+   .abline_h(.5,{148,163,184},1).abline_h(1.0/3,{148,163,184},1)
+   .title("One key; different occurrence multiplicities").x_label("log2(left byte length k)").y_label("multiset similarity").y_limits(0,.72);
+  auto work=dm::graphics::RPlot::create();work.line(log_k,actual,"actual operations",{37,99,235},2).points(log_k,theory,"4k-2",{31,41,55},4)
+   .line(log_k,events,"actual events",{124,58,237},2).title("Count occurrences, not distinct bigrams")
+   .x_label("log2(left byte length k)").y_label("log2(actual count)").y_limits(0,17);
+  dm::graphics::RLayout::create(1,2).add(score).add(work).size(1100,520).title("Repeated-byte controls: exact counts and closed-form scores").fit_panels().save_svg("build/dice_repeat_work.svg");
+  std::print("\nMaximum score residual against the two closed forms: {:.3e}.\n\n",residual);if(residual>1e-14)return 1;
+  const auto large=dm::algorithms::dice_overlap_counts(3000000000ULL,1000000000ULL,1000000000ULL);
+  std::print("Count-only control, no strings constructed: total {}; union {}; Dice {:.6f}; Jaccard {:.6f}.\n\n",large.total,large.union_count,large.coefficient,large.jaccard);
+  int rejected=0;
+  try{dm::algorithms::dice_coefficient_trace("aa","aaaa",3);}catch(const std::length_error&){++rejected;}
+  try{dm::algorithms::dice_coefficient_trace("night","night",7);}catch(const std::length_error&){++rejected;}
+  try{dm::algorithms::dice_overlap_counts(std::numeric_limits<std::size_t>::max(),1,0);}catch(const std::length_error&){++rejected;}
+  try{dm::algorithms::dice_overlap_counts(0,0,1);}catch(const std::invalid_argument&){++rejected;}
+  const auto exact=dm::algorithms::dice_coefficient_trace("aa","aaaa",4),uncapped=dm::algorithms::dice_coefficient_trace("aa","aaaa",0);
+  if(rejected!=4 || exact.overlap.coefficient!=uncapped.overlap.coefficient)return 1;
+  std::print("Four expected complete-cap/count rejections: {}. Exact complete cap four and zero-disabled optional cap agree.\n",rejected);
+}
+```
+// result_begin: markdown
+| k left bytes | right bytes | distinct union keys | shared | Dice | Jaccard | actual updates + lookups | 4k-2 | actual events |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 6 | 1 | 1 | 0.333333 | 0.200000 | 6 | 6 | 5 |
+| 4 | 12 | 1 | 3 | 0.428571 | 0.272727 | 14 | 14 | 11 |
+| 8 | 24 | 1 | 7 | 0.466667 | 0.304348 | 30 | 30 | 23 |
+| 16 | 48 | 1 | 15 | 0.483871 | 0.319149 | 62 | 62 | 47 |
+| 64 | 192 | 1 | 63 | 0.496063 | 0.329843 | 254 | 254 | 191 |
+| 256 | 768 | 1 | 255 | 0.499022 | 0.332464 | 1022 | 1022 | 767 |
+| 1024 | 3072 | 1 | 1023 | 0.499756 | 0.333116 | 4094 | 4094 | 3071 |
+| 4096 | 12288 | 1 | 4095 | 0.499939 | 0.333279 | 16382 | 16382 | 12287 |
+
+Maximum score residual against the two closed forms: 0.000e+00.
+
+Count-only control, no strings constructed: total 4000000000; union 3000000000; Dice 0.500000; Jaccard 0.333333.
+
+Four expected complete-cap/count rejections: 4. Exact complete cap four and zero-disabled optional cap agree.
+\image(figures/dice_repeat_work.svg)
+// result_end
+\caption(The repeated-byte controls match both score formulas and 4k−2 occurrence operations. A fitted two-panel layout keeps the legends above the largest observations.)
+\alttext(Left: Dice approaches one half and Jaccard one third as repeated strings grow. Right: actual occurrence-operation counts coincide with 4k minus two markers, above the event-count curve. Both horizontal axes and the work vertical axis are explicitly labelled as base-two logarithms.)
+
+> Implementation, checks and limits
+
+The canonical core now packs each unsigned byte pair into a 16-bit key and
+uses size_t occurrence counts. It reserves capacity for at most 65,536 left keys,
+rather than constructing a temporary substring key for each update or reserving in
+proportion to a long input beyond the finite byte alphabet. Counts remain exact
+integers; normalized scores use binary64 rounding. Hashing gives
+expected O(|a|+|b|) scalar work and O(min(|a|,65536)) auxiliary storage.
+Adversarial collision behavior can increase hash-table work. The rich trace
+additionally sorts K distinct union keys in O(K log(K+1)) and owns both input
+strings and one event per right occurrence. Its total storage is
+O(|a|+|b|+K), with K≤65,536. Scalar identical/short inputs retain their early
+return; the trace scans even those inputs so that its reported work and rows
+are actual. Default complete occurrence cap is 1,000,000; zero disables only
+that cap. Count-sum arithmetic remains checked, and failures return no partial
+trace. Neither the count-only test above nor these bounds claim that multi-
+gigabyte strings were materialised.
+
+Independent tests compare sorted token-list intersections/unions and a separate
+unconsumed-token scan against 29,282 exhaustive small ASCII/binary pairs and
+2,000 seeded byte-string pairs. A bijection renaming all bytes preserves the
+score. A 131,072-byte control contains every one of the 65,536 byte pairs and
+checks unsigned sorting, counts and complete matching. A larger unary control
+checks 100,000 successful and 200,000 failed consumptions. Count-only tests
+exercise size_t boundaries without enormous allocation. Original scores,
+short conventions, case/space/NUL/UTF-8 controls, equal-feature collisions,
+triangle failure, exact caps, ownership and overflow/error precedence are
+checked separately. No external dataset is needed for these finite controls.
+
+The result measures shared local byte structure. It is useful as an explicitly
+chosen feature score, but cannot establish string identity, Unicode equivalence,
+meaning, edit distance or a metric geometry. Preserve multiplicities and choose
+any preprocessing before constructing the byte strings; the score itself makes
+none of those decisions.
+
+> References
+
+1. L. R. Dice (1945), “Measures of the Amount of Ecologic Association Between Species”, Ecology 26(3), 297–302. [Original paper DOI](https://doi.org/10.2307/1932409), [primary paper scan](https://biocomparison.ucoz.ru/_ld/0/86_dice_1945.pdf). Source of the coincidence-index normalization; the literal-byte multiset construction and short-string conventions are specified here.
+2. G. Kondrak, D. Marcu and K. Knight (2003), “Cognates Can Improve Statistical Translation Models”, Companion Volume of HLT-NAACL 2003, Short Papers, 46–48. [Primary paper and metadata](https://aclanthology.org/N03-2016/). Describes bigram-based lexical Dice; this report does not reproduce its translation experiments or infer a language-independent matching threshold.

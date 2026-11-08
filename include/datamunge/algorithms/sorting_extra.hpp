@@ -1,4 +1,6 @@
 #pragma once
+#include <datamunge/algorithms/bitonic_sort.hpp>
+#include <datamunge/algorithms/flashsort.hpp>
 
 // A quartet of sorting algorithms with distinct mechanisms:
 //   - bitonic_sort  : a data-oblivious sorting network (Batcher), general n
@@ -14,36 +16,6 @@
 #include <vector>
 
 namespace datamunge::algorithms {
-
-namespace detail {
-
-template <typename T>
-void bitonic_merge(std::vector<T>& a, int lo, int n, bool asc) {
-    if (n <= 1) return;
-    int m = 1;
-    while (m * 2 < n) m *= 2; // greatest power of two < n
-    for (int i = lo; i < lo + n - m; ++i)
-        if (asc == (a[i] > a[i + m])) std::swap(a[i], a[i + m]);
-    bitonic_merge(a, lo, m, asc);
-    bitonic_merge(a, lo + m, n - m, asc);
-}
-
-template <typename T>
-void bitonic_sort_rec(std::vector<T>& a, int lo, int n, bool asc) {
-    if (n <= 1) return;
-    const int m = n / 2;
-    bitonic_sort_rec(a, lo, m, !asc);
-    bitonic_sort_rec(a, lo + m, n - m, asc);
-    bitonic_merge(a, lo, n, asc);
-}
-
-} // namespace detail
-
-// Batcher's bitonic sorting network, generalised to arbitrary n.
-template <typename T>
-void bitonic_sort(std::vector<T>& a) {
-    detail::bitonic_sort_rec(a, 0, static_cast<int>(a.size()), true);
-}
 
 // Strand sort: repeatedly extract an increasing subsequence (a "strand") from
 // the input and merge it into the growing result.
@@ -95,51 +67,6 @@ void patience_sort(std::vector<T>& a) {
         if (!piles[i].empty()) pq.emplace(piles[i].back(), i);
     }
     a.swap(out);
-}
-
-// Flashsort: classify elements into value buckets, permute them into bucket
-// order in place by cycle leaders, then finish with insertion sort.
-template <typename T>
-void flashsort(std::vector<T>& a) {
-    const int n = static_cast<int>(a.size());
-    if (n <= 1) return;
-    T   minv = a[0];
-    int amax = 0;
-    for (int i = 1; i < n; ++i) {
-        if (a[i] < minv) minv = a[i];
-        if (a[i] > a[amax]) amax = i;
-    }
-    if (!(minv < a[amax])) return; // all equal
-
-    const int        m  = std::max(2, static_cast<int>(0.43 * n));
-    const double     c1 = static_cast<double>(m - 1) / static_cast<double>(a[amax] - minv);
-    auto             cls = [&](const T& v) {
-        int k = static_cast<int>(c1 * static_cast<double>(v - minv));
-        if (k < 0) k = 0;
-        if (k >= m) k = m - 1;
-        return k;
-    };
-    std::vector<int> L(m, 0);
-    for (int i = 0; i < n; ++i) ++L[cls(a[i])];
-    for (int k = 1; k < m; ++k) L[k] += L[k - 1]; // L[k] = one past class k's range
-
-    int move = 0, j = 0, k = m - 1;
-    while (move < n - 1) {
-        while (j > L[k] - 1) { ++j; k = cls(a[j]); }
-        T flash = a[j];
-        while (j != L[k]) {
-            k              = cls(flash);
-            const int idx  = --L[k];
-            std::swap(flash, a[idx]);
-            ++move;
-        }
-    }
-    for (int i = 1; i < n; ++i) { // insertion sort within buckets
-        T   key = a[i];
-        int p   = i - 1;
-        while (p >= 0 && a[p] > key) { a[p + 1] = a[p]; --p; }
-        a[p + 1] = key;
-    }
 }
 
 } // namespace datamunge::algorithms

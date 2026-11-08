@@ -1,0 +1,334 @@
+//? Title: Gauss–Legendre π: quadratic mathematics, fixed-precision limits
+//? Subtitle: Actual AGM states, a two-ULP plateau, disappearing corrections and honest reference errors
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Compute π rapidly while tracking how arithmetic precision limits the result.
+A fast-converging formula can still stagnate at a value that is not correctly
+rounded. The Gauss–Legendre iteration combines arithmetic and geometric means
+with a correction accumulator. This report follows an actual first step, reruns
+the original six-step example and separates reference differences from error
+against mathematical π. Native snapshots show that the estimate stalls before
+the means do, while the means themselves eventually remain one ULP apart.
+Work counters and explicit record/domain limits expose what further fixed-count
+iterations actually do.
+)
+
+\toc
+
+> Start with one arithmetic mean, one geometric mean and a correction
+
+Initialize a=1, b=1/sqrt(2), t=1/4 and p=1. The arithmetic mean of a and b is
+about 0.853553; the geometric mean is about 0.840896. Use the old a and its new
+arithmetic mean to update t, then double p. The diagram reads these values from
+the first actual native record, including the correction used by the kernel.
+
+```{cpp, results="markdown", file="figures/legendre_first.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_legendre_pi.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <numbers>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::gauss_legendre_pi_trace(1);const auto&e=t.steps.at(0);
+ std::print("| state | a | b | t | p |\n| --- | ---: | ---: | ---: | ---: |\n| Before | {:.9f} | {:.9f} | {:.9f} | {:.1f} |\n| After | {:.9f} | {:.9f} | {:.9f} | {:.1f} |\n",e.before.a,e.before.b,e.before.t,e.before.p,e.after.a,e.after.b,e.after.t,e.after.p);
+ std::print("\nActual correction {:.12g}; estimate {:.17g}; square roots {}; captured records {}.\n",e.correction,e.estimate,t.run.work.square_roots,t.captured_records);
+ dm::graphics::Diagram d(63,1100);dm::graphics::DiagramNodeStyle box;box.width=4.4;box.height=2.4;box.font_size=21;
+ d.node("start",{0,0},std::format("Actual starting state\na = {:.6f}\nb = {:.6f}\nt = {:.2f}, p = {:.0f}",e.before.a,e.before.b,e.before.t,e.before.p),box)
+  .node("means",{6,0},std::format("Two different means\na next = {:.6f}\nb next = {:.6f}",e.after.a,e.after.b),box)
+  .node("correct",{12,0},std::format("Apply used correction\nt = {:.6f}, p = {:.0f}\nestimate = {:.9f}",e.after.t,e.after.p,e.estimate),box)
+  .edge("start","means","average").edge("means","correct","correct t")
+  .text({6,2.5},"AGM states contract; the correction connects the limit to pi",26).save_svg("build/legendre_first.svg");
+ if(e.iteration!=1||!e.estimate_changed||t.steps.size()!=1)throw std::runtime_error("first actual stage");
+}
+```
+// result_begin: markdown
+| state | a | b | t | p |
+| --- | ---: | ---: | ---: | ---: |
+| Before | 1.000000000 | 0.707106781 | 0.250000000 | 1.0 |
+| After | 0.853553391 | 0.840896415 | 0.228553391 | 2.0 |
+
+Actual correction 0.0214466094067; estimate 3.1405792505221686; square roots 2; captured records 2.
+\image(figures/legendre_first.svg)
+// result_end
+\caption(No recurrence is reimplemented in the report. The native trace supplies the before/after states and the exact rounded correction expression used by the executing kernel.)
+\alttext(Three boxes show initial a1,b about 0.707107,t0.25,p1; new means about 0.853553 and0.840896; and the corrected t about 0.228553,p2,estimate3.140579251.)
+
+> Quadratic gap contraction needs a separate connection to π
+
+For positive a and b, let a'=(a+b)/2 and b'=sqrt(ab). Their exact gap satisfies
+
+$$
+a'-b'=\frac{(\sqrt a-\sqrt b)^2}{2}
+       =\frac{(a-b)^2}{2(\sqrt a+\sqrt b)^2}.
+$$
+\alttext(The new gap is the square of the old gap divided by twice the squared sum of the square roots.)
+
+As both approach a positive common limit L, the denominator approaches 8L.
+The gap therefore contracts quadratically in exact arithmetic. This alone does
+not determine π: its connection also uses the correction terms and Legendre's
+relation for elliptic integrals. With the stated initial values, the update is
+
+$$
+\begin{aligned}
+a_{n+1}&=(a_n+b_n)/2,&b_{n+1}&=\sqrt{a_nb_n},\\
+t_{n+1}&=t_n-p_n(a_n-a_{n+1})^2,&p_{n+1}&=2p_n,\\
+\widehat\pi_n&=(a_n+b_n)^2/(4t_n).
+\end{aligned}
+$$
+\alttext(Update the two means, subtract the weighted squared mean change from t, double p, and estimate pi from the squared sum of the means divided by four t.)
+
+[Brent (1976), Fast Multiple-Precision Evaluation of Elementary Functions](https://doi.org/10.1145/321941.321944),
+Section 5, printed 246, gives the limit identity π=A²/T, where A is the common
+AGM limit and T is the limit of t, and explicitly recommends the displayed
+finite estimate ([author's full paper](https://maths-people.anu.edu.au/~brent/pd/rpb034.pdf)).
+It follows the elliptic identities in Section 4. The
+[author also credits Salamin's independent discovery](https://maths-people.anu.edu.au/~brent/pub/pub034.html).
+The paper's precision-based stopping and variable working precision differ from
+this library's fixed-count double model. This is an AGM π algorithm, not
+Gauss–Legendre quadrature for numerical integration.
+
+> Rerun the original six-step example without a fabricated error floor
+
+The original program subtracts a double literal for π. That compares two rounded
+floating numbers; it is not an exact real-number error. The native helper keeps
+that subtraction and separately compares with std::numbers::pi_v<long double>.
+The [C++ mathematical constants specification](https://eel.is/c++draft/numbers)
+uses the nearest representable value of π in the selected type. Long double may
+add precision on this platform, but that reference is rounded too and may have
+no extra bits on other platforms. These differences are diagnostics, not certified
+error bounds. The plot includes only available positive differences; it never
+replaces zero with a made-up floor.
+
+```{cpp, results="markdown", file="figures/legendre_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_legendre_pi.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <numbers>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::gauss_legendre_pi_trace(6);
+ std::vector<double>x0,x1,y0,y1;
+ std::print("| stage | actual estimate | error to double reference | error to wider reference | offset in double-reference ULPs |\n| ---: | ---: | ---: | ---: | ---: |\n");
+ for(const auto&e:t.steps){const auto a=dm::algorithms::pi_reference_accuracy(e.estimate);std::print("| {} | {:.17g} | {:.6e} | {:.6e} | {:.1f} |\n",e.iteration,e.estimate,a.rounded_absolute_error,a.wider_absolute_error,a.rounded_ulp_offset);if(a.has_rounded_log_error){x0.push_back(e.iteration);y0.push_back(a.rounded_log10_error);}if(a.has_wider_log_error){x1.push_back(e.iteration);y1.push_back(double(a.wider_log10_error));}}
+ const auto accuracy=dm::algorithms::pi_reference_accuracy(t.run.value);
+ std::print("\nDouble significand bits {}; wider significand bits {}; wider reference adds bits {}.\n",std::numeric_limits<double>::digits,std::numeric_limits<long double>::digits,accuracy.wider_has_more_bits);
+ std::print("First unchanged estimate stage {}; first unchanged (a,b,t) stage {}; final estimate {:.17g}.\n",t.run.first_unchanged_estimate,t.run.first_unchanged_mean_state,t.run.value);
+ auto plot=dm::graphics::RPlot::create();plot.lines(x0,y0,"Double reference",{37,99,235},2).points(x0,y0,"",{37,99,235},4)
+  .lines(x1,y1,"Wider reference",{220,38,38},2).points(x1,y1,"",{220,38,38},4).legend({"Double reference","Wider reference"},{{37,99,235},{220,38,38}})
+  .title("Actual reference differences fall, then reach a rounding plateau").xlab("Executed stage").ylab("log10 absolute reference difference; no clipped floor").y_limits(-18,0).size(1100,540).save_svg("build/legendre_original.svg");
+ if(t.run.first_unchanged_estimate<0||!std::isfinite(t.run.value))throw std::runtime_error("reference plateau");
+}
+```
+// result_begin: markdown
+| stage | actual estimate | error to double reference | error to wider reference | offset in double-reference ULPs |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 3.1405792505221686 | 1.013403e-03 | 1.013403e-03 | -2281980838865.0 |
+| 2 | 3.1415926462135428 | 7.376250e-09 | 7.376250e-09 | -16609839.0 |
+| 3 | 3.141592653589794 | 8.881784e-16 | 7.656636e-16 | 2.0 |
+| 4 | 3.141592653589794 | 8.881784e-16 | 7.656636e-16 | 2.0 |
+| 5 | 3.141592653589794 | 8.881784e-16 | 7.656636e-16 | 2.0 |
+| 6 | 3.141592653589794 | 8.881784e-16 | 7.656636e-16 | 2.0 |
+
+Double significand bits 53; wider significand bits 64; wider reference adds bits true.
+First unchanged estimate stage 4; first unchanged (a,b,t) stage 5; final estimate 3.141592653589794.
+\image(figures/legendre_original.svg)
+// result_end
+\caption(The original one-, two- and three-step estimates are preserved. Later double estimates stay two reference ULPs above the nearest double π, so they are not correctly rounded π.)
+\alttext(Two reference-error curves drop from about10^-3 to10^-8 and then near10^-15, with a nonzero plateau. The table distinguishes double and wider references and reports the two-ULP offset.)
+
+The old report's “last bit” claim is contradicted by the actual result: the plateau
+is two ULPs above the nearest double π, where one ULP here is the spacing at that
+reference. It is also an approximation to an exact-arithmetic lower formula that
+rounding can move above π. Such computed values are not certified brackets.
+A first unchanged estimate only says that two computed estimates compare equal.
+Extra iterations of the same rounded recurrence do not repair past rounding.
+
+> A nonzero correction can disappear when t is stored
+
+At stage 4, the used correction is positive but too small to change the rounded t.
+The means still change at that stage. At stage 5, a, b and t all stop changing,
+yet a and b remain distinct, one double ULP apart. The doubling weight p continues
+to change, so it is intentionally excluded from the mean-state stagnation flag.
+Neither flag asserts mathematical convergence. The following record table also
+separates the used correction from the rounded difference t_before-t_after.
+
+```{cpp, results="markdown", file="figures/legendre_states.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_legendre_pi.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <numbers>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto t=dm::algorithms::gauss_legendre_pi_trace(8);std::vector<double>xgap,gap_y,xcorr,corr_y;
+ std::print("| stage | a-b after | used correction | rounded t difference | estimate changed | (a,b,t) changed |\n| ---: | ---: | ---: | ---: | --- | --- |\n");
+ for(const auto&e:t.steps){const double gap=e.after.a-e.after.b;std::print("| {} | {:.6e} | {:.6e} | {:.6e} | {} | {} |\n",e.iteration,gap,e.correction,e.before.t-e.after.t,e.estimate_changed,e.mean_state_changed);if(gap>0){xgap.push_back(e.iteration);gap_y.push_back(std::log10(gap));}if(e.correction>0){xcorr.push_back(e.iteration);corr_y.push_back(std::log10(e.correction));}}
+ std::print("\nFinal a {:.17g}; b {:.17g}; equal {}; first unchanged estimate {}; first unchanged mean state {}.\n",t.run.final.a,t.run.final.b,t.run.final.a==t.run.final.b,t.run.first_unchanged_estimate,t.run.first_unchanged_mean_state);
+ auto plot=dm::graphics::RPlot::create();plot.lines(xgap,gap_y,"Mean gap",{37,99,235},2).points(xgap,gap_y,"",{37,99,235},4)
+  .lines(xcorr,corr_y,"Used correction",{220,38,38},2).points(xcorr,corr_y,"",{220,38,38},4).legend({"Mean gap","Used correction"},{{37,99,235},{220,38,38}})
+  .title("Rounded mean states can stall with a nonzero gap").xlab("Actual stage").ylab("log10 positive mean gap or positive used correction").y_limits(-23,1).size(1100,540).save_svg("build/legendre_states.svg");
+ if(t.steps[3].correction<=0||t.steps[3].before.t!=t.steps[3].after.t||t.run.final.a==t.run.final.b)throw std::runtime_error("lost correction and nonzero gap");
+}
+```
+// result_begin: markdown
+| stage | a-b after | used correction | rounded t difference | estimate changed | (a,b,t) changed |
+| ---: | ---: | ---: | ---: | --- | --- |
+| 1 | 1.265698e-02 | 2.144661e-02 | 2.144661e-02 | true | true |
+| 2 | 2.363618e-05 | 8.009951e-05 | 8.009951e-05 | true | true |
+| 3 | 8.242751e-11 | 5.586688e-10 | 5.586688e-10 | true | true |
+| 4 | 1.110223e-16 | 1.358855e-20 | 0.000000e+00 | false | true |
+| 5 | 1.110223e-16 | 0.000000e+00 | 0.000000e+00 | false | false |
+| 6 | 1.110223e-16 | 0.000000e+00 | 0.000000e+00 | false | false |
+| 7 | 1.110223e-16 | 0.000000e+00 | 0.000000e+00 | false | false |
+| 8 | 1.110223e-16 | 0.000000e+00 | 0.000000e+00 | false | false |
+
+Final a 0.84721308479397917; b 0.84721308479397905; equal false; first unchanged estimate 4; first unchanged mean state 5.
+\image(figures/legendre_states.svg)
+// result_end
+\caption(Gap and correction are different quantities. Zero corrections after stage 4 are absent from the logarithmic curve, not moved to an artificial plotting floor.)
+\alttext(The mean gap stalls near10^-16. The positive stage 4 correction reaches about10^-20 while the rounded t difference is zero; later corrections are exactly zero and omitted from the log plot.)
+
+> Requested fixed-precision work still grows linearly
+
+For N admitted stages, the shared recurrence executes N arithmetic means,
+N geometric means, N correction updates and N weight doublings. Including
+initialization, it uses N+1 square roots. The analysis APIs evaluate N+1 estimates
+to detect changes, whereas the legacy scalar API evaluates only the final
+estimate expression. No API stops early merely because an estimate or mean
+state stagnates. Ordinary analysis uses O(N) arithmetic and O(1) result storage;
+owned fixed-schema histories use O(N) records and copying.
+
+This operation count differs from the complexity of obtaining more mathematical
+digits with variable precision. Brent's discussion on printed 247 requires guard
+bits and gives O(M(n)log n) cost for n-bit π using n-bit multiplication cost M(n).
+It also notes that AGM is not self-correcting. Quadratic exact convergence cannot
+create millions of digits inside a fixed double; arithmetic precision must grow.
+The following plot counts actual square-root evaluations, not elapsed time.
+
+```{cpp, results="markdown", file="figures/legendre_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_legendre_pi.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <numbers>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ std::vector<double>x,y;
+ std::print("| requested stages | square roots | mean pairs | correction updates | weight updates | analysis estimate evaluations | trace records needed | final weight finite |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |\n");
+ for(int n:std::array<int,13>{0,1,2,3,4,5,6,8,16,64,256,dm::algorithms::gauss_legendre_pi_limit()-1,dm::algorithms::gauss_legendre_pi_limit()}){const auto s=dm::algorithms::gauss_legendre_pi_run(n);std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",n,s.work.square_roots,s.work.arithmetic_means,s.work.correction_updates,s.work.power_updates,s.work.estimate_evaluations,dm::algorithms::gauss_legendre_pi_trace_records(n),std::isfinite(s.final.p));if(n>0){x.push_back(std::log2(double(n)));y.push_back(std::log2(double(s.work.square_roots)));}if(s.work.square_roots!=n+1||s.work.power_updates!=n)throw std::runtime_error("fixed-count work");}
+ auto plot=dm::graphics::RPlot::create();plot.lines(x,y,"Actual square roots",{37,99,235},2).points(x,y,"",{37,99,235},4)
+  .title("More requested fixed-precision stages still perform more work").xlab("log2 requested positive stage count").ylab("log2 actual square-root evaluations, including initialization").y_limits(0,12).size(1100,540).save_svg("build/legendre_work.svg");
+ std::print("\nSafe used-weight limit {}; the last unused doubling may overflow; estimate remains finite {}.\n",dm::algorithms::gauss_legendre_pi_limit(),std::isfinite(dm::algorithms::gauss_legendre_pi(dm::algorithms::gauss_legendre_pi_limit())));
+}
+```
+// result_begin: markdown
+| requested stages | square roots | mean pairs | correction updates | weight updates | analysis estimate evaluations | trace records needed | final weight finite |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 0 | 1 | 0 | 0 | 0 | 1 | 1 | true |
+| 1 | 2 | 1 | 1 | 1 | 2 | 2 | true |
+| 2 | 3 | 2 | 2 | 2 | 3 | 3 | true |
+| 3 | 4 | 3 | 3 | 3 | 4 | 4 | true |
+| 4 | 5 | 4 | 4 | 4 | 5 | 5 | true |
+| 5 | 6 | 5 | 5 | 5 | 6 | 6 | true |
+| 6 | 7 | 6 | 6 | 6 | 7 | 7 | true |
+| 8 | 9 | 8 | 8 | 8 | 9 | 9 | true |
+| 16 | 17 | 16 | 16 | 16 | 17 | 17 | true |
+| 64 | 65 | 64 | 64 | 64 | 65 | 65 | true |
+| 256 | 257 | 256 | 256 | 256 | 257 | 257 | true |
+| 1023 | 1024 | 1023 | 1023 | 1023 | 1024 | 1024 | true |
+| 1024 | 1025 | 1024 | 1024 | 1024 | 1025 | 1025 | false |
+
+Safe used-weight limit 1024; the last unused doubling may overflow; estimate remains finite true.
+\image(figures/legendre_work.svg)
+// result_end
+\caption(Stagnation is observed but does not skip requested stages. At the maximal binary64 count 1024, only the final unused weight overflows; the next stage would use infinity times zero and is rejected before work.)
+\alttext(A single log2 curve follows the measured N+1 square roots. The table includes zero stages, long stagnant prefixes, and the final permitted weight-overflow boundary.)
+
+> Reference zero, owned records and bounded control counts
+
+Comparing the nearest double π with itself gives a zero double-reference
+error and no available logarithm. A genuinely wider reference still reveals
+that this double constant approximates an irrational real value. The helper
+reports log availability explicitly; it does not convert zero into a guessed
+error floor. ULP offsets below use the local spacing at rounded double π.
+
+Checked analysis/trace counts must lie from 0 through the format's safe used-weight
+limit, 1024 for binary64. The final unused p can become infinity at that boundary,
+while the estimate stays finite; a later use is forbidden. The old function
+returned NaN at 1025. New calls reject that suffix before work. Legacy negative
+counts retain their zero-stage behavior; new checked analysis/trace APIs reject
+negative counts instead of silently interpreting them as precision requests.
+
+Whole history admission counts one initial-state record plus N complete stage
+records before initialization or allocation. These units are records, not scalar
+entries or bytes, and exclude ordinary final output, root/work metadata, working
+storage and allocator bytes. This is not a peak RAM limit. Default cap is one
+million; zero disables only that optional cap. There is no truncation, replay or
+partial returned trace. A zero-stage trace still contains its one initial record.
+
+```{cpp, results="markdown", file="figures/legendre_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/gauss_legendre_pi.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <array>
+#include <cmath>
+#include <limits>
+#include <numbers>
+#include <print>
+namespace dm=datamunge;
+int main(){
+ std::filesystem::create_directories("build");
+ const auto plateau=dm::algorithms::pi_reference_accuracy(dm::algorithms::gauss_legendre_pi(6));const auto rounded=dm::algorithms::pi_reference_accuracy(std::numbers::pi);
+ std::print("| candidate | double-reference error | wider-reference error | local-reference ULP offset | rounded log available | wider log available |\n| --- | ---: | ---: | ---: | --- | --- |\n| AGM plateau | {:.6e} | {:.6e} | {:.1f} | {} | {} |\n| Rounded pi constant | {:.6e} | {:.6e} | {:.1f} | {} | {} |\n",plateau.rounded_absolute_error,plateau.wider_absolute_error,plateau.rounded_ulp_offset,plateau.has_rounded_log_error,plateau.has_wider_log_error,rounded.rounded_absolute_error,rounded.wider_absolute_error,rounded.rounded_ulp_offset,rounded.has_rounded_log_error,rounded.has_wider_log_error);
+ bool denied=false;try{(void)dm::algorithms::gauss_legendre_pi_trace(6,6);}catch(const std::length_error&){denied=true;}
+ auto t=dm::algorithms::gauss_legendre_pi_trace(6,7);t.steps[0].after.a=99;const bool owned=t.run.initial.a==1&&t.steps[1].before.a!=99&&t.run.final.a!=99;
+ bool negative=false,large=false,nonfinite=false;try{(void)dm::algorithms::gauss_legendre_pi_trace(-1,1);}catch(const std::invalid_argument&){negative=true;}try{(void)dm::algorithms::gauss_legendre_pi(std::numeric_limits<int>::max());}catch(const std::invalid_argument&){large=true;}try{(void)dm::algorithms::pi_reference_accuracy(std::numeric_limits<double>::infinity());}catch(const std::invalid_argument&){nonfinite=true;}
+ const auto zero=dm::algorithms::gauss_legendre_pi_trace(0,1);
+ std::print("\nRecords required {}; captured {}; cap 6 rejected {}; cap 7 admitted true; independent owned copies {}.\n",dm::algorithms::gauss_legendre_pi_trace_records(6),t.captured_records,denied,owned);
+ std::print("Checks: negative checked count before quota {}; excessive count before work {}; nonfinite reference candidate {}; legacy negative equals zero {}.\n",negative,large,nonfinite,dm::algorithms::gauss_legendre_pi(-1)==dm::algorithms::gauss_legendre_pi(0));
+ std::print("Zero-stage trace: events {}; records {}; initial estimate {:.17g}; initial square roots {}.\n",zero.steps.size(),zero.captured_records,zero.run.value,zero.run.work.square_roots);
+ auto quota=dm::graphics::RPlot::barplot({7.,double(t.captured_records),6.},{"Required","Captured","Rejected cap"});quota.title("Whole-record admission").xlab("").ylab("Complete records, not bytes").y_limits(0,9);
+ auto ulps=dm::graphics::RPlot::barplot({double(plateau.rounded_ulp_offset),double(rounded.rounded_ulp_offset)},{"AGM plateau","Rounded pi"});ulps.title("Offset from double reference").xlab("").ylab("ULPs at the rounded pi reference").y_limits(0,3);
+ dm::graphics::RLayout::create(1,2).add(quota).add(ulps).size(1100,500).title("Resource records and reference differences have distinct units").fit_panels().save_svg("build/legendre_controls.svg");
+ if(!denied||!owned||!negative||!large||!nonfinite||rounded.has_rounded_log_error)throw std::runtime_error("record and reference controls");
+}
+```
+// result_begin: markdown
+| candidate | double-reference error | wider-reference error | local-reference ULP offset | rounded log available | wider log available |
+| --- | ---: | ---: | ---: | --- | --- |
+| AGM plateau | 8.881784e-16 | 7.656636e-16 | 2.0 | true | true |
+| Rounded pi constant | 0.000000e+00 | 1.225148e-16 | 0.0 | false | true |
+
+Records required 7; captured 7; cap 6 rejected true; cap 7 admitted true; independent owned copies true.
+Checks: negative checked count before quota true; excessive count before work true; nonfinite reference candidate true; legacy negative equals zero true.
+Zero-stage trace: events 0; records 1; initial estimate 2.9142135623730949; initial square roots 1.
+\image(figures/legendre_controls.svg)
+// result_end
+\caption(Exact record admission is 7 for six stages. The zero-height reference-offset bar means equality to the rounded double reference; the wider-reference column explains why that is not exact mathematical π.)
+\alttext(Two panels show record counts7,7 and rejected 6, then ULP offsets2 for the native plateau and0 for rounded pi. Computed log flags and domain controls accompany the figure.)
+
+Actual states, counters and unclipped reference differences preserve the original
+calculation while correcting its accuracy interpretation. Quadratic mathematics
+explains the rapid initial improvement; finite precision explains the plateau,
+disappearing corrections and the gap between equality tests and mathematical
+convergence. These generated constant-iteration states need no external dataset.

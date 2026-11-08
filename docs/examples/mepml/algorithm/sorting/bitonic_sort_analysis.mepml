@@ -1,0 +1,263 @@
+//? Title: Bitonic Sort: A Fixed Network with Visible Comparators
+//? Subtitle: Four-wire execution, exact size and depth, arbitrary lengths and the zero-one principle
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given an unordered sequence, sort it using comparison locations determined only
+by its length. A fixed network exposes independent comparison stages, while the
+values decide which exchanges occur. We inspect a four-wire execution, retain
+the original eighteen-element example, derive exact power-of-two comparison
+counts, and exhaust binary inputs to check the zero-one principle. The sorter,
+network inspector and execution trace share one canonical comparator traversal.
+)
+
+\toc
+
+> The method
+
+A compare/exchange operation sends the smaller and larger of two values to
+specified wires. A bitonic sorter recursively sorts opposing halves, then
+merges the resulting bitonic sequence. For power-of-two length n, the merge
+first compares wires separated by n/2 and then merges the two halves.
+
+For zero-one input, a cyclic bitonic sequence has one contiguous block of ones
+on a circle. Comparing opposite positions separates the smaller from the larger
+half, leaves each half bitonic, and ensures every value in the first half is at
+most every value in the second. Recursing establishes the merge; recursively
+forming the opposing sorted halves establishes the sorter.
+
+The wire pairs and directions depend only on n. They form a sorting network,
+and comparisons in a dependency stage use disjoint wires. The native C++ sorter
+executes them sequentially; a stage label is an available parallel schedule,
+not a measurement of threads or GPU execution.
+
+> Simple example: four wires
+
+Sort \((3,1,4,2)\). The first stage sorts the left pair downward and the right
+pair upward. Two upward merge stages then finish the sequence. The diagram
+and event table come from the actual core topology and integer trace.
+
+```{cpp, file="figures/bitonic_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::bitonic_sort_trace({3,1,4,2});
+  const auto network=dm::algorithms::bitonic_network(4);
+  dm::graphics::Diagram diagram(75,1100);
+  dm::graphics::DiagramStroke wire;wire.color={148,163,184};wire.width=1;
+  for (std::size_t i=0;i<4;++i) {
+    const double y=-1.25*i;
+    diagram.path({{0,y},{8,y}},wire)
+           .text({-.7,y},std::to_string(trace.input[i]))
+           .text({8.7,y},std::to_string(trace.output[i]));
+  }
+  std::vector<int> within(network.stages);
+  for (const auto& c:network.comparators) {
+    const double x=1.5+2.5*c.stage+.35*(within[c.stage]++-.5);
+    const double first=-1.25*c.first,second=-1.25*c.second;
+    dm::graphics::DiagramStroke stroke;
+    stroke.color=c.ascending?dm::RGB{37,99,235}:dm::RGB{217,119,6};
+    diagram.path({{x,first},{x,second}},stroke)
+           .ellipse({x,first},.065,.065,stroke.color)
+           .ellipse({x,second},.065,.065,stroke.color);
+  }
+  for (std::size_t stage=0;stage<network.stages;++stage)
+    diagram.text({1.5+2.5*stage,1},std::format("Stage {}",stage+1));
+  diagram.text({4,-5},"Blue: minimum to upper wire; amber: minimum to lower wire.");
+  diagram.save_svg("build/bitonic_network.svg");
+}
+```
+// result_begin:
+// \image(figures/bitonic_network.svg)
+// result_end
+\caption(A dot identifies a comparator endpoint; a line crossing without a dot adds no connection. Comparators within a stage are slightly staggered to keep crossings unambiguous.)
+\alttext(Four horizontal wires carry input three, one, four, two through six comparators in three stages to output one, two, three, four. The first left comparator is descending; the others are ascending.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto trace=dm::algorithms::bitonic_sort_trace({3,1,4,2});
+  std::print("| stage | first wire | second wire | ascending | before | after | exchanged |\n"
+             "| ---: | ---: | ---: | :--- | :--- | :--- | :--- |\n");
+  for (const auto& s:trace.steps)
+    std::print("| {} | {} | {} | {} | {}, {} | {}, {} | {} |\n",s.comparator.stage+1,
+        s.comparator.first,s.comparator.second,s.comparator.ascending,
+        s.first_before,s.second_before,s.first_after,s.second_after,s.swapped);
+  std::vector<int> original{8,3,11,1,7,14,2,9,5,13,0,6,12,4,10,15,20,17};
+  std::print("\nOriginal eighteen-element input: {}.\n",original);
+  dm::algorithms::bitonic_sort(original);
+  const auto network=dm::algorithms::bitonic_network(original.size());
+  std::print("Sorted: {}. Comparators: {}; stages: {}.\n",original,network.comparators.size(),network.stages);
+}
+```
+// result_begin: markdown
+| stage | first wire | second wire | ascending | before | after | exchanged |
+| ---: | ---: | ---: | :--- | :--- | :--- | :--- |
+| 1 | 0 | 1 | false | 3, 1 | 3, 1 | false |
+| 1 | 2 | 3 | true | 4, 2 | 2, 4 | true |
+| 2 | 0 | 2 | true | 3, 2 | 2, 3 | true |
+| 2 | 1 | 3 | true | 1, 4 | 1, 4 | false |
+| 3 | 0 | 1 | true | 2, 1 | 1, 2 | true |
+| 3 | 2 | 3 | true | 3, 4 | 3, 4 | false |
+
+Original eighteen-element input: [8, 3, 11, 1, 7, 14, 2, 9, 5, 13, 0, 6, 12, 4, 10, 15, 20, 17].
+Sorted: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 20]. Comparators: 91; stages: 15.
+// result_end
+\caption(The original non-power-of-two sorting example is retained. Unchanged pairs still count as comparisons. Trace order is sequential recursion order, with stage labels identifying independent groups.)
+
+> Arbitrary lengths need the right merge invariant
+
+The implementation follows Lang's generalisation. Let s be the greatest power
+of two strictly below n. Compare \((i,i+s)\) only while both wires exist,
+then recurse on lengths s and n-s. Ascending sorting first builds a binary
+valley, \(1^*0^*1^*\), from a descending left part and ascending right part.
+Padding that valley with ones preserves its shape; comparisons against the
+padded ones do nothing. The power-of-two merge therefore restricts to the
+real wires, leaving a power-of-two bitonic left part and a valley-shaped right
+part for recursion. Descending sorting has the symmetric zero-padding argument.
+This is not a claim that every arbitrary-length cyclic bitonic input can be
+merged by this restricted operation.
+
+> Checking the theory: exact counts
+
+For \(n=2^p\), a merge has p layers and n/2 comparisons per layer. If M is
+merge work and C is sorting work,
+
+$$
+M(n)=\frac n2\log_2n,\qquad
+C(n)=2C(n/2)+M(n)=\frac n4p(p+1),\qquad
+D(n)=\frac{p(p+1)}2.
+$$
+\alttext(A merge uses n over two times log base two of n comparisons. Sorting uses n over four times p times p plus one comparisons, arranged in p times p plus one over two stages.)
+
+The formula follows by summing the merge work at each recursive level. The
+leading term \(np^2/4\) omits \(np/4\); it is not the exact count. For
+arbitrary n, the emitted network gives the actual comparison count. Its depth
+is \(q(q+1)/2\) for \(q=\lceil\log_2n\rceil\), with zero depth for
+n=0 or n=1, and at most \(\lfloor n/2\rfloor\) comparisons per stage.
+
+```{cpp, results="markdown", file="figures/bitonic_counts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <bit>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> size,actual,leading,power_size,predicted;
+  std::print("| power-of-two n | emitted comparators | exact formula | stages |\n"
+             "| ---: | ---: | ---: | ---: |\n");
+  for (std::size_t n=2;n<=64;++n) {
+    const auto network=dm::algorithms::bitonic_network(n);
+    size.push_back(n);actual.push_back(network.comparators.size());
+    const double p=std::log2(double(n));leading.push_back(n*p*p/4);
+    if (std::has_single_bit(n)) {
+      const auto exponent=std::bit_width(n)-1;
+      const auto count=(n/2)*(exponent*(exponent+1)/2);
+      if (count!=network.comparators.size()) return 1;
+      std::print("| {} | {} | {} | {} |\n",n,network.comparators.size(),count,network.stages);
+      power_size.push_back(n);predicted.push_back(count);
+    }
+  }
+  dm::graphics::RPlot::create()
+      .lines(size,actual,"network count",dm::RGB{37,99,235},2)
+      .lines(size,leading,"leading term",dm::RGB{148,163,184},2)
+      .points(power_size,predicted,"power-of-two exact",dm::RGB{217,119,6},6)
+      .title("Fixed comparator counts by input length")
+      .x_label("number of elements").y_label("comparators").y_limits(0,900)
+      .size(900,480).save_svg("build/bitonic_counts.svg");
+}
+```
+// result_begin: markdown
+| power-of-two n | emitted comparators | exact formula | stages |
+| ---: | ---: | ---: | ---: |
+| 2 | 1 | 1 | 1 |
+| 4 | 6 | 6 | 3 |
+| 8 | 24 | 24 | 6 |
+| 16 | 80 | 80 | 10 |
+| 32 | 240 | 240 | 15 |
+| 64 | 672 | 672 | 21 |
+\image(figures/bitonic_counts.svg)
+// result_end
+\caption(The measured quantity is the canonical topology's comparison count. Exact power-of-two predictions are marked separately from the leading asymptotic term.)
+\alttext(The comparator count grows with input length. At lengths two, four, eight, sixteen, thirty-two and sixty-four it is one, six, twenty-four, eighty, two hundred forty and six hundred seventy-two.)
+
+> The zero-one principle and value-dependent swaps
+
+Thresholding commutes with min and max. If a comparison network left an inversion
+between two ordered values, a threshold between them would leave an inverted
+binary pair. Hence a network that sorts every binary input of length n sorts
+every totally ordered input of that length. The following exhaustive check
+uses that principle for small lengths, rather than assuming random tests alone
+prove correctness.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::print("| wires | binary inputs checked | failures |\n| ---: | ---: | ---: |\n");
+  for (unsigned n=0;n<=10;++n) {
+    unsigned failures=0;
+    for (unsigned mask=0;mask<(1U<<n);++mask) {
+      std::vector<int> values(n);
+      for (unsigned j=0;j<n;++j) values[j]=(mask>>j)&1;
+      dm::algorithms::bitonic_sort(values);
+      failures+=!std::is_sorted(values.begin(),values.end());
+    }
+    std::print("| {} | {} | {} |\n",n,1U<<n,failures);
+    if (failures) return 1;
+  }
+  std::print("\n| input class | comparisons | exchanges |\n| :--- | ---: | ---: |\n");
+  for (const auto& [label,values]:std::vector<std::pair<std::string,std::vector<int>>>{
+       {"ascending",{0,1,2,3,4,5,6,7}},{"descending",{7,6,5,4,3,2,1,0}},{"equal",{1,1,1,1,1,1,1,1}}}) {
+    const auto trace=dm::algorithms::bitonic_sort_trace(values);
+    const auto swaps=std::count_if(trace.steps.begin(),trace.steps.end(),[](const auto& step){return step.swapped;});
+    std::print("| {} | {} | {} |\n",label,trace.steps.size(),swaps);
+  }
+}
+```
+// result_begin: markdown
+| wires | binary inputs checked | failures |
+| ---: | ---: | ---: |
+| 0 | 1 | 0 |
+| 1 | 2 | 0 |
+| 2 | 4 | 0 |
+| 3 | 8 | 0 |
+| 4 | 16 | 0 |
+| 5 | 32 | 0 |
+| 6 | 64 | 0 |
+| 7 | 128 | 0 |
+| 8 | 256 | 0 |
+| 9 | 512 | 0 |
+| 10 | 1024 | 0 |
+
+| input class | comparisons | exchanges |
+| :--- | ---: | ---: |
+| ascending | 24 | 10 |
+| descending | 24 | 14 |
+| equal | 24 | 6 |
+// result_end
+\caption(Every displayed length is checked on all its binary inputs. Equal-size inputs keep the comparator topology but can cause different numbers of exchanges.)
+
+Native tests extend the binary check through sixteen wires: 131,071 input
+sequences in total. They also replay each trace, verify that stage wire pairs
+are disjoint, and compare generated integer and floating sequences with ordinary
+sorting. Finite exhaustive checks validate those sizes; the recursive argument
+establishes the construction's general correctness.
+
+> Conclusion
+
+One canonical visitor now supplies sorting, comparator counts, dependency stages
+and recorded compare/exchange events. The original eighteen-element example
+sorts without padding the caller's vector. Exact counts and exhaustive binary
+controls support the network description, with generated inputs sufficient for
+these ordering properties.
+
+The native implementation remains sequential and uses branches and exchanges
+that depend on values. Fixed comparator locations do not establish constant-time
+execution. The sort is not stable; descending comparisons retain the historical
+exchange-on-equality rule. The unrecorded sorter uses a logarithmic recursion
+stack, while materialising a topology or trace adds storage proportional to
+the number of comparisons. No observed dataset or runtime speed claim is needed.
+
+> References
+
+- Batcher, K. E. (1968). *Sorting networks and their applications*. AFIPS Spring Joint Computer Conference, 32, 307–314. https://doi.org/10.1145/1468075.1468121
+- Lang, H. W. *Bitonic sorting network for n not a power of 2*. The arbitrary-length construction and binary padding proof are followed here. https://hwlang.de/algorithmen/sortieren/bitonic/oddn.htm

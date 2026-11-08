@@ -17,6 +17,7 @@
 #include <datamunge/stats/decision_tree_classifier.hpp>
 #include <datamunge/stats/decision_tree_regressor.hpp>
 #include <datamunge/stats/diffusion_maps.hpp>
+#include <datamunge/stats/manifold_diagnostics.hpp>
 #include <datamunge/stats/elastic_net.hpp>
 #include <datamunge/stats/exponential_smoothing.hpp>
 #include <datamunge/stats/factor_analysis.hpp>

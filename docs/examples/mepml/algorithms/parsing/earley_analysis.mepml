@@ -1,0 +1,368 @@
+//? Title: Earley Recognition: Actual Dotted Items, Nullable Closure and Measured Joins
+//? Subtitle: Preserve the original grammar examples while making empty rules, provenance and work explicit
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a context-free grammar and a word of atomic tokens, we want to decide
+whether the start symbol can derive the whole word. Left recursion,
+ambiguity and empty productions make a simple recursive search difficult
+to terminate correctly. Earley recognition instead closes finite sets of
+dotted production items. We begin with one token and four actual items,
+retain the original balanced-word and expression examples, and inspect a
+nullable completion that a later waiter must reuse. Owned first-insertion
+reasons, exact family work counts and checked capture controls make the
+recognizer's result reproducible without claiming to enumerate parse trees.
+)
+
+\toc
+
+> Four actual items for one token
+
+Use S→A and A→a, with the one-token input [a]. Boundary zero seeds
+S→.A, predicts A→.a, then scanning a creates A→a. at boundary one.
+Completion combines that finished A with the original waiting S item to
+produce S→A. spanning the whole input. The printed table and native
+diagram come from those actual inserted items and their first parents.
+The dotted text quotes atomic symbol names and prints the origin in parentheses.
+
+```{cpp, results="markdown", file="figures/earley_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  dm::algorithms::ContextFreeGrammar g{{{"S",{"A"}},{"A",{"a"}}},"S"};
+  const auto t=dm::algorithms::earley_trace(g,{"a"});
+  const std::array<const char*,4> names{"seed","predict","scan","complete"};
+  const auto ref=[](dm::algorithms::EarleyLocation r){return r.column==dm::algorithms::earley_no_item?std::string("none"):std::format("({},{})",r.column,r.index);};
+  std::print("Tiny word: accepted {}; items {}; completion joins {}; capture entries {}.\n\n",t.accepted,t.work.unique_items,t.work.completion_joins,t.captured_entries);
+  std::print("| location | actual item | first cause | first parent | second parent |\n| :--- | :--- | :--- | :--- | :--- |\n");
+  std::vector<dm::algorithms::EarleyLocation> order;std::map<std::pair<std::size_t,std::size_t>,std::size_t> position;
+  for(std::size_t k=0;k<t.chart.size();++k)for(std::size_t i=0;i<t.chart[k].size();++i){const auto r=t.reasons[k][i];
+    std::print("| ({},{}) | {} | {} | {} | {} |\n",k,i,dm::algorithms::earley_item_text(t,{k,i}),names.at(static_cast<std::size_t>(r.action)),ref(r.first),ref(r.second));
+    position[{k,i}]=order.size();order.push_back({k,i});
+  }
+  dm::graphics::Diagram d(64,1100);dm::graphics::DiagramNodeStyle box;box.width=4.2;box.height=1.4;box.font_size=22;
+  for(std::size_t i=0;i<order.size();++i){const auto at=order[i];d.node(std::to_string(i),{5.4*i,0},std::format("({},{})\n{}",at.column,at.index,dm::algorithms::earley_item_text(t,at)),box);
+    if(i){const auto r=t.reasons[at.column][at.index];const auto parent=r.action==dm::algorithms::EarleyAction::complete?r.second:r.first;
+      d.edge(std::to_string(position.at({parent.column,parent.index})),std::to_string(i),names.at(static_cast<std::size_t>(r.action)));}}
+  const auto waiter=t.reasons[1][1].first;const double x=5.4*position.at({waiter.column,waiter.index});
+  dm::graphics::DiagramStroke waiting;waiting.arrow=true;waiting.dashed=true;
+  d.path({{x,.7},{x,2.6},{16.2,2.6},{16.2,.7}},waiting).text({8.1,3.1},"completion also uses waiting parent (0,0)",20)
+   .text({8.1,4.3},"One actual prediction, scan and completion",26).save_svg("build/earley_tiny.svg");
+}
+```
+// result_begin: markdown
+Tiny word: accepted true; items 4; completion joins 1; capture entries 16.
+
+| location | actual item | first cause | first parent | second parent |
+| :--- | :--- | :--- | :--- | :--- |
+| (0,0) | p0 "S" -> . "A" (0) | seed | none | none |
+| (0,1) | p1 "A" -> . "a" (0) | predict | (0,0) | none |
+| (1,0) | p1 "A" -> "a" . (0) | scan | (0,1) | none |
+| (1,1) | p0 "S" -> "A" . (0) | complete | (0,0) | (1,0) |
+\image(figures/earley_tiny.svg)
+// result_end
+\caption(All four unique items are from one recognition run. The final completion has two actual prerequisites: the finished A and the earlier item waiting for A.)
+\alttext(A native four-node chain shows seed, prediction, scanning and completion, with a dashed second-parent link from the waiting start item to the accepted item.)
+
+> Define closure over a finite chart
+
+An item in column k has coordinates (production id, dot, origin).
+For A→α.β with origin j, α has matched tokens in [j,k), and β
+remains. A symbol is nonterminal exactly when it occurs as a production
+left-hand side. The operations are:
+
+- Prediction: before a nonterminal B, add each original B→.γ at origin k.
+- Scanning: before a matching terminal token, advance the dot into column k+1.
+- Completion: a finished B from j to k advances every item in column j waiting for B.
+
+Seed every original start production in column zero. Acceptance requires a
+completed start production at the final boundary, with origin zero. No
+synthetic start item is added, preserving the original chart statistics.
+Rules retain their original ids and duplicate rules remain distinct items.
+
+Soundness follows by induction over these deductions: prediction starts an
+empty prefix, scanning consumes the specified token, and completion joins
+adjacent matching spans. For completeness, every successful derivation's
+prediction, token advance and completed child must eventually be joined.
+An agenda processes each inserted item once, and deduplication makes its
+closure finite. If M is the sum of RHS-length-plus-one over all original
+productions, at most M(N+1)(N+2)/2 distinct items can occur across N+1
+columns: each dotted production has at most k+1 origins in column k.
+This remains finite even when a nullable cycle admits infinitely many trees.
+
+The implementation interns opaque symbol strings, predicts a requested
+nonterminal once per column, and indexes waiters and first completed spans.
+It uses integer comparisons in the recognition loop. Insertion-ordered
+vectors determine output order; hash indexes only answer membership/lookup
+queries. Expected constant hash access gives the usual fixed-grammar
+O(N³) general join bound and O(N²) item/index storage. String preparation
+is additional. These are not unconditional worst-case hash-time claims.
+No lookahead, LR(0) precomputation, Leo optimization or parse forest is included.
+
+> Retain the original balanced words and left-recursive expressions
+
+The original grammar S→a S b | a b recognizes a^k b^k for k>=1.
+The next program retains all six original tests. It also retains the
+left-recursive precedence grammar E→E+T|T, T→T*F|F, F→(E)|id
+and its three original input words. Naive recursive descent on that
+left recursion would call itself without consuming a token; Earley needs
+no grammar rewrite. The E/T/F grammar specifies precedence and is not
+the ambiguous S→SS|a grammar used later.
+
+```{cpp, results="markdown", file="figures/earley_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  dm::algorithms::ContextFreeGrammar balanced{{{"S",{"a","S","b"}},{"S",{"a","b"}}},"S"};
+  std::print("| balanced word | accepted |\n| :--- | :--- |\n");
+  for(const auto& word:std::vector<std::vector<std::string>>{{"a","b"},{"a","a","b","b"},{"a","a","a","b","b","b"},{"a","a","b"},{"a","b","b"},{"b","a"}}){
+    std::string text;for(const auto& token:word)text+=token;std::print("| {} | {} |\n",text,dm::algorithms::earley_recognize(balanced,word));}
+  dm::algorithms::ContextFreeGrammar expr{{{"E",{"E","+","T"}},{"E",{"T"}},{"T",{"T","*","F"}},{"T",{"F"}},{"F",{"(","E",")"}},{"F",{"id"}}},"E"};
+  std::print("\n| expression tokens | accepted |\n| :--- | :--- |\n");
+  for(const auto& word:std::vector<std::vector<std::string>>{{"id","+","id","*","id"},{"(","id","+","id",")","*","id"},{"id","+"}}){
+    std::string text;for(const auto& token:word){if(!text.empty())text+=' ';text+=token;}std::print("| {} | {} |\n",text,dm::algorithms::earley_recognize(expr,word));}
+  const std::vector<std::string> big{"a","a","a","a","b","b","b","b"};
+  const auto sizes=dm::algorithms::earley_chart_sizes(balanced,big);const auto t=dm::algorithms::earley_trace(balanced,big);
+  std::print("\nOriginal aaaabbbb chart sizes:");for(int s:sizes)std::print(" {}",s);std::print(". Total items {}; capture entries {}.\n",t.work.unique_items,t.captured_entries);
+  std::vector<double> ys(sizes.begin(),sizes.end());std::vector<std::string> labels;for(std::size_t i=0;i<sizes.size();++i)labels.push_back(std::to_string(i));
+  dm::graphics::RPlot::barplot(ys,labels,"",{16,122,87}).title("Original chart for aaaabbbb").x_label("input boundary").y_label("unique dotted items")
+   .y_limits(0,5.5).size(1100,500).save_svg("build/earley_original.svg");
+}
+```
+// result_begin: markdown
+| balanced word | accepted |
+| :--- | :--- |
+| ab | true |
+| aabb | true |
+| aaabbb | true |
+| aab | false |
+| abb | false |
+| ba | false |
+
+| expression tokens | accepted |
+| :--- | :--- |
+| id + id * id | true |
+| ( id + id ) * id | true |
+| id + | false |
+
+Original aaaabbbb chart sizes: 2 4 4 4 4 2 2 2 1. Total items 25; capture entries 75.
+\image(figures/earley_original.svg)
+// result_end
+\caption(All nine original recognition examples and the exact original chart-size sequence are recomputed. The eight-token chart has 25 items; these are dotted states, not 25 parse trees.)
+\alttext(A native bar plot shows the original chart counts two, four, four, four, four, two, two, two and one across boundaries zero through eight.)
+
+> Empty rules require both arrival orders
+
+Use S→A B, A→ε and B→A with an empty input. A can complete before
+B→.A is predicted. When that later item begins waiting for A, simply
+processing A's old completion once is insufficient. The waiter must
+notice the already completed zero-width span and advance immediately.
+
+The earlier implementation also iterated a column's vector by reference
+while nullable completion appended to the same vector. A compiled
+old-header sanitizer probe reproduces a heap-use-after-free. The new
+kernel copies the current item before inserting, indexes processed
+waiters, and remembers the first completed span. It joins either when
+the span finishes or when a later zero-width waiter arrives. No borrowed
+item reference survives insertion.
+
+```{cpp, results="markdown", file="figures/earley_nullable.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::ContextFreeGrammar g{{{"S",{"A","B"}},{"A",{}},{"B",{"A"}}},"S"};
+  const auto t=dm::algorithms::earley_trace(g,{});dm::algorithms::EarleyLocation selected;
+  std::print("Nullable empty word: accepted {}; items {}; completion joins {}; late nullable joins {}; capture entries {}.\n\n",t.accepted,t.work.unique_items,t.work.completion_joins,t.work.nullable_joins,t.captured_entries);
+  std::print("| item ordinal | actual item in column zero |\n| ---: | :--- |\n");
+  for(std::size_t i=0;i<t.chart[0].size();++i){std::print("| {} | {} |\n",i,dm::algorithms::earley_item_text(t,{0,i}));const auto r=t.reasons[0][i];
+    if(r.action==dm::algorithms::EarleyAction::complete&&r.first.column==r.second.column&&r.first.index>r.second.index)selected={0,i};}
+  if(selected.column==dm::algorithms::earley_no_item)throw std::runtime_error("missing actual late nullable join");
+  const auto cause=t.reasons[selected.column][selected.index];
+  std::print("\nLate completion: waiter ({},{}), earlier completed span ({},{}), target ({},{}).\n",cause.first.column,cause.first.index,cause.second.column,cause.second.index,selected.column,selected.index);
+  dm::graphics::Diagram d(64,1100);dm::graphics::DiagramNodeStyle box;box.width=4.6;box.height=1.6;box.font_size=23;
+  d.node("waiter",{0,0},std::format("waiter ({},{})\n{}",cause.first.column,cause.first.index,dm::algorithms::earley_item_text(t,cause.first)),box);
+  box.fill={187,247,208};d.node("finished",{6,0},std::format("already completed ({},{})\n{}",cause.second.column,cause.second.index,dm::algorithms::earley_item_text(t,cause.second)),box);
+  box.fill={254,215,170};d.node("joined",{3,-3.7},std::format("new item ({},{})\n{}",selected.column,selected.index,dm::algorithms::earley_item_text(t,selected)),box)
+   .edge("waiter","joined","advance").edge("finished","joined","reuse empty A")
+   .text({3,2.4},"A completed before B began waiting",26).save_svg("build/earley_nullable.svg");
+}
+```
+// result_begin: markdown
+Nullable empty word: accepted true; items 6; completion joins 3; late nullable joins 1; capture entries 20.
+
+| item ordinal | actual item in column zero |
+| ---: | :--- |
+| 0 | p0 "S" -> . "A" "B" (0) |
+| 1 | p1 "A" -> . (0) |
+| 2 | p0 "S" -> "A" . "B" (0) |
+| 3 | p2 "B" -> . "A" (0) |
+| 4 | p2 "B" -> "A" . (0) |
+| 5 | p0 "S" -> "A" "B" . (0) |
+
+Late completion: waiter (0,3), earlier completed span (0,1), target (0,4).
+\image(figures/earley_nullable.svg)
+// result_end
+\caption(The actual late join advances item (0,3) using an earlier completed A at (0,1), creating item (0,4). Closure then completes the start rule and accepts the empty input.)
+\alttext(A native diagram combines the later B waiter with an already completed empty A and shows their actual newly inserted B item.)
+
+The same closure handles unit cycles and S→SS|ε|a without an infinite
+search. It recognizes language membership; it does not enumerate all
+parses. Even the epsilon-free S→SS|a has five binary parses for four a
+leaves: splitting the root gives 1·2+1·1+2·1=5. Several derivations
+can therefore share one item. First-insertion reasons record one sound
+way each item arrived, not every derivation that could justify it.
+
+> Derive two exact growth families
+
+For the original accepted word a^k b^k, N=2k. Its column sizes are
+2 initially, four at each a, two at each nonfinal b, and one at the
+end. Thus I=6k+1=3N+1 unique items. Every inner completed S has one
+outer waiter, while the root has none, giving k−1 completion joins.
+This particular family is linear; a bounded count in this plot does
+not establish a general bound for every grammar.
+
+For S→SS|a on a^N, every positive substring is an S. At boundary j
+there are j completed items, j items after their first S, and two
+predicted items, for 2j+2 items. Consequently
+
+\[
+I=\sum_{j=0}^{N}(2j+2)=(N+1)(N+2).
+\]
+
+At origin j there are j+1 waiters for S, and N−j nonempty S spans
+can finish later. Each waiter/span pair is joined once, giving
+
+\[
+J=\sum_{j=0}^{N-1}(j+1)(N-j)=\frac{N(N+1)(N+2)}{6}.
+\]
+
+The next program checks those formulas against actual retained-item
+and join counters. The panels plot logical operation counts, not CPU
+time, and no counter measures the number of parse trees.
+
+```{cpp, results="markdown", file="figures/earley_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::ContextFreeGrammar balanced{{{"S",{"a","S","b"}},{"S",{"a","b"}}},"S"};
+  const dm::algorithms::ContextFreeGrammar ambiguous{{{"S",{"S","S"}},{"S",{"a"}}},"S"};
+  std::vector<double>x,linear,quadratic,cubic;
+  std::print("| tokens N | balanced items | balanced joins | ambiguous items | exact item formula | ambiguous joins | exact join formula |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:{4,8,16,32,64,128}){std::vector<std::string> word(n/2,"a");word.insert(word.end(),n/2,"b");
+    const auto a=dm::algorithms::earley_recognize_work(balanced,word),b=dm::algorithms::earley_recognize_work(ambiguous,std::vector<std::string>(n,"a"));
+    const auto exact_items=(n+1)*(n+2),exact_joins=n*(n+1)*(n+2)/6;
+    if(!a.accepted||!b.accepted||a.work.unique_items!=3*n+1||a.work.completion_joins!=n/2-1||b.work.unique_items!=exact_items||b.work.completion_joins!=exact_joins)throw std::runtime_error("growth identity failed");
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",n,a.work.unique_items,a.work.completion_joins,b.work.unique_items,exact_items,b.work.completion_joins,exact_joins);
+    x.push_back(std::log2(n));linear.push_back(std::log2(a.work.unique_items));quadratic.push_back(std::log2(b.work.unique_items));cubic.push_back(std::log2(b.work.completion_joins));
+  }
+  auto a=dm::graphics::RPlot::create();a.line(x,linear,"balanced",{22,163,74}).points(x,linear,"",{22,163,74},5)
+   .line(x,quadratic,"ambiguous",{37,99,235}).points(x,quadratic,"",{37,99,235},5)
+   .title("Unique chart items: linear versus quadratic").x_label("log2(tokens)").y_label("log2(actual unique items)").y_limits(0,19);
+  auto b=dm::graphics::RPlot::create();b.line(x,cubic,"joins",{220,38,38}).points(x,cubic,"",{220,38,38},5)
+   .title("Ambiguous grammar: cubic waiter/span joins").x_label("log2(tokens)").y_label("log2(actual completion joins)").y_limits(0,23);
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,550).title("Exact family counts verify different chart and completion growth")
+   .fit_panels().save_svg("build/earley_work.svg");
+}
+```
+// result_begin: markdown
+| tokens N | balanced items | balanced joins | ambiguous items | exact item formula | ambiguous joins | exact join formula |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 4 | 13 | 1 | 30 | 30 | 20 | 20 |
+| 8 | 25 | 3 | 90 | 90 | 120 | 120 |
+| 16 | 49 | 7 | 306 | 306 | 816 | 816 |
+| 32 | 97 | 15 | 1122 | 1122 | 5984 | 5984 |
+| 64 | 193 | 31 | 4290 | 4290 | 45760 | 45760 |
+| 128 | 385 | 63 | 16770 | 16770 | 357760 | 357760 |
+\image(figures/earley_work.svg)
+// result_end
+\caption(All six sizes satisfy the derived item/join formulas exactly. Linear work in the balanced family coexists with quadratic items and cubic completion joins in the ambiguous family.)
+\alttext(Two native logarithmic plots compare linear and quadratic unique-item growth and show cubic completion-join growth for the ambiguous grammar.)
+
+> Capture budgets and precise token semantics
+
+A trace owns its grammar, tokens, actual chart and parallel first reasons.
+Its base cost is 2N+P+sum(rhs lengths)+2 logical records: start/LHS/RHS
+symbol strings, token strings and one metadata record per chart boundary.
+Each new unique item and first reason add two records. String bytes,
+runtime hash indexes, scalar fields and allocator overhead are excluded.
+The default cap is one million; zero disables only that optional quota.
+Raw geometry and the base cap are checked before copying or column
+allocation. Each further unique insertion is checked online; duplicate
+attempts consume no capture entries. Failure returns no partial trace.
+
+The original eight-token chart therefore costs 25 base records plus
+2·25 item/reason records, exactly 75. A one-short budget fails even
+though the grammar is valid. Counts, production/dot/origin indices and
+legacy int column sizes have mandatory representability checks.
+
+Symbols are opaque names. An empty RHS derives an empty word, while a
+RHS containing the one empty string names a terminal and consumes one
+atomic token. Empty strings, embedded NUL and UTF-8 symbol names remain
+valid; tokenization is the caller's responsibility. The selected-item
+formatter escapes control bytes and checks its local coordinates. It
+does not certify every field of a caller-edited trace.
+
+```{cpp, results="markdown", file="figures/earley_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::ContextFreeGrammar g{{{"S",{"a","S","b"}},{"S",{"a","b"}}},"S"};
+  const std::vector<std::string> word{"a","a","a","a","b","b","b","b"};
+  const auto exact=dm::algorithms::earley_trace(g,word,75),disabled=dm::algorithms::earley_trace(g,word,0);int caps=0,indices=0,format=0;
+  for(std::size_t limit:{24,74})try{(void)dm::algorithms::earley_trace(g,word,limit);}catch(const std::length_error&){++caps;}
+  try{(void)dm::algorithms::earley_trace_base_entries(g,static_cast<std::size_t>(std::numeric_limits<int>::max())+1);}catch(const std::length_error&){++indices;}
+  auto edited=exact;edited.chart[0][0].dot=99;
+  try{(void)dm::algorithms::earley_item_text(edited,{0,0});}catch(const std::invalid_argument&){++format;}
+  std::print("Exact entries {}; disabled-cap entries {}; expected base/one-short rejections {}/2; index rejection {}/1; edited-item rejection {}/1.\n",exact.captured_entries,disabled.captured_entries,caps,indices,format);
+  const dm::algorithms::ContextFreeGrammar epsilon{{{"S",{}}},"S"},named{{{"S",{""}}},"S"};
+  const auto e=dm::algorithms::earley_trace(epsilon,{}),zero=dm::algorithms::earley_trace(named,{}),one=dm::algorithms::earley_trace(named,{""});
+  std::print("Empty RHS on empty word: {}; one empty-named terminal on empty word: {}; on one empty-named token: {}.\n",e.accepted,zero.accepted,one.accepted);
+  const std::string nul(1,'\0');const dm::algorithms::ContextFreeGrammar bytes{{{"S",{"id",nul}}},"S"};
+  std::print("Atomic id/NUL tokens accepted {}; split i/d/NUL tokens accepted {}; undefined start accepted {}.\n",dm::algorithms::earley_recognize(bytes,{"id",nul}),dm::algorithms::earley_recognize(bytes,{"i","d",nul}),dm::algorithms::earley_recognize({},{}));
+  dm::graphics::Diagram d(64,1100);dm::graphics::DiagramNodeStyle box;box.width=4.8;box.height=2;box.font_size=23;
+  box.fill={187,247,208};d.node("epsilon",{0,0},std::format("{}\ninput []\naccepted {}",dm::algorithms::earley_item_text(e,{0,0}),e.accepted),box);
+  box.fill={254,215,170};d.node("zero",{5.8,0},std::format("{}\ninput []\naccepted {}",dm::algorithms::earley_item_text(zero,{0,0}),zero.accepted),box);
+  box.fill={187,247,208};d.node("one",{11.6,0},std::format("{}\ninput [\"\"]\naccepted {}",dm::algorithms::earley_item_text(one,{1,0}),one.accepted),box)
+   .text({5.8,2.6},"Empty RHS and an empty-named token have different meanings",26).save_svg("build/earley_boundaries.svg");
+}
+```
+// result_begin: markdown
+Exact entries 75; disabled-cap entries 75; expected base/one-short rejections 2/2; index rejection 1/1; edited-item rejection 1/1.
+Empty RHS on empty word: true; one empty-named terminal on empty word: false; on one empty-named token: true.
+Atomic id/NUL tokens accepted true; split i/d/NUL tokens accepted false; undefined start accepted false.
+\image(figures/earley_boundaries.svg)
+// result_end
+\caption(The exact 75-record budget, disabled quota and invalid controls are executed. The diagrams contrast epsilon with a single empty-named terminal, using actual formatted items and verdicts.)
+\alttext(Three native boxes show acceptance for an empty RHS on no tokens, rejection for an empty-named terminal on no tokens, and acceptance when one empty-named token is supplied.)
+
+> What was verified
+
+Separate old/current binaries preserve 8,194 original verdict/chart-size
+cases: every a/b word through length twelve and all original expression
+examples. The old nullable use-after-free is reproduced separately; the
+new seven-case sanitizer suite covers all 8,191 short a/b words, 7,560
+queries on seeded nullable/cyclic grammars against an independent least
+fixed point of interval languages, rule-order and duplicate controls,
+opaque symbols, exact/short/disabled capture limits, ownership and a
+20,000-rule unit chain without recursive library calls.
+
+Every captured item's first parents are checked as a sound earlier
+prediction, scan or completion. Final-chart certificates independently
+count requested predictions, matching scans, distinct completed spans
+and all waiter/span pairs, verifying work identities without replaying
+the implementation. A finite item chart establishes recognition, not a
+count or enumeration of all parses. A rejected word also does not provide
+automatic error recovery or an explanation of the intended source text.
+
+> References
+
+J. Earley (1970), [An Efficient Context-Free Parsing Algorithm](https://doi.org/10.1145/362007.362035),
+Communications of the ACM 13(2), 94–102, introduces the chart algorithm.
+
+J. Aycock and R. N. Horspool (2002), [Practical Earley Parsing](https://webhome.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf),
+The Computer Journal 45(6), 620–630, doi:10.1093/comjnl/45.6.620,
+explains the nullable late-waiter problem and reviews Earley's earlier
+completed-symbol remedy. The implementation here uses indexed waiters
+and completed spans for that handshake; it does not implement their
+LR(0) automaton construction or claim to return a parse forest.

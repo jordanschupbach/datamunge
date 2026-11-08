@@ -12,16 +12,6 @@ namespace {
 std::uint64_t mulmod(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
     return static_cast<std::uint64_t>((static_cast<__uint128_t>(a) * b) % m);
 }
-std::uint64_t powmod(std::uint64_t a, std::uint64_t e, std::uint64_t m) {
-    std::uint64_t r = 1 % m;
-    a %= m;
-    while (e) {
-        if (e & 1) r = mulmod(r, a, m);
-        a = mulmod(a, a, m);
-        e >>= 1;
-    }
-    return r;
-}
 
 } // namespace
 
@@ -62,40 +52,6 @@ std::uint64_t montgomery_multiply(std::uint64_t a, std::uint64_t b, std::uint64_
 
     const std::uint64_t aR  = redc(static_cast<__uint128_t>(a % n) * R2); // a*R mod n
     return redc(static_cast<__uint128_t>(aR) * (b % n));                  // aR*b*R^{-1} = a*b mod n
-}
-
-long long cipolla_sqrt(std::uint64_t n, std::uint64_t p) {
-    n %= p;
-    if (p == 2) return static_cast<long long>(n);
-    if (n == 0) return 0;
-    if (powmod(n, (p - 1) / 2, p) != 1) return -1; // not a quadratic residue
-
-    // Find a with a^2 - n a non-residue.
-    std::uint64_t a = 0, w = 0;
-    for (a = 1; a < p; ++a) {
-        w = (mulmod(a, a, p) + p - n) % p;
-        if (powmod(w, (p - 1) / 2, p) == p - 1) break;
-    }
-
-    // Exponentiate (a + sqrt(w)) to (p+1)/2 in F_{p^2}: elements (x + y*sqrt(w)).
-    auto mul = [&](std::uint64_t x1, std::uint64_t y1, std::uint64_t x2, std::uint64_t y2,
-                   std::uint64_t& rx, std::uint64_t& ry) {
-        rx = (mulmod(x1, x2, p) + mulmod(mulmod(y1, y2, p), w, p)) % p;
-        ry = (mulmod(x1, y2, p) + mulmod(x2, y1, p)) % p;
-    };
-
-    std::uint64_t rx = 1, ry = 0;         // result = 1
-    std::uint64_t bx = a, by = 1;         // base = a + sqrt(w)
-    std::uint64_t exp = (p + 1) / 2;
-    while (exp) {
-        if (exp & 1) { std::uint64_t nx, ny; mul(rx, ry, bx, by, nx, ny); rx = nx; ry = ny; }
-        std::uint64_t nx, ny;
-        mul(bx, by, bx, by, nx, ny);
-        bx = nx; by = ny;
-        exp >>= 1;
-    }
-    // ry should be 0; rx is the square root.
-    return static_cast<long long>(rx);
 }
 
 std::vector<std::uint64_t> addition_chain(std::uint64_t e) {

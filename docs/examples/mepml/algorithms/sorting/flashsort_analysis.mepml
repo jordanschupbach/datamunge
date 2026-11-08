@@ -1,0 +1,372 @@
+//? Title: Flashsort: actual value classes, carried cycles and the insertion tail
+//? Subtitle: Checked arithmetic, original samples and measured work under matched occupancies
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given finite numeric values, produce an ascending ordering while preserving every element.
+Value ranges can suggest a useful partial ordering before many comparisons are made.
+Flashsort maps values into ordered classes, carries values into their class ranges, and
+finishes with insertion sort. This report inspects native carry records, preserves the
+original fifteen-value and 2,000-sample examples, and measures the actual classes and
+finishing work. Equal class occupancies can still lead to very different insertion costs;
+the class vector also takes linear auxiliary storage for this implementation's default.
+)
+
+\toc
+
+> The method: class ranges turn values into destinations
+
+For n>1 nonconstant values, the implementation chooses m=max(2,int(0.43n)) classes.
+In exact arithmetic, the linear classification is
+
+$$
+k(v)=\left\lfloor\frac{m-1}{v_{\max}-v_{\min}}(v-v_{\min})\right\rfloor,
+\qquad 0\le k(v)\le m-1.
+$$
+\alttext(The class is the floor of a value's normalised offset multiplied by one less than the number of classes.)
+
+The native map retains the historical rounded double coefficient and multiplication order
+when those operations are safe. Integral differences are computed in an unsigned domain
+of the same width, without signed subtraction overflow. Extreme or tiny floating ranges
+that make the historical expression unsafe use a scaled long-double ratio. The position
+is clamped before conversion to an index. Boundary rounding is part of this finite map;
+it need not equal an arbitrary-precision evaluation of the displayed formula.
+
+Count each original class occupancy c_k and form exclusive ends E_k=sum_{r≤k}c_r.
+Class k owns slots [E_{k−1},E_k), with E_{−1}=0. The mutable boundary vector L starts at E.
+A carried value of class k goes to slot --L_k; the displaced value becomes the next carry.
+When a cycle closes, scanning for the next unfilled leader continues to the right.
+Each destination is consumed at most once. The native variant retains its original
+cycle order and does not first swap the maximum to position zero.
+
+> Three values: follow every carried exchange
+
+For [2,0,1], m=2 and k(v)=floor(v/2): values 0 and 1 belong to class 0, while 2 belongs
+to class 1. Counts are [2,1], so the initial exclusive ends are [2,3]. Start by carrying
+value 2 from slot zero. Its destination is --L_1=2, displacing 1. Then 1 goes to
+--L_0=1, displacing 0. Finally 0 goes to --L_0=0 and the cycle closes.
+The array is [0,1,2]; insertion sort has nothing to shift.
+
+```{cpp, results="markdown", file="figures/flash_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <climits>
+#include <limits>
+#include <numeric>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const auto t=dm::algorithms::flashsort_trace(std::vector<int>{2,0,1});
+  std::print("Original assignments: {}; counts {}; exclusive ends {}.\n\n",t.class_of_input,t.class_counts,t.class_ends);
+  std::print("| cycle start | class | destination | carried value | displaced value |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto&r:t.moves)std::print("| {} | {} | {} | {} | {} |\n",r.cycle_start,r.class_index,r.destination,r.carried,r.displaced);
+  std::print("\nActual grouped state {}; output {}; carry writes {}; insertion shifts {}.\n",t.classified,t.output,t.work.permutation_writes,t.work.insertion_shifts);
+  dm::graphics::Diagram g(60,1100);dm::graphics::DiagramNodeStyle b;b.width=3.6;b.height=1.9;b.font_size=23;
+  for(std::size_t i=0;i<t.moves.size();++i){const auto&r=t.moves[i];g.node(std::to_string(i),{5.4*i,0},std::format("Write {} to slot {}\nClass {}\nCarry becomes {}",r.carried,r.destination,r.class_index,r.displaced),b);if(i)g.edge(std::to_string(i-1),std::to_string(i));}
+  g.text({5.4,2.5},"Class 0 owns [0,2); class 1 owns [2,3)",25).text({5.4,-2.5},"The third exchange closes the cycle at slot zero",25).text({5.4,-3.9},"Grouped and sorted state: 0 1 2",24).save_svg("build/flash_tiny.svg");
+  if(t.moves.size()!=3||t.output!=std::vector<int>{0,1,2})throw std::runtime_error("tiny carry identity");
+}
+```
+// result_begin: markdown
+Original assignments: [1, 0, 0]; counts [2, 1]; exclusive ends [2, 3].
+
+| cycle start | class | destination | carried value | displaced value |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 2 | 2 | 1 |
+| 0 | 0 | 1 | 1 | 0 |
+| 0 | 0 | 0 | 0 | 2 |
+
+Actual grouped state [0, 1, 2]; output [0, 1, 2]; carry writes 3; insertion shifts 0.
+\image(figures/flash_tiny.svg)
+// result_end
+\caption(The table records the actual carried and displaced values before each native exchange. Three distinct destinations are consumed, and the cycle returns to its original leader.)
+\alttext(A native three-node carry diagram writes value two to slot two, value one to slot one and value zero to slot zero. It labels the two class ranges and the completed cycle.)
+
+> Class ordered does not mean fully sorted
+
+For [4,1,3,0,2], m=2 again. Class 0 contains four values and class 1 contains only the
+maximum. The native carry phase produces [1,3,0,2,4]. Every value is in its class range,
+but three strict inversions remain: (1,0), (3,0) and (3,2). The insertion tail must remove
+those three inversions, one predecessor shift at a time. Equal keys are not shifted by
+insertion, but the preceding nonadjacent cycle exchanges give no stability guarantee.
+
+```{cpp, results="markdown", file="figures/flash_tail.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <climits>
+#include <limits>
+#include <numeric>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const auto t=dm::algorithms::flashsort_trace(std::vector<int>{4,1,3,0,2});
+  std::print("| position | input | input class | after carry phase | final output |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double>x,input,grouped,output;
+  for(std::size_t i=0;i<t.input.size();++i){std::print("| {} | {} | {} | {} | {} |\n",i,t.input[i],t.class_of_input[i],t.classified[i],t.output[i]);x.push_back(i);input.push_back(t.input[i]);grouped.push_back(t.classified[i]);output.push_back(t.output[i]);}
+  std::print("\nNative work: carry writes {}; insertion comparisons {}; insertion shifts {}; final key stores {}.\n",t.work.permutation_writes,t.work.insertion_comparisons,t.work.insertion_shifts,t.work.insertion_placements);
+  auto p=dm::graphics::RPlot::create();p.line(x,input,"Original",{148,163,184},1.5).points(x,input,"",{148,163,184},5).line(x,grouped,"After carries",{234,88,12},2).points(x,grouped,"",{234,88,12},5).line(x,output,"Sorted",{37,99,235},2).points(x,output,"",{37,99,235},4).abline_v(3.5,{100,116,139},1.5).title("A class range can still contain inversions").x_label("Array position").y_label("Value").y_limits(-.2,5.7).legend({"Original","After carries","Sorted"},{{148,163,184},{234,88,12},{37,99,235}}).size(900,520).save_svg("build/flash_tail.svg");
+  if(t.classified!=std::vector<int>{1,3,0,2,4}||t.work.insertion_shifts!=3)throw std::runtime_error("insertion-tail identity");
+}
+```
+// result_begin: markdown
+| position | input | input class | after carry phase | final output |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 4 | 1 | 1 | 0 |
+| 1 | 1 | 0 | 3 | 1 |
+| 2 | 3 | 0 | 0 | 2 |
+| 3 | 0 | 0 | 2 | 3 |
+| 4 | 2 | 0 | 4 | 4 |
+
+Native work: carry writes 5; insertion comparisons 6; insertion shifts 3; final key stores 4.
+\image(figures/flash_tail.svg)
+// result_end
+\caption(After classification the first four positions form a correct class range but contain three strict inversions. The measured insertion shifts equal that inversion count. The vertical line marks the class boundary.)
+\alttext(A five-position plot compares original values, actual post-carry values and final ascending values. A boundary before the last slot separates the four-value class from the maximum.)
+
+> What the work bound does, and does not, say
+
+Counting and cumulative ends cost O(n+m). Carry destinations are consumed once and the
+leader index only increases, so the carry phase has linear work. The last phase is a
+single whole-array insertion loop. Because ordered classes do not interleave in value,
+strict inversions occur only within a class. Hence
+
+$$
+\text{insertion shifts}=\operatorname{inv}(\text{post-carry array})
+\le\sum_k\frac{c_k(c_k-1)}2,
+\qquad T=O\left(n+m+\sum_k c_k^2\right).
+$$
+\alttext(Insertion shifts equal the strict inversions after the carry phase and are bounded by the sum of within-class pairs. Total work is bounded by input length, class count and squared class occupancies.)
+
+The comparison-only lower bound does not forbid value arithmetic and indexing.
+Nevertheless, Flashsort's finishing comparisons can be quadratic when distinct values
+concentrate in one class. Occupancy gives an upper bound; it does not specify their
+actual order or count only distinct keys. All-equal inputs instead take an O(n) shortcut
+without a class vector or insertion tail.
+
+For an ideal model with independent assignments to fixed class probabilities p_k,
+E(sum c_k²)=n+n(n−1)sum p_k². Balanced probabilities over Θ(n) classes give a linear
+expectation. This model explains the mechanism; it does not prove a blanket claim for
+arbitrary clustered inputs, rounded arithmetic, or every distribution normalised by
+sample-dependent extrema. The experiments below measure actual work instead of using
+flat bars as a runtime certificate.
+
+The ordinary implementation stores m integer class boundaries. With m≈0.43n this is
+Θ(n) auxiliary metadata, even though the carry permutation mutates the original array.
+Owned trace snapshots add further O(n+m) storage. Neither is constant-space sorting.
+
+> Preserve both original examples and aggregate the classes actually used
+
+Keep the original scrambled fifteen values. The second example retains the local
+mt19937_64 seed 11, inclusive integer distribution 0 through 9999, and sample size 2000.
+The native sample helper reproduces the original program on the same standard library;
+no promise is made about distribution mappings across different toolchains.
+
+The old plot computed floor(19(v−min)/(max−min)) directly from values. Those are a
+separate set of twenty bins, not an aggregation of the sorter's 860 classes. In particular,
+its bin 19 contains only maximum values for this integer sample. The new plot sums
+consecutive ranges of 43 actual class counts. All 2,000 observations are retained.
+
+```{cpp, results="markdown", file="figures/flash_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <climits>
+#include <limits>
+#include <numeric>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const auto tiny=dm::algorithms::flashsort_trace(std::vector<int>{29,4,17,88,41,6,73,50,12,95,33,61,8,24,77});
+  std::print("Original 15 input: {}.\nOriginal 15 sorted: {}.\nOriginal 15 actual counts {}; carry writes {}; insertion shifts {}.\n\n",tiny.input,tiny.output,tiny.class_counts,tiny.work.permutation_writes,tiny.work.insertion_shifts);
+  const auto sample=dm::algorithms::flashsort_uniform_sample();const auto t=dm::algorithms::flashsort_trace(sample);const auto groups=dm::algorithms::flashsort_class_groups(t.class_counts,20);
+  std::print("| display group | actual class interval | total observations |\n| ---: | --- | ---: |\n");std::vector<double>gx,gy;
+  for(std::size_t i=0;i<groups.size();++i){const auto&g=groups[i];std::print("| {} | [{},{}) | {} |\n",i,g.begin,g.end,g.count);gx.push_back(i);gy.push_back(g.count);}
+  const auto maximum_count=std::count(sample.begin(),sample.end(),t.maximum);
+  std::print("\nOriginal sample: n {}; minimum {}; maximum {}; classes {}; nonempty {}; largest class {}; occupancy-square sum {}.\n",sample.size(),t.minimum,t.maximum,t.work.class_count,t.work.nonempty_classes,t.work.max_occupancy,t.work.occupancy_square_sum);
+  std::print("Actual carries {}; insertion comparisons {}; shifts {}; pair upper bound {}; sorted {}.\n",t.work.permutation_writes,t.work.insertion_comparisons,t.work.insertion_shifts,(t.work.occupancy_square_sum-t.work.n)/2,std::is_sorted(t.output.begin(),t.output.end()));
+  std::print("Old value-bin 19 contains only {} maximum observation(s); the last actual class group contains {} observations.\n",maximum_count,groups.back().count);
+  std::print("Ordinary class-vector payload: {} int entries / {} bytes; input payload {} bytes, excluding allocator overhead.\n",t.work.class_count,t.work.class_count*sizeof(int),sample.size()*sizeof(int));
+  std::vector<double>x,original,sorted;for(std::size_t i=0;i<tiny.input.size();++i){x.push_back(i);original.push_back(tiny.input[i]);sorted.push_back(tiny.output[i]);}
+  auto a=dm::graphics::RPlot::create();a.points(x,original,"Original",{234,88,12},5).line(x,sorted,"Sorted",{37,99,235},2).title("Original fifteen-value example").x_label("Position").y_label("Value").y_limits(0,125).legend({"Original","Sorted"},{{234,88,12},{37,99,235}});
+  auto b=dm::graphics::RPlot::create();b.bars(gx,gy,"Actual observations",{234,88,12}).title("860 classes, grouped 43 at a time").x_label("Consecutive class group").y_label("Total observations").x_limits(-.6,19.6).y_limits(0,150);
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,540).title("Original data with the sorter's actual class aggregation").fit_panels().save_svg("build/flash_original.svg");
+  if(t.work.class_count!=860||t.work.insertion_shifts!=1058||t.work.occupancy_square_sum!=6742)throw std::runtime_error("original sample work");
+}
+```
+// result_begin: markdown
+Original 15 input: [29, 4, 17, 88, 41, 6, 73, 50, 12, 95, 33, 61, 8, 24, 77].
+Original 15 sorted: [4, 6, 8, 12, 17, 24, 29, 33, 41, 50, 61, 73, 77, 88, 95].
+Original 15 actual counts [5, 3, 2, 2, 2, 1]; carry writes 15; insertion shifts 8.
+
+| display group | actual class interval | total observations |
+| ---: | --- | ---: |
+| 0 | [0,43) | 98 |
+| 1 | [43,86) | 107 |
+| 2 | [86,129) | 98 |
+| 3 | [129,172) | 108 |
+| 4 | [172,215) | 108 |
+| 5 | [215,258) | 101 |
+| 6 | [258,301) | 98 |
+| 7 | [301,344) | 92 |
+| 8 | [344,387) | 119 |
+| 9 | [387,430) | 99 |
+| 10 | [430,473) | 100 |
+| 11 | [473,516) | 87 |
+| 12 | [516,559) | 92 |
+| 13 | [559,602) | 111 |
+| 14 | [602,645) | 113 |
+| 15 | [645,688) | 93 |
+| 16 | [688,731) | 93 |
+| 17 | [731,774) | 97 |
+| 18 | [774,817) | 93 |
+| 19 | [817,860) | 93 |
+
+Original sample: n 2000; minimum 18; maximum 9995; classes 860; nonempty 766; largest class 8; occupancy-square sum 6742.
+Actual carries 2000; insertion comparisons 3055; shifts 1058; pair upper bound 2371; sorted true.
+Old value-bin 19 contains only 1 maximum observation(s); the last actual class group contains 93 observations.
+Ordinary class-vector payload: 860 int entries / 3440 bytes; input payload 8000 bytes, excluding allocator overhead.
+\image(figures/flash_original.svg)
+// result_end
+\caption(The original sorted values and exact generated sample are preserved. The second panel aggregates actual native classes rather than recomputing a different value-bin map. The final group contains 93 observations.)
+\alttext(Two panels show the original fifteen values and ascending result, then twenty bars formed by summing forty-three actual classes apiece from the original two-thousand-value sample.)
+
+> Equal occupancies, different insertion costs
+
+Construct [0,1,…,q,M] and [0,q,…,1,M], with M=(q+2)(q+1). Both have n=q+2 values and
+place their q+1 low values in class zero, with the outlying maximum in another class.
+The native carry order produces [1,2,…,q,0,M] for the ascending low values and
+[q,q−1,…,0,M] for the descending ones. Their occupancies and squared-occupancy bounds
+are identical. The actual insertion shifts are q and q(q+1)/2, respectively.
+
+This family demonstrates the quadratic tail without conflating many duplicate keys
+with many inversions. Alongside it, native uniform and clustered workloads compare
+actual occupancy concentration at a common size. Their generation and the measured
+work are in the core; report loops only call those APIs and display the results.
+
+```{cpp, results="markdown", file="figures/flash_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <climits>
+#include <limits>
+#include <numeric>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+std::print("| q | n | shared occupancy-square sum | easy shifts | hard shifts | hard comparisons |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double>ln,le,lh;
+  for(std::size_t q:{8,16,32,64,128,256}){
+    const auto easy=dm::algorithms::flashsort_trace(dm::algorithms::bucket_sort_collision_input(q,false));const auto hard=dm::algorithms::flashsort_trace(dm::algorithms::bucket_sort_collision_input(q,true));
+    std::print("| {} | {} | {} | {} | {} | {} |\n",q,hard.work.n,hard.work.occupancy_square_sum,easy.work.insertion_shifts,hard.work.insertion_shifts,hard.work.insertion_comparisons);
+    ln.push_back(std::log10(hard.work.n));le.push_back(std::log10(easy.work.insertion_shifts));lh.push_back(std::log10(hard.work.insertion_shifts));
+    if(easy.class_counts!=hard.class_counts||easy.work.insertion_shifts!=q||hard.work.insertion_shifts!=q*(q+1)/2)throw std::runtime_error("matched occupancy family");
+  }
+  const auto data=dm::algorithms::bucket_sort_workloads(1000,1);const auto uniform=dm::algorithms::flashsort_trace(data.uniform),clustered=dm::algorithms::flashsort_trace(data.clustered);
+  std::print("\n| workload | n | classes | largest class | occupancy-square sum | actual insertion shifts |\n| --- | ---: | ---: | ---: | ---: | ---: |\n");
+  std::print("| uniform | {} | {} | {} | {} | {} |\n",uniform.work.n,uniform.work.class_count,uniform.work.max_occupancy,uniform.work.occupancy_square_sum,uniform.work.insertion_shifts);
+  std::print("| clustered with two outliers | {} | {} | {} | {} | {} |\n",clustered.work.n,clustered.work.class_count,clustered.work.max_occupancy,clustered.work.occupancy_square_sum,clustered.work.insertion_shifts);
+  const auto ug=dm::algorithms::flashsort_class_groups(uniform.class_counts,20),cg=dm::algorithms::flashsort_class_groups(clustered.class_counts,20);std::vector<double>x,u,c;for(std::size_t i=0;i<ug.size();++i){x.push_back(i);u.push_back(ug[i].count);c.push_back(cg[i].count);}
+  auto costs=dm::graphics::RPlot::create();costs.line(ln,le,"Easy order",{37,99,235},2).points(ln,le,"",{37,99,235},4).line(ln,lh,"Hard order",{220,38,38},2).points(ln,lh,"",{220,38,38},4).title("Same occupancies, different tail work").x_label("log10 input length").y_label("log10 actual insertion shifts").y_limits(.5,5.5).legend({"Easy order","Hard order"},{{37,99,235},{220,38,38}});
+  auto occupancy=dm::graphics::RPlot::create();occupancy.line(x,u,"Uniform",{37,99,235},2).points(x,u,"",{37,99,235},3).line(x,c,"Clustered",{124,58,237},2).points(x,c,"",{124,58,237},3).title("Actual native 1000-value class groups").x_label("Consecutive class group").y_label("Total observations").y_limits(0,1200).legend({"Uniform","Clustered + outliers"},{{37,99,235},{124,58,237}});
+  dm::graphics::RLayout::create(1,2).add(costs).add(occupancy).size(1100,540).title("Conditional performance: measure order and occupancy separately").fit_panels().save_svg("build/flash_work.svg");
+}
+```
+// result_begin: markdown
+| q | n | shared occupancy-square sum | easy shifts | hard shifts | hard comparisons |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 8 | 10 | 82 | 8 | 36 | 37 |
+| 16 | 18 | 290 | 16 | 136 | 137 |
+| 32 | 34 | 1090 | 32 | 528 | 529 |
+| 64 | 66 | 4226 | 64 | 2080 | 2081 |
+| 128 | 130 | 16642 | 128 | 8256 | 8257 |
+| 256 | 258 | 66050 | 256 | 32896 | 32897 |
+
+| workload | n | classes | largest class | occupancy-square sum | actual insertion shifts |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| uniform | 1000 | 430 | 9 | 3414 | 380 |
+| clustered with two outliers | 1000 | 430 | 208 | 160540 | 22866 |
+\image(figures/flash_work.svg)
+// result_end
+\caption(The hard and easy families have identical class counts but linear versus quadratic insertion shifts. The second panel contrasts actual class concentration for native uniform and clustered inputs, without making a wall-clock claim.)
+\alttext(A log-log plot compares easy and hard insertion work for identical occupancies. A second plot compares twenty actual class groups for uniform values and tightly clustered values with outliers.)
+
+> Checked full ranges and complete owned evidence
+
+The old template formed max−min in the input type. INT_MAX−INT_MIN overflowed signed
+int before conversion. Finite floating inputs could also overflow their range or produce
+an infinite coefficient on a tiny range, followed by an invalid integer cast. Bounded
+sanitizer probes reproduce those failures in the frozen original. The checked map keeps
+ordinary safe results and carries intact while handling those full ranges safely.
+
+Floating inputs must all be finite, including a singleton. Invalid data is rejected before
+mutation; n must fit the legacy int index domain. The vector signature and existing
+sorting_extra.hpp include remain available. The implementation supports arithmetic types
+other than bool; it is not a generic comparator or payload-key sorting interface.
+
+The optional trace validates and scans extrema once, then checks complete capture C=5n+2m
+before copying or sorting. Shortcuts use C=2n and have no class arrays or carry history.
+The default entry cap is one million; zero disables only that optional cap. Owned records
+are independent copies, and failure returns no partial trace. Ordinary in-place sorting
+and work counters do not allocate history or impose that optional quota.
+
+```{cpp, results="markdown", file="figures/flash_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <climits>
+#include <limits>
+#include <numeric>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const auto integers=dm::algorithms::flashsort_trace(std::vector<int>{INT_MIN,0,INT_MAX});
+  const double hi=std::numeric_limits<double>::max(),lo=std::numeric_limits<double>::denorm_min();
+  const auto wide=dm::algorithms::flashsort_trace(std::vector<double>{-hi,0,hi});const auto tiny=dm::algorithms::flashsort_trace(std::vector<double>{0,lo,2*lo});
+  std::print("Full int range sorted: {}; assignments {}.\n",integers.output,integers.class_of_input);
+  std::print("Finite double extremes: sorted {}; scaled fallback {}; assignments {}.\n",std::is_sorted(wide.output.begin(),wide.output.end()),wide.work.scaled_classification,wide.class_of_input);
+  std::print("Positive subnormal range: sorted {}; scaled fallback {}; assignments {}.\n",std::is_sorted(tiny.output.begin(),tiny.output.end()),tiny.work.scaled_classification,tiny.class_of_input);
+  bool invalid=false;std::vector<double>bad{3,std::numeric_limits<double>::quiet_NaN(),1};try{dm::algorithms::flashsort(bad);}catch(const std::invalid_argument&){invalid=true;}
+  bool capacity=false;try{(void)dm::algorithms::flashsort_class_count(static_cast<std::size_t>(INT_MAX)+1);}catch(const std::length_error&){capacity=true;}
+  bool under=false;try{(void)dm::algorithms::flashsort_trace(std::vector<int>{2,0,1},18);}catch(const std::length_error&){under=true;}
+  const auto exact=dm::algorithms::flashsort_trace(std::vector<int>{2,0,1},19),uncapped=dm::algorithms::flashsort_trace(std::vector<int>{2,0,1},0);auto edited=exact;edited.input[0]=99;edited.classified[0]=99;edited.output[0]=99;edited.moves[0].carried=99;
+  std::print("Nonfinite input rejected before mutation {}; virtual oversized length rejected {}.\n",invalid&&bad[0]==3&&std::isnan(bad[1])&&bad[2]==1,capacity);
+  std::print("Complete trace: cap19 succeeds; cap18 rejects {}; disabled cap agrees {}; retained output {}; edited first output {}.\n",under,uncapped.output==exact.output,exact.output,edited.output[0]);
+  const auto constant=dm::algorithms::flashsort_trace(std::vector<int>{7,7,7},6);
+  std::print("Constant shortcut: classes {}; carry records {}; insertion shifts {}; capture bound 6 entries.\n",constant.work.class_count,constant.moves.size(),constant.work.insertion_shifts);
+  dm::graphics::Diagram g(60,1100);dm::graphics::DiagramNodeStyle b;b.width=3.8;b.height=2;b.font_size=23;
+  g.node("input",{0,0},"Validate finite data\nCheck signed length\nScan extrema once",b).node("map",{5.6,0},"Safe class map\nFull integer spans\nScaled float fallback",b).node("sort",{11.2,0},"Shared carry loop\nInsertion tail\nOwned optional trace",b).edge("input","map").edge("map","sort").text({5.6,-2.7},"Complete capture is admitted before copying and sorting",24).save_svg("build/flash_controls.svg");
+  if(!invalid||!capacity||!under||wide.work.scaled_classification!=true||tiny.work.scaled_classification!=true)throw std::runtime_error("checked controls");
+}
+```
+// result_begin: markdown
+Full int range sorted: [-2147483648, 0, 2147483647]; assignments [0, 0, 1].
+Finite double extremes: sorted true; scaled fallback true; assignments [0, 0, 1].
+Positive subnormal range: sorted true; scaled fallback true; assignments [0, 0, 1].
+Nonfinite input rejected before mutation true; virtual oversized length rejected true.
+Complete trace: cap19 succeeds; cap18 rejects true; disabled cap agrees true; retained output [0, 1, 2]; edited first output 99.
+Constant shortcut: classes 0; carry records 0; insertion shifts 0; capture bound 6 entries.
+\image(figures/flash_controls.svg)
+// result_end
+\caption(The full int range and two formerly unsafe finite double ranges now sort with valid class indices. Nonfinite input and impossible signed lengths are rejected, and whole capture limits preserve owned evidence.)
+\alttext(A native flow diagram shows input validation and a single extrema scan, a safe integer or scaled-floating classifier, and the shared carry and insertion kernel with optional owned records.)
+
+> What this establishes
+
+The original sorted outputs and sample are preserved, while the plot now represents actual
+sorter classes. Tiny traces show the carried values and the difference between class order
+and full numeric order. Measured shifts support the inversion identity and expose a
+quadratic family with the same occupancies as an easier family. Finite-range validation
+removes observed undefined behavior without changing the historical safe path. These
+checks establish specific arithmetic and algorithmic properties; they do not establish
+that this sort is fastest on any processor or that arbitrary skewed data has linear work.
+No external dataset is needed for these controlled sorting questions.
+
+> References
+
+- K.-D. Neubert, [The FlashSort Algorithm](https://www.neubert.net/FSOIntro.html), author introduction and publication links: euroFORTH'97 and Flashsort1 Algorithm, Dr. Dobb's Journal, February 1998,p123. Its class-vector/cycle mechanism is the starting point; the native variant here uses m≈0.43n and a whole-array insertion tail.
+- K.-D. Neubert, [Flash-Sort: Sorting by in situ Permutation](https://pages.cs.wisc.edu/~deppeler/cs400/readings/Sorting/flashpap.pdf), especially the class-pointer and cycle-leader construction. The paper's byte-key example is not a universal complexity guarantee for this finite arithmetic value classifier.
+- K.-D. Neubert, [Collection of FlashSort Implementations](https://www.neubert.net/Flacodes/FLACodes.html), author-hosted implementations and variants. Maximum relocation and recursive variants differ from the retained native cycle order.
+

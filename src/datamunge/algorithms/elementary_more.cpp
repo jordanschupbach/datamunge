@@ -7,25 +7,6 @@
 
 namespace datamunge::algorithms {
 
-namespace {
-
-// Binary splitting for e = sum 1/k!: returns (P, Q) for the partial sum over [a, b).
-std::pair<std::uint64_t, std::uint64_t> bs_e(int a, int b) {
-    if (b - a == 1) return {1, static_cast<std::uint64_t>(a == 0 ? 1 : a)};
-    const int m = (a + b) / 2;
-    const auto [p1, q1] = bs_e(a, m);
-    const auto [p2, q2] = bs_e(m, b);
-    return {p1 * q2 + p2, q1 * q2};
-}
-
-} // namespace
-
-BinSplitResult binary_splitting_e(int terms) {
-    if (terms < 1) terms = 1;
-    const auto [p, q] = bs_e(0, terms);
-    return BinSplitResult{p, q, static_cast<double>(p) / static_cast<double>(q)};
-}
-
 std::string spigot_e(int n_digits) {
     const int        m = n_digits + 20; // guard columns
     std::vector<int> a(m + 1, 1);       // a[2..m] = 1 (factorial-base digits of e-2)

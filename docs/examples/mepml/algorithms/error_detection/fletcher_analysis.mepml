@@ -1,0 +1,323 @@
+//? Title: Fletcher-16: two residues, exact error patterns and real aliases
+//? Subtitle: Actual byte folds, the original examples, streaming composition and complete native corruption scans
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A receiver can compare a short tag with a recomputed checksum to detect some accidental
+changes to a byte stream. The important question is which changes are detected, not
+whether the tag looks complicated. Raw Fletcher-16 maintains two sums modulo 255,
+which detects every single-input-bit change when the original tag is held fixed.
+It also has exact aliases, including a byte changing between zero and 255 and certain
+transpositions. This report preserves the original examples, inspects actual native
+states, counts complete corruption candidates, and distinguishes those guarantees
+from probabilistic claims or protocol-specific check-byte formats.
+)
+
+\toc
+
+> The method and its raw-tag convention
+
+Start with A=B=0. For every unsigned input byte x, perform
+
+$$
+A\leftarrow(A+x)\bmod255,\qquad
+B\leftarrow(B+A)\bmod255,\qquad
+\operatorname{tag}=(B\ll8)\mathbin{|}A.
+$$
+\alttext(The first residue adds the byte modulo two hundred and fifty-five. The second residue adds the newly updated first residue using the same modulus. The raw tag places B in its high byte and A in its low byte.)
+
+The library uses canonical residues 0 through 254, so both an octet zero and an octet 255
+contribute residue zero. Empty input has tag zero; embedded zero bytes do not terminate
+the input. This is the original library's raw packed tag. Protocols can instead compute
+complemented check bytes at prescribed header offsets and reserve special values.
+Those wire conventions are not supplied by this API.
+
+Each byte costs two modular recurrence updates. The implementation reduces after every
+byte, not in delayed batches. The residues fit in eight bits, while transient additions
+need nine; the core uses sixteen-bit arithmetic. There is O(n) work and constant ordinary
+state, without a hardware speed ranking against Adler-32, CRC or plain sums.
+
+> Two bytes: inspect the actual fold
+
+For bytes [1,2], after the first byte A=B=1. After the second, A=3 and B=4, giving raw
+tag 0x0403. Equivalently, A=1+2 and B=2×1+1×2. The program reads these states from
+the native byte kernel; it does not implement a second checksum in the report.
+
+```{cpp, results="markdown", file="figures/fletcher_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const auto t=dm::algorithms::fletcher16_trace(std::string("\1\2",2));
+  std::print("| input position | byte | A before | B before | A after | B after |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto&s:t.steps)std::print("| {} | {} | {} | {} | {} | {} |\n",s.index,static_cast<unsigned>(s.byte),s.before_a,s.before_b,s.after_a,s.after_b);
+  std::print("\nActual final residues A {}; B {}; raw packed tag 0x{:04X}.\n",t.sum1,t.sum2,t.checksum);
+  dm::graphics::Diagram g(60,1100);dm::graphics::DiagramNodeStyle b;b.width=3.5;b.height=1.9;b.font_size=24;
+  g.node("start",{0,0},"Initial state\nA = 0\nB = 0",b).node("first",{5.4,0},std::format("Read byte {}\nA = {}\nB = {}",static_cast<unsigned>(t.steps[0].byte),t.steps[0].after_a,t.steps[0].after_b),b).node("second",{10.8,0},std::format("Read byte {}\nA = {}\nB = {}",static_cast<unsigned>(t.steps[1].byte),t.steps[1].after_a,t.steps[1].after_b),b).edge("start","first","A, then B").edge("first","second","A, then B").text({5.4,-2.5},"The second sum uses the newly updated first sum",25).text({5.4,-4},"A = 1 + 2 = 3; B = 2 × 1 + 2 = 4",25).save_svg("build/fletcher_tiny.svg");
+  if(t.checksum!=0x0403)throw std::runtime_error("tiny Fletcher identity");
+}
+```
+// result_begin: markdown
+| input position | byte | A before | B before | A after | B after |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 0 | 0 | 1 | 1 |
+| 1 | 2 | 1 | 1 | 3 | 4 |
+
+Actual final residues A 3; B 4; raw packed tag 0x0403.
+\image(figures/fletcher_tiny.svg)
+// result_end
+\caption(The actual two-byte trace gives residues three and four. B receives the updated A at each step, which creates the position weights.)
+\alttext(A native three-stage diagram shows initial residues zero, then residues one and one after byte one, then three and four after byte two.)
+
+> Preserve the original reference and corruption examples
+
+For n bytes x_i indexed from zero, expanding the recurrence gives
+
+$$
+A=\sum_{i=0}^{n-1}x_i\pmod{255},\qquad
+B=\sum_{i=0}^{n-1}(n-i)x_i\pmod{255}.
+$$
+\alttext(A is the byte sum modulo two hundred and fifty-five. B is a weighted sum in which the first byte has weight n and the last has weight one.)
+
+Keep the original abcde reference, all 88 independent one-bit changes to abracadabra,
+and the ABCD versus ABDC transposition. The complete bit scan recomputes the ordinary
+checksum for every candidate, using one toggled/restored scratch message. Its budget
+is n(8n+1) byte folds including the baseline; it neither samples nor truncates candidates.
+The modular deltas in the second panel are residues, not security scores or collision
+probabilities. The numerical magnitude of a packed tag is not a measure of strength.
+
+```{cpp, results="markdown", file="figures/fletcher_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const auto t=dm::algorithms::fletcher16_trace("abcde");const auto flips=dm::algorithms::fletcher16_flip_scan("abracadabra");
+  std::print("| byte position | unsigned byte | A after | B after |\n| ---: | ---: | ---: | ---: |\n");std::vector<double>x,a,b;
+  for(const auto&s:t.steps){std::print("| {} | {} | {} | {} |\n",s.index,static_cast<unsigned>(s.byte),s.after_a,s.after_b);x.push_back(s.index+1);a.push_back(s.after_a);b.push_back(s.after_b);}
+  std::print("\nOriginal reference: fletcher16(abcde) = 0x{:04X}; A {}; B {}.\n",t.checksum,t.sum1,t.sum2);
+  std::print("Original abracadabra scan: detected {} / {}; complete byte folds {}.\n",flips.detected,flips.flips.size(),flips.bytes_processed);
+  const std::string original="ABCD",swapped=dm::algorithms::checksum_swap_bytes(original,2,3);
+  std::print("Original transposition: plain sums {} / {}; raw Fletcher tags {} / {}; detected {}.\n",dm::algorithms::byte_sum32(original),dm::algorithms::byte_sum32(swapped),dm::algorithms::fletcher16(original),dm::algorithms::fletcher16(swapped),dm::algorithms::fletcher16(original)!=dm::algorithms::fletcher16(swapped));
+  std::vector<double>bit,delta;for(const auto&r:flips.flips){bit.push_back(r.bit);delta.push_back(r.delta_b);}
+  auto states=dm::graphics::RPlot::create();states.line(x,a,"A",{37,99,235},2).points(x,a,"",{37,99,235},5).line(x,b,"B",{22,163,74},2).points(x,b,"",{22,163,74},5).title("Actual abcde residues").x_label("Bytes consumed").y_label("Canonical residue").y_limits(0,300).legend({"A","B"},{{37,99,235},{22,163,74}});
+  auto changes=dm::graphics::RPlot::create();changes.points(bit,delta,"Delta B",{124,58,237},3).title("All 88 independent input-bit changes").x_label("Input bit, byte-major LSB first").y_label("Delta B modulo 255").y_limits(0,270);
+  dm::graphics::RLayout::create(1,2).add(states).add(changes).size(1100,540).title("Original values from actual folds and complete candidate scans").fit_panels().save_svg("build/fletcher_original.svg");
+  if(t.checksum!=0xC8F0||flips.detected!=88||dm::algorithms::fletcher16(original)!=38411||dm::algorithms::fletcher16(swapped)!=38667)throw std::runtime_error("original controls");
+}
+```
+// result_begin: markdown
+| byte position | unsigned byte | A after | B after |
+| ---: | ---: | ---: | ---: |
+| 0 | 97 | 97 | 97 |
+| 1 | 98 | 195 | 37 |
+| 2 | 99 | 39 | 76 |
+| 3 | 100 | 139 | 215 |
+| 4 | 101 | 240 | 200 |
+
+Original reference: fletcher16(abcde) = 0xC8F0; A 240; B 200.
+Original abracadabra scan: detected 88 / 88; complete byte folds 979.
+Original transposition: plain sums 266 / 266; raw Fletcher tags 38411 / 38667; detected true.
+\image(figures/fletcher_original.svg)
+// result_end
+\caption(The original tag C8F0, all 88 detected bit changes, equal plain sums 266 and distinct Fletcher tags 38411/38667 are preserved. The figure shows actual residue states and modular changes rather than comparing checksum magnitudes.)
+\alttext(Two panels show the five running residues for abcde and the second-residue change for every independent one-bit corruption of abracadabra.)
+
+> What is guaranteed, and the zero/255 exception
+
+For one altered input bit, the integer byte change is δ=±2^b for 0≤b≤7. None of these
+values is zero modulo 255, so A changes and the raw tag must change, independently
+of the position or the message length. This assumes the original tag is held fixed.
+A simultaneous change to data and the transmitted tag is a different error model.
+
+A general single-byte replacement instead has δ between −255 and 255. Apart from
+an unchanged byte, its only nonzero multiple of 255 is the change between zero and 255.
+Thus the original blanket claim about all single-byte errors was false. The following
+complete census includes every possible replacement at one zero byte: 255 changed
+candidates, of which 254 change the tag and the replacement 255 is missed. Candidate
+zero is an unchanged control and is not counted as an undetected error.
+
+The raw container has sixteen bits, but only 255²=65,025 canonical residue pairs.
+This count alone does not establish a collision probability for arbitrary inputs.
+Both empty input and every all-zero/all-255 sequence have raw tag zero. Leading a
+message with zero or 255 also leaves this zero-initialised raw checksum unchanged;
+the tag therefore does not independently bind a message length.
+
+```{cpp, results="markdown", file="figures/fletcher_alias.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const std::string zero(1,'\0'),ff(1,static_cast<char>(255));const auto c=dm::algorithms::fletcher16_replacement_scan(zero,0);
+  std::print("Zero / 255 raw Fletcher tags: {} / {}; plain byte sums {} / {}.\n",dm::algorithms::fletcher16(zero),dm::algorithms::fletcher16(ff),dm::algorithms::byte_sum32(zero),dm::algorithms::byte_sum32(ff));
+  std::print("Complete one-position replacement census: candidates {}; changed {}; detected {}; changed but missed {}; byte folds {}.\n\n",c.replacements.size(),c.changed,c.detected,c.missed,c.bytes_processed);
+  std::print("| replacement octet | changed byte | changed raw tag | raw tag |\n| ---: | --- | --- | ---: |\n");for(unsigned value:{0,1,254,255}){const auto&r=c.replacements[value];std::print("| {} | {} | {} | 0x{:04X} |\n",value,r.changed,r.detected,r.checksum);}
+  const auto prefixed=dm::algorithms::fletcher16(std::string("\0abcde",6));std::print("\nLeading-zero control: abcde 0x{:04X}; zero+abcde 0x{:04X}; equal {}.\n",dm::algorithms::fletcher16("abcde"),prefixed,prefixed==dm::algorithms::fletcher16("abcde"));
+  std::vector<double>x,y;for(const auto&r:c.replacements){x.push_back(r.replacement);y.push_back(r.detected?1:0);}
+  auto p=dm::graphics::RPlot::create();p.points(x,y,"All candidates",{37,99,235},2.5).points({0,255},{0,0},"Unchanged tag",{220,38,38},5).text(42,.18,"0: unchanged control",{100,116,139},17).text(205,.18,"255: changed, missed",{220,38,38},17).title("A complete zero-byte replacement census").x_label("Replacement octet value").y_label("Raw tag changes (1=yes)").x_limits(-5,260).y_limits(-.2,1.5).legend({"Tag changed","No tag change: 0 or 255"},{{37,99,235},{220,38,38}}).size(900,500).save_svg("build/fletcher_alias.svg");
+  if(c.changed!=255||c.detected!=254||c.missed!=1||prefixed!=0xC8F0)throw std::runtime_error("modulo255 alias");
+}
+```
+// result_begin: markdown
+Zero / 255 raw Fletcher tags: 0 / 0; plain byte sums 0 / 255.
+Complete one-position replacement census: candidates 256; changed 255; detected 254; changed but missed 1; byte folds 257.
+
+| replacement octet | changed byte | changed raw tag | raw tag |
+| ---: | --- | --- | ---: |
+| 0 | false | false | 0x0000 |
+| 1 | true | true | 0x0101 |
+| 254 | true | true | 0xFEFE |
+| 255 | true | false | 0x0000 |
+
+Leading-zero control: abcde 0xC8F0; zero+abcde 0xC8F0; equal true.
+\image(figures/fletcher_alias.svg)
+// result_end
+\caption(Zero and 255 alias under Fletcher-16 even though their plain byte sums differ. The candidate zero is the unchanged control; candidate 255 changes the data and is the single missed alternative.)
+\alttext(All 256 replacement values are plotted against whether the tag changes. Values one through 254 change it; zero is unchanged input and 255 is a changed byte with an unchanged tag.)
+
+> Position sensitivity has exact transposition aliases
+
+Suppose i<j initially contain bytes a,b. Exchanging them leaves A unchanged, while
+
+$$
+\Delta B=(j-i)(b-a)\pmod{255}.
+$$
+\alttext(The modular change in B for a transposition is the position separation times the difference of the two byte values, modulo two hundred and fifty-five.)
+
+An adjacent exchange of distinct octets is detected except for the zero/255 pair.
+At greater distances, 255=3×5×17 has zero divisors. A distance of three and a byte
+difference of 85 give a product of 255 and an unchanged raw tag, even when neither
+byte is zero or 255. For example, [1,0,0,86] and [86,0,0,1] both produce 0x5A57.
+Other examples are distance five with difference 51, distance seventeen with difference
+15, and distance 255 with difference one. Position-sensitive does not mean every
+reordering is detected.
+
+The scalar delta API evaluates that exact modular formula. The table independently
+recomputes both complete messages through the native checksum. The figure queries
+the formula over distances 1 through 255 and marks its zeros, identifying the gaps
+at which those specified exchanges are missed. These are exact conditions, not sampled
+error probabilities.
+
+```{cpp, results="markdown", file="figures/fletcher_transpositions.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+std::print("| distance | octet difference | original raw tag | swapped raw tag | predicted delta B | detected |\n| ---: | ---: | ---: | ---: | ---: | --- |\n");
+  for(auto [distance,gap]:std::vector<std::pair<std::size_t,unsigned>>{{1,1},{3,85},{5,51},{17,15},{255,1}}){std::string data(distance+1,'\0');data[0]=1;data[distance]=static_cast<char>(1+gap);const auto swapped=dm::algorithms::checksum_swap_bytes(data,0,distance);const auto a=dm::algorithms::fletcher16(data),b=dm::algorithms::fletcher16(swapped),delta=dm::algorithms::fletcher16_transposition_delta(distance,1,static_cast<std::uint8_t>(1+gap));std::print("| {} | {} | 0x{:04X} | 0x{:04X} | {} | {} |\n",distance,gap,a,b,delta,a!=b);if((a!=b)!=(delta!=0))throw std::runtime_error("transposition delta identity");}
+  auto p=dm::graphics::RPlot::create();const std::vector<unsigned>gaps{1,15,51,85};const std::vector<dm::graphics::RGB>colors{{37,99,235},{22,163,74},{234,88,12},{124,58,237}};
+  std::print("\n| octet difference | undetected distances in 1..255 |\n| ---: | ---: |\n");
+  for(std::size_t row=0;row<gaps.size();++row){std::vector<double>x,y;for(std::uint64_t d=1;d<=255;++d)if(dm::algorithms::fletcher16_transposition_delta(d,1,static_cast<std::uint8_t>(1+gaps[row]))==0){x.push_back(d);y.push_back(row);}std::print("| {} | {} |\n",gaps[row],x.size());p.points(x,y,"",colors[row],4);}
+  p.title("Exact distances where the transposition leaves the tag unchanged").x_label("Position separation, in bytes").y_label("Octet difference").y_tick_labels({"1","15","51","85"}).x_limits(-3,263).y_limits(-.5,3.5).size(950,480).save_svg("build/fletcher_transpositions.svg");
+}
+```
+// result_begin: markdown
+| distance | octet difference | original raw tag | swapped raw tag | predicted delta B | detected |
+| ---: | ---: | ---: | ---: | ---: | --- |
+| 1 | 1 | 0x0403 | 0x0503 | 1 | true |
+| 3 | 85 | 0x5A57 | 0x5A57 | 0 | false |
+| 5 | 51 | 0x3A35 | 0x3A35 | 0 | false |
+| 17 | 15 | 0x2211 | 0x2211 | 0 | false |
+| 255 | 1 | 0x0303 | 0x0303 | 0 | false |
+
+| octet difference | undetected distances in 1..255 |
+| ---: | ---: |
+| 1 | 1 |
+| 15 | 15 |
+| 51 | 51 |
+| 85 | 85 |
+\image(figures/fletcher_transpositions.svg)
+// result_end
+\caption(A distance-three exchange with difference 85 leaves tag 5A57 unchanged. The zero locations in the modular product explain the broader transposition exceptions; the table also includes a detected adjacent exchange.)
+\alttext(Four rows mark undetected separations for byte differences one, fifteen, fifty-one and eighty-five over distances one through 255. Zeros become more frequent when the byte difference shares factors with 255.)
+
+> Streaming, composition and bounded owned evidence
+
+The update API accepts only canonical packed states whose two lanes are below 255.
+An empty update returns that validated state. If L and R are separately initialised
+messages and m is the length of R, concatenation satisfies
+
+$$
+A_{LR}=A_L+A_R\pmod{255},\qquad
+B_{LR}=B_L+B_R+mA_L\pmod{255}.
+$$
+\alttext(To concatenate independently initialised checksums, add the A residues and add both B residues plus the right-hand length times the left A residue, reducing modulo two hundred and fifty-five.)
+
+The combine operation reduces m before multiplication and supports every uint64 length
+without reading the messages. The caller supplies the correct right-message length.
+For a virtual all-zero suffix, its raw tag is zero at every length. In particular,
+2^64−1 is divisible by 255, so appending that virtual zero suffix leaves this tag
+unchanged. This is an algebraic operation, not a huge allocation or an invalid byte view.
+
+Byte traces check their complete event cap before allocation/folding. Bit scans check
+n(8n+1) whole byte folds; one-position replacement scans check 257n. Zero disables only
+the optional cap, while arithmetic/container limits still apply. Records own their
+values, no input view is retained, and no partial census is returned on failure.
+
+```{cpp, results="markdown", file="figures/fletcher_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+const auto left=dm::algorithms::fletcher16("ab"),right=dm::algorithms::fletcher16("cde");
+  const auto combined=dm::algorithms::fletcher16_combine(left,right,3),updated=dm::algorithms::fletcher16_update(left,"cde");
+  std::print("Chunks: ab 0x{:04X}; cde 0x{:04X}; combined 0x{:04X}; continued 0x{:04X}; whole 0x{:04X}.\n",left,right,combined,updated,dm::algorithms::fletcher16("abcde"));
+  const auto virtual_zero_suffix=dm::algorithms::fletcher16_combine(combined,0,std::numeric_limits<std::uint64_t>::max());
+  std::print("Virtual uint64-max zero suffix: 0x{:04X}; unchanged {}.\n",virtual_zero_suffix,virtual_zero_suffix==combined);
+  bool bad_state=false,trace_under=false,scan_under=false,replacement_under=false;
+  try{(void)dm::algorithms::fletcher16_update(0x00FF,{});}catch(const std::invalid_argument&){bad_state=true;}
+  try{(void)dm::algorithms::fletcher16_trace("abcde",4);}catch(const std::length_error&){trace_under=true;}
+  try{(void)dm::algorithms::fletcher16_flip_scan("abracadabra",978);}catch(const std::length_error&){scan_under=true;}
+  try{(void)dm::algorithms::fletcher16_replacement_scan(std::string(1,'\0'),0,256);}catch(const std::length_error&){replacement_under=true;}
+  const auto t=dm::algorithms::fletcher16_trace("abcde",5);auto edited=t;edited.steps[0].after_a=99;
+  std::print("Checked controls: lane255 rejects {}; whole trace cap4 rejects {}; bit-fold cap978 rejects {}; replacement-fold cap256 rejects {}.\n",bad_state,trace_under,scan_under,replacement_under);
+  std::print("Owned trace: first original A {}; edited copy A {}; retained final tag 0x{:04X}.\n",t.steps[0].after_a,edited.steps[0].after_a,t.checksum);
+  const auto empty=dm::algorithms::fletcher16_flip_scan({});std::print("Empty scan: tag {}; events {}; byte folds {}.\n",empty.checksum,empty.flips.size(),empty.bytes_processed);
+  dm::graphics::Diagram g(60,1100);dm::graphics::DiagramNodeStyle b;b.width=3.8;b.height=1.8;b.font_size=24;
+  g.node("left",{0,1.7},std::format("Chunk ab\nRaw tag {:04X}",left),b).node("right",{0,-1.7},std::format("Chunk cde\nRaw tag {:04X}\nLength 3",right),b).node("combine",{5.7,0},"Combine raw states\nA1 + A2\nB1 + B2 + 3A1",b).node("result",{11.4,0},std::format("Whole abcde\nRaw tag {:04X}",combined),b).edge("left","combine").edge("right","combine").edge("combine","result").text({5.7,-4.2},"Length is supplied explicitly; source bytes need not be retained",24).save_svg("build/fletcher_controls.svg");
+  if(combined!=0xC8F0||updated!=combined||!bad_state||!trace_under||!scan_under||!replacement_under)throw std::runtime_error("Fletcher composition or quotas");
+}
+```
+// result_begin: markdown
+Chunks: ab 0x25C3; cde 0x582D; combined 0xC8F0; continued 0xC8F0; whole 0xC8F0.
+Virtual uint64-max zero suffix: 0xC8F0; unchanged true.
+Checked controls: lane255 rejects true; whole trace cap4 rejects true; bit-fold cap978 rejects true; replacement-fold cap256 rejects true.
+Owned trace: first original A 97; edited copy A 99; retained final tag 0xC8F0.
+Empty scan: tag 0; events 0; byte folds 0.
+\image(figures/fletcher_controls.svg)
+// result_end
+\caption(Separate tags combine to C8F0 and match a streaming continuation. Invalid initial lanes and incomplete whole-operation budgets reject. Owned byte records survive edits to a separate copy.)
+\alttext(A native diagram combines tags for ab and cde, with the right length three, to produce the whole abcde tag C8F0. The formula includes three times the left A residue.)
+
+> What the examples establish
+
+The original reference, all 88 one-bit checks and the detected ABCD/ABDC swap are retained.
+The raw recurrence also proves a general single-input-bit guarantee, while complete byte
+replacement and explicit transposition controls expose its exact exceptions. A plain sum
+misses the original reordering but catches the zero-to-255 substitution that Fletcher
+misses, so a universal strength ladder would be misleading. Corruption models, tag width,
+message structure and implementation costs must be specified before comparing algorithms.
+These are accidental-error checksums, not authentication tags. No external dataset is
+needed for the finite byte domains and controlled error patterns studied here.
+
+> References
+
+- J. G. Fletcher (1982), [An Arithmetic Checksum for Serial Transmissions](https://doi.org/10.1109/TCOM.1982.1095369), IEEE Transactions on Communications 30(1),247–252. Citation verified; the modular recurrence and protocol distinctions here are supported by the accessible RFC sources below.
+- [RFC 926](https://www.rfc-editor.org/rfc/rfc926.html), appendices A.3 and C.2–C.4: modulo-255 arithmetic, zero/255 aliases, single-bit detection and protocol check-byte construction. Its protocol reserves an all-zero check field; the library's raw zero tag is a valid arithmetic result.
+- J. Zweig and C. Partridge (1990), [RFC 1146](https://www.rfc-editor.org/rfc/rfc1146.html), appendix I: two zero-initialised one's-complement accumulators and the weighted second sum. The raw packed integer convention in this report is specified independently of any wire representation.
+

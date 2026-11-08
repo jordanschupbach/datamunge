@@ -8,31 +8,20 @@
 ///   - *Cristian's algorithm* (1989): a client asks a time server for the time and, since
 ///     the reply took a round trip \f$RTT\f$, estimates the true time as
 ///     \f$T_{\text{server}} + RTT/2\f$ (assuming symmetric latency). The remaining
-///     uncertainty is bounded by \f$RTT/2 - \text{min\_latency}\f$.
+///     ideal-rate uncertainty radius is \f$RTT/2 - \text{min\_latency}\f$.
+///     The timestamp is at reply departure; known residence can be removed.
 ///   - *The Berkeley algorithm* (1989): there is no authoritative server; a master polls
 ///     everyone's clocks, computes the *average* (optionally discarding outliers), and
 ///     sends each node the *adjustment* needed to reach that average. It keeps the group
 ///     internally consistent even if none of them is externally accurate.
 /// Both are foundational to NTP-style time keeping.
 
+#include <datamunge/algorithms/cristian.hpp>
 #include <cmath>
 #include <cstddef>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// \brief Cristian's estimate of the true time given a server reading and the round-trip time.
-inline double cristian_estimate(double server_time, double round_trip_time) {
-    return server_time + round_trip_time / 2.0;
-}
-
-/// \brief Cristian's accuracy bound: the estimate is within +/- this of the true time.
-///
-/// With a known minimum one-way latency, the error is bounded by \f$RTT/2 - \text{min\_latency}\f$.
-inline double cristian_error_bound(double round_trip_time, double min_one_way_latency = 0.0) {
-    const double b = round_trip_time / 2.0 - min_one_way_latency;
-    return b > 0.0 ? b : 0.0;
-}
 
 /// Result of a Berkeley synchronization round.
 struct BerkeleyResult {

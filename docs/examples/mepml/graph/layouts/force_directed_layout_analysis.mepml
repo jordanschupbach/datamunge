@@ -1,0 +1,342 @@
+//? Title: Force-directed layout: actual forces, cooling and drawing units
+//? Subtitle: Preserve the original seeded path; inspect raw motion before final centering and scaling
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Edges attract and every unordered pair repels in datamunge's direct
+Fruchterman–Reingold variant. A tiny two-vertex example makes the force balance
+and movement cap visible. The original four-vertex path retains its actual seeded
+coordinates. Native owned traces then expose raw motion, cooling and a diagnostic
+potential without replay. Coincidence, edge multiplicity and small-graph controls
+show the method's limits; actual visit counts explain its quadratic repulsion work.
+)
+
+\toc
+
+> Start with two vertices and one edge
+
+Place two vertices at x=−0.25 and x=0.25, both with y=0. The library uses unit area
+only to set k=1/sqrt(n), so k is approximately0.7071 here. At separation0.5 the
+repulsion magnitude is k²/d=1, while attraction is d²/k≈0.3536. Vertex0 therefore
+has net x-displacement about−0.6464. Its first movement is limited to0.1; it reaches
+x=−0.35. The second and final sweep has temperature0.05, rather than zero.
+All vertices read the same positions during force accumulation and move afterward.
+
+```{cpp, results="markdown", file="figures/force_directed_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/force_directed_layout.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <print>
+#include <iostream>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<dm::algorithms::Point2D> initial{{-.25,0},{.25,0}};const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1}};
+  const auto t=dm::algorithms::force_directed_layout_trace_from(initial,edges,2);
+  std::print("| sweep | temperature | vertex0 repulsion x | net x | new raw x0 | raw potential |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto&f:t.frames)std::print("| {} | {:.2f} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",f.iteration,f.temperature,f.repulsion[0].x,f.displacement[0].x,f.positions[0].x,dm::algorithms::force_directed_layout_metrics(f.positions,edges).potential);
+  std::print("\nInitial raw potential {:.6f}; final raw separation {:.6f}; normalized separation {:.6f}.\n",dm::algorithms::force_directed_layout_metrics(initial,edges).potential,t.raw_final[1].x-t.raw_final[0].x,t.positions[1].x-t.positions[0].x);
+  dm::graphics::Diagram d(58,1100);dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=1.1;node.height=1.1;node.font_size=23;
+  dm::graphics::DiagramStroke link,arrow;link.color={148,163,184};arrow.arrow=true;arrow.width=3;arrow.color={220,38,38};
+  d.path({{-2,0},{2,0}},link).path({{-2,-.8},{-3,-.8}},arrow).path({{2,-.8},{3,-.8}},arrow)
+   .node("0",{-2,0},"0",node).node("1",{2,0},"1",node)
+   .text({0,2},"Two raw points: x = -0.25 and +0.25",25)
+   .text({0,1},"Separation0.5; repulsion1; attraction0.353553",23)
+   .text({0,-2},std::format("First sweep: net x0={:.6f}; capped movement=-{:.1f}",t.frames[0].displacement[0].x,t.frames[0].temperature),23)
+   .text({0,-3.1},"Compute all forces, then move all vertices",23).save_svg("build/force_directed_tiny.svg");
+  if(!(dm::algorithms::force_directed_layout_metrics(t.raw_final,edges).potential>dm::algorithms::force_directed_layout_metrics(t.frames[0].positions,edges).potential))throw std::runtime_error("non-descent control");
+}
+```
+// result_begin: markdown
+| sweep | temperature | vertex0 repulsion x | net x | new raw x0 | raw potential |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.10 | -1.000000 | -0.646447 | -0.350000 | 0.340029 |
+| 1 | 0.05 | -0.714286 | -0.021321 | -0.371321 | 0.341848 |
+
+Initial raw potential 0.405499; final raw separation 0.742642; normalized separation 2.000000.
+\image(figures/force_directed_tiny.svg)
+// result_end
+\caption(The schematic arrows show the first capped outward move. The second raw step slightly raises the regularized potential, so a temperature cap alone is not a descent guarantee.)
+\alttext(A native two-node undirected diagram labels the initial half-unit separation, repulsion one, attraction about0.353553 and vertex-zero first capped movement minus0.1.)
+
+> The force law and its regularization
+
+For positions p_u and p_v, write Delta=p_u−p_v, raw distance d=||Delta||,
+and h=max(delta,d) with delta=1e−9. The implementation adds Delta*k²/h² to u
+and subtracts it from v for repulsion. Each nonloop edge record instead adds
+−Delta*h/k to u and the opposite to v. Above the floor these give the familiar
+magnitudes k²/d and d²/k. Below it, both forces shrink linearly to zero at
+coincidence; the code does not select a random direction for identical points.
+
+If F_u is the accumulated vector, the actual movement is
+
+$$
+p_u\leftarrow p_u+\frac{F_u}{s_u}\min(s_u,t_i),\qquad
+s_u=\max(10^{-9},\|F_u\|),\qquad
+t_i=0.1\left(1-\frac{\operatorname{double}(i)}{T}\right),\quad i=0,\ldots,T-1.
+$$
+\alttext(All forces are accumulated first. A vertex then moves along its displacement, using a distance floor and a linear temperature cap.)
+
+The distance floor also applies to the movement denominator. Thus the exact rule
+near zero is the expression above, rather than an unrestricted normalized direction.
+For practical representable schedules the last temperature is approximately0.1/T;
+very large integers can round when converted to double. T=0 performs no division by
+T because there are no sweeps. No velocity, box confinement, stopping tolerance,
+line search or Barnes–Hut approximation is implemented.
+
+The historical model and direct algorithm are described in Fruchterman and Reingold,
+[Graph Drawing by Force-directed Placement](https://www.reingold.co/force-directed.pdf),
+Software—Practice and Experience21(11),1129–1164(1991),
+[doi:10.1002/spe.4380211102](https://doi.org/10.1002/spe.4380211102).
+This library's variant omits the paper's frame clamping and random coincident-point
+directions. Its distance floor, seeded initializer, fixed schedule and final scaling
+are concrete implementation choices, rather than a claim to reproduce every paper variant.
+
+> The original seeded four-vertex path
+
+The original example draws0--1--2--3 with500 sweeps and seed7. The first four
+output lines retain the current canonical function's original coordinates. A local
+mt19937_64 draws two uniform variates per point in [−0.5,0.5); the seed reproduces
+these values within the same standard-library environment. Different C++ library
+implementations need not map a uniform distribution to identical coordinate bits.
+The figure uses undirected paths, so its links carry no arrowheads.
+
+```{cpp, results="markdown", file="figures/force_directed_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/force_directed_layout.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <print>
+#include <iostream>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto edges=dm::algorithms::force_directed_layout_example_edges();const auto p=dm::algorithms::force_directed_layout(4,edges,500,7);
+  for(const auto&v:p)std::cout<<v.x<<' '<<v.y<<'\n';
+  const auto w=dm::algorithms::force_directed_layout_work(4,edges,500,7).work;const auto m=dm::algorithms::force_directed_layout_metrics(p,edges);
+  std::print("\nOriginal work: {} pair visits; {} attraction visits; {} moves; {} uniform variates.\n",w.pair_visits,w.attraction_visits,w.vertex_moves,w.uniform_values);
+  std::print("Final geometry: centroid ({:.6f}, {:.6f}); maximum centered radius {:.6f}; mean edge length {:.6f}.\n",double(m.centroid_x),double(m.centroid_y),double(m.max_radius),double(m.mean_edge_length));
+  dm::graphics::Diagram d(130,900);dm::graphics::DiagramStroke link;link.color={37,99,235};link.width=3;dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=.65;node.height=.65;node.font_size=24;
+  for(auto[u,v]:edges)d.path({{3*p[u].x,3*p[u].y},{3*p[v].x,3*p[v].y}},link);
+  for(std::size_t u=0;u<p.size();++u)d.node(std::to_string(u),{3*p[u].x,3*p[u].y},std::to_string(u),node);
+  d.text({0,3.6},"Original path: 500 sweeps, seed7",25).text({0,-3.6},"Centered and maximum-radius scaled output",23).save_svg("build/force_directed_original.svg");
+  if(w.pair_visits!=3000||w.attraction_visits!=1500||w.vertex_moves!=2000)throw std::runtime_error("original work");
+}
+```
+// result_begin: markdown
+-0.56251 0.82679
+-0.199704 0.29353
+0.199714 -0.293544
+0.562501 -0.826776
+
+Original work: 3000 pair visits; 1500 attraction visits; 2000 moves; 8 uniform variates.
+Final geometry: centroid (0.000000, -0.000000); maximum centered radius 1.000000; mean edge length 0.666661.
+\image(figures/force_directed_original.svg)
+// result_end
+\caption(The original path is centered and scaled after500 sweeps. Equal diagram scales on x and y preserve the geometry; its original actual coordinates are printed above.)
+\alttext(A native undirected four-node path places vertices zero through three along the original descending diagonal, with zero at the upper left and three at the lower right.)
+
+For n>=2 the final pass computes the double mean in vertex order, subtracts it,
+finds the maximum centered radius r, then divides every point by r when r>0.
+Consequently the displayed centroid is approximately zero and nondegenerate maximum
+radius approximately one. These are floating-point properties, not exact certificates.
+The unit-area force parameter k does not impose a square boundary on raw positions.
+For two vertices joined by one edge, the unregularized force equilibrium separation
+is k; final radius normalization instead makes their output separation two. Raw
+and final distances must therefore be interpreted in different units.
+
+> Inspect one actual run, rather than rerunning prefixes
+
+The owned trace captures initial coordinates, every sweep's repulsion and net
+accumulators, positions after all moves, raw final coordinates, final coordinates
+and actual normalization metadata. It uses the same kernel without replay.
+Running an independent prefix with length t would change the cooling denominator;
+it would not reproduce the first t sweeps of the T-sweep run.
+
+A useful diagnostic integrates this implementation's regularized forces. Let
+U=the sum of U_r over unordered pairs plus U_a over nonloop edge records, where
+
+$$
+U_r(d)=\begin{cases}-k^2\log d,&d\ge\delta,\\
+-k^2\log\delta+\frac{k^2}{2}(1-(d/\delta)^2),&d<\delta,\end{cases}\qquad
+U_a(d)=\begin{cases}d^3/(3k),&d\ge\delta,\\
+\delta d^2/(2k)-\delta^3/(6k),&d<\delta.\end{cases}
+$$
+\alttext(The repulsion and attraction potentials are continuous with continuous first derivatives at the distance floor and differentiate to the library's underlying regularized vector forces.)
+
+The joins agree in value and derivative at delta. Differentiation gives the
+regularized forces with the negative-gradient sign; zero separation has zero vector
+force. This is our diagnostic derivation for the library's law. Actual arithmetic
+is rounded, and the movement cap does not ensure that U decreases each sweep.
+Long-double metrics are queried separately at O(n squared+m) cost per frame; those
+queries are not included in the actual kernel counters. The next potential curve
+uses only raw states, before final normalization changes the fixed-k potential.
+
+```{cpp, results="markdown", file="figures/force_directed_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/force_directed_layout.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <print>
+#include <iostream>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto edges=dm::algorithms::force_directed_layout_example_edges();const auto t=dm::algorithms::force_directed_layout_trace(4,edges,500,7);std::vector<double> x,potential,step_x,temperature,movement;
+  x.push_back(0);potential.push_back(double(dm::algorithms::force_directed_layout_metrics(t.initial,edges).potential));auto previous=t.initial;std::size_t rises=0;double largest_move=0;
+  for(const auto&f:t.frames){const auto value=double(dm::algorithms::force_directed_layout_metrics(f.positions,edges).potential);rises+=value>potential.back();double moved=0;for(std::size_t u=0;u<previous.size();++u)moved=std::max(moved,std::hypot(f.positions[u].x-previous[u].x,f.positions[u].y-previous[u].y));largest_move=std::max(largest_move,moved);x.push_back(double(f.iteration+1));potential.push_back(value);step_x.push_back(double(f.iteration+1));temperature.push_back(f.temperature);movement.push_back(moved);previous=f.positions;}
+  std::print("Actual history: {} frames; {} potential increases; largest raw movement {:.6f}; last temperature {:.6f}.\n",t.frames.size(),rises,largest_move,t.frames.back().temperature);
+  std::print("Raw initial potential {:.6f}; raw final potential {:.6f}; normalized output potential {:.6f}.\n",potential.front(),potential.back(),double(dm::algorithms::force_directed_layout_metrics(t.positions,edges).potential));
+  std::print("Normalization metadata: mean ({:.6f}, {:.6f}); raw scale {:.6f}.\n",t.work.mean.x,t.work.mean.y,t.work.scale);
+  auto energy=dm::graphics::RPlot::create();energy.lines(x,potential,"Raw potential",{37,99,235},2).title("Raw regularized potential").xlab("Completed sweeps; zero is initialization").ylab("Diagnostic U in raw coordinate units");
+  auto motion=dm::graphics::RPlot::create();motion.lines(step_x,temperature,"Temperature",{220,38,38},2).lines(step_x,movement,"Largest move",{37,99,235},1.5).legend({"Temperature","Largest move"},{{220,38,38},{37,99,235}}).title("Cap and actual largest move").xlab("Completed sweep").ylab("Raw distance");
+  dm::graphics::RLayout::create(1,2).add(energy).add(motion).size(1100,520).title("One executing 500-sweep run; metrics queried afterward").fit_panels().save_svg("build/force_directed_history.svg");
+  if(t.frames.size()!=500||largest_move>.10000000001)throw std::runtime_error("actual history bounds");
+}
+```
+// result_begin: markdown
+Actual history: 500 frames; 244 potential increases; largest raw movement 0.100000; last temperature 0.000200.
+Raw initial potential 2.228310; raw final potential 0.567830; normalized output potential 0.576076.
+Normalization metadata: mean (-0.155235, 0.082650); raw scale 0.943124.
+\image(figures/force_directed_history.svg)
+// result_end
+\caption(The left panel measures raw-state potential; the right compares the actual largest movement with its temperature cap. A fixed iteration budget ends the run without a convergence or optimality certificate.)
+\alttext(Two native plots show the original path raw potential over five hundred sweeps, and a falling temperature curve overlaid with actual largest per-vertex raw movements.)
+
+> Coincidence, repeated edges and small-graph semantics
+
+At identical coordinates Delta is zero, so the floor avoids division by zero but
+cannot separate points. A two-vertex coincident layout stays coincident even with
+an edge. Repeated and reversed edge records apply repeated attraction; they are not
+deduplicated. A self loop has a validated endpoint but contributes no force. The
+following one-sweep controls read actual accumulators, rather than inferring forces
+from the capped motion. Three attractive records can reverse the net direction.
+
+```{cpp, results="markdown", file="figures/force_directed_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/force_directed_layout.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <print>
+#include <iostream>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  using Points=std::vector<dm::algorithms::Point2D>;using Edges=std::vector<std::pair<std::size_t,std::size_t>>;const Points initial{{-.25,0},{.25,0}};
+  const std::vector<Edges> graphs{{},{{0,1}},{{0,1},{1,0},{0,1}},{{0,0},{0,1},{1,1}}};const std::vector<std::string> labels{"No edge","One edge","Three records","Edge plus loops"};std::vector<double> net;
+  std::print("| control | pair visits | edge visits | active attraction | net x0 |\n| --- | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<graphs.size();++i){const auto t=dm::algorithms::force_directed_layout_trace_from(initial,graphs[i],1);net.push_back(t.frames[0].displacement[0].x);std::print("| {} | {} | {} | {} | {:.6f} |\n",labels[i],t.work.pair_visits,t.work.edge_visits,t.work.attraction_visits,net.back());}
+  const auto coincident=dm::algorithms::force_directed_layout_trace_from({{1,1},{1,1}},{{0,1}},10);const auto singleton=dm::algorithms::force_directed_layout_work_from({{3,4}},{{0,0}},std::numeric_limits<std::size_t>::max());const auto zero=dm::algorithms::force_directed_layout_work_from({{3,4},{5,4}},{{0,1}},0);
+  std::print("\nCoincident control: raw point0 ({:.0f}, {:.0f}); output point0 ({:.0f}, {:.0f}); {} sweeps without separation.\n",coincident.raw_final[0].x,coincident.raw_final[0].y,coincident.positions[0].x,coincident.positions[0].y,coincident.work.completed_iterations);
+  std::print("Singleton: ({:.0f}, {:.0f}); normalized {}; sweeps {}. Zero iterations with two vertices: x coordinates {:.0f}, {:.0f}; normalized {}.\n",singleton.positions[0].x,singleton.positions[0].y,singleton.work.normalized,singleton.work.completed_iterations,zero.positions[0].x,zero.positions[1].x,zero.work.normalized);
+  auto plot=dm::graphics::RPlot::barplot(net,labels);plot.title("Actual first-sweep net x displacement of vertex0").xlab("Same raw starting positions; input records differ").ylab("Net force accumulator x; before movement cap").size(1000,520).save_svg("build/force_directed_controls.svg");
+  if(net[2]<=0||coincident.raw_final[0].x!=1||singleton.work.normalized||!zero.work.normalized)throw std::runtime_error("degenerate and multiplicity controls");
+}
+```
+// result_begin: markdown
+| control | pair visits | edge visits | active attraction | net x0 |
+| --- | ---: | ---: | ---: | ---: |
+| No edge | 1 | 0 | 0 | -1.000000 |
+| One edge | 1 | 1 | 1 | -0.646447 |
+| Three records | 1 | 3 | 3 | 0.060660 |
+| Edge plus loops | 1 | 3 | 1 | -0.646447 |
+
+Coincident control: raw point0 (1, 1); output point0 (0, 0); 10 sweeps without separation.
+Singleton: (3, 4); normalized false; sweeps 0. Zero iterations with two vertices: x coordinates -1, 1; normalized true.
+\image(figures/force_directed_controls.svg)
+// result_end
+\caption(Repeated edge records strengthen attraction. Loops are visited but ignored by the force law. Below the table, executed coincidence, singleton and zero-sweep controls expose their distinct normalization behavior.)
+\alttext(A native bar chart shows negative first-vertex net force without edges, weaker negative force with one edge, positive force with three repeated attractive records and the same force as one edge when loops are added.)
+
+With n<2 the original API returns seeded positions immediately; a singleton is not
+moved to the origin and ignores even an enormous sweep request. Supplied-position
+variants preserve the same early return. With n>=2, zero sweeps still center and
+scale. Thus empty, singleton and zero-iteration cases are separate contracts.
+The pre-existing edge-versus-isolated-distance test is a property of its particular
+seeded control graph, not a universal guarantee about every adjacent pair or layout.
+Different seeds can produce different drawings, and the API promises neither a
+unique embedding nor minimum crossings, edge length, stress or potential.
+
+> Actual work and complete trace admission
+
+For n>=2 and M nonloop records, T sweeps visit T*n*(n−1)/2 repulsive pairs,
+T*E edge records (including ignored loops), T*M attractions and T*n vertex moves.
+Validation and initialization add O(n+E), so total direct work is
+O(n+E+T*(n squared+E+n)); ordinary output and scratch use O(n) extra storage.
+The native complete-graph generator supplies the dense control below. Sparse
+attraction does not remove the all-pairs repulsion cost. These counts measure
+executed visits, not wall-clock time or cross-library performance.
+
+```{cpp, results="markdown", file="figures/force_directed_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/algorithms/force_directed_layout.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <print>
+#include <iostream>
+#include <limits>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::vector<double> x,pairs,attractions;std::vector<std::string> labels;
+  std::print("| vertices | edge records | pair visits | attraction visits | moves |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:{2u,4u,8u,16u,32u}){const auto edges=dm::algorithms::complete_graph_edges(n);const auto w=dm::algorithms::force_directed_layout_work(n,edges,10,7).work;std::print("| {} | {} | {} | {} | {} |\n",n,edges.size(),w.pair_visits,w.attraction_visits,w.vertex_moves);x.push_back(double(x.size()));pairs.push_back(double(w.pair_visits));attractions.push_back(double(w.vertex_moves));labels.push_back(std::to_string(n));}
+  const auto bound=dm::algorithms::force_directed_layout_trace_entries(2,1,2);bool quota=false,domain=false,overflow=false,huge=false;
+  try{dm::algorithms::force_directed_layout_trace(2,{{0,1}},2,7,bound-1);}catch(const std::length_error&){quota=true;}
+  try{dm::algorithms::force_directed_layout_trace_from({{0,0},{std::numeric_limits<double>::quiet_NaN(),0}},{{0,1}},2,1);}catch(const std::invalid_argument&){domain=true;}
+  try{dm::algorithms::force_directed_layout_from({{-1e200,0},{1e200,0}},{{0,1}},1);}catch(const std::overflow_error&){overflow=true;}
+  try{dm::algorithms::force_directed_layout_trace_entries(std::numeric_limits<std::size_t>::max(),0);}catch(const std::length_error&){huge=true;}
+  std::vector<dm::algorithms::Point2D> initial{{-.25,0},{.25,0}};std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1}};const auto t=dm::algorithms::force_directed_layout_trace_from(initial,edges,2,bound);initial[0].x=99;edges.clear();const bool owned=t.initial[0].x==-.25&&t.edges.size()==1;
+  std::print("\nWhole trace entries {}; one below rejected {}; exact bound frames {}; original 500-sweep bound {}.\n",bound,quota,t.frames.size(),dm::algorithms::force_directed_layout_trace_entries(4,3,500));
+  std::print("Checked controls: domain before quota {}; finite attraction overflow {}; virtual full-width bound {}; owned after caller edits {}.\n",domain,overflow,huge,owned);
+  std::print("Empty and singleton full-width-sweep bounds: {}, {}.\n",dm::algorithms::force_directed_layout_trace_entries(0,0,std::numeric_limits<std::size_t>::max()),dm::algorithms::force_directed_layout_trace_entries(1,0,std::numeric_limits<std::size_t>::max()));
+  auto plot=dm::graphics::RPlot::create();plot.lines(x,pairs,"Pair visits",{220,38,38},2).points(x,pairs,"",{220,38,38},4).lines(x,attractions,"Vertex moves",{37,99,235},2).points(x,attractions,"",{37,99,235},4).x_tick_labels(labels).legend({"Repulsion pair visits","Vertex moves"},{{220,38,38},{37,99,235}}).title("Actual direct work for ten sweeps").xlab("Vertices; consecutive powers of two").ylab("Completed visits; linear count scale").size(950,520).save_svg("build/force_directed_work.svg");
+  if(!quota||!domain||!overflow||!huge||!owned)throw std::runtime_error("checked capture controls");
+}
+```
+// result_begin: markdown
+| vertices | edge records | pair visits | attraction visits | moves |
+| ---: | ---: | ---: | ---: | ---: |
+| 2 | 1 | 10 | 10 | 20 |
+| 4 | 6 | 60 | 60 | 40 |
+| 8 | 28 | 280 | 280 | 80 |
+| 16 | 120 | 1200 | 1200 | 160 |
+| 32 | 496 | 4960 | 4960 | 320 |
+
+Whole trace entries 21; one below rejected true; exact bound frames 2; original 500-sweep bound 6515.
+Checked controls: domain before quota true; finite attraction overflow true; virtual full-width bound true; owned after caller edits true.
+Empty and singleton full-width-sweep bounds: 0, 3.
+\image(figures/force_directed_work.svg)
+// result_end
+\caption(Ten-sweep complete graphs expose quadratic pair visits and linear vertex moves. Attraction visits equal pair visits for these particular complete graphs; the table retains both counts.)
+\alttext(A native line plot compares actual repulsion pair visits and vertex moves for ten sweeps with two, four, eight, sixteen and thirty-two vertices on a linear count scale.)
+
+Every endpoint must lie in0..n−1, and every supplied coordinate must be finite.
+Full domain validation precedes quota checks or copies, including early-return cases.
+All actual double differences, accumulators, distances, updates and normalization
+must remain finite. Finite input alone does not guarantee finite intermediate
+arithmetic: the attraction of a very distant pair can overflow. The same extreme
+pair without an edge is accepted when its actual repulsion and normalization remain
+finite; unused attractive forces are not computed. Failures return no partial result
+and never mutate supplied positions or edges.
+
+Let S=T for n>=2 and S=0 otherwise. Complete trace admission checks
+
+$$
+C=E+3n+S(1+3n).
+$$
+\alttext(The owned trace counts edge records, three point arrays and one frame plus three point arrays per actual sweep.)
+
+C counts entry records, not bytes or peak RAM. It includes edges, initial/raw/final
+point arrays and every frame's positions/repulsion/net vectors; temporary kernel
+scratch is additional. The default cap is one million entries and zero disables
+only the optional cap; arithmetic and container capacity checks remain. Admission
+happens before RNG or input copying and captures every sweep without truncation.
+A supplied-position call starts a fresh cooling schedule, not an exact continuation
+of a previous schedule. Histories cost O(E+n+S*n) owned entry storage, while optional
+per-frame diagnostic queries add their own quadratic work.
+
+The library retains the original seeded path behavior and the ordinary graph-layout
+include. Source programs above regenerate all local figures with canonical C++ APIs.
+The deterministic geometric controls require no external dataset.

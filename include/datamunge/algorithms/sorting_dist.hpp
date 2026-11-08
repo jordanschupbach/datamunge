@@ -9,7 +9,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
-#include <memory>
+#include <datamunge/algorithms/burstsort.hpp>
 #include <string>
 #include <vector>
 
@@ -93,60 +93,6 @@ void samplesort(std::vector<T>& a) {
 // bucketing a postal service uses (country, then city, then street).
 inline void postman_sort(std::vector<std::uint32_t>& a) {
     if (a.size() > 1) detail::msd_radix(a, 0, static_cast<int>(a.size()), 24);
-}
-
-// ---- Burstsort ----
-
-namespace detail {
-
-struct BurstNode {
-    static constexpr int kBurst = 8; // burst threshold
-    // For each byte value 0..255: a bucket of suffixes, or a child node.
-    std::array<std::vector<std::string>, 256> buckets;
-    std::array<std::unique_ptr<BurstNode>, 256> children;
-    std::vector<std::string>                    ended; // strings that terminate here
-    int                                         count = 0;
-};
-
-inline void burst_insert(BurstNode* node, const std::string& s, std::size_t depth) {
-    if (depth == s.size()) { node->ended.push_back(s); return; }
-    const unsigned char c = static_cast<unsigned char>(s[depth]);
-    if (node->children[c]) { burst_insert(node->children[c].get(), s, depth + 1); return; }
-    node->buckets[c].push_back(s);
-    if (static_cast<int>(node->buckets[c].size()) > BurstNode::kBurst) {
-        // Burst: push the bucket down into a new child node.
-        auto child = std::make_unique<BurstNode>();
-        for (const std::string& t : node->buckets[c]) burst_insert(child.get(), t, depth + 1);
-        node->buckets[c].clear();
-        node->children[c] = std::move(child);
-    }
-}
-
-inline void burst_collect(BurstNode* node, std::vector<std::string>& out) {
-    std::sort(node->ended.begin(), node->ended.end());
-    for (auto& s : node->ended) out.push_back(s);
-    for (int c = 0; c < 256; ++c) {
-        if (!node->buckets[c].empty()) {
-            std::sort(node->buckets[c].begin(), node->buckets[c].end());
-            for (auto& s : node->buckets[c]) out.push_back(s);
-        } else if (node->children[c]) {
-            burst_collect(node->children[c].get(), out);
-        }
-    }
-}
-
-} // namespace detail
-
-// Burstsort: insert strings into a burst trie -- shallow buckets that "burst"
-// into deeper nodes once they overflow -- then traverse the trie in order.
-inline void burstsort(std::vector<std::string>& a) {
-    if (a.size() < 2) return;
-    detail::BurstNode root;
-    for (const std::string& s : a) detail::burst_insert(&root, s, 0);
-    std::vector<std::string> out;
-    out.reserve(a.size());
-    detail::burst_collect(&root, out);
-    a.swap(out);
 }
 
 } // namespace datamunge::algorithms

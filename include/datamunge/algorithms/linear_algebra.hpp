@@ -1,5 +1,6 @@
 #pragma once
 
+#include <datamunge/algorithms/freivalds.hpp>
 #include <cstdint>
 #include <vector>
 
@@ -50,21 +51,5 @@ EigenPair power_iteration(const std::vector<std::vector<double>>& matrix, int it
 /// @return the product @c A*B (@c m x @c n); empty if the inner dimensions do not match.
 std::vector<std::vector<double>> strassen_multiply(const std::vector<std::vector<double>>& a,
                                                    const std::vector<std::vector<double>>& b);
-
-/// @brief *Freivalds' algorithm*: a randomized *verifier* for a matrix product. Rather than recompute
-///        @c A*B (which costs @c O(n^3) or, with Strassen, @c O(n^{2.807})), it checks a claimed
-///        product @p c in @c O(n^2) per round by testing @c A(Br) == Cr for a random 0/1 vector @c r.
-///        If @c A*B = C the test always passes; if @c A*B != C each round catches the discrepancy with
-///        probability at least 1/2, so @p rounds independent rounds reduce the chance of a false
-///        "equal" to at most @c 2^{-rounds}.
-///
-/// @param a,b,c the matrices with @c A (@c m x @c k), @c B (@c k x @c n), and claimed product
-///        @c C (@c m x @c n).
-/// @param rounds the number of random rounds.
-/// @param seed the seed for the random vectors.
-/// @return false if a round proves @c A*B != C; true if all rounds pass (probably equal).
-bool freivalds_verify(const std::vector<std::vector<double>>& a, const std::vector<std::vector<double>>& b,
-                      const std::vector<std::vector<double>>& c, int rounds = 20,
-                      std::uint64_t seed = 0xD1B54A32D192ED03ULL);
 
 } // namespace datamunge::algorithms

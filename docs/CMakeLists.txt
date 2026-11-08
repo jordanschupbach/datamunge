@@ -33,7 +33,7 @@ add_custom_target(
   VERBATIM
 )
 
-# The mepml reports (docs/mepml/examples/**/*.mepml) are pages of the site. With
+# Both docs/examples/mepml and docs/mepml/examples supply report pages. With
 # DOCS_MEPML_RUN (and a mep that has `mep-mepml run`), mep first runs every report
 # that changed since its last run -- the editor's C-c C-c, headless -- writing its
 # results and figures back into the report; each run's per-block outcome is kept

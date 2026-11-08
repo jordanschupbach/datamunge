@@ -13,6 +13,8 @@
 #include <datamunge/algorithms/addition_chain.hpp>
 #include <datamunge/algorithms/arc_consistency.hpp>
 #include <datamunge/algorithms/association_rules.hpp>
+#include <datamunge/algorithms/eclat.hpp>
+#include <datamunge/algorithms/fp_growth.hpp>
 #include <datamunge/algorithms/arnoldi_iteration.hpp>
 #include <datamunge/algorithms/arithmetic_extra.hpp>
 #include <datamunge/algorithms/arithmetic_coding.hpp>
@@ -45,6 +47,7 @@
 #include <datamunge/algorithms/check_digits.hpp>
 #include <datamunge/algorithms/checksums.hpp>
 #include <datamunge/algorithms/chacha20.hpp>
+#include <datamunge/algorithms/byte_histogram.hpp>
 #include <datamunge/algorithms/cheney.hpp>
 #include <datamunge/algorithms/canopy_clustering.hpp>
 #include <datamunge/algorithms/comparison_sorts.hpp>
@@ -72,6 +75,7 @@
 #include <datamunge/algorithms/dithering.hpp>
 #include <datamunge/algorithms/dpll.hpp>
 #include <datamunge/algorithms/edmonds_karp.hpp>
+#include <datamunge/algorithms/flow_diagram.hpp>
 #include <datamunge/algorithms/elementary.hpp>
 #include <datamunge/algorithms/elementary_more.hpp>
 #include <datamunge/algorithms/ellipsoid.hpp>
@@ -127,6 +131,7 @@
 #include <datamunge/algorithms/karn.hpp>
 #include <datamunge/algorithms/knuth_bendix.hpp>
 #include <datamunge/algorithms/kruskal.hpp>
+#include <datamunge/algorithms/euclidean_mst.hpp>
 #include <datamunge/algorithms/lanczos_iteration.hpp>
 #include <datamunge/algorithms/leaky_bucket.hpp>
 #include <datamunge/algorithms/lanczos_resampling.hpp>
@@ -143,6 +148,10 @@
 #include <datamunge/algorithms/levenshtein_coding.hpp>
 #include <datamunge/algorithms/lzw.hpp>
 #include <datamunge/algorithms/linear_solvers.hpp>
+#include <datamunge/algorithms/gaussian_elimination.hpp>
+#include <datamunge/algorithms/gauss_jordan.hpp>
+#include <datamunge/algorithms/conjugate_gradient.hpp>
+#include <datamunge/algorithms/gauss_seidel.hpp>
 #include <datamunge/algorithms/lll.hpp>
 #include <datamunge/algorithms/manacher.hpp>
 #include <datamunge/algorithms/mark_compact.hpp>
@@ -178,6 +187,7 @@
 #include <datamunge/algorithms/online_statistics.hpp>
 #include <datamunge/algorithms/optics.hpp>
 #include <datamunge/algorithms/ode.hpp>
+#include <datamunge/algorithms/euler_method.hpp>
 #include <datamunge/algorithms/rbf_network.hpp>
 #include <datamunge/algorithms/rc4.hpp>
 #include <datamunge/algorithms/recursive_descent_parser.hpp>
@@ -210,6 +220,8 @@
 #include <datamunge/algorithms/permutations.hpp>
 #include <datamunge/algorithms/phonetic.hpp>
 #include <datamunge/algorithms/pi_and_cordic.hpp>
+#include <datamunge/algorithms/gauss_legendre_pi.hpp>
+#include <datamunge/algorithms/cordic.hpp>
 #include <datamunge/algorithms/pollard_kangaroo.hpp>
 #include <datamunge/algorithms/pollard_rho.hpp>
 #include <datamunge/algorithms/powerset_construction.hpp>
@@ -249,6 +261,7 @@
 #include <datamunge/algorithms/backtracking.hpp>
 #include <datamunge/algorithms/schreier_sims.hpp>
 #include <datamunge/algorithms/search_more.hpp>
+#include <datamunge/algorithms/general_problem_solver.hpp>
 #include <datamunge/algorithms/sequence_alignment.hpp>
 #include <datamunge/algorithms/sorted_search.hpp>
 #include <datamunge/algorithms/srt_division.hpp>

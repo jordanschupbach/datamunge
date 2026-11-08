@@ -33,6 +33,7 @@
 #include "datamunge/nn/gradient_tricks.hpp"
 #include "datamunge/nn/image_io.hpp"
 #include "datamunge/nn/image_ops.hpp"
+#include "datamunge/nn/image_explainers.hpp"
 #include "datamunge/nn/io.hpp"
 #include "datamunge/nn/kernel.hpp"
 #include "datamunge/nn/layers.hpp"
@@ -82,6 +83,9 @@
 #include "datamunge/nn/vision_plots.hpp"
 
 #include "datamunge/nn/cnn_models.hpp"
+#include "datamunge/nn/bar_images.hpp"
+#include "datamunge/nn/small_image_models.hpp"
+#include "datamunge/nn/zplus_relevance.hpp"
 
 #include "datamunge/nn/classic_cnn_models.hpp"
 

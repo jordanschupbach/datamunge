@@ -1,0 +1,297 @@
+//? Title: Euclidean Minimum Spanning Trees: Actual Edges, Cuts and Work
+//? Subtitle: Complete planar distances, stable Kruskal decisions and checked native C++ histories
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given labeled planar points, connect every point with minimum total
+straight-line edge length, without adding new junctions. The canonical
+C++ implementation measures every unordered pair and runs one shared
+stable Kruskal kernel. We begin with the original unit square, then
+inspect an actual cycle rejection, coincident vertices, scale and
+translation, and exact input-generation work. A checked owned trace
+records the decisions made by the same kernel that returns the tree.
+)
+
+\toc
+
+> The original unit square: three sides suffice
+
+Four vertices in cyclic order have four unit-length sides and two
+sqrt(2) diagonals. A tree needs three edges. Three unit sides connect
+the square with total length three, and every edge has length at least
+one, so no spanning tree can be shorter. Equal weights are scanned in
+the original lexicographic pair order. This chooses a reproducible tree
+from several equally good trees; it does not make the minimum unique.
+
+```{cpp, results="markdown", file="figures/euclidean_mst_square.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::euclidean_minimum_spanning_tree_trace({{0,0},{1,0},{1,1},{0,1}});
+  const auto& k=t.kruskal;const auto& r=k.outcome.result;
+  std::print("Original square: total {}; selected edges {}; connected {}; pair distances {}; actual scans {}; entries {}.\n\n",r.total_weight,r.edges.size(),r.is_connected,t.distance_evaluations,k.steps.size(),t.captured_entries);
+  std::print("| actual scan | pair index | u | v | distance | roots before | accepted | components after |\n| ---: | ---: | ---: | ---: | ---: | :--- | :--- | ---: |\n");
+  for(std::size_t i=0;i<k.steps.size();++i){const auto& step=k.steps[i];auto [u,v,w]=k.input_edges.at(step.input_index);std::print("| {} | {} | {} | {} | {:.9f} | {},{} | {} | {} |\n",i,step.input_index,u,v,w,step.root_u,step.root_v,step.accepted,step.components_after);}
+  dm::graphics::Diagram d(260,1100);dm::graphics::DiagramStroke gray;gray.color={203,213,225};gray.width=2;
+  dm::graphics::DiagramStroke selected;selected.color={37,99,235};selected.width=5;
+  for(auto [u,v,w]:k.input_edges)d.path({{t.points[u].x,t.points[u].y},{t.points[v].x,t.points[v].y}},gray);
+  for(auto [u,v,w]:r.edges)d.path({{t.points[u].x,t.points[u].y},{t.points[v].x,t.points[v].y}},selected);
+  dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=.23;node.height=.23;node.font_size=24;node.padding=7;
+  for(std::size_t i=0;i<t.points.size();++i)d.node(std::to_string(i),{t.points[i].x,t.points[i].y},std::to_string(i),node);
+  d.text({.5,1.55},"Original square: three accepted unit sides",26).text({.5,-.6},"Blue: returned tree; gray: complete candidate graph",22).save_svg("build/euclidean_mst_square.svg");
+}
+```
+// result_begin: markdown
+Original square: total 3; selected edges 3; connected true; pair distances 6; actual scans 3; entries 13.
+
+| actual scan | pair index | u | v | distance | roots before | accepted | components after |
+| ---: | ---: | ---: | ---: | ---: | :--- | :--- | ---: |
+| 0 | 0 | 0 | 1 | 1.000000000 | 0,1 | true | 3 |
+| 1 | 2 | 0 | 3 | 1.000000000 | 0,3 | true | 2 |
+| 2 | 3 | 1 | 2 | 1.000000000 | 0,2 | true | 1 |
+\image(figures/euclidean_mst_square.svg)
+// result_end
+\caption(The trace scans three unit edges and stops after completing a tree. All six pair distances were computed before sorting, including edges that were never scanned.)
+\alttext(A native square with numbered vertices shows all six candidate segments in gray and the three actual selected unit sides in blue.)
+
+> Derive the greedy rule and its geometric objective
+
+For vertices p[i]=(x[i],y[i]), the complete graph has
+M=n(n-1)/2 edges, with weights
+
+\[
+w_{ij}=\operatorname{hypot}(x_i-x_j,y_i-y_j),\quad i<j,
+\qquad \min_T\sum_{(i,j)\in T}w_{ij}.
+\]
+
+Kruskal scans these edges in nondecreasing weight order. It accepts an
+edge exactly when its endpoints belong to different current components.
+An accepted edge reduces the number of components by one without
+creating a cycle. Starting from n components, n-1 accepted edges give
+a connected acyclic spanning tree when n>0. The empty graph is
+connected by this API's convention; a singleton needs no edges.
+
+Why is each greedy acceptance safe? Maintain a minimum tree containing
+the already accepted forest. If the next edge e is absent, insert it
+into that tree: a cycle appears. That cycle contains an edge h crossing
+the current component cut. Such an edge cannot be lighter than e;
+an earlier lighter crossing edge would already have joined components.
+Replacing h by e therefore preserves a minimum tree containing the new
+forest. Ties permit this exchange, so the lightest cut edge belongs to
+some minimum tree, rather than necessarily every minimum tree.
+
+The generic kernel uses path halving and union by rank. Its trace
+records the actual roots before each decision and the actual number
+of components afterwards. Roots are implementation representatives,
+not sorted component labels. Point indices and endpoint orientations
+remain attached to their original records throughout sorting.
+
+> A short cycle is rejected before a distant point joins
+
+Place three points near the origin and a fourth at (10,0). The first
+two unit edges join the cluster. Its remaining diagonal has length
+sqrt(2), but now closes a cycle, so it is rejected. The next edge of
+length nine joins the distant point. This is an actual rejected scan,
+not an edge inferred from the final tree after execution.
+
+```{cpp, results="markdown", file="figures/euclidean_mst_cycle.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const auto t=dm::algorithms::euclidean_minimum_spanning_tree_trace({{0,0},{1,0},{0,1},{10,0}});const auto& k=t.kruskal;
+  std::print("Cluster: total {}; accepted {}; rejected cycles {}; scanned {}; all pair distances {}.\n\n",k.outcome.result.total_weight,k.outcome.work.accepted_edges,k.outcome.work.cycle_rejections,k.outcome.work.scanned_edges,t.distance_evaluations);
+  std::print("| scan | edge | weight | roots before | decision | components after |\n| ---: | :--- | ---: | :--- | :--- | ---: |\n");
+  dm::graphics::Diagram d(80,1100);dm::graphics::DiagramStroke accepted;accepted.color={37,99,235};accepted.width=4;
+  dm::graphics::DiagramStroke rejected;rejected.color={220,38,38};rejected.width=4;rejected.dashed=true;
+  for(std::size_t i=0;i<k.steps.size();++i){const auto& step=k.steps[i];auto [u,v,w]=k.input_edges.at(step.input_index);std::print("| {} | {}-{} | {:.9f} | {},{} | {} | {} |\n",i,u,v,w,step.root_u,step.root_v,step.accepted?"accept":"reject cycle",step.components_after);
+    d.path({{t.points[u].x,t.points[u].y},{t.points[v].x,t.points[v].y}},step.accepted?accepted:rejected);}
+  dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=.25;node.height=.25;node.font_size=22;node.padding=6;
+  for(std::size_t i=0;i<t.points.size();++i)d.node(std::to_string(i),{t.points[i].x,t.points[i].y},std::to_string(i),node);
+  d.text({5,2.1},"A cluster cycle is rejected before the long link",26).text({5,-1.35},"Blue accepted; dashed red rejected; actual coordinates",22).save_svg("build/euclidean_mst_cycle.svg");
+}
+```
+// result_begin: markdown
+Cluster: total 11; accepted 3; rejected cycles 1; scanned 4; all pair distances 6.
+
+| scan | edge | weight | roots before | decision | components after |
+| ---: | :--- | ---: | :--- | :--- | ---: |
+| 0 | 0-1 | 1.000000000 | 0,1 | accept | 3 |
+| 1 | 0-2 | 1.000000000 | 0,2 | accept | 2 |
+| 2 | 1-2 | 1.414213562 | 0,0 | reject cycle | 2 |
+| 3 | 1-3 | 9.000000000 | 0,3 | accept | 1 |
+\image(figures/euclidean_mst_cycle.svg)
+// result_end
+\caption(The actual third scan is a cycle rejection. The fourth scan connects the final component; longer complete-graph edges remain unscanned.)
+\alttext(Four numbered points at their true coordinates show three accepted blue segments and one dashed red triangle edge rejected within the near-origin cluster.)
+
+> Labeled duplicates and coordinate transformations
+
+Equal coordinates do not merge input records. Distinct vertex indices
+can be connected by a zero-length edge, and the algorithm still accepts
+exactly n-1 edges for n>0. The next fixture adds a second record at the
+unit square's origin. Its tree has one zero-length edge and three unit
+edges. Plot markers at identical coordinates overlap; the table keeps
+the separate vertex identities and their zero edge visible.
+
+Translation cancels in pair differences. Multiplying every coordinate
+by a positive factor a multiplies all exact distances and the minimum
+length by a; the selected tree can be retained. These identities are
+mathematical statements. In general floating rounding can alter very
+close ties. Here the exact integer translation and factor three keep
+all selected lengths exactly representable, and the stable selected
+endpoint sequence is checked directly.
+
+```{cpp, results="markdown", file="figures/euclidean_mst_duplicates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const std::vector<dm::algorithms::Point2D> p{{0,0},{0,0},{1,0},{1,1},{0,1}};auto q=p;
+  for(auto& v:q){v.x=3*v.x+5;v.y=3*v.y-2;}
+  const auto a=dm::algorithms::euclidean_minimum_spanning_tree_trace(p),b=dm::algorithms::euclidean_minimum_spanning_tree_trace(q);
+  std::print("Labeled duplicates: vertices {}; accepted edges {}; original length {}; transformed length {}.\n\n",p.size(),a.kruskal.outcome.result.edges.size(),a.kruskal.outcome.result.total_weight,b.kruskal.outcome.result.total_weight);
+  std::print("| accepted order | u | v | original length | transformed length |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<a.kruskal.outcome.result.edges.size();++i){auto [u,v,w]=a.kruskal.outcome.result.edges[i];auto [u2,v2,w2]=b.kruskal.outcome.result.edges.at(i);if(u!=u2||v!=v2||w2!=3*w)throw std::runtime_error("transformed tree identity failed");std::print("| {} | {} | {} | {} | {} |\n",i,u,v,w,w2);}
+  dm::graphics::RLayout layout=dm::graphics::RLayout::create(1,2);
+  for(const auto* t:{&a,&b}){auto plot=dm::graphics::RPlot::create();std::vector<double> x,y;for(const auto& v:t->points){x.push_back(v.x);y.push_back(v.y);}for(auto [u,v,w]:t->kruskal.outcome.result.edges)plot.line({t->points[u].x,t->points[v].x},{t->points[u].y,t->points[v].y},"",{37,99,235});plot.points(x,y,"vertices",{220,38,38},6).title(t==&a?"Duplicate origin, original coordinates":"Scale three and translate (5,-2)").x_label("x coordinate").y_label("y coordinate");layout.add(plot);}
+  layout.size(1100,520).title("Same labeled minimum tree; duplicate point markers overlap").fit_panels().save_svg("build/euclidean_mst_duplicates.svg");
+}
+```
+// result_begin: markdown
+Labeled duplicates: vertices 5; accepted edges 4; original length 3; transformed length 9.
+
+| accepted order | u | v | original length | transformed length |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | 0 | 0 |
+| 1 | 0 | 2 | 1 | 3 |
+| 2 | 0 | 4 | 1 | 3 |
+| 3 | 2 | 3 | 1 | 3 |
+\image(figures/euclidean_mst_duplicates.svg)
+// result_end
+\caption(Both plots contain five labeled input records but four visible positions. The actual returned zero edge links the duplicate records; scaling triples every selected weight and the total.)
+\alttext(Two coordinate plots show the same selected square-side geometry before and after scaling and translation. Duplicate records overlap at one plotted position; their zero edge is preserved in the computed table.)
+
+An MST minimizes total length over edges joining the given vertices.
+It does not form a tour visiting every point in cyclic order, minimize
+root-to-point path lengths, or introduce Steiner junctions. Comparing
+squared distances preserves individual edge ordering in exact arithmetic,
+but summing squared selected weights is a different objective from the
+Euclidean length reported here. The core uses hypot lengths throughout.
+These coordinates are Cartesian units, not latitude/longitude distances.
+
+> Every pair is generated even when scanning finishes early
+
+The implementation builds the full M-edge graph, sorts a stable index
+permutation, then performs union-find scans. With M=n(n-1)/2, this costs
+O(n^2 log(n+1)) time and O(n^2+n) runtime storage. Early tree completion
+can save scans, but does not save pair-distance generation or the sort.
+No Delaunay sparsification is implemented by this API.
+
+For n equally spaced collinear points at coordinates 0,...,n-1, all
+n-1 adjacent unit edges come first and connect the line. The exact
+minimum is n-1: its extremes are distance n-1 apart, and a spanning
+tree's path between them cannot have smaller total length. This
+family therefore gives M actual distance evaluations, S=n-1 actual
+scans, and optional capture C=n+M+S=M+2n-1. Input sizes and outputs are
+logical counts, not elapsed-time benchmarks or peak-memory estimates.
+
+```{cpp, results="markdown", file="figures/euclidean_mst_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::vector<double> sizes,pairs,scans,capture;
+  std::print("| vertices n | pair distances M | scanned edges S | accepted edges | tree length | captured records C |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:{2,4,8,16,32,64,128}){std::vector<dm::algorithms::Point2D> p;for(std::size_t i=0;i<n;++i)p.push_back({double(i),0});const auto t=dm::algorithms::euclidean_minimum_spanning_tree_trace(p);const auto& w=t.kruskal.outcome.work;
+    if(t.distance_evaluations!=n*(n-1)/2||w.scanned_edges!=n-1||t.kruskal.outcome.result.total_weight!=double(n-1)||t.captured_entries!=n*(n-1)/2+2*n-1)throw std::runtime_error("known line family failed");
+    std::print("| {} | {} | {} | {} | {} | {} |\n",n,t.distance_evaluations,w.scanned_edges,w.accepted_edges,t.kruskal.outcome.result.total_weight,t.captured_entries);sizes.push_back(n);pairs.push_back(std::log2(t.distance_evaluations));scans.push_back(std::log2(w.scanned_edges));capture.push_back(std::log2(t.captured_entries));}
+  auto a=dm::graphics::RPlot::create();a.line(sizes,pairs,"pairs M",{37,99,235}).points(sizes,pairs,"",{37,99,235},5).line(sizes,scans,"actual scans S",{220,38,38}).points(sizes,scans,"",{220,38,38},5).title("All distances precede early tree completion").x_label("Number of line vertices n").y_label("log2(logical pair or scan count)");
+  auto b=dm::graphics::RPlot::create();b.line(sizes,capture,"C=n+M+S",{124,58,237}).points(sizes,capture,"",{124,58,237},5).title("Optional trace retains inputs and scans").x_label("Number of line vertices n").y_label("log2(logical retained records)");
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,520).title("Known line optima: complete-pair work remains quadratic").fit_panels().save_svg("build/euclidean_mst_work.svg");
+}
+```
+// result_begin: markdown
+| vertices n | pair distances M | scanned edges S | accepted edges | tree length | captured records C |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 1 | 1 | 1 | 1 | 4 |
+| 4 | 6 | 3 | 3 | 3 | 13 |
+| 8 | 28 | 7 | 7 | 7 | 43 |
+| 16 | 120 | 15 | 15 | 15 | 151 |
+| 32 | 496 | 31 | 31 | 31 | 559 |
+| 64 | 2016 | 63 | 63 | 63 | 2143 |
+| 128 | 8128 | 127 | 127 | 127 | 8383 |
+\image(figures/euclidean_mst_work.svg)
+// result_end
+\caption(Distance generation remains quadratic despite only n-1 scanned edges. Capture includes all input points and generated pair records, plus actual scans. Logarithms affect display only; the table contains exact counts.)
+\alttext(Two plots show log-base-two pair and scan counts and retained trace records for seven line sizes, with exact known minimum lengths in the table.)
+
+A generated geometric workload is appropriate for these exact properties;
+an unrelated real dataset would not establish the cut proof or the
+operation counts. The native tests additionally exercise random point
+clouds, independently computed Prim minima, exhaustive small labeled
+trees and a tree-path bottleneck certificate for every point pair.
+
+> Finite domains, capture quotas and owned results
+
+All coordinates must be finite, including singleton inputs that would
+otherwise generate no distances. Pair arithmetic and container limits
+are checked without allocating the requested graph. Finite coordinate
+differences, hypot distances and accepted-edge totals are required;
+numeric overflow throws instead of returning a connected tree whose
+total is infinity or NaN. The generic Kruskal API accepts finite
+negative weights, parallel edges and self-loops, and checks every
+endpoint and weight before sorting. A disconnected generic graph
+returns a minimum forest with is_connected=false.
+
+The Euclidean trace counts C=N+M+S logical records: N points, M complete
+input edges and S actual decisions. It checks known N+M before generating
+or copying the graph, then checks each next decision online before
+scanning it. The default quota is one million; zero disables only that
+optional quota. Struct scalar fields, the separate output tree, runtime
+sort/DSU storage, capacities and allocator bytes are excluded. This is
+not a peak-RAM bound. Ordinary result/work calls retain no optional
+history or quota. Every returned container owns its values, and errors
+return no partial trace.
+
+```{cpp, results="markdown", file="figures/euclidean_mst_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const std::vector<dm::algorithms::Point2D> p{{0,0},{1,0},{0,1}};const auto t=dm::algorithms::euclidean_minimum_spanning_tree_trace(p,8);
+  bool short_cap=false,base_cap=false;try{(void)dm::algorithms::euclidean_minimum_spanning_tree_trace(p,7);}catch(const std::length_error&){short_cap=true;}
+  try{(void)dm::algorithms::euclidean_minimum_spanning_tree_trace(p,5);}catch(const std::length_error&){base_cap=true;}
+  std::print("Triangle quota: points {}; input edges {}; actual steps {}; total {}; one-short rejected {}; base-short rejected {}; disabled-quota total {}.\n",t.points.size(),t.kruskal.input_edges.size(),t.kruskal.steps.size(),t.captured_entries,short_cap,base_cap,dm::algorithms::euclidean_minimum_spanning_tree_trace(p,0).captured_entries);
+  std::print("Empty trace entries {}; singleton entries {}; checked pairs for 100000 points {}.\n",dm::algorithms::euclidean_minimum_spanning_tree_trace({},1).captured_entries,dm::algorithms::euclidean_minimum_spanning_tree_trace({{2,3}},1).captured_entries,dm::algorithms::euclidean_mst_pair_count(100000));
+  const double nan=std::numeric_limits<double>::quiet_NaN(),inf=std::numeric_limits<double>::infinity(),max=std::numeric_limits<double>::max();int coordinates=0,weights=0,arithmetic=0;bool endpoint=false,geometry=false;
+  for(double bad:{nan,inf,-inf}){try{(void)dm::algorithms::euclidean_minimum_spanning_tree({{bad,0}});}catch(const std::invalid_argument&){++coordinates;}try{(void)dm::algorithms::kruskal(2,{{0,1,bad}});}catch(const std::invalid_argument&){++weights;}}
+  for(const auto& q:std::vector<std::vector<dm::algorithms::Point2D>>{{{-max,0},{max,0}},{{0,0},{max,max}},{{0,0},{.6*max,0},{0,.6*max}}})try{(void)dm::algorithms::euclidean_minimum_spanning_tree(q);}catch(const std::overflow_error&){++arithmetic;}
+  try{(void)dm::algorithms::kruskal(2,{{0,2,1}});}catch(const std::invalid_argument&){endpoint=true;}
+  try{(void)dm::algorithms::euclidean_mst_pair_count(std::numeric_limits<std::size_t>::max());}catch(const std::length_error&){geometry=true;}
+  std::print("Rejections: nonfinite singleton coordinates {}/3; generic weights {}/3; difference/distance/total overflow {}/3; invalid endpoint {}; extreme pair geometry {}.\n",coordinates,weights,arithmetic,endpoint,geometry);
+  dm::graphics::Diagram d(65,1100);dm::graphics::DiagramNodeStyle box;box.width=3.5;box.height=1.5;box.font_size=22;
+  d.node("points",{0,0},std::format("{} point records\noriginal vertices",t.points.size()),box).node("edges",{4.6,0},std::format("{} edge records\ncomplete input",t.kruskal.input_edges.size()),box).node("steps",{9.2,0},std::format("{} scan records\nactual decisions",t.kruskal.steps.size()),box)
+   .edge("points","edges").edge("edges","steps").text({4.6,2},std::format("Logical capture C = {} + {} + {} = {}",t.points.size(),t.kruskal.input_edges.size(),t.kruskal.steps.size(),t.captured_entries),26)
+   .text({4.6,-1.7},"Runtime, separate output and allocator bytes excluded",22).save_svg("build/euclidean_mst_limits.svg");
+}
+```
+// result_begin: markdown
+Triangle quota: points 3; input edges 3; actual steps 2; total 8; one-short rejected true; base-short rejected true; disabled-quota total 8.
+Empty trace entries 0; singleton entries 1; checked pairs for 100000 points 4999950000.
+Rejections: nonfinite singleton coordinates 3/3; generic weights 3/3; difference/distance/total overflow 3/3; invalid endpoint true; extreme pair geometry true.
+\image(figures/euclidean_mst_limits.svg)
+// result_end
+\caption(The exact eight-record triangle trace succeeds, while both insufficient quotas fail. All shown invalid-domain and arithmetic cases throw explicit exceptions. Record counts deliberately exclude runtime and output storage.)
+\alttext(A native three-box diagram shows three point records, three complete edge records and two actual scan records, summing to eight logical captured records.)
+
+The native tests preserve 306 frozen valid legacy outputs, including
+stable ties and generic signed-weight forests, and check actual scan
+certificates, 350 random planar fixtures, 30 exhaustive small-tree
+comparisons, 400 generic graphs, duplicate vertices, coordinate
+transformations, exact work families, ownership and quota boundaries.
+Full finite validation intentionally changes old nonfinite behavior.
+The original square remains a three-edge tree of total length three.
+
+> Reference
+
+J. B. Kruskal, Jr. (1956), On the shortest spanning subtree of a graph
+and the traveling salesman problem, Proceedings of the American
+Mathematical Society 7(1), 48-50,
+https://doi.org/10.1090/S0002-9939-1956-0078686-7.
+The greedy forest construction is applied here to a complete graph of
+planar Euclidean distances. Stable input-order ties, checked finite
+arithmetic and bounded actual scan histories are implementation choices.

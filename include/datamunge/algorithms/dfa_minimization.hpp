@@ -19,6 +19,8 @@
 /// shared automaton types.
 
 #include <datamunge/algorithms/automaton.hpp>
+#include <datamunge/algorithms/automaton_operations.hpp>
+#include <datamunge/algorithms/brzozowski.hpp>
 #include <datamunge/algorithms/powerset_construction.hpp>
 
 #include <algorithm>
@@ -29,43 +31,6 @@
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// \brief Reverse a DFA into an NFA (flip edges; swap start/accept roles).
-inline NFA reverse_dfa(const DFA& d) {
-    NFA r;
-    r.num_states  = d.num_states;
-    r.num_symbols = d.num_symbols;
-    r.delta.assign(d.num_states, std::vector<std::vector<int>>(d.num_symbols));
-    for (int s = 0; s < d.num_states; ++s)
-        for (int sym = 0; sym < d.num_symbols; ++sym) {
-            int t = d.delta[s][sym];
-            if (t >= 0) r.delta[t][sym].push_back(s);
-        }
-    for (int s = 0; s < d.num_states; ++s)
-        if (d.accept[s]) r.start_states.push_back(s);   // accepting states become starts
-    r.accept.assign(d.num_states, 0);
-    if (d.start >= 0) r.accept[d.start] = 1;            // old start becomes the only accept
-    return r;
-}
-
-/// \brief Make a DFA's transition function total by routing every \c -1 to a fresh dead state.
-inline DFA complete_dfa(const DFA& d) {
-    bool need = d.start < 0;
-    for (const auto& row : d.delta)
-        for (int t : row)
-            if (t < 0) need = true;
-    if (!need) return d;
-
-    DFA c    = d;
-    int dead = c.num_states++;
-    for (auto& row : c.delta)
-        for (int& t : row)
-            if (t < 0) t = dead;
-    c.delta.emplace_back(c.num_symbols, dead);   // dead state loops to itself
-    c.accept.push_back(0);
-    if (c.start < 0) c.start = dead;
-    return c;
-}
 
 namespace detail {
 /// Build the quotient DFA from a state->block labeling, keeping only reachable blocks.
@@ -188,10 +153,5 @@ inline DFA hopcroft_minimize(const DFA& din) {
     return detail::build_from_blocks(d, block, static_cast<int>(P.size()));
 }
 
-/// \brief Minimize a DFA by Brzozowski's algorithm: reverse, determinize, reverse, determinize.
-inline DFA brzozowski_minimize(const DFA& d) {
-    DFA t = powerset_construction(reverse_dfa(d), /*complete=*/true);
-    return powerset_construction(reverse_dfa(t), /*complete=*/true);
-}
 
 }  // namespace datamunge::algorithms

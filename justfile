@@ -1005,7 +1005,7 @@ org-examples:
 mepml-from-org:
     python3 scripts/org_to_mepml.py --run examples/org examples/mepml
 
-# Run every code block of the docs' mepml reports (docs/mepml/examples/**/*.mepml, or
+# Run every code block of the docs' mepml reports (both documentation collections, or
 # FILES) with mep (the flake's, from the cpp shell), as its C-c C-c does, writing
 # each block's results and figures back into its report. The C++ blocks build against
 # datamunge found by pkg-config. Prints each block's outcome and fails if one failed
@@ -1013,7 +1013,7 @@ mepml-from-org:
 docs-mepml-run *FILES:
     #!/usr/bin/env bash
     set -euo pipefail
-    files=({{ if FILES == "" { "$(find docs/mepml/examples -name '*.mepml' | sort)" } else { FILES } }})
+    files=({{ if FILES == "" { "$(find docs/examples/mepml docs/mepml/examples -name '*.mepml' | sort)" } else { FILES } }})
     pc="{{ MEPML_PKG_CONFIG_PATH }}"
     # mep finds its own libraries; an outside LD_LIBRARY_PATH can stop it starting.
     {{ NIX_DEVELOP }} .#cpp --command env -u LD_LIBRARY_PATH ${pc:+PKG_CONFIG_PATH="$pc"} \

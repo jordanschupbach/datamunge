@@ -1,5 +1,7 @@
 #pragma once
 
+#include <datamunge/algorithms/cubic_spline.hpp>
+#include <datamunge/algorithms/de_casteljau.hpp>
 #include <cstddef>
 #include <vector>
 
@@ -30,57 +32,5 @@ double lagrange_interpolate(const std::vector<double>& xs, const std::vector<dou
 /// @return the interpolated value @c P(x).
 double neville_interpolate(const std::vector<double>& xs, const std::vector<double>& ys, double x);
 
-/// @brief A piecewise-cubic spline: the knot abscissae @ref xs and, for each of the @c n-1
-///        intervals, the coefficients of @c S_i(t) = a_i + b_i t + c_i t^2 + d_i t^3 with
-///        @c t = x - xs[i]. Produced by @ref natural_cubic_spline and evaluated by
-///        @ref cubic_spline_eval.
-struct CubicSpline {
-    std::vector<double> xs; ///< knot abscissae (length n).
-    std::vector<double> a;  ///< constant coefficients (length n-1); a_i = ys[i].
-    std::vector<double> b;  ///< linear coefficients (length n-1).
-    std::vector<double> c;  ///< quadratic coefficients (length n-1).
-    std::vector<double> d;  ///< cubic coefficients (length n-1).
-};
-
-/// @brief Builds the *natural cubic spline* interpolating the points @c (xs[i], ys[i]): the unique
-///        piecewise-cubic that passes through every point, has continuous first and second
-///        derivatives across the interior knots (@c C^2), and satisfies the *natural* boundary
-///        condition @c S''=0 at both ends. Interior second-derivative "moments" are found by solving
-///        a symmetric tridiagonal system (Thomas algorithm) in @c O(n) time. Unlike a single
-///        high-degree polynomial, the spline resists the wild oscillation (Runge's phenomenon) of
-///        equispaced interpolation.
-///
-/// @param xs the knot abscissae, strictly increasing (length n >= 2).
-/// @param ys the values at the knots (length n).
-/// @return the fitted @ref CubicSpline.
-CubicSpline natural_cubic_spline(const std::vector<double>& xs, const std::vector<double>& ys);
-
-/// @brief Evaluates a @ref CubicSpline at @p x, locating the containing interval by binary search
-///        (clamping to the end intervals for @p x outside the knot range) and evaluating that
-///        interval's cubic.
-///
-/// @param spline a spline from @ref natural_cubic_spline.
-/// @param x      the evaluation point.
-/// @return the spline value @c S(x).
-double cubic_spline_eval(const CubicSpline& spline, double x);
-
-/// @brief A point in the plane, used for Bezier control points and curve samples.
-struct PlanarPoint {
-    double x{0.0};
-    double y{0.0};
-};
-
-/// @brief *De Casteljau's algorithm*: evaluates the Bezier curve defined by the @p control points at
-///        parameter @p t in @c [0,1], by repeated linear interpolation. It builds a pyramid of
-///        points, each level replacing consecutive points by their @c (1-t):(t) blend, until a
-///        single point -- the curve at @p t -- remains. It is the numerically stable standard for
-///        Bezier evaluation and equals the Bernstein-polynomial form
-///        @c sum_i C(n,i) t^i (1-t)^{n-i} P_i. Runs in @c O(n^2) per evaluation. The curve passes
-///        through the first and last control points and lies within their convex hull.
-///
-/// @param control the Bezier control points (at least one).
-/// @param t       the curve parameter in @c [0,1].
-/// @return the point on the Bezier curve at @p t.
-PlanarPoint de_casteljau(const std::vector<PlanarPoint>& control, double t);
 
 } // namespace datamunge::algorithms

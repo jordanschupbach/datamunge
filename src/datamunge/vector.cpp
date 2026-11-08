@@ -233,6 +233,18 @@ double mean(const Vector<>& v) {
   return sum(v) / static_cast<double>(v.size());
 }
 
+double median(const Vector<>& v) {
+  if (v.empty()) return std::numeric_limits<double>::quiet_NaN();
+  for (double value:v) if (std::isnan(value)) return std::numeric_limits<double>::quiet_NaN();
+  std::vector<double> sorted(v.begin(),v.end());
+  const auto middle=sorted.begin()+static_cast<std::ptrdiff_t>(sorted.size()/2);
+  std::nth_element(sorted.begin(),middle,sorted.end());
+  const double upper=*middle;
+  if (sorted.size()%2) return upper;
+  const double lower=*std::max_element(sorted.begin(),middle);
+  return std::isfinite(lower)&&std::isfinite(upper)?std::midpoint(lower,upper):(lower+upper)/2;
+}
+
 double sd(const Vector<>& v) { return vector_expr::sample_sd(v); }
 
 void set_seed(std::uint64_t seed) { generator() = random::SplitMix64(seed); }

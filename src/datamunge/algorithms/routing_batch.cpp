@@ -11,22 +11,6 @@ struct DSU{std::vector<std::size_t>p,r;explicit DSU(std::size_t n):p(n),r(n){std
 std::size_t f(std::size_t x){return p[x]==x?x:p[x]=f(p[x]);}bool join(std::size_t a,std::size_t b){a=f(a);b=f(b);if(a==b)return false;if(r[a]<r[b])std::swap(a,b);p[b]=a;if(r[a]==r[b])++r[a];return true;}};
 void valid(std::size_t n,const std::vector<WeightedEdge>&e){for(auto[u,v,w]:e)if(u>=n||v>=n||!std::isfinite(w))throw std::invalid_argument("routing algorithm: invalid edge");}
 }
-LongestPathResult dag_longest_paths(std::size_t n,const std::vector<WeightedEdge>&edges,std::size_t source){
- valid(n,edges);if(source>=n)throw std::invalid_argument("dag_longest_paths: source out of range");
- std::vector<std::vector<std::pair<std::size_t,double>>>a(n);std::vector<std::size_t>degree(n);
- for(auto[u,v,w]:edges){a[u].push_back({v,w});++degree[v];}std::queue<std::size_t>q;for(std::size_t i=0;i<n;++i)if(!degree[i])q.push(i);
- std::vector<std::size_t>order;while(!q.empty()){auto u=q.front();q.pop();order.push_back(u);for(auto[v,w]:a[u])if(--degree[v]==0)q.push(v);}
- if(order.size()!=n)throw std::invalid_argument("dag_longest_paths: graph contains a cycle");
- LongestPathResult r;r.distance.assign(n,-std::numeric_limits<double>::infinity());r.predecessor.assign(n,n);r.distance[source]=0;
- for(auto u:order)if(std::isfinite(r.distance[u]))for(auto[v,w]:a[u])if(r.distance[u]+w>r.distance[v]){r.distance[v]=r.distance[u]+w;r.predecessor[v]=u;}return r;
-}
-MinimumSpanningTree boruvka(std::size_t n,const std::vector<WeightedEdge>&edges){
- valid(n,edges);MinimumSpanningTree out;DSU d(n);std::size_t groups=n;
- while(groups>1){std::vector<std::size_t>best(n,edges.size());for(std::size_t i=0;i<edges.size();++i){auto[u,v,w]=edges[i];auto a=d.f(u),b=d.f(v);if(a==b)continue;
-   if(best[a]==edges.size()||w<std::get<2>(edges[best[a]]))best[a]=i;if(best[b]==edges.size()||w<std::get<2>(edges[best[b]]))best[b]=i;}
-  bool changed=false;for(auto i:best)if(i<edges.size()){auto[u,v,w]=edges[i];if(d.join(u,v)){out.edges.push_back(edges[i]);out.total_weight+=w;--groups;changed=true;}}if(!changed)break;}
- out.is_connected=n<=1||groups==1;return out;
-}
 MinimumSpanningTree reverse_delete(std::size_t n,const std::vector<WeightedEdge>&input){
  valid(n,input);auto edges=input;std::sort(edges.begin(),edges.end(),[](auto&a,auto&b){return std::get<2>(a)>std::get<2>(b);});
  std::vector<bool>keep(edges.size(),true);auto component_count=[&](std::size_t skip){DSU d(n);for(std::size_t i=0;i<edges.size();++i)if(keep[i]&&i!=skip)d.join(std::get<0>(edges[i]),std::get<1>(edges[i]));

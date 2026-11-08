@@ -1,23 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <datamunge/algorithms/cuthill_mckee.hpp>
+#include <datamunge/algorithms/cannon.hpp>
 
 namespace datamunge::algorithms {
-
-/// @brief The *Cuthill-McKee algorithm*: reorders the rows/columns of a symmetric sparse matrix to
-///        *reduce its bandwidth* -- the maximum distance of any nonzero from the diagonal. Treating
-///        the matrix pattern as a graph, it runs a breadth-first search from a low-degree start
-///        vertex, visiting each level's vertices in increasing-degree order; that BFS order keeps
-///        connected (nonzero-coupled) rows close together, clustering the nonzeros near the diagonal.
-///        The *reverse* Cuthill-McKee (RCM) ordering -- simply reversing the result -- usually reduces
-///        *fill-in* under Cholesky further, and is the more common choice. A tight band means cheaper
-///        banded solves and factorizations.
-///
-/// @param adjacency @c adjacency[i] lists the neighbours of node @c i (the off-diagonal nonzeros of
-///        row @c i); must be symmetric.
-/// @param reverse if true, return the reverse Cuthill-McKee ordering.
-/// @return a permutation: @c perm[k] is the original index placed at new position @c k.
-std::vector<int> cuthill_mckee(const std::vector<std::vector<int>>& adjacency, bool reverse = false);
 
 /// @brief The *minimum degree algorithm*: chooses an *elimination ordering* of a symmetric sparse
 ///        matrix that heuristically *minimizes fill-in* (new nonzeros created) during Cholesky
@@ -42,17 +29,5 @@ std::vector<int> minimum_degree_ordering(const std::vector<std::vector<int>>& ad
 /// @param adjacency the symmetric matrix pattern (off-diagonal nonzeros) as an adjacency list.
 /// @return the fill pattern of @c L: @c result[i] lists the columns @c j<i where @c L(i,j) is nonzero.
 std::vector<std::vector<int>> symbolic_cholesky(const std::vector<std::vector<int>>& adjacency);
-
-/// @brief *Cannon's algorithm* for dense matrix multiplication @c C = A·B of two @c n×n matrices.
-///        Designed for a processor mesh, it *skews* the two matrices with cyclic row/column shifts so
-///        that at each of @c n steps every processor holds a matching @c A- and @c B-block to multiply
-///        and accumulate, then shifts again -- computing the full product with only *nearest-neighbour*
-///        communication and @c O(n) memory per node. This sequential implementation follows the same
-///        shift-multiply-accumulate schedule and returns the exact product.
-///
-/// @param A,B the input matrices in row-major order (each @c n·n entries).
-/// @param n the matrix dimension.
-/// @return the product @c C = A·B in row-major order.
-std::vector<double> cannon_matmul(const std::vector<double>& A, const std::vector<double>& B, int n);
 
 } // namespace datamunge::algorithms

@@ -7,7 +7,6 @@
 #include <cstddef>
 #include <stdexcept>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 namespace datamunge::algorithms {
@@ -31,46 +30,6 @@ std::size_t levenshtein_distance(const std::string& a, const std::string& b) {
         std::swap(prev, curr);
     }
     return prev[n];
-}
-
-std::size_t damerau_levenshtein_distance(const std::string& a, const std::string& b) {
-    const std::size_t n = a.size();
-    const std::size_t m = b.size();
-    // Lowrance-Wagner table with a one-cell border on the top and left holding a "infinity"
-    // sentinel (n + m is an upper bound on any real distance, so it never wins a min).
-    const std::size_t          inf = n + m;
-    std::vector<std::vector<std::size_t>> d(n + 2, std::vector<std::size_t>(m + 2, 0));
-    d[0][0] = inf;
-    for (std::size_t i = 0; i <= n; ++i) {
-        d[i + 1][0] = inf;
-        d[i + 1][1] = i;
-    }
-    for (std::size_t j = 0; j <= m; ++j) {
-        d[0][j + 1] = inf;
-        d[1][j + 1] = j;
-    }
-
-    // da[c] = the largest row i (1-based) at which byte c has appeared in a so far.
-    std::array<std::size_t, 256> da{};
-    for (std::size_t i = 1; i <= n; ++i) {
-        std::size_t db = 0; // largest column j at which a[0..i-1] last matched b
-        for (std::size_t j = 1; j <= m; ++j) {
-            const std::size_t i1   = da[static_cast<unsigned char>(b[j - 1])];
-            const std::size_t j1   = db;
-            std::size_t       cost = 1;
-            if (a[i - 1] == b[j - 1]) {
-                cost = 0;
-                db   = j;
-            }
-            d[i + 1][j + 1] = std::min({
-                d[i][j] + cost,                                // substitution / match
-                d[i + 1][j] + 1,                               // insertion
-                d[i][j + 1] + 1,                               // deletion
-                d[i1][j1] + (i - i1 - 1) + 1 + (j - j1 - 1)});  // transposition of a block
-        }
-        da[static_cast<unsigned char>(a[i - 1])] = i;
-    }
-    return d[n + 1][m + 1];
 }
 
 std::size_t hamming_distance(const std::string& a, const std::string& b) {
@@ -132,24 +91,5 @@ double jaro_winkler_similarity(const std::string& a, const std::string& b, doubl
     return j + static_cast<double>(l) * prefix_scale * (1.0 - j);
 }
 
-double dice_coefficient(const std::string& a, const std::string& b) {
-    if (a == b) return 1.0;                     // identical (covers the both-empty and short cases)
-    if (a.size() < 2 || b.size() < 2) return 0.0; // no bigrams and not equal -> nothing in common
-
-    std::unordered_map<std::string, int> counts;
-    counts.reserve(a.size());
-    for (std::size_t i = 0; i + 1 < a.size(); ++i) ++counts[a.substr(i, 2)];
-
-    std::size_t intersection = 0;
-    for (std::size_t i = 0; i + 1 < b.size(); ++i) {
-        auto it = counts.find(b.substr(i, 2));
-        if (it != counts.end() && it->second > 0) {
-            --it->second;
-            ++intersection;
-        }
-    }
-    const std::size_t total = (a.size() - 1) + (b.size() - 1);
-    return 2.0 * static_cast<double>(intersection) / static_cast<double>(total);
-}
 
 } // namespace datamunge::algorithms

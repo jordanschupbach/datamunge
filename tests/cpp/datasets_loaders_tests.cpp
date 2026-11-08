@@ -186,16 +186,17 @@ TEST(Datasets, BuiltInValuesMatchTheirSources) {
 
 TEST(Datasets, CatalogListsEveryDatasetAndLoadRejectsOthers) {
   const auto catalog = ds::catalog();
-  EXPECT_EQ(catalog.nrows(), 23u);
+  EXPECT_EQ(catalog.nrows(), 24u);
   std::set<std::string> storage;
   for (std::size_t i = 0; i < catalog.nrows(); ++i) {
     storage.insert(catalog.string_at("storage", i));
     const std::string name = catalog.string_at("name", i);
     if (catalog.string_at("storage", i) == "built-in") EXPECT_NO_THROW((void)ds::load(name)) << name;
   }
-  EXPECT_EQ(storage, (std::set<std::string>{"built-in", "download", "stream"}));
+  EXPECT_EQ(storage, (std::set<std::string>{"built-in", "download", "graph", "stream"}));
   EXPECT_THROW((void)ds::load("nope"), std::invalid_argument);
   EXPECT_THROW((void)ds::load("mnist"), std::invalid_argument);
+  EXPECT_THROW((void)ds::load("karate_club"), std::invalid_argument);
 }
 
 // ---------------------------------------------------------------------------- CSV
@@ -323,7 +324,7 @@ TEST(DatasetsDownload, OfflineModeAndDataHome) {
     EXPECT_EQ(ds::diamonds().nrows(), 1u);
   }
   EXPECT_THROW((void)ds::fetch("not-a-dataset"), std::invalid_argument);
-  EXPECT_EQ(ds::downloadable().size(), 8u);
+  EXPECT_EQ(ds::downloadable().size(), 9u);
 }
 
 TEST(DatasetsDownload, RebotRejectsCorruptCacheAndOfflineMisses) {

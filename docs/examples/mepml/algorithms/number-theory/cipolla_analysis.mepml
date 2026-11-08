@@ -1,0 +1,391 @@
+//? Title: Cipolla's Modular Square Roots: An Exact Detour Through a Quadratic Field
+//? Subtitle: Actual candidate tests, exponent bits, prime validation and full-range roots
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given an unsigned integer n and a prime p, find a residue r whose square is n
+modulo p, or establish that no such residue exists. Cipolla's method constructs
+a quadratic extension in which one exponentiation produces a root back in the
+base field. We inspect a small actual computation, retain the original roots
+and complete census modulo 1009, and measure deterministic auxiliary search.
+Canonical C++ now checks the prime domain, includes the missing zero auxiliary,
+uses full-range modular arithmetic, records its actual operations, and returns
+representable legacy roots without losing unsigned root identities.
+)
+
+\toc
+
+> A hand-checkable field: square root of 10 modulo 13
+
+The squares of 6 and 7 are both 10 modulo 13. To obtain one by Cipolla's
+construction, try auxiliary values a until w=a²−10 is a quadratic nonresidue.
+The actual search rejects a=1 because w=4 is a square, then accepts a=2
+because w=7 is not. Introduce a formal symbol s with s²=7. The exponent is
+(13+1)/2=7, and the native right-to-left bit loop starts from result 1 and
+base 2+s. Its accumulator visits 2+s, 11+6s and finally 6+0s.
+These are actual executing-kernel records, not a separately simulated path.
+
+```{cpp, results="markdown", file="figures/cipolla_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::cipolla_sqrt_trace(10,13);
+  if(!t.result.exists || t.result.root!=6 || t.final_element.y!=0)return 1;
+  std::print("| actual auxiliary a | w=a^2-n mod 13 | Euler residue w^6 | accepted |\n| ---: | ---: | ---: | :--- |\n");
+  for(const auto& c:t.candidates)std::print("| {} | {} | {} | {} |\n",c.a,c.w,c.euler_value,c.euler_value==12);
+  std::print("\n| remaining exponent | result before (x,y) | base before (x,y) | result after (x,y) | squared base (x,y) |\n| ---: | :--- | :--- | :--- | :--- |\n");
+  dm::graphics::Diagram diagram(60,1100);
+  dm::graphics::DiagramNodeStyle node;node.width=5.2;node.height=2.8;node.font_size=20;
+  for(std::size_t i=0;i<t.steps.size();++i) {
+    const auto& s=t.steps[i];
+    std::print("| {} | ({},{}) | ({},{}) | ({},{}) | ({},{}) |\n",s.remaining_exponent,s.result_before.x,s.result_before.y,s.base_before.x,s.base_before.y,s.result_after.x,s.result_after.y,s.base_after.x,s.base_after.y);
+    if(i+1==t.steps.size())node.fill={220,252,231};
+    const auto id=std::format("bit{}",i);
+    diagram.node(id,{7.5*i,0},std::format("e={}\nresult {} + {}s\nnext base {} + {}s",s.remaining_exponent,s.result_after.x,s.result_after.y,s.base_after.x,s.base_after.y),node);
+    if(i)diagram.edge(std::format("bit{}",i-1),id,"next bit");
+  }
+  diagram.text({7.5,3},std::format("s^2={} mod {}; accepted a={} after {} tests",t.w,t.prime,t.a,t.work.candidate_tests),21)
+      .text({7.5,-3},std::format("Final result {} + 0s; other root {}; equation verified {}",t.result.root,t.result.other_root,dm::algorithms::cipolla_root_satisfies(10,13,t.result.root)),19)
+      .save_svg("build/cipolla_method.svg");
+  std::print("\nActual pair products: {} result multiplies + {} base squares; {} scalar products inside those pairs.\n",t.work.extension_result_products,t.work.extension_base_squares,t.work.extension_scalar_products);
+}
+```
+// result_begin: markdown
+| actual auxiliary a | w=a^2-n mod 13 | Euler residue w^6 | accepted |
+| ---: | ---: | ---: | :--- |
+| 1 | 4 | 1 | false |
+| 2 | 7 | 12 | true |
+
+| remaining exponent | result before (x,y) | base before (x,y) | result after (x,y) | squared base (x,y) |
+| ---: | :--- | :--- | :--- | :--- |
+| 7 | (1,0) | (2,1) | (2,1) | (11,4) |
+| 3 | (2,1) | (11,4) | (11,6) | (12,10) |
+| 1 | (11,6) | (12,10) | (6,0) | (12,6) |
+
+Actual pair products: 3 result multiplies + 3 base squares; 30 scalar products inside those pairs.
+\image(figures/cipolla_method.svg)
+// result_end
+\caption(The actual extension computation lands at 6+0s; its last base square is retained even though no later bit uses it.)
+\alttext(Three boxes show remaining exponents seven, three and one, with accumulator pairs (2,1), (11,6) and (6,0). The final base pair (12,6) records the closing square.)
+
+> Why the extension calculation gives a base-field square root
+
+For an odd prime p, first reduce n modulo p. Handle zero directly; for n≠0,
+Euler's criterion says a root exists exactly when n^((p−1)/2)=1 modulo p.
+Choose a with w=a²−n a nonresidue, so X²−w is irreducible over F_p.
+In the quadratic field F_p[s]/(s²−w), multiplication is
+
+$$
+(x_1+y_1s)(x_2+y_2s)
+=(x_1x_2+w y_1y_2)+(x_1y_2+x_2y_1)s.
+$$
+\alttext(The coefficient of one is the product of the constant coefficients plus w times the product of the s coefficients. The coefficient of s is the sum of the cross products.)
+
+Here s is a formal field basis symbol, not the complex number i. Since
+w^((p−1)/2)=−1, we have s^p=−s. Thus z=a+s has Frobenius conjugate
+z^p=a−s and norm
+
+$$
+z^{p+1}=(a+s)(a-s)=a^2-w=n.
+$$
+\alttext(The norm of a plus s is a squared minus w, which equals the target n.)
+
+Let r=z^((p+1)/2). Then r²=n. Moreover,
+r^(p−1)=n^((p−1)/2)=1, so r^p=r. The fixed elements of Frobenius are
+exactly the base field: writing r=x+ys gives x−ys=x+ys, hence y=0 because
+p is odd. The resulting x is therefore the desired ordinary residue root.
+The implementation checks both the vanishing y coefficient and x²=n.
+
+Every nonzero quadratic residue has exactly two roots, r and −r: if u²=r²,
+then (u−r)(u+r)=0 in a field. They are distinct for odd p. Zero has one root,
+and F_2 has one root for each of its two elements. These exceptions matter to
+the old report's unrestricted claim that every residue has two roots.
+
+> The original modulus-1009 examples and root pairs
+
+The original deterministic choices remain 439 for n=2, 162 for n=10,
+999 for n=100, and 587 for n=500. Their complementary roots are 570, 847,
+10 and 422. The native equation checker uses widened modular arithmetic;
+the report no longer checks a potentially overflowing signed expression r*r.
+
+The figure retains both roots of every nonzero quadratic residue modulo 1009,
+but orders each pair for display: blue is the smaller root, red the larger.
+That ordering is a plot convention, not a change to the solver's root choice.
+The finite paired clouds reflect across y=p/2. Their appearance is not a
+randomness or cryptographic-security test.
+
+```{cpp, results="markdown", file="figures/cipolla.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");const std::uint64_t p=1009;
+  std::print("| original n | actual unsigned root | complementary root | both equations verified |\n| ---: | ---: | ---: | :--- |\n");
+  for(const std::uint64_t n:{2,10,100,500}) {
+    const auto r=dm::algorithms::cipolla_sqrt_result(n,p);
+    const bool valid=r.exists && dm::algorithms::cipolla_root_satisfies(n,p,r.root) && dm::algorithms::cipolla_root_satisfies(n,p,r.other_root);
+    if(!valid)return 1;std::print("| {} | {} | {} | {} |\n",n,r.root,r.other_root,valid);
+  }
+  std::vector<double> residues,lower,upper;std::uint64_t first_nonresidue=0;
+  for(std::uint64_t n=1;n<p;++n) {
+    const auto r=dm::algorithms::cipolla_sqrt_result(n,p);
+    if(!r.exists){if(!first_nonresidue)first_nonresidue=n;continue;}
+    if(!dm::algorithms::cipolla_root_satisfies(n,p,r.root) || !dm::algorithms::cipolla_root_satisfies(n,p,r.other_root))return 1;
+    residues.push_back(n);lower.push_back(std::min(r.root,r.other_root));upper.push_back(std::max(r.root,r.other_root));
+  }
+  if(residues.size()!=504 || first_nonresidue!=11)return 1;
+  auto plot=dm::graphics::RPlot::create();
+  plot.points(residues,lower,"lower",{37,99,235},2.6).points(residues,upper,"upper",{220,38,38},2.6)
+      .abline_h(p/2.0,{100,116,139},1).legend({"smaller root","larger root"},{{37,99,235},{220,38,38}})
+      .title("Both roots modulo 1009, ordered by value")
+      .x_label("nonzero quadratic residue n").y_label("root representative")
+      .x_limits(-10,1020).y_limits(-30,1200).save_svg("build/cipolla.svg");
+  std::print("\nNonzero square classes: {} of {}. First positive nonresidue: {}. Both roots checked for every plotted pair.\n",residues.size(),p-1,first_nonresidue);
+}
+```
+// result_begin: markdown
+| original n | actual unsigned root | complementary root | both equations verified |
+| ---: | ---: | ---: | :--- |
+| 2 | 439 | 570 | true |
+| 10 | 162 | 847 | true |
+| 100 | 999 | 10 | true |
+| 500 | 587 | 422 | true |
+
+Nonzero square classes: 504 of 1008. First positive nonresidue: 11. Both roots checked for every plotted pair.
+\image(figures/cipolla.svg)
+// result_end
+\caption(All original root pairs remain; the complete census has 504 nonzero square classes and first nonresidue eleven.)
+\alttext(Blue points are the smaller root below 504.5 and red points the complementary larger root above 504.5 for each of 504 nonzero square classes modulo 1009. A horizontal line marks their symmetry axis.)
+
+Squaring pairs each nonzero field element x with −x, so the p−1 nonzero
+elements map two-to-one onto exactly (p−1)/2 square classes. This explains
+504 out of 1008; it is an exact count, not an empirical probability estimate.
+Zero is deliberately excluded from this figure and count.
+
+> Candidate density is not a guarantee about deterministic trial count
+
+For a fixed nonzero square n, exactly (p−1)/2 auxiliary values a in F_p make
+a²−n a nonresidue. A short count explains this. The equation b²=a²−n is
+equivalent to (a−b)(a+b)=n. Each nonzero choice of a−b determines one pair
+(a,b), because two is invertible, so there are p−1 pairs. In terms of the
+quadratic character χ, this says
+
+$$
+\sum_{a\in F_p}\bigl(1+\chi(a^2-n)\bigr)=p-1,
+\qquad \sum_{a\in F_p}\chi(a^2-n)=-1.
+$$
+\alttext(Counting solutions by their first coordinate gives p plus the sum of the quadratic characters, equal to p minus one.)
+
+Exactly two values give a²−n=0. Combining the total count with the character
+sum gives (p−1)/2 nonresidues and (p−3)/2 nonzero residues among the tested
+differences. Independent uniform random auxiliary choices would therefore
+succeed with probability (p−1)/(2p), for mean 2p/(p−1) trials.
+
+This implementation instead retains the reproducible order 1,2,…,p−1,0.
+The random-choice expectation is not a guarantee for that sequential order.
+The table measures averages over every nonzero square input for each fixed
+prime; the histogram describes that fixed-input census modulo 1009. Neither is
+a runtime benchmark or a random independent-trial experiment.
+
+```{cpp, results="markdown", file="figures/cipolla_candidates.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <bit>
+int main() {
+  std::filesystem::create_directories("build");std::vector<std::size_t> frequency;
+  std::print("| prime | nonzero square inputs | mean actual trials | maximum trials | pair products per successful call | scalar products inside pairs |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const std::uint64_t p:{13,17,97,257,1009}) {
+    std::size_t squares=0,total=0,largest=0,pair_count=0,scalar_count=0;
+    for(std::uint64_t n=1;n<p;++n) {
+      const auto t=dm::algorithms::cipolla_sqrt_trace(n,p);if(!t.result.exists)continue;
+      ++squares;total+=t.work.candidate_tests;largest=std::max(largest,t.work.candidate_tests);
+      pair_count=t.work.extension_result_products+t.work.extension_base_squares;scalar_count=t.work.extension_scalar_products;
+      if(pair_count!=std::bit_width(p/2+1)+std::popcount(p/2+1) || scalar_count!=5*pair_count)return 1;
+      if(p==1009){if(frequency.size()<=t.work.candidate_tests)frequency.resize(t.work.candidate_tests+1);++frequency[t.work.candidate_tests];}
+    }
+    if(squares!=(p-1)/2)return 1;
+    std::print("| {} | {} | {:.6f} | {} | {} | {} |\n",p,squares,double(total)/squares,largest,pair_count,scalar_count);
+  }
+  std::vector<double> trials,counts;std::size_t total=0;
+  for(std::size_t k=1;k<frequency.size();++k){trials.push_back(k);counts.push_back(frequency[k]);total+=frequency[k];}
+  if(total!=504)return 1;
+  auto plot=dm::graphics::RPlot::create();
+  plot.bars(trials,counts,"fixed census",{37,99,235}).legend({"504 fixed square inputs"},{{37,99,235}})
+      .title("Deterministic auxiliary work modulo 1009")
+      .x_label("actual candidates tested before success").y_label("number of square inputs")
+      .x_limits(0.5,frequency.size()-0.5).y_limits(0,1.25*(*std::max_element(counts.begin(),counts.end())))
+      .save_svg("build/cipolla_candidates.svg");
+}
+```
+// result_begin: markdown
+| prime | nonzero square inputs | mean actual trials | maximum trials | pair products per successful call | scalar products inside pairs |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 13 | 6 | 1.833333 | 3 | 6 | 30 |
+| 17 | 8 | 1.625000 | 3 | 6 | 30 |
+| 97 | 48 | 1.916667 | 6 | 9 | 45 |
+| 257 | 128 | 1.898438 | 6 | 10 | 50 |
+| 1009 | 504 | 2.051587 | 10 | 16 | 80 |
+\image(figures/cipolla_candidates.svg)
+// result_end
+\caption(Actual deterministic search lengths vary with the input; extension powering work depends only on the prime.)
+\alttext(A histogram counts how many of the 504 nonzero square inputs modulo 1009 require each actual number of auxiliary tests. It measures a complete fixed census, not random-trial probabilities or seconds.)
+
+For exponent E=(p+1)/2, the retained right-to-left loop performs popcount(E)
+result multiplications and bit_width(E) base squares. The latter includes the
+last unused square. Each pair operation performs five reduced scalar products;
+it does not optimise away products with zero coefficients. Scalar Euler powers
+also retain their closing square. These details explain the reported actual
+counts, rather than substituting counts for a different optimised loop.
+
+For T actual candidates, the solver performs O((T+1) log p) named modular
+products in a fixed-word model, including the bounded deterministic prime
+validation. Sequential search can inspect up to p candidates; a positive
+candidate cap bounds that work. The ordinary call retains constant numeric
+state; a trace owns O(T+log p) records. The counters exclude primality's
+internal products and are not an arbitrary-precision bit-cost model. No
+throughput comparison with another square-root method is inferred.
+
+> The missing-zero case and the full unsigned range
+
+Modulo 3, the nonzero square 1 exposes a bug in a search restricted to
+auxiliaries 1 and 2: both give w=0. The only suitable auxiliary is a=0,
+where w=2. The revised order reaches it after those two failures and produces
+the valid root 2, with complementary root 1. Zero differences are rejected as
+auxiliaries rather than mistaken for a quadratic field.
+
+The legacy return type is signed long long, while the input prime can occupy
+all of uint64. A raw computed root above LLONG_MAX cannot be cast safely into
+that interface. One complementary root is at most p/2, so the legacy call now
+uses the other root when necessary. The unsigned-result API retains the
+actual raw root, its complementary root and the selected legacy representative.
+The original small-prime choices remain intact.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const auto small=dm::algorithms::cipolla_sqrt_trace(1,3);
+  if(small.result.root!=2 || small.candidates.size()!=3)return 1;
+  std::print("| actual auxiliary mod 3 | w | Euler value |\n| ---: | ---: | ---: |\n");
+  for(const auto& c:small.candidates)std::print("| {} | {} | {} |\n",c.a,c.w,c.euler_value);
+  std::print("\nCorrected sqrt(1) mod 3: {} and {}; legacy value {}.\n",small.result.root,small.result.other_root,small.result.legacy_root);
+  constexpr std::uint64_t p=18446744073709551557ULL;
+  const auto large=dm::algorithms::cipolla_sqrt_result(9,p);
+  const auto signed_limit=static_cast<std::uint64_t>(std::numeric_limits<long long>::max());
+  if(!large.exists || large.root<=signed_limit || large.legacy_root!=3)return 1;
+  std::print("Full-range prime {}: raw root {}, other root {}, safe legacy root {}.\n",p,large.root,large.other_root,large.legacy_root);
+  std::print("Both unsigned roots satisfy the equation: {} and {}.\n",dm::algorithms::cipolla_root_satisfies(9,p,large.root),dm::algorithms::cipolla_root_satisfies(9,p,large.other_root));
+  const auto zero=dm::algorithms::cipolla_sqrt_result(13,13);
+  const auto binary=dm::algorithms::cipolla_sqrt_trace(std::numeric_limits<std::uint64_t>::max(),2);
+  std::print("Zero class modulo 13: root {}, other {} (one distinct root).\n",zero.root,zero.other_root);
+  std::print("UINT64_MAX modulo 2 normalizes to {}, with unique root {}.\n",binary.normalized_n,binary.result.root);
+}
+```
+// result_begin: markdown
+| actual auxiliary mod 3 | w | Euler value |
+| ---: | ---: | ---: |
+| 1 | 0 | 0 |
+| 2 | 0 | 0 |
+| 0 | 2 | 2 |
+
+Corrected sqrt(1) mod 3: 2 and 1; legacy value 2.
+Full-range prime 18446744073709551557: raw root 18446744073709551554, other root 3, safe legacy root 3.
+Both unsigned roots satisfy the equation: true and true.
+Zero class modulo 13: root 0, other 0 (one distinct root).
+UINT64_MAX modulo 2 normalizes to 1, with unique root 1.
+// result_end
+\caption(A zero auxiliary repairs the small-prime bug; a complementary root preserves the signed legacy result over full-range unsigned primes.)
+
+Every scalar product widens its two operands to unsigned 128 bits before
+reduction. Extension coefficients combine already reduced products, so their
+sums stay below 2p; the code never adds two unreduced 128-bit products.
+Candidate subtraction uses a difference of canonical residues instead of
+forming a²+p−n in uint64. The exponent is computed as p/2+1, avoiding a
+potentially overflowing p+1 expression. Prime validation occurs before n%p,
+so p=0 cannot trigger division by zero, and composite zero inputs cannot
+silently take the zero shortcut.
+
+> Caps, final checks and operation accounting
+
+CipollaOptions uses zero for an unlimited cap. Positive limits bound actual
+candidate visits and actual extension pair operations for the whole call.
+The latter counts the closing square. Cap exhaustion throws std::length_error
+and returns no partial root or trace, even if an intermediate accumulator
+already contains a root. Prime validation, scalar Euler tests and final
+verification are separate from the extension-product cap. Nonresidues and
+valid zero/binary shortcuts do not consume unused candidate or extension work.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  dm::algorithms::CipollaOptions exact;exact.max_candidates=2;exact.max_extension_products=6;
+  const auto t=dm::algorithms::cipolla_sqrt_trace(10,13,exact);
+  auto low=exact;low.max_candidates=1;bool candidate_cap=false;
+  try{(void)dm::algorithms::cipolla_sqrt_result(10,13,low);}catch(const std::length_error&){candidate_cap=true;}
+  low=exact;low.max_extension_products=5;bool product_cap=false;
+  try{(void)dm::algorithms::cipolla_sqrt_trace(10,13,low);}catch(const std::length_error&){product_cap=true;}
+  int invalid=0;
+  const std::array<std::uint64_t,6> bad{{0,1,4,9,561,std::numeric_limits<std::uint64_t>::max()}};
+  for(const auto p:bad)try{(void)dm::algorithms::cipolla_sqrt_result(0,p,low);}catch(const std::invalid_argument&){++invalid;}
+  if(!candidate_cap || !product_cap || invalid!=6)return 1;
+  const auto& w=t.work;
+  std::print("| actual named category | count |\n| :--- | ---: |\n| primality-validator calls (internal products excluded) | {} |\n| input Euler modular products | {} |\n| candidate square products | {} |\n| candidate Euler products | {} |\n| extension result pair products | {} |\n| extension base pair squares | {} |\n| scalar products inside extension pairs | {} |\n| final root-square verification | {} |\n",w.primality_checks,w.residue_power_products,w.candidate_squares,w.candidate_power_products,w.extension_result_products,w.extension_base_squares,w.extension_scalar_products,w.verification_products);
+  const auto named_scalar=w.residue_power_products+w.candidate_squares+w.candidate_power_products+w.extension_scalar_products+w.verification_products;
+  std::print("\nNamed modular scalar products outside prime validation: {}.\n",named_scalar);
+  std::print("One-below caps reject: candidates {}, pair products {}. Invalid zero/composite moduli reject before zero shortcuts: {} of 6.\n",candidate_cap,product_cap,invalid);
+  const auto none=dm::algorithms::cipolla_sqrt_trace(11,1009,low);
+  std::print("Nonresidue 11 mod 1009: exists {}, actual candidate visits {}.\n",none.result.exists,none.work.candidate_tests);
+  auto copy=t;copy.steps[0].result_after.x=0;
+  std::print("Mutating a copied record leaves the original first result coefficient {}.\n",t.steps[0].result_after.x);
+}
+```
+// result_begin: markdown
+| actual named category | count |
+| :--- | ---: |
+| primality-validator calls (internal products excluded) | 1 |
+| input Euler modular products | 5 |
+| candidate square products | 2 |
+| candidate Euler products | 10 |
+| extension result pair products | 3 |
+| extension base pair squares | 3 |
+| scalar products inside extension pairs | 30 |
+| final root-square verification | 1 |
+
+Named modular scalar products outside prime validation: 48.
+One-below caps reject: candidates true, pair products true. Invalid zero/composite moduli reject before zero shortcuts: 6 of 6.
+Nonresidue 11 mod 1009: exists false, actual candidate visits 0.
+Mutating a copied record leaves the original first result coefficient 2.
+// result_end
+\caption(Exact caps pass; lower caps and invalid moduli reject explicitly. The worked example uses 48 named scalar products outside prime validation.)
+
+The variable candidate search and exponent-bit branches expose variable work;
+this routine makes no secret-independent timing claim. Equation verification
+certifies the modular root for a validated prime, not the ordering of the root
+pair or any property of a cryptographic protocol. All returned records own
+their values and calls share no mutable state.
+
+Fourteen new native tests enumerate every residue in the 55 prime fields through
+257, totalling 6,338 residue inputs, and check normalized aliases against explicit
+square sets. They retain the original four roots and all 1009 residue verdicts.
+A separate add-and-double modular arithmetic oracle verifies every recorded
+candidate and pair transition, independently of the core's unsigned-128 products.
+Another 1,000 known squares span four large primes through 18446744073709551557,
+including raw roots above the signed range and their safe legacy complements.
+Signed/unsigned endpoints, pseudoprime/composite rejection, the missing-zero
+case, exact/one-below caps, closing-square accounting, shortcut paths and owned
+copies pass. All fourteen cases also pass AddressSanitizer and UBSan; existing
+arithmetic regressions remain in the native runner.
+
+No observational dataset is needed for these exact finite-field identities.
+The report's complete census describes a particular prime and deterministic
+search order. It does not establish a universal trial count or a performance
+ranking.
+
+> References
+
+- Michele Cipolla (1903), *Un metodo per la risoluzione della congruenza di
+  secondo grado*. The attribution and year are recorded in the notes to
+  section 3.5 of the following reference, correcting the old report's 1907 date.
+- A. Menezes, P. van Oorschot and S. Vanstone (1996), *Handbook of Applied
+  Cryptography*, Algorithm 3.39 and section 3.12 notes.
+  https://cacr.uwaterloo.ca/hac/about/chap3.pdf
+  Its irreducible polynomial X²−bX+n becomes this representation under b=2a:
+  the discriminant is 4(a²−n), with the same quadratic character as a²−n.
+  This implementation uses deterministic candidate order in place of random b.

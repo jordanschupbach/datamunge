@@ -1,21 +1,16 @@
 #pragma once
+#include <datamunge/algorithms/crc32.hpp>
+#include <datamunge/algorithms/fletcher16.hpp>
 
-/// \file checksums.hpp
-/// \brief Three classic error-detecting checksums: CRC-32, Adler-32, and Fletcher-16.
-///
-/// A *checksum* condenses a message into a short tag appended to it; the receiver
-/// recomputes the tag and, if it differs, knows the message was corrupted. The three
-/// here trade off strength for speed:
-///   - *CRC-32* (cyclic redundancy check) treats the message as a polynomial over
-///     GF(2) and returns the remainder modulo a fixed generator polynomial. CRCs
-///     catch *all* burst errors up to the check width and are the standard for
-///     Ethernet, ZIP, PNG, and disk sectors. This is the reflected IEEE 802.3 variant.
-///   - *Adler-32* (Adler 1995, used in zlib) sums the bytes and the running sums modulo
-///     the prime 65521 -- much faster than CRC but weaker on short messages.
-///   - *Fletcher-16* (Fletcher 1982) is a position-sensitive two-byte running sum,
-///     stronger than a plain sum and cheaper than a CRC.
-/// Each is a deterministic function of the byte stream and is verified below against
-/// its published reference value.
+/// @file checksums.hpp
+/// @brief CRC-32, Adler-32 and raw Fletcher-16 entry points with distinct error-detection contracts.
+/// These tags detect specified accidental-error patterns; strength and runtime
+/// depend on the exact algorithm, message/error model and implementation. There
+/// is no universal strength/speed ordering. CRC-32 uses a reflected binary
+/// polynomial; Adler-32 uses prime-modulus running sums; raw Fletcher-16 uses
+/// canonical modulo255 residues and aliases octets0/255. See the individual
+/// contracts for initialization, packing, supported operations and limitations.
+/// These checksums are not authentication tags.
 
 #include <array>
 #include <cstddef>
@@ -25,30 +20,6 @@
 #include <vector>
 
 namespace datamunge::algorithms {
-
-namespace detail {
-
-/// \brief The 256-entry byte table of the reflected CRC-32 polynomial 0xEDB88320.
-inline constexpr auto crc32_table = [] {
-    std::array<std::uint32_t, 256> table{};
-    for (std::uint32_t n = 0; n < 256; ++n) {
-        std::uint32_t c = n;
-        for (int k = 0; k < 8; ++k) c = (c >> 1) ^ (0xEDB88320u & (~(c & 1u) + 1u));
-        table[n] = c;
-    }
-    return table;
-}();
-
-} // namespace detail
-
-/// \brief CRC-32 (reflected IEEE 802.3 / zlib polynomial 0xEDB88320), one table lookup per byte.
-///
-/// crc32("123456789") == 0xCBF43926.
-[[nodiscard]] inline std::uint32_t crc32(std::string_view data) {
-    std::uint32_t crc = 0xFFFFFFFFu;
-    for (unsigned char byte : data) crc = (crc >> 8) ^ detail::crc32_table[(crc ^ byte) & 0xFFu];
-    return crc ^ 0xFFFFFFFFu;
-}
 
 /// \brief The Adler-32 modulus 65521, the largest prime below \f$2^{16}\f$.
 inline constexpr std::uint32_t adler32_modulus = 65521U;
@@ -136,17 +107,5 @@ inline constexpr std::size_t adler32_nmax = 5552;
 ///        \f$(256^2-1)/12\f$.
 /// @throws std::invalid_argument if @p length is below 3 or @p byte_variance is not positive.
 [[nodiscard]] double adler32_collision_probability(std::uint64_t length, double byte_variance = 65535.0 / 12.0);
-
-/// \brief Fletcher-16 checksum.
-///
-/// fletcher16("abcde") == 0xC8F0.
-inline std::uint16_t fletcher16(const std::string& data) {
-    std::uint16_t sum1 = 0, sum2 = 0;
-    for (unsigned char byte : data) {
-        sum1 = static_cast<std::uint16_t>((sum1 + byte) % 255);
-        sum2 = static_cast<std::uint16_t>((sum2 + sum1) % 255);
-    }
-    return static_cast<std::uint16_t>((sum2 << 8) | sum1);
-}
 
 }  // namespace datamunge::algorithms

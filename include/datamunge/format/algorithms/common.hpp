@@ -5,6 +5,7 @@
 /// Not part of the public API; included by <datamunge/format/algorithms.hpp>.
 
 #include <datamunge/format/text_formatter.hpp>
+#include <datamunge/algorithms/integer_arithmetic.hpp>
 
 #include <algorithm>
 #include <cstddef>
@@ -83,17 +84,7 @@ concept unordered_container = requires { typename T::hasher; };
 /// @param v The value.
 /// @return The decimal digits, with a leading '-' when negative.
 inline std::string int128_text(__int128 v) {
-  if (v == 0) return "0";
-  const bool negative = v < 0;
-  unsigned __int128 u = negative ? static_cast<unsigned __int128>(-(v + 1)) + 1 : static_cast<unsigned __int128>(v);
-  std::string digits;
-  while (u != 0) {
-    digits.push_back(static_cast<char>('0' + static_cast<int>(u % 10)));
-    u /= 10;
-  }
-  if (negative) digits.push_back('-');
-  std::reverse(digits.begin(), digits.end());
-  return digits;
+  return datamunge::algorithms::int128_text(v);
 }
 
 /// @brief Quotes a string, truncating it past max_string_chars.

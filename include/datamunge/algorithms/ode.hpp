@@ -4,37 +4,13 @@
 /// @brief One-step ODE integrators (forward and backward Euler, RK4, velocity Verlet), an adaptive
 ///        backward Euler for stiff problems, and the stability functions of the one-step methods.
 
+#include <datamunge/algorithms/euler_method.hpp>
 #include <complex>
 #include <functional>
 #include <limits>
 #include <vector>
 
 namespace datamunge::algorithms {
-
-/// @brief A first-order ODE system @c y'(t) = f(t, y): given the time @c t and the current state
-///        vector @c y, returns the derivative vector @c dy/dt (same dimension as @c y). Higher-order
-///        equations are handled by rewriting them as first-order systems.
-using OdeSystem = std::function<std::vector<double>(double, const std::vector<double>&)>;
-
-/// @brief A sampled ODE trajectory: the time points @ref t and, for each, the state vector @ref y.
-struct OdeSolution {
-    std::vector<double>              t; ///< the @c steps+1 time points, from @c t0 to @c t1.
-    std::vector<std::vector<double>> y; ///< @c y[i] is the state at time @c t[i].
-};
-
-/// @brief The *(forward) Euler method*: the simplest ODE integrator, stepping
-///        @c y_{n+1} = y_n + h·f(t_n, y_n) along the tangent at the current point. It is *explicit*
-///        and first-order accurate (global error @c O(h)), so halving the step size roughly halves
-///        the error -- but it is only *conditionally stable*, and on a stiff or oscillatory problem a
-///        too-large step makes it diverge. It is the reference against which every better method is
-///        measured.
-///
-/// @param f the ODE system @c y'=f(t,y).
-/// @param y0 the initial state at @p t0.
-/// @param t0,t1 the integration interval.
-/// @param steps the number of equal steps (step size @c h=(t1-t0)/steps); must be >= 1.
-/// @return the sampled @ref OdeSolution with @c steps+1 points.
-OdeSolution euler_method(const OdeSystem& f, std::vector<double> y0, double t0, double t1, int steps);
 
 /// @brief The *backward (implicit) Euler method*: steps @c y_{n+1} = y_n + h·f(t_{n+1}, y_{n+1}),
 ///        evaluating the slope at the *arrival* point. Because @c y_{n+1} appears on both sides, each

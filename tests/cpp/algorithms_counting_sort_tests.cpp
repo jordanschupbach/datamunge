@@ -74,32 +74,12 @@ TEST(CountingSort, RejectsAstronomicalRange) {
 }
 
 TEST(CountingSort, IsStableForKeyedRecords) {
-    // Records share keys but carry distinct payloads. We pack the key into the high part and the
-    // original arrival index into the low part, so an ascending numeric sort orders by key and
-    // breaks ties by original position -- exactly what a stable sort must produce. We then check
-    // counting_sort agrees, element for element, with std::stable_sort keyed on the key alone.
-    struct Rec {
-        std::int64_t key;
-        int          tag;
-    };
-    const std::vector<Rec> records = {{1, 0}, {0, 1}, {2, 2}, {1, 3}, {0, 4},
-                                      {1, 5}, {2, 6}, {0, 7}, {2, 8}, {1, 9}};
-    constexpr std::int64_t base = 100; // > number of records, so low part never collides
-
-    std::vector<std::int64_t> packed;
-    packed.reserve(records.size());
-    for (const auto& r : records) packed.push_back(r.key * base + r.tag);
-    counting_sort(packed);
-
-    std::vector<Rec> reference = records;
-    std::stable_sort(reference.begin(), reference.end(),
-                     [](const Rec& a, const Rec& b) { return a.key < b.key; });
-
-    ASSERT_EQ(packed.size(), reference.size());
-    for (std::size_t i = 0; i < packed.size(); ++i) {
-        EXPECT_EQ(packed[i] / base, reference[i].key) << "at position " << i;
-        EXPECT_EQ(static_cast<int>(packed[i] % base), reference[i].tag) << "at position " << i;
-    }
+    const std::vector<std::int64_t> keys{1,0,2,1,0,1,2,0,2,1};
+    std::vector<std::size_t> reference{0,1,2,3,4,5,6,7,8,9};
+    std::stable_sort(reference.begin(),reference.end(),[&](auto i,auto j){return keys[i]<keys[j];});
+    const auto result=datamunge::algorithms::counting_sort_analyze(keys);
+    EXPECT_EQ(result.original_indices,reference);
+    EXPECT_EQ(result.original_indices,(std::vector<std::size_t>{1,4,7,0,3,5,9,2,6,8}));
 }
 
 TEST(CountingSort, RandomCrossCheckAgainstStdSort) {

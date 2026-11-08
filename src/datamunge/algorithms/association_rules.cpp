@@ -1,7 +1,7 @@
 /// @file association_rules.cpp
-/// @brief Apriori, Eclat and FP-growth miners, rule generation and DataFrame encoding.
+/// @brief Apriori and Eclat mining, association rules and DataFrame encoding.
 
-#include <datamunge/algorithms/association_rules.hpp>
+#include <datamunge/algorithms/eclat.hpp>
 
 #include <algorithm>
 #include <format>
@@ -121,193 +121,159 @@ std::vector<AprioriLevel> apriori_levels(const std::vector<std::vector<std::size
     return levels;
 }
 
-/// @brief Helpers for Eclat.
+/// @brief Checked counters and explicit conditional-database frames for Eclat.
 namespace {
-
-/// Recursive Eclat over (item, tidset) extensions sharing a common prefix.
-void eclat_recurse(const std::vector<std::size_t>&                                     prefix,
-                          const std::vector<std::pair<std::size_t, std::vector<std::size_t>>>& items,
-                          std::size_t min_support, std::vector<FrequentItemset>& out) {
-    for (std::size_t i = 0; i < items.size(); ++i) {
-        std::vector<std::size_t> new_prefix = prefix;
-        new_prefix.push_back(items[i].first);
-        out.push_back({new_prefix, items[i].second.size()});
-
-        std::vector<std::pair<std::size_t, std::vector<std::size_t>>> ext;
-        for (std::size_t j = i + 1; j < items.size(); ++j) {
-            std::vector<std::size_t> inter;
-            std::set_intersection(items[i].second.begin(), items[i].second.end(), items[j].second.begin(),
-                                  items[j].second.end(), std::back_inserter(inter));
-            if (inter.size() >= min_support) ext.push_back({items[j].first, std::move(inter)});
-        }
-        if (!ext.empty()) eclat_recurse(new_prefix, ext, min_support, out);
-    }
+/// @brief Add two logical counts without wrapping.
+/// @param a Existing count.
+/// @param b Additional count.
+/// @return Their representable sum.
+/// @throws std::length_error On size_t overflow.
+std::size_t eclat_add(std::size_t a, std::size_t b) {
+    if (b > std::numeric_limits<std::size_t>::max()-a) throw std::length_error("Eclat count overflow");
+    return a+b;
 }
-
-}  // namespace
-
-/// \brief Eclat: depth-first mining over a vertical (tidset) database layout.
-///
-/// Each item is represented by its *tidset* -- the sorted set of transaction ids
-/// that contain it -- so an itemset's support is simply the size of the
-/// intersection of its items' tidsets. Eclat descends depth-first, extending a
-/// prefix by intersecting tidsets, and never rescans the raw database.
-std::vector<FrequentItemset> eclat_frequent_itemsets(
-    const std::vector<std::vector<std::size_t>>& transactions, std::size_t min_support_count) {
-    const auto txns = normalize(transactions);
-
-    std::map<std::size_t, std::vector<std::size_t>> tidsets;
-    for (std::size_t t = 0; t < txns.size(); ++t)
-        for (std::size_t it : txns[t]) tidsets[it].push_back(t);
-
-    std::vector<std::pair<std::size_t, std::vector<std::size_t>>> items;
-    for (auto& [it, tids] : tidsets)
-        if (tids.size() >= min_support_count) items.push_back({it, tids});
-
-    std::vector<FrequentItemset> result;
-    eclat_recurse({}, items, min_support_count, result);
-    canonical_sort(result);
-    return result;
+/// @brief Reserve retained history entries before copying the associated records.
+/// @param trace Owned capture in progress, null for work-only mining.
+/// @param entries Additional logical entries.
+/// @param limit Optional quota; zero disables only the quota.
+/// @throws std::length_error On overflow or quota exhaustion.
+void eclat_capture(EclatTrace* trace, std::size_t entries, std::size_t limit) {
+    if (!trace) return;
+    const auto total=eclat_add(trace->captured_entries,entries);
+    if (limit && total>limit) throw std::length_error("Eclat capture limit exceeded");
+    trace->captured_entries=total;
 }
-
-/// @brief Helpers for FP-growth.
-namespace {
-
-/// A frequent-pattern tree for FP-growth.
-struct FPTree {
-    /// One tree node: an item on a shared transaction prefix.
-    struct Node {
-        std::size_t                          item;      ///< the item at this node.
-        std::size_t                          count;     ///< weighted transactions through this node.
-        int                                  parent;    ///< parent index (-1 for the root).
-        std::unordered_map<std::size_t, int> children;  ///< child index by item.
-    };
-    std::vector<Node>                                   nodes;   ///< nodes[0] is the root.
-    std::unordered_map<std::size_t, std::vector<int>>   header;  ///< item -> node indices.
-
-    /// Creates a tree holding only the root.
-    FPTree() { nodes.push_back({static_cast<std::size_t>(-1), 0, -1, {}}); }
-    /// Whether the tree holds only the root.
-    /// @return true when no transaction has been inserted.
-    bool empty() const { return nodes.size() == 1; }
-
-    /// Insert an item list (already ordered by the tree's item order) with a weight.
-    void insert(const std::vector<std::size_t>& ordered, std::size_t count) {
-        int cur = 0;
-        for (std::size_t it : ordered) {
-            auto found = nodes[cur].children.find(it);
-            int  next;
-            if (found == nodes[cur].children.end()) {
-                next = static_cast<int>(nodes.size());
-                nodes.push_back({it, 0, cur, {}});
-                nodes[cur].children[it] = next;  // nodes[cur] re-indexed after push_back
-                header[it].push_back(next);
-            } else {
-                next = found->second;
-            }
-            nodes[next].count += count;
-            cur = next;
-        }
-    }
+/// @brief An owned conditional suffix tidset, independent of reallocating history.
+struct EclatCandidate {
+    std::size_t item; ///< Last item of the conditional set.
+    std::vector<std::size_t> tids; ///< Owned conditional tids, ascending and unique.
+    std::size_t state; ///< State id when capturing, otherwise zero.
 };
-
-/// Order candidate items by descending (weighted) frequency, breaking ties by id.
-std::vector<std::size_t> frequency_order(const std::unordered_map<std::size_t, std::size_t>& freq,
-                                                std::size_t                                          min_support) {
-    std::vector<std::pair<std::size_t, std::size_t>> v;
-    for (const auto& [it, f] : freq)
-        if (f >= min_support) v.push_back({it, f});
-    std::sort(v.begin(), v.end(), [](const auto& a, const auto& b) {
-        if (a.second != b.second) return a.second > b.second;
-        return a.first < b.first;
-    });
-    std::vector<std::size_t> order;
-    for (const auto& [it, f] : v) order.push_back(it);
-    return order;
+/// @brief One explicit DFS call, preserving the original extension schedule.
+struct EclatFrame {
+    std::vector<std::size_t> prefix; ///< Common item prefix for every candidate.
+    std::vector<EclatCandidate> candidates; ///< Frequent extensions in ascending suffix order.
+    std::size_t next=0; ///< Next extension to visit and emit.
+};
+/// @brief Store a root or actual intersection before its working buffer is moved.
+/// @param trace Optional owned trace.
+/// @param items Full sorted itemset.
+/// @param tids Sorted intersection result or singleton tids.
+/// @param left Earlier left operand or root sentinel.
+/// @param right Earlier right operand or root sentinel.
+/// @param steps Paired-head merge iterations.
+/// @param frequent Support meets threshold.
+/// @param limit Optional capture quota.
+/// @return New state index, or zero without capture.
+/// @throws std::length_error On capture quota/arithmetic/container limits.
+std::size_t eclat_state(EclatTrace* trace, const std::vector<std::size_t>& items,
+                        const std::vector<std::size_t>& tids, std::size_t left,
+                        std::size_t right, std::size_t steps, bool frequent, std::size_t limit) {
+    if (!trace) return 0;
+    eclat_capture(trace,eclat_add(1,eclat_add(items.size(),tids.size())),limit);
+    const auto id=trace->states.size();
+    trace->states.push_back({{items,tids.size()},tids,left,right,steps,frequent});
+    return id;
 }
-
-/// Build an FP-tree from weighted transactions, keeping only frequent items.
-FPTree build_tree(const std::vector<std::pair<std::vector<std::size_t>, std::size_t>>& weighted,
-                         std::size_t min_support) {
-    std::unordered_map<std::size_t, std::size_t> freq;
-    for (const auto& [items, w] : weighted)
-        for (std::size_t it : items) freq[it] += w;
-    const std::vector<std::size_t>               order = frequency_order(freq, min_support);
-    std::unordered_map<std::size_t, std::size_t> rank;
-    for (std::size_t i = 0; i < order.size(); ++i) rank[order[i]] = i;
-
-    FPTree tree;
-    for (const auto& [items, w] : weighted) {
-        std::vector<std::size_t> kept;
-        for (std::size_t it : items)
-            if (rank.count(it)) kept.push_back(it);
-        std::sort(kept.begin(), kept.end(), [&](std::size_t a, std::size_t b) { return rank[a] < rank[b]; });
-        if (!kept.empty()) tree.insert(kept, w);
-    }
-    return tree;
-}
-
-/// Mine an FP-tree recursively via conditional pattern bases.
-void fp_mine(const FPTree& tree, std::size_t min_support, const std::vector<std::size_t>& prefix,
-                    std::vector<FrequentItemset>& out) {
-    // Total count of each item in this tree.
-    std::vector<std::pair<std::size_t, std::size_t>> items;
-    for (const auto& [it, idxs] : tree.header) {
-        std::size_t tot = 0;
-        for (int idx : idxs) tot += tree.nodes[idx].count;
-        if (tot >= min_support) items.push_back({it, tot});
-    }
-    // Process least-frequent items first (canonical, deterministic).
-    std::sort(items.begin(), items.end(), [](const auto& a, const auto& b) {
-        if (a.second != b.second) return a.second < b.second;
-        return a.first < b.first;
-    });
-
-    for (const auto& [it, tot] : items) {
-        std::vector<std::size_t> new_prefix = prefix;
-        new_prefix.push_back(it);
-        out.push_back({new_prefix, tot});
-
-        // Conditional pattern base: prefix paths ending at `it`, weighted by node count.
-        std::vector<std::pair<std::vector<std::size_t>, std::size_t>> cond;
-        for (int idx : tree.header.at(it)) {
-            const std::size_t       cnt = tree.nodes[idx].count;
-            std::vector<std::size_t> path;
-            int                      p = tree.nodes[idx].parent;
-            while (p > 0) {  // stop before the root (index 0)
-                path.push_back(tree.nodes[p].item);
-                p = tree.nodes[p].parent;
-            }
-            if (!path.empty()) cond.push_back({path, cnt});
+/// @brief Common iterative kernel, retaining no history when trace is null.
+/// @param transactions Raw unchanged baskets.
+/// @param threshold Absolute support threshold, including zero.
+/// @param trace Optional capture already holding its validated raw base/input.
+/// @param limit Optional retained-history quota.
+/// @return Canonical sets and checked work counters.
+/// @throws std::length_error On arithmetic, quota or container limits.
+EclatResult eclat_core(const std::vector<std::vector<std::size_t>>& transactions,
+                       std::size_t threshold, EclatTrace* trace, std::size_t limit) {
+    EclatResult out;
+    out.work.transactions=transactions.size();
+    for (const auto& row:transactions) out.work.raw_items=eclat_add(out.work.raw_items,row.size());
+    auto roots=vertical_tidsets(transactions);
+    if (trace) trace->singleton_count=roots.size();
+    std::vector<EclatCandidate> candidates;
+    const auto none=std::numeric_limits<std::size_t>::max();
+    for (auto& root:roots) {
+        out.work.incidences=eclat_add(out.work.incidences,root.tids.size());
+        const bool keep=root.tids.size()>=threshold;
+        const auto state=eclat_state(trace,{root.item},root.tids,none,none,0,keep,limit);
+        if (keep) {
+            out.work.frequent_singletons=eclat_add(out.work.frequent_singletons,1);
+            candidates.push_back({root.item,std::move(root.tids),state});
         }
-        if (cond.empty()) continue;
-        FPTree cond_tree = build_tree(cond, min_support);
-        if (!cond_tree.empty()) fp_mine(cond_tree, min_support, new_prefix, out);
     }
+    std::vector<EclatFrame> frames;
+    if (!candidates.empty()) frames.push_back({{},std::move(candidates),0});
+    out.work.peak_frames=frames.size();
+    while (!frames.empty()) {
+        auto& frame=frames.back();
+        if (frame.next==frame.candidates.size()) {frames.pop_back();continue;}
+        const auto i=frame.next++;
+        const auto& left=frame.candidates[i];
+        auto prefix=frame.prefix;prefix.push_back(left.item);
+        eclat_capture(trace,1,limit);
+        if (trace) trace->emitted.push_back(left.state);
+        out.work.emitted_itemsets=eclat_add(out.work.emitted_itemsets,1);
+        out.itemsets.push_back({prefix,left.tids.size()});
+        std::vector<EclatCandidate> children;
+        for (std::size_t j=i+1;j<frame.candidates.size();++j) {
+            const auto& right=frame.candidates[j];
+            out.work.intersections=eclat_add(out.work.intersections,1);
+            std::vector<std::size_t> tids;
+            std::size_t a=0,b=0,steps=0;
+            while (a<left.tids.size() && b<right.tids.size()) {
+                steps=eclat_add(steps,1);
+                if (left.tids[a]<right.tids[b]) ++a;
+                else if (right.tids[b]<left.tids[a]) ++b;
+                else {tids.push_back(left.tids[a]);++a;++b;}
+            }
+            out.work.intersection_steps=eclat_add(out.work.intersection_steps,steps);
+            out.work.matched_tids=eclat_add(out.work.matched_tids,tids.size());
+            auto items=prefix;items.push_back(right.item);
+            const bool keep=tids.size()>=threshold;
+            const auto state=eclat_state(trace,items,tids,left.state,right.state,steps,keep,limit);
+            if (keep) children.push_back({right.item,std::move(tids),state});
+        }
+        // All sibling intersections precede descent, exactly as in the original recursion.
+        // No reference to frame/left survives the potentially reallocating frame push.
+        if (!children.empty()) {
+            frames.push_back({std::move(prefix),std::move(children),0});
+            out.work.peak_frames=std::max(out.work.peak_frames,frames.size());
+        }
+    }
+    canonical_sort(out.itemsets);
+    return out;
 }
+} // namespace
 
-}  // namespace
-
-/// \brief FP-growth: mine frequent itemsets from a compressed frequent-pattern tree.
-///
-/// Two database scans build the FP-tree: the first counts item frequencies (to keep
-/// and order frequent items by descending support), the second inserts each
-/// transaction, sharing common prefixes so repeated patterns compress into shared
-/// paths. Mining then proceeds recursively without candidate generation: for each
-/// item, its *conditional pattern base* (the prefix paths leading to it) forms a
-/// smaller conditional FP-tree that is mined for the patterns containing that item.
-std::vector<FrequentItemset> fp_growth_frequent_itemsets(
-    const std::vector<std::vector<std::size_t>>& transactions, std::size_t min_support_count) {
-    const auto txns = normalize(transactions);
-    std::vector<std::pair<std::vector<std::size_t>, std::size_t>> weighted;
-    weighted.reserve(txns.size());
-    for (const auto& t : txns) weighted.push_back({t, 1});
-
-    FPTree              tree = build_tree(weighted, min_support_count);
-    std::vector<FrequentItemset> result;
-    fp_mine(tree, min_support_count, {}, result);
-    canonical_sort(result);
-    return result;
+std::vector<ItemTidset> vertical_tidsets(const std::vector<std::vector<std::size_t>>& transactions) {
+    const auto normalized=normalize(transactions);
+    std::map<std::size_t,std::vector<std::size_t>> index;
+    for (std::size_t t=0;t<normalized.size();++t)
+        for (auto item:normalized[t]) index[item].push_back(t);
+    std::vector<ItemTidset> out;out.reserve(index.size());
+    for (auto& [item,tids]:index) out.push_back({item,std::move(tids)});
+    return out;
+}
+std::size_t eclat_trace_base_entries(const std::vector<std::vector<std::size_t>>& transactions) {
+    auto entries=transactions.size();
+    for (const auto& row:transactions) entries=eclat_add(entries,row.size());
+    return entries;
+}
+EclatResult eclat_frequent_itemsets_work(const std::vector<std::vector<std::size_t>>& transactions,
+                                        std::size_t min_support_count) {
+    return eclat_core(transactions,min_support_count,nullptr,0);
+}
+std::vector<FrequentItemset> eclat_frequent_itemsets(
+    const std::vector<std::vector<std::size_t>>& transactions,std::size_t min_support_count) {
+    return eclat_frequent_itemsets_work(transactions,min_support_count).itemsets;
+}
+EclatTrace eclat_trace(const std::vector<std::vector<std::size_t>>& transactions,
+                       std::size_t min_support_count,std::size_t max_entries) {
+    EclatTrace trace;
+    eclat_capture(&trace,eclat_trace_base_entries(transactions),max_entries);
+    trace.transactions=transactions;trace.min_support_count=min_support_count;
+    auto result=eclat_core(transactions,min_support_count,&trace,max_entries);
+    trace.itemsets=std::move(result.itemsets);trace.work=result.work;
+    return trace;
 }
 
 /// \brief Generate association rules from a set of frequent itemsets.

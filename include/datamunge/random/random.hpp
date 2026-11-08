@@ -93,22 +93,82 @@ class Acorn64 : public RandomGenerator {
   std::vector<std::uint64_t> state_;  ///< \f$(Y_0, \dots, Y_k)\f$; \f$Y_0\f$ is the odd increment.
 };
 
-/// Blum-Blum-Shub, using two supplied primes congruent to 3 modulo 4.
+/// @brief Educational uint64 Blum-Blum-Shub engine with explicit modular state and bit output.
+/// Initialise x0=(seed mod N)^2 mod N, then square modulo N before emitting each
+/// low bit. The caller must supply distinct primes p,q congruent to 3 modulo 4;
+/// the constructor checks congruence, product range and seed coprimality, not
+/// primality. Known small default factors and a modulus of at most 64 bits do not
+/// provide cryptographic security. Seed 1 is allowed and gives a constant stream.
+/// Instances own their state; copies also preserve the inherited normal cache.
+/// Separate objects share no state; concurrent mutation needs external locking.
+/// @par Example
+/// @code
+/// dm::random::BlumBlumShub rng(3,7,11);
+/// std::print("{:016x}\n",rng.next_u64()); // cccccccccccccccc
+/// @endcode
+/// @par References
+/// - L. Blum, M. Blum and M. Shub (1986), A Simple Unpredictable Pseudo-Random
+///   Number Generator, SIAM Journal on Computing 15(2), 364-383,
+///   doi:10.1137/0215025. Fixed-width teaching implementation here.
+/// @see next_bit(), state(), blum_blum_shub_trace()
 class BlumBlumShub : public RandomGenerator {
  public:
+  /// @brief Start the modular state at the seed's square after validating structural inputs.
+  /// Uses unsigned 128-bit intermediates for both p*q and squaring. Does not test
+  /// primality or require an unpredictable seed. Constant storage and fixed-width
+  /// arithmetic, plus the Euclidean gcd check; no caller input is modified.
+  /// @param seed Any uint64 value coprime to p*q, reduced modulo N before squaring.
+  /// @param p Caller-supplied prime >=3, congruent to 3 mod 4, default 1000003.
+  /// @param q Distinct caller-supplied prime >=3, congruent to 3 mod 4, default 2001911.
+  /// @throws std::invalid_argument For unsupported congruences/equal factors, a product
+  /// exceeding UINT64_MAX, or a seed not coprime to that product; composites are not detected.
+  /// @par Example
+  /// @code
+  /// dm::random::BlumBlumShub rng(3,7,11);
+  /// std::print("{} {}\n",rng.modulus(),rng.state()); // 77 9
+  /// @endcode
+  /// @see BlumBlumShub, modulus(), state()
   explicit BlumBlumShub(std::uint64_t seed, std::uint64_t p = 1000003,
                         std::uint64_t q = 2001911);
 
+  /// @brief Pack 64 successive next_bit() results in least-significant-bit-first order.
+  /// Bit i comes from the (i+1)th modular square. Advances exactly 64 states,
+  /// retaining the inherited normal() cache, like other raw engine calls.
+  /// Constant storage; 64 fixed-width modular squarings, with no allocation.
+  /// @return Packed uint64 word, which need not be statistically uniform for these parameters.
+  /// @par Example
+  /// @code
+  /// dm::random::BlumBlumShub rng(3,7,11);
+  /// std::print("{:x}\n",rng.next_u64()&15); // c
+  /// @endcode
+  /// @see next_bit(), blum_blum_shub_trace()
   std::uint64_t next_u64() override;
-  /// @brief The Blum integer M = p * q that the state is squared modulo.
-  /// @return The modulus; does not advance the generator.
+  /// @brief Advance one modular square and return its low bit.
+  /// Uses the same private transition as word generation and inspection. No
+  /// allocation; one fixed-width square/modulo operation. Leaves normal cache intact.
+  /// @return Zero or one, from the new state rather than the initial state.
+  /// @par Example
+  /// @code
+  /// dm::random::BlumBlumShub rng(3,7,11);
+  /// const auto bit=rng.next_bit();
+  /// std::print("{} {}\n",bit,rng.state()); // 0 4
+  /// @endcode
+  /// @see next_u64(), state()
+  std::uint64_t next_bit();
+  /// @brief Read the caller-specified product N=p*q without advancing the engine.
+  /// @return Modulus, in O(1); primality of its factors is the caller's precondition.
   [[nodiscard]] std::uint64_t modulus() const noexcept { return modulus_; }
+  /// @brief Read the current modular state for numerical inspection, in O(1).
+  /// @return State in [1,N), initially seed^2 mod N; does not advance or reset any cache.
+  [[nodiscard]] std::uint64_t state() const noexcept { return state_; }
 
  private:
+  /// @brief Apply the canonical x <- x*x mod N transition using an unsigned 128-bit product.
+  /// @return New nonzero state; mutates only this engine's modular state.
   std::uint64_t step();
 
-  std::uint64_t modulus_;
-  std::uint64_t state_;
+  std::uint64_t modulus_; ///< Validated positive product, retained without its factors.
+  std::uint64_t state_; ///< Current nonzero unit modulo modulus_, initially the seed's square.
 };
 
 /// Additive lagged-Fibonacci generator x[n] = x[n-j] + x[n-k] (mod 2^64).
@@ -477,22 +537,107 @@ class Sfc64 : public RandomGenerator {
   std::uint64_t counter_{1};
 };
 
-/// ChaCha20 stream-cipher generator. Use a secret 256-bit key for cryptographic use.
+/// @brief Buffered RFC 8439 ChaCha20 engine emitting little-endian 64-bit words.
+/// Uses a fixed 256-bit key, 96-bit nonce and checked 32-bit block counter.
+/// Eight next_u64() calls consume one 64-byte block; unused words remain buffered.
+/// The counter never carries into the nonce. Copies preserve raw position and the
+/// inherited normal() cache: copying duplicates a stream, not an independent key.
+/// Separate instances share no state; concurrent mutation needs external locking.
+/// Raw calls take constant amortised time/storage with no allocation. This wrapper
+/// supplies no entropy acquisition, nonce management, authentication, reseeding,
+/// backtracking resistance, key erasure or machine-code constant-time assurance.
+/// Public fixed keys are for conformance checks; a 64-bit seed is for simulation.
+/// @par Example
+/// @code
+/// dm::random::ChaCha20 rng(std::array<std::uint32_t,8>{});
+/// std::print("{:016x}\n",rng.next_u64()); // 903df1a0ade0b876
+/// @endcode
+/// @par References
+/// - Y. Nir and A. Langley (2018), RFC 8439, Sections 2.3-2.4,
+///   https://www.rfc-editor.org/rfc/rfc8439.html; word buffering is this wrapper.
+/// @see next_u64(), remaining_u64(), chacha20_trace(), chacha20_seed_key()
 class ChaCha20 : public RandomGenerator {
  public:
+  /// @brief Expand a reproducible 64-bit simulation seed into eight key words.
+  /// Takes four SplitMix64 draws, storing low then high 32-bit halves, with zero
+  /// nonce/counter. At most 2^64 keys can result; expansion adds no entropy.
+  /// No output block is computed until the first raw draw; no allocation.
+  /// @param seed Any deterministic simulation seed, including zero.
+  /// @par Example
+  /// @code
+  /// dm::random::ChaCha20 rng(42), replay(42);
+  /// std::print("{}\n",rng.next_u64()==replay.next_u64()); // true
+  /// @endcode
+  /// @par References
+  /// - SplitMix64 reference, https://prng.di.unimi.it/splitmix64.c
+  /// @see chacha20_seed_key(), ChaCha20
   explicit ChaCha20(std::uint64_t seed);
+
+  /// @brief Start a fixed-key, fixed-nonce stream at the requested RFC block counter.
+  /// Words are values, not host-endian byte buffers: each serializes least-
+  /// significant byte first. Owns copies of all inputs; all bit patterns are
+  /// accepted. No entropy, uniqueness or key quality is checked. The default
+  /// zero nonce/counter enables reproducible tests; callers manage stream reuse.
+  /// No allocation; input arrays are unchanged.
+  /// @param key Eight uint32 words comprising the 256-bit key in RFC order.
+  /// @param nonce Three uint32 words comprising the 96-bit nonce, default all zero.
+  /// @param initial_counter First block number, default zero; UINT32_MAX allows eight words.
+  /// @par Example
+  /// @code
+  /// dm::random::ChaCha20 rng(std::array<std::uint32_t,8>{},{},0xffffffffU);
+  /// std::print("{}\n",rng.remaining_u64()); // 8
+  /// @endcode
+  /// @par References
+  /// - RFC 8439, https://www.rfc-editor.org/rfc/rfc8439.html#section-2.3
+  /// @see next_u64(), remaining_u64()
   ChaCha20(const std::array<std::uint32_t, 8>& key,
            const std::array<std::uint32_t, 3>& nonce = {},
            std::uint32_t initial_counter = 0);
 
+  /// @brief Consume two buffered 32-bit words as low | (high << 32), refilling as needed.
+  /// Refills use the canonical twenty-round permutation and feed-forward, preserving
+  /// valid-range legacy outputs. The final counter's full eight-word block is usable;
+  /// a later call throws before mutation. Leaves normal()'s cached draw intact.
+  /// Amortised O(1) time, constant storage, no allocation in successful calls.
+  /// @return Next little-endian uint64, advancing raw position by exactly one word.
+  /// @throws std::length_error If no raw words remain at the fixed key/nonce.
+  /// @par Example
+  /// @code
+  /// dm::random::ChaCha20 rng(std::array<std::uint32_t,8>{});
+  /// (void)rng.next_u64();
+  /// std::print("{}\n",rng.remaining_u64()); // 34359738367
+  /// @endcode
+  /// @par References
+  /// - RFC 8439, https://www.rfc-editor.org/rfc/rfc8439.html#section-2.3
+  /// @see remaining_u64(), chacha20_trace()
   std::uint64_t next_u64() override;
 
+  /// @brief Read the number of still available raw uint64 draws, including the buffered tail.
+  /// Does not generate a block, mutate state or inspect/reset the normal cache.
+  /// Initially 8*(2^32-initial_counter), at most 2^35. A distribution sampler can
+  /// consume multiple raw words or a cached normal value, so this is not a count
+  /// of remaining distribution calls. O(1), no allocation; concurrent reads need
+  /// no concurrent mutation of this instance.
+  /// @return Remaining raw draws, zero only after the final block is consumed.
+  /// @par Example
+  /// @code
+  /// dm::random::ChaCha20 rng(std::array<std::uint32_t,8>{},{},0xfffffffeU);
+  /// std::print("{}\n",rng.remaining_u64()); // 16
+  /// @endcode
+  /// @see next_u64(), chacha20_trace()
+  [[nodiscard]] std::uint64_t remaining_u64() const noexcept;
+
  private:
+  /// @brief Generate one block with the shared core permutation, then advance only the counter.
+  /// Marks exhaustion after UINT32_MAX, retaining that block until consumed. No
+  /// allocation or cache mutation; callers invoke only with an empty word buffer.
+  /// @throws std::length_error If the final block has already been generated.
   void refill();
 
-  std::array<std::uint32_t, 16> state_{};
-  std::array<std::uint32_t, 16> buffer_{};
-  std::size_t                   buffer_index_{16};
+  std::array<std::uint32_t, 16> state_{}; ///< Key/nonce and next block counter, held at UINT32_MAX after the final refill.
+  std::array<std::uint32_t, 16> buffer_{}; ///< Owned feed-forward words of the most recently generated block.
+  std::size_t buffer_index_{16}; ///< Next unused 32-bit word; even and at most sixteen.
+  bool counter_exhausted_{false}; ///< Whether the final permitted block has already been generated.
 };
 
 } // namespace datamunge::random

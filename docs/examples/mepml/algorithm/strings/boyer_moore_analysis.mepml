@@ -1,0 +1,309 @@
+//? Title: Boyer–Moore: Exact Byte Matching and the Shifts It Actually Takes
+//? Subtitle: Native bad-character and strong good-suffix tables, a DNA trace and a repeated-match worst case
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Boyer–Moore compares a pattern against the text from right to left, then skips
+forward using bad-character and strong good-suffix rules. We first inspect a
+five-byte example, retain the original DNA search and its six alignments, and
+read the preprocessing tables, mismatch positions and comparison counts directly
+from the canonical C++ search loop. A final experiment contrasts large skips,
+unit shifts and repeated full matches. Skipping can reduce inspected bytes on
+suitable inputs; this all-occurrences implementation can still do quadratic
+comparison work when many long matches overlap.
+)
+
+\toc
+
+> Simple example: shift two positions, then match
+
+Search for ABC in XXABC. The first comparison is pattern[2]=C against
+text[2]=A. A's rightmost pattern index is zero, giving bad-character shift
+2-0=2. The good-suffix rule offers one, and the core takes max(1,2,1)=2.
+The next alignment matches ABC at offset two, comparing C, B and A in that
+order. The two visited alignments require four byte comparisons in total.
+
+Both panels use actual records from `boyer_moore_trace`. Coloured cells show
+compared bytes: red for the failed comparison and green for equal bytes.
+Uncoloured cells in a visited alignment were not compared during that alignment.
+
+```{cpp, file="figures/boyer_moore_small.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::string text="XXABC",pattern="ABC";
+  const auto trace=dm::algorithms::boyer_moore_trace(text,pattern);
+  dm::graphics::Diagram diagram(70,1100);
+  for (std::size_t panel=0;panel<trace.alignments.size();++panel) {
+    const auto& step=trace.alignments[panel];const double shift=9*panel;
+    dm::graphics::DiagramNodeStyle cell;cell.width=.8;cell.height=.8;cell.padding=5;
+    diagram.text({shift+2,2.2},std::format("alignment s = {}; {} comparison{}",
+        step.position,step.comparisons,step.comparisons==1?"":"s"));
+    for (std::size_t i=0;i<text.size();++i) {
+      cell.fill={239,246,255};
+      const bool compared=i>=step.position+pattern.size()-step.comparisons && i<step.position+pattern.size();
+      if (compared) cell.fill=!step.matched&&i==step.position+step.mismatch_index?dm::RGB{254,226,226}:dm::RGB{220,252,231};
+      diagram.node(std::format("t{}-{}",panel,i),{shift+i,0},std::string(1,text[i]),cell)
+          .text({shift+i,1},std::format("{}",i),14);
+    }
+    for (std::size_t i=0;i<pattern.size();++i) {
+      cell.fill={239,246,255};
+      if (i>=pattern.size()-step.comparisons)
+        cell.fill=!step.matched&&i==step.mismatch_index?dm::RGB{254,226,226}:dm::RGB{220,252,231};
+      diagram.node(std::format("p{}-{}",panel,i),{shift+step.position+i,-1.5},std::string(1,pattern[i]),cell);
+    }
+    diagram.text({shift+2,-3.1},step.matched?std::format("full match at {}; next shift {}",step.position,step.shift):
+        std::format("bad = {}, good = {}; take shift {}",step.bad_character_shift,step.good_suffix_shift,step.shift));
+  }
+  diagram.save_svg("build/boyer_moore_small.svg");
+}
+```
+// result_begin:
+// \image(figures/boyer_moore_small.svg)
+// result_end
+\caption(Text indices are byte offsets. The next shift after a full match is also recorded, even when it leaves the range of possible alignments.)
+\alttext(ABC first aligns under XXA and mismatches C with A at text offset two. A two-position shift aligns it under ABC, producing a full match after three right-to-left comparisons.)
+
+> Exact problem and the two safe shift rules
+
+For text length n and pattern length m, return every start s with
+0<=s<=n-m whose m bytes equal the pattern. Matches may overlap. The library
+returns no matches for an empty pattern or one longer than the text. Strings
+are byte sequences: embedded NUL and high bytes work, comparison is
+case-sensitive, and UTF-8 offsets count bytes rather than characters.
+
+At alignment s, suppose the first mismatch encountered from the right is at
+pattern index j. The suffix pattern[j+1..m-1] already matched. If c is the
+mismatching text byte, the raw bad-character proposal is j-last[c], where
+last[c] is the rightmost pattern index containing c, or -1 if absent. It can
+be negative when the rightmost occurrence lies to the right of j. The core
+floors progress at one and combines it with the positive good-suffix shift:
+
+$$
+ d=\max\{1,\ j-\operatorname{last}[c],\ \operatorname{shift}[j+1]\}.
+$$
+\alttext(The next shift is the maximum of one, the raw bad-character shift and the strong good-suffix shift.)
+
+The strong good-suffix rule looks for an earlier copy of the matched suffix
+preceded by a different byte from pattern[j]. If none works, it aligns a
+pattern prefix with a suffix of the matched part. The condition on the
+preceding byte rules out an alignment known to repeat the same mismatch.
+The core builds the shift array in two passes over border positions: first
+record eligible repeated suffixes, then fill remaining entries using prefix
+borders. Index zero is the full-match shift, based on the longest proper
+border; it preserves overlapping occurrences.
+
+Each rule excludes occurrences before its proposed next alignment. Taking
+the larger safe lower bound remains safe. It does not prove that this choice
+is fastest in elapsed time or that all bytes between alignment starts were
+unread: each alignment can inspect several trailing bytes.
+
+> Original DNA example: tables and actual search decisions
+
+The original text GTTATAGCTGATCGCGGCGTAGCGGCGAA has 29 bytes, and the
+pattern GCGGCG has six. There are 24 possible starting positions. The
+following program prints both native tables and all visited alignments,
+then plots each departure shift. The ordinary search and trace call the
+same kernel; no report-side search or preprocessing implementation remains.
+
+```{cpp, results="markdown", file="figures/boyer_moore_shifts.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::string text="GTTATAGCTGATCGCGGCGTAGCGGCGAA",pattern="GCGGCG";
+  const auto trace=dm::algorithms::boyer_moore_trace(text,pattern);
+  if (trace.matches!=dm::algorithms::boyer_moore_search(text,pattern)) return 1;
+  std::print("| byte | rightmost pattern index (-1 = absent) |\n| :--- | ---: |\n");
+  for (char byte:std::string("ACGT")) std::print("| {} | {} |\n",byte,trace.tables.last[static_cast<unsigned char>(byte)]);
+  std::print("\n| suffix-start k | good-suffix shift[k] |\n| ---: | ---: |\n");
+  for (std::size_t k=0;k<trace.tables.good_suffix.size();++k)
+    std::print("| {} | {} |\n",k,trace.tables.good_suffix[k]);
+  std::print("\n| start s | result | equal suffix bytes | comparisons | raw bad | good | chosen shift |\n"
+             "| ---: | :--- | ---: | ---: | ---: | ---: | ---: |\n");
+  std::vector<double> starts,shifts,match_starts,match_shifts;
+  for (const auto& step:trace.alignments) {
+    const auto result=step.matched?std::string("full match"):
+        std::format("mismatch j={}, text {}",step.mismatch_index,char(step.text_byte));
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",step.position,result,step.matched_suffix_length,
+        step.comparisons,step.bad_character_shift,step.good_suffix_shift,step.shift);
+    starts.push_back(step.position);shifts.push_back(step.shift);
+    if (step.matched) {match_starts.push_back(step.position);match_shifts.push_back(step.shift);}
+  }
+  std::print("\nMatches: {}. Visited alignments: {} of {} possible starts. Search byte comparisons: {}.\n",
+      trace.matches,trace.alignments.size(),text.size()-pattern.size()+1,trace.comparisons);
+  dm::graphics::RPlot::create().bars(starts,shifts,"departure shift",dm::RGB{37,99,235},.7)
+      .points(match_starts,match_shifts,"full match",dm::RGB{220,38,38},5)
+      .title("GCGGCG: six visited alignments and their actual shifts")
+      .x_label("pattern start offset s, bytes").y_label("departure shift, bytes")
+      .y_limits(0,9).size(900,480).save_svg("build/boyer_moore_shifts.svg");
+}
+```
+// result_begin: markdown
+| byte | rightmost pattern index (-1 = absent) |
+| :--- | ---: |
+| A | -1 |
+| C | 4 |
+| G | 5 |
+| T | -1 |
+
+| suffix-start k | good-suffix shift[k] |
+| ---: | ---: |
+| 0 | 3 |
+| 1 | 3 |
+| 2 | 3 |
+| 3 | 3 |
+| 4 | 5 |
+| 5 | 2 |
+| 6 | 1 |
+
+| start s | result | equal suffix bytes | comparisons | raw bad | good | chosen shift |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: |
+| 0 | mismatch j=5, text A | 0 | 1 | 6 | 1 | 6 |
+| 6 | mismatch j=5, text T | 0 | 1 | 6 | 1 | 6 |
+| 12 | mismatch j=5, text C | 0 | 1 | 1 | 1 | 1 |
+| 13 | full match | 6 | 6 | 0 | 3 | 3 |
+| 16 | mismatch j=4, text A | 1 | 2 | 5 | 2 | 5 |
+| 21 | full match | 6 | 6 | 0 | 3 | 3 |
+
+Matches: [13, 21]. Visited alignments: 6 of 24 possible starts. Search byte comparisons: 17.
+\image(figures/boyer_moore_shifts.svg)
+// result_end
+\caption(The two absent bytes A and T cause six-byte shifts at starts zero and six. Full matches occur at 13 and 21; the trace counts 17 search comparisons.)
+\alttext(Six bars at starts zero, six, twelve, thirteen, sixteen and twenty-one have heights six, six, one, three, five and three. Red markers identify the full matches at thirteen and twenty-one.)
+
+At s=16, the last G matches and the next comparison fails on absent A at
+pattern index four. The raw bad-character shift is five, while good-suffix
+shift[5] is two, so the chosen shift is five. At s=12, C is present in the
+pattern and the chosen shift is one. Each full match shifts three, preserving
+the pattern's GCG border. These are observations from this input, rather than
+an average-case claim about all DNA sequences. A small alphabet can make
+substrings recur frequently and limit skipping.
+
+> Large skips, unit shifts and the all-match worst case
+
+Fix text A repeated n=2048 times and vary pattern length m. Three deterministic
+families separate the reasons for a low or high comparison count:
+
+- Pattern B repeated m times: every mismatch is against a byte absent from the
+  pattern, so each alignment costs one comparison and shifts m.
+- Pattern A repeated m-1 times followed by B: the rightmost comparison fails
+  immediately, but the mismatching A occurs at pattern index m-2. Shifts are
+  one, so every possible start is visited with one comparison.
+- Pattern A repeated m times: every start is a full overlapping match, the
+  period shift is one, and the core rechecks all m bytes each time.
+
+The last family makes exactly m(n-m+1) comparisons. With m proportional to
+n, this is quadratic, even though the method can skip well on other inputs.
+The implementation does not remember already matched regions across alignments.
+
+```{cpp, results="markdown", file="figures/boyer_moore_comparisons.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::size_t n=2048;const std::string text(n,'A');
+  std::vector<double> length,absent,unit,repeated;
+  std::print("| m | B^m comparisons | A^(m-1)B comparisons | A^m comparisons | A^m matches |\n"
+             "| ---: | ---: | ---: | ---: | ---: |\n");
+  for (std::size_t m:{4,8,16,32,64,128}) {
+    const auto a=dm::algorithms::boyer_moore_trace(text,std::string(m,'B'));
+    const auto u=dm::algorithms::boyer_moore_trace(text,std::string(m-1,'A')+'B');
+    const auto r=dm::algorithms::boyer_moore_trace(text,std::string(m,'A'));
+    if (a.comparisons!=n/m || u.comparisons!=n-m+1 || r.comparisons!=m*(n-m+1)) return 1;
+    length.push_back(m);absent.push_back(double(a.comparisons)/n);
+    unit.push_back(double(u.comparisons)/n);repeated.push_back(double(r.comparisons)/n);
+    std::print("| {} | {} | {} | {} | {} |\n",m,a.comparisons,u.comparisons,r.comparisons,r.matches.size());
+  }
+  auto matches=dm::graphics::RPlot::create()
+      .lines(length,repeated,"overlapping A^m",dm::RGB{220,38,38},2)
+      .points(length,repeated,"",dm::RGB{220,38,38},4)
+      .title("Overlapping full matches")
+      .x_label("pattern length m, bytes").y_label("comparisons / text byte")
+      .y_limits(0,160).size(700,460);
+  auto misses=dm::graphics::RPlot::create()
+      .lines(length,unit,"unit-shift miss",dm::RGB{37,99,235},2)
+      .lines(length,absent,"absent-byte skip",dm::RGB{22,163,74},2)
+      .title("Two kinds of mismatch")
+      .x_label("pattern length m, bytes").y_label("comparisons / text byte")
+      .y_limits(0,1.4).size(700,460);
+  dm::graphics::RLayout::create(1,2).size(1400,500)
+      .title("Repeated full matches recheck m bytes per alignment")
+      .add(matches).add(misses).save("build/boyer_moore_comparisons.svg");
+}
+```
+// result_begin: markdown
+| m | B^m comparisons | A^(m-1)B comparisons | A^m comparisons | A^m matches |
+| ---: | ---: | ---: | ---: | ---: |
+| 4 | 512 | 2045 | 8180 | 2045 |
+| 8 | 256 | 2041 | 16328 | 2041 |
+| 16 | 128 | 2033 | 32528 | 2033 |
+| 32 | 64 | 2017 | 64544 | 2017 |
+| 64 | 32 | 1985 | 127040 | 1985 |
+| 128 | 16 | 1921 | 245888 | 1921 |
+\image(figures/boyer_moore_comparisons.svg)
+// result_end
+\caption(The panels use different vertical scales so all three families remain visible. These are logical comparisons, excluding preprocessing, rather than timing measurements or a random-text benchmark.)
+\alttext(Comparisons per text byte grow approximately with pattern length for repeated full matches. Unit-shift mismatches stay near one, while absent-byte skips decrease toward zero.)
+
+> Boundary and byte controls
+
+The trace exposes the raw negative bad-character proposal when it occurs.
+For AABB against ABAB, the final B matches and the next B mismatches A at
+pattern index two. The rightmost pattern B is at index three, hence bad=-1.
+The strong good-suffix rule supplies four, ensuring safe forward progress.
+The sentinel for a full-match mismatch index is m, not a valid pattern index.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  struct Example {std::string name,text,pattern;};
+  const std::vector<Example> examples{
+      {"overlapping matches","aaaa","aa"},{"empty pattern","abc",""},
+      {"pattern longer than text","ab","abc"},{"case-sensitive","ABCabc","abc"},
+      {"embedded NUL",std::string("A\0B\0B",5),std::string("\0B",2)},
+      {"high bytes",std::string("\xff\x80\xff",3),std::string("\xff",1)},
+      {"negative raw bad shift","AABB","ABAB"}};
+  std::print("| case | text bytes | pattern bytes | match starts | visited alignments | comparisons |\n"
+             "| :--- | ---: | ---: | :--- | ---: | ---: |\n");
+  for (const auto& example:examples) {
+    const auto trace=dm::algorithms::boyer_moore_trace(example.text,example.pattern);
+    std::print("| {} | {} | {} | {} | {} | {} |\n",example.name,trace.text_size,trace.pattern_size,
+        trace.matches,trace.alignments.size(),trace.comparisons);
+  }
+  const auto trace=dm::algorithms::boyer_moore_trace("AABB","ABAB");const auto& step=trace.alignments.front();
+  std::print("\nNegative-shift control: raw bad {}, good {}, chosen {}.\n",
+      step.bad_character_shift,step.good_suffix_shift,step.shift);
+}
+```
+// result_begin: markdown
+| case | text bytes | pattern bytes | match starts | visited alignments | comparisons |
+| :--- | ---: | ---: | :--- | ---: | ---: |
+| overlapping matches | 4 | 2 | [0, 1, 2] | 3 | 6 |
+| empty pattern | 3 | 0 | [] | 0 | 0 |
+| pattern longer than text | 2 | 3 | [] | 0 | 0 |
+| case-sensitive | 6 | 3 | [3] | 2 | 4 |
+| embedded NUL | 5 | 2 | [1, 3] | 3 | 5 |
+| high bytes | 3 | 1 | [0, 2] | 3 | 3 |
+| negative raw bad shift | 4 | 4 | [] | 1 | 2 |
+
+Negative-shift control: raw bad -1, good 4, chosen 4.
+// result_end
+\caption(NUL and high-byte data are described by case labels instead of writing nonprinting bytes into the report. Every returned position counts bytes.)
+
+Preprocessing takes O(m+256) work and storage. Ordinary search allocates the
+match offsets but no alignment records, and its worst-case comparison bound
+for this implementation is O((n-m+1)m). A trace retains O(A+K) records for A
+visited alignments and K matches, plus the tables. Both APIs borrow inputs
+without mutation and own their outputs. Trace always preprocesses the pattern,
+even for impossible searches; ordinary search returns immediately for empty
+or oversized patterns. Signed border-index range and recorded counter overflow
+are checked. Generated byte strings suffice for the algorithmic experiments;
+no observational dataset is required.
+
+> References
+
+- R. S. Boyer and J Strother Moore (1977), A fast string searching algorithm,
+  Communications of the ACM 20(10), 762–772.
+  [Original paper](https://doi.org/10.1145/359842.359859).
+- J Strother Moore, [the authors' algorithm page](https://www.cs.utexas.edu/~moore/best-ideas/string-searching/),
+  including the qualification about recurring substrings on small alphabets.

@@ -2,6 +2,7 @@
 /// @brief Pinned dataset sources, curl downloads with checksum checks, and gzip/tar unpacking.
 
 #include <datamunge/datasets/download.hpp>
+#include <datamunge/datasets/network_data.hpp>
 
 #include <datamunge/algorithms/md5.hpp>
 #include <datamunge/algorithms/sha256.hpp>
@@ -342,11 +343,12 @@ std::string data_home() {
 }
 
 std::vector<std::string> downloadable() {
-  return {"california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "mnist", "rebot_devarm", "sudoku"};
+  return {"california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku"};
 }
 
 std::string fetch(const std::string& name, const std::string& directory) {
   const fs::path dir = directory.empty() ? fs::path(data_home()) / name : fs::path(directory);
+  if (name == "karate_club") return detail::fetch_karate_source(dir.string());
   if (name == "rebot_devarm") {
     ensure_rebot(dir);
     return dir.string();
@@ -370,7 +372,7 @@ std::string fetch(const std::string& name, const std::string& directory) {
     ensure_cifar(name == "cifar100", dir);
   } else {
     throw std::invalid_argument("unknown downloadable dataset \"" + name +
-                                "\"; expected california_housing, cifar10, cifar100, diamonds, fashion_mnist, mnist, rebot_devarm or sudoku");
+                                "\"; expected california_housing, cifar10, cifar100, diamonds, fashion_mnist, karate_club, mnist, rebot_devarm or sudoku");
   }
   return dir.string();
 }

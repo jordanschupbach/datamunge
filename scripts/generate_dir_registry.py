@@ -168,6 +168,7 @@ def render(table: dict[str, tuple[str, list[tuple[str, str, str, str]]]]) -> str
         "/// The member tables behind dm::dir(): one entry per public class, sorted by",
         "/// qualified name (template arguments dropped). Each entry's text is the class's",
         "/// one-line description, then one member per line as `kind<TAB>name<TAB>signature<TAB>brief`.",
+        "/// Empty trailing fields may be omitted; the reader supplies their empty values.",
         "",
         "#include <cstddef>",
         "#include <string_view>",
@@ -186,7 +187,7 @@ def render(table: dict[str, tuple[str, list[tuple[str, str, str, str]]]]) -> str
     ]
     for name in sorted(table):
         brief, members = table[name]
-        body = "\n".join([brief] + ["\t".join(m).replace("\n", " ") for m in members])
+        body = "\n".join([brief] + ["\t".join(m).replace("\n", " ").rstrip(" \t") for m in members])
         # Explicit byte lengths: constructing a string_view from a bare literal makes the compiler
         # count every character in constant evaluation, which overruns clang's step limit here.
         lines.append(

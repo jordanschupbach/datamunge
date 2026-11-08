@@ -1,0 +1,328 @@
+//? Title: Deutsch–Jozsa: One Oracle Query, Visible Interference and the Promise
+//? Subtitle: Trace the actual circuit, retain the original five oracles, and count classical simulation work
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A Boolean function on n input bits is promised to be constant or to return one
+on exactly half its inputs. We want to identify which case holds. Deutsch–Jozsa
+uses one logical quantum oracle application: equal phases reinforce the
+all-zero outcome, while a balanced set of signs cancels it. A two-bit worked
+example exposes actual gate-boundary amplitudes before retaining the original
+five four-bit examples. Native traces distinguish the mathematical promise
+from the legacy numerical threshold and demonstrate what happens outside the
+promise. Measured callback, gate and amplitude-pair counts show the exponential
+cost of this classical state-vector simulation. A sequential classical API
+supplies actual comparison counts; a query advantage on ideal quantum hardware
+does not make this C++ program a one-call classical algorithm.
+)
+
+\toc
+
+> A hand-checkable four-input example
+
+Let the basis order be 00, 01, 10, 11: bit zero is the least significant
+qubit. Take f(x)=x mod 2, with truth table [0,1,0,1]. Starting at |00⟩, two
+Hadamard gates produce amplitudes [1/2,1/2,1/2,1/2]. The phase oracle changes
+them to [1/2,−1/2,1/2,−1/2]. The final two Hadamards leave amplitude one at
+|01⟩ and zero at |00⟩. Thus the all-zero measurement never occurs in the ideal
+circuit. The native diagram uses the actual trace, rather than a second oracle
+pass. Its one logical oracle stage entails four classical callback evaluations.
+
+```{cpp, results="markdown", file="figures/dj_interference.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::deutsch_jozsa_trace(2,[](std::size_t x){return x&1;});
+  if(t.truth_table!=std::vector<int>{0,1,0,1} || t.promise!=dm::algorithms::DeutschJozsaPromise::balanced)return 1;
+  dm::graphics::Diagram d(62,1100);dm::graphics::DiagramNodeStyle box;box.width=3;box.height=1.3;box.font_size=20;
+  d.node("h1",{0,0},"Two Hadamards\nuniform inputs",box)
+   .node("f",{5,0},"One phase oracle\nsign = (-1)^f(x)",box)
+   .node("h2",{10,0},"Two Hadamards\ninterfere",box)
+   .edge("h1","f").edge("f","h2")
+   .text({5,2},"Two-bit Deutsch-Jozsa: f(x) = x mod 2",24)
+   .text({0,-1.5},"[ +0.5, +0.5, +0.5, +0.5 ]",17)
+   .text({5,-1.5},"[ +0.5, -0.5, +0.5, -0.5 ]",17)
+   .text({10,-1.5},"[ 0, 1, 0, 0 ]",18)
+   .text({5,-2.6},std::format("Actual callback calls: {}; P(00) = {:.6f}; final peak at |01>",t.work.callback_calls,t.result.prob_all_zero),21)
+   .save_svg("build/dj_interference.svg");
+  std::print("| basis x | f(x) | before oracle | after oracle | final amplitude |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t x=0;x<t.truth_table.size();++x)
+    std::print("| {:02b} | {} | {:.6f} | {:.6f} | {:.6f} |\n",x,t.truth_table[x],t.before_oracle[x].real(),t.after_oracle[x].real(),t.final_state[x].real());
+  std::print("\nLogical oracle applications {}; actual callbacks {}; Hadamards {}; amplitude-pair updates {}.\n",t.work.oracle_applications,t.work.callback_calls,t.work.hadamard_gates,t.work.butterflies);
+}
+```
+// result_begin: markdown
+| basis x | f(x) | before oracle | after oracle | final amplitude |
+| ---: | ---: | ---: | ---: | ---: |
+| 00 | 0 | 0.500000 | 0.500000 | 0.000000 |
+| 01 | 1 | 0.500000 | -0.500000 | 1.000000 |
+| 10 | 0 | 0.500000 | 0.500000 | 0.000000 |
+| 11 | 1 | 0.500000 | -0.500000 | 0.000000 |
+
+Logical oracle applications 1; actual callbacks 4; Hadamards 4; amplitude-pair updates 8.
+\image(figures/dj_interference.svg)
+// result_end
+\caption(The actual two-bit circuit moves a uniform state through signed phases to outcome 01; its one logical oracle application entails four C++ calls.)
+\alttext(Three native boxes show initial Hadamards, one phase oracle and final Hadamards. The actual uniform and signed amplitude vectors become the basis state 01. A footer reports four callback calls and zero all-zero probability.)
+
+> Why the promise turns interference into a decision
+
+Write N=2^n and w for the number of inputs with f(x)=1. Applying the final
+Hadamards to each phase-marked basis state gives
+
+$$
+a_y=\frac1N\sum_{x=0}^{N-1}(-1)^{f(x)\oplus(x\cdot y)},\qquad
+a_0=\frac{N-2w}{N},\qquad P_0=\left(1-\frac{2w}{N}\right)^2.
+$$
+\alttext(The amplitude at y is the average sign with parity x dot y. The all-zero amplitude is N minus twice the number of ones, divided by N. Its square is the all-zero probability.)
+
+For a constant function w is zero or N, so a_0 is +1 or −1 and P_0=1.
+For a balanced function w=N/2, so a_0=P_0=0. The sign distinguishes the two
+constant state vectors but is a global phase; measuring the register cannot
+identify which constant was supplied. Nonzero measurement means balanced
+only under the promise. The implementation computes the distribution, rather
+than drawing a random shot. Its compatibility flag is the numerical test
+P_0>0.5, not a physical measurement or a certificate for an arbitrary function.
+
+A conventional reversible bit oracle acts as |x,b⟩→|x,b XOR f(x)⟩. Preparing
+its auxiliary qubit in |−⟩=(|0⟩−|1⟩)/√2 makes an output flip contribute the
+phase (−1)^f(x), leaving the auxiliary qubit separable. The C++ phase-oracle
+simulation omits that unchanged qubit. The one-query form follows the
+phase-kickback presentation of [Cleve, Ekert, Macchiavello and Mosca](https://arxiv.org/abs/quant-ph/9708016).
+Deutsch and Jozsa introduced the promised separation in 1992; the improved
+form was published by Cleve and colleagues in 1998.
+
+> Preserve all five original four-bit oracles
+
+Constants zero and one, full parity, the top bit and the least significant bit
+are the original examples. The last three are balanced. Their final peaks are
+respectively basis indices 15, 8 and 1, but Deutsch–Jozsa only asks whether the
+index is zero. The independent fast Walsh transform already in datamunge
+provides an amplitude cross-check. Every numerical result below comes from
+the shared circuit kernel. Small rounding residuals are printed separately
+from the count-derived formula.
+
+```{cpp, results="markdown", file="figures/dj_original_oracles.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::string> names{"constant0","constant1","parity","topbit","mod2"};
+  const std::vector<std::function<int(std::size_t)>> oracles{
+    [](std::size_t){return 0;},[](std::size_t){return 1;},
+    [](std::size_t x){return std::popcount(x)&1;},
+    [](std::size_t x){return (x>>3)&1;},[](std::size_t x){return x&1;}};
+  std::vector<double> p0;double max_error=0;
+  std::print("| original oracle | ones / 16 | P(all zero) | threshold constant | final peak index | classical calls | simulator calls |\n| :--- | ---: | ---: | :--- | ---: | ---: | ---: |\n");
+  for(std::size_t k=0;k<oracles.size();++k) {
+    const auto t=dm::algorithms::deutsch_jozsa_trace(4,oracles[k]);
+    const auto old=dm::algorithms::deutsch_jozsa(4,oracles[k]);
+    const auto c=dm::algorithms::deutsch_jozsa_classical(4,oracles[k]);
+    const auto spectrum=dm::algorithms::walsh_spectrum(t.truth_table);
+    if(t.result.constant!=(k<2) || old.prob_all_zero!=t.result.prob_all_zero)return 1;
+    for(std::size_t x=0;x<spectrum.size();++x)max_error=std::max(max_error,std::abs(spectrum[x]-t.final_state[x].real()));
+    p0.push_back(t.result.prob_all_zero);
+    std::print("| {} | {} | {:.6f} | {} | {} | {} | {} |\n",names[k],t.ones,t.result.prob_all_zero,t.result.constant,dm::algorithms::most_probable(t.final_state),c.queries,t.work.callback_calls);
+  }
+  std::print("\nMaximum amplitude residual against the fast Walsh transform: {:.3e}.\n",max_error);
+  if(max_error>1e-12)return 1;
+  auto p=dm::graphics::RPlot::create();p.barplot(p0,names,"P0",{37,99,235}).abline_h(.5,{220,38,38},1.5)
+   .title("Original n=4 controls: the promised cases separate")
+   .x_label("original effective Boolean oracle").y_label("computed P(all-zero measurement)")
+   .y_limits(0,1.15).size(1100,570).save_svg("build/dj_original_oracles.svg");
+}
+```
+// result_begin: markdown
+| original oracle | ones / 16 | P(all zero) | threshold constant | final peak index | classical calls | simulator calls |
+| :--- | ---: | ---: | :--- | ---: | ---: | ---: |
+| constant0 | 0 | 1.000000 | true | 0 | 9 | 16 |
+| constant1 | 16 | 1.000000 | true | 0 | 9 | 16 |
+| parity | 8 | 0.000000 | false | 15 | 2 | 16 |
+| topbit | 8 | 0.000000 | false | 8 | 9 | 16 |
+| mod2 | 8 | 0.000000 | false | 1 | 2 | 16 |
+
+Maximum amplitude residual against the fast Walsh transform: 6.661e-16.
+\image(figures/dj_original_oracles.svg)
+// result_end
+\caption(All five original four-bit controls reproduce their expected all-zero probabilities; the half-probability line marks the legacy numerical threshold.)
+\alttext(The two constant-oracle bars reach one; parity, top bit and low bit reach zero. A horizontal half-probability line marks the compatibility threshold.)
+
+> Outside the promise, the threshold has no promised meaning
+
+For an arbitrary truth table P_0 depends only on its number of ones; the
+remaining spectrum depends on their positions. With four bits and one one,
+P_0=49/64=0.765625, and the compatibility flag says constant despite the
+nonconstant table. With two bits and table [0,0,0,1], P_0=1/4, and the flag
+says false despite the table being unbalanced. Native trace promise categories
+identify both as neither. The classical API also relies on the promise:
+querying inputs 0 through 8 misses a four-bit function's lone one at input 15.
+
+Balanced functions need not be parities or concentrate at a single nonzero
+basis state. The piecewise function below uses the low bit on x<4 and the
+next bit on x≥4. Its truth table [0,1,0,1,0,0,1,1] is balanced, but its final
+distribution has four nonzero probabilities of one quarter each. The sweep
+then checks every possible number of ones on the four-bit domain.
+
+```{cpp, results="markdown", file="figures/dj_promise_boundary.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto near=dm::algorithms::deutsch_jozsa_trace(4,[](std::size_t x){return x==15;});
+  const auto and2=dm::algorithms::deutsch_jozsa_trace(2,[](std::size_t x){return x==3;});
+  const auto misleading=dm::algorithms::deutsch_jozsa_classical(4,[](std::size_t x){return x==15;});
+  std::print("One one among 16: P0 {:.6f}; threshold constant {}; promise neither {}.\n\n",near.result.prob_all_zero,near.result.constant,near.promise==dm::algorithms::DeutschJozsaPromise::neither);
+  std::print("AND on two bits: P0 {:.6f}; threshold constant {}; promise neither {}.\n\n",and2.result.prob_all_zero,and2.result.constant,and2.promise==dm::algorithms::DeutschJozsaPromise::neither);
+  std::print("Off-promise classical control: constant {}; queries {}.\n\n",misleading.constant,misleading.queries);
+  const auto nonlinear=dm::algorithms::deutsch_jozsa_trace(3,[](std::size_t x){return x<4?(x&1):((x>>1)&1);});
+  std::print("Nonlinear balanced table {}; promise balanced {}.\n\n",nonlinear.truth_table,nonlinear.promise==dm::algorithms::DeutschJozsaPromise::balanced);
+  const auto probabilities=dm::algorithms::probabilities(nonlinear.final_state);
+  std::print("| outcome y | probability |\n| ---: | ---: |\n");
+  for(std::size_t y=0;y<probabilities.size();++y)std::print("| {:03b} | {:.6f} |\n",y,probabilities[y]);
+  std::vector<double> fractions,p0,formula;double residual=0;
+  for(std::size_t w=0;w<=16;++w) {
+    const auto t=dm::algorithms::deutsch_jozsa_trace(4,[w](std::size_t x){return x<w;});
+    fractions.push_back(double(w)/16);p0.push_back(t.result.prob_all_zero);formula.push_back(t.mean_phase*t.mean_phase);
+    residual=std::max(residual,std::abs(p0.back()-formula.back()));
+  }
+  if(residual>1e-12 || near.promise!=dm::algorithms::DeutschJozsaPromise::neither || and2.promise!=dm::algorithms::DeutschJozsaPromise::neither)return 1;
+  std::print("\nAll 17 four-bit one-counts checked; maximum probability residual {:.3e}.\n",residual);
+  auto p=dm::graphics::RPlot::create();p.line(fractions,formula,"count formula",{37,99,235},2)
+   .points(fractions,p0,"actual circuit",{234,88,12},5).abline_h(.5,{100,116,139},1)
+   .title("Promise locations: endpoints constant, midpoint balanced")
+   .x_label("fraction of effective ones, w/16").y_label("P(all zero) = (1 - 2w/16)^2")
+   .y_limits(-.05,1.12).size(1100,570).save_svg("build/dj_promise_boundary.svg");
+}
+```
+// result_begin: markdown
+One one among 16: P0 0.765625; threshold constant true; promise neither true.
+
+AND on two bits: P0 0.250000; threshold constant false; promise neither true.
+
+Off-promise classical control: constant true; queries 9.
+
+Nonlinear balanced table [0, 1, 0, 1, 0, 0, 1, 1]; promise balanced true.
+
+| outcome y | probability |
+| ---: | ---: |
+| 000 | 0.000000 |
+| 001 | 0.250000 |
+| 010 | 0.250000 |
+| 011 | 0.000000 |
+| 100 | 0.000000 |
+| 101 | 0.250000 |
+| 110 | 0.250000 |
+| 111 | 0.000000 |
+
+All 17 four-bit one-counts checked; maximum probability residual 1.332e-15.
+\image(figures/dj_promise_boundary.svg)
+// result_end
+\caption(The circuit matches the count-derived probability at all seventeen possible one-counts; only the endpoints and midpoint satisfy the promise.)
+\alttext(Seventeen actual probability markers agree with a U-shaped count formula. Endpoints correspond to constant tables, the zero minimum at fraction one half to balanced tables, and other positions lie outside the promise.)
+
+> Query complexity and the cost of running this simulator
+
+For n≥1, a deterministic classical algorithm can be forced to receive the
+same answer at N/2 distinct inputs. Those observations are compatible with
+a constant function and with a balanced completion, so it needs another
+query in the worst case. N/2+1 queries suffice: two different outputs mean
+balanced, while N/2+1 equal outputs exclude balanced. The sequential API
+implements this rule. The top-bit control attains its bound exactly; low-bit
+parity instead stops after two queries. For n=0 the domain contains one
+input and only a constant case; both APIs call that input once.
+
+The ideal circuit uses one logical phase query and 2n single-qubit Hadamards,
+excluding oracle construction and measurement hardware. This classical
+simulator instead stores N complex amplitudes, makes N callback calls and
+executes 2n×N/2=nN amplitude-pair updates. Each callback's own cost is extra.
+The rich trace retains three actual states and one integer table: O(N) storage;
+the original API retains only its working state, also O(N). A full classical
+truth-table count could check the promise with N evaluations and O(1) extra
+storage, without simulating any circuit. The new trace's inspection of every
+callback value is likewise classical evidence, not an extra physical promise
+test obtained for free from a quantum measurement.
+
+```{cpp, results="markdown", file="figures/dj_query_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> bits,logical,callbacks,classical,pairs;
+  std::print("| n | basis states | logical oracle applications | actual simulator callbacks | Hadamards | actual pair updates | classical top-bit queries |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(int n:{1,2,4,8,12,16}) {
+    const std::function<int(std::size_t)> oracle=[n](std::size_t x){return (x>>(n-1))&1;};
+    const auto t=dm::algorithms::deutsch_jozsa_trace(n,oracle);const auto c=dm::algorithms::deutsch_jozsa_classical(n,oracle);
+    if(c.queries!=t.truth_table.size()/2+1 || t.work.butterflies!=std::size_t(n)*t.truth_table.size())return 1;
+    std::print("| {} | {} | {} | {} | {} | {} | {} |\n",n,t.truth_table.size(),t.work.oracle_applications,t.work.callback_calls,t.work.hadamard_gates,t.work.butterflies,c.queries);
+    bits.push_back(n);logical.push_back(std::log2(double(t.work.oracle_applications)));callbacks.push_back(std::log2(double(t.work.callback_calls)));
+    classical.push_back(std::log2(double(c.queries)));pairs.push_back(std::log2(double(t.work.butterflies)));
+  }
+  auto query=dm::graphics::RPlot::create();query.line(bits,logical,"logical quantum",{22,163,74},2)
+   .line(bits,classical,"classical top bit",{234,88,12},2).line(bits,callbacks,"simulator callbacks",{37,99,235},2)
+   .title("Quantum and classical oracle counts").x_label("input bits n").y_label("log2(actual count)").y_limits(-.6,20);
+  auto simulation=dm::graphics::RPlot::create();simulation.line(bits,callbacks,"callbacks",{37,99,235},2).line(bits,pairs,"pair updates",{124,58,237},2)
+   .title("Exponential classical simulation work").x_label("input bits n").y_label("log2(actual primitive count)").y_limits(-.6,24);
+  dm::graphics::RLayout::create(1,2).add(query).add(simulation).size(1100,520).title("One logical oracle query still costs 2^n C++ callback calls").fit_panels().save_svg("build/dj_query_work.svg");
+  int rejected=0,calls=0;const std::function<int(std::size_t)> counter=[&](std::size_t){++calls;return 0;};
+  try{dm::algorithms::deutsch_jozsa_trace(-1,counter,1);}catch(const std::invalid_argument&){++rejected;}
+  try{dm::algorithms::deutsch_jozsa_trace(4,counter,15);}catch(const std::length_error&){++rejected;}
+  try{dm::algorithms::deutsch_jozsa_trace(4,{},1);}catch(const std::invalid_argument&){++rejected;}
+  if(rejected!=3 || calls!=0)return 1;
+  std::print("\nThree expected domain/cap/empty-callback rejections; callback calls before rejection {}. Exact cap 16 and zero-disabled optional cap both succeed.\n",calls);
+  dm::algorithms::deutsch_jozsa_trace(4,counter,16);dm::algorithms::deutsch_jozsa_trace(4,counter,0);
+  if(calls!=32)return 1;
+}
+```
+// result_begin: markdown
+| n | basis states | logical oracle applications | actual simulator callbacks | Hadamards | actual pair updates | classical top-bit queries |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2 | 1 | 2 | 2 | 2 | 2 |
+| 2 | 4 | 1 | 4 | 4 | 8 | 3 |
+| 4 | 16 | 1 | 16 | 8 | 64 | 9 |
+| 8 | 256 | 1 | 256 | 16 | 2048 | 129 |
+| 12 | 4096 | 1 | 4096 | 24 | 49152 | 2049 |
+| 16 | 65536 | 1 | 65536 | 32 | 1048576 | 32769 |
+
+Three expected domain/cap/empty-callback rejections; callback calls before rejection 0. Exact cap 16 and zero-disabled optional cap both succeed.
+\image(figures/dj_query_work.svg)
+// result_end
+\caption(Measured logical queries, simulator callbacks and amplitude-pair updates use distinct execution models; logarithmic axes show their different growth.)
+\alttext(Two fitted panels plot explicitly transformed base-two logarithms of measured counts. One logical query stays at zero, simulator callback counts grow with n, and amplitude-pair counts grow to n times two to the n. Classical top-bit queries approach half the simulator callbacks.)
+
+A randomised classical comparison changes the conclusion. With k independent
+uniform queries with replacement, a balanced function produces all equal
+answers with probability 2×(1/2)^k=2^(1−k). Declaring balanced once two answers
+differ has no error on constant functions; ten queries give balanced-case
+error 1/512, independent of n. Therefore the exponential separation concerns
+exact deterministic classical query complexity, not bounded-error classical
+query complexity. It also assumes a coherent oracle is already available.
+
+> Contracts and reproducibility
+
+The original two-field DeutschJozsaResult and its formatter remain unchanged.
+The ordinary function still returns p0>0.5 and the raw computed probability;
+it deliberately preserves the original effective bit f(x)&1 even for other
+integer outputs. Promise claims refer to those effective bits. Negative or
+unrepresentable qubit counts and empty callbacks now throw before evaluation;
+capacity checks protect allocations. The trace defaults to at most 1,048,576
+basis states, with a checked complete cap before allocation or callbacks. Zero
+disables that optional cap but retains arithmetic and capacity guards. Memory
+allocation and oracle exceptions propagate, without undoing prior callback
+side effects. A physical oracle must be a fixed Boolean function: inspecting
+a stateful callback once only documents the table it actually produced.
+
+All four programs are complete and editable; figures are saved under local
+build/ and copied into figures/. No external dataset suits this promise
+problem, so the examples use explicit Boolean oracles. Independent tests
+check every one of the 65,814 Boolean tables with n=0 through 4 by direct
+character sums, including all 12,958 promised tables. Further checks cover
+every affine parity through eight bits, complements, a nonlinear balanced
+function, the shared Fourier circuit, original outputs, classical early and
+worst-case exits, caps, empty and throwing callbacks, ownership, low-bit
+compatibility and safe dimension validation. Numerical probabilities use
+double precision: “exact” describes the ideal decision under the promise,
+not exact floating arithmetic or a sampled hardware experiment.
+
+> References
+
+1. D. Deutsch and R. Jozsa (1992), “Rapid solution of problems by quantum computation”, Proceedings of the Royal Society A 439, 553–558. [Original paper DOI](https://doi.org/10.1098/rspa.1992.0167). Introduces the promised quantum/classical separation.
+2. R. Cleve, A. Ekert, C. Macchiavello and M. Mosca (1998), “Quantum algorithms revisited”, Proceedings of the Royal Society A 454, 339–354. [Author preprint](https://arxiv.org/abs/quant-ph/9708016), [DOI](https://doi.org/10.1098/rspa.1998.0164). The one-query phase-kickback form used here.
+3. IBM Quantum Learning, [The Deutsch–Jozsa algorithm](https://quantum.cloud.ibm.com/learning/en/modules/computer-science/deutsch-jozsa). Contemporary circuit presentation and distinction between deterministic and probabilistic classical comparisons. This report runs the native C++ simulator directly.

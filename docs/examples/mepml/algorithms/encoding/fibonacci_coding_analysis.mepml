@@ -1,0 +1,360 @@
+//? Title: Fibonacci Coding: Exact Weights, Strict Frames and Actual Word Spans
+//? Subtitle: Zeckendorf digits, full-range uint64 round trips and the limits of delimiter-based recovery
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Represent a sequence of positive integers without transmitting a separate
+length for each value. A decoder must identify word boundaries and recover
+every value exactly. Fibonacci coding uses nonconsecutive Fibonacci weights
+and a final one-bit terminator. We start with the six-bit encoding of ten,
+retain the original codewords, round trip and length comparison, then extend
+the native codec to every positive uint64 value. Actual word spans and work
+counts come from the encoder and strict whole-frame parser. Malformed tails,
+width overflow, bit-flip experiments and explicit capture limits distinguish
+self-delimiting framing from error detection, correction and recovery.
+)
+
+\toc
+
+> Ten is eight plus two
+
+Use coding weights W0=1,W1=2 and W(i+2)=W(i+1)+Wi. Ten is eight plus
+two, so its ascending-weight payload is 01001. Append one terminating bit
+to obtain 010011. Its final two ones form the delimiter: the first is the
+highest payload digit, and the second is the appended terminator. This
+overlap matters when labelling word spans and counting work.
+
+The native trace below captures the actual output and its spans in the same
+pass. The figure reads its bits directly and obtains the coding weights
+from datamunge. The reusable bit-text renderer has the historical name
+exp_golomb_bit_string but simply prints any vector<bool>; it performs no
+coding or decoding.
+
+```{cpp, results="markdown", file="figures/fibonacci_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/fibonacci_coding.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::fibonacci_encode_trace({10});const auto& w=t.words.front();std::print("Ten codeword: {}; payload bits {}; appended terminators {}; actual emitted bits {}.\n",dm::algorithms::exp_golomb_bit_string(t.bits),t.work.payload_bits,t.work.terminator_bits,t.work.bit_visits);std::print("Actual span: [{},{}); overlapping delimiter [{},{}); captured entries {}.\n",w.begin,w.end,w.delimiter_begin,w.end,t.captured_entries);
+  std::print("| actual payload index | native weight | emitted bit | contribution |\n| ---: | ---: | ---: | ---: |\n");dm::graphics::Diagram g(60,1100);dm::graphics::DiagramNodeStyle box;box.width=1.9;box.height=1.55;box.font_size=23;std::uint64_t sum=0;for(std::size_t i=0;i<t.bits.size();++i){if(i+1<t.bits.size()){const auto weight=dm::algorithms::fibonacci_coding_weight(i),contribution=t.bits[i]?weight:0;sum+=contribution;std::print("| {} | {} | {} | {} |\n",i,weight,int(t.bits[i]),contribution);box.fill=t.bits[i]?dm::graphics::RGB{187,247,208}:dm::graphics::RGB{226,232,240};g.node(std::to_string(i),{2.5*i,0},std::format("bit {}\nw={}",int(t.bits[i]),weight),box);}else{box.fill={254,243,199};g.node(std::to_string(i),{2.5*i,0},"bit 1\nterminator",box);}}
+  dm::graphics::DiagramStroke mark;mark.color={220,38,38};mark.width=3;g.path({{10,-1.3},{10,-1.65},{12.5,-1.65},{12.5,-1.3}},mark).text({11.25,-2.5},"11 delimiter",22).text({6.25,2.4},"10 = 8 + 2; payload 01001, then append 1",26).text({4,-2.5},"Payload includes its highest one",22).save_svg("build/fibonacci_tiny.svg");std::print("Exact weighted sum {}; decoded value {}.\n",sum,dm::algorithms::fibonacci_decode(t.bits).front());if(sum!=10||t.words[0].end!=6)throw std::runtime_error("tiny identity failed");
+}
+```
+// result_begin: markdown
+Ten codeword: 010011; payload bits 5; appended terminators 1; actual emitted bits 6.
+Actual span: [0,6); overlapping delimiter [4,6); captured entries 8.
+| actual payload index | native weight | emitted bit | contribution |
+| ---: | ---: | ---: | ---: |
+| 0 | 1 | 0 | 0 |
+| 1 | 2 | 1 | 2 |
+| 2 | 3 | 0 | 0 |
+| 3 | 5 | 0 | 0 |
+| 4 | 8 | 1 | 8 |
+Exact weighted sum 10; decoded value 10.
+\image(figures/fibonacci_tiny.svg)
+// result_end
+\caption(The native six-bit word has five payload positions and one appended bit. The final delimiter overlaps the highest payload position, as the actual trace indices show.)
+\alttext(A native row of six boxes shows bits zero,one,zero,zero,one,one. The first five are labelled with weights one,two,three,five,eight. The last is the appended terminator; a bracket marks the final two ones.)
+
+> Why greedy digits and the delimiter work
+
+Choose the largest Wk≤n. Since n<W(k+1)=Wk+W(k−1), subtracting Wk
+leaves less than W(k−1), so the next weight cannot be selected. Repeating
+therefore gives nonconsecutive selected weights. Existence follows by
+induction on the remaining positive integer. For uniqueness, the largest
+sum using nonconsecutive weights below Wk is Wk−1; two distinct such
+representations cannot disagree at their largest selected weight and still
+have equal sums. This is the Zeckendorf representation for the weights1,2,... .
+
+The last payload digit is one and its predecessor, if present, is zero.
+There is no payload11; appending one introduces a first11 exactly at the
+word end. From a known frame start, a decoder reads payload weights until
+that pair, emits one value and resets its weight index and previous-bit
+state. A longer word cannot begin with an entire shorter word, because
+that would already contain the first terminating11. This establishes a
+prefix code and unique parsing from the supplied start. It does not by
+itself establish error correction or synchronization from an arbitrary bit.
+
+If Wk≤n<W(k+1), payload length is k+1 and complete length k+2. Growth
+Wk=Theta(phi^k) gives length log_phi(n)+O(1), about1.44042log2(n)+O(1).
+The native length API uses exact integer weights, not rounded logarithms.
+
+> Keep the original examples; compare domains explicitly
+
+The original eight codewords and ten-value round trip are retained below.
+The original length table compared positive Fibonacci input n with
+nonnegative Exp-Golomb0 input n. Both calls are valid, but their integer
+domains start differently. An additional fair-positive mapping compares
+Fibonacci n with Exp-Golomb0(n−1). The latter uses one bit at n=1 while
+Fibonacci uses two, so compactness is distribution- and mapping-dependent.
+The plot uses log2(n) only as a display coordinate; every length is an
+exact native count.
+
+```{cpp, results="markdown", file="figures/fibonacci_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/fibonacci_coding.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| original value | native codeword | native length |\n| ---: | :--- | ---: |\n");for(std::uint64_t n:{1ULL,2ULL,3ULL,4ULL,10ULL,20ULL,50ULL,100ULL}){const auto bits=dm::algorithms::fibonacci_encode({n});std::print("| {} | {} | {} |\n",n,dm::algorithms::exp_golomb_bit_string(bits),dm::algorithms::fibonacci_code_length(n));}
+  const std::vector<std::uint64_t>values{1,2,3,4,7,10,50,100,1000,100000};const auto e=dm::algorithms::fibonacci_encode_trace(values);const auto d=dm::algorithms::fibonacci_decode_trace(e.bits);std::print("\nOriginal ten-value round trip: {}; actual bits {}; complete words {}.\n",d.values==values,e.bits.size(),d.words.size());std::print("| value | Fibonacci bits | original Exp-Golomb0(n) bits | positive-mapped Exp-Golomb0(n-1) bits |\n| ---: | ---: | ---: | ---: |\n");std::vector<double>x,fib,same,mapped;for(std::uint64_t n:{1ULL,2ULL,4ULL,8ULL,16ULL,64ULL,256ULL,1024ULL,8192ULL,65536ULL}){const auto a=dm::algorithms::fibonacci_code_length(n),b=dm::algorithms::exp_golomb_code_length(n),c=dm::algorithms::exp_golomb_code_length(n-1);std::print("| {} | {} | {} | {} |\n",n,a,b,c);x.push_back(std::log2(double(n)));fib.push_back(a);same.push_back(b);mapped.push_back(c);}
+  auto plot=dm::graphics::RPlot::create();plot.line(x,fib,"Fibonacci n",{37,99,235},2).points(x,fib,"",{37,99,235},5).line(x,same,"Exp-Golomb n",{220,38,38},2).points(x,same,"",{220,38,38},5).line(x,mapped,"Exp-Golomb n-1",{22,163,74},2).points(x,mapped,"",{22,163,74},5).title("Original lengths, plus an explicit positive-domain mapping").x_label("log2(n), display coordinate").y_label("Exact codeword bits").size(1100,580).save_svg("build/fibonacci_original.svg");if(d.values!=values)throw std::runtime_error("original round trip failed");
+}
+```
+// result_begin: markdown
+| original value | native codeword | native length |
+| ---: | :--- | ---: |
+| 1 | 11 | 2 |
+| 2 | 011 | 3 |
+| 3 | 0011 | 4 |
+| 4 | 1011 | 4 |
+| 10 | 010011 | 6 |
+| 20 | 0101011 | 7 |
+| 50 | 001001011 | 9 |
+| 100 | 00101000011 | 11 |
+
+Original ten-value round trip: true; actual bits 85; complete words 10.
+| value | Fibonacci bits | original Exp-Golomb0(n) bits | positive-mapped Exp-Golomb0(n-1) bits |
+| ---: | ---: | ---: | ---: |
+| 1 | 2 | 3 | 1 |
+| 2 | 3 | 3 | 3 |
+| 4 | 4 | 5 | 5 |
+| 8 | 6 | 7 | 7 |
+| 16 | 7 | 9 | 9 |
+| 64 | 10 | 13 | 13 |
+| 256 | 13 | 17 | 17 |
+| 1024 | 16 | 21 | 21 |
+| 8192 | 20 | 27 | 27 |
+| 65536 | 24 | 33 | 33 |
+\image(figures/fibonacci_original.svg)
+// result_end
+\caption(The original examples run unchanged on valid inputs. The additional n−1 mapping shows that comparing positive and nonnegative code families requires an explicit domain convention.)
+\alttext(A native plot compares exact Fibonacci code lengths,original Exp-Golomb lengths at the same number,and positive-mapped Exp-Golomb lengths at n minus one. The horizontal coordinate is log base two of the original number.)
+
+> Full uint64 coverage and strict parsing
+
+There are92 coding weights representable in uint64: W0=1 through
+W91=12200160415121876738. The next recurrence value exceeds uint64.
+The new core stores those exact weights once as an immutable fixed array;
+it never forms the overflowing next weight. UINT64_MAX needs92 payload
+digits and one terminator, for93 bits. The parser recognizes a terminating
+one before requesting another weight, and checks value sums before addition.
+
+The old encoder grew an unchecked Fibonacci vector until a weight exceeded
+n, which cannot happen when n=UINT64_MAX after unsigned wrapping. The old
+decoder used an even shorter table: the valid word with90 zero digits
+followed by11 already indexes beyond its logical table. A hardened-library
+probe confirms that violation; a longer malformed word triggers a heap
+read overflow under ASAN. The replacement checks both the index and sum.
+
+Whole-frame parsing now rejects unfinished tails, including a complete
+word followed by a lone zero. Those bits are not implicit padding. Zero
+is outside the positive code domain; it is rejected before append mutation.
+The old zero encoder produced a lone1, which decoded to no value. The
+following program shows valid maximum-width round trips and explicit errors.
+
+```{cpp, results="markdown", file="figures/fibonacci_width.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/fibonacci_coding.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| coding weight index | exact native weight | exact word length |\n| ---: | ---: | ---: |\n");for(std::size_t i:{0,1,89,90,91}){const auto n=dm::algorithms::fibonacci_coding_weight(i);std::print("| {} | {} | {} |\n",i,n,dm::algorithms::fibonacci_code_length(n));}
+  const std::vector<std::uint64_t>values{7540113804746346429ULL,12200160415121876738ULL,UINT64_MAX};const auto e=dm::algorithms::fibonacci_encode_trace(values);const auto d=dm::algorithms::fibonacci_decode_trace(e.bits);std::print("\nFull-width round trip: {}; encoded bits {}; final word length {}.\n",d.values==values,e.bits.size(),e.words.back().end-e.words.back().begin);std::print("UINT64_MAX code: {}.\n",dm::algorithms::exp_golomb_bit_string(dm::algorithms::fibonacci_encode({UINT64_MAX})));
+  int malformed=0;for(const auto& b:std::vector<std::vector<bool>>{{false},{true},{true,true,false}}){try{(void)dm::algorithms::fibonacci_decode(b);}catch(const std::invalid_argument&){++malformed;}}std::vector<bool>wide(93,false);wide.push_back(true);wide.push_back(true);bool overflow=false;try{(void)dm::algorithms::fibonacci_decode(wide);}catch(const std::overflow_error&){overflow=true;}std::vector<bool>prefix{false,true,false};const auto before=prefix;bool zero=false;try{dm::algorithms::fibonacci_encode_value(0,prefix);}catch(const std::invalid_argument&){zero=true;}std::print("Strict controls: unfinished tails rejected {}/3; excessive weight rejected {}; zero append rejected {}; prefix unchanged {}.\n",malformed,overflow,zero,prefix==before);
+  dm::graphics::Diagram g(56,1100);dm::graphics::DiagramNodeStyle box;box.width=5.5;box.height=1.9;box.font_size=23;box.fill={219,234,254};g.node("last",{0,0},"Last coding weight, index 91\n12200160415121876738",box);box.fill={187,247,208};g.node("maximum",{8,0},"UINT64_MAX uses\n92 payload bits + 1 terminator",box).edge("last","maximum");box.fill={254,226,226};g.node("guard",{4,-4},"Index 92: checked rejection\nNo out-of-range table read",box).text({4,3},"Complete immutable table; guarded value sums",27).save_svg("build/fibonacci_width.svg");if(d.values!=values||malformed!=3||!overflow||!zero||prefix!=before)throw std::runtime_error("width controls failed");
+}
+```
+// result_begin: markdown
+| coding weight index | exact native weight | exact word length |
+| ---: | ---: | ---: |
+| 0 | 1 | 2 |
+| 1 | 2 | 3 |
+| 89 | 4660046610375530309 | 91 |
+| 90 | 7540113804746346429 | 92 |
+| 91 | 12200160415121876738 | 93 |
+
+Full-width round trip: true; encoded bits 278; final word length 93.
+UINT64_MAX code: 010100000101000101000001000101010001001000100100000000100100010010001000101000001000101001011.
+Strict controls: unfinished tails rejected 3/3; excessive weight rejected true; zero append rejected true; prefix unchanged true.
+\image(figures/fibonacci_width.svg)
+// result_end
+\caption(The valid maximum-width words execute through the shared codec. The native table ends before overflow, the final terminator needs no extra weight, and malformed tails are errors.)
+\alttext(A native diagram shows the last representable coding weight,index ninety-one,and the maximum unsigned value requiring ninety-two payload bits plus one terminator. A red guard box identifies rejection before index ninety-two can be read.)
+
+> A delimiter is not an error-correction code
+
+Changing the first bit of0011, the code for three, gives1011, the valid
+code for four. The parser accepts it and the value changes silently.
+Other changes destroy a terminator and produce an unfinished frame. A
+strict parser checks structural validity and representability, not whether
+the source values are still correct. External framing, checksums or error
+correction would be separate format choices.
+
+The experiment flips each bit of the original ten-value stream once and
+runs the native whole-frame decoder. The categories describe this exact
+frame and this single-bit substitution model. They establish neither a
+universal bound on damaged values nor recovery from arbitrary insertions,
+deletions, bursts or arbitrary starting offsets. Overlapping11 patterns
+can occur across word boundaries, so treating the next visible11 as an
+unconditional original-boundary certificate is unsafe. The original blanket
+“at most two codewords” statement is not part of this API's contract.
+
+```{cpp, results="markdown", file="figures/fibonacci_corruption.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/fibonacci_coding.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto original=dm::algorithms::fibonacci_encode({1,2,3,4,7,10,50,100,1000,100000});std::size_t same=0,changed=0,rejected=0;for(std::size_t i=0;i<original.size();++i){auto mutated=original;mutated[i]=!mutated[i];try{const auto decoded=dm::algorithms::fibonacci_decode(mutated);if(decoded==std::vector<std::uint64_t>{1,2,3,4,7,10,50,100,1000,100000})++same;else ++changed;}catch(const std::invalid_argument&){++rejected;}catch(const std::overflow_error&){++rejected;}}
+  std::print("Original-frame single-bit flips: tested {}; accepted unchanged {}; accepted changed {}; structurally rejected {}.\n",original.size(),same,changed,rejected);const auto three=dm::algorithms::fibonacci_encode({3});auto four=three;four[0]=!four[0];std::print("Silent valid change: {} -> {}; decoded {} -> {}.\n",dm::algorithms::exp_golomb_bit_string(three),dm::algorithms::exp_golomb_bit_string(four),dm::algorithms::fibonacci_decode(three).front(),dm::algorithms::fibonacci_decode(four).front());std::print("| repeated-one values | flipped bit index | whole-frame unfinished-tail rejection |\n| ---: | ---: | :--- |\n");for(std::size_t n:{4,16,64}){auto b=dm::algorithms::fibonacci_encode(std::vector<std::uint64_t>(n,1));b[2]=false;bool invalid=false;try{(void)dm::algorithms::fibonacci_decode(b);}catch(const std::invalid_argument&){invalid=true;}std::print("| {} | 2 | {} |\n",n,invalid);if(!invalid)throw std::runtime_error("corruption control failed");}
+  auto plot=dm::graphics::RPlot::create();plot.bars({0,1,2},{double(same),double(changed),double(rejected)},"Observed mutations",{37,99,235}).x_tick_labels({"Accepted unchanged","Accepted changed","Rejected frame"}).title("All single-bit flips of the original sample frame").x_label("Native strict whole-frame outcome").y_label("Number of mutations").size(1100,560).save_svg("build/fibonacci_corruption.svg");if(same+changed+rejected!=original.size()||dm::algorithms::fibonacci_decode(four).front()!=4)throw std::runtime_error("mutation census failed");
+}
+```
+// result_begin: markdown
+Original-frame single-bit flips: tested 85; accepted unchanged 0; accepted changed 82; structurally rejected 3.
+Silent valid change: 0011 -> 1011; decoded 3 -> 4.
+| repeated-one values | flipped bit index | whole-frame unfinished-tail rejection |
+| ---: | ---: | :--- |
+| 4 | 2 | true |
+| 16 | 2 | true |
+| 64 | 2 | true |
+\image(figures/fibonacci_corruption.svg)
+// result_end
+\caption(Every bar is a native decode outcome for one flipped bit of the same original frame. A separate three-to-four example demonstrates that a structurally valid changed word can pass silently.)
+\alttext(A native bar plot counts accepted unchanged,accepted changed,and rejected frames after every possible single-bit flip of the original sample. The printed example changes the valid code for three to the valid code for four.)
+
+> Actual spans, work and owned history
+
+The encoder and strict parser share their ordinary/work/trace kernels;
+there is no explanatory codec replay. Work counts complete values, actual
+payload bits and actual single terminating bits. bit_visits counts only
+emitted or consumed positions; preflight, copying, allocation, table lookups
+and greedy candidate checks are excluded. It is not a CPU-operation count
+or timing measurement. Ordinary encoding uses O(N+B) word work and O(B)
+output; parsing uses O(B) word work and O(N) output, with fixed scratch.
+
+A trace owns B bit positions, N values and N whole span records, giving
+logical capture C=B+2N. Scalar metadata, container capacity and headers,
+allocators and runtime temporaries are excluded: this is not peak RAM.
+Encoding checks complete C before copies/emission. Decoding admits B
+before copying its input, then two entries before each completed value/span
+append. Default quota is1000000; zero disables only that optional quota.
+No partial trace is returned on any error. Ordinary/work APIs store no
+optional history and have no history quota. The packed-bool container does
+not specify byte serialization, endianness, padding or outer framing.
+
+```{cpp, results="markdown", file="figures/fibonacci_capture.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/fibonacci_coding.hpp>
+#include <datamunge/algorithms/exp_golomb.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <print>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<std::uint64_t>values{1,2,10};const auto e=dm::algorithms::fibonacci_encode_trace(values,17),d=dm::algorithms::fibonacci_decode_trace(e.bits,17);std::print("| actual word | value | begin | overlapping delimiter begin | end | emitted length | parsed length |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");for(std::size_t i=0;i<e.words.size();++i){const auto&w=e.words[i];const auto&v=d.words[i];std::print("| {} | {} | {} | {} | {} | {} | {} |\n",i,w.value,w.begin,w.delimiter_begin,w.end,w.end-w.begin,v.end-v.begin);}
+  std::print("\nSame-pass work: values {}; payload {}; terminators {}; bit visits {}; captured B+2N {}.\n",e.work.values,e.work.payload_bits,e.work.terminator_bits,e.work.bit_visits,e.captured_entries);
+  bool enc=false,dec=false;try{(void)dm::algorithms::fibonacci_encode_trace({1,2},8);}catch(const std::length_error&){enc=true;}try{(void)dm::algorithms::fibonacci_decode_trace(dm::algorithms::fibonacci_encode({1,2}),8);}catch(const std::length_error&){dec=true;}const auto off=dm::algorithms::fibonacci_encode_trace({1,2},0);auto edited=e;const auto owned=edited;edited.bits[0]=false;edited.values[0]=99;std::print("Quota controls: C=9 over cap8 rejects encode {}; decode {}; disabled quota actual C {}.\n",enc,dec,off.captured_entries);std::print("Owned copy: first bit {}; first value {}; edited first bit {}; edited first value {}.\n",owned.bits[0],owned.values[0],edited.bits[0],edited.values[0]);
+  const std::vector<std::vector<std::uint64_t>>families{{},{1},{1,2,10},{1,2,3,4,7,10,50,100,1000,100000},{UINT64_MAX}};std::vector<double>x,y;std::print("| input values N | actual bits B | actual capture C | formula B+2N |\n| ---: | ---: | ---: | ---: |\n");for(const auto&v:families){const auto t=dm::algorithms::fibonacci_encode_trace(v);std::print("| {} | {} | {} | {} |\n",v.size(),t.bits.size(),t.captured_entries,t.bits.size()+2*v.size());x.push_back(t.bits.size()+2*v.size());y.push_back(t.captured_entries);}auto plot=dm::graphics::RPlot::create();plot.points(x,y,"Actual captures",{37,99,235},7).line({0,130},{0,130},"C = B + 2N",{100,116,139},1).title("Logical retained entries in actual Fibonacci traces").x_label("B + 2N, excluding metadata and capacity").y_label("Actual admitted entries C").size(1100,560).save_svg("build/fibonacci_capture.svg");if(!enc||!dec||d.values!=values||owned.values.front()!=1)throw std::runtime_error("capture controls failed");
+}
+```
+// result_begin: markdown
+| actual word | value | begin | overlapping delimiter begin | end | emitted length | parsed length |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 0 | 0 | 2 | 2 | 2 |
+| 1 | 2 | 2 | 3 | 5 | 3 | 3 |
+| 2 | 10 | 5 | 9 | 11 | 6 | 6 |
+
+Same-pass work: values 3; payload 8; terminators 3; bit visits 11; captured B+2N 17.
+Quota controls: C=9 over cap8 rejects encode true; decode true; disabled quota actual C 9.
+Owned copy: first bit true; first value 1; edited first bit false; edited first value 99.
+| input values N | actual bits B | actual capture C | formula B+2N |
+| ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0 |
+| 1 | 2 | 4 | 4 |
+| 3 | 11 | 17 | 17 |
+| 10 | 85 | 105 | 105 |
+| 1 | 93 | 95 | 95 |
+\image(figures/fibonacci_capture.svg)
+// result_end
+\caption(Native emission and parsing agree on every word boundary and logical bit count. Exact and failed capture limits and independent ownership execute alongside the measured C=B+2N identity.)
+\alttext(A native scatter plot compares actual captured entries with B plus twice N for empty,tiny,original-sample and maximum-value traces. The points lie on the diagonal; printed rows show actual emission and parsing spans.)
+
+> Verification and source
+
+The core now supports the full positive uint64 range, while preserving
+69634 frozen records of valid old codewords, decoded values, a1000-value
+batch and arbitrary-prefix append, plus all25 lines of original program
+stdout. Strict sanitizer tests enumerate17710 small nonadjacent codewords
+independently of greedy encoding, test every representable weight boundary,
+10000 seeded full-width values and600 variable batches, strict tails,
+unsigned value overflow, actual spans, quotas and ownership. An optional
+arbitrary-precision Python oracle independently checks23578 encode/decode
+results; it is not a report runtime dependency.
+
+A. Apostolico and A. S. Fraenkel,
+[Robust Transmission of Unbounded Strings Using Fibonacci Representations](https://docs.lib.purdue.edu/cstech/464/),
+Purdue technical report CSD-TR-545, October1985; subsequently IEEE Transactions
+on Information Theory33(2),1987,pp.238–245,
+[doi:10.1109/TIT.1987.1057284](https://doi.org/10.1109/TIT.1987.1057284),
+studies generalized Fibonacci representations and their delimiter structure.
+The inspected1985 report distinguishes several representations. This report
+specifies datamunge's order-two ascending-weight positive-integer variant
+and tests its strict parser directly; it does not infer a universal corruption
+recovery guarantee from the paper's title. The repository's existing native
+Exp-Golomb APIs supply the comparison lengths and generic bit-text rendering.

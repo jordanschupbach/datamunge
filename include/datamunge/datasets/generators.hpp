@@ -50,6 +50,39 @@ namespace datamunge::datasets {
 /// @see stats::LLE, stats::Isomap
 dstruct::DataFrame swiss_roll(std::size_t n, double noise = 0.0, std::uint64_t seed = 0);
 
+/// @brief Random engine for an explicit Swiss-roll generation overload.
+/// @par Example
+/// See swiss_roll(std::size_t,double,std::uint64_t,SwissRollEngine).
+/// @see swiss_roll()
+enum class SwissRollEngine {
+    Xoshiro, ///< Existing cross-platform Xoshiro256** generator.
+    Mt19937 ///< Standard-library mt19937_64 and uniform_real_distribution<double>.
+};
+
+/// @brief Generates a Swiss roll with an explicitly chosen random engine.
+/// Xoshiro forwards to the original three-argument API unchanged. Mt19937 draws
+/// interleaved t,height pairs before any independent coordinate noise, matching the
+/// original diffusion-map experiment at n=400, noise=0, seed=42 on libstdc++.
+/// Its distribution mapping is standard-library dependent; do not claim identical
+/// bit patterns across different C++ library implementations. Same six columns and
+/// geometry as the primary overload. Work/storage O(n), no shared random state.
+/// @param n Number of points, including zero.
+/// @param noise Finite nonnegative coordinate-noise standard deviation.
+/// @param seed Engine seed.
+/// @param engine Explicit Xoshiro or Mt19937 choice.
+/// @return Owned x,y,z,t,height,arc_length columns.
+/// @throws std::invalid_argument Unknown engine or nonfinite/negative noise.
+/// @par Example
+/// @code
+/// const auto d=dm::datasets::swiss_roll(4,0,42,dm::datasets::SwissRollEngine::Mt19937);
+/// std::print("{}\n",d.nrows()); // 4
+/// @endcode
+/// @par References
+/// - Roweis and Saul (2000), Nonlinear dimensionality reduction by locally linear
+///   embedding. Science 290, 2323-2326. doi:10.1126/science.290.5500.2323
+/// @see swiss_roll(std::size_t,double,std::uint64_t)
+[[nodiscard]] dstruct::DataFrame swiss_roll(std::size_t n, double noise, std::uint64_t seed, SwissRollEngine engine);
+
 /// @brief Breiman's twonorm benchmark: two Gaussian classes with identity covariance and means
 ///        \f$\pm a\mathbf 1\f$, \f$a=2/\sqrt d\f$ (R's `mlbench.twonorm`).
 ///

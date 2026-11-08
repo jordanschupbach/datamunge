@@ -1,0 +1,391 @@
+//? Title: Chu–Liu/Edmonds: Contract Cycles, Recover a Rooted Directed Tree
+//? Subtitle: Actual incoming choices, reduced costs, nested expansion and explicit limits
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A directed network needs a cheapest set of links that lets one prescribed root
+reach every vertex. Choosing each vertex's cheapest incoming link can create
+cycles disconnected from the root. Chu–Liu/Edmonds contracts those cycles,
+solves the reduced problem and expands the selected links back to the original
+graph. We retain the original three-vertex example, follow actual nested
+contractions, verify a controlled cycle family, and distinguish nonexistence,
+work caps and numerical range failures. Canonical C++ now recovers original
+edge identities and records the executing kernel's phases without replay.
+)
+
+\toc
+
+> The original three vertices: cheap incoming arcs form a cycle
+
+Root 0 has arcs 0→1 of cost 5 and 0→2 of cost 6. The two other arcs,
+1→2 and 2→1, each cost 1. Independently choosing the cheapest incoming arc
+for vertices 1 and 2 selects both unit arcs. Their total 2 is a lower bound,
+but those arcs form a cycle and neither vertex is reachable from root 0.
+
+Contract {1,2}. Entering via 0→1 replaces the chosen incoming arc 2→1,
+so its reduced cost is 5−1=4. Entering via 0→2 instead costs 6−1=5.
+The contracted problem chooses the original arc 0→1. Expansion removes
+2→1 and keeps 1→2, giving total cost 5+1=6. The table and drawing use
+actual phase records and the recovered original tree.
+
+```{cpp, results="markdown", file="figures/chu_liu_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<dm::algorithms::WeightedEdge> edges{{0,1,5},{0,2,6},{1,2,1},{2,1,1}};
+  const auto t=dm::algorithms::chu_liu_edmonds_trace(3,edges,0);
+  if(!t.tree.result.exists || t.tree.result.total_weight!=6 || t.phases.size()!=2)return 1;
+  std::print("| phase | current vertex | chosen original arc id | original endpoints | working cost |\n| ---: | ---: | ---: | :--- | ---: |\n");
+  for(std::size_t p=0;p<t.phases.size();++p)for(std::size_t v=0;v<t.phases[p].vertex_count;++v)if(v!=t.phases[p].root) {
+    const auto id=t.phases[p].incoming_edges[v];const auto [u,w,cost]=edges[id];
+    std::print("| {} | {} | {} | {} -> {} | {} |\n",p,v,id,u,w,t.phases[p].incoming_weights[v]);
+  }
+  std::print("\nRecovered parents: {}. Original selected ids for vertices 1,2: {},{}.\n",t.tree.parent,t.tree.incoming_edges[1],t.tree.incoming_edges[2]);
+  std::print("Reduced total {} = original selected cost {}.\n",t.reduced_total,t.tree.result.total_weight);
+  dm::graphics::Diagram diagram(60,1100);
+  dm::graphics::DiagramNodeStyle node;node.circle=true;node.width=1.1;node.height=1.1;node.font_size=22;
+  const std::array<dm::graphics::DiagramPoint,3> positions{{{0,0},{4,2},{4,-2}}};
+  for(std::size_t v=0;v<3;++v){node.fill=v?dm::graphics::RGB{254,240,138}:dm::graphics::RGB{220,252,231};diagram.node(std::format("first{}",v),positions[v],std::format("{}",v),node);}
+  dm::graphics::DiagramStroke potential;potential.color={148,163,184};potential.dashed=true;potential.width=1.5;
+  diagram.edge("first0","first1",std::format("{}",std::get<2>(edges[0])),potential)
+      .edge("first0","first2",std::format("{}",std::get<2>(edges[1])),potential);
+  dm::graphics::DiagramStroke chosen;chosen.color={234,88,12};chosen.width=3;chosen.arrow=true;
+  diagram.path({{4.4,1.6},{5.5,0},{4.4,-1.6}},chosen).text({5.8,0},std::format("{}",std::get<2>(edges[t.phases[0].incoming_edges[2]])),20)
+      .path({{3.6,-1.6},{2.5,0},{3.6,1.6}},chosen).text({2.1,0},std::format("{}",std::get<2>(edges[t.phases[0].incoming_edges[1]])),20);
+  node.fill={220,252,231};diagram.node("root",{10,0},"0",node);node.fill={254,240,138};node.width=2;node.height=2;
+  diagram.node("cycle",{16,0},"{1,2}",node);
+  chosen.color={37,99,235};
+  diagram.path({{10.5,0.4},{13,1.5},{15.05,0.4}},chosen).text({13,2},std::format("reduced {}",t.phases[1].edges[0].weight),20);
+  potential.arrow=true;
+  diagram.path({{10.5,-0.4},{13,-1.5},{15.05,-0.4}},potential).text({13,-2},std::format("reduced {}",t.phases[1].edges[1].weight),20);
+  diagram.text({2,4.3},"Cheapest incoming arcs: a cycle",21)
+      .text({13,4.3},std::format("Contract; baseline {}",t.phases[0].added_cost),21)
+      .text({8,-4.5},"Expand the chosen entry: replace 2 -> 1 by 0 -> 1",20);
+  node.width=1.1;node.height=1.1;
+  for(std::size_t v=0;v<3;++v){node.fill=v?dm::graphics::RGB{219,234,254}:dm::graphics::RGB{220,252,231};diagram.node(std::format("tree{}",v),{7.0*v,-9},std::format("{}",v),node);}
+  for(std::size_t v=1;v<3;++v)diagram.edge(std::format("tree{}",t.tree.parent[v]),std::format("tree{}",v),std::format("original cost {}",std::get<2>(edges[t.tree.incoming_edges[v]])));
+  diagram.text({7,-6.7},std::format("Recovered original tree, cost {}",t.tree.result.total_weight),22).save_svg("build/chu_liu_method.svg");
+}
+```
+// result_begin: markdown
+| phase | current vertex | chosen original arc id | original endpoints | working cost |
+| ---: | ---: | ---: | :--- | ---: |
+| 0 | 1 | 3 | 2 -> 1 | 1 |
+| 0 | 2 | 2 | 1 -> 2 | 1 |
+| 1 | 0 | 0 | 0 -> 1 | 4 |
+
+Recovered parents: [0, 0, 1]. Original selected ids for vertices 1,2: 0,2.
+Reduced total 6 = original selected cost 6.
+\image(figures/chu_liu_method.svg)
+// result_end
+\caption(The actual cycle contributes baseline two; its cheaper reduced entry costs four. Expansion recovers original arcs of costs five and one.)
+\alttext(An initial panel shows a gold two-vertex unit-cost cycle and dashed root-entry alternatives five and six. A contracted panel shows reduced alternatives four and five. The expanded tree is 0 to 1 to 2 with costs five and one.)
+
+> The precise problem and its feasibility condition
+
+We seek a spanning directed out-arborescence rooted at r: r has no incoming
+selected arc, every other vertex has exactly one, and every vertex is reachable
+from r. Those conditions force exactly V−1 arcs and exclude directed cycles.
+This is a prescribed-root spanning problem, not an unconstrained minimum
+branching forest, where omitting positive-cost arcs could give a cheaper empty
+answer. It is also different from choosing an undirected MST.
+
+An arborescence exists exactly when every original vertex is reachable from r.
+Necessity is immediate. For sufficiency, a rooted search can choose each newly
+reached vertex's first incoming discovery arc. The algorithm need not run that
+search separately: a missing incoming choice, possibly after contracting a
+closed cycle, detects nonexistence. Checking only the initial incoming choices
+is insufficient.
+
+> Why normalisation and contraction preserve the optimum
+
+Let b(v) be the cheapest eligible incoming cost for each non-root vertex and
+b(r)=0. Every feasible tree chooses one incoming arc for each non-root vertex,
+so subtracting b(v) from every arc entering v changes every feasible objective
+by the same baseline:
+
+$$
+B=\sum_{v\ne r}b(v),\qquad
+w(T)=B+\sum_{(u,v)\in T}\bigl(w(u,v)-b(v)\bigr).
+$$
+\alttext(The cost of any feasible tree is the sum of all chosen minimum incoming baselines plus the sum of its reduced arc costs.)
+
+Every eligible reduced cost is nonnegative, and the chosen incoming arcs have
+reduced cost zero. If they are acyclic, following predecessors must end at r:
+every other vertex has a predecessor, while r has none. They already form an
+optimum arborescence with reduced cost zero.
+
+If they contain a zero-cost cycle C, an optimum can be chosen with just one
+external arc entering C. To see this, take a root-to-C path in an optimum and
+keep its first entry. Replace the other incoming choices in C with the
+zero-cost cycle arcs, deleting the cycle arc entering that first entry vertex.
+All of C becomes reachable along a directed path, outside reachability remains,
+and no reduced cost increases. Contracting C therefore preserves an optimum.
+Different entry arcs retain their original identities and reduced costs;
+parallel entries into a contracted component must remain distinct.
+
+The implementation contracts all disjoint selected cycles in a round. Edges
+that become internal remain stored as self loops but are ignored in future
+incoming choices. On expansion, the chosen original entering arc identifies
+exactly which previous incoming arc to replace. Current-component maps for
+original vertices support repeated expansion through nested cycles.
+Finite negative original weights are valid: the same normalisation applies,
+and a tree cannot traverse a negative cycle repeatedly.
+
+> Nested cycles need more than one contraction
+
+Use arcs 0→1 of cost 5, 0→3 of cost 10, the zero-cost pair 1↔2, and
+arcs 2→3 and 3→1 of cost 1. Initially {1,2} is a selected cycle and
+vertex 3 chooses 2→3. After contraction, the component {1,2} and vertex 3
+select each other. A second contraction is required before a root entry wins.
+The native expansion recovers 0→1, 1→2 and 2→3 with total cost 6.
+
+The diagram labels each group with its actual current vertex id and original
+members. Display order follows the smallest original member for readability;
+the kernel's cycle-first component ids are retained in the labels. Every arrow
+comes from the actual next-component map.
+
+```{cpp, results="markdown", file="figures/chu_liu_nested.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<dm::algorithms::WeightedEdge> edges{{0,1,5},{0,3,10},{1,2,0},{2,1,0},{2,3,1},{3,1,1}};
+  const auto t=dm::algorithms::chu_liu_edmonds_trace(4,edges,0);
+  if(t.phases.size()!=3 || t.tree.result.total_weight!=6)return 1;
+  std::print("| actual phase | current vertices | selected cycles | baseline added | cumulative reduced cost |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  dm::graphics::Diagram diagram(60,1100);
+  dm::graphics::DiagramNodeStyle node;node.width=3.4;node.height=1.6;node.font_size=20;
+  for(std::size_t p=0;p<t.phases.size();++p) {
+    const auto& phase=t.phases[p];
+    std::print("| {} | {} | {} | {} | {} |\n",p,phase.vertex_count,phase.cycles.size(),phase.added_cost,phase.cumulative_cost);
+    std::vector<std::vector<std::size_t>> members(phase.vertex_count);
+    for(std::size_t v=0;v<phase.original_to_vertex.size();++v)members[phase.original_to_vertex[v]].push_back(v);
+    std::vector<std::size_t> order(phase.vertex_count);std::iota(order.begin(),order.end(),0);
+    std::sort(order.begin(),order.end(),[&](auto a,auto b){return members[a].front()<members[b].front();});
+    for(std::size_t j=0;j<order.size();++j) {
+      const auto v=order[j];bool in_cycle=false;
+      for(const auto& cycle:phase.cycles)if(std::ranges::find(cycle,v)!=cycle.end())in_cycle=true;
+      node.fill=v==phase.root?dm::graphics::RGB{220,252,231}:(in_cycle?dm::graphics::RGB{254,240,138}:dm::graphics::RGB{219,234,254});
+      diagram.node(std::format("p{}v{}",p,v),{15.0*j/(order.size()-1),-5.0*p},std::format("current id {}\n{}",v,members[v]),node);
+    }
+  }
+  for(std::size_t p=0;p+1<t.phases.size();++p)for(std::size_t v=0;v<t.phases[p].vertex_count;++v)
+    diagram.edge(std::format("p{}v{}",p,v),std::format("p{}v{}",p+1,t.phases[p].component[v]));
+  diagram.text({7.5,2.6},"Actual partitions: {1,2}, then {1,2,3}",22)
+      .text({7.5,-12.6},std::format("Recovered original parents {}; total cost {}",t.tree.parent,t.tree.result.total_weight),20)
+      .save_svg("build/chu_liu_nested.svg");
+  std::print("\nRecovered parents: {}. Compact saved vertex entries: {}. Actual expansion assignments: {}.\n",t.tree.parent,t.work.saved_vertex_entries,t.work.expansion_replacements);
+}
+```
+// result_begin: markdown
+| actual phase | current vertices | selected cycles | baseline added | cumulative reduced cost |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 4 | 1 | 1 | 1 |
+| 1 | 3 | 1 | 1 | 2 |
+| 2 | 2 | 0 | 4 | 6 |
+
+Recovered parents: [0, 0, 1, 2]. Compact saved vertex entries: 15. Actual expansion assignments: 3.
+\image(figures/chu_liu_nested.svg)
+// result_end
+\caption(Two nested contractions reduce four vertices to three and then two before expansion recovers the original tree.)
+\alttext(Three rows show the original four singleton vertices, then groups {0}, {1,2}, {3}, then {0}, {1,2,3}. Root groups are green; currently cycling groups are gold. Arrows follow native component maps.)
+
+Cycle lists in the API follow predecessor links, which is the reverse of
+traversing their selected directed arcs. Group membership and selected edge
+identities specify the cycle without relying on an ambiguous drawing order.
+The routine now uses iterative cycle detection that follows each previously
+unprocessed non-root vertex once per successful round, rather than repeatedly
+walking a long predecessor chain.
+
+> Checking a family with a known optimum and scan count
+
+The native rooted_cycle_edges(k) fixture has root 0, cycle vertices 1…k,
+a unit-cost directed cycle, and root-entry cost 5 to every cycle vertex.
+All k initial choices form one cycle. One root entry is necessary, and every
+other chosen arc costs at least 1, so OPT≥5+(k−1)=k+4. Keeping one root
+entry and deleting the cycle arc into its target attains that lower bound.
+
+This family takes two incoming-choice rounds and one contraction. Every round
+retains all 2k input arcs, including mapped self loops. Thus actual incoming
+scans inspect 4k arcs and reweighting inspects 2k, for a named total of 6k.
+These counts exclude validation, parent walks, copying, expansion and allocation;
+they are not elapsed time or a worst-case complexity measurement.
+
+```{cpp, results="markdown", file="figures/chu_liu_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> sizes,actual,prediction;
+  std::print("| cycle k | input arcs | rounds | incoming scans | reweight visits | named total | tree cost | known OPT |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const std::size_t k:{2,3,4,8,16,32,64,128}) {
+    const auto edges=dm::algorithms::rooted_cycle_edges(k);const auto t=dm::algorithms::chu_liu_edmonds_trace(k+1,edges,0);
+    const auto total=t.work.incoming_edge_visits+t.work.reweight_edge_visits;
+    if(t.work.phases!=2 || total!=6*k || t.tree.result.total_weight!=k+4)return 1;
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",k,edges.size(),t.work.phases,t.work.incoming_edge_visits,t.work.reweight_edge_visits,total,t.tree.result.total_weight,k+4);
+    sizes.push_back(k);actual.push_back(total);prediction.push_back(6*k);
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(sizes,actual,"actual",{37,99,235},1.5).points(sizes,prediction,"6k",{234,88,12},5)
+      .legend({"actual named edge visits","two-round prediction 6k"},{{37,99,235},{234,88,12}})
+      .title("One cycle: two scans and one reweighting pass")
+      .x_label("cycle vertices k").y_label("named edge inspections")
+      .x_limits(0,135).y_limits(0,850).save_svg("build/chu_liu_work.svg");
+}
+```
+// result_begin: markdown
+| cycle k | input arcs | rounds | incoming scans | reweight visits | named total | tree cost | known OPT |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 4 | 2 | 8 | 4 | 12 | 6 | 6 |
+| 3 | 6 | 2 | 12 | 6 | 18 | 7 | 7 |
+| 4 | 8 | 2 | 16 | 8 | 24 | 8 | 8 |
+| 8 | 16 | 2 | 32 | 16 | 48 | 12 | 12 |
+| 16 | 32 | 2 | 64 | 32 | 96 | 20 | 20 |
+| 32 | 64 | 2 | 128 | 64 | 192 | 36 | 36 |
+| 64 | 128 | 2 | 256 | 128 | 384 | 68 | 68 |
+| 128 | 256 | 2 | 512 | 256 | 768 | 132 | 132 |
+\image(figures/chu_liu_work.svg)
+// result_end
+\caption(The exact known optimum and named 6k edge-visit count hold across the controlled family.)
+\alttext(A blue line of actual combined incoming/reweight inspections coincides with orange 6k prediction points as cycle size grows.)
+
+For P rounds, this implementation performs O(P(V+E)) work, with P≤V because
+every nonfinal contraction reduces the current vertex count. The familiar
+O(VE) bound applies when E is at least V−1, as it must be for a feasible
+spanning graph; the V term still matters for sparse impossible inputs.
+Compact expansion maps require O(E+PV) auxiliary storage even for the legacy
+cost-returning call. Full tracing additionally retains arcs and partitions for
+O(P(V+E)) storage. The old cost-only implementation did not recover edges;
+this implementation's expansion history is part of its memory cost.
+No observational dataset is needed for these controlled graph identities.
+
+> Nonexistence is not a partial branching
+
+An isolated vertex without an incoming arc fails immediately. A closed cycle
+unreachable from the root can give every non-root vertex an initial incoming
+choice, yet fails after contraction. A finite edge entering the root cannot
+make that cycle reachable from the root. The returned legacy failure is
+{total_weight=0, exists=false}; recovered parent/edge arrays are empty.
+The trace still retains the actual failed round and any earlier reduced baseline.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<std::vector<dm::algorithms::WeightedEdge>> graphs{
+      {{0,1,1}},{{1,2,1},{2,1,1}},{{1,0,-9},{1,2,1},{2,1,1}}};
+  const std::array<std::string,3> names{"initial missing vertex","closed unreachable cycle","cycle with arc into root"};
+  std::print("| input | exists | rounds | final missing current vertices | reduced prefix | returned cost |\n| :--- | :--- | ---: | :--- | ---: | ---: |\n");
+  for(std::size_t i=0;i<graphs.size();++i) {
+    const auto t=dm::algorithms::chu_liu_edmonds_trace(3,graphs[i],0);
+    if(t.tree.result.exists || !t.tree.parent.empty() || t.phases.back().missing_vertices.empty())return 1;
+    std::print("| {} | {} | {} | {} | {} | {} |\n",names[i],t.tree.result.exists,t.work.phases,t.phases.back().missing_vertices,t.reduced_total,t.tree.result.total_weight);
+  }
+  const auto signed_tree=dm::algorithms::chu_liu_edmonds_tree(2,{{1,1,-100},{1,0,-100},{0,1,-3},{0,1,-3}},0);
+  if(signed_tree.result.total_weight!=-3 || signed_tree.incoming_edges[1]!=2)return 1;
+  std::print("\nNegative parallel control: cost {}, chosen original id {}; self loop and root-entering arc ignored after validation.\n",signed_tree.result.total_weight,signed_tree.incoming_edges[1]);
+}
+```
+// result_begin: markdown
+| input | exists | rounds | final missing current vertices | reduced prefix | returned cost |
+| :--- | :--- | ---: | :--- | ---: | ---: |
+| initial missing vertex | false | 1 | [2] | 0 | 0 |
+| closed unreachable cycle | false | 2 | [0] | 2 | 0 |
+| cycle with arc into root | false | 2 | [0] | 2 | 0 |
+
+Negative parallel control: cost -3, chosen original id 2; self loop and root-entering arc ignored after validation.
+// result_end
+\caption(Failed graphs retain no partial recovered tree; negative finite costs, ignored arcs and parallel tie identities have separate contracts.)
+
+Every endpoint and weight validates before caps or algorithmic selection,
+including arcs that will be ignored. NaN and infinities reject explicitly;
+absence is represented by omitting an arc, not by an infinite weight. Equal
+working costs prefer the first original input edge. Parallel input arcs remain
+separate throughout contraction, selection and expansion. Root self-parenting
+in the returned parent array is a storage convention, not a selected self loop.
+
+> Work caps and finite-range arithmetic
+
+Positive BranchingOptions caps bound actual rounds and the combined incoming
+and reweight edge inspections across the whole call. Zero disables the
+respective cap. The original example needs two rounds and twelve named visits:
+eight for incoming choices and four for contraction. Validation is counted
+separately. Recovery copies and parent walks are outside the edge-visit cap;
+these controls are not a complete memory budget. Exhaustion throws
+std::length_error and exposes no partial result.
+
+A working reduced cost can exceed double range even when the recovered
+original total fits. Costs and differences therefore use checked long double,
+then the selected original edges are summed in original destination order and
+checked before conversion to the unchanged double result field. The reduced
+baseline total is retained separately; floating roundoff can make it differ
+from the sum of the recovered original edges. This is numerical optimisation,
+not an exact-real optimality certificate or arbitrary-precision arithmetic.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  const std::vector<dm::algorithms::WeightedEdge> edges{{0,1,5},{0,2,6},{1,2,1},{2,1,1}};
+  dm::algorithms::BranchingOptions exact;exact.max_phases=2;exact.max_edge_visits=12;
+  const auto t=dm::algorithms::chu_liu_edmonds_trace(3,edges,0,exact);
+  auto low=exact;low.max_phases=1;bool phase_cap=false;
+  try{(void)dm::algorithms::chu_liu_edmonds_tree(3,edges,0,low);}catch(const std::length_error&){phase_cap=true;}
+  low=exact;low.max_edge_visits=11;bool visit_cap=false;
+  try{(void)dm::algorithms::chu_liu_edmonds_trace(3,edges,0,low);}catch(const std::length_error&){visit_cap=true;}
+  bool invalid=false;try{(void)dm::algorithms::chu_liu_edmonds_tree(2,{{0,1,1},{1,0,std::numeric_limits<double>::quiet_NaN()}},0,low);}catch(const std::invalid_argument&){invalid=true;}
+  if(t.tree.result.total_weight!=6 || !phase_cap || !visit_cap || !invalid)return 1;
+  std::print("Exact caps return cost {}. One-below phase cap rejects: {}. One-below visit cap rejects: {}.\n",t.tree.result.total_weight,phase_cap,visit_cap);
+  std::print("Ignored root-entering NaN rejects during full validation: {}.\n",invalid);
+  const auto m=std::numeric_limits<double>::max();
+  const auto wide=dm::algorithms::chu_liu_edmonds_trace(3,{{0,1,m},{0,2,m},{1,2,-m},{2,1,-m}},0);
+  if(wide.tree.result.total_weight!=0 || wide.phases[1].edges[0].weight<=m)return 1;
+  std::print("Wide reduced entry / DBL_MAX = {}; recovered original cost {}.\n",wide.phases[1].edges[0].weight/m,wide.tree.result.total_weight);
+  bool overflow=false;try{(void)dm::algorithms::chu_liu_edmonds(3,{{0,1,m},{0,2,m}},0);}catch(const std::overflow_error&){overflow=true;}
+  if(!overflow)return 1;std::print("Unrepresentable final original total throws overflow_error: {}.\n",overflow);
+  const auto one=dm::algorithms::chu_liu_edmonds_tree(1,{},0);
+  std::print("Singleton root: parents {}, cost {}.\n",one.parent,one.result.total_weight);
+}
+```
+// result_begin: markdown
+Exact caps return cost 6. One-below phase cap rejects: true. One-below visit cap rejects: true.
+Ignored root-entering NaN rejects during full validation: true.
+Wide reduced entry / DBL_MAX = 2; recovered original cost 0.
+Unrepresentable final original total throws overflow_error: true.
+Singleton root: parents [0], cost 0.
+// result_end
+\caption(Exact caps pass, lower caps fail, ignored malformed input rejects, and a wide intermediate remains distinct from final-total overflow.)
+
+A root is required even for an edgeless graph; zero vertices or an out-of-range
+root throw std::invalid_argument. A singleton root has a valid zero-cost tree.
+Vertex ids stay size_t throughout, and traversal/expansion is iterative. Calls
+borrow input without mutation and return owned values. long double's extra
+range and precision are platform-dependent, and nonfinite working arithmetic
+still throws. No last-bit reproducibility across floating implementations is
+promised.
+
+> Verification and limits
+
+The native tests independently enumerate one incoming choice per non-root
+vertex and check rooted reachability. All 2,187 three-vertex signed ternary
+graph/root combinations and 16,384 four-vertex presence/root combinations agree
+with that brute-force optimum. Another 1,000 seeded signed multigraphs check
+parallel identities, roots and impossible cases. Every actual phase is checked
+for its cheapest incoming choices, reduced costs, cycle membership, component
+maps, baseline and named work. The recovered original edges are verified to
+form a tree with the returned cost.
+
+Nested and simultaneous cycles, negative costs, exact and one-below caps,
+malformed ignored arcs, owned copies, huge size_t domains, wide intermediate
+costs, positive/negative final overflow and a 100,000-vertex chain are covered.
+All fourteen new cases pass AddressSanitizer and UBSan, alongside the existing
+advanced-graph regressions in the native runner. The controlled 6k plot is a
+check of one two-round family, not evidence that all instances require only
+two rounds or linear work.
+
+> References
+
+- Y.-J. Chu and T.-H. Liu (1965), *On the shortest arborescence of a directed
+  graph*, Scientia Sinica 14(10), 1396–1400.
+  https://www.cs.cmu.edu/~15850/handouts/chu-liu_1965.pdf
+- Jack Edmonds (1967), *Optimum Branchings*, Journal of Research of the National
+  Bureau of Standards, Section B, 71B(4), 233–240.
+  https://doi.org/10.6028/jres.071B.032

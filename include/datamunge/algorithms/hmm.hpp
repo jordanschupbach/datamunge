@@ -23,9 +23,11 @@
 /// probabilities never underflows. The forward-backward pass uses Rabiner's
 /// per-time-step *scaling*: each column of the forward variable is normalized to
 /// sum to one and the reciprocals are accumulated, giving \f$\log P(O\mid\lambda)\f$
-/// as \f$-\sum_t\log c_t\f$ with no underflow. Baum-Welch drives its E-step from the
+/// as \f$-\sum_t\log c_t\f$. Finite-precision limits still apply; see forward_backward().
+/// Baum-Welch drives its E-step from the
 /// same scaled recursions.
 
+#include <datamunge/algorithms/forward_backward.hpp>
 #include <cmath>
 #include <cstddef>
 #include <limits>
@@ -34,31 +36,10 @@
 
 namespace datamunge::algorithms {
 
-/// Parameters of a discrete HMM \f$\lambda=(\pi,A,B)\f$.
-struct HiddenMarkovModel {
-    std::vector<double>              initial;     ///< \f$\pi_i\f$, length \f$N\f$ (rows sum to 1).
-    std::vector<std::vector<double>> transition;  ///< \f$A_{ij}\f$, \f$N\times N\f$ (each row sums to 1).
-    std::vector<std::vector<double>> emission;    ///< \f$B_{ik}\f$, \f$N\times M\f$ (each row sums to 1).
-
-    /// Number of hidden states \f$N\f$.
-    std::size_t num_states() const { return initial.size(); }
-    /// Number of observation symbols \f$M\f$.
-    std::size_t num_symbols() const { return emission.empty() ? 0 : emission.front().size(); }
-};
-
 /// Result of Viterbi decoding.
 struct ViterbiResult {
     std::vector<std::size_t> states;           ///< Most likely hidden state path, length \f$T\f$.
     double                   log_probability;  ///< \f$\log P(\text{path}, O \mid \lambda)\f$.
-};
-
-/// Result of the scaled forward-backward pass.
-struct ForwardBackwardResult {
-    std::vector<std::vector<double>> alpha;  ///< Scaled forward variables \f$\hat\alpha_t(i)\f$, \f$T\times N\f$.
-    std::vector<std::vector<double>> beta;   ///< Scaled backward variables \f$\hat\beta_t(i)\f$, \f$T\times N\f$.
-    std::vector<std::vector<double>> gamma;  ///< State posteriors \f$\gamma_t(i)=P(q_t=i\mid O)\f$, \f$T\times N\f$.
-    std::vector<double>              scale;  ///< Scaling factors \f$c_t\f$, length \f$T\f$.
-    double log_likelihood;                   ///< \f$\log P(O\mid\lambda) = -\sum_t \log c_t\f$.
 };
 
 /// Result of Baum-Welch training.
@@ -135,74 +116,6 @@ inline ViterbiResult viterbi(const HiddenMarkovModel& hmm, const std::vector<std
     for (std::size_t step = t - 1; step > 0; --step) result.states[step - 1] = psi[step][result.states[step]];
     result.log_probability = best_final;
     return result;
-}
-
-/// \brief Scaled forward-backward: state posteriors and the sequence likelihood.
-///
-/// The unscaled forward variable is \f$\alpha_t(i)=P(o_1\dots o_t, q_t=i\mid\lambda)\f$; the backward
-/// variable is \f$\beta_t(i)=P(o_{t+1}\dots o_T\mid q_t=i,\lambda)\f$. To avoid underflow each forward
-/// column is normalized to sum to one, storing \f$c_t = 1/\sum_j \bar\alpha_t(j)\f$; the backward pass
-/// reuses the same \f$c_t\f$. Then \f$\log P(O\mid\lambda)=-\sum_t\log c_t\f$ and the smoothed posterior is
-/// \f$\gamma_t(i)\propto\hat\alpha_t(i)\hat\beta_t(i)\f$ (normalized over \f$i\f$). Complexity \f$O(T N^2)\f$.
-inline ForwardBackwardResult forward_backward(const HiddenMarkovModel& hmm, const std::vector<std::size_t>& obs) {
-    detail::check_observations(hmm, obs);
-    const std::size_t n = hmm.num_states();
-    const std::size_t t = obs.size();
-
-    ForwardBackwardResult r;
-    r.log_likelihood = 0.0;
-    if (t == 0 || n == 0) return r;
-
-    r.alpha.assign(t, std::vector<double>(n, 0.0));
-    r.beta.assign(t, std::vector<double>(n, 0.0));
-    r.gamma.assign(t, std::vector<double>(n, 0.0));
-    r.scale.assign(t, 0.0);
-
-    // Forward pass with scaling.
-    double sum0 = 0.0;
-    for (std::size_t i = 0; i < n; ++i) {
-        r.alpha[0][i] = hmm.initial[i] * hmm.emission[i][obs[0]];
-        sum0 += r.alpha[0][i];
-    }
-    r.scale[0] = sum0 > 0.0 ? 1.0 / sum0 : 0.0;
-    for (std::size_t i = 0; i < n; ++i) r.alpha[0][i] *= r.scale[0];
-
-    for (std::size_t step = 1; step < t; ++step) {
-        double sum = 0.0;
-        for (std::size_t j = 0; j < n; ++j) {
-            double acc = 0.0;
-            for (std::size_t i = 0; i < n; ++i) acc += r.alpha[step - 1][i] * hmm.transition[i][j];
-            r.alpha[step][j] = acc * hmm.emission[j][obs[step]];
-            sum += r.alpha[step][j];
-        }
-        r.scale[step] = sum > 0.0 ? 1.0 / sum : 0.0;
-        for (std::size_t j = 0; j < n; ++j) r.alpha[step][j] *= r.scale[step];
-    }
-
-    // Backward pass, reusing the forward scaling factors.
-    for (std::size_t i = 0; i < n; ++i) r.beta[t - 1][i] = r.scale[t - 1];
-    for (std::size_t step = t - 1; step > 0; --step)
-        for (std::size_t i = 0; i < n; ++i) {
-            double acc = 0.0;
-            for (std::size_t j = 0; j < n; ++j)
-                acc += hmm.transition[i][j] * hmm.emission[j][obs[step]] * r.beta[step][j];
-            r.beta[step - 1][i] = acc * r.scale[step - 1];
-        }
-
-    // Posteriors gamma_t(i), normalized per time step.
-    for (std::size_t step = 0; step < t; ++step) {
-        double norm = 0.0;
-        for (std::size_t i = 0; i < n; ++i) {
-            r.gamma[step][i] = r.alpha[step][i] * r.beta[step][i];
-            norm += r.gamma[step][i];
-        }
-        if (norm > 0.0)
-            for (std::size_t i = 0; i < n; ++i) r.gamma[step][i] /= norm;
-    }
-
-    for (std::size_t step = 0; step < t; ++step)
-        r.log_likelihood -= (r.scale[step] > 0.0 ? std::log(r.scale[step]) : 0.0);
-    return r;
 }
 
 /// \brief Baum-Welch (EM) parameter re-estimation from one or more observation sequences.

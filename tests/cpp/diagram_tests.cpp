@@ -42,6 +42,43 @@ TEST(Diagram, ArrowsEndAtRectangleBoundaries) {
   EXPECT_NE(svg.find("<polygon points="), std::string::npos);
 }
 
+TEST(Diagram, UndirectedLinksPreserveBoundaryAndLabelWithoutArrowhead) {
+  DiagramStroke style;
+  style.arrow = true;
+  style.color = {220, 38, 38};
+  style.width = 3;
+  Diagram linked;
+  linked.node("a", {0, 0}, "A").node("b", {5, 0}, "B").link("a", "b", "u & v", style);
+  const auto svg = linked.to_svg();
+  EXPECT_EQ(svg.find("<polygon points="), std::string::npos);
+  EXPECT_NE(svg.find("u &amp; v"), std::string::npos);
+  std::smatch match;
+  ASSERT_TRUE(
+      std::regex_search(
+          svg, match, std::regex("<polyline points=\"([0-9.]+),([0-9.]+) ([0-9.]+),([0-9.]+)")));
+  EXPECT_NEAR(std::stod(match[3]) - std::stod(match[1]), (5 - 3.8) * 64, .002);
+  Diagram directed;
+  style.arrow = false;
+  directed.node("a", {0, 0}, "A").node("b", {5, 0}, "B").edge("a", "b", "", style);
+  EXPECT_NE(directed.to_svg().find("<polygon points="), std::string::npos);
+}
+
+TEST(Diagram, UndirectedLinksShareCircleClippingAndRejectAmbiguousGeometry) {
+  DiagramNodeStyle c;
+  c.circle = true;
+  c.width = c.height = 1;
+  c.padding          = 2;
+  Diagram d;
+  d.node("a", {0, 0}, "A", c).node("b", {3, 4}, "B", c);
+  EXPECT_NO_THROW(d.link("a", "b"));
+  EXPECT_EQ(d.to_svg().find("<polygon points="), std::string::npos);
+  EXPECT_THROW(d.link("a", "missing"), std::invalid_argument);
+  EXPECT_THROW(d.link("a", "a"), std::invalid_argument);
+  Diagram overlap;
+  overlap.node("a", {0, 0}, "A").node("b", {.1, 0}, "B");
+  EXPECT_THROW(overlap.link("a", "b"), std::invalid_argument);
+}
+
 TEST(Diagram, MathematicalScriptsHaveNativeOutlinesAndKeepTheirAccessibleText) {
   const auto svg = Diagram().text({0, 0}, "v₁ + x² + H⁻¹ + Vᵀ").to_svg();
   EXPECT_NE(svg.find("aria-label=\"v₁ + x² + H⁻¹ + Vᵀ\""), std::string::npos);
@@ -54,6 +91,20 @@ TEST(Diagram, MathematicalScriptsHaveNativeOutlinesAndKeepTheirAccessibleText) {
   EXPECT_LT(*scales.begin(), *scales.rbegin());
   EXPECT_NE(svg.find("<use href=\"#dm-g-"), std::string::npos);
   EXPECT_EQ(svg.find("font-family"), std::string::npos);
+}
+
+TEST(Diagram, LogicalConnectivesHaveDistinctNativeOutlines) {
+  const auto            logical  = Diagram().text({0, 0}, "∧∨").to_svg();
+  const auto            fallback = Diagram().text({0, 0}, "?").to_svg();
+  const std::regex      pattern("<path id=\"dm-g-([0-9]+)\"");
+  std::set<std::string> ids;
+  for (std::sregex_iterator it(logical.begin(), logical.end(), pattern), end; it != end; ++it)
+    ids.insert((*it)[1]);
+  ASSERT_EQ(ids.size(), 2);
+  std::smatch question;
+  ASSERT_TRUE(std::regex_search(fallback, question, pattern));
+  EXPECT_EQ(ids.count(question[1]), 0);
+  EXPECT_NE(logical.find("aria-label=\"∧∨\""), std::string::npos);
 }
 
 TEST(Diagram, CircleAnchorsAreRadialAndNodeTextExpands) {

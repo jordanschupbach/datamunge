@@ -89,6 +89,38 @@ struct DiagramNodeStyle {
 /// @see RPlot, DiagramNodeStyle, DiagramStroke
 class Diagram {
  public:
+  /// @brief Draw a validated rooted tree using native measured label boxes.
+  /// Parent0 must be SIZE_MAX; every other node has one valid, non-self parent.
+  /// Arbitrary parent-id order is allowed. Sibling order follows input node IDs.
+  /// Iterative traversal rejects disconnected cycles without call-stack recursion.
+  /// Layout assigns consecutive leaf slots and centres ancestors over descendant
+  /// intervals. Global spacing uses the actual native font/wrapped box extents,
+  /// including long unbreakable labels. Arrows point from parent to child.
+  /// Range/shape checks and O(N) structural validation precede the optional node
+  /// cap; validation may allocate scratch before the cap. The cap precedes output
+  /// primitives. Zero disables only the cap; count/container checks remain.
+  /// Empty arrays produce an Empty tree label. Result owns all labels/geometry;
+  /// no caller mutation or shared state. Layout traversal is O(N); native node-ID
+  /// and edge lookup make construction O(N squared + text layout), with O(N)
+  /// structural scratch and owned output proportional to nodes and label content.
+  /// @param parents Parent indices; root at index0 with SIZE_MAX sentinel.
+  /// @param labels One owned UTF-8 label per node, allowing newlines/empty labels.
+  /// @param title Optional figure title, default empty.
+  /// @param max_nodes Maximum input nodes, default1000; zero disables optional cap.
+  /// @return Independent fitted native diagram; empty trees remain renderable.
+  /// @throws std::invalid_argument Shape, root, parent, self link, cycle or disconnected tree.
+  /// @throws std::length_error Count/capacity overflow or exceeded node cap.
+  /// @throws std::bad_alloc Allocation fails.
+  /// @par Example
+  /// @code
+  /// auto d=dm::graphics::Diagram::rooted_tree({std::size_t(-1),0,0},{"root","a:2","b:1"},"Counts");
+  /// std::cout << !d.to_svg().empty(); // 1
+  /// @endcode
+  /// @see node(), edge(), save_svg()
+  static Diagram rooted_tree(const std::vector<std::size_t>& parents,
+                             const std::vector<std::string>& labels,
+                             const std::string& title="", std::size_t max_nodes=1000);
+
   /// @brief Creates an empty diagram with equal horizontal and vertical unit scales.
   /// @param unit_pixels Pixels per diagram unit (default 64); positive and finite.
   /// @param max_width Maximum exported width in pixels (default 1100); positive and finite.
@@ -135,6 +167,31 @@ class Diagram {
       std::string        label  = {},
       DiagramStroke      stroke = {});
 
+  /// @brief Join two node boundaries with an undirected line and optional label.
+  /// Uses the same rectangle/circle boundary clipping and label offset as edge(),
+  /// while always disabling the arrowhead, even if stroke.arrow is true. Nodes
+  /// must already exist with distinct centres and nonoverlapping boxes. Copies
+  /// the geometry/label into this diagram; no caller object is referenced.
+  /// Validation precedes the same path/text appends as edge(); allocation failure
+  /// can leave an appended path, so a strong exception guarantee is not promised.
+  /// Endpoint lookup is O(number of drawing items), output storage O(1+label size).
+  /// @param from Existing first node id.
+  /// @param to Existing second node id; reversing ids only reverses label offset.
+  /// @param label Optional owned UTF-8 label, default empty.
+  /// @param stroke Valid line colour/width/dash style, default standard; arrow flag ignored.
+  /// @return This diagram for chaining.
+  /// @throws std::invalid_argument Missing/coincident/overlapping nodes or invalid stroke.
+  /// @par Example
+  /// @code
+  /// dm::graphics::Diagram d;
+  /// d.node("a", {0,0}, "A").node("b", {5,0}, "B").link("a", "b", "undirected");
+  /// d.save_svg("build/undirected.svg");
+  /// std::cout << "undirected"; // undirected
+  /// @endcode
+  /// @see edge(), path(), DiagramStroke
+  Diagram& link(const std::string& from, const std::string& to,
+                std::string label = {}, DiagramStroke stroke = {});
+
   /// @brief Adds a centred multiline UTF-8 label without a box.
   /// @param centre Label centre in diagram units.
   /// @param label Owned text; newlines separate lines, empty text is allowed.
@@ -149,6 +206,26 @@ class Diagram {
   /// @endcode
   Diagram&
   text(DiagramPoint centre, std::string label, double font_size = 18, RGB ink = {15, 23, 42});
+
+  /// @brief Adds native text with plain white backing, useful over diagram edges.
+  /// Text is measured with the same embedded font as text(). The white rectangle
+  /// has four pixels of horizontal and three pixels of vertical padding. It is
+  /// drawn immediately before the label, so later primitives may cover it.
+  /// Coordinates and font size have the same validation and units as text().
+  /// @param centre Label centre, in finite diagram units.
+  /// @param label Owned UTF-8 label; newlines are supported.
+  /// @param font_size Positive finite pixel size, default 18.
+  /// @param ink Finite text colour, default dark slate.
+  /// @return This diagram for chaining.
+  /// @throws std::invalid_argument For nonfinite coordinates/colour or invalid font size.
+  /// @throws std::bad_alloc If allocation fails.
+  /// @par Example
+  /// @code
+  /// const auto d=dm::graphics::Diagram().path({{0,0},{4,0}}).label({2,0},"flow 3/4");
+  /// std::print("{}\n",d.to_svg().find("fill=\"white\"")!=std::string::npos); // true
+  /// @endcode
+  /// @see text(), edge()
+  Diagram& label(DiagramPoint centre,std::string label,double font_size=18,RGB ink={15,23,42});
 
   /// @brief Adds a polyline, optionally dashed and ending in an arrowhead.
   /// @param points At least two finite coordinates in diagram units, in drawing order.
@@ -222,6 +299,16 @@ class Diagram {
   void save_svg(const std::string& path) const;
 
  private:
+  /// @brief Share actual node-boundary clipping for directed and undirected connections.
+  /// @param from Existing first node id.
+  /// @param to Existing second node id, with noncoincident/nonoverlapping geometry.
+  /// @param label Owned optional UTF-8 connection label.
+  /// @param stroke Valid line styling; its arrow flag is overridden by arrow.
+  /// @param arrow Whether the shared path receives an arrowhead.
+  /// @return This diagram after path and optional label insertion.
+  /// @throws std::invalid_argument Invalid stroke, node ids or connected geometry.
+  Diagram& connect(const std::string& from, const std::string& to,
+                   std::string label, DiagramStroke stroke, bool arrow);
   /// @brief One owned drawing operation; all coordinates and extents are in pixels.
   struct Item {
     std::string               kind;     ///< node, text, path, polygon, or ellipse.

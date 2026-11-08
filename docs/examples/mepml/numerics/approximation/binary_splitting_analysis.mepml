@@ -1,0 +1,252 @@
+//? Title: Binary Splitting: Exact Fractions and a Finite Word-Size Limit
+//? Subtitle: Normalised subtrees, the exponential series and rounding versus truncation
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a finite rational series, compute its exact fraction before converting it
+to floating point. Repeatedly merging balanced subranges organises the integer
+products and avoids rounding each term separately. We derive the recurrence
+for the exponential series, inspect a four-term product tree, and distinguish
+the omitted series tail from floating-point conversion error. Datamunge's
+implementation uses unsigned 64-bit integers: it supports at most 21 terms,
+returns an unreduced fraction, and rejects larger requests before arithmetic.
+)
+
+\toc
+
+> The method
+
+The target is \(S_N=\sum_{k=0}^{N-1}1/k!\). Set \(q_0=1\), and
+\(q_k=k\) for \(k>0\). Define each half-open subtree by
+
+$$
+Q(a,b)=\prod_{j=a}^{b-1}q_j,\qquad
+P(a,b)=\sum_{k=a}^{b-1}\prod_{j=k+1}^{b-1}q_j.
+$$
+\alttext(Q is the product of the subtree's factors. P sums the suffix products, with an empty product equal to one.)
+
+The ratio is a **normalised** sum of reciprocal prefix products starting at a.
+It is not generally \(\sum_{k=a}^{b-1}1/k!\). For example, the leaf
+\([3,4)\) is \(1/3\), while the original factorial term is \(1/6\).
+Only the root starting at zero has the desired original-series interpretation:
+\(Q(0,N)=(N-1)!\) and \(P(0,N)/Q(0,N)=S_N\).
+
+At a leaf, \(P=1\) and \(Q=q_a\). Split a longer range at its midpoint m.
+Every suffix starting in the left half contains the entire right-half product,
+while suffixes starting in the right half do not. Therefore
+
+$$
+P(a,b)=P(a,m)Q(m,b)+P(m,b),\qquad Q(a,b)=Q(a,m)Q(m,b).
+$$
+\alttext(The parent numerator is the left numerator times the right denominator plus the right numerator. The parent denominator is the product of the two child denominators.)
+
+Induction from the leaves proves the invariant. This merge is not ordinary
+addition of two unrelated fractions: that would have another denominator factor
+in the second numerator term. The normalisation above is why this recurrence
+works.
+
+> Simple example: four terms
+
+The four original terms sum to \(1+1+1/2+1/6=8/3\). The balanced tree
+returns \(16/6\), which is the same exact fraction without automatic reduction.
+The diagram uses the core's recorded postorder tree; no second implementation
+is needed to draw its intermediate values.
+
+```{cpp, file="figures/binary_splitting_tree.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::binary_splitting_e_trace(4);
+  const std::vector<dm::graphics::DiagramPoint> positions{
+      {0,0},{4,0},{2,-3},{8,0},{12,0},{10,-3},{6,-6}};
+  dm::graphics::Diagram diagram(55,1000);
+  dm::graphics::DiagramNodeStyle style;
+  style.width=2.8;
+  for (std::size_t i=0;i<trace.nodes.size();++i) {
+    const auto& node=trace.nodes[i];
+    diagram.node(std::to_string(i),positions[i],std::format("[{}, {})\nP/Q = {}/{}",
+        node.begin,node.end,node.num,node.den),style);
+  }
+  for (std::size_t i=0;i<trace.nodes.size();++i) {
+    const auto& node=trace.nodes[i];
+    if (node.left>=0) {
+      diagram.edge(std::to_string(node.left),std::to_string(i));
+      diagram.edge(std::to_string(node.right),std::to_string(i));
+    }
+  }
+  diagram.save_svg("build/binary_splitting_tree.svg");
+}
+```
+// result_begin:
+// \image(figures/binary_splitting_tree.svg)
+// result_end
+\caption(Leaves and merges for four terms. The rightmost leaf is normalised as 1/3; the root, rather than each leaf, represents the original factorial series.)
+\alttext(Four leaves with fractions one over one, one over one, one over two and one over three merge into two over one and four over six, then into sixteen over six.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+int main() {
+  std::print("| terms | raw numerator | raw denominator | reduced fraction | double value |\n"
+             "| ---: | ---: | ---: | :--- | ---: |\n");
+  for (int n:{1,2,3,4,5,6,18,21}) {
+    const auto r=dm::algorithms::binary_splitting_e(n);
+    const auto divisor=std::gcd(r.num,r.den);
+    std::print("| {} | {} | {} | {}/{} | {:.17g} |\n",n,r.num,r.den,r.num/divisor,r.den/divisor,r.value);
+  }
+  try { (void)dm::algorithms::binary_splitting_e(22); }
+  catch (const std::overflow_error& error) { std::print("\n22 terms: {}.\n",error.what()); }
+}
+```
+// result_begin: markdown
+| terms | raw numerator | raw denominator | reduced fraction | double value |
+| ---: | ---: | ---: | :--- | ---: |
+| 1 | 1 | 1 | 1/1 | 1 |
+| 2 | 2 | 1 | 2/1 | 2 |
+| 3 | 5 | 2 | 5/2 | 2.5 |
+| 4 | 16 | 6 | 8/3 | 2.6666666666666665 |
+| 5 | 65 | 24 | 65/24 | 2.7083333333333335 |
+| 6 | 326 | 120 | 163/60 | 2.7166666666666668 |
+| 18 | 966858672404690 | 355687428096000 | 7437374403113/2736057139200 | 2.7182818284590451 |
+| 21 | 6613313319248080001 | 2432902008176640000 | 6613313319248080001/2432902008176640000 | 2.7182818284590451 |
+
+22 terms: binary_splitting_e: at most 21 terms fit uint64.
+// result_end
+\caption(The original three- and eighteen-term examples are retained. Reduction is displayed explicitly and is not a promise made by the returned record.)
+
+For 21 terms the denominator is \(20!=2432902008176640000\), and the numerator
+is 6613313319248080001; both fit an unsigned 64-bit word. At 22 terms, even the
+raw denominator \(21!=51090942171709440000\) exceeds \(2^{64}-1\).
+The implementation checks this supported-count boundary before recursion.
+For compatibility, requests below one are still clamped to one term.
+
+> Checking the theory: truncation and conversion are different errors
+
+For positive N, the omitted tail starts at \(1/N!\). Every subsequent ratio is
+at most \(1/(N+1)\), with a strictly smaller ratio after the first. A geometric
+majorant gives
+
+$$
+\frac1{N!}<e-S_N<\frac{N+1}{N\,N!}.
+$$
+\alttext(The exact truncation error lies strictly between one over N factorial and N plus one divided by N times N factorial.)
+
+This is an exact mathematical bound on the rational result, not on its rounded
+double conversion. The next program preserves the original convergence study
+through 18 terms and extends it to the supported limit. The printed bound is
+evaluated in floating point for display. `double reference difference` compares
+two rounded values; zero means equality to `std::exp(1.0)` at that precision,
+and cannot certify equality to the irrational number e.
+
+```{cpp, results="markdown", file="figures/binary_splitting_accuracy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> terms,guaranteed,observed_terms,observed;
+  long double factorial=1;
+  std::print("| terms | lower tail bound | upper tail bound | double reference difference |\n"
+             "| ---: | ---: | ---: | ---: |\n");
+  for (int n=1;n<=21;++n) {
+    factorial*=n;
+    const auto r=dm::algorithms::binary_splitting_e(n);
+    const double lower=static_cast<double>(1/factorial);
+    const double upper=static_cast<double>((n+1)/(n*factorial));
+    const double difference=std::abs(r.value-std::exp(1.0));
+    std::print("| {} | {:.5e} | {:.5e} | {:.5e} |\n",n,lower,upper,difference);
+    terms.push_back(n); guaranteed.push_back(-std::log10(upper));
+    if (difference>0) { observed_terms.push_back(n); observed.push_back(-std::log10(difference)); }
+  }
+  dm::graphics::RPlot::create()
+      .lines(terms,guaranteed,"rational tail bound",dm::RGB{37,99,235},2)
+      .points(observed_terms,observed,"double reference error",dm::RGB{220,38,38},5)
+      .title("Exact-tail bounds versus floating conversion")
+      .x_label("number of terms").y_label("negative base-10 logarithm of absolute error")
+      .size(950,500).save_svg("build/binary_splitting_accuracy.svg");
+}
+```
+// result_begin: markdown
+| terms | lower tail bound | upper tail bound | double reference difference |
+| ---: | ---: | ---: | ---: |
+| 1 | 1.00000e+00 | 2.00000e+00 | 1.71828e+00 |
+| 2 | 5.00000e-01 | 7.50000e-01 | 7.18282e-01 |
+| 3 | 1.66667e-01 | 2.22222e-01 | 2.18282e-01 |
+| 4 | 4.16667e-02 | 5.20833e-02 | 5.16152e-02 |
+| 5 | 8.33333e-03 | 1.00000e-02 | 9.94850e-03 |
+| 6 | 1.38889e-03 | 1.62037e-03 | 1.61516e-03 |
+| 7 | 1.98413e-04 | 2.26757e-04 | 2.26273e-04 |
+| 8 | 2.48016e-05 | 2.79018e-05 | 2.78602e-05 |
+| 9 | 2.75573e-06 | 3.06192e-06 | 3.05862e-06 |
+| 10 | 2.75573e-07 | 3.03131e-07 | 3.02886e-07 |
+| 11 | 2.50521e-08 | 2.73296e-08 | 2.73127e-08 |
+| 12 | 2.08768e-09 | 2.26165e-09 | 2.26055e-09 |
+| 13 | 1.60590e-10 | 1.72944e-10 | 1.72876e-10 |
+| 14 | 1.14707e-11 | 1.22901e-11 | 1.22862e-11 |
+| 15 | 7.64716e-13 | 8.15697e-13 | 8.15348e-13 |
+| 16 | 4.77948e-14 | 5.07819e-14 | 5.06262e-14 |
+| 17 | 2.81146e-15 | 2.97684e-15 | 2.66454e-15 |
+| 18 | 1.56192e-16 | 1.64869e-16 | 0.00000e+00 |
+| 19 | 8.22064e-18 | 8.65330e-18 | 0.00000e+00 |
+| 20 | 4.11032e-19 | 4.31583e-19 | 0.00000e+00 |
+| 21 | 1.95729e-20 | 2.05050e-20 | 0.00000e+00 |
+\image(figures/binary_splitting_accuracy.svg)
+// result_end
+\caption(The theoretical curve concerns the exact rational partial sum. Red points show only nonzero differences from the rounded double reference; zero differences are omitted rather than assigned an invented digit count.)
+\alttext(The rational truncation guarantee improves with the term count. Floating-point comparisons eventually reach the precision limit and do not continue to measure the rational tail.)
+
+> Tree size and the implementation's scope
+
+A full binary tree with N leaves has \(N-1\) merges, so recording stores
+\(2N-1\) nodes. Midpoint splitting gives maximum leaf depth
+\(\lceil\log_2 N\rceil\). Each merge uses two fixed-word multiplications
+and an addition. The implementation therefore performs \(O(N)\) word work,
+uses \(O(\log(N+1))\) recursion-stack space, and optionally records \(O(N)\)
+nodes. The exact fractions need not be reduced at intermediate stages.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <bit>
+int main() {
+  std::print("| effective terms | recorded nodes | exact node count | merges |\n"
+             "| ---: | ---: | ---: | ---: |\n");
+  for (int n:{0,1,2,3,4,8,16,21}) {
+    const auto trace=dm::algorithms::binary_splitting_e_trace(n);
+    std::size_t merges=0;
+    for (const auto& node:trace.nodes) merges+=node.left>=0;
+    std::print("| {} | {} | {} | {} |\n",trace.terms,trace.nodes.size(),2*trace.terms-1,merges);
+  }
+}
+```
+// result_begin: markdown
+| effective terms | recorded nodes | exact node count | merges |
+| ---: | ---: | ---: | ---: |
+| 1 | 1 | 1 | 0 |
+| 1 | 1 | 1 | 0 |
+| 2 | 3 | 3 | 1 |
+| 3 | 5 | 5 | 2 |
+| 4 | 7 | 7 | 3 |
+| 8 | 15 | 15 | 7 |
+| 16 | 31 | 31 | 15 |
+| 21 | 41 | 41 | 20 |
+// result_end
+\caption(The legacy request of zero uses one effective term. Recorded counts include leaves and all internal merges.)
+
+General multiprecision binary splitting can organise much larger products and
+benefit from fast integer multiplication. This API does not implement that
+arithmetic and is not a route to millions of digits. A balanced tree alone also
+does not establish a speed advantage over a sequential uint64 recurrence for
+these tiny supported counts. No timing or asymptotic digit-performance claim is
+inferred from the node table.
+
+> Conclusion
+
+The exact root fraction reproduces the original examples, while its recorded
+subtrees explain the normalisation needed by the merge formula. The rational
+tail keeps shrinking after the double conversion reaches its precision limit.
+The report distinguishes an unreduced fraction, its rounded conversion and the
+irrational target, and makes the 21-term word-size limit explicit. These exact
+series controls need no observed dataset.
+
+> References
+
+- Brent, R. P. and Zimmermann, P. *Modern Computer Arithmetic*, section 4.9, Binary Splitting. Author's book page: https://members.loria.fr/PZimmermann/mca/pub226.html

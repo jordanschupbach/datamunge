@@ -1,0 +1,305 @@
+//? Title: Floyd–Steinberg dithering: actual diffusion, finite edges and tone
+//? Subtitle: Preserve the original gradient, inspect native floating-point updates and measure the error that leaves the image
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A binary image can suggest intermediate brightness by varying the density of white
+pixels. Floyd–Steinberg error diffusion quantizes pixels in raster order and transfers
+the resulting errors to future neighbors. This report preserves the original forty-by-
+sixty-four gradient and all its output pixels, inspects actual native updates, and
+compares a threshold baseline with diffusion. Image edges discard weighted error, so
+finite images do not have a guarantee of exact global or local tone preservation.
+Work counts, floating-point evidence and input/quota controls make those limits explicit.
+)
+
+\toc
+
+> The implemented raster rule
+
+Scan each row left to right, from the top row down. At a pixel, the working value
+already includes earlier diffusion. Values strictly below 128 become zero; values
+at or above 128 become 255. Set e to working value minus that output and update the
+future neighbors in this order: right by 7e/16, down-left by 3e/16, down by 5e/16,
+and down-right by e/16. Skip neighbors outside the image, without renormalizing.
+
+The fixed128 convention and traditional stencil are described in section3 of
+[Speigle and Feng's research paper](https://corporate.jp.sharp/rd/journal-76/pdf/76-05.pdf).
+Their later threshold-modulation and color extensions are outside this implementation.
+The historical reference is R.W.Floyd and L.Steinberg, “An Adaptive Algorithm for
+Spatial Greyscale,” Proceedings of the Society for Information Display17(2),75–77(1976).
+
+The cutoff is part of the existing library contract. For an arbitrary double, 127.75
+is closer to 255 than to zero, yet this implementation outputs zero for a single
+pixel of that value. Describing it as unrestricted nearest-level rounding would be
+incorrect. Working values are not clipped to0..255; feedback can push them beyond
+that nominal grayscale range.
+
+> Read the first diffusion and all four quantizations
+
+A two-by-two image of128 provides a small exact example. The first output is255,
+so e=-127. Its down-left neighbor is outside, discarding3e/16=-23.8125 at that step.
+The following method diagram reads the native stencil and actual update records.
+The table follows every actual raster quantization, including incoming errors.
+
+```{cpp, results="markdown", file="figures/floyd_steinberg_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/grayscale_images.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::floyd_steinberg_trace({{128.,128.},{128.,128.}});
+  std::print("| row | column | actual working value | output | error | discarded numerator /16 |\n| ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(const auto&r:t.steps)std::print("| {} | {} | {:.12g} | {} | {:.12g} | {} |\n",r.row,r.col,r.value_before,r.quantized,r.error,r.discarded_numerator);
+  const auto&w=t.work;std::print("\nTiny totals: input {}; output {}; white {}; actual updates {}; discarded slots {}; boundary loss {}; balance residual {}.\n",w.input_sum,w.output_sum,w.white,w.updates,w.discarded_slots,w.boundary_loss,w.balance_residual);
+  const auto stencil=dm::algorithms::floyd_steinberg_stencil(2,2,0,0);const auto&first=t.steps[0];
+  dm::graphics::Diagram d(58,1100);dm::graphics::DiagramNodeStyle style;style.width=3.8;style.height=2.5;style.font_size=22;
+  d.node("pixel",{0,0},std::format("Working {}\nOutput {}\nError {}",first.value_before,first.quantized,first.error),style);
+  const std::vector<std::string> names{"Right","Down-left","Down","Down-right"};const std::vector<dm::graphics::DiagramPoint> positions{{5.4,0},{-5.4,-4},{0,-4},{5.4,-4}};
+  for(const auto&n:stencil.candidates){std::string text;
+    if(n.in_bounds){const auto it=std::find_if(t.updates.begin()+first.update_begin,t.updates.begin()+first.update_end,[&](const auto&u){return u.direction==n.direction;});text=std::format("{}\nTransfer {}\n{} → {}",names[n.direction],it->transfer,it->value_before,it->value_after);}
+    else text=std::format("{} outside\nDiscarded share\n{}",names[n.direction],first.boundary_loss);
+    const auto id=std::to_string(n.direction);d.node(id,positions[n.direction],text,style).edge("pixel",id,std::format("{}/16",n.numerator));
+  }
+  d.text({0,2.4},"First actual raster step: no edge renormalization",25).save_svg("build/floyd_steinberg_tiny.svg");
+  if(w.white!=2||w.boundary_loss!=2||w.balance_residual!=0)throw std::runtime_error("tiny signed balance");
+}
+```
+// result_begin: markdown
+| row | column | actual working value | output | error | discarded numerator /16 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 128 | 255 | -127 | 3 |
+| 0 | 1 | 72.4375 | 0 | 72.4375 | 8 |
+| 1 | 0 | 101.89453125 | 0 | 101.89453125 | 9 |
+| 1 | 1 | 187.278076172 | 255 | -67.7219238281 | 16 |
+
+Tiny totals: input 512; output 510; white 2; actual updates 6; discarded slots 10; boundary loss 2; balance residual 0.
+\image(figures/floyd_steinberg_tiny.svg)
+// result_end
+\caption(The first error is negative. Three valid transfers update future cells and one outside share is discarded. Across all four steps, input512 minus output510 equals signed boundary loss2.)
+\alttext(A native stencil diagram shows working128 quantized255 with error minus127, right transfer minus55.5625, down transfer minus39.6875, down-right minus7.9375, and the outside down-left share minus23.8125.)
+
+The output is [255,0;0,255], with two white cells. Each pixel is quantized once,
+but future working cells may receive several additions. The trace stores only actual
+in-bounds updates, with their destination value before addition, the double transfer,
+and the value after addition. It records the executing kernel without a second run.
+
+> Preserve the original gradient and its three bands
+
+The native fixture uses the original formula255×column/63 on every one of40 rows.
+Its64 columns are split at21 and42, exactly as in the original program; the final
+band is one column wider. The table distinguishes the intended mean from white
+fraction and the resulting mean255×fraction. All original white fractions remain
+unchanged when rounded to six decimals.
+
+```{cpp, results="markdown", file="figures/floyd_steinberg_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/grayscale_images.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto input=dm::algorithms::dither_gradient(40,64);const auto result=dm::algorithms::floyd_steinberg_work(input);
+  std::print("| columns | pixels | white pixels | white fraction | input mean | output mean | output minus input |\n| --- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(auto[begin,end]:std::vector<std::pair<std::size_t,std::size_t>>{{0,21},{21,42},{42,64}}){const auto v=dm::algorithms::dither_region_stats(input,result.output,begin,end);std::print("| [{},{}) | {} | {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",begin,end,v.pixels,v.white,v.white_fraction,v.input_mean,v.output_mean,v.mean_error);}
+  const auto&w=result.work;std::print("\nOriginal gradient: pixels {}; white {}; actual updates {}; direction slots {}; signed boundary loss {:.9f}; balance residual {:.3e}.\n",w.pixels,w.white,w.updates,w.neighbor_slots,w.boundary_loss,w.balance_residual);
+  std::vector<std::vector<double>> shown;for(const auto&row:result.output)shown.emplace_back(row.begin(),row.end());
+  dm::graphics::diagram_grayscale_images({{input,"Original grayscale ramp"},{shown,"Binary error diffusion"}}).save_svg("build/floyd_steinberg_original.svg");
+  if(w.white!=1285)throw std::runtime_error("original binary image");
+}
+```
+// result_begin: markdown
+| columns | pixels | white pixels | white fraction | input mean | output mean | output minus input |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| [0,21) | 840 | 132 | 0.157143 | 40.476190 | 40.071429 | -0.404762 |
+| [21,42) | 840 | 415 | 0.494048 | 125.476190 | 125.982143 | 0.505952 |
+| [42,64) | 880 | 738 | 0.838636 | 212.500000 | 213.852273 | 1.352273 |
+
+Original gradient: pixels 2560; white 1285; actual updates 9930; direction slots 10240; signed boundary loss -1275.000000000; balance residual 3.921e-13.
+\image(figures/floyd_steinberg_original.svg)
+// result_end
+\caption(The original gradient and all binary output pixels are preserved. Zero is drawn black and255 white with equal pixel scales; source display colors round to8-bit gray, while statistics use the original doubles.)
+\alttext(Two native grayscale cell panels show a smooth left-to-right dark-to-light ramp and its binary halftone, with white-pixel density increasing toward the right.)
+
+The preserved fractions are0.157143,0.494048 and0.838636 for the original three
+bands. Those arithmetic observations explain the increasing dot density; they do not
+certify a perceptual quality score or exact equality of each band's mean. Error can
+flow from one band to the next, and from the image into discarded outside shares.
+
+The returned image holds int values0or255. It is binary-valued data, not a packed
+one-bit bitmap. Its actual storage includes integer cells and row metadata.
+
+> Compare independent thresholding on a uniform patch
+
+On a uniform128 patch, independent thresholding makes every pixel white. Error
+diffusion can instead mix black and white pixels so that the arithmetic mean is
+closer to the input. Both algorithms below are native functions; the report only
+formats their outputs and measurements. This specific control is evidence about
+that patch, not a universal ranking across images, devices or viewing conditions.
+
+```{cpp, results="markdown", file="figures/floyd_steinberg_comparison.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/grayscale_images.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<std::vector<double>> input(32,std::vector<double>(32,128.));
+  const auto plain=dm::algorithms::threshold_dither(input);const auto diffused=dm::algorithms::floyd_steinberg_dither(input);
+  std::print("| method | pixels | white pixels | white fraction | input mean | output mean | signed mean error |\n| --- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(bool diffuse:{false,true}){const auto&out=diffuse?diffused:plain;const auto v=dm::algorithms::dither_region_stats(input,out,0,32);std::print("| {} | {} | {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} |\n",diffuse?"Diffusion":"Threshold",v.pixels,v.white,v.white_fraction,v.input_mean,v.output_mean,v.mean_error);}
+  std::vector<std::vector<double>> left,right;for(const auto&row:plain)left.emplace_back(row.begin(),row.end());for(const auto&row:diffused)right.emplace_back(row.begin(),row.end());
+  dm::graphics::diagram_grayscale_images({{left,"Threshold at128"},{right,"Raster diffusion"}}).save_svg("build/floyd_steinberg_comparison.svg");
+}
+```
+// result_begin: markdown
+| method | pixels | white pixels | white fraction | input mean | output mean | signed mean error |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Threshold | 1024 | 1024 | 1.000000 | 128.000000 | 255.000000 | 127.000000 |
+| Diffusion | 1024 | 512 | 0.500000 | 128.000000 | 127.500000 | -0.500000 |
+\image(figures/floyd_steinberg_comparison.svg)
+// result_end
+\caption(A uniform128 patch becomes all white under independent thresholding. The raster diffusion result mixes black and white; the table reports its actual density and mean error.)
+\alttext(Two native32-by32 pixel panels compare a completely white threshold result with the black-and-white raster pattern produced by diffusion on the same uniform gray input.)
+
+Visual artifacts depend on image content and scan direction. The primary research
+paper cited above discusses patterning, worm-like structures and edge effects in
+traditional error diffusion. Our fixed raster scan is not a serpentine variant,
+a color halftoner, a noise-driven method or their improved threshold-modulation
+algorithm. No claim that it is always best-looking or faster is needed here.
+
+> Boundary loss and finite-image tone balance
+
+For a pixel p let e_p be its actual quantization error and a_p the sum of weights
+whose destinations lie outside the image. In exact arithmetic, summing every pixel
+cancels internal transfers, leaving
+
+$$
+\sum_p\mathrm{input}_p-\sum_p\mathrm{output}_p
+=\sum_p a_p e_p.
+$$
+\alttext(The total input intensity minus total output intensity equals the sum of each error times the fraction discarded outside the image, in exact arithmetic.)
+
+The right-hand side is signed: positive loss means the output sum is smaller;
+negative loss means it is larger. For floating-point computation the native
+`balance_residual` is input sum minus output sum minus that signed boundary term.
+A small residual checks this accounting, not perceptual fidelity. It is not a promise
+that image means match. A single pixel of127.5 becomes zero and discards its entire
+127.5 error, providing a direct counterexample to exact finite-image preservation.
+
+The next controls hold the intended value at64 while changing square size. Density
+is measured against64/255. Neither monotone improvement with size nor equality at
+every finite size is assumed. Work counts include four direction slots per pixel;
+only valid destinations cause an update.
+
+```{cpp, results="markdown", file="figures/floyd_steinberg_balance.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/grayscale_images.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::vector<double> index,density,pixels,slots,updates;std::vector<std::string> labels;
+  std::print("| side | pixels | white pixels | white fraction | mean error | boundary loss | balance residual | actual updates |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t side:{1u,2u,4u,8u,16u,32u,64u}){const std::vector<std::vector<double>> input(side,std::vector<double>(side,64.));const auto result=dm::algorithms::floyd_steinberg_work(input);const auto v=dm::algorithms::dither_region_stats(input,result.output,0,side);const auto&w=result.work;
+    std::print("| {} | {} | {} | {:.6f} | {:.6f} | {:.9f} | {:.3e} | {} |\n",side,w.pixels,w.white,v.white_fraction,v.mean_error,w.boundary_loss,w.balance_residual,w.updates);
+    index.push_back(double(index.size()));density.push_back(double(v.white_fraction));pixels.push_back(double(w.pixels));slots.push_back(double(w.neighbor_slots));updates.push_back(double(w.updates));labels.push_back(std::to_string(side));
+  }
+  auto tone=dm::graphics::RPlot::create();tone.points(index,density,"Actual white fraction",{22,163,74},5).lines({0.,6.},{64./255.,64./255.},"Intended64/255",{220,38,38},1.5).x_tick_labels(labels).ylim(0,.28).title("Uniform64: actual binary density").xlab("Square side (categorical)").ylab("White fraction").legend({"Measured","64/255"},{{22,163,74},{220,38,38}});
+  auto work=dm::graphics::RPlot::create();work.lines(pixels,slots,"Slots",{220,38,38},2).lines(pixels,updates,"Updates",{37,99,235},2).title("Attempted slots and valid updates").xlab("Input pixels").ylab("Actual counted operations").legend({"Four slots per pixel","In-bounds updates"},{{220,38,38},{37,99,235}});
+  dm::graphics::RLayout::create(1,2).add(tone).add(work).size(1100,540).title("Finite edges affect tone; each pixel has constant stencil work").fit_panels().save_svg("build/floyd_steinberg_balance.svg");
+}
+```
+// result_begin: markdown
+| side | pixels | white pixels | white fraction | mean error | boundary loss | balance residual | actual updates |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 0 | 0.000000 | -64.000000 | 64.000000000 | 0.000e+00 | 0 |
+| 2 | 4 | 1 | 0.250000 | -0.250000 | 1.000000000 | 0.000e+00 | 6 |
+| 4 | 16 | 3 | 0.187500 | -16.187500 | 259.000000000 | 0.000e+00 | 42 |
+| 8 | 64 | 15 | 0.234375 | -4.234375 | 271.000000000 | 3.553e-14 | 210 |
+| 16 | 256 | 64 | 0.250000 | -0.250000 | 64.000000000 | -4.974e-14 | 930 |
+| 32 | 1024 | 256 | 0.250000 | -0.250000 | 256.000000000 | 3.424e-13 | 3906 |
+| 64 | 4096 | 1017 | 0.248291 | -0.685791 | 2809.000000000 | -6.306e-14 | 16002 |
+\image(figures/floyd_steinberg_balance.svg)
+// result_end
+\caption(Uniform64 images of seven sizes show actual binary density and signed boundary accounting. Attempted slots equal4N; valid updates omit the image boundary.)
+\alttext(Two native plots show measured white fractions against the intended64-over255 density and the actual direction-slot and destination-update counts versus input pixel count.)
+
+For a nonempty R-by-C rectangle, the valid-update count is
+R(C-1)+(R-1)C+2(R-1)(C-1). Counting this stencil and validating every row/value
+gives O(R+N) work for N pixels. The by-value ordinary API owns a double scratch
+image and returns an integer image, requiring O(R+N) storage. The earlier constant
+extra-memory claim omitted these images. Only the per-pixel scalar state is constant.
+
+An owned trace additionally retains the input, N steps and at most4N updates. Its
+complete admission bound is2R+7N entries: two outer-row arrays, two cell arrays,
+one step per pixel and up to four updates per pixel. Temporary scratch, bytes and
+peak RAM are not the quota units. The default one-million-entry cap is checked
+before copying trace input; zero disables only that optional cap. No partial trace
+or sampled/truncated history is returned.
+
+> Domain, geometry and ownership controls
+
+Every row width is validated before scanning source values. Ragged rows reject even
+when the first row has width zero. Every source value must be finite; finite values
+outside nominal0..255 are accepted without clipping. Actual double transfers and
+updated values must stay finite, so an extreme source can fail if it has a valid
+neighbor even though an extreme single pixel succeeds. The grayscale renderer has
+its own display domain0..255; that does not change the numerical kernel's input rules.
+
+```{cpp, results="markdown", file="figures/floyd_steinberg_controls.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <datamunge/plot/grayscale_images.hpp>
+#include <limits>
+#include <print>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  bool ragged=false,nonfinite=false,quota=false,overflow=false;const auto maximum=std::numeric_limits<double>::max();
+  try{dm::algorithms::floyd_steinberg_dither({{128.,128.},{128.}});}catch(const std::invalid_argument&){ragged=true;}
+  try{dm::algorithms::floyd_steinberg_trace({{std::numeric_limits<double>::quiet_NaN()}},1);}catch(const std::invalid_argument&){nonfinite=true;}
+  try{dm::algorithms::floyd_steinberg_trace({{128.,128.},{128.,128.}},31);}catch(const std::length_error&){quota=true;}
+  try{dm::algorithms::floyd_steinberg_dither({{maximum,0.}});}catch(const std::overflow_error&){overflow=true;}
+  auto source=std::vector<std::vector<double>>{{128.,128.},{128.,128.}};const auto original=source;const auto trace=dm::algorithms::floyd_steinberg_trace(source,32);const bool unchanged=source==original;source[0][0]=7;const bool independent=trace.input==original;
+  std::print("Checked controls: ragged rejected {}; NaN rejected before quota {}; whole cap31 rejected {}; cap32 steps {}; neighbor arithmetic overflow rejected {}.\n",ragged,nonfinite,quota,trace.steps.size(),overflow);
+  std::print("Ownership: source unchanged after call {}; owned input independent after caller edit {}.\n",unchanged,independent);
+  std::print("Cutoff127.75 output {}; exact128 output {}; finite maximum single-pixel output {}.\n",dm::algorithms::floyd_steinberg_dither({{127.75}})[0][0],dm::algorithms::floyd_steinberg_dither({{128.}})[0][0],dm::algorithms::floyd_steinberg_dither({{maximum}})[0][0]);
+  const auto full=std::numeric_limits<std::size_t>::max();const auto stencil=dm::algorithms::floyd_steinberg_stencil(full,full,0,full-1);
+  std::print("Virtual size_t-max top-right center: right {}; down-left {}; down {}; down-right {}.\n",stencil.candidates[0].in_bounds,stencil.candidates[1].in_bounds,stencil.candidates[2].in_bounds,stencil.candidates[3].in_bounds);
+  const auto one=dm::algorithms::floyd_steinberg_work({{127.5}});std::print("One-pixel tone control: input {}; output {}; discarded {}; residual {}.\n",one.work.input_sum,one.work.output_sum,one.work.boundary_loss,one.work.balance_residual);
+  dm::graphics::Diagram d(60,1100);dm::graphics::DiagramNodeStyle style;style.width=4.2;style.height=2.8;style.font_size=23;
+  d.node("quota",{0,0},std::format("Whole trace bound32\nCap31 rejects: {}\nCap32 records {} steps",quota,trace.steps.size()),style)
+   .node("finite",{6,0},std::format("Finite source required\nNaN rejects: {}\nUpdate overflow: {}",nonfinite,overflow),style)
+   .node("owned",{12,0},std::format("Owned result\nCaller unchanged: {}\nIndependent input: {}",unchanged,independent),style)
+   .text({6,-3.1},"Validation, complete admission and actual arithmetic are separate checks",24).save_svg("build/floyd_steinberg_controls.svg");
+  if(!ragged||!nonfinite||!quota||!overflow||!unchanged||!independent)throw std::runtime_error("checked dithering controls");
+}
+```
+// result_begin: markdown
+Checked controls: ragged rejected true; NaN rejected before quota true; whole cap31 rejected true; cap32 steps 4; neighbor arithmetic overflow rejected true.
+Ownership: source unchanged after call true; owned input independent after caller edit true.
+Cutoff127.75 output 0; exact128 output 255; finite maximum single-pixel output 255.
+Virtual size_t-max top-right center: right false; down-left true; down true; down-right false.
+One-pixel tone control: input 127.5; output 0; discarded 127.5; residual 0.
+\image(figures/floyd_steinberg_controls.svg)
+// result_end
+\caption(Ragged/nonfinite sources reject; a two-by-two trace needs an upper admission bound32. Actual arithmetic overflow is distinct from input finiteness, and successful trace storage is independent.)
+\alttext(Three native boxes show whole trace quota31 versus32, nonfinite-source and update-overflow checks, and independent owned input storage.)
+
+The ordinary by-value overload copies an lvalue before its body validates; an rvalue
+can transfer its storage. Work and trace overloads validate read-only input before
+copying. No numerical API mutates the caller's source, and failures return no partial
+output. Empty and zero-width rectangular images retain their shapes.
+
+All five programs are complete editable C++ sources and call the shared native kernel,
+fixtures, threshold baseline and statistics helpers. There is no external dataset.
+Verification preserves original pixel decisions and exact floating-point update bits,
+checks small grids against independent rational gathering, uses higher-precision
+conditional controls, replays actual update evidence, tests signed edge balance,
+full-width geometry, quotas and ownership, and runs address/undefined-behavior
+sanitizers. Native figures are saved locally and copied into the report.

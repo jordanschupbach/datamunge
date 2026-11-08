@@ -9,6 +9,4545 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-08: Extracted Goertzel into a shared checked ordered kernel
+  in algorithms/goertzel.hpp/.cpp. The existing Hz/bin signatures preserve the
+  legacy offset-then-truncate signed index, unsigned unreduced angle, ordered
+  recurrence and raw terminal expression. All7,152 frozen scalar cases/28,608
+  lines and15,357 actual selection/sample/final events/43,965 lines match direct,
+  installed and rebuilt old execution;2,137 nonempty plans/11,058sample updates/
+  25empty returns independently certified. Original16stdout lines/SVG identical;
+  four old DSP tests and FFT header unchanged. Finite negative raw power−2^-51
+  versus exact2^-104 and DC cancellation at100k/1m retained explicitly, without
+  clipping/widening. Finite samples/rate/target, safe truncated int range, actual
+  selected angle/coefficient/evaluated state and terminal output checked, including
+  invalid arguments before empty return. Existing valid fractional int boundaries
+  remain admitted; huge unsigned bins are not silently reduced modulo N.
+  Native GoertzelRun/GoertzelTrace expose actual two-state execution and selected
+  sample updates, excluding validation/trigonometry/allocation/FLOPs/time. Complete
+  fixed initial/sample/stop history is emitted online with default1m records,
+  zero optional-off, no replay/truncation/partial result/input mutation. N4H6
+  reject5/admit6, empty2reject1/admit2. Input/root/ordinary run+selection/constant
+  working state/allocator excluded; records are not entries/bytes/peak RAM.
+  Unrounded frequency response is separate and does not alter legacy selection.
+  Native sinusoid_signal/dtmf_signal own output, validate every descriptor first,
+  admit whole N samples before allocation (default1m/0off), preserve ordered
+  descriptor accumulation and the original410sample generator bit-for-bit.
+  DtmfPeaks holds eight native responses, first maximum per canonical group and
+  aggregate8N updates. It is only a candidate: silence/empty ties choose1; no
+  amplitude, timing, tolerance, noise or speech acceptance test is claimed.
+  Independent direct complex Fourier sums check7,023moderate-bin cases; large
+  unreduced-angle deviations remain disclosed witnesses. Versioned exact Q(sqrt2)
+  Fourier fixtures cover4,786cases/35,438input entries without recurrence or FFT.
+  Eight strict-fno-wrapv ASAN/UBSAN tests, native21+5dir and combined3,199 with no
+  skips pass; whole two paths67definitions audited,17public examples compiled/run
+  with exact stdout,11clangd hovers, final installed code/read-only section parity
+  and freshness checked. Registry2,415classes/16,260members/1,787KiB; two paths
+  added to completed manifest. TI SPRA066 method/implementation/summary and
+  official Q.23/Q.24 relevant sections read and PDF pages inspected. Original1958
+  bibliography verified; inaccessible full article not claimed read.
+  Seven complete C++ programs/seven inspected local SVGs/all108computed lines in
+  each Markdown/HTML export and matching figure bundles. Independent report
+  Fourier oracle checks29selector rows,8DTMF rows against frozen original powers,
+  five candidate cases,36MN work rows,10DC rows and four hand-checkable states.
+  Concept diagram near introduction, selector boundaries/negative frequency,
+  original410sample pair and unrounded comparison, invalid-input candidates,
+  selected work, finite numerical limitations and separate quotas demonstrated.
+  Numerical axis uses ppm for distinct ticks; printed percentages unchanged;
+  six other SVG hashes unchanged. No PSD/calibrated-power/complete-receiver/
+  timing claim or forced external dataset. Website137reports/658blocks/593figures
+  verified. Original pair removed only after all gates; eight candidate old images
+  absent; catalog API/selector/candidate semantics/destination updated.
+  Evidence: build/mepml-conversion/goertzel/.
+
+- 2026-11-08: Extracted gnome sort into a shared checked diagnostic kernel
+  in algorithms/gnome_sort.hpp/.cpp. exchange_sorts.hpp forwards the existing
+  signature and removes its duplicate declaration; exchange_sorts.cpp loses only
+  the old gnome definition. Odd-even/pancake bodies are byte-identical, the prior
+  cocktail module is untouched, and all3 original exchange-sort tests remain
+  unchanged (including6,000randomarrays and4,000pancake replays).
+  All10,396 scalar cases/20,792lines and15,648 actual pointer/pair steps over758
+  observed calls/37,198total lines match direct preflight, installed and rebuilt
+  old execution. Original5stdoutlines/SVG byte-identical; all27 original example
+  visits checked against the frozen old actual observer. Legacy by-value signature,
+  boundary short-circuit, left<=right forward, strict adjacent swap/back, duplicate
+  stability and int extremes retained. Scalar sorting has constant auxiliary
+  state beyond its owned input/output, no identity/history allocation or diagnostic
+  counter updates. Lvalue input copying costs O(n).
+  GnomeSortRun owns stable original identities carried by actual exchanges and
+  checked selected work: visits, key comparisons, swaps, forward/backward steps
+  and zero-index boundary visits, excluding copying/identity initialization/
+  allocation/loop tests/FLOPs/time. Identity output/initialization cost O(n).
+  GnomeSortTrace emits fixed-size initial/actual-step/stop records online, without
+  full-array snapshots, replay, truncation, partial return or caller lvalue mutation.
+  Every metadata record counts: default1m complete records/0optional-off; empty2
+  reject1/admit2, singleton3reject2/admit3, [2,1]6reject5/admit6 including the final
+  stop append. Inputs/root/ordinary sorted+identity outputs/constant working state/
+  allocator overhead excluded; not numeric entries/bytes/peak RAM. Copying and
+  identity allocation can precede history rejection. Output-only/run have no
+  history quota. Native adjacent_sort_inputs generates four owned controlled
+  arrays: ascending, descending, one middle adjacent inversion and last minimum.
+  Whole4n integer entries admitted before allocation, default1m/0off; n-1 int
+  representability, 4n overflow and capacity checked, with no overflowing final
+  int iota increment. n4whole16reject15/admit16; deep ownership verified.
+  Own sorted-prefix/stability proof and potential P=n-i+2I give exact visits
+  S=n+2I0, swaps/backwards I0, forwards n+I0 and comparisons S−Z. Z equals one
+  plus original strict prefix record minima for nonempty input, zero for empty.
+  Independent direct stable key+original-index ranks, pairwise inversions and
+  prefix minima verify all10,396 cases; every15,648 recorded step checks actual
+  before pair, branch, pointer and resulting values against those counts. Versioned
+  fixtures2,097cases/12,428input entries and600actual pair/identity/prefix/potential
+  certificates are native regressions. Known family inversion counts tested for
+  n0..64 and exact reported36rows/ninepositive sizes. Stability/extremes/empty/
+  singleton/online-final-empty limits/ownedcopies/wholegenerator admission pass.
+  Seven strict-fno-wrapv ASAN/UBSAN tests, native19+5dir and combined3,178 with no
+  skips pass. Whole new2paths44definitions plus existingforwardheader4/total48
+  audited; all10public examples compiled/run with exact stdout and7clangd hovers.
+  Final counter wording correction rebuilt documentation/core; compiled .text,
+  .rodata and .data.rel.ro match the already-verified build exactly, installed
+  freshness/code parity holds, and focused24tests/hovers rechecked. Two new paths
+  added to manifest; existing exchange header remains once. Registry2,410classes/
+  16,231members/1,784KiB. Official NIST entry read in full, original Sarbazi-Azad
+  2000 newsletter bibliography verified there; unavailable author pages not
+  claimed read, Grune historical-date uncertainty not invented.
+  Six complete C++ programs/six inspected local figures/all90computed output lines
+  in each Markdown/HTML export and identical image bundles: actual [3,1,2] pairs/
+  seven visits/nine records; original27walk/10swaps/24comparisons/3boundary/29records;
+  equal keys stable ids[1,3,0,2]; ascending/reverse/adjacent/last-minimum36rows;
+  equalI3tenvisits but8versus7comparisons/all_equal4visits3comparisons; complete
+  history versus whole four-array entry limits. All six SVG hashes unchanged on
+  review. Counted visits/key comparisons/retained records kept distinct; precise
+  linear time when I=O(n), no equality with ordinary insertion-sort comparison
+  counts and no timing claim. Controlled inputs need no external dataset.
+  Website136reports/651blocks/586figures verified. Original paired reports removed
+  only after all gates; eight candidate old images absent; catalog native API/
+  count semantics/new destination updated. Evidence: build/mepml-conversion/gnome-sort/.
+
+- 2026-11-08: Moved planar GJK into a shared checked native kernel
+  in geometry/gjk.hpp/.cpp, keeping the original distance signature/default100,
+  ordered double support/projection/triangle recurrence, first support ties,
+  absolute squared-norm1e-20/progress1e-10 cutoffs and final norm at the loop cap.
+  All4,762 scalar cases/58,680 lines and38,470 actual state records/97,150 lines
+  match direct preflight, installed and rebuilt old execution. Original7stdout
+  lines and SVG byte-identical; original5 numeric-batch tests, Point2D and unrelated
+  sim3D GJK/EPA/collision sources unchanged. Inputs are finite 2D point clouds
+  representing convex hulls, including arbitrary order/duplicates/singletons/
+  collinear points. No concave-body, curved-support callback, 3D, closest-pair
+  witness, penetration depth, time-of-impact or exact contact guarantee is added.
+  Complete coordinate validation precedes empty convention, loop budget and
+  history work; evaluated nonfinite intermediates are rejected before decisions.
+  Frozen NaN/infinity/ignored late NaN/empty-masked NaN/nonfinite norm and finite
+  subtraction-overflow behavior is corrected. Finite underflow/cancellation and
+  floating triangle predicates remain, with the finite legacy scale limitations
+  preserved rather than silently changing the method: positive5e-11 point gap
+  returns0; scale1e-6 squares with truegap2e-6 return6e-6; crossingsegments can
+  return sqrt2*1e-6. Empty zero is a convention, not geometric contact.
+  Native GjkRun owns actual stopping reason, final constant-sized feature and
+  selected work. GjkTrace captures complete fixed-size actual state records online,
+  including initialization, every queried support/actual returned feature and
+  stop/empty metadata, with no numerical replay/truncation/partial return/input
+  mutation. Default1m records,0 optional-off; complete records not scalar entries,
+  bytes or peak RAM. Input/root/ordinary result/final feature/constant working
+  storage/allocator overhead excluded. Separated singleton4reject3/admit4;
+  near-origin3reject2/admit3; empty1admit1 and quota0off. Loop-budget0 still initializes
+  and returns iteration_limit with2records, a different unit from the history cap.
+  Selected actual support calls/dots/strict comparisons/loop visits/progress and
+  feature reductions exclude validation/FLOPs/allocation/time. Complete-scan dots
+  equal(n+m)*queries, comparisons=dots−2queries. Honest O((K+1)(n+m)) search plus
+  validation, O(1) ordinary auxiliary storage; no fixed-convergence/linear-time
+  theorem inferred from the bounded default. Native regular_polygon ports the
+  report helper's exact ordered angle/coordinate formula, with finite scalar and
+  computed output checks, whole vertex count/quota/capacity before allocation,
+  default1m/0optional-off, zero-radius repeated points and owned output.
+  Independent Fraction oracle enumerates ALL pairwise Minkowski differences,
+  constructs an exact monotone-chain hull and exhaustively projects onto its
+  boundary, without GJK support/simplex recurrence:4,759nonempty cases/40,454 hull
+  vertices;3empty legacy0 cases excluded from geometric comparisons. Moderate-scale
+  max absolute error1.78e-15; all-scale errors and3falsezero cases retained/disclosed.
+  Versioned exact fixtures1,442cases/8,353storedpoints (225corner-subset pairs,
+  961collinear-subset pairs,256randomclouds);400actualsupport-firsttie/feature-
+  geometry/work certificates, all stopping reasons and budget/history/ownership/
+  malformed/range/generator tests pass. Seven strict-fno-wrapv ASAN/UBSAN cases,
+  native14+5dir and combined3,159 with no skips pass. Whole2paths79definitions,
+  all11public examples compiled/run with exact stdout and7clangd hovers, final
+  installed freshness/code/read-only parity pass. New2paths added to manifest.
+  Original GJK1988primaryPDF pages4/6 read/raster inspected for support/descent
+  versus scaled numerical criterion/backup; retained closest-feature attribution
+  Ericson2005 RTCD Sections5.1.2/5.1.5 verified against author site/table of contents.
+  SixcompleteCPP/sixinspectedlocalfigures/allcomputedMDHTMLoutputs/copiedimages:
+  analyticalsquaregap3/Minkowskidifference, actualsegment t3/5closest(-.4,.2) and
+  triangle-inside branch,27originaldemo/sweepvalues,13scalecontrols/tinygapzero,
+  ten actualsize-workrows,record/wholevertex/loop/domaincontrols. Active segment
+  highlighted/label moved and duplicate legends removed; other3SVGs unchanged.
+  Website135reports/645blocks/580figures verified. No forceddataset for the kernel.
+  Original paired reports removed only after gates; eight old image candidates
+  absent; catalog API/approximation/convex-hull scope/destination updated.
+  Evidence: build/mepml-conversion/gjk/.
+
+- 2026-11-08: Extracted Girvan–Newman into a shared checked native module
+  in algorithms/girvan_newman.hpp/.cpp, with network_analysis.hpp forwarding the
+  old include. Six non-GN functions (validate/normalize/PageRank/system/TrustRank/
+  HITS) remain byte-identical and original7 graph tests unchanged. All9,912 scalar
+  cases/137,397 lines and34,011 actual primitive events over390 observed cases/
+  171,798 lines match direct preflight, installed and rebuilt old execution;
+  original2stdout lines exact. Shared ordered-double Brandes/raw source sums,
+  canonical minmax/sort/dedup/loop ignore, adjacency/BFS order, every source,
+  lower_bound score-slot search and near-maximum raw1e-12 simultaneous deletion
+  preserved. Conventional scores are raw/2. Target is at least: cycle4 overshoots
+  target2 to4groups; disconnected early stop and empty n0target1 remain explicit.
+  Native edge betweenness, actual-work run/owned primitive traces, original-graph
+  modularity and bounded clique-bridge/layered families added. Nonfinite checks
+  precede propagation/division/deletion, fixing frozen layer1030 path overflow/
+  65,728 nonfinite contributions/NaN maximum/delete-all2060-singleton result.
+  A265-vertex/318-edge exact uint64 regression has mathematical2^53+1 paths
+  rounded back to2^53; the guarantee now checks the bound BEFORE addition and
+  clears correctly, with unchanged actual double recurrence. Layer60 remains
+  finite beyond2^53; conservative integer-count guarantee false
+  is not an assertion every larger integer rounded. Finite operation order is
+  retained. Vertex distance/counter/container capacities checked. Selected work
+  includes n² source slots and actual binary-search comparisons, not timing or
+  all costs; honest O(r log(r+1)+m n²+n m² log(m+1)) total bound plus terminal
+  work, O(n+m) scoring scratch and O(r+n+m) ordinary auxiliary storage with raw
+  deduplication capacity and additional history storage explained. Modularity uses original edges including
+  removed ones, validates complete disjoint groups and defines edgelessQ0; no
+  global modularity optimum or true-community certificate is claimed.
+  Online histories count all fixed primitive and canonical/round/component
+  metadata records, default1m/0 optional-off. No replay, partial/truncated return
+  or caller mutation. Inputs/root/work/final ordinary output/working BFS-preds-
+  queues/allocator storage excluded; not numeric entries/bytes/peak RAM. Tiny
+  graph33reject32/admit33, emptymetadata4reject3/admit4, standalone edge-score19
+  reject18; whole generator vertices6reject5/admit6 are separate units.
+  Native bounded GML topology ingress preserves source-id mapping and input
+  edge order/direction/multiplicity while skipping unknown balanced attributes;
+  malformed/duplicate/missing/unknown ids, int64 and byte/node/edge limits checked,
+  iterative deep-list skipping and copied output tested. New karate_club()/fetch
+  path reuses native verified file/ZIP extraction/shared cache/offline/mirror;
+  original author ZIP970bytes and both members pinned, corrupt cached bytes
+  rejected without replacement.34vertices/sourceids1..34 mapid−1,78undirected
+  unweighted edges, no faction labels. Native fresh acquisition/all78 independently
+  parsed edges/offline reuse pass. Dataset catalog adds graph row, load() directs
+  callers to graph accessor, downloadable names9; existing14 offline loader tests
+  updated only for catalog24/download9 and graph refusal, all pass.
+  Independent exact ALL-simple-path Fraction oracle checks7,356 partitions,
+  including all5,406 simplegraph0..5/valid-target cases and799actualraw scores;
+  versioned fixtures retain1,100graphs/5,406partitions/scores. Independent karate
+  Floyd distances plus explicit shortest-path enumeration/Fraction weights agrees
+  with78initial scores,34target requests and all33actual batch stages/modularity.
+  Visited Qmax0.4012984878369494 at round21/fivegroups; firstsplit round10/twogroups
+  Q0.359960552268,11removals. Full actual174,531-record history/32scored batches/
+  78removals retained. Eight algorithm and six reader/cache strict sanitizer cases
+  cover exhaustive fixtures,160actual BFS/path/dependency/cut/work certificates,
+  direct-pair modularity, domains/order/normalization/quotas/ownership/generators,
+  finite and overflowing path counts, malformed GML/10,000-deep lists/limits and
+  real cache corruption. Visual review found directed arrows on undirected graph
+  figures; added canonical Diagram::link with shared boundary clipping and forced
+  no arrowhead, leaving existing edge() semantics intact. Eleven strict diagram
+  sanitizer cases (nine existing+two new) pass; three pre-change directed SVGs
+  remain byte-identical after the shared implementation refactor. Only bridge,
+  diamond and cycle figure SVGs change when using undirected links; other five
+  inspected SVG hashes unchanged. Native44graph/data+11diagram+5dir/combined3,145
+  pass. Whole4newpath132definitions plus existing2diagram paths63/total195 audited;
+  all20 changed/public snippets and stdout,17clangd hover targets, final installed
+  freshness/code/read-only parity pass. Four new paths added to manifest; existing
+  diagram paths remain once. Eight complete C++ programs/eight inspected local
+  figures/all computed outputs in Markdown+HTML and identical figure bundles pass:
+  bridge9raw18; actual half-path diamond; original bridge/cycle/disconnected stops;
+  native karate firstsplit/layout drawing only; all33 original-edge Q stages;
+  selected work family; finite60layer versus1030rejection; online/whole controls.
+  Primary GN2002PDFp3 single-edge rule, Brandes2001p7 dependency formula/p9 divide2
+  and NG2004PDFp8 original-graph modularity read/raster inspected; Zachary1977
+  publisher metadata/author collection README verified. Native batch variant,
+  floating limits, no invented labels/timing/global-optimum/social-truth claims
+  explicit. Site134/639blocks/574figures verified. Original paired reports removed
+  only after all gates; six candidate old image paths absent; catalog API/variant/
+  destination updated. Evidence: build/mepml-conversion/girvan-newman/.
+
+- 2026-11-08: Converted geometric hashing to shared checked native kernels
+  in geometry/geometric_hashing.hpp/.cpp. Original table/match fields and helper
+  names retained; ordered double quotient, absolute squared-basis cutoff1e-18,
+  floor/signed32 packing, bucket multiplicity, every scene basis, unordered tally
+  iteration/strict global improvements, exact recovery and first-hit verification
+  preserved. All2,748 scalar cases/242,814 lines and54,482 primitive events over80
+  observed cases/297,376 lines match direct preflight, installed and rebuilt old
+  execution. Original6 geometry tests/6stdout lines/SVG and completed Point2D are
+  unchanged. Complete finite points/quant/tolerance-square/positive threshold and
+  public table-id validation precedes work/capture; four frozen float-cast UBSan
+  failures, zero-vote negative-index UBSan and positive-id ASan overflow corrected.
+  Required finite intermediates/signed floor ranges checked before casts; no
+  arbitrary ordinary point-count cap. Same ordered model/table provenance remains
+  caller responsibility. Native checked frame/bin/vector similarity transform,
+  ordinary actual-work results and owned primitive histories share the kernels.
+  Online complete-record cap defaults1m/0 optional-off, before each append;
+  no synthetic initial record, numerical replay, partial/truncated return or
+  caller mutation. Input vectors/root/work/final ordinary table or candidate,
+  working tally/hash and allocator storage excluded; not numeric entries/bytes/
+  peak RAM. Triangle build12reject11/admit12; recognition31reject30/admit31;
+  empty0 and complete invalid-before-quota/deep-copy controls pass.
+  Nine strict ASan/UBSan/float-cast tests cover1,024 independent exact Fraction
+  frame/bin fixtures,2,000 integer-grid table comparisons,120 actual trace/work/
+  tally/first-hit certificates, transforms/reflection/tiny cutoff, signed limits,
+  malformed inputs and candidate/inlier/duplicate controls. External Fraction
+  oracle checks2,688 table cases/201,564 entries and1,552 unambiguous vote maxima/
+  49,198 scene bases; exact-real equivalence is not claimed for excluded boundary
+  cases. Native17+5dir/combined3,099 pass; whole2path102definitions, all20 public
+  snippets/stdout,8clangd hovers and final built-installed code/read-only parity/
+  freshness pass. Header/new source added to completed manifest; Point2D once.
+  Seven complete programs/seven visually inspected SVGs and all computed lines
+  in Markdown/HTML with source-build-export image parity pass: hand(.5,.5) frame;
+  actual tiny table/vote and threshold; original6model+4clutter at scale1.7/angle.9/
+  translation12,-8 recovered; same scene atq.5 yields8votes/2inliers despite true
+  copy; duplicate4inliers against3scene; nextafter floor/reflection/absolutecutoff;
+  actual M3..12 cubic frames ending1,320 with all poor candidates retained;
+  online records/ownership/invalid/empty. Legend overlap and generic bar labels
+  polished; only gh_votes/work/controls SVG hashes change. found means recovered
+  candidate, not inlier acceptance; no alternate retry/refinement/one-to-one
+  matching. Own complex cancellation/reflection, floor-boundary and frame-count
+  derivations; selected counts not total/timing; per-call validation plus expected
+  hash O(T+N+M+M^3+V+NM), O(N²) tally and collision-list costs explained.
+  Original Lamdan/Wolfson1988 metadata verified and paper238–240 raster read,
+  Sections2.1–2.2 distinguished from this native one-model/global-only/first-hit
+  variant. No forced dataset, general-affine, portable-tie, timing or universal
+  clutter-success claim. Site133/631blocks/566figures verified. Original paired
+  reports removed only after all gates; six old image paths absent; catalog
+  corrected from general affine to supported planar similarity and destination
+  updated. Evidence: build/mepml-conversion/geometric-hashing/.
+
+- 2026-11-08: Converted geohash to a shared checked native kernel in
+  geohash.hpp/.cpp. Legacy three-argument encoder preserves longitude-first,
+  upper-on-equality, ordered double midpoints, alphabet and all requested steps;
+  valid negative precision including INT_MIN still clamps to zero. No arbitrary
+  positive precision limit or early stagnation exit. All107980 frozen scalar
+  outputs and82060 actual bisections/16412 emissions over544 observed cases/
+  206996 lines match installed and rebuilt old execution; original11 calendar/
+  geometry tests,20 stdout lines and SVG preserved. Complete finite inclusive
+  coordinate checks now precede arithmetic. New run/work and owned bit/emission
+  trace share the actual encoder kernel; initial coordinates/bounds plus5p bits
+  andp emissions require1+6p complete records. Checked count/capacity/whole quota
+  before history initialization/allocation; default1m/0 optional quota off;
+  not numeric entries, bytes or peak RAM. Root/work/final ordinary output,
+  working and allocator storage excluded; no partial/truncation/replay/mutation.
+  Strict fully validated lowercase decoder accepts empty world and returns
+  actual unrounded bounds/center/spans and precision flags; no high-precision
+  roundtrip guarantee. Ideal angular resolution explicitly distinct from actual
+  double endpoint stagnation/collapse and representational underflow. Full-key
+  alphabet validation precedes common-prefix comparison, even differing heads.
+  Own interleaved integer-grid derivation, ceil/floor5p/2 axis bits, alternating
+  8/4 and4/8 contraction, angular area/32 and prefix nesting explained; nearby
+  points across a split and equivalent end meridians share zero characters.
+  Ten strict ASan/UBSan/float-cast tests include2643 independent exact Fraction
+  integer-quantization fixtures,32768 exhaustive three-character integer-grid
+  cells,1000 actual random trace certificates, domain/count/alphabet/empty/owned/
+  quota/INT_MAX-before-allocation controls and4096-character no-early-exit work.
+  Independent Fraction quantization checks74760 frozen queries. Canonical
+  point first unchanged bit110, no collapse and positive actual1024 spans while
+  ideal spans underflow to zero; pole/end-meridian collapse109 distinguished.
+  Native30+5dir/combined3082 pass; whole2path78 definitions, all15 public examples
+  and stdout,8 clangd hovers, final installed freshness/code/read-only parity
+  pass. Header/source added to completed manifest. Six complete C++ programs/
+  six visually inspected local SVGs, computed outputs in Markdown and HTML,
+  source/build/export image bytes and site132/624blocks/559figures pass. Report
+  covers actual01101→13→e, original ezs42 and London/Greenwich/Sydney keys,
+  resolution, boundary counterexamples, endpoint stagnation and record controls.
+  Primary Chris Veness author page and source verified; strict-case, empty-key,
+  unrounded-center and validation variants documented. No forced dataset,
+  physical-distance certificate, historical invention or timing claim. Original
+  paired reports removed only after all gates; six candidate image paths absent;
+  catalog updated. Evidence: build/mepml-conversion/geohash/.
+
+- 2026-11-08: Converted generational collection to a shared checked native kernel
+  in generational.hpp/.cpp. Legacy result layout, binary-age outcomes, root and
+  old-field seed order, all-seeds-before-LIFO behavior, ascending classification
+  and actual full comparison are preserved. All34036 valid cases/387529 records
+  match independent full/young Warshall closures and direct preflight/installed
+  output. All60561 primitive events over788 frozen cases/448878 observed lines
+  match direct preflight, installed and rebuilt old execution. Original9memory
+  tests and completed object_graph.hpp remain byte-for-byte unchanged; original
+  7stdout lines/SVG exact. Complete graph validation then exact binary ages now
+  precede indexing/copy/quota; four recorded ASan heap overflows (short ages,
+  high root/child and short rows) and a nonbinary-age false-free are corrected.
+  Slot-only size metadata remains ignored, including invalid unused values.
+  Native ordinary work/full marks and owned primitive traces share the actual
+  kernel; no numerical replay. Online actual event quota defaults1m/0 disables
+  optional quota only; complete primitive records are not numeric entries/bytes/
+  peakRAM. Input vectors, root/work/final ordinary output, working and allocator
+  storage excluded; no partial/truncated return or caller mutation. Singleton8
+  records rejects7/admitted8; empty0records. Separate family generator admits
+  whole object counts before allocation and checked int-id capacity: original7
+  objects reject6/admit7, with safe excessive-size and zero-old-count guards.
+  New owned fixed-age GenerationalHeap validates/indexes once and maintains exact
+  old-to-young(source,field) slots on checked existing-field replacement. Sorted
+  hinted construction O(N+E+R); ordered-set writes O(log(W+1)); allocate new key
+  before mutation, duplicate fields independent, invalid writes atomic and deep
+  copies independent. Ages/roots/field counts fixed. Sparse collect shares young
+  kernel with O(Y+R+W+E_y) per-call work/storage: no old scan, whole revalidation,
+  full comparison or N-dense output. Setup, explicit graph snapshots and writes
+  have separate costs. Neither analysis physically promotes/frees/copies objects.
+  Legacy total O(N+E+R) includes discovery, dense output and full comparison;
+  minor_scanned is only young pops. Unreachable old sources can conservatively
+  retain floating young garbage, making minor visits exceed full-root liveness.
+  Own last-old-to-young-crossing proof establishes full-live-young subset of
+  retained young, not equality; maintained exact-slot update invariant explained.
+  Ten strict ASan/UBSan/float-cast tests cover33033 exhaustive all graphs0..3/
+  roots/binary ages with independent Warshall and eager/sparse equality,10000
+  actual writes independently rechecked after each,300 actual event/work/stack
+  certificates, hand seed3,1→visits1,2,3/full3,0,1,2, floating safety, full invalid
+  graph/age-before-quota and ignored sizes, online/whole quota/owned controls,
+  old chains through100000 with separate setup/constant young work,100000-young
+  chain iterative traversal and duplicate-slot/atomic-write/deep-copy behavior.
+  Native28+5dir/combined3052 pass; whole2path77definitions/all18public snippets/
+  stdout/8clangdhovers and final built-installed code/read-only parity/freshness
+  pass. Header and new source added to completed manifest; ObjectGraph once.
+  Six complete C++ programs/six inspected figures/all computed result lines in
+  both Markdown/HTML exports/source-build-export image parity pass: tiny boundary;
+  original7heap (young2/full6, remember3, free6, old/full/validation fields4 and
+  dense7); rooted minor2/full3 versus unrooted2/0; maintained writes with slots
+  0,1,2,1,0 and survivors0,2,2,1,0, no old scan and explicit separate rebuild
+  verification; old1..4096 eager discovery/full grow versus paid setup and fixed
+  remembered1/young2/classified3; online8/8/7 versus whole objects7/7/6 plus owned,
+  invalid-before-quota, atomic writes and empty controls. Intro arrow/plot legend
+  shortened after visual review; final SVG hashes confirm other figures unchanged.
+  Original Ungar1984 publisher metadata/DOI10.1145/800020.808261 verified; original
+  Sections7–8 read, printed161 §8.1 raster inspected. Store-side remembering/new
+  traversal distinguished from copying/survivor-space/tenuring runtime policy.
+  Empirical young-death tendency is workload-dependent; no production-version,
+  pause-time, timing, external-dataset or universal-performance claim. Site131/
+  618blocks/553figures passes. Originals removed only after all gates, six old
+  image paths absent, catalog API/destination updated. Evidence:
+  build/mepml-conversion/generational/.
+
+- 2026-11-08: Converted General Problem Solver to a dedicated checked forward-planning module
+  (general_problem_solver.hpp/.cpp), reexported through search_more.hpp. The old
+  recursive state-only visited set could miss bounded plans. One shared heap DFS
+  now records best expansion depths and reopens strictly shallower arrivals.
+  Legacy record layouts/signature/default32, operator order, add-wins effects,
+  initial-goal success, failure placeholders and all64 fact bits are retained.
+  Independent BFS checks397686 frozen cases (327680 exhaustive two-fact cases,
+  70000 random cases and6 controls):397683 results unchanged,2 false negatives
+  recovered and1 formerly successful case selects a different valid first DFS
+  path (3 rather than2 actions). No successes lost; all266377 returned plans are
+  independently valid. DFS explicitly does not promise shortestness. Direct
+  preflight/installed outputs match; original empty-stdout/exit0 make program
+  preserved. All2171129 frozen observed lines reproduce from rebuilt old source.
+  Of931 primitive event traces,925/6496 events match exactly; all6 changed traces
+  contain actual shallower reopenings (6909 new versus6776 old total events).
+  Unrelated shared search bodies/declarations and original6tests unchanged.
+  Actual visit/test/apply/goal/cutoff/repeat/reopen/backtrack/finish/exhaust events,
+  selected operator indices and work come from the executing kernel, without
+  replay. Online fixed-schema event-record quota defaults1m/0 disables optional
+  quota; each next capture is checked, no partial/truncated return or caller
+  mutation. Input operators/name bytes/root/work/final ordinary/working/allocator
+  storage excluded; records are not numeric entries, bytes or peak RAM. Original
+  make needs6 events including finish: cap5 rejects6 admits; initial goals/zero
+  budget still produce2 events. Independent checker validates every index before
+  whole p+1 prefix-state quota/capacity and transitions; early failure retains an
+  actual valid prefix with no admission discount. Applicability and goal flags
+  are separate, names may duplicate/be empty, and indices disambiguate them.
+  Native carry-operator generator accepts1..64 bits, with safe high-bit masks.
+  Ten strict ASan/UBSan/float-cast tests independently check327680 exhaustive and
+  21000 random three/four-fact bounded BFS outcomes,400 actual event/work
+  certificates, reduced old counterexample4→6→1→7, goal/depth/repeat precedence,
+  precondition failure/full-index-before-quota, online and whole caps, snapshots,
+  empty/duplicate/NUL labels, add-wins/highbit63/invalid enum/domain guards.
+  Counter family1..16 bits executes deep32768-step plan on32769 heap frames;
+  all32769 certificate states independently equal0..32768. Exact work is65536
+  visits/65535 checks/32752 repeat prunes/15 depth cutoffs at16 bits, no recursion.
+  Native25+5dir/combined3024, whole2path76definitions/all14header snippets/stdout/
+  8clangdhovers and final installed code/read-only parity/freshness pass. Two new
+  manifest paths; incomplete unrelated search_more files intentionally excluded.
+  Five complete C++ programs/five inspected figures/40computed lines per MD/HTML
+  export/source-build-export image parity pass: six-event make, independent door
+  states0,1,2,6; actual reopen6 depth2→1 with remaining budget1→2 and certified
+  path4,6,1,7; budget4/5 nonshortest paths; binary exponential counts; online
+  records6/6/5 versus whole certificate states3/3/2 with highbit/identity controls.
+  Own bit-mask, soundness/depth-dominance/bounded-completeness/finite-state cost,
+  carry progress/optimal family length/exact work and quota derivations. Original
+  Fikes/Nilsson IJCAI1971 introduction/II.A–B printed608–610 read; printed609 PDF
+  raster inspected. Ground positive-fact forward DFS is distinguished from
+  historical GPS means-ends strategy/first-order STRIPS theorem proving; no
+  external action, dataset, timing or general shortest-plan claim. All figures
+  passed first visual review. Site130/612blocks/547figures/5757pages passes;
+  original mepml/org removed only after gates, six old image paths absent and
+  catalog API/destination corrected. Evidence: build/mepml-conversion/general-problem-solver/.
+
+- 2026-11-08: Converted Gauss–Seidel with actual mixed-vector coordinate histories
+  in gauss_seidel.hpp and the existing conjugate_gradient.cpp stationary kernel.
+  Legacy scalar/residual-only signatures/layouts/zero-start/ordered widened sums,
+  checked double assignments, double-rounded dense A*x residual and inclusive
+  stopping are preserved. Existing residual-only history retains its online cap.
+  All20530 systems/16 unrelated CG controls match in146016 frozen records; all
+  116331 actual numerator/old/new/before-after coordinate events match in495009
+  observed records across direct preflight, installed and rebuilt original.
+  Original5stdout lines/SVG exact. Pre-existing cached3.72223e-11 is identified
+  as stale: actual unchanged pre-conversion program outputs3.72241e-11, which is
+  preserved. Original14CG tests/helpers/kernel/public wrappers/Laplacian fixtures
+  and CG/legacy linear headers remain byte-for-byte unchanged. New ordinary
+  run/work and full actual coordinate/sweep history share this one execution,
+  without numerical replay or additional residual products. Counts include zero
+  dense coefficients: kn coordinate assignments/divisions, kn(n-1) offdiagonal
+  products, kn² residual products and k+1 norm evaluations, first norm from b.
+  Complete shape/finiteness/nonzero diagonal/controls validated before initial
+  convergence/quota. New whole history bound n+1+K[n(1+2n)+(1+n)], empty1;
+  initial vector/norm, per-coordinate metadata+two vectors and per-sweep metadata
+  plus vector included. Fixed metadata contains scalars/work. Units are entries,
+  not bytes/peakRAM; original A/b, final ordinary output, root metadata, working
+  and allocator storage excluded. Positive quota/default1m,0 disables optional
+  quota only; checked counts/capacities precede initialization/history allocation,
+  no early-success discount, truncation, partial returned history or caller
+  mutation. Ordinary O(kn²) work/O(n) extra storage; actual history O(kn²).
+  Exact one-sweep n2 needs16 rejects15/admitted16; zero-RHS n1/K5 needs27 rejects
+  cap2 despite initial convergence, while legacy online cap1 admits initial
+  success and rejects a needed sweep. Empty/INTMAX budget history needs1.
+  Ten strict ASan/UBSan/float-cast tests independently check exact binary q-family
+  powers/error/radii/residual including q1.25 divergence, hand mixed reads,
+  SDD nilpotent transient residual1→64→0, reversed variables mapped back,
+  1000 integer strictly dominant3x3 against Cramer determinants, domain-before-
+  quota/nonfinite/negative/zero/overflow/unrepresentable norm and division,
+  complete bound/capacity arithmetic/owned snapshots/actual dense work through64.
+  Native33target+5dir/combined2999 pass; whole3path90definitions/all8newheader
+  snippets/stdout/10clangdhovers pass; final installed code/read-only sections
+  and freshness verified. One new manifest header; existing shared two once.
+  Five complete C++ programs/five inspected native figures/41computed result
+  lines in each Markdown/HTML export/source-build-export image parity pass.
+  Actual tiny updates(.5,0)→(.5,.75); original3x3 solution(2,4,3)/13sweeps with
+  residual3.722410353787e-11/off78,res117,norm14; q=.25,.5,.75,1.25 observed ratios
+  q² versus analytic Jacobi|q| (no Jacobi solver/timing claim); strict dominance
+  does not imply monotone residual, triangular1,64,0/order(.5,.75)vs(.75,.5);
+  native Laplacian one-sweep dense scaling64→4032off/4096res/8386history entries;
+  complete16-16-15 quota and early-zero/online/ownership/validation/empty controls.
+  Primary Netlib Templates second-edition author list and full Gauss–Seidel
+  subsection read; native dense widened absolute-residual variant stated. Own
+  scalar/triangular/error splitting, exact spectral criterion, SDD infinity-norm
+  induction/SPD coordinate-energy contraction, q-family closed form and work/
+  quota derivations. Corrects universal twice-Jacobi/straightlog/monotone/solely
+  matvec claims; residual not forward-error or exact floating residual certificate,
+  zero has no fabricated logarithm, scaling affects absolute stopping. No forced
+  external dataset or benchmark. Rate-plot legend initially covered divergent
+  endpoint; raised headroom, reran5programs and verified four unchanged SVG SHAs.
+  Site129reports/607blocks/542figures passes; original mepml/org removed only after
+  gates, six old owned image paths absent and catalog API/destination updated.
+  Evidence: build/mepml-conversion/gauss-seidel/.
+
+- 2026-11-08: Converted Gauss–Legendre pi into an actual fixed-count double kernel
+  in gauss_legendre_pi.hpp/.cpp. Legacy initialization, scalar signature, ordered
+  means/left-associated p*delta*delta/t subtraction and doubling are preserved.
+  All2227 frozen records match: scalar counts0..1024, full1024 actual before/after
+  state/estimate records including last unused p=Inf,103 BBP controls,32 Chudnovsky,
+  42 CORDIC and exact40-hex-digit Machin output. New preflight/installed/rebuilt
+  original match; original9stdout lines/SVG exact; original8tests unchanged/pass.
+  Only AGM body moved; other BBP bodies unchanged. A source-file purpose comment
+  refresh is the sole additional source difference and preserves all compiled
+  text/rodata/data.rel.ro after fresh XML/registry/core/install verification.
+  New owned run/trace/used-correction/change flags/work and reference diagnostics
+  share the actual recurrence without replay, early stopping, widening or forced
+  equal means. Legacy negatives retain zero-stage compatibility. Checked analysis
+  counts are0..binary-double maximum exponent(1024 here); excessive old NaN suffix
+  is rejected before work. Every used weight, correction, mean, t and estimate is
+  finite; the last unused p overflow is explicitly retained, never used again.
+  Scalar legacy evaluates only its final estimate; analysis evaluates initial and
+  every stage(N+1) for flags. Mean-state equality excludes the changing weight.
+  Plateau is two ULPs above nearest double pi, correcting old last-bit claim.
+  Estimate first unchanged at4 while means still change; (a,b,t) first unchanged
+  at5 while a,b remain one ULP apart. Actual positive stage4 correction1.358855e-20
+  is lost in rounded t, then later actual corrections are zero. Error helper keeps
+  rounded-double and wider-rounded differences/local-reference ULP offsets apart,
+  exposes extra-bit/log-availability flags and never fabricates an error floor.
+  Rounded pi compared with itself has zero rounded error but nonzero wider error;
+  wider reference is itself approximate and may provide no extra bits elsewhere.
+  Whole admission counts one initial-state record plusN fixed-schema stage
+  records, default1m/0 disables optional quota only; complete count/capacity checks
+  precede initialization/history allocation. Records are not scalar entries,
+  bytes or peakRAM; ordinary final output/root-work metadata/working state/
+  allocatorbytes excluded. Exact7records for6stages rejects6/admitted7; zero
+  stages has one initial record. No partial output/truncation/caller mutation.
+  O(N) arithmetic and history, O(1) ordinary analysis result storage.
+  Ten strict ASan/UBSan/float-cast tests independently compare Decimal150 Machin
+  pi/true errors, all0..1024 scalar/run results/full actual stage certificates,
+  exact positive AGM gap identity within rounding, used correction versus rounded
+  t difference, estimate/state stagnation versus unequal means/correct rounding,
+  count-boundary/negativeINTMIN compatibility/new negative checks/INTMAX rejection,
+  ownership/quota/log-reference units/adjacent ULPs/nonfinite candidate domains,
+  long-double precision portability and work through stagnant suffixes. Versioned
+  tests/oracles/gauss_legendre_machin.py --write/--check deterministically reproduces
+  the reference header with Python standard Decimal, independently of AGM.
+  Native27target+5dir/combined2966 pass; whole4path73definitions/all11newheader+
+  1changedlegacy examples/stdout/7hovers pass. Final library/install freshness and
+  compiled code/read-only parity checked. New2manifest paths/shared2already once.
+  Five complete C++ programs/five inspected native figures/44computed lines in
+  each Markdown/HTML export/source-build-export image parity pass. Actual first
+  averages/correction/t/p; preserved original6stages with double error8.881784e-16
+  versus wider7.656636e-16/twoULPs and53vs64bits; oneULP gap/correction-loss/stall
+  flags4vs5; actualN+1 square roots andNupdates/noearlystop through1024lastunused
+  pInf/finiteestimate; exact recordquota7vs6/owned/count/nonfinite controls and
+  roundedconstantzero-no-log but wider1.225148e-16/zero-stage2.9142135623730949.
+  Explicit newline diagram labels and absent default panel x labels fix visual
+  wrapping; all5programs rerun, unchanged figures verified by SHA.
+  Primary Brent1976 full author paper/Sections4-5 printed245-247 read,246-247
+  rasters inspected: elliptic/Legendre connection pi=A²/T and better finite
+  estimate, quadratic exact theory and own positive-gap derivation. Mathematical
+  lower formulas can cease to bracket pi when computed in finite precision.
+  Variable-precision guard bits/M(n)log n and non-self-correction distinguished
+  from fixed double; no arbitrary-precision/digit/error certificate claim.
+  Salamin independent-reference metadata verified (fulltext403/not claimed read),
+  C++ nearest-constant specification read; no forced external dataset or timing
+  claim. Site128reports/602blocks/537figures passes; original mepml/org removed
+  only after gates, six owned old image paths absent and catalog API/destination
+  updated. Evidence: build/mepml-conversion/gauss-legendre-pi/.
+
+- 2026-11-08: Converted Gauss–Jordan into checked full augmented reduction
+  in gauss_jordan.hpp/.cpp. The shared kernel preserves legacy result layout,
+  by-value signature, strict absolute1e-12 cutoff/equality acceptance, earliest
+  absolute pivot ties, interleaved full-row double A/identity divisions and
+  multiply-subtracts, including zero factors, prior columns and signed zeros.
+  All2,255,164 frozen records from35,859 systems match:16,276 actual-event cases/
+  118,243 actual pivot/normalize/eliminate/reject snapshots, full solution/inverse/
+  final matrix-transformation-RHS-permutation and100 unrelated solver controls.
+  New preflight, installed library and rebuilt original match; original12stdout
+  lines/SVG exact. Only Gauss–Jordan body moved; shared other bodies, original8
+  tests and protected Gaussian126 header/source/tests remain byte-for-byte unchanged.
+  Complete square/finite/RHS/control validation precedes indexing, early cutoff,
+  quotas, input copies and inverse/state allocation (legacy argument copies can
+  precede validation). Old short-row/short-RHS ASan heap overflows, NaN false
+  success, extraemptyRHS and finite arithmetic overflow are reproduced and fixed.
+  All stored coefficient/transformation/RHS assignments are checked, including
+  inverse overflow; rounding/underflow and inaccurate inverses remain possible.
+  Actual owned event matrices/identity-transform/RHS/permutation, final reduced
+  coefficients/RHS, counted work and raw clearing factors share one execution
+  without replay. No duplicated final inverse block; failed legacy solution and
+  inverse arrays remain empty. A failed event's transform is a partial row
+  transformation, not an inverse. New independent widened unsnapped A*V and V*A
+  products/infinity errors/supplied norms replace local report matrix products;
+  arbitrary candidates need not be inverses. Supplied norm product is not a
+  condition certificate; numerical residuals are not interval accuracy proofs.
+  Gaussian126 fixture and solve-residual summary are reused.
+  Whole history H=n²+2n+(n²+n)*(1+2n²+4n), default1m/0 disables optional cap only;
+  checked count/container/work-counter bounds before copies/state, full validation
+  first, no early-stop discount/truncation/partial output/caller mutation. Input
+  rows/cells/RHS and event metadata/two matrix row-records-cells/RHS/permutation
+  count; ordinary output/root-work metadata/working state/allocatorbytes excluded.
+  Entries not bytes/peakRAM. Successful n2history attains110, early zero-pivot
+  rejection retains25 but rejects cap25/admitted110; original3actual/bound387;
+  empty0. Separate inverse-product quota2n+2n² with default1m/0off. Ordinary
+  O(n³) arithmetic/O(n²) storage, full history/copy O(n⁴).
+  Ten strict ASan/UBSan/float-cast tests independently use determinant/adjugate/
+  Cramer on19,683 ternary3x3 matrices and15,625 small2x2 systems,300 random
+  actual-event certificates with accumulated T*Aoriginal=currentA and T*borig=
+  currentRHS invariants, pivot ties/swap-all-blocks/normalization/full clearing/
+  counters, dominant known solutions through32/both inverse sides, exact work
+  identities0..64, raw above-pivot factor100, scaled cutoff/equality/singular and
+  inconsistent systems, failed partial transform, all later nonfinite/domain-
+  beforequota/early pivot, coefficient+inverse overflow, ownership/successful
+  exact versus failed conservative quotas/virtual counts/empty, noncommuting
+  unsnapped products/cap/widened range. Native27target+5dir/combined2939 pass;
+  whole4path96definitions, all9new+2changedlegacy examples/stdout,8hovers and final
+  installed source freshness/code/read-only parity pass;2new manifest paths,
+  shared2already listed once.
+  Five complete C++ programs/five inspected native figures/36computed lines in
+  each Markdown/HTML export/source-build-export image parity pass. Tiny actual
+  swap-normalize2-clearbelow1-normalize-.5-clearabove1.5 transforms I into
+  [[3,-1],[-2,1]], x[1,2]/6events110. Original3x3 two swaps/12events387, inverse
+  errors A*V-I1.110223e-15/V*A-I8.881784e-16 and solve residual2.220446e-16 are
+  shown unsnapped. Actual fullblock updates2n²(n-1) versus Gaussian's
+  n(n-1)(n+1)/3 give ratio6n/(n+1) for these different tasks, replacing the false
+  inverse-free/50% claim; no universal ratio/timing claim. Raw above-pivot100
+  has an exact inverse here, while supplied wrongI gives product errors100 and
+  normproduct101 versus truecandidate10201. Failed partialtransform errors6/2;
+  tiny1e-13I defaultreject/explicit1e-15works, whole110/success110/early25 and
+  domain/ownership/productquota/empty controls. Diagram row label shortened and
+  plot legend shortened after visual clipping review, all programs rerun.
+  Own row-operation composition/inverse-on-full-reduction, cost and quota
+  derivations. Primary Tsao1989 NASA TM101466 Section3 printed8-9 read/raster
+  inspected; no-pivot diagonal-reduction variant explicitly differs from native
+  normalization/partialpivot/full identity. No error-equivalence theorem applied
+  to this implementation. Peters/Wilkinson1975 original stability reference
+  verified, fulltext403/not claimed read; no unconditional accuracy/rank claim
+  or forced external dataset. Site127reports/597blocks/532figures passes; original
+  mepml/org removed only after gates, six owned old image paths absent and catalog
+  API/destination updated. Evidence: build/mepml-conversion/gauss-jordan/.
+
+- 2026-11-08: Converted Gaussian elimination to a shared checked scalar kernel
+  in gaussian_elimination.hpp/.cpp. Legacy LinearSolution layout, by-value
+  signature, ordered double recurrence, earliest maximal-absolute pivot ties,
+  strict absolute pivot cutoff1e-12 (equality accepted), row permutations and
+  early failures are preserved. Only the Gaussian body moves from shared
+  linear_solvers.cpp; every other body remains byte-for-byte unchanged. All
+  1,264,805 frozen records match:35,859 systems,16,276 full actual-event cases/
+  90,477 events, final upper/RHS/row order and100 unrelated solver-control cases.
+  All625 small2x2 matrices with25RHS each,19,683 ternary3x3 matrices, scalar/empty,
+  500random, original3, scale/threshold/tie/swap andWilkinson controls included.
+  New direct-source preflight, installed library and rebuilt original match;
+  original9stdout lines/originalSVG exact; original5tests remain unchanged/pass.
+  The actual original solution is floating approximate[2,3.0000000000000004,
+  -0.99999999999999989]; the cached signedzero differed from this toolchain's
+  actual output. New report preserves actual data rather than its stale cache.
+  Full square/RHS shape and finite input validation precedes indexing, early
+  cutoff and trace quota. Independently reproduced shortrow/shortRHS ASan heap
+  overflow, NaN false-success and finite overflow/nonfinite solution are fixed.
+  Stored double assignments and widened growth are checked, without widening
+  or reordering the solve. Roundoff/underflow remain possible; an absolute cutoff
+  failure is not a rank certificate and does not distinguish inconsistent from
+  underdetermined or uniformly tiny nonsingular systems. Explicit positive
+  finite cutoff on new APIs preserves legacy default semantics.
+  Owned actual pivot/reject/eliminate/back snapshots, final upper/transformed
+  RHS/current-to-original row order, accepted pivot count, actual work and stored
+  coefficient growth share one kernel without replay. No manufactured zeros;
+  no packed L factor/blocked BLAS. New original fixture/Wilkinson growth family
+  and widened infinity-norm residual/backward summary replace report-local logic.
+  Residual summary is independent of solving; distinct from existing Frobenius/
+  2-norm linalg::backward_error. A small residual does not certify forward accuracy.
+  Whole trace bound n²+2n+(n(n-1)/2+2n)*(1+n²+4n), default1m/0 disables optional
+  cap only; checked arithmetic/container/work-counter limits precede input copies
+  and state allocation after complete no-allocation input/control validation.
+  Input/event matrix rows and all vectors plus one event metadata record counted;
+  ordinary final outputs, root/work metadata, working state/allocatorbytes excluded.
+  Entries not bytes/peakRAM; no early-stop discount/truncation/partial output or
+  caller mutation. Tiny upper73/actual67 rejects67 and admits73; original213/195;
+  empty0. Ordinary arithmeticO(n³)/storageO(n²), full history/copy worst-caseO(n⁴).
+  Ten strict ASan/UBSan/float-cast tests independently use determinant/Cramer
+  formulas for15,625 small2x2 systems and19,683 ternary3x3 matrices,300 random
+  actual-event certificates, held row/pivot/permutation/update/back states and
+  counters, known dominant systems through64, exact Wilkinson growth through128,
+  |multiplier|<=1/no swaps, singular/inconsistent controls, threshold equality/
+  scaling, full later nonfinite/domain-beforequota/early failure, finite overflow,
+  owned copies/conservative caps/virtual count capacities and empty behavior.
+  Native24target+5dir/combined2912 pass. Whole four-path102definitions pass;
+  all13newheader+2changedlegacyexamples compile/run with exact stdout,7hovers
+  (including existing CG legacy target), final library/install source freshness
+  and matching compiled code/read-only sections verified. New2manifest paths;
+  existing shared2paths remain listed once.
+  Six complete C++ programs/six inspected native figures/40 computed lines in
+  both Markdown/HTML exports/source-build-export image parity pass. Actual tiny
+  swap/factor0.5/-0.5y=-1/back(1,2); original U diagonal-3,1.667,0.2/roworder1,2,0/
+  two swaps/8coefficientupdates/9events/195retained and explicit rounding evidence;
+  successful actual triangular row-count/cubic coefficient-count vs virtual
+  quartic whole-history entries (no timing claim); Wilkinson family growth2^(n-1)
+  with multiplier1/no swaps but zero backward error for selected RHS; deliberately
+  wrong(1,2) on diag(1,1e-10) has coordinate error1 despite residual1e-10/
+  backwarderror3.333e-11; scaled1e-13I fails1e-12 but solves with1e-15, wholequota/
+  owned/fullvalidation/numeric-overflow/empty controls. Log-magnitude figure
+  explains its zero-height coordinate bar represents error1, not zero error.
+  Own row-equivalence/backsub/work/growth-doubling/history derivations; primary
+  LAPACK DGETRF source/LUG read with exactzeroINFO/blocked-factor differences
+  explicit, NIST family and original growth-author explicit matrix read.
+  Higham/Higham1989 publisher abstract/metadata verifies correctdoi0610012 and
+  growth need not yield large error for every RHS. Wilkinson1961 reference verified
+  but ACM fulltext403, no claim full paper read. Generated systems are natural;
+  no forced external dataset or unconditional numerical-stability claim.
+  Site126reports/592blocks/527figures passes; original mepml/org removed only
+  after gates, six owned old image paths absent, catalog API/destination updated.
+  Evidence: build/mepml-conversion/gaussian-elimination/.
+
+- 2026-11-08: Converted Gale–Shapley into a checked shared FIFO kernel
+  in stable_matching.hpp/.cpp. Legacy result layout/signatures, exact FIFO
+  proposals, ranking/acceptance/displacement/rejection, maps and proposal metadata
+  are preserved across 2,854,683 frozen records from 46,975 profiles: all 46,674
+  strict complete profiles through three agents, 300 random cases, original five.
+  New Clang preflight, installed GCC and rebuilt original match; 35 original
+  stdout lines and original SVG match byte-for-byte. Actual pre-edit program
+  yields nine/eight proposals and resident mean ranks 1.8/2.8; cached report's
+  1.2/3.2 was stale. Fixture preserves shuffle semantics; exact numeric tests
+  separately pin emitted rows because std::shuffle mapping is library-dependent.
+  Existing five stable-matching tests remain unchanged and passed originally;
+  a new three-agent hypothetical wrong-orientation regression demonstrates the
+  correct inverse map, without alleging an existing test bug.
+  Full preference shape/range/permutation checks precede candidate indexing and
+  quota admission; malformed maps now return false safely. Old short-map UBSan,
+  out-of-range partner/short inverse ASan faults and false certification of a
+  duplicate nonmatching are independently reproduced and corrected. Valid partial
+  candidates remain supported; proposal metadata, including MAX, is ignored by
+  stability checks. Empty result is stable/perfect, ranks have no agents and
+  means are placeholders. New owned proposal snapshots expose actual used reviewer
+  ranks, next choices, before/after FIFO, two maps, incumbent/newly-free/decision;
+  work counters share the ordinary kernel without replay. Diagnostic witnesses
+  use one-based ranks and unmatched n+1. Orientation reversal preserves execution
+  count metadata. Rank summaries require perfect feasible maps but do not certify
+  stability. Native full-permutation enumeration reuses the checker, admits n!
+  candidates before search and is not an independent oracle. Native original,
+  mutual-first and common-order profile generators replace report-local logic.
+  Whole trace entries 3n+3n²+Q(1+5n), Q=n(n-1)+1 (empty zero); default one million,
+  zero disables optional cap only. Checked arithmetic/container lengths precede
+  rank/state/copy allocation, after O(n) validation scratch. Entries are not bytes
+  or peak RAM; ordinary outputs, metadata, working state and allocator bytes
+  excluded. Tiny bound51/actual45 rejects45 and admits51; original636/actual275.
+  Diagnostics admit worst-case n² witnesses; enumeration limits candidates rather
+  than stable answers. No truncation, caller mutation, partial history or replay.
+  Ten strict ASan/UBSan/float-cast tests independently scan preference positions
+  for all complete small profiles/candidates, exact stable sets, proposer-optimal
+  and reviewer-pessimal properties; 300 random actual-state certificates check
+  held-best-ever, FIFO/free-map equivalence, no repeated pair, next-choice prefix,
+  counters and owned copies. All256 small malformed/partial map combinations,
+  witness ranks, MAX metadata, domains before quotas, overflow, factorial/empty,
+  exact deterministic families and portable fixed-row regression pass.
+  Native24 target+5dir/combined2888 pass; whole two-path92 definitions/all26
+  header examples/stdout/5hovers pass with final built/installed code freshness.
+  Five complete C++ programs/five inspected native figures and both exports retain
+  all43 computed lines and identical source/build/export figures: tiny actual
+  displacement/queues[1],[0],[]; original synthetic rows/orientations/rank means;
+  paper Example1 three stable maps with opposite rank means over six candidates;
+  measured proposals n/triangular and n² inverse-rank preparation (not timing);
+  malformed/partial/unstable/stable controls with0/3/1/0 witnesses, whole quotas,
+  ownership, input validation, virtual overflow and empty controls.
+  Read original1962 paper printed11-15, Theorem1 pp12-13 and Theorem2 p14;
+  rejection induction, existence/stability/optimality and reviewer tradeoff stated
+  within strict complete equal-side model. FIFO proposal bound differs from
+  original simultaneous stage count. Ordinal means are not universal utility;
+  native enumeration is not the independent test oracle. Official NRMP positions
+  and couples sources verify that real matching exceeds this unit-capacity toy;
+  no actual residency data or outcome claim. Site125 reports/586 blocks/521 figures
+  passes. Source and org removed only after gates; six owned old image paths
+  absent, catalog destination/API updated, two paths added to completed manifest.
+  Evidence: build/mepml-conversion/gale-shapley/.
+
+- 2026-11-08: Converted Gabow SCC into a validated shared iterative kernel
+  in gabow_scc.hpp/.cpp, retaining the legacy signature, raw closure-order labels,
+  ascending start and adjacency order/duplicates/loops. Original was already
+  iterative. All658,854 frozen graph/label/other-SCC-control/actual preorder-S-B-
+  heapframe-nextneighbor/component-assignment records match exactly:66,369 graph
+  cases, including all66,067 digraphs through4vertices and833 full-event cases.
+  New Clang preflight, installed GCC and rebuilt original match;6 original stdout
+  lines/originalSVG are byte-identical. graph_connectivity.hpp and its unrelated
+  algorithms remain byte-for-byte unchanged and outside completed manifest.
+  Native work and owned enter/edge/collapse/close-root/assign/finish snapshots
+  share one kernel without replay. Each primitive is captured at its actual time;
+  closure-counter increment follows all assignments. S holds all discovered-
+  unassigned vertices, including finished DFS calls; B holds candidate roots;
+  active frames are a different stack. Full n/row/endpoint validation precedes
+  empty returns, quotas, copies and state allocation. Old short-row/high-endpoint
+  ASan heap overflow and negative-edge UBSan offset overflow are documented and
+  corrected; negative n/extrarow-empty domains explicit. No caller mutation,
+  shared state or partial result. Native partition-bijection comparison permits
+  noncontiguous/MAX nonnegative labels and native quotient summary groups/sorts/
+  deduplicates arcs with raw internal/cross counters; supplied labels are not
+  certified SCCs and arbitrary quotients may be cyclic. Summary sort/map costs
+  separated from linear traversal; Gabow IDs strictly decrease on cross arcs.
+  Whole history bound(N+E)+(E+4N)*(1+5N), exact event countE+4N and conservative
+  vector lengths; default1m/0 disables only optional cap/count capacities remain.
+  Admission before copies/state; snapshot frame pair counts one record, root
+  metadata/work/final ordinary labels/working storage/allocator bytes excluded,
+  entries not bytes or peak RAM. Tiny upper263/actual185 rejects cap185 and
+  admits263; original upper1740/actual1173. Empty trace0. History adds worst-case
+  O((N+E)N) copies/storage while ordinary kernel retains O(N) state.
+  Ten strict ASan/UBSan/float-cast cases independently use transitive reachability
+  on all66,067 digraphs, per-primitive state/counter certificates for531 small and
+  300 random shuffled duplicate graphs, full membership/preorder/S/B/frame/tree
+  index/assignment/closure counter invariants, finished-open cross-edge, single
+  edge79collapses/80totalrootpops, dense/DAG exact operation identities,
+  200,000-vertex chain/cycle heap traversal, relabel/order/loop/duplicate partition
+  invariance, full domains before quota, virtual overflow/conservative caps/owned
+  snapshots, label-bijection and arbitrary cyclic quotient controls. Original
+  raw labels[3,3,2,2,2,1,1,0]/visits8/edges10/tree7/open3/closed0/closures4/
+  collapses4/peaksDFS8-S8-B4/42events retained. Native25 target+5dir/combined2864
+  pass. Whole two-path75definitions/all15header snippets/stdout/5hovers pass;
+  final allocation-failure contract comments preserve compiled text/read-only
+  sections after docs/registry/install freshness verification.
+  Five complete C++ programs/five inspected native figures/both exports retain
+  every computed line and identical source/build/export images. Actual tiny
+  finished1/openS[0,1] versus frames[(0,1)], later2->1 collapse/all3SCC; original
+  four-group quotient chain sizes2,3,2,1/sink-firstIDs; reversed neighbor order
+  permutes labels but same partition; duplicate loops change work2,1,0→2,6,1/
+  rawcross2unique1 and supplied false split produces cyclic quotient. Families
+  reuse native rooted_tree_edges/complete_directed_graph_edges, measuredS=E+4N
+  versus represented input N+E (no elapsed timing claim); eight-cycleoneedge
+  seven boundary pops/eight total, whole263/185 and deep200kcycle1mtransitions/
+  199999collapses/default history rejection. Work-plot headroom keeps legend
+  clear of highest point. No external dataset is natural for these exact inputs.
+  Read full Gabow2000 Section2/Theorem2.1 printed108-110; contracted-path
+  boundary invariant, sink removal and amortized proof distinguish open vertices
+  from active calls, all-SCC partition from cycle enumeration, and many pops per
+  edge from one-comparison claim. Native monotonic preorder/separate component/
+  explicit-frame variant described;1999 submission not mistaken for journal date.
+  Site124reports/581blocks/516figures passes; originals removed only after all
+  gates, catalog API/destination updated/six old figure paths absent; two paths
+  added to completed manifest. Evidence: build/mepml-conversion/gabow-scc/.
+
+- 2026-11-08: Converted fuzzy c-means into a checked shared Euclidean kernel
+  in fuzzy_c_means.hpp/.cpp, preserving FuzzyCMeansResult layout and legacy
+  signature/defaults. All296,880 frozen input/initialized membership/actual
+  center-membership-maxchange/final objective records match exactly, including
+  zero-dimensional/zero-iteration/last-near-coincident controls and original160
+  blobs. Both pre-edit compilers, new Clang preflight, installed GCC and rebuilt
+  original match;12 original stdout lines/originalSVG are byte-identical.
+  Before any API edits, corrected test-driver multiple RNG draws in unspecified
+  argument order; preserved first artifacts, sequenced m/T/seed explicitly and
+  verified both compiler paths identical. No baseline rewritten after core edits.
+  Native work/seeded and supplied-start owned traces/actual weighted numerators,
+  denominators, distances and phase objectives share one kernel without replay.
+  Prediction memberships replace report-local lambda; original seed21 blob
+  generator ported; native coefficient/entropy summaries and ordered objective.
+  Last center within strict distance1e-12 wins one-hot, zero-weight column retains
+  old center, returned centers use incoming last memberships (no final refresh),
+  max-change<tol strict/tol0 runs cap, zero iterations randomU/zeroV all retained.
+  Full shape/finite/parameter/simplex-row validation before quotas/shortcuts/
+  copies/RNG; no normalization or scaling. Old ragged ASan heap-overflow/NaN
+  results/all-positive-weight underflow are documented; invalid input throws,
+  actual nonfinite arithmetic overflows, entirely underflowed positive cluster
+  weights throw. Trace phase objectives have additional numeric limits (initial
+  zero-center objective can overflow when an ordinary final fit is finite).
+  Whole trace upper base2n+c+nd+nc+cd plusT*(1+3c+2n+2cd+2nc) admits before
+  copies/draws, default1m/0 disables only optional quota/count capacities remain,
+  not bytes/peak RAM or early-stop estimate/no truncation/partial/caller mutation.
+  Tiny48vs47, original195004 requested/11485actual, ownership/virtual overflow.
+  Nine strict ASan/UBSan/float-cast cases use independent inverse-power
+  long-double queries400models/four fuzzifiers, analytic weighted means/row
+  optimality grid, every actual phase sum-distance-membership/objective/counter
+  certificate, scaling/reflection/translation invariants, simplex/domain/
+  numerical overflow-underflow/trace extra limits/last ties/dead clusters/
+  zero-empty dimensions/caps/owned history/original fixture controls. Native21
+  affected+5dir/combined2839 pass. Whole two-path67definitions/all16header
+  examples/stdout/5hovers pass; final comment-only helper exception-contract
+  narrowing preserves all compiled text/read-only sections after docs/install.
+  Five complete C++ programs/five inspected native figures/both exports retain
+  every computed line and identical source/build/export images. Tiny centers
+  55/31,255/31/J80.5→14.64516→11.21858660.; original11iters/J623.80448; canonical
+  Iris150/four raw centimetre features/species excluded then grouped descriptive
+  membership means/33iters/J60.505711/PC.783397/H.395492nats; fixed0,10centers
+  acrossm1.5,2,3,5 demonstrate far tails→.5 (not global monotone S or probability/
+  noise detector); actual three-iteration24point ratio powers72c² versus0 for
+  coincident rows, with all distances computed first. Near-exact midpoint report
+  assertion tolerates rounding; Color typo corrected to native RGB.
+  Own objective/Lagrange/block-minimizer proof distinguishes exact descent from
+  finite threshold/stopping, local versus global solutions, fixed-center m limits
+  versus fitted solutions, raw-feature scaling, PC/entropy versus calibrated
+  uncertainty/cluster quality/automatic c selection. Dunn1973 publisher verified;
+  full1984 Bezdek/Ehrlich/Full pp193-195 read including singularity discussion,
+  Euclidean versus paper norm options and nonstatistical membership.
+  Site123reports/576blocks/511figures passes; originals removed only after all
+  gates, catalog API/destination updated/six old SVG paths absent; two completed
+  paths added after checks. Evidence: build/mepml-conversion/fuzzy-c-means/.
+
+- 2026-11-08: Converted Freivalds into a checked shared projection kernel
+  in freivalds.hpp/.cpp, reexported through the legacy linear_algebra.hpp.
+  Preserved valid finite double accumulation order, SplitMix64 unsigned wrap/
+  one word per bit, default seed/20 rounds, absolute tolerance1e-6, all three
+  matvecs before row comparisons, and first failing row/round exits. All283,315
+  frozen input/verdict/actual challenge-matvec-tested-residual/state records and
+  unrelated Gram-Schmidt/power/Strassen controls match bit-for-bit; pre-edit
+  installed core and rebuilt frozen source match too. All48,000 original seed
+  verdicts plus12 counts match both ordinary calls and the once-per-seed batch;
+  original18 stdout lines/originalSVG match. Every other legacy linear-algebra
+  implementation body/private helper remains byte-for-byte unchanged; old
+  incomplete files excluded from completed manifest, new two paths added.
+  Full rectangular validation of all inputs precedes finite validation,
+  compatibility/zero-round/quota/copies/RNG. Wellformed incompatible dimensions
+  still reject; nonpositive rounds compatible accept vacuously, empty default
+  calls perform20 empty rounds/no RNG. Old ragged A/B/C each independently
+  produce ASan heap-buffer-overflow; old NaNs silently accept. New invalid input
+  throws, actual nonfinite accumulators/compared residuals throw overflow_error;
+  no unused AB/norm computations or caller mutation. Supplied zero challenge
+  with huge unused product accepts while actual overflowing challenge throws.
+  Native work/owned actual round traces/supplied binary probe/exhaustive binary
+  audit/fixed original40x40 seed3 fixture share one kernel with no replay. Fixture
+  product reuses canonical Strassen and independently matches integer products.
+  Whole trace upper bound=input rows+cells+T*(1+n+k+3m), T=max(rounds,0) compatible;
+  default1m/0 disables only optional quota, checked count/container limits remain.
+  Admission precedes copies/RNG; differences retain only tested row prefix.
+  Tiny upper29/actual28 still rejects cap28 and admits29; entries are not bytes
+  or peak RAM, no partial result escapes. Exhaustive audit count2^n checked
+  before enumeration with separate vector cap. Seed sweep validates nonwrapping
+  seed range/aggregate work bounds, executes maximum prefix once/seed, derives
+  caller-order/duplicate/negative prefixes from actual zero-based failure index;
+  zero-trial/empty/incompatible controls documented and tested.
+  Ten strict ASan/UBSan/float-cast cases independently test6,561 exhaustive integer
+  matrix pairs/correct-and-corrupted claims/all binary vectors,300 rectangular
+  random models, dense exact integer residual oracle and wide-integer proof of
+  exactly correct cancellation input. Separate SplitMix indexed-word/state
+  oracle, actual frames/work/early exits, epsilon boundary/nextafter/signedzero/
+  subnormal, finite domain before shortcuts/caps, actual later-row overflow,
+  retained ownership/whole quotas/empty/zero-width/zero-negative rounds/range
+  checks pass. Measured original batch4000calls/7838rounds/313520words/37622400
+  terms/157520comparisons agrees with all original prefix verdicts. Original
+  correct20round product96000terms is preserved.
+  Native25 affected+5dir and accumulated2818 tests pass; whole new two-path
+  Doxygen audit96definitions, all21 public header examples/stdout,5 hovers,
+  final registry and built/installed code-readonly-section/freshness parity pass.
+  Five complete C++ programs/five inspected native figures/both exports check
+  every computed line and identical source/build/export SVGs. Actual tiny
+  3matvec method branch/all4challenges2accept; original seed curve with explicit
+  0/4000 at11/12 and log panel omitting zeros without fabricated floor; numerical
+  small wrong alwaysaccept and exact-cancellation halfreject; measured3Kn²
+  versus analytical schoolbookn³ (n40K20:96000>64000, not runtime/Strassen counts);
+  whole29/28 admission/owned/domain/empty/zero controls. Legend text shortened
+  after visual inspection to fit canvas. Exact-arithmetic IID binary theorem
+  independently derived by conditioning one nonzero coefficient; distinguishes
+  deterministic seed fractions and approximate tolerance decisions, no general
+  exact-equality or one-sidedness promise. Verified1979 Freivalds publisher
+  chapter/Section3 full text pp59-60 (sign probes; ours binary variant).
+  Site122reports/571blocks/506figures passes. Originals removed after all gates,
+  catalog API/destination updated, six old figure paths verified absent.
+  Evidence: build/mepml-conversion/freivalds/.
+
+- 2026-11-08: Converted FP-growth into a checked shared explicit DFS kernel
+  in fp_growth.hpp/.cpp, retaining the legacy association_rules.hpp declaration,
+  FrequentItemset layout, row-set normalization, canonical ordering and historical
+  zero-threshold positive-support-only behavior. Full-width node/parent/header
+  IDs replace private int narrowing; node0 alone denotes root, so SIZE_MAX item
+  IDs remain valid. All93,020 frozen output/Apriori-Eclat controls and actual
+  tree creation/node-parent-header/order/DFS emission/weighted conditional path/
+  child-tree records,19 original stdout lines and the original SVG match exactly.
+  Pre-edit installed native/preflight/rebuilt frozen source also match. Other
+  association helpers/miners/rules/encoding function bodies remain byte-for-byte
+  unchanged; source purpose description reflects extraction. That final comment
+  refresh preserves compiled text/read-only sections exactly.
+  Native measured work, owned actual trees/steps/conditional bases and original
+  grocery fixtures share one kernel without replay. Header-node creation order,
+  build frequency-descending/ID-ascending ties, mining support-ascending/ID ties,
+  nearest-ancestor-first paths, TARGET-node weights, pruned child builds and DFS
+  emit/base/build/descent schedule are preserved; no paper single-path shortcut.
+  History base N+raw occurrences precedes input copy/normalization. Later tree
+  costs1+prefix+nodes+order+sum(1+headerIDs), step costs1+pattern+sum(1+pathitems)
+  admitted online before history copies; working records formed first as needed.
+  Default1m/zero disables only optional cap; count/container checks remain. Units
+  exclude ordinary canonical output/work/normalized input/active trees/buffers/
+  allocator bytes, not a whole-memory or peak-RAM quota; no partial result or
+  caller mutation. Tiny exact38 versus37 rejection, empty trace2 are exercised.
+  Added Diagram::rooted_tree using existing exact native font box measurements,
+  iterative DFS leaf intervals/global measured spacing and parent-to-child arrows.
+  Full parent/root/cycle/disconnection checks before optional node cap; validation
+  may allocate scratch, cap precedes primitives; arbitrary parent-ID order, empty
+  renderable trees, owned labels, zero cap and capacity checks documented. Existing
+  Diagram methods/instance fields remain byte-for-byte unchanged and six old SVG
+  fixtures remain identical. No report-local tree layout or schematic substitution.
+  Eleven strict ASan/UBSan/float-cast cases independently count subset membership
+  on2,842 exhaustive database-threshold cases and250 seeded duplicate/sparse/MAX
+  fixtures plus permutations; certify weighted projected node counts, headers,
+  supports, conditional paths/children/DFS emissions, every work counter/history
+  entry and peak frame tree occupancy. Exact dense/disjoint identities, online
+  caps/ownership/wide admission/zero-empty-MAX/pruned-empty controls, measured
+  geometry non-overlap/XML/Unicode/long wrapping/parent domains before cap and a
+  2,000-deep heap traversal pass. Grocery has no empty pruned child; a dedicated
+  two-path base with counts1+1 at threshold2 tests that case instead.
+  Fifty-eight affected plus5 dir native cases and accumulated CTest2,793 pass.
+  Whole six-path audit197 definitions/all30 changed-header examples(19 stdout)/
+  twelve hovers(six new) pass. Existing four completed paths retained once; new
+  FP header/source added after gates, umbrella and source manifest wired.
+  Five complete programs/five inspected figures/both exports preserve all55
+  computed lines and identical source/build/export images. Tiny actual tree/pair
+  support2/header3+3, original11 grocery sets and actual ten-node tree, diapers
+  base beer2 plus beer,bread1→conditionalbeer3/history150; canonicalTitanic891rows/
+  2673incidences/7items/min45/32sets(7,16,9)/initial23nodes/all58/build17/hops43/
+  peak3/history3976/all-three-miner equality; denseU10output1023 versus disjoint10,
+  nodes1023/build512/hops1013/peak10/live65/output5120IDs; online38/37/owned/MAX/
+  empty2/above-count/zeroFP2 versus Apriori-Eclat3 controls. Publisher2000 paper
+  tree/conditional proof sections read; nonempty-extension identity and target
+  weights precise. Corrects wrong old hand tree, raw-losslessness/two-total-scans/
+  O(Nwidth)/one-tree-memory/universal-compression-runtime/zero-equivalence claims.
+  Canonical passenger data and native itemset_label reused; no external data glue.
+  Site121reports/566blocks/501figures passes; originals removed only after gates,
+  catalog API/destination updated; six old figure paths checked absent. Evidence:
+  build/mepml-conversion/fp-growth/.
+
+- 2026-11-08: Converted forward–backward into a shared validated native recursion
+  in forward_backward.hpp/.cpp, preserving historical model/result field layouts,
+  accessors, two-argument signature and hmm.hpp include. Existing Viterbi and
+  Baum–Welch bodies remain byte-for-byte unchanged; incomplete umbrella excluded
+  from manifest, Gaussian HMM remains completed once. All87,530 frozen successful
+  alpha/beta/gamma/scale/loglikelihood plus Viterbi/BaumWelch control records,
+  all24 original stdout lines and one original SVG match exactly. Pre-edit GCC
+  O3 and Clang O2 baselines also match. New work is measured in the executing
+  kernel; actual table results already expose states, so no redundant trace/replay.
+  Complete model shape validation precedes all weights, observations, allocation,
+  quotas and empty shortcuts. Finite probabilities in[0,1], stochastic initial/
+  transition/emission distributions within absolute1e-12 LD sum; no silent model
+  normalization. Observation and supplied path IDs fully checked. Empty model and
+  observations have evidence1/log0/empty tables. Whole optional result admission
+  4T+3TN for positive dimensions, default1m/zero disables only cap; entry records
+  not bytes/RAM, count/container bounds remain. Ordinary API has no optional cap.
+  Corrected impossible evidence from old finite prefix score to -infinity with
+  explicit zero undefined-posterior placeholders. Boolean prefix support probe
+  distinguishes positive mass lost to zero (underflow_error); nonfinite actual
+  arithmetic/reciprocal scale throws overflow_error. Individual tiny terms can
+  still round away; scaling is not an arbitrary-length/precision guarantee.
+  Frozen probes demonstrate old impossible log0, tiny inf/NaN and ragged emission
+  UBSan null-reference access. Native bounded widened path probability/enumeration/
+  marginals/best path and checked integer N^T replace report-local brute force.
+  Separate path cap default1m/zero off plus count/work/capacity checks; positive
+  widened prefix underflow throws, no partial results/caller mutation. Original
+  model and fourteen-symbol fixtures are native; reference enumeration is O(TN^T),
+  not a replacement fast solver or unlimited-precision oracle.
+  Ten strict ASan/UBSan/float-cast cases independently recurse through all243
+  dyadic two-state models/all15,309 observation-model pairs and200 random models;
+  filtering/unscaled suffix relations and sum(alpha*beta)=c_t, analytic future
+  influence, impossible/positive-underflow/reciprocal-overflow distinction, full
+  shape/weight/row-sum/symbol/path domains before cap/empty, whole quotas/ownership/
+  full-width forecasts, actual counters/parity,10,000-step log evidence, marginal
+  modes with a forbidden transition and enumeration ties. Existing Viterbi test's
+  path identity assertion failed identically on frozen old code; corrected to
+  verify recovered joint path score against optimum, preserving production ties.
+  Twenty-seven affected legacy HMM/format/Gaussian sampling cases plus5 dir pass;
+  accumulated CTest2,766. Fresh59 definitions/all13 examples/five hovers pass.
+  Five complete programs/five inspected native figures/all46 computed lines in
+  both exports with matching source/build/export images: tiny four-path evidence
+  .154 and first-state filtering .1→smoothed .24026; original short16-path evidence
+  .0133576 and14-step log-14.9452; marginal modes0→1 mass0 versus Viterbi0→2 mass.4;
+  one-state10,000-step finite log evidence despite double exp underflow; actual
+  two-pass pair terms versus integer path forecasts and entry20/original140 plus
+  domain/enum-cap/virtual-overflow/owned controls. Rabiner1989 primary recurrence
+  and scaling sections read, exact native backward convention documented; backward
+  rows are not probability distributions, product norm c_t not1. Conditional model
+  uncertainty does not establish calibration; no universal threshold/Viterbi or
+  arbitrary-length guarantees. Synthetic fixtures need no dataset. Site120reports/
+  561blocks/496figures passes; originals removed only after gates/catalog alias
+  updated/two old figure paths checked absent. Evidence:
+  build/mepml-conversion/forward-backward/.
+
+- 2026-11-08: Converted force-directed layout with a shared checked native kernel
+  extracted into force_directed_layout.hpp/.cpp; legacy signature/defaults and
+  graph_layout include retained, spectral implementation and Point2D ABI unchanged.
+  All118,983 frozen seeded/output/raw/actual-frame/repulsion/net/temperature/mean/
+  scale records including66 spectral controls,8,289 frozen supplied-initial reference
+  records and4 original stdout lines match. Pre-edit installed native smoke also
+  exact; obsolete original stored coordinates replaced by actual source output.
+  Actual double operation/update order retained, duplicate/reverse edges attract
+  repeatedly, validated loops ignored, no coincident jitter, all forces before all
+  moves. Cooling0.1*(1-double(i)/T); n<2 raw early return/no normalization, T0n>=2
+  still centered/scaled. Work records actual pair/edge/attraction/move/sweep visits
+  and uniform-distribution calls, not raw engine words. Owned traces capture real
+  accumulator phases and states without replay; fresh supplied-position schedules.
+  Whole bound E+3n+S(1+3n), S=T for n>=2 else0, default1m/zero disables only cap,
+  before RNG/copies, checked arithmetic/capacities; entries not bytes or peak RAM.
+  All supplied finite coordinates/endpoints validated before quota/early returns;
+  actual intermediate arithmetic must remain finite. Extreme nonedge controls
+  succeed without evaluating unused overflowing attractions; no partial result or
+  caller mutation. Independent long-double geometry and C1 regularized potential
+  helpers are queries, not extra kernel work; raw versus final units distinguished.
+  Ten strict ASan/UBSan/float-cast cases independently use ordered-vertex widened
+  forces on300 fixtures and all64 three-vertex loop/edge graphs, actual move replay,
+  potential finite differences including the distance floor, analytic two-point
+  cooling/non-descent, counts/seeded parity, translation/rotation/reflection,
+  coincidence/singleton/full-width sweeps/zero iteration, domain-before-quota,
+  whole admission/ownership/virtual overflow and finite-extreme actual overflow.
+  Forty-seven affected plus5 dir native cases pass; accumulated CTest2,739.
+  Fresh69 definitions/all14 header examples/five hovers pass; two new canonical
+  paths completed; unfinished spectral umbrella excluded, geometry remains once.
+  Five complete programs/five inspected native figures/both exports preserve all29
+  computed lines and matching source/build/export images. Tiny two-vertex second
+  capped step increases potential; original500-sweep path coordinates preserved;
+  once-only500-frame raw potential/temperature/movement history; repeated-edge/
+  loop/coincidence/singleton/T0 controls; dense actual work and quota21/original6515/
+  domain/overflow/owned controls. Native complete_graph_edges reused. No global
+  convergence/descent/quality/adjacent-distance guarantees or seed portability
+  claims. Author-hosted1991 Fruchterman/Reingold paper read; paper frame clamping
+  and coincident random directions explicitly omitted in this variant. No dataset.
+  Site119reports/556blocks/491figures passes; originals removed only after gates,
+  catalog alias updated; original owns no images. Evidence:
+  build/mepml-conversion/force-directed/.
+
+- 2026-11-08: Converted Floyd–Warshall with a shared checked in-place kernel
+  preserving the historical AllPairsShortestPaths layout,detector/path signatures,
+  strict parallel/tie/diagonal behavior and actual k/i/j read/update order. All
+  429,817 frozen distance-bit/next-hop/valid-path/actual-stage/strict-improvement
+  records and26 original stdout lines match final core and rebuilt frozen source.
+  Left operands remain actual per-j reads,including negative-cycle sweeps;no cached
+  left operand,early negative-cycle abort or raw-matrix rewrite. Full endpoint/
+  finite-weight validation precedes allocation/admission;every attempted double
+  candidate must remain finite,including non-improving candidates. Shared work and
+  owned full-stage trace do not replay. Whole upper trace entries E+A+(n+1)(1+A)
+  +n cubed,A=2n+2n squared,preflight before copies,default1m/zero disables only cap;
+  all stages and strict updates owned,no partial result,entry units not bytes/RAM.
+  Pair/mask helpers validate full matrices and classify unbounded exactly through
+  reachable negative diagonals;do not trust external global flags. Bounded path
+  reconstruction validates shapes/values/all hop IDs before shortcuts,rejects
+  affected pairs including diagonals,allows unaffected pairs despite other cycles,
+  retains broken-sentinel empty results and throws on cyclic external hop chains.
+  Frozen UBSan probe confirms old malformed-next null-offset access. Full query
+  validation costs O(n squared),external data not certified optimal by validation.
+  Native original9edge fixture;report reuses complete_directed_graph_edges helper.
+  Ten strict ASan/UBSan/float-cast cases independently use copied-layer edge-list
+  Bellman–Ford and negative-descendant propagation on all4096three-vertex graphs,
+  all4096four-vertex DAGs and400 potential graphs;actual stage/improvement replay
+  and boolean-reachability count formulas,originalall25path edge costs,ties/
+  parallel/self/signedzero/dyadics,unbounded masks/untrustedflags/unaffectedqueries,
+  fullmatrix/pathbounds/domain/wholequota/ownership/emptyvirtualbound controls,
+  finite overflow including non-improving sums,and dense/disconnected actualwork.
+  Fifty-six affected plus five dir native cases pass;accumulated CTest2,722.
+  Fresh66 definitions/all16 header examples/five hovers pass;two canonical paths
+  added to completed manifest after gates. Existing generic WeightedGraph method
+  is independent and outside this scope;affected Dijkstra/Bellman/Floyd/format
+  target rebuilt and tested.
+  Five complete programs/five inspected native figures/both exports preserve
+  all40 computed lines and identical source/build/export images. Tiny9→5via1;
+  original5x5 matrix/route0,4,3,2cost-3;actualstages0to2cost8/8/8/8/-1/-3,
+  strictupdates2/3/1/9/3,total18,82finite additions;negativecontrolnineunbounded
+  pairs but isolated4self safe;dense n cubed versus disconnected n measured on
+  powersof2 with explicit log2display. Originalquota560/emptybound1/NaN-beforecap/
+  cyclicpath/overflow/ownedcontrols execute. Corrects every-optimal-walk simplicity,
+  independent-row claim,globalnegativecycleversuspairmeaning,tiehop/ranking,
+  floatingcertificate and validation/path complexity assumptions. Historical1962
+  DOI/bibliography verified without full-journal access claims;officialBoost.Graph
+  API read for all-pairs/negative-cycle scope,no cross-library performance/floating
+  equivalence claims or dataset. Site118reports/551blocks/486figures passes;
+  originals removed after gates,catalog alias updated,five old SVG paths absent.
+  Evidence: build/mepml-conversion/floyd-warshall/.
+
+- 2026-11-08: Converted Floyd–Steinberg into a shared validated native raster kernel
+  preserving its by-value signature/dithering.hpp include,128 cutoff,unclipped
+  working values,R7/DL3/D5/DR1 order and exact double transfer/update arithmetic.
+  All526,364 frozen pixel/working-quantization/update-bit records and six original
+  stdout lines match final core and rebuilt frozen header. Frozen ASan confirms
+  old ragged-grid overflow;full row validation now precedes all finite checks.
+  All finite source values remain accepted,including outside nominal0..255 and
+  single DBLMAX;nonfinite sources reject and nonfinite actual neighbor arithmetic
+  throws. Boundary loss uses widened missing-weight accounting,avoiding spurious
+  double overflow for a single extreme pixel. Work and owned actual traces share
+  once-only prepare/run,no replay/caller views/partial result. Trace preflights
+  whole upper bound2R+7N before copying,default1m/zero disables only optional cap;
+  returned entries exclude temporary scratch/bytes/peakRAM. Native guarded stencil
+  supports virtualSIZE_MAX dimensions;gradient/threshold baseline/column-band
+  statistics replace report-local algorithms. Ordinary owns double scratch and
+  returned int cells,O(R+N)storage;binary values are not packed one-bit storage.
+  Added native equal-scale grayscale panels:zero BLACK255 WHITE,display-only
+  rounding,invisible cell borders plus thin outer frame for all-white extents,
+  complete shape/finite0..255/range/cap validation and owned primitives.
+  Nine strict ASan/UBSan/float-cast cases cover independent exact fixed-point
+  gathering for729 ternary2x3 grids/256 uniform levels/4096 dyadic fixtures,
+  500 higher-precision conditional gathers and actual update replays,signed edge
+  balance,all finite/domain/shape/quota/ownership controls,negativezero/subnormals,
+  extreme arithmetic,pure full-width geometry via signed128,original gradient
+  bits/band counts,whole-image stats validation and grayscale colors/ownership.
+  Forty-seven affected plus five dir cases pass;accumulated CTest2,705. Fresh80
+  definitions/all18 new-header examples/five hovers pass. Existing ordered Bayer
+  body/documentation remain exactly unchanged;uncompleted umbrella stays outside
+  the completed manifest,only four canonical new paths added.
+  Five complete programs/five inspected native figures/both exports preserve
+  all27 computed lines and identical source/build/export images. Original40x64
+  gradient white132/415/738 in column bands0/21/42/64 retains fractions.157143/
+  .494048/.838636,total1285white,9930updates,10240slots and signedloss-1275 with
+  residual3.921e-13. Tiny2x2uniform128 has input512/output510/loss2;single127.5
+  becomes0 and loses127.5. Uniform128 threshold allwhite versus diffusion halfwhite;
+  uniform64 size controls demonstrate nonmonotonic finite-size tone errors.
+  Derives signed boundary telescoping with floating residual;corrects nearest-
+  level127.75,exact local/global tone,constant extra memory,packedbitmap and
+  universalquality/speed claims. Speigle/Feng2000primary paper section3 read for
+  traditional stencil/cutoff and artifacts;Floyd/Steinberg1976citation verified
+  without claiming fullpaper access. No color/serpentine/modulated extension or
+  dataset. Site117reports/546blocks/481figures passes;originals removed after all
+  gates,catalog alias updated,five old SVG paths absent. Evidence:
+  build/mepml-conversion/floyd-steinberg/.
+
+- 2026-11-08: Converted Floyd cycle finding with actual shared-kernel pointer records
+  and a reusable full-uint64 quadratic modular transition. Existing ordinary/work
+  APIs retain result layout, callback order and the repeated initial f(x0).
+  All1,204,440 frozen callback-input/output/result/phase-count records and15
+  original stdout lines match final core and rebuilt frozen header/source.
+  Owned Floyd pairs come from the actual ordinary kernel without replay or extra
+  callbacks; original-orbit indices distinguish repeated state labels. Each row
+  precedes its equality test; no-call locate-entry reset is recorded. Separate
+  online row quota(default1m/zero unlimited) admits before each movement/reset,
+  while global evaluation limits can stop within a round. No partial trace or
+  callback-effect rollback is promised. Ordinary/work detector state remains
+  O(1);trace storage O(mu+lambda),fixture/callback storage excluded explicitly.
+  Eight strict ASan/UBSan/float-cast cases use independent first-seen oracles on
+  every map through five states/all seeds,65x64 tail/period fixtures,500 random
+  maps,actual pair indices and callback-sequence parity,every evaluation/row cap
+  and callback-throw boundary on representative orbits,fulluint64 state labels,
+  owned records/fixedpoint4calls,and10,000 full-width quadratic cases plus edge
+  cube against independent binary add/double modular arithmetic. Twenty-seven
+  affected plus five dir native cases pass; accumulated CTest2,690. Fresh72
+  definitions/all20 cycle-header examples/six hovers pass. Existing completed
+  cycle header/source manifest entries remain exactly once.
+  Five complete programs/five inspected native figures/both exports preserve
+  all41 computed lines and identical source/build/export images. Originalrho
+  mu3/lambda4/entry3 gives Floyd22/Brent17calls;actualmeetingstate4atindices4/8,
+  phasecalls12+6+4 and12pairs. Allseven original quadratic totals/ratios preserved
+  (1.12to1.59);controlledperiod8/tail0to32 exposes meeting/cost stairs. Derives
+  t=lambda*max(1,ceil(mu/lambda)),completeF=3t+2mu+lambda and entry-reset proof.
+  Removes unsupported universal ratio/runtime/sqrt-growth assertions;distinguishes
+  exact-state cycle finding from Pollard gcd/factorization and deterministic
+  mappings from changing callbacks. Fullwidth polynomial control gives3422;
+  eval21/row11each leave21completedcalls,exact22/12succeeds. Author-hosted
+  Brent1980paper and Pollard1975paper read;no dataset. Site116reports/541blocks/
+  476figures passes;originals removed after gates,catalog alias updated,five
+  old SVG paths absent. Evidence: build/mepml-conversion/floyd/.
+
+- 2026-11-08: Converted flood fill into a checked shared native traversal
+  preserving the count-returning signature, both direction orders, mark-on-push
+  and actual LIFO behavior. All345,762 frozen final-grid/pop/probe/peak records
+  and21 original stdout lines match final core and rebuilt frozen header.
+  A frozen ASan probe confirms the old ragged-grid buffer overrun. Full row-shape
+  validation now precedes all no-ops and mutation; guarded size_t geometry avoids
+  narrowing and supports virtual SIZE_MAX dimensions without grid allocation.
+  Native work and owned actual trace APIs share once-only prepare/traverse;
+  trace preflights the complete upper entry bound2R+(D+3)N or2(R+N) before copying,
+  default1m/zero disables only the optional cap. Actual K visits/DK probes retain
+  no caller views and do not replay. Native original6x8 fixture is reusable.
+  Added full-signed categorical cell panels with a sorted shared nonzero palette;
+  zero white/eight-color cycle/numeric identities and owned primitives explicit.
+  Refactored shared renderer preserves all five legacy SVGs byte-for-byte and
+  retains the old nonnegative ID mapping. Existing completed graphics paths stay
+  once; new canonical flood paths added only after all gates.
+  Fourteen strict ASan/UBSan/float-cast cases cover independent BFS on all65,536
+  binary4x4 masks/both modes plus selected other seeds,600 signed rectangular
+  contexts with actual stack/probe replay,full shape-before-noop/quota,whole
+  admission bounds/ownership,virtual full-width geometry against signed128,
+  full signed values,preexisting replacement barrier,large heap frontier and
+  signature/fixture parity. Fifty-one affected plus five dir native cases pass;
+  accumulated CTest2,682. Fresh74 definitions/all16 header examples/six hovers pass.
+  Five complete programs/five inspected native figures/both exports preserve
+  all34 computed lines and identical source/build/export images. Tiny2x2 pop
+  order and pending counts are actual;checkerboard fills1vs5;originalfill8 leaves
+  lower-right5 unchanged. Equal1024-cell inputs show rectangle/strip/checker4/
+  checker8 changed1024/1024/1/512 and peak497/1/1/120. Correct O(R+K) includes
+  shape checking;stack worstO(K),traces copyN,entry quota is not bytes. Exact-value
+  flood differs from all-nonzero component labeling, same-value return0 counts
+  mutations,preexisting replacement is not a bridge. SignedINTMINtoINTMAX,
+  ragged rejection/cap31vs32/full-width neighbor controls execute. Official
+  scikit-image API/example and IntelIPP connectivity read;no tolerance/scanline/
+  timing claims or external dataset. Site115 reports/536 blocks/471 figures
+  passes;originals removed after gates,catalog alias updated,five old SVG paths
+  absent. Evidence: build/mepml-conversion/flood-fill/.
+
+- 2026-11-08: Converted raw Fletcher-16 into a shared native byte kernel
+  with the original const-string signature and checksums.hpp include preserved.
+  Nine native APIs provide canonical streaming update, constant-work combination,
+  actual owned byte folds, complete bit/replacement scans, analytical swap delta,
+  an owned binary byte swap and the original modulo2^32 plain sum. All67,837
+  frozen tags (all256 one-byte/all65,536 two-byte messages plus binary/long/
+  original controls) and nine original stdout lines remain exact against final
+  core and rebuilt frozen header. Raw residues0..254/B-high A-low packing and
+  empty0 are explicit; invalid initial lane255 states reject before byte work.
+  Trace admits complete byte events, scans admit exact N(8N+1)/257N full-message
+  byte work before allocation/evaluation, optional zero caps disable only the
+  cap, no partial results/replay/retained views. Shared ordinary folds recompute
+  every scan candidate with one owned scratch message. Combine reduces uint64
+  right length before multiplying and preserves canonical tags, including a
+  virtual uint64-max all-zero suffix without allocation or fake byte views.
+  Eleven strict ASan/UBSan/float-cast cases cover independent weighted sums,
+  all65,025 canonical/511 invalid states,1,600 binary chunk/compose fixtures,
+  actual owned byte events,every one-byte bit/replacement candidate,120 random
+  flip/100 replacement contexts,all adjacent two-byte swaps/1,000 random swap
+  contexts,composite-modulus aliases,full uint64 analytical distances,whole
+  quotas,empty/signed-byte semantics and intentional32-bit sum wrap. Exhaustive
+  two-byte multiplicities are64,516 singleton states/508 double states/one
+  quadruple state. Fifteen affected native plus five dir cases pass; accumulated
+  CTest2,661. Fresh scope63 definitions includes the modified completed checksum
+  umbrella;all15 new-header examples and four hovers pass. Existing checksum
+  manifest paths remain once; only the new canonical module is appended.
+  Five complete programs/five inspected native figures/both exports preserve
+  every computed line and identical source/build/export images. OriginalC8F0,
+  88/88 bit detections,plain266/266 and Fletcher38411/38667 remain. The report
+  proves the tag-held-fixed single-bit guarantee,corrects all-single-byte-error
+  and universal strength/speed claims,demonstrates0/255 replacement alias
+  (255 changed/254 detected/one missed),leading-zero non-length-binding,and
+  nonadjacent product-zero swaps at3×85,5×51,17×15,255×1. It distinguishes
+  65,025 possible raw tags from a probability model,canonical raw residues from
+  protocol complemented check bytes,and actual per-byte reductions from hardware
+  timing. RFC926 appendicesA.3/C.2-C.4 and RFC1146 appendixI read; Fletcher1982
+  citation verified without claiming closed-paper access. No external dataset.
+  Site114 reports/531 blocks/466 figures passes; originals removed after gates,
+  one catalog alias updated,five old owned SVG paths absent. Evidence:
+  build/mepml-conversion/fletcher/.
+
+- 2026-11-08: Converted Flashsort into checked shared arithmetic
+  classification/carry/insertion kernels, preserving its in-place template and
+  sorting_extra.hpp include. Canonical flashsort.hpp plus native class-count,
+  actual-class grouping and original mt19937_64 sample helpers expose work and
+  owned actual class/carry evidence. Integral differences use the corresponding
+  unsigned domain; unsafe floating spans/coefficients use a finite scaled ratio,
+  with clamping before integer conversion. All finite values and signed length
+  are checked before mutation. Bounded frozen-source probes reproduce signed
+  range subtraction overflow and wide/subnormal finite-range invalid casts.
+  All 7,458 safe frozen result/sample bit records and seven original stdout lines
+  remain exact, including the historical double-map/carry/insertion order.
+  Actual preparation is shared once, without replay. Trace admits whole upper
+  entry count C=5n+2m (shortcut2n), default1m/zero disables only the optional cap,
+  before copying/sorting; ordinary metadata is O(m) and records are owned.
+  Eleven strict ASan/UBSan/float-cast cases cover all permutations through eight,
+  6,561 duplicate arrays,1,600 independent full int64/uint64 pairs,1,600 wide-
+  exponent double arrays,full signed/small-integral/float/long-double/subnormal
+  domains,exact power-two class floors,400 actual carry replay/boundary/strict-
+  inversion oracles,matched occupancy easy/quadratic families,whole quotas,
+  finite-before-mutation,ownership,class aggregation and sample/signature parity.
+  Seventeen affected native plus five dir cases pass; accumulated CTest2,646.
+  Fresh scope66/66 definitions,eleven compiled examples,four clangd hovers pass.
+  Five complete programs/five inspected native figures/both exports preserve
+  all57 computed lines and identical source/build/export figures. Original
+  fifteen values and 2,000-sample generator are retained. Actual860 classes are
+  aggregated43 at a time, correcting the original separate20-value-bin plot;
+  its old last bin held only one maximum, versus93 in the real final class group.
+  Original sample occupancy-square6742/shifts1058/comparisons3055 are measured;
+  ordinary class-vector payload3440 bytes versus8000 input bytes on this platform.
+  Reuses native bucket workloads/collision families. Derives class ordering,
+  insertion-inversion equality and occupancy upper bound,conditional iid fixed-
+  probability expectation,linear metadata and quadratic distinct-cluster tails.
+  Identical occupancies give256 versus32896 shifts at n258. Preserves the native
+  no-initial-maximum-swap variant and avoids stability/hardware-speed/universal-
+  linearity claims. Neubert author introduction,paper and code collection read.
+  No external dataset. Site113 reports/526 blocks/461 figures passes; originals
+  removed after gates,one catalog alias updated,five old owned SVG paths absent.
+  Evidence: build/mepml-conversion/flashsort/.
+
+- 2026-11-08: Converted Fisher–Yates to one shared native swap kernel,
+  preserving its vector signature and existing permutations.hpp include. A new
+  canonical fisher_yates module reuses SplitMix64/uniform_u64; a counting derived
+  engine measures actual raw draws including rejection, without replacing the
+  sampler. Ordinary/work/owned actual trace and validated explicit choices share
+  the same swaps. Trace preflights complete C=2n+max(n-1,0), default one million
+  entries/zero disables the optional cap, before copying or drawing; no replay,
+  partial trace or byte/peak-RAM claim. Native complete seeded/ideal choice
+  censuses retain all position marginals and observed whole-permutation counts,
+  with nonwrapping seed intervals, labelled original positions, checked count/
+  container limits and whole C=n²+outcomes*(n+1) admission before allocation.
+  Exact comparison models include ascending full-range swaps and rotations.
+  All 17,448 frozen seeded result/tally records and 13 original stdout lines
+  remain exact against final core and rebuilt original source. The original
+  stored text was stale before conversion: frozen current seed42 output is
+  3,6,4,2,1,5 and first-position counts are 10118/9980/9856/10141/9886/10019;
+  tests and the new report preserve executed values rather than stale text.
+  Eleven strict ASan/UBSan cases include 2,400 independent full-product-threshold
+  stream oracles; all legal shrinking choices through n=8 versus standard
+  permutation enumeration; all 27 naive triples; flat rotation marginals with
+  only three joint outputs; the original 60,000 seeds, every marginal and all
+  720 observed outputs; forced first-zero-word rejection; exact/under/disabled
+  quotas, domains/overflow/empty/zero-trials, signed duplicates and owned copies.
+  Eighteen affected native cases plus five dir pass; accumulated CTest 2,629.
+  Fresh scoped coverage 47/47 definitions, eleven compiled examples, four hovers.
+  Five complete programs/five inspected native figures/both exports retain every
+  computed line and identical inspected image bundles. The report derives the
+  ideal bijection, contrasts deterministic finite seeds with independent bounded
+  draws, proves flat marginals insufficient via exact rotations, and separates
+  swap attempts, distinct-position swaps, actual raw words, expected retries and
+  budget units from timing. Durstenfeld citation verified; NIST, Haas2020 and
+  Lemire2019 primary analyses read. No external dataset. Site112 reports/521
+  blocks/456 figures passes; originals removed after gates, one catalog alias
+  updated and five old owned SVG paths absent. Evidence:
+  build/mepml-conversion/fisher-yates/.
+
+- 2026-11-08: Converted finite differences with shared checked Poisson assembly
+  and canonical thomas_solve(), retaining the original four-argument vector API.
+  New FiniteDifferencePoissonResult/finite_difference_poisson_solve() expose owned
+  grid, actual once-only source samples, boundary-adjusted RHS, solved values and
+  residuals evaluated with long-double intermediates. Nonpositive grids, absent
+  callbacks, nonfinite data, signed n+2 capacity overflow and nonfinite assembly/
+  solution are checked. Both endpoint terms reach the same RHS for n=1. Callback
+  order and all 32,896 frozen solution/callback bit records plus nine original
+  stdout lines remain exact against the final library and rebuilt frozen source.
+  A bounded old-source sanitizer probe reproduces zero-grid invalid access.
+  Ten strict ASan/UBSan cases include 400 independent discrete Green systems,
+  160 pivoted dense solves, 256 polynomial/maximum-principle grids, sine eigenmode
+  predictions, callback ordering/exceptions, domain/capacity/finite-overflow,
+  signed-zero endpoints, owned copies and residual definitions. Fourteen affected
+  native cases and five dir cases pass; accumulated CTest passes 2,611 cases.
+  Fresh scoped coverage is 19/19 definitions, with four compiled examples and
+  three clangd hovers. Existing ODE documentation now describes the actual
+  bounded numerical-Newton iteration; its implementation is unchanged.
+  Five complete programs and five inspected native figures cover a one-unknown
+  stencil, three-unknown nonzero boundaries, the original sine profile and all
+  five refinements, fixed-grid frequency error versus residual, and owned checked
+  output. Both exports retain every computed result line and identical inspected
+  source/build/export images. Reuses native interpolation and error scans rather
+  than report-local assembly/solve/error-census implementations. Derives SPD,
+  linear work, conditional smooth nodal O(h²) convergence and the 1/8 inverse
+  bound; distinguishes interpolation, rounding, resolution and discrete residual
+  from continuous PDE accuracy. Verified Persson and Sobey primary course notes.
+  No external dataset. Site verifies 111 reports/516 executed blocks/451 figures;
+  originals removed only after all gates, one catalog alias updated, five old
+  owned SVG paths absent. Evidence: build/mepml-conversion/finite-difference/.
+
+- 2026-11-08: Converted filtered back-projection into six checked native
+  APIs: originalradon_transform/filtered_back_projection signatures retained,
+  sharedfinitegeometry/filter/gatherkernels exposedasram_lak_filter/back_projection,
+  reusable disk_phantom/parallel_projection_angles replace reportsetup loops.
+  Movedinlineimplementationtocanonicalcpp. All60188frozenforward/reconstruction
+  floatingbitrecords(168signedsmallfixtures+original64/96disks)and5originalstdout
+  lines remainexact against standalonecheckedkernels,installedcore and rebuilt
+  originalheader. Positivegeometry/exactN²/rectangularMxD/finitevalues+nonempty
+  angles validatedbeforeallocation/numericalwork; size_tpixel/kernelgeometry,
+  guardedsupportbeforefloorcast andfinite-resultoverflowerrors. Oldemptyimage
+  readUB/emptyanglezeros observedwithboundedprobes; empty-anglepi/Mundefined,nowreject.
+  Empty standalonefilterreturnsempty. Unitspacing/fixedpi/Mweights explicit;
+  arbitraryfiniteanglesacceptedwithoutadaptivequadraturepromise. Actualfinite
+  pixel-splat A andpaired(pi/M)A-transposeB shareweights; finiteFBP isnotmatrix
+  inverse. Directzero-extendedRamLak/summationorderpreserved,notcircularFFT.
+  TenstrictASAN/UBSAN/floatcastcases include300independentdensehatA/analyticalH
+  matrixfixtures,300scaledadjoint/linearityfixtures,axisexactness/clip/finiteDC/
+  phantomradius-boundaries/roundedangles,shape-nonfinite-capacity/finiteoverflow/
+  hugeangles/ownership/callablesignatures/originaldisk. Audit22/22definitions,
+  6compiledexamples/4clangdhovers/25affected+5dir/combined2597tests pass.
+  Fivecompleteprograms/fiveinspectednativefigures/bothexports preserve37computed
+  lines/identicalimages:tiny3x3actualsplatweights+adjointcertificate,finiteimpulse/
+  constantresponse,original96/R22/M120/D144truth-sinogram-reconstruction-profile
+  withcorrectedequalrow-columnimagescale,view/detectorRMSE+retainedmasscontrols,
+  affinegain/offsetsamecorrelationbutlargerRMSE,andvalidatedownedpipelinestages.
+  OnlineCovariancereusesnativePearsoninsteadlocalformula;reportonlyresidual
+  reductions/presentationreshapes. CorrectidealcontinuousvsfiniteA-transposeHA,
+  unitfrequencyconvention/filterfiniteDC,detectorcollectedmassvsgatherrange,
+  correlationvsgain/offset/pointwiseaccuracy. Originalcorr.9941/center.9860 retained,
+  actualRMSE.040605776/maxerror.393672622;gaincontrolcorrelation.994051437
+  unchangedwhileRMSErises.596190923. Plain dot(...) computedlabelsfixMarkdown/HTML
+  anglebracket-stripping;allresultlinesverified. ReadKak/Slaney1988chapter3Eq45/61
+  andverifiedoriginalRamachandran/Lakshminarayanan1971citation/abstract. Native
+  buffersareordinaryoutputs,notoptionalrecordhistory;noquotaneeded. Site110reports/
+  511blocks/446figurespasses;originalsremovedaftergates/onecatalogaliasandits
+  inverseclaimcorrected/fiveoldSVGpathsabsent. Evidence:
+  build/mepml-conversion/filtered-back-projection/.
+
+- 2026-11-07: Converted Fibonacci search to one checked exact-match
+  ordinary/work/ownedtrace kernel plus pure virtual fibonacci_search_schedule.
+  Legacy compiled signature/duplicate index choice/all1157680frozenresult-index-
+  probelines and10originalstdoutlines preserved against currentcore andseparately
+  rebuilt frozensource. Beforegrowth validate signedindexdomain; checkedgrowth
+  addition, initialsigned-1sentinel andclamp-beforeaddition remove unsignedwrap
+  idiom without changing indices. Scalar initialsizes/growthadditions,actualreads,
+  keycomparisons andmaintransitions exposedseparately. Actualpreposttrios/offsets/
+  readvalues/branches includeequality-onlyfallback(onecomparison,noinventedorder)
+  andrepeatedclamps. Key8reads4,1,2,3,4(finaltail);key20reads4,7,9,9,9(allmain);
+  duplicatescanreturnnonfirstoccurrence. Wholeoptionalrecord C=P/default1m/0off,
+  admissionbeforeread/noinputcopy-replay-partialtrace-peakRAMclaim;ordinary/work
+  constantstorage/nohistoryquota. TenstrictASANcases independentlycomparestandard
+  membership,all165smallnondecreasingarrays,alllengths0..4096edgequeries,600seeded
+  wide/duplicatearrays,10000virtualfullsigneddomainscheduleswithwiderinteger
+  tableoracle,1000001elementinput,actualstateidentities/primitivebranchcounts/
+  clamps/fallback/quota/ownership/callablesignature. Audit71/71definitions,
+  all16compiledheaderexamples and8clangdhovers(existing8Eytzsnips/4hoversretained),
+  24affected+5dir/combined2572tests pass. Fivecompleteprograms/fiveinspectednative
+  figures/bothexports/59computedlines/identicalimages:tiny7valuesactual2reads,
+  original10values+5queriesand13path/actualbinarypathcomparison,clamps-tail-
+  duplicates-empty-singleton,completepresent+missingquerycensus19lengthsvsnative
+  binary,fullsigneddomainvirtualschedule+captureownership. No report-localsearch
+  replay. Correctexactfiniteclampingvsasymptoticratios/reads-vsuniqueindices-vs
+  primitivecomparisons/initialgrowthvssearchwork andaddition-onlyvshardwarespeed;
+  purelookupdistinctfromunimodaloptimization/generalizedasymmetricoptimality.
+  ReadNISTofficialdefinition andEfraimidis2010introduction; nativevariantexplicit.
+  Othersearches/Eytzinger unchanged;completedpathmanifeststillonce. Site109reports/
+  506blocks/441figurespasses;originalsremovedaftergates/onecatalogaliasupdated/
+  fiveoldSVGpathsabsent. Evidence: build/mepml-conversion/fibonacci-search/.
+
+- 2026-11-07: Converted Fibonacci coding to a complete immutable92weight
+  uint64 table, native exact weight/length APIs and shared ordinary/work/owned
+  actual-span encoder/strict whole-frame parser. Old callable signatures and
+  all69634validfrozen codeword/decoded/batch/appendrecords plus25originalstdout
+  lines remain exact against checkedcore and separately rebuilt originalheader.
+  Allpositiveuint64valuesnow supported:MAXhas92payload+1terminatorbits; next
+  weight neverformedinuint64,terminatorrecognizedbeforeweightlookup,checked
+  index/value sums. Zero rejects beforeappendmutation; totalgeometry/reserve
+  beforewriting preservesarbitraryprefix onerrors. Unfinishedtailsnowreject
+  insteadofsilentloss. BoundedoldrepresentableF92wordhitslogicaltablebounds
+  withhardenedstdlib; longmalformedwordreproducesASANheapoverflow; oldzero
+  emittedlone1/decodedemptyobserved. NewtableavoidsunboundedMAXweightgrowth.
+  Actualwordspansmarkoverlappingfinal11:highestpayloadone+oneappendedterminator.
+  Workcountsactualpayload/terminators/bits/values excludepreflight/greedytests/
+  allocation. Ownedtrace C=B+2N/default1m/0off; encoderadmitscompleteCbefore
+  copies/emission,decoderadmitsBbeforecopyandtwoentriespercompletewordonline;
+  no replay/partialtrace/peakRAMclaim;ordinarynooptionalhistoryquota. Tenstrict
+  ASAN/UBSANcases independentlyenumerate17710nonadjacentpayloads,all92weight
+  boundaries/MAX/10000seededfullwidthvalues/600variablebatches,stricttruncations/
+  valuesumoverflow/prefixappend/actualspans-work/domain/ownership/quotas and
+  ordinary1000002bitframe.23578Pythonarbitraryprecisioncodecresults pass.
+  Audit44/44definitions,14compiledexamples,4clangdhovers,41affected+5dir and
+  combined2548tests pass. Fiveprograms/fiveinspectednativefigures/bothexports
+  preserve58computedlines/identicalimages:actual10digits/sum/delimiter,alloriginal
+  eightwords/tenvalueroundtrip/tenlengthcasespluspositiveEG(n-1)mapping,fullwidth
+  table/guards,85originalframesinglebitflips(82changed/3rejected)andvalid3to4
+  mutation,actualspan/capturework. ReusesnativeExpGolomblength/genericbittext;
+  no report-localcodec/lengthloop. Correctprefixfromknownstartvsarbitrarysync,
+  structuralvalidityvserrordetection/correction/blankettwo-wordrecoveryclaim,
+  explicitdomainmappingvsgenericcompressionclaim. ReadoriginalPurdue1985
+  Apostolico/Fraenkeltechnicalreportandverified1987IEEEpublicationmetadata;
+  nativeorder2variantandlimits explicit. Site108reports/501blocks/436figures
+  passes; originalsremovedaftergates,onecatalogaliasupdated,fiveoldSVGpathsabsent.
+  Evidence: build/mepml-conversion/fibonacci-coding/.
+
+- 2026-11-07: Converted Fermat primality with checked explicit-base
+  FermatBaseResult/fermat_base_test, constant-storage bounded half-open-interval
+  FermatBaseCensus/fermat_base_census and one shared bool/work/ownedtrace seeded
+  kernel. Canonical exact mod_pow replaces report-local powering; census replaces
+  local liar_fraction. Legacy compiled signature/defaults and positive-round
+  SplitMix64/modulo stream preserved:19200frozen decisions and13originalstdout
+  lines match currentcore and separatelyrebuilt oldsource. Nonpositive rounds
+  nowreject before filters; zero/one are notprime rather thancomposite. Actual
+  stop/filter/completedrounds/lastbase-gcd-residue plus actual admitted roundrows,
+  no replay orinnerbit-history. Onegcd perround now suppliesdiagnosticfactor;
+  ordinary/workconstantstorage/nohistoryquota; ownedtrace C=actualroundrecords,
+  default1m/0off/pre-drawgcdpoweradmission/no partialtrace/nopeakRAMclaim.
+  Exactcensus workcapdefault1m/0off checkedbeforepowers, fulluint64 andempty[n,n)
+  supported, invalidbase/intervalcontrols reject beforearithmetic; emptyfraction
+  denominators leftundefined. TenstrictASANcases include32640smallbase results
+  vsindependentrepeatedmultiplication,censuspartitions throughn512,Carmichael/
+  fullgroup-originalinterval-samplersupportcounts,goldenSplitMixwords,3000seeded
+  work/trace/boolparity+actualearlywitnesses,fullwidth/filters/INTMAXbudget,
+  quota/domain/names/ownership.42710Pythonarbitraryprecisionpow/gcdoraclechecks
+  pass. Audit49/49definitions,11compiledexamples,4clangdhovers,26affected+5dir
+  andcombined2507tests pass. Fiveprograms/fiveinspectednativefigures/bothexports
+  preserve54computedlines/identicalimages:tiny15actualgcd/residuecertificates,
+  original97/91/561decisions+fiveconditionalfractions,561nativefactors/first40
+  bases/copopulations,samepassdefault182passthen345gcd3failure andseed1a115pass
+  thena459gcd51failure,filters/MAXbase,explicitlyhypotheticaliidprobabilitycurves,
+  samebaseMillerRabincomparisons/quota/ownership/domain. Correctconditionalvsall
+  bases,endpointdenominators,passvsproof,idealindependencevsdeterministicmodulo
+  bias,andforwardfailureprobabilityvsposteriorinterpretation. ReadConradFermat
+  Test andShoup2008Theorem10.1/pp307-308; noactualseedediidguaranteeclaimed.
+  Existingcompletedprimalitypathsremainonceinmanifest. Site107reports/496blocks/
+  431figurespasses; originalsremovedaftergates,onecatalogaliasupdated,fiveoldSVG
+  pathsabsent. Evidence: build/mepml-conversion/fermat-primality/.
+
+- 2026-11-07: Converted Fermat factorization with one exact bounded native
+  kernel shared by preserved fermat_factor signature and new work/trace APIs.
+  Actual tests, increments, factors, proper split and even/factor/trivial-pair/
+  trial-limit stops replace the report-local counter. Default five-million-test
+  cap retained; zero/one now reject as invalid factorization inputs. Trial-limit
+  n return remains inconclusive, including composite3000000021; first945split
+  is composite27x35. Exact reusable integer_sqrt_u128 uses bit-width brackets,
+  division comparisons and wide upper sentinel, supports all128bit patterns and
+  UINT128_MAXrootUINT64_MAX without floating arithmetic. Evenzero-work andodd
+  squareb0 behavior explicit; guarded budget increments avoid unused wrap.
+  Optional same-pass capture C=T whole actual trial records, quota1m/0off,
+  admitted before root/square work; no partial trace on failure, no peakRAM claim;
+  ordinary/work remain constant storage. Ten strict ASAN/UBSAN tests cover8190
+  smallinputs via independentclosest-divisororacle,600seeded clippedproducts,
+  10000randomfull128root brackets, fullwidth/odd squares/near squares,allstops,
+  hugepositivebudget,quota/domain/names/ownership. Optional Python math.isqrt
+  independentoracle passes19405fullwidth/square-boundary comparisons. Frozen4626
+  valid legacyfactorlines and14originalfull-programstdoutlines match currentcore
+  andseparatelyrebuilt oldsource. Bounded strict originalreportcounterprobe shows
+  floatingceilbelowroot andout-of-rangefloatcast for(2^32-1)^2+2; native exact
+  ceil fixes report counting without a second factorization loop. Audit44/44
+  definitions,12compiledexamples,4clangdhovers,24affected+5dir andcombined2481
+  tests pass. Fivecompleteprograms/fiveinspectednativefigures/bothexports preserve
+  47computedlines andidenticalsource/build/exportimages:tiny5959actualrows and
+  equal-area square/rectangle,originaltwofactorizations/sevengaps,true tests vs
+  increments andcontinuousfloor formula,stop/cappedcomposite/multifactor controls,
+  exactwidthdiagnostics andownedhistoryquota/workfamilies. Corrected nearestpair
+  vs arbitrarypair,splitvsprimefactorization,incrementsvscontinuousexcess and
+  fixedwordvsarbitrarybit complexity. Read primaryPomerance1996p1474 viaauthor
+  PDF andofficialPython3.14isqrt contract. Site106reports/491blocks/426figures
+  passes; originalsremovedaftergates,onecatalogaliasupdated,fiveoldSVGpathsabsent.
+  Evidence: build/mepml-conversion/fermat-factor/.
+
+- 2026-11-07: Converted the FEM report with a shared five-source synchronous
+  visitor and public FEM1D::solve_transient_builtin, delegating to the same actual
+  backward-Euler loop as live callbacks. Existing result/class layouts and solver
+  signatures retained. All2345frozen nodal/time/value-bit lines and34original
+  full-program output lines remain exact against rebuilt frozen module/currentcore;
+  original diffusion2/5/20,reaction4..128,Neumann/Robin,transient20nodes/selected
+  times and2Dlinear6x6/Poisson8/16/32/slice cases execute. Source defaults/extra
+  parameters/empty polynomial match steady/live behavior without local report
+  adapter classes. Rounded t_end=.30000000000000004/dt.1 formerly produced a
+  duplicate final time/zero actual_dt/NaN. Checked finite positive time controls,
+  node/frame/vector/solution-value counts, positive actual intervals, direct final
+  time and stopping as soon as reached correct that case to4finiteframes; huge
+  finite nominal products avoid intermediate overflow. Spatial finite geometry,
+  coefficient/source arithmetic and nonzero Thomas pivots remain explicit caller
+  preconditions; no new solver-wide conditioning certificate claimed.
+  Eight strict ASAN/UBSAN tests cover400seeded fixtures×5named/live source families
+  bothsteady/transient, defaults/trailing/empty data, independent one-interior
+  backward-Euler product on3meshes×3reactions,300rounded-time fixtures,partial
+  steps,MAXtime/fenv,nonfinite/capacity controls beforecallbacks,actual quadrature
+  calls/exceptions,ownership/checked accessors. Audit68/68definitions,9compiled
+  examples,4clangd hovers,29affected+5dir andcombined2457tests pass.
+  Sixcompleteprograms/sixinspectednativefigures/bothexports preserve49computed
+  lines andidenticalsource/build/exportimages. Tinyactual3nodecoefficient/hat,
+  nodalexactnesswithbetween-node.03125error,original1D/2Drefinements+fields,
+  original/mirroredconormalboundaries,onesharedtransienthistory/steadygap and
+  correctedactualtimegrid/source/decaycontrols execute. Reusednative linear
+  interpolation/errorcensus;no report-local assembly/linear/time solver. Corrected
+  nodalvswholefield/L2vsmaxnorm claims,conditionalcoerciveBE stabilityvsaccuracy,
+  integrand-vs-source quadrature degrees andconormal-vs-physicalflux signs. Read
+  officialMFEMweakform andArnold2012norm/dualregularity/semidiscreteBE references.
+  Minimalpublicheaderskeepcompleteprogramsidiomaticandfast;Doxygenexamplesuse
+  dm/dm.hpp. Site105reports/486blocks/421figurespasses;originalsremovedaftergates,
+  noexistingcatalogaliasand20oldownedSVGpathsabsent. Evidence:
+  build/mepml-conversion/fem/.
+
+- 2026-11-07: Converted false position to one checked plain/retained-twice
+  Illinois kernel with actual true endpoint values kept separate from artificial
+  secant weights. Original compiled Illinois signature/RootResult layout/default
+  seven-trial exponential and2296 frozen result/everycallback-coordinate bit lines
+  remain exact, also against separately rebuilt frozen source. Safe legacy
+  interpolation is preserved; prechecked products/differences/division and scaled
+  positive weights/std::lerp guard finite-overflow cases. Original huge-coordinate
+  probe sends10nonfinitecoordinates and returnsNaN; huge-value denominator raises
+  overflow while converging in2trials. Both checked cases use1actualguardedtrial
+  without overflow/invalid flags; ordinary floating coordinate rounding explicit.
+  Actual outcomes expose callback/guard/halving work, pretrial true/weighted state,
+  rounded radius and8distinct stops; independent function/coordinate tolerances,
+  input orientation and bothendpoint call order retained. Explicit nonfinite/domain,
+  stagnation/weightunderflow/budget behavior and callback exceptions/sideeffects.
+  Owned same-pass actual evaluation+step capture C=2+2K whole records, default1m/
+  zero disables onlyquota, admission before callbacks/interpolation, no replay or
+  partial result/peakRAM claim; ordinary constant storage/nohistory quota.
+  Tiny finite secant products underflow in the frozen source (wrong zero estimate,
+  cap10); normal-product admission now chooses scaled weights, recovering the
+  representable affine root in one actual guarded trial.10000independently scaled
+  affine pairs spanning coordinate/function exponents-1020..1020 check roots and
+  absence of overflow/invalid flags. Ten strict ASAN/UBSAN tests also cover
+  2000seededscaledquadratics bothpolicies plus
+  2000affinelongdoubleinterpolationchecks,actualraw/weight/transition/call/capture
+  certificates,allcontrols/domain/callbackfailures/endpointorder/reversed/zero/
+  units/radius/adjacentstagnation/finiteguards/underflow/ownership/quotas. Audit
+  77/77definitions,12compiled examples,4clangd hovers,22affected+5dir andcombined
+  2428tests pass. Fivecompleteprograms/fiveinspectednativefigures/bothexports
+  preserve40computedlines andidenticalsource/build/exportimages:tinyactual
+  secants/damping,originalexpdefaultandmatched16vs8,measuredpowerfamilystall/
+  endpointstates,functionunitsvscoordinateerror/radius,andfinite/capturecontrols.
+  Correctmathematicalsign-bracketderivation/continuityassumptions,rawvsweights,
+  residual-vs-coordinateunits/displayfloors,rounded-not-certifiedradius,finitejump
+  caveat andconditionalUUM/efficiencyindexanalysis. ReadprimaryDowell/Jarratt1971
+  pp168–171;nativeinitialside0delayvsmost-recent-paperinitializationexplicit.
+  Otherrootmethods/RootResult unchanged. Site104reports/480blocks/415figurespasses;
+  originalsremovedaftergates,onecatalogaliasupdated,oldSVGpathsabsent. Evidence:
+  build/mepml-conversion/false-position/.
+
+- 2026-11-07: Converted Eytzinger search to shared checked complete-tree
+  construction and equality-first exact-match kernels with owned actual source-
+  rank placements and node-read/decision/next-child probes. Original compiled
+  signatures, layouts and found/index/probe outputs retain233716 frozen lines,
+  also matched by separately rebuilt frozen source. Existing other sorted-search
+  algorithms unchanged. Zero-based child existence checked before multiplication;
+  signed-index bounds checked. Unchecked ordering preconditions, exact-match vs
+  lower-bound semantics, first-encounter duplicate choice and layout-vs-source
+  index explicit. Optional capture is N whole placement or P whole probe records,
+  default1m/zero disables only quota, before layout allocations/next node read,
+  no partial result/replay/input alias/peakRAM claim; ordinary calls no quota.
+  Ten strict ASAN/UBSAN tests use independent BFS rank-interval oracle,165exhaustive
+  nondecreasing arrays,all lengths0..1024,600seeded wide/duplicate arrays,
+  int endpoints,all actual transitions/counts,root rank,perfect-tree depth sums,
+  ownership/exact/short/empty/disabled quotas and1000001element ordinary layout.
+  Audit35/35definitions,8compiled examples,4clangd hovers,24affected+5dir and
+  combined2406tests pass. Fivecompleteprograms/fiveinspectednativefigures/both
+  exports preserve57computed lines and identical source/build/export images.
+  Tiny7nodeactualpath,original10values/5queries/4nodewalk,actualsource-rank
+  provenance,per-key/complete-tree read counts,explicit hypothetical aligned-four-
+  integer blocks and full-width/capture controls execute. Corrected root13 is
+  rank6, not median10; mathematical in-order correctness/root-rank/depth-mean
+  derivations,preprocessing cost,static/read-only preconditions and probe-vs-
+  comparison/cache/runtime distinction. Verified Khuong/Morin2017arXivrevision
+  section3.2; no imported speedup/tuned-prefetch claim. Site103reports/475blocks/
+  410figures passes;originals removed after gates,onecatalogaliasupdated,oldSVG
+  paths absent. Evidence: build/mepml-conversion/eytzinger-search/.
+
+- 2026-11-07: Converted extended Euclid to one checked signed128-bit kernel
+  with the original compiled ExtendedGcd three-int64 layout/signatures, unsigned
+  gcd certificates, actual work counts and owned same-pass row/inverse traces.
+  Raw rows preserve signed truncating quotients and terminal zero coefficients;
+  final sign normalization stays separate. C=2+D whole row records, default1m,
+  zero disables quota, admission before each allocation/division, no replay or
+  partial trace. Ordinary calls retain constant auxiliary storage. Legacy gcd
+  overflow for the three magnitude2^63 cases throws; unsigned certificates handle
+  every int64 pair. Checked product addition and unsigned magnitudes validate
+  arbitrary certificates including a malformed sum of2^127. Modulus validation,
+  inverse normalization and legacy modulus-one/zero-pair conventions explicit.
+  Five strict frozen-source UBSAN probes reproduce division, negation and unused
+  terminal coefficient overflow; old safe outputs match133138 frozen lines.
+  Ten strict ASAN/UBSAN tests cover66049 small pairs,10000 full-width pairs,
+  powers/neighbours/MIN/MAX, raw identities/quotients/unimodular determinants,
+  Fibonacci90/91 divisions, ownership/quotas/domains and legacy layout/ranges.
+  Independent Python arbitrary-precision oracle passes11449 cases including every
+  actual row and modular inverse. Audit50/50definitions,14compiled examples,
+  fourclangd hovers,27affected+5dir+1oracle and combined2382tests pass.
+  Six complete programs/six inspected native figures/both exports preserve63
+  computed lines and identical source/build/export images. Original100000pair
+  randomized check, tiny240/46rows, signed paths, inverse residue cycle, bounded
+  Fibonacci work and full-width storage cases execute. Mathematical certificates,
+  fixed-word versus bit complexity, actual capture units, signed std::gcd
+  precondition and degenerate modulus one explained. Verified HAC1996 algorithms
+  2.104/2.107/2.142/example2.109 and C++working draft numeric.ops.gcd references.
+  Site102reports/470blocks/405figures passes; originals removed after gates,
+  two catalog aliases updated and five old owned SVG paths absent. Evidence:
+  build/mepml-conversion/extended-euclidean/.
+
+- 2026-11-07: Converted exponential backoff to checked finite window arithmetic
+  and owned actual explicit/seeded idle-wait schedules. Original three inline
+  names/signatures and tested u=1 endpoint remain. Valid nonnegative finite base/cap
+  including zero/base-above-cap, indices/counts and inclusive explicit u retain all
+  5786 frozen legacy output lines, including signed-zero/subnormal/max fixtures and
+  separately recompiled frozen header. Negative/nonfinite/domain failures now throw.
+  Shared widened exponent-gap/mantissa comparison precedes ldexp, avoiding both
+  retry-index loops and finite-cap intermediate overflow. Original zero/INTMAX probe
+  completes0.87s rather than timing out; runtime nearMAX probe raises FE_OVERFLOW
+  before returning a finite cap. New fixed scalar math branch needs neither scaling
+  for that capped case nor for zero/INTMAX. O(N) ordinary windows remain valid when
+  hypothetical cumulative waits overflow. Actual step records retain index/window/
+  unit variate/product and capped/scaled branch flags; shared schedule emitter
+  records prefixes once without replay. Cumulative addition rejects a wait exceeding
+  remaining finite capacity, with no partial result; rounding remains ordinary.
+  Seeded native xorshift13/7/17 high53bits preserves the original eight values and
+  seed88172645463325252; zero seed rejected, local state/noncrypto/same-seed limits
+  explicit. Native SplitMix64 provides nonzero population seeds in the report.
+  Twelve ASAN/UBSAN tests check12000 seeded wide finite cases and2098 binary-power
+  exponents/cap neighbours/large indices against independent overflow-safe doubling,
+  signed zeros/endpoints, actual records/prefixes/branch flags, no intermediate
+  FE_OVERFLOW, malformed/empty cases, ownership, overflow-vs-pure-output separation,
+  seeded stream/prefix/same-seed controls and time-unit scaling. Audit36/36
+  definitions,9 compiled exact-output examples,4clangd hovers,31affected
+  backoff/networking/format+5dir and combined2354 tests pass. Five complete
+  programs/five inspected native figures/both exports preserve34 computed
+  lines and identical source/build/export images. Tinyfour-step offsets9.25,
+  originaleight waits,1000client repeat/distinct-seed controls,2000schedule prefix
+  means and finite-domain diagrams execute. Ideal uniform mean/variance/fixed-bin
+  collision probability and geometric/capped-tail idle sums are derived; observed-
+  range histogram, nonindependence guarantees, timer quantisation, idle-vs-RPC time,
+  unlimited cumulative budget and numeric-vs-TCP/Ethernet scope explicit. Verified
+  Brooker2015 and RFC6298 references; no copied service contention outcomes.
+  Site101reports/464blocks/399figures passes; original sources removed after gates,
+  one catalog alias updated and old owned SVG paths absent. Evidence:
+  build/mepml-conversion/exponential-backoff/.
+
+- 2026-11-07: Added batched tensor image explanations under nn/image_explainers
+  and converted the original explainable-AI report. Legacy scalar stats explainer
+  source/header remain byte-identical, with all five existing tests passing.
+  New CPU Float32/Float64 single-image masking uses nonempty rectangular grids,
+  Bool coalition batches and tensor gather/where across all channels. Fixed-target
+  finite [B] callbacks run under NoGradGuard, with owned detached Float64 score
+  copies. Known evaluation quota and complete geometry are checked before calls;
+  default1m/zero disables quota only, exact Shapley hard P<=20 remains. Quota counts
+  scored images rather than peak RAM, CPU work or callback batches. External
+  callback side effects cannot be rolled back. Exact ascending-mask enumeration
+  retains actual coalition scores, computes tensor weighted marginal sums and
+  reports signed values/endpoints/measured efficiency residual and actual work.
+  Anchored full/empty plus seeded MT64 masks feed a Float64 tensor weighted-ridge
+  Cholesky fit without inverse or hidden model training. Intercept unpenalized;
+  actual masks/scores/weights, weighted in-sample R2 and fitted/full scores retained.
+  Anchored weighted means avoid constant-score variance drift. Signed spatial
+  expansion divides by actual uneven patch areas by default; optional repetition
+  explicitly changes pixel totals. Tensor Pearson comparison retains negatives,
+  offers labelled positive-only clipping and returns NaN for constant maps.
+  Sixteen ASAN/UBSAN tests include224 random games against independent permutation
+  averages,127 seven-player unanimity games,16 independent long-double pivoted
+  weighted-ridge fits, actual query/mask/span/work checks, additive/signed/baseline
+  controls, uneven channels/noncontiguous data, callback errors/ownership/gradients,
+  all quota/domain/geometry limits and undefined/extreme-scale correlation. The reusable native map diagram
+  adds square cells, grayscale input, signed blue-white-red scales and explicit
+  numeric keys, with finite/label/flag/render geometry and owned presentation checks.
+  Audit62/62 definitions,12 compiled exact-output documentation examples and4
+  clangd hovers pass.21 affected tensor/legacy tests+5dir and combined2323 pass.
+  Six complete programs/ten inspected native figures/both exports preserve38
+  computed result lines and identical source/build/export image bytes. Retains
+  600 noisy12x12 bars, fixed-position horizontal/vertical examples,4x4 patches,
+  800 LIME samples, CNN/dense/z-plus comparisons; replaces constructor-trained
+  wrappers with explicit SGD .05/batch16/40CNN+200dense epochs on420fit/180heldout.
+  Actual architecture counts6578/4706, optimizer calls1080/5400, held-out confusion,
+  fixed raw-logit targets,65,536-coalition queries and524,288 marginal counts execute.
+  Baseline/partition/probability controls check full-score invariance and query
+  preflight; signed numeric maps/residuals replace clamped-negative displays and
+  score differences misleadingly labelled efficiency. Fixed-baseline games are
+  distinguished from conditional-expectation SHAP/KernelSHAP and causal claims;
+  custom LIME kernel/anchors/ridge and new tensor initialization are explicit,
+  without claims to reproduce the old wrapper's fitted numbers. Verified primary
+  Ribeiro2016/LundbergLee2017 and Shapley RAND1952 references support derivations.
+  Site100reports/459blocks/394figures passes; originals removed after gates;
+  no old catalog alias or owned SVG files existed. Evidence:
+  build/mepml-conversion/explainable-ai/.
+
+- 2026-11-07: Converted Exp-Golomb to full-range checked uint64 emission and
+  bounded-prefix parsing through a compiled shared kernel. Original three inline
+  names/signatures/defaults and append/prefix semantics remain. All9094 valid
+  legacy scenarios match exactly, including independently recompiled frozen header.
+  Decoder count remains an upper limit: complete shorter frames return fewer,
+  count0 reads none and meeting the limit leaves any tail unread. Every attempted
+  word must be complete; invalid order/count and native overflow throw. Old probes
+  reproduce shift64/negative-shift UB, truncated heap overflow and UINT64_MAX
+  encoding as a single zero. New sentinel arithmetic emits its actual129bit word
+  without q+1 overflow or shifts by64. Reusable size/length/ASCII-debug helpers,
+  actual work/consumed boundaries and owned emitted/parsed spans replace local
+  report codec helpers. Bool-vector storage defines no byte format/endianness.
+  Ordinary output has no optional history/quota. Trace logical C=B+2N reserves
+  known encoding C before copies/emission; decoder reserves entire input B then
+  two entries online per actual completed word. Unread tails retained/accounted,
+  default1m/zero disables only quota, checked arithmetic/container limits remain;
+  metadata/runtime/capacity/allocator bytes excluded, no peak-RAM claim.
+  Fourteen ASAN/UBSAN cases include all65536 uint16 values at eight orders,
+  all64orders with powers/neighbours/maximum and320 seeded full-width sequences
+  against independent division/binary-string-carry oracle. All655355 binary-prefix
+  requests through length16/orders0..4 check value/boundary or incomplete rejection.
+  Proper truncations/allorders, native overflow, append prefix/strong parameter
+  errors, count0/up-to/INTMAX framing, exact/base/one-short/zero quotas, ownership,
+  all actual span/work/capture certificates and size/threshold controls pass.
+  Audit60/60 definitions,17 compiled exact-output snippets,4clangd hovers,
+  44affected coding/format+5dir and combined2302 tests pass. Five complete native
+  programs/five inspected figures/both exports preserve 72 computed result
+  lines and identical source/build/export images. Original codewords/mixed90bit
+  sample/ten lengths retained; exact254/255 threshold, order-source costs,
+  actual5N/7N work/history,129bit maximum, prefix/append/quota controls execute.
+  Derives inverse/prefix-free proof and finite-vs-unbounded scope against verified
+  ITU-T H.274(05/2022) section9.1 equation72/Table21; no full video/framing claim.
+  Site99reports/453blocks/384figures passes; originals removed after gates,
+  catalog updated and old figure paths absent. Evidence:
+  build/mepml-conversion/exp-golomb/.
+
+- 2026-11-07: Converted exact cover to a validated iterative dancing-links
+  kernel, preserving the original compiled signature/result field layout and all565
+  valid legacy selected-row sequences. Stable smallest-column/input-row ordering
+  remains; every successful/unsuccessful returned search fully unwinds its mesh.
+  Actual work/outcome/trace APIs expose live choices, residual column sizes, selected
+  stack and complete initial/final node records, without explanatory replay. An
+  explicit frame stack removes recursive call-stack dependence. Root/header/incidence
+  geometry and original row IDs fit checked int/container limits; full incidence
+  range and within-row uniqueness are validated. Duplicate whole rows and unsorted
+  unique entries remain valid; empty rows are ignored and empty universe succeeds.
+  Old probes show duplicate incidences incorrectly accepted and bad-column access
+  causing ASAN heap overflow. New reusable rectangular domino builder keeps original
+  horizontal-before-vertical placement order; native diagram validates board shape,
+  adjacency, row IDs, exact cell coverage and scale/render quota. Logical trace
+  B=R+I+2K plus sum(1+C+depth) counts input row/incidences, two node-record snapshots
+  and actual events/residual vectors/partial rows. Known B checked before graph/copy
+  allocation, events before copies; default1m/zero disables only quota, ordinary
+  output/runtime/capacity/header/allocator bytes excluded, no partial result or
+  peak-RAM claim. Ordinary calls retain no optional history. Full raw meshes agree
+  after success/failure and all captures are read from actual runtime state.
+  Six ASAN/UBSAN cases check all5058 small binary matrices and500 seeded random
+  systems vs independent subset oracles; every event matches independent set-based
+  residuals and every initial/final mesh satisfies circular-link/membership/size
+  invariants. All63 rectangular encodings match direct placement generation and
+  parity/cover proofs; large odd unsatisfiable boards use ordinary work, with bounded
+  history on even/small odd cases after an intentional trace-cap test adjustment.
+  Exact/base/one-short/zero quotas, ownership, all incidence/geometry/graphics limits,
+  full work identities, known singleton/whole-row families and depth4096 complete.
+  Two-path audit97/97 definitions, fifteen compiled exact-output examples and four
+  clangd hovers pass.24 affected trace/CSP/Sudoku/format+5dir and combined2258 pass.
+  Separately compiled frozen source reproduces565 original receipts. Five complete
+  programs/five inspected native figures/both exports pass (47 computed lines,
+  identical source/build/export images). Tiny99entry actual backtracking/full mesh,
+  original4,1,3 seven-column selection/literal-paper comparison, original4x6 tiling,
+  equal-node/different-scan/history formulas and domain/quota/deep controls execute.
+  Correct branch/exchange-free AlgorithmX proof, exact inverse operations, primary-
+  column scope, rectangle parity, exponential search limits and verified Knuth2000
+  reference replace loose claims. Site98reports/448blocks/379figures passes; originals
+  removed after gates, allthree catalog aliases updated and old SVG paths absent.
+  Root storage recovered via two Nix-verified dead source snapshots and byte-verified
+  NYU cache relocation preserving its canonical path; receipts remain under the
+  conversion root. Evidence: build/mepml-conversion/exact-cover/.
+
+- 2026-11-07: Converted forward Euler to a checked shared canonical
+  euler_method.hpp/.cpp with ordinary/work/actual-derivative trace entry points and
+  an allocation-free capture-size helper. Shared OdeSystem/OdeSolution moved to
+  ode_types.hpp, preserving alias/signature and t/y field order; ode.hpp reexports
+  them and Euler. Only the old Euler body moves out of ode.cpp; all other integrator
+  bodies/helpers remain. Nonempty finite states, finite endpoints, positive steps,
+  nonempty callbacks and full derivative dimensions/finiteness are validated before
+  unsafe indexing; finite double increments/updated states are checked. Extended
+  nominal h/interior grids avoid needless endpoint-subtraction overflow, pin final
+  time exactly and validate strictly advancing nonzero grids before callbacks.
+  Reverse/zero intervals remain supported; zero interval keeps N calls/N+1 samples.
+  Time underflow/rounded stagnation and arithmetic failures are explicit. Ordinary
+  calls retain intrinsic output history, without optional derivative capture/quota.
+  Actual derivatives are captured from the same callbacks, never replayed. Complete
+  known C=(2N+1)(d+1) is checked before history copies/callbacks; default1m/zero disables
+  only quota, excludes other metadata/runtime/capacities/headers/allocator bytes and
+  is not peak RAM. Failures expose no partial result; caller exceptions propagate.
+  All132 frozen legacy full state trajectories (16268samples), sample counts and
+  callback counts match exactly;130 time grids exact, two change by at most1.4211e-14
+  under the explicit rounding policy. Separately compiled frozen original sources
+  reproduce the original receipt. Old probes confirm accepted nonpositive steps,
+  empty dimension, NaN derivatives and repeated rounded times; malformed derivative
+  caused UBSan null-reference access. Six ASAN/UBSAN cases check closed discrete
+  scalar/vector/oscillator solutions, independent nonautonomous quadrature, actual
+  stateful callback sequences, known decay order/stability boundaries, whole quotas,
+  ownership, all domains and finite overflow/underflow/forward/reverse/zero limits.
+  Five-path audit67/67 definitions (originalODEbaseline34/34), nine compiled exact-
+  output snippets and four clangd hovers pass.23 affected trace/oldODE/format+5dir
+  and combined2234 cases pass. Six complete programs/six final inspected native
+  figures and both exports pass (33 computed lines, identical source/build/export
+  images). Actual tiny tangents precede original8step/9refinement decay, exact scalar
+  stability disk/multipliers, oscillator energy-pumping proof and measured trace,
+  time forcing/vector work and capture/precision controls. Assumptions behind O(h)
+  global error, defect normalisation, strict decay vs neutral stability and floating
+  limits are explicit; verified Hairer/Lubich and Moler primary references. Site97
+  reports/443blocks/374figures passes. Originals removed after all gates; old owned
+  euler_method.svg paths absent. Evidence: build/mepml-conversion/euler-method/.
+
+- 2026-11-07: Converted planar Euclidean minimum spanning trees to a
+  dedicated canonical euclidean_mst.hpp/.cpp with the original compiled function
+  and advanced_graph.hpp forwarding include preserved. Only that old body/declaration
+  move; unrelated graph functions remain. Complete lexicographic pairs feed a shared
+  stable Kruskal kernel for ordinary result, logical work and actual owned scan
+  histories. Generic finite signed weights, parallel edges, self-loops, disconnected
+  forests, stable input ties and empty/singleton connectivity remain supported.
+  Actual steps retain input index, pre-merge roots, acceptance and post-decision
+  component count without replay. Planar trace owns points and complete edges with
+  pair distances measured once. Checked divide-before-multiply pair geometry and
+  full finite coordinate/weight/endpoint validation precede unsafe allocation/sort;
+  differences, hypot distances and accepted-edge totals must stay finite. Old probes
+  confirm nonfinite singleton coordinates/weights and nonfinite connected totals
+  were previously accepted. Logical capture C=N+M+S (generic M+S) reserves known
+  inputs before graph generation/copies and each step online before scanning;
+  default1m/zero disables only quota; output/runtime/capacity/allocator bytes excluded,
+  no partial result and no peak-RAM claim. Ordinary calls keep no optional history.
+  All306 valid legacy scenario lines, including full selected-edge order/ties, match
+  new outputs and separately recompiled frozen original sources exactly. Six
+  ASan/UBSan cases cover350 planar clouds vs independent dense Prim and tree-path
+  bottleneck certificates,30 exhaustive Prüfer-tree minima,400 generic graph/BFS
+  scan certificates, original square/cluster-cycle/duplicates, full signed/loop/forest
+  cases, exact work/quota/ownership/empty cases, finite extremes and pair/sum overflow,
+  known line/grid and scale/translation identities. Four-path audit57/57 definitions,
+  fourteen compiled exact-output snippets and four clangd hovers pass.35 affected
+  custom/old advanced/Kruskal/Prim/format+5dir and combined2211 cases pass. Five
+  complete programs/five inspected native figures/both exports pass (28 computed
+  lines, identical source/build/export images). Original square3, actual cluster
+  rejection/total11, duplicate zeroedge andscale3, seven known line-family work/capture
+  cases and explicit quota/domain controls execute. Exchange proof handles ties;
+  complete-pair complexity and early-scan limits, labeled duplicates, geometric
+  units and tour/Steiner/squared-objective distinctions are explicit. Original
+  Kruskal1956 reference verified. Site96reports/437blocks/368figures passes; original
+  mepml/org removed after all gates; no old owned images. Evidence:
+  build/mepml-conversion/euclidean-mst/.
+
+- 2026-11-07: Converted the ellipsoid method to a positive triangular
+  factor representation with O(n²) central cuts, preserving the original compiled
+  function and three-field result layout. Shared actual callback execution supplies
+  compact result/work and owned trace APIs, explicit limit/zero-subgradient/support-
+  tolerance/rounded-center-stagnation reasons, measured factor log volumes, stable
+  exact log-volume ratios and a checked native 2-D outline. Scaled projections and
+  hypot avoid squared-norm overflow; positive diagonals are multiplied without
+  dense cancellation. Full center/radius/cap/tolerance/callback/oracle/state shape
+  and finiteness validation precedes unsafe access. Arithmetic loss is explicit;
+  floating geometry does not verify convexity or enclosures. Actual trace quota
+  C=Nsamples(1+n+n²)+Nattempts(1+n) is reserved before associated callbacks/copies;
+  default1m/zero disables only quota, not a peak-memory bound. Ordinary calls retain
+  no optional history. Original dense implementation demonstrably stopped on a
+  negative metric with a nonsymmetric invalid matrix; wrong gradient shape triggered
+  UBSan null-reference access. New original quadratic best1.98984e-13/support3.17709e-11
+  meets tolerance1e-10 with the full500attempt allowance. 196 frozen old/new scenarios
+  reviewed:144 short higher-dimensional results agree within measured maxvalue9.95e-12
+  and maxpoint1.03e-11;48 corrected 1-D results match independent endpoint bisection.
+  Old1D duplicated initial midpoint and omitted final cut center; new every accepted
+  center is evaluated consistently. Both long quadratics meet independently known
+  optima; plateau/constant exact minima retained, zero-gradient queries drop39→2 and
+  20→1. Six ASan/UBSan cases check250 random factor cuts vs independent extended
+  matrix formulas and retained-half membership, positive scaling, actual oracle
+  sequences, known quadratics, nonsmooth/constant optima,48 interval cases, exact
+  work/capture identities, all domains, ownership, quotas and finite arithmetic limits.
+  All82 definitions/17 compiled exact-output snippets/four clangd hovers pass;
+  20 affected native+5dir and combined2176 cases pass. Five complete report programs,
+  five final inspected native figures and both exports (33 computed lines,
+  identical source/build/export images) pass. Tiny unit cut and interval bisection
+  precede actual original quadratic, exact volume-vs-growing-axis counterexample
+  and work/precision controls. Conditional objective support and exact rho replace
+  false volume-to-distance and unqualified rate claims; lecture reference verified.
+  Site95reports/432blocks/363figures passes; originals removed after all gates,
+  old owned SVG paths absent. Evidence: build/mepml-conversion/ellipsoid/.
+
+- 2026-11-07: Extended Elias gamma with full positive uint64 support in a
+  shared compiled emitter/strict parser, preserving the three original inline
+  entry points and all 1,728 valid legacy encoded/decoded scenario lines. Integer
+  bit width and shifts in [0,63] replace the undefined shift64 at n>=2^63. Zero
+  encoding, nonbinary text, truncated words and trailing zero prefixes now fail
+  explicitly; empty input stays valid and overwide prefixes raise overflow. The
+  unchanged old-header probe reproduces shift64 UB and old silent zero omission/
+  malformed acceptance. Ordinary/work calls retain no optional history or quota.
+  New exact length/size summaries compare gamma to minimal common fixed width,
+  excluding framing; ASCII bit characters are explicitly not packed bytes.
+  Owned actual encode/decode spans share the real kernels, without replay. Capture
+  C=B+2N counts bit characters, values and word records. Encoding validates complete
+  known geometry/quota before copies/emission; decoding validates the full alphabet,
+  reserves B before copying and two entries per complete word online before append.
+  Default one million, zero disables only quota; failures expose no partial result,
+  and scalar/runtime/capacity/allocator memory is excluded, not a peak-RAM bound.
+  All 54 definitions, fifteen compiled exact-output examples and four clangd hovers
+  pass. Six ASan/UBSan cases check all 65,535 positive16bit values against independent
+  division codewords, all 131,071 binary streams through16bits against an independent
+  codeword dictionary, 600 seeded full-width sequences, every power/neighbour and
+  UINT64_MAX, actual spans with from_chars payload checks, exact work/size/capture
+  identities, strict malformed/zero/overwide limits, ownership and quotas. 21
+  compression/trace/format plus five dir and combined 2,156 cases pass. Five complete
+  programs/five inspected native figures and both exports pass (61 computed
+  lines, identical source/build/export images). Actual thirteen spans, original
+  1..12 codes and74bit mixed sequence/minimalfixed100bits, exact dyadic bucket/Kraft
+  identities throughK20,7Nbit/9Nhistory families, controlled magnitude comparisons
+  and full-width127bit/129entry controls execute. Correct piecewise implied masses,
+  symbolic finite-codebook remainder2^-64, source-dependent payload savings and
+  framing/storage distinctions replace earlier loose claims. Site94reports/427blocks/
+  358figures passes. Originals removed after all gates; old SVG paths absent.
+  Evidence: build/mepml-conversion/elias-gamma/.
+
+- 2026-11-07: Extended Edmonds-Karp through one checked complete-BFS kernel
+  with ordinary work and actual owned search/augmentation capture, preserving the
+  four-argument function and shared three-field MaxFlowResult layout. Entire finite
+  nonnegative graph/geometry validation precedes adjacency allocation. Independent
+  residual pairs retain self/parallel/antiparallel identities; successful flows use
+  cancellation residuals, avoiding nearly-equal capacity subtraction. Every positive
+  update/total must make finite representable progress, with explicit failure and no
+  partial output. Full BFS retains original first sink paths and final cut order;
+  no redundant uncounted cut traversal. Owned complete levels and first parents,
+  path pair before/after values and work are captured without replay. Quota counts
+  E+1+P(1+2V)+A+L; minimum first-search geometry precedes copies/adjacency, later
+  search/path reservations precede traversal/push. Default one million, zero disables
+  only quota; output/runtime/scalar/allocator bytes excluded, no peak-RAM claim.
+  Ordinary/work APIs retain no optional history/quota. Reusable native flow/cut
+  diagrams preserve edge identities using lanes/loops and caller positions, validate
+  local shape without certifying edited results, and display four significant digits.
+  Visual inspection caught labels crossing strokes; additive Diagram::label provides
+  measured white backing and preserves all existing text/edge methods. Final affected
+  figures were rerendered and inspected. All 127 definitions across four flow plus two
+  diagram files, thirteen compiled exact-output examples and nine clangd hovers pass.
+  Six ASan/UBSan cases include all 53,526 small graph/terminal cases and 600 seeded
+  self/parallel/antiparallel networks against enumerated cuts, independent Floyd
+  distances and lexicographic shortest-parent DAG checks, every actual residual
+  update/work/capture certificate, ownership/quota/invalid/numerical/renderer cases,
+  exact parallel counts and a 20,000-edge iterative path. Separate old/new binaries
+  preserve all 1,232 baseline full value/flow/cut lines. Old probes confirm accepted
+  nonfinite capacities and a wide-scale inconsistent flow; new errors are explicit.
+  22 flow/format plus nine diagram and five dir cases and combined 2,135 cases pass. Five complete
+  programs/five inspected figures and both exports pass (59 computed lines and
+  identical source/build/export images): tiny bottleneck/cut, actual e2 cancellation,
+  original CLRS flow23/cut23, exact 2k²+k versus Dinic3k BFS inspections and distinct
+  self/parallel/opposite lanes with numeric/capture controls. Exact-arithmetic and
+  numerical limits, isolated-vertex initialization, witness/certificate distinction
+  and retained-memory exclusions are explicit. Site 93 reports/422 blocks/353 figures
+  passes. Originals removed after all gates; old SVG paths absent.
+  Evidence: build/mepml-conversion/edmonds-karp/.
+
+- 2026-11-07: Moved periodic EDF/RMS scheduling to a shared compiled unit
+  engine with owned ready jobs, stable input-order ties and no discarded backlog.
+  Original RTTask/RTSlice/RTScheduleResult field order and both inline simulation
+  entry points are preserved; CPU scheduling elsewhere is unchanged. Full domain
+  validation rejects nonpositive periods, negative work/horizons, duplicate/reserved
+  idle ids and invalid policies. Zero-work jobs complete at release; wide deadlines
+  avoid release-plus-period int overflow. A miss is checked through boundary H;
+  finishing exactly at a deadline is on time. Exact EDF rational screening uses
+  private integer limbs with no tolerance or external bigint dependency. Numeric
+  utilization/RMS sufficient-screen rounding is explicit; the stable expm1 RMS
+  bound is not a necessary feasibility limit. Actual owned traces record releases,
+  executed/completed/missed job outcomes and every selected job id in the same
+  kernel. Raw N+H+J geometry and complete quota precede copies/history allocation;
+  default one million/zero disables only quota, no partial return, runtime/result
+  buffers and allocator bytes excluded. Ordinary/work calls retain no optional
+  history or quota. Native task-id-to-row plotting validates slices/ids without
+  claiming to certify caller-edited demand/verdicts. Six ASan/UBSan cases compare
+  2,592 exhaustive policy/task/horizon scenarios and 600 seeded fixtures (both
+  policies plus reversed input order) against an independent offline-arrival,
+  flat-ready-job scan oracle, checking every tick/job and exact count/cap/ownership
+  certificates. Boundary completion, retained expired jobs, zero work, opaque ids,
+  full validation and many-limb exact sums pass. Old probes confirm omitted H=2
+  miss and accepted 1+1/INT_MAX overload; corrected outcomes are shown. Separate
+  binaries preserve 2,708 feasible baseline timeline/verdict lines. All 79 affected
+  definitions, nineteen compiled exact-output snippets and four clangd hovers pass;
+  30 scheduling/trace/format plus five dir and combined 2,113 cases pass. Five
+  complete programs/five inspected figures and both exports pass with identical
+  source/build/export images. Actual preemption, original 13-job/20-busy/4-idle
+  hyperperiod, EDF versus RMS missed jobs, harmonic U=1 repetition, exact unit/history
+  families, overdue selections and quota/domain controls execute. Model assumptions,
+  finite-prefix versus repeated-state proof, sufficient versus necessary RMS claims
+  and explicit idle-work complexity are stated. Site 92 reports/417 blocks/348
+  figures passes. Originals removed after gates; old SVG paths absent.
+  Evidence: build/mepml-conversion/edf/.
+
+- 2026-11-07: Extended Eclat with owned sorted vertical tidsets, explicit DFS
+  frames, checked work counters and actual conditional-intersection evidence.
+  Original signature, FrequentItemset layout, canonical order, empty/repeated rows,
+  duplicate-item normalization, opaque full-width ids and zero-support convention
+  are preserved. Other miners, shared normalization, rule/encoding/label bodies are
+  byte-unchanged. All sibling intersections precede descent; history records both
+  actual conditional parents, failures and separate emission ids. Ordinary/work
+  calls retain no optional history or quota. Trace quota counts raw rows/items,
+  state headers/item ids/tids and emitted ids; base is checked before copies and
+  state/emission costs online. Default one million, zero disables only quota;
+  working intersection/result copies and allocator bytes are explicitly excluded,
+  so the quota is not a peak-RAM claim. No partial trace escapes failure. Six
+  ASan/UBSan cases include 2,842 exhaustive database/threshold cases vs independent
+  subset support, 500 seeded sparse/duplicate fixtures plus row permutations,
+  every state's direct membership certificate, common-prefix actual operands,
+  independent union-based merge-step identities, exact work/count/depth/cap
+  certificates, ownership and zero/empty/full-width limits. Separate binaries
+  preserve all 2,858 baseline scenario lines, including Titanic. All 94 affected
+  definitions, ten compiled exact-output snippets and four clangd hovers pass;
+  22 association/trace/format plus five dir cases and combined 2,083 cases pass.
+  Five complete programs/five inspected figures and both exports pass (81 computed
+  lines, identical source/build/export images). Original eleven groceries, actual
+  conditional triple and beer/diapers operands, dense F=2^U-1 and R=F-U, disjoint
+  R=U(U-1)/2, row scaling, canonical Titanic (891 rows, 32 sets at support45), and
+  exact 28-entry capture demonstrate semantics. Positive-threshold cross-checks,
+  FP-growth's current zero-support difference, output/failed-attempt costs and
+  conditional-memory bounds are explicit. Site 91 reports/412 blocks/343 figures
+  passes. Originals removed after all gates; original SVG paths absent.
+  Evidence: build/mepml-conversion/eclat/.
+
+- 2026-11-07: Converted Earley recognition to a shared compiled indexed
+  closure while retaining both inline entry points, legacy int column counts,
+  original production ids/order and duplicate-rule identity. Copied agenda items,
+  indexed waiters and first completed spans replace unsafe vector iteration and
+  recognize nullable cycles under either waiter/completion arrival order. Ordinary
+  work/boolean/size calls return no input or reason history; sparse runtime columns
+  avoid eagerly allocating all indexes. Opaque strings include empty/NUL/UTF-8
+  names; an empty RHS differs from an empty-named terminal, and an undefined start
+  rejects. Raw index/count geometry precedes allocation. Owned actual traces keep
+  the chart and first-insertion parents without replay or a parse-forest claim.
+  Capture base 2N+P+sum(rhs lengths)+2 is checked before copies/column metadata;
+  each new item/reason reserves two records online, duplicate attempts consume none.
+  Default cap is one million; zero disables only quota, and failures expose no
+  partial trace. A checked selected-item formatter escapes control symbols without
+  promising to certify arbitrary edited traces. All 83 definitions, eleven compiled
+  exact-output snippets and four clangd hovers pass. Seven ASan/UBSan cases include
+  all 8,191 short a/b words, 7,560 seeded nullable/cyclic grammar queries vs an
+  independent least fixed point of interval languages, first-parent deduction
+  certificates and final-chart prediction/scan/span/join work identities, rule
+  permutations/duplicates, opaque names, caps/ownership/formatting and a 20,000-link
+  iterative unit chain. An unchanged old-header probe reproduces heap-use-after-free
+  for S->A,A->epsilon; the new probe accepts without sanitizer errors. Separate
+  old/current binaries preserve 8,194 exact verdict/chart-size scenarios. Thirty
+  affected parser/format plus five dir cases pass; combined targeted set 2,061.
+  Five complete programs/five inspected figures and both exports pass, including
+  37 computed lines and identical source/build/export images. Original nine
+  examples/chart counts, actual four-state two-parent completion, late nullable
+  join and empty-RHS/token distinction are shown. Exact linear balanced-family
+  items, quadratic ambiguous-family items and cubic waiter/span joins are derived
+  and checked, with expected-hash/fixed-grammar and no-all-parses limits explicit.
+  The original barplot label was corrected to an explicit title; that final figure
+  was re-inspected and four other hashes are unchanged. Website 90 reports/407
+  blocks/338 figures passes. Original mepml/org removed after gates; old SVG paths
+  absent. Evidence: build/mepml-conversion/earley/.
+
+- 2026-11-07: Converted dynamic time warping with the original inline entry
+  point, three-field DTWResult and diagonal/advance-a/advance-b tie order retained.
+  Shared compiled canonical kernel uses two double cost rows plus one predecessor
+  byte per positive cell. Complete finite input and signed-index/product/capture
+  geometry validation precedes allocation and optional capture checks. Nonfinite
+  off-path accumulated costs remain infinity; only an unrepresentable final optimum
+  rejects an otherwise finite-input solve. Actual owned traces capture both inputs,
+  positive-cell costs and selected directions during that same recurrence. Complete
+  n+m+2nm logical entry count is checked before capture allocation, default one
+  million; zero disables only the optional cap. Ordinary/work calls retain no input
+  or cost history. A complete witness validator/cost sum and native alignment plot
+  port reusable report logic; plot checks feasible endpoints/steps/exact forward
+  cost and finite display offsets, not optimality. All 42 definitions, eight exact
+  compiled documentation snippets and three clangd hovers pass. Five ASan/UBSan
+  cases cover 14,400 ternary short-sequence pairs with independent exhaustive path
+  enumeration and every prefix table/direction, 500 seeded symmetry/scaling/L1
+  controls, nonmetric counterexamples, input/cap/index/overflow/witness/plot limits,
+  ownership and a 50,001-pair iterative traceback. Separate old/current binaries
+  preserve 14,402 distances and exact paths; original NaN/infinity acceptance is
+  demonstrated by compiled old-header probes. All 17 affected native and five dir
+  cases pass; combined targeted set 2,031. Six complete report programs and six
+  inspected native figures pass both computed exports and image-byte checks.
+  Original zero-cost tiny path and 30-sample sinusoid values are retained, including
+  bit-identical vector-generated inputs and exact path. Fixed canonical GunPoint
+  fitting sources 40/5/20 supply recorded 150-sample examples without test use,
+  extra normalization, synthetic data or benchmark claims. Exact recurrence work,
+  buffer-slot counts versus total storage, rigid L1 versus Euclidean naming,
+  zero-distance/triangle failures and unrestricted-variant limits are explicit.
+  Website 89 reports/402 blocks/333 figures passes. Original mepml/org removed after
+  gates; old owned SVG paths absent. Evidence: build/mepml-conversion/dtw/.
+
+- 2026-11-07: Converted the Iris CART report from repeated disabled chunks
+  and one assembled program into six complete native C++ programs. Retained the
+  original four-predictor depth-three fit (nine nodes, five leaves, 146/150 correct),
+  actual node thresholds, original confusion/importance values, eight-depth curve
+  and four new-flower leaf-share predictions. A frozen 201-line receipt additionally
+  verifies all 150 fitted labels and exact original summaries, node table and
+  predictions before/after the change. Added DecisionTreeClassifier::plot_tree():
+  actual model nodes, shortest round-trip thresholds, sample counts and fitted
+  Gini/entropy labels, class-coloured leaves and <=/> branches; iterative layout
+  preserves left-to-right fitted leaf order. The default 255 complete-node cap is
+  checked before layout allocation; zero disables only the optional cap. Returned
+  native Diagram owns its labels and outlives the unchanged model. Four new tests
+  cover exact/short/disabled limits, tiny and full fits, mixed unsplit root,
+  ownership, no refitting/mutation, entropy and XML-escaped labels. All 17 classifier,
+  regressor and diagram cases pass under ASan/UBSan, 22 native/dir cases pass and
+  combined targeted set 2,014 passes. Both canonical paths audit 72/72 definitions;
+  all four existing/new documented programs execute, three with exact expected
+  stdout and one checked five-node table; the new method's clangd hover passes.
+  Six complete programs/six inspected native figures and both computed exports pass;
+  47 computed lines and source/build/export image bytes agree. The final predictor
+  axis and region-range corrections were inspected; four other image hashes match.
+  A six-row Gini example precedes Iris; actual fitted diagrams, classification/
+  importance, 120-train/30-test stratified held-out confusion, original plus held-out
+  depth curves and sampled petal regions are executed. Training fit, exploratory
+  test reuse, leaf shares, tied splits, importance and data-version limitations
+  are explicit; no unexecuted LDA/SVM comparison remains. A nested text fence in
+  computed output was interpreted as a new executable block; replacing it with
+  the native node table and rerunning all six programs resolved the format issue.
+  Website 88 reports/396 blocks/327 figures passes; original mepml/org removed only
+  after gates and all old owned figure paths were absent. Evidence:
+  build/mepml-conversion/dt-iris/.
+
+- 2026-11-07: Converted D*-style replanning into an explicit persistent D* Lite
+  planner while preserving the one-shot function, original tiny route, GridPathResult
+  field order and failure convention. Shared canonical C++ keeps exact bounded
+  g/rhs labels, an indexed heap with one entry per inconsistent cell, a fixed goal,
+  checked Manhattan movement modifier, ordered validated obstacle batches and
+  deterministic optimal route extraction. Complete shape/coordinate/product/cap
+  validation precedes allocation or mutation. Owned copies retain full queue
+  capacity; assignment constructs a replacement before nonallocating swaps.
+  Actual lower/raise/key-refresh trace operands include initial/final fields,
+  stored queue keys and pending work. Logical capture cost is 5N+Q+P, checked
+  before copies/pops; a stopped capture leaves valid resumable progress, with
+  work_before separating prior pops from this call. Ordinary repair stores no
+  history. Checked grid-mask construction and native route plotting move reusable
+  setup/rendering into core; supplied routes are checked for feasibility/cost.
+  Eight ASan/UBSan cases pass, including 41,472 static mask/terminal BFS checks,
+  29,952 exhaustive flip/restore trace certificates, 2,400 seeded changing-map
+  queries and a 50,001-cell corridor. Independent certificates check actual queue
+  ordering, Bellman updates, labels, termination, capture and all work counters.
+  Separate HEAD/current binaries preserve 1,001 original scenarios, including the
+  exact tiny path. All 105 definitions, 15 compiled exact-output examples, four
+  clangd hovers, 23 affected native cases and five dir cases pass; combined targeted
+  set 1,997. Five complete report programs and five inspected native figures pass
+  both computed exports with identical source/build/export image bytes. The report
+  distinguishes classic D* from Lite, shows disconnection/reopening and lazy keys,
+  and measures reuse without promising each edit beats fresh search. Website
+  87 reports/390 blocks/321 figures passes. Original mepml/org removed after gates;
+  neither source referenced owned figures. The previously recorded 35 unrelated
+  documentation gaps remain outside this batch. Evidence: build/mepml-conversion/d-star/.
+
+- 2026-11-07: Converted DPLL with the original function, two-field SatResult,
+  first-occurrence unit/smallest-id pure/first-variable true-first order, raw clause
+  order/multiplicity/tautologies and total-model completion retained. Full signed-id
+  validation precedes verdicts, dense allocation and optional limits; zero, INT_MIN,
+  out-of-bound ids and negative counts are rejected. Widened n+1 arithmetic and
+  presence polarity bits avoid signed count/frequency overflow. Heap-backed frames
+  replace native recursion, retain parent states and expose actual node arrival,
+  unit/pure assignments, conflicting original clause, restored failure returns,
+  both-child exhaustion and satisfied partial states without replay. Original
+  input/complete assignment event entries are capped online, default one million,
+  with input/root cost checked before dense allocation; zero disables only cap.
+  Ordinary/work calls retain no history. A validated total-model checker and bounded
+  original-order mt19937 three-distinct-variable generator move reusable report code
+  into core; invalid generator controls leave engine state untouched. Logical work
+  separates outer clause visits from literal visits including both pure passes.
+  Full two-path audit covers69 definitions, eleven compiled/executed exact-output
+  examples and five clangd hovers. Seven ASan/UBSan cases pass:all512 two-variable
+  clause sets and19683 ordered three-clause/three-variable formulas vs exhaustive
+  models;800 seeded raw formulas; actual state/reason/pure-polarity/conflict/parent/
+  exhaustion/model certificates and node/branch/capture identities; empty/zero-var,
+  duplicates/tautologies/unused variables, total-model validation, caps/priority,
+  ownership, generator stream/state and1024-decision explicit-stack controls.
+  Compiled unchanged HEAD-source probes expose invalid-literal vector-index assertion,
+  INT_MAX+1 signed overflow and a negative bound accepted as SAT. Separate old/current
+  binaries match2522 original verdicts and full models, including all2520 random
+  instances. All21 original rounded fractions match the rerun; effective ratios,
+  Wilson intervals and measured median work now qualify their finite scope.
+  Visual review found unsupported logical AND/OR rendered as question marks in two
+  native diagrams. Added U+2227/U+2228 to the canonical font generator and regenerated
+  C++ data through just embed-plot-font twice, byte-identically. A native regression
+  requires two distinct actual outlines, neither the fallback glyph. Twenty-five
+  affected DPLL, five dir and nine diagram cases pass; combined targeted set1974.
+  Five complete report programs/five inspected captioned native figures and both
+  computed exports pass;56 result lines and source/build/raw figure bytes verified.
+  All final images re-inspected after font correction; three other hashes unchanged.
+  Unit proof, complete three-node refutation, original/pure-alternative checked
+  models, original finite random sweep and exact tautology-family scan formulas
+  through depth1024 are executed. Largest sampled median54.5 nodes at actual4.48
+  and nonzero high-ratio counts are stated without an asymptotic threshold claim.
+  Website86 reports/385 blocks/316 figures passes. Original mepml/org removed after
+  gates; old dpll.svg source/build paths absent. The previously recorded35 unrelated
+  completed-manifest documentation gaps remain outside this batch; no broad audit
+  was rerun. Evidence: build/mepml-conversion/dpll/.
+
+- 2026-11-07: Converted Double Dabble around a shared compiled shift/add-three
+  kernel, preserving both original function signatures, most-significant-first
+  unpacked digits, deliberate low-bit truncation and singleton zero at width zero.
+  Widths outside0..64 now fail before allocation/subtraction/shifting; explicit
+  zero/full-width selection avoids shift-by64. An exact65-entry integer capacity
+  lookup replaces floating capacity arithmetic. Ordinary conversion, string output,
+  actual trace and work-only calls share the kernel; ordinary/work calls retain no
+  history. Owned before/corrected/after/carry vectors preserve requested-width zero
+  padding, consumed prefixes, actual input bit indices and logical counters. Maximum
+  capture is64 stages of20 nibbles, with no unnecessary history quota. A checked
+  inverse validates all unpacked0..9 digits before decimal Horner overflow checks;
+  leading zeros are accepted and its multiply-ten/add arithmetic is distinguished
+  from the conversion recurrence. Full two-path audit covers35 definitions, nine
+  compiled/executed exact-output examples and four clangd hovers. Seven ASan/UBSan
+  cases pass:all65536 sixteen-bit values vs standard decimal formatting/round-trips;
+  all8191 inputs through twelve bits with full actual stage certificates against
+  independent schoolbook decimal doubling; all65 widths with zero/all-one and2210
+  total seeded/boundary controls, ignored high bits, decimal/binary thresholds,
+  full uint64 max, validation/overflow priority and snapshot ownership/padding.
+  Counters verify checks=shifts=B*D and corrections=decimal carries. Separate
+  unchanged HEAD-header probe confirms the old shift-by64 at width65 and accepted
+  negative-width zero. Separate old/current binaries match138 conversions:all eight
+  original cases plus two values at every width0..64. Thirteen affected native plus
+  five dir cases pass; combined targeted set1940. Five complete programs/five
+  inspected captioned native figures pass first review; all42 computed result lines
+  appear in both exports and all source/build/raw figure bytes match. Tiny13 carry
+  diagram precedes every actual243 stage, original eight conversions/full64-bit max,
+  capacity/value-length comparison, measured work families and truncation/inverse
+  validation controls. Local digit/carry and global prefix proofs justify the
+  recurrence; report separates software nibble counts from CPU timings or hardware
+  cycles, and unpacked BCD/decimal text/checked inverse semantics. Website85 reports/
+  380 blocks/311 figures passes. Original mepml/org removed after gates; old generic
+  double_dabble_digits.svg source/build paths absent. The previously recorded35
+  unrelated completed-manifest gaps remain outside this batch; no broad audit was
+  rerun. Evidence: build/mepml-conversion/double-dabble/.
+
+- 2026-11-07: Converted Conway's Doomsday rule to a canonical compiled kernel,
+  retaining all four original function names/signatures, Sunday-first codes and
+  arbitrary signed-code name normalization. Date calls reuse existing Gregorian
+  month validation before lookup/subtraction, rejecting invalid months/days and
+  nonexistent leap dates. Widened floor-based century decomposition supports the
+  full int-year domain, including astronomical year zero and negatives, without
+  signed overflow or negative weekday results. Fixed owned year/date terms expose
+  century residue/anchor, within-century year, direct quarters, dozen decomposition,
+  leap status, canonical reference, signed offset and final weekday without replay.
+  Fixed twelve-month anchors retain March14, leap-adjusted January/February and
+  actual ordinal days/weekdays. All public semantics specify proleptic Gregorian
+  rules, defaults/ownership, historical-cutover/timezone limits and O(1) work.
+  Full two-path audit covers37 definitions, ten compiled/executed exact-output
+  examples and four clangd hovers. Six ASan/UBSan cases pass:730485 daily comparisons
+  against independent sequential-day/month-length oracles across five complete
+  400-year cycles; representative chrono dates and10000 full-int-year samples;
+  full monthly anchor/quarter/dozen/ordinal identities, century/leap boundaries,
+  extreme invalid month/day inputs, complete validation priority, signed names
+  and owned copies. Separate unchanged HEAD-header probes confirm the old month13
+  bounds error, INT_MIN day subtraction overflow and negative-year anchor-3.
+  Separate old/current binaries match all64 original scenario values (three event
+  names,2025 anchor,eight original monthly anchors,twelve month starts,forty yearly
+  anchors). Twenty-two affected native plus five dir cases pass; combined targeted
+  set1927. Six complete report programs/six inspected captioned native figures and
+  both computed exports pass; all71 result lines and source/build/raw figure bytes
+  are checked. Tightened cycle-panel labels and widened a signed-century diagram
+  gap; both corrected images re-inspected, four other reviewed hashes identical.
+  Worked Christmas2025 trace and both full common/leap anchor sets precede original
+  events/40-year scatter, exact400-year counts/century controls,144-row AirPassengers
+  calendar annotation and negative/extreme/invalid-date controls. Report derives
+  the century/dozen/whole-week identities and146097-day period, while separating
+  Gregorian conventions and monthly observations from local historical calendars
+  or inferred daily traffic. Website84 reports/375 blocks/306 figures passes.
+  Original mepml/org removed after gates; old doomsday.svg source/build paths absent.
+  The previously recorded35 unrelated completed-manifest gaps remain outside this
+  batch; no broad documentation audit was rerun. Evidence: build/mepml-conversion/doomsday/.
+
+- 2026-11-07: Converted Dixon integer factorisation to a dedicated canonical
+  dixon.hpp/.cpp, retaining the original two-argument function and its old header
+  reexport. Only the old Dixon body and its exclusive prime helper move out of
+  number_theory_extra.cpp; other factorisation implementations stay intact.
+  Shared exact modular scanning, positive smooth relations, all-row GF(2) reduction
+  and original-row selection now use dynamic packed vectors instead of unguarded
+  single words. Singleton dependencies are eligible; both exact GCDs are retained,
+  with a proper minus divisor selected before plus. Inputs require n>=2 and bases
+  in1..4096; full requested scan endpoints are validated before allocation. Zero
+  residues are counted/skipped before division. Owned fixed-window collections and
+  actual factor traces expose original exponents, selected row identities, full
+  even sums, roots, GCDs, rank, successful divisions, whole-row XOR work and logical
+  captured cells without replay. Default one-million scalar-cell capture cap is
+  checked before each affected capture; zero disables only the optional cap.
+  Compact factoring stores no dependency history. Full two-path audit covers49
+  definitions, seven compiled/executed exact-output examples and four clangd hovers.
+  Seven ASan/UBSan cases pass:9568 small modulus/base/budget combinations and714
+  independent full-window comparisons; Boolean elimination and repeated-add modular
+  arithmetic verify row selections, congruences, rank, both GCDs, divisions, XORs
+  and capture accounting. Full-width moduli/root boundaries, zero residues, primes,
+  even/square inputs, exact/one-short caps, validation/endpoint overflow, ownership,
+  high parity bits across63/64/65 and127/128/129, and a130-row prime-modulus batch
+  that exhausts every dependency through selection index129 are covered. Compiled
+  unchanged HEAD-source probes confirm the old shift-by64 and modulus-zero division.
+  Eleven affected native plus five dir cases pass; combined targeted set1905.
+  Five complete programs/five inspected captioned native figures pass first review;
+  all36 computed result lines appear in both exports and all source/build/raw figure
+  bytes match. Original four factors/cofactors and25-in4000 density are preserved;
+  report adds hand congruences for77/69, original batch counts/ranks/trivial attempts,
+  six nested-base density curves, capture/failure controls and dynamic-boundary rows.
+  Derivation separates rank-nullity from successful factoring, proper/composite
+  divisors from prime factorisation, and bounded consecutive scanning from Dixon's
+  random-list expected-time theorem. Website83 reports/369 blocks/300 figures passes.
+  Original mepml/org removed after gates; old dixon.svg source/build paths absent.
+  The previously recorded35 unrelated completed-manifest gaps remain outside this
+  batch; no broad documentation audit was rerun. Evidence: build/mepml-conversion/dixon/.
+
+- 2026-11-07: Converted the Euclidean distance transform around a shared compiled
+  one-dimensional lower-envelope kernel, preserving the original grid function
+  name/input/return shape and a forwarding detail::dt_1d spelling. The geometry
+  umbrella now exposes the APIs through dm/dm.hpp. True infinity candidates are
+  skipped instead of using1e20; size_t indices are converted before products and
+  factored long-double intersections replace signed int squares. Empty/zero-width
+  shapes are safe, ragged grids and invalid costs/sites/counts are rejected, and
+  optional complete input/cell caps precede capture. Owned actual 1-D comparisons,
+  boundaries, removed candidates, costs/argmins and logical counters explain the
+  envelope without replay. The 2-D feature/trace APIs retain squared/Euclidean
+  distances, original nearest rows/columns and column-pass intermediates; exact
+  ties choose smaller column then row, and no-site sentinels are explicit. A
+  bounded site-grid constructor and native distance-field plot replace reusable
+  report-local preparation/graphics. Full two-path audit covers54 definitions,
+  seven compiled/executed exact-output examples and four clangd hovers. Nine
+  ASan/UBSan cases pass:87381 weighted vectors against independent quadratic minima,
+  all74954 binary masks through4x4 against all-site distances/argmins/column minima,
+  actual envelope pop/boundary/work identities, original9x15, char/tie/empty/no-site
+  shapes, caps/validation/ownership/plot controls, a50001-finite-candidate line and
+  100001-sample/single-row regressions. Compiled unchanged HEAD-header probes expose
+  signed overflow at index46341 and the old zero-width vector-index assertion.
+  Fourteen affected native plus five dir cases pass; combined targeted set1894.
+  Five complete programs/five inspected captioned native figures, both computed
+  exports and byte-identical source/build/raw bundles pass. Every one of the135
+  original rounded distances and the row-four profile match the executed report.
+  Shortened a clipped envelope legend and compacted two equal-scale diagrams;
+  all three corrected figures were re-inspected while the other two reviewed
+  hashes stayed identical. Report derives crossings/separability/amortized counts,
+  verifies single-site/all-site count formulas, and separates exact metric choice
+  from floating rounding, padding, obstacle routes and witness tie conventions.
+  Website82 reports/364 blocks/295 figures passes. Original mepml/org removed after
+  gates; original distance_transform.svg source/build references checked absent.
+  The previously recorded35 unrelated completed-manifest gaps remain outside this
+  batch; no broad audit was rerun. Evidence: build/mepml-conversion/distance-transform/.
+
+- 2026-11-07: Converted Dinic into dedicated canonical dinic.hpp/.cpp, retaining
+  the four-argument function, CapacityEdge spelling, advanced_graph.hpp reexport
+  and MaxFlowResult layout/formatting; only the old Dinic body moves out of the
+  shared advanced module. Flat residual pairs preserve original identities for
+  loops/parallel/antiparallel arcs. Strict-positive residuals replace the former
+  absolute 1e-12 cutoff; a compiled HEAD-source probe returns 7.5 and zero for
+  capacities 7.5 and 7.5e-13, while the new solver retains both positive values.
+  Iterative current-arc traversal avoids recursive vertex-depth calls. Complete
+  validation precedes adjacency allocation, and checked residual/aggregate
+  arithmetic rejects nonfinite or lost positive progress before committing a path.
+  Shared actual capture owns original input, every BFS level set including final
+  failure, pushed paths and oriented pair before/after operands, with no replay.
+  History cost P*(V+1)+A+L is checked before BFS/path mutation; default one million
+  entries, zero disables only the optional cap. A separate generic numerical
+  flow/cut check exposes capacity/conservation/value errors, signed gap, crossing
+  identities and distinct feasible/optimal flags with explicit absolute tolerance.
+  Checked disjoint/staircase fixture generators test one versus increasing phases.
+  Scoped two-path audit covers 79 definitions, six compiled/executed exact-output
+  examples and four clangd hovers. Eight ASan/UBSan cases pass, including all 729
+  ternary three-vertex networks/all six terminal pairs and 4096 binary four-vertex
+  networks/all twelve terminal pairs: 53526 computations agree with independently
+  enumerated cut minima. Separate replay verifies levels, bottlenecks, residual
+  snapshots, blocked level graphs and DFS-inspections=pointer-advances+path-updates.
+  Original/CLRS/cancellation, loops/parallel pairs, capacity scales, exact/one-short
+  history and generator caps, arithmetic/validation priority, malformed supplied
+  certificates, ownership and a 30000-edge iterative chain are covered. Thirty-one
+  affected native plus five dir cases pass; combined targeted set 1880. Five complete
+  report programs/five inspected captioned native figures and both computed-result
+  exports pass with byte-identical source/build/raw bundles. All figures passed
+  first review. Report executes the original7.5, classic23/cut12+7+4, reverse-edge
+  rerouting across levels3/5, numerical certificate counterexamples, phase/work
+  families and a20000-edge chain. Fresh-XML website81 reports/359 blocks/290 figures
+  passes. Broader completed manifest has19700/19735 documented definitions:34
+  missing CUDA descriptions and one simulation description are outside this change;
+  both files are unchanged from HEAD. Scoped Dinic coverage remains79/79. Original
+  mepml/org removed after gates; neither had owned figure assets. Evidence:
+  build/mepml-conversion/dinic/.
+
+- 2026-11-07: Converted Dijkstra with the original finite-input distances, strict
+  adjacency/tie behavior, public signatures, two-field ShortestPathResult and
+  formatting retained. A shared lazy-heap kernel records actual fresh/stale pops,
+  outgoing-edge operands/outcomes, original selected arc identities, settlement
+  order and logical work without replay or full snapshots. Complete finite
+  nonnegative weight/endpoint validation precedes adjacency allocation, including
+  unreachable arcs; an examined nonfinite candidate sum now throws explicitly even
+  when it would not improve a known route. Online caps count pops plus inspections,
+  default one million, checked before each event; zero disables only that budget.
+  Path reconstruction retains empty out-of-range/unreachable convenience while
+  bounding and checking reachable public-record chains for malformed shapes,
+  distances, indices and cycles. A bounded descending parallel-arc generator
+  exposes O(E) lazy heaps at V=2 with exact binary64 integer weights. Full two-path
+  audit covers 53 definitions, six compiled/executed exact-output examples and
+  four clangd hovers. Nine ASan/UBSan cases pass, including all 4096 three-vertex
+  zero/one/two/absent-cost digraphs from every source (12288 traversals), independent
+  Floyd-Warshall distances and multiset-based complete actual-event certificates;
+  original six cities, zero cycles, duplicates, tie rules, bands, parallel arcs,
+  event/generator cap boundaries, validation/overflow priority, maximum/subnormal
+  finite costs, negative zero, malformed parents and owned copies. Thirty-nine
+  affected native cases plus five dir cases pass; combined targeted set 1849.
+  Five complete programs and five inspected captioned native figures retain all
+  original six-city roads, distances and route A-C-B-D-F at cost eleven. Crowded
+  crossing-road labels were separated and a base-two count plot now distinguishes
+  heap growth from two settlements; both corrected figures were re-inspected and
+  three other reviewed hashes stayed identical. The report proves settlement,
+  R+1 push/pop conservation and the unrestricted multigraph versus simple-graph
+  bounds, with closed-form band and parallel controls. Both computed-result exports,
+  identical packaged source/build figures and website 80 reports/354 blocks/285
+  figures pass. Original mepml/org removed after gates; all original figure paths
+  checked absent. Evidence: build/mepml-conversion/dijkstra/.
+
+- 2026-11-07: Converted diffusion maps with the existing core constructor, four-field
+  option aggregate, defaults, compact model storage and binding facade signatures
+  retained. A shared fit kernel exposes owned actual squared distances, Gaussian K,
+  alpha-corrected A, degrees, stationary probabilities, transition P, symmetric S,
+  full right eigenbasis and retained coordinates without replay. The symmetric
+  Householder/QL solver replaces cyclic Jacobi. Nonfinite controls/retained data,
+  squared-distance overflow and floating-point disconnected kernels are rejected;
+  small roundoff-negative eigenvalues are clipped before nonnegative-time filtering.
+  Trace observation/capacity guards precede dense allocation. Generic upper-median
+  global/kth-neighbour squared-distance summaries and aligned between/within centroid
+  scatter replace report-local helpers. An explicit SwissRollEngine overload retains
+  the original 400 mt19937_64/libstdc++ draws at seed 42 while the existing Xoshiro
+  API and outputs remain unchanged. Full six-path audit covers 76 definitions,
+  eleven compiled/executed exact-output examples and four clangd hovers. Nine new
+  ASan/UBSan tests pass, including 108 independent transition-power/spectral fits
+  at four times, rational three-point matrices/spectrum/distances, reversibility,
+  weighted orthogonality, filtering, null/cap/ownership/overflow controls, all ranks
+  at sizes 2..19, centroid scatter/similarity identities and original-generator
+  replay controls. Seventeen affected native cases plus five dir cases pass,
+  including both legacy facade constructors, owned embedding frames and unchanged
+  options/model formatting; combined targeted set 1810 passes. Six complete report
+  programs and six inspected captioned native figures pass. Two iris panel lower
+  bounds were expanded and re-inspected; the other four final figures retain
+  reviewed identical bytes. Both computed-result exports, packaged source/build
+  figure bundles and website 79 reports/349 blocks/280 figures pass. The report
+  corrects right-eigenvector and stationary-normalization factors, separates
+  asymptotic alpha claims from finite labelled separation, retains all original
+  iris/roll/PCA/MDS scenarios, and explicitly shows broad-kernel height recovery
+  in coordinate three versus local-kernel height failure in the first four.
+  Original mepml/org removed after gates; their twelve referenced build images
+  were absent. Evidence: build/mepml-conversion/diffusion-maps/.
+
+- 2026-11-07: Converted educational Diffie–Hellman around the existing exact uint64
+  right-to-left exponentiation kernel, preserving legacy public/shared-key arithmetic
+  names/includes, all valid nonzero-modulus results, modulus-one/zero-exponent
+  conventions and original fold/square/shift order including the final unused square.
+  Canonical mul_mod now shares the full unsigned 128 product implementation and rejects
+  zero before remainder evaluation; the original diffie_hellman include still reexports
+  it for Shamir. Actual owned bit traces record remaining exponent, running base,
+  accumulator before/after, bit decision and squared base without replay. Recorded
+  counts distinguish bit-width squares, popcount accumulator products and their sum;
+  complete effective-bit caps (default 64, zero disables optional cap) precede
+  allocation/powering, with modulus one returning zero work. A deterministic four-power
+  exchange record retains public/raw shared values without storing private exponents. A
+  bounded prime-validated generated-cycle API accepts any canonical nonzero element,
+  includes identity once, computes its exact order with one enumeration product per
+  value including the closing product, and applies online order/capacity guards;
+  enumeration counts exclude primality checking and zero disables only the optional
+  cap. The report reproduces original 23/5/6/15 public 8/19/shared 2 and original
+  31-bit public 744111946/1598667707/shared 490982923. Existing
+  baby_step_giant_step_trace recovers exponent 123456 from public inputs with 46,341
+  baby products and 3 giant lookups and recomputes the shared value, exposing the toy
+  size without adding a new attack algorithm. Actual 5^6 trace shows three squares/two
+  folds/result 8 and unused final square 16; 19^6 gives 2. Generated cycles for g
+  1/4/5/22 modulo 23 have orders 1/11/22/2; the original 23 plotted exponents include a
+  repeated identity and a tiny table recovers exponent representatives 6/15. A
+  two-session substitution gives Alice/intermediary 18 and intermediary/Bob 15 despite
+  both local agreement checks passing; unvalidated 0/1/22 peers expose collapsed/parity
+  outputs. Sparse/dense exponents of 64 bits take 65/128 products; full-width product
+  arithmetic gives 2 versus premature uint64-wrap 6. Zero-work and exact 3-bit/22-cycle
+  caps are checked. Primary-paper claims distinguish CDH shared-value computation from
+  discrete-log recovery sufficiency and reject a scattered plot as evidence of
+  hardness; RFC 7919 peer-check discussion stays within its known-group context.
+  Variable work/exposed trace bits, missing randomness/authentication/group
+  validation/KDF and raw arithmetic versus secure protocol scope remain explicit. Nine
+  ASan/UBSan tests pass: 72,900 small arithmetic exchanges and 103,275 complete power
+  traces use repeated multiplication/state invariants; 5,000 full-width products and
+  500 powers use independent addition-only/left-to-right references. Every element of
+  every prime through 127 is enumerated independently; a full-width prime's order-two
+  element exercises exact closing multiplication. Original/period/subgroup/substitution
+  cases, all 64 exponent widths, zero-modulus/zero-work controls, complete/online caps,
+  primality/range guards and owned copies pass. A separate Python arbitrary-precision
+  CTest verifies 20,000 product/pow controls. Thirty-six native cases, one Python
+  oracle and five dir cases pass; combined targeted CTest passes 1,793. Fresh
+  47-definition audit, twelve compiled/executed exact-output documentation examples and
+  four clangd hovers pass. Five complete report programs, five inspected captioned
+  native figures including fitted cycle panels, both computed-result exports and
+  byte-identical source/build/raw-export bundles pass without visual corrections. Site
+  verifies 78 reports, 343 executed blocks and 274 source-matching figures. Original
+  mepml/org removed after gates. Evidence: `build/mepml-conversion/diffie-hellman/`.
+  Migration: 78/427 converted, 349 pending; next is diffusion_maps_iris_analysis.
+
+- 2026-11-07: Converted the difference map into a canonical compiled checked execution
+  kernel behind the original callable template, preserving by-value/move-only callback
+  support, defaults, four-field result layout/formatter and strict step<tol stop
+  semantics. A compiled pre-change probe on A={0,3},B={0,2},beta=.25,x0=2.25 returned
+  solution 2/convergedtrue/step0 despite distance 1 to A. The corrected
+  positive-iteration result is the actual B(f_A) cross-estimate, not B(x_after); the
+  exact control decodes 0 while the fixed iterate remains 2.25 and direct B(x)=2 is
+  invalid. Four callback orderings A(x),B(x),A(f_B),B(f_A) are retained per update
+  without the old extra final B call; the zero-budget B(x0)/zero-residual
+  sentinel/false-stop fallback remains explicit. Complete initial/control checks and
+  dimension/finiteness checks after every callback precede indexing;
+  reciprocal/relaxed/gap/update/iterate arithmetic is checked. Hypot norms retain
+  finite 1.414214e200 and nonzero 1.414214e-200 steps where squaring would
+  overflow/underflow. Owned actual eight-vector histories record initial/final
+  iterates, cross-estimates, stable step/gap norms, numerical stop reason and
+  callback/update counts without replay. A checked 1+8n history cost and online
+  actual-record cap (default1m entries; zero disables optional cap) protect
+  zero-dimensional metadata too, exclude documented baseline/transient storage, and
+  reject before the next callbacks while preserving earlier external effects. Reusable
+  affine-hyperplane and finite-set projectors validate complete shapes/finite inputs,
+  scale normals/use checked long-double arithmetic, return owned outputs and keep
+  earliest numerical nearest-point ties; no exact/full-range projection guarantee is
+  claimed. The report preserves the original [2,2]/two-update/zero-residual example,
+  distinguishes first good iterate from evaluated agreement, proves cross-projection
+  decoding and the beta-one Douglas–Rachford identity, exposes alternating 3/2
+  stagnation in the exact finite-set control, derives the independent two-line T_beta
+  matrix and norm multiplier, and checks 48 actual iterate norms within 8.882e-16
+  relative error. Small-beta disjoint sets give a numerical stop with gap 1; unit-beta
+  disjoint sets drift with gap 1; slope-one beta 4 diverges despite convex intersecting
+  sets. The legacy step residual is explicitly distinguished from Elser's cross-gap
+  error measure. Ten ASan/UBSan tests pass, including 12,000 matrix-oracle updates
+  across five slopes/eight betas/25 starts, 1,000 projector trials with independent
+  integer nearest-point checks, original/decoded/nonconvex controls, actual callback
+  inputs/order, move-only calls, ownership, strict-zero tolerance, zero
+  budgets/dimensions, exact online caps/overflow, malformed/nonfinite/throwing
+  callbacks, numerical range checks and stop-limit counterexamples. Twenty-four
+  affected native cases plus five dir cases pass; combined targeted CTest passes 1,756.
+  Fresh 50-definition audit, eleven compiled/executed exact-output examples and four
+  clangd hovers pass. Four report programs rerun after a decoder-node label wrap was
+  corrected; the changed figure was re-viewed and other inspected hashes remain
+  identical. Four captioned inspected native figures, both computed-result exports and
+  byte-identical source/build/raw-export bundles pass. Site verifies 77 reports, 338
+  executed blocks and 269 matching figures. Original mepml/org removed after all gates.
+  Evidence: `build/mepml-conversion/difference-map/`. Migration: 77/427 converted, 350
+  pending; next is diffie_hellman_analysis.
+
+- 2026-11-07: Converted byte-bigram Sørensen–Dice into a dedicated canonical packed-key
+  consuming kernel, retaining the original string_metrics include, two-string scalar
+  call, all five word-pair scores, identity/short-input early paths and literal
+  byte/case/space/NUL behavior. Counter storage is now size_t, keys are packed unsigned
+  16-bit pairs without temporary substring keys, and reserve requests are bounded by
+  the 65,536-key alphabet rather than unbounded input length. A checked count-only API
+  validates intersections before total overflow and computes exact integer total/union
+  plus floating Dice and multiset Jaccard; its explicit both-empty convention lets
+  string traces preserve different-short-string score zero. An owned actual trace
+  records sorted union multiplicities and ascending right-offset remaining-count
+  transitions from the executing kernel, with no replay; it scans equal/short inputs
+  deliberately, and counts actual occurrence-level updates/lookups/matches/misses
+  separately from hash probes, collisions, rehashing and trace bookkeeping. Complete
+  A+B cap defaults to one million and precedes scanning/copy/allocation; zero disables
+  only the optional cap. The report first exposes the shared ht in night/nacht and
+  retains scores .25/.4/.8/1/0. Repeated aa/aaaa consumes once then misses twice,
+  giving Dice .5 and Jaccard 1/3. Different strings abaca/acaba share the same full bag
+  and score one; ab/abc/bc gives d=1−Dice direct 1 versus two-leg 2/3, disproving
+  metricity. Literal case, space, NUL, canonically equivalent UTF-8 spellings and
+  short/empty controls expose representation limits. A unary length-k/3k family matches
+  both score closed forms exactly and records 4k−2 occurrence operations despite one
+  distinct key; at k=4096 it has 4,095 shared, 16,382 operations and 12,287 events. A
+  count-only four-billion total/three-billion union is checked without constructing
+  huge strings, while all constants also fit a 32-bit size_t. Corrected historical
+  attribution distinguishes Dice's ecological normalization from later lexical bigrams.
+  Nine tests pass ASan/UBSan: 29,282 exhaustive ASCII/binary pairs use independent
+  sorted token-list intersections/unions and unconsumed-token event scans; 2,000 seeded
+  arbitrary-byte pairs add symmetry and bijective byte-renaming invariance. A
+  131,072-byte input covers every 65,536 byte pair and unsigned sorted rows; a large
+  unary case checks 100,000 matches and 200,000 misses.
+  Original/short/nonmetric/encoding/cap/ownership cases, count boundaries, overflow and
+  invalid-before-overflow precedence pass. Thirty-one affected native cases plus five
+  dir cases pass; combined targeted CTest passes 1,732. Fresh 39-definition audit,
+  eight compiled/executed exact-output examples and four clangd hovers pass. Four
+  executed report programs, four inspected captioned native figures, both
+  computed-result exports and byte-identical source/build/raw-export figure bundles
+  pass. Final prose-only edits clarify bucket reserve requests and floating score
+  rounding; all actual program/result hashes remain unchanged. A caption-count audit
+  caught and repaired four missing Deutsch–Jozsa captions with its final program/figure
+  hashes unchanged and both exports rechecked. Site verifies 76 reports, 334 blocks and
+  265 source-matching figures. Original Dice mepml/org removed only after these gates.
+  Evidence: `build/mepml-conversion/dice/`. Migration: 76/427 converted, 351 pending;
+  next is difference_map_analysis.
+
+- 2026-11-07: Converted Deutsch–Jozsa into a shared canonical compiled circuit while
+  retaining the original two-field result layout, formatter, ascending callback order,
+  gate sequence, raw probability, >0.5 decision and integer f(x)&1 convention. Checked
+  qubit dimensions and empty callbacks reject before shifts/evaluation; capacity checks
+  precede allocation. An owned actual trace records all three gate boundaries and
+  observed low bits without replay, count-derived mean phase, exact
+  constant/balanced/neither table categories, logical oracle applications, actual
+  callbacks, Hadamards, amplitude-pair updates and sign flips. A complete default
+  1048576-state cap is checked before allocation/calls; zero disables only that
+  optional cap, with counter/capacity guards retained. Sequential classical promised
+  querying records actual early or worst-case calls with O(1) extra storage and permits
+  safe early exit on the largest representable domain. Callback exceptions propagate
+  without undoing prior effects. The report retains all five original n=4 oracles and
+  adds a native two-bit interference diagram, off-promise examples yielding either
+  threshold verdict, a nonlinear balanced spectrum with four quarter-probability
+  outcomes, all 17 one-count controls and explicit-log2 measured query/work
+  comparisons. At n=16, one logical oracle application costs 65,536 simulator callbacks
+  and 1,048,576 amplitude-pair updates; the top-bit classical control uses 32,769
+  actual queries. Promise guarantees, floating residuals, deterministic exact versus
+  randomised classical comparisons, n=0 conventions and ideal hardware versus
+  state-vector simulation costs are explicit. Primary historical checks distinguish the
+  original 1992 two-query algorithm from the 1998 single-query phase-kickback form.
+  Nine ASan/UBSan tests pass, including all 65,814 Boolean tables through four bits
+  against independent direct character sums and all 12,958 promised tables against
+  sequential classical decisions; all affine parities/complements through eight bits,
+  original outputs, shared Fourier cross-checks, low-bit semantics,
+  nonlinear/off-promise tables, ordering, ownership, caps, dimensions and throwing
+  callbacks pass. Thirty affected native cases plus five dir cases pass; the combined
+  targeted suite passes 1,701. Fresh 35-definition documentation audit, eight
+  compiled/executed exact-output examples and four clangd hovers pass. Four report
+  programs, four inspected native figures, both computed-result exports and identical
+  source/build/raw-export figure bytes pass. Final plot limits keep legends away from
+  the largest measured counts; all four programs were rerun and the changed figure
+  re-viewed, with unchanged figure hashes verified. Site verifies 75 reports,330 blocks
+  and261 source-matching figures. Original mepml/org removed after these gates.
+  Evidence: `build/mepml-conversion/deutsch-jozsa/`. Migration: 75/427 converted, 352
+  pending; next is dice_coefficient_analysis.
+
+- 2026-11-07: Converted directed depth-first search into a dedicated canonical
+  explicit-continuation kernel, retaining the original four-argument call,
+  BasicPathResult layout/first-entry count, search_more.hpp include, original input-edge
+  order, global marking and immediate goal-entry stop. Heap {vertex,next-successor}
+  frames preserve recursive descent/resume order without the process call-stack limit;
+  successful paths stay active and no finish/unwind records are invented. Complete
+  terminal/endpoint validation precedes adjacency allocation and all caps, including
+  start=goal and invalid unreachable arcs. Owned actual discovery/scan/finish/goal
+  events retain original edge identities and pre-descent target state;
+  parent/edge/depth, preorder/genuine postorder and checked 2n discovery/finish
+  sentinels distinguish unseen from entered-but-unfinished vertices. Complete
+  source-component traversal uses the same kernel without requesting a goal or
+  restarting unreachable components. Complete vertex/edge caps and online event caps
+  throw without partial output; zero disables only optional limits. A reusable
+  rooted-tree generator produces forward chain/binary/star controls with checked
+  complete edge caps. The report retains the original two-node path [0,1], expanded 2,
+  derives continuation/reachability/linear work and storage invariants, and
+  distinguishes first DFS paths from shortest-hop BFS. A backtracked cycle branch
+  finishes [3,1] before path [0,2,4,5,6]; actual entries 7, scans 7 and events 17 remain
+  distinct. Moving direct edge 0->6 first gives two entries/one scan. A complete
+  duplicate/self-loop/unreachable control has seven entries/finishes, ten scans and 24
+  events, with genuine nested intervals and unseen v7. Tree events match 3n-1 regardless
+  of branching; at n=512, chain/binary/star active peaks are 512/10/2, displayed with an
+  explicitly labelled log2 depth scale. A 200,000-node ordinary path and 20,000-node
+  full chain exercise deep entry and finishing without recursive DFS. Nine new tests
+  pass ASan/UBSan: all 4,626 directed graphs within the stated loop scopes give 70,210
+  goal comparisons and 17,954 full-source comparisons against a recursive
+  original-edge-scan oracle. Separate transitive closure checks reachability;
+  metadata/count comparisons and independent event/frame/target-state replay check
+  actual recording. One thousand seeded ordered multigraphs add loops, duplicate arcs
+  and reversed order. Original/trivial/unreachable/early-stop cases, complete
+  intervals/DAG reverse postorder, ownership, exact caps, timestamp overflow,
+  invalid-before-cap precedence and generator guards pass. Fifteen native
+  DFS/search-neighbor cases plus five dir cases pass; combined CTest passes 1,671. All
+  61 scoped definitions, ten compiled/executed exact-output documentation examples and
+  four clangd hovers pass. Four report programs, four inspected native figures, both
+  computed-result exports and all source/build/raw-export figure bytes pass; the fitted
+  two-panel work/depth plot keeps chain, binary and star results distinct. Site verifies
+  74 reports, 326 executed blocks and 257 source-matching figures. Original mepml/org
+  removed after these gates. Evidence: `build/mepml-conversion/depth-first-search/`.
+  Migration: 74/427 converted, 353 pending; next is deutsch_jozsa_analysis.
+
+- 2026-11-07: Converted Delaunay triangulation to a dedicated exact-sign
+  symbolic-boundary Bowyer-Watson core, preserving the one-vector call, Triangle
+  layout/defaults/formatter, original four-face square fan and original seeded 47-face
+  cloud. A compiled pre-change probe reproduced zero faces for (0,0),(1,0),(.5,1e-6);
+  the new real seed plus hull ghosts returns the required face without finite
+  super-triangle coordinates. Complete finite validation precedes caps/trivial results;
+  exact duplicate/signed-zero coordinates retain earliest original ids, collinear inputs
+  have no seed, strict cocircular ties retain existing faces, and finite output triples
+  are CCW/canonical/sorted. New incircle_sign handles all finite binary64 via 48 signed
+  products of four decoded dyadics, using two 264-word uint32 accumulators; 8,398
+  required bits fit 8,448, without floating products, tolerance or long-double
+  dependence. It complements existing exact orientation, with exactness scoped to stored
+  coordinates. Actual owned removal/boundary/replacement events and checked
+  seed/finite/ghost/cavity counters require no replay; original-record caps precede
+  allocation, cumulative conflict caps precede whole scans and event-entry caps precede
+  history retention. Local mesh analysis validates indices, CCW/nondegenerate/duplicate
+  faces and edge multiplicity, caps full circle-query work, counts
+  used/distinct/boundary sites and exact violations, and provides separately scaled
+  approximate angles. It explicitly does not certify arbitrary global embedding/coverage
+  or use approximate angles for topology. Core cloud generation keeps the original
+  seed/distribution draw order and documents cross-library distribution variability. The
+  report derives determinant/cavity and Euler edge-incidence relations,
+  symbolic-boundary initialization and exact u(u-3) conflict scans, with conservative
+  ordered-map complexity and output/history costs. It corrects the no-thin-triangles
+  claim: the unchanged cloud has minimum angle 0.364812 degrees despite 1,269
+  zero-violation exact circle checks; the only triangle at epsilon 1e-6 has minimum
+  0.000114591559 degrees. Native scan counts reach 16,000 at u=128; exact fan limits are
+  5 original records, 10 conflicts and 19 entries. Nine new tests pass ASan/UBSan: all
+  512 subsets of a 3x3 grid in both orders and 250 seeded integer meshes have
+  independent signed128 signs, full site use, exact hull/face area equality, noncrossing
+  edges, boundary/Euler counts and complete empty-circle checks. Actual-event replay, 24
+  cocircular square permutations, collinear/hull-edge insertion, duplicate
+  identities/ownership, mixed largest-finite/subnormal topology, malformed mesh analysis
+  and complete caps pass. Independent Fraction translated determinants agree for all
+  10,000 controls: 6,000 random full-range and 4,000 cocircular/ULP cases. Forty-three
+  native Delaunay/Voronoi/jump-and-walk/FEM/format/trace cases plus the Fraction oracle
+  and five dir cases pass all 49 gates; combined CTest passes 1,656. All 69 scoped
+  definitions, ten compiled/executed exact-output documentation examples and four clangd
+  hovers pass. Four report programs, four inspected native figures, both computed-result
+  exports and all source/build/raw-export figure bytes pass. A final prose-only cloud
+  finding preserved executed C++ hashes and genuine run metadata. Site verifies 73
+  reports, 322 executed blocks and 253 source-matching figures. Original mepml/org
+  removed after these gates. Evidence: `build/mepml-conversion/delaunay/`. Migration:
+  73/427 converted, 354 pending; next is depth_first_search_analysis.
+
+- 2026-11-07: Converted de Casteljau into a dedicated canonical weighted-double
+  evaluator, retaining the original signature, PlanarPoint two-double
+  layout/defaults/formatter, interpolation.hpp include, empty (0,0) sentinel and finite
+  polynomial extrapolation. Full finite-control/parameter validation precedes caps or
+  output; nonfinite weighted results now throw even if a different algebraic arrangement
+  could be finite. The original increasing-index (1-t)*left+t*right ordering remains.
+  Owned actual rows and measured inner-loop blend counts replace the report-local
+  recurrence, with checked cancelled full triangle geometry. Reusable subdivision
+  captures the two boundary diagonals during one solve in O(m) storage, retains nominal
+  degree and meeting-point copies, and checks a complete combined-output cap. Uniform
+  sampling validates once, includes both requested parameter endpoints through
+  std::lerp/direct endpoint assignment, handles equal/descending/tiny/extrapolated
+  parameter intervals, and checks complete point/prospective-blend caps before
+  allocation. Optional zero caps leave arithmetic/capacity checks enabled. The report
+  preserves the original four controls, both endpoints, midpoint (2,1.875), ten triangle
+  points and 101 curve samples. It derives intermediate Bernstein expansion,
+  endpoints/convexity in exact arithmetic, both subdivision reparameterizations, exact
+  absolute control-perturbation sensitivity, cancellation/relative-conditioning limits
+  and scalar/trace/split/batch costs. A quarter split meets at (0.90625,1.265625); both
+  native identity mappings have maximum coordinate residual 1.33226763e-15 over 101
+  local parameters. A unit perturbation of the second y control follows 3t(1-t)^2 with
+  residual 4.99600361e-16 and sampled maximum 0.444411. Degree 64 records 2080 actual
+  point blends, 2145 stored points and 4160 coordinate blends. Nine tests pass
+  ASan/UBSan: 300 integer nets at nine eighth-grid parameters check every actual
+  triangle entry against an independent signed128 Bernstein numerator; 100 nets at five
+  split values including endpoints and seventeen local values check both
+  identities/diagonals; 1000 non-dyadic nets check long-double Bernstein, affine
+  transformation, hull boxes and extrapolation. Original values, ownership,
+  empty/singleton, complete caps, count overflow, finite-before-cap validation, explicit
+  arithmetic overflow and sensitivity/cancellation controls pass. A test-only mixed-type
+  auto declaration was separated before compilation; all final checks pass. Thirty-four
+  native interpolation/de Boor/format/trace cases plus five dir cases pass; combined
+  CTest passes 1,612. All 31 scoped definitions, nine compiled/executed exact-output
+  examples and four clangd hovers pass. Four final report programs, four inspected
+  native figures, both computed-result exports and all source/build/raw-export figure
+  bytes pass. Two diagram labels initially crossed paths; they were moved into empty
+  regions, all four programs rerun and both corrected diagrams viewed again; other
+  viewed figure hashes match. Site verifies 72 reports, 318 executed blocks and 249
+  source-matching figures. Original mepml/org removed after these gates. Evidence:
+  `build/mepml-conversion/de-casteljau/`. Migration: 72/427 converted, 355 pending; next
+  is delaunay_analysis.
+
+- 2026-11-07: Converted DDA line drawing into a dedicated canonical double-accumulation
+  kernel while retaining the four-argument legacy call, DDAPoint alias and both original
+  rasters. Widened endpoint differences, unsigned sample/count loops and checked
+  rounding cover full 32-bit geometry and reject out-of-int accumulated results before
+  conversion. Actual owned traces retain both accumulators before rounding,
+  exact-rational reference centres, approximate drift/coordinate-error diagnostics and
+  precise coordinate add/round counts without replay, endpoint snapping, clamping or tie
+  repair. The ordinary path omits all trace/reference arithmetic. Exact random-access
+  and full-raster comparisons use portable unsigned64 products and quotient/remainder
+  with global signed halfway-away-from-zero rounding, avoiding signed overflow and
+  floating selection. Complete point caps check before allocation; zero disables only an
+  optional cap. The report derives major-axis sampling, the exact half-pixel bound,
+  8-connectivity and reversal, and the floating increment-plus-addition error identity
+  and half-pixel-plus-drift budget. Output storage is correctly O(N+1), and measured
+  arithmetic is two coordinate additions per transition and two rounds per sample.
+  Native equal-scale figures open with five binary-exact samples and preserve original
+  shallow 15 and steep 11 sequences. A 12-step midpoint selects (6,0) against exact
+  (6,1); a 10-step height 7 reversal selects (5,4) versus(5,3); the translated
+  10,000-step control has six changed samples and max coordinate error 0.500500. Exact
+  ties are distinguished from Bresenham's directed policy and from integer translation
+  across zero. Full-span count 4,294,967,296 and middle exact samples (-1,0)/(0,1)
+  allocate no raster. Nine new tests pass ASan/UBSan: all 14,641 signed-grid endpoint
+  quadruples compare with an independent signed128 weighted-endpoint oracle and check
+  replay, diagnostics, exact endpoints/reversal/8-connectivity; 1,000 seeded short
+  lines, 25,000 full-width random-access samples, 2,500 extreme-grid/index combinations,
+  coincidence/ownership, complete caps, invalid indices and signed ties pass. An actual
+  five-million-step near-INT_MAX overshoot throws before unsafe conversion. The initial
+  12-step reversal-witness assertion was corrected to the observed 10-step height 7
+  witness; no core defect was hidden, and all final tests pass. Fifteen native
+  graphics/trace cases plus five dir cases pass; combined CTest passes 1,578. All 43
+  scoped definitions, eight compiled/executed exact-output examples and four clangd
+  hovers pass. Four report programs, four inspected native figures, both computed-result
+  exports and all source/build/raw-export figure bytes pass; the website verifies 71
+  reports, 314 executed blocks and 245 source-matching figures. Original mepml/org
+  removed after these gates. Evidence: `build/mepml-conversion/dda-line/`. Migration:
+  71/427 converted, 356 pending; next is de_casteljau_analysis.
+
+- 2026-11-07: Converted Davis–Putnam into a canonical checked sparse ordered-clause
+  kernel while retaining the legacy Boolean call shape and valid propositional verdicts.
+  Complete literal/bound validation now precedes trivial verdicts and resource caps,
+  rejects zero/INT_MIN/out-of-range ids, avoids signed loop/negation overflow and
+  allocates no dense num_vars array. Canonical literal/clause deduplication and
+  tautology removal feed deterministic first-unit, smallest-signed-pure and
+  smallest-variable resolution rules. Complete owned initial/after snapshots,
+  per-transition parent/tautology/duplicate counts and checked aggregate
+  rules/pairs/peak counts come from the actual kernel without replay. Separate
+  distinct-clause, cumulative parent-pair and whole-history entry caps throw without a
+  partial Boolean verdict; zero disables only optional caps. A reusable grid CNF checks
+  ids/output sizes before allocation and exposes first-state 2k+2 -> k²+2 with k² pairs.
+  The report derives existential projection, unit/pure correctness, finite termination
+  and ordered-set costs; it narrows the old general-first-order decision claim to finite
+  propositional SAT and distinguishes a decision/history from assignment or standalone
+  proof certificates. Original four formulas remain, with actual resolution work
+  replacing input-clause bars. The four-clause contradiction records 4 pairs, 2
+  discarded tautologies, opposite units and a final empty clause. At grid order 8,
+  initial 18 becomes 66, later peak 263 and total 8200 pairs; first-step theory and
+  whole-run measures are explicitly separate. History accounting 13+5+2 exactly meets
+  cap 20 and rejects 19. Eight new tests pass ASan/UBSan, independently enumerating all
+  512 canonical two-variable formulas, 3,304 three-variable formulas with at most three
+  clauses and 1,500 seeded formulas through seven variables; every step is checked under
+  both pivot values for every assignment, with independent resolvent/counter
+  reconstruction. Ownership, empty/duplicate/tautological inputs, sparse INT_MAX,
+  invalid-before-trivial/cap precedence and complete cap/generator guards pass. Thirteen
+  native trace/optimization cases plus five dir cases pass; combined CTest passes 1,563.
+  All 41 scoped definitions, seven compiled/executed exact-output documentation examples
+  and four clangd hovers pass. Four report programs, four inspected native figures, both
+  computed-result HTML/Markdown exports and all source/build/raw-export figure bytes
+  pass. The site verifies 70 reports, 310 executed blocks and 241 source-matching
+  figures. Original mepml/org removed only after these gates. Evidence:
+  `build/mepml-conversion/davis-putnam/`. Migration: 70/427 converted, 357 pending; next
+  is dda_line_analysis.
+
+- 2026-11-07: Converted unrestricted Damerau–Levenshtein distance to a dedicated
+  canonical Lowrance–Wagner kernel while preserving the scalar name/signature,
+  string_metrics include and all five original Levenshtein/DL results. Checked
+  rectangular/border dimensions and n+m arithmetic replace unchecked
+  allocation/candidate sums; safe clipping at the finite marker preserves every
+  unit-cost interior minimum. Owned complete traces retain the actual sentinel table,
+  all prefix-cell candidates, pre-update last-occurrence coordinates, deterministic
+  first-minimum choices and checked cell/byte/match/row/bridge counters without replay
+  or string snapshots. A reusable three-row OSA comparison computes the restricted
+  distance rather than assuming its value. Checked prefix access and local traceback
+  validation expand source-interior deletions, one adjacent swap and target-interior
+  insertions into owned current-position byte instructions; checked by-value replay
+  verifies enum/payload/position/expected-byte semantics. Complete border-inclusive
+  table and output-edit caps reject whole requests before their respective allocations;
+  zero disables only optional caps. Byte/NUL/high-byte/case-sensitive semantics and the
+  absence of UTF-8 decoding/normalization are explicit. The report derives
+  operation-graph metric bounds, the Lowrance–Wagner last-occurrence bridge under its
+  unit-cost condition, exact integer clipping, prefix/grid/work costs and
+  script-position invariants. The native CA->AC->ABC witness costs two, while computed
+  OSA gives three and violates the triangle inequality against its two unit legs.
+  Original unsupported frequency ranking and overly narrow strict-improvement claims are
+  replaced with scoped historical motivation and the unrestricted edit definition. All
+  five original pairs are retained, with nested markers preserving coincident Lev/OSA/DL
+  values; actual prefix candidates are (3,3,3,2), and rectangular controls separate nm
+  interior updates from complete borders. Nine new cases pass AddressSanitizer and
+  UBSan: independent shortest-edit-graph BFS checks all 14,641 pairs of 121 ternary
+  strings through length four, with bounded-depth/length completeness and
+  outside-alphabet projection arguments; 1,771,561 finite-corpus metric triangles,
+  literal script replay, full-table OSA controls, 1,000 seeded repeated/full-byte pairs,
+  all 256 byte swaps, NUL/UTF-8 cases, last-occurrence/candidate/work reconstruction,
+  overflow/complete caps, ownership and malformed records/instructions pass. All 64
+  scoped definitions, thirteen compiled/executed documentation examples and four clangd
+  hovers pass. Thirty-one metric/Hamming cases plus five dir cases pass; combined CTest
+  passes 1,550 cases. Four report programs, four inspected native figures,
+  computed-result HTML/Markdown exports and byte-identical source/build/export figure
+  bundles pass. A report-only prefix-program name collision was corrected and all four
+  programs rerun successfully; final source/exports contain no compiler diagnostics.
+  Site verifies 69 reports, 306 executed blocks and 237 source-matching figures.
+  Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/damerau-levenshtein/`.
+  Migration: 69/427 converted, 358 pending; next is davis_putnam_analysis.
+
+- 2026-11-07: Converted DAG longest paths to a dedicated canonical
+  FIFO-Kahn/maximum-relaxation kernel while retaining the original signature,
+  LongestPathResult two-vector layout/formatter, routing_batch include and
+  source/unreachable predecessor sentinel n. Complete endpoint/finite-weight/source
+  checks precede allocation and optional trace n/m caps; every graph component is
+  checked for cycles before numerical relaxation. All reachable double candidates must
+  be finite, including losing extremely negative routes, replacing silent
+  infinity/unreachable confusion with checked overflow; unreachable edges are validated
+  but never added. Owned actual traces retain original directed/parallel edges,
+  whole-graph topological order, exact predecessor-edge choices, every reachable-edge
+  attempt and checked pop/edge/reach/candidate/improvement counts without replay. Strict
+  stored ties retain the first witness under the documented FIFO/input-order policy.
+  Safe local path recovery checks shapes, markers, visited endpoints and stored
+  recurrences, rejects predecessor cycles by a length guard and distinguishes singleton
+  source paths from empty unreachable records without claiming to certify arbitrary
+  edited graphs globally. A reusable finite-weight forward-band generator uses cancelled
+  checked edge-count factors and complete preallocation caps. The report preserves the
+  original length-nine diamond and recovers vertices [0,2,3]/edges [1,3], derives
+  topological induction and the Hamiltonian-path hardness connection, separates
+  negative/unreachable/tied/parallel cases, and derives componentwise-earliest
+  precedence-only event times (0,3,2,10,11). Chain/dense workloads measure V+E+E_R
+  visits rather than claiming linear work in vertices for dense graphs. An explicit 2^53
+  control shows distinct exact route totals collapsing into a stored tie, with the
+  exact-real recurrence and ordinary double limitations stated separately. Nine new
+  cases pass AddressSanitizer and UBSan: 202,013 ordered-DAG/source cases through six
+  vertices match independent enumeration of all source paths; 1,000 seeded relabelled
+  multigraphs, actual event replay/topological checks, exact edge witnesses,
+  signed/unreachable/tied/source cases, global cycles, full domain/complete-cap checks,
+  both overflow signs, rounded ties, all small generator shapes/count guards,
+  ownership/malformed local chains and 100,000 isolated vertices pass. All 40 scoped
+  definitions, nine compiled/executed documentation examples and four clangd hovers
+  pass. Twenty-six routing/format cases plus five dir cases pass; combined CTest passes
+  1,519 cases. Four report programs, four inspected native SVGs, computed-result
+  HTML/Markdown exports and byte-identical source/build/export figure bundles pass. Site
+  verifies 68 reports, 302 executed blocks and 233 source-matching figures. Original
+  mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/dag-longest-path/`.
+  Migration: 68/427 converted, 359 pending; next is damerau_levenshtein_analysis.
+
+- 2026-11-07: Converted CYK to a canonical compressed-id byte-membership kernel while
+  retaining the inline recognizer, original CNFGrammar three-field layout/formatter and
+  empty-input rejection. All integer ids, including negative/sparse signed extremes,
+  remain valid; duplicate rules are recognition-idempotent, terminals are bytes
+  including NUL, and epsilon/unit-rule/general-CFG conversion is explicitly outside the
+  representation. Complete owned analyses retain every positive span, sorted distinct
+  memberships, actual first split/rule choices and checked
+  terminal/split/skip/rule/match/new-state counts without replay. Dense geometry uses
+  factor-cancelled checked triangular/cubic counts and complete potential Q*m/K*r caps
+  before input/chart/choice allocation; grammar preparation precedes those caps, zero
+  disables only optional limits, and actual skips do not reduce potential budgets.
+  Checked constant-time borrowed-cell access and iterative preorder first-tree recovery
+  validate visited local structures and root consistency without claiming to certify
+  arbitrary edited records against an absent original grammar. Complete parse-node caps
+  cover the exact 2n-1 tree size. The report derives recurrence soundness/completeness,
+  the original a^k b^k language and nonregularity, span/split identities,
+  grammar-dependent memory and complete time costs including duplicate terminals and the
+  split loop when r=0. It retains all eight original strings, explains all ten aabb
+  cells/seven memberships/18 rule tests and reconstructs its seven-node first parse.
+  S->SS|a separates five possible aaaa trees from one returned witness, ten chart
+  memberships and matching-rule events; duplicate rules change work but not the
+  language. Nine new cases pass AddressSanitizer and UBSan: all 8,191 a/b strings
+  through length twelve match the proven original language; an independent fixed-point
+  language-concatenation oracle checks 100 seeded grammars and 12,700 inputs; recovered
+  trees match original productions and bytes. All 256 byte terminals, NUL/UTF-8 byte
+  fixtures, signed extremes, duplicate/first-rule choices, exact cubic work, empty-child
+  skips, factor-cancelled large geometry, overflow/potential/node budgets,
+  ownership/borrows, malformed visited witnesses and a 200-byte right-branching tree
+  pass. All 76 scoped definitions, twelve compiled/executed documentation examples and
+  four clangd hovers pass. Twenty-four parsing/hash/format cases plus five dir cases
+  pass; combined CTest passes 1,493 cases. Four report programs, four inspected native
+  figures, computed-result HTML/Markdown exports and byte-identical source/build/export
+  figure bundles pass. Giving the original bar chart an explicit title and short legend
+  fixes initial clipping; the other final SVG hashes match inspected figures. Site
+  verifies 67 reports, 298 executed blocks and 229 source-matching figures. Original
+  mepml/org removed after all gates. Evidence: `build/mepml-conversion/cyk/`.
+  Migration: 67/427 converted, 360 pending; next is dag_longest_path_analysis.
+
+- 2026-11-07: Converted comparison-based cycle sort into a dedicated canonical
+  rank/placement kernel while retaining its by-value signature and distribution_sorts
+  include. Output-only, work-only and traced calls share actual placements without a
+  second instrumented algorithm. Checked native counts distinguish suffix rank tests,
+  duplicate equality tests, successful skips, logical value-cell writes, rank scans,
+  starts and nontrivial rotations. Complete owned traces carry real held/displaced keys
+  and input identities, target-block starts, destinations and cycle closure, with at
+  most n records and no array snapshots. The complete element cap defaults to 4096 and
+  rejects before copying, identity/history allocation or sorting; zero disables only
+  that optional cap. An independent std::sort-based core reference reports the Hamming
+  minimum for key sorting, outside measured work. The report proves that every initially
+  mismatching key cell is written once and every initially correct cell is preserved,
+  derives exact comparison/scan formulas and the sharp B(n) through B(n)+(n-1)^2
+  rank-test bounds, and distinguishes quadratic repeated-rank sorting from Haddon's
+  conditional linear variants. Actual duplicate identities (2a,2b,1c) become (1c,2b,2a),
+  exposing instability and the difference between the two-write key minimum and a
+  three-position stable-record target. Logical working-cell counts explicitly exclude
+  by-value copies, held items, identity records, allocation and physical device
+  erase/write amplification. The original seven values retain seven writes, 39 rank
+  tests and three cycles; all forty seed-three sizes retain the n=200 endpoint of 199
+  writes and 57,301 rank tests. Separate native panels make the linear write curve
+  visible; a model based on the existing full-width bubble kernel explains its 39,800
+  reversal key tests, 19,900 exchanges and 39,800 model writes without inventing a
+  crossover. Nine new cases pass AddressSanitizer and UBSan: 88,573 ternary sequences
+  through length ten and 46,234 permutations through length eight replay against
+  independent sorted targets, unique destinations, held/displaced identities, exact work
+  reconstructions and minimum-write checks; 1,000 seeded mixed/full-range inputs, signed
+  extremes, exact best/worst/reverse formulas, empty/singleton/ownership/complete-cap
+  cases and the original experiment pass. All 41 scoped definitions, seven
+  compiled/executed documentation examples and four clangd hovers pass. Thirteen sorting
+  cases plus five dir cases pass; combined CTest passes 1,469 cases. Four report
+  programs, four inspected native SVGs, computed-result HTML/Markdown exports and
+  byte-identical source/build/export figure bundles pass. Site verifies 66 reports, 294
+  executed blocks and 225 source-matching figures. Original mepml/org removed after all
+  gates. Evidence: `build/mepml-conversion/cycle-sort/`.
+  Migration: 66/427 converted, 361 pending; next is cyk_analysis.
+
+- 2026-11-07: Converted Cuthill–McKee to a dedicated checked canonical queue kernel while retaining
+  the original signature/default and sparse_linalg include. Raw endpoints and size sums
+  are checked before optional trace caps; loops and duplicate entries are ignored, off-
+  diagonal symmetry is required after normalization, and degree/id ties plus component
+  starts are deterministic. A once-sorted root list avoids quadratic isolated-component
+  searches. Owned complete traces record actual discoveries, parents, component
+  levels/roots, inverse positions and normalized scan/enqueue work without replay.
+  Reusable checked permutation/inversion, band-pattern generation, lower/upper profile
+  metrics and sorted structural coordinates replace report-local algorithms; generator
+  counts are constant-time checked before allocation. The report derives permutation/SPD
+  preservation, BFS level bounds, exact reversal invariance of bandwidth and profile
+  exchange, and sorting-inclusive complexity. It preserves the original seed-seven
+  forty-row 32-to-2 fixture, explicitly separates portable structural checks from
+  std::shuffle-specific ids, and proves a star counterexample where CM worsens optimal
+  bandwidth 2 to 3. Separate native panels distinguish bandwidth, skyline allocation and
+  exact symbolic fill, including the star's three/one/zero added edges. Nine new cases
+  pass AddressSanitizer and UBSan: all 33,868 simple graphs through six vertices match
+  an independent dense/linear-choice traversal; all 124,470 graph/order cases through
+  five vertices match dense bandwidth/envelope inspection and reversal identities; 1,000
+  irregular normalization controls, 500 coordinate/permutation round trips, extreme
+  generator counts, empty/singleton/ownership/invalid/budget cases and 100,000 isolated
+  vertices pass. All 40 scoped definitions, eleven compiled/executed documentation
+  examples and four clangd hovers pass. Twenty-two sparse/format cases plus five dir
+  cases pass; combined CTest passes 1,456 cases. Four report programs, four inspected
+  native figures, computed-result HTML/Markdown exports and adjacent byte-identical
+  source/build/export bundles pass. Additional work-plot headroom prevents the legend
+  obscuring its largest point; other final rasters rerender byte-identically to
+  inspected copies. Site verifies 65 reports, 290 executed blocks and 221 source-
+  matching figures. Original mepml/org removed after all gates. Evidence: `build/mepml-
+  conversion/cuthill-mckee/`.
+  Migration: 65/427 converted, 362 pending; next is cycle_sort_analysis.
+
+- 2026-11-07: Converted natural cubic spline interpolation into a dedicated canonical
+  kernel while retaining the original five-vector CubicSpline layout, names/include and
+  zero/constant/line conventions. Full finite/shape/increasing-knot checks and checked
+  fit/evaluation arithmetic replace unsafe malformed-record behavior. Legacy mutable
+  scalar evaluation explicitly validates in O(n); an owned PreparedCubicSpline
+  validates/copies once for O(log n) scalar value/derivative queries and complete
+  ordered batches, with right-piece third-derivative and endpoint-cubic extrapolation
+  semantics. One fit kernel supplies actual widths, secants, moments, original
+  tridiagonal entries/RHS, multipliers, pivots, eliminated RHS and logical work without
+  replay. Complete trace caps follow full input validation. Reusable native function-
+  error censuses retain actual predictions/references, first sampled maxima and scaled
+  RMS, validate finite queries/callback presence before complete
+  caps/allocation/invocation, and distinguish sampled maxima from certified suprema. The
+  report derives the moment system, SPD uniqueness and bending-energy minimum over the
+  knot span; preserves the original Runge nodes and measured 0.02197383 versus
+  1.91564305 errors (ratio 87.178404); and restores the formerly clipped polynomial
+  peaks. Compatible sine and mismatched quadratic endpoint controls derive/show O(h^4)
+  versus boundary-layer O(h^2) behavior. Explicit monotone-data overshoot, negative
+  interpolation of nonnegative samples and curved natural extrapolation replace blanket
+  smoothness/shape/stability claims. All 51 scoped definitions, eleven compiled/executed
+  documentation examples and four clangd hovers pass. Eleven new cases pass
+  AddressSanitizer and UBSan, covering exact hand coefficients/moments, 1,000 irregular-
+  grid factor-replay/continuity/linearity controls, original interpolation/format
+  behavior, all derivative-side conventions,
+  malformed/finite/budget/ownership/degenerate cases, both refinement families and
+  stable large-error RMS. A permanent optional Fraction oracle solves the full
+  value/C1/C2/natural coefficient constraints by exact dense elimination, independently
+  of the moment/Thomas formulation: 102 fits and 4,320 value/derivative controls, plus
+  coefficients/moments, pass; its native checker is also sanitized. Twenty-five
+  interpolation/format/oracle cases plus five dir cases pass; combined CTest passes
+  1,434 cases. Four report programs, four inspected native SVGs and both exports pass.
+  Shortening the convergence legend fixes initial right-edge clipping; the other final
+  SVGs rerender byte-identically to inspected rasters. Final hashes and adjacent build
+  copies match. Site verifies 64 reports, 286 executed blocks and 217 matching figures.
+  Original mepml/org removed after all gates. Evidence: `build/mepml-conversion/cubic-
+  spline/`. Migration: 64/427 converted, 363 pending; next is cuthill_mckee_analysis.
+
+- 2026-11-07: Converted Cristian's clock observation model into a dedicated canonical
+  core while preserving the original inline signatures/default minimum/include and
+  worked estimate 1020/radius 15/all ten sweep rows. Owned native observations
+  explicitly timestamp reply departure, remove known server residence, retain nominal
+  relative/absolute receipt intervals and model controlled path asymmetry. Complete
+  probe selection validates every observation and derived output before an optional
+  cap/allocation, keeps all analyses and selects the first smallest stored radius;
+  estimates remain at their own receipt instants with no aging or OS-clock mutation.
+  Contradictory/nonfinite/negative parameters reject instead of clamping impossible
+  minima to false zero. Half/radius/error collapse, hidden network duration, generated
+  interval loss and unrepresentable arithmetic are checked. Subtraction-based
+  feasibility avoids doubled-minimum overflow and wider-long-double assumptions; an
+  additional 8-byte-long-double guard control passes exact, infeasible and positive-
+  radius-collapse subnormal cases. Absolute epoch additions share double precision to
+  fix a zero-width double-rounding inconsistency, covered by a nextafter regression. The
+  report derives the minimax midpoint, separates symmetry from the conditional bound,
+  identifies arrival/departure stamp corrections and known-processing bias, preserves
+  the original RTT study, and demonstrates that a faster probe need not have smaller
+  actual error. Coarse epochs can collapse stored absolute endpoints while relative
+  delays retain width; these are ordinary rounded model values, not outward enclosures,
+  drift/error propagation, statistical confidence intervals or a full NTP
+  implementation. All 56 scoped definitions, nine compiled/executed new or changed
+  documentation examples and four clangd hovers pass. Nine new cases pass
+  AddressSanitizer and UBSan, including 27,004 integer exchanges, 10,000 exact binary-
+  fraction controls, attained extremes, processing cancellation, selection
+  ties/ownership, complete caps and full validation, zero/coarse epochs,
+  underflow/overflow and both rounding regressions. Sixteen Cristian/distributed cases
+  plus five dir cases pass; combined CTest passes 1,409 cases. Four executed report
+  programs, three inspected native SVGs and both exports pass; final SVG hashes match
+  inspected copies and adjacent build outputs. Site verifies 63 reports, 282 executed
+  blocks and 213 matching figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/cristian/`. Migration: 63/427 converted, 364 pending; next is
+  cubic_spline_analysis.
+
+- 2026-11-07: Converted CRC-32 into a dedicated canonical immutable-table byte kernel
+  shared by the existing inline crc32() and complete actual byte traces; the
+  checksums.hpp include path, table name and exact checksum convention remain available.
+  Owned native bit toggles fully validate addresses and cancel duplicates in pairs. A
+  complete bounded single-bit census reuses one toggled/restored scratch message and
+  checks exact n*(8n+1) byte-fold work before allocation/evaluation. Binary/embedded-
+  zero/empty semantics, ownership, no-partial-result caps and fixed-length affine
+  syndrome meaning are explicit. The report retains standard CBF43926 and original
+  B74574DE/152 flips/15.460526 mean, distinguishes raw and finalized registers, and
+  diagrams actual first-byte lookup constants. It derives payload-independent syndrome
+  composition and the <=32-bit short-burst guarantee, checks all 11,476 original double-
+  bit errors via unique syndromes, and replaces false universal low-weight/odd-
+  error/avalanche-collision claims with an explicit 33-span, fifteen-flip zero-syndrome
+  generator error. All 41 scoped definitions, eight compiled new/changed documentation
+  examples and three clangd hovers pass. Nine new cases pass AddressSanitizer and UBSan:
+  256 one-byte and 65,536 two-byte messages versus an independent bit loop; 1,000 random
+  binary inputs with existing codec-streaming parity; 300 payload/composition controls;
+  every original single/double error; 110,591 exhaustive width-1..12 bursts plus 2,000
+  sampled width-13..32 bursts; all 120 fitting offsets of the odd-weight collision;
+  exact/one-below/disabled budgets, duplicate/invalid bits, empty results and owned
+  copies. Thirty-two checksum/Adler/codec cases plus five dir cases pass; combined CTest
+  passes 1,393 cases. Three report programs, three inspected native SVGs and both
+  exports pass, with final figure hashes matching inspected rasters and adjacent build
+  files. A root-disk-full compilation/cache interruption was resolved using project
+  TMPDIR, narrowly removing ten verified unreferenced datamunge Nix source snapshots
+  through liveness checks, preserving task PCH symlinks and saving a reusable tools-only
+  dev-shell profile; the final run has no failures. Site verifies 62 reports, 278
+  executed blocks and 210 matching figures. Original mepml/org removed after all gates.
+  Evidence: `build/mepml-conversion/crc32/`. Migration: 62/427 converted, 365 pending;
+  next is cristian_analysis.
+
+- 2026-11-07: Converted Crank–Nicolson heat evolution into a dedicated canonical core,
+  retaining the original callable signature and pde_solvers.hpp include path. One
+  validated kernel samples each interior point once, enforces exact zero endpoints,
+  reuses one actual Thomas factorization and optionally retains complete actual
+  RHS/profile states, factors, solve counts, scaled RMS and componentwise backward
+  errors without prefix replay. Scalar domains, finite sampled values, representable
+  spacing/interior coordinates, ratios, coefficients, final time and arithmetic are
+  checked; valid zero diffusion/time and zero-step conventions are explicit. Complete
+  history scalar caps are checked before allocation or callback invocation. Native sine-
+  mode controls independently separate continuous, semidiscrete and ideal CN evolution;
+  finite modal evaluations are not arbitrary-precision certificates. The report retains
+  the sixty-interior-point experiment, fixes the sample/reference index mismatch, opens
+  with the hand-solvable alternating 1,-0.6,0.36 case, and distinguishes ideal L2
+  stability from positivity, maximum-norm guarantees, stiff damping and finite
+  arithmetic. Separate space/time studies give ratios approaching four and expose
+  cancellation in combined PDE error; solve residuals are not treated as PDE accuracy.
+  All 50 new-module definitions, eight compiled/executed documentation examples and
+  three clangd hovers pass. Eleven new cases pass AddressSanitizer and UBSan, including
+  500 independent dense long-double Cholesky evolutions, 116 sine-mode controls, actual
+  RHS/factor/state checks, both refinement orders, original data, zero-
+  step/diffusion/time behavior, callback order/exceptions, exact/one-below/disabled
+  history caps, invalid/unrepresentable arithmetic, near-DBL_MAX scaled-RMS identity
+  profiles and owned storage. Fifteen heat/PDE plus five dir cases pass; combined CTest
+  passes 1,361 cases. Four executed report programs, four inspected native SVGs and both
+  exports pass; explicit scientific ticks fix initially rounded-zero temporal axes and
+  single legend entries retain visible endpoints. Final SVG hashes match inspected
+  copies and adjacent build outputs. Site verifies 61 reports, 275 executed blocks and
+  207 matching figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/crank-nicolson/`. Migration: 61/427 converted, 366 pending;
+  next is crc32_analysis.
+
+- 2026-11-07: Converted counting sort with one canonical histogram/prefix/reverse-
+  placement kernel. Legacy overloads retain their hard billion-bucket ceiling and valid-
+  empty convention; new owned analysis exposes stable original indices and actual bucket
+  boundaries, and a complete trace records each original key, input index, cursor and
+  assigned slot without replay. Full bounds/key validation precedes allocation and
+  optional bucket/event caps. Unsigned checked range arithmetic supports narrow
+  intervals at either signed-64-bit endpoint. Diagnostic defaults bound buckets to one
+  million and events to one hundred thousand; zero disables only the optional cap, with
+  allocation failures still possible. The report preserves the original eight integers
+  and named records, replaces the packed-key pseudo-stability check with genuine equal-
+  key identities, derives block correctness/stability, and separates logical n,k,n work
+  from initialization, copies, timings and worst-case comparison bounds. All 34 scoped
+  definitions, nine compiled/executed documentation examples and three clangd hovers
+  pass. Eighteen native cases pass address/undefined sanitizers, including 29,524
+  exhaustive ternary sequences through length nine and 1,000 random duplicate-heavy
+  identity/event-replay controls. Endpoint ranges, complete exact/one-below caps, full
+  invalid input, empty/singleton/owned results and legacy exception preservation pass.
+  Eighteen counting-sort plus five dir cases pass; combined CTest passes 1,346 cases.
+  Four report programs, four inspected SVGs and both exports pass, with final figure
+  hashes matching inspected rasters and adjacent build outputs. Site verifies 60
+  reports, 271 executed blocks and 203 matching figures. Original mepml/org removed
+  after all gates. Evidence: `build/mepml-conversion/counting-sort/`. Migration: 60/427
+  converted, 367 pending; next is crank_nicolson_analysis.
+
+- 2026-11-07: Converted circular CORDIC. One canonical floating recurrence preserves the
+  original SinCos two-double layout/default count and actual raw/gain update order while
+  adding checked reduction metadata, immutable prepared stage constants, owned actual
+  before/after traces and bounded error sweeps. Original atan/sqrt expressions prepare
+  the shared table once; per-call work explicitly includes floating multiplications,
+  compensation products and extra trace normalizations. The supported domain is finite
+  theta and 0..1075 stages, covering every nonzero binary64 scale; zero stages is an
+  unrotated approximation and zero residual does not stop the requested steps. Complete
+  trace/evaluation caps follow full input validation; sweep rows retain first
+  worst-angle ties and explicit absent extrema. The retained
+  remainder(theta,2*pi_double) policy is explicitly not high-precision reduction: huge
+  original-angle phase errors can survive a tiny residual and near-unit norm. The report
+  corrects amplification versus inverse compensation, derives the ideal finite-stage
+  bound only for exact reduced-target arithmetic, and distinguishes a floating model
+  from multiplier-free hardware. Original four angles and all twelve normalized states
+  are preserved; the actual first raw states (1,1), (0.5,1.5), (0.875,1.375) are
+  hand-checkable. A 2,001-angle sweep separates stage error from the binary64 floor. All
+  87 scoped definitions, fifteen compiled/executed new or changed documentation examples
+  and four hovers pass. Twelve new cases pass AddressSanitizer and UBSan. Exact
+  output-value parity with the former kernel covers 1,000 seeded angles at counts
+  0,1,2,3,12,40,44,64,1075; original trajectory states match independently. Ten thousand
+  moderate angles, every nonzero stage scale, fold boundaries, gain/phase identities,
+  full invalid-input checks, exact/one-below budgets, sweep empty/tie semantics and
+  owned storage pass. A permanent optional CTest oracle uses 430-digit Decimal working
+  arithmetic with independent Machin pi/Taylor sine/cosine for 126 controls, including
+  subnormals and largest finite doubles; its native checker also passes
+  address/undefined sanitizers. Maximum folded-model component error is 1.12767e-13 and
+  moderate original-angle error 1.13135e-13, while original-angle error including huge
+  inputs reaches 1.83609. Optional standard-library oracles require Python 3.9 and the
+  focused runner builds its checker dependency. Thirty CORDIC/pi/format/oracle cases
+  plus five dir cases pass; combined CTest passes 1,328 cases. Five report programs,
+  four inspected equal-scale figures and both exports pass. Final SVG hashes match
+  inspected copies. Site verifies 59 reports, 267 executed blocks and 199 matching
+  figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/cordic/`. Migration: 59/427 converted, 368 pending; next is
+  counting_sort_analysis. Previously recorded unrelated audit, CAD-policy and optional
+  C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted convex hull. One canonical Andrew monotone-chain kernel
+  preserves the legacy by-value signature and strict CCW/lexicographic-start convention
+  while adding earliest original identities, checked actual work and compact actual
+  test/pop/push edits without prefix reruns or quadratic stack snapshots. Complete
+  finite validation precedes internal indexed allocation/sorting and optional
+  point/event caps; signed-zero duplicates retain the earliest matching representation.
+  Empty, singleton, two-point, collinear and edge-interior conventions are explicit. A
+  reusable exact orientation_sign decodes finite IEEE binary64 values and accumulates
+  six dyadic coordinate products in two fixed 4224-bit integer arrays; the proved sum
+  bound is at most 4199 bits. No floating products, long-double assumptions or tolerance
+  determine its sign. Cancellation determinant one, subnormal triangles and huge
+  collinear configurations are classified correctly; the cancellation triangle retains
+  all three vertices. The original Point2D layout/equality and double-valued primitives
+  remain unchanged in behavior, with their limitations fully documented. Native
+  unsnapped mt19937 normal sampling preserves the original full forty-point stream and
+  former hull on this toolchain, including eight vertices; permanent tests compare full
+  original stream/hull parity rather than assuming a universal normal mapping. The
+  seven-point square retains its four original corners. The report derives both envelope
+  invariants, lower-dimensional conventions, exact push/pop identity, linear scan bound,
+  capacity proof and comparison-model scope. All 80 scoped definitions, nineteen
+  compiled/executed documentation examples and four hovers pass. Fourteen new native
+  cases pass AddressSanitizer and UBSan. Independent integer supporting-edge enumeration
+  checks 512 grid subsets, 6,561 ordered four-record tuples and 1,000 seeded clouds with
+  actual edit replay. All 5,040 seven-point permutations retain earliest identities;
+  10,000 random triple permutation/similarity controls, full-range/duplicate/degeneracy
+  checks, exact/one-below caps, original stream parity and owned states pass. A
+  permanent optional CTest Python Fraction oracle validates 20,000 raw-binary64 and
+  collinear/one-ULP triples; its native checker also passes address/undefined
+  sanitizers. The focused runner builds that oracle dependency when Python is available.
+  Thirty-five geometry/oracle cases plus five dir cases pass; combined CTest passes
+  1,298 cases. Five report programs, four inspected figures and both exports pass. Final
+  SVG hashes match inspected copies. The final proof-only wording correction passes
+  fresh documentation/hover and exports without changing executable code. Site verifies
+  58 reports, 262 executed blocks and 195 matching figures. Original mepml/org removed
+  after all gates. Evidence: `build/mepml-conversion/convex-hull/`. Migration: 58/427
+  converted, 369 pending; next is cordic_analysis. Previously recorded unrelated audit,
+  CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted connected-component labelling. One canonical checked two-pass
+  kernel preserves the original ConnectedComponents fields and row-major
+  first-occurrence dense IDs, using rank-balanced union and path halving. Complete
+  rectangular validation includes empty-first-row ragged inputs; empty/zero-width shapes
+  retain their rows. Nonzero negative/extreme ints remain foreground and all image
+  indexing uses size_t, with explicit int-label/counter range checks. Output-only and
+  analysis paths omit history allocation; optional traces own actual provisional maps,
+  per-foreground decisions, all union attempts, final parents and remapping without
+  replay. Complete cell caps and online actual record caps have explicit zero-unlimited
+  semantics. Native summaries validate label ranges/dense presence and measure areas,
+  inclusive bounds, centroids and exposed orthogonal edges, explicitly trusting supplied
+  grouping rather than certifying connectivity. Native original-rectangle/checkerboard
+  fixtures and a checked one/two-panel labelled-cell Diagram recipe replace report
+  algorithms and scatter-marker geometry. The report derives the partial-scan invariant,
+  balanced-union complexity and grid perimeter 4A-2E, shows an actual bridge merge and
+  diagonal-contact partition change, and reproduces original areas 9,8,8,16 with 41
+  foreground cells. The original rectangles need zero successful unions, corrected
+  explicitly; they perform 56 total attempts and 153 finds. All 84 affected definitions,
+  sixteen compiled/executed documentation examples and four hovers pass. Thirteen new
+  cases pass AddressSanitizer and UBSan. All 65,536 four-by-four binary masks match
+  independent full-neighbour flood fill in both modes (131,072 complete canonical
+  label-map comparisons). One thousand random masks per mode independently replay actual
+  predecessor, union/root/rank and remap transitions. A nonminimum-rank-root witness
+  retains first-occurrence output IDs. One thousand random measurement maps match
+  independent pixel sets and perimeter identities; 576 rectangular checkerboards, holes,
+  diagonal contacts, exact/one-below caps, full invalid-input checks and owned storage
+  pass. Two graphics cases check validation, bounds, provisional/full-int labels and
+  ownership. Thirty new/legacy image/graphics/format cases plus five dir cases pass;
+  combined CTest passes 1,263 cases. Five report programs, four inspected figures and
+  both exports pass. Final unchanged figure hashes match their inspected versions; the
+  corrected work legend is separately rerendered and inspected. Site verifies 57
+  reports, 257 executed blocks and 191 matching figures. Original mepml/org removed
+  after all gates. Evidence: `build/mepml-conversion/connected-components/`. Migration:
+  57/427 converted, 370 pending; next is convex_hull_analysis. Previously recorded
+  unrelated audit, CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted conjugate gradient. One checked executing kernel preserves the legacy function/result layouts and adds dense/matrix-free solves, owned actual x/r/p/Ap histories, explicit stop reasons and actual product counts. Complete finite/shape/size/exact-symmetry/control validation precedes dense work; SPD remains a precondition with encountered curvature failure reported, not a matrix-wide certificate. Inclusive absolute stopping checks the recomputed rounded-operator residual separately from the recursive residual, including initially and at zero budget; residual gaps stop unconverged. Widened inner products/norms and checked double updates handle extreme scales without squared-double failures. Online scalar-entry caps count actual snapshots and solve-only calls omit capture. Forward Gauss-Seidel and its native history share one checked sweep kernel; native dense/matrix-free Dirichlet fixtures and analytical unit-RHS solutions replace report loops. The report corrects the gradient sign, distinguishes energy decrease from nonmonotone residual norms, derives exact Krylov termination and the Chebyshev energy bound with floating limits, and explains active-spectrum termination. The original 20-unknown unit-RHS solve takes ten CG steps and twenty counted products, with computed true residual zero explicitly distinguished from the old recursive 2.3e-16. Forty GS sweeps leave residual 1.712176. Matrix-free dimensions 20/40/80/160 match the analytical solutions exactly on this toolchain. All 91 affected definitions, fifteen compiled/executed new or changed documentation examples and four hovers pass. Fourteen new cases pass AddressSanitizer and UBSan. One thousand seeded SPD problems match an independent long-double Cholesky oracle; actual recurrence replay, energy checks, directly recorded callback arguments, active eigenvalue controls, a residual-rise example, an actual residual-gap witness, zero/empty/budget/inclusive controls, full invalid-input checks, callback failures, curvature, caps, widened scales and owned states pass. Thirty-six new/legacy solver/format cases plus five dir cases pass; combined CTest passes 1,233 cases. Five report programs, four inspected figures and both exports pass. Final figures match inspected SVG bytes. Site verifies 56 reports, 252 executed blocks and 187 matching figures. Original mepml/org removed after all gates. Evidence: `build/mepml-conversion/conjugate-gradient/`. Migration: 56/427 converted, 371 pending; next is connected_components_analysis. Previously recorded unrelated audit, CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted the 2D cone surface diagnostic. A single checked angular-gap kernel preserves the legacy mask signature while adding actual owned direction records, per-query witnesses and exact work counters. Full finite-input/control validation precedes bounded work; every ordered pair is scanned, coincident locations contribute no invented ray, widened norms handle huge/subnormal differences, sparse queries retain their full-turn convention, and thresholds are inclusive. The original 2,500 candidate sampler is native and reproduces 1,948 accepted points, 176 flags and minimum flagged radius 9.336971. Strict radial summaries have explicit empty extrema. The report distinguishes this planar analogue from the published 3D molecular algorithm, derives O(n² + sum k log k) work, demonstrates an interior point falsely flagged locally and shows all 962 inner-core points flagged at radius 0.25. All 62 definitions, twelve compiled/executed documentation examples and three hovers pass. Fifteen new cases pass AddressSanitizer and UBSan. An independent supporting-line oracle checks 6,561 ordered grid tuples, all 512 grid subsets and 1,000 random clouds; 500 local clouds use a separate cross/dot angular oracle. Original sampler/mask parity, exact inclusive controls, one-working-ULP thresholds, duplicates, extreme norms, actual pair/direction caps, full validation and ownership pass. Twenty-two new/legacy cases plus five dir cases pass; combined CTest passes 1,197 cases. Five report programs, four inspected figures and both exports pass. Final figure copies match inspected outputs. Site verifies 55 reports, 247 executed blocks and 183 matching figures. Original mepml/org removed after all gates. Evidence: `build/mepml-conversion/cone-surface/`. Migration: 55/427 converted, 372 pending; next is conjugate_gradient_analysis. Previously recorded unrelated audit, CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted computus. One canonical checked positive-int Gregorian
+  Easter kernel preserves the original EasterDate fields, triviality and standard
+  layout while adding owned actual integer steps and bounded constant-storage
+  range summaries. All positive int years are supported; zero/BCE numbering is
+  rejected and early positive dates are explicitly proleptic rule projections.
+  Full endpoint/order validation and positive complete-count caps precede scans;
+  date extrema preserve first ties and INT_MAX-ending loops cannot wrap. The
+  report corrects the golden-number/index, nominal-full-moon and day-of-year
+  descriptions, derives both exceptional week cases and a sufficient 5,700,000-year
+  rule period without claiming minimality. Original notable dates and the 2000-2040
+  earliest/latest witnesses and 33-day spread remain. All 40 definitions have
+  coverage; six documentation examples compile/run and three hovers pass. Ten
+  new cases pass AddressSanitizer and UBSan. A distinct published USNO Oudin
+  algorithm and independent Gregorian weekday calculation check every year in a
+  complete 5,700,000-year period; its independently accumulated histogram agrees
+  exactly. Published date controls, early proleptic years, 10,000 random large
+  years, 10,000 period shifts, exceptional predicates, 1,000 independent summary
+  ranges, partition additivity, exact/one-below complete caps, INT_MAX termination
+  and owned returns pass. Thirty new/legacy calendar/format cases plus five dir
+  cases pass; combined runners pass 1,175 cases. Five report programs, four
+  inspected figures and both exports pass against the final rebuilt core. The
+  cycle contains all 35 dates and 38,750 week corrections. Final figure hashes
+  match the inspected versions. Site verifies 54 reports, 242 executed blocks and
+  179 matching figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/computus/`. Migration: 54/427 converted, 373 pending;
+  next is cone_algorithm_analysis. Previously recorded unrelated audit, CAD-policy
+  and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted comb sort. One canonical plain-10/13 gap kernel
+  preserves the legacy API while adding checked actual work and optional owned
+  pass states/identities without replay. Exact quotient/remainder arithmetic fixes
+  gap-times-ten overflow across size_t's range, without a special gap adjustment.
+  The original full-width forward bubble comparator is now a named native baseline,
+  retaining its terminal zero-swap scan. Positive online trace caps count that
+  terminal scan; output-only/work-only calls have no cap. The original seven-value
+  run has five passes, 23 comparisons and six swaps. All forty seed-four shuffle
+  inputs agree with former report counting loops on this toolchain; n=400 gives
+  7,106 comb and 155,610 bubble comparisons. The old frozen bubble count 147,630
+  and implementation-specific shuffle mapping are explicitly distinguished.
+  The report replaces the unqualified linearithmic claim with a quadratic
+  worst-case upper bound, sorted-input Theta(n log n), a derived inversion decrease
+  and an actual carried-identity instability example. All 29 affected definitions
+  have coverage; eight documentation examples compile/run and three hovers pass.
+  Eleven new cases pass AddressSanitizer and UBSan. Independent sorting, inversion
+  and stable maximum-left-displacement oracles check 9,841 ternary inputs through
+  length eight, all 40,320 eight-element permutations and 1,000 seeded duplicate
+  arrays. Actual pass/state counters, signed extremes, full-range gap arithmetic
+  against unsigned-128 products, former-loop parity, exact/one-below caps and
+  snapshot ownership pass. Fourteen new/legacy comparison-sort cases plus five
+  dir cases pass; combined runners pass 1,145 cases. Five report programs, four
+  inspected figures and both exports pass. Site verifies 53 reports, 237 executed
+  blocks and 175 matching figures. Original mepml/org removed after all gates.
+  Evidence: `build/mepml-conversion/comb-sort/`. Migration: 53/427 converted,
+  374 pending; next is computus_analysis. Previously recorded unrelated audit,
+  CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted Cohen-Sutherland line clipping. A canonical checked
+  kernel preserves the legacy call and ClippedSegment field layout while validating
+  all finite coordinates and ordered inclusive bounds before trivial decisions.
+  Zero-area rectangles, corner tangency and directed point segments are valid.
+  Owned actual endpoints/outcodes, selected boundaries, replacement codes and
+  terminal decisions share the executing kernel without replay. Widened original-
+  line determinants avoid drift from earlier rounded cuts and preserve tested
+  integer corner cancellations and huge diagonals. Bounded interpolation handles
+  unrepresentable products; current-range projection retains prior half-planes.
+  The report explicitly limits floating geometry rather than claiming exact
+  predicates, and derives a worst-case four-cut bound from permanently satisfied
+  half-planes. A left-only endpoint gains a top bit before rejection, correcting
+  the old decreasing-bit termination argument. All 45 definitions have coverage;
+  seven documentation programs compile/run and three clangd hovers pass. Eleven
+  new cases pass AddressSanitizer and UBSan. An independent exact-rational
+  parametric oracle checks all 86,436 grid segment/ordered-rectangle combinations,
+  including degenerate rectangles, plus 3,000 seeded integer problems. Original
+  results, actual work/state invariants, reversal/exact similarities, every-coordinate
+  validation, one-ULP corner controls, huge/subnormal values, extreme thin-slab point
+  contact and ownership pass. Twenty-six native new/legacy graphics/format cases
+  plus five dir cases pass; combined runners pass 1,131 cases. Five report programs,
+  four inspected equal-scale/operation-count figures and both exports pass. The
+  complete 2,401-segment report grid attains four cuts on four inputs, with 2,436
+  total cuts and 4,837 decisions. Site verifies 52 reports, 232 executed blocks and
+  171 matching figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/cohen-sutherland/`. Migration: 52/427 converted,
+  375 pending; next is comb_sort_analysis. Previously recorded unrelated audit,
+  CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted cocktail shaker sort. One canonical adjacent-exchange
+  kernel preserves legacy output and directional-bound behavior, adding optional
+  owned actual pass states, stable original identities and checked work counters.
+  A positive online snapshot cap includes terminal zero-comparison passes; the
+  output-only API has no cap. The original seven integers need five directional
+  passes, twenty comparisons and ten swaps, stopping with bounds [2,4]. The report
+  corrects the old universal half-pass and bounds-must-meet claims, proves the
+  outer-region invariant, stability and swaps=inversions, and derives exact
+  sorted/reverse/turtle/rabbit comparison families. All 29 affected definitions
+  have coverage, four documentation examples compile/run and three hovers pass.
+  Nine new cases pass AddressSanitizer and UBSan. Independent stable-sort/inversion
+  and pass-state checks cover all 9,841 ternary inputs through length eight,
+  40,320 eight-element permutations and 1,000 seeded duplicate arrays. Integer
+  extremes, exact/one-below caps, empty stopping passes and owned snapshots pass.
+  Twelve new/legacy exchange-sort cases plus five dir cases pass; combined runners
+  pass 1,105 cases. Four mep programs, four raster-inspected figures and both
+  exports pass. The site verifies 51 reports, 227 executed blocks and 167 matching
+  figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/cocktail-shaker/`. Migration: 51/427 converted,
+  376 pending; next is cohen_sutherland_analysis. Previously recorded unrelated
+  audit, CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted CNN analysis with canonical tensor bar generation,
+  small convolutional/dense models, signed z-plus relevance and native square-cell
+  image diagrams. Model constructors expose forward endpoints and named leaves;
+  the report keeps all SGD/Adam training loops explicit. Bar generation matches
+  the original complete 600-row MT19937_64 normal/shuffle stream. Relevance uses
+  actual max-pool winners, signed raw-score seeds and documented bias/epsilon/
+  zero-path limits, without mutating parameters, input gradients or caller grad mode.
+  Sixty-two affected definitions have coverage; fourteen documentation programs
+  compile/run and four clangd hovers pass. Twenty-one new cases pass AddressSanitizer
+  and UBSan, covering independent hand gradients/redistribution, every-parameter
+  finite differences, local-pool phase changes, global-pool controls, signed paths,
+  invalid domains/overflow, exact parameter counts, real learning and square pixels.
+  Twenty-nine new/legacy CNN cases and five dir cases pass; combined runners pass
+  1,093 cases. Eight complete report programs reproduce the original bar fit,
+  filters, same-target initialized relevance controls and positional-shift results.
+  Native verified MNIST archives supply a disjoint 512-row fit, 128-row validation
+  and 256-row official-test experiment; checkpoint selection uses validation only.
+  All eighteen figures are raster-inspected and match native output bytes; both
+  exports pass. The site verifies 50 reports, 223 executed blocks and 163 matching
+  figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/cnn/`. Migration: 50/427 converted, 377 pending; next is
+  cocktail_shaker_sort_analysis. Previously recorded unrelated audit, CAD-policy
+  and optional C++17 limits remain outside this batch.
+
+- 2026-11-07: Converted closest-pair analysis. A dedicated canonical checked
+  all-pairs kernel retains the legacy call/result layout, validates every finite
+  coordinate before complete work caps, compares widened differences/hypot values
+  and checks finite-double legacy conversion. Owned indexed results preserve
+  original duplicate identities and first computed-distance ties. Actual strict
+  improvement records share the executing kernel without replay; their positive
+  record cap is online, while the complete pair cap preflights after validation.
+  Zero distances do not stop the all-pairs scan. A bounded native rectangle sampler
+  preserves the original sixty seed-424242 MT19937 draws and planted pair; standard-
+  library uniform-real mapping limits cross-implementation bitwise reproducibility.
+  All 45 affected definitions have coverage, ten examples compile/run and three
+  hovers pass. Seventeen new tests pass AddressSanitizer and UBSan. Exact integer
+  squared-distance oracles check all 6,561 ordered four-record grid tuples, 502
+  nontrivial grid subsets and 1,000 seeded integer clouds, plus 720 permutations
+  with exact similarity transforms. Original cloud/pair, subnormal/tiny/huge
+  distances, wide selected values beyond double, actual record caps, validation
+  before limits, owned copies and generator bounds pass. Twenty-two native
+  new/legacy/geometry-format cases and five dir cases pass. Production Python help
+  and wrapper are regenerated from canonical header/interface sources; scoped
+  invalid/overflow failures become ValueError/OverflowError. Nine targeted SWIG
+  compatibility tests pass using that exact production rule; a full installed-
+  package build is not claimed. The report corrects the old one-square-root and
+  exactness claims, derives the invariant/exact work, preserves the original
+  62-record example and expands its right triangle. An unequal-real-distance
+  counterexample whose computed values tie explicitly limits geometric accuracy.
+  Five mep programs, four inspected figures and both exports pass. Combined runners
+  pass 1,064 cases; site verifies 49 reports, 215 executed blocks and 145 matching
+  figures. Original mepml/org removed after all gates. Evidence:
+  `build/mepml-conversion/closest-pair/`. Migration: 49/427 converted, 378 pending;
+  next is cnn_analysis. Previously recorded unrelated audit, CAD-policy and
+  optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Clarke-Wright savings routing. A dedicated canonical
+  parallel-savings kernel retains the legacy call/include and VehicleRoutes layout,
+  validates all finite coordinates/nonnegative demands and finite positive capacity,
+  and checks widened distances/loads and finite-double final cost. Equal savings
+  now use ascending original pair ids; zero savings remain eligible. Actual owned
+  endpoint lookups, rejection reasons, reversal calls, accepted customer orders,
+  route loads, named work and star/savings/distance accounting share one kernel
+  without replay. Complete pair/endpoint/trace caps preflight after validation.
+  Independent native route evaluation reports closure, coverage, repeated/missing
+  customers, interior depot visits, overloads and widened edge sums; invalid ids
+  throw. Depot demand is validated but ignored; capacity comparisons have no hidden
+  tolerance. All 73 module definitions, eleven compiled examples and three hovers
+  pass. Seventeen new cases pass AddressSanitizer and UBSan. Independent deque
+  state checks cover 1,926 line/depot/capacity inputs and 1,000 random Euclidean
+  problems. Exhaustive permutation/cut oracles check 100 small problems and the
+  fixed six-point counterexample, whose shorter feasible length is 30.520843
+  against greedy 30.655229. Exact/one-below caps, full validation before limits,
+  literal floating boundaries, zero demands, depot-only/nonzero depot, ownership,
+  malformed proposed routes and wide arithmetic pass. Thirty-two routing/tour/
+  formatting cases plus five dir cases pass. The report retains the original
+  distance-four merge, proves feasibility and exact telescoping savings, states
+  cubic endpoint lookup/quadratic storage and distinguishes greedy capacity sweeps
+  from exact-optimum monotonicity. Five mep programs, four inspected figures and
+  both exports pass. Combined runners pass 1,042 cases; site verifies 48 reports,
+  210 executed blocks and 141 matching figures. Original mepml/org copies removed
+  after all gates. Evidence: `build/mepml-conversion/clarke-wright/`. Migration:
+  48/427 converted, 379 pending; next is closest_pair_analysis. Previously recorded
+  unrelated audit, CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted the circle-layout report. Dedicated canonical headers
+  retain Point2D/Circle2D layouts and the legacy include/call while the executing
+  Jacobi kernel adds checked widened arithmetic, fixed-step controls, complete
+  pair-work/snapshot preflight caps, owned actual raw states, measured edge/nonedge
+  potential, normalization map and separate returned-disk diagnostics. Full
+  endpoint/options validation precedes limits/allocation; loops are ignored,
+  reversed duplicates collapse and empty/singleton inputs skip sweeps. Counts
+  distinguish relaxation pairs, commits, raw snapshots and output measurements.
+  The report corrects the original Koebe-construction and linear-memory claims:
+  dense adjacency is quadratic, no universal fixed-step descent is promised,
+  and resetting output radii can destroy contacts or create overlaps. Original
+  triangle coordinates remain; three raw contacts become zero returned contacts.
+  A positive unequal-radius K4 control has all six contacts, while the default
+  eight-cycle returns eight overlapping pairs. Actual energy agrees with the
+  independent two-circle closed form, and step size two increases it. All 83
+  definitions have coverage; thirteen documentation examples compile/run and
+  three hovers pass. Fourteen new tests pass AddressSanitizer and UBSan, with
+  independent raw-state checks of all 1,100 simple graphs through five vertices,
+  1,000 seeded random multigraph/control cases and triangle/two-circle closed
+  forms. Endpoint/tolerance/radius validation, owned frames, exact/one-below caps,
+  huge preflight work, range checks and zero-step semantics pass. Thirty native
+  circle/graph-analysis/formatting cases plus five dir cases pass. Five mep
+  programs, four inspected figures and both exports pass. Combined runners pass
+  1,010 cases; the site verifies 47 reports, 205 executed blocks and 137 matching
+  figures. Catalog corrected; original mepml/org removed after all gates.
+  Evidence: `build/mepml-conversion/circle-packing/`. Migration: 47/427 converted,
+  380 pending; next is clarke_wright_analysis. Previously recorded unrelated audit,
+  CAD-policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Cipolla modular-square-root analysis. The canonical
+  module validates every uint64 prime before normalization/shortcuts, uses reduced
+  unsigned-128 scalar products and sums, safe canonical differences and a safe
+  exponent expression, and verifies the final extension root. Candidate order
+  1,2,...,p-1,0 preserves earlier successes and fixes sqrt(1) modulo three, where
+  zero is the only suitable auxiliary. The legacy signed API/include remains;
+  full unsigned root pairs retain raw identity while a complementary root is used
+  when necessary to give a nonnegative representable legacy result. Actual owned
+  candidates, exponent-bit transitions, closing squares, path and named counters
+  share the kernel without replay. Positive work caps expose no partial result;
+  primality's internal arithmetic is excluded explicitly from named product counts.
+  All 75 module definitions are documented, twelve examples compile/run and three
+  hovers pass. Fourteen new tests, four arithmetic regressions, nine formatting and
+  five dir cases pass. All fourteen new cases pass AddressSanitizer and UBSan.
+  Independent square sets exhaust 6,338 residue inputs over 55 prime fields through
+  257 and normalized aliases, with all 1009 original residue verdicts retained.
+  Add-and-double modular arithmetic verifies every actual candidate and pair
+  transition. Another 1,000 known squares span four large primes through the top
+  of uint64, checking signed fallback, endpoints and widened arithmetic. Composite/
+  pseudoprime rejection before zero shortcuts, exact/one-below caps, ownership,
+  unused closing-square work and binary/zero/nonresidue shortcuts pass. The report
+  preserves the original four root choices and 504-square plot, proves norm and
+  Frobenius correctness, distinguishes deterministic search from uniform-random
+  expectations, corrects the 1903 attribution, and shows a raw p-3 root returned
+  safely as legacy root three. Five mep blocks, three inspected SVGs and both
+  exports pass. Combined runners pass 980 cases; site verifies 46 reports, 200
+  executed blocks and 133 matching figures. Original mepml/org copies removed
+  after all gates. Evidence: `build/mepml-conversion/cipolla/`. Migration: 46/427
+  converted, 381 pending; next is circle_packing_layout_analysis. Previously
+  recorded unrelated audit, CAD policy and optional C++17 limits remain outside
+  this batch.
+
+- 2026-11-06: Converted Chu-Liu/Edmonds directed-tree analysis. A dedicated
+  canonical module retains the legacy call/layout while recovering actual original
+  edge ids and parents through iterative compact contraction history. Working costs
+  and final original-edge sums use checked long double with checked conversion;
+  vertex ids no longer narrow to int, and every endpoint/finite signed weight
+  validates before caps, including ignored loops and root-entering arcs. One kernel
+  captures actual incoming choices, wide reduced arcs, predecessor cycles, original
+  partitions, baselines and work without replay. Cycle detection follows each
+  non-root vertex once per successful round. Phase/combined-edge-visit caps return
+  no partial result; nonexistence retains its actual failed round with empty tree
+  arrays. All 63 new-module definitions are documented, twelve examples compile/run
+  and three hovers pass. Fourteen new tests, seven advanced-graph cases, nine
+  formatting and five dir cases pass; all fourteen new cases pass AddressSanitizer
+  and UBSan. Independent enumeration checks 2,187 three-vertex signed ternary
+  graph/root combinations, 16,384 four-vertex presence/root combinations and 1,000
+  signed random multigraphs. Every phase, reduced cost, cycle, partition, baseline,
+  final original edge and named counter is verified. Nested/simultaneous cycles,
+  missing vertices versus unreachable closed cycles, original parallel ties,
+  ignored malformed arcs, owned copies, exact/one-below caps, size_t domains,
+  wide intermediates/fitting totals, final overflow and a 100,000-vertex chain
+  pass. The report preserves the original cost six and derives rooted reachability,
+  baseline normalisation and the contraction exchange argument. It documents the
+  O(E+PV) compact expansion history even for cost-only calls, full trace storage,
+  rounded numerical limits and the scope of its two-round 6k scan family. Five
+  mep blocks, three inspected SVGs and both exports pass. Combined runners pass
+  953 cases; site verifies 45 reports, 195 executed blocks and 130 matching
+  figures. Original mepml/org copies removed after all gates. Evidence:
+  `build/mepml-conversion/chu-liu/`. Migration: 45/427 converted, 382 pending;
+  next is cipolla_analysis. Previously recorded unrelated audit, CAD policy and
+  optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Chudnovsky pi analysis. A dedicated canonical module
+  replaces separate factorial/power evaluation with a bounded-ratio double
+  recurrence, retaining the legacy include/call while documenting its changed
+  rounding path and explicit nonpositive-count errors. Actual owned term, sum and
+  prefix-estimate records share the kernel without replay. Stagnation alone does
+  not stop evaluation; the first underflowed zero is recorded, after which huge
+  suffixes are skipped without giant reservation. Native ratio, decimal-gain and
+  geometric log-bound APIs document the limiting factor 1728 and separate exact
+  truncation theory from rounding and real-accuracy guarantees. All 35 module
+  definitions are documented; eight examples compile/run and three hovers pass.
+  Ten new tests, eight pi/BBP/CORDIC cases, nine formatting and five dir cases pass.
+  All ten new cases pass AddressSanitizer and UBSan. Independent factorial-prefix
+  checks, 1,000 full-range random ratio indices, 10,000 uniform-ratio indices,
+  exact positive-polynomial identities, one hundred omitted-term bounds and
+  counts 1--4096 pass, alongside INT_MAX requests, exact underflow boundaries,
+  malformed counts and owned records. A 240-digit Decimal Machin oracle verifies
+  all 25 actual native terms/prefixes, twelve finite-series error bounds and seven
+  ratios, explicitly marking values below its decimal resolution. Linked-core and
+  standalone Clang probe output agrees exactly. The report preserves the original
+  four counts, labels both rounded references, removes artificial log floors and
+  distinguishes a nonzero lost correction, a later underflowed term and the
+  theoretical 14.18-digit rate. Five mep blocks, three inspected figures and both
+  exports pass. Combined runners pass 923 cases; site verifies 44 reports, 190
+  executed blocks and 127 source-matching figures. Original mepml/org copies are
+  removed after all gates. Evidence: `build/mepml-conversion/chudnovsky/`.
+  Migration: 44/427 converted, 383 pending; next is chu_liu_edmonds_analysis.
+  Previously recorded unrelated audit, CAD policy and optional C++17 limits remain
+  outside this batch.
+
+- 2026-11-06: Converted Christofides TSP analysis. The legacy call, result layout
+  and general finite nonnegative matrix acceptance remain. A dedicated canonical
+  module and shared TourResult header expose actual tree edges, odd vertices,
+  matching choices, Euler vertices/stable edge-copy identities, first-visit shortcut
+  positions, stage costs and named work without replay. Ties explicitly prefer
+  weight/endpoints and ascending matching partners. Widened checked matching and
+  route sums prevent invalid partner reconstruction after double overflow; the
+  final result conversion is checked. Separate full-matrix metric checks, native
+  Euclidean and uniform hub/leaf fixtures, hard odd caps and table preallocation
+  caps document the real contract. All 48 new-module definitions are documented,
+  ten examples compile/run and three hovers pass. Fifteen new tests, six legacy
+  tour/search cases and nine formatting cases pass; five dir cases pass too.
+  All fifteen new tests pass AddressSanitizer and UBSan. Independent Prim and
+  recursive pairing verify 729 exhaustive four-vertex cost matrices and 1,000
+  planar inputs. Exhaustive tour orders check the 3/2 component bounds for 120
+  integer shortest-path metrics. Euler copies, shortcut positions, named counts,
+  every square start, zero/empty/singleton costs, invalid trailing values, exact
+  and one-below caps, ownership, fitting results with oversized matching alternatives,
+  final overflow and a 1,200-vertex line pass. The report preserves the original
+  square and distinguishes exact metric theory, tolerance/rounding limits and the
+  bounded exponential subset matching implementation. A symmetric nonmetric
+  counterexample increases cost from five to 103 by shortcutting, versus proven
+  optimum four. Five mep blocks, three inspected figures and both exports pass.
+  Combined runners pass 896 cases; site verifies 43 reports, 185 executed blocks
+  and 124 source-matching figures. Original mepml/org copies removed after all
+  gates. Evidence: `build/mepml-conversion/christofides/`. Migration: 43/427
+  converted, 384 pending; next is chudnovsky_pi_analysis. Previously recorded
+  unrelated audit, CAD policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Chinese remainder analysis. The legacy call and
+  CrtSolution layout remain. A shared canonical kernel now widens Bezout updates,
+  checks the compatible lcm before narrowing and records actual merge certificates,
+  wide correction/candidate values, representable prefixes and operation counts.
+  Overflow leaves the trace verdict absent; the ordinary call throws instead of
+  returning a wrapped period. No claim is made about an unvisited inconsistent
+  suffix. Checked residue normalization and representative verification replace
+  local unsafe modulo helpers. All moduli validate before arithmetic, comparisons
+  and positive complete-call merge/division caps; cap failures expose no partial
+  trace. All 68 header/source definitions are documented; eleven examples compile
+  and run, with three clangd hovers passing. Fourteen new cases, ten legacy CRT
+  cases and nine formatting cases pass; all 24 CRT cases pass AddressSanitizer and
+  UBSan. Independent enumeration checks 12,286 small pair/triple systems; another
+  1,000 signed random and 1,000 constructed near-limit systems verify every actual
+  Bezout identity, candidate and counter. Exact/oversized periods, wide corrections
+  with fitting results, Fibonacci gcd chains, signed endpoints, reordered late
+  contradictions, exact/one-below caps, invalid suffixes, ownership and 100,000
+  unit constraints pass. The original three controls and coprime grid are retained,
+  with actual merge diagrams and an exhaustive 1/g compatibility census. Five mep
+  blocks, three inspected figures and both exports pass. Combined runners pass
+  866 CTest cases; site verifies 42 reports, 180 executed blocks and 121 matching
+  figures. Original mepml/org copies removed after verification. Evidence:
+  `build/mepml-conversion/crt/`. Migration: 42/427 converted, 385 pending; next is
+  christofides_analysis. Previously recorded unrelated audit, CAD policy and
+  optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Chien root-search analysis. The legacy signature,
+  normalization, zero/constant/direct-linear paths, distinct primitive-power root
+  order and closing updates remain. A shared canonical kernel now records actual
+  generator rejections, coefficient states, final orbit closure and checked named
+  operation counts without replay. Whole-call point/term caps preflight normalized
+  sweeps; generator-step caps reject before the next named operation, with trace
+  reservation after successful generator discovery. Linear inversion products are
+  separate from sweep budgets. The existing native Horner/formatting APIs replace
+  unchecked report helpers. All 143 polynomial-module definitions are documented;
+  twenty-eight examples compile/run and three new plus three existing hovers pass.
+  Twenty-six native cases include twelve new and fourteen polynomial/formatting
+  regressions; all twelve new cases pass AddressSanitizer and UBSan. Independent
+  unsigned Horner and generator-order walks exhaust 23,941 coefficient vectors
+  through length five over GF(2/3/5/7), checking every actual state, root order,
+  generator result and counter. Another 1,000 signed random polynomials and 1,000
+  near-limit linear cases cover widened arithmetic and signed endpoints. Exact and
+  one-below caps, huge-sweep preflight and generator rejection before giant record
+  reservation, malformed fields, ownership, repeated roots and shortcut semantics
+  pass. Existing Cantor-Zassenhaus and dir runners are rebuilt and pass. The report
+  retains the original thirteen GF(13) values and root, corrects the nine-value
+  image versus all-input coverage distinction, and adds actual GF(7) states, generator
+  rejections, full operation counts, formal-zero/function-zero examples and explicit
+  prime-field limits. The degree-only curve is labelled a theoretical formula;
+  no runtime speedup or complete decoder is claimed. Five mep blocks, three inspected
+  SVGs and both exports pass. Combined runners pass 833 CTest cases; site verifies
+  41 reports, 175 executed blocks and 118 source-matching figures. Removed original
+  mepml/org files after verification. Evidence: `build/mepml-conversion/chien/`.
+  Migration: 41/427 converted, 386 pending; next is chinese_remainder_analysis.
+  Previously recorded unrelated audit, CAD policy and optional C++17 limits remain
+  outside this batch.
+
+- 2026-11-06: Converted Cheney copying analysis. The legacy inline call and
+  CheneyResult layout retain valid-input BFS order and ignored-size semantics.
+  ObjectGraph defaults to empty; full graph/id validation returns actual visit
+  counts and optionally checks positive size prefixes. Iterative liveness validates
+  before indexing, while size access checks only its requested value. A shared
+  append-only kernel now constructs an owned symbolic heap, rewriting every live
+  root/reference slot and preserving duplicates, sharing and cycles. Checked size
+  offsets and destination capacity are separate from object-slot forwarding. Actual
+  chronological root/field/scan events record scan/free boundaries without replay
+  or queue snapshots; positive whole-call event caps expose no partial result.
+  Growing output rows are reacquired after possible vector reallocations. All
+  56 definitions are documented, fourteen examples compile/run and three hovers
+  pass. Thirty-three native cases include fifteen new and eighteen existing
+  collector/formatting cases. All fifteen new cases pass AddressSanitizer and
+  UBSan. Independent deque and closure oracles cover 6,775 exhaustive small graph/
+  ordered-root configurations; 1,000 random multigraphs verify every rewritten slot,
+  size default, actual event and repeated evacuation. Exact/zero capacities, event
+  caps, malformed garbage, ignored metadata, duplicate ordering and owned copies
+  pass, alongside a 100,000-object chain and a 50,000-object frontier exercising
+  output reallocation. Affected buddy/memory/dir runners are rebuilt and pass.
+  The report retains the original tree, adds scrambled labels and a shared cycle,
+  and corrects live-only work, constant-space, byte-address, fragmentation/locality
+  and runtime-collector claims. It separates full validation from live copying,
+  slots from packed units and destination capacity from an equal-semispace model.
+  Five mep blocks, three inspected SVGs and both exports pass. Combined runners
+  pass 807 CTest cases; site verifies 40 reports, 170 executed blocks and 115
+  source-matching figures. Removed original mepml/org files after verification.
+  Evidence: `build/mepml-conversion/cheney/`. Migration: 40/427 converted,
+  387 pending; next is chien_search_analysis. Previously recorded unrelated
+  audit, CAD policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Chakravala/Pell analysis. The legacy call signature and
+  PellSolution layout remain through a compatibility include. Dedicated canonical
+  code shares ordinary and actual-traced cyclic steps, fixes the negative-one
+  norm multiplier choice, compares exact squared errors with smaller-on-ties
+  selection, and retains the floor-root/no-shortcut path to positive norm one.
+  Quotient/remainder composition supports oversized unreduced numerators when
+  reduced coordinates still fit. Checked coordinate overflow and strict complete-
+  call update budgets throw without partial results. New exact uint64 roots and
+  signed/unsigned 128-bit text replace report helpers; the existing private format
+  helper forwards to canonical text. An exact gcd-cancellation checker avoids
+  overflowing coordinate squares and accepts nonfundamental solutions honestly.
+  All 47 dedicated definitions and sixteen shared-format definitions pass audits;
+  eleven documented examples compile/run and three hovers pass. Twenty-eight
+  native cases include thirteen new and fifteen existing number-theory/formatting
+  cases; thirteen new cases pass UBSan. Independent continued fractions and a
+  separate Python big-integer oracle compare 11,001 inputs: 9,215 representable
+  fundamentals, 1,685 explicit range failures and 101 squares. All 7,818 actual
+  records for 969 coefficients through 1,000 satisfy exact norm/divisibility,
+  independently enumerated multiplier minima and path continuity checks. Full-width
+  square neighbours, zero/exact budgets, malformed pairs, copied records, 200,000
+  small identity comparisons, 50,000 random root brackets, 100,000 squares and
+  128-bit decimal endpoints pass. N=661's actual final numerator exceeds signed
+  128-bit while its quotient fits, directly checking the widened-numerator fix.
+  The report corrects nearest-root, small-intermediate, digit-count and unsupported
+  period-complexity claims, retains the original famous pairs/size plot and adds
+  actual paths, work counts, numeric limits and nonminimal valid-pair examples.
+  Five mep blocks, three inspected SVGs and both exports pass. Combined runners
+  pass 774 CTest cases; site verifies 39 reports, 165 executed blocks and 112
+  source-matching figures. Removed original mepml/org files after verification.
+  Evidence: `build/mepml-conversion/chakravala/`. Migration: 39/427 converted,
+  388 pending; next unchecked entry is cheney_analysis. Previously recorded
+  unrelated audit, CAD policy and optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted the separate buffered ChaCha20 random-engine report.
+  Constructors, next_u64 signatures, simulation-seed packing and valid-range output
+  are retained. The engine reuses the canonical cipher permutation, retains all
+  eight words at the final block counter, then throws before raw state mutation;
+  it no longer silently carries into the nonce. Capacity inspection includes both
+  ungenerated blocks and buffered tails. Native seed expansion and preflighted
+  actual draw traces replace duplicated report logic; traces reserve before drawing
+  and preserve the inherited normal cache. Dedicated header/source coverage is 9/9;
+  a separate XML inventory verifies all ten changed engine/class/private definitions
+  in random.hpp, which remains outside the completed-file manifest. Eight documented
+  examples compile/run and three new plus one existing hover pass. Thirty-five native
+  cases pass, including eleven new engine cases and twenty-four existing random and
+  distribution cases. The eleven new cases also pass UBSan. Independent row-rotation
+  blocks verify 1,000 random streams, actual record locations and values, partial
+  buffers and near-limit counters. Another 1,000 seed cases verify legacy packing
+  and explicit-key replay. Every final-buffer tail, failed complete-call preflight,
+  copied/assigned raw state and normal caches, sampler rejection consumption and
+  base dispatch pass. The report checks the entire RFC block as eight raw words,
+  preserves the original raw/uniform values and corrects its stale stored bounded
+  result to 6 without changing the common sampler. It derives buffering/capacity,
+  demonstrates exhaustion and copy replay, and explains variable sampler consumption
+  and the limits of simulation seeds, copies, entropy and security claims. Four mep
+  blocks, two inspected SVGs and both exports pass. Combined runners pass 746 CTest
+  cases; site verifies 38 reports, 160 executed blocks and 109 source-matching figures.
+  Removed original mepml/org files after verification. Evidence:
+  `build/mepml-conversion/chacha20/`. Migration: 38/427 converted, 389 pending;
+  next is chakravala_analysis. Previously recorded unrelated audit, CAD policy and
+  optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted ChaCha20 analysis. Existing block/XOR signatures and
+  valid-range output are preserved; complete-call counter overflow now rejects
+  before copying or block work. Shared actual quarter, permutation, block and XOR
+  kernels expose owned stages, all eighty quarters and twenty rounds, feed-forward
+  words and consumed block ranges without replay. Ordinary calls keep no provenance.
+  New checked capacity/block-count APIs handle uint64 endpoints, and whole-call trace
+  caps reject before allocation. Binary-safe hex and byte histograms replace report
+  helpers. All 44 definitions are documented, sixteen examples compile/run and three
+  hovers pass. Thirty-three native cases pass including existing crypto/formatting
+  checks; twenty-four crypto cases pass UBSan. Independent row-rotation, widened
+  quarter and inverse oracles check 500 random blocks, 500 binary messages and
+  10,000 quarter rounds, including every actual record. Counter limits, exact caps,
+  empty input, all byte values, histogram groups and ownership pass. The report
+  checks complete RFC vectors, retains the original 4 KiB sample, demonstrates the
+  tautological histogram mean using a constant-byte control, and executes aligned
+  and misaligned one-shot chunking and unauthenticated bit flipping. It explains
+  raw versus AEAD capacity, discarded tails, key-bearing traces and the limits of
+  histogram/security/timing claims. Five mep blocks, three inspected SVGs and both
+  exports pass. Combined runners pass 711 CTest cases; site verifies 37 reports,
+  156 executed blocks and 107 source-matching figures. Removed original mepml/org
+  files after verification. Evidence: `build/mepml-conversion/chacha20_analysis/`.
+  Migration: 37/427 converted, 390 pending; next is the separate chacha20 random
+  generator report. Previously recorded unrelated audit, CAD policy and optional
+  C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Cantor-Zassenhaus and its canonical prime-field arithmetic.
+  Existing GFPoly/PolyDivMod layouts and division/root/factor signatures and default
+  seed are retained. Checked prime validation reuses Miller-Rabin; safe normalization,
+  widened coefficient sums/products, zero-divisor checks and size_t degrees fix unchecked
+  arithmetic. New reusable arithmetic/formatting and squarefree/irreducibility APIs
+  replace report-local code. Chien retains its order/zero convention, with safe
+  primitive-root bounds and constant/linear shortcuts. Shared factorization validates
+  nonzero squarefree odd-field inputs, uses incremental DDF and iterative EDF, and
+  avoids p^d exponent overflow through a Frobenius recurrence. Actual owned traces
+  include all attempts, gcd/character/complement records, units, residuals and checked
+  work counts. Whole-call trial/product caps return no partial factorization; ordinary
+  calls allocate no provenance records. All 90 definitions are documented, twenty
+  examples compile/run and three hovers pass. Twenty-five native cases pass including
+  existing polynomial/formatting cases; sixteen polynomial cases pass UBSan. Independent
+  monic trial division verifies 7,800 small inputs: 6,258 squarefree cases factor and
+  1,542 repeats reject. A further 1,000 random draws supply squarefree seeded cases;
+  300 near-limit arithmetic cases and a separate unsigned-128-bit exponent oracle
+  verify actual Frobenius/character/gcd/complement records and counter formulas.
+  Exact budgets, invalid fields/divisors, units, helper GF(2) arithmetic, root ordering,
+  zero-seed replay and owned copies pass. The report preserves the original quartic
+  and bars, distinguishes its single executed DDF step from the residual shortcut,
+  checks irreducibility separately from reconstruction, measures 64 seeds and factors
+  near INT64_MAX without a uint64 exponent. It clearly limits claims about biased
+  deterministic sampling, squarefree decomposition, characteristic two and operation
+  models. Five mep blocks, three inspected SVGs and both exports pass. Combined runners
+  pass 678 CTest cases; site verifies 36 reports, 151 executed blocks and 104
+  source-matching figures. Removed original mepml/org files after verification.
+  Evidence: `build/mepml-conversion/cantor_zassenhaus/`. Migration: 36/427 converted,
+  391 pending; next checklist entry is chacha20_analysis, followed by the separate
+  chacha20 report. Previously recorded unrelated audit, CAD policy and optional C++17
+  limits remain outside this batch.
+
+- 2026-11-06: Converted canopy clustering. Existing inline signatures and Canopy
+  layout are retained, with an initialized default centre. Finite rectangular/radius
+  validation and hypot-based norms replace unchecked indexing and squared-distance
+  overflow/underflow. Shared construction preserves strict all-original-point
+  membership and index-order seeds, explicitly consuming a selected zero-tight-radius
+  seed. Native actual traces expose distances, decisions, seed-pool transitions and
+  checked counters; whole-call distance budgets return no partial result. Coverage
+  inverts memberships and deduplicates unordered candidate pairs, with checked manual
+  records and before-deduplication pair budgets. Centre extraction validates only
+  selected indices. A native translated-grid generator preserves the original ninety
+  coordinates/order; the dataset directory already covers it in the finished manifest.
+  All 45 definitions are documented, ten examples compile/run and three hovers pass.
+  Twenty-eight native cases pass, including existing recurrent/PCNN/formatting cases;
+  nineteen canopy/recurrent cases pass UBSan. Independent live-list and pair oracles
+  cover 6,825 exhaustive configurations and 1,000 random multidimensional cases, with
+  500 additional shuffled cases checking the sufficient metric condition. Boundaries,
+  budgets, ownership, malformed inputs/records, original grids and huge/tiny norms pass.
+  The report corrects the unconditional close-pair guarantee and Gaussian description,
+  derives T1>=T2+r, executes missed-pair and nonmonotone-tight-radius examples, and
+  adds native iris candidate coverage without claiming measured acceleration or
+  downstream accuracy. Five mep blocks, four inspected SVGs and both exports pass;
+  iris legends fit and the omitted unordered pair has an undirected link. Combined
+  runners pass 653 CTest cases; site verifies 35 reports, 146 executed blocks and 101
+  source-matching figures. Removed original mepml/org files after verification.
+  Evidence: `build/mepml-conversion/canopy/`. Migration: 35/427 converted, 392 pending;
+  next is cantor_zassenhaus_analysis. Previously recorded unrelated audit, CAD policy
+  and optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted Cannon matrix multiplication. The scalar API signature,
+  cyclic order and final closing shift are preserved through a compatibility include.
+  Dedicated canonical code adds checked blocked scheduling, allocation-free checked
+  work prediction and actual traces shared with the ordinary numeric kernel. Source
+  ids are transported alongside numeric buffers; owned snapshots capture actual C
+  after each round. Exact shape/divisibility checks, size_t product checks and complete-
+  call block-update budgets precede buffer allocation. Ordinary calls keep no trace
+  records, inputs can alias and remain unchanged, and nonfinite arithmetic propagates.
+  All 29 definitions are documented, seven examples compile/run and three hovers pass.
+  Twenty-four native cases pass, including existing sparse/formatting cases; fifteen
+  sparse/Cannon cases pass UBSan. Independent integer products and source/partial
+  oracles cover 6,561 exhaustive 2-by-2 pairs at both mesh sizes and 1,000 larger
+  blocked cases. Complete k visits, identity/zero/aliased inputs, budgets, counts,
+  ownership, malformed shapes and count overflow pass; random floating cases match
+  long-double dot products within scaled allowances. The report preserves the original
+  small product and random comparison design while reusing native random draws and
+  DenseMatrix multiplication. It corrects bitwise-equality and memory/communication
+  claims, demonstrates cancellation yielding one versus zero, and measures 96-by-96
+  scalar/copy/block work across mesh sizes. Four mep blocks, three inspected SVGs and
+  both exports pass. The website's separate compiler rerun passes with identical
+  inspected SVG hashes. Combined runners pass 625 CTest cases; site verifies 34
+  reports, 141 executed blocks and 97 source-matching figures. Removed original
+  mepml/org files after verification. Evidence: `build/mepml-conversion/cannon/`.
+  Migration: 34/427 converted, 393 pending; next is canopy_analysis. Other sparse
+  linear-algebra APIs remain outside this finished batch, alongside the previously
+  recorded unrelated audit, CAD policy and optional C++17 limits.
+
+- 2026-11-06: Converted continuous C4.5-inspired induction. Existing inline
+  signatures, aggregate layouts and the maximum-ratio selection policy are retained.
+  Checked inputs, finite separating midpoints and visited-path prediction remove
+  unchecked shape/index access and overflow/rounding failures. Explicit pending
+  partitions preserve left-first numbering without recursive construction. Shared
+  ordinary/traced training exposes actual rows, candidates, scores and stopping
+  reasons; checked whole-call candidate budgets return no partial model. The original
+  Gaussian-cloud generator is now a native reusable dataset API with explicit local
+  seed/draw order and same-toolchain repeatability. All 69 learner/generator
+  definitions and the changed loader file pass fresh XML coverage; fourteen examples
+  compile/run and three hovers pass. Twenty-six native cases pass; seventeen tree/rule
+  cases pass UBSan. An independent recursive materialized-label trainer matches
+  37,324 exhaustive configurations and 1,000 random multifeature/multiclass cases.
+  Exact scores/ties, all stopping rules, XOR, duplicates, malformed inputs/paths,
+  extreme/adjacent/subnormal thresholds, budgets, ownership and generator boundaries
+  pass. The report derives a hand-checkable split, adds native iris five-fold
+  evaluation and preserves the original 180-point training plot. It explicitly
+  documents the omitted full C4.5 filter, pruning, missing/categorical handling and
+  later MDL threshold correction. Four mep blocks, three inspected SVGs and both
+  exports pass. Combined runners pass 601 CTest cases; site verifies 33 reports,
+  137 executed blocks and 94 source-matching figures. Removed original mepml/org
+  files after verification. Both changed areas were already in the finished-paths
+  manifest. Evidence: `build/mepml-conversion/c45/`. Migration: 33/427 converted,
+  394 pending; next is cannon_analysis. Previously recorded unrelated audit, CAD and
+  optional C++17 limits remain outside this batch.
+
+- 2026-11-06: Converted burstsort. The original inline one-argument signature and
+  capacity eight are preserved through the compatibility sorting header. A dedicated
+  canonical header implements configured sorting, actual nodes/slots/bursts and
+  checked prefix reconstruction. Shared index-bucket kernels use flat ownership and
+  explicit work stacks; positive capacities and optional complete-call node caps are
+  checked, and copy-then-swap preserves caller values on allocation failure. All 62
+  definitions are documented, nine examples compile/run and three hovers pass.
+  Twenty-three native cases pass, with thirteen sorting cases and the isolated
+  allocation checker also passing UBSan. Independent prefix partitions, stable ids
+  and burst triggers match 58,593 exhaustive traces; 1,000 random binary arrays,
+  all 256 bytes and 103 injected allocation positions pass. A 10,000-byte common
+  prefix creates/traverses/destroys 10,001 nodes without recursive ownership.
+  The report preserves the original nineteen words and root-slot plot, illustrates
+  the actual two-node trie and threshold discontinuity, and distinguishes directory
+  scans/comparator calls from unmeasured cache performance. Four mep blocks, three
+  inspected SVGs and both exports pass. Combined runners pass 575 CTest cases; site
+  verifies 32 reports, 133 executed blocks and 91 source-matching figures. Removed
+  original mepml/org files after verification. Evidence:
+  `build/mepml-conversion/burstsort/`. Migration: 32/427 converted, 395 pending;
+  next is c45_analysis. Other sorting_dist APIs remain outside the finished manifest,
+  as do the previously recorded unrelated audit, CAD and optional C++17 limits.
+
+- 2026-11-06: Converted Burrows-Wheeler transformation. The existing inline
+  signatures and aggregate layout are preserved, with a safely initialized default
+  primary index. Unsigned byte order now matches in both directions, correcting
+  high-bit binary round trips; size_t frequencies/starts avoid narrowing and cyclic
+  positions avoid overflowing additions. Primary indices are checked before LF or
+  output allocation/access. Shared ordinary/traced kernels expose actual rotation
+  starts/comparator work, stable occurrence-ranked LF and actual inverse writes.
+  Forward budgets throw before excess byte-pair tests; ordinary calls allocate no
+  trace records. All 40 definitions are documented, eleven examples compile/run and
+  three clangd hovers pass. Twenty-five native cases pass including existing
+  compression/formatting cases; sixteen compression cases also pass UBSan. All 9,841
+  ternary-byte strings through length eight match independent materialized rotations
+  and small prepend/sort inversion. Full byte-alphabet, 1,000 random binary/periodic
+  cases, stable occurrence-pair LF, actual counters/write paths, exact budgets and
+  malformed primary indices pass. A 200,000-byte unary inverse repeatedly visits row
+  zero while writing every byte. Unary forward work reaches 2,400,768 byte-pair tests
+  at n=512, verifying B=n*C with actual sort counts. The report preserves banana and
+  the original 59-to-20 run result, reuses native RLE/MTF, demonstrates aabb gaining
+  runs, explains periodic LF cycles, and distinguishes index validation from image
+  membership or corruption detection. Five mep blocks, four inspected SVGs and both
+  exports pass; the work title explicitly names byte-pair tests. Combined runners
+  pass 552 CTest cases, including the current registry runner; site verifies
+  thirty-one reports, 129 executed blocks and 88 source-matching figures. Removed
+  original mepml/org files after verification. Evidence:
+  `build/mepml-conversion/burrows_wheeler/`. Migration: 31/427 converted, 396 pending;
+  next is burstsort_analysis. Unchanged RLE/MTF and other compression documentation,
+  and previously recorded unrelated full-audit, CAD policy and optional C++17
+  DataFrame limits remain outside this batch.
+
+- 2026-11-06: Converted bully election. The original inline function, result layout
+  and valid-input counts remain as the documented highest-responder shortcut; a new
+  static fanout API activates every live higher responder once. Shared kernels expose
+  actual logical sends, candidate phases, delivery flags and final learned leaders.
+  Lean tracing omits only message storage, and complete-call budgets never return a
+  partial leader. Checked ids/flags/initiators eliminate unchecked indexing; ignored
+  tails and nonzero-byte liveness are retained, with -1 for an inactive system. All
+  41 definitions are documented, ten examples compile/run and three clangd hovers
+  pass. Twenty-six native cases pass, including existing distributed and formatting
+  cases; seventeen distributed cases also pass UBSan. All 9,217 live-initiator choices
+  through ten nodes and 1,000 larger random masks match independent formulas, actual
+  messages/phases, delivery and learned leaders. A separate delayed FIFO-message
+  simulator verifies fanout outcomes, while budgets, recording modes, extra flags,
+  malformed inputs and id capacity pass. All-up formulas hold for every initiator
+  through 64 nodes. The report preserves the original 6/2/3 counts, contrasts the
+  9/3/3 fanout model, corrects shortcut complexity and the immediate-election claim,
+  and explicitly omits the original paper's halt/reorganization/recovery machinery.
+  Scaling executes 1,048,575 fanout sends at 1,024 nodes versus 3,069 shortcut and
+  1,023 top-initiated sends. Four mep blocks, three inspected SVGs and both exports
+  pass; visual review adjusted the scaling limits to keep the largest point clear.
+  Combined runners pass 527 CTest cases, including the current registry runner;
+  site verifies thirty reports, 124 executed blocks and 84 source-matching figures.
+  Removed original mepml/org files after verification. Evidence:
+  `build/mepml-conversion/bully_election/`. Migration: 30/427 converted, 397 pending;
+  next is burrows_wheeler_analysis. Unchanged clock/bakery documentation and previously
+  recorded unrelated full-audit, CAD policy and optional C++17 DataFrame limits remain
+  outside this batch.
+
+- 2026-11-06: Converted buddy allocation. The canonical inline class retains its
+  metadata layout, valid signatures, deterministic order/offset selection, left-child
+  splitting and unknown-free no-op policy. Dimension/request/order validation and
+  widened class calculation avoid invalid shifts; positive oversized requests safely
+  return -1. Ordinary and traced calls share kernels, with actual split paths, XOR
+  buddy probes/merges and owned address-sorted free/live snapshots. Host metadata is
+  prepared before committing erases, with rollback on allocation failure. All 63
+  definitions are documented, sixteen public examples compile/run and three clangd
+  hovers pass. Twenty-seven native cases pass, including existing memory/formatting
+  tests and isolated failure injection. Seventeen memory cases and the isolated fault
+  checker also pass UBSan. All 733 reachable eight-byte states and 13,927 transitions
+  match an independent occupancy bitmap; 9,000 larger-arena operations check actual
+  traces, exact accounting, maximal coalescence, alignment, snapshot ownership and
+  independent copies. All 25 injected host-allocation failure positions across eight
+  scenarios preserve state and permit recovery. Invalid dimensions/requests/orders,
+  unknown frees, oversized requests and heights through thirty pass. The report keeps
+  the original offsets, waste and free-count plot, demonstrates adjacent nonbuddies,
+  corrects the minimum-block waste exception and ordered-container complexity, and
+  distinguishes logical offsets from backing storage. Four mep blocks, four inspected
+  SVGs and both exports pass; the scaling legend was adjusted after visual review.
+  Combined runners pass 501 CTest cases, with the current registry runner rebuilt;
+  site verifies twenty-nine reports, 120 executed blocks and 81 source-matching
+  figures. Removed original mepml/org files after verification. Evidence:
+  `build/mepml-conversion/buddy_allocator/`. Migration: 29/427 converted, 398 pending;
+  next is bully_election_analysis. Previously recorded unrelated full-audit, CAD
+  policy and optional C++17 DataFrame limits remain outside this batch.
+
+- 2026-11-06: Converted integer bucket sort. A dedicated canonical header/source
+  retains the by-value signature, stable insertion comparisons and empty/singleton/
+  constant shortcuts. The distribution-sort header forwards it. Quotient/remainder
+  scaling widens before subtraction and prevents product overflow across the full
+  int range and allocation-free bucket counts through SIZE_MAX. Ordinary sorting
+  and actual per-bucket snapshots/comparison/shift/store counters share one kernel;
+  trace counters throw instead of wrapping. Original paired sample generation and
+  a checked matched-load family are native. All 36 affected definitions are
+  documented, eight examples compile/run and three clangd hovers pass. Fourteen
+  native cases also pass UBSan, including 97,656 exhaustive short arrays, 2,000
+  full-range random inputs, independent rational index checks with 20,000 large
+  random counts, actual prefix-rank work counts, monotonicity, shortcuts, sampling
+  locality, matched-load formulas, validation and generator capacity. All four
+  existing distribution-sort cases pass. The report preserves the original small
+  array and 100-item occupancy experiment, corrects the claim that occupancy alone
+  decides work, and distinguishes fixed-bin independence from observed-range bins.
+  At identical occupancies, m=2,048 produces 2,048 versus 2,098,176 comparisons.
+  Four mep blocks, three inspected SVGs and both exports pass. Combined runners pass
+  474 CTest cases; site verifies twenty-eight reports, 116 executed blocks and 77
+  source-matching figures. Removed original mepml/org files after verification.
+  Evidence: `build/mepml-conversion/bucket_sort/`. Migration: 28/427 converted,
+  399 pending; next is buddy_allocator_analysis. Unchanged pigeonhole/cycle/tree
+  documentation and previously recorded unrelated full-audit, CAD policy and
+  optional C++17 DataFrame limits remain outside this batch.
+
+- 2026-11-06: Converted Brzozowski automaton minimization. Canonical checked
+  automaton operations and powerset construction now share actual stage provenance
+  with the ordinary two-reversal algorithm, retaining inline signatures and state
+  discovery order. Default DFA safely denotes the empty language (start=-1), with
+  its formatter test updated. Whole-language equivalence explores sparse product
+  pairs and returns shortest lexicographic witnesses; stage/pair limits throw before
+  exceeding the requested budget. Native binary position-language generation shows
+  exact exponential intermediate growth. All 63 definitions across four dedicated
+  headers are documented, eighteen example programs compile/run and four clangd
+  hovers pass. Twenty-eight native cases include existing automata and formatting
+  tests; nineteen automata cases pass UBSan. Independent table-filling checks all
+  17,626 complete binary machines through three states, 1,000 partial machines and
+  500 language pairs. Actual subset/counter invariants, minimality, reachability,
+  sparse products, epsilon/zero-alphabet cases, budget boundaries and invalid input
+  pass. The report preserves the original six-to-three-to-three counts, corrects
+  first-pass minimality for unreachable inputs and derives the exponential family
+  reaching 1,024 intermediate states and twelve final states. Four mep blocks, three
+  inspected SVGs and both exports pass. Combined runners pass 460 CTest cases; site
+  verifies twenty-seven reports, 112 executed blocks and 74 source-matching figures.
+  Removed original mepml/org files after verification. Evidence:
+  `build/mepml-conversion/brzozowski/`. Migration: 27/427 converted, 400 pending;
+  next is bucket_sort_analysis. Unchanged Moore/Hopcroft partition-helper comments
+  and previously recorded unrelated full-audit, CAD policy and optional C++17
+  DataFrame limits remain outside this batch.
+
+- 2026-11-06: Converted brute-force shortest-path search. A shared explicit-stack
+  kernel preserves the original signature, result layout, per-source adjacency order,
+  entered-prefix count, strict shortest-path ties and once-per-entry incumbent bound.
+  It avoids native recursion depth and validates every used endpoint before graph
+  allocation. A common result header documents producer-specific expanded semantics;
+  search_more includes the canonical declarations. Typed actual prefixes/incumbents,
+  local/global probes, optional path copies and complete-search visit limits expose
+  actual work without returning a partial optimum. A checked complete-directed
+  generator supports the factorial family. The report keeps the original chain,
+  corrects the claim that all goal paths are enumerated, shows the two incumbent
+  changes and safe pruning, and derives exact dense-unreachable work with BFS context.
+  All 47 affected definitions are documented; seven public examples compile/run and
+  three clangd hovers pass. Sixteen native cases also pass UBSan: all 4,165 directed
+  graphs through four vertices and 66,129 terminal pairs match independent Floyd
+  distances and first-adjacency shortest ties; actual histories/counters, 1,000
+  ordered multigraphs, complete-call budgets, invalid inputs and generator size
+  constraints pass. A 50,000-vertex chain succeeds with lean records, and the dense
+  family reaches 109,601 prefix visits and 876,808 probes with an isolated goal.
+  All six existing search-more cases pass. Four mep blocks, three inspected SVGs
+  and both exports pass. Combined converted runners pass 432 CTest cases; the site
+  verifies twenty-six reports, 108 executed blocks and 71 source-matching SVGs.
+  Removed legacy mepml/org files after verification. Evidence:
+  `build/mepml-conversion/brute_force/`. Migration: 26/427 converted, 401 pending;
+  next is brzozowski_analysis. Unchanged search-more producer documentation and
+  previously recorded unrelated full-audit, CAD policy and optional C++17 DataFrame
+  limits remain outside this batch.
+
+- 2026-11-06: Converted Bron-Kerbosch maximal-clique enumeration. A dedicated
+  canonical inline header retains the original signature and deterministic pivot,
+  branch and output order; the original graph-connectivity header includes it for
+  compatibility. Union symmetrisation, duplicate/loop treatment, ignored extra rows
+  and the empty-graph clique are preserved, while used endpoints/row counts are
+  validated before allocation. One shared kernel supplies ordinary output and actual
+  preorder R/P/X/pivot frames, emitted-size counts and checked logical probes. A
+  positive call budget throws without returning partial output. Native complete-
+  multipartite generation supports the exact exponential-output family. The report
+  keeps all three original cliques and the histogram, shows why R=[2,1], P=[], X=[0]
+  is not maximal, and accounts for explicit member output and snapshot storage.
+  All 33 dedicated definitions are documented; five public examples compile/run and
+  three clangd hovers pass. Thirteen native cases also pass UBSan: all 33,868 graphs
+  through six vertices match exhaustive subset maximality with actual frame/counter
+  invariants; 1,000 asymmetric/duplicate/loop inputs, boundary/empty/complete controls,
+  limits and generator overflow pass. Multipartite counts reach 6,561 cliques and
+  9,841 calls at 24 vertices. Existing 3,000 random clique and 3,000 SCC trials pass.
+  Four mep blocks, three inspected SVGs and both exports pass. Combined converted
+  runners pass 416 CTest cases; the website verifies twenty-five reports, 104 executed
+  blocks and 68 source-matching SVGs. Removed legacy mepml/org files after verification.
+  Evidence: `build/mepml-conversion/bron_kerbosch/`. Migration: 25/427 converted,
+  402 pending; next is brute_force_search_analysis. Unchanged SCC documentation and
+  previously recorded unrelated full-audit, CAD policy and optional C++17 DataFrame
+  limits remain outside this batch.
+
+- 2026-11-06: Converted Borwein pi. A shared inline kernel retains the original
+  unambiguous one-argument signatures, lower clamp, direct short-run values and
+  requested sequence lengths. Stopping after an unchanged stored inverse-pi update
+  fixes the old 512-step inf*0/NaN and avoids unchecked late exponent arithmetic.
+  Typed actual updates distinguish performed work from copied sequence padding.
+  Optional rationalised trace evaluation retains tiny auxiliary y values without
+  promising more accurate final pi. A logarithmic helper evaluates the exact-arithmetic
+  error model without underflow or a false rounded-result certificate. The report
+  keeps the original four-update sequence, corrects last-bit, log-axis and precision-
+  cost claims, and separates real convergence theory from double-reference discrepancy.
+  All 32 definitions are documented; seven public examples compile/run and three
+  clangd hovers pass. Nineteen native cases include eleven focused cases also passing
+  UBSan: original values/signature inference, scalar/sequence/actual-prefix contracts,
+  positive tiny y after root rounding, negative and INT_MAX requests, padding through
+  2048 updates, finite-exception checks, long-double AGM and log-bound range checks.
+  Independent 1000-digit Machin, doubled AGM and Decimal calculations verify the
+  exact-arithmetic model and both native trace modes. Four mep blocks, three inspected
+  SVGs and both exports pass. Combined converted runners pass 403 CTest cases; the
+  website verifies twenty-four reports, 100 executed blocks and 65 source-matching
+  SVGs. Removed the legacy mepml/org files after verification. Evidence:
+  `build/mepml-conversion/borwein_pi/`. Migration: 24/427 converted, 403 pending;
+  next is bron_kerbosch_analysis. Previously recorded unrelated full-audit, CAD policy
+  and optional C++17 DataFrame limits remain outside this batch.
+
+- 2026-11-06: Converted Bresenham rasterisation. The four-argument inline API
+  and original directed inclusive ties are preserved in a shared integer loop;
+  differences and errors are widened before arithmetic for all 32-bit int endpoints.
+  New actual pre-movement records expose saved errors, axis/joint moves and terminal
+  states. An allocation-free uint64 count and optional complete-trace point limit
+  reject excessive output before allocation. Ordinary calls omit trace allocation.
+  The report retains all fifteen original centres and the steep/diagonal examples,
+  derives rational nearest-centre and integer-state invariants, shows reversal ties,
+  measures the half-pixel residual and distinguishes output storage from O(1) working
+  state. All 22 definitions are documented; six public examples compile/run and three
+  clangd hovers pass. Thirteen native cases include eight focused cases also passing
+  UBSan: 14,641 exhaustive small endpoint pairs and 1,000 random moderate segments
+  match an independent rational oracle; signed extreme short segments, full-range
+  counts, preflight limits, axis exchange, reversed ties and all recorded decisions
+  pass. Four mep blocks, three inspected SVGs and both exports pass. Combined converted
+  runners pass 384 CTest cases; the website verifies twenty-three reports, 96 executed
+  blocks and 62 source-matching SVGs. Removed legacy mepml/org files after verification.
+  Evidence: `build/mepml-conversion/bresenham/`. Migration: 23/427 converted, 404 pending.
+  Next is borwein_pi_analysis, the earliest source still present in the checklist.
+  Previously recorded unrelated full-audit, CAD policy and optional C++17 DataFrame
+  limits remain outside this batch.
+
+- 2026-11-06: Converted Brent cycle detection. Shared checked Brent/Floyd kernels
+  preserve the legacy result layout and transition-call order while exposing exact
+  phase/equality counts and the recovered entry without replay. Brent records actual
+  movements and no-call checkpoints; ordinary/work entry points retain constant
+  storage. Positive global budgets stop before the next excess call in every phase.
+  Native rho-map, exact orbit-prefix, decimal-digit and happy-number helpers replace
+  report-side logic. The report corrects checkpoint indices to 0,1,3,7,…, derives
+  complete call formulas, retains the original graph and six positive digit examples,
+  and separates zero and varying cycle entries from the eight-cycle containing four.
+  All 56 definitions are documented; sixteen public examples compile/run and three
+  clangd hovers pass. Nineteen native cases also pass UBSan: all 3,413 maps through
+  five states (16,739 starts), 4,160 controlled tail/period pairs, exact call order,
+  per-phase budget boundaries, empty/throwing callbacks, storage/size constraints,
+  10,000 string-digit checks, all positive bounded states 1..1620 and 2,000 random
+  uint64 classifications. Four mep blocks, three inspected SVGs and both exports
+  pass. Combined converted runners pass 371 CTest cases; the website verifies
+  twenty-two reports, 92 executed blocks and 59 source-matching SVGs. Removed the
+  legacy mepml/org files after verification. Evidence: `build/mepml-conversion/brent/`.
+  Migration: 22/427 converted, 405 pending; next is bresenham_analysis. Previously
+  recorded unrelated full-audit, CAD policy and optional C++17 DataFrame limits remain.
+
+- 2026-11-06: Converted breadth-first search. A shared FIFO kernel supplies
+  the unchanged single-goal result and typed actual dequeue/discovery/queue records,
+  plus a full-source traversal with snapshots off by default. Original result layout
+  and input-order tie behavior are preserved through a documented common header;
+  producer-specific order semantics also describe the existing bidirectional wrapper.
+  Validation precedes adjacency allocation. The report keeps the three-vertex chain,
+  shows real queue snapshots and first-discovery predecessors, distinguishes pending
+  and undiscovered vertices after goal removal, and verifies native grid distances
+  and full incidence counts. It states adjacency-copy storage and optional quadratic
+  queue-capture costs explicitly. All 36 affected definitions are documented; six
+  public examples compile/run and three clangd hovers pass. Seventeen native cases
+  compare 66,129 goal searches and 16,585 full traversals with Floyd–Warshall on all
+  4,165 directed graphs through four vertices, plus 1,000 shuffled multigraphs in
+  both modes, loops/duplicates, invalid inputs, closed-form grids and a 20,000-vertex
+  frontier with snapshots omitted. Three mep blocks, two inspected SVGs and both
+  exports pass. Combined converted runners pass 352 CTest cases; the website verifies
+  twenty-one reports, 88 blocks and 56 source-matching SVGs. Removed legacy mepml/org
+  files after verification. Evidence: `build/mepml-conversion/bfs/`. Migration:
+  21/427 converted, 406 pending; next is brent_cycle_detection_analysis. Previously
+  recorded unrelated full-audit, CAD policy and optional C++17 DataFrame limits remain.
+
+- 2026-11-06: Converted exact knapsack branch and bound. The shared iterative
+  take-first kernel records actual decisions, parent links, incumbent changes and
+  pruning while retaining KnapsackResult's layout. Exact density cross-products,
+  rational fractional bounds and integer floors replace floating-point pruning;
+  input validation and checked weight/value/counter arithmetic remove undefined
+  or incorrect cases. Signed nonpositive profits are omitted, positive free items
+  precede weighted items and original indices resolve density ties. A native fixture
+  generator preserves the original MT19937 draw order. All 61 affected definitions
+  are documented; nine public examples compile/run and three clangd hovers pass.
+  Sixteen native cases include every bound/prune on 55,986 enumerated instances,
+  1,000 random signed/free-item instances, 400 existing DP trials, thirteen seeded
+  DP checks, near-INT_MAX density/overflow controls, 5,000 free items and a parity-gap
+  family with 136,135 visits at eighteen items. All twelve focused cases also pass
+  UBSan. The report preserves value 220 and seventeen visits on the original example,
+  corrects the full tree to 2^(n+1)-1 and separates node work from timings. Four mep
+  blocks, three inspected SVGs, HTML/Markdown and website exports pass. Combined
+  converted runners pass 335 CTest cases; the site verifies twenty reports, 85 blocks
+  and 54 source-matching figures. Removed legacy mepml/org files after verification.
+  Evidence: `build/mepml-conversion/branch_bound/`. Migration: 20/427 converted,
+  407 pending; next is breadth_first_search_analysis. Previously recorded unrelated
+  full-audit, CAD policy and optional C++17 DataFrame limits remain outside this batch.
+
+- 2026-11-06: Converted Horspool byte search. Public prefix-only shift tables
+  and typed actual-alignment records share the existing ordinary/corpus scan;
+  comparison-counter overflow is checked. The report contrasts ending and mismatch
+  bytes, preserves the original abra example, proves safe shifts and exhibits
+  quadratic work even with no matches. Literal Titanic queries agree per record
+  with the native naive baseline: five patterns use 30,351 Horspool comparisons
+  versus 108,699 naive comparisons. Restored documented direct native reductions
+  in summarise_each through a concrete function-pointer overload, preserving
+  generic/captured callbacks, null columns and standalone pipe inclusion. All 139
+  affected definitions are documented; sixteen examples compile/run and three
+  clangd hovers pass. Thirty-six Horspool/Zhu–Takaoka/pipe cases pass, including
+  2,047 independent table checks, 129,921 exhaustive text/pattern pairs, 18,000
+  random inputs, binary-byte controls and actual corpus counters. Four mep blocks,
+  three inspected figures, HTML/Markdown and site exports pass; the existing
+  Zhu–Takaoka report also reruns all five blocks with unchanged source/results.
+  The combined C++23 runners pass 319 CTest cases; the assembled site verifies
+  nineteen reports, 81 blocks and 51 source-matching SVGs. An optional C++17 probe
+  fails on pre-existing DataFrame unordered_set::contains calls at lines 3407/3433;
+  an isolated unchanged-DataFrame include reproduces the same errors. Required
+  C++23 checks pass; the unrelated full-audit/CAD policy limits remain as recorded.
+  Removed legacy mepml/org files after verification. Evidence:
+  `build/mepml-conversion/horspool/`. Migration: 19/427 converted, 408 pending;
+  next is branch_and_bound_analysis.
+
+- 2026-11-06: Converted Boyer–Moore exact byte matching. Public preprocessing
+  tables and actual alignment traces share the same kernel as ordinary search;
+  removed the report's duplicate implementations. Preserved the original DNA
+  example, its six starts and matches at 13/21, and verified its 17 comparisons.
+  Added signed border-sentinel and trace-counter guards, exposed negative raw bad
+  shifts, and corrected blanket sublinear/linear claims in the header/report/catalog.
+  Exact repeated-byte families demonstrate quadratic rechecking of overlapping
+  full matches and distinguish unit-shift misses from absent-byte skips. All 27
+  affected definitions are documented; six public examples compile/run and two
+  clangd hovers pass. Eighteen native cases include 2,047 direct overlap-oracle
+  suffix-table checks, 129,921 exhaustive text/pattern pairs against string::find,
+  6,000 random inputs and embedded-NUL/high-byte controls. Four mep blocks, three
+  inspected SVGs, HTML/Markdown and website exports pass. The combined converted
+  runners pass 283 CTest cases; the site verifies eighteen successful reports,
+  77 blocks and 48 source-matching figures. Removed only this report's legacy
+  mepml/org sources and assets, retaining Horspool for its own next conversion.
+  Evidence: `build/mepml-conversion/boyer_moore/`. Migration: 18/427 converted,
+  409 pending; next is boyer_moore_horspool_analysis. Previously recorded unrelated
+  full-audit and CAD Python-tab policy failures remain outside this batch.
+
+- 2026-11-06: Converted Boruvka minimum spanning forests. The shared native
+  kernel now exposes canonical component labels, original-index cheapest choices,
+  actual accepted merges and whole-edge-scan counters while preserving the legacy
+  API and tie order. Documented shared edge/result types, checked widened weight
+  totals and added reusable dyadic_path_edges. The report retains the four-vertex
+  example, shows its actual merges and corrects halving for disconnected graphs,
+  vertex-array work and trace storage. All 36 affected definitions are documented;
+  eight public examples compile/run and two clangd hovers pass. Sixteen native
+  cases include independent dense Prim/reachability checks of all 33,868 simple
+  graphs through six vertices, 1,000 shuffled multigraphs, negative weights, loops,
+  ties, invalid inputs, weight overflow and tight phases through 1,024 vertices.
+  Four mep blocks, three inspected SVGs, HTML/Markdown and website exports pass.
+  The combined converted-report runners pass 265 CTest cases; the assembled site
+  verifies seventeen successful reports, 73 blocks and 45 source-matching figures.
+  Removed the legacy mepml/org files after verification and repointed the catalog.
+  Evidence: `build/mepml-conversion/boruvka/`. Migration: 17/427 converted, 410
+  pending; next is boyer_moore_analysis. Existing unrelated full-audit and CAD
+  Python-tab policy failures remain as previously recorded.
+
+- 2026-11-06: Converted Booth multiplication and bootstrap resampling. Booth's
+  widened shared signed-digit loop provides the legacy exact product/counts and
+  all 32 real accumulator decisions; the report corrects the reversed bit-pair
+  table and checks runs, alternating bits and an exact binomial count law.
+  Nine native cases and the focused UBSan suite check 65,536 signed-byte pairs,
+  300,000 full-width pairs and prefix invariants. All 23 changed Booth definitions,
+  five compiled examples and two hovers pass. Bootstrap gains a native median
+  and a shared bootstrap_summary API with finite checks, widened centred sums,
+  scaled acceleration and ordered percentile fallback across singular BCa cases.
+  Corrected its 1987 paper DOI and the conditional mean-SE formula; all eight
+  public examples compile/run. The 215-definition scoped audit and fourteen
+  hovers pass. Bootstrap/resampling and vector regression targets pass 51 tests,
+  including extreme units, finite endpoints, ties, RNG compatibility and caller
+  stream advancement. Independent Python calculations of the actual iris
+  replicates agree on bias/SE and all four intervals within 2.55e-10. Together
+  the converted-report runners pass 249 CTest cases. Both reports pass eight
+  mep blocks, six inspected SVGs and HTML/Markdown exports. The assembled site
+  verifies sixteen successful reports, 69 blocks and 42 source-matching SVGs.
+  Legacy mepml/org sources are removed after each verified conversion. Evidence:
+  `build/mepml-conversion/booth/` and `bootstrap/`. Migration: 16/427 converted,
+  411 pending; next is boruvka_analysis. Previously recorded unrelated full
+  documentation-gate and CAD Python-tab policy failures remain outside this batch.
+
+- 2026-11-06: Converted blossom matching and Blum–Blum–Shub generation. A shared
+  Edmonds kernel now exposes actual expanded odd sets, original-vertex lifted
+  paths, post-augmentation mate maps and logical counters. Added the pre-allocation
+  INT_MAX check, correct duplicate-edge work bound and unmatched-sentinel example.
+  Independent subset enumeration verifies all 33,868 simple graphs through six
+  vertices plus 1,000 shuffled cases through twelve, including nested blossoms.
+  BBS now exposes the same individual-bit transition used by word generation,
+  consuming bit records and nonmutating bounded state orbits. Its report preserves
+  nibble c, exposes repeated whole words, proves exact small seed-period counts,
+  and documents structural validation versus caller primality assumptions and
+  fixed-width teaching scope. Overflow-free add/double and Python integer oracles
+  verify near-64-bit moduli, 1,920 transitions and thirty packed words. Eight report
+  blocks, four inspected figures, HTML/Markdown and website exports pass. Blossom
+  covers 28/28 Doxygen definitions; the new BBS files cover 14/14 and the changed
+  shared engine class brings its precise symbol scope to 23/23. The remaining
+  shared random-file backlog is not marked complete. All fifteen public examples
+  compile/run and four clangd hovers pass. Native targets pass seven and thirty
+  cases; all fourteen report runners plus dir rebuild and pass 216 CTest cases.
+  Regenerated member help is deterministic. The site verifies fourteen successful
+  reports, 61 blocks and 36 source-matching SVGs. Legacy sources are removed after
+  each report passes. Evidence: `build/mepml-conversion/blossom/` and `bbs/`.
+  Migration: 14/427 converted, 413 pending; next is `booth_analysis`.
+
+- 2026-11-06: Converted BLAST and Bloom filters to the new report collection.
+  Canonical indexed seed visitation and ungapped extension expose actual byte pairs,
+  strict X-drop states, checked scoring/coordinates and int64 score arithmetic.
+  The BLAST report retains the original DNA hits and adds missed-seed and cubic-work
+  controls. Bloom filters now pack bits, maintain exact occupancy, expose canonical
+  probes and validate dimensions; the FNV helper uses the RFC 9923 basis, explicitly
+  requiring retained old string hashes to be rebuilt. An original-header control
+  verifies unchanged integer-key membership/fill across 10,240 insertion states
+  and 1,310,720 queries. Ten mep blocks, six inspected figures, HTML/Markdown and
+  website exports pass. Scoped Doxygen covers 54/54 definitions, seventeen public
+  examples compile/run and four clangd hovers pass. Native report targets pass
+  17 and 16 cases, including exhaustive small seeded intervals, word boundaries,
+  boolean-array occupancy, duplicates/copies and official FNV vectors. Refreshed
+  generated dm::dir tables include the new inspection records; the generator omits
+  empty trailing fields to avoid source whitespace errors, with deterministic output
+  and unchanged parsing. All twelve report runners plus five normal GCC dir cases
+  pass 179 CTest cases. A separate clang dir run has four passes and one existing
+  compiler-specific expectation failure (DenseMatrix<> versus DenseMatrix<double>);
+  type-name parsing is unchanged. The site verifies twelve successful reports,
+  53 executed blocks and 32 source-matching SVGs. Evidence: `build/mepml-conversion/`
+  under `blast/` and `bloom/`. Migration: 12/427 converted, 415 pending; next is
+  `blossom_matching_analysis`. Existing full documentation-gate and CAD Python-tab
+  policy failures recorded below remain outside this batch.
+
+- 2026-11-06: Converted Bitap, bitonic sorting and BKM to the new report collection.
+  Coupled Shift-And states and overlapping Hamming matches share the canonical
+  scanner; bounded budgets preserve legacy start/end conventions. Bitonic sort,
+  topology and actual integer events share an allocation-free comparator visitor,
+  with explicit arbitrary-length merge invariants and dependency stages. BKM now
+  checks its real finite domain and exposes actual accepted/rejected factor traces;
+  the report corrects the ln(3) plateau and distinguishes truncation from rounding.
+  Twelve mep blocks, seven inspected figures, HTML/Markdown and website exports pass.
+  Scoped Doxygen covers 80/80 definitions, all 22 public examples compile/run and
+  six clangd hovers pass. Native targets pass 15, 12 and 11 tests; controls include
+  exhaustive small bit states, all 131,071 binary inputs through sixteen sorting
+  wires, dense elementary-function sweeps, exact binary boundaries and every BKM
+  prefix. Independent window/suffix and 100-digit decimal oracles check 116 matches,
+  1,692 bit states and 2,279 BKM states. All ten converted-report runners rebuild
+  together and pass 141 CTest cases. The assembled site verifies ten successful
+  reports, 43 executed blocks and 26 source-matching SVG figures. Legacy mepml/org
+  sources are removed after each report passes. Evidence: `build/mepml-conversion/`
+  under `bitap/`, `bitonic/` and `bkm/`. Migration progress: 10/427 converted,
+  417 pending; next is `blast_analysis`. Existing full-gate documentation and CAD
+  Python-tab policy failures recorded below remain outside this batch.
+
+- 2026-11-06: Converted binary splitting, Birkhoff interpolation and bisection.
+  The new core modules expose exact product-tree nodes, derivative constraint
+  matrices/evaluation and canonical bracket histories. Added a checked 21-term
+  uint64 boundary, row/column-scaled pivoting, separate coordinate/residual
+  stopping controls, finite-value guards and overflow-safe midpoints. Existing
+  function signatures and result layouts remain; stricter error contracts are documented.
+  The three report runners pass 14 mep blocks, eight inspected figures and
+  HTML/Markdown exports; their native CTest targets pass 10, 20 and 17 cases.
+  All eighteen public examples compile/run, six clangd hovers pass and scoped
+  Doxygen covers 79/79 definitions. Independent Fraction/100-digit Decimal checks
+  verify 21 exact series roots/tail bounds, 504 interpolation systems and forty
+  exact dyadic bisection brackets/signs/root-distance bounds. Legacy sources are
+  removed only after verification. All seven conversion runners rebuild and pass
+  103 CTest cases together; the assembled website has seven successful reports,
+  31 executed blocks and nineteen source-matching SVG figures.
+  Evidence: `build/mepml-conversion/` under
+  `binary_splitting/`, `birkhoff/` and `bisection/`. The migration now has seven
+  completed conversions and 420 pending; next is `bitap_analysis`.
+
+- 2026-11-06: Converted B* multi-goal search, bilinear interpolation, binary GCD
+  and binary search into the newly requested `docs/examples/mepml/` collection.
+  Added canonical search/GCD traces, finite/overflow guards for informed search,
+  checked/stable bilinear blending, and accurate boundary/closed-interval contracts.
+  The new standalone headers and implementations cover 63/63 Doxygen definitions;
+  all sixteen public examples compile/run and seven clangd hovers pass.
+  Seventeen report blocks, eleven rasterised/reviewed figures and HTML/Markdown
+  exports pass. The local installed-library CMake/CTest runners pass 56 tests,
+  including 600 Floyd–Warshall graph cases, 2,000 independent interpolation cases,
+  all 65,536 byte GCD pairs, 20,000 full-width Euclidean GCD comparisons, exhaustive
+  sorted duplicate sequences and exact search-tree probe sums. Both documentation
+  collections retain stable site URLs and actual source links (19 website tests).
+  One unrelated existing policy test still fails because it forbids the intentional
+  Python tabs in `docs/mepml/examples/cad/seeed_devarm.mepml`; it is not counted as
+  passing. The full completed-path gate has 35 existing undocumented fields in
+  compute/cuda.cpp and sim/world.cpp; all 63 definitions in the new modules pass the scoped
+  check. Legacy mepml/org sources are removed only after validation. Evidence:
+  `build/mepml-conversion/`; the remaining conversion checklist starts with
+  `binary_splitting_analysis`.
+
 - 2026-11-02: Reimplemented the articulated sorting capabilities in the independent
   native solver: full COM inertia, compounds/ellipsoids/STL support hulls, strict
   reusable URDF import, fixed joints, bounded implicit drives, reflected rotors,

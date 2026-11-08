@@ -81,22 +81,4 @@ double monotone_cubic_interpolate(const std::vector<double>& xs, const std::vect
     return hermite_segment(x, xs[k], xs[k + 1], ys[k], ys[k + 1], m[k], m[k + 1]);
 }
 
-double bilinear_interpolate(const std::vector<double>& xs, const std::vector<double>& ys,
-                            const std::vector<double>& z, double x, double y) {
-    const std::size_t ny = ys.size();
-    const std::size_t i  = locate(xs, x);
-    const std::size_t j  = locate(ys, y);
-    const double      tx = (x - xs[i]) / (xs[i + 1] - xs[i]);
-    const double      ty = (y - ys[j]) / (ys[j + 1] - ys[j]);
-
-    const double z00 = z[i * ny + j];
-    const double z10 = z[(i + 1) * ny + j];
-    const double z01 = z[i * ny + (j + 1)];
-    const double z11 = z[(i + 1) * ny + (j + 1)];
-
-    const double a = z00 + tx * (z10 - z00); // interpolate in x along the two rows
-    const double b = z01 + tx * (z11 - z01);
-    return a + ty * (b - a); // then in y
-}
-
 } // namespace datamunge::algorithms

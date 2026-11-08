@@ -1,0 +1,368 @@
+//? Title: Depth-First Search: Actual Backtracking, First Paths and Complete Finish Times
+//? Subtitle: Preserve recursive adjacency order with explicit frames, then measure events and stack depth
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a directed graph, a source and a target, we want to know whether a path
+exists and return one if it does. Depth-first search follows one unseen
+successor at a time, returning to an earlier vertex only after its current
+branch is exhausted. The original two-vertex example is retained with visible
+results. A seven-vertex control then shows genuine backtracking, a cycle
+edge, early stopping and a first DFS path longer than the shortest path.
+Native traces record discoveries, scanned original arcs, target states and
+actual finishes without replay. Complete source traversal supplies valid
+finish intervals, while explicit heap frames preserve the old recursive
+order on a 200,000-vertex chain. We derive the reachable-work and linear
+storage bounds, test adjacency-order effects, and distinguish active frames
+from total graph/history memory.
+)
+
+\toc
+
+> Keep the original path, then expose a backtracked branch
+
+The original input, two vertices and the arc 0→1, returns [0,1], found=true
+and expanded=2. Here expanded means first entries, including the goal; it
+does not mean scanned edges. The larger prescribed graph has source zero
+and goal six. Source adjacency is [1,2,6]. DFS first follows 0→1→3, scans
+3→0 but finds zero already active, then finishes three and one. It resumes
+zero at successor two and reaches the goal by 0→2→4→5→6 before inspecting
+the direct arc 0→6. The diagram and transition table use actual native
+records. Colours distinguish the returned path, the completed branch, the
+active cycle edge and the unscanned direct alternative.
+
+```{cpp, results="markdown", file="figures/dfs_backtracking.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto original=dm::algorithms::depth_first_search(2,{{0,1}},0,1);
+  const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1},{1,3},{3,0},{0,2},{2,4},{4,5},{5,6},{0,6}};
+  const auto t=dm::algorithms::depth_first_search_trace(7,edges,0,6);const auto bfs=dm::algorithms::breadth_first_search(7,edges,0,6);
+  if(original.path!=std::vector<std::size_t>{0,1} || t.result.path!=std::vector<std::size_t>{0,2,4,5,6} || t.events.size()!=17)return 1;
+  std::vector<bool> on_path(7,false),scanned(edges.size(),false),back(edges.size(),false);
+  for(auto v:t.result.path)on_path[v]=true;
+  for(const auto& e:t.events)if(e.kind==dm::algorithms::DepthFirstEventKind::examine) {scanned[e.edge_index]=true;back[e.edge_index]=e.neighbor_state==dm::algorithms::DepthFirstState::active;}
+  const std::vector<dm::graphics::DiagramPoint> positions{{0,0},{2,2},{2,-2},{4,2},{4,-2},{6,-2},{8,0}};
+  dm::graphics::Diagram d(85,1100);dm::graphics::DiagramNodeStyle box;box.width=1.2;box.height=.9;box.font_size=20;
+  for(std::size_t v=0;v<7;++v) {
+    const bool done=t.state[v]==dm::algorithms::DepthFirstState::finished;box.fill=v==6?dm::graphics::RGB{220,252,231}:done?dm::graphics::RGB{241,245,249}:dm::graphics::RGB{219,234,254};
+    d.node(std::to_string(v),positions[v],std::format("{}\n{}",v,v==6?"goal":done?"finished":"active"),box);
+  }
+  for(std::size_t i=0;i<edges.size();++i) {
+    const auto [u,v]=edges[i];const bool tree=t.parent[v]==u&&t.parent_edge[v]==i;dm::graphics::DiagramStroke style;style.width=2;
+    style.color=back[i]?dm::graphics::RGB{220,38,38}:tree&&on_path[u]&&on_path[v]?dm::graphics::RGB{22,163,74}:tree?dm::graphics::RGB{37,99,235}:dm::graphics::RGB{148,163,184};style.dashed=!scanned[i];
+    d.edge(std::to_string(u),std::to_string(v),std::format("e{}{}",i,scanned[i]?"":" unscanned"),style);
+  }
+  d.text({4,3.5},"DFS finishes 3 and 1, resumes 0, then stops with its goal path active",22)
+   .text({4,-3.4},std::format("DFS path {}; shortest-hop BFS path {}",t.result.path,bfs.path),21)
+   .save_svg("build/dfs_backtracking.svg");
+  std::print("Original control: path {}; found {}; expanded {}.\n\n",original.path,original.found,original.expanded);
+  const std::vector<std::string> kinds{"discover","examine","finish","goal"},states{"unseen","active","finished"};
+  std::print("| event | kind | vertex | neighbour | original edge | depth | active frames | target state before scan |\n| ---: | :--- | ---: | :--- | :--- | ---: | ---: | :--- |\n");
+  for(std::size_t i=0;i<t.events.size();++i) {
+    const auto& e=t.events[i];const bool scan=e.kind==dm::algorithms::DepthFirstEventKind::examine;
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",i,kinds[static_cast<std::size_t>(e.kind)],e.vertex,e.neighbor==7?"-":std::to_string(e.neighbor),e.edge_index==edges.size()?"-":std::to_string(e.edge_index),e.depth,e.stack_size,scan?states[static_cast<std::size_t>(e.neighbor_state)]:"-");
+  }
+  std::print("\nActual preorder {}; genuine postorder {}; scanned arcs {}; discovered {}; finished {}; maximum active frames {}.\n",t.preorder,t.postorder,t.work.edges_examined,t.work.discovered,t.work.finished,t.work.max_stack_size);
+}
+```
+// result_begin: markdown
+Original control: path [0, 1]; found true; expanded 2.
+
+| event | kind | vertex | neighbour | original edge | depth | active frames | target state before scan |
+| ---: | :--- | ---: | :--- | :--- | ---: | ---: | :--- |
+| 0 | discover | 0 | - | - | 0 | 1 | - |
+| 1 | examine | 0 | 1 | 0 | 0 | 1 | unseen |
+| 2 | discover | 1 | - | 0 | 1 | 2 | - |
+| 3 | examine | 1 | 3 | 1 | 1 | 2 | unseen |
+| 4 | discover | 3 | - | 1 | 2 | 3 | - |
+| 5 | examine | 3 | 0 | 2 | 2 | 3 | active |
+| 6 | finish | 3 | - | - | 2 | 2 | - |
+| 7 | finish | 1 | - | - | 1 | 1 | - |
+| 8 | examine | 0 | 2 | 3 | 0 | 1 | unseen |
+| 9 | discover | 2 | - | 3 | 1 | 2 | - |
+| 10 | examine | 2 | 4 | 4 | 1 | 2 | unseen |
+| 11 | discover | 4 | - | 4 | 2 | 3 | - |
+| 12 | examine | 4 | 5 | 5 | 2 | 3 | unseen |
+| 13 | discover | 5 | - | 5 | 3 | 4 | - |
+| 14 | examine | 5 | 6 | 6 | 3 | 4 | unseen |
+| 15 | discover | 6 | - | 6 | 4 | 5 | - |
+| 16 | goal | 6 | - | - | 4 | 5 | - |
+
+Actual preorder [0, 1, 3, 2, 4, 5, 6]; genuine postorder [3, 1]; scanned arcs 7; discovered 7; finished 2; maximum active frames 5.
+\image(figures/dfs_backtracking.svg)
+// result_end
+\caption(Edge ids are original input positions. The blue branch finishes before the green goal path is found. The red arc returns to an active ancestor; the grey dashed direct edge is never scanned by this goal-stopping run.)
+\alttext(Source zero reaches the finished branch one-three above, then the active green path two-four-five-six below. A red three-to-zero arc closes a directed cycle. A grey direct zero-to-six arc is labelled unscanned.)
+
+> Derive the frame invariant and reachability guarantee
+
+The canonical implementation keeps an explicit frame (vertex,next successor)
+for each active vertex. Its stack is the current directed tree path from
+source to the current vertex. A newly entered vertex is marked immediately,
+so a loop or another incoming arc cannot enter it twice. Before descending,
+the parent's successor position advances. When the child finishes, that
+position identifies exactly where the corresponding recursive call would
+resume. Induction over entries, edge scans and returns shows that this
+explicit loop preserves the old recursive adjacency order and first path.
+It avoids dependence on the process's recursive call-stack depth.
+
+A returned path is valid because every non-root frame was pushed through
+an actual directed arc from its parent. Vertices on it are distinct because
+all entries obey global marking. If the target is entered, the kernel stops
+before examining its outgoing arcs. It does not pop the successful path or
+fabricate finish events during a hypothetical unwind. If the stack becomes
+empty without the target, every reachable vertex has been entered: otherwise,
+a source-to-unseen path would contain a first unseen vertex whose reached
+predecessor must have scanned and entered it before finishing, a contradiction.
+This proves the reachability decision, not minimum path length.
+
+Let R be discovered vertices and E_scan the actual adjacency entries scanned
+before termination. Each entry is discovered once, each finished frame pops
+once, and each source list position advances once. Thus traversal work is
+O(R+E_scan), with R≤n and E_scan≤m. The wrapper still validates all input arcs,
+constructs adjacency and initializes n states, giving O(n+m) total worst-case
+time even when start=goal. Adjacency occupies O(n+m), search state and possible
+output path O(n), and optional actual history O(n+m). Only the current frame
+count can be smaller on a shallow tree. No stack snapshot is copied at each
+event, avoiding an accidental quadratic trace cost.
+
+> Full traversal gives genuine discovery and finish intervals
+
+The next run has no goal stop. It retains the same eight arcs, adds a
+parallel 0→1 arc, a self-loop 2→2 and an unreachable self-loop at vertex
+seven. Complete traversal visits the source component, not every graph
+component. Its result.found=false and empty path mean that no goal was
+requested; preorder/expanded still describe all seven reached vertices.
+All ten reachable adjacency entries are scanned, including the duplicate
+and reachable loop, while the unreachable loop is only validated/stored.
+
+Timestamps tick only on discoveries and actual finishes. For a tree parent
+u and child v in the completed run,
+
+\[
+d(u)<d(v)<f(v)<f(u).
+\]
+\alttext(A child's discovery and finish times lie strictly between those of its tree parent.)
+
+The child call begins after its parent's entry and ends before the parent
+can exhaust its remaining adjacency. Repeating this fact nests descendant
+intervals; intervals of separate completed branches are disjoint. In a
+successful early-stop run, active vertices have no finish time, so no
+completed-interval conclusion is inferred for them. Missing times use 2n,
+checked for representability before graph allocation; root/unseen parents
+and depths use n, and an absent original parent-edge id uses m.
+
+```{cpp, results="markdown", file="figures/dfs_intervals.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<std::size_t,std::size_t>> edges{{0,1},{1,3},{3,0},{0,2},{2,4},{4,5},{5,6},{0,6},{0,1},{2,2},{7,7}};
+  const auto t=dm::algorithms::depth_first_traversal(8,edges,0);
+  if(t.goal_requested || t.work.discovered!=7 || t.work.finished!=7 || t.work.edges_examined!=10 || t.events.size()!=24)return 1;
+  dm::graphics::Diagram d(50,1100);dm::graphics::DiagramStroke line;line.color={37,99,235};line.width=4;
+  const std::vector<std::string> states{"unseen","active","finished"};
+  std::print("| vertex | stopping state | parent | tree depth | discovered at | genuinely finished at |\n| ---: | :--- | :--- | :--- | :--- | :--- |\n");
+  for(std::size_t v=0;v<t.n;++v) {
+    const bool seen=t.discovered_at[v]!=2*t.n;d.text({-1.5,-double(v)},std::format("v{}",v),18);
+    if(seen) {
+      const double a=t.discovered_at[v],b=t.finished_at[v];d.path({{a,-double(v)},{b,-double(v)}},line)
+       .ellipse({a,-double(v)},.055,.055,{37,99,235}).ellipse({b,-double(v)},.055,.055,{37,99,235})
+       .text({16,-double(v)},std::format("[{},{}]",t.discovered_at[v],t.finished_at[v]),18);
+    }else d.text({6.5,-double(v)},"unseen; both timestamps use sentinel 16",18,{100,116,139});
+    std::print("| {} | {} | {} | {} | {} | {} |\n",v,states[static_cast<std::size_t>(t.state[v])],t.parent[v]==t.n?"-":std::to_string(t.parent[v]),seen?std::to_string(t.depth[v]):"-",seen?std::to_string(t.discovered_at[v]):"none",seen?std::to_string(t.finished_at[v]):"none");
+  }
+  for(int k=0;k<=13;++k)d.text({double(k),.7},std::to_string(k),14);
+  d.text({6.5,1.7},"Complete source-component DFS: descendant time intervals nest",22)
+   .text({6.5,-8.4},"Ticks count entries and genuine finishes; unreachable v7 has no interval",20)
+   .save_svg("build/dfs_intervals.svg");
+  std::print("\nComplete preorder {}; postorder {}; events {} = 2*7+10. Target-state counts: unseen {}, active {}, finished {}.\n",t.preorder,t.postorder,t.events.size(),t.work.unseen_edges,t.work.active_edges,t.work.finished_edges);
+  std::print("No goal requested: found {}; path {}; expanded {}. Unreachable vertex 7 remains unseen.\n",t.result.found,t.result.path,t.result.expanded);
+}
+```
+// result_begin: markdown
+| vertex | stopping state | parent | tree depth | discovered at | genuinely finished at |
+| ---: | :--- | :--- | :--- | :--- | :--- |
+| 0 | finished | - | 0 | 0 | 13 |
+| 1 | finished | 0 | 1 | 1 | 4 |
+| 2 | finished | 0 | 1 | 5 | 12 |
+| 3 | finished | 1 | 2 | 2 | 3 |
+| 4 | finished | 2 | 2 | 6 | 11 |
+| 5 | finished | 4 | 3 | 7 | 10 |
+| 6 | finished | 5 | 4 | 8 | 9 |
+| 7 | unseen | - | - | none | none |
+
+Complete preorder [0, 1, 3, 2, 4, 5, 6]; postorder [3, 1, 6, 5, 4, 2, 0]; events 24 = 2*7+10. Target-state counts: unseen 6, active 2, finished 2.
+No goal requested: found false; path []; expanded 7. Unreachable vertex 7 remains unseen.
+\image(figures/dfs_intervals.svg)
+// result_end
+\caption(Every reached vertex now has a genuine finish. Root zero encloses both completed branches, while vertex seven has no interval. Actual edge-target states distinguish six new-tree descents, two active-cycle arcs and two already-finished targets.)
+\alttext(Seven horizontal intervals have integer discovery and finish ticks. Root zero spans zero through thirteen; its child intervals and their descendants nest. A separate row says vertex seven was unseen.)
+
+For directed graphs, a scanned arc to an active vertex closes a cycle along
+the ancestor path, including a self-loop. Arcs to finished vertices need not
+cause descent; they may be forward or cross arcs. In a complete traversal of
+a reachable DAG there are no active-target arcs, and reverse postorder is
+a topological order of that reachable subgraph. This report's loop-containing
+control is not claimed to have such an order. The API does not restart at
+unseen vertices to construct a whole-graph DFS forest.
+
+> Input order changes the first path and stopping work
+
+The direct edge 0→6 exists in both larger goal-search runs. Move it from
+last to first in source zero's adjacency and DFS returns [0,6], with two
+entries and one scan. In the original order it returns a four-edge path
+after seven entries and seven scans. BFS on that same graph returns the
+one-edge path because it searches by hop distance. DFS's entry count is not
+BFS's dequeue count; the table below compares DFS counts only. The unchanged
+two-vertex control, unreachable target and start=goal cases make success and
+empty/singleton path conventions explicit.
+
+```{cpp, results="markdown", file="figures/dfs_order.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::vector<std::pair<std::size_t,std::size_t>> original{{0,1},{1,3},{3,0},{0,2},{2,4},{4,5},{5,6},{0,6}};auto reordered=original;std::rotate(reordered.begin(),reordered.end()-1,reordered.end());
+  const std::vector<dm::algorithms::DepthFirstTrace> runs{
+    dm::algorithms::depth_first_search_trace(2,{{0,1}},0,1),dm::algorithms::depth_first_search_trace(7,original,0,6),
+    dm::algorithms::depth_first_search_trace(7,reordered,0,6),dm::algorithms::depth_first_search_trace(8,original,0,7),dm::algorithms::depth_first_search_trace(7,original,0,0)};
+  const std::vector<std::string> labels{"original","late direct","direct first","unreachable","start=goal"};std::vector<double> x,entries;
+  std::print("| case | found | returned path | entered vertices | scanned arcs | finished frames |\n| :--- | :--- | :--- | ---: | ---: | ---: |\n");
+  for(std::size_t k=0;k<runs.size();++k) {
+    const auto& t=runs[k];x.push_back(k);entries.push_back(t.result.expanded);
+    std::print("| {} | {} | {} | {} | {} | {} |\n",labels[k],t.result.found,t.result.path,t.result.expanded,t.work.edges_examined,t.work.finished);
+  }
+  if(runs[1].result.path.size()!=5 || runs[2].result.path!=std::vector<std::size_t>{0,6} || runs[3].result.found || runs[4].result.expanded!=1)return 1;
+  auto p=dm::graphics::RPlot::create();
+  p.bars(x,entries,"vertex entries",{37,99,235},.6).legend({"vertex entries"},{{37,99,235}})
+   .x_ticks(x,labels).title("The same direct arc can be reached early or late by DFS")
+   .x_label("fixed directed search case").y_label("actual distinct first vertex entries")
+   .x_limits(-.6,4.6).y_limits(0,9).size(1100,570).save_svg("build/dfs_order.svg");
+}
+```
+// result_begin: markdown
+| case | found | returned path | entered vertices | scanned arcs | finished frames |
+| :--- | :--- | :--- | ---: | ---: | ---: |
+| original | true | [0, 1] | 2 | 1 | 0 |
+| late direct | true | [0, 2, 4, 5, 6] | 7 | 7 | 2 |
+| direct first | true | [0, 6] | 2 | 1 | 0 |
+| unreachable | false | [] | 7 | 8 | 7 |
+| start=goal | true | [0] | 1 | 0 | 0 |
+\image(figures/dfs_order.svg)
+// result_end
+\caption(Adjacency order changes DFS's selected path and amount of work before success. A failed search has an empty path; a zero-edge success has a singleton path. The bars show actual distinct entries, not shortest distances.)
+\alttext(Five bars show two, seven, two, seven and one entered vertices. Late versus first placement of the direct edge changes the count from seven to two.)
+
+> Linear trace work and worst-case active depth
+
+For a completed source traversal, every reached vertex is discovered and
+finished exactly once, and every outgoing adjacency entry of those vertices
+is examined exactly once. There are therefore
+
+\[
+N_{\rm events}=2R+E_R.
+\]
+\alttext(Complete traversal retains two events per reached vertex and one per reachable adjacency entry.)
+
+A successful goal run instead has R discoveries, F genuine finishes,
+E_scan examinations and one goal event; its actual total is R+F+E_scan+1.
+For the seven-vertex example, 7+2+7+1=17. A full tree has R=n and E_R=n−1,
+so its trace has 3n−1 events regardless of branching shape. Active frames
+are different: a chain reaches n, a binary tree grows logarithmically, and
+a nontrivial star reaches two. The complete graph, state arrays and retained
+history still use linear space in n+m even for a shallow tree. Explicit
+frames remove recursive call-stack limits, not the need for memory.
+
+Complete endpoint/terminal validation precedes adjacency allocation and all
+optional caps, even for a trivial goal or bad unreachable arc. Trace limits
+bound every original vertex and edge, including unreachable records, and
+every actual retained event. Event caps are online; exhausting one throws
+without a partial result. Zero disables only that optional cap, while
+2n timestamp arithmetic and container capacities remain checked. The old
+four-argument result function has no optional trace limits and allocates no
+trace events. No external dataset is needed for these graph-order and work
+controls; the reusable native tree generator supplies their exact inputs.
+
+```{cpp, results="markdown", file="figures/dfs_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  std::vector<double> sizes,events,theory,chain,binary,star;
+  std::print("| vertices n | shape | discovered | finished | scanned tree arcs | events | 3n-1 | peak frames |\n| ---: | :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:{8,16,32,64,128,256,512}) {
+    const std::vector<std::size_t> branching{1,2,n};const std::vector<std::string> names{"chain","binary","star"};std::vector<double> peak;
+    for(std::size_t k=0;k<branching.size();++k) {
+      const auto t=dm::algorithms::depth_first_traversal(n,dm::algorithms::rooted_tree_edges(n,branching[k]),0);
+      if(t.work.discovered!=n || t.work.finished!=n || t.work.edges_examined!=n-1 || t.events.size()!=3*n-1)return 1;
+      peak.push_back(t.work.max_stack_size);if(k==0){sizes.push_back(n);events.push_back(t.events.size());theory.push_back(3*n-1);}
+      if(n==8 || n==64 || n==512)std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",n,names[k],t.work.discovered,t.work.finished,t.work.edges_examined,t.events.size(),3*n-1,t.work.max_stack_size);
+    }
+    chain.push_back(std::log2(peak[0]));binary.push_back(std::log2(peak[1]));star.push_back(std::log2(peak[2]));
+  }
+  const std::vector<std::pair<std::size_t,std::size_t>> e{{0,1},{1,3},{3,0},{0,2},{2,4},{4,5},{5,6},{0,6}};int rejected=0;
+  try{(void)dm::algorithms::depth_first_search_trace(7,e,0,6,{6,8,17});}catch(const std::length_error&){++rejected;}
+  try{(void)dm::algorithms::depth_first_search_trace(7,e,0,6,{7,7,17});}catch(const std::length_error&){++rejected;}
+  try{(void)dm::algorithms::depth_first_search_trace(7,e,0,6,{7,8,16});}catch(const std::length_error&){++rejected;}
+  try{(void)dm::algorithms::depth_first_search_trace(7,{{0,7}},0,0,{1,1,1});}catch(const std::invalid_argument&){++rejected;}
+  const auto exact=dm::algorithms::depth_first_search_trace(7,e,0,6,{7,8,17}),disabled=dm::algorithms::depth_first_search_trace(7,e,0,6,{0,0,0});
+  const auto deep=dm::algorithms::depth_first_search(200000,dm::algorithms::rooted_tree_edges(200000,1),0,199999);
+  if(rejected!=4 || exact.events.size()!=17 || disabled.events.size()!=17 || !deep.found || deep.path.size()!=200000)return 1;
+  std::print("\nFour expected rejections: vertex cap, complete edge cap, actual event cap, invalid endpoint before trivial-goal/cap checks. Count {}. Exact 7/8/17 limits and zero-disabled optional caps succeed.\n",rejected);
+  std::print("Deep chain: entered {}; returned path vertices {}; first {}; last {}.\n",deep.expanded,deep.path.size(),deep.path.front(),deep.path.back());
+  auto work=dm::graphics::RPlot::create();work.line(sizes,events,"actual",{37,99,235},2).points(sizes,theory,"3n-1",{31,41,55},4)
+    .legend({"actual","3n-1"},{{37,99,235},{31,41,55}}).title("Full traversal: 3n - 1 events").x_label("vertices n").y_label("retained actual events").x_limits(0,550).y_limits(0,1900);
+  auto space=dm::graphics::RPlot::create();space.line(sizes,chain,"chain",{37,99,235},2).line(sizes,binary,"binary",{234,88,12},2).line(sizes,star,"star",{31,41,55},2)
+    .legend({"chain","binary","star"},{{37,99,235},{234,88,12},{31,41,55}}).title("Active depth, logarithmic scale").x_label("vertices n").y_label("log2(maximum active frames)").x_limits(0,550).y_limits(0,11);
+  dm::graphics::RLayout::create(1,2).add(work).add(space).size(1100,520).title("Linear event counts and worst-case active depth").fit_panels().save_svg("build/dfs_work.svg");
+}
+```
+// result_begin: markdown
+| vertices n | shape | discovered | finished | scanned tree arcs | events | 3n-1 | peak frames |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 8 | chain | 8 | 8 | 7 | 23 | 23 | 8 |
+| 8 | binary | 8 | 8 | 7 | 23 | 23 | 4 |
+| 8 | star | 8 | 8 | 7 | 23 | 23 | 2 |
+| 64 | chain | 64 | 64 | 63 | 191 | 191 | 64 |
+| 64 | binary | 64 | 64 | 63 | 191 | 191 | 7 |
+| 64 | star | 64 | 64 | 63 | 191 | 191 | 2 |
+| 512 | chain | 512 | 512 | 511 | 1535 | 1535 | 512 |
+| 512 | binary | 512 | 512 | 511 | 1535 | 1535 | 10 |
+| 512 | star | 512 | 512 | 511 | 1535 | 1535 | 2 |
+
+Four expected rejections: vertex cap, complete edge cap, actual event cap, invalid endpoint before trivial-goal/cap checks. Count 4. Exact 7/8/17 limits and zero-disabled optional caps succeed.
+Deep chain: entered 200000; returned path vertices 200000; first 0; last 199999.
+\image(figures/dfs_work.svg)
+// result_end
+\caption(All three tree shapes perform the same complete event work. The right panel uses log2 depths to keep the smaller binary/star values distinct; the left confirms actual counts against 3n−1. A separate 200,000-vertex chain executes the ordinary first-path API without recursive calls.)
+\alttext(Left: native events and 3n minus one markers coincide linearly. Right: logarithms of active-frame counts distinguish a chain reaching 512, binary height ten and star height two. The panels are fitted to their display cells.)
+
+> Independent controls and scope
+
+Nine new tests pass AddressSanitizer and UndefinedBehaviorSanitizer. Exhaustive
+controls enumerate all directed graphs with loops through three vertices and
+all loop-free directed graphs on four vertices: 4,626 graphs in total. They
+compare 70,210 source-goal searches and 17,954 complete source traversals
+with a small recursive oracle that scans the original edge sequence. A
+separate transitive-closure computation checks reachability independently
+of DFS order. Tests compare selected paths, entry/finish orders, parents,
+original parent edges, depths, timestamps, target states, counters and
+replayed event/frame boundaries. One thousand seeded ordered multigraphs
+add loops, duplicate arcs and reversed edge orders. The original minimal
+case, backtracking/early-stop/shortest-path distinction, complete interval
+nesting, DAG reverse postorder, ownership, graph/event caps, timestamp
+arithmetic and native tree-generator guards pass. A 200,000-vertex ordinary
+path and 20,000-vertex complete chain test deep entry and finish behavior.
+Existing search_more cases verify compatibility with neighbouring search APIs.
+
+The API answers directed reachability and returns its first DFS-tree path.
+It does not enumerate all simple paths, minimize hops or weights, or scan
+unreachable components unless another source is requested. Discovery,
+expansion and completion are separate observable events; early stopping
+does not silently turn partial state into a completed DFS forest. The native
+report inputs make these distinctions visible without a forced external dataset.
+
+> References
+
+- Robert Tarjan (1972), *Depth-First Search and Linear Graph Algorithms*, SIAM Journal on Computing 1(2), 146–160. [Original paper DOI](https://doi.org/10.1137/0201010); [paper PDF](https://www.cs.cmu.edu/~cdm/resources/Tarjan1972-sccs.pdf). The stack/adjacency view motivates the explicit continuations; this API's goal call stops on first target entry, while its complete call traverses one source component.
+- Robert Sedgewick and Kevin Wayne, *Algorithms*, fourth edition, directed DFS paths. [Authors' implementation](https://github.com/kevin-wayne/algs4/blob/master/src/main/java/edu/princeton/cs/algs4/DepthFirstDirectedPaths.java). Global marking and input adjacency order define a DFS path; the library retains those semantics with explicit frames and optional actual records.

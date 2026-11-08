@@ -1,0 +1,402 @@
+//? Title: Dijkstra’s Algorithm: Settled Vertices and Stale Heap Entries
+//? Subtitle: Actual relaxation traces, the original six-city network and measured lazy-heap bounds
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a directed network with nonnegative travel costs and a starting vertex,
+we want the cheapest cost and a route to every reachable destination.
+Choosing a cheap immediate edge alone cannot identify the cheapest complete
+route. Dijkstra’s algorithm instead settles the smallest accumulated cost
+on the current frontier. A three-vertex example shows how improving a
+route leaves a stale heap entry without expanding a vertex twice. We retain
+the original six-city network and reconstruct its route of cost eleven.
+Actual heap removals and edge inspections expose the implementation’s tie
+rules and work. Zero-cost cycles, unreachable vertices, invalid weights,
+overflow and malformed predecessor records test its boundaries. Sparse
+bands and parallel-arc workloads distinguish the familiar simple-graph
+complexity from the larger heap possible in a multigraph.
+)
+
+\toc
+
+> Start with three vertices and one improved route
+
+Let source 0 have a direct edge to target 1 of cost four and an edge to
+vertex 2 of cost one. The edge 2→1 costs one. After expanding the source,
+the heap contains tentative routes (1,2) and (4,1). Removing (1,2) discovers
+a cheaper route to target 1, of cost two, and pushes (2,1). We then settle
+1 at cost two. Finally the old (4,1) entry is removed and skipped: its key
+four is larger than the current distance two.
+
+A vertex is settled once, while its id can occur in several heap removals.
+The trace below comes from the same kernel as ordinary dijkstra(), with
+no replay of prefixes and no report-local shortest-path implementation.
+Exactly seven events are recorded: four removals plus three edge inspections.
+
+```{cpp, results="markdown", file="figures/dijkstra_three_vertices.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::dijkstra_trace(3,{{0,1,4},{0,2,1},{2,1,1}},0,7);
+  std::print("Distances: {}; settled order: {}; route to target: {}.\n\n",t.result.distance,t.settled_order,dm::algorithms::reconstruct_path(t.result,1));
+  std::print("| removal | vertex | stored key | current distance | stale | heap before | heap after expansion | inspected edges |\n| ---: | ---: | ---: | ---: | :--- | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<t.pops.size();++i){const auto& e=t.pops[i];std::print("| {} | {} | {:.0f} | {:.0f} | {} | {} | {} | {} |\n",i,e.vertex,e.key,e.live_distance,e.stale,e.heap_before,e.heap_after,e.relaxation_count);}
+  std::print("\nActual pushes {}; pops {}; fresh settlements {}; stale removals {}; peak heap {}.\n",t.work.heap_pushes,t.work.heap_pops,t.work.settled_vertices,t.work.stale_pops,t.work.max_heap_size);
+  dm::graphics::Diagram d(80,1100);dm::graphics::DiagramNodeStyle box;box.width=2.5;box.height=1.5;box.font_size=24;
+  d.node("s",{0,0},std::format("Source 0\nfinal cost {:.0f}",t.result.distance[0]),box)
+   .node("t",{8,0},std::format("Target 1\nfinal cost {:.0f}",t.result.distance[1]),box)
+   .node("v",{4,-3.7},std::format("Via vertex 2\nfinal cost {:.0f}",t.result.distance[2]),box);
+  dm::graphics::DiagramStroke blue;blue.color={37,99,235};blue.width=3.5;
+  dm::graphics::DiagramStroke grey;grey.color={148,163,184};grey.width=2;
+  d.edge("s","t","cost 4: old tentative route",grey).edge("s","v","cost 1",blue).edge("v","t","cost 1",blue)
+   .text({4,2},"A cheaper route leaves an old entry in the heap",25)
+   .text({4,-5.3},"Blue route 0 → 2 → 1 costs 2; the later key 4 for vertex 1 is stale",21)
+   .save_svg("build/dijkstra_three_vertices.svg");
+}
+```
+// result_begin: markdown
+Distances: [0, 2, 1]; settled order: [0, 2, 1]; route to target: [0, 2, 1].
+
+| removal | vertex | stored key | current distance | stale | heap before | heap after expansion | inspected edges |
+| ---: | ---: | ---: | ---: | :--- | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0 | false | 1 | 2 | 2 |
+| 1 | 2 | 1 | 1 | false | 2 | 2 | 1 |
+| 2 | 1 | 2 | 2 | false | 2 | 1 | 0 |
+| 3 | 1 | 4 | 2 | true | 1 | 0 | 0 |
+
+Actual pushes 4; pops 4; fresh settlements 3; stale removals 1; peak heap 2.
+\image(figures/dijkstra_three_vertices.svg)
+// result_end
+\caption(The blue two-edge route improves the target from cost four to two. The actual removal table shows the later stale entry and its zero outgoing inspections.)
+\alttext(A triangle links source zero, via vertex two and target one. The direct cost-four arrow is grey, while the two cost-one arrows are blue.)
+
+> Why settling the nearest frontier is safe
+
+For vertices 0,...,V−1, let delta(s,v) be the least total edge cost of a
+source-to-v path, or positive infinity when no such path exists. Store
+d[s]=0 and all other tentative distances as infinity. Relaxing an arc
+(u,v,w) compares candidate=d[u]+w with d[v]; a strict improvement changes
+the distance and parent and pushes the new (candidate,v) heap entry.
+Tentative finite labels always correspond to discovered routes, so they
+are upper bounds on the true optimum in exact arithmetic.
+
+Suppose the minimum fresh entry u had a shorter true route. On that route,
+let y be the first vertex outside the settled set and x its settled
+predecessor. Expanding x already gave y a tentative cost at most the
+cost of the route prefix. Nonnegative remaining costs make this at most
+the full route cost, which was assumed smaller than d[u]. Then y would
+be a smaller frontier entry, contradicting the choice of u. Thus a fresh
+minimum has its final distance. Strict improvements and nonnegative
+weights ensure a settled vertex never needs a new expansion. Zero weights
+are valid; strict comparison prevents equal-cost cycles from changing parents.
+
+The implemented frontier is a binary min-heap ordered by (distance,vertex).
+Smaller vertex ids break equal-key ties. Outgoing arcs preserve input order,
+and equal-cost candidates retain the first predecessor. A later strict
+improvement adds a new entry; the older one remains until it is removed.
+The stale test is stored_key > current_distance. There is no decrease-key,
+no full queue snapshot and no early target stop: the single-source API
+drains the heap and returns all reachable distances.
+
+[Dijkstra’s original 1959 paper](https://doi.org/10.1007/BF01386390)
+constructs routes in increasing distance order and stops at a requested
+destination; it also discusses directed branch lengths. This implementation
+uses that settling principle for a complete source traversal with a lazy heap.
+The floating-point implementation compares rounded double additions, so the
+exact-arithmetic proof does not promise exact-real costs for arbitrary doubles.
+
+> The original six-city road network
+
+Keep the ten original directed roads and source A, with the original
+left-to-right city arrangement. Positions serve only to draw the network;
+weights are arbitrary travel
+costs and are not inferred from Euclidean distances. This educational graph
+has no external dataset. An undirected road would require a reverse arc.
+
+The expected distances are A=0, B=3, C=2, D=8, E=9 and F=11.
+The cheapest route to F is A→C→B→D→F, costing 2+1+5+3=11.
+The alternative through E costs 2+1+6+4=13. Blue arrows in the diagram
+are the actual selected original arcs, identified by predecessor_edge in
+the trace; vertex parents alone would not identify a chosen parallel arc.
+The printed table exposes all ten outgoing-edge inspections, including
+candidates that do not improve a destination.
+
+```{cpp, results="markdown", file="figures/dijkstra_six_cities.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<std::tuple<std::size_t,std::size_t,double>> roads{{0,1,4},{0,2,2},{2,1,1},{1,3,5},{2,3,8},{2,4,10},{1,4,6},{3,5,3},{4,5,4},{3,4,2}};
+  const std::vector<std::string> name{"A","B","C","D","E","F"};
+  const auto t=dm::algorithms::dijkstra_trace(6,roads,0,19);
+  std::print("| city | distance from A | predecessor | original tree arc |\n| :--- | ---: | :--- | :--- |\n");
+  for(std::size_t v=0;v<6;++v){const auto parent=t.result.predecessor[v];
+    std::print("| {} | {:.0f} | {} | {} |\n",name[v],t.result.distance[v],parent==dm::algorithms::kNoPredecessor?"root":name[parent],parent==dm::algorithms::kNoPredecessor?"none":std::to_string(t.predecessor_edge[v]));}
+  std::print("\nRoute to F: ");for(auto v:dm::algorithms::reconstruct_path(t.result,5))std::print("{} ",name[v]);
+  std::print("; cost {:.0f}. Settled ids: {}.\n\n",t.result.distance[5],t.settled_order);
+  std::print("| original arc | road | tail distance | prior destination | candidate | improved | heap after inspection |\n| ---: | :--- | ---: | ---: | ---: | :--- | ---: |\n");
+  for(const auto& e:t.relaxations)std::print("| {} | {} to {} | {:.0f} | {:.0f} | {:.0f} | {} | {} |\n",e.edge_index,name[e.from],name[e.to],e.from_distance,e.distance_before,e.candidate,e.improved,e.heap_after);
+  std::print("\nWork: {} inspections, {} improvements, {} removals, {} stale, peak heap {}.\n",t.work.edges_examined,t.work.successful_relaxations,t.work.heap_pops,t.work.stale_pops,t.work.max_heap_size);
+  const std::vector<dm::graphics::DiagramPoint> position{{0,2},{4,3},{4,0},{9,3},{9,0},{13,2}};
+  dm::graphics::Diagram diagram(70,1100);dm::graphics::DiagramNodeStyle node;node.width=1.3;node.height=1.3;node.circle=true;node.font_size=24;
+  for(std::size_t v=0;v<6;++v)diagram.node(name[v],position[v],std::format("{}\n{:.0f}",name[v],t.result.distance[v]),node);
+  for(std::size_t i=0;i<roads.size();++i){const auto [u,v,w]=roads[i];dm::graphics::DiagramStroke style;
+    const bool chosen=t.predecessor_edge[v]==i;style.color=chosen?dm::graphics::RGB{37,99,235}:dm::graphics::RGB{148,163,184};style.width=chosen?3.5:1.8;
+    diagram.edge(name[u],name[v],(i==4 || i==6)?"":std::format("{:.0f}",w),style);}
+  diagram.text({5.15,1.08},"8",20,{100,116,139}).text({7.85,1.08},"6",20,{37,99,235});
+  diagram.text({6.5,5},"Original six-city network; node labels show city and final cost",25)
+   .text({6.5,-2},"Blue arrows: the selected shortest-path tree from A; grey arrows: other roads",21)
+   .save_svg("build/dijkstra_six_cities.svg");
+}
+```
+// result_begin: markdown
+| city | distance from A | predecessor | original tree arc |
+| :--- | ---: | :--- | :--- |
+| A | 0 | root | none |
+| B | 3 | C | 2 |
+| C | 2 | A | 1 |
+| D | 8 | B | 3 |
+| E | 9 | B | 6 |
+| F | 11 | D | 7 |
+
+Route to F: A C B D F ; cost 11. Settled ids: [0, 2, 1, 3, 4, 5].
+
+| original arc | road | tail distance | prior destination | candidate | improved | heap after inspection |
+| ---: | :--- | ---: | ---: | ---: | :--- | ---: |
+| 0 | A to B | 0 | inf | 4 | true | 1 |
+| 1 | A to C | 0 | inf | 2 | true | 2 |
+| 2 | C to B | 2 | 4 | 3 | true | 2 |
+| 4 | C to D | 2 | inf | 10 | true | 3 |
+| 5 | C to E | 2 | inf | 12 | true | 4 |
+| 3 | B to D | 3 | 10 | 8 | true | 4 |
+| 6 | B to E | 3 | 12 | 9 | true | 5 |
+| 7 | D to F | 8 | inf | 11 | true | 4 |
+| 9 | D to E | 8 | 9 | 10 | false | 4 |
+| 8 | E to F | 9 | 11 | 13 | false | 3 |
+
+Work: 10 inspections, 8 improvements, 9 removals, 3 stale, peak heap 5.
+\image(figures/dijkstra_six_cities.svg)
+// result_end
+\caption(All ten directed roads and the five selected shortest-path-tree arcs from A. Node labels include the computed final distance; edge labels are the original travel costs.)
+\alttext(Six circular city nodes carry final distances. Directed roads are labelled with costs, and the selected tree arcs are blue.)
+
+> Zero-cost ties, unreachable vertices and invalid input
+
+For equal tentative costs, the heap’s smaller vertex id settles first,
+regardless of the order of the source’s adjacency entries. In the next
+example, the source lists vertex 2 before vertex 1, both at cost one.
+Vertex 1 nevertheless settles first and supplies vertex 3’s parent. Zero
+cycles and duplicate arcs produce inspections, but equal candidates never
+push new entries. Vertex 4 is isolated, so its distance is infinity and
+its reconstructed route is empty.
+
+A negative edge invalidates the settling proof. In a separate three-node
+control, 0→1 costs two, 0→2 costs five and 2→1 costs minus six.
+An irrevocable settlement of vertex 1 at cost two would be premature:
+the route through vertex 2 costs minus one. Dijkstra rejects that graph;
+the existing Bellman–Ford API returns minus one. This illustrates the
+broken invariant, rather than claiming an unchecked variant must return
+one particular wrong answer.
+
+All endpoints and weights are checked, including arcs in unreachable
+components, before adjacency allocation. NaN, either infinity and negative
+weights raise invalid_argument. If an examined sum of finite nonnegative
+costs overflows, the kernel raises overflow_error, even when the candidate
+would not beat an already known shorter route. It does not silently turn
+a reachable cost into the infinity marker. A finite DBL_MAX route is valid.
+
+The public two-field ShortestPathResult layout is unchanged. Safe path
+recovery now bounds traversal and validates visited indices, finite
+nonnegative distances, vector alignment and cycles. Out-of-range and
+positive-infinity targets retain the original empty-return convenience.
+Without a stored source or edge list, this function checks structural
+safety; it cannot certify that a manually supplied sentinel is the intended
+source or that arbitrary parent costs satisfy edge recurrences.
+
+```{cpp, results="markdown", file="figures/dijkstra_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<std::tuple<std::size_t,std::size_t,double>> edges{{0,2,1},{0,1,1},{1,3,0},{2,3,0},{3,2,0},{3,3,0},{0,1,1},{1,0,0}};
+  const auto t=dm::algorithms::dijkstra_trace(5,edges,0);
+  std::print("Zero-cycle control: distances {}; settled {}; parent of 3 is {}; unreachable route length {}.\n",t.result.distance,t.settled_order,t.result.predecessor[3],dm::algorithms::reconstruct_path(t.result,4).size());
+  std::print("Inspections {}; improvements {}; stale removals {}.\n\n",t.work.edges_examined,t.work.successful_relaxations,t.work.stale_pops);
+  const std::vector<std::tuple<std::size_t,std::size_t,double>> negative{{0,1,2},{0,2,5},{2,1,-6}};
+  const auto reference=dm::algorithms::bellman_ford(3,negative,0);
+  std::size_t rejected=0;
+  for(double w:{-1.,std::numeric_limits<double>::infinity(),std::numeric_limits<double>::quiet_NaN()}){
+    try{(void)dm::algorithms::dijkstra(3,{{1,2,w}},0);}catch(const std::invalid_argument&){++rejected;}}
+  try{(void)dm::algorithms::dijkstra(3,negative,0);}catch(const std::invalid_argument&){++rejected;}
+  std::size_t overflow=0;try{(void)dm::algorithms::dijkstra(3,{{0,1,1e308},{0,2,1},{1,2,1e308}},0);}catch(const std::overflow_error&){++overflow;}
+  std::size_t malformed=0;try{(void)dm::algorithms::reconstruct_path(dm::algorithms::ShortestPathResult{{0,1},{dm::algorithms::kNoPredecessor,1}},1);}catch(const std::invalid_argument&){++malformed;}
+  if(rejected!=4 || overflow!=1 || malformed!=1 || reference.distance[1]!=-1)return 1;
+  std::print("Rejected weight controls {}; overflow controls {}; malformed-parent controls {}. Bellman-Ford negative-edge optimum {:.0f}.\n",rejected,overflow,malformed,reference.distance[1]);
+  dm::graphics::Diagram d(75,1100);dm::graphics::DiagramNodeStyle node;node.width=2;node.height=1.3;node.font_size=24;
+  d.node("s",{0,0},"Source 0\ncost 0",node).node("early",{8,0},"Vertex 1\ntrue cost −1",node).node("later",{4,-3},"Vertex 2\ncost 5",node);
+  dm::graphics::DiagramStroke bad;bad.color={220,38,38};bad.width=3.5;
+  d.edge("s","early","direct cost 2").edge("s","later","cost 5").edge("later","early","cost −6",bad)
+   .text({4,2},"Negative-edge control: settling vertex 1 at cost 2 is premature",24)
+   .text({4,-4.7},"Dijkstra rejects this graph; Bellman–Ford returns the route cost −1",21)
+   .save_svg("build/dijkstra_boundaries.svg");
+}
+```
+// result_begin: markdown
+Zero-cycle control: distances [0, 1, 1, 1, inf]; settled [0, 1, 2, 3]; parent of 3 is 1; unreachable route length 0.
+Inspections 8; improvements 3; stale removals 0.
+
+Rejected weight controls 4; overflow controls 1; malformed-parent controls 1. Bellman-Ford negative-edge optimum -1.
+\image(figures/dijkstra_boundaries.svg)
+// result_end
+\caption(A negative edge breaks the nonnegative settling argument: the indirect route costs minus one. The executed controls separately check zero-cost cycles, tie order, isolated vertices, invalid weights, overflow and malformed parents.)
+\alttext(Three nodes show a direct route of cost two and an indirect route with weights five and minus six; the negative edge is red.)
+
+> Count the work rather than infer it from a timing curve
+
+Let R be the number of strict improvements, E_r the number of outgoing
+arcs examined from reachable settled vertices and V_r the number of
+reachable vertices. A full successful execution has
+
+\[
+\text{pushes}=\text{pops}=R+1,\qquad
+\text{stale pops}=R+1-V_r,\qquad R\le E_r\le E.
+\]
+
+The extra push is the initial source entry. Every improvement creates one
+entry, and draining the heap removes every entry. Each reachable vertex
+accounts for one fresh removal; the rest are stale. The peak heap size is
+at most R+1. Validation and adjacency construction still inspect/store all
+E input arcs, including unreachable components.
+
+Binary heap operations take logarithmic time in the live entry count.
+Thus a safe multigraph bound is O(V+E+(R+1)log(R+2)), or
+O(V+E+(E+1)log(E+2)) after eliminating R. Storage is O(V+E).
+For simple graphs, E is at most quadratic in V, giving the familiar
+O((V+E)log V) bound. The original report’s unrestricted heap-size/log-V
+claim needs this distinction when arbitrarily many parallel arcs are allowed.
+Counters count logical pushes, removals and inspections, not comparator
+calls, elapsed time or a guaranteed constant per heap operation.
+
+For a forward band, include u→u+d for d=1,...,w when the destination exists,
+and give every arc cost one. With n>w, the exact edge count is
+wn−w(w+1)/2. Every non-source vertex improves once, the heap peaks at w,
+and delta(0,v)=ceil(v/w). The existing canonical band generator supplies
+the inputs; no graph-building algorithm is reimplemented in the report.
+
+```{cpp, results="markdown", file="figures/dijkstra_forward_bands.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  std::vector<double> sizes,inspections,pushes,peaks;
+  std::print("| vertices | band width | arcs / inspections | improvements | pushes / pops | stale | peak heap | last cost |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t n:{32u,128u,512u,2048u}){
+    const std::size_t w=8;const auto edges=dm::algorithms::dag_forward_band_edges(n,w);
+    const auto t=dm::algorithms::dijkstra_trace(n,edges,0);
+    if(t.work.edges_examined!=w*n-w*(w+1)/2 || t.work.successful_relaxations!=n-1 || t.work.heap_pops!=n || t.work.stale_pops || t.work.max_heap_size!=w || t.result.distance.back()!=(n-1+w-1)/w)return 1;
+    sizes.push_back(n);inspections.push_back(t.work.edges_examined);pushes.push_back(t.work.heap_pushes);peaks.push_back(t.work.max_heap_size);
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {:.0f} |\n",n,w,t.work.edges_examined,t.work.successful_relaxations,t.work.heap_pops,t.work.stale_pops,t.work.max_heap_size,t.result.distance.back());
+  }
+  auto p=dm::graphics::RPlot::create();p.line(sizes,inspections,"edge inspections",{37,99,235}).points(sizes,inspections,"",{37,99,235},5).line(sizes,pushes,"heap pushes",{220,38,38});
+  p.title("Actual work in width-eight forward bands").x_label("number of vertices").y_label("logical operation count").y_limits(0,22000).size(1100,570).save_svg("build/dijkstra_forward_bands.svg");
+}
+```
+// result_begin: markdown
+| vertices | band width | arcs / inspections | improvements | pushes / pops | stale | peak heap | last cost |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 32 | 8 | 220 | 31 | 32 | 0 | 8 | 4 |
+| 128 | 8 | 988 | 127 | 128 | 0 | 8 | 16 |
+| 512 | 8 | 4060 | 511 | 512 | 0 | 8 | 64 |
+| 2048 | 8 | 16348 | 2047 | 2048 | 0 | 8 | 256 |
+\image(figures/dijkstra_forward_bands.svg)
+// result_end
+\caption(Actual operation counts on width-eight unit-cost bands match the closed forms at four sizes. Every vertex settles once, every arc is inspected once and the peak heap stays at eight.)
+\alttext(A line plot shows edge inspections and heap pushes growing with the number of vertices; the table verifies exact counts and destination costs.)
+
+> Two vertices can still produce a large lazy heap
+
+Take m parallel arcs 0→1 with descending weights m,m−1,...,1.
+Expanding source 0 improves vertex 1 once per arc. Before vertex 1 can be
+removed, the heap therefore contains m entries, even though V=2. The
+first removal settles vertex 1 at cost one; the other m−1 are stale.
+The exact counts are m inspections, m improvements, m+1 pushes/removals,
+a peak heap of m and two settled vertices for positive m. This proves
+that a lazy heap is not generally bounded by the number of vertices.
+It does not alone prove a lower bound on comparator work. The figure uses
+base-two logarithms of the positive counts to distinguish heap growth
+from the constant two settled vertices; the table retains exact integers.
+
+The canonical workload generator checks the complete edge count before
+allocation. Integer weights stay exact through count 2^53; an optional
+one-million-edge output cap defaults on. The trace separately budgets
+actual events as pop records plus inspected-edge records. Its default is
+one million events, and zero disables only that optional cap. Budgets are
+checked before the next operation, so the exact m-arc history needs 2m+1
+events. Result arrays, adjacency and settled-order storage are outside
+that history count. An exhausted budget raises length_error with no partial
+trace returned. Ordinary dijkstra() allocates no trace histories.
+
+```{cpp, results="markdown", file="figures/dijkstra_parallel_arcs.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::vector<double> arcs,peak,settled;
+  std::print("| parallel arcs | inspections | pushes / pops | settled | stale | peak heap | history events | chosen original arc |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t m:{1u,8u,64u,512u,4096u,32768u}){
+    const auto edges=dm::algorithms::dijkstra_parallel_workload(m);const auto t=dm::algorithms::dijkstra_trace(2,edges,0,2*m+1);
+    if(t.work.edges_examined!=m || t.work.heap_pushes!=m+1 || t.work.heap_pops!=m+1 || t.work.settled_vertices!=2 || t.work.stale_pops!=m-1 || t.work.max_heap_size!=m || t.predecessor_edge[1]!=m-1)return 1;
+    arcs.push_back(std::log2(m));peak.push_back(std::log2(t.work.max_heap_size));settled.push_back(std::log2(t.work.settled_vertices));
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",m,t.work.edges_examined,t.work.heap_pops,t.work.settled_vertices,t.work.stale_pops,t.work.max_heap_size,t.pops.size()+t.relaxations.size(),t.predecessor_edge[1]);
+  }
+  const auto edges=dm::algorithms::dijkstra_parallel_workload(8);std::size_t rejected=0;
+  try{(void)dm::algorithms::dijkstra_trace(2,edges,0,16);}catch(const std::length_error&){++rejected;}
+  const auto exact=dm::algorithms::dijkstra_trace(2,edges,0,17),uncapped=dm::algorithms::dijkstra_trace(2,edges,0,0);
+  if(rejected!=1 || exact.result.distance!=uncapped.result.distance)return 1;
+  std::print("\nEight-arc budget: 16 events rejected {}; 17 succeeds; zero disables the optional cap. Empty graph on two vertices settles {} vertex.\n",rejected,dm::algorithms::dijkstra_trace(2,{},0).work.settled_vertices);
+  auto p=dm::graphics::RPlot::create();p.line(arcs,peak,"peak heap",{37,99,235}).points(arcs,peak,"",{37,99,235},5).line(arcs,settled,"settled vertices",{220,38,38}).title("Two vertices, many parallel arcs").x_label("log2(parallel arc count)").y_label("log2(actual count)").y_limits(-.5,19).size(1100,570).save_svg("build/dijkstra_parallel_arcs.svg");
+}
+```
+// result_begin: markdown
+| parallel arcs | inspections | pushes / pops | settled | stale | peak heap | history events | chosen original arc |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 2 | 2 | 0 | 1 | 3 | 0 |
+| 8 | 8 | 9 | 2 | 7 | 8 | 17 | 7 |
+| 64 | 64 | 65 | 2 | 63 | 64 | 129 | 63 |
+| 512 | 512 | 513 | 2 | 511 | 512 | 1025 | 511 |
+| 4096 | 4096 | 4097 | 2 | 4095 | 4096 | 8193 | 4095 |
+| 32768 | 32768 | 32769 | 2 | 32767 | 32768 | 65537 | 32767 |
+
+Eight-arc budget: 16 events rejected 1; 17 succeeds; zero disables the optional cap. Empty graph on two vertices settles 1 vertex.
+\image(figures/dijkstra_parallel_arcs.svg)
+// result_end
+\caption(Base-two logarithms of actual counts show the growing heap peak beside the constant two settled vertices. The table also verifies that stale removals equal the arc count minus one.)
+\alttext(A rising blue line for heap entries and a horizontal red line for two settled vertices are plotted in base-two logarithmic coordinates; exact counts remain in the table.)
+
+> What was verified and what remains a convention
+
+Native tests enumerate all 4096 three-vertex directed graphs whose six
+possible non-loop arcs are absent or have costs zero, one or two. For every
+source, independent Floyd–Warshall distances match both ordinary and traced
+Dijkstra: 12,288 source traversals. A multiset-based event certificate checks
+every recorded minimum removal, original arc, prior distance/parent,
+candidate, strict-improvement outcome and resulting heap size. The original
+six-city graph, zero cycles, duplicate arcs and tie order receive explicit
+checks. The existing 500 seeded Bellman–Ford comparisons remain in the suite.
+
+Closed-form band and parallel-arc families check final distances, selected
+arc identities and work conservation. Exact/one-short event caps, complete
+input validation, overflow priority, finite maximum/subnormal costs,
+negative zero, malformed predecessor chains and owned trace copies cover
+boundary behavior. A malformed public record can no longer force unchecked
+parent indexing or an infinite reconstruction loop.
+
+The original finite distances, predecessor conventions, public function
+signatures, two-field result layout and formatting remain available. The
+new trace distinguishes discovery, settlement and obsolete entries; it does
+not conflate nine removals with six settled cities. Nonnegative finite costs
+make greedy settlement valid, while explicit floating-point and history
+limits keep failures visible rather than presenting them as unreachable routes.
+
+> References
+
+- E. W. Dijkstra (1959), “A note on two problems in connexion with graphs”,
+  Numerische Mathematik 1, 269–271.
+  [Original paper](https://doi.org/10.1007/BF01386390),
+  [open scan](https://www.cs.cornell.edu/courses/JavaAndDS/shortestPath/1959dijkstra.pdf).

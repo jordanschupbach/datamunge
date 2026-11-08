@@ -6,6 +6,7 @@
 #include <datamunge/dstruct/dataframe.hpp>
 #include <datamunge/linalg/dense_matrix.hpp>
 #include <datamunge/plot/plot.hpp>
+#include <datamunge/plot/diagram.hpp>
 #include <datamunge/random/random.hpp>
 #include <datamunge/stats/formula.hpp>
 
@@ -164,6 +165,34 @@ class DecisionTreeClassifier {
     /// std::print("{}\n", tree.node_frame().to_md());
     /// @endcode
     [[nodiscard]] dstruct::DataFrame node_frame() const;
+
+    /// @brief Draw the actual fitted CART nodes and branches as an owned native diagram.
+    /// Labels show node id, the stored threshold or predicted leaf class, sample
+    /// count and the fitted Gini/entropy impurity. Thresholds use shortest round-trip
+    /// decimal text; no model is refit or inferred from predictions. Left edges
+    /// mean <=; right edges mean >. Leaves retain depth-first left-to-right order,
+    /// with parents centred over their descendant leaves. Long labels wrap using
+    /// Diagram's native font metrics; exceptionally long words can expand boxes.
+    /// Layout uses O(node_count()) temporary storage without recursive traversal.
+    /// The node cap is checked before layout allocation. The model is unchanged;
+    /// the returned diagram owns its labels and may outlive the model. No file I/O.
+    /// Concurrent const calls are safe when the model is not assigned or destroyed.
+    /// @param max_nodes Optional complete-node cap, default 255; zero disables only this cap.
+    /// @return Editable diagram, with root at the top and class-coloured leaves.
+    /// @throws std::length_error If the complete fitted tree exceeds a nonzero cap.
+    /// @throws std::logic_error If no fitted nodes remain, for example after moving the model.
+    /// @throws std::bad_alloc If owned labels or layout storage cannot be allocated.
+    /// @par Example
+    /// @code
+    /// const dm::stats::DecisionTreeClassifier tree(dm::datasets::iris(), "Species ~ .", {.max_depth=1});
+    /// const auto picture=tree.plot_tree();
+    /// std::print("{}\n",picture.to_svg().find("n=150")!=std::string::npos); // true
+    /// @endcode
+    /// @par References
+    /// - L. Breiman, J. H. Friedman, R. A. Olshen and C. J. Stone (1984).
+    ///   Classification and Regression Trees. https://www.routledge.com/Classification-and-Regression-Trees/Breiman-Friedman-Stone-Olshen/p/book/9780412048418/
+    /// @see node_frame(), graphics::Diagram, plot_classification()
+    [[nodiscard]] graphics::Diagram plot_tree(std::size_t max_nodes=255) const;
 
     /// @brief Scatter of @p data in the (x_feature, y_feature) plane, coloured by true class, with
     ///        a black marker on rows the tree misclassifies.

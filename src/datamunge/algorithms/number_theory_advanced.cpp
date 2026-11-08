@@ -48,22 +48,6 @@ i128 invmod(i128 a, i128 m) {
     return ((x % m) + m) % m;
 }
 
-u64 isqrt_u64(u64 n) {
-    if (n == 0) return 0;
-    u64 x = static_cast<u64>(std::sqrt(static_cast<double>(n)));
-    while (x > 0 && x > n / x) --x;
-    while ((x + 1) <= n / (x + 1) && (x + 1) * (x + 1) <= n) ++x;
-    return x;
-}
-
-i128 isqrt_i128(i128 n) {
-    if (n <= 0) return 0;
-    i128 x = static_cast<i128>(std::sqrt(static_cast<long double>(n)));
-    while (x > 0 && x * x > n) --x;
-    while ((x + 1) * (x + 1) <= n) ++x;
-    return x;
-}
-
 // ---- elliptic-curve arithmetic mod n for Lenstra ECM ----
 
 struct Point {
@@ -116,49 +100,6 @@ struct XorShift {
 };
 
 } // namespace
-
-PellSolution chakravala(u64 N) {
-    const u64 s = isqrt_u64(N);
-    if (s * s == N) return {0, 0, false}; // perfect square: no nontrivial solution
-
-    i128 a = static_cast<i128>(s);
-    i128 b = 1;
-    i128 k = a * a - static_cast<i128>(N); // a^2 - N b^2 = k
-
-    int guard = 0;
-    while (k != 1 && ++guard < 100000) {
-        i128 absk = k < 0 ? -k : k;
-        // m ≡ -a * b^{-1} (mod absk), chosen nearest to sqrt(N), m >= 1.
-        i128 m;
-        if (absk == 1) {
-            m = static_cast<i128>(s); // free choice: nearest to sqrt(N)
-            if (m < 1) m = 1;
-        } else {
-            i128 binv = invmod(((b % absk) + absk) % absk, absk);
-            i128 r0   = ((-a % absk + absk) % absk) * binv % absk; // residue class
-            // pick m = r0 + t*absk closest to s, with m >= 1
-            i128 t    = (static_cast<i128>(s) - r0) / absk;
-            i128 best = 0;
-            i128 bestval = -1;
-            for (i128 dt = -1; dt <= 1; ++dt) {
-                i128 cand = r0 + (t + dt) * absk;
-                if (cand < 1) continue;
-                i128 diff = cand * cand - static_cast<i128>(N);
-                if (diff < 0) diff = -diff;
-                if (bestval < 0 || diff < bestval) { bestval = diff; best = cand; }
-            }
-            if (bestval < 0) best = r0 >= 1 ? r0 : r0 + absk; // fallback
-            m = best;
-        }
-        const i128 a_new = (a * m + static_cast<i128>(N) * b) / absk;
-        const i128 b_new = (a + b * m) / absk;
-        const i128 k_new = (m * m - static_cast<i128>(N)) / k;
-        a = a_new < 0 ? -a_new : a_new;
-        b = b_new < 0 ? -b_new : b_new;
-        k = k_new;
-    }
-    return {a, b, k == 1};
-}
 
 u64 lenstra_ecm(u64 n, u64 seed) {
     if (n <= 1) return n;

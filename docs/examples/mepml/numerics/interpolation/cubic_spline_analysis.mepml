@@ -1,0 +1,381 @@
+//? Title: Natural Cubic Splines: Moment Systems, Smoothness and Boundary Limits
+//? Subtitle: A three-knot solve, the original eleven-node Runge comparison, and controls for overshoot, extrapolation and refinement order
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given values at ordered knots, we want a smooth interpolating curve without
+forcing one high-degree polynomial across the whole domain. Natural cubic
+splines join local cubics with continuous values, slopes and second derivatives,
+using zero second derivative at the two endpoints. We solve a three-knot
+example by hand and expose its actual native moment system and coefficients,
+then retain the original eleven-node Runge comparison with its full polynomial
+overshoot visible. Independent refinement controls separate compatible and
+mismatched endpoint curvature: fourth-order behavior is not automatic for
+every smooth function under natural boundary conditions. Small counterexamples
+also show that C2 continuity does not guarantee monotonicity, positivity or
+linear extrapolation. Prepared native evaluation supplies derivatives and
+repeated queries without rescanning mutable coefficient arrays.
+)
+
+\toc
+
+> Three knots, two cubics, one unknown moment
+
+Start with (0,0), (1,1), (2,0). On interval i let t=x−x_i and
+S_i(x)=a_i+b_i t+c_i t²+d_i t³. Write h_i=x_(i+1)−x_i>0 and
+m_i=S''(x_i). Since the second derivative of a cubic is linear,
+
+\[
+S_i''(x)=m_i+\frac{m_{i+1}-m_i}{h_i}t.
+\]
+\alttext(The second derivative varies linearly from the left moment to the right moment over the interval.)
+
+Integrating twice and imposing both endpoint values gives
+
+\[
+a_i=y_i,\quad
+b_i=\frac{y_{i+1}-y_i}{h_i}-\frac{h_i(2m_i+m_{i+1})}{6},\quad
+c_i=\frac{m_i}{2},\quad
+d_i=\frac{m_{i+1}-m_i}{6h_i}.
+\]
+\alttext(The constant is the left value; the slope corrects the secant by endpoint moments; the quadratic coefficient is half the left moment; the cubic coefficient is the moment difference over six interval widths.)
+
+Matching the first derivative between neighboring pieces yields the interior
+tridiagonal system
+
+\[
+h_{i-1}m_{i-1}+2(h_{i-1}+h_i)m_i+h_i m_{i+1}
+=6\left(\frac{y_{i+1}-y_i}{h_i}-\frac{y_i-y_{i-1}}{h_{i-1}}\right).
+\]
+\alttext(Adjacent moments are weighted by interval widths, with twice the sum of neighboring widths on the diagonal. The right side is six times the change in secant slope.)
+
+Natural endpoints set m_0=m_(n−1)=0. Here both widths are one and the
+secants are +1 and −1, so 4m_1=−12 and m_1=−3. The two pieces become
+S_0(t)=1.5t−0.5t³ and S_1(t)=1−1.5t²+0.5t³. In particular S(0.5)=0.6875,
+and both pieces meet at x=1 with slope zero and second derivative −3.
+
+```{cpp, results="markdown", file="figures/cubic_spline_moments.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::natural_cubic_spline_trace({0,1,2},{0,1,0},3);
+  const dm::algorithms::PreparedCubicSpline p(t.spline);
+  if(t.moments!=std::vector<double>{0,-3,0} || p.evaluate(.5)!=.6875 || p.evaluate(1,2)!=-3) return 1;
+  std::print("Actual interior matrix diagonal {}; RHS {}; pivot {}; solved moments {}.\n\n",t.diagonal,t.rhs,t.pivots,t.moments);
+  std::print("| interval | a | b | c | d |\n| :--- | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<t.spline.a.size();++i) std::print("| [{},{}] | {} | {} | {} | {} |\n",t.spline.xs[i],t.spline.xs[i+1],t.spline.a[i],t.spline.b[i],t.spline.c[i],t.spline.d[i]);
+  dm::graphics::Diagram d(65,1100);
+  dm::graphics::DiagramNodeStyle box;box.width=2.8;box.height=1.4;box.font_size=18;
+  const std::vector<double> y{0,1,0};
+  for(std::size_t i=0;i<3;++i) {
+    box.fill=i==1?dm::graphics::RGB{254,243,199}:dm::graphics::RGB{219,234,254};
+    d.node(std::format("k{}",i),{4.*i,0},std::format("knot ({},{})\nmoment {}",t.spline.xs[i],y[i],t.moments[i]),box);
+  }
+  box.width=3.5;box.height=1.9;box.fill={220,252,231};
+  for(std::size_t i=0;i<2;++i) {
+    d.node(std::format("piece{}",i),{2+4.*i,-3},std::format("interval [{},{}]\na={}, b={}\nc={}, d={}",t.spline.xs[i],t.spline.xs[i+1],t.spline.a[i],t.spline.b[i],t.spline.c[i],t.spline.d[i]),box);
+    d.edge(std::format("k{}",i),std::format("piece{}",i)).edge(std::format("k{}",i+1),std::format("piece{}",i));
+  }
+  d.text({4,2},std::format("Actual one-row moment system: {} m1 = {}",t.diagonal[0],t.rhs[0]),23)
+   .text({4,-5.2},std::format("S(0.5)={}; shared slope={}; shared second derivative={}",p.evaluate(.5),p.evaluate(1,1),p.evaluate(1,2)),19)
+   .save_svg("build/cubic_spline_moments.svg");
+  std::print("\nActual forward eliminations {}; back substitutions {}; coefficient intervals {}.\n",t.eliminations,t.back_substitutions,t.coefficient_intervals);
+}
+```
+// result_begin: markdown
+Actual interior matrix diagonal [4]; RHS [-12]; pivot [4]; solved moments [0, -3, 0].
+
+| interval | a | b | c | d |
+| :--- | ---: | ---: | ---: | ---: |
+| [0,1] | 0 | 1.5 | 0 | -0.5 |
+| [1,2] | 1 | 0 | -1.5 | 0.5 |
+
+Actual forward eliminations 0; back substitutions 1; coefficient intervals 2.
+\image(figures/cubic_spline_moments.svg)
+// result_end
+\caption(The native trace retains the actual system before elimination and the actual final pivots, reduced RHS and moments. Both local pieces depend on the shared interior moment.)
+\alttext(Three knot boxes carry moments zero, minus three and zero. Arrows connect each adjacent pair to its actual local coefficient box; the displayed one-row system is four times the interior moment equals minus twelve.)
+
+> Why the solution exists, and what natural means
+
+After fixing the endpoint moments, the matrix is symmetric. Each diagonal
+2(h_(i−1)+h_i) exceeds the sum of its nonnegative off-diagonal entries, so
+it is positive definite. The moment system has a unique solution, and Thomas
+elimination has positive pivots in exact arithmetic. Assembly, factorization,
+back substitution and coefficient construction take O(n) work and storage.
+The traced and ordinary fit use one executing kernel, with owned array copies
+only when a trace is requested.
+
+Natural specifies endpoint second derivatives, not endpoint slopes. It also
+has a useful variational meaning. Among interpolants with a square-integrable second derivative on the knot
+span [x_0,x_(n−1)], the natural spline minimizes the bending functional
+E(g)=integral from the first to the last knot of (g''(x))² dx. To see why, write g=S+v, with v zero at every knot.
+Integrating integral S''v'' by parts on every interval gives zero: S''' is
+constant inside each piece, v vanishes at knots, S'' is continuous across
+interior knots, and its endpoint values are zero. Therefore
+
+\[
+E(S+v)=E(S)+E(v)\ge E(S).
+\]
+\alttext(The cross term in the squared-curvature energy vanishes, leaving the spline energy plus the nonnegative energy of the perturbation.)
+
+Equality requires v''=0, so v is a line; with at least two distinct knots it
+vanishes identically. This explains the natural boundary choice and uniqueness.
+It does not impose monotonicity or keep every piece inside its data range.
+Floating calculations approximate this ideal system; finite checks do not
+certify conditioning or an exact energy inequality.
+
+> Retain the original Runge comparison, without clipping the polynomial
+
+Use f(x)=1/(1+25x²) at eleven equally spaced knots from −1 to 1. These are
+the original coordinates and values. The global interpolating polynomial has
+degree at most ten; the natural spline has ten cubic pieces. Both interpolate
+the same knot data, yet their behavior between knots can differ substantially.
+
+The scan now uses 2,001 integer-indexed coordinates, including both endpoints,
+instead of repeated floating additions of 0.001. It reports a maximum over
+that finite grid, not a certified continuous supremum. The old plot's upper
+limit 1.3 cut off the polynomial's largest visible overshoot; the full range
+is retained below.
+
+```{cpp, results="markdown", file="figures/cubic_spline.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto f=[](double x){return 1/(1+25*x*x);};
+  const dm::Vector<> xs=dm::seql(-1,1,11);
+  const dm::Vector<> ys=1/(1+25*xs*xs);
+  const dm::algorithms::PreparedCubicSpline p(dm::algorithms::natural_cubic_spline(xs,ys));
+  const dm::Vector<> grid=dm::seql(-1,1,2001);
+  const auto nodes=dm::algorithms::interpolation_error_scan([&](double x){return p.evaluate(x);},f,xs);
+  const auto spline=dm::algorithms::interpolation_error_scan([&](double x){return p.evaluate(x);},f,grid);
+  const auto polynomial=dm::algorithms::interpolation_error_scan([&](double x){return dm::algorithms::lagrange_interpolate(xs,ys,x);},f,grid);
+  if(spline.max_abs_error<.0219 || spline.max_abs_error>.0221 || polynomial.max_abs_error<1.91 || polynomial.max_abs_error>1.92 || nodes.max_abs_error>1e-14) return 1;
+  std::print("| model | queries | sampled maximum error | first worst coordinate | sampled RMS error |\n| :--- | ---: | ---: | ---: | ---: |\n");
+  std::print("| natural spline | {} | {:.8f} | {:.6f} | {:.8f} |\n",spline.queries.size(),spline.max_abs_error,spline.queries[spline.worst_index],spline.rms_error);
+  std::print("| degree-10 polynomial | {} | {:.8f} | {:.6f} | {:.8f} |\n",polynomial.queries.size(),polynomial.max_abs_error,polynomial.queries[polynomial.worst_index],polynomial.rms_error);
+  std::print("\nSampled knot error {:.3e}; polynomial/spline sampled maximum-error ratio {:.6f}.\n",nodes.max_abs_error,polynomial.max_abs_error/spline.max_abs_error);
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(polynomial.queries,polynomial.predictions,"degree-10 polynomial",{220,38,38},1.6)
+      .line(spline.queries,spline.references,"true Runge function",{22,163,74},2)
+      .line(spline.queries,spline.predictions,"natural cubic spline",{37,99,235},2)
+      .points(xs,ys,"knots",{31,41,55},5)
+      .legend({"degree-10 polynomial","true Runge function","natural spline"},{{220,38,38},{22,163,74},{37,99,235}})
+      .title("Original eleven knots: complete polynomial overshoot")
+      .x_label("x").y_label("interpolated value").x_limits(-1.05,1.05).y_limits(-.4,2.6).size(900,580)
+      .save_svg("build/cubic_spline.svg");
+}
+```
+// result_begin: markdown
+| model | queries | sampled maximum error | first worst coordinate | sampled RMS error |
+| :--- | ---: | ---: | ---: | ---: |
+| natural spline | 2001 | 0.02197383 | -0.118000 | 0.00715618 |
+| degree-10 polynomial | 2001 | 1.91564305 | 0.940000 | 0.58023648 |
+
+Sampled knot error 0.000e+00; polynomial/spline sampled maximum-error ratio 87.178404.
+\image(figures/cubic_spline.svg)
+// result_end
+\caption(The original error magnitudes remain approximately 0.02197 for the spline and 1.91564 for the polynomial. The complete vertical range shows both outer polynomial peaks, rather than hiding them above the frame.)
+\alttext(A full-range plot shows both curves through eleven black knots. The global polynomial rises near two between outer knots and falls below zero farther inward; the natural spline follows the positive Runge function much more closely in this experiment.)
+
+This is one useful interpolation comparison, not a theorem that every cubic
+spline is accurate for every knot choice. Global polynomial interpolation on
+unsuitable nodes can oscillate even in exact arithmetic; evaluating the same
+polynomial with a different formula does not change that interpolation problem.
+Likewise, natural boundary conditions can introduce their own approximation error.
+
+> Boundary compatibility changes the refinement rate
+
+On a uniform mesh, the interior moment equation is
+m_(i−1)+4m_i+m_(i+1)=6(y_(i−1)−2y_i+y_(i+1))/h². For a smooth function,
+substituting its true second derivatives leaves an O(h²) residual. The
+strictly diagonally dominant interior matrix has an inverse bounded in maximum
+norm independently of the grid size. If the endpoint second derivatives also
+match the natural zeros, the moment errors are O(h²). They enter the local
+spline formula multiplied by h², giving O(h⁴) value error together with the
+local cubic interpolation remainder, under the stated smoothness and compatible
+boundary assumptions.
+
+For f(x)=x², however, the true second derivatives at both ends are two.
+Writing e_i=m_i−2 gives e_0=e_N=−2 and the homogeneous interior recurrence
+e_(i−1)+4e_i+e_(i+1)=0. Its decaying root is −2+sqrt(3), so an O(1)
+moment mismatch persists near each boundary. On an interval, with λ=(x−x_i)/h,
+the value error is
+
+\[
+S(x)-x^2=\frac{h^2}{6}\left[e_i((1-\lambda)^3-(1-\lambda))
++e_{i+1}(\lambda^3-\lambda)\right].
+\]
+\alttext(The quadratic's spline error equals h squared times a fixed combination of the two neighboring moment errors. The boundary moment mismatch therefore produces second-order value error.)
+
+Thus the maximum error near the ends is of order h², despite f being a smooth
+polynomial. Natural splines reproduce lines, but need not reproduce quadratics
+or arbitrary cubics whose endpoint curvature violates the chosen boundary data.
+The next controlled study contrasts x² with sin(πx), whose endpoint second
+derivatives vanish. Every displayed error is a native finite-grid census.
+
+```{cpp, results="markdown", file="figures/cubic_spline_orders.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const double pi=std::acos(-1.);
+  const dm::Vector<> grid=dm::seql(0,1,8193);
+  std::vector<double> log_intervals,log_sin_error,log_quadratic_error;
+  double previous_sin=0,previous_quadratic=0;
+  std::print("| intervals | sampled sin error | halving ratio | sampled x squared error | halving ratio |\n| ---: | ---: | :--- | ---: | :--- |\n");
+  for(std::size_t intervals:{4,8,16,32,64,128}) {
+    const dm::Vector<> xs=dm::seql(0,1,intervals+1);
+    const dm::Vector<> sine=dm::sin(pi*xs),quadratic=xs*xs;
+    const dm::algorithms::PreparedCubicSpline ps(dm::algorithms::natural_cubic_spline(xs,sine)),pq(dm::algorithms::natural_cubic_spline(xs,quadratic));
+    const auto es=dm::algorithms::interpolation_error_scan([&](double x){return ps.evaluate(x);},[=](double x){return std::sin(pi*x);},grid);
+    const auto eq=dm::algorithms::interpolation_error_scan([&](double x){return pq.evaluate(x);},[](double x){return x*x;},grid);
+    const auto rs=previous_sin/es.max_abs_error,rq=previous_quadratic/eq.max_abs_error;
+    if(intervals>=16 && (rs<15.5 || rs>17 || rq<3.98 || rq>4.02)) return 1;
+    std::print("| {} | {:.6e} | {} | {:.6e} | {} |\n",intervals,es.max_abs_error,previous_sin?std::format("{:.6f}",rs):"n/a",eq.max_abs_error,previous_quadratic?std::format("{:.6f}",rq):"n/a");
+    log_intervals.push_back(std::log2(intervals));log_sin_error.push_back(std::log2(es.max_abs_error));log_quadratic_error.push_back(std::log2(eq.max_abs_error));
+    previous_sin=es.max_abs_error;previous_quadratic=eq.max_abs_error;
+  }
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(log_intervals,log_sin_error,"compatible sine",{37,99,235},2)
+      .points(log_intervals,log_sin_error,"",{37,99,235},4)
+      .line(log_intervals,log_quadratic_error,"incompatible quadratic",{234,88,12},2)
+      .points(log_intervals,log_quadratic_error,"",{234,88,12},4)
+      .legend({"sin(pi x)","x squared"},{{37,99,235},{234,88,12}})
+      .title("Endpoint compatibility changes the global refinement rate")
+      .x_label("log2(number of intervals)").y_label("log2(sampled maximum absolute error)")
+      .x_limits(1.8,7.2).y_limits(-34,-5).size(900,580)
+      .save_svg("build/cubic_spline_orders.svg");
+}
+```
+// result_begin: markdown
+| intervals | sampled sin error | halving ratio | sampled x squared error | halving ratio |
+| ---: | ---: | :--- | ---: | :--- |
+| 4 | 1.066088e-03 | n/a | 6.016472e-03 | n/a |
+| 8 | 6.312141e-05 | 16.889484 | 1.533980e-03 | 3.922131 |
+| 16 | 3.889305e-06 | 16.229483 | 3.835341e-04 | 3.999593 |
+| 32 | 2.422094e-07 | 16.057616 | 9.588246e-05 | 4.000045 |
+| 64 | 1.512443e-08 | 16.014442 | 2.397019e-05 | 4.000071 |
+| 128 | 9.450637e-10 | 16.003614 | 5.991792e-06 | 4.000504 |
+\image(figures/cubic_spline_orders.svg)
+// result_end
+\caption(On the explicitly transformed base-two axes, slopes approach minus four and minus two. Halving h reduces the compatible sine error by about sixteen, and the incompatible quadratic error by about four.)
+\alttext(Two decreasing error curves on base-two logarithmic coordinates have distinct slopes: the compatible sine falls about four vertical units per horizontal unit and the quadratic falls about two.)
+
+These grids illustrate the derived asymptotic behavior before rounding dominates.
+They do not provide rigorous continuous maximum bounds. In particular, a small
+sampled error should not be relabeled a guaranteed error tolerance.
+
+> C2 smoothness does not preserve shape, and natural extrapolation is still cubic
+
+Fit nondecreasing samples (0,0), (1,1), (2,1). The natural spline has
+S(1.5)=1.09375, above the largest sample. At x=2 its second derivative is
+zero, yet its last cubic coefficient is nonzero. Extending that piece to x=3
+gives S(3)=1, while extending the endpoint tangent line would give 0.75.
+Natural imposes curvature at one endpoint, not a linear function everywhere
+outside it. Another nonnegative dataset, (0,0), (1,0), (2,1), gives the negative
+value S(0.5)=−0.09375. Neither monotonicity nor positivity follows from C2 continuity.
+
+```{cpp, results="markdown", file="figures/cubic_spline_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const dm::algorithms::PreparedCubicSpline p(dm::algorithms::natural_cubic_spline({0,1,2},{0,1,1}));
+  const dm::algorithms::PreparedCubicSpline q(dm::algorithms::natural_cubic_spline({0,1,2},{0,0,1}));
+  if(p.evaluate(1.5)!=1.09375 || q.evaluate(.5)!=-.09375 || p.evaluate(2,2)!=0 || p.evaluate(3)!=1) return 1;
+  std::print("| control | native value |\n| :--- | ---: |\n");
+  std::print("| monotone data: S(1.5) | {} |\n| nonnegative data: S(0.5) | {} |\n| endpoint second derivative S''(2) | {} |\n| extended cubic S(3) | {} |\n| endpoint tangent at x=3 | {} |\n",p.evaluate(1.5),q.evaluate(.5),p.evaluate(2,2),p.evaluate(3),p.evaluate(2)+p.evaluate(2,1));
+  const dm::Vector<> grid=dm::seql(0,3,601);
+  auto plot=dm::graphics::RPlot::create();
+  plot.line(grid,p.evaluate(grid),"natural cubic",{37,99,235},2)
+      .points(std::vector<double>{0,1,2},std::vector<double>{0,1,1},"data",{31,41,55},5)
+      .line(std::vector<double>{2,3},std::vector<double>{p.evaluate(2),p.evaluate(2)+p.evaluate(2,1)},"endpoint tangent",{234,88,12},2)
+      .abline_v(2,{107,114,128},1)
+      .legend({"natural cubic","endpoint tangent","data"},{{37,99,235},{234,88,12},{31,41,55}})
+      .title("Smooth interpolation can overshoot; end-piece extrapolation curves")
+      .x_label("x; supplied knot domain ends at 2").y_label("value")
+      .x_limits(-.05,3.05).y_limits(-.05,1.3).size(900,580)
+      .save_svg("build/cubic_spline_limits.svg");
+  bool malformed=false,capped=false,invalid=false;
+  auto bad=p.coefficients();bad.d.pop_back();
+  try { (void)dm::algorithms::cubic_spline_eval(bad,1); }
+  catch(const std::invalid_argument&) { malformed=true; }
+  try { (void)dm::algorithms::natural_cubic_spline_trace({0,1,2},{0,1,0},2); }
+  catch(const std::length_error&) { capped=true; }
+  try { (void)dm::algorithms::natural_cubic_spline_trace({0,1,1},{0,1,0},1); }
+  catch(const std::invalid_argument&) { invalid=true; }
+  if(!malformed || !capped || !invalid) return 1;
+  std::print("\nMalformed records reject; complete knot cap rejects; invalid data validates before cap: pass.\n");
+}
+```
+// result_begin: markdown
+| control | native value |
+| :--- | ---: |
+| monotone data: S(1.5) | 1.09375 |
+| nonnegative data: S(0.5) | -0.09375 |
+| endpoint second derivative S''(2) | 0 |
+| extended cubic S(3) | 1 |
+| endpoint tangent at x=3 | 0.75 |
+
+Malformed records reject; complete knot cap rejects; invalid data validates before cap: pass.
+\image(figures/cubic_spline_limits.svg)
+// result_end
+\caption(The blue curve overshoots the plateau inside the data domain, then follows a curved endpoint piece outside it. The orange tangent is displayed only as a comparison; the evaluator does not switch to that line.)
+\alttext(Three nondecreasing data points are joined by a smooth blue curve that rises above one, returns to one at x=2 and curves below then back up outside the domain. A straight orange endpoint tangent instead falls to three quarters at x=3.)
+
+> Native contracts and verification scope
+
+The original CubicSpline five-vector layout, fitting/evaluation names and
+interpolation.hpp include path remain available. Finite increasing knots,
+matching finite ordinates and complete coefficient shapes now validate explicitly.
+Empty fitting input gives a zero model, a singleton gives a constant and two
+knots give a line. Those degenerate conventions are library choices, separate
+from the uniqueness statement for a natural interpolant through at least two knots.
+
+A mutable public CubicSpline can be changed by its caller. Consequently,
+cubic_spline_eval() checks its full record in O(n) time before binary lookup.
+PreparedCubicSpline owns and validates one snapshot, then handles repeated
+scalar/derivative queries in O(log n) and q-query batches in O(q log n).
+Values and derivative orders zero through three are supported; the third
+derivative can jump at a knot, where the right interval is selected. The last
+knot uses the last interval. Outside queries extrapolate the end cubic; their
+coordinates are not clamped. A structurally valid manually supplied record
+need not satisfy natural boundaries or C2 continuity.
+
+The fit trace defaults to a complete 100,000-knot cap, checked after full input
+validation and before allocation. The sampled error census defaults to a complete
+1,000,000-query cap, with full finite-query/callback-presence checks before
+allocation or invocation. It calls each callback once per query, retains actual
+values and uses first-maximum ties and a scaled RMS. Empty error input has an
+explicit false existence flag and zero placeholders. Zero optional caps disable
+those caps only; allocation and container limits remain. Callback exceptions
+propagate. Input arrays, fitted records and diagnostics retain no borrowed views;
+the prepared coefficient accessor deliberately borrows its object's const record.
+
+Arithmetic must remain representable in the checked floating calculation.
+Unrepresentable widths, secants, system entries, coefficients, query offsets or
+evaluation results raise an overflow error. Ordinary rounding and extreme knot
+scales can still affect accuracy; validation is not a conditioning certificate.
+There is no shape-preserving modification, automatic boundary-condition choice
+or adaptive global-error guarantee hidden inside this natural spline API.
+
+No external dataset is required for these manufactured interpolation controls.
+Native tests retain the original Runge result, hand-solved moments, irregular
+knot continuity and actual factor replay, 1,000 random linearity controls,
+all derivative-side conventions, shape/finite/cap validation, empty/constant/line
+cases, both convergence families and stable large-error RMS calculations.
+A permanent optional Python Fraction oracle solves the full cubic value/C1/C2/
+natural-boundary constraint matrix by exact dense elimination, independently
+of the native moment/Thomas formulation. It checks 102 fits, their coefficients,
+moments, extrapolated values and derivatives. The focused C++ tests and native
+oracle checker also run under address and undefined-behavior sanitizers.
+
+> References
+
+C. de Boor, [A Practical Guide to Splines](https://link.springer.com/book/9780387953663)
+(2001), provides a canonical treatment of spline interpolation. The
+[SciPy CubicSpline documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)
+distinguishes natural boundary data from its default not-a-knot choice;
+[PPoly](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PPoly.html)
+documents local-power evaluation and endpoint-piece extrapolation. These
+comparisons describe semantics, not a dependency on Python in executable reports.

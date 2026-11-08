@@ -1,0 +1,275 @@
+//? Title: Bitap: Parallel Prefix States and Substitution Windows
+//? Subtitle: Exact matching, Hamming budgets, overlapping occurrences and visible machine-word states
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a byte string and a short pattern, locate every equal-length window that
+matches exactly or differs in at most a chosen number of positions. Overlapping
+windows and partial matches must survive while new matches begin. Bitap packs
+these prefix states into machine words. We derive the update, inspect a
+three-byte example, retain the original synthetic DNA motif, and exhaust a
+four-letter Hamming ball. The report uses canonical match and trace APIs rather
+than counting windows with a separate search implementation.
+)
+
+\toc
+
+> The method
+
+For pattern P of m bytes, build one mask for every possible byte c:
+bit j of \(M_c\) is one exactly when \(P_j=c\). Bit j of the state R
+means that the length-\(j+1\) pattern prefix matches the text suffix ending at
+the current position. Reading c performs
+
+$$
+R' = ((R\ll1)\lor1)\land M_c.
+$$
+\alttext(Shift active prefixes one place, seed a new length-one prefix, then retain only positions whose pattern byte equals the current text byte.)
+
+The low seed bit starts a fresh candidate at every position. Every higher bit
+extends a matching shorter prefix only when its next byte agrees. Induction on
+the consumed text proves the state interpretation; bit \(m-1\) signals a full
+match. An earlier full match does not prevent a new overlapping one.
+
+For at most d substitutions, keep states \(R_0,\ldots,R_k\). With every
+right-hand state taken from the **previous** text position,
+
+$$
+R'_0=((R_0\ll1)\lor1)\land M_c,\qquad
+R'_d=\left(((R_d\ll1)\lor1)\land M_c\right)
+       \lor\left((R_{d-1}\ll1)\lor1\right),\quad d\ge1.
+$$
+\alttext(Level zero requires an equal byte. A higher error level can extend an equal-byte prefix at the same level or spend one substitution from the preceding level.)
+
+The words are masked to m bits. A complete length-m window is accepted at the
+smallest level whose top bit is active, which gives its actual Hamming distance.
+Every window consumes exactly m text bytes. Insertions and deletions are outside
+this mode. The budget is clamped into \([0,m]\): allowing more than m
+substitutions cannot admit another length-m window.
+
+> Simple example: parallel restarts in AABA
+
+Use pattern `ABA`. The exact states after `A`, `A`, `B`, `A` are
+`001`, `001`, `010`, `101`, written with the longest prefix bit on the left.
+The last state has both the full prefix `ABA` and the one-byte prefix `A` active.
+Thus a complete occurrence and a fresh possible occurrence coexist.
+
+```{cpp, results="markdown", file="figures/bitap_states.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <bitset>
+int main() {
+  std::filesystem::create_directories("build");
+  const auto trace=dm::algorithms::bitap_trace("AABA","ABA",1);
+  dm::graphics::Diagram diagram(60,1100);
+  dm::graphics::DiagramNodeStyle style;style.width=2.8;
+  std::print("| byte index | byte | exact state R0 | one-substitution state R1 |\n"
+             "| ---: | :--- | :--- | :--- |\n");
+  for (std::size_t i=0;i<trace.steps.size();++i) {
+    const auto& step=trace.steps[i];
+    const auto exact=std::bitset<3>(step.states[0]).to_string();
+    const auto fuzzy=std::bitset<3>(step.states[1]).to_string();
+    diagram.node(std::to_string(i),{4.5*i,0},std::format("Read {}\nR0 {}\nR1 {}",char(step.byte),exact,fuzzy),style);
+    if (i) diagram.edge(std::to_string(i-1),std::to_string(i));
+    std::print("| {} | {} | {} | {} |\n",step.position,char(step.byte),exact,fuzzy);
+  }
+  diagram.text({6.75,-2},"Pattern ABA: bit 0 is prefix A; bit 2 is prefix ABA.");
+  diagram.save_svg("build/bitap_states.svg");
+}
+```
+// result_begin: markdown
+| byte index | byte | exact state R0 | one-substitution state R1 |
+| ---: | :--- | :--- | :--- |
+| 0 | A | 001 | 001 |
+| 1 | A | 001 | 011 |
+| 2 | B | 010 | 011 |
+| 3 | A | 101 | 101 |
+\image(figures/bitap_states.svg)
+// result_end
+\caption(All error levels use one=active. The states come from the same core loop that finds matches; no report-side Bitap replay is used.)
+\alttext(Four state boxes follow AABA. The exact states are zero zero one, zero zero one, zero one zero and one zero one. The one-substitution states are zero zero one, zero one one, zero one one and one zero one.)
+
+> The original motif example
+
+The original 47-byte synthetic DNA string contains `ACGTACG` twice exactly,
+as well as nearby windows with substitutions. This is an invented algorithm
+fixture, not an observed genome. The 41 overlapping length-seven windows are
+counted directly by `bitap_matches` below.
+
+```{cpp, results="markdown", file="figures/bitap_motif.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::string text="TTGCAACGTACGTTAGGCAACGTCCGATCGAAGGTAAGACGTACGCC",motif="ACGTACG";
+  std::vector<double> counts;
+  std::vector<std::string> labels;
+  std::print("| allowed substitutions | windows | start offsets | first legacy inclusive end |\n"
+             "| ---: | ---: | :--- | ---: |\n");
+  for (int budget=0;budget<=4;++budget) {
+    const auto matches=dm::algorithms::bitap_matches(text,motif,budget);
+    std::vector<std::size_t> starts;
+    for (const auto& match:matches) starts.push_back(match.begin);
+    std::print("| {} | {} | {} | {} |\n",budget,matches.size(),starts,
+        dm::algorithms::bitap_fuzzy_search(text,motif,budget));
+    counts.push_back(matches.size());labels.push_back(std::to_string(budget));
+  }
+  std::print("\nFirst exact start: {}; complete windows: {}.\n",
+      dm::algorithms::bitap_search(text,motif),text.size()-motif.size()+1);
+  dm::graphics::RPlot::barplot(counts,labels,"matching windows",dm::RGB{5,150,105})
+      .title("Synthetic motif: more windows qualify")
+      .x_label("allowed substitutions").y_label("overlapping windows")
+      .size(850,460).save_svg("build/bitap_motif.svg");
+}
+```
+// result_begin: markdown
+| allowed substitutions | windows | start offsets | first legacy inclusive end |
+| ---: | ---: | :--- | ---: |
+| 0 | 2 | [5, 38] | 11 |
+| 1 | 3 | [5, 19, 38] | 11 |
+| 2 | 5 | [5, 9, 19, 31, 38] | 11 |
+| 3 | 7 | [5, 9, 19, 23, 27, 31, 38] | 11 |
+| 4 | 13 | [1, 5, 9, 10, 14, 15, 19, 23, 26, 27, 31, 34, 38] | 7 |
+
+First exact start: 5; complete windows: 41.
+\image(figures/bitap_motif.svg)
+// result_end
+\caption(The original exact and fuzzy queries are retained, with every qualifying start offset visible. Budgets give nested sets, so counts cannot decrease.)
+\alttext(The matching-window counts increase from two exact matches to three, five, seven and thirteen as the substitution budget rises from zero through four.)
+
+The legacy interfaces use different index conventions: `bitap_search` returns
+a **start**, while `bitap_fuzzy_search` returns an **inclusive end**. For the
+first exact seven-byte motif these are 5 and 11. Modern match records instead
+use the consistent half-open interval \([5,12)\), plus the actual substitution
+count. The repeated occurrences at starts 5 and 38 are separate windows.
+
+> Checking the theory: exhaust a Hamming ball
+
+For a fixed m-byte pattern over an alphabet of q symbols, the number of strings
+at exactly d substitutions is
+
+$$
+H_d={m\choose d}(q-1)^d.
+$$
+\alttext(Choose the d changed positions, then choose one of q minus one different symbols at each changed position.)
+
+For pattern `ACGT` over `ACGT`, the coefficients of \((1+3z)^4\) are
+\((1,12,54,108,81)\). Their sum is 256, the number of all four-byte strings.
+The program constructs those strings, asks Bitap for each full-window distance,
+and compares the measured histogram with the exact formula.
+
+```{cpp, results="markdown", file="figures/bitap_hamming_ball.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  const std::string alphabet="ACGT",pattern="ACGT";
+  std::vector<double> observed(5);
+  const std::vector<int> predicted{1,12,54,108,81};
+  for (unsigned code=0;code<256;++code) {
+    unsigned digits=code;
+    std::string word(4,'A');
+    for (char& byte:word) { byte=alphabet[digits%4];digits/=4; }
+    const auto matches=dm::algorithms::bitap_matches(word,pattern,4);
+    if (matches.size()!=1) return 1;
+    ++observed[matches.front().substitutions];
+  }
+  std::print("| exact substitutions | observed strings | binomial count | cumulative observed |\n"
+             "| ---: | ---: | ---: | ---: |\n");
+  std::vector<std::string> labels;
+  int cumulative=0;
+  for (int d=0;d<=4;++d) {
+    if (observed[d]!=predicted[d]) return 1;
+    cumulative+=observed[d];labels.push_back(std::to_string(d));
+    std::print("| {} | {:.0f} | {} | {} |\n",d,observed[d],predicted[d],cumulative);
+  }
+  dm::graphics::RPlot::barplot(observed,labels,"all four-byte strings",dm::RGB{37,99,235})
+      .title("Exhaustive Hamming distances to ACGT")
+      .x_label("actual substitutions").y_label("strings out of 256")
+      .size(850,460).save_svg("build/bitap_hamming_ball.svg");
+}
+```
+// result_begin: markdown
+| exact substitutions | observed strings | binomial count | cumulative observed |
+| ---: | ---: | ---: | ---: |
+| 0 | 1 | 1 | 1 |
+| 1 | 12 | 12 | 13 |
+| 2 | 54 | 54 | 67 |
+| 3 | 108 | 108 | 175 |
+| 4 | 81 | 81 | 256 |
+\image(figures/bitap_hamming_ball.svg)
+// result_end
+\caption(Every possible four-byte word is scored, so this is an exhaustive check rather than a random estimate. Distances are recovered from the smallest accepting error level.)
+\alttext(The histogram has one word at distance zero, twelve at one, fifty-four at two, one hundred eight at three and eighty-one at four.)
+
+If a text were independently sampled uniformly from that alphabet, the expected
+number of qualifying windows would be \((n-m+1)\sum_{d=0}^k H_d/q^m\).
+Linearity of expectation does not require windows to be independent; overlapping
+window indicators generally are dependent. The constructed motif example is not
+sampled from this model, so its counts are not a significance calculation.
+
+> API boundaries and exact work counts
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <climits>
+int main() {
+  std::print("| pattern bytes | legacy exact start | legacy fuzzy end | modern exact windows |\n"
+             "| ---: | ---: | ---: | :--- |\n");
+  const std::string text(70,'x');
+  for (int length:{62,63,64}) {
+    const std::string pattern(length,'x');
+    std::string modern;
+    try { modern=std::to_string(dm::algorithms::bitap_matches(text,pattern).size()); }
+    catch (const std::invalid_argument&) { modern="unsupported pattern length"; }
+    std::print("| {} | {} | {} | {} |\n",length,dm::algorithms::bitap_search(text,pattern),
+        dm::algorithms::bitap_fuzzy_search(text,pattern,0),modern);
+  }
+  const auto trace=dm::algorithms::bitap_trace("abcdefgh","WXYZ",INT_MAX);
+  std::print("\nRequested budget INT_MAX: effective budget {}, {} windows, {} bytes, {} word updates.\n",
+      trace.effective_budget,trace.matches.size(),trace.bytes_scanned,trace.word_updates);
+  std::print("Empty pattern in ab: {} boundary matches. Insertion example ABXCD versus ABCD at budget 1: {} windows.\n",
+      dm::algorithms::bitap_matches("ab","").size(),dm::algorithms::bitap_matches("ABXCD","ABCD",1).size());
+}
+```
+// result_begin: markdown
+| pattern bytes | legacy exact start | legacy fuzzy end | modern exact windows |
+| ---: | ---: | ---: | :--- |
+| 62 | 0 | 61 | 9 |
+| 63 | 0 | -1 | 8 |
+| 64 | -1 | -1 | unsupported pattern length |
+
+Requested budget INT_MAX: effective budget 4, 5 windows, 8 bytes, 40 word updates.
+Empty pattern in ab: 3 boundary matches. Insertion example ABXCD versus ABCD at budget 1: 0 windows.
+// result_end
+\caption(The historical unsupported-length sentinel is preserved. Modern helpers reject an oversized pattern explicitly, and a huge requested budget is capped before allocating or updating error levels.)
+
+The `ABXCD` example contains a one-insertion alignment with `ABCD`, but neither
+four-byte window is within one substitution. This distinguishes Hamming windows
+from variable-length edit-distance matches. Empty patterns produce n+1 empty
+boundary intervals in modern helpers; the two legacy first-match calls retain
+their special return value zero.
+
+For a nonempty pattern, preprocessing uses 256 masks and m assignments. A full
+scan with effective budget k performs exactly \(n(k+1)\) state-word updates,
+plus acceptance checks and output handling. The overall work is
+\(O(n(k+1)+m+256)\), with fixed word-state storage and one result per reported
+window. Tracing additionally owns \(n(k+1)\) recorded words. Work counts do not
+establish a runtime advantage over another string-search algorithm.
+
+All indices and lengths count bytes. Matching is case-sensitive, supports NUL
+and arbitrary byte values, and performs no Unicode normalisation. The exact
+legacy call supports patterns through 63 bytes; its fuzzy counterpart retains
+the older 62-byte limit. Modern helpers support 63 bytes and use one active-bit
+convention at every error level.
+
+> Conclusion
+
+The hand example exposes simultaneous full matches and restarts. Canonical
+match records reproduce the original motif counts and index conventions, while
+exhaustive enumeration verifies the Hamming-distance histogram. Native tests
+also check every recorded prefix bit against direct suffix comparisons. These
+synthetic and exhaustive controls establish the algorithmic claims without
+introducing biological conclusions or an unrelated observed dataset.
+
+> References
+
+- Baeza-Yates, R. and Gonnet, G. H. (1992). *A New Approach to Text Searching*. Communications of the ACM, 35(10), 74–82. https://doi.org/10.1145/135239.135243

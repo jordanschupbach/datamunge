@@ -12,7 +12,7 @@
 /// \f$A \Rightarrow C\f$ ("customers who buy \f$A\f$ tend to buy \f$C\f$") ranked by
 /// confidence and lift.
 ///
-/// The three mining algorithms compute the *same* frequent-itemset collection by
+/// For positive minimum support, the three mining algorithms compute the *same* frequent-itemset collection by
 /// very different strategies:
 ///   - *Apriori* (Agrawal & Srikant 1994): breadth-first, level by level, using the
 ///     downward-closure principle -- every subset of a frequent set is frequent --
@@ -86,29 +86,63 @@ std::vector<FrequentItemset> apriori_frequent_itemsets(const std::vector<std::ve
 std::vector<AprioriLevel> apriori_levels(const std::vector<std::vector<std::size_t>>& transactions,
                                          std::size_t min_support_count);
 
-/// \brief Eclat: depth-first mining over a vertical (tidset) database layout.
+/// @brief Eclat: canonical frequent sets from conditional sorted tidset intersections.
 ///
-/// Each item is represented by its *tidset* -- the sorted set of transaction ids
-/// that contain it -- so an itemset's support is simply the size of the
-/// intersection of its items' tidsets. Eclat descends depth-first, extending a
-/// prefix by intersecting tidsets, and never rescans the raw database.
-/// \param transactions      Baskets of item ids.
-/// \param min_support_count Minimum support count.
-/// \return The same itemsets as apriori_frequent_itemsets(), in the same order.
+/// Within-basket duplicates count once; empty/repeated baskets retain their row
+/// identities. Opaque size_t ids include SIZE_MAX. Empty input/universe yields no
+/// sets. Threshold zero enumerates all nonempty observed-universe subsets, even
+/// with zero support (FP-growth currently omits those zero-support combinations).
+/// Explicit DFS frames avoid call-stack recursion. Results own their buffers;
+/// input is unchanged and independent calls share no mutable state. There is no
+/// optional capture quota. Output may contain 2^U-1 sets for U observed items.
+/// @param transactions Raw baskets of item ids.
+/// @param min_support_count Absolute minimum row support; above N gives no sets.
+/// @return Frequent sets ordered by size, then lexicographically by item id.
+/// @throws std::length_error On shape, counter or container overflow.
+/// @throws std::bad_alloc If allocation fails.
+/// @par Example
+/// @code
+/// const auto f = dm::algorithms::eclat_frequent_itemsets({{0,1},{0}},1);
+/// std::print("{} {}\n", f.size(), f.back().support); // 3 1
+/// @endcode
+/// @par References
+/// - M. J. Zaki (2000), Scalable Algorithms for Association Mining, IEEE TKDE 12(3), 372–390. doi:10.1109/69.846291. Uses plain sorted tidsets, no diffsets.
+/// @see apriori_frequent_itemsets(), eclat_frequent_itemsets_work(), eclat_trace()
 std::vector<FrequentItemset> eclat_frequent_itemsets(const std::vector<std::vector<std::size_t>>& transactions,
                                                      std::size_t min_support_count);
 
-/// \brief FP-growth: mine frequent itemsets from a compressed frequent-pattern tree.
+/// @brief Mine canonical positive-support patterns from shared FP-tree prefixes.
+/// Baskets are sets: sort and deduplicate each without changing the caller.
+/// Empty/repeated rows retain their identities; IDs are opaque size_t including
+/// SIZE_MAX. No empty itemset is returned. Positive thresholds return all sets
+/// whose row count meets the threshold; above N returns none. Threshold0 retains
+/// the historical positive-support-only FP behavior, unlike Apriori/Eclat0.
+/// Build order is support descending then ID ascending; mining order is support
+/// ascending then ID ascending. Explicit DFS preserves the original emit/base/
+/// child-build/descent schedule without recursive call-stack depth. No single-path
+/// shortcut, Apriori candidate join or extra database scan per candidate is used.
+/// Output can have exponentially many sets and item IDs. Sorting, hash operations,
+/// conditional rebuilding and output copying remain real work; no universal
+/// compression/runtime guarantee. Independent calls share no mutable state.
+/// Counts/capacities are checked; errors return no partial result.
 ///
-/// Two database scans build the FP-tree: the first counts item frequencies (to keep
-/// and order frequent items by descending support), the second inserts each
-/// transaction, sharing common prefixes so repeated patterns compress into shared
-/// paths. Mining then proceeds recursively without candidate generation: for each
-/// item, its *conditional pattern base* (the prefix paths leading to it) forms a
-/// smaller conditional FP-tree that is mined for the patterns containing that item.
-/// \param transactions      Baskets of item ids.
-/// \param min_support_count Minimum support count.
-/// \return The same itemsets as apriori_frequent_itemsets(), in the same order.
+/// Ordinary calls keep no history and impose no optional output/capture cap.
+/// Working memory includes normalized/weighted input, active ancestor trees and
+/// conditional buffers, in addition to all returned itemsets. Tree construction
+/// sorts item frequencies and each retained row; it is not generally O(N*width).
+/// @param transactions Raw item baskets, never mutated.
+/// @param min_support_count Absolute row count threshold;0 retains positive-support sets.
+/// @return Owned itemsets ordered by cardinality then lexicographic item IDs.
+/// @throws std::length_error Count or container capacity overflows.
+/// @throws std::bad_alloc Allocation fails.
+/// @par Example
+/// @code
+/// const auto f=dm::algorithms::fp_growth_frequent_itemsets({{0,1},{0},{1}},2);
+/// std::cout << f.size(); // 2
+/// @endcode
+/// @par References
+/// - J. Han, J. Pei and Y. Yin (2000), Mining Frequent Patterns without Candidate Generation, SIGMOD2000,1–12, doi:10.1145/342009.335372; https://sigmodrecord.org/?download_id=6623&smd_process_download=1; direct conditional-tree variant without single-path shortcut.
+/// @see fp_growth_frequent_itemsets_work(), fp_growth_trace()
 std::vector<FrequentItemset> fp_growth_frequent_itemsets(const std::vector<std::vector<std::size_t>>& transactions,
                                                          std::size_t min_support_count);
 

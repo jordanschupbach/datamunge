@@ -13,6 +13,13 @@
 
 namespace datamunge::algorithms {
 
+std::array<std::size_t,256> horspool_shifts(const std::string& pattern) {
+    std::array<std::size_t,256> shift;shift.fill(pattern.size());
+    for (std::size_t i=0;i+1<pattern.size();++i)
+        shift[static_cast<unsigned char>(pattern[i])]=pattern.size()-1-i;
+    return shift;
+}
+
 /// @brief Private byte tables and search-work baselines.
 namespace {
 
@@ -67,32 +74,32 @@ StringSearchScan naive_scan(const std::string& text, const std::string& pattern)
     }
     return out;
 }
-/// @brief Precompute the one-byte Horspool shifts once per pattern.
-/// @param pattern Borrowed byte pattern, possibly empty.
-/// @return Positive distance from the window's final byte to its next candidate alignment.
-std::array<std::size_t, kAlphabet> horspool_table(const std::string& pattern) {
-    std::array<std::size_t, kAlphabet> shift;
-    shift.fill(pattern.size());
-    for (std::size_t i = 0; i + 1 < pattern.size(); ++i) shift[uc(pattern[i])] = pattern.size() - 1 - i;
-    return shift;
-}
 /// @brief Run an instrumented Horspool scan with precomputed shifts.
 /// @param text Borrowed text bytes.
 /// @param pattern Borrowed pattern; empty matches nowhere.
-/// @param shift Table constructed for this pattern by horspool_table().
+/// @param shift Table constructed for this pattern by horspool_shifts().
+/// @param trace Optional actual-alignment output; nullptr (default) omits record allocation.
 /// @return Positions and scan work, including failed equality checks.
+/// @throws std::overflow_error If the search comparison counter would wrap.
 StringSearchScan horspool_scan(const std::string& text, const std::string& pattern,
-                              const std::array<std::size_t, kAlphabet>& shift) {
+                              const std::array<std::size_t, kAlphabet>& shift,
+                              std::vector<HorspoolAlignment>* trace=nullptr) {
     StringSearchScan out;
     const auto n = text.size(), m = pattern.size();
     if (m == 0 || m > n) return out;
     std::size_t s = 0;
     while (s <= n - m) {
         ++out.alignments;
+        const auto start_comparisons=out.comparisons;
         std::size_t i = m;
-        while (i > 0) { ++out.comparisons; if (text[s+i-1] != pattern[i-1]) break; --i; }
+        while (i > 0) {
+            if (out.comparisons==std::numeric_limits<std::size_t>::max())
+                throw std::overflow_error("Horspool: comparison counter overflow");
+            ++out.comparisons;if (text[s+i-1] != pattern[i-1]) break;--i;
+        }
         if (i == 0) out.positions.push_back(s);
-        const auto advance = shift[uc(text[s+m-1])];
+        const auto ending_byte=uc(text[s+m-1]);const auto advance=shift[ending_byte];
+        if (trace) trace->push_back({s,m-i,i?i-1:m,out.comparisons-start_comparisons,ending_byte,advance,i==0});
         if (advance > n - m - s) break;
         s += advance;
     }
@@ -166,7 +173,11 @@ dstruct::DataFrame ZhuTakaoka::digram_table(const std::string& alphabet) const {
 }
 std::vector<std::size_t> boyer_moore_horspool_search(const std::string& text, const std::string& pattern) {
     if (pattern.empty() || pattern.size() > text.size()) return {};
-    return horspool_scan(text, pattern, horspool_table(pattern)).positions;
+    return horspool_scan(text, pattern, horspool_shifts(pattern)).positions;
+}
+HorspoolTrace boyer_moore_horspool_trace(const std::string& text,const std::string& pattern) {
+    HorspoolTrace out;out.text_size=text.size();out.pattern_size=pattern.size();out.shifts=horspool_shifts(pattern);
+    out.scan=horspool_scan(text,pattern,out.shifts,&out.alignments);return out;
 }
 std::vector<std::size_t> zhu_takaoka_search(const std::string& text, const std::string& pattern) {
     if (pattern.empty() || pattern.size() > text.size()) return {};
@@ -180,7 +191,7 @@ dstruct::DataFrame string_search_comparison(const dstruct::DataFrame& frame, con
     std::vector<double> records, bytes, matches, alignments, comparisons, agrees;
     for (const auto& pattern : patterns) {
         const ZhuTakaoka zt(pattern);
-        const auto hp_table = horspool_table(pattern);
+        const auto hp_table = horspool_shifts(pattern);
         std::array<std::size_t, 3> nmatch{}, nalign{}, ncompare{};
         std::array<bool, 3> ok{true, true, true};
         std::size_t nbytes = 0;

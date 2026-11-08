@@ -166,32 +166,4 @@ std::vector<std::vector<double>> strassen_multiply(const std::vector<std::vector
     return out;
 }
 
-bool freivalds_verify(const std::vector<std::vector<double>>& a, const std::vector<std::vector<double>>& b,
-                      const std::vector<std::vector<double>>& c, int rounds, std::uint64_t seed) {
-    const std::size_t m = a.size();
-    const std::size_t k = m == 0 ? 0 : a[0].size();
-    const std::size_t n = b.empty() ? 0 : b[0].size();
-    if (b.size() != k) return false;
-    if (c.size() != m) return false;
-    if (m > 0 && c[0].size() != n) return false;
-
-    std::uint64_t state = seed;
-    for (int r = 0; r < rounds; ++r) {
-        Vector rv(n);
-        for (std::size_t j = 0; j < n; ++j) rv[j] = static_cast<double>(splitmix(state) & 1ULL);
-        // Compute A(Br) and Cr in O(n^2).
-        Vector br(k, 0.0);
-        for (std::size_t i = 0; i < k; ++i)
-            for (std::size_t j = 0; j < n; ++j) br[i] += b[i][j] * rv[j];
-        Vector abr(m, 0.0), cr(m, 0.0);
-        for (std::size_t i = 0; i < m; ++i) {
-            for (std::size_t j = 0; j < k; ++j) abr[i] += a[i][j] * br[j];
-            for (std::size_t j = 0; j < n; ++j) cr[i] += c[i][j] * rv[j];
-        }
-        for (std::size_t i = 0; i < m; ++i)
-            if (std::fabs(abr[i] - cr[i]) > 1e-6) return false;
-    }
-    return true;
-}
-
 } // namespace datamunge::algorithms

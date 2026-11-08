@@ -1,0 +1,423 @@
+//? Title: Dinic’s Maximum Flow: Blocking Phases, Cancellation and Cut Checks
+//? Subtitle: Actual BFS levels and residual pushes, the original 7.5 example, and the classic flow of 23
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a directed network with capacities and distinct source and sink,
+we want the largest flow that respects every edge limit and conserves flow
+at intermediate vertices. A route chosen early may need to be undone before
+other routes can carry more flow. Dinic’s algorithm groups pushes into
+blocking-flow phases on residual BFS levels. We begin with the original
+single edge of capacity 7.5, then inspect an actual cancellation path that
+requires a second phase. The classic six-vertex network reaches value 23,
+checked against its per-edge feasibility and cut capacity. Controlled path
+families expose phase and current-arc work. Positive capacities below the
+old absolute cutoff, bounded trace capture, an iterative long-path traversal
+and explicit arithmetic failures make the numerical limits visible.
+)
+
+\toc
+
+> One edge: retain the original answer and expose the residual pair
+
+The original executable sends flow from vertex 0 to vertex 1 on one edge
+of capacity 7.5. Its unique maximum flow is 7.5. Before the push, the
+forward residual is 7.5 and the paired cancellation residual is zero.
+The bottleneck is 7.5; afterwards those values are zero and 7.5. The
+terminal BFS cannot reach the sink, so the source side of the minimum cut
+is {0}, and the crossing capacity is also 7.5.
+
+The new trace records those actual operands and both BFS searches, rather
+than rerunning the algorithm at selected prefixes. The same program scales
+the single edge over four capacity units. The former fixed residual test
+capacity>1e−12 returned zero for 7.5e−13; the canonical kernel now uses
+strict positivity and returns that positive flow. It does not introduce
+an absolute unit-dependent cutoff.
+
+```{cpp, results="markdown", file="figures/dinic_single_edge.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const auto t=dm::algorithms::dinic_max_flow_trace(2,{{0,1,7.5}},0,1,8);
+  const auto c=dm::algorithms::max_flow_certificate(2,t.network.edges,0,1,t.result);
+  const auto& push=t.augmentations[0];const auto& arc=push.path[0];
+  std::print("Original flow {:.1f}; edge flows {}; cut side {}; cut capacity {:.1f}; optimal {}.\n\n",t.result.max_flow,t.result.edge_flow,t.result.min_cut_source_side,c.cut_capacity,c.optimal_within_tolerance);
+  std::print("| phase | sink level (2 = unreachable) | pushed paths | flow before | flow after |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<t.phases.size();++i){const auto& phase=t.phases[i];std::print("| {} | {} | {} | {:.1f} | {:.1f} |\n",i,phase.sink_level,phase.augmentation_count,phase.flow_before,phase.flow_after);}
+  std::print("\nActual pair update: forward {:.1f} to {:.1f}; cancellation {:.1f} to {:.1f}; amount {:.1f}.\n\n",arc.residual_before,arc.residual_after,arc.paired_before,arc.paired_after,push.amount);
+  std::print("| capacity | returned flow | cut capacity | duality gap | optimal at zero tolerance |\n| ---: | ---: | ---: | ---: | :--- |\n");
+  for(double scale:{1e-200,1e-13,1.,1e200}){const double capacity=7.5*scale;
+    const std::vector<dm::algorithms::CapacityEdge> edges{{0,1,capacity}};const auto r=dm::algorithms::dinic_max_flow(2,edges,0,1);
+    const auto check=dm::algorithms::max_flow_certificate(2,edges,0,1,r);
+    if(r.max_flow!=capacity || !check.optimal_within_tolerance)return 1;
+    std::print("| {:.1e} | {:.1e} | {:.1e} | {:.0f} | {} |\n",capacity,r.max_flow,check.cut_capacity,check.duality_gap,check.optimal_within_tolerance);}
+  dm::graphics::Diagram diagram(80,1100);dm::graphics::DiagramNodeStyle box;box.width=3.7;box.height=2;box.font_size=24;
+  diagram.node("s",{0,0},"Source 0\ncut side S",box).node("t",{8,0},"Sink 1\noutside S",box)
+   .edge("s","t",std::format("flow / capacity = {:.1f} / 7.5",t.result.max_flow))
+   .text({4,2.2},"One push saturates the edge and reaches the cut bound",25)
+   .text({4,-2.1},std::format("Forward residual {:.1f} → {:.1f}; paired cancellation {:.1f} → {:.1f}",arc.residual_before,arc.residual_after,arc.paired_before,arc.paired_after),22)
+   .save_svg("build/dinic_single_edge.svg");
+}
+```
+// result_begin: markdown
+Original flow 7.5; edge flows [7.5]; cut side [0]; cut capacity 7.5; optimal true.
+
+| phase | sink level (2 = unreachable) | pushed paths | flow before | flow after |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | 1 | 0.0 | 7.5 |
+| 1 | 2 | 0 | 7.5 | 7.5 |
+
+Actual pair update: forward 7.5 to 0.0; cancellation 0.0 to 7.5; amount 7.5.
+
+| capacity | returned flow | cut capacity | duality gap | optimal at zero tolerance |
+| ---: | ---: | ---: | ---: | :--- |
+| 7.5e-200 | 7.5e-200 | 7.5e-200 | 0 | true |
+| 7.5e-13 | 7.5e-13 | 7.5e-13 | 0 | true |
+| 7.5e+00 | 7.5e+00 | 7.5e+00 | 0 | true |
+| 7.5e+200 | 7.5e+200 | 7.5e+200 | 0 | true |
+\image(figures/dinic_single_edge.svg)
+// result_end
+\caption(The original single-edge flow reaches 7.5, exactly matching its cut capacity. The recorded residual pair and scale table expose the push and removal of the old absolute cutoff.)
+\alttext(Source and sink boxes are connected by a saturated capacity-7.5 edge; a label shows forward residual falling to zero and cancellation residual rising to 7.5.)
+
+> Flow conservation and residual cancellation
+
+For each original arc e=(u,v) with capacity c_e, retain its own flow f_e
+with 0<=f_e<=c_e. Net outflow is zero at every vertex except source s
+and sink t; the value is net outflow from s, also net inflow to t.
+Parallel and antiparallel input arcs keep separate identities. Each input
+arc gets a forward residual c_e−f_e and a paired reverse residual f_e.
+A reverse push cancels previous flow on that particular original arc.
+It is distinct from a separately supplied opposite-direction input arc.
+
+BFS assigns each reachable residual vertex its shortest arc-count distance
+from s, considering only positive residual capacities. During a phase,
+DFS follows arcs whose head is exactly one level beyond the tail.
+The level graph is acyclic. A blocking flow leaves no residual s-to-t
+path advancing through those fixed levels: every such path has lost an
+available arc. This need not be a maximum-flow solution when rerouting
+is allowed. The next example makes that distinction concrete.
+
+There are two left vertices L1,L2 and two right vertices R1,R2. Unit arcs
+connect s to each left vertex, L1 to R1 and R2, L2 to R1, and each right
+vertex to t. Input order first selects s→L1→R1→t. That blocks all
+remaining forward paths in the first level graph, at flow one. A second
+BFS finds the length-five residual path
+s→L2→R1→L1→R2→t. Its R1→L1 arc cancels the earlier L1→R1 flow.
+The two final matches are L1→R2 and L2→R1, giving value two.
+
+```{cpp, results="markdown", file="figures/dinic_cancellation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<dm::algorithms::CapacityEdge> edges{{0,1,1},{0,2,1},{1,3,1},{1,4,1},{2,3,1},{3,5,1},{4,5,1}};
+  const auto t=dm::algorithms::dinic_max_flow_trace(6,edges,0,5);const auto& a=t.augmentations[1];
+  const std::vector<std::string> name{"s","L1","L2","R1","R2","t"};
+  std::print("Final flow {:.0f}; original L1-to-R1 flow {:.0f}; L1-to-R2 {:.0f}; L2-to-R1 {:.0f}.\n\n",t.result.max_flow,t.result.edge_flow[2],t.result.edge_flow[3],t.result.edge_flow[4]);
+  std::print("| phase | actual BFS levels | sink distance (6 = unreachable) | augmentations | flow after |\n| ---: | :--- | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<t.phases.size();++i){const auto& p=t.phases[i];std::print("| {} | {} | {} | {} | {:.0f} |\n",i,p.levels,p.sink_level,p.augmentation_count,p.flow_after);}
+  std::print("\n| second-push arc | original edge | cancellation | used residual before | after | paired before | after |\n| :--- | ---: | :--- | ---: | ---: | ---: | ---: |\n");
+  for(const auto& e:a.path)std::print("| {} to {} | {} | {} | {:.0f} | {:.0f} | {:.0f} | {:.0f} |\n",name[e.from],name[e.to],e.input_edge,e.reverse,e.residual_before,e.residual_after,e.paired_before,e.paired_after);
+  dm::graphics::Diagram d(65,1100);dm::graphics::DiagramNodeStyle node;node.width=1.8;node.height=1.3;node.font_size=23;
+  std::vector<std::size_t> vertices{a.path.front().from};for(const auto& e:a.path)vertices.push_back(e.to);
+  for(std::size_t i=0;i<vertices.size();++i)d.node(std::to_string(vertices[i]),{3.2*i,0},name[vertices[i]],node);
+  for(const auto& e:a.path){dm::graphics::DiagramStroke stroke;stroke.color=e.reverse?dm::graphics::RGB{234,88,12}:dm::graphics::RGB{37,99,235};stroke.width=3;
+    d.edge(std::to_string(e.from),std::to_string(e.to),e.reverse?"cancel 1":"push 1",stroke);}
+  d.text({8,2},"Second actual residual path: undo one earlier match",25)
+   .text({8,-2},std::format("Original L1 → R1 flow becomes {:.0f}; total flow increases from {:.0f} to {:.0f}",t.result.edge_flow[2],a.flow_before,a.flow_after),21)
+   .save_svg("build/dinic_cancellation.svg");
+}
+```
+// result_begin: markdown
+Final flow 2; original L1-to-R1 flow 0; L1-to-R2 1; L2-to-R1 1.
+
+| phase | actual BFS levels | sink distance (6 = unreachable) | augmentations | flow after |
+| ---: | :--- | ---: | ---: | ---: |
+| 0 | [0, 1, 1, 2, 2, 3] | 3 | 1 | 1 |
+| 1 | [0, 3, 1, 2, 4, 5] | 5 | 1 | 2 |
+| 2 | [0, 6, 6, 6, 6, 6] | 6 | 0 | 2 |
+
+| second-push arc | original edge | cancellation | used residual before | after | paired before | after |
+| :--- | ---: | :--- | ---: | ---: | ---: | ---: |
+| s to L2 | 1 | false | 1 | 0 | 0 | 1 |
+| L2 to R1 | 4 | false | 1 | 0 | 0 | 1 |
+| R1 to L1 | 2 | true | 1 | 0 | 0 | 1 |
+| L1 to R2 | 3 | false | 1 | 0 | 0 | 1 |
+| R2 to t | 6 | false | 1 | 0 | 0 | 1 |
+\image(figures/dinic_cancellation.svg)
+// result_end
+\caption(The actual second path uses one cancellation arc, shown in orange, and increases total flow from one to two. Printed snapshots identify the original edge and both members of its residual pair.)
+\alttext(Six boxes form the second augmenting path from source through L2, R1, L1 and R2 to sink; the reverse R1-to-L1 arc is orange.)
+
+> Why the shortest residual path grows after a blocking phase
+
+Let old BFS levels be ell. Every residual arc already present before the
+phase satisfies ell(v)<=ell(u)+1. Any newly positive cancellation arc
+reverses a used level arc, so its old level change is minus one. Thus a
+new residual path cannot increase the old level by more than one per
+arc. A new s-to-t path no longer than the old sink level would have to
+advance exactly one old level at every step. The blocking flow has removed
+all such paths, a contradiction. Hence the next reachable sink distance
+strictly increases. A simple residual path has at most V−1 arcs, so there
+are at most V−1 successful phases in exact arithmetic, followed by one
+failed BFS. In the executed cancellation example those distances are
+three, five, then unreachable.
+
+The implementation uses an explicit path stack instead of recursive DFS.
+Each vertex’s current-arc pointer advances permanently through its adjacency
+within a phase. Successful path prefixes may be tested again, while an
+exhausted arc or dead end is not retried in that phase. If J counts current
+pointer advances and L counts successful path-arc updates, the recorded
+DFS inspections satisfy inspections=J+L. At most 2E pointer advances occur
+per phase. Every positive path push saturates a level arc, and cancellation
+arcs go backwards in the fixed levels, so at most E pushes are needed in
+one phase. With each path length at most V−1, a phase costs O(VE), and
+all phases cost O(V^2 E), after O(V+E) initialization. Ordinary working
+storage is O(V+E), including the explicit stack.
+
+[Dinic’s original paper](https://www.cs.bgu.ac.il/~dinitz/D70.pdf)
+gives the polynomial operation bound. The report’s current-arc counters
+measure this concrete iterative variant; they are not elapsed-time or
+arbitrary-precision bit-complexity measurements.
+
+> Recover the classic value 23 and check the cut independently
+
+The ten-arc six-vertex network used by the existing tests has maximum
+flow 23. We now run it in the report itself. The final residual source
+side is S={0,1,2,4}; crossing original arcs have capacities 12,7,4,
+whose sum is 23. The table retains every original arc’s individual flow,
+including the antiparallel pair between vertices 1 and 2.
+
+For any feasible flow and any source/sink-separating cut S, summing
+conservation over S cancels internal arcs and gives
+
+\[
+|f|=\sum_{u\in S,v\notin S}f_{uv}-\sum_{u\notin S,v\in S}f_{uv}
+\le\sum_{u\in S,v\notin S}c_{uv}=c(S,\bar S).
+\]
+
+At exact residual termination, every outgoing crossing arc is saturated
+and every incoming crossing flow is zero, since either would otherwise
+create a residual arc leaving S. Equality therefore proves optimality.
+This is the [flow/cut bound of Ford and Fulkerson](https://doi.org/10.4153/CJM-1956-045-5).
+The separate core check computes edge-bound errors, intermediate-vertex
+conservation, terminal/value agreement and the signed cut-minus-value gap.
+It does not call Dinic, search for a replacement cut or repair the result.
+Default absolute tolerance is zero; positive tolerances are numerical
+agreements and keep the actual error and gap visible.
+
+```{cpp, results="markdown", file="figures/dinic_classic_cut.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<dm::algorithms::CapacityEdge> edges{{0,1,16},{0,2,13},{1,2,10},{2,1,4},{1,3,12},{3,2,9},{2,4,14},{4,3,7},{3,5,20},{4,5,4}};
+  const auto t=dm::algorithms::dinic_max_flow_trace(6,edges,0,5);const auto c=dm::algorithms::max_flow_certificate(6,edges,0,5,t.result);
+  if(t.result.max_flow!=23 || !c.optimal_within_tolerance)return 1;
+  std::print("Classic flow {:.0f}; cut side {}; crossing original arcs {}; cut capacity {:.0f}.\n\n",t.result.max_flow,t.result.min_cut_source_side,c.crossing_edges,c.cut_capacity);
+  std::print("| edge | from | to | capacity | flow |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t i=0;i<edges.size();++i){const auto [u,v,capacity]=edges[i];std::print("| {} | {} | {} | {:.0f} | {:.0f} |\n",i,u,v,capacity,t.result.edge_flow[i]);}
+  std::print("\nCapacity violation {:.0f}; conservation error {:.0f}; value balance error {:.0f}; signed duality gap {:.0f}; feasible {}; optimal {}.\n",c.max_capacity_violation,c.max_conservation_error,c.value_balance_error,c.duality_gap,c.feasible,c.optimal_within_tolerance);
+  std::print("BFS sink levels: ");for(const auto& phase:t.phases)std::print("{} ",phase.sink_level);std::print("(6 means unreachable).\n");
+  dm::graphics::Diagram d(60,1100);dm::graphics::DiagramNodeStyle side;side.width=3.5;side.height=2.1;side.font_size=23;
+  d.node("s",{0,0},std::format("Source side S\n{}",t.result.min_cut_source_side),side).node("t",{12,0},"Complement of S\nvertices 3 and 5",side);
+  dm::graphics::DiagramNodeStyle gate;gate.width=3;gate.height=1.5;gate.font_size=22;
+  for(std::size_t i=0;i<c.crossing_edges.size();++i){const auto e=c.crossing_edges[i];const auto [u,v,capacity]=edges[e];const auto id="edge"+std::to_string(e);
+    d.node(id,{6,3-3.0*i},std::format("{} → {}\nflow {:.0f} / capacity {:.0f}",u,v,t.result.edge_flow[e],capacity),gate).edge("s",id).edge(id,"t");}
+  d.text({6,5.2},"Computed cut capacity 12 + 7 + 4 = 23 equals the feasible flow",24)
+   .text({6,-5.1},"Each gate is one original crossing arc; the full ten-arc network is in the table",20)
+   .save_svg("build/dinic_classic_cut.svg");
+}
+```
+// result_begin: markdown
+Classic flow 23; cut side [0, 1, 2, 4]; crossing original arcs [4, 7, 9]; cut capacity 23.
+
+| edge | from | to | capacity | flow |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 1 | 16 | 12 |
+| 1 | 0 | 2 | 13 | 11 |
+| 2 | 1 | 2 | 10 | 0 |
+| 3 | 2 | 1 | 4 | 0 |
+| 4 | 1 | 3 | 12 | 12 |
+| 5 | 3 | 2 | 9 | 0 |
+| 6 | 2 | 4 | 14 | 11 |
+| 7 | 4 | 3 | 7 | 7 |
+| 8 | 3 | 5 | 20 | 19 |
+| 9 | 4 | 5 | 4 | 4 |
+
+Capacity violation 0; conservation error 0; value balance error 0; signed duality gap 0; feasible true; optimal true.
+BFS sink levels: 3 4 6 (6 means unreachable).
+\image(figures/dinic_classic_cut.svg)
+// result_end
+\caption(Three saturated original cut arcs form the upper bound of 23, attained by the computed feasible flow. The full per-edge table and independent numerical checks accompany the cut diagram.)
+\alttext(Source-side and complement boxes are joined through three cut-edge boxes with capacities twelve, seven and four; each carries its full capacity.)
+
+> Controlled phase growth and measured work
+
+Two canonical generated families separate path multiplicity from path
+length. In the first, p internally disjoint unit-capacity paths all have
+length four: E=4p and V=2+3p. BFS finds them at the same sink level,
+and one blocking phase pushes all p units. In the staircase family,
+there is one unit path of each length 1,...,p. Then
+E=p(p+1)/2, V=2+p(p−1)/2 and each successful phase removes exactly
+the next shortest path. Its successive sink levels are 1,...,p.
+This tests increasing phase counts while remaining below the general
+V−1 bound; it is not a tight worst-case construction.
+
+Counters include BFS visits to reverse and zero-capacity residual arcs of
+reached vertices. DFS inspections include retries of still-current arcs
+after successful pushes. The identity J+L separates permanent pointer
+movement from the successful path work. Both charts use the executed
+counts, rather than values inferred from graph size.
+
+```{cpp, results="markdown", file="figures/dinic_phase_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::vector<double> sizes,equal_phases,stair_phases,equal_checks,stair_checks;
+  std::print("| paths | family | vertices | edges | value | blocking phases | BFS searches | DFS inspections | pointer advances | path updates |\n| ---: | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t paths:{1u,2u,4u,8u,16u,32u}){
+    sizes.push_back(paths);
+    for(bool stair:{false,true}){const auto g=stair?dm::algorithms::dinic_staircase_paths(paths):dm::algorithms::dinic_disjoint_paths(paths,4);
+      const auto t=dm::algorithms::dinic_max_flow_trace(g.vertex_count,g.edges,g.source,g.sink);
+      if(t.result.max_flow!=paths || t.work.blocking_phases!=(stair?paths:1) || t.work.dfs_arc_inspections!=t.work.current_arc_advances+t.work.path_arc_updates)return 1;
+      std::print("| {} | {} | {} | {} | {:.0f} | {} | {} | {} | {} | {} |\n",paths,stair?"staircase":"equal length four",g.vertex_count,g.edges.size(),t.result.max_flow,t.work.blocking_phases,t.work.bfs_calls,t.work.dfs_arc_inspections,t.work.current_arc_advances,t.work.path_arc_updates);
+      (stair?stair_phases:equal_phases).push_back(t.work.blocking_phases);(stair?stair_checks:equal_checks).push_back(t.work.dfs_arc_inspections);
+    }
+  }
+  auto p=dm::graphics::RPlot::create(),q=dm::graphics::RPlot::create();
+  p.line(sizes,equal_phases,"equal length",{37,99,235}).points(sizes,equal_phases,"",{37,99,235},5).line(sizes,stair_phases,"staircase",{220,38,38}).points(sizes,stair_phases,"",{220,38,38},5).title("Successful blocking phases").x_label("number of disjoint paths").y_label("actual phase count").y_limits(0,43);
+  const double top=1.3*(*std::max_element(stair_checks.begin(),stair_checks.end()));
+  q.line(sizes,equal_checks,"equal length",{37,99,235}).points(sizes,equal_checks,"",{37,99,235},5).line(sizes,stair_checks,"staircase",{220,38,38}).points(sizes,stair_checks,"",{220,38,38},5).title("Actual current-arc inspections").x_label("number of disjoint paths").y_label("DFS residual-arc tests").y_limits(0,top);
+  dm::graphics::RLayout::create(1,2).add(p).add(q).size(1100,520).title("Same number of paths; different path lengths and network sizes").fit_panels().save_svg("build/dinic_phase_work.svg");
+}
+```
+// result_begin: markdown
+| paths | family | vertices | edges | value | blocking phases | BFS searches | DFS inspections | pointer advances | path updates |
+| ---: | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | equal length four | 5 | 4 | 1 | 1 | 2 | 8 | 4 | 4 |
+| 1 | staircase | 2 | 1 | 1 | 1 | 2 | 2 | 1 | 1 |
+| 2 | equal length four | 8 | 8 | 2 | 1 | 2 | 16 | 8 | 8 |
+| 2 | staircase | 3 | 3 | 2 | 2 | 3 | 10 | 7 | 3 |
+| 4 | equal length four | 14 | 16 | 4 | 1 | 2 | 32 | 16 | 16 |
+| 4 | staircase | 8 | 10 | 4 | 4 | 5 | 60 | 50 | 10 |
+| 8 | equal length four | 26 | 32 | 8 | 1 | 2 | 64 | 32 | 32 |
+| 8 | staircase | 30 | 36 | 8 | 8 | 9 | 408 | 372 | 36 |
+| 16 | equal length four | 50 | 64 | 16 | 1 | 2 | 128 | 64 | 64 |
+| 16 | staircase | 122 | 136 | 16 | 16 | 17 | 2992 | 2856 | 136 |
+| 32 | equal length four | 98 | 128 | 32 | 1 | 2 | 256 | 128 | 128 |
+| 32 | staircase | 498 | 528 | 32 | 32 | 33 | 22880 | 22352 | 528 |
+\image(figures/dinic_phase_work.svg)
+// result_end
+\caption(Equal-length paths share one blocking phase, while the staircase uses one phase per path. The table and second panel check the actual DFS inspection identity and expose the differing network sizes.)
+\alttext(Two line panels compare successful phase counts and DFS arc inspections for equal-length and staircase path families.)
+
+> Feasibility, optimality and finite arithmetic are separate checks
+
+A feasible flow of seven on a capacity-ten edge is not optimal: its cut
+bound is ten and its gap is three. Conversely, a reported value equal to
+a cut bound can accompany an infeasible per-edge assignment. Deliberately
+supply flow three on 0→1 and flow two on 1→2, both with capacity three,
+while reporting value three and cut {0}. The scalar gap is zero, but
+vertex 1 accumulates one unit and the sink receives only two. The
+independent check rejects feasibility and optimality. The following figure
+illustrates that supplied invalid record, not a Dinic output.
+
+A tolerance of 0.5 would accept a feasible value 9.5 against a cut of ten
+within that tolerance; the displayed gap remains 0.5. These flags are
+numerical checks of the supplied result. They do not replace independent
+exact tests when a proof over exact integer data is needed.
+
+The kernel checks every residual pair and cumulative flow before a positive
+push. Nonfinite sums raise overflow_error. A positive update lost to
+rounding raises runtime_error; for example, trying to subtract one from
+an edge residual of 1e100 cannot change that double. No partial flow or
+trace is returned. There is no hidden unit-dependent epsilon or automatic
+rescaling. The original four-argument name, advanced_graph.hpp include
+path and MaxFlowResult layout remain available.
+
+Trace storage is explicitly bounded. If P includes the final failed BFS,
+A is the number of augmentations and L sums successful path lengths,
+the entry cost is C=P(V+1)+A+L: each phase, each stored vertex level,
+each augmentation and each path-arc snapshot counts one. Original graph,
+result and working arrays are outside that optional history budget.
+The default cap is one million entries; zero disables only that cap.
+The single-edge trace costs eight entries exactly; seven fails before
+the final BFS. Capture adds O(C) time/storage to the ordinary algorithm.
+
+```{cpp, results="markdown", file="figures/dinic_checks.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| supplied record | tolerance | flow | cut | conservation error | value error | signed gap | feasible | optimal within tolerance |\n| :--- | ---: | ---: | ---: | ---: | ---: | ---: | :--- | :--- |\n");
+  for(double value:{7.,11.,9.5}){const double tolerance=value==9.5?.5:0;const dm::algorithms::MaxFlowResult r{value,{value},{0}};
+    const auto c=dm::algorithms::max_flow_certificate(2,{{0,1,10}},0,1,r,tolerance);
+    std::print("| single edge | {:.1f} | {:.1f} | {:.1f} | {:.1f} | {:.1f} | {:.1f} | {} | {} |\n",tolerance,value,c.cut_capacity,c.max_conservation_error,c.value_balance_error,c.duality_gap,c.feasible,c.optimal_within_tolerance);}
+  const dm::algorithms::MaxFlowResult bad{3,{3,2},{0}};const auto c=dm::algorithms::max_flow_certificate(3,{{0,1,3},{1,2,3}},0,2,bad);
+  std::print("| broken conservation | 0.0 | 3.0 | {:.1f} | {:.1f} | {:.1f} | {:.1f} | {} | {} |\n\n",c.cut_capacity,c.max_conservation_error,c.value_balance_error,c.duality_gap,c.feasible,c.optimal_within_tolerance);
+  std::size_t cap=0,overflow=0,progress=0,invalid=0;
+  try{(void)dm::algorithms::dinic_max_flow_trace(2,{{0,1,7.5}},0,1,7);}catch(const std::length_error&){++cap;}
+  try{(void)dm::algorithms::dinic_max_flow(2,{{0,1,1e308},{0,1,1e308}},0,1);}catch(const std::overflow_error&){++overflow;}
+  try{(void)dm::algorithms::dinic_max_flow(3,{{0,1,1e100},{1,2,1}},0,2);}catch(const std::runtime_error&){++progress;}
+  try{(void)dm::algorithms::dinic_max_flow(4,{{2,3,std::numeric_limits<double>::infinity()}},0,1);}catch(const std::invalid_argument&){++invalid;}
+  if(cap!=1 || overflow!=1 || progress!=1 || invalid!=1 || c.feasible || c.optimal_within_tolerance)return 1;
+  std::print("Expected rejections: history cap {}; total overflow {}; lost residual progress {}; unreachable nonfinite edge {}.\n",cap,overflow,progress,invalid);
+  const auto g=dm::algorithms::dinic_disjoint_paths(1,20000);const auto t=dm::algorithms::dinic_max_flow_trace(g.vertex_count,g.edges,g.source,g.sink);
+  std::print("Iterative chain: {} edges, flow {:.0f}, longest pushed path {}, BFS arc visits {}, DFS arc tests {}.\n",g.edges.size(),t.result.max_flow,t.work.max_path_edges,t.work.bfs_arc_inspections,t.work.dfs_arc_inspections);
+  dm::graphics::Diagram d(75,1100);dm::graphics::DiagramNodeStyle node;node.width=2.8;node.height=1.6;node.font_size=23;
+  d.node("s",{0,0},"Source 0\nsends 3",node).node("middle",{5,0},std::format("Vertex 1\nimbalance {:.0f}",c.max_conservation_error),node).node("t",{10,0},"Sink 2\nreceives 2",node)
+   .edge("s","middle","flow 3 / capacity 3").edge("middle","t","flow 2 / capacity 3")
+   .text({5,2.3},"Supplied invalid record: cut minus reported value is zero",25)
+   .text({5,-2.3},"Conservation and terminal balance fail, so the equality does not certify a maximum flow",20)
+   .save_svg("build/dinic_checks.svg");
+}
+```
+// result_begin: markdown
+| supplied record | tolerance | flow | cut | conservation error | value error | signed gap | feasible | optimal within tolerance |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: | :--- | :--- |
+| single edge | 0.0 | 7.0 | 10.0 | 0.0 | 0.0 | 3.0 | true | false |
+| single edge | 0.0 | 11.0 | 10.0 | 0.0 | 0.0 | -1.0 | false | false |
+| single edge | 0.5 | 9.5 | 10.0 | 0.0 | 0.0 | 0.5 | true | true |
+| broken conservation | 0.0 | 3.0 | 3.0 | 1.0 | 1.0 | 0.0 | false | false |
+
+Expected rejections: history cap 1; total overflow 1; lost residual progress 1; unreachable nonfinite edge 1.
+Iterative chain: 20000 edges, flow 1, longest pushed path 20000, BFS arc visits 40001, DFS arc tests 40000.
+\image(figures/dinic_checks.svg)
+// result_end
+\caption(A deliberately supplied invalid result has a zero scalar cut gap but fails conservation and terminal balance. Executed controls also check tolerance semantics, trace caps, arithmetic failures and a 20,000-edge iterative path.)
+\alttext(Source, middle and sink boxes show three units sent into the middle but only two leaving, exposing the one-unit conservation error despite a zero reported cut gap.)
+
+> Verification and limits
+
+Native tests enumerate all 729 three-vertex networks with each directed
+non-loop capacity in {0,1,2}, from all six ordered terminal pairs, and all
+4096 four-vertex unit/zero-capacity networks from all twelve terminal
+pairs. These 53,526 source/sink computations match independently enumerated
+cut minima. Plain and traced per-edge flows and cut sides agree. A separate
+replay checks every BFS level, path bottleneck, residual operand/update,
+blocked level graph and inspection identity against the owned original input.
+
+The original single edge and classic value 23, the cancellation example,
+parallel/antiparallel arcs, self-loops, scale changes, exact/one-short
+history caps, malformed supplied certificates, complete input guards and
+arithmetic failures receive explicit controls. Generated path counts and
+phase counts match their closed forms, and a 30,000-edge native test
+uses the explicit stack without vertex-depth C++ recursion. The report
+itself runs the 20,000-edge version. All inputs are small educational
+networks or canonical generated fixtures; no external dataset is required.
+
+The mathematical flow/cut proof and phase bound hold in exact arithmetic.
+The implementation uses checked doubles and numerical diagnostics; a wide
+capacity range may require rescaling or a different arithmetic model.
+Within the exhibited representable cases, the trace exposes how blocking
+and cancellation achieve the result, and the independent flow/cut check
+establishes the reported numerical agreement.
+
+> References
+
+- E. A. Dinic (1970), “Algorithm for solution of a problem of maximum flow
+  in a network with power estimation”, Soviet Mathematics Doklady 11,
+  1277–1280. [Original English translation](https://www.cs.bgu.ac.il/~dinitz/D70.pdf),
+  [author’s publication list](https://www.cs.bgu.ac.il/~dinitz/pub.html).
+- L. R. Ford Jr. and D. R. Fulkerson (1956), “Maximal flow through a network”,
+  Canadian Journal of Mathematics 8, 399–404.
+  [Original paper](https://doi.org/10.4153/CJM-1956-045-5).

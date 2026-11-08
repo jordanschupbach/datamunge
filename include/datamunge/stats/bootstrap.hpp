@@ -30,10 +30,11 @@ struct BootstrapOptions {
 /// Interval endpoints are ordered lower/upper. Quantiles use linear interpolation
 /// at (B-1)*p, equivalent to R type 7. The BCa interval falls back to the
 /// percentile interval when its strict empirical probability at the estimate is zero or one,
-/// or its probability adjustment is not finite. A default result holds zero values.
+/// jackknife values are unavailable, or its adjustment is nonfinite, singular or reversed.
+/// A default result holds zero values.
 /// @par Example
 /// @code
-/// const auto result = dm::stats::Bootstrap().run({1,1}, dm::mean);
+/// const auto result = dm::stats::Bootstrap().run({1,1}, [](const auto& values){return dm::mean(values);});
 /// const double estimate = result.estimate; // 1
 /// @endcode
 /// @see Bootstrap::run()
@@ -57,10 +58,41 @@ struct BootstrapResult {
       0.0}; ///< Bias-corrected and accelerated percentile endpoints.
 };
 
+/// @brief Summarise caller-supplied bootstrap replicates using the same interval code as Bootstrap::run().
+/// Keeps replicate draw order; quantiles use an independent sorted copy and type-7
+/// linear interpolation. Bias is mean(replicates)-estimate and SE uses B-1, with
+/// zero SE for B=1. Normal intervals centre at estimate-bias. BCa uses strict
+/// replicate<estimate counts and scaled leave-one-out deviations; it falls back
+/// to percentile without at least two jackknife values or with an invalid adjustment.
+/// Computation uses long-double centred sums and checked double endpoints.
+/// O(B log B+J) work and O(B) additional storage; no caller data are mutated.
+/// @param estimate Finite original statistic.
+/// @param replicates Nonempty finite statistics, copied or moved into the result.
+/// @param jackknife_values Finite leave-one-out statistics in any order, default empty (BCa fallback).
+/// @param confidence_level Level strictly between zero and one, default 0.95.
+/// @return Owned replicates, bias, SE and four ordered intervals.
+/// @throws std::invalid_argument If replicates are empty or the level is invalid.
+/// @throws std::domain_error If estimate or any replicate/jackknife statistic is nonfinite.
+/// @throws std::overflow_error If a summary or endpoint is outside finite double range.
+/// @par Example
+/// @code
+/// const auto result=dm::stats::bootstrap_summary(2.5,{1,2,3,4},{},0.5);
+/// std::print("{} {}\n",result.percentile_interval.first,result.percentile_interval.second); // 1.75 3.25
+/// @endcode
+/// @par References
+/// - B. Efron (1979), Bootstrap Methods: Another Look at the Jackknife,
+///   doi:10.1214/aos/1176344552.
+/// - B. Efron (1987), Better Bootstrap Confidence Intervals,
+///   doi:10.1080/01621459.1987.10478410.
+/// @see Bootstrap::run(), BootstrapResult
+BootstrapResult bootstrap_summary(double estimate,std::vector<double> replicates,
+    const std::vector<double>& jackknife_values={},double confidence_level=0.95);
+
 /// @brief Nonparametric resampling with replacement, as in R's boot with ordinary resampling.
 ///
 /// Resamples n observations B times and evaluates a deterministic statistic.
-/// No missing-value filtering occurs; the statistic controls non-finite handling.
+/// No missing-value filtering occurs; the statistic controls input non-finite handling
+/// but must return finite values for the original sample, resamples and jackknife samples.
 /// BCa acceleration may also evaluate the statistic on n leave-one-out samples.
 /// Copies cost O(B*n+n*n), plus statistic evaluations and O(B log B) sorting;
 /// temporary/result storage is O(n+B). Inputs are borrowed and unchanged.
@@ -68,14 +100,14 @@ struct BootstrapResult {
 /// @par Example
 /// @code
 /// const dm::stats::Bootstrap bootstrap({100,0.95,42});
-/// const auto result = bootstrap.run({1,1,1}, dm::mean);
+/// const auto result = bootstrap.run({1,1,1}, [](const auto& values){return dm::mean(values);});
 /// const double se = result.standard_error; // 0
 /// @endcode
 /// @par References
 /// - B. Efron (1979), Bootstrap Methods: Another Look at the Jackknife,
 ///   https://doi.org/10.1214/aos/1176344552
 /// - B. Efron (1987), Better Bootstrap Confidence Intervals,
-///   https://doi.org/10.1080/01621459.1987.10478407
+///   https://doi.org/10.1080/01621459.1987.10478410
 /// @see BootstrapOptions, BootstrapResult
 class Bootstrap {
  public:
@@ -97,9 +129,11 @@ class Bootstrap {
   /// @return Owned replicates, summary estimates and four confidence intervals.
   /// @throws std::invalid_argument If sample is empty.
   /// @throws std::bad_function_call If statistic is empty; callback exceptions propagate.
+  /// @throws std::domain_error If a statistic result is nonfinite.
+  /// @throws std::overflow_error If a summary or interval exceeds finite double range.
   /// @par Example
   /// @code
-  /// const auto result = dm::stats::Bootstrap().run({1,1}, dm::mean);
+  /// const auto result = dm::stats::Bootstrap().run({1,1}, [](const auto& values){return dm::mean(values);});
   /// const double estimate = result.estimate; // 1
   /// @endcode
   /// @par References
@@ -121,10 +155,12 @@ class Bootstrap {
   /// @return Owned replicates, summary estimates and confidence intervals.
   /// @throws std::invalid_argument If sample is empty.
   /// @throws std::bad_function_call If statistic is empty; callback exceptions propagate.
+  /// @throws std::domain_error If a statistic result is nonfinite, possibly after advancing the stream.
+  /// @throws std::overflow_error If a summary or interval exceeds finite double range.
   /// @par Example
   /// @code
   /// dm::random::Xoshiro256StarStar rng(42);
-  /// const auto result = dm::stats::Bootstrap().run({1,1}, dm::mean, rng);
+  /// const auto result = dm::stats::Bootstrap().run({1,1}, [](const auto& values){return dm::mean(values);}, rng);
   /// const double se = result.standard_error; // 0
   /// @endcode
   /// @par References

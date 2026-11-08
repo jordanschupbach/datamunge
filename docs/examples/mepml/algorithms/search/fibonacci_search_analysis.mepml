@@ -1,0 +1,361 @@
+//? Title: Fibonacci Search: Actual Schedules, Reads and Fallbacks
+//? Subtitle: Exact-match array search with checked offsets, owned transitions and separate comparison counts
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Find an integer in a nondecreasing array and report its position or absence.
+Fibonacci search narrows its schedule with consecutive Fibonacci sizes rather
+than computing midpoint divisions. We begin with two actual reads on seven
+values, retain the original ten-value array and five queries, and inspect the
+native solver's pre/post states. The report-local retracing loop is replaced
+by same-pass owned records. Repeated clamped positions, an equality fallback,
+duplicates and a full query census distinguish reads from unique positions,
+primitive comparisons and elapsed time. A pure native schedule API checks
+very large hypothetical lengths without allocating corresponding arrays.
+)
+
+\toc
+
+> Two actual reads find nine
+
+In [1,3,5,7,9,11,13], the smallest covering Fibonacci size is eight.
+Its predecessors are five and three. The native implementation starts with
+offset−1, probes offset+small=2 and reads five. Since five is below nine,
+it moves the offset to two and reduces the schedule from(3,5,8) to(2,3,5).
+The next probe is index four, whose value nine matches. There are two reads,
+three primitive key comparisons and one nonmatching schedule transition.
+
+The diagram highlights only native captured reads. The boxes below the
+array show each actual pre/post trio; no local search loop recreates them.
+The result is an index in the original sorted array, unlike the separate
+Eytzinger layout's index convention.
+
+```{cpp, results="markdown", file="figures/fibonacci_search_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<int>a{1,3,5,7,9,11,13};const auto t=dm::algorithms::fibonacci_search_trace(a,9);const auto&o=t.outcome;std::print("| actual read | index | value | before (small,middle,large) | offset before | decision | after (small,middle,large) | offset after | key comparisons |\n| ---: | ---: | ---: | :--- | ---: | :--- | :--- | ---: | ---: |\n");std::set<std::size_t>visited;for(std::size_t j=0;j<t.probes.size();++j){const auto&r=t.probes[j];visited.insert(r.index);std::print("| {} | {} | {} | ({},{},{}) | {} | {} | ({},{},{}) | {} | {} |\n",j+1,r.index,r.value,r.small_before,r.middle_before,r.large_before,r.offset_before,r.decision==0?"match":r.decision>0?"upper":"lower",r.small_after,r.middle_after,r.large_after,r.offset_after,r.comparisons);}
+  std::print("\nTiny result: found {}; index {}; reads {}; key comparisons {}; transitions {}; initial growth additions {}.\n",o.result.found,o.result.index,o.result.probes,o.comparisons,o.transitions,o.schedule.growth_steps);
+  dm::graphics::Diagram g(58,1100);dm::graphics::DiagramNodeStyle box;box.width=1.6;box.height=1.4;box.font_size=23;for(std::size_t i=0;i<a.size();++i){box.fill=visited.contains(i)?dm::graphics::RGB{191,219,254}:dm::graphics::RGB{226,232,240};if(std::ptrdiff_t(i)==o.result.index)box.fill={187,247,208};g.node(std::format("a{}",i),{2.2*i,0},std::format("{}\ni={}",a[i],i),box);}box.width=5.5;box.height=1.8;for(std::size_t j=0;j<t.probes.size();++j){const auto&r=t.probes[j];box.fill=r.decision==0?dm::graphics::RGB{187,247,208}:dm::graphics::RGB{219,234,254};const auto id=std::format("r{}",j);g.node(id,{2.8+7*j,-3.8},std::format("Read {}: index {}\n({},{},{}) → ({},{},{})",j+1,r.index,r.small_before,r.middle_before,r.large_before,r.small_after,r.middle_after,r.large_after),box);if(j)g.edge("r0",id,"next");}g.text({6.6,2.5},"Seven sorted values; actual lookup of nine",27).text({6.6,-6.2},"2 reads, 3 key comparisons, 1 schedule transition",25).save_svg("build/fibonacci_search_tiny.svg");if(!o.result.found||o.result.index!=4||o.result.probes!=2||o.comparisons!=3)throw std::runtime_error("tiny lookup failed");
+}
+```
+// result_begin: markdown
+| actual read | index | value | before (small,middle,large) | offset before | decision | after (small,middle,large) | offset after | key comparisons |
+| ---: | ---: | ---: | :--- | ---: | :--- | :--- | ---: | ---: |
+| 1 | 2 | 5 | (3,5,8) | -1 | upper | (2,3,5) | 2 | 1 |
+| 2 | 4 | 9 | (2,3,5) | 2 | match | (2,3,5) | 2 | 2 |
+
+Tiny result: found true; index 4; reads 2; key comparisons 3; transitions 1; initial growth additions 4.
+\image(figures/fibonacci_search_tiny.svg)
+// result_end
+\caption(The actual reads are index two then four. A successful equality is reached through two ordering comparisons in the main loop, so two reads perform three primitive key comparisons.)
+\alttext(A native seven-cell sorted array highlights value five at index two and the matched nine at index four. Two lower boxes show the actual Fibonacci trios before and after each read.)
+
+> The native schedule and its shrinking invariant
+
+For positive n, grow(small,middle,large) from(0,1,1) until large≥n,
+maintaining small+middle=large. The current offset is initially−1.
+During the main loop, probe min(offset+small,n−1). A read value below
+the key moves the offset to that index and updates the sizes as
+(new small,new middle,new large)=(old middle−old small,old small,old middle).
+A value above the key keeps the offset and sets
+(new small,new middle,new large)=(2old small−old middle,old middle−old small,old small).
+The implementation uses successive nonnegative differences, avoiding the
+unnecessary doubled intermediate in that second expression.
+
+Nondecreasing order justifies discarding the corresponding values. Each
+nonmatching main iteration decreases the Fibonacci rank by at least one.
+When large≤1, a possible remaining offset+1 position is checked by equality.
+That final check is a real read even when a previous read visited the same
+position. Covering-rank growth and search each take O(log(n+1)) word work.
+The schedule-addition count plus two is a conservative read bound, not an
+exact count or a claim of optimal comparisons.
+
+There is no midpoint division in this schedule. That arithmetic property
+alone does not imply faster execution than binary search on current
+hardware. Index checks, branches, key comparisons, memory access and
+preprocessing all matter. Fibonacci search here is exact membership in
+an already sorted array, distinct from unimodal numerical optimization.
+
+> The original ten values and five queries
+
+For n=10, the initial trio is(5,8,13). The original search for thirteen
+reads index:value pairs4:9,7:15,5:11,6:13. All five original results and
+probe counts are preserved. The binary-search comparison below calls the
+native closed-interval binary-search trace; on this particular query its
+four positions happen to coincide. The next section shows paths with
+different behavior. No equivalence of their general search trees is claimed.
+
+```{cpp, results="markdown", file="figures/fibonacci_search_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<int>a{1,3,5,7,9,11,13,15,17,19};std::print("| original key | found | original-array index | actual reads | key comparisons | main transitions |\n| ---: | :--- | ---: | ---: | ---: | ---: |\n");for(int key:{13,1,19,8,20}){const auto o=dm::algorithms::fibonacci_search_work(a,key);std::print("| {} | {} | {} | {} | {} | {} |\n",key,o.result.found,o.result.index,o.result.probes,o.comparisons,o.transitions);}
+  const auto t=dm::algorithms::fibonacci_search_trace(a,13);std::print("\n| read | index | value | small before | middle before | large before | offset before | large after | offset after |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");std::vector<double>x,y,px,py;for(std::size_t i=0;i<a.size();++i){x.push_back(i);y.push_back(a[i]);}auto plot=dm::graphics::RPlot::create();plot.points(x,y,"Input values",{148,163,184},7);for(std::size_t j=0;j<t.probes.size();++j){const auto&r=t.probes[j];std::print("| {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",j+1,r.index,r.value,r.small_before,r.middle_before,r.large_before,r.offset_before,r.large_after,r.offset_after);px.push_back(r.index);py.push_back(r.value);plot.text(r.index,r.value+1.1,std::to_string(j+1),{220,38,38},15);}
+  const auto b=dm::algorithms::binary_search_trace(a,13);bool same=b.probes.size()==t.probes.size();for(std::size_t j=0;j<b.probes.size()&&same;++j)same=std::size_t(b.probes[j].index)==t.probes[j].index;std::print("\nOriginal thirteen path: 4:9 7:15 5:11 6:13; actual binary path matches {}.\n",same);plot.points(px,py,"Actual reads",{220,38,38},11).points({double(t.probes.back().index)},{double(t.probes.back().value)},"Match",{202,138,4},15).title("Original thirteen lookup: labels give actual read order").x_label("Original array index").y_label("Actual read value").x_limits(-.5,9.5).size(1100,560).save_svg("build/fibonacci_search_original.svg");if(t.outcome.result.index!=6||t.probes.size()!=4||!same)throw std::runtime_error("original path checks failed");
+}
+```
+// result_begin: markdown
+| original key | found | original-array index | actual reads | key comparisons | main transitions |
+| ---: | :--- | ---: | ---: | ---: | ---: |
+| 13 | true | 6 | 4 | 6 | 3 |
+| 1 | true | 0 | 3 | 6 | 2 |
+| 19 | true | 9 | 3 | 4 | 2 |
+| 8 | false | -1 | 5 | 6 | 4 |
+| 20 | false | -1 | 5 | 5 | 5 |
+
+| read | index | value | small before | middle before | large before | offset before | large after | offset after |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 4 | 9 | 5 | 8 | 13 | -1 | 8 | 4 |
+| 2 | 7 | 15 | 3 | 5 | 8 | 4 | 3 | 4 |
+| 3 | 5 | 11 | 1 | 2 | 3 | 4 | 2 | 5 |
+| 4 | 6 | 13 | 1 | 1 | 2 | 5 | 2 | 5 |
+
+Original thirteen path: 4:9 7:15 5:11 6:13; actual binary path matches true.
+\image(figures/fibonacci_search_original.svg)
+// result_end
+\caption(All original queries preserve their result/index/probe counts. Red points and numbers come from the actual thirteen trace; binary-search path equality is checked for this specific query.)
+\alttext(A native plot of the original ten sorted odd values highlights actual indices four,seven,five,six. Numbered red markers show the read order and a gold marker identifies thirteen at index six.)
+
+> Repeated clamps, the equality fallback and duplicates
+
+The native implementation intentionally retains its original index choices
+and probe counts. For absent key twenty, indices4,7,9,9,9 are all main-loop
+reads. Clamping repeats the last position three times, making five reads
+but only three distinct positions. For absent key eight, the path is
+4,1,2,3,4: the fifth read is the final equality-only fallback. The first
+and last read inspect the same position. That fallback executes one
+comparison; it does not invent an ordering test for its explanatory record.
+
+For duplicates, a matching index is the first one encountered by this
+search schedule. It need not be the first sorted occurrence. An eight-item
+constant array returns index two for its repeated key. Empty input returns
+false,index−1 and zero work; singleton lookup uses the equality fallback.
+Sortedness remains an unchecked precondition, so these statements require
+a nondecreasing input that stays unmodified during the search.
+
+```{cpp, results="markdown", file="figures/fibonacci_search_edges.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<int>a{1,3,5,7,9,11,13,15,17,19};std::print("| key | actual read | index | value | final equality check | decision | comparisons |\n| ---: | ---: | ---: | ---: | :--- | :--- | ---: |\n");auto plot=dm::graphics::RPlot::create();const std::vector<dm::graphics::RGB>colours{{37,99,235},{220,38,38}};int c=0;for(int key:{8,20}){const auto t=dm::algorithms::fibonacci_search_trace(a,key);std::vector<double>x,y;std::set<std::size_t>unique;for(std::size_t j=0;j<t.probes.size();++j){const auto&r=t.probes[j];unique.insert(r.index);std::print("| {} | {} | {} | {} | {} | {} | {} |\n",key,j+1,r.index,r.value,r.final_check,r.decision==2?"tail miss":r.decision==0?"match":r.decision>0?"upper":"lower",r.comparisons);x.push_back(j+1);y.push_back(r.index);if(r.final_check)plot.points({double(j+1)},{double(r.index)},"Final equality",{22,163,74},10);}std::print("\nKey {} totals: reads {}; distinct positions {}; comparisons {}; transitions {}.\n",key,t.outcome.result.probes,unique.size(),t.outcome.comparisons,t.outcome.transitions);plot.line(x,y,std::format("Key {}",key),colours[c],2).points(x,y,"",colours[c],5);++c;}
+  const auto duplicate=dm::algorithms::fibonacci_search_work(std::vector<int>(8,4),4),empty=dm::algorithms::fibonacci_search_work({},4);const auto single=dm::algorithms::fibonacci_search_trace({7},7);std::print("Duplicate eight-value array: index {}; reads {}; first sorted occurrence is zero.\n",duplicate.result.index,duplicate.result.probes);std::print("Empty: found {}; index {}; reads {}; initial additions {}. Singleton: index {}; final equality {}.\n",empty.result.found,empty.result.index,empty.result.probes,empty.schedule.growth_steps,single.outcome.result.index,single.probes.front().final_check);
+  plot.title("Clamped repeats and final equality are actual element reads").x_label("Actual read number").y_label("Inspected original-array index").x_ticks({1,2,3,4,5},{"1","2","3","4","5"}).size(1100,560).save_svg("build/fibonacci_search_edges.svg");if(duplicate.result.index!=2||empty.result.probes||!single.probes.front().final_check)throw std::runtime_error("edge controls failed");
+}
+```
+// result_begin: markdown
+| key | actual read | index | value | final equality check | decision | comparisons |
+| ---: | ---: | ---: | ---: | :--- | :--- | ---: |
+| 8 | 1 | 4 | 9 | false | lower | 2 |
+| 8 | 2 | 1 | 3 | false | upper | 1 |
+| 8 | 3 | 2 | 5 | false | upper | 1 |
+| 8 | 4 | 3 | 7 | false | upper | 1 |
+| 8 | 5 | 4 | 9 | true | tail miss | 1 |
+
+Key 8 totals: reads 5; distinct positions 4; comparisons 6; transitions 4.
+| 20 | 1 | 4 | 9 | false | upper | 1 |
+| 20 | 2 | 7 | 15 | false | upper | 1 |
+| 20 | 3 | 9 | 19 | false | upper | 1 |
+| 20 | 4 | 9 | 19 | false | upper | 1 |
+| 20 | 5 | 9 | 19 | false | upper | 1 |
+
+Key 20 totals: reads 5; distinct positions 3; comparisons 5; transitions 5.
+Duplicate eight-value array: index 2; reads 1; first sorted occurrence is zero.
+Empty: found false; index -1; reads 0; initial additions 0. Singleton: index 0; final equality true.
+\image(figures/fibonacci_search_edges.svg)
+// result_end
+\caption(The plot preserves repeated positions rather than collapsing them. The green marker is the actual equality-only final read for key eight; the red path clamps repeatedly at index nine for key twenty.)
+\alttext(A native plot of read number versus inspected index compares absent keys eight and twenty. Key eight returns to index four on its final equality check; key twenty reads index nine three times.)
+
+> A complete query census measures logical work
+
+For each length n below, construct[0,2,...,2(n−1)]. Query every present
+even value and each of its n+1 missing gaps, represented by−1 and the
+n positive odd values. This is an exact census of these query classes,
+not a timing benchmark or a probability distribution over arbitrary keys.
+The success and missing means use their own denominators. Each query calls
+the native ordinary search APIs; the report only summarizes their counts.
+
+The plot compares mean successful reads for Fibonacci and binary search,
+plus their worst reads across the complete census. Read counts omit initial
+Fibonacci schedule additions and primitive comparison differences, which
+are separately available through the work API. Array construction/sorting
+and any cache behavior are outside these read counts. A lower count on a
+selected family does not imply a universal runtime advantage.
+
+```{cpp, results="markdown", file="figures/fibonacci_search_census.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  std::print("| n | Fibonacci mean present | binary mean present | Fibonacci mean missing | binary mean missing | Fibonacci worst reads | binary worst reads | initial additions | conservative bound |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");std::vector<double>x,fmean,bmean,fworst,bworst;for(std::size_t n:{1,2,3,5,8,10,13,21,34,55,89,144,233,377,610,987,1597,2584,4096}){std::vector<int>a(n);for(std::size_t i=0;i<n;++i)a[i]=2*i;std::size_t fp=0,bp=0,fm=0,bm=0,fx=0,bx=0;for(std::size_t i=0;i<n;++i){const auto f=dm::algorithms::fibonacci_search(a,2*i),b=dm::algorithms::binary_search(a,2*i);fp+=f.probes;bp+=b.probes;fx=std::max(fx,f.probes);bx=std::max(bx,b.probes);if(!f.found||!b.found)throw std::runtime_error("present census failed");}for(std::size_t i=0;i<=n;++i){const int key=i==0?-1:int(2*i-1);const auto f=dm::algorithms::fibonacci_search(a,key),b=dm::algorithms::binary_search(a,key);fm+=f.probes;bm+=b.probes;fx=std::max(fx,f.probes);bx=std::max(bx,b.probes);if(f.found||b.found)throw std::runtime_error("missing census failed");}const auto schedule=dm::algorithms::fibonacci_search_schedule(n);const auto bound=schedule.growth_steps+2;std::print("| {} | {:.6f} | {:.6f} | {:.6f} | {:.6f} | {} | {} | {} | {} |\n",n,double(fp)/n,double(bp)/n,double(fm)/(n+1),double(bm)/(n+1),fx,bx,schedule.growth_steps,bound);if(fx>bound)throw std::runtime_error("rank bound failed");x.push_back(std::log2(double(n)));fmean.push_back(double(fp)/n);bmean.push_back(double(bp)/n);fworst.push_back(fx);bworst.push_back(bx);}
+  auto plot=dm::graphics::RPlot::create();plot.line(x,fmean,"Fibonacci mean",{37,99,235},2).points(x,fmean,"",{37,99,235},4).line(x,bmean,"Binary mean",{22,163,74},2).line(x,fworst,"Fibonacci worst",{220,38,38},2).line(x,bworst,"Binary worst",{124,58,237},2).title("Complete native query census on equally spaced arrays").x_label("log2(n), display coordinate").y_label("Actual element reads").size(1100,580).save_svg("build/fibonacci_search_census.svg");
+}
+```
+// result_begin: markdown
+| n | Fibonacci mean present | binary mean present | Fibonacci mean missing | binary mean missing | Fibonacci worst reads | binary worst reads | initial additions | conservative bound |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.000000 | 1.000000 | 1.000000 | 1.000000 | 1 | 1 | 0 | 2 |
+| 2 | 1.500000 | 1.500000 | 1.666667 | 1.666667 | 2 | 2 | 1 | 3 |
+| 3 | 2.000000 | 1.666667 | 2.500000 | 2.000000 | 3 | 2 | 2 | 4 |
+| 5 | 2.400000 | 2.200000 | 3.166667 | 2.666667 | 4 | 3 | 3 | 5 |
+| 8 | 2.875000 | 2.625000 | 3.888889 | 3.222222 | 5 | 4 | 4 | 6 |
+| 10 | 2.900000 | 2.900000 | 4.272727 | 3.545455 | 5 | 4 | 5 | 7 |
+| 13 | 3.384615 | 3.153846 | 4.571429 | 3.857143 | 6 | 4 | 5 | 7 |
+| 21 | 3.952381 | 3.761905 | 5.272727 | 4.545455 | 7 | 5 | 6 | 8 |
+| 34 | 4.558824 | 4.323529 | 5.971429 | 5.171429 | 8 | 6 | 7 | 9 |
+| 55 | 5.200000 | 4.963636 | 6.678571 | 5.857143 | 9 | 6 | 8 | 10 |
+| 89 | 5.865169 | 5.651685 | 7.388889 | 6.577778 | 10 | 7 | 9 | 11 |
+| 144 | 6.548611 | 6.284722 | 8.103448 | 7.234483 | 11 | 8 | 10 | 12 |
+| 233 | 7.244635 | 6.939914 | 8.820513 | 7.905983 | 12 | 8 | 11 | 13 |
+| 377 | 7.949602 | 7.668435 | 9.539683 | 8.645503 | 13 | 9 | 12 | 14 |
+| 610 | 8.660656 | 8.339344 | 10.260229 | 9.324059 | 14 | 10 | 13 | 15 |
+| 987 | 9.375887 | 8.973658 | 10.981781 | 9.963563 | 15 | 10 | 14 | 16 |
+| 1597 | 10.093926 | 9.725110 | 11.704005 | 10.718398 | 16 | 11 | 15 | 17 |
+| 2584 | 10.813854 | 10.419892 | 12.426692 | 11.415474 | 17 | 12 | 16 | 18 |
+| 4096 | 11.484619 | 11.003418 | 13.102026 | 12.000488 | 17 | 13 | 17 | 19 |
+\image(figures/fibonacci_search_census.svg)
+// result_end
+\caption(Every present element and missing gap is searched through the native APIs. Means are conditioned on those explicit query classes, and worst-case counts are over the same finite census.)
+\alttext(A native logarithmic-length display compares Fibonacci and binary mean successful reads and their worst reads over all present values and missing gaps for nineteen array lengths.)
+
+> Checked virtual schedules and owned actual history
+
+The pure fibonacci_search_schedule API accepts n without allocating an
+array. It rejects lengths above PTRDIFF_MAX before schedule arithmetic.
+For a positive accepted n, the last growth addition sums two predecessors
+smaller than n, so its covering value fits size_t even when it exceeds
+the signed index range. Explicit checked addition also protects the growth.
+Probe computation represents offset−1 as a signed sentinel and clamps
+before addition, avoiding the former unsigned-wrap idiom. It uses the same
+mathematical indices on valid inputs.
+
+Optional C=P counts one whole record per actual read, including repeats
+and the final equality check. Admission occurs before reading the next
+input element. Default quota is1000000; zero disables only optional quota.
+Input values are not copied wholesale. Metadata, vector capacity, allocators
+and runtime storage are excluded from C, so it is not peak RAM. Records
+own the values they did read and copies remain independent after input
+mutation. Ordinary/work calls keep constant auxiliary storage and no
+history quota; capture errors expose no partial trace.
+
+```{cpp, results="markdown", file="figures/fibonacci_search_limits.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/algorithms/sorted_search.hpp>
+#include <datamunge/plot/diagram.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <numeric>
+#include <print>
+#include <set>
+#include <stdexcept>
+#include <string>
+#include <vector>
+namespace dm=datamunge;
+int main(){
+  std::filesystem::create_directories("build");
+  const auto limit=std::size_t(std::numeric_limits<std::ptrdiff_t>::max());std::print("| hypothetical n, no array allocated | small | middle | covering large | actual growth additions |\n| ---: | ---: | ---: | ---: | ---: |\n");for(std::size_t n:std::vector<std::size_t>{0,1,10,std::size_t(1)<<(std::numeric_limits<std::size_t>::digits/2),limit}){const auto s=dm::algorithms::fibonacci_search_schedule(n);std::print("| {} | {} | {} | {} | {} |\n",n,s.small,s.middle,s.large,s.growth_steps);}
+  int bounds=0;for(auto n:{limit+1,std::numeric_limits<std::size_t>::max()})try{(void)dm::algorithms::fibonacci_search_schedule(n);}catch(const std::length_error&){++bounds;}const std::vector<int>a{1,3,5,7,9,11,13,15,17,19};bool maincap=false,tailcap=false;try{(void)dm::algorithms::fibonacci_search_trace(a,13,3);}catch(const std::length_error&){maincap=true;}try{(void)dm::algorithms::fibonacci_search_trace(a,8,4);}catch(const std::length_error&){tailcap=true;}const auto exact=dm::algorithms::fibonacci_search_trace(a,13,4),off=dm::algorithms::fibonacci_search_trace(a,13,0);auto edited=exact;const auto owned=edited;edited.probes.front().value=-99;std::print("\nPosition bounds rejected {}/2. Main-read quota rejects {}; fallback quota rejects {}; exact quota C {}; disabled quota C {}.\n",bounds,maincap,tailcap,exact.captured_entries,off.captured_entries);std::print("Owned actual read: retained value {}; edited value {}; retained result index {}.\n",owned.probes.front().value,edited.probes.front().value,owned.outcome.result.index);
+  const auto s=dm::algorithms::fibonacci_search_schedule(limit);dm::graphics::Diagram g(52,1100);dm::graphics::DiagramNodeStyle box;box.width=6.2;box.height=1.9;box.font_size=23;const std::vector<std::size_t>sizes{s.small,s.middle,s.large};const std::vector<std::string>names{"Small predecessor","Middle predecessor","Covering Fibonacci"};for(std::size_t i=0;i<3;++i){box.fill=i==2?dm::graphics::RGB{187,247,208}:dm::graphics::RGB{219,234,254};g.node(std::to_string(i),{7.5*i,0},std::format("{}\n{}",names[i],sizes[i]),box);}g.text({7.5,2.8},std::format("Virtual n={}; no input array allocated",limit),27).text({7.5,-2.7},std::format("{} actual growth additions; covering size stays in size_t",s.growth_steps),25).save_svg("build/fibonacci_search_limits.svg");if(bounds!=2||!maincap||!tailcap||owned.probes.front().value!=9)throw std::runtime_error("limit controls failed");
+}
+```
+// result_begin: markdown
+| hypothetical n, no array allocated | small | middle | covering large | actual growth additions |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 1 | 0 |
+| 10 | 5 | 8 | 13 | 5 |
+| 4294967296 | 1836311903 | 2971215073 | 4807526976 | 46 |
+| 9223372036854775807 | 4660046610375530309 | 7540113804746346429 | 12200160415121876738 | 91 |
+
+Position bounds rejected 2/2. Main-read quota rejects true; fallback quota rejects true; exact quota C 4; disabled quota C 4.
+Owned actual read: retained value 9; edited value -99; retained result index 6.
+\image(figures/fibonacci_search_limits.svg)
+// result_end
+\caption(The native pure schedule reaches the full signed-index length domain with no array allocation. Separate limits verify main and fallback capture admission and ownership.)
+\alttext(A native three-box diagram shows the exact small,middle and covering Fibonacci sizes for the maximum signed-index length. The caption states the actual schedule-addition count and that no input array was allocated.)
+
+> Verification and references
+
+The original callable signature and valid result/index/probe behavior are
+preserved across1157680 frozen lines, including all lengths0..1024 and
+queries,1000 seeded duplicate arrays and integer extremes. All ten original
+full-program output lines also remain exact. Strict sanitizer checks cover
+independent standard membership, all165 small nondecreasing arrays over
+three values, all lengths0..4096 at edge queries,600 seeded wide/duplicate
+arrays,10000 virtual full-domain schedules checked with wider integers,
+a million-element input, actual pre/post records, fallback/repeated reads,
+quotas and ownership. All16 examples in the changed header, including its
+existing Eytzinger examples, are compiled and executed.
+
+Paul E. Black, [Fibonaccian search](https://xlinux.nist.gov/dads/HTML/fibonaccianSearch.html),
+NIST Dictionary of Algorithms and Data Structures, entry modified14December2020,
+describes the Fibonacci-sized sorted-array search family and its subtraction
+scheduling. The native variant starts with the smaller predecessor offset,
+clamps positions and keeps a final equality fallback; the exact contract and
+actual counts here describe that implementation.
+
+P. S. Efraimidis, [(alpha,beta) Fibonacci Search](https://arxiv.org/abs/1012.0259),
+2010, introduction, discusses historical arithmetic motivation and explicitly
+distinguishes sorted-array search from unimodal optimization. Its generalized
+asymmetric-cost optimum is a different model; this report claims no such
+optimality for the native exact-match/clamped variant.

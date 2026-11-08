@@ -1,29 +1,39 @@
 #pragma once
+/// @file exchange_sorts.hpp
+/// @brief Integer adjacent-exchange and prefix-reversal sorting entry points.
 
+#include <datamunge/algorithms/cocktail_shaker_sort.hpp>
+#include <datamunge/algorithms/gnome_sort.hpp>
 #include <cstddef>
 #include <vector>
 
 namespace datamunge::algorithms {
 
-/// @brief *Gnome sort* (Hamid Sarbazi-Azad, 2000): the simplest sort to describe -- like a garden
-///        gnome ordering flower pots. Walk forward; if the current pair is in order step forward,
-///        otherwise swap them and step *back*. That single rule sorts the array with one loop, no
-///        nested loops and no bounds bookkeeping. It behaves like insertion sort -- @c O(n^2) worst
-///        case, @c O(n) on nearly-sorted input -- and is in-place and stable.
-///
-/// @param a the input values.
-/// @return a sorted (non-decreasing) copy of @p a.
-std::vector<int> gnome_sort(std::vector<int> a);
 
-/// @brief *Cocktail shaker sort* (bidirectional bubble sort): a bubble sort that alternates
-///        direction each pass -- left to right bubbling the largest element to the end, then right
-///        to left bubbling the smallest to the front. Sweeping both ways fixes the "turtles" (small
-///        values near the end) that plain bubble sort moves only one step per pass, roughly halving
-///        the passes, though it remains @c O(n^2). It is in-place and stable, and stops early once a
-///        pass makes no swaps.
+
+/// @brief Return a stable nondecreasing integer copy using alternating adjacent exchanges.
+/// Forward passes fix the rightmost remaining maximum, backward passes the
+/// leftmost minimum. Strict greater-than comparisons preserve equal-key order;
+/// signed extremes are valid. Stops at the first zero-swap directional pass.
+/// Each successful pass shrinks one bound by one: reversing direction does not
+/// guarantee half the directional passes or comparisons of bubble sort.
+/// Empty/singleton inputs return immediately. Worst-case time O(n^2), best O(n);
+/// constant working state beyond the by-value input/output buffer. Lvalue callers
+/// retain their original vector; no shared state is used. See the trace API for
+/// actual pass states, identity labels and work counters from this same kernel.
 ///
-/// @param a the input values.
-/// @return a sorted (non-decreasing) copy of @p a.
+/// @param a Owned integer input; an lvalue is copied by the call.
+/// @return Owned sorted values, preserving multiplicities.
+/// @throws std::bad_alloc If the by-value copy cannot be allocated.
+/// @throws std::length_error If requested vector storage exceeds capacity.
+/// @par Example
+/// @code
+/// std::print("{}\n",dm::algorithms::cocktail_shaker_sort({3,1,2})); // [1, 2, 3]
+/// @endcode
+/// @par References
+/// - P. E. Black and B. Bockholt, Bidirectional bubble sort, NIST Dictionary of
+///   Algorithms and Data Structures, https://xlinux.nist.gov/dads/HTML/bidirectionalBubbleSort.html.
+/// @see cocktail_shaker_sort_trace()
 std::vector<int> cocktail_shaker_sort(std::vector<int> a);
 
 /// @brief *Odd-even sort* (brick sort): repeatedly compares and swaps all (odd, even)-indexed

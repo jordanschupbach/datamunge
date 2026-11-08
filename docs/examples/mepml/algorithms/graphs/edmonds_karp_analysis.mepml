@@ -1,0 +1,420 @@
+//? Title: Edmonds–Karp: Actual Shortest Paths, Cancellations and Cut Witnesses
+//? Subtitle: From one bottleneck to the original CLRS network and exact BFS work
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Given a directed network with capacity limits, we want to send as much
+flow as possible from a source to a sink while conserving flow elsewhere.
+An earlier routing decision may need to be undone to make room for a
+better one. Edmonds–Karp repeatedly finds a shortest residual path and
+pushes its bottleneck. We inspect a tiny bottleneck and an actual reverse
+cancellation, preserve the original six-vertex example, and check exact
+search counts against a blocking-flow method. Owned execution evidence,
+cut certificates and explicit numerical limits make the results checkable.
+)
+
+\toc
+
+> Start with one bottleneck and a matching cut
+
+Take s=0, an intermediate vertex 1 and t=2, with capacities three
+and two along the chain. A first BFS finds 0→1→2. Its bottleneck
+is min(3,2)=2: pushing two leaves residual capacities one and zero.
+The final BFS still reaches vertex 1, but cannot reach the sink.
+Thus S={0,1}, and its only outgoing capacity is two. Flow and cut agree.
+
+The native figure uses the actual result. Edge labels are input
+identity: flow/capacity; green nodes belong to the supplied source side,
+and red edges cross that cut. The drawing API preserves input identities
+and supports parallel, antiparallel and self edges as well.
+
+```{cpp, results="markdown", file="figures/edmonds_karp_tiny.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::FlowNetwork g{3,{{0,1,3},{1,2,2}},0,2};
+  const auto t=dm::algorithms::edmonds_karp_trace(g.vertex_count,g.edges,g.source,g.sink);
+  const auto c=dm::algorithms::max_flow_certificate(g.vertex_count,g.edges,g.source,g.sink,t.result);
+  std::print("Tiny: flow {}; searches {}; adjacency inspections {}; captured entries {}.\n",t.result.max_flow,t.work.bfs_calls,t.work.bfs_arc_inspections,t.captured_entries);
+  std::print("Feasible {}; optimal with zero tolerance {}; cut capacity {}; duality gap {}.\n\n",c.feasible,c.optimal_within_tolerance,c.cut_capacity,c.duality_gap);
+  std::print("| search | vertex | residual distance | parent oriented arc id |\n| ---: | ---: | :--- | :--- |\n");
+  const auto none=std::numeric_limits<std::size_t>::max();
+  for(std::size_t k=0;k<t.searches.size();++k)for(std::size_t v=0;v<g.vertex_count;++v){const auto& b=t.searches[k];
+    std::print("| {} | {} | {} | {} |\n",k,v,b.levels[v]==g.vertex_count?std::string("unreachable"):std::to_string(b.levels[v]),b.parents[v]==none?std::string("none"):std::to_string(b.parents[v]));}
+  std::print("\n| actual path edge | used residual before | used residual after | cancellation before | cancellation after |\n| :--- | ---: | ---: | ---: | ---: |\n");
+  for(const auto& a:t.augmentations.at(0).path)std::print("| e{}: {} to {} | {} | {} | {} | {} |\n",a.input_edge,a.from,a.to,a.residual_before,a.residual_after,a.paired_before,a.paired_after);
+  auto d=dm::algorithms::plot_max_flow(g,t.result,{{0,0},{5,0},{10,0}});
+  d.text({5,2},"One bottleneck push: min(3,2) = 2",25).text({5,-1.8},"Red edge leaves the final source side S = {0,1}",20).save_svg("build/edmonds_karp_tiny.svg");
+}
+```
+// result_begin: markdown
+Tiny: flow 2; searches 2; adjacency inspections 7; captured entries 20.
+Feasible true; optimal with zero tolerance true; cut capacity 2; duality gap 0.
+
+| search | vertex | residual distance | parent oriented arc id |
+| ---: | ---: | :--- | :--- |
+| 0 | 0 | 0 | none |
+| 0 | 1 | 1 | 0 |
+| 0 | 2 | 2 | 2 |
+| 1 | 0 | 0 | none |
+| 1 | 1 | 1 | 0 |
+| 1 | 2 | unreachable | none |
+
+| actual path edge | used residual before | used residual after | cancellation before | cancellation after |
+| :--- | ---: | ---: | ---: | ---: |
+| e0: 0 to 1 | 3 | 1 | 0 | 2 |
+| e1: 1 to 2 | 2 | 0 | 0 | 2 |
+\image(figures/edmonds_karp_tiny.svg)
+// result_end
+\caption(The second edge saturates. The final complete BFS reaches vertices 0 and 1, producing a cut whose capacity equals the feasible flow value.)
+\alttext(A native three-node directed chain shows flow two on capacities three and two. The first two nodes are green, and the saturated final edge crossing to the orange sink is red.)
+
+> Derive residual augmentation
+
+For each original input edge e=(u,v) of capacity c_e, keep its flow
+f_e with 0<=f_e<=c_e. At every vertex except the terminals,
+
+\[
+\sum_{e\text{ leaving }v}f_e-\sum_{e\text{ entering }v}f_e=0.
+\]
+
+The source's net outgoing flow is the objective value. Every input
+edge owns a forward residual arc of capacity c_e−f_e and a reverse
+cancellation arc of capacity f_e. Parallel edges keep separate pairs;
+an original v→u edge is distinct from the cancellation arc of u→v.
+A self edge does not increase source-to-sink value and is never part
+of a simple augmenting path.
+
+BFS traverses strictly positive residual arcs. Its parent chain to the
+sink is a shortest path by edge count. Let delta be the minimum used
+residual. Decrease each used residual by delta and increase its paired
+opposite by delta. A forward use increases the original flow; a reverse
+use decreases it. Internal path vertices gain and lose equal amounts,
+so conservation remains true, while the source value increases by delta.
+The bottleneck ensures capacity bounds remain satisfied in exact arithmetic.
+
+The kernel completes every BFS, even after discovering the sink. This
+keeps all actual distances and first-discovery parent arc ids available.
+It preserves the original first sink path because the graph does not
+change during a search. Oriented ids 2e and 2e+1 identify an input
+edge's forward and reverse arcs; SIZE_MAX means no parent. Unreachable
+distance is V. The final failed search directly supplies the cut, with
+no uncounted second reachability traversal.
+
+If S is the final reachable set, no positive residual crosses from S
+to its complement. Every original S→complement edge is therefore
+saturated, and every complement→S edge has zero flow: otherwise its
+cancellation arc would leave S. Summing conservation over S gives
+flow value equal to outgoing cut capacity. Any feasible flow is bounded
+above by any separating cut, so these matching witnesses establish
+optimality in exact arithmetic. The numerical certificate reports
+feasibility errors and the signed duality gap separately; nonzero
+tolerance would mean numerical agreement, rather than an exact proof.
+
+> An actual cancellation repairs an earlier choice
+
+Interpret the following unit-capacity network as a small matching
+problem: source 0 connects to left vertices 1 and 2; right vertices
+3 and 4 connect to sink 5. Available middle edges are 1→3, 1→4
+and 2→3. The first shortest path uses 1→3. To send a second unit,
+BFS follows 0→2→3→1→4→5. The step 3→1 is the cancellation
+arc of input edge e2, undoing the earlier 1→3 flow. Final matches
+are 1→4 and 2→3. No additional matching implementation is needed;
+the report reads the actual residual path records.
+
+```{cpp, results="markdown", file="figures/edmonds_karp_cancellation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const std::vector<std::tuple<std::size_t,std::size_t,double>> edges{{0,1,1},{0,2,1},{1,3,1},{1,4,1},{2,3,1},{3,5,1},{4,5,1}};
+  const auto t=dm::algorithms::edmonds_karp_trace(6,edges,0,5);
+  std::print("Cancellation: flow {}; searches {}; inspections {}; path updates {}; captured entries {}.\n\n",t.result.max_flow,t.work.bfs_calls,t.work.bfs_arc_inspections,t.work.path_arc_updates,t.captured_entries);
+  std::print("| push | amount | input edge | orientation | from | to | used before | used after | paired before | paired after |\n| ---: | ---: | ---: | :--- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  dm::graphics::Diagram d(64,1100);dm::graphics::DiagramNodeStyle box;box.width=1.2;box.height=1.2;box.circle=true;box.font_size=23;
+  for(std::size_t k=0;k<t.augmentations.size();++k){const auto& a=t.augmentations[k];const double offset=k==0?3.8:0,y=-4.*k;
+    d.text({9.5,y+1.6},std::format("Push {}: amount {}, shortest path has {} edges",k,a.amount,a.path.size()),22);
+    d.node(std::format("{}-0",k),{offset,y},std::to_string(a.path.front().from),box);
+    for(std::size_t j=0;j<a.path.size();++j){const auto& arc=a.path[j];std::print("| {} | {} | e{} | {} | {} | {} | {} | {} | {} | {} |\n",k,a.amount,arc.input_edge,arc.reverse?"reverse":"forward",arc.from,arc.to,arc.residual_before,arc.residual_after,arc.paired_before,arc.paired_after);
+      d.node(std::format("{}-{}",k,j+1),{offset+3.8*(j+1),y},std::to_string(arc.to),box);dm::graphics::DiagramStroke line;if(arc.reverse)line.color={220,38,38};
+      d.edge(std::format("{}-{}",k,j),std::format("{}-{}",k,j+1),std::format("e{} {}",arc.input_edge,arc.reverse?"reverse":"forward"),line);}}
+  const auto& undo=t.augmentations.at(1).path.at(2);
+  if(!undo.reverse||undo.input_edge!=2||t.result.edge_flow.at(2)!=0)throw std::runtime_error("missing actual cancellation");
+  std::print("\nActual reverse use: e{}, {} to {}; final original e2 flow {}.\n",undo.input_edge,undo.from,undo.to,t.result.edge_flow.at(2));
+  d.text({9.5,3.2},"The second shortest path cancels the first middle-edge choice",25).save_svg("build/edmonds_karp_cancellation.svg");
+}
+```
+// result_begin: markdown
+Cancellation: flow 2; searches 3; inspections 30; path updates 8; captured entries 57.
+
+| push | amount | input edge | orientation | from | to | used before | used after | paired before | paired after |
+| ---: | ---: | ---: | :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 1 | e0 | forward | 0 | 1 | 1 | 0 | 0 | 1 |
+| 0 | 1 | e2 | forward | 1 | 3 | 1 | 0 | 0 | 1 |
+| 0 | 1 | e5 | forward | 3 | 5 | 1 | 0 | 0 | 1 |
+| 1 | 1 | e1 | forward | 0 | 2 | 1 | 0 | 0 | 1 |
+| 1 | 1 | e4 | forward | 2 | 3 | 1 | 0 | 0 | 1 |
+| 1 | 1 | e2 | reverse | 3 | 1 | 1 | 0 | 0 | 1 |
+| 1 | 1 | e3 | forward | 1 | 4 | 1 | 0 | 0 | 1 |
+| 1 | 1 | e6 | forward | 4 | 5 | 1 | 0 | 0 | 1 |
+
+Actual reverse use: e2, 3 to 1; final original e2 flow 0.
+\image(figures/edmonds_karp_cancellation.svg)
+// result_end
+\caption(The red reverse step is an actual update: e2's cancellation residual falls from one to zero, while its forward residual is restored from zero to one.)
+\alttext(Two native path chains show the first three-edge augmentation and a second five-edge augmentation. The second chain highlights the reverse edge from vertex three to vertex one in red.)
+
+> Why shortest paths bound the work
+
+After an augmentation, residual source distances cannot decrease. Any
+newly positive arc is a reverse of an arc used on the shortest path;
+it points from level d+1 back to level d. Such an arc cannot create a
+shorter source path. Induction along a hypothetical first shortened path
+makes this contradiction precise. Complete BFS records let us inspect
+all distances, including vertices that become unreachable.
+
+Each augmentation saturates at least one oriented residual arc (u,v).
+For that same arc to be saturated again, it must first regain capacity
+through reverse use. Between those events, its tail distance increases
+by at least two. A vertex has fewer than V finite distance levels, so
+an oriented arc can be charged O(V) times. Summing over the 2E residual
+arcs gives O(VE) augmentations, independently of capacity magnitudes in
+exact arithmetic.
+
+Writing A for actual augmentations, the implementation costs
+O((A+1)(V+E)) for full array initialization and BFS, plus path work
+O(AV). Ordinary storage is O(V+E). The usual bound can be written
+O(V+E+VE²), including the initial/final search for empty graphs.
+To account for many isolated vertices, charge augmentations using W
+incident vertices: A=O(WE), with W<=min(V,2E) when a path exists.
+Then both terms WE·V and WE² are bounded by O(VE²). Trace copying
+adds its explicitly counted history cost. These bounds do not make
+checked double arithmetic an exact-real solver.
+
+> Preserve the original CLRS network and both witnesses
+
+The original six-vertex network has ten directed input edges. Its known
+maximum flow is 23. The returned source side is S={0,1,2,4}; its
+crossing inputs are e4 (1→3, capacity 12), e7 (4→3, capacity 7)
+and e9 (4→5, capacity 4). Their sum is 23. The program prints every
+per-edge flow, all actual path lengths/bottlenecks, and the independent
+numerical certificate. No observational dataset is needed for these
+network invariants; explicit graphs permit exact hand checks.
+
+```{cpp, results="markdown", file="figures/edmonds_karp_original.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");
+  const dm::algorithms::FlowNetwork g{6,{{0,1,16},{0,2,13},{1,2,10},{2,1,4},{1,3,12},{3,2,9},{2,4,14},{4,3,7},{3,5,20},{4,5,4}},0,5};
+  const auto t=dm::algorithms::edmonds_karp_trace(g.vertex_count,g.edges,g.source,g.sink);
+  const auto c=dm::algorithms::max_flow_certificate(g.vertex_count,g.edges,g.source,g.sink,t.result);
+  if(t.result.max_flow!=23||!c.feasible||!c.optimal_within_tolerance)throw std::runtime_error("original CLRS certificate failed");
+  std::print("Original CLRS: flow {}; cut capacity {}; feasible {}; optimal with zero tolerance {}; gap {}.\n",t.result.max_flow,c.cut_capacity,c.feasible,c.optimal_within_tolerance,c.duality_gap);
+  std::print("Source side:");for(auto v:t.result.min_cut_source_side)std::print(" {}",v);std::print("; crossing input edges:");for(auto e:c.crossing_edges)std::print(" e{}",e);std::print(".\n\n");
+  std::print("| input edge | from | to | capacity | actual flow |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t e=0;e<g.edges.size();++e){const auto [u,v,capacity]=g.edges[e];std::print("| e{} | {} | {} | {} | {} |\n",e,u,v,capacity,t.result.edge_flow[e]);}
+  std::print("\n| BFS | sink distance (V means unreachable) | inspections | flow before | push amount |\n| ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t k=0;k<t.searches.size();++k)std::print("| {} | {} | {} | {} | {} |\n",k,t.searches[k].levels[g.sink],t.searches[k].bfs_arc_inspections,t.searches[k].flow_before,k<t.augmentations.size()?t.augmentations[k].amount:0.);
+  std::print("\nWork: {} searches; {} augmentations; {} adjacency inspections; {} path updates; {} captured entries.\n",t.work.bfs_calls,t.work.augmentations,t.work.bfs_arc_inspections,t.work.path_arc_updates,t.captured_entries);
+  auto d=dm::algorithms::plot_max_flow(g,t.result,{{0,0},{5,3},{5,-3},{11,3},{11,-3},{16,0}});
+  d.text({8,5},"Original CLRS network: matching flow and cut of 23",25).text({8,-5},"Input edge: flow/capacity; red edges cross S to its complement",20).save_svg("build/edmonds_karp_original.svg");
+}
+```
+// result_begin: markdown
+Original CLRS: flow 23; cut capacity 23; feasible true; optimal with zero tolerance true; gap 0.
+Source side: 0 1 2 4; crossing input edges: e4 e7 e9.
+
+| input edge | from | to | capacity | actual flow |
+| ---: | ---: | ---: | ---: | ---: |
+| e0 | 0 | 1 | 16 | 12 |
+| e1 | 0 | 2 | 13 | 11 |
+| e2 | 1 | 2 | 10 | 0 |
+| e3 | 2 | 1 | 4 | 0 |
+| e4 | 1 | 3 | 12 | 12 |
+| e5 | 3 | 2 | 9 | 0 |
+| e6 | 2 | 4 | 14 | 11 |
+| e7 | 4 | 3 | 7 | 7 |
+| e8 | 3 | 5 | 20 | 19 |
+| e9 | 4 | 5 | 4 | 4 |
+
+| BFS | sink distance (V means unreachable) | inspections | flow before | push amount |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 3 | 20 | 0 | 12 |
+| 1 | 3 | 20 | 12 | 4 |
+| 2 | 4 | 20 | 16 | 7 |
+| 3 | 6 | 14 | 23 | 0 |
+
+Work: 4 searches; 3 augmentations; 74 adjacency inspections; 10 path updates; 76 captured entries.
+\image(figures/edmonds_karp_original.svg)
+// result_end
+\caption(The original feasible flow and separating cut agree at 23. Opposite input edges 1→2 and 2→1 retain separate curved lanes and labels; neither is confused with a cancellation arc.)
+\alttext(A native six-node network colours source-side vertices green and the other vertices orange. Three red crossing edges have capacities twelve, seven and four, totalling twenty-three.)
+
+The independent cut certificate uses the supplied input/result; it does
+not rerun Edmonds–Karp or choose a more favourable cut. Here integer
+capacities and small exact sums give zero capacity/conservation/value
+errors and zero gap. More general double inputs still need the reported
+errors and explicit tolerance. Four-significant-digit diagram labels
+are a display convention; the printed result values remain available.
+
+> Check an exact repeated-search family
+
+For k parallel source-to-sink edges of unit capacity, every path has
+one edge and exactly one edge saturates per push. Hence A=k and
+there are k+1 complete BFS calls. Each successful BFS reaches both
+vertices and inspects all 2k residual adjacency entries. The final
+failed BFS inspects the source's k entries, giving
+
+\[
+I_{EK}=2k²+k,\qquad L=k.
+\]
+
+Dinic instead sends all k units in one blocking phase. It still performs
+k path pushes, but needs only two BFS calls and 3k BFS inspections.
+This compares these logical searches on one controlled family, not
+wall-clock performance or a universal speed ranking. Scaling capacities
+by a positive power of two changes the flow values but not these counts.
+
+```{cpp, results="markdown", file="figures/edmonds_karp_work.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");std::vector<double>x,ek_inspections,dinic_inspections,ek_searches,dinic_searches;
+  std::print("| parallel edges k | EK pushes | EK BFS | EK inspections | Dinic pushes | Dinic BFS | Dinic inspections | EK capture |\n| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
+  for(std::size_t k:{1,2,4,8,16,32,64}){const auto g=dm::algorithms::dinic_disjoint_paths(k,1);
+    const auto a=dm::algorithms::edmonds_karp_trace(g.vertex_count,g.edges,g.source,g.sink);const auto b=dm::algorithms::dinic_max_flow_trace(g.vertex_count,g.edges,g.source,g.sink);
+    if(a.result.max_flow!=k||b.result.max_flow!=k||a.work.augmentations!=k||a.work.bfs_calls!=k+1||a.work.bfs_arc_inspections!=2*k*k+k||a.work.path_arc_updates!=k||a.captured_entries!=8*k+6||b.work.augmentations!=k||b.work.blocking_phases!=1||b.work.bfs_calls!=2||b.work.bfs_arc_inspections!=3*k)throw std::runtime_error("parallel family identity failed");
+    std::print("| {} | {} | {} | {} | {} | {} | {} | {} |\n",k,a.work.augmentations,a.work.bfs_calls,a.work.bfs_arc_inspections,b.work.augmentations,b.work.bfs_calls,b.work.bfs_arc_inspections,a.captured_entries);
+    x.push_back(std::log2(k));ek_inspections.push_back(std::log2(a.work.bfs_arc_inspections));dinic_inspections.push_back(std::log2(b.work.bfs_arc_inspections));ek_searches.push_back(a.work.bfs_calls);dinic_searches.push_back(b.work.bfs_calls);}
+  std::print("\n| common capacity, k=8 | flow | pushes | inspections |\n| ---: | ---: | ---: | ---: |\n");
+  for(double capacity:{.125,1.,8.,1024.}){const auto g=dm::algorithms::dinic_disjoint_paths(8,1,capacity);const auto r=dm::algorithms::edmonds_karp_work(g.vertex_count,g.edges,g.source,g.sink);
+    if(r.result.max_flow!=8*capacity||r.work.augmentations!=8||r.work.bfs_arc_inspections!=136)throw std::runtime_error("capacity scale identity failed");std::print("| {} | {} | {} | {} |\n",capacity,r.result.max_flow,r.work.augmentations,r.work.bfs_arc_inspections);}
+  auto a=dm::graphics::RPlot::create();a.line(x,ek_inspections,"Edmonds-Karp",{220,38,38}).points(x,ek_inspections,"",{220,38,38},5).line(x,dinic_inspections,"Dinic",{37,99,235}).points(x,dinic_inspections,"",{37,99,235},5).title("Quadratic versus linear BFS inspections").x_label("log2(parallel edges k)").y_label("log2(residual arc inspections)").y_limits(0,16);
+  auto b=dm::graphics::RPlot::create();b.line(x,ek_searches,"Edmonds-Karp",{220,38,38}).line(x,dinic_searches,"Dinic",{37,99,235}).title("Repeated BFS versus one blocking phase").x_label("log2(parallel edges k)").y_label("Complete BFS calls").y_limits(0,78);
+  dm::graphics::RLayout::create(1,2).add(a).add(b).size(1100,520).title("Same k path pushes; different numbers of shortest-path searches").fit_panels().save_svg("build/edmonds_karp_work.svg");
+}
+```
+// result_begin: markdown
+| parallel edges k | EK pushes | EK BFS | EK inspections | Dinic pushes | Dinic BFS | Dinic inspections | EK capture |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 2 | 3 | 1 | 2 | 3 | 14 |
+| 2 | 2 | 3 | 10 | 2 | 2 | 6 | 22 |
+| 4 | 4 | 5 | 36 | 4 | 2 | 12 | 38 |
+| 8 | 8 | 9 | 136 | 8 | 2 | 24 | 70 |
+| 16 | 16 | 17 | 528 | 16 | 2 | 48 | 134 |
+| 32 | 32 | 33 | 2080 | 32 | 2 | 96 | 262 |
+| 64 | 64 | 65 | 8256 | 64 | 2 | 192 | 518 |
+
+| common capacity, k=8 | flow | pushes | inspections |
+| ---: | ---: | ---: | ---: |
+| 0.125 | 1 | 8 | 136 |
+| 1 | 8 | 8 | 136 |
+| 8 | 64 | 8 | 136 |
+| 1024 | 8192 | 8 | 136 |
+\image(figures/edmonds_karp_work.svg)
+// result_end
+\caption(All seven edge-count cases satisfy the closed forms, and the capacity-scale sweep leaves the operation counts unchanged. Each curve describes this exact family.)
+\alttext(Two native plots compare quadratic Edmonds–Karp BFS inspections with linear Dinic inspections, and k-plus-one searches with two searches.)
+
+> Boundary semantics, numerical progress and owned history
+
+All capacities must be finite and nonnegative, all endpoints in range,
+and terminals distinct and valid. Complete validation and checked
+residual/vector geometry precede adjacency allocation. Strictly positive
+residuals include subnormal capacities; no arbitrary epsilon discards them.
+Parallel and antiparallel edges retain their own pairs, while self edges
+remain unused by a simple source-to-sink path.
+
+Double arithmetic cannot represent every update. Each used residual
+must strictly decrease, each paired residual and the total must strictly
+increase, and sums must remain finite. A lost positive update raises an
+error; overflow raises an error. The original code accepted NaN/infinite
+capacities and recovered edge flow by subtracting nearly equal capacity
+and forward residual values. A saved probe with capacities 1e300 and
+unit bottlenecks reported total two but edge flows 0,1,1,0, violating
+internal conservation. This implementation returns no partial result
+when the required residual update cannot be represented. Recovering
+successful per-edge flows from cancellation residuals also avoids that
+nearly-equal subtraction. This is not arbitrary-precision arithmetic.
+
+The trace counts E original input records and one network header;
+each of P complete searches costs one header plus V levels and V
+parents; each of A pushes costs one header plus its path-arc records.
+Writing L for total path length,
+
+\[
+C=E+1+P(1+2V)+A+L.
+\]
+
+The minimum including the first BFS is checked before input copying or
+adjacency allocation. Later search/path costs are reserved before their
+traversal or push. The default cap is one million entries; zero disables
+only the optional quota. Result copies, working arrays, scalar metadata,
+vector capacity and allocator bytes are excluded, so C is not a
+peak-memory bound. Quota or arithmetic failure returns no partial trace.
+Ordinary/work calls retain no optional history and have no optional quota.
+
+```{cpp, results="markdown", file="figures/edmonds_karp_boundaries.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+  std::filesystem::create_directories("build");const dm::algorithms::FlowNetwork g{2,{{0,0,7},{0,1,1.5},{0,1,2.5},{1,0,9},{1,1,5}},0,1};
+  const auto r=dm::algorithms::edmonds_karp(g.vertex_count,g.edges,g.source,g.sink);
+  std::print("Separate identities: total {}; per-input flows:",r.max_flow);for(auto f:r.edge_flow)std::print(" {}",f);std::print(".\n");
+  const auto exact=dm::algorithms::edmonds_karp_trace(2,{{0,1,3}},0,1,14);int caps=0;
+  for(std::size_t cap:{6,13})try{(void)dm::algorithms::edmonds_karp_trace(2,{{0,1,3}},0,1,cap);}catch(const std::length_error&){++caps;}
+  try{(void)dm::algorithms::edmonds_karp_trace(100000000,{},0,1,1);}catch(const std::length_error&){++caps;}
+  std::print("Trace minimum {}; exact entries {}; disabled-cap entries {}; minimum/one-short/large-geometry rejections {}/3.\n",dm::algorithms::edmonds_karp_trace_base_entries(2,1),exact.captured_entries,dm::algorithms::edmonds_karp_trace(2,{{0,1,3}},0,1,0).captured_entries,caps);
+  const double inf=std::numeric_limits<double>::infinity();int invalid=0;
+  for(double bad:{-1.,inf,-inf,std::numeric_limits<double>::quiet_NaN()})try{(void)dm::algorithms::edmonds_karp(4,{{2,3,bad}},0,1);}catch(const std::invalid_argument&){++invalid;}
+  int lost=0,overflow=0;
+  try{(void)dm::algorithms::edmonds_karp(2,{{0,1,1e300},{0,1,1}},0,1);}catch(const std::runtime_error&){++lost;}
+  try{(void)dm::algorithms::edmonds_karp(4,{{0,1,1e300},{1,3,1},{0,2,1},{2,3,1e300}},0,3);}catch(const std::runtime_error&){++lost;}
+  try{(void)dm::algorithms::edmonds_karp(2,{{0,1,1e308},{0,1,1e308}},0,1);}catch(const std::overflow_error&){++overflow;}
+  std::print("Invalid capacity rejections {}/4; lost-progress rejections {}/2; overflow rejections {}/1.\n",invalid,lost,overflow);
+  const double tiny=std::numeric_limits<double>::denorm_min(),big=std::numeric_limits<double>::max();
+  std::print("Smallest positive capacity preserved {}; largest finite single capacity preserved {}.\n",dm::algorithms::edmonds_karp(2,{{0,1,tiny}},0,1).max_flow==tiny,dm::algorithms::edmonds_karp(2,{{0,1,big}},0,1).max_flow==big);
+  auto d=dm::algorithms::plot_max_flow(g,r,{{0,0},{8,0}});
+  d.text({4,3.8},"Separate self, parallel and antiparallel input edges",25).text({4,-2.5},"Only the two source-to-sink inputs carry flow: 1.5 + 2.5 = 4",20).save_svg("build/edmonds_karp_boundaries.svg");
+}
+```
+// result_begin: markdown
+Separate identities: total 4; per-input flows: 0 1.5 2.5 0 0.
+Trace minimum 7; exact entries 14; disabled-cap entries 14; minimum/one-short/large-geometry rejections 3/3.
+Invalid capacity rejections 4/4; lost-progress rejections 2/2; overflow rejections 1/1.
+Smallest positive capacity preserved true; largest finite single capacity preserved true.
+\image(figures/edmonds_karp_boundaries.svg)
+// result_end
+\caption(Self edges and the opposite original input carry zero; the two parallel forward inputs independently carry 1.5 and 2.5. The capture and numerical controls above fail explicitly.)
+\alttext(A native two-node diagram shows separate self loops, two forward lanes and an opposite lane, each labelled with its original edge identity and flow/capacity.)
+
+The drawing helper validates finite shapes, cut ids and node positions,
+but does not certify arbitrary caller-edited flows or cuts. The independent
+certificate API is the appropriate place to inspect feasibility and gaps.
+Owned traces can also be edited; their records are evidence from a run,
+rather than a self-validating proof object.
+
+> What the examples establish
+
+Shortest residual paths expose both the bottleneck and the cancellations
+needed to repair earlier routing. The original flow of 23 has matching
+primal and cut witnesses, while complete BFS evidence and controlled
+parallel edges make operation counts explicit. Checked finite progress
+and retained-history limits describe the implementation's practical
+boundary; they do not replace the exact-arithmetic theorem with an
+unqualified numerical guarantee.
+
+> References
+
+- J. Edmonds and R. M. Karp (1972), “Theoretical Improvements in
+  Algorithmic Efficiency for Network Flow Problems”, Journal of the ACM
+  19(2), 248–264, [doi:10.1145/321694.321699](https://doi.org/10.1145/321694.321699).
+  [Original paper](https://web.eecs.umich.edu/~pettie/matching/Edmonds-Karp-network-flow.pdf).
+  The implementation uses shortest residual paths with independent input
+  edge pairs, complete BFS capture and explicit checks on double updates.
+- L. R. Ford Jr. and D. R. Fulkerson (1956), “Maximal flow through a
+  network”, Canadian Journal of Mathematics 8, 399–404,
+  [doi:10.4153/CJM-1956-045-5](https://doi.org/10.4153/CJM-1956-045-5).
+  Flow/cut duality supplies the certificate interpretation.
+- The six-vertex, ten-edge CLRS fixture is retained from the original
+  report's example of Cormen, Leiserson, Rivest and Stein, Introduction
+  to Algorithms, Figure 26.1. All capacities and computed outputs are
+  included here, so the example can be checked without an external file.
