@@ -240,52 +240,14 @@ autoencoder_variational_model <- function(training = TRUE) {
     model
 }
 
-# (a * b) mod 2^32 for 32-bit unsigned values held in doubles.
-autoencoder_mul32 <- function(a, b) {
-    ah <- a %/% 65536; al <- a %% 65536
-    bh <- b %/% 65536; bl <- b %% 65536
-    (al * bl + ((ah * bl + al * bh) %% 65536) * 65536) %% 4294967296
-}
-
-autoencoder_xor32 <- function(a, b) {
-    bitwXor(as.integer(a %/% 65536), as.integer(b %/% 65536)) * 65536 +
-        bitwXor(as.integer(a %% 65536), as.integer(b %% 65536))
-}
-
-# `count` raw std::mt19937(seed)() outputs: R's own Mersenne-Twister seeded with init_genrand(seed).
-autoencoder_mt19937_raw <- function(count, seed) {
-    state <- numeric(624L)
-    state[1L] <- seed %% 4294967296
-    for (i in 2L:624L) {
-        previous <- state[i - 1L]
-        state[i] <- (autoencoder_mul32(1812433253, autoencoder_xor32(previous, previous %/% 1073741824)) + (i - 1L)) %%
-            4294967296
-    }
-    signed <- as.integer(ifelse(state >= 2147483648, state - 4294967296, state))
-    had <- exists(".Random.seed", envir = globalenv(), inherits = FALSE)
-    if (had) old <- get(".Random.seed", envir = globalenv())
-    on.exit(if (had) assign(".Random.seed", old, envir = globalenv()) else rm(".Random.seed", envir = globalenv()))
-    assign(".Random.seed", c(10403L, 624L, signed), envir = globalenv())
-    stats::runif(count) * 4294967296
-}
-
-# tflow's Box-Muller stream from std::mt19937(seed): `count` doubles.
-autoencoder_gaussian_values <- function(count, seed) {
-    pairs <- (count + 1L) %/% 2L
-    raw <- autoencoder_mt19937_raw(2 * pairs, seed)
-    u <- (raw[c(TRUE, FALSE)] + 0.5) / 4294967296
-    v <- (raw[c(FALSE, TRUE)] + 0.5) / 4294967296
-    tau <- 2 * pi  # R_strtod may misround the long literal; 2 * pi is the exact double
-    radius <- sqrt(-2 * log(u))
-    bank <- as.vector(rbind(radius * cos(tau * v), radius * sin(tau * v)))
-    bank[seq_len(count)]
-}
+# Canonical Box-Muller stream as ordinary numeric values, for compatibility.
+autoencoder_gaussian_values <- function(count, seed)
+    nn$GaussianNoise(as.integer(count), 1L, as.numeric(seed))$values()
 
 # tflow's nn::GaussianNoise as float64 [samples, shape...].
-autoencoder_gaussian_noise <- function(shape, samples, seed) {
-    full <- as.integer(c(samples, shape))
-    nn$from_vector_double(autoencoder_gaussian_values(prod(full), seed), full)
-}
+autoencoder_gaussian_noise <- function(shape, samples, seed)
+    nn$GaussianNoise(as.integer(shape), as.integer(samples), as.numeric(seed))
+
 
 autoencoder_vae_noise <- function(n, samples, seed) {
     standard <- autoencoder_gaussian_noise(c(n, 2L), samples, seed)
@@ -316,28 +278,15 @@ autoencoder_vae_score <- function(model, images, bank) {
 autoencoder_flatten <- function(images) nn$reshape(images, c(images$size(0L), 784L))
 
 # "encoder" features -> latent ReLU, "decoder" latent -> features sigmoid; list(code, reconstruction).
-autoencoder_undercomplete <- function(p, x, features = 784L, latent = 32L) {
-    autoencoder_require(features > 1L && latent > 0L && latent < features, "strictly undercomplete positive bottleneck")
-    code <- nn$dense(p, "encoder", x, as.integer(latent), nn$Activation$Relu)
-    list(code = code, reconstruction = nn$dense(p, "decoder", code, as.integer(features), nn$Activation$Sigmoid))
-}
+autoencoder_undercomplete <- function(p, x, features = 784L, latent = 32L)
+    nn$UndercompleteAutoencoder(p, x, as.integer(features), as.integer(latent))
 
-# tflow's ReconstructionMse: mean over every element.
+
 autoencoder_reconstruction_mse <- function(prediction, original) nn$mean(nn$square(nn$sub(prediction, original)))
 
 # clamp(float(x + sigma z), 0, 1) with z one float64 bank [1, shape...].
-autoencoder_corrupt_for_denoising <- function(clean, standard_noise, sigma) {
-    sigma <- readBin(writeBin(sigma, raw(), size = 4L), "double", size = 4L)
-    autoencoder_require(clean$dtype() == nn$DType$Float32 && clean$dim() >= 2L &&
-        standard_noise$dtype() == nn$DType$Float64 &&
-        identical(as.numeric(standard_noise$shape()), c(1, as.numeric(clean$shape()))) &&
-        is.finite(sigma) && sigma >= 0, "aligned single Gaussian bank and nonnegative sigma")
-    x <- clean$contiguous()$values()
-    z <- standard_noise$contiguous()$values()
-    autoencoder_require(all(is.finite(x) & x >= 0 & x <= 1 & is.finite(z)), "finite unit-range clean pixels/noise")
-    # float32 rounding first (from_vector), then the clamp in float32.
-    nn$clip(nn$from_vector(x + sigma * z, clean$shape()), 0, 1)
-}
+autoencoder_corrupt_for_denoising <- function(clean, standard_noise, sigma)
+    nn$CorruptForDenoising(clean, standard_noise, sigma)
 
 # tflow's data.npz record: the three pools (+ any extra named tensors).
 autoencoder_save_data <- function(path, pools, extra = list()) {

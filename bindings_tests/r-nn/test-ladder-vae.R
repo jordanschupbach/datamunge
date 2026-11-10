@@ -1,0 +1,65 @@
+library(testthat)
+nn <- datamungerNN::nn
+
+test_that("Precision fusion owns moments and keeps all four input paths", {
+  t <- nn$DType$Float64;em <- nn$full(c(2L,2L),2,t)$requires_grad_();el <- nn$full(c(2L,2L),log(4),t)$requires_grad_()
+  pm <- nn$full(c(2L,2L),-1,t)$requires_grad_();pl <- nn$full(c(2L,2L),log(9),t)$requires_grad_()
+  q <- nn$LadderPrecisionFusion(em,el,pm,pl);mu <- q$mu;lv <- q$log_variance;rm(q);gc()
+  expect_equal(mu$values(),rep(14/13,4));expect_equal(exp(lv$values()),rep(36/13,4))
+  loss <- nn$add(nn$sum(nn$add(nn$square(mu),nn$square(lv))),nn$sum(nn$ConditionalGaussianKl(mu,lv,pm,pl)))
+  g <- nn$grad(loss,nn$tensor_vector(list(em,el,pm,pl)));expect_length(g,4)
+  expect_true(all(vapply(g,function(a)any(abs(a$values())>1e-12),logical(1))))
+})
+
+test_that("All sixteen fields own lifetime with live Float64 image and noise", {
+  t <- nn$DType$Float64;p <- nn$ParameterStore(2503L,t)
+  x <- nn$full(c(2L,6L),.3,t)$requires_grad_();e <- nn$full(c(2L,3L),.2,t)$requires_grad_()
+  out <- nn$LadderVariationalAutoencoder(p,x,e,6L,2L,1L,3L,2L)
+  names <- c("evidence_mu","evidence_lv","top_mu","top_lv","top_z","prior_mu","prior_lv","lower_mu","lower_lv","lower_z","logits","probability","nll","kl_lower","kl_top","loss")
+  fields <- lapply(names,function(name)do.call("$",list(out,name)));names(fields) <- names;rm(out);gc()
+  expect_equal(p$size(),22);expect_equal(p$count(),100);expect_equal(fields$top_z$shape(),c(2,1))
+  expect_equal(fields$loss$dtype(),t);before <- p$flatten()
+  decoded <- nn$sigmoid(nn$GaussianVaeDecode(p,fields$lower_z,6L,2L,3L))
+  expect_equal(decoded$values(),fields$probability$values());expect_equal(decoded$values(),nn$sigmoid(fields$logits)$values())
+  expect_identical(p$flatten(),before)
+  g <- nn$grad(fields$loss,nn$tensor_vector(c(nn$tensor_list(p$parameters()),list(x,e))))
+  expect_length(g,24);expect_true(all(vapply(g,function(a)all(is.finite(a$values())),logical(1))))
+  expect_true(all(vapply(tail(g,2),function(a)any(abs(a$values())>1e-12),logical(1))))
+})
+
+test_that("Default census explicit lower-first noise and caller Adam preserve semantics", {
+  p <- nn$ParameterStore(2503L);x <- nn$full(c(2L,784L),.3);base <- nn$LadderVariationalAutoencoder(p,x,nn$zeros(c(2L,6L)))
+  expect_equal(p$size(),22);expect_equal(p$count(),52196)
+  expect_equal(base$lower_z$values(),base$lower_mu$values());expect_equal(base$top_z$values(),base$top_mu$values())
+  lower <- nn$concat(nn$tensor_vector(list(nn$full(c(2L,4L),.5),nn$zeros(c(2L,2L)))),1L)
+  upper <- nn$concat(nn$tensor_vector(list(nn$zeros(c(2L,4L)),nn$full(c(2L,2L),.5))),1L)
+  low <- nn$LadderVariationalAutoencoder(p,x,lower);top <- nn$LadderVariationalAutoencoder(p,x,upper)
+  expect_equal(low$prior_mu$values(),base$prior_mu$values());expect_equal(low$lower_mu$values(),base$lower_mu$values())
+  expect_false(identical(low$lower_z$values(),base$lower_z$values()));expect_false(identical(top$prior_mu$values(),base$prior_mu$values()))
+  expect_false(identical(top$lower_mu$values(),base$lower_mu$values()));before <- p$flatten()
+  g <- nn$grad(top$loss,p$parameters());config <- nn$OptimizerConfig();config$kind <- nn$OptimizerKind$Adam
+  optimizer <- nn$Optimizer(p,.003,config);optimizer$step(nn$tensor_vector(g))
+  expect_equal(optimizer$iterations(),1);expect_false(identical(p$flatten(),before))
+})
+
+test_that("All six ancestral fields own lifetime and both supplied paths stay live", {
+  t <- nn$DType$Float64;p <- nn$ParameterStore(2503L,t)
+  top <- nn$full(c(2L,2L),.2,t)$requires_grad_();e <- nn$ones(c(2L,4L),t)$requires_grad_()
+  prior <- nn$LadderPrior(p,top,e);names <- c("top_z","lower_noise","prior_mu","prior_lv","lower_z","probability")
+  fields <- lapply(names,function(name)do.call("$",list(prior,name)));names(fields) <- names;rm(prior);gc()
+  expect_equal(p$size(),10);expect_equal(p$count(),26216)
+  expect_equal(fields$top_z$values(),top$values());expect_equal(fields$lower_noise$values(),e$values())
+  expect_equal(nn$sigmoid(nn$GaussianVaeDecode(p,fields$lower_z))$values(),fields$probability$values())
+  g <- nn$grad(nn$sum(fields$probability),nn$tensor_vector(list(top,e)));expect_length(g,2)
+  expect_true(all(vapply(g,function(a)any(abs(a$values())>1e-12),logical(1))))
+})
+
+test_that("Malformed dimensions and pixels fail before trainable leaves", {
+  p <- nn$ParameterStore(1L);x <- nn$full(c(2L,6L),.3);e <- nn$zeros(c(2L,3L))
+  expect_error(nn$LadderVariationalAutoencoder(p,x,e,6L,2L,1L,0L,2L))
+  expect_error(nn$LadderVariationalAutoencoder(p,nn$full(c(2L,6L),1.1),e,6L,2L,1L,3L,2L))
+  expect_error(nn$LadderVariationalAutoencoder(p,x,nn$zeros(c(1L,3L)),6L,2L,1L,3L,2L))
+  expect_error(nn$LadderPrior(p,nn$zeros(c(2L,1L)),nn$zeros(c(1L,2L)),6L,2L,1L,3L,2L))
+  expect_equal(p$size(),0)
+  expect_error(nn$LadderPrecisionFusion(nn$zeros(c(2L,2L)),nn$zeros(c(1L,2L)),nn$zeros(c(2L,2L)),nn$zeros(c(2L,2L))))
+})

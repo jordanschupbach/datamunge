@@ -269,6 +269,7 @@ datamunge/nn/dropout_variants
 datamunge/nn/einsum
 datamunge/nn/elementwise
 datamunge/nn/fft
+datamunge/nn/frozen_graph
 datamunge/nn/gemm
 datamunge/nn/gradcheck
 datamunge/nn/gradient_tricks

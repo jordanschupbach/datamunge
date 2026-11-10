@@ -5,9 +5,9 @@ Two batches, ties, strict-radius boundary, padding, duplicate gradient accumulat
 frozen-discrete XYZ derivatives, translation and explicit invalid-input errors.
 
 Port of tflow's point_geometry. TF -> datamunge: tflow's custom CPU kernels
-become host functions (common/point_geometry.hpp) whose errors are
-exceptions rather than failed session runs; the checks and their messages
-are otherwise the same. No dataset needed.
+become canonical tensor distance/ranking primitives with detached integer
+choices and differentiable gathers. Invalid contracts throw exceptions.
+The complete hand-checkable source fixture needs no external dataset.
 
 Native source: examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_geometry.cpp
 """

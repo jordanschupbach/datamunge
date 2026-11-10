@@ -2,7 +2,7 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/gatys_style_transfer.py
 """Gatys image optimization through genuine frozen pretrained VGG-19 features.
 https://arxiv.org/abs/1508.06576
-Preparation: just style-assets (verified official Keras ImageNet weights,
+Preparation: datamunge-prepare-data style (verified official Keras ImageNet weights,
 tutorial Labrador/Kandinsky images, independent Keras feature/gradient fixtures).
 RGB[0,1] -> BGR255/ImageNet means; replace max pools with average pools.
 Match conv4_2 content and equally weighted conv1_1..conv5_1 style Grams.

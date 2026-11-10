@@ -3,7 +3,7 @@
 """DETR set prediction: object queries, Hungarian matching and transformer.
 
 Port of tflow's detr. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 https://arxiv.org/abs/2005.12872
 https://github.com/facebookresearch/detr
 

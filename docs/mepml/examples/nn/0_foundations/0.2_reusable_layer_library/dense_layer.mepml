@@ -420,8 +420,8 @@ int main() {
 }
 ```
 // result_begin: markdown
-Network 64 → 128 → 10, N = 256: per-example gradient norms from 6.759 to 14.346; max relative difference, one pass + norms vs 256 backward passes = 3.6e-16; the one-pass route was 10× faster here.
-Layer 1, example 0: second singular value / first of its 64×128 gradient = 2.7e-16 (rank 1). Sum over 8 examples: numerical rank 8 of a possible 64.
+Network 64 → 128 → 10, N = 256: per-example gradient norms from 6.759 to 14.346; max relative difference, one pass + norms vs 256 backward passes = 3.6e-16; the one-pass route was 7× faster here.
+Layer 1, example 0: second singular value / first of its 64×128 gradient = 2.4e-16 (rank 1). Sum over 8 examples: numerical rank 8 of a possible 64.
 
 | input [N, T, in] → out | route | max relative difference vs per-example backward passes |
 | :--- | :--- | ---: |

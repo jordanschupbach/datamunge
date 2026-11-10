@@ -156,30 +156,17 @@ struct ConvAeOutput {
   nn::Tensor conv1, pool1, conv2, code, decoder1, reconstruction;
 };
 
+// Compatibility handles for independently maintained Python/R workflows.
+// Model arithmetic is canonical in nn/autoencoder_models.hpp.
 inline nn::Tensor ConvAeDecode(nn::ParameterStore& p, const nn::Tensor& code, nn::Tensor* decoder1 = nullptr) {
-  nn::ConvLayerOptions relu;
-  relu.init       = nn::init::he_uniform();
-  relu.activation = nn::Activation::Relu;
-  auto d1 = nn::conv2d(p, "decoder1", nn::upsample_nearest(code, 2), 8, 3, relu);
-  if (decoder1) *decoder1 = d1;
-  nn::ConvLayerOptions output;
-  output.activation = nn::Activation::Sigmoid;
-  return nn::conv2d(p, "decoder2", nn::upsample_nearest(d1, 2), 1, 3, output);
+  const auto result = nn::models::ConvolutionalDecoder(p, code);
+  if (decoder1) *decoder1 = result.hidden;
+  return result.reconstruction;
 }
 
-/// Conv3x3 1->8 ReLU, AvgPool2, Conv3x3 8->4 ReLU, AvgPool2 (7x7x4 code), then
-/// nearest-repeat2, Conv3x3 4->8 ReLU, nearest-repeat2, Conv3x3 8->1 sigmoid.
 inline ConvAeOutput ConvolutionalAutoencoder(nn::ParameterStore& p, const nn::Tensor& image) {
-  ConvAeOutput         out;
-  nn::ConvLayerOptions relu;
-  relu.init       = nn::init::he_uniform();
-  relu.activation = nn::Activation::Relu;
-  out.conv1          = nn::conv2d(p, "encoder1", image, 8, 3, relu);
-  out.pool1          = nn::avg_pool2d(out.conv1, 2, 2);
-  out.conv2          = nn::conv2d(p, "encoder2", out.pool1, 4, 3, relu);
-  out.code           = nn::avg_pool2d(out.conv2, 2, 2);
-  out.reconstruction = ConvAeDecode(p, out.code, &out.decoder1);
-  return out;
+  const auto result = nn::models::ConvolutionalAutoencoder(p, image);
+  return {result.conv1, result.pool1, result.conv2, result.code, result.decoder1, result.reconstruction};
 }
 
 class ConvolutionalAutoencoderModel {
@@ -220,40 +207,101 @@ class ConvolutionalAutoencoderModel {
 
 // ---- variational autoencoder ---------------------------------------------------------
 
+/// @brief Forward explicit diagonal-Gaussian sampling to the canonical core.
+/// @param mu Finite nonempty Float32/64 means [B,L].
+/// @param log_variance Finite matching log variances [B,L].
+/// @param epsilon Finite matching explicit standard-normal noise [B,L].
+/// @return Owning differentiable mu+exp(log_variance/2)*epsilon.
+/// @throws std::invalid_argument For invalid shape, dtype or values.
+/// @par Example
+/// @code
+/// #include <dm/dm.hpp>
+/// namespace n=dm::nn;
+/// const auto z=n::models::GaussianReparameterize(n::ones({1,2}),n::zeros({1,2}),n::zeros({1,2}));
+/// // Canonical equivalent: z is [1,1], with no posterior RNG draw.
+/// @endcode
+/// @see datamunge::nn::models::GaussianReparameterize()
 inline nn::Tensor VaeReparameterize(const nn::Tensor& mu, const nn::Tensor& log_variance, const nn::Tensor& epsilon) {
-  return mu + nn::exp(0.5 * log_variance) * epsilon;
+  return nn::models::GaussianReparameterize(mu, log_variance, epsilon);
 }
-/// KL(N(mu, exp(lv)) || N(0, I)) per row.
+/// @brief Forward coordinate-summed standard-normal KL to the canonical core.
+/// @param mu Finite nonempty Float32/64 means [B,L].
+/// @param log_variance Finite matching log variances [B,L].
+/// @return Owning differentiable per-row KL [B], without clipping roundoff.
+/// @throws std::invalid_argument For invalid shape, dtype or values.
+/// @par Example
+/// @code
+/// #include <dm/dm.hpp>
+/// namespace n=dm::nn;
+/// const auto kl=n::models::DiagonalGaussianKl(n::ones({2,3}),n::zeros({2,3}));
+/// // Canonical equivalent: each coordinate-summed KL is1.5.
+/// @endcode
+/// @see datamunge::nn::models::DiagonalGaussianKl()
 inline nn::Tensor VaeKl(const nn::Tensor& mu, const nn::Tensor& log_variance) {
-  return 0.5 * nn::sum(nn::square(mu) + nn::exp(log_variance) - 1.0 - log_variance, {1});
+  return nn::models::DiagonalGaussianKl(mu, log_variance);
 }
-/// Bernoulli NLL summed over pixels, stable for large |logits|.
+/// @brief Forward stable pixel-summed Bernoulli cross-entropy to the canonical core.
+/// @param logits Finite nonempty Float32/64 log-odds [B,F].
+/// @param target Finite matching unit-range targets [B,F].
+/// @return Owning differentiable per-row summed NLL [B], without sigmoid clipping.
+/// @throws std::invalid_argument For invalid shape, dtype or values.
+/// @par Example
+/// @code
+/// #include <dm/dm.hpp>
+/// namespace n=dm::nn;
+/// const auto nll=n::models::BernoulliPixelNll(n::zeros({2,3}),n::zeros({2,3}));
+/// // Canonical equivalent: each row is3*log(2), not a pixel mean.
+/// @endcode
+/// @see datamunge::nn::models::BernoulliPixelNll()
 inline nn::Tensor VaePixelNll(const nn::Tensor& logits, const nn::Tensor& target) {
-  return nn::sum(nn::softplus(logits) - target * logits, {1});
+  return nn::models::BernoulliPixelNll(logits, target);
 }
 
 struct VaeOutput {
   nn::Tensor mu, log_variance, z, logits, probability, reconstruction_nll, kl, loss;
 };
 
+/// @brief Forward the original two-code/ReLU64 decoder to the canonical core.
+/// @param p Mutable matching floating parameter store; decoder/output names are retained.
+/// @param z Finite nonempty Float32/64 codes [B,2].
+/// @return Owning differentiable Bernoulli logits [B,784], without an image input.
+/// @throws std::invalid_argument For invalid code/dtype or incompatible leaves.
+/// @par Example
+/// @code
+/// #include <dm/dm.hpp>
+/// namespace n=dm::nn;
+/// n::ParameterStore p(1951);
+/// const auto logits=n::models::GaussianVaeDecode(p,n::zeros({2,2}),784,2,64);
+/// // Canonical equivalent: [2,784] logits from four decoder leaves.
+/// @endcode
+/// @see datamunge::nn::models::GaussianVaeDecode()
 inline nn::Tensor VaeDecodeLogits(nn::ParameterStore& p, const nn::Tensor& z) {
-  return nn::dense(p, "output", nn::dense(p, "decoder", z, 64, nn::Activation::Relu), 784);
+  return nn::models::GaussianVaeDecode(p, z, 784, 2, 64);
 }
 
-/// 784 -> 64 ReLU -> (mu, log variance) [2] each; z = mu + exp(lv / 2) eps;
-/// 2 -> 64 ReLU -> 784 logits. Loss: mean over the batch of summed pixel NLL + KL.
+/// @brief Forward the original ReLU64/two-coordinate VAE to native beta=1 inference.
+///
+/// This compatibility record retains the original eight fields and ten-leaf
+/// creation order; canonical GaussianVaeOutput also exposes unweighted_loss.
+/// No fitting, posterior noise draws or mode changes are hidden by this adapter.
+/// @param p Mutable matching floating parameter store; original names are retained.
+/// @param image Finite nonempty unit-range Float32/64 [B,784] pixels.
+/// @param epsilon Finite matching explicit Gaussian noise [B,2].
+/// @return Owning original eight-field result; loss averages pixel-summed NLL plus latent-summed KL over images.
+/// @throws std::invalid_argument For invalid inputs/dtypes or incompatible leaves.
+/// @par Example
+/// @code
+/// #include <dm/dm.hpp>
+/// namespace n=dm::nn;
+/// n::ParameterStore p(1951);
+/// const auto out=n::models::BetaVariationalAutoencoder(p,n::zeros({2,784}),n::zeros({2,2}),1,784,2,64);
+/// // Canonical equivalent: beta1, latent2, hidden64, ten leaves/101652 scalars.
+/// @endcode
+/// @see datamunge::nn::models::BetaVariationalAutoencoder()
 inline VaeOutput VariationalAutoencoder(nn::ParameterStore& p, const nn::Tensor& image, const nn::Tensor& epsilon) {
-  VaeOutput out;
-  auto      h          = nn::dense(p, "encoder", image, 64, nn::Activation::Relu);
-  out.mu                 = nn::dense(p, "mu", h, 2);
-  out.log_variance       = nn::dense(p, "log_variance", h, 2);
-  out.z                  = VaeReparameterize(out.mu, out.log_variance, epsilon);
-  out.logits             = VaeDecodeLogits(p, out.z);
-  out.probability        = nn::sigmoid(out.logits);
-  out.reconstruction_nll = VaePixelNll(out.logits, image);
-  out.kl                 = VaeKl(out.mu, out.log_variance);
-  out.loss               = nn::mean(out.reconstruction_nll + out.kl, {0});
-  return out;
+  const auto out = nn::models::BetaVariationalAutoencoder(p, image, epsilon, 1, 784, 2, 64);
+  return {out.mu, out.log_variance, out.z, out.logits, out.probability,
+          out.reconstruction_nll, out.kl, out.loss};
 }
 
 class VariationalAutoencoderModel {
@@ -304,18 +352,7 @@ class VariationalAutoencoderModel {
 /// tflow's nn::GaussianNoise: Box-Muller pairs from std::mt19937(seed), as
 /// float64 [samples, shape...].
 inline nn::Tensor GaussianNoise(const nn::Shape& shape, std::int64_t samples, std::uint32_t seed) {
-  nn::Shape full{samples};
-  full.insert(full.end(), shape.begin(), shape.end());
-  std::vector<double> bank(static_cast<std::size_t>(nn::shape_numel(full)));
-  std::mt19937        rng(seed);
-  constexpr double    tau = 6.283185307179586476925286766559;
-  for (std::size_t i = 0; i < bank.size(); i += 2) {
-    const double u = (double(rng()) + .5) / 4294967296., v = (double(rng()) + .5) / 4294967296.;
-    const double radius = std::sqrt(-2 * std::log(u));
-    bank[i]             = radius * std::cos(tau * v);
-    if (i + 1 < bank.size()) bank[i + 1] = radius * std::sin(tau * v);
-  }
-  return nn::from_vector(bank, full);
+  return nn::models::GaussianNoise(shape, samples, seed);
 }
 
 struct VaeNoiseBank {
@@ -352,16 +389,15 @@ inline std::vector<double> VaeScore(VariationalAutoencoderModel& model, const nn
 /// [n, 28, 28, 1] (or any n x 784 values) as [n, 784] original pixels.
 inline nn::Tensor Flatten(const nn::Tensor& images) { return nn::reshape(images, {images.size(0), 784}); }
 
+// Preserve the SWIG-visible value type and function while the canonical model
+// lives in the library. Existing Python/R examples keep the same interface.
 struct DenseAeOutput {
   nn::Tensor code, reconstruction;
 };
-
-/// "encoder" features -> latent ReLU, "decoder" latent -> features sigmoid (Glorot uniform, zero biases).
 inline DenseAeOutput UndercompleteAutoencoder(nn::ParameterStore& p, const nn::Tensor& input,
                                               std::int64_t features = 784, std::int64_t latent = 32) {
-  check::Require(features > 1 && latent > 0 && latent < features, "strictly undercomplete positive bottleneck");
-  auto code = nn::dense(p, "encoder", input, latent, nn::Activation::Relu);
-  return {code, nn::dense(p, "decoder", code, features, nn::Activation::Sigmoid)};
+  const auto result = nn::models::UndercompleteAutoencoder(p, input, features, latent);
+  return {result.code, result.reconstruction};
 }
 
 /// tflow's ReconstructionMse: mean over every element.
@@ -378,21 +414,7 @@ inline std::unique_ptr<nn::Optimizer> MakeAdam(nn::ParameterStore& store, double
 
 /// tflow's CorruptForDenoising: clamp(float(x + sigma z), 0, 1) with z one float64 bank [1, shape...].
 inline nn::Tensor CorruptForDenoising(const nn::Tensor& clean, const nn::Tensor& standard_noise, float sigma) {
-  nn::Shape shape{1};
-  shape.insert(shape.end(), clean.shape().begin(), clean.shape().end());
-  check::Require(clean.dtype() == nn::DType::Float32 && clean.dim() >= 2 &&
-                     standard_noise.dtype() == nn::DType::Float64 && standard_noise.shape() == shape &&
-                     std::isfinite(sigma) && sigma >= 0,
-                 "aligned single Gaussian bank and nonnegative sigma");
-  const auto          x = clean.contiguous().to_vector<float>();
-  const auto          z = standard_noise.contiguous().to_vector<double>();
-  std::vector<float>  out(x.size());
-  for (std::size_t i = 0; i < x.size(); ++i) {
-    check::Require(std::isfinite(x[i]) && x[i] >= 0 && x[i] <= 1 && std::isfinite(z[i]),
-                   "finite unit-range clean pixels/noise");
-    out[i] = std::clamp(float(double(x[i]) + double(sigma) * z[i]), 0.f, 1.f);
-  }
-  return nn::from_vector(out, clean.shape());
+  return nn::models::CorruptForDenoising(clean, standard_noise, sigma);
 }
 
 /// tflow's data.npz record: the three pools (+ any extra arrays).

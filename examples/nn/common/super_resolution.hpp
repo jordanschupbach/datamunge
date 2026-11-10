@@ -4,8 +4,7 @@
 // common/ml/super_resolution.h (namespace sr; the data/metric half,
 // common/ml/sr_data.h, is common/sr_data.hpp).
 // TF -> datamunge: parameters are an nn::ParameterStore (seed 17, datamunge's
-// generator); SRConv / SRPixelShuffle are reused from
-// common/adversarial_super_resolution.hpp (srgan::, identical to tflow's);
+// generator); SRConv / SRPixelShuffle are canonical nn::models operations;
 // the checkpoint is best.npz; PNGs via nn::save_png; test_outputs.npz via
 // nn::save_npz. nn::depth_to_space is TF's DCR order, so (like tflow) the CRD
 // shuffle is an explicit reshape/transpose.
@@ -23,8 +22,11 @@
 #include <string>
 #include <vector>
 
-#include "common/adversarial_super_resolution.hpp"
 #include "common/sr_data.hpp"
+#include <datamunge/nn/image_io.hpp>
+#include <datamunge/nn/image_ops.hpp>
+#include <datamunge/nn/io.hpp>
+#include <datamunge/nn/optim.hpp>
 #include <datamunge/nn/super_resolution_models.hpp>
 
 namespace sr {

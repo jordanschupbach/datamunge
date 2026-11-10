@@ -1,4 +1,4 @@
-# Hard winner competition autoencoders (examples/nn/common/competitive_autoencoder.hpp).
+# Canonical C++ competition with host-owned experiment state and diagnostics.
 #
 # 784 -> 64 -> 784 sigmoid autoencoders and their matched-weight plain controls,
 # shared by k_sparse_autoencoder (per-image top-8 SIGNED activities of a LINEAR
@@ -11,8 +11,8 @@ if (!exists("autoencoder_undercomplete", inherits = TRUE)) nn_helper("autoencode
 if (!exists("nn_require", inherits = TRUE)) nn_helper("checks", environment())
 
 # Canonical C++ forward, discrete mask and fixtures through SWIG.
-competitive_autoencoder_mask <- nn_components$ae$CompetitiveMask
-competitive_autoencoder_forward <- nn_components$ae$CompetitiveAutoencoder
+competitive_autoencoder_mask <- nn$CompetitiveMask
+competitive_autoencoder_forward <- nn$CompetitiveAutoencoder
 
 # Parameters (seed 1931) + optional Adam; forward pieces only.
 competitive_autoencoder_model <- function(lifetime = TRUE, plain = FALSE, training = TRUE) {
@@ -45,6 +45,22 @@ competitive_autoencoder_model <- function(lifetime = TRUE, plain = FALSE, traini
     model
 }
 
-competitive_autoencoder_check_support <- function(probe, lifetime, plain)
-    nn_components$ae$CheckCompetitiveSupport(nn$tensor_vector(probe), lifetime, plain)
-competitive_autoencoder_checks <- nn_components$ae$CompetitiveChecks
+competitive_autoencoder_check_support <- function(probe, lifetime, plain) {
+    raw <- probe[[1L]]; mask <- probe[[2L]]; code <- probe[[3L]]
+    values <- matrix(mask$values(),nrow=raw$size(0L),byrow=TRUE)
+    nn_require(all(values %in% c(0,1)),"binary selector")
+    nn_require(identical(code$values(),raw$values()*mask$values()),"code equals selected actual activities")
+    counts <- if(lifetime) colSums(values) else rowSums(values)
+    expected <- if(plain) (if(lifetime) nrow(values) else ncol(values)) else
+                (if(lifetime) ceiling(nrow(values)/8) else min(8,ncol(values)))
+    nn_require(all(counts==expected),"exact selected slots on competition axis")
+}
+competitive_autoencoder_checks <- function() {
+    x <- nn$from_vector(c(3,1,1,0,2,4,0,0,-1,-2,5,5,-4,-1,-2,-3),c(4L,4L))$requires_grad_()
+    expected <- list(c(1,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0),c(1,1,0,0,1,1,0,0,0,0,1,1,0,1,1,0))
+    for(i in 1L:2L) {
+        mask <- nn$CompetitiveMask(x,i==1L,2L)
+        nn_require(identical(mask$values(),expected[[i]]),"native toy winners")
+        nn_require(identical(nn$grad(nn$sum(nn$mul(x,mask)),list(x))[[1L]]$values(),expected[[i]]),"native toy winner derivatives")
+    }
+}

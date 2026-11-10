@@ -1,0 +1,53 @@
+library(testthat)
+nn <- datamungerNN::nn
+
+test_that("Exact finite mixture preserves signed values and all three derivative paths", {
+  t <- nn$DType$Float64
+  z <- nn$from_vector_double(c(1,1,1,-1),c(2L,2L))$requires_grad_()
+  mu <- nn$from_vector_double(c(-1,-1,1,1),c(2L,2L))$requires_grad_()
+  lv <- nn$zeros(c(2L,2L),t)$requires_grad_()
+  out <- nn$EmpiricalTotalCorrelation(z,mu,lv);v <- exp(-2)
+  expect_equal(out$per_case$values(),c(log(2*(1+v*v)/(1+v)^2),log(4*v/(1+v)^2)),tolerance=1e-13)
+  loss <- out$mean;joint <- out$log_joint;rm(out);gc()
+  expect_lt(loss$item(),0);expect_equal(joint$shape(),c(2))
+  g <- nn$grad(loss,nn$tensor_vector(list(z,mu,lv)));expect_length(g,3)
+  expect_true(all(vapply(g,function(x) any(abs(x$values())>1e-12),logical(1))))
+})
+
+test_that("Nested Gaussian results own lifetime and host optimizers alternate stores", {
+  p <- nn$ParameterStore(2237L);d <- nn$ParameterStore(2309L)
+  x <- nn$full(c(2L,3L),.3);e <- nn$full(c(2L,2L),.7)
+  out <- nn$FactorVariationalAutoencoder(p,d,x,e,3,3L,2L,2L,2L)
+  expect_equal(p$count(),35);expect_equal(d$count(),9)
+  net <- out$net;loss <- out$loss;tc <- out$tc;rm(out);gc()
+  z <- net$z;probability <- net$probability;rm(net);gc()
+  expect_equal(probability$shape(),c(2,3));expect_true(is.finite(tc$item()))
+  config <- nn$OptimizerConfig();config$kind <- nn$OptimizerKind$Adam
+  optimizer <- nn$Optimizer(p,.003,config);disc_optimizer <- nn$Optimizer(d,.003,config)
+  before <- d$flatten();optimizer$step(nn$tensor_vector(nn$grad(loss,p$parameters())))
+  expect_identical(d$flatten(),before)
+  fresh <- nn$FactorVariationalAutoencoder(p,d,x,e,3,3L,2L,2L,2L)
+  joint <- fresh$net$z$detach();product <- nn$PermuteLatentColumns(joint,2311L)
+  expect_false(product$requires_grad());expect_equal(product$values(),nn$PermuteLatentColumns(joint,2311L)$values())
+  before <- p$flatten();dl <- nn$FactorDiscriminatorLoss(d,joint,product,2L,2L)
+  disc_optimizer$step(nn$tensor_vector(nn$grad(dl,d$parameters())))
+  expect_identical(p$flatten(),before);expect_equal(optimizer$iterations(),1);expect_equal(disc_optimizer$iterations(),1)
+  expect_equal(z$shape(),c(2,2))
+})
+
+test_that("Full fitting references stay live and malformed calls leave stores empty", {
+  p <- nn$ParameterStore(2237L);refs <- nn$from_vector(c(.2,.3,.7,.5,.4,.1,.8,.2,.6),c(3L,3L))$requires_grad_()
+  x <- nn$full(c(2L,3L),.3);e <- nn$ones(c(2L,2L))
+  out <- nn$BetaTcVariationalAutoencoder(p,x,e,refs,3,3L,2L,2L)
+  net <- out$net;loss <- out$loss;rm(out);gc()
+  parameters <- nn$grad(loss,p$parameters())
+  reference_forward <- nn$BetaTcVariationalAutoencoder(p,x,e,refs,3,3L,2L,2L)
+  vars <- c(parameters,nn$grad(reference_forward$loss,nn$tensor_vector(list(refs))))
+  expect_length(vars,11);expect_true(any(abs(vars[[11]]$values())>1e-12));expect_equal(net$mu$shape(),c(2,2))
+  zero <- nn$BetaTcVariationalAutoencoder(p,x,e,refs,0,3L,2L,2L)
+  expect_equal(zero$loss$item(),zero$net$unweighted_loss$item())
+  q <- nn$ParameterStore(1L)
+  for(w in c(-1,NaN,Inf))expect_error(nn$BetaTcVariationalAutoencoder(q,x,e,refs,w,3L,2L,2L))
+  expect_error(nn$BetaTcVariationalAutoencoder(q,x,e,nn$zeros(c(0L,3L)),3,3L,2L,2L))
+  expect_error(nn$FactorVariationalAutoencoder(q,q,x,e,3,3L,2L,2L,2L));expect_equal(q$size(),0)
+})

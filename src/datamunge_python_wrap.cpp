@@ -3844,226 +3844,243 @@ namespace Swig {
 #define SWIGTYPE_p_datamunge__geometry__BoundingBox swig_types[126]
 #define SWIGTYPE_p_datamunge__geometry__Circle swig_types[127]
 #define SWIGTYPE_p_datamunge__geometry__ClosestPairResult swig_types[128]
-#define SWIGTYPE_p_datamunge__geometry__DTWResult swig_types[129]
-#define SWIGTYPE_p_datamunge__geometry__DiameterResult swig_types[130]
-#define SWIGTYPE_p_datamunge__geometry__KDTree2D swig_types[131]
-#define SWIGTYPE_p_datamunge__geometry__MinimumBoundingRectangle swig_types[132]
-#define SWIGTYPE_p_datamunge__geometry__Point2D swig_types[133]
-#define SWIGTYPE_p_datamunge__geometry__Triangle swig_types[134]
-#define SWIGTYPE_p_datamunge__geometry__VoronoiDiagram swig_types[135]
-#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge swig_types[136]
-#define SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash swig_types[137]
-#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[138]
-#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[139]
-#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[140]
-#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[141]
-#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[142]
-#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[143]
-#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[144]
-#define SWIGTYPE_p_datamunge__image__HSV swig_types[145]
-#define SWIGTYPE_p_datamunge__image__Image swig_types[146]
-#define SWIGTYPE_p_datamunge__image__Pixel swig_types[147]
-#define SWIGTYPE_p_datamunge__nn__NnModel swig_types[148]
-#define SWIGTYPE_p_datamunge__nn__NnTensor swig_types[149]
-#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[150]
-#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[151]
-#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[152]
-#define SWIGTYPE_p_datamunge__ode__RHS swig_types[153]
-#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[154]
-#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[155]
-#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[156]
-#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[157]
-#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[158]
-#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[159]
-#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[160]
-#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[161]
-#define SWIGTYPE_p_datamunge__optim__Adam swig_types[162]
-#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[163]
-#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[164]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[165]
-#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[166]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[167]
-#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[168]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[169]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[170]
-#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[171]
-#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[172]
-#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[173]
-#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[174]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[175]
-#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[176]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[177]
-#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[178]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[179]
-#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[180]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[181]
-#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[182]
-#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[183]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[184]
-#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[185]
-#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[186]
-#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[187]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[188]
-#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[189]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[190]
-#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[191]
-#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[192]
-#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[193]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[194]
-#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[195]
-#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[196]
-#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[197]
-#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[198]
-#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[199]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[200]
-#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[201]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[202]
-#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[203]
-#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[204]
-#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[205]
-#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[206]
-#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[207]
-#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[208]
-#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[209]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[210]
-#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[211]
-#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[212]
-#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[213]
-#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[214]
-#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[215]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[216]
-#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[217]
-#define SWIGTYPE_p_datamunge__optim__Newton swig_types[218]
-#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[219]
-#define SWIGTYPE_p_datamunge__optim__PSO swig_types[220]
-#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[221]
-#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[222]
-#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[223]
-#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[224]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[225]
-#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[226]
-#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[227]
-#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[228]
-#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[229]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[230]
-#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[231]
-#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[232]
-#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[233]
-#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[234]
-#define SWIGTYPE_p_datamunge__optim__SGD swig_types[235]
-#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[236]
-#define SWIGTYPE_p_datamunge__optim__SQP swig_types[237]
-#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[238]
-#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[239]
-#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[240]
-#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[241]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[242]
-#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[243]
-#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[244]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[245]
-#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[246]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[247]
-#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[248]
-#define SWIGTYPE_p_datamunge__sim__TaskBatch swig_types[249]
-#define SWIGTYPE_p_datamunge__sim__TaskOutput swig_types[250]
-#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[251]
-#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[252]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[253]
-#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[254]
-#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[255]
-#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[256]
-#define SWIGTYPE_p_difference_type swig_types[257]
-#define SWIGTYPE_p_first_type swig_types[258]
-#define SWIGTYPE_p_int swig_types[259]
-#define SWIGTYPE_p_long_long swig_types[260]
-#define SWIGTYPE_p_p_PyObject swig_types[261]
-#define SWIGTYPE_p_second_type swig_types[262]
-#define SWIGTYPE_p_short swig_types[263]
-#define SWIGTYPE_p_signed_char swig_types[264]
-#define SWIGTYPE_p_size_type swig_types[265]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t swig_types[266]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[267]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[268]
-#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[269]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[270]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[271]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[272]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[273]
-#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[274]
-#define SWIGTYPE_p_std__allocatorT_datamunge__fda__BSplineBasis_t swig_types[275]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[276]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[277]
-#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[278]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[279]
-#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[280]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__ABLine_t swig_types[281]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__DataSeries_t swig_types[282]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__LegendEntry_t swig_types[283]
-#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__RGB_t swig_types[284]
-#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[285]
-#define SWIGTYPE_p_std__allocatorT_double_t swig_types[286]
-#define SWIGTYPE_p_std__allocatorT_int_t swig_types[287]
-#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[288]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[289]
-#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[290]
-#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[291]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[292]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[293]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[294]
-#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[295]
-#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[296]
-#define SWIGTYPE_p_std__invalid_argument swig_types[297]
-#define SWIGTYPE_p_std__pairT_double_double_t swig_types[298]
-#define SWIGTYPE_p_std__pairT_int_int_t swig_types[299]
-#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[300]
-#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[301]
-#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[302]
-#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[303]
-#define SWIGTYPE_p_std__string swig_types[304]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t swig_types[305]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[306]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[307]
-#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[308]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[309]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[310]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[311]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[312]
-#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[313]
-#define SWIGTYPE_p_std__vectorT_datamunge__fda__BSplineBasis_t swig_types[314]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[315]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[316]
-#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[317]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[318]
-#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[319]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t swig_types[320]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t swig_types[321]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t swig_types[322]
-#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t swig_types[323]
-#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[324]
-#define SWIGTYPE_p_std__vectorT_double_t swig_types[325]
-#define SWIGTYPE_p_std__vectorT_int_t swig_types[326]
-#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[327]
-#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[328]
-#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[329]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[330]
-#define SWIGTYPE_p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t swig_types[331]
-#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[332]
-#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[333]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[334]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[335]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[336]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t swig_types[337]
-#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[338]
-#define SWIGTYPE_p_swig__SwigPyIterator swig_types[339]
-#define SWIGTYPE_p_unsigned_char swig_types[340]
-#define SWIGTYPE_p_unsigned_int swig_types[341]
-#define SWIGTYPE_p_unsigned_long_long swig_types[342]
-#define SWIGTYPE_p_unsigned_short swig_types[343]
-#define SWIGTYPE_p_value_type swig_types[344]
-#define SWIGTYPE_p_vertex_type swig_types[345]
-#define SWIGTYPE_p_weight_type swig_types[346]
-static swig_type_info *swig_types[348];
-static swig_module_info swig_module = {swig_types, 347, 0, 0, 0, 0};
+#define SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis swig_types[129]
+#define SWIGTYPE_p_datamunge__geometry__ConvexHullOptions swig_types[130]
+#define SWIGTYPE_p_datamunge__geometry__ConvexHullTrace swig_types[131]
+#define SWIGTYPE_p_datamunge__geometry__ConvexHullWork swig_types[132]
+#define SWIGTYPE_p_datamunge__geometry__DTWComputation swig_types[133]
+#define SWIGTYPE_p_datamunge__geometry__DTWResult swig_types[134]
+#define SWIGTYPE_p_datamunge__geometry__DTWTrace swig_types[135]
+#define SWIGTYPE_p_datamunge__geometry__DTWWork swig_types[136]
+#define SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis swig_types[137]
+#define SWIGTYPE_p_datamunge__geometry__DelaunayInsertion swig_types[138]
+#define SWIGTYPE_p_datamunge__geometry__DelaunayTrace swig_types[139]
+#define SWIGTYPE_p_datamunge__geometry__DelaunayWork swig_types[140]
+#define SWIGTYPE_p_datamunge__geometry__DiameterResult swig_types[141]
+#define SWIGTYPE_p_datamunge__geometry__HullEvent swig_types[142]
+#define SWIGTYPE_p_datamunge__geometry__HullIndexedPoint swig_types[143]
+#define SWIGTYPE_p_datamunge__geometry__KDTree2D swig_types[144]
+#define SWIGTYPE_p_datamunge__geometry__MinimumBoundingRectangle swig_types[145]
+#define SWIGTYPE_p_datamunge__geometry__Point2D swig_types[146]
+#define SWIGTYPE_p_datamunge__geometry__Triangle swig_types[147]
+#define SWIGTYPE_p_datamunge__geometry__VoronoiDiagram swig_types[148]
+#define SWIGTYPE_p_datamunge__graphics__ABLine swig_types[149]
+#define SWIGTYPE_p_datamunge__graphics__DataSeries swig_types[150]
+#define SWIGTYPE_p_datamunge__graphics__LegendEntry swig_types[151]
+#define SWIGTYPE_p_datamunge__graphics__Plot swig_types[152]
+#define SWIGTYPE_p_datamunge__graphics__RGB swig_types[153]
+#define SWIGTYPE_p_datamunge__graphics__RLayout swig_types[154]
+#define SWIGTYPE_p_datamunge__graphics__RPlot swig_types[155]
+#define SWIGTYPE_p_datamunge__image__HSV swig_types[156]
+#define SWIGTYPE_p_datamunge__image__Image swig_types[157]
+#define SWIGTYPE_p_datamunge__image__Pixel swig_types[158]
+#define SWIGTYPE_p_datamunge__nn__NnModel swig_types[159]
+#define SWIGTYPE_p_datamunge__nn__NnTensor swig_types[160]
+#define SWIGTYPE_p_datamunge__ode__ODEOptions swig_types[161]
+#define SWIGTYPE_p_datamunge__ode__ODESolution swig_types[162]
+#define SWIGTYPE_p_datamunge__ode__ODESolver swig_types[163]
+#define SWIGTYPE_p_datamunge__ode__RHS swig_types[164]
+#define SWIGTYPE_p_datamunge__optim__ACOR swig_types[165]
+#define SWIGTYPE_p_datamunge__optim__ACOROptions swig_types[166]
+#define SWIGTYPE_p_datamunge__optim__AMSGrad swig_types[167]
+#define SWIGTYPE_p_datamunge__optim__AMSGradOptions swig_types[168]
+#define SWIGTYPE_p_datamunge__optim__AdaDelta swig_types[169]
+#define SWIGTYPE_p_datamunge__optim__AdaDeltaOptions swig_types[170]
+#define SWIGTYPE_p_datamunge__optim__AdaGrad swig_types[171]
+#define SWIGTYPE_p_datamunge__optim__AdaGradOptions swig_types[172]
+#define SWIGTYPE_p_datamunge__optim__Adam swig_types[173]
+#define SWIGTYPE_p_datamunge__optim__AdamOptions swig_types[174]
+#define SWIGTYPE_p_datamunge__optim__ArbitraryFunction swig_types[175]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColony swig_types[176]
+#define SWIGTYPE_p_datamunge__optim__ArtificialBeeColonyOptions swig_types[177]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangian swig_types[178]
+#define SWIGTYPE_p_datamunge__optim__AugmentedLagrangianOptions swig_types[179]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimization swig_types[180]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationOptions swig_types[181]
+#define SWIGTYPE_p_datamunge__optim__BayesianOptimizationResult swig_types[182]
+#define SWIGTYPE_p_datamunge__optim__BayesianSurrogate swig_types[183]
+#define SWIGTYPE_p_datamunge__optim__CMAES swig_types[184]
+#define SWIGTYPE_p_datamunge__optim__CMAESOptions swig_types[185]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradient swig_types[186]
+#define SWIGTYPE_p_datamunge__optim__ConjugateGradientOptions swig_types[187]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescent swig_types[188]
+#define SWIGTYPE_p_datamunge__optim__CoordinateDescentOptions swig_types[189]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethod swig_types[190]
+#define SWIGTYPE_p_datamunge__optim__CrossEntropyMethodOptions swig_types[191]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearch swig_types[192]
+#define SWIGTYPE_p_datamunge__optim__CuckooSearchOptions swig_types[193]
+#define SWIGTYPE_p_datamunge__optim__DEOptions swig_types[194]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableFunction swig_types[195]
+#define SWIGTYPE_p_datamunge__optim__DifferentiableSeparableFunction swig_types[196]
+#define SWIGTYPE_p_datamunge__optim__DifferentialEvolution swig_types[197]
+#define SWIGTYPE_p_datamunge__optim__EqualityConstrainedFunction swig_types[198]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistribution swig_types[199]
+#define SWIGTYPE_p_datamunge__optim__EstimationOfDistributionOptions swig_types[200]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategy swig_types[201]
+#define SWIGTYPE_p_datamunge__optim__EvolutionStrategyOptions swig_types[202]
+#define SWIGTYPE_p_datamunge__optim__FISTA swig_types[203]
+#define SWIGTYPE_p_datamunge__optim__FISTAOptions swig_types[204]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithm swig_types[205]
+#define SWIGTYPE_p_datamunge__optim__FireflyAlgorithmOptions swig_types[206]
+#define SWIGTYPE_p_datamunge__optim__GAOptions swig_types[207]
+#define SWIGTYPE_p_datamunge__optim__GeneticAlgorithm swig_types[208]
+#define SWIGTYPE_p_datamunge__optim__GradientDescent swig_types[209]
+#define SWIGTYPE_p_datamunge__optim__GradientDescentOptions swig_types[210]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizer swig_types[211]
+#define SWIGTYPE_p_datamunge__optim__GreyWolfOptimizerOptions swig_types[212]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearch swig_types[213]
+#define SWIGTYPE_p_datamunge__optim__HarmonySearchOptions swig_types[214]
+#define SWIGTYPE_p_datamunge__optim__HessianFunction swig_types[215]
+#define SWIGTYPE_p_datamunge__optim__InequalityConstrainedFunction swig_types[216]
+#define SWIGTYPE_p_datamunge__optim__InteriorPoint swig_types[217]
+#define SWIGTYPE_p_datamunge__optim__InteriorPointOptions swig_types[218]
+#define SWIGTYPE_p_datamunge__optim__LBFGS swig_types[219]
+#define SWIGTYPE_p_datamunge__optim__LBFGSOptions swig_types[220]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardt swig_types[221]
+#define SWIGTYPE_p_datamunge__optim__LevenbergMarquardtOptions swig_types[222]
+#define SWIGTYPE_p_datamunge__optim__Nadam swig_types[223]
+#define SWIGTYPE_p_datamunge__optim__NadamOptions swig_types[224]
+#define SWIGTYPE_p_datamunge__optim__NelderMead swig_types[225]
+#define SWIGTYPE_p_datamunge__optim__NelderMeadOptions swig_types[226]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradient swig_types[227]
+#define SWIGTYPE_p_datamunge__optim__NesterovAcceleratedGradientOptions swig_types[228]
+#define SWIGTYPE_p_datamunge__optim__Newton swig_types[229]
+#define SWIGTYPE_p_datamunge__optim__NewtonOptions swig_types[230]
+#define SWIGTYPE_p_datamunge__optim__PSO swig_types[231]
+#define SWIGTYPE_p_datamunge__optim__PSOOptions swig_types[232]
+#define SWIGTYPE_p_datamunge__optim__ParallelTempering swig_types[233]
+#define SWIGTYPE_p_datamunge__optim__ParallelTemperingOptions swig_types[234]
+#define SWIGTYPE_p_datamunge__optim__ProximalFunction swig_types[235]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradient swig_types[236]
+#define SWIGTYPE_p_datamunge__optim__ProximalGradientOptions swig_types[237]
+#define SWIGTYPE_p_datamunge__optim__RBFGaussianProcessSurrogate swig_types[238]
+#define SWIGTYPE_p_datamunge__optim__RMSProp swig_types[239]
+#define SWIGTYPE_p_datamunge__optim__RMSPropOptions swig_types[240]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescent swig_types[241]
+#define SWIGTYPE_p_datamunge__optim__RandomizedBlockCoordinateDescentOptions swig_types[242]
+#define SWIGTYPE_p_datamunge__optim__ResidualFunction swig_types[243]
+#define SWIGTYPE_p_datamunge__optim__SAGA swig_types[244]
+#define SWIGTYPE_p_datamunge__optim__SAGAOptions swig_types[245]
+#define SWIGTYPE_p_datamunge__optim__SGD swig_types[246]
+#define SWIGTYPE_p_datamunge__optim__SGDOptions swig_types[247]
+#define SWIGTYPE_p_datamunge__optim__SQP swig_types[248]
+#define SWIGTYPE_p_datamunge__optim__SQPOptions swig_types[249]
+#define SWIGTYPE_p_datamunge__optim__SVRG swig_types[250]
+#define SWIGTYPE_p_datamunge__optim__SVRGOptions swig_types[251]
+#define SWIGTYPE_p_datamunge__optim__SeparableFunction swig_types[252]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealing swig_types[253]
+#define SWIGTYPE_p_datamunge__optim__SimulatedAnnealingOptions swig_types[254]
+#define SWIGTYPE_p_datamunge__optim__SurrogatePrediction swig_types[255]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewton swig_types[256]
+#define SWIGTYPE_p_datamunge__optim__TrustRegionNewtonOptions swig_types[257]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimization swig_types[258]
+#define SWIGTYPE_p_datamunge__optim__WhaleOptimizationOptions swig_types[259]
+#define SWIGTYPE_p_datamunge__sim__TaskBatch swig_types[260]
+#define SWIGTYPE_p_datamunge__sim__TaskOutput swig_types[261]
+#define SWIGTYPE_p_datamunge__stats__ARIMA swig_types[262]
+#define SWIGTYPE_p_datamunge__stats__ARIMAOptions swig_types[263]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothing swig_types[264]
+#define SWIGTYPE_p_datamunge__stats__ExponentialSmoothingOptions swig_types[265]
+#define SWIGTYPE_p_datamunge__stats__HypothesisTestResult swig_types[266]
+#define SWIGTYPE_p_datamunge__stats__KendallTau swig_types[267]
+#define SWIGTYPE_p_difference_type swig_types[268]
+#define SWIGTYPE_p_first_type swig_types[269]
+#define SWIGTYPE_p_int swig_types[270]
+#define SWIGTYPE_p_long_long swig_types[271]
+#define SWIGTYPE_p_p_PyObject swig_types[272]
+#define SWIGTYPE_p_second_type swig_types[273]
+#define SWIGTYPE_p_short swig_types[274]
+#define SWIGTYPE_p_signed_char swig_types[275]
+#define SWIGTYPE_p_size_type swig_types[276]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Complex_t swig_types[277]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__MultivariatePolynomial_t swig_types[278]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__Polynomial_t swig_types[279]
+#define SWIGTYPE_p_std__allocatorT_datamunge__algebra__SquareFreeFactor_t swig_types[280]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__Corner_t swig_types[281]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__FlowVector_t swig_types[282]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughCircle_t swig_types[283]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__HoughLine_t swig_types[284]
+#define SWIGTYPE_p_std__allocatorT_datamunge__cv__KeyPoint_t swig_types[285]
+#define SWIGTYPE_p_std__allocatorT_datamunge__fda__BSplineBasis_t swig_types[286]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaGammaState_t swig_types[287]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__AlphaBetaState_t swig_types[288]
+#define SWIGTYPE_p_std__allocatorT_datamunge__filter__KalmanState_t swig_types[289]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Point2D_t swig_types[290]
+#define SWIGTYPE_p_std__allocatorT_datamunge__geometry__Triangle_t swig_types[291]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__ABLine_t swig_types[292]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__DataSeries_t swig_types[293]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__LegendEntry_t swig_types[294]
+#define SWIGTYPE_p_std__allocatorT_datamunge__graphics__RGB_t swig_types[295]
+#define SWIGTYPE_p_std__allocatorT_datamunge__image__Image_t swig_types[296]
+#define SWIGTYPE_p_std__allocatorT_double_t swig_types[297]
+#define SWIGTYPE_p_std__allocatorT_int_t swig_types[298]
+#define SWIGTYPE_p_std__allocatorT_size_t_t swig_types[299]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_int_int_t_t swig_types[300]
+#define SWIGTYPE_p_std__allocatorT_std__pairT_std__string_double_t_t swig_types[301]
+#define SWIGTYPE_p_std__allocatorT_std__string_t swig_types[302]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[303]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_double_t_t swig_types[304]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_int_t_t swig_types[305]
+#define SWIGTYPE_p_std__allocatorT_std__vectorT_std__string_t_t swig_types[306]
+#define SWIGTYPE_p_std__allocatorT_unsigned_char_t swig_types[307]
+#define SWIGTYPE_p_std__invalid_argument swig_types[308]
+#define SWIGTYPE_p_std__pairT_double_double_t swig_types[309]
+#define SWIGTYPE_p_std__pairT_int_int_t swig_types[310]
+#define SWIGTYPE_p_std__pairT_std__string_double_t swig_types[311]
+#define SWIGTYPE_p_std__pairT_std__string_std__string_t swig_types[312]
+#define SWIGTYPE_p_std__pairT_std__vectorT_double_t_std__vectorT_double_t_t swig_types[313]
+#define SWIGTYPE_p_std__shared_ptrT_datamunge__algebra__detail__ExprNode_t swig_types[314]
+#define SWIGTYPE_p_std__string swig_types[315]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Complex_t swig_types[316]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__MultivariatePolynomial_t swig_types[317]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__Polynomial_t swig_types[318]
+#define SWIGTYPE_p_std__vectorT_datamunge__algebra__SquareFreeFactor_t swig_types[319]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__Corner_t swig_types[320]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__FlowVector_t swig_types[321]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughCircle_t swig_types[322]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__HoughLine_t swig_types[323]
+#define SWIGTYPE_p_std__vectorT_datamunge__cv__KeyPoint_t swig_types[324]
+#define SWIGTYPE_p_std__vectorT_datamunge__fda__BSplineBasis_t swig_types[325]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t swig_types[326]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__AlphaBetaState_t swig_types[327]
+#define SWIGTYPE_p_std__vectorT_datamunge__filter__KalmanState_t swig_types[328]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t swig_types[329]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t swig_types[330]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t swig_types[331]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t swig_types[332]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t swig_types[333]
+#define SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t swig_types[334]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__ABLine_t swig_types[335]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__DataSeries_t swig_types[336]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__LegendEntry_t swig_types[337]
+#define SWIGTYPE_p_std__vectorT_datamunge__graphics__RGB_t swig_types[338]
+#define SWIGTYPE_p_std__vectorT_datamunge__image__Image_t swig_types[339]
+#define SWIGTYPE_p_std__vectorT_double_t swig_types[340]
+#define SWIGTYPE_p_std__vectorT_int_t swig_types[341]
+#define SWIGTYPE_p_std__vectorT_long_long_std__allocatorT_long_long_t_t swig_types[342]
+#define SWIGTYPE_p_std__vectorT_size_t_t swig_types[343]
+#define SWIGTYPE_p_std__vectorT_std__pairT_int_int_t_t swig_types[344]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t swig_types[345]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__string_double_t_t swig_types[346]
+#define SWIGTYPE_p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t swig_types[347]
+#define SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t swig_types[348]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[349]
+#define SWIGTYPE_p_std__vectorT_std__uint8_t_t swig_types[350]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t swig_types[351]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_double_t_t swig_types[352]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_int_t_t swig_types[353]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_std__allocatorT_std__vectorT_long_long_std__allocatorT_long_long_t_t_t_t swig_types[354]
+#define SWIGTYPE_p_std__vectorT_std__vectorT_std__string_t_t swig_types[355]
+#define SWIGTYPE_p_swig__SwigPyIterator swig_types[356]
+#define SWIGTYPE_p_unsigned_char swig_types[357]
+#define SWIGTYPE_p_unsigned_int swig_types[358]
+#define SWIGTYPE_p_unsigned_long_long swig_types[359]
+#define SWIGTYPE_p_unsigned_short swig_types[360]
+#define SWIGTYPE_p_value_type swig_types[361]
+#define SWIGTYPE_p_vertex_type swig_types[362]
+#define SWIGTYPE_p_weight_type swig_types[363]
+static swig_type_info *swig_types[365];
+static swig_module_info swig_module = {swig_types, 364, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -7249,6 +7266,22 @@ SWIGINTERN std::vector< datamunge::geometry::Point2D >::iterator std_vector_Sl_d
 SWIGINTERN std::vector< datamunge::geometry::Point2D >::iterator std_vector_Sl_datamunge_geometry_Point2D_Sg__insert__SWIG_0(std::vector< datamunge::geometry::Point2D > *self,std::vector< datamunge::geometry::Point2D >::iterator pos,std::vector< datamunge::geometry::Point2D >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_geometry_Point2D_Sg__insert__SWIG_1(std::vector< datamunge::geometry::Point2D > *self,std::vector< datamunge::geometry::Point2D >::iterator pos,std::vector< datamunge::geometry::Point2D >::size_type n,std::vector< datamunge::geometry::Point2D >::value_type const &x){ self->insert(pos, n, x); }
 
+SWIGINTERN int
+SWIG_AsVal_unsigned_SS_int (PyObject * obj, unsigned int *val)
+{
+  unsigned long v;
+  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v > UINT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< unsigned int >(v);
+    }
+  }  
+  return res;
+}
+
+
   namespace swig {
     template <>  struct traits< datamunge::geometry::Triangle > {
       typedef pointer_category category;
@@ -8352,22 +8385,6 @@ SWIGINTERN std::vector< datamunge::cv::HoughCircle >::iterator std_vector_Sl_dat
 SWIGINTERN std::vector< datamunge::cv::HoughCircle >::iterator std_vector_Sl_datamunge_cv_HoughCircle_Sg__erase__SWIG_1(std::vector< datamunge::cv::HoughCircle > *self,std::vector< datamunge::cv::HoughCircle >::iterator first,std::vector< datamunge::cv::HoughCircle >::iterator last){ return self->erase(first, last); }
 SWIGINTERN std::vector< datamunge::cv::HoughCircle >::iterator std_vector_Sl_datamunge_cv_HoughCircle_Sg__insert__SWIG_0(std::vector< datamunge::cv::HoughCircle > *self,std::vector< datamunge::cv::HoughCircle >::iterator pos,std::vector< datamunge::cv::HoughCircle >::value_type const &x){ return self->insert(pos, x); }
 SWIGINTERN void std_vector_Sl_datamunge_cv_HoughCircle_Sg__insert__SWIG_1(std::vector< datamunge::cv::HoughCircle > *self,std::vector< datamunge::cv::HoughCircle >::iterator pos,std::vector< datamunge::cv::HoughCircle >::size_type n,std::vector< datamunge::cv::HoughCircle >::value_type const &x){ self->insert(pos, n, x); }
-
-SWIGINTERN int
-SWIG_AsVal_unsigned_SS_int (PyObject * obj, unsigned int *val)
-{
-  unsigned long v;
-  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
-  if (SWIG_IsOK(res)) {
-    if ((v > UINT_MAX)) {
-      return SWIG_OverflowError;
-    } else {
-      if (val) *val = static_cast< unsigned int >(v);
-    }
-  }  
-  return res;
-}
-
 
   namespace swig {
     template <>  struct traits< datamunge::cv::FlowVector > {
@@ -152505,6 +152522,1806 @@ SWIGINTERN PyObject *Point2DVector_swiginit(PyObject *SWIGUNUSEDPARM(self), PyOb
   return SWIG_Python_InitShadowInstance(args);
 }
 
+SWIGINTERN PyObject *_wrap_ConvexHullOptions_max_points_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullOptions_max_points_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullOptions_max_points_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullOptions_max_points_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->max_points = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullOptions_max_points_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullOptions_max_points_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullOptions * >(argp1);
+  result =  ((arg1)->max_points);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullOptions_max_events_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullOptions *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullOptions_max_events_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullOptions_max_events_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullOptions * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullOptions_max_events_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->max_events = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullOptions_max_events_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullOptions_max_events_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullOptions * >(argp1);
+  result =  ((arg1)->max_events);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ConvexHullOptions(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullOptions *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_ConvexHullOptions", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::ConvexHullOptions *)new datamunge::geometry::ConvexHullOptions();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ConvexHullOptions(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullOptions *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ConvexHullOptions" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullOptions *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullOptions * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ConvexHullOptions_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *ConvexHullOptions_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_HullIndexedPoint_point_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullIndexedPoint *arg1 = 0 ;
+  datamunge::geometry::Point2D *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullIndexedPoint_point_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullIndexedPoint, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullIndexedPoint_point_set" "', argument " "1"" of type '" "datamunge::geometry::HullIndexedPoint *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullIndexedPoint * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__Point2D, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "HullIndexedPoint_point_set" "', argument " "2"" of type '" "datamunge::geometry::Point2D *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::Point2D * >(argp2);
+  if (arg1) (arg1)->point = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullIndexedPoint_point_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullIndexedPoint *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::Point2D *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullIndexedPoint, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullIndexedPoint_point_get" "', argument " "1"" of type '" "datamunge::geometry::HullIndexedPoint *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullIndexedPoint * >(argp1);
+  result = (datamunge::geometry::Point2D *)& ((arg1)->point);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__Point2D, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullIndexedPoint_input_index_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullIndexedPoint *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullIndexedPoint_input_index_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullIndexedPoint, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullIndexedPoint_input_index_set" "', argument " "1"" of type '" "datamunge::geometry::HullIndexedPoint *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullIndexedPoint * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullIndexedPoint_input_index_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->input_index = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullIndexedPoint_input_index_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullIndexedPoint *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullIndexedPoint, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullIndexedPoint_input_index_get" "', argument " "1"" of type '" "datamunge::geometry::HullIndexedPoint *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullIndexedPoint * >(argp1);
+  result =  ((arg1)->input_index);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_HullIndexedPoint(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullIndexedPoint *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_HullIndexedPoint", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::HullIndexedPoint *)new datamunge::geometry::HullIndexedPoint();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__HullIndexedPoint, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_HullIndexedPoint(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullIndexedPoint *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullIndexedPoint, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_HullIndexedPoint" "', argument " "1"" of type '" "datamunge::geometry::HullIndexedPoint *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullIndexedPoint * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *HullIndexedPoint_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__HullIndexedPoint, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *HullIndexedPoint_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_input_points_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_input_points_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_input_points_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_input_points_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->input_points = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_input_points_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_input_points_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->input_points);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_distinct_points_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_distinct_points_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_distinct_points_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_distinct_points_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->distinct_points = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_distinct_points_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_distinct_points_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->distinct_points);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_sort_comparisons_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_sort_comparisons_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_sort_comparisons_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_sort_comparisons_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->sort_comparisons = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_sort_comparisons_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_sort_comparisons_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->sort_comparisons);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_duplicate_comparisons_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_duplicate_comparisons_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_duplicate_comparisons_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_duplicate_comparisons_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->duplicate_comparisons = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_duplicate_comparisons_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_duplicate_comparisons_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->duplicate_comparisons);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_orientation_tests_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_orientation_tests_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_orientation_tests_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_orientation_tests_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->orientation_tests = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_orientation_tests_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_orientation_tests_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->orientation_tests);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_pushes_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_pushes_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_pushes_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_pushes_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->pushes = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_pushes_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_pushes_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->pushes);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_pops_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_pops_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_pops_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_pops_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->pops = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_pops_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_pops_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->pops);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_max_stack_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullWork_max_stack_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_max_stack_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "ConvexHullWork_max_stack_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->max_stack = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullWork_max_stack_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullWork_max_stack_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  result =  ((arg1)->max_stack);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ConvexHullWork(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_ConvexHullWork", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::ConvexHullWork *)new datamunge::geometry::ConvexHullWork();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__ConvexHullWork, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ConvexHullWork(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ConvexHullWork" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ConvexHullWork_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__ConvexHullWork, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *ConvexHullWork_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_HullEvent__pass_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  datamunge::geometry::HullPass arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent__pass_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent__pass_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent__pass_set" "', argument " "2"" of type '" "datamunge::geometry::HullPass""'");
+  } 
+  arg2 = static_cast< datamunge::geometry::HullPass >(val2);
+  if (arg1) (arg1)->pass = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent__pass_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::HullPass result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent__pass_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result = (datamunge::geometry::HullPass) ((arg1)->pass);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_action_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  datamunge::geometry::HullAction arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent_action_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_action_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent_action_set" "', argument " "2"" of type '" "datamunge::geometry::HullAction""'");
+  } 
+  arg2 = static_cast< datamunge::geometry::HullAction >(val2);
+  if (arg1) (arg1)->action = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_action_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::HullAction result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_action_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result = (datamunge::geometry::HullAction) ((arg1)->action);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_candidate_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent_candidate_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_candidate_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent_candidate_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->candidate = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_candidate_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_candidate_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result =  ((arg1)->candidate);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_point_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent_point_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_point_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent_point_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->point = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_point_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_point_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result =  ((arg1)->point);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_a_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent_a_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_a_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent_a_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->a = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_a_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_a_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result =  ((arg1)->a);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_b_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent_b_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_b_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent_b_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->b = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_b_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_b_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result =  ((arg1)->b);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_turn_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent_turn_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_turn_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent_turn_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  if (arg1) (arg1)->turn = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_turn_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  int result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_turn_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result = (int) ((arg1)->turn);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_stack_size_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "HullEvent_stack_size_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_stack_size_set" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "HullEvent_stack_size_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->stack_size = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_HullEvent_stack_size_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "HullEvent_stack_size_get" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  result =  ((arg1)->stack_size);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_HullEvent(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_HullEvent", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::HullEvent *)new datamunge::geometry::HullEvent();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__HullEvent, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_HullEvent(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::HullEvent *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__HullEvent, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_HullEvent" "', argument " "1"" of type '" "datamunge::geometry::HullEvent *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::HullEvent * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *HullEvent_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__HullEvent, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *HullEvent_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_ConvexHullAnalysis_hull_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *arg1 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullAnalysis_hull_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullAnalysis_hull_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullAnalysis_hull_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > * >(argp2);
+  if (arg1) (arg1)->hull = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullAnalysis_hull_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullAnalysis_hull_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp1);
+  result = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)& ((arg1)->hull);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullAnalysis_input_indices_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *arg1 = 0 ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullAnalysis_input_indices_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullAnalysis_input_indices_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullAnalysis_input_indices_set" "', argument " "2"" of type '" "std::vector< std::size_t,std::allocator< std::size_t > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::size_t,std::allocator< std::size_t > > * >(argp2);
+  if (arg1) (arg1)->input_indices = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullAnalysis_input_indices_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullAnalysis_input_indices_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp1);
+  result = (std::vector< std::size_t,std::allocator< std::size_t > > *)& ((arg1)->input_indices);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullAnalysis_work_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *arg1 = 0 ;
+  datamunge::geometry::ConvexHullWork *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullAnalysis_work_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullAnalysis_work_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullAnalysis_work_set" "', argument " "2"" of type '" "datamunge::geometry::ConvexHullWork *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::ConvexHullWork * >(argp2);
+  if (arg1) (arg1)->work = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullAnalysis_work_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::ConvexHullWork *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullAnalysis_work_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp1);
+  result = (datamunge::geometry::ConvexHullWork *)& ((arg1)->work);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__ConvexHullWork, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ConvexHullAnalysis(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_ConvexHullAnalysis", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::ConvexHullAnalysis *)new datamunge::geometry::ConvexHullAnalysis();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ConvexHullAnalysis(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ConvexHullAnalysis" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ConvexHullAnalysis_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *ConvexHullAnalysis_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_analysis_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  datamunge::geometry::ConvexHullAnalysis *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullTrace_analysis_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_analysis_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullTrace_analysis_set" "', argument " "2"" of type '" "datamunge::geometry::ConvexHullAnalysis *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::ConvexHullAnalysis * >(argp2);
+  if (arg1) (arg1)->analysis = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_analysis_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::ConvexHullAnalysis *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_analysis_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  result = (datamunge::geometry::ConvexHullAnalysis *)& ((arg1)->analysis);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_sorted_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  std::vector< datamunge::geometry::HullIndexedPoint,std::allocator< datamunge::geometry::HullIndexedPoint > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullTrace_sorted_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_sorted_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullTrace_sorted_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::HullIndexedPoint,std::allocator< datamunge::geometry::HullIndexedPoint > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::HullIndexedPoint,std::allocator< datamunge::geometry::HullIndexedPoint > > * >(argp2);
+  if (arg1) (arg1)->sorted = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_sorted_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::HullIndexedPoint,std::allocator< datamunge::geometry::HullIndexedPoint > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_sorted_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  result = (std::vector< datamunge::geometry::HullIndexedPoint,std::allocator< datamunge::geometry::HullIndexedPoint > > *)& ((arg1)->sorted);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_events_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  std::vector< datamunge::geometry::HullEvent,std::allocator< datamunge::geometry::HullEvent > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullTrace_events_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_events_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullTrace_events_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::HullEvent,std::allocator< datamunge::geometry::HullEvent > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::HullEvent,std::allocator< datamunge::geometry::HullEvent > > * >(argp2);
+  if (arg1) (arg1)->events = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_events_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::HullEvent,std::allocator< datamunge::geometry::HullEvent > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_events_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  result = (std::vector< datamunge::geometry::HullEvent,std::allocator< datamunge::geometry::HullEvent > > *)& ((arg1)->events);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_lower_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullTrace_lower_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_lower_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullTrace_lower_set" "', argument " "2"" of type '" "std::vector< std::size_t,std::allocator< std::size_t > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::size_t,std::allocator< std::size_t > > * >(argp2);
+  if (arg1) (arg1)->lower = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_lower_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_lower_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  result = (std::vector< std::size_t,std::allocator< std::size_t > > *)& ((arg1)->lower);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_upper_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "ConvexHullTrace_upper_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_upper_set" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "ConvexHullTrace_upper_set" "', argument " "2"" of type '" "std::vector< std::size_t,std::allocator< std::size_t > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::size_t,std::allocator< std::size_t > > * >(argp2);
+  if (arg1) (arg1)->upper = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ConvexHullTrace_upper_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ConvexHullTrace_upper_get" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  result = (std::vector< std::size_t,std::allocator< std::size_t > > *)& ((arg1)->upper);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_ConvexHullTrace(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_ConvexHullTrace", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::ConvexHullTrace *)new datamunge::geometry::ConvexHullTrace();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_ConvexHullTrace(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::ConvexHullTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_ConvexHullTrace" "', argument " "1"" of type '" "datamunge::geometry::ConvexHullTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::ConvexHullTrace * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *ConvexHullTrace_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *ConvexHullTrace_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
 SWIGINTERN PyObject *_wrap_convex_hull(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > arg1 ;
@@ -152528,6 +154345,405 @@ SWIGINTERN PyObject *_wrap_convex_hull(PyObject *self, PyObject *args) {
   return resultobj;
 fail:
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_convex_hull_analyze__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  datamunge::geometry::ConvexHullOptions arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::geometry::ConvexHullAnalysis result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "convex_hull_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "convex_hull_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__geometry__ConvexHullOptions,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "convex_hull_analyze" "', argument " "2"" of type '" "datamunge::geometry::ConvexHullOptions""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "convex_hull_analyze" "', argument " "2"" of type '" "datamunge::geometry::ConvexHullOptions""'");
+    } else {
+      datamunge::geometry::ConvexHullOptions * temp = reinterpret_cast< datamunge::geometry::ConvexHullOptions * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = datamunge::geometry::convex_hull_analyze((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::ConvexHullAnalysis(result)), SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_convex_hull_analyze__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::geometry::ConvexHullAnalysis result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "convex_hull_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "convex_hull_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = datamunge::geometry::convex_hull_analyze((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1);
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::ConvexHullAnalysis(result)), SWIGTYPE_p_datamunge__geometry__ConvexHullAnalysis, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_convex_hull_analyze(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "convex_hull_analyze", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_convex_hull_analyze__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_convex_hull_analyze__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'convex_hull_analyze'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::convex_hull_analyze(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &,datamunge::geometry::ConvexHullOptions)\n"
+    "    datamunge::geometry::convex_hull_analyze(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_convex_hull_trace__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  datamunge::geometry::ConvexHullOptions arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  datamunge::geometry::ConvexHullTrace result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "convex_hull_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "convex_hull_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__geometry__ConvexHullOptions,  0  | 0);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "convex_hull_trace" "', argument " "2"" of type '" "datamunge::geometry::ConvexHullOptions""'"); 
+    }  
+    if (!argp2) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "convex_hull_trace" "', argument " "2"" of type '" "datamunge::geometry::ConvexHullOptions""'");
+    } else {
+      datamunge::geometry::ConvexHullOptions * temp = reinterpret_cast< datamunge::geometry::ConvexHullOptions * >(argp2);
+      arg2 = *temp;
+      if (SWIG_IsNewObj(res2)) delete temp;
+    }
+  }
+  result = datamunge::geometry::convex_hull_trace((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::ConvexHullTrace(result)), SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_convex_hull_trace__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::geometry::ConvexHullTrace result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "convex_hull_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "convex_hull_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = datamunge::geometry::convex_hull_trace((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1);
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::ConvexHullTrace(result)), SWIGTYPE_p_datamunge__geometry__ConvexHullTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_convex_hull_trace(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "convex_hull_trace", 0, 2, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_convex_hull_trace__SWIG_1(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_datamunge__geometry__ConvexHullOptions, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_convex_hull_trace__SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'convex_hull_trace'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::convex_hull_trace(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &,datamunge::geometry::ConvexHullOptions)\n"
+    "    datamunge::geometry::convex_hull_trace(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_sample_gaussian_points__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  std::uint32_t arg2 ;
+  std::size_t arg3 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "sample_gaussian_points" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sample_gaussian_points" "', argument " "2"" of type '" "std::uint32_t""'");
+  } 
+  arg2 = static_cast< std::uint32_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "sample_gaussian_points" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = datamunge::geometry::sample_gaussian_points(SWIG_STD_MOVE(*(&arg1)),arg2,SWIG_STD_MOVE(*(&arg3)));
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_sample_gaussian_points__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  std::uint32_t arg2 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "sample_gaussian_points" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "sample_gaussian_points" "', argument " "2"" of type '" "std::uint32_t""'");
+  } 
+  arg2 = static_cast< std::uint32_t >(val2);
+  result = datamunge::geometry::sample_gaussian_points(SWIG_STD_MOVE(*(&arg1)),arg2);
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_sample_gaussian_points__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "sample_gaussian_points" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  result = datamunge::geometry::sample_gaussian_points(SWIG_STD_MOVE(*(&arg1)));
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_sample_gaussian_points__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 0) || (nobjs > 0)) SWIG_fail;
+  result = datamunge::geometry::sample_gaussian_points();
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_sample_gaussian_points(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "sample_gaussian_points", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 0) {
+    return _wrap_sample_gaussian_points__SWIG_3(self, argc, argv);
+  }
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_sample_gaussian_points__SWIG_2(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_sample_gaussian_points__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_sample_gaussian_points__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'sample_gaussian_points'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::sample_gaussian_points(std::size_t,std::uint32_t,std::size_t)\n"
+    "    datamunge::geometry::sample_gaussian_points(std::size_t,std::uint32_t)\n"
+    "    datamunge::geometry::sample_gaussian_points(std::size_t)\n"
+    "    datamunge::geometry::sample_gaussian_points()\n");
+  return 0;
 }
 
 
@@ -155347,122 +157563,9 @@ SWIGINTERN PyObject *Triangle_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject 
   return SWIG_Python_InitShadowInstance(args);
 }
 
-SWIGINTERN PyObject *_wrap_make_ccw_triangle(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayWork_seed_orientation_tests_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  std::size_t arg1 ;
-  std::size_t arg2 ;
-  std::size_t arg3 ;
-  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg4 = 0 ;
-  size_t val1 ;
-  int ecode1 = 0 ;
-  size_t val2 ;
-  int ecode2 = 0 ;
-  size_t val3 ;
-  int ecode3 = 0 ;
-  int res4 = SWIG_OLDOBJ ;
-  PyObject *swig_obj[4] ;
-  datamunge::geometry::Triangle result;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "make_ccw_triangle", 4, 4, swig_obj)) SWIG_fail;
-  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "make_ccw_triangle" "', argument " "1"" of type '" "std::size_t""'");
-  } 
-  arg1 = static_cast< std::size_t >(val1);
-  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "make_ccw_triangle" "', argument " "2"" of type '" "std::size_t""'");
-  } 
-  arg2 = static_cast< std::size_t >(val2);
-  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "make_ccw_triangle" "', argument " "3"" of type '" "std::size_t""'");
-  } 
-  arg3 = static_cast< std::size_t >(val3);
-  {
-    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
-    res4 = swig::asptr(swig_obj[3], &ptr);
-    if (!SWIG_IsOK(res4)) {
-      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "make_ccw_triangle" "', argument " "4"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
-    }
-    if (!ptr) {
-      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "make_ccw_triangle" "', argument " "4"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
-    }
-    arg4 = ptr;
-  }
-  result = datamunge::geometry::detail::make_ccw_triangle(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg4);
-  resultobj = SWIG_NewPointerObj((new datamunge::geometry::Triangle(result)), SWIGTYPE_p_datamunge__geometry__Triangle, SWIG_POINTER_OWN |  0 );
-  if (SWIG_IsNewObj(res4)) delete arg4;
-  return resultobj;
-fail:
-  if (SWIG_IsNewObj(res4)) delete arg4;
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_in_circumcircle(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::geometry::Point2D *arg1 = 0 ;
-  datamunge::geometry::Point2D *arg2 = 0 ;
-  datamunge::geometry::Point2D *arg3 = 0 ;
-  datamunge::geometry::Point2D *arg4 = 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  PyObject *swig_obj[4] ;
-  bool result;
-  
-  (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "in_circumcircle", 4, 4, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__geometry__Point2D,  0  | 0);
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "in_circumcircle" "', argument " "1"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  if (!argp1) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "in_circumcircle" "', argument " "1"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  arg1 = reinterpret_cast< datamunge::geometry::Point2D * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__geometry__Point2D,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "in_circumcircle" "', argument " "2"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "in_circumcircle" "', argument " "2"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  arg2 = reinterpret_cast< datamunge::geometry::Point2D * >(argp2);
-  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__geometry__Point2D,  0  | 0);
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "in_circumcircle" "', argument " "3"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  if (!argp3) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "in_circumcircle" "', argument " "3"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  arg3 = reinterpret_cast< datamunge::geometry::Point2D * >(argp3);
-  res4 = SWIG_ConvertPtr(swig_obj[3], &argp4, SWIGTYPE_p_datamunge__geometry__Point2D,  0  | 0);
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "in_circumcircle" "', argument " "4"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  if (!argp4) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "in_circumcircle" "', argument " "4"" of type '" "datamunge::geometry::Point2D const &""'"); 
-  }
-  arg4 = reinterpret_cast< datamunge::geometry::Point2D * >(argp4);
-  result = (bool)datamunge::geometry::detail::in_circumcircle((datamunge::geometry::Point2D const &)*arg1,(datamunge::geometry::Point2D const &)*arg2,(datamunge::geometry::Point2D const &)*arg3,(datamunge::geometry::Point2D const &)*arg4);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_CanonicalEdge_u_set(PyObject *self, PyObject *args) {
-  PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdge *arg1 = 0 ;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
   std::size_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -155471,18 +157574,18 @@ SWIGINTERN PyObject *_wrap_CanonicalEdge_u_set(PyObject *self, PyObject *args) {
   PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "CanonicalEdge_u_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayWork_seed_orientation_tests_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CanonicalEdge_u_set" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdge *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_seed_orientation_tests_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp1);
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CanonicalEdge_u_set" "', argument " "2"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayWork_seed_orientation_tests_set" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);
-  if (arg1) (arg1)->u = arg2;
+  if (arg1) (arg1)->seed_orientation_tests = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -155490,9 +157593,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CanonicalEdge_u_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayWork_seed_orientation_tests_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdge *arg1 = 0 ;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -155501,12 +157604,12 @@ SWIGINTERN PyObject *_wrap_CanonicalEdge_u_get(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CanonicalEdge_u_get" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdge *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_seed_orientation_tests_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp1);
-  result =  ((arg1)->u);
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  result =  ((arg1)->seed_orientation_tests);
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
   return resultobj;
 fail:
@@ -155514,9 +157617,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CanonicalEdge_v_set(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayWork_insertions_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdge *arg1 = 0 ;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
   std::size_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
@@ -155525,18 +157628,18 @@ SWIGINTERN PyObject *_wrap_CanonicalEdge_v_set(PyObject *self, PyObject *args) {
   PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "CanonicalEdge_v_set", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, 0 |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayWork_insertions_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CanonicalEdge_v_set" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdge *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_insertions_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp1);
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CanonicalEdge_v_set" "', argument " "2"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayWork_insertions_set" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);
-  if (arg1) (arg1)->v = arg2;
+  if (arg1) (arg1)->insertions = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -155544,9 +157647,9 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_CanonicalEdge_v_get(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayWork_insertions_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdge *arg1 = 0 ;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -155555,12 +157658,12 @@ SWIGINTERN PyObject *_wrap_CanonicalEdge_v_get(PyObject *self, PyObject *args) {
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, 0 |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CanonicalEdge_v_get" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdge *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_insertions_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp1);
-  result =  ((arg1)->v);
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  result =  ((arg1)->insertions);
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
   return resultobj;
 fail:
@@ -155568,79 +157671,293 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CanonicalEdge(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayWork_incircle_tests_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  std::size_t arg1 ;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
   std::size_t arg2 ;
-  size_t val1 ;
-  int ecode1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
   size_t val2 ;
   int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
-  datamunge::geometry::detail::CanonicalEdge *result = 0 ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "new_CanonicalEdge", 2, 2, swig_obj)) SWIG_fail;
-  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
-  if (!SWIG_IsOK(ecode1)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_CanonicalEdge" "', argument " "1"" of type '" "std::size_t""'");
-  } 
-  arg1 = static_cast< std::size_t >(val1);
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayWork_incircle_tests_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_incircle_tests_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
   ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "new_CanonicalEdge" "', argument " "2"" of type '" "std::size_t""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayWork_incircle_tests_set" "', argument " "2"" of type '" "std::size_t""'");
   } 
   arg2 = static_cast< std::size_t >(val2);
-  result = (datamunge::geometry::detail::CanonicalEdge *)new datamunge::geometry::detail::CanonicalEdge(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, SWIG_POINTER_NEW |  0 );
+  if (arg1) (arg1)->incircle_tests = arg2;
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_CanonicalEdge___eq__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayWork_incircle_tests_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdge *arg1 = 0 ;
-  datamunge::geometry::detail::CanonicalEdge *arg2 = 0 ;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
-  PyObject *swig_obj[2] ;
-  bool result;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "CanonicalEdge___eq__", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, 0 |  0 );
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CanonicalEdge___eq__" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdge const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_incircle_tests_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CanonicalEdge___eq__" "', argument " "2"" of type '" "datamunge::geometry::detail::CanonicalEdge const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CanonicalEdge___eq__" "', argument " "2"" of type '" "datamunge::geometry::detail::CanonicalEdge const &""'"); 
-  }
-  arg2 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp2);
-  result = (bool)((datamunge::geometry::detail::CanonicalEdge const *)arg1)->operator ==((datamunge::geometry::detail::CanonicalEdge const &)*arg2);
-  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  result =  ((arg1)->incircle_tests);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
   return resultobj;
 fail:
-  if (PyErr_Occurred() && !PyErr_ExceptionMatches(PyExc_TypeError)) {
-    return NULL;
-  }
-  PyErr_Clear();
-  SWIG_Py_INCREF(Py_NotImplemented);
-  return Py_NotImplemented;
+  return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_CanonicalEdge(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayWork_hull_side_tests_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdge *arg1 = 0 ;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayWork_hull_side_tests_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_hull_side_tests_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayWork_hull_side_tests_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->hull_side_tests = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayWork_hull_side_tests_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_hull_side_tests_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  result =  ((arg1)->hull_side_tests);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayWork_removed_faces_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayWork_removed_faces_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_removed_faces_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayWork_removed_faces_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->removed_faces = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayWork_removed_faces_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_removed_faces_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  result =  ((arg1)->removed_faces);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayWork_boundary_edges_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayWork_boundary_edges_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_boundary_edges_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayWork_boundary_edges_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->boundary_edges = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayWork_boundary_edges_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_boundary_edges_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  result =  ((arg1)->boundary_edges);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayWork_created_faces_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayWork_created_faces_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_created_faces_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayWork_created_faces_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->created_faces = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayWork_created_faces_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayWork_created_faces_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
+  result =  ((arg1)->created_faces);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DelaunayWork(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DelaunayWork", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::DelaunayWork *)new datamunge::geometry::DelaunayWork();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DelaunayWork, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DelaunayWork(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayWork *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -155648,11 +157965,11 @@ SWIGINTERN PyObject *_wrap_delete_CanonicalEdge(PyObject *self, PyObject *args) 
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayWork, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CanonicalEdge" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdge *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DelaunayWork" "', argument " "1"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp1);
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp1);
   delete arg1;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -155661,44 +157978,64 @@ fail:
 }
 
 
-SWIGINTERN PyObject *CanonicalEdge_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *DelaunayWork_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj = NULL;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__DelaunayWork, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *CanonicalEdge_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *DelaunayWork_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
-SWIGINTERN PyObject *_wrap_CanonicalEdgeHash___call__(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_input_index_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdgeHash *arg1 = 0 ;
-  datamunge::geometry::detail::CanonicalEdge *arg2 = 0 ;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  std::size_t arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  void *argp2 = 0 ;
-  int res2 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
   PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayInsertion_input_index_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_input_index_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayInsertion_input_index_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->input_index = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_input_index_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
   std::size_t result;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "CanonicalEdgeHash___call__", 2, 2, swig_obj)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash, 0 |  0 );
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CanonicalEdgeHash___call__" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdgeHash const *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_input_index_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdgeHash * >(argp1);
-  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdge,  0  | 0);
-  if (!SWIG_IsOK(res2)) {
-    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CanonicalEdgeHash___call__" "', argument " "2"" of type '" "datamunge::geometry::detail::CanonicalEdge const &""'"); 
-  }
-  if (!argp2) {
-    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "CanonicalEdgeHash___call__" "', argument " "2"" of type '" "datamunge::geometry::detail::CanonicalEdge const &""'"); 
-  }
-  arg2 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdge * >(argp2);
-  result = ((datamunge::geometry::detail::CanonicalEdgeHash const *)arg1)->operator ()((datamunge::geometry::detail::CanonicalEdge const &)*arg2);
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  result =  ((arg1)->input_index);
   resultobj = SWIG_From_size_t(static_cast< size_t >(result));
   return resultobj;
 fail:
@@ -155706,23 +158043,293 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_CanonicalEdgeHash(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_faces_before_set(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdgeHash *result = 0 ;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
   
   (void)self;
-  if (!SWIG_Python_UnpackTuple(args, "new_CanonicalEdgeHash", 0, 0, 0)) SWIG_fail;
-  result = (datamunge::geometry::detail::CanonicalEdgeHash *)new datamunge::geometry::detail::CanonicalEdgeHash();
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash, SWIG_POINTER_NEW |  0 );
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayInsertion_faces_before_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_faces_before_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayInsertion_faces_before_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->faces_before = arg2;
+  resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
   return NULL;
 }
 
 
-SWIGINTERN PyObject *_wrap_delete_CanonicalEdgeHash(PyObject *self, PyObject *args) {
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_faces_before_get(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
-  datamunge::geometry::detail::CanonicalEdgeHash *arg1 = 0 ;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_faces_before_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  result =  ((arg1)->faces_before);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_faces_after_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayInsertion_faces_after_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_faces_after_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayInsertion_faces_after_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->faces_after = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_faces_after_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_faces_after_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  result =  ((arg1)->faces_after);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_removed_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayInsertion_removed_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_removed_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayInsertion_removed_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > * >(argp2);
+  if (arg1) (arg1)->removed = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_removed_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_removed_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  result = (std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *)& ((arg1)->removed);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_boundary_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  std::vector< std::pair< std::size_t,std::size_t >,std::allocator< std::pair< std::size_t,std::size_t > > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayInsertion_boundary_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_boundary_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayInsertion_boundary_set" "', argument " "2"" of type '" "std::vector< std::pair< std::size_t,std::size_t >,std::allocator< std::pair< std::size_t,std::size_t > > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::pair< std::size_t,std::size_t >,std::allocator< std::pair< std::size_t,std::size_t > > > * >(argp2);
+  if (arg1) (arg1)->boundary = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_boundary_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::pair< std::size_t,std::size_t >,std::allocator< std::pair< std::size_t,std::size_t > > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_boundary_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  result = (std::vector< std::pair< std::size_t,std::size_t >,std::allocator< std::pair< std::size_t,std::size_t > > > *)& ((arg1)->boundary);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_added_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayInsertion_added_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_added_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayInsertion_added_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > * >(argp2);
+  if (arg1) (arg1)->added = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayInsertion_added_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayInsertion_added_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
+  result = (std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *)& ((arg1)->added);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DelaunayInsertion(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DelaunayInsertion", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::DelaunayInsertion *)new datamunge::geometry::DelaunayInsertion();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DelaunayInsertion(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayInsertion *arg1 = 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   PyObject *swig_obj[1] ;
@@ -155730,11 +158337,11 @@ SWIGINTERN PyObject *_wrap_delete_CanonicalEdgeHash(PyObject *self, PyObject *ar
   (void)self;
   if (!args) SWIG_fail;
   swig_obj[0] = args;
-  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash, SWIG_POINTER_DISOWN |  0 );
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, SWIG_POINTER_DISOWN |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CanonicalEdgeHash" "', argument " "1"" of type '" "datamunge::geometry::detail::CanonicalEdgeHash *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DelaunayInsertion" "', argument " "1"" of type '" "datamunge::geometry::DelaunayInsertion *""'"); 
   }
-  arg1 = reinterpret_cast< datamunge::geometry::detail::CanonicalEdgeHash * >(argp1);
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayInsertion * >(argp1);
   delete arg1;
   resultobj = SWIG_Py_Void();
   return resultobj;
@@ -155743,14 +158350,974 @@ fail:
 }
 
 
-SWIGINTERN PyObject *CanonicalEdgeHash_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *DelaunayInsertion_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj = NULL;
   if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
-  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__detail__CanonicalEdgeHash, SWIG_NewClientData(obj));
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__DelaunayInsertion, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
 
-SWIGINTERN PyObject *CanonicalEdgeHash_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *DelaunayInsertion_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_points_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_points_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_points_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayTrace_points_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > * >(argp2);
+  if (arg1) (arg1)->points = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_points_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_points_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)& ((arg1)->points);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__Point2D_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_representatives_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_representatives_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_representatives_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayTrace_representatives_set" "', argument " "2"" of type '" "std::vector< std::size_t,std::allocator< std::size_t > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::size_t,std::allocator< std::size_t > > * >(argp2);
+  if (arg1) (arg1)->representatives = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_representatives_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_representatives_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (std::vector< std::size_t,std::allocator< std::size_t > > *)& ((arg1)->representatives);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_representative_for_input_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_representative_for_input_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_representative_for_input_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayTrace_representative_for_input_set" "', argument " "2"" of type '" "std::vector< std::size_t,std::allocator< std::size_t > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::size_t,std::allocator< std::size_t > > * >(argp2);
+  if (arg1) (arg1)->representative_for_input = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_representative_for_input_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< std::size_t,std::allocator< std::size_t > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_representative_for_input_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (std::vector< std::size_t,std::allocator< std::size_t > > *)& ((arg1)->representative_for_input);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_has_seed_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  bool arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  bool val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_has_seed_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_has_seed_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  ecode2 = SWIG_AsVal_bool(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayTrace_has_seed_set" "', argument " "2"" of type '" "bool""'");
+  } 
+  arg2 = static_cast< bool >(val2);
+  if (arg1) (arg1)->has_seed = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_has_seed_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  bool result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_has_seed_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (bool) ((arg1)->has_seed);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_seed_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  datamunge::geometry::Triangle *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_seed_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_seed_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__Triangle, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayTrace_seed_set" "', argument " "2"" of type '" "datamunge::geometry::Triangle *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::Triangle * >(argp2);
+  if (arg1) (arg1)->seed = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_seed_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::Triangle *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_seed_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (datamunge::geometry::Triangle *)& ((arg1)->seed);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__Triangle, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_triangles_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_triangles_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_triangles_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayTrace_triangles_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > * >(argp2);
+  if (arg1) (arg1)->triangles = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_triangles_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_triangles_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *)& ((arg1)->triangles);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__Triangle_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_steps_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  std::vector< datamunge::geometry::DelaunayInsertion,std::allocator< datamunge::geometry::DelaunayInsertion > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_steps_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_steps_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayTrace_steps_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::DelaunayInsertion,std::allocator< datamunge::geometry::DelaunayInsertion > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::DelaunayInsertion,std::allocator< datamunge::geometry::DelaunayInsertion > > * >(argp2);
+  if (arg1) (arg1)->steps = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_steps_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::DelaunayInsertion,std::allocator< datamunge::geometry::DelaunayInsertion > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_steps_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (std::vector< datamunge::geometry::DelaunayInsertion,std::allocator< datamunge::geometry::DelaunayInsertion > > *)& ((arg1)->steps);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_work_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  datamunge::geometry::DelaunayWork *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayTrace_work_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_work_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DelaunayTrace_work_set" "', argument " "2"" of type '" "datamunge::geometry::DelaunayWork *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::DelaunayWork * >(argp2);
+  if (arg1) (arg1)->work = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayTrace_work_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::DelaunayWork *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayTrace_work_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  result = (datamunge::geometry::DelaunayWork *)& ((arg1)->work);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DelaunayWork, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DelaunayTrace(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DelaunayTrace", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::DelaunayTrace *)new datamunge::geometry::DelaunayTrace();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DelaunayTrace, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DelaunayTrace(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayTrace, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DelaunayTrace" "', argument " "1"" of type '" "datamunge::geometry::DelaunayTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayTrace * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DelaunayTrace_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__DelaunayTrace, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *DelaunayTrace_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_distinct_points_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_distinct_points_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_distinct_points_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_distinct_points_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->distinct_points = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_distinct_points_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_distinct_points_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result =  ((arg1)->distinct_points);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_used_points_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_used_points_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_used_points_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_used_points_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->used_points = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_used_points_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_used_points_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result =  ((arg1)->used_points);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_triangles_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_triangles_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_triangles_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_triangles_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->triangles = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_triangles_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_triangles_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result =  ((arg1)->triangles);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_edges_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_edges_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_edges_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_edges_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->edges = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_edges_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_edges_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result =  ((arg1)->edges);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_boundary_edges_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_boundary_edges_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_boundary_edges_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_boundary_edges_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->boundary_edges = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_boundary_edges_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_boundary_edges_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result =  ((arg1)->boundary_edges);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_circle_tests_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_circle_tests_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_circle_tests_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_circle_tests_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->circle_tests = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_circle_tests_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_circle_tests_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result =  ((arg1)->circle_tests);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_interior_violations_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_interior_violations_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_interior_violations_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_interior_violations_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->interior_violations = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_interior_violations_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_interior_violations_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result =  ((arg1)->interior_violations);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_minimum_angle_degrees_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DelaunayAnalysis_minimum_angle_degrees_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_minimum_angle_degrees_set" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  ecode2 = SWIG_AsVal_double(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DelaunayAnalysis_minimum_angle_degrees_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->minimum_angle_degrees = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DelaunayAnalysis_minimum_angle_degrees_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  double result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DelaunayAnalysis_minimum_angle_degrees_get" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  result = (double) ((arg1)->minimum_angle_degrees);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DelaunayAnalysis(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DelaunayAnalysis", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::DelaunayAnalysis *)new datamunge::geometry::DelaunayAnalysis();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DelaunayAnalysis(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DelaunayAnalysis *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DelaunayAnalysis" "', argument " "1"" of type '" "datamunge::geometry::DelaunayAnalysis *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DelaunayAnalysis * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DelaunayAnalysis_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *DelaunayAnalysis_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   return SWIG_Python_InitShadowInstance(args);
 }
 
@@ -155782,6 +159349,634 @@ SWIGINTERN PyObject *_wrap_delaunay_triangulation(PyObject *self, PyObject *args
 fail:
   if (SWIG_IsNewObj(res1)) delete arg1;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_trace__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  std::size_t arg4 ;
+  int res1 = SWIG_OLDOBJ ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  datamunge::geometry::DelaunayTrace result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "delaunay_trace" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "delaunay_trace" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "delaunay_trace" "', argument " "4"" of type '" "std::size_t""'");
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = datamunge::geometry::delaunay_trace((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)),SWIG_STD_MOVE(*(&arg4)));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DelaunayTrace(result)), SWIGTYPE_p_datamunge__geometry__DelaunayTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_trace__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  std::size_t arg2 ;
+  std::size_t arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::geometry::DelaunayTrace result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "delaunay_trace" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "delaunay_trace" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = datamunge::geometry::delaunay_trace((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)),SWIG_STD_MOVE(*(&arg3)));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DelaunayTrace(result)), SWIGTYPE_p_datamunge__geometry__DelaunayTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_trace__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  std::size_t arg2 ;
+  int res1 = SWIG_OLDOBJ ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  datamunge::geometry::DelaunayTrace result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "delaunay_trace" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = datamunge::geometry::delaunay_trace((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1,SWIG_STD_MOVE(*(&arg2)));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DelaunayTrace(result)), SWIGTYPE_p_datamunge__geometry__DelaunayTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_trace__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  datamunge::geometry::DelaunayTrace result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_trace" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  result = datamunge::geometry::delaunay_trace((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1);
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DelaunayTrace(result)), SWIGTYPE_p_datamunge__geometry__DelaunayTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_trace(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "delaunay_trace", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      return _wrap_delaunay_trace__SWIG_3(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_delaunay_trace__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_delaunay_trace__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      {
+        int res = SWIG_AsVal_size_t(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_delaunay_trace__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'delaunay_trace'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::delaunay_trace(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &,std::size_t,std::size_t,std::size_t)\n"
+    "    datamunge::geometry::delaunay_trace(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &,std::size_t,std::size_t)\n"
+    "    datamunge::geometry::delaunay_trace(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &,std::size_t)\n"
+    "    datamunge::geometry::delaunay_trace(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_analyze__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::geometry::DelaunayAnalysis result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delaunay_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *ptr = (std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "delaunay_analyze" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_analyze" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "delaunay_analyze" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = datamunge::geometry::delaunay_analyze((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1,(std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DelaunayAnalysis(result)), SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_analyze__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *arg1 = 0 ;
+  std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::geometry::DelaunayAnalysis result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *ptr = (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delaunay_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_analyze" "', argument " "1"" of type '" "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *ptr = (std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "delaunay_analyze" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "delaunay_analyze" "', argument " "2"" of type '" "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = datamunge::geometry::delaunay_analyze((std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &)*arg1,(std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DelaunayAnalysis(result)), SWIGTYPE_p_datamunge__geometry__DelaunayAnalysis, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_analyze(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "delaunay_analyze", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_delaunay_analyze__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_delaunay_analyze__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'delaunay_analyze'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::delaunay_analyze(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &,std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &,std::size_t)\n"
+    "    datamunge::geometry::delaunay_analyze(std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > const &,std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_uniform_cloud__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  std::uint32_t arg2 ;
+  double arg3 ;
+  std::size_t arg4 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  size_t val4 ;
+  int ecode4 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "delaunay_uniform_cloud" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "delaunay_uniform_cloud" "', argument " "2"" of type '" "std::uint32_t""'");
+  } 
+  arg2 = static_cast< std::uint32_t >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "delaunay_uniform_cloud" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  ecode4 = SWIG_AsVal_size_t(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "delaunay_uniform_cloud" "', argument " "4"" of type '" "std::size_t""'");
+  } 
+  arg4 = static_cast< std::size_t >(val4);
+  result = datamunge::geometry::delaunay_uniform_cloud(SWIG_STD_MOVE(*(&arg1)),arg2,arg3,SWIG_STD_MOVE(*(&arg4)));
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_uniform_cloud__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  std::uint32_t arg2 ;
+  double arg3 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  double val3 ;
+  int ecode3 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "delaunay_uniform_cloud" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "delaunay_uniform_cloud" "', argument " "2"" of type '" "std::uint32_t""'");
+  } 
+  arg2 = static_cast< std::uint32_t >(val2);
+  ecode3 = SWIG_AsVal_double(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "delaunay_uniform_cloud" "', argument " "3"" of type '" "double""'");
+  } 
+  arg3 = static_cast< double >(val3);
+  result = datamunge::geometry::delaunay_uniform_cloud(SWIG_STD_MOVE(*(&arg1)),arg2,arg3);
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_uniform_cloud__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  std::uint32_t arg2 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "delaunay_uniform_cloud" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "delaunay_uniform_cloud" "', argument " "2"" of type '" "std::uint32_t""'");
+  } 
+  arg2 = static_cast< std::uint32_t >(val2);
+  result = datamunge::geometry::delaunay_uniform_cloud(SWIG_STD_MOVE(*(&arg1)),arg2);
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_uniform_cloud__SWIG_3(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > result;
+  
+  (void)self;
+  if ((nobjs < 1) || (nobjs > 1)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "delaunay_uniform_cloud" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  result = datamunge::geometry::delaunay_uniform_cloud(SWIG_STD_MOVE(*(&arg1)));
+  resultobj = swig::from(static_cast< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delaunay_uniform_cloud(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[5] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "delaunay_uniform_cloud", 0, 4, argv))) SWIG_fail;
+  --argc;
+  if (argc == 1) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_delaunay_uniform_cloud__SWIG_3(self, argc, argv);
+    }
+  }
+  if (argc == 2) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_delaunay_uniform_cloud__SWIG_2(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_delaunay_uniform_cloud__SWIG_1(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    {
+      int res = SWIG_AsVal_size_t(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_unsigned_SS_int(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        {
+          int res = SWIG_AsVal_double(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          {
+            int res = SWIG_AsVal_size_t(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_delaunay_uniform_cloud__SWIG_0(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'delaunay_uniform_cloud'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::delaunay_uniform_cloud(std::size_t,std::uint32_t,double,std::size_t)\n"
+    "    datamunge::geometry::delaunay_uniform_cloud(std::size_t,std::uint32_t,double)\n"
+    "    datamunge::geometry::delaunay_uniform_cloud(std::size_t,std::uint32_t)\n"
+    "    datamunge::geometry::delaunay_uniform_cloud(std::size_t)\n");
+  return 0;
 }
 
 
@@ -157931,6 +162126,874 @@ SWIGINTERN PyObject *DTWResult_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject
   return SWIG_Python_InitShadowInstance(args);
 }
 
+SWIGINTERN PyObject *_wrap_DTWWork_cells_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long long val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWWork_cells_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWWork_cells_set" "', argument " "1"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long_SS_long(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DTWWork_cells_set" "', argument " "2"" of type '" "std::uint64_t""'");
+  } 
+  arg2 = static_cast< std::uint64_t >(val2);
+  if (arg1) (arg1)->cells = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWWork_cells_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::uint64_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWWork_cells_get" "', argument " "1"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp1);
+  result = (std::uint64_t) ((arg1)->cells);
+  resultobj = SWIG_From_unsigned_SS_long_SS_long(static_cast< unsigned long long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWWork_predecessor_reads_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long long val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWWork_predecessor_reads_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWWork_predecessor_reads_set" "', argument " "1"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long_SS_long(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DTWWork_predecessor_reads_set" "', argument " "2"" of type '" "std::uint64_t""'");
+  } 
+  arg2 = static_cast< std::uint64_t >(val2);
+  if (arg1) (arg1)->predecessor_reads = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWWork_predecessor_reads_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::uint64_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWWork_predecessor_reads_get" "', argument " "1"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp1);
+  result = (std::uint64_t) ((arg1)->predecessor_reads);
+  resultobj = SWIG_From_unsigned_SS_long_SS_long(static_cast< unsigned long long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWWork_traceback_steps_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *arg1 = 0 ;
+  std::uint64_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned long long val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWWork_traceback_steps_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWWork_traceback_steps_set" "', argument " "1"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_long_SS_long(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DTWWork_traceback_steps_set" "', argument " "2"" of type '" "std::uint64_t""'");
+  } 
+  arg2 = static_cast< std::uint64_t >(val2);
+  if (arg1) (arg1)->traceback_steps = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWWork_traceback_steps_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::uint64_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWWork_traceback_steps_get" "', argument " "1"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp1);
+  result = (std::uint64_t) ((arg1)->traceback_steps);
+  resultobj = SWIG_From_unsigned_SS_long_SS_long(static_cast< unsigned long long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DTWWork(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DTWWork", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::DTWWork *)new datamunge::geometry::DTWWork();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DTWWork, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DTWWork(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWWork *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWWork, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DTWWork" "', argument " "1"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DTWWork_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__DTWWork, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *DTWWork_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_DTWComputation_result_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWComputation *arg1 = 0 ;
+  datamunge::geometry::DTWResult *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWComputation_result_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWComputation, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWComputation_result_set" "', argument " "1"" of type '" "datamunge::geometry::DTWComputation *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWComputation * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__DTWResult, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWComputation_result_set" "', argument " "2"" of type '" "datamunge::geometry::DTWResult *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::DTWResult * >(argp2);
+  if (arg1) (arg1)->result = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWComputation_result_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWComputation *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::DTWResult *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWComputation, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWComputation_result_get" "', argument " "1"" of type '" "datamunge::geometry::DTWComputation *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWComputation * >(argp1);
+  result = (datamunge::geometry::DTWResult *)& ((arg1)->result);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DTWResult, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWComputation_work_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWComputation *arg1 = 0 ;
+  datamunge::geometry::DTWWork *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWComputation_work_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWComputation, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWComputation_work_set" "', argument " "1"" of type '" "datamunge::geometry::DTWComputation *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWComputation * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWComputation_work_set" "', argument " "2"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp2);
+  if (arg1) (arg1)->work = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWComputation_work_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWComputation *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::DTWWork *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWComputation, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWComputation_work_get" "', argument " "1"" of type '" "datamunge::geometry::DTWComputation *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWComputation * >(argp1);
+  result = (datamunge::geometry::DTWWork *)& ((arg1)->work);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DTWComputation(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWComputation *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DTWComputation", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::DTWComputation *)new datamunge::geometry::DTWComputation();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DTWComputation, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DTWComputation(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWComputation *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWComputation, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DTWComputation" "', argument " "1"" of type '" "datamunge::geometry::DTWComputation *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWComputation * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DTWComputation_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__DTWComputation, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *DTWComputation_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_DTWTrace_a_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWTrace_a_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_a_set" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWTrace_a_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->a = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_a_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_a_get" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->a);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_b_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWTrace_b_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_b_set" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWTrace_b_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->b = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_b_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_b_get" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->b);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_cumulative_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWTrace_cumulative_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_cumulative_set" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWTrace_cumulative_set" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< double,std::allocator< double > > * >(argp2);
+  if (arg1) (arg1)->cumulative = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_cumulative_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< double,std::allocator< double > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_cumulative_get" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  result = (std::vector< double,std::allocator< double > > *)& ((arg1)->cumulative);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_double_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_predecessors_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  std::vector< datamunge::geometry::DTWPredecessor,std::allocator< datamunge::geometry::DTWPredecessor > > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWTrace_predecessors_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_predecessors_set" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWTrace_predecessors_set" "', argument " "2"" of type '" "std::vector< datamunge::geometry::DTWPredecessor,std::allocator< datamunge::geometry::DTWPredecessor > > *""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< datamunge::geometry::DTWPredecessor,std::allocator< datamunge::geometry::DTWPredecessor > > * >(argp2);
+  if (arg1) (arg1)->predecessors = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_predecessors_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::vector< datamunge::geometry::DTWPredecessor,std::allocator< datamunge::geometry::DTWPredecessor > > *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_predecessors_get" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  result = (std::vector< datamunge::geometry::DTWPredecessor,std::allocator< datamunge::geometry::DTWPredecessor > > *)& ((arg1)->predecessors);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_result_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  datamunge::geometry::DTWResult *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWTrace_result_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_result_set" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__DTWResult, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWTrace_result_set" "', argument " "2"" of type '" "datamunge::geometry::DTWResult *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::DTWResult * >(argp2);
+  if (arg1) (arg1)->result = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_result_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::DTWResult *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_result_get" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  result = (datamunge::geometry::DTWResult *)& ((arg1)->result);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DTWResult, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_work_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  datamunge::geometry::DTWWork *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWTrace_work_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_work_set" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2,SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "DTWTrace_work_set" "', argument " "2"" of type '" "datamunge::geometry::DTWWork *""'"); 
+  }
+  arg2 = reinterpret_cast< datamunge::geometry::DTWWork * >(argp2);
+  if (arg1) (arg1)->work = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_work_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  datamunge::geometry::DTWWork *result = 0 ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_work_get" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  result = (datamunge::geometry::DTWWork *)& ((arg1)->work);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DTWWork, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_captured_entries_set(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  std::size_t arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "DTWTrace_captured_entries_set", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_captured_entries_set" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "DTWTrace_captured_entries_set" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  if (arg1) (arg1)->captured_entries = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_DTWTrace_captured_entries_get(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "DTWTrace_captured_entries_get" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  result =  ((arg1)->captured_entries);
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_DTWTrace(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *result = 0 ;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "new_DTWTrace", 0, 0, 0)) SWIG_fail;
+  result = (datamunge::geometry::DTWTrace *)new datamunge::geometry::DTWTrace();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_datamunge__geometry__DTWTrace, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_DTWTrace(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::geometry::DTWTrace *arg1 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  
+  (void)self;
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_datamunge__geometry__DTWTrace, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_DTWTrace" "', argument " "1"" of type '" "datamunge::geometry::DTWTrace *""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::geometry::DTWTrace * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *DTWTrace_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj = NULL;
+  if (!SWIG_Python_UnpackTuple(args, "swigregister", 1, 1, &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_datamunge__geometry__DTWTrace, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *DTWTrace_swiginit(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  return SWIG_Python_InitShadowInstance(args);
+}
+
+SWIGINTERN PyObject *_wrap_dtw_trace_entries(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::size_t arg1 ;
+  std::size_t arg2 ;
+  size_t val1 ;
+  int ecode1 = 0 ;
+  size_t val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  std::size_t result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "dtw_trace_entries", 2, 2, swig_obj)) SWIG_fail;
+  ecode1 = SWIG_AsVal_size_t(swig_obj[0], &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "dtw_trace_entries" "', argument " "1"" of type '" "std::size_t""'");
+  } 
+  arg1 = static_cast< std::size_t >(val1);
+  ecode2 = SWIG_AsVal_size_t(swig_obj[1], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "dtw_trace_entries" "', argument " "2"" of type '" "std::size_t""'");
+  } 
+  arg2 = static_cast< std::size_t >(val2);
+  result = datamunge::geometry::dtw_trace_entries(SWIG_STD_MOVE(*(&arg1)),SWIG_STD_MOVE(*(&arg2)));
+  resultobj = SWIG_From_size_t(static_cast< size_t >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_dynamic_time_warping_work(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[2] ;
+  datamunge::geometry::DTWComputation result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "dynamic_time_warping_work", 2, 2, swig_obj)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "dynamic_time_warping_work" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dynamic_time_warping_work" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "dynamic_time_warping_work" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dynamic_time_warping_work" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = datamunge::geometry::dynamic_time_warping_work((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DTWComputation(result)), SWIGTYPE_p_datamunge__geometry__DTWComputation, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_dynamic_time_warping(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   std::vector< double,std::allocator< double > > *arg1 = 0 ;
@@ -157973,6 +163036,499 @@ fail:
   if (SWIG_IsNewObj(res1)) delete arg1;
   if (SWIG_IsNewObj(res2)) delete arg2;
   return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_dynamic_time_warping_trace__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::size_t arg3 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  size_t val3 ;
+  int ecode3 = 0 ;
+  datamunge::geometry::DTWTrace result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "dynamic_time_warping_trace" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dynamic_time_warping_trace" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "dynamic_time_warping_trace" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dynamic_time_warping_trace" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  ecode3 = SWIG_AsVal_size_t(swig_obj[2], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "dynamic_time_warping_trace" "', argument " "3"" of type '" "std::size_t""'");
+  } 
+  arg3 = static_cast< std::size_t >(val3);
+  result = datamunge::geometry::dynamic_time_warping_trace((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,SWIG_STD_MOVE(*(&arg3)));
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DTWTrace(result)), SWIGTYPE_p_datamunge__geometry__DTWTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_dynamic_time_warping_trace__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  datamunge::geometry::DTWTrace result;
+  
+  (void)self;
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "dynamic_time_warping_trace" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dynamic_time_warping_trace" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "dynamic_time_warping_trace" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dynamic_time_warping_trace" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  result = datamunge::geometry::dynamic_time_warping_trace((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new datamunge::geometry::DTWTrace(result)), SWIGTYPE_p_datamunge__geometry__DTWTrace, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_dynamic_time_warping_trace(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[4] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "dynamic_time_warping_trace", 0, 3, argv))) SWIG_fail;
+  --argc;
+  if (argc == 2) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_dynamic_time_warping_trace__SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        {
+          int res = SWIG_AsVal_size_t(argv[2], NULL);
+          _v = SWIG_CheckState(res);
+        }
+        if (_v) {
+          return _wrap_dynamic_time_warping_trace__SWIG_0(self, argc, argv);
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'dynamic_time_warping_trace'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::dynamic_time_warping_trace(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,std::size_t)\n"
+    "    datamunge::geometry::dynamic_time_warping_trace(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &)\n");
+  return 0;
+}
+
+
+SWIGINTERN PyObject *_wrap_dtw_path_cost(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< int,std::allocator< int > > *arg3 = 0 ;
+  std::vector< int,std::allocator< int > > *arg4 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  PyObject *swig_obj[4] ;
+  double result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "dtw_path_cost", 4, 4, swig_obj)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "dtw_path_cost" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dtw_path_cost" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "dtw_path_cost" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dtw_path_cost" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "dtw_path_cost" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dtw_path_cost" "', argument " "3"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::vector< int,std::allocator< int > > *ptr = (std::vector< int,std::allocator< int > > *)0;
+    res4 = swig::asptr(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "dtw_path_cost" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "dtw_path_cost" "', argument " "4"" of type '" "std::vector< int,std::allocator< int > > const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  result = (double)datamunge::geometry::dtw_path_cost((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< int,std::allocator< int > > const &)*arg3,(std::vector< int,std::allocator< int > > const &)*arg4);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_plot_dtw_alignment__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  datamunge::geometry::DTWResult *arg3 = 0 ;
+  double arg4 ;
+  std::size_t arg5 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  size_t val5 ;
+  int ecode5 = 0 ;
+  datamunge::graphics::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 5) || (nobjs > 5)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "plot_dtw_alignment" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "plot_dtw_alignment" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__geometry__DTWResult,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "plot_dtw_alignment" "', argument " "3"" of type '" "datamunge::geometry::DTWResult const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "3"" of type '" "datamunge::geometry::DTWResult const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::geometry::DTWResult * >(argp3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "plot_dtw_alignment" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  ecode5 = SWIG_AsVal_size_t(swig_obj[4], &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "plot_dtw_alignment" "', argument " "5"" of type '" "std::size_t""'");
+  } 
+  arg5 = static_cast< std::size_t >(val5);
+  result = datamunge::geometry::plot_dtw_alignment((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(datamunge::geometry::DTWResult const &)*arg3,arg4,SWIG_STD_MOVE(*(&arg5)));
+  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_plot_dtw_alignment__SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  datamunge::geometry::DTWResult *arg3 = 0 ;
+  double arg4 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  double val4 ;
+  int ecode4 = 0 ;
+  datamunge::graphics::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 4) || (nobjs > 4)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "plot_dtw_alignment" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "plot_dtw_alignment" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__geometry__DTWResult,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "plot_dtw_alignment" "', argument " "3"" of type '" "datamunge::geometry::DTWResult const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "3"" of type '" "datamunge::geometry::DTWResult const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::geometry::DTWResult * >(argp3);
+  ecode4 = SWIG_AsVal_double(swig_obj[3], &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "plot_dtw_alignment" "', argument " "4"" of type '" "double""'");
+  } 
+  arg4 = static_cast< double >(val4);
+  result = datamunge::geometry::plot_dtw_alignment((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(datamunge::geometry::DTWResult const &)*arg3,arg4);
+  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_plot_dtw_alignment__SWIG_2(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  std::vector< double,std::allocator< double > > *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  datamunge::geometry::DTWResult *arg3 = 0 ;
+  int res1 = SWIG_OLDOBJ ;
+  int res2 = SWIG_OLDOBJ ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  datamunge::graphics::RPlot result;
+  
+  (void)self;
+  if ((nobjs < 3) || (nobjs > 3)) SWIG_fail;
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res1 = swig::asptr(swig_obj[0], &ptr);
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "plot_dtw_alignment" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "1"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg1 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "plot_dtw_alignment" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  res3 = SWIG_ConvertPtr(swig_obj[2], &argp3, SWIGTYPE_p_datamunge__geometry__DTWResult,  0  | 0);
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "plot_dtw_alignment" "', argument " "3"" of type '" "datamunge::geometry::DTWResult const &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "plot_dtw_alignment" "', argument " "3"" of type '" "datamunge::geometry::DTWResult const &""'"); 
+  }
+  arg3 = reinterpret_cast< datamunge::geometry::DTWResult * >(argp3);
+  result = datamunge::geometry::plot_dtw_alignment((std::vector< double,std::allocator< double > > const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(datamunge::geometry::DTWResult const &)*arg3);
+  resultobj = SWIG_NewPointerObj((new datamunge::graphics::RPlot(result)), SWIGTYPE_p_datamunge__graphics__RPlot, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res1)) delete arg1;
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_plot_dtw_alignment(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[6] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "plot_dtw_alignment", 0, 5, argv))) SWIG_fail;
+  --argc;
+  if (argc == 3) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__geometry__DTWResult, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          return _wrap_plot_dtw_alignment__SWIG_2(self, argc, argv);
+        }
+      }
+    }
+  }
+  if (argc == 4) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__geometry__DTWResult, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            return _wrap_plot_dtw_alignment__SWIG_1(self, argc, argv);
+          }
+        }
+      }
+    }
+  }
+  if (argc == 5) {
+    int _v = 0;
+    int res = swig::asptr(argv[0], (std::vector< double,std::allocator< double > >**)(0));
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = swig::asptr(argv[1], (std::vector< double,std::allocator< double > >**)(0));
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        int res = SWIG_ConvertPtr(argv[2], 0, SWIGTYPE_p_datamunge__geometry__DTWResult, SWIG_POINTER_NO_NULL | 0);
+        _v = SWIG_CheckState(res);
+        if (_v) {
+          {
+            int res = SWIG_AsVal_double(argv[3], NULL);
+            _v = SWIG_CheckState(res);
+          }
+          if (_v) {
+            {
+              int res = SWIG_AsVal_size_t(argv[4], NULL);
+              _v = SWIG_CheckState(res);
+            }
+            if (_v) {
+              return _wrap_plot_dtw_alignment__SWIG_0(self, argc, argv);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+fail:
+  SWIG_Python_RaiseOrModifyTypeError("Wrong number or type of arguments for overloaded function 'plot_dtw_alignment'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    datamunge::geometry::plot_dtw_alignment(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,datamunge::geometry::DTWResult const &,double,std::size_t)\n"
+    "    datamunge::geometry::plot_dtw_alignment(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,datamunge::geometry::DTWResult const &,double)\n"
+    "    datamunge::geometry::plot_dtw_alignment(std::vector< double,std::allocator< double > > const &,std::vector< double,std::allocator< double > > const &,datamunge::geometry::DTWResult const &)\n");
+  return 0;
 }
 
 
@@ -160940,6 +166496,145 @@ fail:
   if (SWIG_IsNewObj(res2)) delete arg2;
   if (SWIG_IsNewObj(res3)) delete arg3;
   if (SWIG_IsNewObj(res7)) delete arg7;
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_FEM1D_solve_transient_builtin(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  datamunge::fem::Mesh1D *arg1 = 0 ;
+  std::vector< double,std::allocator< double > > *arg2 = 0 ;
+  std::vector< double,std::allocator< double > > *arg3 = 0 ;
+  std::string *arg4 = 0 ;
+  std::vector< double,std::allocator< double > > *arg5 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg6 = 0 ;
+  datamunge::fem::BoundaryCondition1D *arg7 = 0 ;
+  std::vector< double,std::allocator< double > > *arg8 = 0 ;
+  double arg9 ;
+  double arg10 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 = SWIG_OLDOBJ ;
+  int res3 = SWIG_OLDOBJ ;
+  int res4 = SWIG_OLDOBJ ;
+  int res5 = SWIG_OLDOBJ ;
+  void *argp6 = 0 ;
+  int res6 = 0 ;
+  void *argp7 = 0 ;
+  int res7 = 0 ;
+  int res8 = SWIG_OLDOBJ ;
+  double val9 ;
+  int ecode9 = 0 ;
+  double val10 ;
+  int ecode10 = 0 ;
+  PyObject *swig_obj[10] ;
+  datamunge::fem::FEM1DTimeSeries result;
+  
+  (void)self;
+  if (!SWIG_Python_UnpackTuple(args, "FEM1D_solve_transient_builtin", 10, 10, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1, SWIGTYPE_p_datamunge__fem__Mesh1D,  0  | 0);
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "FEM1D_solve_transient_builtin" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  if (!argp1) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "1"" of type '" "datamunge::fem::Mesh1D const &""'"); 
+  }
+  arg1 = reinterpret_cast< datamunge::fem::Mesh1D * >(argp1);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res2 = swig::asptr(swig_obj[1], &ptr);
+    if (!SWIG_IsOK(res2)) {
+      SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "FEM1D_solve_transient_builtin" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "2"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg2 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res3 = swig::asptr(swig_obj[2], &ptr);
+    if (!SWIG_IsOK(res3)) {
+      SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "FEM1D_solve_transient_builtin" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "3"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg3 = ptr;
+  }
+  {
+    std::string *ptr = (std::string *)0;
+    res4 = SWIG_AsPtr_std_string(swig_obj[3], &ptr);
+    if (!SWIG_IsOK(res4)) {
+      SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "FEM1D_solve_transient_builtin" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "4"" of type '" "std::string const &""'"); 
+    }
+    arg4 = ptr;
+  }
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res5 = swig::asptr(swig_obj[4], &ptr);
+    if (!SWIG_IsOK(res5)) {
+      SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "FEM1D_solve_transient_builtin" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "5"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg5 = ptr;
+  }
+  res6 = SWIG_ConvertPtr(swig_obj[5], &argp6, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res6)) {
+    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "FEM1D_solve_transient_builtin" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp6) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "6"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg6 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp6);
+  res7 = SWIG_ConvertPtr(swig_obj[6], &argp7, SWIGTYPE_p_datamunge__fem__BoundaryCondition1D,  0  | 0);
+  if (!SWIG_IsOK(res7)) {
+    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "FEM1D_solve_transient_builtin" "', argument " "7"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  if (!argp7) {
+    SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "7"" of type '" "datamunge::fem::BoundaryCondition1D const &""'"); 
+  }
+  arg7 = reinterpret_cast< datamunge::fem::BoundaryCondition1D * >(argp7);
+  {
+    std::vector< double,std::allocator< double > > *ptr = (std::vector< double,std::allocator< double > > *)0;
+    res8 = swig::asptr(swig_obj[7], &ptr);
+    if (!SWIG_IsOK(res8)) {
+      SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "FEM1D_solve_transient_builtin" "', argument " "8"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    if (!ptr) {
+      SWIG_exception_fail(SWIG_NullReferenceError, "invalid null reference " "in method '" "FEM1D_solve_transient_builtin" "', argument " "8"" of type '" "std::vector< double,std::allocator< double > > const &""'"); 
+    }
+    arg8 = ptr;
+  }
+  ecode9 = SWIG_AsVal_double(swig_obj[8], &val9);
+  if (!SWIG_IsOK(ecode9)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "FEM1D_solve_transient_builtin" "', argument " "9"" of type '" "double""'");
+  } 
+  arg9 = static_cast< double >(val9);
+  ecode10 = SWIG_AsVal_double(swig_obj[9], &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "FEM1D_solve_transient_builtin" "', argument " "10"" of type '" "double""'");
+  } 
+  arg10 = static_cast< double >(val10);
+  result = datamunge::fem::FEM1D::solve_transient_builtin((datamunge::fem::Mesh1D const &)*arg1,(std::vector< double,std::allocator< double > > const &)*arg2,(std::vector< double,std::allocator< double > > const &)*arg3,(std::string const &)*arg4,(std::vector< double,std::allocator< double > > const &)*arg5,(datamunge::fem::BoundaryCondition1D const &)*arg6,(datamunge::fem::BoundaryCondition1D const &)*arg7,(std::vector< double,std::allocator< double > > const &)*arg8,arg9,arg10);
+  resultobj = SWIG_NewPointerObj((new datamunge::fem::FEM1DTimeSeries(result)), SWIGTYPE_p_datamunge__fem__FEM1DTimeSeries, SWIG_POINTER_OWN |  0 );
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res8)) delete arg8;
+  return resultobj;
+fail:
+  if (SWIG_IsNewObj(res2)) delete arg2;
+  if (SWIG_IsNewObj(res3)) delete arg3;
+  if (SWIG_IsNewObj(res4)) delete arg4;
+  if (SWIG_IsNewObj(res5)) delete arg5;
+  if (SWIG_IsNewObj(res8)) delete arg8;
   return NULL;
 }
 
@@ -237436,7 +243131,7 @@ static PyMethodDef SwigMethods[] = {
 		""},
 	 { "downloadable", _wrap_downloadable, METH_NOARGS, "\n"
 		"The names fetch() accepts, sorted: \"california_housing\", \"cifar10\", \"cifar100\",\n"
-		"       \"diamonds\", \"fashion_mnist\", \"mnist\", \"rebot_devarm\", \"sudoku\".\n"
+		"       \"diamonds\", \"fashion_mnist\", \"karate_club\", \"mnist\", \"rebot_devarm\", \"sudoku\".\n"
 		"\n"
 		"Title: Example\n"
 		"\n"
@@ -237452,6 +243147,8 @@ static PyMethodDef SwigMethods[] = {
 		"IDX files (`train-images-idx3-ubyte`, ...); \"cifar10\" holds `data_batch_1..5.bin` and\n"
 		"`test_batch.bin`; \"cifar100\" holds `train.bin` and `test.bin` (the binary versions);\n"
 		"\"sudoku\" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.\n"
+		"\"karate_club\" holds the970-byte original ZIP, GML topology and source README;\n"
+		"every cached archive/member is checksum-verified. karate_club() reads34nodes/78edges.\n"
 		"\"rebot_devarm\" holds 38 pinned Seeed DevArm CAD/URDF/STL files and the\n"
 		"CERN-OHL-W-2.0 source license in their upstream relative directory layout.\n"
 		"DevArm verifies the size and SHA-256 of every cached file on every call;\n"
@@ -237466,7 +243163,7 @@ static PyMethodDef SwigMethods[] = {
 		":param name: One of downloadable().\n"
 		":type directory: string, optional\n"
 		":param directory: Where the files live; empty means `data_home() + \"/\" + name`. Files\n"
-		"           already present there are used as they are, except DevArm's verified files.\n"
+		"           already present there are used as they are, except DevArm and karate_club's verified files.\n"
 		":rtype: string\n"
 		":return: The local path of the CSV file or the dataset directory.\n"
 		":raises: std::invalid_argument for an unknown name.\n"
@@ -237481,7 +243178,7 @@ static PyMethodDef SwigMethods[] = {
 		"For a complete CAD asset tree, use `dm::datasets::fetch(\"rebot_devarm\")`.\n"
 		"Title: References\n"
 		"- Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm\n"
-		"See also: data_home(), downloadable(), download_file()\n"
+		"See also: data_home(), downloadable(), download_file(), karate_club()\n"
 		""},
 	 { "download_file", _wrap_download_file, METH_VARARGS, "\n"
 		"Downloads ``url`` to ``destination`` with curl, unless the destination already exists.\n"
@@ -243585,19 +249282,90 @@ static PyMethodDef SwigMethods[] = {
 	 { "Point2D_x_get", _wrap_Point2D_x_get, METH_O, NULL},
 	 { "Point2D_y_set", _wrap_Point2D_y_set, METH_VARARGS, NULL},
 	 { "Point2D_y_get", _wrap_Point2D_y_get, METH_O, NULL},
-	 { "Point2D___eq__", _wrap_Point2D___eq__, METH_VARARGS, NULL},
-	 { "Point2D___ne__", _wrap_Point2D___ne__, METH_VARARGS, NULL},
+	 { "Point2D___eq__", _wrap_Point2D___eq__, METH_VARARGS, "\n"
+		"Compare both coordinates with ordinary double equality.\n"
+		":type other: :py:class:`Point2D`\n"
+		":param other: Point to compare without mutation.\n"
+		":rtype: boolean\n"
+		":return: Both coordinate comparisons are true; signed zeros compare equal.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::cout << (dm::geometry::Point2D{0,1}==dm::geometry::Point2D{-0.,1}); // 1\n"
+		"See also: operator!=()\n"
+		""},
+	 { "Point2D___ne__", _wrap_Point2D___ne__, METH_VARARGS, "\n"
+		"Negate coordinate equality, including unequal NaN coordinates.\n"
+		":type other: :py:class:`Point2D`\n"
+		":param other: Point to compare without mutation.\n"
+		":rtype: boolean\n"
+		":return: Logical negation of operator==().\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::cout << (dm::geometry::Point2D{0,1}!=dm::geometry::Point2D{0,2}); // 1\n"
+		"See also: operator==()\n"
+		""},
 	 { "new_Point2D", _wrap_new_Point2D, METH_NOARGS, NULL},
 	 { "delete_Point2D", _wrap_delete_Point2D, METH_O, NULL},
 	 { "Point2D_swigregister", Point2D_swigregister, METH_O, NULL},
 	 { "Point2D_swiginit", Point2D_swiginit, METH_VARARGS, NULL},
-	 { "squared_distance", _wrap_squared_distance, METH_VARARGS, NULL},
-	 { "distance", _wrap_distance, METH_VARARGS, NULL},
+	 { "squared_distance", _wrap_squared_distance, METH_VARARGS, "\n"
+		"Evaluate squared Euclidean distance using the original double arithmetic.\n"
+		"No finite/range validation. Differences, products and sum can overflow,\n"
+		"underflow or lose low bits; NaNs propagate according to floating arithmetic.\n"
+		":type a: :py:class:`Point2D`\n"
+		":param a: First point.\n"
+		":type b: :py:class:`Point2D`\n"
+		":param b: Second point.\n"
+		":rtype: float\n"
+		":return: Rounded squared distance, possibly infinity/NaN or underflowed zero.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::cout << dm::geometry::squared_distance({0,0},{3,4}); // 25\n"
+		"See also: distance()\n"
+		""},
+	 { "distance", _wrap_distance, METH_VARARGS, "\n"
+		"Return sqrt(squared_distance(a,b)) with its original range limitations.\n"
+		"A finite mathematical distance may overflow through the squared intermediate;\n"
+		"this convenience primitive performs no checked hypot or input validation.\n"
+		":type a: :py:class:`Point2D`\n"
+		":param a: First point.\n"
+		":type b: :py:class:`Point2D`\n"
+		":param b: Second point.\n"
+		":rtype: float\n"
+		":return: Rounded square root of the double-valued squared distance.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::cout << dm::geometry::distance({0,0},{3,4}); // 5\n"
+		"See also: squared_distance()\n"
+		""},
 	 { "cross", _wrap_cross, METH_VARARGS, "\n"
-		"The z-component of (b - a) x (c - a): positive when a->b->c turns counterclockwise,\n"
-		"       negative when clockwise, zero when the three points are collinear. The basic\n"
-		"       orientation primitive every other algorithm in this module (convex hull, segment\n"
-		"       intersection, point-in-polygon) is built from.\n"
+		"Evaluate the original double determinant (b-a) cross (c-a).\n"
+		"A positive exact determinant means counterclockwise, but this approximation\n"
+		"can cancel, overflow or underflow and its returned sign is not certified.\n"
+		"No tolerance or finite validation is applied. orientation_sign() supplies an\n"
+		"exact sign for finite stored binary64 points; this primitive remains unchanged.\n"
+		":type a: :py:class:`Point2D`\n"
+		":param a: First point.\n"
+		":type b: :py:class:`Point2D`\n"
+		":param b: Second point.\n"
+		":type c: :py:class:`Point2D`\n"
+		":param c: Third point.\n"
+		":rtype: float\n"
+		":return: Rounded double determinant, possibly infinity/NaN or a misleading zero.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::cout << dm::geometry::cross({0,0},{1,0},{0,1}); // 1\n"
+		"See also: orientation_sign()\n"
 		""},
 	 { "Point2DVector_iterator", _wrap_Point2DVector_iterator, METH_O, NULL},
 	 { "Point2DVector___bool__", _wrap_Point2DVector___bool__, METH_O, NULL},
@@ -243630,12 +249398,185 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_Point2DVector", _wrap_delete_Point2DVector, METH_O, NULL},
 	 { "Point2DVector_swigregister", Point2DVector_swigregister, METH_O, NULL},
 	 { "Point2DVector_swiginit", Point2DVector_swiginit, METH_VARARGS, NULL},
+	 { "ConvexHullOptions_max_points_set", _wrap_ConvexHullOptions_max_points_set, METH_VARARGS, NULL},
+	 { "ConvexHullOptions_max_points_get", _wrap_ConvexHullOptions_max_points_get, METH_O, NULL},
+	 { "ConvexHullOptions_max_events_set", _wrap_ConvexHullOptions_max_events_set, METH_VARARGS, NULL},
+	 { "ConvexHullOptions_max_events_get", _wrap_ConvexHullOptions_max_events_get, METH_O, NULL},
+	 { "new_ConvexHullOptions", _wrap_new_ConvexHullOptions, METH_NOARGS, NULL},
+	 { "delete_ConvexHullOptions", _wrap_delete_ConvexHullOptions, METH_O, NULL},
+	 { "ConvexHullOptions_swigregister", ConvexHullOptions_swigregister, METH_O, NULL},
+	 { "ConvexHullOptions_swiginit", ConvexHullOptions_swiginit, METH_VARARGS, NULL},
+	 { "HullIndexedPoint_point_set", _wrap_HullIndexedPoint_point_set, METH_VARARGS, "Copied original coordinate."},
+	 { "HullIndexedPoint_point_get", _wrap_HullIndexedPoint_point_get, METH_O, "Copied original coordinate."},
+	 { "HullIndexedPoint_input_index_set", _wrap_HullIndexedPoint_input_index_set, METH_VARARGS, NULL},
+	 { "HullIndexedPoint_input_index_get", _wrap_HullIndexedPoint_input_index_get, METH_O, NULL},
+	 { "new_HullIndexedPoint", _wrap_new_HullIndexedPoint, METH_NOARGS, NULL},
+	 { "delete_HullIndexedPoint", _wrap_delete_HullIndexedPoint, METH_O, NULL},
+	 { "HullIndexedPoint_swigregister", HullIndexedPoint_swigregister, METH_O, NULL},
+	 { "HullIndexedPoint_swiginit", HullIndexedPoint_swiginit, METH_VARARGS, NULL},
+	 { "ConvexHullWork_input_points_set", _wrap_ConvexHullWork_input_points_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_input_points_get", _wrap_ConvexHullWork_input_points_get, METH_O, NULL},
+	 { "ConvexHullWork_distinct_points_set", _wrap_ConvexHullWork_distinct_points_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_distinct_points_get", _wrap_ConvexHullWork_distinct_points_get, METH_O, NULL},
+	 { "ConvexHullWork_sort_comparisons_set", _wrap_ConvexHullWork_sort_comparisons_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_sort_comparisons_get", _wrap_ConvexHullWork_sort_comparisons_get, METH_O, NULL},
+	 { "ConvexHullWork_duplicate_comparisons_set", _wrap_ConvexHullWork_duplicate_comparisons_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_duplicate_comparisons_get", _wrap_ConvexHullWork_duplicate_comparisons_get, METH_O, NULL},
+	 { "ConvexHullWork_orientation_tests_set", _wrap_ConvexHullWork_orientation_tests_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_orientation_tests_get", _wrap_ConvexHullWork_orientation_tests_get, METH_O, NULL},
+	 { "ConvexHullWork_pushes_set", _wrap_ConvexHullWork_pushes_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_pushes_get", _wrap_ConvexHullWork_pushes_get, METH_O, NULL},
+	 { "ConvexHullWork_pops_set", _wrap_ConvexHullWork_pops_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_pops_get", _wrap_ConvexHullWork_pops_get, METH_O, NULL},
+	 { "ConvexHullWork_max_stack_set", _wrap_ConvexHullWork_max_stack_set, METH_VARARGS, NULL},
+	 { "ConvexHullWork_max_stack_get", _wrap_ConvexHullWork_max_stack_get, METH_O, NULL},
+	 { "new_ConvexHullWork", _wrap_new_ConvexHullWork, METH_NOARGS, NULL},
+	 { "delete_ConvexHullWork", _wrap_delete_ConvexHullWork, METH_O, NULL},
+	 { "ConvexHullWork_swigregister", ConvexHullWork_swigregister, METH_O, NULL},
+	 { "ConvexHullWork_swiginit", ConvexHullWork_swiginit, METH_VARARGS, NULL},
+	 { "HullEvent__pass_set", _wrap_HullEvent__pass_set, METH_VARARGS, NULL},
+	 { "HullEvent__pass_get", _wrap_HullEvent__pass_get, METH_O, NULL},
+	 { "HullEvent_action_set", _wrap_HullEvent_action_set, METH_VARARGS, NULL},
+	 { "HullEvent_action_get", _wrap_HullEvent_action_get, METH_O, NULL},
+	 { "HullEvent_candidate_set", _wrap_HullEvent_candidate_set, METH_VARARGS, NULL},
+	 { "HullEvent_candidate_get", _wrap_HullEvent_candidate_get, METH_O, NULL},
+	 { "HullEvent_point_set", _wrap_HullEvent_point_set, METH_VARARGS, NULL},
+	 { "HullEvent_point_get", _wrap_HullEvent_point_get, METH_O, NULL},
+	 { "HullEvent_a_set", _wrap_HullEvent_a_set, METH_VARARGS, NULL},
+	 { "HullEvent_a_get", _wrap_HullEvent_a_get, METH_O, NULL},
+	 { "HullEvent_b_set", _wrap_HullEvent_b_set, METH_VARARGS, NULL},
+	 { "HullEvent_b_get", _wrap_HullEvent_b_get, METH_O, NULL},
+	 { "HullEvent_turn_set", _wrap_HullEvent_turn_set, METH_VARARGS, NULL},
+	 { "HullEvent_turn_get", _wrap_HullEvent_turn_get, METH_O, NULL},
+	 { "HullEvent_stack_size_set", _wrap_HullEvent_stack_size_set, METH_VARARGS, NULL},
+	 { "HullEvent_stack_size_get", _wrap_HullEvent_stack_size_get, METH_O, NULL},
+	 { "new_HullEvent", _wrap_new_HullEvent, METH_NOARGS, NULL},
+	 { "delete_HullEvent", _wrap_delete_HullEvent, METH_O, NULL},
+	 { "HullEvent_swigregister", HullEvent_swigregister, METH_O, NULL},
+	 { "HullEvent_swiginit", HullEvent_swiginit, METH_VARARGS, NULL},
+	 { "ConvexHullAnalysis_hull_set", _wrap_ConvexHullAnalysis_hull_set, METH_VARARGS, "Owned unclosed strict hull."},
+	 { "ConvexHullAnalysis_hull_get", _wrap_ConvexHullAnalysis_hull_get, METH_O, "Owned unclosed strict hull."},
+	 { "ConvexHullAnalysis_input_indices_set", _wrap_ConvexHullAnalysis_input_indices_set, METH_VARARGS, "Earliest original identities in hull order."},
+	 { "ConvexHullAnalysis_input_indices_get", _wrap_ConvexHullAnalysis_input_indices_get, METH_O, "Earliest original identities in hull order."},
+	 { "ConvexHullAnalysis_work_set", _wrap_ConvexHullAnalysis_work_set, METH_VARARGS, "Actual producing operations."},
+	 { "ConvexHullAnalysis_work_get", _wrap_ConvexHullAnalysis_work_get, METH_O, "Actual producing operations."},
+	 { "new_ConvexHullAnalysis", _wrap_new_ConvexHullAnalysis, METH_NOARGS, NULL},
+	 { "delete_ConvexHullAnalysis", _wrap_delete_ConvexHullAnalysis, METH_O, NULL},
+	 { "ConvexHullAnalysis_swigregister", ConvexHullAnalysis_swigregister, METH_O, NULL},
+	 { "ConvexHullAnalysis_swiginit", ConvexHullAnalysis_swiginit, METH_VARARGS, NULL},
+	 { "ConvexHullTrace_analysis_set", _wrap_ConvexHullTrace_analysis_set, METH_VARARGS, "Actual hull, identities and work."},
+	 { "ConvexHullTrace_analysis_get", _wrap_ConvexHullTrace_analysis_get, METH_O, "Actual hull, identities and work."},
+	 { "ConvexHullTrace_sorted_set", _wrap_ConvexHullTrace_sorted_set, METH_VARARGS, "Actual sorted distinct input records."},
+	 { "ConvexHullTrace_sorted_get", _wrap_ConvexHullTrace_sorted_get, METH_O, "Actual sorted distinct input records."},
+	 { "ConvexHullTrace_events_set", _wrap_ConvexHullTrace_events_set, METH_VARARGS, "Actual test/pop/push edits."},
+	 { "ConvexHullTrace_events_get", _wrap_ConvexHullTrace_events_get, METH_O, "Actual test/pop/push edits."},
+	 { "ConvexHullTrace_lower_set", _wrap_ConvexHullTrace_lower_set, METH_VARARGS, "Actual final lower stack."},
+	 { "ConvexHullTrace_lower_get", _wrap_ConvexHullTrace_lower_get, METH_O, "Actual final lower stack."},
+	 { "ConvexHullTrace_upper_set", _wrap_ConvexHullTrace_upper_set, METH_VARARGS, "Actual final upper stack."},
+	 { "ConvexHullTrace_upper_get", _wrap_ConvexHullTrace_upper_get, METH_O, "Actual final upper stack."},
+	 { "new_ConvexHullTrace", _wrap_new_ConvexHullTrace, METH_NOARGS, NULL},
+	 { "delete_ConvexHullTrace", _wrap_delete_ConvexHullTrace, METH_O, NULL},
+	 { "ConvexHullTrace_swigregister", ConvexHullTrace_swigregister, METH_O, NULL},
+	 { "ConvexHullTrace_swiginit", ConvexHullTrace_swiginit, METH_VARARGS, NULL},
 	 { "convex_hull", _wrap_convex_hull, METH_O, "\n"
-		"The 2D convex hull of ``points`` (Andrew's monotone chain, O(n log n)), returned as\n"
-		"       hull vertices in counterclockwise order with no repeated first/last point. Points\n"
-		"       exactly on a hull edge (collinear with two hull vertices) are excluded, matching\n"
-		"       the \"strict\" convex hull convention. Fewer than 3 distinct input points are\n"
-		"       returned as-is (there's no well-defined polygon to build).\n"
+		"Compute Andrew's strict monotone-chain hull using exact binary64 orientation signs.\n"
+		"Validates all coordinates before internal indexed copies or sorting; the\n"
+		"original by-value argument copy occurs at the call boundary. Exact coordinate\n"
+		"equality removes duplicates (including signed zero); the earliest matching\n"
+		"original record supplies its representation. Returns lexicographic-minimum\n"
+		"first, counterclockwise, no repeated endpoint and no collinear edge interiors.\n"
+		"Empty/singleton/two-point/collinear outputs follow ConvexHullAnalysis. O(n log n)\n"
+		"comparisons plus O(n) bounded exact-sign tests, O(n) scratch/output, no global\n"
+		"state. The legacy by-value signature is retained and has no optional caps.\n"
+		"Other geometry routines that use cross() retain their own floating contracts.\n"
+		":type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":param points: Finite planar records, copied by value as in the original API.\n"
+		":rtype: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":return: Owned strict hull of the represented coordinates.\n"
+		":raises: std::invalid_argument Any nonfinite coordinate.\n"
+		":raises: std::length_error Work/container size exhaustion.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto h=dm::geometry::convex_hull({{0,0},{2,0},{2,2},{0,2},{1,1}});\n"
+		"    std::cout << h.size(); // 4\n"
+		"Title: References\n"
+		"- A. M. Andrew (1979), Another efficient algorithm for convex hulls in two\n"
+		"  dimensions, https://doi.org/10.1016/0020-0190(79)90072-3 .\n"
+		"See also: convex_hull_analyze(), convex_hull_trace(), orientation_sign()\n"
+		""},
+	 { "convex_hull_analyze", _wrap_convex_hull_analyze, METH_VARARGS, "\n"
+		"Execute the same exact-sign hull kernel with identities and actual work.\n"
+		"Same ordering, degeneracy and complexity contract as convex_hull(). Full finite\n"
+		"validation precedes the complete max_points cap and scratch allocation. No\n"
+		"events or completed-chain snapshots are retained; event cap is ignored.\n"
+		":type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":param points: Finite original records; not mutated.\n"
+		":type options: :py:class:`ConvexHullOptions`, optional\n"
+		":param options: Complete original-record cap, zero unlimited; defaults one million.\n"
+		":rtype: :py:class:`ConvexHullAnalysis`\n"
+		":return: Owned hull, earliest original indices and actual counters.\n"
+		":raises: std::invalid_argument Nonfinite coordinate.\n"
+		":raises: std::length_error Complete point cap or work/container exhaustion.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto a=dm::geometry::convex_hull_analyze({{0,0},{1,0},{2,0}});\n"
+		"    std::cout << a.hull.size() << ' ' << a.work.distinct_points; // 2 3\n"
+		"Title: References\n"
+		"- Andrew (1979), https://doi.org/10.1016/0020-0190(79)90072-3 .\n"
+		"See also: convex_hull(), ConvexHullOptions\n"
+		""},
+	 { "convex_hull_trace", _wrap_convex_hull_trace, METH_VARARGS, "\n"
+		"Capture the hull kernel's actual stack events without replay or quadratic snapshots.\n"
+		"Same computation/work as analyze, plus O(n) owned sorted records, compact\n"
+		"test/pop/push edits and completed lower/upper chains. Positive max_events is\n"
+		"checked online on actual records, including pushes; zero disables the cap.\n"
+		":type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":param points: Finite original records; not mutated.\n"
+		":type options: :py:class:`ConvexHullOptions`, optional\n"
+		":param options: Complete point and actual event caps.\n"
+		":rtype: :py:class:`ConvexHullTrace`\n"
+		":return: Owned actual sorted coordinates, identities, work and scan edits.\n"
+		":raises: std::invalid_argument Nonfinite coordinate.\n"
+		":raises: std::length_error Point/event cap or work/container exhaustion.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});\n"
+		"    std::cout << t.events.size(); // 4\n"
+		"Title: References\n"
+		"- Andrew (1979), https://doi.org/10.1016/0020-0190(79)90072-3 .\n"
+		"See also: convex_hull_analyze(), HullEvent\n"
+		""},
+	 { "sample_gaussian_points", _wrap_sample_gaussian_points, METH_VARARGS, "\n"
+		"Draw unsnapped independent standard-normal x,y pairs with a local 32-bit MT stream.\n"
+		"Reproduces the original hull report's mt19937/normal_distribution call order,\n"
+		"including its cached normal variate. Distribution mappings can differ between\n"
+		"standard libraries; a seed alone does not promise portable coordinate bits.\n"
+		"Complete count cap precedes allocation. Empty count is valid. O(count) expected\n"
+		"work/storage; no global RNG or mutation. Finite draws are checked before return.\n"
+		":type count: std::size_t, optional\n"
+		":param count: Number of points, default forty.\n"
+		":type seed: int, optional\n"
+		":param seed: Local mt19937 seed, default 20240728.\n"
+		":type max_points: std::size_t, optional\n"
+		":param max_points: Complete draw cap, default one million; zero unlimited.\n"
+		":rtype: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":return: Owned unsnapped normal point cloud.\n"
+		":raises: std::length_error Complete draw cap/container exhaustion.\n"
+		":raises: std::overflow_error A generated coordinate is nonfinite.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::cout << dm::geometry::sample_gaussian_points(40,20240728).size(); // 40\n"
+		"Title: References\n"
+		"- C++ normal_distribution specification: https://eel.is/c++draft/rand.dist.norm.normal .\n"
+		"See also: convex_hull(), random_point_cloud()\n"
 		""},
 	 { "ClosestPairResult_a_set", _wrap_ClosestPairResult_a_set, METH_VARARGS, "Owned coordinate copy of the lower-index selected input record."},
 	 { "ClosestPairResult_a_get", _wrap_ClosestPairResult_a_get, METH_O, "Owned coordinate copy of the lower-index selected input record."},
@@ -243767,33 +249708,201 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_Triangle", _wrap_delete_Triangle, METH_O, NULL},
 	 { "Triangle_swigregister", Triangle_swigregister, METH_O, NULL},
 	 { "Triangle_swiginit", Triangle_swiginit, METH_VARARGS, NULL},
-	 { "make_ccw_triangle", _wrap_make_ccw_triangle, METH_VARARGS, NULL},
-	 { "in_circumcircle", _wrap_in_circumcircle, METH_VARARGS, NULL},
-	 { "CanonicalEdge_u_set", _wrap_CanonicalEdge_u_set, METH_VARARGS, NULL},
-	 { "CanonicalEdge_u_get", _wrap_CanonicalEdge_u_get, METH_O, NULL},
-	 { "CanonicalEdge_v_set", _wrap_CanonicalEdge_v_set, METH_VARARGS, NULL},
-	 { "CanonicalEdge_v_get", _wrap_CanonicalEdge_v_get, METH_O, NULL},
-	 { "new_CanonicalEdge", _wrap_new_CanonicalEdge, METH_VARARGS, NULL},
-	 { "CanonicalEdge___eq__", _wrap_CanonicalEdge___eq__, METH_VARARGS, NULL},
-	 { "delete_CanonicalEdge", _wrap_delete_CanonicalEdge, METH_O, NULL},
-	 { "CanonicalEdge_swigregister", CanonicalEdge_swigregister, METH_O, NULL},
-	 { "CanonicalEdge_swiginit", CanonicalEdge_swiginit, METH_VARARGS, NULL},
-	 { "CanonicalEdgeHash___call__", _wrap_CanonicalEdgeHash___call__, METH_VARARGS, NULL},
-	 { "new_CanonicalEdgeHash", _wrap_new_CanonicalEdgeHash, METH_NOARGS, NULL},
-	 { "delete_CanonicalEdgeHash", _wrap_delete_CanonicalEdgeHash, METH_O, NULL},
-	 { "CanonicalEdgeHash_swigregister", CanonicalEdgeHash_swigregister, METH_O, NULL},
-	 { "CanonicalEdgeHash_swiginit", CanonicalEdgeHash_swiginit, METH_VARARGS, NULL},
+	 { "DelaunayWork_seed_orientation_tests_set", _wrap_DelaunayWork_seed_orientation_tests_set, METH_VARARGS, NULL},
+	 { "DelaunayWork_seed_orientation_tests_get", _wrap_DelaunayWork_seed_orientation_tests_get, METH_O, NULL},
+	 { "DelaunayWork_insertions_set", _wrap_DelaunayWork_insertions_set, METH_VARARGS, NULL},
+	 { "DelaunayWork_insertions_get", _wrap_DelaunayWork_insertions_get, METH_O, NULL},
+	 { "DelaunayWork_incircle_tests_set", _wrap_DelaunayWork_incircle_tests_set, METH_VARARGS, NULL},
+	 { "DelaunayWork_incircle_tests_get", _wrap_DelaunayWork_incircle_tests_get, METH_O, NULL},
+	 { "DelaunayWork_hull_side_tests_set", _wrap_DelaunayWork_hull_side_tests_set, METH_VARARGS, NULL},
+	 { "DelaunayWork_hull_side_tests_get", _wrap_DelaunayWork_hull_side_tests_get, METH_O, NULL},
+	 { "DelaunayWork_removed_faces_set", _wrap_DelaunayWork_removed_faces_set, METH_VARARGS, NULL},
+	 { "DelaunayWork_removed_faces_get", _wrap_DelaunayWork_removed_faces_get, METH_O, NULL},
+	 { "DelaunayWork_boundary_edges_set", _wrap_DelaunayWork_boundary_edges_set, METH_VARARGS, NULL},
+	 { "DelaunayWork_boundary_edges_get", _wrap_DelaunayWork_boundary_edges_get, METH_O, NULL},
+	 { "DelaunayWork_created_faces_set", _wrap_DelaunayWork_created_faces_set, METH_VARARGS, NULL},
+	 { "DelaunayWork_created_faces_get", _wrap_DelaunayWork_created_faces_get, METH_O, NULL},
+	 { "new_DelaunayWork", _wrap_new_DelaunayWork, METH_NOARGS, NULL},
+	 { "delete_DelaunayWork", _wrap_delete_DelaunayWork, METH_O, NULL},
+	 { "DelaunayWork_swigregister", DelaunayWork_swigregister, METH_O, NULL},
+	 { "DelaunayWork_swiginit", DelaunayWork_swiginit, METH_VARARGS, NULL},
+	 { "DelaunayInsertion_input_index_set", _wrap_DelaunayInsertion_input_index_set, METH_VARARGS, NULL},
+	 { "DelaunayInsertion_input_index_get", _wrap_DelaunayInsertion_input_index_get, METH_O, NULL},
+	 { "DelaunayInsertion_faces_before_set", _wrap_DelaunayInsertion_faces_before_set, METH_VARARGS, NULL},
+	 { "DelaunayInsertion_faces_before_get", _wrap_DelaunayInsertion_faces_before_get, METH_O, NULL},
+	 { "DelaunayInsertion_faces_after_set", _wrap_DelaunayInsertion_faces_after_set, METH_VARARGS, NULL},
+	 { "DelaunayInsertion_faces_after_get", _wrap_DelaunayInsertion_faces_after_get, METH_O, NULL},
+	 { "DelaunayInsertion_removed_set", _wrap_DelaunayInsertion_removed_set, METH_VARARGS, "Exact actual conflicting faces, in scan order."},
+	 { "DelaunayInsertion_removed_get", _wrap_DelaunayInsertion_removed_get, METH_O, "Exact actual conflicting faces, in scan order."},
+	 { "DelaunayInsertion_boundary_set", _wrap_DelaunayInsertion_boundary_set, METH_VARARGS, "Actual directed nonshared cavity edges."},
+	 { "DelaunayInsertion_boundary_get", _wrap_DelaunayInsertion_boundary_get, METH_O, "Actual directed nonshared cavity edges."},
+	 { "DelaunayInsertion_added_set", _wrap_DelaunayInsertion_added_set, METH_VARARGS, "Actual replacement real/ghost faces, in boundary-key order."},
+	 { "DelaunayInsertion_added_get", _wrap_DelaunayInsertion_added_get, METH_O, "Actual replacement real/ghost faces, in boundary-key order."},
+	 { "new_DelaunayInsertion", _wrap_new_DelaunayInsertion, METH_NOARGS, NULL},
+	 { "delete_DelaunayInsertion", _wrap_delete_DelaunayInsertion, METH_O, NULL},
+	 { "DelaunayInsertion_swigregister", DelaunayInsertion_swigregister, METH_O, NULL},
+	 { "DelaunayInsertion_swiginit", DelaunayInsertion_swiginit, METH_VARARGS, NULL},
+	 { "DelaunayTrace_points_set", _wrap_DelaunayTrace_points_set, METH_VARARGS, "Complete copied original coordinates, including duplicates."},
+	 { "DelaunayTrace_points_get", _wrap_DelaunayTrace_points_get, METH_O, "Complete copied original coordinates, including duplicates."},
+	 { "DelaunayTrace_representatives_set", _wrap_DelaunayTrace_representatives_set, METH_VARARGS, "Earliest unique ids in original input order."},
+	 { "DelaunayTrace_representatives_get", _wrap_DelaunayTrace_representatives_get, METH_O, "Earliest unique ids in original input order."},
+	 { "DelaunayTrace_representative_for_input_set", _wrap_DelaunayTrace_representative_for_input_set, METH_VARARGS, "Earliest equal-coordinate id per original record."},
+	 { "DelaunayTrace_representative_for_input_get", _wrap_DelaunayTrace_representative_for_input_get, METH_O, "Earliest equal-coordinate id per original record."},
+	 { "DelaunayTrace_has_seed_set", _wrap_DelaunayTrace_has_seed_set, METH_VARARGS, NULL},
+	 { "DelaunayTrace_has_seed_get", _wrap_DelaunayTrace_has_seed_get, METH_O, NULL},
+	 { "DelaunayTrace_seed_set", _wrap_DelaunayTrace_seed_set, METH_VARARGS, "Initial CCW finite seed, meaningful only when has_seed."},
+	 { "DelaunayTrace_seed_get", _wrap_DelaunayTrace_seed_get, METH_O, "Initial CCW finite seed, meaningful only when has_seed."},
+	 { "DelaunayTrace_triangles_set", _wrap_DelaunayTrace_triangles_set, METH_VARARGS, "Complete finite final CCW triangles, using earliest original ids."},
+	 { "DelaunayTrace_triangles_get", _wrap_DelaunayTrace_triangles_get, METH_O, "Complete finite final CCW triangles, using earliest original ids."},
+	 { "DelaunayTrace_steps_set", _wrap_DelaunayTrace_steps_set, METH_VARARGS, "Actual non-seed cavity transitions, without replay."},
+	 { "DelaunayTrace_steps_get", _wrap_DelaunayTrace_steps_get, METH_O, "Actual non-seed cavity transitions, without replay."},
+	 { "DelaunayTrace_work_set", _wrap_DelaunayTrace_work_set, METH_VARARGS, "Checked actual operations from the executing kernel."},
+	 { "DelaunayTrace_work_get", _wrap_DelaunayTrace_work_get, METH_O, "Checked actual operations from the executing kernel."},
+	 { "new_DelaunayTrace", _wrap_new_DelaunayTrace, METH_NOARGS, NULL},
+	 { "delete_DelaunayTrace", _wrap_delete_DelaunayTrace, METH_O, NULL},
+	 { "DelaunayTrace_swigregister", DelaunayTrace_swigregister, METH_O, NULL},
+	 { "DelaunayTrace_swiginit", DelaunayTrace_swiginit, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_distinct_points_set", _wrap_DelaunayAnalysis_distinct_points_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_distinct_points_get", _wrap_DelaunayAnalysis_distinct_points_get, METH_O, NULL},
+	 { "DelaunayAnalysis_used_points_set", _wrap_DelaunayAnalysis_used_points_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_used_points_get", _wrap_DelaunayAnalysis_used_points_get, METH_O, NULL},
+	 { "DelaunayAnalysis_triangles_set", _wrap_DelaunayAnalysis_triangles_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_triangles_get", _wrap_DelaunayAnalysis_triangles_get, METH_O, NULL},
+	 { "DelaunayAnalysis_edges_set", _wrap_DelaunayAnalysis_edges_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_edges_get", _wrap_DelaunayAnalysis_edges_get, METH_O, NULL},
+	 { "DelaunayAnalysis_boundary_edges_set", _wrap_DelaunayAnalysis_boundary_edges_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_boundary_edges_get", _wrap_DelaunayAnalysis_boundary_edges_get, METH_O, NULL},
+	 { "DelaunayAnalysis_circle_tests_set", _wrap_DelaunayAnalysis_circle_tests_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_circle_tests_get", _wrap_DelaunayAnalysis_circle_tests_get, METH_O, NULL},
+	 { "DelaunayAnalysis_interior_violations_set", _wrap_DelaunayAnalysis_interior_violations_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_interior_violations_get", _wrap_DelaunayAnalysis_interior_violations_get, METH_O, NULL},
+	 { "DelaunayAnalysis_minimum_angle_degrees_set", _wrap_DelaunayAnalysis_minimum_angle_degrees_set, METH_VARARGS, NULL},
+	 { "DelaunayAnalysis_minimum_angle_degrees_get", _wrap_DelaunayAnalysis_minimum_angle_degrees_get, METH_O, NULL},
+	 { "new_DelaunayAnalysis", _wrap_new_DelaunayAnalysis, METH_NOARGS, NULL},
+	 { "delete_DelaunayAnalysis", _wrap_delete_DelaunayAnalysis, METH_O, NULL},
+	 { "DelaunayAnalysis_swigregister", DelaunayAnalysis_swigregister, METH_O, NULL},
+	 { "DelaunayAnalysis_swiginit", DelaunayAnalysis_swiginit, METH_VARARGS, NULL},
 	 { "delaunay_triangulation", _wrap_delaunay_triangulation, METH_O, "\n"
-		"The Delaunay triangulation of ``points`` (Bowyer-Watson incremental algorithm,\n"
-		"       O(n^2) worst case -- a deliberately simple, easy-to-verify-correct choice over the\n"
-		"       faster O(n log n) sweep/divide-and-conquer algorithms, matching this module's\n"
-		"       \"basic\" scope). Uses plain double-precision arithmetic for the in-circumcircle\n"
-		"       predicate (not CGAL's exact/adaptive-precision arithmetic), so nearly-degenerate\n"
-		"       inputs (many points exactly or near-exactly cocircular) may be triangulated\n"
-		"       inconsistently at the boundary between two valid choices -- fine for typical inputs.\n"
-		"       Returns fewer than 3 points unchanged as an empty triangle list (nothing to\n"
-		"       triangulate); duplicate points are not deduplicated (the caller should do so if\n"
-		"       that matters for their use case, e.g. via the same convex_hull() dedup logic).\n"
+		"Construct a complete unconstrained Delaunay triangulation with exact signs.\n"
+		"Retains the original one-vector signature and Triangle layout. Finite coordinate\n"
+		"validation precedes even trivial results. Duplicates coalesce to earliest ids;\n"
+		"collinear/fewer-than-three distinct sites return no faces. Uses Bowyer-Watson\n"
+		"cavity replacement with symbolic hull ghosts, avoiding any finite super-triangle\n"
+		"whose proximity could remove valid narrow faces. All orientation/incircle signs\n"
+		"are exact for finite stored binary64, including subnormals/extreme scales.\n"
+		"Cocircular ties retain existing faces under the ordering in DelaunayTrace.\n"
+		"Faces are strictly CCW, contain no ghosts and reference original ids. Finite\n"
+		"output order is canonical as documented on DelaunayTrace. No boundary constraints,\n"
+		"holes, Steiner refinement or minimum-angle guarantee is supplied. Input unchanged;\n"
+		"O(n log(n+1)+u^2 log(u+1)) worst-case work for n records/u distinct sites with\n"
+		"ordered cavity maps and full live scans; O(n+u) working/output storage, no shared\n"
+		"state or optional resource caps. Exact-predicate cost is bounded per binary64 query.\n"
+		":type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":param points: Borrowed finite planar sites, possibly empty/duplicate/collinear.\n"
+		":rtype: std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > >\n"
+		":return: Owned complete finite mesh of the distinct sites' convex hull, or no faces for collinearity.\n"
+		":raises: std::invalid_argument Any nonfinite coordinate, even on short input.\n"
+		":raises: std::length_error Counter arithmetic or container capacity exceeded.\n"
+		":raises: std::logic_error Internal cavity topology invariant fails; no partial mesh returned.\n"
+		":raises: std::bad_alloc Allocation fails.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::print(\"{}\\n\",dm::geometry::delaunay_triangulation({{0,0},{1,0},{.5,.000001}}).size()); // 1\n"
+		"Title: References\n"
+		"- A. Bowyer (1981), Computing Dirichlet tessellations, Computer Journal 24(2),162–166, doi:10.1093/comjnl/24.2.162.\n"
+		"- D. F. Watson (1981), Computing the n-dimensional Delaunay tessellation with application to Voronoi polytopes, Computer Journal 24(2),167–172, doi:10.1093/comjnl/24.2.167. This variant uses symbolic boundary faces, exact decoded-dyadic signs, earliest duplicate identities and ordered cavity edges.\n"
+		"See also: delaunay_trace(), incircle_sign()\n"
+		""},
+	 { "delaunay_trace", _wrap_delaunay_trace, METH_VARARGS, "\n"
+		"Capture actual symbolic-boundary cavity transitions from the same solver.\n"
+		"No replay. Full finite validation precedes the original-record cap and all\n"
+		"allocation. max_tests bounds cumulative incircle plus hull-side calls, checked\n"
+		"before each complete live-face scan. Trace entries charge one per insertion\n"
+		"plus removed faces, boundary edges and added faces, including ghosts, checked\n"
+		"before retaining the event. Points/maps/final output and temporary cavities are\n"
+		"excluded from that entry count; caps do not bound bytes or wall time. Zero\n"
+		"disables only an optional cap. O(sum cavity/event sizes) additional history,\n"
+		"at worst O(u^2), beyond the ordinary solver. Failure returns no partial result.\n"
+		":type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":param points: Finite original coordinates, unchanged.\n"
+		":type max_points: std::size_t, optional\n"
+		":param max_points: Complete original-record cap, default 1000000; zero disables.\n"
+		":type max_tests: std::size_t, optional\n"
+		":param max_tests: Cumulative complete-scan conflict cap, default 10000000; zero disables.\n"
+		":type max_entries: std::size_t, optional\n"
+		":param max_entries: Cumulative event-entry cap, default 1000000; zero disables.\n"
+		":rtype: :py:class:`DelaunayTrace`\n"
+		":return: Owned points, original-id maps, finite mesh, actual events and work.\n"
+		":raises: std::invalid_argument Any nonfinite coordinate.\n"
+		":raises: std::length_error Optional cap, count arithmetic or container capacity exceeded.\n"
+		":raises: std::logic_error Internal cavity invariant fails.\n"
+		":raises: std::bad_alloc Allocation fails.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}},5,10);\n"
+		"    std::print(\"{} {}\\n\",t.triangles.size(),t.work.incircle_tests+t.work.hull_side_tests); // 4 10\n"
+		"Title: References\n"
+		"- Bowyer (1981), doi:10.1093/comjnl/24.2.162; Watson (1981), doi:10.1093/comjnl/24.2.167; records the symbolic-boundary variant rather than a geometric replay.\n"
+		"See also: DelaunayTrace, delaunay_triangulation()\n"
+		""},
+	 { "delaunay_analyze", _wrap_delaunay_analyze, METH_VARARGS, "\n"
+		"Measure a supplied mesh and test every nonvertex site against every circle.\n"
+		"Performs the structural checks on DelaunayAnalysis first. The complete prospective\n"
+		"circle count faces*(unique_sites-3) is checked before circle queries; zero cap\n"
+		"disables only that limit. O(n log(n+1)+f log(f+1)+fu) work and O(n+f) storage;\n"
+		"minimum angles are floating diagnostics and are not certified bounds. This is a\n"
+		"local property analysis, not a global embedding/coverage certificate.\n"
+		":type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":param points: Finite original sites, unchanged.\n"
+		":type triangles: std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > >\n"
+		":param triangles: Finite CCW faces with valid original indices, unchanged.\n"
+		":type max_tests: std::size_t, optional\n"
+		":param max_tests: Complete exact-circle query cap, default 1000000; zero disables.\n"
+		":rtype: :py:class:`DelaunayAnalysis`\n"
+		":return: Owned scalar topology, actual query/violation counts and approximate angle.\n"
+		":raises: std::invalid_argument Nonfinite coordinates, bad/degenerate/non-CCW/duplicate faces or nonmanifold edges.\n"
+		":raises: std::length_error Circle-count arithmetic or optional cap exceeded.\n"
+		":raises: std::bad_alloc Allocation fails.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const std::vector<dm::geometry::Point2D> p{{0,0},{1,0},{1,1},{0,1}};\n"
+		"    const auto a=dm::geometry::delaunay_analyze(p,dm::geometry::delaunay_triangulation(p));\n"
+		"    std::print(\"{} {} {}\\n\",a.edges,a.boundary_edges,a.circle_tests); // 5 4 2\n"
+		"See also: DelaunayAnalysis, delaunay_triangulation()\n"
+		""},
+	 { "delaunay_uniform_cloud", _wrap_delaunay_uniform_cloud, METH_VARARGS, "\n"
+		"Generate the report's seeded uniform square-cloud control in the core.\n"
+		"Uses mt19937(seed) and uniform_real_distribution<double>(0,extent), x then y\n"
+		"for each point. Same-library runs reproduce the original report's seed20250728\n"
+		"and 30-site square when defaults are used. Standard distribution algorithms\n"
+		"need not match across C++ libraries, so the seed is not a universal byte fixture.\n"
+		"Coincident draws are allowed and later triangulation deduplicates them.\n"
+		"O(count) work/storage, owned output, no global RNG or shared mutation.\n"
+		":type count: std::size_t\n"
+		":param count: Number of original generated records, zero allowed.\n"
+		":type seed: int, optional\n"
+		":param seed: mt19937 seed, default 20250728.\n"
+		":type extent: float, optional\n"
+		":param extent: Positive finite square extent, default 10; checked even for count zero.\n"
+		":type max_points: std::size_t, optional\n"
+		":param max_points: Optional complete output-record cap, default 1000000; zero disables.\n"
+		":rtype: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >\n"
+		":return: Owned generated points in [0,extent) on each axis.\n"
+		":raises: std::invalid_argument Nonpositive or nonfinite extent.\n"
+		":raises: std::length_error Optional count cap or container capacity exceeded before allocation.\n"
+		":raises: std::bad_alloc Allocation fails.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::print(\"{}\\n\",dm::geometry::delaunay_uniform_cloud(30).size()); // 30\n"
+		"See also: delaunay_trace()\n"
 		""},
 	 { "Point2DVectorVector_iterator", _wrap_Point2DVectorVector_iterator, METH_O, NULL},
 	 { "Point2DVectorVector___bool__", _wrap_Point2DVectorVector___bool__, METH_O, NULL},
@@ -243869,49 +249978,202 @@ static PyMethodDef SwigMethods[] = {
 		"       the important caveat about unbounded cells at the convex hull boundary. Fewer than\n"
 		"       3 points produce an empty diagram (matching delaunay_triangulation()).\n"
 		""},
-	 { "DTWResult_distance_set", _wrap_DTWResult_distance_set, METH_VARARGS, "\n"
-		"The cumulative warping cost -- sum of |a[i] - b[j]| along the optimal\n"
-		"       alignment path.\n"
-		""},
-	 { "DTWResult_distance_get", _wrap_DTWResult_distance_get, METH_O, "\n"
-		"The cumulative warping cost -- sum of |a[i] - b[j]| along the optimal\n"
-		"       alignment path.\n"
-		""},
-	 { "DTWResult_path_a_set", _wrap_DTWResult_path_a_set, METH_VARARGS, "\n"
-		"The optimal alignment: path_a[k]/path_b[k] give the index into a/b at step k of\n"
-		"       the path, from (0, 0) to (a.size()-1, b.size()-1), monotonically non-decreasing\n"
-		"       in both. Two parallel int vectors rather than a vector<pair<size_t,size_t>> (or\n"
-		"       even vector<size_t>) -- a deliberately binding-friendly shape reusing the\n"
-		"       already-proven plain vector<int> machinery. vector<size_t> as either a struct\n"
-		"       field or nested inside another template has repeatedly hit real SWIG codegen\n"
-		"       conflicts in this codebase (duplicate scalar-traits definitions); plain `int`\n"
-		"       sidesteps that category of bug entirely, and is more than large enough for any\n"
-		"       realistic sequence length here.\n"
-		""},
-	 { "DTWResult_path_a_get", _wrap_DTWResult_path_a_get, METH_O, "\n"
-		"The optimal alignment: path_a[k]/path_b[k] give the index into a/b at step k of\n"
-		"       the path, from (0, 0) to (a.size()-1, b.size()-1), monotonically non-decreasing\n"
-		"       in both. Two parallel int vectors rather than a vector<pair<size_t,size_t>> (or\n"
-		"       even vector<size_t>) -- a deliberately binding-friendly shape reusing the\n"
-		"       already-proven plain vector<int> machinery. vector<size_t> as either a struct\n"
-		"       field or nested inside another template has repeatedly hit real SWIG codegen\n"
-		"       conflicts in this codebase (duplicate scalar-traits definitions); plain `int`\n"
-		"       sidesteps that category of bug entirely, and is more than large enough for any\n"
-		"       realistic sequence length here.\n"
-		""},
-	 { "DTWResult_path_b_set", _wrap_DTWResult_path_b_set, METH_VARARGS, NULL},
-	 { "DTWResult_path_b_get", _wrap_DTWResult_path_b_get, METH_O, NULL},
+	 { "DTWResult_distance_set", _wrap_DTWResult_distance_set, METH_VARARGS, NULL},
+	 { "DTWResult_distance_get", _wrap_DTWResult_distance_get, METH_O, NULL},
+	 { "DTWResult_path_a_set", _wrap_DTWResult_path_a_set, METH_VARARGS, "Owned zero-based a indices, from zero to a.size()-1."},
+	 { "DTWResult_path_a_get", _wrap_DTWResult_path_a_get, METH_O, "Owned zero-based a indices, from zero to a.size()-1."},
+	 { "DTWResult_path_b_set", _wrap_DTWResult_path_b_set, METH_VARARGS, "Owned parallel b indices, from zero to b.size()-1."},
+	 { "DTWResult_path_b_get", _wrap_DTWResult_path_b_get, METH_O, "Owned parallel b indices, from zero to b.size()-1."},
 	 { "new_DTWResult", _wrap_new_DTWResult, METH_NOARGS, NULL},
 	 { "delete_DTWResult", _wrap_delete_DTWResult, METH_O, NULL},
 	 { "DTWResult_swigregister", DTWResult_swigregister, METH_O, NULL},
 	 { "DTWResult_swiginit", DTWResult_swiginit, METH_VARARGS, NULL},
+	 { "DTWWork_cells_set", _wrap_DTWWork_cells_set, METH_VARARGS, "Exactly a.size()*b.size() recurrence evaluations."},
+	 { "DTWWork_cells_get", _wrap_DTWWork_cells_get, METH_O, "Exactly a.size()*b.size() recurrence evaluations."},
+	 { "DTWWork_predecessor_reads_set", _wrap_DTWWork_predecessor_reads_set, METH_VARARGS, "Three slots per recurrence cell, including borders."},
+	 { "DTWWork_predecessor_reads_get", _wrap_DTWWork_predecessor_reads_get, METH_O, "Three slots per recurrence cell, including borders."},
+	 { "DTWWork_traceback_steps_set", _wrap_DTWWork_traceback_steps_set, METH_VARARGS, "Number of actual output index pairs, including origin."},
+	 { "DTWWork_traceback_steps_get", _wrap_DTWWork_traceback_steps_get, METH_O, "Number of actual output index pairs, including origin."},
+	 { "new_DTWWork", _wrap_new_DTWWork, METH_NOARGS, NULL},
+	 { "delete_DTWWork", _wrap_delete_DTWWork, METH_O, NULL},
+	 { "DTWWork_swigregister", DTWWork_swigregister, METH_O, NULL},
+	 { "DTWWork_swiginit", DTWWork_swiginit, METH_VARARGS, NULL},
+	 { "DTWComputation_result_set", _wrap_DTWComputation_result_set, METH_VARARGS, "Optimal path and its unnormalized absolute loss."},
+	 { "DTWComputation_result_get", _wrap_DTWComputation_result_get, METH_O, "Optimal path and its unnormalized absolute loss."},
+	 { "DTWComputation_work_set", _wrap_DTWComputation_work_set, METH_VARARGS, "Actual recurrence and traceback counts."},
+	 { "DTWComputation_work_get", _wrap_DTWComputation_work_get, METH_O, "Actual recurrence and traceback counts."},
+	 { "new_DTWComputation", _wrap_new_DTWComputation, METH_NOARGS, NULL},
+	 { "delete_DTWComputation", _wrap_delete_DTWComputation, METH_O, NULL},
+	 { "DTWComputation_swigregister", DTWComputation_swigregister, METH_O, NULL},
+	 { "DTWComputation_swiginit", DTWComputation_swiginit, METH_VARARGS, NULL},
+	 { "DTWTrace_a_set", _wrap_DTWTrace_a_set, METH_VARARGS, "Owned first input, unchanged by alignment."},
+	 { "DTWTrace_a_get", _wrap_DTWTrace_a_get, METH_O, "Owned first input, unchanged by alignment."},
+	 { "DTWTrace_b_set", _wrap_DTWTrace_b_set, METH_VARARGS, "Owned second input."},
+	 { "DTWTrace_b_get", _wrap_DTWTrace_b_get, METH_O, "Owned second input."},
+	 { "DTWTrace_cumulative_set", _wrap_DTWTrace_cumulative_set, METH_VARARGS, "Actual positive-cell prefix costs, row-major."},
+	 { "DTWTrace_cumulative_get", _wrap_DTWTrace_cumulative_get, METH_O, "Actual positive-cell prefix costs, row-major."},
+	 { "DTWTrace_predecessors_set", _wrap_DTWTrace_predecessors_set, METH_VARARGS, "Actual selected directions, parallel to cumulative."},
+	 { "DTWTrace_predecessors_get", _wrap_DTWTrace_predecessors_get, METH_O, "Actual selected directions, parallel to cumulative."},
+	 { "DTWTrace_result_set", _wrap_DTWTrace_result_set, METH_VARARGS, "Finite optimal distance and selected actual traceback."},
+	 { "DTWTrace_result_get", _wrap_DTWTrace_result_get, METH_O, "Finite optimal distance and selected actual traceback."},
+	 { "DTWTrace_work_set", _wrap_DTWTrace_work_set, METH_VARARGS, "Counts from the same recurrence/traceback."},
+	 { "DTWTrace_work_get", _wrap_DTWTrace_work_get, METH_O, "Counts from the same recurrence/traceback."},
+	 { "DTWTrace_captured_entries_set", _wrap_DTWTrace_captured_entries_set, METH_VARARGS, "Complete logical capture cost described above."},
+	 { "DTWTrace_captured_entries_get", _wrap_DTWTrace_captured_entries_get, METH_O, "Complete logical capture cost described above."},
+	 { "new_DTWTrace", _wrap_new_DTWTrace, METH_NOARGS, NULL},
+	 { "delete_DTWTrace", _wrap_delete_DTWTrace, METH_O, NULL},
+	 { "DTWTrace_swigregister", DTWTrace_swigregister, METH_O, NULL},
+	 { "DTWTrace_swiginit", DTWTrace_swiginit, METH_VARARGS, NULL},
+	 { "dtw_trace_entries", _wrap_dtw_trace_entries, METH_VARARGS, "\n"
+		"Compute the complete logical capture size without allocating a DTW matrix.\n"
+		"Checks positive lengths, int path-index representability and size_t geometry.\n"
+		"A representable count does not promise that the corresponding buffers fit memory.\n"
+		":type n: std::size_t\n"
+		":param n: Positive first length, at most INT_MAX.\n"
+		":type m: std::size_t\n"
+		":param m: Positive second length, at most INT_MAX.\n"
+		":rtype: std::size_t\n"
+		":return: n+m+2*n*m logical entries, excluding result paths and scratch rows.\n"
+		":raises: std::invalid_argument For either zero length.\n"
+		":raises: std::length_error For index, product or capture-count overflow.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    std::print(\"{}\\n\",dm::geometry::dtw_trace_entries(3,4)); // 31\n"
+		"See also: dynamic_time_warping_trace()\n"
+		""},
+	 { "dynamic_time_warping_work", _wrap_dynamic_time_warping_work, METH_VARARGS, "\n"
+		"Compute unrestricted absolute-loss DTW and actual logical work without cost history.\n"
+		"Owns the result; borrows finite inputs without mutation. No band, slope bound,\n"
+		"step weighting, length normalization or fitted parameters. Finite ties choose\n"
+		"diagonal, then advance_a, then advance_b. O(n*m) recurrence time, O(n*m+n+m)\n"
+		"scratch/output, with only two double cost rows and n*m predecessor bytes.\n"
+		"Complete input/geometry validation precedes allocation. Positive overflowing\n"
+		"off-path costs remain infinity; only a nonfinite final optimum is rejected.\n"
+		"Under ordinary double arithmetic the returned witness sums to the returned\n"
+		"distance in forward order. Concurrent independent calls share no mutable state.\n"
+		":type a: std::vector< double,std::allocator< double > >\n"
+		":param a: Nonempty finite scalar sequence, length at most INT_MAX.\n"
+		":type b: std::vector< double,std::allocator< double > >\n"
+		":param b: Nonempty finite scalar sequence, length at most INT_MAX.\n"
+		":rtype: :py:class:`DTWComputation`\n"
+		":return: Independent optimal result and counts, with no retained input/cost history.\n"
+		":raises: std::invalid_argument For empty or nonfinite input.\n"
+		":raises: std::length_error For geometry/index/container bounds.\n"
+		":raises: std::overflow_error If the final minimum is not finite double.\n"
+		":raises: std::bad_alloc If scratch or result storage cannot be allocated.\n"
+		"Title: Example\n"
+		"See DTWWork and DTWComputation for executed work examples.\n"
+		"Title: References\n"
+		"- H. Sakoe and S. Chiba (1978), Dynamic programming algorithm optimization for\n"
+		"  spoken word recognition, IEEE TASSP26(1):43-49. doi:10.1109/TASSP.1978.1163055.\n"
+		"  This is the unrestricted scalar absolute-loss variant, without the paper's window/slope rules.\n"
+		"See also: dynamic_time_warping(), dynamic_time_warping_trace()\n"
+		""},
 	 { "dynamic_time_warping", _wrap_dynamic_time_warping, METH_VARARGS, "\n"
-		"Dynamic Time Warping distance between two (possibly different-length) scalar\n"
-		"       sequences: the minimum-cost monotone alignment between them under absolute\n"
-		"       difference as the per-step cost, found via the classic O(n*m) dynamic program. This\n"
-		"       is the unrestricted (no Sakoe-Chiba band or other windowing) version -- fine for the\n"
-		"       modest sequence lengths this module targets; a banded variant would be needed to\n"
-		"       scale to long sequences.\n"
+		"Preserve the original two-argument unrestricted absolute-loss DTW entry point.\n"
+		"Same validation, ownership, deterministic ties, numerical limits and complexity\n"
+		"as dynamic_time_warping_work(); discards only its work counters. This distance\n"
+		"is not a metric: unequal stretched sequences can have zero cost and the triangle\n"
+		"inequality can fail. Equal-length diagonal alignment bounds it by rigid L1 loss.\n"
+		":type a: std::vector< double,std::allocator< double > >\n"
+		":param a: Nonempty finite first sequence, length at most INT_MAX.\n"
+		":type b: std::vector< double,std::allocator< double > >\n"
+		":param b: Nonempty finite second sequence, length at most INT_MAX.\n"
+		":rtype: :py:class:`DTWResult`\n"
+		":return: Owned optimal distance and inclusive zero-based parallel int paths.\n"
+		":raises: std::invalid_argument For empty or nonfinite input.\n"
+		":raises: std::length_error For geometry/index/container bounds.\n"
+		":raises: std::overflow_error If the final optimum is not finite double.\n"
+		":raises: std::bad_alloc If scratch or result storage cannot be allocated.\n"
+		"Title: Example\n"
+		"See DTWResult for the executed original stretched-sequence example.\n"
+		"Title: References\n"
+		"- H. Sakoe and S. Chiba (1978), IEEE TASSP26(1):43-49, doi:10.1109/TASSP.1978.1163055.\n"
+		"See also: dynamic_time_warping_work(), dtw_path_cost()\n"
+		""},
+	 { "dynamic_time_warping_trace", _wrap_dynamic_time_warping_trace, METH_VARARGS, "\n"
+		"Capture actual positive-cell costs and predecessor choices from the shared DTW kernel.\n"
+		"Validates complete finite inputs/geometry before checking the optional complete\n"
+		"capture budget, then copies inputs and runs once. Owns every snapshot. No partial\n"
+		"trace/result escapes on failure. Same variant/ties/numerical rules as ordinary DTW.\n"
+		":type a: std::vector< double,std::allocator< double > >\n"
+		":param a: Nonempty finite first input, length at most INT_MAX.\n"
+		":type b: std::vector< double,std::allocator< double > >\n"
+		":param b: Nonempty finite second input, length at most INT_MAX.\n"
+		":type max_entries: std::size_t, optional\n"
+		":param max_entries: Complete logical entry cap, default 1000000; zero disables only cap.\n"
+		":rtype: :py:class:`DTWTrace`\n"
+		":return: Independent input, costs, directions, optimal result, counts and capture cost.\n"
+		":raises: std::invalid_argument For empty or nonfinite input, before budget checks.\n"
+		":raises: std::length_error For geometry/index/container/capture limits.\n"
+		":raises: std::overflow_error If the final optimum is not finite double.\n"
+		":raises: std::bad_alloc If owned or working storage cannot be allocated.\n"
+		"Title: Example\n"
+		"See DTWTrace and DTWPredecessor for executed capture examples.\n"
+		"Title: References\n"
+		"- H. Sakoe and S. Chiba (1978), IEEE TASSP26(1):43-49, doi:10.1109/TASSP.1978.1163055.\n"
+		"See also: dtw_trace_entries(), dynamic_time_warping_work()\n"
+		""},
+	 { "dtw_path_cost", _wrap_dtw_path_cost, METH_VARARGS, "\n"
+		"Validate a complete monotone witness and sum its unshifted absolute losses.\n"
+		"Checks all finite input and path geometry before numerical accumulation: equal\n"
+		"nonempty path lengths, in-bounds indices, exact endpoints and unit advances\n"
+		"(1,0), (0,1), (1,1). This certifies feasibility/cost, not optimality. O(n+m+L)\n"
+		"validation/sum, no allocations, input unchanged; no shared mutable state.\n"
+		":type a: std::vector< double,std::allocator< double > >\n"
+		":param a: Nonempty finite first sequence.\n"
+		":type b: std::vector< double,std::allocator< double > >\n"
+		":param b: Nonempty finite second sequence.\n"
+		":type path_a: std::vector< int,std::allocator< int > >\n"
+		":param path_a: Borrowed signed first indices, zero through a.size()-1.\n"
+		":type path_b: std::vector< int,std::allocator< int > >\n"
+		":param path_b: Borrowed parallel signed second indices, zero through b.size()-1.\n"
+		":rtype: float\n"
+		":return: Finite forward-order sum of absolute differences on the supplied witness.\n"
+		":raises: std::invalid_argument For invalid finite inputs or path shape/indices/steps/endpoints.\n"
+		":raises: std::length_error For input index/geometry bounds.\n"
+		":raises: std::overflow_error If the supplied path's accumulated cost is not finite double.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto r=dm::geometry::dynamic_time_warping({1,2},{1,2});\n"
+		"    std::print(\"{}\\n\",dm::geometry::dtw_path_cost({1,2},{1,2},r.path_a,r.path_b)); // 0\n"
+		"See also: DTWResult, plot_dtw_alignment()\n"
+		""},
+	 { "plot_dtw_alignment", _wrap_plot_dtw_alignment, METH_VARARGS, "\n"
+		"Draw two scalar series and their validated DTW correspondence segments natively.\n"
+		"Costs use unshifted inputs; only drawing adds offset to a and subtracts it from b.\n"
+		"Requires result.distance to equal the validated forward witness sum exactly;\n"
+		"it does not independently prove optimality. Validates complete inputs/witness,\n"
+		"finite plotted coordinates and optional path-pair cap before drawing allocation.\n"
+		"Owns all series; no file I/O or model mutation. Concurrent calls share no state.\n"
+		":type a: std::vector< double,std::allocator< double > >\n"
+		":param a: Nonempty finite first sequence.\n"
+		":type b: std::vector< double,std::allocator< double > >\n"
+		":param b: Nonempty finite second sequence.\n"
+		":type result: :py:class:`DTWResult`\n"
+		":param result: Borrowed complete feasible result with exact finite witness cost.\n"
+		":type offset: float, optional\n"
+		":param offset: Finite nonnegative vertical display separation per series, default 1.6.\n"
+		":type max_pairs: std::size_t, optional\n"
+		":param max_pairs: Optional complete correspondence cap, default 4096; zero disables only cap.\n"
+		":rtype: :py:class:`RPlot`\n"
+		":return: Editable owned RPlot with two lines and gray correspondence segments.\n"
+		":raises: std::invalid_argument For invalid inputs/witness/distance/offset.\n"
+		":raises: std::length_error For input geometry/index limits or exceeded nonzero pair cap.\n"
+		":raises: std::overflow_error For witness cost or shifted drawing-coordinate overflow.\n"
+		":raises: std::bad_alloc If owned plot storage cannot be allocated.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto r=dm::geometry::dynamic_time_warping({1,2},{1,2});\n"
+		"    const auto p=dm::geometry::plot_dtw_alignment({1,2},{1,2},r);\n"
+		"    std::print(\"{}\\n\",p.series().size()); // 3\n"
+		"See also: dtw_path_cost(), graphics::RPlot\n"
 		""},
 	 { "discrete_frechet_distance", _wrap_discrete_frechet_distance, METH_VARARGS, "\n"
 		"The discrete Fréchet distance between two point sequences (\"curves\") p and q\n"
@@ -244097,47 +250359,236 @@ static PyMethodDef SwigMethods[] = {
 	 { "delete_BoundaryCondition1D", _wrap_delete_BoundaryCondition1D, METH_O, NULL},
 	 { "BoundaryCondition1D_swigregister", BoundaryCondition1D_swigregister, METH_O, NULL},
 	 { "BoundaryCondition1D_swiginit", BoundaryCondition1D_swiginit, METH_VARARGS, NULL},
-	 { "FEM1DResult_size", _wrap_FEM1DResult_size, METH_O, NULL},
-	 { "FEM1DResult_node_at", _wrap_FEM1DResult_node_at, METH_VARARGS, NULL},
-	 { "FEM1DResult_value_at", _wrap_FEM1DResult_value_at, METH_VARARGS, NULL},
+	 { "FEM1DResult_size", _wrap_FEM1DResult_size, METH_O, "\n"
+		"Count stored solution values without changing either array.\n"
+		":rtype: std::size_t\n"
+		":return: Actual u.size(); no allocation or shared mutation.\n"
+		""},
+	 { "FEM1DResult_node_at", _wrap_FEM1DResult_node_at, METH_VARARGS, "\n"
+		"Read an owned spatial coordinate with vector bounds checking.\n"
+		":type index: std::size_t\n"
+		":param index: Zero-based coordinate index.\n"
+		":rtype: float\n"
+		":return: Stored coordinate by value.\n"
+		":raises: std::out_of_range If index is outside nodes.\n"
+		""},
+	 { "FEM1DResult_value_at", _wrap_FEM1DResult_value_at, METH_VARARGS, "\n"
+		"Read an owned nodal value with vector bounds checking.\n"
+		":type index: std::size_t\n"
+		":param index: Zero-based value index.\n"
+		":rtype: float\n"
+		":return: Stored solution value by value.\n"
+		":raises: std::out_of_range If index is outside u.\n"
+		""},
 	 { "new_FEM1DResult", _wrap_new_FEM1DResult, METH_NOARGS, NULL},
 	 { "delete_FEM1DResult", _wrap_delete_FEM1DResult, METH_O, NULL},
 	 { "FEM1DResult_swigregister", FEM1DResult_swigregister, METH_O, NULL},
 	 { "FEM1DResult_swiginit", FEM1DResult_swiginit, METH_VARARGS, NULL},
-	 { "FEM1DTimeSeries_num_steps", _wrap_FEM1DTimeSeries_num_steps, METH_O, NULL},
-	 { "FEM1DTimeSeries_num_nodes", _wrap_FEM1DTimeSeries_num_nodes, METH_O, NULL},
-	 { "FEM1DTimeSeries_node_at", _wrap_FEM1DTimeSeries_node_at, METH_VARARGS, NULL},
-	 { "FEM1DTimeSeries_time_at", _wrap_FEM1DTimeSeries_time_at, METH_VARARGS, NULL},
-	 { "FEM1DTimeSeries_value_at", _wrap_FEM1DTimeSeries_value_at, METH_VARARGS, NULL},
+	 { "FEM1DTimeSeries_num_steps", _wrap_FEM1DTimeSeries_num_steps, METH_O, "\n"
+		"Count stored time levels, including the initial state.\n"
+		":rtype: std::size_t\n"
+		":return: Actual times.size(), rather than the number of time advances.\n"
+		""},
+	 { "FEM1DTimeSeries_num_nodes", _wrap_FEM1DTimeSeries_num_nodes, METH_O, "\n"
+		"Count stored spatial coordinates.\n"
+		":rtype: std::size_t\n"
+		":return: Actual nodes.size(); no allocation or shared mutation.\n"
+		""},
+	 { "FEM1DTimeSeries_node_at", _wrap_FEM1DTimeSeries_node_at, METH_VARARGS, "\n"
+		"Read a spatial coordinate with vector bounds checking.\n"
+		":type index: std::size_t\n"
+		":param index: Zero-based coordinate index.\n"
+		":rtype: float\n"
+		":return: Owned coordinate by value.\n"
+		":raises: std::out_of_range If index is outside nodes.\n"
+		""},
+	 { "FEM1DTimeSeries_time_at", _wrap_FEM1DTimeSeries_time_at, METH_VARARGS, "\n"
+		"Read an actual stored time level with bounds checking.\n"
+		":type step: std::size_t\n"
+		":param step: Zero-based frame index, including initial frame zero.\n"
+		":rtype: float\n"
+		":return: Actual stored time by value.\n"
+		":raises: std::out_of_range If step is outside times.\n"
+		""},
+	 { "FEM1DTimeSeries_value_at", _wrap_FEM1DTimeSeries_value_at, METH_VARARGS, "\n"
+		"Read a stored nodal time-slice value with both vector bounds checked.\n"
+		":type step: std::size_t\n"
+		":param step: Zero-based time-frame index in u.\n"
+		":type node_index: std::size_t\n"
+		":param node_index: Zero-based spatial index within that row.\n"
+		":rtype: float\n"
+		":return: Stored nodal value by value.\n"
+		":raises: std::out_of_range If either index is outside the actual stored vectors.\n"
+		""},
 	 { "new_FEM1DTimeSeries", _wrap_new_FEM1DTimeSeries, METH_NOARGS, NULL},
 	 { "delete_FEM1DTimeSeries", _wrap_delete_FEM1DTimeSeries, METH_O, NULL},
 	 { "FEM1DTimeSeries_swigregister", FEM1DTimeSeries_swigregister, METH_O, NULL},
 	 { "FEM1DTimeSeries_swiginit", FEM1DTimeSeries_swiginit, METH_VARARGS, NULL},
 	 { "FEM1D_solve", _wrap_FEM1D_solve, METH_VARARGS, "\n"
-		"Solves the steady-state BVP -(p u')' + q u = f with the given boundary\n"
-		"       conditions. p and q must each be either a single value (constant across the\n"
-		"       whole domain) or exactly one value per element (mesh.num_elements()).\n"
-		"       Throws std::invalid_argument for a mismatched size.\n"
+		"Solve the steady P1 system for -(p*u')'+q*u=f with endpoint boundary data.\n"
+		"Follows FEM1D's mesh/coefficient/finite-arithmetic/nonsingular-pivot preconditions.\n"
+		"Uses three-point Gauss-Legendre quadrature of f times each local basis, natural\n"
+		"boundary terms and symmetric Dirichlet elimination, then Thomas elimination.\n"
+		"O(N) work/storage for N nodes; invokes the source three times per element.\n"
+		"No callback pointer is retained. Independent calls share no mutable state.\n"
+		":type mesh: :py:class:`Mesh1D`\n"
+		":param mesh: Borrowed mesh with at least two finite strictly increasing nodes.\n"
+		":type p: std::vector< double,std::allocator< double > >\n"
+		":param p: Borrowed diffusion coefficient: length1 or one per element.\n"
+		":type q: std::vector< double,std::allocator< double > >\n"
+		":param q: Borrowed reaction coefficient: length1 or one per element.\n"
+		":type f: :py:class:`ScalarField1D`\n"
+		":param f: Borrowed spatial source; evaluate() may have caller-owned side effects.\n"
+		":type left: :py:class:`BoundaryCondition1D`\n"
+		":param left: Left endpoint condition, with outward normal -1.\n"
+		":type right: :py:class:`BoundaryCondition1D`\n"
+		":param right: Right endpoint condition, with outward normal +1.\n"
+		":rtype: :py:class:`FEM1DResult`\n"
+		":return: Owned original nodes and computed nodal values.\n"
+		":raises: std::invalid_argument If p/q are empty or have the wrong lengths.\n"
+		":raises: std::bad_alloc If assembly/result storage cannot be allocated; callback exceptions propagate.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    struct Unit final:dm::fem::ScalarField1D{double evaluate(double) override{return 1;}} source;\n"
+		"    const auto r=dm::fem::FEM1D::solve(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},source,{},{});\n"
+		"    std::print(\"{}\\n\",r.value_at(1)); // 0.125\n"
+		"Title: References\n"
+		"- https://mfem.org/fem_weak_form/ ; native interval P1 and quadrature choices as FEM1D.\n"
+		"See also: solve_builtin(), solve_transient()\n"
 		""},
 	 { "FEM1D_solve_builtin", _wrap_FEM1D_solve_builtin, METH_VARARGS, "\n"
-		"Same as solve(), but f is one of a fixed set of named source terms instead of a\n"
-		"       live user-supplied callback -- the only option for bindings without director\n"
-		"       support. source_params is interpreted positionally per source name, with the\n"
-		"       listed defaults used for any parameter past the end of source_params:\n"
-		"         - \"zero\":       f(x) = 0.                            source_params unused.\n"
-		"         - \"constant\":   f(x) = c.                            {c=1}.\n"
-		"         - \"linear\":     f(x) = m*x + c.                       {m=1, c=0}.\n"
-		"         - \"polynomial\": f(x) = sum_i source_params[i] * x^i. an empty list means f=0.\n"
-		"         - \"sine\":       f(x) = amplitude*sin(freq*x+phase).  {amplitude=1, freq=1, phase=0}.\n"
-		"       Throws std::invalid_argument for an unknown source name.\n"
+		"Solve the steady system using an owned named spatial source, without a director callback.\n"
+		"Shares the live-source solver and its mathematical/precondition/storage contracts.\n"
+		"Sources: zero=0 (params unused); constant=c ({1}); linear=m*x+c ({1,0});\n"
+		"polynomial=sum(params[i]*x^i) (empty gives0); sine=A*sin(w*x+phase) ({1,1,0}).\n"
+		"Missing trailing parameters use those defaults; extra parameters are ignored\n"
+		"except polynomial, which uses all entries. Name matching is exact/case-sensitive.\n"
+		":type mesh: :py:class:`Mesh1D`\n"
+		":param mesh: Borrowed valid finite interval mesh; unchanged.\n"
+		":type p: std::vector< double,std::allocator< double > >\n"
+		":param p: Borrowed scalar/per-element diffusion coefficient.\n"
+		":type q: std::vector< double,std::allocator< double > >\n"
+		":param q: Borrowed scalar/per-element reaction coefficient.\n"
+		":type source: string\n"
+		":param source: Exact name zero, constant, linear, polynomial or sine.\n"
+		":type source_params: std::vector< double,std::allocator< double > >\n"
+		":param source_params: Borrowed positional source parameters, with defaults described above.\n"
+		":type left: :py:class:`BoundaryCondition1D`\n"
+		":param left: Left endpoint data using outward normal -1.\n"
+		":type right: :py:class:`BoundaryCondition1D`\n"
+		":param right: Right endpoint data using outward normal +1.\n"
+		":rtype: :py:class:`FEM1DResult`\n"
+		":return: Owned computed nodal result, retaining no source or input reference.\n"
+		":raises: std::invalid_argument For an unknown source or malformed p/q lengths.\n"
+		":raises: std::bad_alloc If owned parameter/assembly/result storage cannot be allocated.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto r=dm::fem::FEM1D::solve_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},\"constant\",{}, {},{});\n"
+		"    std::print(\"{}\\n\",r.value_at(1)); // 0.125\n"
+		"Title: References\n"
+		"- https://mfem.org/fem_weak_form/ ; source definitions are native convenience choices.\n"
+		"See also: solve(), solve_transient_builtin()\n"
 		""},
 	 { "FEM1D_solve_transient", _wrap_FEM1D_solve_transient, METH_VARARGS, "\n"
-		"Solves the transient (parabolic) problem u_t - (p u')' + q u = f(x) [f and the\n"
-		"       boundary conditions are held fixed in time -- this \"basic\" transient solver does\n"
-		"       not support a time-varying source or BCs] from t=0 to t=t_end with initial\n"
-		"       condition u0 (one value per mesh node), via unconditionally stable backward\n"
-		"       Euler time-stepping with fixed step dt. Throws std::invalid_argument if\n"
-		"       u0.size() != mesh.num_nodes(), or if dt <= 0 or t_end <= 0.\n"
+		"Integrate u_t-(p*u')'+q*u=f with P1 space and actual backward-Euler time intervals.\n"
+		"Shares FEM1D's spatial/finite-arithmetic/nonzero-pivot preconditions. Source\n"
+		"and boundary data represent a time-independent model; the live callback is\n"
+		"actually reevaluated three times per element at every time advance, not cached.\n"
+		"Stores initial u0 as supplied, then imposes boundary data at later solves.\n"
+		"Nominal step dt is shortened at t_end; actual positive time differences enter\n"
+		"the mass term. Stops once t_end is reached, avoiding a duplicate rounded last\n"
+		"time even when ceil(t_end/dt) overestimates the number of advances.\n"
+		"O(S*N) work/output storage for S advances/N nodes, O(N) assembly temporaries;\n"
+		"no optional trace or quota. Backward Euler is unconditionally stable for the\n"
+		"coercive semidiscrete model, not a guarantee of arbitrary-step accuracy or\n"
+		"finite arithmetic for arbitrary parameters. Input arrays remain unchanged;\n"
+		"callback exceptions/side effects/concurrent safety belong to caller.\n"
+		":type mesh: :py:class:`Mesh1D`\n"
+		":param mesh: Borrowed valid mesh with at least two finite increasing nodes.\n"
+		":type p: std::vector< double,std::allocator< double > >\n"
+		":param p: Borrowed scalar/per-element diffusion coefficient.\n"
+		":type q: std::vector< double,std::allocator< double > >\n"
+		":param q: Borrowed scalar/per-element reaction coefficient.\n"
+		":type f: :py:class:`ScalarField1D`\n"
+		":param f: Borrowed spatial callback, reevaluated at every advance.\n"
+		":type left: :py:class:`BoundaryCondition1D`\n"
+		":param left: Fixed left condition, with outward normal -1.\n"
+		":type right: :py:class:`BoundaryCondition1D`\n"
+		":param right: Fixed right condition, with outward normal +1.\n"
+		":type u0: std::vector< double,std::allocator< double > >\n"
+		":param u0: Borrowed finite initial nodal values, exactly one per mesh node.\n"
+		":type t_end: float\n"
+		":param t_end: Positive finite final time, in time units.\n"
+		":type dt: float\n"
+		":param dt: Positive finite nominal time step in the same units; may exceed t_end.\n"
+		":rtype: :py:class:`FEM1DTimeSeries`\n"
+		":return: Owned nodes, initial state and strictly advancing slices ending at t_end.\n"
+		":raises: std::invalid_argument For fewer than two nodes, wrong coefficient/u0 lengths or nonpositive/nonfinite time controls.\n"
+		":raises: std::length_error If frame counts, vector capacities or total scalar count cannot be represented.\n"
+		":raises: std::overflow_error If rounded time products cannot advance before t_end.\n"
+		":raises: std::bad_alloc If output/assembly storage cannot be allocated; callback exceptions propagate.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    struct Zero final:dm::fem::ScalarField1D{double evaluate(double) override{return 0;}} source;\n"
+		"    const auto t=dm::fem::FEM1D::solve_transient(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},source,{},{},{0,1,0},.5,.5);\n"
+		"    std::print(\"{} {:.6f}\\n\",t.num_steps(),t.value_at(1,1)); // 2 0.142857\n"
+		"Title: References\n"
+		"- Arnold (2012), Numerical Analysis of Partial Differential Equations, chapter5 section2.\n"
+		"  https://www-users.cse.umn.edu/~arnold/8445.f12/notes.pdf . Native load quadrature,\n"
+		"  fixed data and rounded/shortened time grid are implementation choices.\n"
+		"See also: solve_transient_builtin(), FEM1DTimeSeries\n"
+		""},
+	 { "FEM1D_solve_transient_builtin", _wrap_FEM1D_solve_transient_builtin, METH_VARARGS, "\n"
+		"Integrate the same backward-Euler model with a named source and no callback subclass.\n"
+		"Uses the same private source construction as solve_builtin() and the same\n"
+		"actual time loop as solve_transient(); no second solver or per-language glue.\n"
+		"Names/defaults: zero=0; constant=c ({1}); linear=m*x+c ({1,0});\n"
+		"polynomial=sum(params[i]*x^i) (empty0); sine=A*sin(w*x+phase) ({1,1,0}).\n"
+		"Extra entries ignored except polynomial; exact case-sensitive names. Source\n"
+		"objects are local and synchronous; results own values, not callback aliases.\n"
+		"All spatial/time/initial-state, complexity and stability contracts follow\n"
+		"solve_transient(); ordinary output has no optional history/quota.\n"
+		":type mesh: :py:class:`Mesh1D`\n"
+		":param mesh: Borrowed valid finite increasing mesh, with at least two nodes.\n"
+		":type p: std::vector< double,std::allocator< double > >\n"
+		":param p: Borrowed scalar/per-element diffusion coefficient.\n"
+		":type q: std::vector< double,std::allocator< double > >\n"
+		":param q: Borrowed scalar/per-element reaction coefficient.\n"
+		":type source: string\n"
+		":param source: Exact name zero, constant, linear, polynomial or sine.\n"
+		":type source_params: std::vector< double,std::allocator< double > >\n"
+		":param source_params: Borrowed positional parameters; omitted trailing values use the defaults above.\n"
+		":type left: :py:class:`BoundaryCondition1D`\n"
+		":param left: Fixed left boundary condition using outward normal -1.\n"
+		":type right: :py:class:`BoundaryCondition1D`\n"
+		":param right: Fixed right boundary condition using outward normal +1.\n"
+		":type u0: std::vector< double,std::allocator< double > >\n"
+		":param u0: Borrowed finite initial values, exactly one per spatial node.\n"
+		":type t_end: float\n"
+		":param t_end: Positive finite final time.\n"
+		":type dt: float\n"
+		":param dt: Positive finite nominal time step; final interval is shortened as needed.\n"
+		":rtype: :py:class:`FEM1DTimeSeries`\n"
+		":return: Owned initial state and actual strictly advancing backward-Euler slices.\n"
+		":raises: std::invalid_argument For an unknown source, malformed coefficient/u0 lengths, fewer than two nodes or nonpositive/nonfinite time controls.\n"
+		":raises: std::length_error If frame/container/total scalar counts cannot be represented.\n"
+		":raises: std::overflow_error If rounded time products cannot advance.\n"
+		":raises: std::bad_alloc If parameters, output or assembly storage cannot be allocated.\n"
+		"Title: Example\n"
+		"\n"
+		".. code-block:: c++\n"
+		"\n"
+		"    const auto t=dm::fem::FEM1D::solve_transient_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},\"constant\",{1},{},{},{0,0,0},.5,.5);\n"
+		"    std::print(\"{} {:.6f}\\n\",t.num_steps(),t.value_at(1,1)); // 2 0.107143\n"
+		"Title: References\n"
+		"- https://www-users.cse.umn.edu/~arnold/8445.f12/notes.pdf ; same native discretization as solve_transient().\n"
+		"See also: solve_builtin(), solve_transient()\n"
 		""},
 	 { "new_FEM1D", _wrap_new_FEM1D, METH_NOARGS, NULL},
 	 { "delete_FEM1D", _wrap_delete_FEM1D, METH_O, NULL},
@@ -247831,15 +254282,26 @@ static swig_type_info _swigt__p_datamunge__filter__VectorFunction = {"_p_datamun
 static swig_type_info _swigt__p_datamunge__geometry__BoundingBox = {"_p_datamunge__geometry__BoundingBox", "datamunge::geometry::BoundingBox *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__Circle = {"_p_datamunge__geometry__Circle", "datamunge::geometry::Circle *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__ClosestPairResult = {"_p_datamunge__geometry__ClosestPairResult", "datamunge::geometry::ClosestPairResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__ConvexHullAnalysis = {"_p_datamunge__geometry__ConvexHullAnalysis", "datamunge::geometry::ConvexHullAnalysis *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__ConvexHullOptions = {"_p_datamunge__geometry__ConvexHullOptions", "datamunge::geometry::ConvexHullOptions *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__ConvexHullTrace = {"_p_datamunge__geometry__ConvexHullTrace", "datamunge::geometry::ConvexHullTrace *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__ConvexHullWork = {"_p_datamunge__geometry__ConvexHullWork", "datamunge::geometry::ConvexHullWork *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__DTWComputation = {"_p_datamunge__geometry__DTWComputation", "datamunge::geometry::DTWComputation *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__DTWResult = {"_p_datamunge__geometry__DTWResult", "datamunge::geometry::DTWResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__DTWTrace = {"_p_datamunge__geometry__DTWTrace", "datamunge::geometry::DTWTrace *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__DTWWork = {"_p_datamunge__geometry__DTWWork", "datamunge::geometry::DTWWork *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__DelaunayAnalysis = {"_p_datamunge__geometry__DelaunayAnalysis", "datamunge::geometry::DelaunayAnalysis *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__DelaunayInsertion = {"_p_datamunge__geometry__DelaunayInsertion", "datamunge::geometry::DelaunayInsertion *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__DelaunayTrace = {"_p_datamunge__geometry__DelaunayTrace", "datamunge::geometry::DelaunayTrace *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__DelaunayWork = {"_p_datamunge__geometry__DelaunayWork", "datamunge::geometry::DelaunayWork *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__DiameterResult = {"_p_datamunge__geometry__DiameterResult", "datamunge::geometry::DiameterResult *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__HullEvent = {"_p_datamunge__geometry__HullEvent", "datamunge::geometry::HullEvent *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_datamunge__geometry__HullIndexedPoint = {"_p_datamunge__geometry__HullIndexedPoint", "datamunge::geometry::HullIndexedPoint *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__KDTree2D = {"_p_datamunge__geometry__KDTree2D", "datamunge::geometry::KDTree2D *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__MinimumBoundingRectangle = {"_p_datamunge__geometry__MinimumBoundingRectangle", "datamunge::geometry::MinimumBoundingRectangle *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__Point2D = {"_p_datamunge__geometry__Point2D", "std::vector< datamunge::geometry::Point2D >::value_type *|datamunge::geometry::Point2D *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__Triangle = {"_p_datamunge__geometry__Triangle", "std::vector< datamunge::geometry::Triangle >::value_type *|datamunge::geometry::Triangle *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__geometry__VoronoiDiagram = {"_p_datamunge__geometry__VoronoiDiagram", "datamunge::geometry::VoronoiDiagram *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__geometry__detail__CanonicalEdge = {"_p_datamunge__geometry__detail__CanonicalEdge", "datamunge::geometry::detail::CanonicalEdge *", 0, 0, (void*)0, 0};
-static swig_type_info _swigt__p_datamunge__geometry__detail__CanonicalEdgeHash = {"_p_datamunge__geometry__detail__CanonicalEdgeHash", "datamunge::geometry::detail::CanonicalEdgeHash *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__graphics__ABLine = {"_p_datamunge__graphics__ABLine", "std::vector< datamunge::graphics::ABLine >::value_type *|datamunge::graphics::ABLine *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__graphics__DataSeries = {"_p_datamunge__graphics__DataSeries", "std::vector< datamunge::graphics::DataSeries >::value_type *|datamunge::graphics::DataSeries *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_datamunge__graphics__LegendEntry = {"_p_datamunge__graphics__LegendEntry", "std::vector< datamunge::graphics::LegendEntry >::value_type *|datamunge::graphics::LegendEntry *", 0, 0, (void*)0, 0};
@@ -248020,6 +254482,10 @@ static swig_type_info _swigt__p_std__vectorT_datamunge__fda__BSplineBasis_t = {"
 static swig_type_info _swigt__p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t = {"_p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t", "std::vector< datamunge::filter::AlphaBetaGammaState,std::allocator< datamunge::filter::AlphaBetaGammaState > > *|std::vector< datamunge::filter::AlphaBetaGammaState > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__filter__AlphaBetaState_t = {"_p_std__vectorT_datamunge__filter__AlphaBetaState_t", "std::vector< datamunge::filter::AlphaBetaState,std::allocator< datamunge::filter::AlphaBetaState > > *|std::vector< datamunge::filter::AlphaBetaState > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__filter__KalmanState_t = {"_p_std__vectorT_datamunge__filter__KalmanState_t", "std::vector< datamunge::filter::KalmanState,std::allocator< datamunge::filter::KalmanState > > *|std::vector< datamunge::filter::KalmanState > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t = {"_p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t", "std::vector< datamunge::geometry::DTWPredecessor,std::allocator< datamunge::geometry::DTWPredecessor > > *|std::vector< enum datamunge::geometry::DTWPredecessor,std::allocator< enum datamunge::geometry::DTWPredecessor > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t = {"_p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t", "std::vector< datamunge::geometry::DelaunayInsertion,std::allocator< datamunge::geometry::DelaunayInsertion > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t = {"_p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t", "std::vector< datamunge::geometry::HullEvent,std::allocator< datamunge::geometry::HullEvent > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t = {"_p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t", "std::vector< datamunge::geometry::HullIndexedPoint,std::allocator< datamunge::geometry::HullIndexedPoint > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__geometry__Point2D_t = {"_p_std__vectorT_datamunge__geometry__Point2D_t", "std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > *|std::vector< datamunge::geometry::Point2D > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__geometry__Triangle_t = {"_p_std__vectorT_datamunge__geometry__Triangle_t", "std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > > *|std::vector< datamunge::geometry::Triangle > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_datamunge__graphics__ABLine_t = {"_p_std__vectorT_datamunge__graphics__ABLine_t", "std::vector< datamunge::graphics::ABLine,std::allocator< datamunge::graphics::ABLine > > *|std::vector< datamunge::graphics::ABLine > *", 0, 0, (void*)0, 0};
@@ -248032,8 +254498,10 @@ static swig_type_info _swigt__p_std__vectorT_int_t = {"_p_std__vectorT_int_t", "
 static swig_type_info _swigt__p_std__vectorT_long_long_std__allocatorT_long_long_t_t = {"_p_std__vectorT_long_long_std__allocatorT_long_long_t_t", "datamunge::algebra::detail::GfPoly *|std::vector< long long,std::allocator< long long > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_size_t_t = {"_p_std__vectorT_size_t_t", "std::vector< size_t,std::allocator< size_t > > *|std::vector< size_t > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__pairT_int_int_t_t = {"_p_std__vectorT_std__pairT_int_int_t_t", "std::vector< std::pair< int,int >,std::allocator< std::pair< int,int > > > *|std::vector< std::pair< int,int > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t = {"_p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t", "std::vector< std::pair< std::size_t,std::size_t >,std::allocator< std::pair< std::size_t,std::size_t > > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__pairT_std__string_double_t_t = {"_p_std__vectorT_std__pairT_std__string_double_t_t", "std::vector< std::pair< std::string,double >,std::allocator< std::pair< std::string,double > > > *|std::vector< std::pair< std::string,double > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t = {"_p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t", "std::vector< std::pair< datamunge::algebra::detail::GfPoly,int >,std::allocator< std::pair< datamunge::algebra::detail::GfPoly,int > > > *|std::vector< std::pair< std::vector< long long,std::allocator< long long > >,int >,std::allocator< std::pair< std::vector< long long,std::allocator< long long > >,int > > > *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t = {"_p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t", "std::vector< std::size_t,std::allocator< std::size_t > > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string,std::allocator< std::string > > *|std::vector< std::string > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__uint8_t_t = {"_p_std__vectorT_std__uint8_t_t", "datamunge::image::Channel *|std::vector< std::uint8_t > *|std::vector< std::uint8_t,std::allocator< std::uint8_t > > *|std::vector< unsigned char,std::allocator< unsigned char > > *|std::vector< unsigned char > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t = {"_p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t", "std::vector< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > > *|std::vector< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >,std::allocator< std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > > > > *|std::vector< std::vector< datamunge::geometry::Point2D > > *", 0, 0, (void*)0, 0};
@@ -248180,15 +254648,26 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_datamunge__geometry__BoundingBox,
   &_swigt__p_datamunge__geometry__Circle,
   &_swigt__p_datamunge__geometry__ClosestPairResult,
+  &_swigt__p_datamunge__geometry__ConvexHullAnalysis,
+  &_swigt__p_datamunge__geometry__ConvexHullOptions,
+  &_swigt__p_datamunge__geometry__ConvexHullTrace,
+  &_swigt__p_datamunge__geometry__ConvexHullWork,
+  &_swigt__p_datamunge__geometry__DTWComputation,
   &_swigt__p_datamunge__geometry__DTWResult,
+  &_swigt__p_datamunge__geometry__DTWTrace,
+  &_swigt__p_datamunge__geometry__DTWWork,
+  &_swigt__p_datamunge__geometry__DelaunayAnalysis,
+  &_swigt__p_datamunge__geometry__DelaunayInsertion,
+  &_swigt__p_datamunge__geometry__DelaunayTrace,
+  &_swigt__p_datamunge__geometry__DelaunayWork,
   &_swigt__p_datamunge__geometry__DiameterResult,
+  &_swigt__p_datamunge__geometry__HullEvent,
+  &_swigt__p_datamunge__geometry__HullIndexedPoint,
   &_swigt__p_datamunge__geometry__KDTree2D,
   &_swigt__p_datamunge__geometry__MinimumBoundingRectangle,
   &_swigt__p_datamunge__geometry__Point2D,
   &_swigt__p_datamunge__geometry__Triangle,
   &_swigt__p_datamunge__geometry__VoronoiDiagram,
-  &_swigt__p_datamunge__geometry__detail__CanonicalEdge,
-  &_swigt__p_datamunge__geometry__detail__CanonicalEdgeHash,
   &_swigt__p_datamunge__graphics__ABLine,
   &_swigt__p_datamunge__graphics__DataSeries,
   &_swigt__p_datamunge__graphics__LegendEntry,
@@ -248369,6 +254848,10 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t,
   &_swigt__p_std__vectorT_datamunge__filter__AlphaBetaState_t,
   &_swigt__p_std__vectorT_datamunge__filter__KalmanState_t,
+  &_swigt__p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t,
+  &_swigt__p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t,
+  &_swigt__p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t,
+  &_swigt__p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t,
   &_swigt__p_std__vectorT_datamunge__geometry__Point2D_t,
   &_swigt__p_std__vectorT_datamunge__geometry__Triangle_t,
   &_swigt__p_std__vectorT_datamunge__graphics__ABLine_t,
@@ -248381,8 +254864,10 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_std__vectorT_long_long_std__allocatorT_long_long_t_t,
   &_swigt__p_std__vectorT_size_t_t,
   &_swigt__p_std__vectorT_std__pairT_int_int_t_t,
+  &_swigt__p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t,
   &_swigt__p_std__vectorT_std__pairT_std__string_double_t_t,
   &_swigt__p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t,
+  &_swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t,
   &_swigt__p_std__vectorT_std__string_t,
   &_swigt__p_std__vectorT_std__uint8_t_t,
   &_swigt__p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t,
@@ -248529,15 +255014,26 @@ static swig_cast_info _swigc__p_datamunge__filter__VectorFunction[] = {  {&_swig
 static swig_cast_info _swigc__p_datamunge__geometry__BoundingBox[] = {  {&_swigt__p_datamunge__geometry__BoundingBox, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__Circle[] = {  {&_swigt__p_datamunge__geometry__Circle, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__ClosestPairResult[] = {  {&_swigt__p_datamunge__geometry__ClosestPairResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__ConvexHullAnalysis[] = {  {&_swigt__p_datamunge__geometry__ConvexHullAnalysis, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__ConvexHullOptions[] = {  {&_swigt__p_datamunge__geometry__ConvexHullOptions, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__ConvexHullTrace[] = {  {&_swigt__p_datamunge__geometry__ConvexHullTrace, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__ConvexHullWork[] = {  {&_swigt__p_datamunge__geometry__ConvexHullWork, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__DTWComputation[] = {  {&_swigt__p_datamunge__geometry__DTWComputation, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__DTWResult[] = {  {&_swigt__p_datamunge__geometry__DTWResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__DTWTrace[] = {  {&_swigt__p_datamunge__geometry__DTWTrace, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__DTWWork[] = {  {&_swigt__p_datamunge__geometry__DTWWork, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__DelaunayAnalysis[] = {  {&_swigt__p_datamunge__geometry__DelaunayAnalysis, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__DelaunayInsertion[] = {  {&_swigt__p_datamunge__geometry__DelaunayInsertion, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__DelaunayTrace[] = {  {&_swigt__p_datamunge__geometry__DelaunayTrace, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__DelaunayWork[] = {  {&_swigt__p_datamunge__geometry__DelaunayWork, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__DiameterResult[] = {  {&_swigt__p_datamunge__geometry__DiameterResult, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__HullEvent[] = {  {&_swigt__p_datamunge__geometry__HullEvent, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_datamunge__geometry__HullIndexedPoint[] = {  {&_swigt__p_datamunge__geometry__HullIndexedPoint, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__KDTree2D[] = {  {&_swigt__p_datamunge__geometry__KDTree2D, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__MinimumBoundingRectangle[] = {  {&_swigt__p_datamunge__geometry__MinimumBoundingRectangle, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__Point2D[] = {  {&_swigt__p_datamunge__geometry__Point2D, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__Triangle[] = {  {&_swigt__p_datamunge__geometry__Triangle, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__geometry__VoronoiDiagram[] = {  {&_swigt__p_datamunge__geometry__VoronoiDiagram, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__geometry__detail__CanonicalEdge[] = {  {&_swigt__p_datamunge__geometry__detail__CanonicalEdge, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_datamunge__geometry__detail__CanonicalEdgeHash[] = {  {&_swigt__p_datamunge__geometry__detail__CanonicalEdgeHash, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__graphics__ABLine[] = {  {&_swigt__p_datamunge__graphics__ABLine, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__graphics__DataSeries[] = {  {&_swigt__p_datamunge__graphics__DataSeries, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_datamunge__graphics__LegendEntry[] = {  {&_swigt__p_datamunge__graphics__LegendEntry, 0, 0, 0},{0, 0, 0, 0}};
@@ -248718,6 +255214,10 @@ static swig_cast_info _swigc__p_std__vectorT_datamunge__fda__BSplineBasis_t[] = 
 static swig_cast_info _swigc__p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t[] = {  {&_swigt__p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_datamunge__filter__AlphaBetaState_t[] = {  {&_swigt__p_std__vectorT_datamunge__filter__AlphaBetaState_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_datamunge__filter__KalmanState_t[] = {  {&_swigt__p_std__vectorT_datamunge__filter__KalmanState_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t[] = {  {&_swigt__p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_datamunge__geometry__Point2D_t[] = {  {&_swigt__p_std__vectorT_datamunge__geometry__Point2D_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_datamunge__geometry__Triangle_t[] = {  {&_swigt__p_std__vectorT_datamunge__geometry__Triangle_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_datamunge__graphics__ABLine_t[] = {  {&_swigt__p_std__vectorT_datamunge__graphics__ABLine_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -248730,8 +255230,10 @@ static swig_cast_info _swigc__p_std__vectorT_int_t[] = {  {&_swigt__p_std__vecto
 static swig_cast_info _swigc__p_std__vectorT_long_long_std__allocatorT_long_long_t_t[] = {  {&_swigt__p_std__vectorT_long_long_std__allocatorT_long_long_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_size_t_t[] = {  {&_swigt__p_std__vectorT_size_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__pairT_int_int_t_t[] = {  {&_swigt__p_std__vectorT_std__pairT_int_int_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t[] = {  {&_swigt__p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__pairT_std__string_double_t_t[] = {  {&_swigt__p_std__vectorT_std__pairT_std__string_double_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t[] = {  {&_swigt__p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t[] = {  {&_swigt__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__uint8_t_t[] = {  {&_swigt__p_std__vectorT_std__uint8_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t[] = {  {&_swigt__p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -248878,15 +255380,26 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_datamunge__geometry__BoundingBox,
   _swigc__p_datamunge__geometry__Circle,
   _swigc__p_datamunge__geometry__ClosestPairResult,
+  _swigc__p_datamunge__geometry__ConvexHullAnalysis,
+  _swigc__p_datamunge__geometry__ConvexHullOptions,
+  _swigc__p_datamunge__geometry__ConvexHullTrace,
+  _swigc__p_datamunge__geometry__ConvexHullWork,
+  _swigc__p_datamunge__geometry__DTWComputation,
   _swigc__p_datamunge__geometry__DTWResult,
+  _swigc__p_datamunge__geometry__DTWTrace,
+  _swigc__p_datamunge__geometry__DTWWork,
+  _swigc__p_datamunge__geometry__DelaunayAnalysis,
+  _swigc__p_datamunge__geometry__DelaunayInsertion,
+  _swigc__p_datamunge__geometry__DelaunayTrace,
+  _swigc__p_datamunge__geometry__DelaunayWork,
   _swigc__p_datamunge__geometry__DiameterResult,
+  _swigc__p_datamunge__geometry__HullEvent,
+  _swigc__p_datamunge__geometry__HullIndexedPoint,
   _swigc__p_datamunge__geometry__KDTree2D,
   _swigc__p_datamunge__geometry__MinimumBoundingRectangle,
   _swigc__p_datamunge__geometry__Point2D,
   _swigc__p_datamunge__geometry__Triangle,
   _swigc__p_datamunge__geometry__VoronoiDiagram,
-  _swigc__p_datamunge__geometry__detail__CanonicalEdge,
-  _swigc__p_datamunge__geometry__detail__CanonicalEdgeHash,
   _swigc__p_datamunge__graphics__ABLine,
   _swigc__p_datamunge__graphics__DataSeries,
   _swigc__p_datamunge__graphics__LegendEntry,
@@ -249067,6 +255580,10 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__vectorT_datamunge__filter__AlphaBetaGammaState_t,
   _swigc__p_std__vectorT_datamunge__filter__AlphaBetaState_t,
   _swigc__p_std__vectorT_datamunge__filter__KalmanState_t,
+  _swigc__p_std__vectorT_datamunge__geometry__DTWPredecessor_std__allocatorT_datamunge__geometry__DTWPredecessor_t_t,
+  _swigc__p_std__vectorT_datamunge__geometry__DelaunayInsertion_std__allocatorT_datamunge__geometry__DelaunayInsertion_t_t,
+  _swigc__p_std__vectorT_datamunge__geometry__HullEvent_std__allocatorT_datamunge__geometry__HullEvent_t_t,
+  _swigc__p_std__vectorT_datamunge__geometry__HullIndexedPoint_std__allocatorT_datamunge__geometry__HullIndexedPoint_t_t,
   _swigc__p_std__vectorT_datamunge__geometry__Point2D_t,
   _swigc__p_std__vectorT_datamunge__geometry__Triangle_t,
   _swigc__p_std__vectorT_datamunge__graphics__ABLine_t,
@@ -249079,8 +255596,10 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_std__vectorT_long_long_std__allocatorT_long_long_t_t,
   _swigc__p_std__vectorT_size_t_t,
   _swigc__p_std__vectorT_std__pairT_int_int_t_t,
+  _swigc__p_std__vectorT_std__pairT_std__size_t_std__size_t_t_std__allocatorT_std__pairT_std__size_t_std__size_t_t_t_t,
   _swigc__p_std__vectorT_std__pairT_std__string_double_t_t,
   _swigc__p_std__vectorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_std__allocatorT_std__pairT_std__vectorT_long_long_std__allocatorT_long_long_t_t_int_t_t_t,
+  _swigc__p_std__vectorT_std__size_t_std__allocatorT_std__size_t_t_t,
   _swigc__p_std__vectorT_std__string_t,
   _swigc__p_std__vectorT_std__uint8_t_t,
   _swigc__p_std__vectorT_std__vectorT_datamunge__geometry__Point2D_t_t,
@@ -249782,9 +256301,19 @@ SWIGINTERN int SWIG_mod_exec(PyObject *m) {
   SWIG_Python_SetConstant(d, "StepMethod_RK45",SWIG_From_int(static_cast< int >(datamunge::ode::StepMethod::RK45)));
   SWIG_Python_SetConstant(d, "StepMethod_AdamsBashforth",SWIG_From_int(static_cast< int >(datamunge::ode::StepMethod::AdamsBashforth)));
   SWIG_Python_SetConstant(d, "StepMethod_AdamsMoulton",SWIG_From_int(static_cast< int >(datamunge::ode::StepMethod::AdamsMoulton)));
+  SWIG_Python_SetConstant(d, "HullPass_lower",SWIG_From_int(static_cast< int >(datamunge::geometry::HullPass::lower)));
+  SWIG_Python_SetConstant(d, "HullPass_upper",SWIG_From_int(static_cast< int >(datamunge::geometry::HullPass::upper)));
+  SWIG_Python_SetConstant(d, "HullAction_test",SWIG_From_int(static_cast< int >(datamunge::geometry::HullAction::test)));
+  SWIG_Python_SetConstant(d, "HullAction_pop",SWIG_From_int(static_cast< int >(datamunge::geometry::HullAction::pop)));
+  SWIG_Python_SetConstant(d, "HullAction_push",SWIG_From_int(static_cast< int >(datamunge::geometry::HullAction::push)));
   SWIG_Python_SetConstant(d, "Orientation_Collinear",SWIG_From_int(static_cast< int >(datamunge::geometry::Orientation::Collinear)));
   SWIG_Python_SetConstant(d, "Orientation_Clockwise",SWIG_From_int(static_cast< int >(datamunge::geometry::Orientation::Clockwise)));
   SWIG_Python_SetConstant(d, "Orientation_CounterClockwise",SWIG_From_int(static_cast< int >(datamunge::geometry::Orientation::CounterClockwise)));
+  SWIG_Python_SetConstant(d, "DTWPredecessor_origin",SWIG_From_int(static_cast< int >(datamunge::geometry::DTWPredecessor::origin)));
+  SWIG_Python_SetConstant(d, "DTWPredecessor_diagonal",SWIG_From_int(static_cast< int >(datamunge::geometry::DTWPredecessor::diagonal)));
+  SWIG_Python_SetConstant(d, "DTWPredecessor_advance_a",SWIG_From_int(static_cast< int >(datamunge::geometry::DTWPredecessor::advance_a)));
+  SWIG_Python_SetConstant(d, "DTWPredecessor_advance_b",SWIG_From_int(static_cast< int >(datamunge::geometry::DTWPredecessor::advance_b)));
+  SWIG_Python_SetConstant(d, "DTWPredecessor_unrepresentable",SWIG_From_int(static_cast< int >(datamunge::geometry::DTWPredecessor::unrepresentable)));
   SWIG_Python_SetConstant(d, "BCType_Dirichlet",SWIG_From_int(static_cast< int >(datamunge::fem::BCType::Dirichlet)));
   SWIG_Python_SetConstant(d, "BCType_Neumann",SWIG_From_int(static_cast< int >(datamunge::fem::BCType::Neumann)));
   SWIG_Python_SetConstant(d, "BCType_Robin",SWIG_From_int(static_cast< int >(datamunge::fem::BCType::Robin)));

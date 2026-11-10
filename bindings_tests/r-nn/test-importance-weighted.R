@@ -1,0 +1,61 @@
+library(testthat)
+nn <- datamungerNN::nn
+
+test_that("Stable log mean and five owning diagnostics preserve all density paths", {
+  t <- nn$DType$Float64
+  w <- nn$from_vector_double(c(1000,1001,999),c(3L,1L))$requires_grad_()
+  b <- nn$IwaeLogMeanExp(w)
+  expect_equal(b$item(),1001+log((exp(-1)+1+exp(-2))/3),tolerance=1e-12)
+  expect_equal(sum(nn$grad(nn$neg(nn$sum(b)),nn$tensor_vector(list(w)))[[1]]$values()),-1)
+  mu <- nn$full(c(6L,2L),.3,t)$requires_grad_();lv <- nn$full(c(6L,2L),-.2,t)$requires_grad_()
+  z <- nn$ones(c(6L,2L),t)$requires_grad_();nll <- nn$full(c(6L),3,t)$requires_grad_()
+  out <- nn$ImportanceWeightedBound(mu,lv,z,nll,3L)
+  fields <- list(out$log_weights,out$normalized_weights,out$negative_bound,out$effective_samples,out$loss)
+  rm(out);gc()
+  expect_equal(fields[[1]]$shape(),c(3,2));expect_equal(fields[[4]]$values(),c(3,3))
+  g <- nn$grad(fields[[5]],nn$tensor_vector(list(mu,lv,z,nll)))
+  expect_length(g,4);expect_true(all(vapply(g,function(x)any(abs(x$values())>1e-12),logical(1))))
+  expect_equal(sum(g[[4]]$values()),1)
+})
+
+test_that("All eleven forward fields own lifetime and Float64 image/noise paths remain live", {
+  t <- nn$DType$Float64;p <- nn$ParameterStore(2237L,t)
+  x <- nn$full(c(2L,6L),.3,t)$requires_grad_();e <- nn$full(c(3L,2L,2L),.2,t)$requires_grad_()
+  out <- nn$ImportanceWeightedAutoencoder(p,x,e,6L,2L,3L)
+  names <- c("mu","log_variance","z","probability","nll","kl","loss","negative_bound","log_weights","normalized_weights","effective_samples")
+  fields <- lapply(names,function(name)do.call("$",list(out,name)));names(fields) <- names;rm(out);gc()
+  expect_equal(p$size(),10);expect_equal(p$count(),70)
+  expect_equal(fields$probability$shape(),c(6,6));expect_equal(fields$negative_bound$shape(),c(2))
+  expect_equal(fields$loss$dtype(),t);before <- p$flatten()
+  expect_equal(nn$sigmoid(nn$GaussianVaeDecode(p,fields$z,6L,2L,3L))$values(),fields$probability$values())
+  expect_identical(p$flatten(),before)
+  g <- nn$grad(fields$loss,nn$tensor_vector(c(nn$tensor_list(p$parameters()),list(x,e))))
+  expect_length(g,12);expect_true(all(vapply(g,function(x)all(is.finite(x$values())),logical(1))))
+  expect_true(all(vapply(tail(g,2),function(x)any(abs(x$values())>1e-12),logical(1))))
+})
+
+test_that("Default sampled K1 shares Gaussian leaves and host Adam owns updates", {
+  p <- nn$ParameterStore(2237L);x <- nn$full(c(2L,784L),.3);e <- nn$full(c(1L,2L,4L),.2)
+  out <- nn$ImportanceWeightedAutoencoder(p,x,e)
+  expect_equal(p$size(),10);expect_equal(p$count(),51416)
+  plain <- nn$BetaVariationalAutoencoder(p,x,nn$reshape(e,c(2L,4L)))
+  expect_equal(out$probability$values(),plain$probability$values());expect_false(identical(out$loss$item(),plain$loss$item()))
+  g <- nn$grad(out$loss,p$parameters());before <- p$flatten()
+  config <- nn$OptimizerConfig();config$kind <- nn$OptimizerKind$Adam
+  optimizer <- nn$Optimizer(p,.003,config);optimizer$step(nn$tensor_vector(g))
+  expect_equal(optimizer$iterations(),1);expect_false(identical(p$flatten(),before))
+})
+
+test_that("Invalid inputs fail before leaves and sample normalization uses K axis", {
+  p <- nn$ParameterStore(1L);x <- nn$full(c(2L,6L),.3)
+  expect_error(nn$ImportanceWeightedAutoencoder(p,x,nn$ones(c(3L,1L,2L)),6L,2L,3L))
+  expect_error(nn$ImportanceWeightedAutoencoder(p,x,nn$ones(c(3L,2L,2L),nn$DType$Float64),6L,2L,3L))
+  expect_error(nn$ImportanceWeightedAutoencoder(p,nn$full(c(2L,6L),1.1),nn$ones(c(3L,2L,2L)),6L,2L,3L))
+  expect_equal(p$size(),0)
+  expect_error(nn$IwaeLogMeanExp(nn$full(c(2L,2L),Inf)))
+  expect_error(nn$ImportanceWeightedBound(nn$zeros(c(6L,2L)),nn$zeros(c(6L,2L)),nn$ones(c(6L,2L)),nn$ones(c(6L)),4L))
+  out <- nn$ImportanceWeightedAutoencoder(p,x,nn$ones(c(3L,2L,2L)),6L,2L,3L)
+  w <- matrix(out$normalized_weights$values(),nrow=3,byrow=TRUE)
+  expect_equal(colSums(w),c(1,1),tolerance=1e-6)
+  expect_true(all(out$effective_samples$values()>=1-1e-6 & out$effective_samples$values()<=3+1e-6))
+})

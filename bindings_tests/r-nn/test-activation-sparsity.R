@@ -1,0 +1,40 @@
+testthat::test_that("native L1/KL gradients distinguish clipping and batch aggregation", {
+    nn <- datamungerNN::nn
+    h <- nn$from_vector_double(c(0,.1,.2,1,0,.1,.2,1),c(2L,4L))$requires_grad_()
+    penalty <- nn$ActivationSparsity(h,.1,.2,.2,.1)
+    expected <- rep(c(0,.1/8+.2*(-.2/.1+.8/.9)/8,.1/8,.1/8),2)
+    testthat::expect_equal(nn$grad(penalty$total,list(h))[[1L]]$values(),expected,tolerance=1e-12)
+    q <- nn$from_vector_double(c(.01,.99,.99,.01),c(2L,2L))
+    whole <- nn$ActivationSparsity(q,.1,.2,.2)
+    first <- nn$ActivationSparsity(nn$take_rows(q,0L),.1,.2,.2)
+    second <- nn$ActivationSparsity(nn$take_rows(q,1L),.1,.2,.2)
+    testthat::expect_lt(whole$kl$item(),(first$kl$item()+second$kl$item())/2)
+    testthat::expect_equal(whole$l1$item(),(first$l1$item()+second$l1$item())/2)
+    testthat::expect_error(nn$ActivationSparsity(nn$ones(c(1L,2L)),.1,.2,.2,1e-100),"rounding")
+})
+
+testthat::test_that("native sparse model owns its nested penalty and continuous graph", {
+    nn <- datamungerNN::nn
+    p <- nn$ParameterStore(1601L)
+    x <- nn$from_vector(c(.1,.6,.8,.3,.2,.7),c(2L,3L))
+    result <- nn$SparseAutoencoder(p,x,.1,.2,3L,2L)
+    testthat::expect_equal(p$count(),17)
+    testthat::expect_equal(p$size(),4L)
+    testthat::expect_lt(abs(result$loss$item()-result$mse$item()-result$penalty$total$item()),1e-7)
+    gradients <- nn$grad(result$loss,p$parameters())
+    testthat::expect_length(gradients,4L)
+    testthat::expect_true(all(vapply(gradients,function(g) all(is.finite(g$values())) && any(g$values()!=0),logical(1))))
+    result <- nn$SparseAutoencoder(p,x,.1,.2,3L,2L)
+    penalty <- result$penalty
+    expected <- penalty$unit_mean$values()
+    rm(result);invisible(gc())
+    testthat::expect_equal(penalty$unit_mean$values(),expected)
+    derivatives <- nn$grad(penalty$total,list(p$at("encoder/W"),p$at("encoder/b")))
+    testthat::expect_true(all(vapply(derivatives,function(g) any(g$values()!=0),logical(1))))
+    means <- penalty$unit_mean
+    rm(penalty);invisible(gc())
+    testthat::expect_equal(means$values(),expected)
+    empty <- nn$ParameterStore(1L)
+    testthat::expect_error(nn$SparseAutoencoder(empty,x,-1,.2,3L,2L),"nonnegative")
+    testthat::expect_equal(empty$size(),0L)
+})

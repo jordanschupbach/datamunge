@@ -2,8 +2,8 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.py
 """Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
 
-Port of tflow's recurrent_autoencoder. Preparation (in ~/projects/tflow_examples):
-just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
+Prepare MNIST pools with the native mnist-assets dataset API; data are read
+from $DATAMUNGE_DATA_DIR/saliency. Outputs
 (history, npz arrays, states.npz, metrics.json, index.html and digit<k>.png galleries)
 go to output/nn/models/recurrent_autoencoder. Checkpoints are best.npz files instead of
 TF SaveV2 bundles. Options: epochs=N data=PATH out=PATH init=PATH (start from saved
@@ -22,43 +22,12 @@ checks = helper("checks")
 ae = helper("autoencoder")
 
 
-# ---- model (examples/nn/common/recurrent_autoencoder.hpp) --------------------------------
+# ---- model (datamunge/nn/sequence_autoencoders.hpp) --------------------------------
 
-class RecurrentOutput:
-    code = reconstruction = encoder_states = decoder_states = None
-
-
-def recurrent_decode(p, code, steps=28, features=28):
-    """Decoder only: repeat the code, NOT original/previous target rows; all steps share weights."""
-    out = RecurrentOutput()
-    out.code = code
-    h = nn.zeros_like(code)
-    states, rows = [], []
-    for _ in range(steps):
-        h = nn.rnn_step(p, "decoder", code, h)
-        states.append(h)
-        rows.append(nn.dense(p, "output", h, features, nn.Activation.Sigmoid))
-    out.reconstruction = nn.stack(rows, 1)
-    out.decoder_states = nn.stack(states, 1)
-    return out
-
-
-def recurrent_autoencoder(p, sequence, steps=28, features=28, units=32):
-    """Tanh encoder over the rows of sequence [B, steps, features]; the final state is the only bridge."""
-    checks.require(steps > 1 and features > 0 and 0 < units < steps * features, "strict sequence bottleneck")
-    h = nn.zeros([sequence.size(0), units], sequence.dtype())
-    states = []
-    for t in range(steps):
-        h = nn.rnn_step(p, "encoder", nn.select(sequence, 1, t), h)
-        states.append(h)
-    out = recurrent_decode(p, h, steps, features)
-    out.encoder_states = nn.stack(states, 1)
-    return out
-
-
-def sequence_of(images):
-    """[n, 28, 28, 1] viewed as an ordered 28-row sequence, without resize."""
-    return nn.reshape(images, [images.size(0), 28, 28])
+# Reusable sequence conversion and forward arithmetic are canonical C++.
+recurrent_decode = nn.RecurrentDecode
+recurrent_autoencoder = nn.RecurrentAutoencoder
+sequence_of = nn.ImageRowSequence
 
 
 def sequence_mse(reconstruction, sequence):

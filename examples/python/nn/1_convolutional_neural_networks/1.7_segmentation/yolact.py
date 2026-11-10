@@ -27,7 +27,8 @@ census and the 348 derivatives do not depend on the input size; the
 which the executed 64-pixel model also satisfies). Training is eager; the
 fixed fitting-batch mask-loss probe uses training-mode BN without updating
 the moving averages, as TF's separate session run does. Scenes are the
-MNIST instance scenes bit-identical to TF's (output/datasets/mnist);
+MNIST instance scenes from the shared tensor sampler;pixel rounding and
+tensor positive-mask shuffles may differ from the original host implementation;
 weights come from datamunge's generator, so trained numbers match TF
 statistically.
 Options: data=PATH epochs=3 accuracy=0|1 checks_only=0|1 threads=N.

@@ -1,4 +1,4 @@
-# Tiny asymmetric masked autoencoder (examples/nn/common/masked_autoencoder.hpp).
+# Tiny asymmetric masked autoencoder (include/datamunge/nn/masked_autoencoder.hpp).
 #
 # He et al. MAE on 16 non-overlapping 7x7 MNIST patches: a visible-only width-32
 # transformer encoder (4 of 16 tokens), a width-16 mask-token decoder, fixed 2-D
@@ -6,79 +6,24 @@
 # pieces, hash-derived patch selections and native metrics only: training steps
 # (forward, masked_autoencoder_loss, nn$grad / optimizer) are written out in each example.
 
-if (!exists("autoencoder_mul32", inherits = TRUE)) nn_helper("autoencoder", environment())
+if (!exists("autoencoder_make_adam", inherits = TRUE)) nn_helper("autoencoder", environment())
 
-# Fixed 2-D sin/cos positions [16, width]: first half the patch row, second the column.
-masked_autoencoder_position <- function(width) {
-    width <- as.integer(width)
-    out <- numeric(16L * width)
-    for (patch in 0L:15L)
-        for (axis in 0L:1L)
-            for (k in seq_len(width %/% 4L) - 1L) {
-                a <- (if (axis == 1L) patch %% 4L else patch %/% 4L) * 10000^(-2 * k / (width %/% 2L))
-                out[patch * width + axis * width %/% 2L + k + 1L] <- sin(a)
-                out[patch * width + axis * width %/% 2L + width %/% 4L + k + 1L] <- cos(a)
-            }
-    nn$from_vector(out, c(16L, width))
-}
+masked_autoencoder_position <- nn$MaePosition
+masked_autoencoder_block <- nn$MaeBlock
+masked_autoencoder_patches <- nn$MaePatches
+masked_autoencoder_forward <- nn$MaskedAutoencoder
+masked_autoencoder_loss <- nn$MaeLoss
 
-# Pre-norm block: x + MHA(LN x) (2 heads, no biases), then + FF(LN .) ratio 2, tanh-GELU.
-masked_autoencoder_block <- function(p, name, x, width) {
-    normalized <- nn$layer_norm(p, paste0(name, "/ln1"), x)
-    options <- nn$MultiHeadOptions()
-    options$need_weights <- TRUE
-    attended <- nn$multi_head_attention(p, paste0(name, "/attention"), normalized, normalized, 2L, options)
-    residual <- nn$add(x, attended$output)
-    ff <- nn$dense(p, paste0(name, "/ff1"), nn$layer_norm(p, paste0(name, "/ln2"), residual), 2L * as.integer(width),
-                   nn$Activation$GeluTanh)
-    list(output = nn$add(residual, nn$dense(p, paste0(name, "/ff2"), ff, as.integer(width))),
-         attention = attended$weights)
-}
-
-# [B, 28, 28, 1] -> [B, 16, 49] row-major 7x7 patches.
-masked_autoencoder_patches <- function(image) {
-    b <- image$size(0L)
-    nn$reshape(nn$transpose(nn$reshape(image, c(b, 4L, 7L, 4L, 7L)), c(0L, 1L, 3L, 2L, 4L)), c(b, 16L, 49L))
-}
-
-# Encoder half; selector [B, 4, 16] one-hot gather: hidden pixels never enter the encoder.
-# Adds patches, visible, mask, code, encoder_attention to the list `out`.
-masked_autoencoder_encode <- function(p, image, selector, out = list()) {
-    out$patches <- masked_autoencoder_patches(image)
-    out$visible <- nn$matmul(selector, out$patches)
-    out$mask <- nn$sub(1, nn$sum(selector, 1L))
-    embedded <- nn$dense(p, "patch", out$visible, 32L)
-    position <- nn$matmul(selector, nn$expand_dims(masked_autoencoder_position(32L), 0L))
-    encoder <- masked_autoencoder_block(p, "encoder", nn$add(embedded, position), 32L)
-    out$code <- nn$layer_norm(p, "encoder/norm", encoder$output)
-    out$encoder_attention <- encoder$attention
+masked_autoencoder_encode <- function(p,image,selector,out=list()) {
+    value <- nn$MaeEncode(p,image,selector)
+    out$patches <- value$patches; out$visible <- value$visible; out$mask <- value$mask
+    out$code <- value$code; out$encoder_attention <- value$encoder_attention
     out
 }
-
-# Decoder half: from the code and patch locations only (no image/target).
-# Adds decoder_attention and prediction to the list `out`.
-masked_autoencoder_decode <- function(p, code, selector, out = list()) {
-    mask <- nn$sub(1, nn$sum(selector, 1L))
-    projected <- nn$dense(p, "decoder_projection", code, 16L)
-    restored <- nn$matmul(selector, projected, TRUE)
-    token <- p$get("mask_token", 16L, nn$init$zeros())
-    decoder_input <- nn$add(nn$add(restored, nn$mul(nn$expand_dims(mask, 2L), token)), masked_autoencoder_position(16L))
-    decoder <- masked_autoencoder_block(p, "decoder", decoder_input, 16L)
-    out$decoder_attention <- decoder$attention
-    out$prediction <- nn$dense(p, "prediction", nn$layer_norm(p, "decoder/norm", decoder$output), 49L,
-                               nn$Activation$Sigmoid)
+masked_autoencoder_decode <- function(p,code,selector,out=list()) {
+    value <- nn$MaeDecode(p,code,selector)
+    out$prediction <- value$prediction; out$decoder_attention <- value$decoder_attention
     out
-}
-
-masked_autoencoder_forward <- function(p, image, selector) {
-    out <- masked_autoencoder_encode(p, image, selector)
-    masked_autoencoder_decode(p, out$code, selector, out)
-}
-
-# Squared error over hidden patches only, / (49 x number of hidden patches).
-masked_autoencoder_loss <- function(prediction, patches, mask) {
-    error <- nn$square(nn$sub(prediction, patches))
-    nn$div(nn$sum(nn$mul(error, nn$expand_dims(mask, 2L))), nn$mul(nn$sum(mask), 49))
 }
 
 # Parameters (seed 1877) + optional Adam; forward pieces only.
@@ -110,55 +55,17 @@ masked_autoencoder_model <- function(training = TRUE) {
     model
 }
 
-# uint32 avalanche hash (vectorised over doubles holding uint32 values).
-masked_autoencoder_mix <- function(x) {
-    x <- autoencoder_xor32(x, x %/% 65536)
-    x <- autoencoder_mul32(x, 2146121005)  # 0x7feb352d
-    x <- autoencoder_xor32(x, x %/% 32768)
-    x <- autoencoder_mul32(x, 2221713035)  # 0x846ca68b
-    autoencoder_xor32(x, x %/% 65536)
+# Native mask generation preserves the original wrapping uint32 rank order.
+masked_autoencoder_selection_values <- function(ids,epoch=0L,seed=1907) {
+    source <- nn$cast(nn$from_vector_double(as.numeric(ids),as.integer(length(ids))),nn$DType$Int64)
+    nn$MaeSelection(source,epoch,seed)$values()
 }
-
-# Flat [n, 4, 16] selection values for source ids (hash of source id, epoch, seed).
-masked_autoencoder_selection_values <- function(ids, epoch = 0L, seed = 1907) {
-    out <- numeric(length(ids) * 64L)
-    i <- 0:15
-    patch_term <- autoencoder_mul32(i, 3266489909)  # 0xc2b2ae35
-    epoch_term <- autoencoder_mul32(epoch, 2246822507)  # 0x85ebca6b
-    for (b in seq_along(ids)) {
-        base <- autoencoder_xor32(autoencoder_xor32(seed, autoencoder_mul32(ids[b] %% 4294967296, 2654435769)), epoch_term)
-        keys <- masked_autoencoder_mix(autoencoder_xor32(rep(base, 16L), patch_term))
-        chosen <- i[order(keys, i)][1:4]
-        out[(b - 1L) * 64L + (0:3) * 16L + chosen + 1L] <- 1
-    }
-    out
-}
-
-# Reproducible per-example 4-of-16 visible patch selection [n, 4, 16].
-masked_autoencoder_selection <- function(source, epoch = 0L, seed = 1907) {
-    ids <- source$contiguous()$values()
-    nn$from_vector(masked_autoencoder_selection_values(ids, epoch, seed), c(length(ids), 4L, 16L))
-}
-
-# Flat (0-based) pixel index of element `within` of 7x7 patch `patch`.
-masked_autoencoder_pixel <- function(patch, within)
-    ((patch %/% 4L) * 7L + within %/% 7L) * 28L + (patch %% 4L) * 7L + within %% 7L
-
-# 1-based image index for every patch element in [16, 49] patch order (length 784).
-masked_autoencoder_pixel_index <- as.vector(outer(0:48, 0:15, function(i, p) masked_autoencoder_pixel(p, i))) + 1L
-
-# [n, 16, 49] patch values -> [n, 784] image values (flat vector).
-masked_autoencoder_image_values <- function(values, n) {
-    out <- numeric(n * 784L)
-    for (b in seq_len(n)) out[(b - 1L) * 784L + masked_autoencoder_pixel_index] <- values[(b - 1L) * 784L + 1:784]
-    out
-}
-
-# [n, 16, 49] patches -> [n, 784] image.
-masked_autoencoder_image <- function(patches) {
-    n <- patches$size(0L)
-    nn$from_vector(masked_autoencoder_image_values(patches$contiguous()$values(), n), c(n, 784L))
-}
+masked_autoencoder_selection <- nn$MaeSelection
+masked_autoencoder_pixel <- Vectorize(function(patch,within) nn$MaePixel(as.integer(patch),as.integer(within)))
+masked_autoencoder_pixel_index <- as.vector(outer(0:48,0:15,function(i,p)masked_autoencoder_pixel(p,i)))+1L
+masked_autoencoder_image_values <- function(values,n)
+    nn$MaeImage(nn$from_vector(values,c(n,16L,49L)))$values()
+masked_autoencoder_image <- nn$MaeImage
 
 # [n, 16] logical: whether patch p of example b is hidden (flat [n, 4, 16] selection values).
 masked_autoencoder_hidden_matrix <- function(selection, n) {

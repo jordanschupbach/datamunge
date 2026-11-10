@@ -1,0 +1,46 @@
+library(testthat)
+nn<-datamungerNN::nn
+
+test_that("binary preparation masks and seeded banks have owning native values",{
+ o<-nn$BinaryPixels(nn$full(c(2L,28L,28L,1L),.5)$requires_grad_())
+ gray<-o$gray;binary<-o$images;rm(o);gc()
+ expect_true(nn$equal_bits(gray,nn$full(c(2L,8L,8L,1L),.5)))
+ expect_true(nn$equal_bits(binary,nn$ones(c(2L,8L,8L,1L))))
+ expect_false(gray$requires_grad())
+ expect_equal(nn$sum(nn$CausalPixelMask(1L,8L,FALSE))$item(),32)
+ expect_equal(nn$sum(nn$CausalPixelMask(8L,8L,TRUE))$item(),320)
+ u<-nn$BinaryPixelUniforms(2L,8423)
+ expect_equal(u$shape(),c(2,64))
+ expect_true(nn$equal_bits(u,nn$BinaryPixelUniforms(2L,8423)))
+ expect_false(nn$equal_bits(u,nn$BinaryPixelUniforms(2L,8424)))
+ expect_error(nn$BinaryPixels(nn$full(c(1L,28L,28L,1L),1.1)))
+ expect_error(nn$CausalPixelMask(0L,8L,FALSE))
+ expect_error(nn$BinaryPixelUniforms(0L,1))
+})
+test_that("model census fields and causal input graph survive store collection",{
+ p<-nn$ParameterStore(8401,nn$DType$Float64)
+ x<-nn$full(c(1L,5L,7L,1L),.25,nn$DType$Float64)$requires_grad_()
+ o<-nn$PixelCnn(p,x)
+ expect_equal(c(p$count(),p$size()),c(1841,10))
+ logits<-o$logits;hidden<-o$hidden;leaves<-p$parameters();rm(o,p);gc()
+ z<-nn$reshape(logits,c(35L))
+ g<-nn$grad(nn$sum(nn$slice_axis(z,0L,17L,18L)),nn$tensor_vector(list(x)))[[1]]
+ expect_true(all(g$values()[18:35]==0))
+ expect_equal(hidden$shape(),c(1,5,7,8))
+ fresh<-nn$ParameterStore(1)
+ expect_error(nn$PixelCnn(fresh,nn$zeros(c(1L,8L,8L,2L))))
+ expect_equal(fresh$size(),0)
+})
+test_that("Bernoulli likelihood retains units gradients and flat fields",{
+ z<-nn$zeros(c(2L,3L,5L,1L),nn$DType$Float64)$requires_grad_()
+ o<-nn$BernoulliPixels(z,nn$ones(z$shape(),z$dtype()))
+ loss<-o$loss;per<-o$per_image_nll;pixel<-o$pixel_nll;q<-o$probability
+ rm(o);gc()
+ expect_equal(loss$item(),log(2))
+ expect_equal(per$values(),rep(15*log(2),2))
+ g<-nn$grad(loss,nn$tensor_vector(list(z)))[[1]]
+ expect_equal(g$values(),rep(-.5/30,30))
+ expect_equal(pixel$shape(),c(2,3,5,1))
+ expect_equal(nn$mean(q)$item(),.5)
+ expect_error(nn$BernoulliPixels(z,nn$full(z$shape(),.5,z$dtype())))
+})

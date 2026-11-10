@@ -8,8 +8,8 @@ rm(.nn_common)
 # BOTH activation-L1 and mean-unit Bernoulli-KL sparse autoencoders with matched controls.
 # Four matched 64-sigmoid variants, three epochs/default, no label targets.
 #
-# Port of tflow's sparse_autoencoder (model and penalties: examples/nn/common/sparse_autoencoder.hpp).
-# Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are read from
+# Port of tflow's sparse_autoencoder (model and penalties: include/datamunge/nn/activation_sparse_autoencoder.hpp).
+# Preparation uses the native mnist-assets dataset API; data are read from
 # $DATAMUNGE_DATA_DIR/saliency. Outputs (plain/, l1/, kl/, combined/ training records, data.npz,
 # index.html and digit<k>.png galleries) go to output/nn/models/sparse_autoencoder.
 # Options: epochs=N data=PATH out=PATH init=PATH (start all four variants from saved
@@ -21,39 +21,10 @@ nn_helper("autoencoder")
 fmt <- function(x) sprintf("%g", x)
 float32 <- function(x) readBin(writeBin(x, raw(), size = 4L), "double", size = 4L, n = length(x))
 
-# ---- model and penalties (examples/nn/common/sparse_autoencoder.hpp) -------------------------
+# ---- model and penalties (datamunge/nn/activation_sparse_autoencoder.hpp) -------------------------
 
-# l1 = mean |code|; kl = mean over units of KL(Bernoulli(rho) || Bernoulli(clamped batch mean));
-# total = l1_weight l1 + kl_weight kl. All constants are float32 values as in tflow.
-activation_sparsity <- function(code, l1_weight, kl_weight, rho = 0.05, epsilon = 1e-5) {
-    l1_weight <- float32(l1_weight)
-    kl_weight <- float32(kl_weight)
-    rho <- float32(rho)
-    epsilon <- float32(epsilon)
-    nn_require(is.finite(l1_weight) && l1_weight >= 0 && is.finite(kl_weight) && kl_weight >= 0 && rho > 0 &&
-               rho < 1 && epsilon > 0 && epsilon < 0.5, "valid sparsity weights/target/clamp")
-    out <- list()
-    out$l1 <- nn$mean(nn$abs(code))
-    out$unit_mean <- nn$mean(code, 0L)
-    out$clipped_mean <- nn$clip(out$unit_mean, epsilon, float32(1 - epsilon))
-    complement <- float32(1 - rho)
-    positive <- nn$mul(nn$log(nn$div(rho, out$clipped_mean)), rho)
-    negative <- nn$mul(nn$log(nn$div(complement, nn$sub(1, out$clipped_mean))), complement)
-    out$kl <- nn$mean(nn$add(positive, negative), 0L)
-    out$total <- nn$add(nn$mul(out$l1, l1_weight), nn$mul(out$kl, kl_weight))
-    out
-}
-
-# 784 -> 64 sigmoid -> 784 sigmoid; loss = MSE + sparsity penalties.
-sparse_forward <- function(p, image, l1_weight, kl_weight) {
-    out <- list()
-    out$code <- nn$dense(p, "encoder", image, 64L, nn$Activation$Sigmoid)
-    out$reconstruction <- nn$dense(p, "decoder", out$code, 784L, nn$Activation$Sigmoid)
-    out$mse <- autoencoder_reconstruction_mse(out$reconstruction, image)
-    out$penalty <- activation_sparsity(out$code, l1_weight, kl_weight)
-    out$loss <- nn$add(out$mse, out$penalty$total)
-    out
-}
+activation_sparsity <- nn$ActivationSparsity
+sparse_forward <- nn$SparseAutoencoder
 
 sparse_model <- function(l1, kl, training = TRUE) {
     model <- new.env()

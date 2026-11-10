@@ -1432,6 +1432,35 @@ void voxel(const fs::path& root) {
   save(destination / "manifest.json", j);
 }
 
+/// @brief Acquire and verify the original 2015 ImageNet frozen Inception graph without converting weights.
+/// @param root Dedicated inception_metric cache, containing archive, exact GraphDef, license and manifest.
+void inception_metric(const fs::path& root) {
+  const std::string archive = "inception-2015-12-05.tgz";
+  const std::string url = "https://storage.googleapis.com/download.tensorflow.org/models/image/imagenet/" + archive;
+  const std::string archive_sha = "f6b539e07358fc4622efdd40cdb5577672c46cd416bbfccf9d4d2438f9b93a1c";
+  const std::string graph_sha = "009d6814d1bc560d4e7b236e170e9b2d5ca6f4b57bd8037f6db05776204415c6";
+  source(root,"inception-metric",archive,url,archive_sha,88931400);
+  Temporary stage(root);
+  extract_archive((root/archive).string(),stage.path.string(),{"classify_image_graph_def.pb","LICENSE"},128ULL*1024*1024);
+  require(fs::file_size(stage.path/"classify_image_graph_def.pb") == 95673916 &&
+          file_digest((stage.path/"classify_image_graph_def.pb").string()) == graph_sha,
+          "original Inception GraphDef fingerprint mismatch");
+  for (const auto& name : {"classify_image_graph_def.pb","LICENSE"}) {
+    const auto destination = root/name;
+    if (fs::exists(destination)) {
+      require(!fs::is_symlink(destination) && fs::is_regular_file(destination) &&
+              file_digest(destination.string()) == file_digest((stage.path/name).string()),
+              "existing Inception asset fingerprint mismatch: " + destination.string());
+    } else fs::rename(stage.path/name,destination);
+  }
+  save(root/"manifest.json",Json{{"adapter","inception-metric"},{"original_archive_url",url},
+      {"archive_sha256",archive_sha},{"archive_bytes",88931400},{"graph_sha256",graph_sha},
+      {"graph_bytes",95673916},{"format","unmodified TensorFlow GraphDef"},
+      {"feature_tensor","pool_3:0"},{"feature_width",2048},{"class_count",1008},
+      {"input_tensor","ExpandDims:0"},{"input_units","Float32 NHWC RGB, 0..255"},
+      {"runtime","native FrozenGraph; TensorFlow is not required"}});
+}
+
 /// @brief Required outputs used to validate a completed native preparation marker.
 /// @param name Dataset adapter.
 /// @return Relative output paths, including the provenance manifest.
@@ -1439,6 +1468,8 @@ std::vector<std::string> outputs(const std::string& name) {
   static const std::map<std::string, std::vector<std::string>> files = {
       {"memory", {"ntm/data.npz", "ntm/manifest.json", "memnet/data.npz", "memnet/manifest.json"}},
       {"mnist-assets", {"saliency/saliency_data.npz", "saliency/manifest.json"}},
+      {"beta-vae-assets", {"beta_vae/factors.npz", "beta_vae/manifest.json"}},
+      {"sequence-vae-assets", {"sequence_vae/sentences.npz", "sequence_vae/vocabulary.txt", "sequence_vae/manifest.json"}},
       {"audio", {"wavenet_stack.npz", "manifest.json", "source_files.tsv"}},
       {"depth", {"pairs.npz", "manifest.json", "selected_rows.tsv"}},
       {"flowers", {"flowers.npz", "manifest.json", "prepared_rows.tsv"}},
@@ -1456,6 +1487,7 @@ std::vector<std::string> outputs(const std::string& name) {
         "ecg_sensor/BasicMotions/signals.npz",
         "ecg_sensor/BasicMotions/manifest.json"}},
       {"style", {"vgg16.npz", "vgg19.npz", "content.jpg", "style.jpg", "manifest.json"}},
+      {"inception-metric", {"classify_image_graph_def.pb", "LICENSE", "manifest.json"}},
       {"text",
        {"sentence/sentence.npz",
         "sentence/manifest.json",
@@ -1496,9 +1528,11 @@ std::string prepare_example_data(const std::string& name, const std::string& dir
         {"mesh", "modelnet"},
         {"pose", "human_pose"},
         {"style", "style_transfer"},
+        {"inception-metric", "inception_metric"},
         {"video", "action_video"},
         {"voxel", "modelnet"}};
-    if (name != "signals" && name != "text" && name != "memory" && name != "mnist-assets") {
+    if (name != "signals" && name != "text" && name != "memory" && name != "mnist-assets" &&
+        name != "beta-vae-assets" && name != "sequence-vae-assets") {
       const auto found = folders.find(name);
       target /= found == folders.end() ? name : found->second;
     }
@@ -1529,9 +1563,13 @@ std::string prepare_example_data(const std::string& name, const std::string& dir
       }
     }
   }
+  if (complete && name == "inception-metric")
+    require(file_digest((root/"classify_image_graph_def.pb").string()) ==
+            "009d6814d1bc560d4e7b236e170e9b2d5ca6f4b57bd8037f6db05776204415c6",
+            "cached original Inception GraphDef fingerprint mismatch");
   if (complete)
     return root.string();
-  if (name == "memory" || name == "mnist-assets")
+  if (name == "memory" || name == "mnist-assets" || name == "beta-vae-assets" || name == "sequence-vae-assets")
     prepare_basic(name, root);
   else if (name == "audio")
     audio(root);
@@ -1555,6 +1593,8 @@ std::string prepare_example_data(const std::string& name, const std::string& dir
     signals(root);
   else if (name == "style")
     style(root);
+  else if (name == "inception-metric")
+    inception_metric(root);
   else if (name == "text")
     text(root);
   else if (name == "vqa")

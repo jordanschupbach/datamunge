@@ -23,9 +23,9 @@ or VOC/biomedical benchmark claims.
 TF -> datamunge: atrous and separable atrous convolutions use native
 nn::conv2d / nn::depthwise_conv2d dilation (TF expands the kernels). TF
 builds the full models as graphs only; here they execute forward/backward on
-a 33x33 image (same parameters). The shapes are bit-identical to TF's;
-weights come from datamunge's generator, so trained numbers match TF
-statistically. As in TF, training keeps the default .55 test-mIoU gate.
+a33x33 image (same parameter census). Shapes and weights use tensor
+generators,so fixed-seed shape pixels differ from TF's mt19937 version.
+Full training retains the configured test-mIoU demonstration gate.
 Options: model=v3|plus (default both) epochs=20 seed=17 (parameter initialization) threads=N.
 Artifacts: output/nn/models/deeplab_v3{,_plus}_shapes/.
 

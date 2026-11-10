@@ -3,7 +3,7 @@
 """FCOS anchor-free detection: point targets, centerness and shared GN towers.
 
 Port of tflow's fcos. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 Short default: three training epochs; use epochs=N for longer accuracy experiments.
 https://arxiv.org/abs/1904.01355
 https://github.com/tianzhi0549/FCOS

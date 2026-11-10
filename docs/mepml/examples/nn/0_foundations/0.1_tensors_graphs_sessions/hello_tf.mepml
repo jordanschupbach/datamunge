@@ -97,7 +97,7 @@ int main() {
 | nn threads | 16 |
 | hardware threads | 32 |
 | architecture | x86_64 |
-| compiler | clang 21.1.8 |
+| compiler | gcc 15.2.0 |
 | CPU features | SSE4.2, AVX, AVX2, FMA, AVX512F |
 
 - a + b = [[6, 8], [10, 12]]
@@ -193,12 +193,12 @@ int main() {
 // result_begin: markdown
 | n | flops 2n³ | nn::matmul float32 (GFLOP/s) | nn::matmul float64 | triple loop i-k-j | triple loop i-j-k | elementwise add (GFLOP/s) |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 32 | 6.55e+04 | 52.3 | 43.9 | 13.54 | 4.98 | 1.70 |
-| 64 | 5.24e+05 | 114.7 | 76.7 | 17.52 | 4.73 | 4.54 |
-| 128 | 4.19e+06 | 404.1 | 222.0 | 19.36 | 3.58 | 8.79 |
-| 256 | 3.36e+07 | 436.1 | 358.3 | 18.32 | 3.05 | 10.88 |
-| 512 | 2.68e+08 | 596.8 | 394.5 | 17.01 | 1.67 | 26.14 |
-| 1024 | 2.15e+09 | 474.9 | 201.8 | 16.64 | not run | 11.97 |
+| 32 | 6.55e+04 | 92.2 | 62.3 | 19.94 | 7.10 | 2.18 |
+| 64 | 5.24e+05 | 188.3 | 96.2 | 25.70 | 6.53 | 6.29 |
+| 128 | 4.19e+06 | 506.2 | 267.0 | 29.03 | 3.89 | 10.98 |
+| 256 | 3.36e+07 | 864.3 | 556.3 | 29.48 | 3.18 | 13.06 |
+| 512 | 2.68e+08 | 1903.4 | 876.6 | 29.44 | 2.12 | 22.21 |
+| 1024 | 2.15e+09 | 1839.1 | 774.6 | 28.67 | not run | 61.78 |
 
 Arithmetic intensity at n = 1024: matmul 171 flops per byte of its inputs and output, elementwise add 0.083.
 \image(figures/hello_tf_gemm.svg)
@@ -286,7 +286,7 @@ int main() {
 | 256 | 1.36e-08 | 2.33e-07 | 2.36 | 1.53e-05 |
 | 1024 | 8.25e-09 | 6.27e-08 | 2.82 | 6.10e-05 |
 | 4096 | 4.70e-09 | 2.74e-08 | 3.22 | 2.44e-04 |
-| 16384 | 2.50e-09 | 1.36e-08 | 3.41 | 9.77e-04 |
+| 16384 | 3.38e-09 | 2.17e-08 | 4.63 | 9.77e-04 |
 \image(figures/hello_tf_accuracy.svg)
 // result_end
 
@@ -343,8 +343,8 @@ int main() {
 // result_begin: markdown
 | precision | intercept | slope | largest error against stats::LM |
 | :--- | ---: | ---: | ---: |
-| float32 | 33.474457 | 10.729625 | 6.0e-05 |
-| float64 | 33.474397 | 10.729641 | 2.9e-13 |
+| float32 | 33.474529 | 10.729604 | 1.3e-04 |
+| float64 | 33.474397 | 10.729641 | 1.5e-13 |
 
 stats::LM: waiting = 33.474397 + 10.729641 eruptions. Condition number of XᵀX: 159.1; κ u in float32 = 9.5e-06.
 \image(figures/hello_tf_faithful.svg)

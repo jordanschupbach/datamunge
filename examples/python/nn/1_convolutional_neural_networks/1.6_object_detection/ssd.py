@@ -3,7 +3,7 @@
 """SSD: multiscale single-shot detection with hard negative mining.
 
 Port of tflow's ssd. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 
 Build full VGG-16 SSD300: normalized conv4_3, dilated fc6, fc7, four
 extra blocks and six independent classification/regression heads. Check

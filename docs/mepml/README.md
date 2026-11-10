@@ -49,6 +49,74 @@ research manuscripts keep their own source,
 figures, outcome archives and Nix/just build files separately from the library
 examples.
 
+The [NN conversion plan](nn-conversion-plan.md) tracks the continued migration of
+standalone neural-network programs into `examples/nn/` reports, including removal
+of originals after execution and figure/export verification. `just nn-report-status`
+prints the inventory without running model training.
+The [auxiliary-classifier GAN report](examples/nn/3_generative_models/3.1_gans/auxiliary_classifier_gan.mepml)
+shows native conditional generation, image-only discrimination and all alternating
+updates, including the short run's weak samples and explicit diagnostic limits.
+The [bidirectional GAN report](examples/nn/3_generative_models/3.1_gans/bidirectional_gan.mepml)
+keeps joint pairs, three independent optimizer states and unfitted cycle diagnostics
+explicit, including its failed short-run reconstruction.
+The [vanilla GAN](examples/nn/3_generative_models/3.1_gans/vanilla_gan.mepml),
+[least-squares GAN](examples/nn/3_generative_models/3.1_gans/lsgan.mepml),
+[hinge GAN](examples/nn/3_generative_models/3.1_gans/hinge_gan.mepml) and
+[conditional GAN](examples/nn/3_generative_models/3.1_gans/conditional_gan.mepml)
+reports keep the shared dense networks, distinct source objectives and both-network
+class conditions explicit, including complete loops and weak generated images.
+The [InfoGAN report](examples/nn/3_generative_models/3.1_gans/infogan.mepml)
+keeps generated codes, separate image-only recognition and all three optimizer
+phases explicit, including weak images and the negative empirical information score.
+The [Spectral GAN report](examples/nn/3_generative_models/3.1_gans/spectral_gan.mepml)
+keeps cached spectral directions, differentiable weight normalization and every
+state/D/G phase explicit, including the measured approximation error and weak images.
+The [Self-Attention GAN report](examples/nn/3_generative_models/3.1_gans/self_attention_gan.mepml)
+keeps spatial patch mixing, zero residual gates, two spectral caches and every
+state/D/state/G phase explicit, including weak samples and measured nonlocal controls.
+The [BigGAN report](examples/nn/3_generative_models/3.1_gans/big_gan.mepml)
+keeps hierarchical noise, conditional BN captures, projection scores, rejection
+proposals and every spectral/Adam/moving-statistic write explicit, including weak
+samples and the original batch-statistics loss convention.
+The [DCGAN report](examples/nn/3_generative_models/3.1_gans/dcgan.mepml)
+keeps learned transposed maps, joint real/fake BN for D, fresh G through saved-BN
+D and all four state/Adam write owners explicit, including checkerboard-like
+samples and the favorable coarse score of a constant fitting-mean baseline.
+The [Wasserstein GAN report](examples/nn/3_generative_models/3.1_gans/wasserstein_gan.mepml)
+keeps clipped RMSProp and gradient-penalty Adam trials separate, with actual input
+Jacobians, stopped interpolation paths and every three-critic/fresh-G write explicit.
+It preserves the weak diagonal samples and unconverged signed gaps.
+The [Progressive GAN report](examples/nn/3_generative_models/3.1_gans/progressive_gan.mepml)
+shows both real fade paths, eight caller-owned Adam states and all-active-gradient
+capture before selected writes. Its fixed-weight fade gallery is separate from
+its three weak epoch galleries.
+The [Pix2Pix report](examples/nn/3_generative_models/3.1_gans/pix2pix.mepml)
+keeps quantized binary conditions, both U-Net skips and D-then-fresh-G writes
+explicit. Its preserved weak result is compared with the stronger fitting-only
+mean image, with original and ten-class galleries and blank-condition controls.
+The [CycleGAN report](examples/nn/3_generative_models/3.1_gans/cycle_gan.mepml)
+keeps the domains disjoint and both generator captures before either write. Its
+original and ten-class galleries, wrong-snapshot control and stronger fitting-only
+mean references qualify the weak fixed-final result.
+The [StyleGAN report](examples/nn/3_generative_models/3.1_gans/style_gan.mepml)
+compares native AdaIN and modulated/demodulated paths with supplied spatial noise,
+visible optimizer steps and all original weak-result galleries. Its additional
+fixed-style control distinguishes truncation from shared-noise conditions.
+The [StarGAN report](examples/nn/3_generative_models/3.1_gans/star_gan.mepml)
+keeps the target code, dual critic heads, shared-generator round trip and every
+optimizer write explicit. Its original and all-digit galleries plus fitting-only
+means qualify the weak requested-domain result.
+The [SRGAN/ESRGAN report](examples/nn/3_generative_models/3.1_gans/srgan_esrgan.mepml)
+keeps frozen VGG content losses, warm-up/cold Adam reset, live relativistic means
+and same-capture BN commits explicit. Original RGB previews and all32 per-image
+PSNR/SSIM gains qualify the small improvements over bicubic.
+The [SinGAN report](examples/nn/3_generative_models/3.1_gans/singan.mepml)
+keeps frozen lower-scale draws, explicit shared-RGB noise, fixed amplitudes,
+both warm-start groups and cold per-scale Adam clocks visible. Its original
+weak samples and training reconstruction remain unchanged.
+The website serializes reports sharing a directory so their local figures and
+fixtures cannot overwrite one another; separate directories can run concurrently.
+
 Keep each report's `figures/` beside the report in its topic directory; its
 complete C++ diagram blocks are the editable sources. The website uses these directories to group its Reports index
 and navigation. The `nn/` hierarchy is maintained separately.

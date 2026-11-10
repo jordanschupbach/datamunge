@@ -7,8 +7,8 @@ rm(.nn_common)
 
 # Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
 #
-# Port of tflow's recurrent_autoencoder. Preparation (in ~/projects/tflow_examples):
-# just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
+# Prepare MNIST pools with the native mnist-assets dataset API; data are read
+# from $DATAMUNGE_DATA_DIR/saliency. Outputs
 # (history, npz arrays, states.npz, metrics.json, index.html and digit<k>.png galleries)
 # go to output/nn/models/recurrent_autoencoder. Checkpoints are best.npz files instead of
 # TF SaveV2 bundles. Options: epochs=N data=PATH out=PATH init=PATH (start from saved
@@ -20,38 +20,12 @@ nn_helper("autoencoder")
 
 fmt <- function(x) sprintf("%g", x)
 
-# ---- model (examples/nn/common/recurrent_autoencoder.hpp) --------------------------------
+# ---- model (datamunge/nn/sequence_autoencoders.hpp) --------------------------------
 
-# Decoder only: repeat the code, NOT original/previous target rows; all steps share weights.
-recurrent_decode <- function(p, code, steps = 28L, features = 28L) {
-    h <- nn$zeros_like(code)
-    states <- list()
-    rows <- list()
-    for (t in seq_len(steps)) {
-        h <- nn$rnn_step(p, "decoder", code, h)
-        states[[t]] <- h
-        rows[[t]] <- nn$dense(p, "output", h, features, nn$Activation$Sigmoid)
-    }
-    list(code = code, reconstruction = nn$stack(nn$tensor_vector(rows), 1L),
-         decoder_states = nn$stack(nn$tensor_vector(states), 1L))
-}
-
-# Tanh encoder over the rows of sequence [B, steps, features]; the final state is the only bridge.
-recurrent_autoencoder <- function(p, sequence, steps = 28L, features = 28L, units = 32L) {
-    nn_require(steps > 1L && features > 0L && units > 0L && units < steps * features, "strict sequence bottleneck")
-    h <- nn$zeros(c(sequence$size(0L), units), sequence$dtype())
-    states <- list()
-    for (t in seq_len(steps)) {
-        h <- nn$rnn_step(p, "encoder", nn$select(sequence, 1L, t - 1L), h)
-        states[[t]] <- h
-    }
-    out <- recurrent_decode(p, h, steps, features)
-    out$encoder_states <- nn$stack(nn$tensor_vector(states), 1L)
-    out
-}
-
-# [n, 28, 28, 1] viewed as an ordered 28-row sequence, without resize.
-recurrent_sequence <- function(images) nn$reshape(images, c(images$size(0L), 28L, 28L))
+# Reusable sequence conversion and forward arithmetic are canonical C++.
+recurrent_decode <- nn$RecurrentDecode
+recurrent_autoencoder <- nn$RecurrentAutoencoder
+recurrent_sequence <- nn$ImageRowSequence
 
 recurrent_mse <- function(reconstruction, sequence) nn$mean(nn$square(nn$sub(reconstruction, sequence)))
 

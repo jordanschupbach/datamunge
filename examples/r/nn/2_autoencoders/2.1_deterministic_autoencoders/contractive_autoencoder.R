@@ -8,8 +8,8 @@ rm(.nn_common)
 # Exact sigmoid-encoder Jacobian-Frobenius penalty, plain and strong matched controls.
 # Three epochs/default; differentiate through activation slopes AND encoder weights.
 #
-# Port of tflow's contractive_autoencoder. Preparation (in ~/projects/tflow_examples):
-# just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
+# Port of tflow's contractive_autoencoder. Missing MNIST pools are prepared through
+# the canonical C++ dataset API in the shared cache ($DATAMUNGE_DATA_DIR/saliency). Outputs
 # (per-variant plain/contractive/strong histories, npz arrays and metrics.json, data.npz,
 # index.html and digit<k>.png galleries) go to output/nn/models/contractive_autoencoder.
 # Options: epochs=N data=PATH out=PATH init=PATH (start all three variants from saved
@@ -21,15 +21,9 @@ nn_helper("autoencoder")
 fmt <- function(x) sprintf("%g", x)
 float32 <- function(x) readBin(writeBin(x, raw(), size = 4L), "double", size = 4L, n = length(x))
 
-# ---- model (examples/nn/common/contractive_autoencoder.hpp) ----------------------------------
-
-# sum_j (h_j (1 - h_j))^2 sum_i W_ij^2 per example, and its batch mean.
-sigmoid_encoder_contraction <- function(code, encoder_weight) {
-    slope <- nn$mul(code, nn$sub(1, code))
-    squared_column_norm <- nn$sum(nn$square(encoder_weight), 0L)
-    per <- nn$sum(nn$mul(nn$square(slope), squared_column_norm), 1L)
-    list(per_example = per, mean = nn$mean(per, 0L))
-}
+# Canonical forward/penalty operations; this R script still owns fitting.
+sigmoid_encoder_contraction <- function(code, encoder_weight)
+    nn$SigmoidEncoderContraction(code, encoder_weight)
 
 # 784->32 sigmoid->784 sigmoid (seed 1753) with loss MSE + weight * exact Jacobian penalty.
 contractive_model <- function(weight, training = TRUE) {
@@ -39,13 +33,7 @@ contractive_model <- function(weight, training = TRUE) {
     model$parameters <- nn$ParameterStore(1753L)
     model$decoder <- function(code) nn$dense(model$parameters, "decoder", code, 784L, nn$Activation$Sigmoid)
     model$forward <- function(image) {
-        out <- list()
-        out$code <- nn$dense(model$parameters, "encoder", image, 32L, nn$Activation$Sigmoid)
-        out$reconstruction <- model$decoder(out$code)
-        out$mse <- autoencoder_reconstruction_mse(out$reconstruction, image)
-        out$penalty <- sigmoid_encoder_contraction(out$code, model$parameters$at("encoder/W"))
-        out$loss <- nn$add(out$mse, nn$mul(out$penalty$mean, model$weight))
-        out
+        nn$ContractiveAutoencoder(model$parameters, image, model$weight)
     }
     # list(code, reconstruction, loss, mse, penalty mean, penalty per example)
     model$evaluate <- function(images) nn$no_grad(function() {

@@ -8,9 +8,9 @@ rm(.nn_common)
 # Lifetime WTA: training-only per-feature batch winners, full ReLU deployment.
 # Three default epochs per model; matched plain control.
 #
-# Port of tflow's winner_take_all_autoencoder (the model is examples/nn/common/competitive_autoencoder.hpp,
+# Port of tflow's winner_take_all_autoencoder (the model is include/datamunge/nn/competitive_autoencoders.hpp,
 # mirrored by examples/r/nn/common/competitive_autoencoder.R and shared with
-# k_sparse_autoencoder). Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are
+# k_sparse_autoencoder). Preparation: just nn-autoencoder-data; data are
 # read from $DATAMUNGE_DATA_DIR/saliency. Outputs (competitive/ and plain/ training records,
 # data.npz, index.html and digit<k>.png galleries) go to output/nn/models/winner_take_all_autoencoder.
 # Options: epochs=N data=PATH out=PATH init=PATH (start both models from saved

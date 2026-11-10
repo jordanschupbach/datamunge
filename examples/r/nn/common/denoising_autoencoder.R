@@ -1,4 +1,4 @@
-# Denoising autoencoder model (examples/nn/common/denoising_autoencoder.hpp).
+# Denoising autoencoder model (include/datamunge/nn/autoencoder_models.hpp).
 #
 # The dense 784->32 ReLU->784 sigmoid undercomplete autoencoder (seed 1657) with
 # target-free inference. The corruption itself is autoencoder_corrupt_for_denoising;

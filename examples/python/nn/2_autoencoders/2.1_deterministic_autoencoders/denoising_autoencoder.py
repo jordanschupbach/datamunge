@@ -3,8 +3,9 @@
 """Actual corrupted-input/CLEAN-target autoencoder with fresh epoch noise and matched ordinary AE.
 Three epochs/default; fixed validation/test Gaussian banks, clean/low/strong/secondseed controls.
 
-Port of tflow's denoising_autoencoder. Preparation (in ~/projects/tflow_examples):
-just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
+Port of tflow's denoising_autoencoder. The canonical C++ dataset API prepares
+genuine MNIST in $DATAMUNGE_DATA_DIR/saliency. Noise, corruption and the model
+forward pass delegate to datamunge's core API. Outputs
 (denoising/ and ordinary/ training records, data.npz with every noise bank, the
 per-epoch training corruptions, test_metrics.tsv, outputs.npz, index.html and
 digit<k>.png galleries) go to output/nn/models/denoising_autoencoder. The Gaussian

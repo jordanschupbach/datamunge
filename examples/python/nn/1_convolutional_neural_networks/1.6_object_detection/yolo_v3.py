@@ -3,7 +3,7 @@
 """YOLO v3: Darknet-53, three prediction scales and independent logistic classes.
 
 Port of tflow's yolo_v3. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 Short default: three training epochs; use epochs=N for longer accuracy experiments.
 
 Check independent multi-label BCE and coordinate derivatives, background

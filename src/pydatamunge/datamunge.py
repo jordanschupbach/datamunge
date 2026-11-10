@@ -4414,7 +4414,7 @@ def data_home():
 def downloadable():
     r"""
     The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100",
-           "diamonds", "fashion_mnist", "mnist", "rebot_devarm", "sudoku".
+           "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".
 
     Title: Example
 
@@ -4433,6 +4433,8 @@ def fetch(*args):
     IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
     `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
     "sudoku" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.
+    "karate_club" holds the970-byte original ZIP, GML topology and source README;
+    every cached archive/member is checksum-verified. karate_club() reads34nodes/78edges.
     "rebot_devarm" holds 38 pinned Seeed DevArm CAD/URDF/STL files and the
     CERN-OHL-W-2.0 source license in their upstream relative directory layout.
     DevArm verifies the size and SHA-256 of every cached file on every call;
@@ -4447,7 +4449,7 @@ def fetch(*args):
     :param name: One of downloadable().
     :type directory: string, optional
     :param directory: Where the files live; empty means `data_home() + "/" + name`. Files
-               already present there are used as they are, except DevArm's verified files.
+               already present there are used as they are, except DevArm and karate_club's verified files.
     :rtype: string
     :return: The local path of the CSV file or the dataset directory.
     :raises: std::invalid_argument for an unknown name.
@@ -4462,7 +4464,7 @@ def fetch(*args):
     For a complete CAD asset tree, use `dm::datasets::fetch("rebot_devarm")`.
     Title: References
     - Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm
-    See also: data_home(), downloadable(), download_file()
+    See also: data_home(), downloadable(), download_file(), karate_club()
     """
     return _datamunge.fetch(*args)
 
@@ -15698,7 +15700,19 @@ class ODESolver(object):
 # Register ODESolver in _datamunge:
 _datamunge.ODESolver_swigregister(ODESolver)
 class Point2D(object):
-    r"""A point (or free vector) in the plane."""
+    r"""
+    A copied point or free vector with ordinary double coordinates.
+    Construction does not validate finiteness; checked algorithms document their
+    own input contracts. Default coordinates are zero. Equality is numeric, so
+    signed zeros compare equal and NaN coordinates do not compare equal.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::geometry::Point2D p{3,4};
+        std::cout << p.x << ' ' << p.y; // 3 4
+    See also: squared_distance(), distance(), cross(), orientation_sign()
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -15706,9 +15720,35 @@ class Point2D(object):
     y = property(_datamunge.Point2D_y_get, _datamunge.Point2D_y_set)
 
     def __eq__(self, other):
+        r"""
+        Compare both coordinates with ordinary double equality.
+        :type other: :py:class:`Point2D`
+        :param other: Point to compare without mutation.
+        :rtype: boolean
+        :return: Both coordinate comparisons are true; signed zeros compare equal.
+        Title: Example
+
+        .. code-block:: c++
+
+            std::cout << (dm::geometry::Point2D{0,1}==dm::geometry::Point2D{-0.,1}); // 1
+        See also: operator!=()
+        """
         return _datamunge.Point2D___eq__(self, other)
 
     def __ne__(self, other):
+        r"""
+        Negate coordinate equality, including unequal NaN coordinates.
+        :type other: :py:class:`Point2D`
+        :param other: Point to compare without mutation.
+        :rtype: boolean
+        :return: Logical negation of operator==().
+        Title: Example
+
+        .. code-block:: c++
+
+            std::cout << (dm::geometry::Point2D{0,1}!=dm::geometry::Point2D{0,2}); // 1
+        See also: operator==()
+        """
         return _datamunge.Point2D___ne__(self, other)
 
     def __init__(self):
@@ -15719,17 +15759,66 @@ class Point2D(object):
 _datamunge.Point2D_swigregister(Point2D)
 
 def squared_distance(a, b):
+    r"""
+    Evaluate squared Euclidean distance using the original double arithmetic.
+    No finite/range validation. Differences, products and sum can overflow,
+    underflow or lose low bits; NaNs propagate according to floating arithmetic.
+    :type a: :py:class:`Point2D`
+    :param a: First point.
+    :type b: :py:class:`Point2D`
+    :param b: Second point.
+    :rtype: float
+    :return: Rounded squared distance, possibly infinity/NaN or underflowed zero.
+    Title: Example
+
+    .. code-block:: c++
+
+        std::cout << dm::geometry::squared_distance({0,0},{3,4}); // 25
+    See also: distance()
+    """
     return _datamunge.squared_distance(a, b)
 
 def distance(a, b):
+    r"""
+    Return sqrt(squared_distance(a,b)) with its original range limitations.
+    A finite mathematical distance may overflow through the squared intermediate;
+    this convenience primitive performs no checked hypot or input validation.
+    :type a: :py:class:`Point2D`
+    :param a: First point.
+    :type b: :py:class:`Point2D`
+    :param b: Second point.
+    :rtype: float
+    :return: Rounded square root of the double-valued squared distance.
+    Title: Example
+
+    .. code-block:: c++
+
+        std::cout << dm::geometry::distance({0,0},{3,4}); // 5
+    See also: squared_distance()
+    """
     return _datamunge.distance(a, b)
 
 def cross(a, b, c):
     r"""
-    The z-component of (b - a) x (c - a): positive when a->b->c turns counterclockwise,
-           negative when clockwise, zero when the three points are collinear. The basic
-           orientation primitive every other algorithm in this module (convex hull, segment
-           intersection, point-in-polygon) is built from.
+    Evaluate the original double determinant (b-a) cross (c-a).
+    A positive exact determinant means counterclockwise, but this approximation
+    can cancel, overflow or underflow and its returned sign is not certified.
+    No tolerance or finite validation is applied. orientation_sign() supplies an
+    exact sign for finite stored binary64 points; this primitive remains unchanged.
+    :type a: :py:class:`Point2D`
+    :param a: First point.
+    :type b: :py:class:`Point2D`
+    :param b: Second point.
+    :type c: :py:class:`Point2D`
+    :param c: Third point.
+    :rtype: float
+    :return: Rounded double determinant, possibly infinity/NaN or a misleading zero.
+    Title: Example
+
+    .. code-block:: c++
+
+        std::cout << dm::geometry::cross({0,0},{1,0},{0,1}); // 1
+    See also: orientation_sign()
     """
     return _datamunge.cross(a, b, c)
 class Point2DVector(object):
@@ -15825,16 +15914,303 @@ class Point2DVector(object):
 
 # Register Point2DVector in _datamunge:
 _datamunge.Point2DVector_swigregister(Point2DVector)
+class ConvexHullOptions(object):
+    r"""
+    Limits for complete input storage and actual optional hull trace events.
+    Full finite validation precedes max_points preflight; max_events is an online
+    count of actual test/pop/push records, ignored by untraced calls. Zero disables
+    either cap. No partial result escapes a failed cap.
+    Title: Example
+
+    .. code-block:: c++
+
+        dm::geometry::ConvexHullOptions o;
+        std::cout << o.max_points << ' ' << o.max_events; // 1000000 1000000
+    See also: convex_hull_trace()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    max_points = property(_datamunge.ConvexHullOptions_max_points_get, _datamunge.ConvexHullOptions_max_points_set)
+    max_events = property(_datamunge.ConvexHullOptions_max_events_get, _datamunge.ConvexHullOptions_max_events_set)
+
+    def __init__(self):
+        _datamunge.ConvexHullOptions_swiginit(self, _datamunge.new_ConvexHullOptions())
+    __swig_destroy__ = _datamunge.delete_ConvexHullOptions
+
+# Register ConvexHullOptions in _datamunge:
+_datamunge.ConvexHullOptions_swigregister(ConvexHullOptions)
+class HullIndexedPoint(object):
+    r"""
+    Owned distinct coordinate with the earliest matching input identity.
+    Exact equality coalesces duplicates and signed zeros; sorting ties by original
+    index retains the earliest coordinate representation. Output owns the point.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::convex_hull_trace({{1,0},{0,0},{1,0}});
+        std::cout << t.sorted[1].input_index; // 0
+    See also: ConvexHullTrace
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    point = property(_datamunge.HullIndexedPoint_point_get, _datamunge.HullIndexedPoint_point_set, doc=r"""Copied original coordinate.""")
+    input_index = property(_datamunge.HullIndexedPoint_input_index_get, _datamunge.HullIndexedPoint_input_index_set)
+
+    def __init__(self):
+        _datamunge.HullIndexedPoint_swiginit(self, _datamunge.new_HullIndexedPoint())
+    __swig_destroy__ = _datamunge.delete_HullIndexedPoint
+
+# Register HullIndexedPoint in _datamunge:
+_datamunge.HullIndexedPoint_swigregister(HullIndexedPoint)
+class ConvexHullWork(object):
+    r"""
+    Actual sorting, deduplication and two-scan work, with checked counters.
+    Comparison counts depend on the standard-library sort and original order.
+    For at least two distinct points each pass pushes each point once. Tests
+    count exact orientation requests; every nonpositive test causes one pop.
+    max_stack is the greatest length of either separate chain, not their sum.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto a=dm::geometry::convex_hull_analyze({{0,0},{1,0},{0,1}});
+        std::cout << a.work.distinct_points << ' ' << a.work.pushes; // 3 6
+    See also: ConvexHullAnalysis
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    input_points = property(_datamunge.ConvexHullWork_input_points_get, _datamunge.ConvexHullWork_input_points_set)
+    distinct_points = property(_datamunge.ConvexHullWork_distinct_points_get, _datamunge.ConvexHullWork_distinct_points_set)
+    sort_comparisons = property(_datamunge.ConvexHullWork_sort_comparisons_get, _datamunge.ConvexHullWork_sort_comparisons_set)
+    duplicate_comparisons = property(_datamunge.ConvexHullWork_duplicate_comparisons_get, _datamunge.ConvexHullWork_duplicate_comparisons_set)
+    orientation_tests = property(_datamunge.ConvexHullWork_orientation_tests_get, _datamunge.ConvexHullWork_orientation_tests_set)
+    pushes = property(_datamunge.ConvexHullWork_pushes_get, _datamunge.ConvexHullWork_pushes_set)
+    pops = property(_datamunge.ConvexHullWork_pops_get, _datamunge.ConvexHullWork_pops_set)
+    max_stack = property(_datamunge.ConvexHullWork_max_stack_get, _datamunge.ConvexHullWork_max_stack_set)
+
+    def __init__(self):
+        _datamunge.ConvexHullWork_swiginit(self, _datamunge.new_ConvexHullWork())
+    __swig_destroy__ = _datamunge.delete_ConvexHullWork
+
+# Register ConvexHullWork in _datamunge:
+_datamunge.ConvexHullWork_swigregister(ConvexHullWork)
+HullPass_lower = _datamunge.HullPass_lower
+r"""Left-to-right lower scan."""
+HullPass_upper = _datamunge.HullPass_upper
+r"""Right-to-left upper scan."""
+HullAction_test = _datamunge.HullAction_test
+r"""Exact orientation test; stack unchanged."""
+HullAction_pop = _datamunge.HullAction_pop
+r"""Remove a non-left-turn top."""
+HullAction_push = _datamunge.HullAction_push
+r"""Append the current candidate."""
+class HullEvent(object):
+    r"""
+    Actual scan event, referring to indices in the trace's sorted unique points.
+    candidate is the pending point; point is the pushed/popped point, or candidate
+    for a test. a,b,turn are meaningful only for test events and otherwise zero.
+    stack_size is the actual size after the event (unchanged for tests). Together
+    these compact edits describe every stack state without quadratic snapshots.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});
+        std::cout << t.events[0].stack_size; // 1
+    See also: ConvexHullTrace, HullPass, HullAction
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    _pass = property(_datamunge.HullEvent__pass_get, _datamunge.HullEvent__pass_set)
+    action = property(_datamunge.HullEvent_action_get, _datamunge.HullEvent_action_set)
+    candidate = property(_datamunge.HullEvent_candidate_get, _datamunge.HullEvent_candidate_set)
+    point = property(_datamunge.HullEvent_point_get, _datamunge.HullEvent_point_set)
+    a = property(_datamunge.HullEvent_a_get, _datamunge.HullEvent_a_set)
+    b = property(_datamunge.HullEvent_b_get, _datamunge.HullEvent_b_set)
+    turn = property(_datamunge.HullEvent_turn_get, _datamunge.HullEvent_turn_set)
+    stack_size = property(_datamunge.HullEvent_stack_size_get, _datamunge.HullEvent_stack_size_set)
+
+    def __init__(self):
+        _datamunge.HullEvent_swiginit(self, _datamunge.new_HullEvent())
+    __swig_destroy__ = _datamunge.delete_HullEvent
+
+# Register HullEvent in _datamunge:
+_datamunge.HullEvent_swigregister(HullEvent)
+class ConvexHullAnalysis(object):
+    r"""
+    Owned strict hull, earliest original identities and actual work without history.
+    Vertices start at the lexicographic minimum and run counterclockwise, without
+    repeating the first. Collinear edge points are omitted. Empty gives no points;
+    one distinct point gives one; a collinear set gives its sorted two endpoints.
+    Identity vector aligns one-for-one with hull vertices.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto a=dm::geometry::convex_hull_analyze({{1,0},{0,0},{0,1}});
+        std::cout << a.hull.size() << ' ' << a.input_indices[0]; // 3 1
+    See also: convex_hull_analyze()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    hull = property(_datamunge.ConvexHullAnalysis_hull_get, _datamunge.ConvexHullAnalysis_hull_set, doc=r"""Owned unclosed strict hull.""")
+    input_indices = property(_datamunge.ConvexHullAnalysis_input_indices_get, _datamunge.ConvexHullAnalysis_input_indices_set, doc=r"""Earliest original identities in hull order.""")
+    work = property(_datamunge.ConvexHullAnalysis_work_get, _datamunge.ConvexHullAnalysis_work_set, doc=r"""Actual producing operations.""")
+
+    def __init__(self):
+        _datamunge.ConvexHullAnalysis_swiginit(self, _datamunge.new_ConvexHullAnalysis())
+    __swig_destroy__ = _datamunge.delete_ConvexHullAnalysis
+
+# Register ConvexHullAnalysis in _datamunge:
+_datamunge.ConvexHullAnalysis_swigregister(ConvexHullAnalysis)
+class ConvexHullTrace(object):
+    r"""
+    Owned actual sorted identities, compact stack edits and completed scan chains.
+    lower/upper contain indices into sorted and include their endpoints. Inputs
+    with fewer than two distinct points take no scans and have empty chains/events.
+    Trace capture performs no extra sorting or orientation replay. All storage is
+    independent of the caller, result and other snapshots; O(n) extra space.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});
+        std::cout << t.lower.size() << ' ' << t.upper.size(); // 2 2
+    See also: convex_hull_trace()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    analysis = property(_datamunge.ConvexHullTrace_analysis_get, _datamunge.ConvexHullTrace_analysis_set, doc=r"""Actual hull, identities and work.""")
+    sorted = property(_datamunge.ConvexHullTrace_sorted_get, _datamunge.ConvexHullTrace_sorted_set, doc=r"""Actual sorted distinct input records.""")
+    events = property(_datamunge.ConvexHullTrace_events_get, _datamunge.ConvexHullTrace_events_set, doc=r"""Actual test/pop/push edits.""")
+    lower = property(_datamunge.ConvexHullTrace_lower_get, _datamunge.ConvexHullTrace_lower_set, doc=r"""Actual final lower stack.""")
+    upper = property(_datamunge.ConvexHullTrace_upper_get, _datamunge.ConvexHullTrace_upper_set, doc=r"""Actual final upper stack.""")
+
+    def __init__(self):
+        _datamunge.ConvexHullTrace_swiginit(self, _datamunge.new_ConvexHullTrace())
+    __swig_destroy__ = _datamunge.delete_ConvexHullTrace
+
+# Register ConvexHullTrace in _datamunge:
+_datamunge.ConvexHullTrace_swigregister(ConvexHullTrace)
 
 def convex_hull(points):
     r"""
-    The 2D convex hull of ``points`` (Andrew's monotone chain, O(n log n)), returned as
-           hull vertices in counterclockwise order with no repeated first/last point. Points
-           exactly on a hull edge (collinear with two hull vertices) are excluded, matching
-           the "strict" convex hull convention. Fewer than 3 distinct input points are
-           returned as-is (there's no well-defined polygon to build).
+    Compute Andrew's strict monotone-chain hull using exact binary64 orientation signs.
+    Validates all coordinates before internal indexed copies or sorting; the
+    original by-value argument copy occurs at the call boundary. Exact coordinate
+    equality removes duplicates (including signed zero); the earliest matching
+    original record supplies its representation. Returns lexicographic-minimum
+    first, counterclockwise, no repeated endpoint and no collinear edge interiors.
+    Empty/singleton/two-point/collinear outputs follow ConvexHullAnalysis. O(n log n)
+    comparisons plus O(n) bounded exact-sign tests, O(n) scratch/output, no global
+    state. The legacy by-value signature is retained and has no optional caps.
+    Other geometry routines that use cross() retain their own floating contracts.
+    :type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :param points: Finite planar records, copied by value as in the original API.
+    :rtype: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :return: Owned strict hull of the represented coordinates.
+    :raises: std::invalid_argument Any nonfinite coordinate.
+    :raises: std::length_error Work/container size exhaustion.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto h=dm::geometry::convex_hull({{0,0},{2,0},{2,2},{0,2},{1,1}});
+        std::cout << h.size(); // 4
+    Title: References
+    - A. M. Andrew (1979), Another efficient algorithm for convex hulls in two
+      dimensions, https://doi.org/10.1016/0020-0190(79)90072-3 .
+    See also: convex_hull_analyze(), convex_hull_trace(), orientation_sign()
     """
     return _datamunge.convex_hull(points)
+
+def convex_hull_analyze(*args):
+    r"""
+    Execute the same exact-sign hull kernel with identities and actual work.
+    Same ordering, degeneracy and complexity contract as convex_hull(). Full finite
+    validation precedes the complete max_points cap and scratch allocation. No
+    events or completed-chain snapshots are retained; event cap is ignored.
+    :type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :param points: Finite original records; not mutated.
+    :type options: :py:class:`ConvexHullOptions`, optional
+    :param options: Complete original-record cap, zero unlimited; defaults one million.
+    :rtype: :py:class:`ConvexHullAnalysis`
+    :return: Owned hull, earliest original indices and actual counters.
+    :raises: std::invalid_argument Nonfinite coordinate.
+    :raises: std::length_error Complete point cap or work/container exhaustion.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto a=dm::geometry::convex_hull_analyze({{0,0},{1,0},{2,0}});
+        std::cout << a.hull.size() << ' ' << a.work.distinct_points; // 2 3
+    Title: References
+    - Andrew (1979), https://doi.org/10.1016/0020-0190(79)90072-3 .
+    See also: convex_hull(), ConvexHullOptions
+    """
+    return _datamunge.convex_hull_analyze(*args)
+
+def convex_hull_trace(*args):
+    r"""
+    Capture the hull kernel's actual stack events without replay or quadratic snapshots.
+    Same computation/work as analyze, plus O(n) owned sorted records, compact
+    test/pop/push edits and completed lower/upper chains. Positive max_events is
+    checked online on actual records, including pushes; zero disables the cap.
+    :type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :param points: Finite original records; not mutated.
+    :type options: :py:class:`ConvexHullOptions`, optional
+    :param options: Complete point and actual event caps.
+    :rtype: :py:class:`ConvexHullTrace`
+    :return: Owned actual sorted coordinates, identities, work and scan edits.
+    :raises: std::invalid_argument Nonfinite coordinate.
+    :raises: std::length_error Point/event cap or work/container exhaustion.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});
+        std::cout << t.events.size(); // 4
+    Title: References
+    - Andrew (1979), https://doi.org/10.1016/0020-0190(79)90072-3 .
+    See also: convex_hull_analyze(), HullEvent
+    """
+    return _datamunge.convex_hull_trace(*args)
+
+def sample_gaussian_points(count=40, seed=20240728, max_points=1000000):
+    r"""
+    Draw unsnapped independent standard-normal x,y pairs with a local 32-bit MT stream.
+    Reproduces the original hull report's mt19937/normal_distribution call order,
+    including its cached normal variate. Distribution mappings can differ between
+    standard libraries; a seed alone does not promise portable coordinate bits.
+    Complete count cap precedes allocation. Empty count is valid. O(count) expected
+    work/storage; no global RNG or mutation. Finite draws are checked before return.
+    :type count: std::size_t, optional
+    :param count: Number of points, default forty.
+    :type seed: int, optional
+    :param seed: Local mt19937 seed, default 20240728.
+    :type max_points: std::size_t, optional
+    :param max_points: Complete draw cap, default one million; zero unlimited.
+    :rtype: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :return: Owned unsnapped normal point cloud.
+    :raises: std::length_error Complete draw cap/container exhaustion.
+    :raises: std::overflow_error A generated coordinate is nonfinite.
+    Title: Example
+
+    .. code-block:: c++
+
+        std::cout << dm::geometry::sample_gaussian_points(40,20240728).size(); // 40
+    Title: References
+    - C++ normal_distribution specification: https://eel.is/c++draft/rand.dist.norm.normal .
+    See also: convex_hull(), random_point_cloud()
+    """
+    return _datamunge.sample_gaussian_points(count, seed, max_points)
 class ClosestPairResult(object):
     r"""
     Owned closest-point coordinate copies and legacy finite-double distance.
@@ -16095,8 +16471,16 @@ class TriangleVector(object):
 _datamunge.TriangleVector_swigregister(TriangleVector)
 class Triangle(object):
     r"""
-    A Delaunay triangle, referenced by index into the point array passed to
-           delaunay_triangulation(). Vertices are always counterclockwise.
+    Three original point indices in counterclockwise order for finite mesh faces.
+    Original field layout/defaults are retained. A trace ghost uses c=points.size()
+    as a symbolic infinity marker, with a,b the reversed finite hull edge; it is
+    never returned by delaunay_triangulation(). No coordinate is constructed for it.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::geometry::Triangle t{0,1,2};std::print("{} {} {}\n",t.a,t.b,t.c); // 0 1 2
+    See also: delaunay_triangulation(), DelaunayInsertion
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -16111,55 +16495,280 @@ class Triangle(object):
 
 # Register Triangle in _datamunge:
 _datamunge.Triangle_swigregister(Triangle)
+class DelaunayWork(object):
+    r"""
+    Actual seed and cavity operations, excluding validation, sorting and copies.
+    A conflict test is either an incircle test on a finite face or an exact
+    half-plane test on a ghost. Counters exclude CCW checks on newly created faces,
+    between-endpoint comparisons, map operations, allocation, trace copies and final
+    sorting. Initial seed plus three ghosts are excluded from creation/removal counts.
+    No counts are estimates of time or fixed-predicate internal arithmetic.
+    Title: Example
 
-def make_ccw_triangle(a, b, c, pts):
-    return _datamunge.make_ccw_triangle(a, b, c, pts)
+    .. code-block:: c++
 
-def in_circumcircle(a, b, c, d):
-    return _datamunge.in_circumcircle(a, b, c, d)
-class CanonicalEdge(object):
+        const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}});
+        std::print("{} {}\n",t.work.insertions,t.work.incircle_tests+t.work.hull_side_tests); // 2 10
+    See also: DelaunayTrace
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    u = property(_datamunge.CanonicalEdge_u_get, _datamunge.CanonicalEdge_u_set)
-    v = property(_datamunge.CanonicalEdge_v_get, _datamunge.CanonicalEdge_v_set)
-
-    def __init__(self, a, b):
-        _datamunge.CanonicalEdge_swiginit(self, _datamunge.new_CanonicalEdge(a, b))
-
-    def __eq__(self, other):
-        return _datamunge.CanonicalEdge___eq__(self, other)
-    __swig_destroy__ = _datamunge.delete_CanonicalEdge
-
-# Register CanonicalEdge in _datamunge:
-_datamunge.CanonicalEdge_swigregister(CanonicalEdge)
-class CanonicalEdgeHash(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-
-    def __call__(self, e):
-        return _datamunge.CanonicalEdgeHash___call__(self, e)
+    seed_orientation_tests = property(_datamunge.DelaunayWork_seed_orientation_tests_get, _datamunge.DelaunayWork_seed_orientation_tests_set)
+    insertions = property(_datamunge.DelaunayWork_insertions_get, _datamunge.DelaunayWork_insertions_set)
+    incircle_tests = property(_datamunge.DelaunayWork_incircle_tests_get, _datamunge.DelaunayWork_incircle_tests_set)
+    hull_side_tests = property(_datamunge.DelaunayWork_hull_side_tests_get, _datamunge.DelaunayWork_hull_side_tests_set)
+    removed_faces = property(_datamunge.DelaunayWork_removed_faces_get, _datamunge.DelaunayWork_removed_faces_set)
+    boundary_edges = property(_datamunge.DelaunayWork_boundary_edges_get, _datamunge.DelaunayWork_boundary_edges_set)
+    created_faces = property(_datamunge.DelaunayWork_created_faces_get, _datamunge.DelaunayWork_created_faces_set)
 
     def __init__(self):
-        _datamunge.CanonicalEdgeHash_swiginit(self, _datamunge.new_CanonicalEdgeHash())
-    __swig_destroy__ = _datamunge.delete_CanonicalEdgeHash
+        _datamunge.DelaunayWork_swiginit(self, _datamunge.new_DelaunayWork())
+    __swig_destroy__ = _datamunge.delete_DelaunayWork
 
-# Register CanonicalEdgeHash in _datamunge:
-_datamunge.CanonicalEdgeHash_swigregister(CanonicalEdgeHash)
+# Register DelaunayWork in _datamunge:
+_datamunge.DelaunayWork_swigregister(DelaunayWork)
+class DelaunayInsertion(object):
+    r"""
+    Owned actual cavity removal, directed boundary and replacement for one site.
+    removed/added may contain ghosts, identified by c=the original input count.
+    boundary is ordered by canonical undirected endpoint key but retains the first
+    directed occurrence; shared interior edges are cancelled. Actual face scans
+    precede this event. No full before/after mesh snapshot or geometric replay is
+    retained. All vectors own their entries and have no input lifetime dependency.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}});
+        std::print("{} {} {}\n",t.steps.back().input_index,t.steps.back().removed.size(),t.steps.back().added.size()); // 4 2 4
+    See also: DelaunayTrace
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    input_index = property(_datamunge.DelaunayInsertion_input_index_get, _datamunge.DelaunayInsertion_input_index_set)
+    faces_before = property(_datamunge.DelaunayInsertion_faces_before_get, _datamunge.DelaunayInsertion_faces_before_set)
+    faces_after = property(_datamunge.DelaunayInsertion_faces_after_get, _datamunge.DelaunayInsertion_faces_after_set)
+    removed = property(_datamunge.DelaunayInsertion_removed_get, _datamunge.DelaunayInsertion_removed_set, doc=r"""Exact actual conflicting faces, in scan order.""")
+    boundary = property(_datamunge.DelaunayInsertion_boundary_get, _datamunge.DelaunayInsertion_boundary_set, doc=r"""Actual directed nonshared cavity edges.""")
+    added = property(_datamunge.DelaunayInsertion_added_get, _datamunge.DelaunayInsertion_added_set, doc=r"""Actual replacement real/ghost faces, in boundary-key order.""")
+
+    def __init__(self):
+        _datamunge.DelaunayInsertion_swiginit(self, _datamunge.new_DelaunayInsertion())
+    __swig_destroy__ = _datamunge.delete_DelaunayInsertion
+
+# Register DelaunayInsertion in _datamunge:
+_datamunge.DelaunayInsertion_swigregister(DelaunayInsertion)
+class DelaunayTrace(object):
+    r"""
+    Complete owned sites, earliest-identity mapping, finite mesh and actual events.
+    Numeric coordinate equality coalesces duplicates and signed zeros. Representatives
+    retain earliest input indices in input order. Seed is the first two distinct
+    sites and first later noncollinear site; remaining distinct sites are inserted
+    in input order. Strict positive incircle conflicts retain an existing diagonal
+    on an exact cocircular tie; permutations may therefore select another valid mesh.
+    Final finite triangles rotate their smallest id first and are lexicographically
+    sorted, independent of map/hash traversal. All-collinear/fewer than three
+    distinct sites have no seed, faces or insertion events. All fields own data;
+    public edits are unchecked and independent calls share no mutable state.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::delaunay_trace({{0,0},{1,0},{0,1},{0,0}});
+        std::print("{} {} {}\n",t.representatives.size(),t.representative_for_input.back(),t.triangles.size()); // 3 0 1
+    See also: delaunay_trace(), delaunay_triangulation()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    points = property(_datamunge.DelaunayTrace_points_get, _datamunge.DelaunayTrace_points_set, doc=r"""Complete copied original coordinates, including duplicates.""")
+    representatives = property(_datamunge.DelaunayTrace_representatives_get, _datamunge.DelaunayTrace_representatives_set, doc=r"""Earliest unique ids in original input order.""")
+    representative_for_input = property(_datamunge.DelaunayTrace_representative_for_input_get, _datamunge.DelaunayTrace_representative_for_input_set, doc=r"""Earliest equal-coordinate id per original record.""")
+    has_seed = property(_datamunge.DelaunayTrace_has_seed_get, _datamunge.DelaunayTrace_has_seed_set)
+    seed = property(_datamunge.DelaunayTrace_seed_get, _datamunge.DelaunayTrace_seed_set, doc=r"""Initial CCW finite seed, meaningful only when has_seed.""")
+    triangles = property(_datamunge.DelaunayTrace_triangles_get, _datamunge.DelaunayTrace_triangles_set, doc=r"""Complete finite final CCW triangles, using earliest original ids.""")
+    steps = property(_datamunge.DelaunayTrace_steps_get, _datamunge.DelaunayTrace_steps_set, doc=r"""Actual non-seed cavity transitions, without replay.""")
+    work = property(_datamunge.DelaunayTrace_work_get, _datamunge.DelaunayTrace_work_set, doc=r"""Checked actual operations from the executing kernel.""")
+
+    def __init__(self):
+        _datamunge.DelaunayTrace_swiginit(self, _datamunge.new_DelaunayTrace())
+    __swig_destroy__ = _datamunge.delete_DelaunayTrace
+
+# Register DelaunayTrace in _datamunge:
+_datamunge.DelaunayTrace_swigregister(DelaunayTrace)
+class DelaunayAnalysis(object):
+    r"""
+    Coordinate-deduplicated topology counts and exact local empty-circle checks.
+    Counts are independent of triangle order. Duplicate-coordinate ids are mapped
+    to earliest originals. Triangle indices must be valid, distinct in coordinate,
+    exactly CCW, with no duplicate face and at most two incident faces per edge.
+    These checks do not certify global nonoverlap, hull coverage or planar embedding
+    of an arbitrary supplied mesh. minimum_angle_degrees is a scaled floating
+    diagnostic, NaN for no faces and potentially zero after extreme scale loss;
+    it never controls topology. Empty-circle signs are exact for stored binary64.
+    Title: Example
+
+    .. code-block:: c++
+
+        const std::vector<dm::geometry::Point2D> p{{0,0},{4,0},{4,4},{0,4},{2,2}};
+        const auto a=dm::geometry::delaunay_analyze(p,dm::geometry::delaunay_triangulation(p));
+        std::print("{} {} {} {}\n",a.distinct_points,a.triangles,a.boundary_edges,a.interior_violations); // 5 4 4 0
+    See also: delaunay_analyze()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    distinct_points = property(_datamunge.DelaunayAnalysis_distinct_points_get, _datamunge.DelaunayAnalysis_distinct_points_set)
+    used_points = property(_datamunge.DelaunayAnalysis_used_points_get, _datamunge.DelaunayAnalysis_used_points_set)
+    triangles = property(_datamunge.DelaunayAnalysis_triangles_get, _datamunge.DelaunayAnalysis_triangles_set)
+    edges = property(_datamunge.DelaunayAnalysis_edges_get, _datamunge.DelaunayAnalysis_edges_set)
+    boundary_edges = property(_datamunge.DelaunayAnalysis_boundary_edges_get, _datamunge.DelaunayAnalysis_boundary_edges_set)
+    circle_tests = property(_datamunge.DelaunayAnalysis_circle_tests_get, _datamunge.DelaunayAnalysis_circle_tests_set)
+    interior_violations = property(_datamunge.DelaunayAnalysis_interior_violations_get, _datamunge.DelaunayAnalysis_interior_violations_set)
+    minimum_angle_degrees = property(_datamunge.DelaunayAnalysis_minimum_angle_degrees_get, _datamunge.DelaunayAnalysis_minimum_angle_degrees_set)
+
+    def __init__(self):
+        _datamunge.DelaunayAnalysis_swiginit(self, _datamunge.new_DelaunayAnalysis())
+    __swig_destroy__ = _datamunge.delete_DelaunayAnalysis
+
+# Register DelaunayAnalysis in _datamunge:
+_datamunge.DelaunayAnalysis_swigregister(DelaunayAnalysis)
 
 def delaunay_triangulation(points):
     r"""
-    The Delaunay triangulation of ``points`` (Bowyer-Watson incremental algorithm,
-           O(n^2) worst case -- a deliberately simple, easy-to-verify-correct choice over the
-           faster O(n log n) sweep/divide-and-conquer algorithms, matching this module's
-           "basic" scope). Uses plain double-precision arithmetic for the in-circumcircle
-           predicate (not CGAL's exact/adaptive-precision arithmetic), so nearly-degenerate
-           inputs (many points exactly or near-exactly cocircular) may be triangulated
-           inconsistently at the boundary between two valid choices -- fine for typical inputs.
-           Returns fewer than 3 points unchanged as an empty triangle list (nothing to
-           triangulate); duplicate points are not deduplicated (the caller should do so if
-           that matters for their use case, e.g. via the same convex_hull() dedup logic).
+    Construct a complete unconstrained Delaunay triangulation with exact signs.
+    Retains the original one-vector signature and Triangle layout. Finite coordinate
+    validation precedes even trivial results. Duplicates coalesce to earliest ids;
+    collinear/fewer-than-three distinct sites return no faces. Uses Bowyer-Watson
+    cavity replacement with symbolic hull ghosts, avoiding any finite super-triangle
+    whose proximity could remove valid narrow faces. All orientation/incircle signs
+    are exact for finite stored binary64, including subnormals/extreme scales.
+    Cocircular ties retain existing faces under the ordering in DelaunayTrace.
+    Faces are strictly CCW, contain no ghosts and reference original ids. Finite
+    output order is canonical as documented on DelaunayTrace. No boundary constraints,
+    holes, Steiner refinement or minimum-angle guarantee is supplied. Input unchanged;
+    O(n log(n+1)+u^2 log(u+1)) worst-case work for n records/u distinct sites with
+    ordered cavity maps and full live scans; O(n+u) working/output storage, no shared
+    state or optional resource caps. Exact-predicate cost is bounded per binary64 query.
+    :type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :param points: Borrowed finite planar sites, possibly empty/duplicate/collinear.
+    :rtype: std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > >
+    :return: Owned complete finite mesh of the distinct sites' convex hull, or no faces for collinearity.
+    :raises: std::invalid_argument Any nonfinite coordinate, even on short input.
+    :raises: std::length_error Counter arithmetic or container capacity exceeded.
+    :raises: std::logic_error Internal cavity topology invariant fails; no partial mesh returned.
+    :raises: std::bad_alloc Allocation fails.
+    Title: Example
+
+    .. code-block:: c++
+
+        std::print("{}\n",dm::geometry::delaunay_triangulation({{0,0},{1,0},{.5,.000001}}).size()); // 1
+    Title: References
+    - A. Bowyer (1981), Computing Dirichlet tessellations, Computer Journal 24(2),162–166, doi:10.1093/comjnl/24.2.162.
+    - D. F. Watson (1981), Computing the n-dimensional Delaunay tessellation with application to Voronoi polytopes, Computer Journal 24(2),167–172, doi:10.1093/comjnl/24.2.167. This variant uses symbolic boundary faces, exact decoded-dyadic signs, earliest duplicate identities and ordered cavity edges.
+    See also: delaunay_trace(), incircle_sign()
     """
     return _datamunge.delaunay_triangulation(points)
+
+def delaunay_trace(points, max_points=1000000, max_tests=10000000, max_entries=1000000):
+    r"""
+    Capture actual symbolic-boundary cavity transitions from the same solver.
+    No replay. Full finite validation precedes the original-record cap and all
+    allocation. max_tests bounds cumulative incircle plus hull-side calls, checked
+    before each complete live-face scan. Trace entries charge one per insertion
+    plus removed faces, boundary edges and added faces, including ghosts, checked
+    before retaining the event. Points/maps/final output and temporary cavities are
+    excluded from that entry count; caps do not bound bytes or wall time. Zero
+    disables only an optional cap. O(sum cavity/event sizes) additional history,
+    at worst O(u^2), beyond the ordinary solver. Failure returns no partial result.
+    :type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :param points: Finite original coordinates, unchanged.
+    :type max_points: std::size_t, optional
+    :param max_points: Complete original-record cap, default 1000000; zero disables.
+    :type max_tests: std::size_t, optional
+    :param max_tests: Cumulative complete-scan conflict cap, default 10000000; zero disables.
+    :type max_entries: std::size_t, optional
+    :param max_entries: Cumulative event-entry cap, default 1000000; zero disables.
+    :rtype: :py:class:`DelaunayTrace`
+    :return: Owned points, original-id maps, finite mesh, actual events and work.
+    :raises: std::invalid_argument Any nonfinite coordinate.
+    :raises: std::length_error Optional cap, count arithmetic or container capacity exceeded.
+    :raises: std::logic_error Internal cavity invariant fails.
+    :raises: std::bad_alloc Allocation fails.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}},5,10);
+        std::print("{} {}\n",t.triangles.size(),t.work.incircle_tests+t.work.hull_side_tests); // 4 10
+    Title: References
+    - Bowyer (1981), doi:10.1093/comjnl/24.2.162; Watson (1981), doi:10.1093/comjnl/24.2.167; records the symbolic-boundary variant rather than a geometric replay.
+    See also: DelaunayTrace, delaunay_triangulation()
+    """
+    return _datamunge.delaunay_trace(points, max_points, max_tests, max_entries)
+
+def delaunay_analyze(points, triangles, max_tests=1000000):
+    r"""
+    Measure a supplied mesh and test every nonvertex site against every circle.
+    Performs the structural checks on DelaunayAnalysis first. The complete prospective
+    circle count faces*(unique_sites-3) is checked before circle queries; zero cap
+    disables only that limit. O(n log(n+1)+f log(f+1)+fu) work and O(n+f) storage;
+    minimum angles are floating diagnostics and are not certified bounds. This is a
+    local property analysis, not a global embedding/coverage certificate.
+    :type points: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :param points: Finite original sites, unchanged.
+    :type triangles: std::vector< datamunge::geometry::Triangle,std::allocator< datamunge::geometry::Triangle > >
+    :param triangles: Finite CCW faces with valid original indices, unchanged.
+    :type max_tests: std::size_t, optional
+    :param max_tests: Complete exact-circle query cap, default 1000000; zero disables.
+    :rtype: :py:class:`DelaunayAnalysis`
+    :return: Owned scalar topology, actual query/violation counts and approximate angle.
+    :raises: std::invalid_argument Nonfinite coordinates, bad/degenerate/non-CCW/duplicate faces or nonmanifold edges.
+    :raises: std::length_error Circle-count arithmetic or optional cap exceeded.
+    :raises: std::bad_alloc Allocation fails.
+    Title: Example
+
+    .. code-block:: c++
+
+        const std::vector<dm::geometry::Point2D> p{{0,0},{1,0},{1,1},{0,1}};
+        const auto a=dm::geometry::delaunay_analyze(p,dm::geometry::delaunay_triangulation(p));
+        std::print("{} {} {}\n",a.edges,a.boundary_edges,a.circle_tests); // 5 4 2
+    See also: DelaunayAnalysis, delaunay_triangulation()
+    """
+    return _datamunge.delaunay_analyze(points, triangles, max_tests)
+
+def delaunay_uniform_cloud(count, seed=20250728, extent=10, max_points=1000000):
+    r"""
+    Generate the report's seeded uniform square-cloud control in the core.
+    Uses mt19937(seed) and uniform_real_distribution<double>(0,extent), x then y
+    for each point. Same-library runs reproduce the original report's seed20250728
+    and 30-site square when defaults are used. Standard distribution algorithms
+    need not match across C++ libraries, so the seed is not a universal byte fixture.
+    Coincident draws are allowed and later triangulation deduplicates them.
+    O(count) work/storage, owned output, no global RNG or shared mutation.
+    :type count: std::size_t
+    :param count: Number of original generated records, zero allowed.
+    :type seed: int, optional
+    :param seed: mt19937 seed, default 20250728.
+    :type extent: float, optional
+    :param extent: Positive finite square extent, default 10; checked even for count zero.
+    :type max_points: std::size_t, optional
+    :param max_points: Optional complete output-record cap, default 1000000; zero disables.
+    :rtype: std::vector< datamunge::geometry::Point2D,std::allocator< datamunge::geometry::Point2D > >
+    :return: Owned generated points in [0,extent) on each axis.
+    :raises: std::invalid_argument Nonpositive or nonfinite extent.
+    :raises: std::length_error Optional count cap or container capacity exceeded before allocation.
+    :raises: std::bad_alloc Allocation fails.
+    Title: Example
+
+    .. code-block:: c++
+
+        std::print("{}\n",dm::geometry::delaunay_uniform_cloud(30).size()); // 30
+    See also: delaunay_trace()
+    """
+    return _datamunge.delaunay_uniform_cloud(count, seed, extent, max_points)
 class Point2DVectorVector(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -16292,24 +16901,25 @@ def voronoi_diagram(points):
     """
     return _datamunge.voronoi_diagram(points)
 class DTWResult(object):
+    r"""
+    Owned unrestricted scalar DTW result, preserving the original three-field layout.
+    Distance is the unnormalized sum of absolute differences along the returned
+    inclusive path. Default construction is an uncomputed placeholder. Copies own
+    independent buffers. Positive lengths fit int; steps advance a, b or both by one.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::geometry::dynamic_time_warping({1,2,3},{1,1,2,3});
+        std::print("{} {}\n",r.distance,r.path_a.size()); // 0 4
+    See also: dynamic_time_warping(), dtw_path_cost()
+    """
+
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
-    distance = property(_datamunge.DTWResult_distance_get, _datamunge.DTWResult_distance_set, doc=r"""
-    The cumulative warping cost -- sum of |a[i] - b[j]| along the optimal
-           alignment path.
-    """)
-    path_a = property(_datamunge.DTWResult_path_a_get, _datamunge.DTWResult_path_a_set, doc=r"""
-    The optimal alignment: path_a[k]/path_b[k] give the index into a/b at step k of
-           the path, from (0, 0) to (a.size()-1, b.size()-1), monotonically non-decreasing
-           in both. Two parallel int vectors rather than a vector<pair<size_t,size_t>> (or
-           even vector<size_t>) -- a deliberately binding-friendly shape reusing the
-           already-proven plain vector<int> machinery. vector<size_t> as either a struct
-           field or nested inside another template has repeatedly hit real SWIG codegen
-           conflicts in this codebase (duplicate scalar-traits definitions); plain `int`
-           sidesteps that category of bug entirely, and is more than large enough for any
-           realistic sequence length here.
-    """)
-    path_b = property(_datamunge.DTWResult_path_b_get, _datamunge.DTWResult_path_b_set)
+    distance = property(_datamunge.DTWResult_distance_get, _datamunge.DTWResult_distance_set)
+    path_a = property(_datamunge.DTWResult_path_a_get, _datamunge.DTWResult_path_a_set, doc=r"""Owned zero-based a indices, from zero to a.size()-1.""")
+    path_b = property(_datamunge.DTWResult_path_b_get, _datamunge.DTWResult_path_b_set, doc=r"""Owned parallel b indices, from zero to b.size()-1.""")
 
     def __init__(self):
         _datamunge.DTWResult_swiginit(self, _datamunge.new_DTWResult())
@@ -16317,17 +16927,271 @@ class DTWResult(object):
 
 # Register DTWResult in _datamunge:
 _datamunge.DTWResult_swigregister(DTWResult)
+class DTWWork(object):
+    r"""
+    Logical work of the shared DTW recurrence and actual traceback.
+    These are counts, not time. Validation, allocation, copies, comparisons and
+    rendering are excluded. Each positive cell reads three predecessor slots,
+    including infinite boundary slots. Every returned pair counts one traceback step.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::geometry::dynamic_time_warping_work({2},{5});
+        std::print("{} {} {}\n",r.work.cells,r.work.predecessor_reads,r.work.traceback_steps); // 1 3 1
+    See also: DTWComputation
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    cells = property(_datamunge.DTWWork_cells_get, _datamunge.DTWWork_cells_set, doc=r"""Exactly a.size()*b.size() recurrence evaluations.""")
+    predecessor_reads = property(_datamunge.DTWWork_predecessor_reads_get, _datamunge.DTWWork_predecessor_reads_set, doc=r"""Three slots per recurrence cell, including borders.""")
+    traceback_steps = property(_datamunge.DTWWork_traceback_steps_get, _datamunge.DTWWork_traceback_steps_set, doc=r"""Number of actual output index pairs, including origin.""")
+
+    def __init__(self):
+        _datamunge.DTWWork_swiginit(self, _datamunge.new_DTWWork())
+    __swig_destroy__ = _datamunge.delete_DTWWork
+
+# Register DTWWork in _datamunge:
+_datamunge.DTWWork_swigregister(DTWWork)
+class DTWComputation(object):
+    r"""
+    Owned ordinary result and logical work, without retained cost-table history.
+    Scratch consists of two cost rows and one predecessor byte per positive cell.
+    No input references survive return. Copies own independent result paths.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto c=dm::geometry::dynamic_time_warping_work({0,1},{0,1});
+        std::print("{} {}\n",c.result.distance,c.work.cells); // 0 4
+    See also: dynamic_time_warping_work(), DTWTrace
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    result = property(_datamunge.DTWComputation_result_get, _datamunge.DTWComputation_result_set, doc=r"""Optimal path and its unnormalized absolute loss.""")
+    work = property(_datamunge.DTWComputation_work_get, _datamunge.DTWComputation_work_set, doc=r"""Actual recurrence and traceback counts.""")
+
+    def __init__(self):
+        _datamunge.DTWComputation_swiginit(self, _datamunge.new_DTWComputation())
+    __swig_destroy__ = _datamunge.delete_DTWComputation
+
+# Register DTWComputation in _datamunge:
+_datamunge.DTWComputation_swigregister(DTWComputation)
+DTWPredecessor_origin = _datamunge.DTWPredecessor_origin
+r"""Positive cell (0,0), reached from the implicit zero border origin."""
+DTWPredecessor_diagonal = _datamunge.DTWPredecessor_diagonal
+r"""Previous positive cell (i-1,j-1)."""
+DTWPredecessor_advance_a = _datamunge.DTWPredecessor_advance_a
+r"""Previous positive cell (i-1,j)."""
+DTWPredecessor_advance_b = _datamunge.DTWPredecessor_advance_b
+r"""Previous positive cell (i,j-1)."""
+DTWPredecessor_unrepresentable = _datamunge.DTWPredecessor_unrepresentable
+r"""Positive accumulated cost exceeds finite double range."""
+class DTWTrace(object):
+    r"""
+    Owned input, actual accumulated costs and chosen predecessors from one DTW run.
+    Positive cells are row-major at i*b.size()+j; sentinel border is implicit.
+    Costs and predecessor codes are captured during the original recurrence,
+    not reconstructed afterward. Infinite cells mark unrepresentable costs.
+    Logical capture entries are a.size()+b.size()+2*a.size()*b.size(): one
+    per input scalar, cost and direction. Result paths, rolling scratch rows,
+    scalar metadata and allocator bytes are excluded. Copies are independent.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::geometry::dynamic_time_warping_trace({1},{4});
+        std::print("{} {}\n",t.cumulative[0],t.captured_entries); // 3 4
+    See also: dynamic_time_warping_trace(), dtw_trace_entries()
+    """
+
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    a = property(_datamunge.DTWTrace_a_get, _datamunge.DTWTrace_a_set, doc=r"""Owned first input, unchanged by alignment.""")
+    b = property(_datamunge.DTWTrace_b_get, _datamunge.DTWTrace_b_set, doc=r"""Owned second input.""")
+    cumulative = property(_datamunge.DTWTrace_cumulative_get, _datamunge.DTWTrace_cumulative_set, doc=r"""Actual positive-cell prefix costs, row-major.""")
+    predecessors = property(_datamunge.DTWTrace_predecessors_get, _datamunge.DTWTrace_predecessors_set, doc=r"""Actual selected directions, parallel to cumulative.""")
+    result = property(_datamunge.DTWTrace_result_get, _datamunge.DTWTrace_result_set, doc=r"""Finite optimal distance and selected actual traceback.""")
+    work = property(_datamunge.DTWTrace_work_get, _datamunge.DTWTrace_work_set, doc=r"""Counts from the same recurrence/traceback.""")
+    captured_entries = property(_datamunge.DTWTrace_captured_entries_get, _datamunge.DTWTrace_captured_entries_set, doc=r"""Complete logical capture cost described above.""")
+
+    def __init__(self):
+        _datamunge.DTWTrace_swiginit(self, _datamunge.new_DTWTrace())
+    __swig_destroy__ = _datamunge.delete_DTWTrace
+
+# Register DTWTrace in _datamunge:
+_datamunge.DTWTrace_swigregister(DTWTrace)
+
+def dtw_trace_entries(n, m):
+    r"""
+    Compute the complete logical capture size without allocating a DTW matrix.
+    Checks positive lengths, int path-index representability and size_t geometry.
+    A representable count does not promise that the corresponding buffers fit memory.
+    :type n: std::size_t
+    :param n: Positive first length, at most INT_MAX.
+    :type m: std::size_t
+    :param m: Positive second length, at most INT_MAX.
+    :rtype: std::size_t
+    :return: n+m+2*n*m logical entries, excluding result paths and scratch rows.
+    :raises: std::invalid_argument For either zero length.
+    :raises: std::length_error For index, product or capture-count overflow.
+    Title: Example
+
+    .. code-block:: c++
+
+        std::print("{}\n",dm::geometry::dtw_trace_entries(3,4)); // 31
+    See also: dynamic_time_warping_trace()
+    """
+    return _datamunge.dtw_trace_entries(n, m)
+
+def dynamic_time_warping_work(a, b):
+    r"""
+    Compute unrestricted absolute-loss DTW and actual logical work without cost history.
+    Owns the result; borrows finite inputs without mutation. No band, slope bound,
+    step weighting, length normalization or fitted parameters. Finite ties choose
+    diagonal, then advance_a, then advance_b. O(n*m) recurrence time, O(n*m+n+m)
+    scratch/output, with only two double cost rows and n*m predecessor bytes.
+    Complete input/geometry validation precedes allocation. Positive overflowing
+    off-path costs remain infinity; only a nonfinite final optimum is rejected.
+    Under ordinary double arithmetic the returned witness sums to the returned
+    distance in forward order. Concurrent independent calls share no mutable state.
+    :type a: std::vector< double,std::allocator< double > >
+    :param a: Nonempty finite scalar sequence, length at most INT_MAX.
+    :type b: std::vector< double,std::allocator< double > >
+    :param b: Nonempty finite scalar sequence, length at most INT_MAX.
+    :rtype: :py:class:`DTWComputation`
+    :return: Independent optimal result and counts, with no retained input/cost history.
+    :raises: std::invalid_argument For empty or nonfinite input.
+    :raises: std::length_error For geometry/index/container bounds.
+    :raises: std::overflow_error If the final minimum is not finite double.
+    :raises: std::bad_alloc If scratch or result storage cannot be allocated.
+    Title: Example
+    See DTWWork and DTWComputation for executed work examples.
+    Title: References
+    - H. Sakoe and S. Chiba (1978), Dynamic programming algorithm optimization for
+      spoken word recognition, IEEE TASSP26(1):43-49. doi:10.1109/TASSP.1978.1163055.
+      This is the unrestricted scalar absolute-loss variant, without the paper's window/slope rules.
+    See also: dynamic_time_warping(), dynamic_time_warping_trace()
+    """
+    return _datamunge.dynamic_time_warping_work(a, b)
 
 def dynamic_time_warping(a, b):
     r"""
-    Dynamic Time Warping distance between two (possibly different-length) scalar
-           sequences: the minimum-cost monotone alignment between them under absolute
-           difference as the per-step cost, found via the classic O(n*m) dynamic program. This
-           is the unrestricted (no Sakoe-Chiba band or other windowing) version -- fine for the
-           modest sequence lengths this module targets; a banded variant would be needed to
-           scale to long sequences.
+    Preserve the original two-argument unrestricted absolute-loss DTW entry point.
+    Same validation, ownership, deterministic ties, numerical limits and complexity
+    as dynamic_time_warping_work(); discards only its work counters. This distance
+    is not a metric: unequal stretched sequences can have zero cost and the triangle
+    inequality can fail. Equal-length diagonal alignment bounds it by rigid L1 loss.
+    :type a: std::vector< double,std::allocator< double > >
+    :param a: Nonempty finite first sequence, length at most INT_MAX.
+    :type b: std::vector< double,std::allocator< double > >
+    :param b: Nonempty finite second sequence, length at most INT_MAX.
+    :rtype: :py:class:`DTWResult`
+    :return: Owned optimal distance and inclusive zero-based parallel int paths.
+    :raises: std::invalid_argument For empty or nonfinite input.
+    :raises: std::length_error For geometry/index/container bounds.
+    :raises: std::overflow_error If the final optimum is not finite double.
+    :raises: std::bad_alloc If scratch or result storage cannot be allocated.
+    Title: Example
+    See DTWResult for the executed original stretched-sequence example.
+    Title: References
+    - H. Sakoe and S. Chiba (1978), IEEE TASSP26(1):43-49, doi:10.1109/TASSP.1978.1163055.
+    See also: dynamic_time_warping_work(), dtw_path_cost()
     """
     return _datamunge.dynamic_time_warping(a, b)
+
+def dynamic_time_warping_trace(a, b, max_entries=1000000):
+    r"""
+    Capture actual positive-cell costs and predecessor choices from the shared DTW kernel.
+    Validates complete finite inputs/geometry before checking the optional complete
+    capture budget, then copies inputs and runs once. Owns every snapshot. No partial
+    trace/result escapes on failure. Same variant/ties/numerical rules as ordinary DTW.
+    :type a: std::vector< double,std::allocator< double > >
+    :param a: Nonempty finite first input, length at most INT_MAX.
+    :type b: std::vector< double,std::allocator< double > >
+    :param b: Nonempty finite second input, length at most INT_MAX.
+    :type max_entries: std::size_t, optional
+    :param max_entries: Complete logical entry cap, default 1000000; zero disables only cap.
+    :rtype: :py:class:`DTWTrace`
+    :return: Independent input, costs, directions, optimal result, counts and capture cost.
+    :raises: std::invalid_argument For empty or nonfinite input, before budget checks.
+    :raises: std::length_error For geometry/index/container/capture limits.
+    :raises: std::overflow_error If the final optimum is not finite double.
+    :raises: std::bad_alloc If owned or working storage cannot be allocated.
+    Title: Example
+    See DTWTrace and DTWPredecessor for executed capture examples.
+    Title: References
+    - H. Sakoe and S. Chiba (1978), IEEE TASSP26(1):43-49, doi:10.1109/TASSP.1978.1163055.
+    See also: dtw_trace_entries(), dynamic_time_warping_work()
+    """
+    return _datamunge.dynamic_time_warping_trace(a, b, max_entries)
+
+def dtw_path_cost(a, b, path_a, path_b):
+    r"""
+    Validate a complete monotone witness and sum its unshifted absolute losses.
+    Checks all finite input and path geometry before numerical accumulation: equal
+    nonempty path lengths, in-bounds indices, exact endpoints and unit advances
+    (1,0), (0,1), (1,1). This certifies feasibility/cost, not optimality. O(n+m+L)
+    validation/sum, no allocations, input unchanged; no shared mutable state.
+    :type a: std::vector< double,std::allocator< double > >
+    :param a: Nonempty finite first sequence.
+    :type b: std::vector< double,std::allocator< double > >
+    :param b: Nonempty finite second sequence.
+    :type path_a: std::vector< int,std::allocator< int > >
+    :param path_a: Borrowed signed first indices, zero through a.size()-1.
+    :type path_b: std::vector< int,std::allocator< int > >
+    :param path_b: Borrowed parallel signed second indices, zero through b.size()-1.
+    :rtype: float
+    :return: Finite forward-order sum of absolute differences on the supplied witness.
+    :raises: std::invalid_argument For invalid finite inputs or path shape/indices/steps/endpoints.
+    :raises: std::length_error For input index/geometry bounds.
+    :raises: std::overflow_error If the supplied path's accumulated cost is not finite double.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::geometry::dynamic_time_warping({1,2},{1,2});
+        std::print("{}\n",dm::geometry::dtw_path_cost({1,2},{1,2},r.path_a,r.path_b)); // 0
+    See also: DTWResult, plot_dtw_alignment()
+    """
+    return _datamunge.dtw_path_cost(a, b, path_a, path_b)
+
+def plot_dtw_alignment(a, b, result, offset=1.6, max_pairs=4096):
+    r"""
+    Draw two scalar series and their validated DTW correspondence segments natively.
+    Costs use unshifted inputs; only drawing adds offset to a and subtracts it from b.
+    Requires result.distance to equal the validated forward witness sum exactly;
+    it does not independently prove optimality. Validates complete inputs/witness,
+    finite plotted coordinates and optional path-pair cap before drawing allocation.
+    Owns all series; no file I/O or model mutation. Concurrent calls share no state.
+    :type a: std::vector< double,std::allocator< double > >
+    :param a: Nonempty finite first sequence.
+    :type b: std::vector< double,std::allocator< double > >
+    :param b: Nonempty finite second sequence.
+    :type result: :py:class:`DTWResult`
+    :param result: Borrowed complete feasible result with exact finite witness cost.
+    :type offset: float, optional
+    :param offset: Finite nonnegative vertical display separation per series, default 1.6.
+    :type max_pairs: std::size_t, optional
+    :param max_pairs: Optional complete correspondence cap, default 4096; zero disables only cap.
+    :rtype: :py:class:`RPlot`
+    :return: Editable owned RPlot with two lines and gray correspondence segments.
+    :raises: std::invalid_argument For invalid inputs/witness/distance/offset.
+    :raises: std::length_error For input geometry/index limits or exceeded nonzero pair cap.
+    :raises: std::overflow_error For witness cost or shifted drawing-coordinate overflow.
+    :raises: std::bad_alloc If owned plot storage cannot be allocated.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::geometry::dynamic_time_warping({1,2},{1,2});
+        const auto p=dm::geometry::plot_dtw_alignment({1,2},{1,2},r);
+        std::print("{}\n",p.series().size()); // 3
+    See also: dtw_path_cost(), graphics::RPlot
+    """
+    return _datamunge.plot_dtw_alignment(a, b, result, offset, max_pairs)
 
 def discrete_frechet_distance(p, q):
     r"""
@@ -16655,21 +17519,26 @@ class ScalarField2D(object):
 # Register ScalarField2D in _datamunge:
 _datamunge.ScalarField2D_swigregister(ScalarField2D)
 BCType_Dirichlet = _datamunge.BCType_Dirichlet
+r"""Prescribe u=value at the endpoint."""
 BCType_Neumann = _datamunge.BCType_Neumann
+r"""Prescribe outward conormal p*du/dn=value."""
 BCType_Robin = _datamunge.BCType_Robin
+r"""Prescribe p*du/dn+robin_coefficient*(u-value)=0."""
 class BoundaryCondition1D(object):
     r"""
-    A boundary condition at one end of a 1D domain, expressed in terms of the outward
-           normal derivative du/dn (i.e. +u'(x) at the right end, -u'(x) at the left end --
-           this sign convention is what makes the same struct/formula apply symmetrically at
-           both ends):
-             Dirichlet: u = value.
-             Neumann:   p * du/dn = value (value is the prescribed outward flux; positive
-                        means flux leaving the domain through this boundary).
-             Robin:     p * du/dn + robin_coefficient * (u - value) = 0 (a linear/convective
-                        mix of the two -- value is the ambient/reference value, robin_coefficient
-                        the transfer coefficient; robin_coefficient = 0 reduces to Neumann with
-                        flux 0).
+    Owned endpoint data for Dirichlet, outward-conormal Neumann or Robin conditions.
+    Dirichlet uses value as u; Neumann uses it as p*du/dn; Robin uses it as the
+    reference value in p*du/dn+alpha*(u-value)=0. Alpha zero gives zero conormal.
+    For coercive diffusion/heat models use nonnegative Robin alpha and sufficient
+    constraints/reaction to remove the constant nullspace. Unsupported enum values
+    and nonfinite data are outside the solver's preconditions, not fully validated.
+    Title: Example
+
+    .. code-block:: c++
+
+        const dm::fem::BoundaryCondition1D right{dm::fem::BCType::Robin,4,3};
+        std::print("{} {}\n",right.value,right.robin_coefficient); // 4 3
+    See also: FEM1D, BCType
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -16686,21 +17555,51 @@ class BoundaryCondition1D(object):
 _datamunge.BoundaryCondition1D_swigregister(BoundaryCondition1D)
 class FEM1DResult(object):
     r"""
-    The nodal solution of a steady-state 1D FEM solve, plus lightweight
-           cross-language-safe accessors (see datamunge::ode::ODESolution for the same
-           "public fields for C++, accessor methods for bindings" split rationale).
+    Owned nodal P1 steady solution, with checked scalar accessors for language bindings.
+    The continuous finite-element field is the piecewise-linear interpolant of
+    these values; nodal agreement alone does not imply agreement between nodes.
+    Copies own their arrays, with no mesh/callback alias. Public edits can break
+    array consistency; accessors check the actual requested vector bounds.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::fem::FEM1D::solve_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{1},{},{});
+        std::print("{} {}\n",r.size(),r.value_at(1)); // 3 0.125
+    See also: FEM1D::solve(), algorithms::linear_interpolate()
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def size(self):
+        r"""
+        Count stored solution values without changing either array.
+        :rtype: std::size_t
+        :return: Actual u.size(); no allocation or shared mutation.
+        """
         return _datamunge.FEM1DResult_size(self)
 
     def node_at(self, index):
+        r"""
+        Read an owned spatial coordinate with vector bounds checking.
+        :type index: std::size_t
+        :param index: Zero-based coordinate index.
+        :rtype: float
+        :return: Stored coordinate by value.
+        :raises: std::out_of_range If index is outside nodes.
+        """
         return _datamunge.FEM1DResult_node_at(self, index)
 
     def value_at(self, index):
+        r"""
+        Read an owned nodal value with vector bounds checking.
+        :type index: std::size_t
+        :param index: Zero-based value index.
+        :rtype: float
+        :return: Stored solution value by value.
+        :raises: std::out_of_range If index is outside u.
+        """
         return _datamunge.FEM1DResult_value_at(self, index)
 
     def __init__(self):
@@ -16710,24 +17609,74 @@ class FEM1DResult(object):
 # Register FEM1DResult in _datamunge:
 _datamunge.FEM1DResult_swigregister(FEM1DResult)
 class FEM1DTimeSeries(object):
-    r"""One time slice of a transient (time-dependent) 1D FEM solve."""
+    r"""
+    Owned initial state and actual strictly advancing backward-Euler time slices.
+    Solver output has one u row per time and one value per spatial node. Initial
+    time zero/u0 are retained as supplied; later rows satisfy imposed boundary data.
+    Times retain rounded nominal-step products with a shortened final interval;
+    an already reached endpoint is not appended twice. Copies retain no mesh/source
+    alias. Public edits may break consistency; accessors check actual vector bounds.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto t=dm::fem::FEM1D::solve_transient_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{1},{},{},{0,0,0},.5,.5);
+        std::print("{} {:.6f}\n",t.num_steps(),t.value_at(1,1)); // 2 0.107143
+    See also: FEM1D::solve_transient(), FEM1D::solve_transient_builtin()
+    """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
 
     def num_steps(self):
+        r"""
+        Count stored time levels, including the initial state.
+        :rtype: std::size_t
+        :return: Actual times.size(), rather than the number of time advances.
+        """
         return _datamunge.FEM1DTimeSeries_num_steps(self)
 
     def num_nodes(self):
+        r"""
+        Count stored spatial coordinates.
+        :rtype: std::size_t
+        :return: Actual nodes.size(); no allocation or shared mutation.
+        """
         return _datamunge.FEM1DTimeSeries_num_nodes(self)
 
     def node_at(self, index):
+        r"""
+        Read a spatial coordinate with vector bounds checking.
+        :type index: std::size_t
+        :param index: Zero-based coordinate index.
+        :rtype: float
+        :return: Owned coordinate by value.
+        :raises: std::out_of_range If index is outside nodes.
+        """
         return _datamunge.FEM1DTimeSeries_node_at(self, index)
 
     def time_at(self, step):
+        r"""
+        Read an actual stored time level with bounds checking.
+        :type step: std::size_t
+        :param step: Zero-based frame index, including initial frame zero.
+        :rtype: float
+        :return: Actual stored time by value.
+        :raises: std::out_of_range If step is outside times.
+        """
         return _datamunge.FEM1DTimeSeries_time_at(self, step)
 
     def value_at(self, step, node_index):
+        r"""
+        Read a stored nodal time-slice value with both vector bounds checked.
+        :type step: std::size_t
+        :param step: Zero-based time-frame index in u.
+        :type node_index: std::size_t
+        :param node_index: Zero-based spatial index within that row.
+        :rtype: float
+        :return: Stored nodal value by value.
+        :raises: std::out_of_range If either index is outside the actual stored vectors.
+        """
         return _datamunge.FEM1DTimeSeries_value_at(self, step, node_index)
 
     def __init__(self):
@@ -16738,12 +17687,25 @@ class FEM1DTimeSeries(object):
 _datamunge.FEM1DTimeSeries_swigregister(FEM1DTimeSeries)
 class FEM1D(object):
     r"""
-    Galerkin finite-element solver for 1D linear two-point boundary value problems
-           -(p u')' + q u = f(x) on [a, b] (steady state), or its parabolic (time-dependent)
-           counterpart u_t - (p u')' + q u = f(x) (transient), using piecewise-linear (P1)
-           Lagrange basis functions on the supplied mesh. p and q are taken as piecewise
-           constant per element (the common case: known per-element material/diffusion/
-           reaction coefficients) while the source term f may vary continuously in space.
+    Solve steady or transient one-dimensional divergence-form problems with P1 Galerkin FEM.
+    Models -(p*u')'+q*u=f and u_t-(p*u')'+q*u=f on a caller-supplied mesh.
+    Requires at least two finite strictly increasing nodes, finite coefficient/
+    boundary/source data and finite assembled arithmetic with nonzero Thomas pivots;
+    those mathematical/geometry preconditions are not fully validated. Positive p,
+    nonnegative q/Robin data and adequate constraints give the usual coercive model.
+    Piecewise-constant p/q can be scalar or one per element. Results own their
+    values; input mesh/data are unchanged. Calls share no mutable global state,
+    while callback side effects/concurrency belong to the caller.
+    Title: Example
+
+    .. code-block:: c++
+
+        const auto r=dm::fem::FEM1D::solve_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{1},{},{});
+        std::print("{}\n",r.value_at(1)); // 0.125
+    Title: References
+    - MFEM, Weak Formulations: https://mfem.org/fem_weak_form/ . This native implementation
+      uses P1 intervals, three-point Gauss-Legendre loads and a tridiagonal direct solve.
+    See also: Mesh1D, FEM1DResult, FEM1DTimeSeries
     """
 
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
@@ -16752,40 +17714,184 @@ class FEM1D(object):
     @staticmethod
     def solve(mesh, p, q, f, left, right):
         r"""
-        Solves the steady-state BVP -(p u')' + q u = f with the given boundary
-               conditions. p and q must each be either a single value (constant across the
-               whole domain) or exactly one value per element (mesh.num_elements()).
-               Throws std::invalid_argument for a mismatched size.
+        Solve the steady P1 system for -(p*u')'+q*u=f with endpoint boundary data.
+        Follows FEM1D's mesh/coefficient/finite-arithmetic/nonsingular-pivot preconditions.
+        Uses three-point Gauss-Legendre quadrature of f times each local basis, natural
+        boundary terms and symmetric Dirichlet elimination, then Thomas elimination.
+        O(N) work/storage for N nodes; invokes the source three times per element.
+        No callback pointer is retained. Independent calls share no mutable state.
+        :type mesh: :py:class:`Mesh1D`
+        :param mesh: Borrowed mesh with at least two finite strictly increasing nodes.
+        :type p: std::vector< double,std::allocator< double > >
+        :param p: Borrowed diffusion coefficient: length1 or one per element.
+        :type q: std::vector< double,std::allocator< double > >
+        :param q: Borrowed reaction coefficient: length1 or one per element.
+        :type f: :py:class:`ScalarField1D`
+        :param f: Borrowed spatial source; evaluate() may have caller-owned side effects.
+        :type left: :py:class:`BoundaryCondition1D`
+        :param left: Left endpoint condition, with outward normal -1.
+        :type right: :py:class:`BoundaryCondition1D`
+        :param right: Right endpoint condition, with outward normal +1.
+        :rtype: :py:class:`FEM1DResult`
+        :return: Owned original nodes and computed nodal values.
+        :raises: std::invalid_argument If p/q are empty or have the wrong lengths.
+        :raises: std::bad_alloc If assembly/result storage cannot be allocated; callback exceptions propagate.
+        Title: Example
+
+        .. code-block:: c++
+
+            struct Unit final:dm::fem::ScalarField1D{double evaluate(double) override{return 1;}} source;
+            const auto r=dm::fem::FEM1D::solve(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},source,{},{});
+            std::print("{}\n",r.value_at(1)); // 0.125
+        Title: References
+        - https://mfem.org/fem_weak_form/ ; native interval P1 and quadrature choices as FEM1D.
+        See also: solve_builtin(), solve_transient()
         """
         return _datamunge.FEM1D_solve(mesh, p, q, f, left, right)
 
     @staticmethod
     def solve_builtin(mesh, p, q, source, source_params, left, right):
         r"""
-        Same as solve(), but f is one of a fixed set of named source terms instead of a
-               live user-supplied callback -- the only option for bindings without director
-               support. source_params is interpreted positionally per source name, with the
-               listed defaults used for any parameter past the end of source_params:
-                 - "zero":       f(x) = 0.                            source_params unused.
-                 - "constant":   f(x) = c.                            {c=1}.
-                 - "linear":     f(x) = m*x + c.                       {m=1, c=0}.
-                 - "polynomial": f(x) = sum_i source_params[i] * x^i. an empty list means f=0.
-                 - "sine":       f(x) = amplitude*sin(freq*x+phase).  {amplitude=1, freq=1, phase=0}.
-               Throws std::invalid_argument for an unknown source name.
+        Solve the steady system using an owned named spatial source, without a director callback.
+        Shares the live-source solver and its mathematical/precondition/storage contracts.
+        Sources: zero=0 (params unused); constant=c ({1}); linear=m*x+c ({1,0});
+        polynomial=sum(params[i]*x^i) (empty gives0); sine=A*sin(w*x+phase) ({1,1,0}).
+        Missing trailing parameters use those defaults; extra parameters are ignored
+        except polynomial, which uses all entries. Name matching is exact/case-sensitive.
+        :type mesh: :py:class:`Mesh1D`
+        :param mesh: Borrowed valid finite interval mesh; unchanged.
+        :type p: std::vector< double,std::allocator< double > >
+        :param p: Borrowed scalar/per-element diffusion coefficient.
+        :type q: std::vector< double,std::allocator< double > >
+        :param q: Borrowed scalar/per-element reaction coefficient.
+        :type source: string
+        :param source: Exact name zero, constant, linear, polynomial or sine.
+        :type source_params: std::vector< double,std::allocator< double > >
+        :param source_params: Borrowed positional source parameters, with defaults described above.
+        :type left: :py:class:`BoundaryCondition1D`
+        :param left: Left endpoint data using outward normal -1.
+        :type right: :py:class:`BoundaryCondition1D`
+        :param right: Right endpoint data using outward normal +1.
+        :rtype: :py:class:`FEM1DResult`
+        :return: Owned computed nodal result, retaining no source or input reference.
+        :raises: std::invalid_argument For an unknown source or malformed p/q lengths.
+        :raises: std::bad_alloc If owned parameter/assembly/result storage cannot be allocated.
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto r=dm::fem::FEM1D::solve_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{}, {},{});
+            std::print("{}\n",r.value_at(1)); // 0.125
+        Title: References
+        - https://mfem.org/fem_weak_form/ ; source definitions are native convenience choices.
+        See also: solve(), solve_transient_builtin()
         """
         return _datamunge.FEM1D_solve_builtin(mesh, p, q, source, source_params, left, right)
 
     @staticmethod
     def solve_transient(mesh, p, q, f, left, right, u0, t_end, dt):
         r"""
-        Solves the transient (parabolic) problem u_t - (p u')' + q u = f(x) [f and the
-               boundary conditions are held fixed in time -- this "basic" transient solver does
-               not support a time-varying source or BCs] from t=0 to t=t_end with initial
-               condition u0 (one value per mesh node), via unconditionally stable backward
-               Euler time-stepping with fixed step dt. Throws std::invalid_argument if
-               u0.size() != mesh.num_nodes(), or if dt <= 0 or t_end <= 0.
+        Integrate u_t-(p*u')'+q*u=f with P1 space and actual backward-Euler time intervals.
+        Shares FEM1D's spatial/finite-arithmetic/nonzero-pivot preconditions. Source
+        and boundary data represent a time-independent model; the live callback is
+        actually reevaluated three times per element at every time advance, not cached.
+        Stores initial u0 as supplied, then imposes boundary data at later solves.
+        Nominal step dt is shortened at t_end; actual positive time differences enter
+        the mass term. Stops once t_end is reached, avoiding a duplicate rounded last
+        time even when ceil(t_end/dt) overestimates the number of advances.
+        O(S*N) work/output storage for S advances/N nodes, O(N) assembly temporaries;
+        no optional trace or quota. Backward Euler is unconditionally stable for the
+        coercive semidiscrete model, not a guarantee of arbitrary-step accuracy or
+        finite arithmetic for arbitrary parameters. Input arrays remain unchanged;
+        callback exceptions/side effects/concurrent safety belong to caller.
+        :type mesh: :py:class:`Mesh1D`
+        :param mesh: Borrowed valid mesh with at least two finite increasing nodes.
+        :type p: std::vector< double,std::allocator< double > >
+        :param p: Borrowed scalar/per-element diffusion coefficient.
+        :type q: std::vector< double,std::allocator< double > >
+        :param q: Borrowed scalar/per-element reaction coefficient.
+        :type f: :py:class:`ScalarField1D`
+        :param f: Borrowed spatial callback, reevaluated at every advance.
+        :type left: :py:class:`BoundaryCondition1D`
+        :param left: Fixed left condition, with outward normal -1.
+        :type right: :py:class:`BoundaryCondition1D`
+        :param right: Fixed right condition, with outward normal +1.
+        :type u0: std::vector< double,std::allocator< double > >
+        :param u0: Borrowed finite initial nodal values, exactly one per mesh node.
+        :type t_end: float
+        :param t_end: Positive finite final time, in time units.
+        :type dt: float
+        :param dt: Positive finite nominal time step in the same units; may exceed t_end.
+        :rtype: :py:class:`FEM1DTimeSeries`
+        :return: Owned nodes, initial state and strictly advancing slices ending at t_end.
+        :raises: std::invalid_argument For fewer than two nodes, wrong coefficient/u0 lengths or nonpositive/nonfinite time controls.
+        :raises: std::length_error If frame counts, vector capacities or total scalar count cannot be represented.
+        :raises: std::overflow_error If rounded time products cannot advance before t_end.
+        :raises: std::bad_alloc If output/assembly storage cannot be allocated; callback exceptions propagate.
+        Title: Example
+
+        .. code-block:: c++
+
+            struct Zero final:dm::fem::ScalarField1D{double evaluate(double) override{return 0;}} source;
+            const auto t=dm::fem::FEM1D::solve_transient(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},source,{},{},{0,1,0},.5,.5);
+            std::print("{} {:.6f}\n",t.num_steps(),t.value_at(1,1)); // 2 0.142857
+        Title: References
+        - Arnold (2012), Numerical Analysis of Partial Differential Equations, chapter5 section2.
+          https://www-users.cse.umn.edu/~arnold/8445.f12/notes.pdf . Native load quadrature,
+          fixed data and rounded/shortened time grid are implementation choices.
+        See also: solve_transient_builtin(), FEM1DTimeSeries
         """
         return _datamunge.FEM1D_solve_transient(mesh, p, q, f, left, right, u0, t_end, dt)
+
+    @staticmethod
+    def solve_transient_builtin(mesh, p, q, source, source_params, left, right, u0, t_end, dt):
+        r"""
+        Integrate the same backward-Euler model with a named source and no callback subclass.
+        Uses the same private source construction as solve_builtin() and the same
+        actual time loop as solve_transient(); no second solver or per-language glue.
+        Names/defaults: zero=0; constant=c ({1}); linear=m*x+c ({1,0});
+        polynomial=sum(params[i]*x^i) (empty0); sine=A*sin(w*x+phase) ({1,1,0}).
+        Extra entries ignored except polynomial; exact case-sensitive names. Source
+        objects are local and synchronous; results own values, not callback aliases.
+        All spatial/time/initial-state, complexity and stability contracts follow
+        solve_transient(); ordinary output has no optional history/quota.
+        :type mesh: :py:class:`Mesh1D`
+        :param mesh: Borrowed valid finite increasing mesh, with at least two nodes.
+        :type p: std::vector< double,std::allocator< double > >
+        :param p: Borrowed scalar/per-element diffusion coefficient.
+        :type q: std::vector< double,std::allocator< double > >
+        :param q: Borrowed scalar/per-element reaction coefficient.
+        :type source: string
+        :param source: Exact name zero, constant, linear, polynomial or sine.
+        :type source_params: std::vector< double,std::allocator< double > >
+        :param source_params: Borrowed positional parameters; omitted trailing values use the defaults above.
+        :type left: :py:class:`BoundaryCondition1D`
+        :param left: Fixed left boundary condition using outward normal -1.
+        :type right: :py:class:`BoundaryCondition1D`
+        :param right: Fixed right boundary condition using outward normal +1.
+        :type u0: std::vector< double,std::allocator< double > >
+        :param u0: Borrowed finite initial values, exactly one per spatial node.
+        :type t_end: float
+        :param t_end: Positive finite final time.
+        :type dt: float
+        :param dt: Positive finite nominal time step; final interval is shortened as needed.
+        :rtype: :py:class:`FEM1DTimeSeries`
+        :return: Owned initial state and actual strictly advancing backward-Euler slices.
+        :raises: std::invalid_argument For an unknown source, malformed coefficient/u0 lengths, fewer than two nodes or nonpositive/nonfinite time controls.
+        :raises: std::length_error If frame/container/total scalar counts cannot be represented.
+        :raises: std::overflow_error If rounded time products cannot advance.
+        :raises: std::bad_alloc If parameters, output or assembly storage cannot be allocated.
+        Title: Example
+
+        .. code-block:: c++
+
+            const auto t=dm::fem::FEM1D::solve_transient_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{1},{},{},{0,0,0},.5,.5);
+            std::print("{} {:.6f}\n",t.num_steps(),t.value_at(1,1)); // 2 0.107143
+        Title: References
+        - https://www-users.cse.umn.edu/~arnold/8445.f12/notes.pdf ; same native discretization as solve_transient().
+        See also: solve_builtin(), solve_transient()
+        """
+        return _datamunge.FEM1D_solve_transient_builtin(mesh, p, q, source, source_params, left, right, u0, t_end, dt)
 
     def __init__(self):
         _datamunge.FEM1D_swiginit(self, _datamunge.new_FEM1D())

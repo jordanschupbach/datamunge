@@ -1,5 +1,5 @@
 /// @file basic.cpp
-/// @brief Existing deterministic local memory and MNIST source selections in the canonical library.
+/// @brief Canonical local memory, factor lattice, sentence grammar and original-MNIST preparation.
 #ifdef DATAMUNGE_ENABLE_DATA_ASSETS
 #include <datamunge/datasets/download.hpp>
 #include <datamunge/nn/nn.hpp>
@@ -172,10 +172,113 @@ static void Saliency(const std::string& directory) {
   fs::rename(stage.path / "saliency_data.npz", fs::path(directory) / "saliency_data.npz");
 }
 
-/// @brief Prepare local copy/QA tasks or original MNIST plus its balanced teaching pools.
-/// @param name "memory" or "mnist-assets".
+/// @brief Prepare the exact local known-factor circle/square lattice and its split provenance.
+/// @param root Parent cache; outputs live below beta_vae/.
+static void FactorLattice(const fs::path& root) {
+  const auto directory=root/"beta_vae";
+  fs::create_directories(directory);
+  if(fs::is_regular_file(directory/"factors.npz")){
+    if(!fs::is_regular_file(directory/"manifest.json"))
+      save(directory/"manifest.json",{{"source","caller-supplied factors.npz"},{"generation_verified",false}});
+    return;
+  }
+  Temporary stage(directory);
+  auto records=nn::models::KnownFactorLattice();
+  for(auto& [name,value]:records)if(name.ends_with("_images"))value=nn::cast(value,nn::DType::Int32);
+  nn::save_npz((stage.path/"factors.npz").string(),records);
+  save(stage.path/"manifest.json",{{"dataset","local known-factor circle/square lattice"},
+    {"generator","datamunge C++ exhaustive lattice v1"},{"external_source",false},{"generation_verified",true},
+    {"factor_order",{"shape","size","x","y"}},{"cardinalities",{2,3,7,7}},
+    {"row_order","ascending source ID within split"},{"source_id","(((shape*3+size)*7+x)*7+y)"},
+    {"split","residue=(x+2*y+size+3*shape)%7; test0,validation1,fit2..6"},
+    {"fit",210},{"validation",42},{"test",42},{"image_shape",{28,28,1}},
+    {"radius","size+2"},{"centre","(3*x+5,3*y+5)"},
+    {"pixels","inclusive binary circle dx^2+dy^2<=r^2 or axis-aligned square |dx|,|dy|<=r"}});
+  fs::rename(stage.path/"manifest.json",directory/"manifest.json");
+  fs::rename(stage.path/"factors.npz",directory/"factors.npz");
+}
+
+/// @brief Enumerate the repository's complete six-factor sentence grammar in source-ID order.
+/// @return Sixteen owning Int32 arrays: config plus five arrays for each of three splits.
+static nn::NamedTensors SentenceGrammar() {
+  nn::NamedTensors records{{"config", nn::from_vector(std::vector<int>{19, 7})}};
+  for (int split = 0; split < 3; ++split) {
+    const std::string prefix = split == 0 ? "fit_" : split == 1 ? "validation_" : "test_";
+    const int count = split == 0 ? 288 : 72;
+    std::vector<int> tokens, inputs, lengths, factors, sources;
+    for (int id = 0; id < 432; ++id) {
+      const std::array<int, 6> f{id / 216, (id / 72) % 3, (id / 24) % 3,
+                                 (id / 12) % 2, (id / 3) % 4, id % 3};
+      const int residue = 2 * ((f[1] + f[2] + f[5]) % 3) + (f[0] + f[3] + f[4]) % 2;
+      if ((residue == 0 ? 2 : residue == 1 ? 1 : 0) != split)
+        continue;
+      std::vector<int> sentence{3 + f[0], 5 + f[1], 8 + f[2], 11 + f[3], 13 + f[4]};
+      if (f[5])
+        sentence.push_back(16 + f[5]);
+      sentence.push_back(2);
+      lengths.push_back(int(sentence.size()));
+      sentence.resize(7, 0);
+      tokens.insert(tokens.end(), sentence.begin(), sentence.end());
+      inputs.push_back(1);
+      inputs.insert(inputs.end(), sentence.begin(), sentence.end() - 1);
+      factors.insert(factors.end(), f.begin(), f.end());
+      sources.push_back(id);
+    }
+    records.emplace_back(prefix + "tokens", nn::from_vector(tokens, {count, 7}));
+    records.emplace_back(prefix + "decoder_inputs", nn::from_vector(inputs, {count, 7}));
+    records.emplace_back(prefix + "lengths", nn::from_vector(lengths, {count}));
+    records.emplace_back(prefix + "factors", nn::from_vector(factors, {count, 6}));
+    records.emplace_back(prefix + "source_ids", nn::from_vector(sources, {count}));
+  }
+  return records;
+}
+
+/// @brief Prepare the exhaustive local sentence grammar and explicit generation provenance.
+/// @param root Parent cache; outputs live below sequence_vae/. Supplied archives are retained.
+static void SentenceAssets(const fs::path& root) {
+  const auto directory = root / "sequence_vae";
+  fs::create_directories(directory);
+  const std::string vocabulary =
+      "[pad]\n[bos]\n[eos]\na\nthe\nred\ngreen\nblue\ncircle\nsquare\ntriangle\n"
+      "moves\nrolls\nleft\nright\nup\ndown\nquickly\nslowly\n";
+  if (fs::is_regular_file(directory / "sentences.npz")) {
+    if (!fs::is_regular_file(directory / "vocabulary.txt"))
+      write(directory / "vocabulary.txt", vocabulary);
+    if (!fs::is_regular_file(directory / "manifest.json"))
+      save(directory / "manifest.json",
+           {{"source", "caller-supplied sentences.npz"}, {"generation_verified", false}});
+    return;
+  }
+  Temporary stage(directory);
+  nn::save_npz((stage.path / "sentences.npz").string(), SentenceGrammar());
+  write(stage.path / "vocabulary.txt", vocabulary);
+  save(stage.path / "manifest.json",
+       {{"dataset", "local exhaustive compositional sentence grammar"},
+        {"generator", "datamunge C++ sentence grammar v1"},
+        {"external_source", false}, {"generation_verified", true},
+        {"factor_order", {"article", "colour", "shape", "verb", "direction", "adverb"}},
+        {"cardinalities", {2, 3, 3, 2, 4, 3}},
+        {"row_order", "ascending source ID within split"},
+        {"source_id", "(((((article*3+colour)*3+shape)*2+verb)*4+direction)*3+adverb)"},
+        {"split", "residue=2*((colour+shape+adverb)%3)+(article+verb+direction)%2; test0,validation1,fit2..5"},
+        {"fit", 288}, {"validation", 72}, {"test", 72}, {"vocabulary_size", 19}, {"steps", 7},
+        {"special_ids", {{"pad", 0}, {"bos", 1}, {"eos", 2}}},
+        {"tokens", "article,colour,shape,verb,direction,optional adverb,EOS; right PAD to seven"},
+        {"adverb", "0 absent,1 quickly,2 slowly"},
+        {"lengths", "six without adverb,seven otherwise; includes EOS, excludes PAD"},
+        {"decoder_inputs", "BOS then previous target, including EOS before final PAD"},
+        {"dtype", "Int32 for all sixteen arrays"}});
+  fs::rename(stage.path / "vocabulary.txt", directory / "vocabulary.txt");
+  fs::rename(stage.path / "manifest.json", directory / "manifest.json");
+  fs::rename(stage.path / "sentences.npz", directory / "sentences.npz");
+}
+
+/// @brief Prepare local teaching tasks or original MNIST plus its balanced teaching pools.
+/// @param name "memory", "mnist-assets", "beta-vae-assets" or "sequence-vae-assets".
 /// @param root Parent dataset cache.
 void prepare_basic(const std::string& name, const fs::path& root) {
+  if(name=="beta-vae-assets"){FactorLattice(root);return;}
+  if (name == "sequence-vae-assets") { SentenceAssets(root); return; }
   if (name == "mnist-assets") {
     datamunge::datasets::fetch("mnist", (root / "mnist").string());
     Saliency((root / "saliency").string());

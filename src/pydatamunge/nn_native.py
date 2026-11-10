@@ -2048,6 +2048,1695 @@ RnnKind_Gru = _nn_native.RnnKind_Gru
 
 def recurrent(store, name, x, units, kind):
     return _nn_native.recurrent(store, name, x, units, kind)
+
+def MidpointUniformNoise(shape, seed):
+    return _nn_native.MidpointUniformNoise(shape, seed)
+
+def GaussianNoise(shape, samples, seed):
+    return _nn_native.GaussianNoise(shape, samples, seed)
+
+def CorruptForDenoising(clean, standard_noise, sigma):
+    return _nn_native.CorruptForDenoising(clean, standard_noise, sigma)
+class ConvolutionalDecoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    hidden = property(_nn_native.ConvolutionalDecoderOutput_hidden_get, _nn_native.ConvolutionalDecoderOutput_hidden_set)
+    reconstruction = property(_nn_native.ConvolutionalDecoderOutput_reconstruction_get, _nn_native.ConvolutionalDecoderOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.ConvolutionalDecoderOutput_swiginit(self, _nn_native.new_ConvolutionalDecoderOutput())
+    __swig_destroy__ = _nn_native.delete_ConvolutionalDecoderOutput
+
+# Register ConvolutionalDecoderOutput in _nn_native:
+_nn_native.ConvolutionalDecoderOutput_swigregister(ConvolutionalDecoderOutput)
+
+def ConvolutionalDecoder(parameters, code):
+    return _nn_native.ConvolutionalDecoder(parameters, code)
+class ConvolutionalAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    conv1 = property(_nn_native.ConvolutionalAeOutput_conv1_get, _nn_native.ConvolutionalAeOutput_conv1_set)
+    pool1 = property(_nn_native.ConvolutionalAeOutput_pool1_get, _nn_native.ConvolutionalAeOutput_pool1_set)
+    conv2 = property(_nn_native.ConvolutionalAeOutput_conv2_get, _nn_native.ConvolutionalAeOutput_conv2_set)
+    code = property(_nn_native.ConvolutionalAeOutput_code_get, _nn_native.ConvolutionalAeOutput_code_set)
+    decoder1 = property(_nn_native.ConvolutionalAeOutput_decoder1_get, _nn_native.ConvolutionalAeOutput_decoder1_set)
+    reconstruction = property(_nn_native.ConvolutionalAeOutput_reconstruction_get, _nn_native.ConvolutionalAeOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.ConvolutionalAeOutput_swiginit(self, _nn_native.new_ConvolutionalAeOutput())
+    __swig_destroy__ = _nn_native.delete_ConvolutionalAeOutput
+
+# Register ConvolutionalAeOutput in _nn_native:
+_nn_native.ConvolutionalAeOutput_swigregister(ConvolutionalAeOutput)
+
+def ConvolutionalAutoencoder(parameters, image):
+    return _nn_native.ConvolutionalAutoencoder(parameters, image)
+class DenseAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.DenseAeOutput_code_get, _nn_native.DenseAeOutput_code_set)
+    reconstruction = property(_nn_native.DenseAeOutput_reconstruction_get, _nn_native.DenseAeOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.DenseAeOutput_swiginit(self, _nn_native.new_DenseAeOutput())
+    __swig_destroy__ = _nn_native.delete_DenseAeOutput
+
+# Register DenseAeOutput in _nn_native:
+_nn_native.DenseAeOutput_swigregister(DenseAeOutput)
+
+def UndercompleteAutoencoder(parameters, input, features=784, latent=32):
+    return _nn_native.UndercompleteAutoencoder(parameters, input, features, latent)
+
+def UndercompleteDecoder(parameters, code, features=784, latent=32):
+    return _nn_native.UndercompleteDecoder(parameters, code, features, latent)
+class ContractivePenalty(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    per_example = property(_nn_native.ContractivePenalty_per_example_get, _nn_native.ContractivePenalty_per_example_set)
+    mean = property(_nn_native.ContractivePenalty_mean_get, _nn_native.ContractivePenalty_mean_set)
+
+    def __init__(self):
+        _nn_native.ContractivePenalty_swiginit(self, _nn_native.new_ContractivePenalty())
+    __swig_destroy__ = _nn_native.delete_ContractivePenalty
+
+# Register ContractivePenalty in _nn_native:
+_nn_native.ContractivePenalty_swigregister(ContractivePenalty)
+
+def SigmoidEncoderContraction(code, encoder_weight):
+    return _nn_native.SigmoidEncoderContraction(code, encoder_weight)
+class ContractiveOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.ContractiveOutput_code_get, _nn_native.ContractiveOutput_code_set)
+    reconstruction = property(_nn_native.ContractiveOutput_reconstruction_get, _nn_native.ContractiveOutput_reconstruction_set)
+    loss = property(_nn_native.ContractiveOutput_loss_get, _nn_native.ContractiveOutput_loss_set)
+    mse = property(_nn_native.ContractiveOutput_mse_get, _nn_native.ContractiveOutput_mse_set)
+    penalty = property(_nn_native.ContractiveOutput_penalty_get, _nn_native.ContractiveOutput_penalty_set)
+
+    def __init__(self):
+        _nn_native.ContractiveOutput_swiginit(self, _nn_native.new_ContractiveOutput())
+    __swig_destroy__ = _nn_native.delete_ContractiveOutput
+
+# Register ContractiveOutput in _nn_native:
+_nn_native.ContractiveOutput_swigregister(ContractiveOutput)
+
+def ContractiveAutoencoder(parameters, input, weight, features=784, latent=32):
+    return _nn_native.ContractiveAutoencoder(parameters, input, weight, features, latent)
+
+def LatentLerp(a, b, alpha):
+    return _nn_native.LatentLerp(a, b, alpha)
+
+def LatentDirection(source, direction, scale):
+    return _nn_native.LatentDirection(source, direction, scale)
+
+def LatentClassMeans(codes, labels, classes=10):
+    return _nn_native.LatentClassMeans(codes, labels, classes)
+
+def LatentFlatten(codes):
+    return _nn_native.LatentFlatten(codes)
+
+def DoubleSampleRows(input):
+    return _nn_native.DoubleSampleRows(input)
+class SvdPca(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, fitting, retained=2):
+        _nn_native.SvdPca_swiginit(self, _nn_native.new_SvdPca(fitting, retained))
+
+    def mean(self):
+        return _nn_native.SvdPca_mean(self)
+
+    def components(self):
+        return _nn_native.SvdPca_components(self)
+
+    def variances(self):
+        return _nn_native.SvdPca_variances(self)
+
+    def scores(self):
+        return _nn_native.SvdPca_scores(self)
+
+    def Transform(self, input):
+        return _nn_native.SvdPca_Transform(self, input)
+
+    def Reconstruct(self, projection):
+        return _nn_native.SvdPca_Reconstruct(self, projection)
+    __swig_destroy__ = _nn_native.delete_SvdPca
+
+# Register SvdPca in _nn_native:
+_nn_native.SvdPca_swigregister(SvdPca)
+
+def NearestFitRows(fitting, query, neighbors=10):
+    return _nn_native.NearestFitRows(fitting, query, neighbors)
+
+def NeighborOverlap(reference, candidate):
+    return _nn_native.NeighborOverlap(reference, candidate)
+
+def NeighborLabelAccuracy(neighbors, fit_labels, query_labels):
+    return _nn_native.NeighborLabelAccuracy(neighbors, fit_labels, query_labels)
+class CodecQuantizer(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    minimum = property(_nn_native.CodecQuantizer_minimum_get, _nn_native.CodecQuantizer_minimum_set)
+    maximum = property(_nn_native.CodecQuantizer_maximum_get, _nn_native.CodecQuantizer_maximum_set)
+
+    def __init__(self):
+        _nn_native.CodecQuantizer_swiginit(self, _nn_native.new_CodecQuantizer())
+    __swig_destroy__ = _nn_native.delete_CodecQuantizer
+
+# Register CodecQuantizer in _nn_native:
+_nn_native.CodecQuantizer_swigregister(CodecQuantizer)
+
+def FitCodecQuantizer(code):
+    return _nn_native.FitCodecQuantizer(code)
+
+def QuantizeCodec(code, q):
+    return _nn_native.QuantizeCodec(code, q)
+
+def DequantizeCodec(symbols, q):
+    return _nn_native.DequantizeCodec(symbols, q)
+
+def SymbolTensor(symbols, width=32):
+    return _nn_native.SymbolTensor(symbols, width)
+
+def LearnedCodecDecode(codes, weights, bias):
+    return _nn_native.LearnedCodecDecode(codes, weights, bias)
+class CodecPacket(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    quantizer = property(_nn_native.CodecPacket_quantizer_get, _nn_native.CodecPacket_quantizer_set)
+    weights = property(_nn_native.CodecPacket_weights_get, _nn_native.CodecPacket_weights_set)
+    bias = property(_nn_native.CodecPacket_bias_get, _nn_native.CodecPacket_bias_set)
+    source_ids = property(_nn_native.CodecPacket_source_ids_get, _nn_native.CodecPacket_source_ids_set)
+    symbols = property(_nn_native.CodecPacket_symbols_get, _nn_native.CodecPacket_symbols_set)
+
+    def __init__(self):
+        _nn_native.CodecPacket_swiginit(self, _nn_native.new_CodecPacket())
+    __swig_destroy__ = _nn_native.delete_CodecPacket
+
+# Register CodecPacket in _nn_native:
+_nn_native.CodecPacket_swigregister(CodecPacket)
+
+def PackCodec(p):
+    return _nn_native.PackCodec(p)
+
+def UnpackCodec(bytes):
+    return _nn_native.UnpackCodec(bytes)
+
+def DecodeCodec(packet):
+    return _nn_native.DecodeCodec(packet)
+
+def ReconstructionScores(original, reconstruction):
+    return _nn_native.ReconstructionScores(original, reconstruction)
+
+def InkScores(images, fit_mean):
+    return _nn_native.InkScores(images, fit_mean)
+
+def NominalThreshold(scores, quantile=.95):
+    return _nn_native.NominalThreshold(scores, quantile)
+class ReconstructionRanking(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    auroc = property(_nn_native.ReconstructionRanking_auroc_get, _nn_native.ReconstructionRanking_auroc_set)
+    average_precision = property(_nn_native.ReconstructionRanking_average_precision_get, _nn_native.ReconstructionRanking_average_precision_set)
+    normal_fpr = property(_nn_native.ReconstructionRanking_normal_fpr_get, _nn_native.ReconstructionRanking_normal_fpr_set)
+    anomaly_tpr = property(_nn_native.ReconstructionRanking_anomaly_tpr_get, _nn_native.ReconstructionRanking_anomaly_tpr_set)
+
+    def __init__(self):
+        _nn_native.ReconstructionRanking_swiginit(self, _nn_native.new_ReconstructionRanking())
+    __swig_destroy__ = _nn_native.delete_ReconstructionRanking
+
+# Register ReconstructionRanking in _nn_native:
+_nn_native.ReconstructionRanking_swigregister(ReconstructionRanking)
+
+def RankAnomalies(normal_scores, anomaly_scores, threshold):
+    return _nn_native.RankAnomalies(normal_scores, anomaly_scores, threshold)
+
+def AnomalyCorruption(original, kind):
+    return _nn_native.AnomalyCorruption(original, kind)
+class LogisticGanLoss(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    discriminator = property(_nn_native.LogisticGanLoss_discriminator_get, _nn_native.LogisticGanLoss_discriminator_set)
+    generator = property(_nn_native.LogisticGanLoss_generator_get, _nn_native.LogisticGanLoss_generator_set)
+
+    def __init__(self):
+        _nn_native.LogisticGanLoss_swiginit(self, _nn_native.new_LogisticGanLoss())
+    __swig_destroy__ = _nn_native.delete_LogisticGanLoss
+
+# Register LogisticGanLoss in _nn_native:
+_nn_native.LogisticGanLoss_swigregister(LogisticGanLoss)
+
+def LogisticGanObjectives(real, fake):
+    return _nn_native.LogisticGanObjectives(real, fake)
+
+def ConditionalGanGenerate(generator, noise, labels, features=784, classes=10, hidden=32):
+    return _nn_native.ConditionalGanGenerate(generator, noise, labels, features, classes, hidden)
+
+def GanCoarsePixels(pixels):
+    return _nn_native.GanCoarsePixels(pixels)
+class AuxiliaryDiscriminator(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    source = property(_nn_native.AuxiliaryDiscriminator_source_get, _nn_native.AuxiliaryDiscriminator_source_set)
+    class_logits = property(_nn_native.AuxiliaryDiscriminator_class_logits_get, _nn_native.AuxiliaryDiscriminator_class_logits_set)
+    class_probability = property(_nn_native.AuxiliaryDiscriminator_class_probability_get, _nn_native.AuxiliaryDiscriminator_class_probability_set)
+
+    def __init__(self):
+        _nn_native.AuxiliaryDiscriminator_swiginit(self, _nn_native.new_AuxiliaryDiscriminator())
+    __swig_destroy__ = _nn_native.delete_AuxiliaryDiscriminator
+
+# Register AuxiliaryDiscriminator in _nn_native:
+_nn_native.AuxiliaryDiscriminator_swigregister(AuxiliaryDiscriminator)
+
+def AuxiliaryGanDiscriminate(discriminator, image, features=784, classes=10, hidden=32):
+    return _nn_native.AuxiliaryGanDiscriminate(discriminator, image, features, classes, hidden)
+
+def AuxiliaryClassLoss(logits, labels):
+    return _nn_native.AuxiliaryClassLoss(logits, labels)
+class AuxiliaryClassifierGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.AuxiliaryClassifierGanOutput_fake_get, _nn_native.AuxiliaryClassifierGanOutput_fake_set)
+    real_logit = property(_nn_native.AuxiliaryClassifierGanOutput_real_logit_get, _nn_native.AuxiliaryClassifierGanOutput_real_logit_set)
+    fake_logit = property(_nn_native.AuxiliaryClassifierGanOutput_fake_logit_get, _nn_native.AuxiliaryClassifierGanOutput_fake_logit_set)
+    real_probability = property(_nn_native.AuxiliaryClassifierGanOutput_real_probability_get, _nn_native.AuxiliaryClassifierGanOutput_real_probability_set)
+    fake_probability = property(_nn_native.AuxiliaryClassifierGanOutput_fake_probability_get, _nn_native.AuxiliaryClassifierGanOutput_fake_probability_set)
+    discriminator_loss = property(_nn_native.AuxiliaryClassifierGanOutput_discriminator_loss_get, _nn_native.AuxiliaryClassifierGanOutput_discriminator_loss_set)
+    generator_loss = property(_nn_native.AuxiliaryClassifierGanOutput_generator_loss_get, _nn_native.AuxiliaryClassifierGanOutput_generator_loss_set)
+    real_class_logits = property(_nn_native.AuxiliaryClassifierGanOutput_real_class_logits_get, _nn_native.AuxiliaryClassifierGanOutput_real_class_logits_set)
+    fake_class_logits = property(_nn_native.AuxiliaryClassifierGanOutput_fake_class_logits_get, _nn_native.AuxiliaryClassifierGanOutput_fake_class_logits_set)
+    real_class_probability = property(_nn_native.AuxiliaryClassifierGanOutput_real_class_probability_get, _nn_native.AuxiliaryClassifierGanOutput_real_class_probability_set)
+    fake_class_probability = property(_nn_native.AuxiliaryClassifierGanOutput_fake_class_probability_get, _nn_native.AuxiliaryClassifierGanOutput_fake_class_probability_set)
+    real_class_loss = property(_nn_native.AuxiliaryClassifierGanOutput_real_class_loss_get, _nn_native.AuxiliaryClassifierGanOutput_real_class_loss_set)
+    fake_class_loss = property(_nn_native.AuxiliaryClassifierGanOutput_fake_class_loss_get, _nn_native.AuxiliaryClassifierGanOutput_fake_class_loss_set)
+    source_discriminator_loss = property(_nn_native.AuxiliaryClassifierGanOutput_source_discriminator_loss_get, _nn_native.AuxiliaryClassifierGanOutput_source_discriminator_loss_set)
+    source_generator_loss = property(_nn_native.AuxiliaryClassifierGanOutput_source_generator_loss_get, _nn_native.AuxiliaryClassifierGanOutput_source_generator_loss_set)
+
+    def __init__(self):
+        _nn_native.AuxiliaryClassifierGanOutput_swiginit(self, _nn_native.new_AuxiliaryClassifierGanOutput())
+    __swig_destroy__ = _nn_native.delete_AuxiliaryClassifierGanOutput
+
+# Register AuxiliaryClassifierGanOutput in _nn_native:
+_nn_native.AuxiliaryClassifierGanOutput_swigregister(AuxiliaryClassifierGanOutput)
+
+def AuxiliaryClassifierGan(generator, discriminator, image, noise, labels, features=784, classes=10, hidden=32):
+    return _nn_native.AuxiliaryClassifierGan(generator, discriminator, image, noise, labels, features, classes, hidden)
+
+def GaussianRingPoints(*args):
+    return _nn_native.GaussianRingPoints(*args)
+
+def BiganMap(parameters, input, output=2, hidden=16):
+    return _nn_native.BiganMap(parameters, input, output, hidden)
+
+def BiganJointScore(discriminator, image, code, hidden=16):
+    return _nn_native.BiganJointScore(discriminator, image, code, hidden)
+class BiganOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.BiganOutput_fake_get, _nn_native.BiganOutput_fake_set)
+    encoded = property(_nn_native.BiganOutput_encoded_get, _nn_native.BiganOutput_encoded_set)
+    real_score = property(_nn_native.BiganOutput_real_score_get, _nn_native.BiganOutput_real_score_set)
+    fake_score = property(_nn_native.BiganOutput_fake_score_get, _nn_native.BiganOutput_fake_score_set)
+    discriminator_loss = property(_nn_native.BiganOutput_discriminator_loss_get, _nn_native.BiganOutput_discriminator_loss_set)
+    eg_loss = property(_nn_native.BiganOutput_eg_loss_get, _nn_native.BiganOutput_eg_loss_set)
+    reconstruction = property(_nn_native.BiganOutput_reconstruction_get, _nn_native.BiganOutput_reconstruction_set)
+    latent_cycle = property(_nn_native.BiganOutput_latent_cycle_get, _nn_native.BiganOutput_latent_cycle_set)
+
+    def __init__(self):
+        _nn_native.BiganOutput_swiginit(self, _nn_native.new_BiganOutput())
+    __swig_destroy__ = _nn_native.delete_BiganOutput
+
+# Register BiganOutput in _nn_native:
+_nn_native.BiganOutput_swigregister(BiganOutput)
+
+def BidirectionalGan(generator, encoder, discriminator, image, prior, hidden=16):
+    return _nn_native.BidirectionalGan(generator, encoder, discriminator, image, prior, hidden)
+DenseGanObjective_Logistic = _nn_native.DenseGanObjective_Logistic
+DenseGanObjective_LeastSquares = _nn_native.DenseGanObjective_LeastSquares
+DenseGanObjective_Hinge = _nn_native.DenseGanObjective_Hinge
+class DenseGanLoss(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    discriminator = property(_nn_native.DenseGanLoss_discriminator_get, _nn_native.DenseGanLoss_discriminator_set)
+    generator = property(_nn_native.DenseGanLoss_generator_get, _nn_native.DenseGanLoss_generator_set)
+
+    def __init__(self):
+        _nn_native.DenseGanLoss_swiginit(self, _nn_native.new_DenseGanLoss())
+    __swig_destroy__ = _nn_native.delete_DenseGanLoss
+
+# Register DenseGanLoss in _nn_native:
+_nn_native.DenseGanLoss_swigregister(DenseGanLoss)
+
+def LeastSquaresGanObjectives(real, fake):
+    return _nn_native.LeastSquaresGanObjectives(real, fake)
+
+def HingeGanObjectives(real, fake):
+    return _nn_native.HingeGanObjectives(real, fake)
+
+def MlpGanGenerate(generator, noise, features=784, hidden=32):
+    return _nn_native.MlpGanGenerate(generator, noise, features, hidden)
+
+def MlpGanDiscriminate(discriminator, image, features=784, hidden=32):
+    return _nn_native.MlpGanDiscriminate(discriminator, image, features, hidden)
+class DenseGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.DenseGanOutput_fake_get, _nn_native.DenseGanOutput_fake_set)
+    real_score = property(_nn_native.DenseGanOutput_real_score_get, _nn_native.DenseGanOutput_real_score_set)
+    fake_score = property(_nn_native.DenseGanOutput_fake_score_get, _nn_native.DenseGanOutput_fake_score_set)
+    discriminator_loss = property(_nn_native.DenseGanOutput_discriminator_loss_get, _nn_native.DenseGanOutput_discriminator_loss_set)
+    generator_loss = property(_nn_native.DenseGanOutput_generator_loss_get, _nn_native.DenseGanOutput_generator_loss_set)
+
+    def __init__(self):
+        _nn_native.DenseGanOutput_swiginit(self, _nn_native.new_DenseGanOutput())
+    __swig_destroy__ = _nn_native.delete_DenseGanOutput
+
+# Register DenseGanOutput in _nn_native:
+_nn_native.DenseGanOutput_swigregister(DenseGanOutput)
+
+def DenseGan(generator, discriminator, image, noise, objective, features=784, hidden=32):
+    return _nn_native.DenseGan(generator, discriminator, image, noise, objective, features, hidden)
+
+def ConditionalGanDiscriminate(discriminator, image, labels, features=784, classes=10, hidden=32):
+    return _nn_native.ConditionalGanDiscriminate(discriminator, image, labels, features, classes, hidden)
+class ConditionalGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.ConditionalGanOutput_fake_get, _nn_native.ConditionalGanOutput_fake_set)
+    real_logit = property(_nn_native.ConditionalGanOutput_real_logit_get, _nn_native.ConditionalGanOutput_real_logit_set)
+    fake_logit = property(_nn_native.ConditionalGanOutput_fake_logit_get, _nn_native.ConditionalGanOutput_fake_logit_set)
+    real_probability = property(_nn_native.ConditionalGanOutput_real_probability_get, _nn_native.ConditionalGanOutput_real_probability_set)
+    fake_probability = property(_nn_native.ConditionalGanOutput_fake_probability_get, _nn_native.ConditionalGanOutput_fake_probability_set)
+    discriminator_loss = property(_nn_native.ConditionalGanOutput_discriminator_loss_get, _nn_native.ConditionalGanOutput_discriminator_loss_set)
+    generator_loss = property(_nn_native.ConditionalGanOutput_generator_loss_get, _nn_native.ConditionalGanOutput_generator_loss_set)
+
+    def __init__(self):
+        _nn_native.ConditionalGanOutput_swiginit(self, _nn_native.new_ConditionalGanOutput())
+    __swig_destroy__ = _nn_native.delete_ConditionalGanOutput
+
+# Register ConditionalGanOutput in _nn_native:
+_nn_native.ConditionalGanOutput_swigregister(ConditionalGanOutput)
+
+def ConditionalGan(generator, discriminator, image, noise, labels, features=784, classes=10, hidden=32):
+    return _nn_native.ConditionalGan(generator, discriminator, image, noise, labels, features, classes, hidden)
+class InfoCodes(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    category = property(_nn_native.InfoCodes_category_get, _nn_native.InfoCodes_category_set)
+    continuous = property(_nn_native.InfoCodes_continuous_get, _nn_native.InfoCodes_continuous_set)
+    raw = property(_nn_native.InfoCodes_raw_get, _nn_native.InfoCodes_raw_set)
+
+    def __init__(self):
+        _nn_native.InfoCodes_swiginit(self, _nn_native.new_InfoCodes())
+    __swig_destroy__ = _nn_native.delete_InfoCodes
+
+# Register InfoCodes in _nn_native:
+_nn_native.InfoCodes_swigregister(InfoCodes)
+
+def InfoPrior(*args):
+    return _nn_native.InfoPrior(*args)
+
+def InfoGanGenerate(generator, noise, category, continuous, features=784, classes=10, hidden=32):
+    return _nn_native.InfoGanGenerate(generator, noise, category, continuous, features, classes, hidden)
+class InfoRecognition(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    logits = property(_nn_native.InfoRecognition_logits_get, _nn_native.InfoRecognition_logits_set)
+    probability = property(_nn_native.InfoRecognition_probability_get, _nn_native.InfoRecognition_probability_set)
+    mean = property(_nn_native.InfoRecognition_mean_get, _nn_native.InfoRecognition_mean_set)
+
+    def __init__(self):
+        _nn_native.InfoRecognition_swiginit(self, _nn_native.new_InfoRecognition())
+    __swig_destroy__ = _nn_native.delete_InfoRecognition
+
+# Register InfoRecognition in _nn_native:
+_nn_native.InfoRecognition_swigregister(InfoRecognition)
+
+def InfoGanRecognize(recognizer, image, features=784, classes=10, continuous=2, hidden=32):
+    return _nn_native.InfoGanRecognize(recognizer, image, features, classes, continuous, hidden)
+class InfoRecognitionLoss(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    categorical = property(_nn_native.InfoRecognitionLoss_categorical_get, _nn_native.InfoRecognitionLoss_categorical_set)
+    continuous = property(_nn_native.InfoRecognitionLoss_continuous_get, _nn_native.InfoRecognitionLoss_continuous_set)
+    total = property(_nn_native.InfoRecognitionLoss_total_get, _nn_native.InfoRecognitionLoss_total_set)
+    lower_bound = property(_nn_native.InfoRecognitionLoss_lower_bound_get, _nn_native.InfoRecognitionLoss_lower_bound_set)
+
+    def __init__(self):
+        _nn_native.InfoRecognitionLoss_swiginit(self, _nn_native.new_InfoRecognitionLoss())
+    __swig_destroy__ = _nn_native.delete_InfoRecognitionLoss
+
+# Register InfoRecognitionLoss in _nn_native:
+_nn_native.InfoRecognitionLoss_swigregister(InfoRecognitionLoss)
+
+def InfoGanRecognitionLoss(prediction, category, continuous):
+    return _nn_native.InfoGanRecognitionLoss(prediction, category, continuous)
+class InfoGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.InfoGanOutput_fake_get, _nn_native.InfoGanOutput_fake_set)
+    real_logit = property(_nn_native.InfoGanOutput_real_logit_get, _nn_native.InfoGanOutput_real_logit_set)
+    fake_logit = property(_nn_native.InfoGanOutput_fake_logit_get, _nn_native.InfoGanOutput_fake_logit_set)
+    real_probability = property(_nn_native.InfoGanOutput_real_probability_get, _nn_native.InfoGanOutput_real_probability_set)
+    fake_probability = property(_nn_native.InfoGanOutput_fake_probability_get, _nn_native.InfoGanOutput_fake_probability_set)
+    discriminator_loss = property(_nn_native.InfoGanOutput_discriminator_loss_get, _nn_native.InfoGanOutput_discriminator_loss_set)
+    generator_loss = property(_nn_native.InfoGanOutput_generator_loss_get, _nn_native.InfoGanOutput_generator_loss_set)
+    source_generator_loss = property(_nn_native.InfoGanOutput_source_generator_loss_get, _nn_native.InfoGanOutput_source_generator_loss_set)
+    recognition_loss = property(_nn_native.InfoGanOutput_recognition_loss_get, _nn_native.InfoGanOutput_recognition_loss_set)
+    categorical_loss = property(_nn_native.InfoGanOutput_categorical_loss_get, _nn_native.InfoGanOutput_categorical_loss_set)
+    continuous_loss = property(_nn_native.InfoGanOutput_continuous_loss_get, _nn_native.InfoGanOutput_continuous_loss_set)
+    mi_lower_bound = property(_nn_native.InfoGanOutput_mi_lower_bound_get, _nn_native.InfoGanOutput_mi_lower_bound_set)
+    q_logits = property(_nn_native.InfoGanOutput_q_logits_get, _nn_native.InfoGanOutput_q_logits_set)
+    q_probability = property(_nn_native.InfoGanOutput_q_probability_get, _nn_native.InfoGanOutput_q_probability_set)
+    q_mean = property(_nn_native.InfoGanOutput_q_mean_get, _nn_native.InfoGanOutput_q_mean_set)
+
+    def __init__(self):
+        _nn_native.InfoGanOutput_swiginit(self, _nn_native.new_InfoGanOutput())
+    __swig_destroy__ = _nn_native.delete_InfoGanOutput
+
+# Register InfoGanOutput in _nn_native:
+_nn_native.InfoGanOutput_swigregister(InfoGanOutput)
+
+def InfoGan(generator, discriminator, recognizer, image, noise, category, continuous, features=784, classes=10, hidden=32):
+    return _nn_native.InfoGan(generator, discriminator, recognizer, image, noise, category, continuous, features, classes, hidden)
+class SpectralPowerPair(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    u = property(_nn_native.SpectralPowerPair_u_get, _nn_native.SpectralPowerPair_u_set)
+    v = property(_nn_native.SpectralPowerPair_v_get, _nn_native.SpectralPowerPair_v_set)
+
+    def __init__(self):
+        _nn_native.SpectralPowerPair_swiginit(self, _nn_native.new_SpectralPowerPair())
+    __swig_destroy__ = _nn_native.delete_SpectralPowerPair
+
+# Register SpectralPowerPair in _nn_native:
+_nn_native.SpectralPowerPair_swigregister(SpectralPowerPair)
+
+def cached_spectral_power_iteration(*args):
+    return _nn_native.cached_spectral_power_iteration(*args)
+class CachedSpectralKernel(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    weight = property(_nn_native.CachedSpectralKernel_weight_get, _nn_native.CachedSpectralKernel_weight_set)
+    sigma = property(_nn_native.CachedSpectralKernel_sigma_get, _nn_native.CachedSpectralKernel_sigma_set)
+
+    def __init__(self):
+        _nn_native.CachedSpectralKernel_swiginit(self, _nn_native.new_CachedSpectralKernel())
+    __swig_destroy__ = _nn_native.delete_CachedSpectralKernel
+
+# Register CachedSpectralKernel in _nn_native:
+_nn_native.CachedSpectralKernel_swigregister(CachedSpectralKernel)
+
+def cached_spectral_kernel(*args):
+    return _nn_native.cached_spectral_kernel(*args)
+
+def advance_cached_spectral_state(*args):
+    return _nn_native.advance_cached_spectral_state(*args)
+
+def cached_spectral_dense(*args):
+    return _nn_native.cached_spectral_dense(*args)
+
+def SpectralGanDiscriminate(discriminator, state, image, features=784, hidden=32):
+    return _nn_native.SpectralGanDiscriminate(discriminator, state, image, features, hidden)
+
+def SpectralGan(generator, discriminator, state, image, noise, features=784, hidden=32):
+    return _nn_native.SpectralGan(generator, discriminator, state, image, noise, features, hidden)
+
+def CompetitiveMask(scores, lifetime, k=8):
+    return _nn_native.CompetitiveMask(scores, lifetime, k)
+class CompetitiveAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    raw = property(_nn_native.CompetitiveAeOutput_raw_get, _nn_native.CompetitiveAeOutput_raw_set)
+    mask = property(_nn_native.CompetitiveAeOutput_mask_get, _nn_native.CompetitiveAeOutput_mask_set)
+    training_code = property(_nn_native.CompetitiveAeOutput_training_code_get, _nn_native.CompetitiveAeOutput_training_code_set)
+    code = property(_nn_native.CompetitiveAeOutput_code_get, _nn_native.CompetitiveAeOutput_code_set)
+    training_reconstruction = property(_nn_native.CompetitiveAeOutput_training_reconstruction_get, _nn_native.CompetitiveAeOutput_training_reconstruction_set)
+    reconstruction = property(_nn_native.CompetitiveAeOutput_reconstruction_get, _nn_native.CompetitiveAeOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.CompetitiveAeOutput_swiginit(self, _nn_native.new_CompetitiveAeOutput())
+    __swig_destroy__ = _nn_native.delete_CompetitiveAeOutput
+
+# Register CompetitiveAeOutput in _nn_native:
+_nn_native.CompetitiveAeOutput_swigregister(CompetitiveAeOutput)
+
+def CompetitiveAutoencoder(parameters, input, lifetime, plain=False, features=784, latent=64, k=8):
+    return _nn_native.CompetitiveAutoencoder(parameters, input, lifetime, plain, features, latent, k)
+
+def MaePixel(patch, within):
+    return _nn_native.MaePixel(patch, within)
+
+def MaePatches(image):
+    return _nn_native.MaePatches(image)
+
+def MaeImage(patches):
+    return _nn_native.MaeImage(patches)
+
+def MaePosition(*args):
+    return _nn_native.MaePosition(*args)
+
+def MaeSelection(*args):
+    return _nn_native.MaeSelection(*args)
+class MaeBlockOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    output = property(_nn_native.MaeBlockOutput_output_get, _nn_native.MaeBlockOutput_output_set)
+    attention = property(_nn_native.MaeBlockOutput_attention_get, _nn_native.MaeBlockOutput_attention_set)
+
+    def __init__(self):
+        _nn_native.MaeBlockOutput_swiginit(self, _nn_native.new_MaeBlockOutput())
+    __swig_destroy__ = _nn_native.delete_MaeBlockOutput
+
+# Register MaeBlockOutput in _nn_native:
+_nn_native.MaeBlockOutput_swigregister(MaeBlockOutput)
+
+def MaeBlock(parameters, name, x, width):
+    return _nn_native.MaeBlock(parameters, name, x, width)
+class MaskedAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    patches = property(_nn_native.MaskedAeOutput_patches_get, _nn_native.MaskedAeOutput_patches_set)
+    visible = property(_nn_native.MaskedAeOutput_visible_get, _nn_native.MaskedAeOutput_visible_set)
+    mask = property(_nn_native.MaskedAeOutput_mask_get, _nn_native.MaskedAeOutput_mask_set)
+    code = property(_nn_native.MaskedAeOutput_code_get, _nn_native.MaskedAeOutput_code_set)
+    prediction = property(_nn_native.MaskedAeOutput_prediction_get, _nn_native.MaskedAeOutput_prediction_set)
+    encoder_attention = property(_nn_native.MaskedAeOutput_encoder_attention_get, _nn_native.MaskedAeOutput_encoder_attention_set)
+    decoder_attention = property(_nn_native.MaskedAeOutput_decoder_attention_get, _nn_native.MaskedAeOutput_decoder_attention_set)
+    encoder_input = property(_nn_native.MaskedAeOutput_encoder_input_get, _nn_native.MaskedAeOutput_encoder_input_set)
+    projected = property(_nn_native.MaskedAeOutput_projected_get, _nn_native.MaskedAeOutput_projected_set)
+    restored = property(_nn_native.MaskedAeOutput_restored_get, _nn_native.MaskedAeOutput_restored_set)
+    decoder_input = property(_nn_native.MaskedAeOutput_decoder_input_get, _nn_native.MaskedAeOutput_decoder_input_set)
+
+    def __init__(self):
+        _nn_native.MaskedAeOutput_swiginit(self, _nn_native.new_MaskedAeOutput())
+    __swig_destroy__ = _nn_native.delete_MaskedAeOutput
+
+# Register MaskedAeOutput in _nn_native:
+_nn_native.MaskedAeOutput_swigregister(MaskedAeOutput)
+
+def MaeEncode(parameters, image, selector):
+    return _nn_native.MaeEncode(parameters, image, selector)
+
+def MaeDecode(parameters, code, selector):
+    return _nn_native.MaeDecode(parameters, code, selector)
+
+def MaskedAutoencoder(parameters, image, selector):
+    return _nn_native.MaskedAutoencoder(parameters, image, selector)
+
+def MaeLoss(prediction, patches, mask):
+    return _nn_native.MaeLoss(prediction, patches, mask)
+class SpectralSpatialOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    input = property(_nn_native.SpectralSpatialOutput_input_get, _nn_native.SpectralSpatialOutput_input_set)
+    probability = property(_nn_native.SpectralSpatialOutput_probability_get, _nn_native.SpectralSpatialOutput_probability_set)
+    output = property(_nn_native.SpectralSpatialOutput_output_get, _nn_native.SpectralSpatialOutput_output_set)
+
+    def __init__(self):
+        _nn_native.SpectralSpatialOutput_swiginit(self, _nn_native.new_SpectralSpatialOutput())
+    __swig_destroy__ = _nn_native.delete_SpectralSpatialOutput
+
+# Register SpectralSpatialOutput in _nn_native:
+_nn_native.SpectralSpatialOutput_swigregister(SpectralSpatialOutput)
+
+def SpectralSpatialAttention(*args):
+    return _nn_native.SpectralSpatialAttention(*args)
+class SelfAttentionGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    pixels = property(_nn_native.SelfAttentionGenerated_pixels_get, _nn_native.SelfAttentionGenerated_pixels_set)
+    attention_input = property(_nn_native.SelfAttentionGenerated_attention_input_get, _nn_native.SelfAttentionGenerated_attention_input_set)
+    attention_probability = property(_nn_native.SelfAttentionGenerated_attention_probability_get, _nn_native.SelfAttentionGenerated_attention_probability_set)
+    attention_output = property(_nn_native.SelfAttentionGenerated_attention_output_get, _nn_native.SelfAttentionGenerated_attention_output_set)
+
+    def __init__(self):
+        _nn_native.SelfAttentionGenerated_swiginit(self, _nn_native.new_SelfAttentionGenerated())
+    __swig_destroy__ = _nn_native.delete_SelfAttentionGenerated
+
+# Register SelfAttentionGenerated in _nn_native:
+_nn_native.SelfAttentionGenerated_swigregister(SelfAttentionGenerated)
+
+def SelfAttentionGanGenerate(generator, state, noise):
+    return _nn_native.SelfAttentionGanGenerate(generator, state, noise)
+class SelfAttentionDiscriminated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    score = property(_nn_native.SelfAttentionDiscriminated_score_get, _nn_native.SelfAttentionDiscriminated_score_set)
+    attention_input = property(_nn_native.SelfAttentionDiscriminated_attention_input_get, _nn_native.SelfAttentionDiscriminated_attention_input_set)
+    attention_probability = property(_nn_native.SelfAttentionDiscriminated_attention_probability_get, _nn_native.SelfAttentionDiscriminated_attention_probability_set)
+    attention_output = property(_nn_native.SelfAttentionDiscriminated_attention_output_get, _nn_native.SelfAttentionDiscriminated_attention_output_set)
+
+    def __init__(self):
+        _nn_native.SelfAttentionDiscriminated_swiginit(self, _nn_native.new_SelfAttentionDiscriminated())
+    __swig_destroy__ = _nn_native.delete_SelfAttentionDiscriminated
+
+# Register SelfAttentionDiscriminated in _nn_native:
+_nn_native.SelfAttentionDiscriminated_swigregister(SelfAttentionDiscriminated)
+
+def SelfAttentionGanDiscriminate(discriminator, state, image):
+    return _nn_native.SelfAttentionGanDiscriminate(discriminator, state, image)
+class SelfAttentionGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.SelfAttentionGanOutput_fake_get, _nn_native.SelfAttentionGanOutput_fake_set)
+    real_score = property(_nn_native.SelfAttentionGanOutput_real_score_get, _nn_native.SelfAttentionGanOutput_real_score_set)
+    fake_score = property(_nn_native.SelfAttentionGanOutput_fake_score_get, _nn_native.SelfAttentionGanOutput_fake_score_set)
+    discriminator_loss = property(_nn_native.SelfAttentionGanOutput_discriminator_loss_get, _nn_native.SelfAttentionGanOutput_discriminator_loss_set)
+    generator_loss = property(_nn_native.SelfAttentionGanOutput_generator_loss_get, _nn_native.SelfAttentionGanOutput_generator_loss_set)
+    g_attention = property(_nn_native.SelfAttentionGanOutput_g_attention_get, _nn_native.SelfAttentionGanOutput_g_attention_set)
+    g_attention_input = property(_nn_native.SelfAttentionGanOutput_g_attention_input_get, _nn_native.SelfAttentionGanOutput_g_attention_input_set)
+    g_attention_output = property(_nn_native.SelfAttentionGanOutput_g_attention_output_get, _nn_native.SelfAttentionGanOutput_g_attention_output_set)
+    real_attention = property(_nn_native.SelfAttentionGanOutput_real_attention_get, _nn_native.SelfAttentionGanOutput_real_attention_set)
+    real_attention_input = property(_nn_native.SelfAttentionGanOutput_real_attention_input_get, _nn_native.SelfAttentionGanOutput_real_attention_input_set)
+    real_attention_output = property(_nn_native.SelfAttentionGanOutput_real_attention_output_get, _nn_native.SelfAttentionGanOutput_real_attention_output_set)
+    fake_attention = property(_nn_native.SelfAttentionGanOutput_fake_attention_get, _nn_native.SelfAttentionGanOutput_fake_attention_set)
+
+    def __init__(self):
+        _nn_native.SelfAttentionGanOutput_swiginit(self, _nn_native.new_SelfAttentionGanOutput())
+    __swig_destroy__ = _nn_native.delete_SelfAttentionGanOutput
+
+# Register SelfAttentionGanOutput in _nn_native:
+_nn_native.SelfAttentionGanOutput_swigregister(SelfAttentionGanOutput)
+
+def SelfAttentionGan(generator, discriminator, generator_state, discriminator_state, image, noise):
+    return _nn_native.SelfAttentionGan(generator, discriminator, generator_state, discriminator_state, image, noise)
+class BatchNormCapture(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.BatchNormCapture_value_get, _nn_native.BatchNormCapture_value_set)
+    mean = property(_nn_native.BatchNormCapture_mean_get, _nn_native.BatchNormCapture_mean_set)
+    unbiased_variance = property(_nn_native.BatchNormCapture_unbiased_variance_get, _nn_native.BatchNormCapture_unbiased_variance_set)
+
+    def __init__(self):
+        _nn_native.BatchNormCapture_swiginit(self, _nn_native.new_BatchNormCapture())
+    __swig_destroy__ = _nn_native.delete_BatchNormCapture
+
+# Register BatchNormCapture in _nn_native:
+_nn_native.BatchNormCapture_swigregister(BatchNormCapture)
+
+def capture_batch_norm(*args):
+    return _nn_native.capture_batch_norm(*args)
+class BatchNormMovingValues(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mean = property(_nn_native.BatchNormMovingValues_mean_get, _nn_native.BatchNormMovingValues_mean_set)
+    variance = property(_nn_native.BatchNormMovingValues_variance_get, _nn_native.BatchNormMovingValues_variance_set)
+
+    def __init__(self):
+        _nn_native.BatchNormMovingValues_swiginit(self, _nn_native.new_BatchNormMovingValues())
+    __swig_destroy__ = _nn_native.delete_BatchNormMovingValues
+
+# Register BatchNormMovingValues in _nn_native:
+_nn_native.BatchNormMovingValues_swigregister(BatchNormMovingValues)
+
+def batch_norm_moving_values(*args):
+    return _nn_native.batch_norm_moving_values(*args)
+class GaussianRejectionDraw(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    z = property(_nn_native.GaussianRejectionDraw_z_get, _nn_native.GaussianRejectionDraw_z_set)
+    proposals = property(_nn_native.GaussianRejectionDraw_proposals_get, _nn_native.GaussianRejectionDraw_proposals_set)
+
+    def __init__(self):
+        _nn_native.GaussianRejectionDraw_swiginit(self, _nn_native.new_GaussianRejectionDraw())
+    __swig_destroy__ = _nn_native.delete_GaussianRejectionDraw
+
+# Register GaussianRejectionDraw in _nn_native:
+_nn_native.GaussianRejectionDraw_swigregister(GaussianRejectionDraw)
+
+def GaussianRejectionPrior(*args):
+    return _nn_native.GaussianRejectionPrior(*args)
+
+def BigGanResize8(images):
+    return _nn_native.BigGanResize8(images)
+class BigGanMoments(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    bn1_mean = property(_nn_native.BigGanMoments_bn1_mean_get, _nn_native.BigGanMoments_bn1_mean_set)
+    bn1_unbiased_variance = property(_nn_native.BigGanMoments_bn1_unbiased_variance_get, _nn_native.BigGanMoments_bn1_unbiased_variance_set)
+    bn2_mean = property(_nn_native.BigGanMoments_bn2_mean_get, _nn_native.BigGanMoments_bn2_mean_set)
+    bn2_unbiased_variance = property(_nn_native.BigGanMoments_bn2_unbiased_variance_get, _nn_native.BigGanMoments_bn2_unbiased_variance_set)
+    output_mean = property(_nn_native.BigGanMoments_output_mean_get, _nn_native.BigGanMoments_output_mean_set)
+    output_unbiased_variance = property(_nn_native.BigGanMoments_output_unbiased_variance_get, _nn_native.BigGanMoments_output_unbiased_variance_set)
+
+    def __init__(self):
+        _nn_native.BigGanMoments_swiginit(self, _nn_native.new_BigGanMoments())
+    __swig_destroy__ = _nn_native.delete_BigGanMoments
+
+# Register BigGanMoments in _nn_native:
+_nn_native.BigGanMoments_swigregister(BigGanMoments)
+class BigGanGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.BigGanGenerated_image_get, _nn_native.BigGanGenerated_image_set)
+    moments = property(_nn_native.BigGanGenerated_moments_get, _nn_native.BigGanGenerated_moments_set)
+
+    def __init__(self):
+        _nn_native.BigGanGenerated_swiginit(self, _nn_native.new_BigGanGenerated())
+    __swig_destroy__ = _nn_native.delete_BigGanGenerated
+
+# Register BigGanGenerated in _nn_native:
+_nn_native.BigGanGenerated_swigregister(BigGanGenerated)
+
+def BigGanGenerate(generator, spectral, moving, noise, labels, batch_statistics=False):
+    return _nn_native.BigGanGenerate(generator, spectral, moving, noise, labels, batch_statistics)
+class BigGanDiscriminated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    score = property(_nn_native.BigGanDiscriminated_score_get, _nn_native.BigGanDiscriminated_score_set)
+    features = property(_nn_native.BigGanDiscriminated_features_get, _nn_native.BigGanDiscriminated_features_set)
+    source = property(_nn_native.BigGanDiscriminated_source_get, _nn_native.BigGanDiscriminated_source_set)
+    projection = property(_nn_native.BigGanDiscriminated_projection_get, _nn_native.BigGanDiscriminated_projection_set)
+
+    def __init__(self):
+        _nn_native.BigGanDiscriminated_swiginit(self, _nn_native.new_BigGanDiscriminated())
+    __swig_destroy__ = _nn_native.delete_BigGanDiscriminated
+
+# Register BigGanDiscriminated in _nn_native:
+_nn_native.BigGanDiscriminated_swigregister(BigGanDiscriminated)
+
+def BigGanDiscriminate(discriminator, spectral, image, labels):
+    return _nn_native.BigGanDiscriminate(discriminator, spectral, image, labels)
+
+def ModifiedOrthogonalPenalty(*args):
+    return _nn_native.ModifiedOrthogonalPenalty(*args)
+
+def BigGanCommitMoments(moving, captured):
+    return _nn_native.BigGanCommitMoments(moving, captured)
+class BigGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.BigGanOutput_fake_get, _nn_native.BigGanOutput_fake_set)
+    fake_training = property(_nn_native.BigGanOutput_fake_training_get, _nn_native.BigGanOutput_fake_training_set)
+    fake_inference = property(_nn_native.BigGanOutput_fake_inference_get, _nn_native.BigGanOutput_fake_inference_set)
+    fake_score_training = property(_nn_native.BigGanOutput_fake_score_training_get, _nn_native.BigGanOutput_fake_score_training_set)
+    fake_score_inference = property(_nn_native.BigGanOutput_fake_score_inference_get, _nn_native.BigGanOutput_fake_score_inference_set)
+    real_score = property(_nn_native.BigGanOutput_real_score_get, _nn_native.BigGanOutput_real_score_set)
+    fake_score = property(_nn_native.BigGanOutput_fake_score_get, _nn_native.BigGanOutput_fake_score_set)
+    d_loss = property(_nn_native.BigGanOutput_d_loss_get, _nn_native.BigGanOutput_d_loss_set)
+    g_source = property(_nn_native.BigGanOutput_g_source_get, _nn_native.BigGanOutput_g_source_set)
+    g_orthogonal = property(_nn_native.BigGanOutput_g_orthogonal_get, _nn_native.BigGanOutput_g_orthogonal_set)
+    g_loss = property(_nn_native.BigGanOutput_g_loss_get, _nn_native.BigGanOutput_g_loss_set)
+    moments = property(_nn_native.BigGanOutput_moments_get, _nn_native.BigGanOutput_moments_set)
+
+    def __init__(self):
+        _nn_native.BigGanOutput_swiginit(self, _nn_native.new_BigGanOutput())
+    __swig_destroy__ = _nn_native.delete_BigGanOutput
+
+# Register BigGanOutput in _nn_native:
+_nn_native.BigGanOutput_swigregister(BigGanOutput)
+
+def BigGan(generator, discriminator, generator_spectral, discriminator_spectral, moving, image, noise, labels, display_batch_statistics=False):
+    return _nn_native.BigGan(generator, discriminator, generator_spectral, discriminator_spectral, moving, image, noise, labels, display_batch_statistics)
+class AffineBatchNormCapture(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.AffineBatchNormCapture_value_get, _nn_native.AffineBatchNormCapture_value_set)
+    mean = property(_nn_native.AffineBatchNormCapture_mean_get, _nn_native.AffineBatchNormCapture_mean_set)
+    unbiased_variance = property(_nn_native.AffineBatchNormCapture_unbiased_variance_get, _nn_native.AffineBatchNormCapture_unbiased_variance_set)
+
+    def __init__(self):
+        _nn_native.AffineBatchNormCapture_swiginit(self, _nn_native.new_AffineBatchNormCapture())
+    __swig_destroy__ = _nn_native.delete_AffineBatchNormCapture
+
+# Register AffineBatchNormCapture in _nn_native:
+_nn_native.AffineBatchNormCapture_swigregister(AffineBatchNormCapture)
+
+def capture_affine_batch_norm(parameters, moving, name, input, batch_statistics=False, epsilon=.001):
+    return _nn_native.capture_affine_batch_norm(parameters, moving, name, input, batch_statistics, epsilon)
+class DcganGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.DcganGenerated_image_get, _nn_native.DcganGenerated_image_set)
+    stem_mean = property(_nn_native.DcganGenerated_stem_mean_get, _nn_native.DcganGenerated_stem_mean_set)
+    stem_variance = property(_nn_native.DcganGenerated_stem_variance_get, _nn_native.DcganGenerated_stem_variance_set)
+    up14_mean = property(_nn_native.DcganGenerated_up14_mean_get, _nn_native.DcganGenerated_up14_mean_set)
+    up14_variance = property(_nn_native.DcganGenerated_up14_variance_get, _nn_native.DcganGenerated_up14_variance_set)
+
+    def __init__(self):
+        _nn_native.DcganGenerated_swiginit(self, _nn_native.new_DcganGenerated())
+    __swig_destroy__ = _nn_native.delete_DcganGenerated
+
+# Register DcganGenerated in _nn_native:
+_nn_native.DcganGenerated_swigregister(DcganGenerated)
+
+def DcganGenerate(generator, moving, noise, batch_statistics=False):
+    return _nn_native.DcganGenerate(generator, moving, noise, batch_statistics)
+class DcganDiscriminated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    logit = property(_nn_native.DcganDiscriminated_logit_get, _nn_native.DcganDiscriminated_logit_set)
+    mean = property(_nn_native.DcganDiscriminated_mean_get, _nn_native.DcganDiscriminated_mean_set)
+    variance = property(_nn_native.DcganDiscriminated_variance_get, _nn_native.DcganDiscriminated_variance_set)
+
+    def __init__(self):
+        _nn_native.DcganDiscriminated_swiginit(self, _nn_native.new_DcganDiscriminated())
+    __swig_destroy__ = _nn_native.delete_DcganDiscriminated
+
+# Register DcganDiscriminated in _nn_native:
+_nn_native.DcganDiscriminated_swigregister(DcganDiscriminated)
+
+def DcganDiscriminate(discriminator, moving, image, batch_statistics=False):
+    return _nn_native.DcganDiscriminate(discriminator, moving, image, batch_statistics)
+class DcganPhaseOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.DcganPhaseOutput_fake_get, _nn_native.DcganPhaseOutput_fake_set)
+    real_logit = property(_nn_native.DcganPhaseOutput_real_logit_get, _nn_native.DcganPhaseOutput_real_logit_set)
+    fake_logit = property(_nn_native.DcganPhaseOutput_fake_logit_get, _nn_native.DcganPhaseOutput_fake_logit_set)
+    loss = property(_nn_native.DcganPhaseOutput_loss_get, _nn_native.DcganPhaseOutput_loss_set)
+    stem_mean = property(_nn_native.DcganPhaseOutput_stem_mean_get, _nn_native.DcganPhaseOutput_stem_mean_set)
+    stem_variance = property(_nn_native.DcganPhaseOutput_stem_variance_get, _nn_native.DcganPhaseOutput_stem_variance_set)
+    up14_mean = property(_nn_native.DcganPhaseOutput_up14_mean_get, _nn_native.DcganPhaseOutput_up14_mean_set)
+    up14_variance = property(_nn_native.DcganPhaseOutput_up14_variance_get, _nn_native.DcganPhaseOutput_up14_variance_set)
+    down7_mean = property(_nn_native.DcganPhaseOutput_down7_mean_get, _nn_native.DcganPhaseOutput_down7_mean_set)
+    down7_variance = property(_nn_native.DcganPhaseOutput_down7_variance_get, _nn_native.DcganPhaseOutput_down7_variance_set)
+
+    def __init__(self):
+        _nn_native.DcganPhaseOutput_swiginit(self, _nn_native.new_DcganPhaseOutput())
+    __swig_destroy__ = _nn_native.delete_DcganPhaseOutput
+
+# Register DcganPhaseOutput in _nn_native:
+_nn_native.DcganPhaseOutput_swigregister(DcganPhaseOutput)
+
+def DcganDiscriminatorPhase(generator, discriminator, g_moving, d_moving, image, noise):
+    return _nn_native.DcganDiscriminatorPhase(generator, discriminator, g_moving, d_moving, image, noise)
+
+def DcganGeneratorPhase(generator, discriminator, g_moving, d_moving, image, noise):
+    return _nn_native.DcganGeneratorPhase(generator, discriminator, g_moving, d_moving, image, noise)
+class DcganOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.DcganOutput_fake_get, _nn_native.DcganOutput_fake_set)
+    real_logit = property(_nn_native.DcganOutput_real_logit_get, _nn_native.DcganOutput_real_logit_set)
+    fake_logit = property(_nn_native.DcganOutput_fake_logit_get, _nn_native.DcganOutput_fake_logit_set)
+    real_probability = property(_nn_native.DcganOutput_real_probability_get, _nn_native.DcganOutput_real_probability_set)
+    fake_probability = property(_nn_native.DcganOutput_fake_probability_get, _nn_native.DcganOutput_fake_probability_set)
+    d_loss = property(_nn_native.DcganOutput_d_loss_get, _nn_native.DcganOutput_d_loss_set)
+    g_loss = property(_nn_native.DcganOutput_g_loss_get, _nn_native.DcganOutput_g_loss_set)
+
+    def __init__(self):
+        _nn_native.DcganOutput_swiginit(self, _nn_native.new_DcganOutput())
+    __swig_destroy__ = _nn_native.delete_DcganOutput
+
+# Register DcganOutput in _nn_native:
+_nn_native.DcganOutput_swigregister(DcganOutput)
+
+def Dcgan(generator, discriminator, g_moving, d_moving, image, noise):
+    return _nn_native.Dcgan(generator, discriminator, g_moving, d_moving, image, noise)
+
+def MidpointUniform(*args):
+    return _nn_native.MidpointUniform(*args)
+
+def ClipWassersteinCritic(critic, bound=.01):
+    return _nn_native.ClipWassersteinCritic(critic, bound)
+
+def WassersteinGenerate(generator, noise):
+    return _nn_native.WassersteinGenerate(generator, noise)
+
+def WassersteinCritic(critic, point):
+    return _nn_native.WassersteinCritic(critic, point)
+class WassersteinGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.WassersteinGanOutput_fake_get, _nn_native.WassersteinGanOutput_fake_set)
+    real_score = property(_nn_native.WassersteinGanOutput_real_score_get, _nn_native.WassersteinGanOutput_real_score_set)
+    fake_score = property(_nn_native.WassersteinGanOutput_fake_score_get, _nn_native.WassersteinGanOutput_fake_score_set)
+    interpolation = property(_nn_native.WassersteinGanOutput_interpolation_get, _nn_native.WassersteinGanOutput_interpolation_set)
+    input_gradient = property(_nn_native.WassersteinGanOutput_input_gradient_get, _nn_native.WassersteinGanOutput_input_gradient_set)
+    symbolic_input_gradient = property(_nn_native.WassersteinGanOutput_symbolic_input_gradient_get, _nn_native.WassersteinGanOutput_symbolic_input_gradient_set)
+    norm = property(_nn_native.WassersteinGanOutput_norm_get, _nn_native.WassersteinGanOutput_norm_set)
+    penalty = property(_nn_native.WassersteinGanOutput_penalty_get, _nn_native.WassersteinGanOutput_penalty_set)
+    critic_gap = property(_nn_native.WassersteinGanOutput_critic_gap_get, _nn_native.WassersteinGanOutput_critic_gap_set)
+    generator_loss = property(_nn_native.WassersteinGanOutput_generator_loss_get, _nn_native.WassersteinGanOutput_generator_loss_set)
+    critic_loss = property(_nn_native.WassersteinGanOutput_critic_loss_get, _nn_native.WassersteinGanOutput_critic_loss_set)
+
+    def __init__(self):
+        _nn_native.WassersteinGanOutput_swiginit(self, _nn_native.new_WassersteinGanOutput())
+    __swig_destroy__ = _nn_native.delete_WassersteinGanOutput
+
+# Register WassersteinGanOutput in _nn_native:
+_nn_native.WassersteinGanOutput_swigregister(WassersteinGanOutput)
+
+def WassersteinGan(generator, critic, real, noise, alpha, penalty_weight=10., penalty_graph=True):
+    return _nn_native.WassersteinGan(generator, critic, real, noise, alpha, penalty_weight, penalty_graph)
+
+def pixel_rms_normalize(*args):
+    return _nn_native.pixel_rms_normalize(*args)
+
+def ProgressiveActiveGroups(stage, generator=True):
+    return _nn_native.ProgressiveActiveGroups(stage, generator)
+class ProgressiveGanGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    old4 = property(_nn_native.ProgressiveGanGenerated_old4_get, _nn_native.ProgressiveGanGenerated_old4_set)
+    new8 = property(_nn_native.ProgressiveGanGenerated_new8_get, _nn_native.ProgressiveGanGenerated_new8_set)
+    image = property(_nn_native.ProgressiveGanGenerated_image_get, _nn_native.ProgressiveGanGenerated_image_set)
+
+    def __init__(self):
+        _nn_native.ProgressiveGanGenerated_swiginit(self, _nn_native.new_ProgressiveGanGenerated())
+    __swig_destroy__ = _nn_native.delete_ProgressiveGanGenerated
+
+# Register ProgressiveGanGenerated in _nn_native:
+_nn_native.ProgressiveGanGenerated_swigregister(ProgressiveGanGenerated)
+
+def ProgressiveGanGenerate(g_core, g_old_rgb, g_new_block, g_new_rgb, noise, alpha):
+    return _nn_native.ProgressiveGanGenerate(g_core, g_old_rgb, g_new_block, g_new_rgb, noise, alpha)
+class ProgressiveGanDiscriminated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    old_path = property(_nn_native.ProgressiveGanDiscriminated_old_path_get, _nn_native.ProgressiveGanDiscriminated_old_path_set)
+    new_path = property(_nn_native.ProgressiveGanDiscriminated_new_path_get, _nn_native.ProgressiveGanDiscriminated_new_path_set)
+    mixed = property(_nn_native.ProgressiveGanDiscriminated_mixed_get, _nn_native.ProgressiveGanDiscriminated_mixed_set)
+    base = property(_nn_native.ProgressiveGanDiscriminated_base_get, _nn_native.ProgressiveGanDiscriminated_base_set)
+    score = property(_nn_native.ProgressiveGanDiscriminated_score_get, _nn_native.ProgressiveGanDiscriminated_score_set)
+
+    def __init__(self):
+        _nn_native.ProgressiveGanDiscriminated_swiginit(self, _nn_native.new_ProgressiveGanDiscriminated())
+    __swig_destroy__ = _nn_native.delete_ProgressiveGanDiscriminated
+
+# Register ProgressiveGanDiscriminated in _nn_native:
+_nn_native.ProgressiveGanDiscriminated_swigregister(ProgressiveGanDiscriminated)
+
+def ProgressiveGanDiscriminate(d_core, d_old_rgb, d_new_block, d_new_rgb, image, alpha):
+    return _nn_native.ProgressiveGanDiscriminate(d_core, d_old_rgb, d_new_block, d_new_rgb, image, alpha)
+class ProgressiveGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.ProgressiveGanOutput_fake_get, _nn_native.ProgressiveGanOutput_fake_set)
+    old4 = property(_nn_native.ProgressiveGanOutput_old4_get, _nn_native.ProgressiveGanOutput_old4_set)
+    new8 = property(_nn_native.ProgressiveGanOutput_new8_get, _nn_native.ProgressiveGanOutput_new8_set)
+    real_score = property(_nn_native.ProgressiveGanOutput_real_score_get, _nn_native.ProgressiveGanOutput_real_score_set)
+    fake_score = property(_nn_native.ProgressiveGanOutput_fake_score_get, _nn_native.ProgressiveGanOutput_fake_score_set)
+    d_loss = property(_nn_native.ProgressiveGanOutput_d_loss_get, _nn_native.ProgressiveGanOutput_d_loss_set)
+    g_loss = property(_nn_native.ProgressiveGanOutput_g_loss_get, _nn_native.ProgressiveGanOutput_g_loss_set)
+
+    def __init__(self):
+        _nn_native.ProgressiveGanOutput_swiginit(self, _nn_native.new_ProgressiveGanOutput())
+    __swig_destroy__ = _nn_native.delete_ProgressiveGanOutput
+
+# Register ProgressiveGanOutput in _nn_native:
+_nn_native.ProgressiveGanOutput_swigregister(ProgressiveGanOutput)
+
+def ProgressiveGan(g_core, g_old_rgb, g_new_block, g_new_rgb, d_core, d_old_rgb, d_new_block, d_new_rgb, image, noise, alpha):
+    return _nn_native.ProgressiveGan(g_core, g_old_rgb, g_new_block, g_new_rgb, d_core, d_old_rgb, d_new_block, d_new_rgb, image, noise, alpha)
+
+def quantized_sobel_edges(image, threshold=256):
+    return _nn_native.quantized_sobel_edges(image, threshold)
+class Pix2PixGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    down14 = property(_nn_native.Pix2PixGenerated_down14_get, _nn_native.Pix2PixGenerated_down14_set)
+    down7 = property(_nn_native.Pix2PixGenerated_down7_get, _nn_native.Pix2PixGenerated_down7_set)
+    up14 = property(_nn_native.Pix2PixGenerated_up14_get, _nn_native.Pix2PixGenerated_up14_set)
+    joined14 = property(_nn_native.Pix2PixGenerated_joined14_get, _nn_native.Pix2PixGenerated_joined14_set)
+    up28 = property(_nn_native.Pix2PixGenerated_up28_get, _nn_native.Pix2PixGenerated_up28_set)
+    joined28 = property(_nn_native.Pix2PixGenerated_joined28_get, _nn_native.Pix2PixGenerated_joined28_set)
+    image = property(_nn_native.Pix2PixGenerated_image_get, _nn_native.Pix2PixGenerated_image_set)
+
+    def __init__(self):
+        _nn_native.Pix2PixGenerated_swiginit(self, _nn_native.new_Pix2PixGenerated())
+    __swig_destroy__ = _nn_native.delete_Pix2PixGenerated
+
+# Register Pix2PixGenerated in _nn_native:
+_nn_native.Pix2PixGenerated_swigregister(Pix2PixGenerated)
+
+def Pix2PixGenerate(generator, source):
+    return _nn_native.Pix2PixGenerate(generator, source)
+
+def Pix2PixDiscriminate(discriminator, source, image):
+    return _nn_native.Pix2PixDiscriminate(discriminator, source, image)
+class Pix2PixOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.Pix2PixOutput_fake_get, _nn_native.Pix2PixOutput_fake_set)
+    real_logit = property(_nn_native.Pix2PixOutput_real_logit_get, _nn_native.Pix2PixOutput_real_logit_set)
+    fake_logit = property(_nn_native.Pix2PixOutput_fake_logit_get, _nn_native.Pix2PixOutput_fake_logit_set)
+    g_adversarial = property(_nn_native.Pix2PixOutput_g_adversarial_get, _nn_native.Pix2PixOutput_g_adversarial_set)
+    l1 = property(_nn_native.Pix2PixOutput_l1_get, _nn_native.Pix2PixOutput_l1_set)
+    discriminator_loss = property(_nn_native.Pix2PixOutput_discriminator_loss_get, _nn_native.Pix2PixOutput_discriminator_loss_set)
+    generator_loss = property(_nn_native.Pix2PixOutput_generator_loss_get, _nn_native.Pix2PixOutput_generator_loss_set)
+
+    def __init__(self):
+        _nn_native.Pix2PixOutput_swiginit(self, _nn_native.new_Pix2PixOutput())
+    __swig_destroy__ = _nn_native.delete_Pix2PixOutput
+
+# Register Pix2PixOutput in _nn_native:
+_nn_native.Pix2PixOutput_swigregister(Pix2PixOutput)
+
+def Pix2Pix(generator, discriminator, target, source, l1_weight=100):
+    return _nn_native.Pix2Pix(generator, discriminator, target, source, l1_weight)
+
+def RotateInvertGrayscale(image, inverse=False):
+    return _nn_native.RotateInvertGrayscale(image, inverse)
+class CycleDomains(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    a = property(_nn_native.CycleDomains_a_get, _nn_native.CycleDomains_a_set)
+    b = property(_nn_native.CycleDomains_b_get, _nn_native.CycleDomains_b_set)
+    ids_a = property(_nn_native.CycleDomains_ids_a_get, _nn_native.CycleDomains_ids_a_set)
+    ids_b = property(_nn_native.CycleDomains_ids_b_get, _nn_native.CycleDomains_ids_b_set)
+    original_b = property(_nn_native.CycleDomains_original_b_get, _nn_native.CycleDomains_original_b_set)
+
+    def __init__(self):
+        _nn_native.CycleDomains_swiginit(self, _nn_native.new_CycleDomains())
+    __swig_destroy__ = _nn_native.delete_CycleDomains
+
+# Register CycleDomains in _nn_native:
+_nn_native.CycleDomains_swigregister(CycleDomains)
+
+def SplitCycleDomains(images, labels, source_ids):
+    return _nn_native.SplitCycleDomains(images, labels, source_ids)
+
+def CycleGanDiscriminate(critic, image):
+    return _nn_native.CycleGanDiscriminate(critic, image)
+class CycleGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake_a = property(_nn_native.CycleGanOutput_fake_a_get, _nn_native.CycleGanOutput_fake_a_set)
+    fake_b = property(_nn_native.CycleGanOutput_fake_b_get, _nn_native.CycleGanOutput_fake_b_set)
+    cycle_a = property(_nn_native.CycleGanOutput_cycle_a_get, _nn_native.CycleGanOutput_cycle_a_set)
+    cycle_b = property(_nn_native.CycleGanOutput_cycle_b_get, _nn_native.CycleGanOutput_cycle_b_set)
+    identity_a = property(_nn_native.CycleGanOutput_identity_a_get, _nn_native.CycleGanOutput_identity_a_set)
+    identity_b = property(_nn_native.CycleGanOutput_identity_b_get, _nn_native.CycleGanOutput_identity_b_set)
+    real_a_score = property(_nn_native.CycleGanOutput_real_a_score_get, _nn_native.CycleGanOutput_real_a_score_set)
+    real_b_score = property(_nn_native.CycleGanOutput_real_b_score_get, _nn_native.CycleGanOutput_real_b_score_set)
+    fake_a_score = property(_nn_native.CycleGanOutput_fake_a_score_get, _nn_native.CycleGanOutput_fake_a_score_set)
+    fake_b_score = property(_nn_native.CycleGanOutput_fake_b_score_get, _nn_native.CycleGanOutput_fake_b_score_set)
+    g_loss = property(_nn_native.CycleGanOutput_g_loss_get, _nn_native.CycleGanOutput_g_loss_set)
+    d_a_loss = property(_nn_native.CycleGanOutput_d_a_loss_get, _nn_native.CycleGanOutput_d_a_loss_set)
+    d_b_loss = property(_nn_native.CycleGanOutput_d_b_loss_get, _nn_native.CycleGanOutput_d_b_loss_set)
+    adversarial_a = property(_nn_native.CycleGanOutput_adversarial_a_get, _nn_native.CycleGanOutput_adversarial_a_set)
+    adversarial_b = property(_nn_native.CycleGanOutput_adversarial_b_get, _nn_native.CycleGanOutput_adversarial_b_set)
+    cycle_loss_a = property(_nn_native.CycleGanOutput_cycle_loss_a_get, _nn_native.CycleGanOutput_cycle_loss_a_set)
+    cycle_loss_b = property(_nn_native.CycleGanOutput_cycle_loss_b_get, _nn_native.CycleGanOutput_cycle_loss_b_set)
+    identity_loss_a = property(_nn_native.CycleGanOutput_identity_loss_a_get, _nn_native.CycleGanOutput_identity_loss_a_set)
+    identity_loss_b = property(_nn_native.CycleGanOutput_identity_loss_b_get, _nn_native.CycleGanOutput_identity_loss_b_set)
+
+    def __init__(self):
+        _nn_native.CycleGanOutput_swiginit(self, _nn_native.new_CycleGanOutput())
+    __swig_destroy__ = _nn_native.delete_CycleGanOutput
+
+# Register CycleGanOutput in _nn_native:
+_nn_native.CycleGanOutput_swigregister(CycleGanOutput)
+
+def CycleGan(a_to_b, b_to_a, critic_a, critic_b, a, b, cycle_weight=10, identity_weight=5):
+    return _nn_native.CycleGan(a_to_b, b_to_a, critic_a, critic_b, a, b, cycle_weight, identity_weight)
+class ModulatedConv2DOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.ModulatedConv2DOutput_image_get, _nn_native.ModulatedConv2DOutput_image_set)
+    demodulator = property(_nn_native.ModulatedConv2DOutput_demodulator_get, _nn_native.ModulatedConv2DOutput_demodulator_set)
+
+    def __init__(self):
+        _nn_native.ModulatedConv2DOutput_swiginit(self, _nn_native.new_ModulatedConv2DOutput())
+    __swig_destroy__ = _nn_native.delete_ModulatedConv2DOutput
+
+# Register ModulatedConv2DOutput in _nn_native:
+_nn_native.ModulatedConv2DOutput_swigregister(ModulatedConv2DOutput)
+
+def modulated_conv2d(*args):
+    return _nn_native.modulated_conv2d(*args)
+
+def spatial_instance_normalize(*args):
+    return _nn_native.spatial_instance_normalize(*args)
+
+def StyleGanMap(generator, z):
+    return _nn_native.StyleGanMap(generator, z)
+class StyleGanSynthesis(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.StyleGanSynthesis_image_get, _nn_native.StyleGanSynthesis_image_set)
+    tiled_constant = property(_nn_native.StyleGanSynthesis_tiled_constant_get, _nn_native.StyleGanSynthesis_tiled_constant_set)
+    first = property(_nn_native.StyleGanSynthesis_first_get, _nn_native.StyleGanSynthesis_first_set)
+    upsampled = property(_nn_native.StyleGanSynthesis_upsampled_get, _nn_native.StyleGanSynthesis_upsampled_set)
+    second = property(_nn_native.StyleGanSynthesis_second_get, _nn_native.StyleGanSynthesis_second_set)
+    first_style = property(_nn_native.StyleGanSynthesis_first_style_get, _nn_native.StyleGanSynthesis_first_style_set)
+    second_style = property(_nn_native.StyleGanSynthesis_second_style_get, _nn_native.StyleGanSynthesis_second_style_set)
+    first_demodulator = property(_nn_native.StyleGanSynthesis_first_demodulator_get, _nn_native.StyleGanSynthesis_first_demodulator_set)
+    second_demodulator = property(_nn_native.StyleGanSynthesis_second_demodulator_get, _nn_native.StyleGanSynthesis_second_demodulator_set)
+
+    def __init__(self):
+        _nn_native.StyleGanSynthesis_swiginit(self, _nn_native.new_StyleGanSynthesis())
+    __swig_destroy__ = _nn_native.delete_StyleGanSynthesis
+
+# Register StyleGanSynthesis in _nn_native:
+_nn_native.StyleGanSynthesis_swigregister(StyleGanSynthesis)
+
+def StyleGanSynthesize(*args):
+    return _nn_native.StyleGanSynthesize(*args)
+
+def StyleGanDiscriminate(critic, image):
+    return _nn_native.StyleGanDiscriminate(critic, image)
+class StyleGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.StyleGanOutput_fake_get, _nn_native.StyleGanOutput_fake_set)
+    mapped = property(_nn_native.StyleGanOutput_mapped_get, _nn_native.StyleGanOutput_mapped_set)
+    first_style = property(_nn_native.StyleGanOutput_first_style_get, _nn_native.StyleGanOutput_first_style_set)
+    second_style = property(_nn_native.StyleGanOutput_second_style_get, _nn_native.StyleGanOutput_second_style_set)
+    first_demodulator = property(_nn_native.StyleGanOutput_first_demodulator_get, _nn_native.StyleGanOutput_first_demodulator_set)
+    second_demodulator = property(_nn_native.StyleGanOutput_second_demodulator_get, _nn_native.StyleGanOutput_second_demodulator_set)
+    real_score = property(_nn_native.StyleGanOutput_real_score_get, _nn_native.StyleGanOutput_real_score_set)
+    fake_score = property(_nn_native.StyleGanOutput_fake_score_get, _nn_native.StyleGanOutput_fake_score_set)
+    d_loss = property(_nn_native.StyleGanOutput_d_loss_get, _nn_native.StyleGanOutput_d_loss_set)
+    g_loss = property(_nn_native.StyleGanOutput_g_loss_get, _nn_native.StyleGanOutput_g_loss_set)
+
+    def __init__(self):
+        _nn_native.StyleGanOutput_swiginit(self, _nn_native.new_StyleGanOutput())
+    __swig_destroy__ = _nn_native.delete_StyleGanOutput
+
+# Register StyleGanOutput in _nn_native:
+_nn_native.StyleGanOutput_swigregister(StyleGanOutput)
+
+def StyleGan(generator, critic, real, z, noise4, noise8, version2=False):
+    return _nn_native.StyleGan(generator, critic, real, z, noise4, noise8, version2)
+
+def VisiblePatchValues(patches, hidden, fill=0):
+    return _nn_native.VisiblePatchValues(patches, hidden, fill)
+
+def CompositePatchValues(observed, prediction, hidden):
+    return _nn_native.CompositePatchValues(observed, prediction, hidden)
+
+def ImageRowSequence(images, steps=28, features=28):
+    return _nn_native.ImageRowSequence(images, steps, features)
+class RecurrentAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.RecurrentAeOutput_code_get, _nn_native.RecurrentAeOutput_code_set)
+    reconstruction = property(_nn_native.RecurrentAeOutput_reconstruction_get, _nn_native.RecurrentAeOutput_reconstruction_set)
+    encoder_states = property(_nn_native.RecurrentAeOutput_encoder_states_get, _nn_native.RecurrentAeOutput_encoder_states_set)
+    decoder_states = property(_nn_native.RecurrentAeOutput_decoder_states_get, _nn_native.RecurrentAeOutput_decoder_states_set)
+
+    def __init__(self):
+        _nn_native.RecurrentAeOutput_swiginit(self, _nn_native.new_RecurrentAeOutput())
+    __swig_destroy__ = _nn_native.delete_RecurrentAeOutput
+
+# Register RecurrentAeOutput in _nn_native:
+_nn_native.RecurrentAeOutput_swigregister(RecurrentAeOutput)
+
+def RecurrentEncode(parameters, input, steps=28, features=28, units=32):
+    return _nn_native.RecurrentEncode(parameters, input, steps, features, units)
+
+def RecurrentDecode(parameters, code, steps=28, features=28):
+    return _nn_native.RecurrentDecode(parameters, code, steps, features)
+
+def RecurrentAutoencoder(parameters, input, steps=28, features=28, units=32):
+    return _nn_native.RecurrentAutoencoder(parameters, input, steps, features, units)
+class SparsityPenalty(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    l1 = property(_nn_native.SparsityPenalty_l1_get, _nn_native.SparsityPenalty_l1_set)
+    kl = property(_nn_native.SparsityPenalty_kl_get, _nn_native.SparsityPenalty_kl_set)
+    unit_mean = property(_nn_native.SparsityPenalty_unit_mean_get, _nn_native.SparsityPenalty_unit_mean_set)
+    clipped_mean = property(_nn_native.SparsityPenalty_clipped_mean_get, _nn_native.SparsityPenalty_clipped_mean_set)
+    total = property(_nn_native.SparsityPenalty_total_get, _nn_native.SparsityPenalty_total_set)
+
+    def __init__(self):
+        _nn_native.SparsityPenalty_swiginit(self, _nn_native.new_SparsityPenalty())
+    __swig_destroy__ = _nn_native.delete_SparsityPenalty
+
+# Register SparsityPenalty in _nn_native:
+_nn_native.SparsityPenalty_swigregister(SparsityPenalty)
+
+def ActivationSparsity(code, l1_weight, kl_weight, rho=.05, epsilon=1e-5):
+    return _nn_native.ActivationSparsity(code, l1_weight, kl_weight, rho, epsilon)
+class SparseAeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.SparseAeOutput_code_get, _nn_native.SparseAeOutput_code_set)
+    reconstruction = property(_nn_native.SparseAeOutput_reconstruction_get, _nn_native.SparseAeOutput_reconstruction_set)
+    mse = property(_nn_native.SparseAeOutput_mse_get, _nn_native.SparseAeOutput_mse_set)
+    loss = property(_nn_native.SparseAeOutput_loss_get, _nn_native.SparseAeOutput_loss_set)
+    penalty = property(_nn_native.SparseAeOutput_penalty_get, _nn_native.SparseAeOutput_penalty_set)
+
+    def __init__(self):
+        _nn_native.SparseAeOutput_swiginit(self, _nn_native.new_SparseAeOutput())
+    __swig_destroy__ = _nn_native.delete_SparseAeOutput
+
+# Register SparseAeOutput in _nn_native:
+_nn_native.SparseAeOutput_swigregister(SparseAeOutput)
+
+def SparseAutoencoder(parameters, image, l1_weight, kl_weight, features=784, latent=64, rho=.05, epsilon=1e-5):
+    return _nn_native.SparseAutoencoder(parameters, image, l1_weight, kl_weight, features, latent, rho, epsilon)
+
+def SigmoidAutoencoder(parameters, image, widths):
+    return _nn_native.SigmoidAutoencoder(parameters, image, widths)
+
+def SigmoidAutoencoderDecode(parameters, code, widths):
+    return _nn_native.SigmoidAutoencoderDecode(parameters, code, widths)
+class TiedAutoencoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    encoder_weight = property(_nn_native.TiedAutoencoderOutput_encoder_weight_get, _nn_native.TiedAutoencoderOutput_encoder_weight_set)
+    decoder_weight = property(_nn_native.TiedAutoencoderOutput_decoder_weight_get, _nn_native.TiedAutoencoderOutput_decoder_weight_set)
+    code = property(_nn_native.TiedAutoencoderOutput_code_get, _nn_native.TiedAutoencoderOutput_code_set)
+    reconstruction = property(_nn_native.TiedAutoencoderOutput_reconstruction_get, _nn_native.TiedAutoencoderOutput_reconstruction_set)
+
+    def __init__(self):
+        _nn_native.TiedAutoencoderOutput_swiginit(self, _nn_native.new_TiedAutoencoderOutput())
+    __swig_destroy__ = _nn_native.delete_TiedAutoencoderOutput
+
+# Register TiedAutoencoderOutput in _nn_native:
+_nn_native.TiedAutoencoderOutput_swigregister(TiedAutoencoderOutput)
+
+def TiedAutoencoder(parameters, image, features=784, latent=32, tied=True):
+    return _nn_native.TiedAutoencoder(parameters, image, features, latent, tied)
+
+def TiedAutoencoderDecode(parameters, code, features=784, latent=32, tied=True):
+    return _nn_native.TiedAutoencoderDecode(parameters, code, features, latent, tied)
+
+def BernoulliPixelNll(logits, target):
+    return _nn_native.BernoulliPixelNll(logits, target)
+
+def AaeEncode(encoder, image, features=784, latent=4, hidden=16):
+    return _nn_native.AaeEncode(encoder, image, features, latent, hidden)
+
+def AaeDecode(decoder, code, features=784, latent=4, hidden=16):
+    return _nn_native.AaeDecode(decoder, code, features, latent, hidden)
+
+def AaeDiscriminate(discriminator, code, latent=4, hidden=16):
+    return _nn_native.AaeDiscriminate(discriminator, code, latent, hidden)
+class AaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.AaeOutput_code_get, _nn_native.AaeOutput_code_set)
+    logits = property(_nn_native.AaeOutput_logits_get, _nn_native.AaeOutput_logits_set)
+    probability = property(_nn_native.AaeOutput_probability_get, _nn_native.AaeOutput_probability_set)
+    prior_logit = property(_nn_native.AaeOutput_prior_logit_get, _nn_native.AaeOutput_prior_logit_set)
+    encoded_logit = property(_nn_native.AaeOutput_encoded_logit_get, _nn_native.AaeOutput_encoded_logit_set)
+    nll = property(_nn_native.AaeOutput_nll_get, _nn_native.AaeOutput_nll_set)
+    reconstruction_loss = property(_nn_native.AaeOutput_reconstruction_loss_get, _nn_native.AaeOutput_reconstruction_loss_set)
+    discriminator_loss = property(_nn_native.AaeOutput_discriminator_loss_get, _nn_native.AaeOutput_discriminator_loss_set)
+    adversarial_loss = property(_nn_native.AaeOutput_adversarial_loss_get, _nn_native.AaeOutput_adversarial_loss_set)
+
+    def __init__(self):
+        _nn_native.AaeOutput_swiginit(self, _nn_native.new_AaeOutput())
+    __swig_destroy__ = _nn_native.delete_AaeOutput
+
+# Register AaeOutput in _nn_native:
+_nn_native.AaeOutput_swigregister(AaeOutput)
+
+def AdversarialAutoencoder(encoder, decoder, discriminator, image, prior, features=784, latent=4, hidden=16):
+    return _nn_native.AdversarialAutoencoder(encoder, decoder, discriminator, image, prior, features, latent, hidden)
+
+def FrozenEncoderFeatures(image, weight, bias):
+    return _nn_native.FrozenEncoderFeatures(image, weight, bias)
+class TransferScaling(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    center = property(_nn_native.TransferScaling_center_get, _nn_native.TransferScaling_center_set)
+    scale = property(_nn_native.TransferScaling_scale_get, _nn_native.TransferScaling_scale_set)
+
+    def __init__(self):
+        _nn_native.TransferScaling_swiginit(self, _nn_native.new_TransferScaling())
+    __swig_destroy__ = _nn_native.delete_TransferScaling
+
+# Register TransferScaling in _nn_native:
+_nn_native.TransferScaling_swigregister(TransferScaling)
+
+def FitTransferScaling(code, floor=1e-6):
+    return _nn_native.FitTransferScaling(code, floor)
+class EncoderClassifierOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.EncoderClassifierOutput_code_get, _nn_native.EncoderClassifierOutput_code_set)
+    features = property(_nn_native.EncoderClassifierOutput_features_get, _nn_native.EncoderClassifierOutput_features_set)
+    logits = property(_nn_native.EncoderClassifierOutput_logits_get, _nn_native.EncoderClassifierOutput_logits_set)
+    probability = property(_nn_native.EncoderClassifierOutput_probability_get, _nn_native.EncoderClassifierOutput_probability_set)
+    loss = property(_nn_native.EncoderClassifierOutput_loss_get, _nn_native.EncoderClassifierOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.EncoderClassifierOutput_swiginit(self, _nn_native.new_EncoderClassifierOutput())
+    __swig_destroy__ = _nn_native.delete_EncoderClassifierOutput
+
+# Register EncoderClassifierOutput in _nn_native:
+_nn_native.EncoderClassifierOutput_swigregister(EncoderClassifierOutput)
+class FrozenEncoderClassifier(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, weight, bias, center, scale, classes=10):
+        _nn_native.FrozenEncoderClassifier_swiginit(self, _nn_native.new_FrozenEncoderClassifier(weight, bias, center, scale, classes))
+
+    def encoder_weight(self):
+        return _nn_native.FrozenEncoderClassifier_encoder_weight(self)
+
+    def encoder_bias(self):
+        return _nn_native.FrozenEncoderClassifier_encoder_bias(self)
+
+    def center(self):
+        return _nn_native.FrozenEncoderClassifier_center(self)
+
+    def scale(self):
+        return _nn_native.FrozenEncoderClassifier_scale(self)
+
+    def Forward(self, *args):
+        return _nn_native.FrozenEncoderClassifier_Forward(self, *args)
+    __swig_destroy__ = _nn_native.delete_FrozenEncoderClassifier
+
+# Register FrozenEncoderClassifier in _nn_native:
+_nn_native.FrozenEncoderClassifier_swigregister(FrozenEncoderClassifier)
+
+def Match(a, b):
+    return _nn_native.Match(a, b)
+
+def GaussianReparameterize(mu, log_variance, epsilon):
+    return _nn_native.GaussianReparameterize(mu, log_variance, epsilon)
+
+def DiagonalGaussianKl(mu, log_variance):
+    return _nn_native.DiagonalGaussianKl(mu, log_variance)
+
+def GaussianVaeDecode(parameters, code, features=784, latent=4, hidden=32):
+    return _nn_native.GaussianVaeDecode(parameters, code, features, latent, hidden)
+class GaussianVaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_nn_native.GaussianVaeOutput_mu_get, _nn_native.GaussianVaeOutput_mu_set)
+    log_variance = property(_nn_native.GaussianVaeOutput_log_variance_get, _nn_native.GaussianVaeOutput_log_variance_set)
+    z = property(_nn_native.GaussianVaeOutput_z_get, _nn_native.GaussianVaeOutput_z_set)
+    logits = property(_nn_native.GaussianVaeOutput_logits_get, _nn_native.GaussianVaeOutput_logits_set)
+    probability = property(_nn_native.GaussianVaeOutput_probability_get, _nn_native.GaussianVaeOutput_probability_set)
+    reconstruction_nll = property(_nn_native.GaussianVaeOutput_reconstruction_nll_get, _nn_native.GaussianVaeOutput_reconstruction_nll_set)
+    kl = property(_nn_native.GaussianVaeOutput_kl_get, _nn_native.GaussianVaeOutput_kl_set)
+    loss = property(_nn_native.GaussianVaeOutput_loss_get, _nn_native.GaussianVaeOutput_loss_set)
+    unweighted_loss = property(_nn_native.GaussianVaeOutput_unweighted_loss_get, _nn_native.GaussianVaeOutput_unweighted_loss_set)
+
+    def __init__(self):
+        _nn_native.GaussianVaeOutput_swiginit(self, _nn_native.new_GaussianVaeOutput())
+    __swig_destroy__ = _nn_native.delete_GaussianVaeOutput
+
+# Register GaussianVaeOutput in _nn_native:
+_nn_native.GaussianVaeOutput_swigregister(GaussianVaeOutput)
+
+def BetaVariationalAutoencoder(parameters, image, epsilon, beta=1, features=784, latent=4, hidden=32):
+    return _nn_native.BetaVariationalAutoencoder(parameters, image, epsilon, beta, features, latent, hidden)
+class VectorQuantizedOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    indices = property(_nn_native.VectorQuantizedOutput_indices_get, _nn_native.VectorQuantizedOutput_indices_set)
+    assignment = property(_nn_native.VectorQuantizedOutput_assignment_get, _nn_native.VectorQuantizedOutput_assignment_set)
+    quantized = property(_nn_native.VectorQuantizedOutput_quantized_get, _nn_native.VectorQuantizedOutput_quantized_set)
+    straight_through = property(_nn_native.VectorQuantizedOutput_straight_through_get, _nn_native.VectorQuantizedOutput_straight_through_set)
+    codebook_loss = property(_nn_native.VectorQuantizedOutput_codebook_loss_get, _nn_native.VectorQuantizedOutput_codebook_loss_set)
+    commitment_loss = property(_nn_native.VectorQuantizedOutput_commitment_loss_get, _nn_native.VectorQuantizedOutput_commitment_loss_set)
+
+    def __init__(self):
+        _nn_native.VectorQuantizedOutput_swiginit(self, _nn_native.new_VectorQuantizedOutput())
+    __swig_destroy__ = _nn_native.delete_VectorQuantizedOutput
+
+# Register VectorQuantizedOutput in _nn_native:
+_nn_native.VectorQuantizedOutput_swigregister(VectorQuantizedOutput)
+
+def VectorQuantize(*args):
+    return _nn_native.VectorQuantize(*args)
+
+def VqLookup(ids, book, entries=16):
+    return _nn_native.VqLookup(ids, book, entries)
+
+def VqDecoder(parameters, codes, height=28, width=28, dimensions=4, channels=8):
+    return _nn_native.VqDecoder(parameters, codes, height, width, dimensions, channels)
+class VectorQuantizedAutoencoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    encoded = property(_nn_native.VectorQuantizedAutoencoderOutput_encoded_get, _nn_native.VectorQuantizedAutoencoderOutput_encoded_set)
+    book = property(_nn_native.VectorQuantizedAutoencoderOutput_book_get, _nn_native.VectorQuantizedAutoencoderOutput_book_set)
+    probability = property(_nn_native.VectorQuantizedAutoencoderOutput_probability_get, _nn_native.VectorQuantizedAutoencoderOutput_probability_set)
+    nll = property(_nn_native.VectorQuantizedAutoencoderOutput_nll_get, _nn_native.VectorQuantizedAutoencoderOutput_nll_set)
+    reconstruction_loss = property(_nn_native.VectorQuantizedAutoencoderOutput_reconstruction_loss_get, _nn_native.VectorQuantizedAutoencoderOutput_reconstruction_loss_set)
+    loss = property(_nn_native.VectorQuantizedAutoencoderOutput_loss_get, _nn_native.VectorQuantizedAutoencoderOutput_loss_set)
+    vq = property(_nn_native.VectorQuantizedAutoencoderOutput_vq_get, _nn_native.VectorQuantizedAutoencoderOutput_vq_set)
+
+    def __init__(self):
+        _nn_native.VectorQuantizedAutoencoderOutput_swiginit(self, _nn_native.new_VectorQuantizedAutoencoderOutput())
+    __swig_destroy__ = _nn_native.delete_VectorQuantizedAutoencoderOutput
+
+# Register VectorQuantizedAutoencoderOutput in _nn_native:
+_nn_native.VectorQuantizedAutoencoderOutput_swigregister(VectorQuantizedAutoencoderOutput)
+
+def VectorQuantizedAutoencoder(parameters, image, entries=16, dimensions=4, channels=8, commitment_beta=.25):
+    return _nn_native.VectorQuantizedAutoencoder(parameters, image, entries, dimensions, channels, commitment_beta)
+class VqCodeUsage(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    counts = property(_nn_native.VqCodeUsage_counts_get, _nn_native.VqCodeUsage_counts_set)
+    perplexity = property(_nn_native.VqCodeUsage_perplexity_get, _nn_native.VqCodeUsage_perplexity_set)
+
+    def __init__(self):
+        _nn_native.VqCodeUsage_swiginit(self, _nn_native.new_VqCodeUsage())
+    __swig_destroy__ = _nn_native.delete_VqCodeUsage
+
+# Register VqCodeUsage in _nn_native:
+_nn_native.VqCodeUsage_swigregister(VqCodeUsage)
+
+def VqUsage(ids, entries=16):
+    return _nn_native.VqUsage(ids, entries)
+class VqMarkovPrior(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, fitting, entries=16, smoothing=.5):
+        _nn_native.VqMarkovPrior_swiginit(self, _nn_native.new_VqMarkovPrior(fitting, entries, smoothing))
+
+    def counts(self):
+        return _nn_native.VqMarkovPrior_counts(self)
+
+    def probabilities(self):
+        return _nn_native.VqMarkovPrior_probabilities(self)
+
+    def Sample(self, uniforms):
+        return _nn_native.VqMarkovPrior_Sample(self, uniforms)
+
+    def Nll(self, grid):
+        return _nn_native.VqMarkovPrior_Nll(self, grid)
+    __swig_destroy__ = _nn_native.delete_VqMarkovPrior
+
+# Register VqMarkovPrior in _nn_native:
+_nn_native.VqMarkovPrior_swigregister(VqMarkovPrior)
+
+def Vq2TopDecoder(parameters, top, height=28, width=28, dimensions=4):
+    return _nn_native.Vq2TopDecoder(parameters, top, height, width, dimensions)
+
+def Vq2Decoder(parameters, bottom, top_feature, channels=8):
+    return _nn_native.Vq2Decoder(parameters, bottom, top_feature, channels)
+class VectorQuantizedAutoencoder2Output(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    encoded_top = property(_nn_native.VectorQuantizedAutoencoder2Output_encoded_top_get, _nn_native.VectorQuantizedAutoencoder2Output_encoded_top_set)
+    encoded_bottom = property(_nn_native.VectorQuantizedAutoencoder2Output_encoded_bottom_get, _nn_native.VectorQuantizedAutoencoder2Output_encoded_bottom_set)
+    top_book = property(_nn_native.VectorQuantizedAutoencoder2Output_top_book_get, _nn_native.VectorQuantizedAutoencoder2Output_top_book_set)
+    bottom_book = property(_nn_native.VectorQuantizedAutoencoder2Output_bottom_book_get, _nn_native.VectorQuantizedAutoencoder2Output_bottom_book_set)
+    top_feature = property(_nn_native.VectorQuantizedAutoencoder2Output_top_feature_get, _nn_native.VectorQuantizedAutoencoder2Output_top_feature_set)
+    probability = property(_nn_native.VectorQuantizedAutoencoder2Output_probability_get, _nn_native.VectorQuantizedAutoencoder2Output_probability_set)
+    nll = property(_nn_native.VectorQuantizedAutoencoder2Output_nll_get, _nn_native.VectorQuantizedAutoencoder2Output_nll_set)
+    reconstruction_loss = property(_nn_native.VectorQuantizedAutoencoder2Output_reconstruction_loss_get, _nn_native.VectorQuantizedAutoencoder2Output_reconstruction_loss_set)
+    loss = property(_nn_native.VectorQuantizedAutoencoder2Output_loss_get, _nn_native.VectorQuantizedAutoencoder2Output_loss_set)
+    top = property(_nn_native.VectorQuantizedAutoencoder2Output_top_get, _nn_native.VectorQuantizedAutoencoder2Output_top_set)
+    bottom = property(_nn_native.VectorQuantizedAutoencoder2Output_bottom_get, _nn_native.VectorQuantizedAutoencoder2Output_bottom_set)
+
+    def __init__(self):
+        _nn_native.VectorQuantizedAutoencoder2Output_swiginit(self, _nn_native.new_VectorQuantizedAutoencoder2Output())
+    __swig_destroy__ = _nn_native.delete_VectorQuantizedAutoencoder2Output
+
+# Register VectorQuantizedAutoencoder2Output in _nn_native:
+_nn_native.VectorQuantizedAutoencoder2Output_swigregister(VectorQuantizedAutoencoder2Output)
+
+def VectorQuantizedAutoencoder2(*args):
+    return _nn_native.VectorQuantizedAutoencoder2(*args)
+class Vq2ConditionalPrior(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, top, bottom, top_height=7, top_width=7, entries=16, smoothing=.5):
+        _nn_native.Vq2ConditionalPrior_swiginit(self, _nn_native.new_Vq2ConditionalPrior(top, bottom, top_height, top_width, entries, smoothing))
+
+    def counts(self):
+        return _nn_native.Vq2ConditionalPrior_counts(self)
+
+    def probabilities(self):
+        return _nn_native.Vq2ConditionalPrior_probabilities(self)
+
+    def Sample(self, top, uniforms):
+        return _nn_native.Vq2ConditionalPrior_Sample(self, top, uniforms)
+
+    def Nll(self, top, bottom):
+        return _nn_native.Vq2ConditionalPrior_Nll(self, top, bottom)
+    __swig_destroy__ = _nn_native.delete_Vq2ConditionalPrior
+
+# Register Vq2ConditionalPrior in _nn_native:
+_nn_native.Vq2ConditionalPrior_swigregister(Vq2ConditionalPrior)
+
+def VaeGanFeatureNll(real, reconstruction):
+    return _nn_native.VaeGanFeatureNll(real, reconstruction)
+
+def VaeGanDecode(generator, code, features=784, latent=4, hidden=16):
+    return _nn_native.VaeGanDecode(generator, code, features, latent, hidden)
+class VaeGanDiscriminatorOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    feature = property(_nn_native.VaeGanDiscriminatorOutput_feature_get, _nn_native.VaeGanDiscriminatorOutput_feature_set)
+    logit = property(_nn_native.VaeGanDiscriminatorOutput_logit_get, _nn_native.VaeGanDiscriminatorOutput_logit_set)
+
+    def __init__(self):
+        _nn_native.VaeGanDiscriminatorOutput_swiginit(self, _nn_native.new_VaeGanDiscriminatorOutput())
+    __swig_destroy__ = _nn_native.delete_VaeGanDiscriminatorOutput
+
+# Register VaeGanDiscriminatorOutput in _nn_native:
+_nn_native.VaeGanDiscriminatorOutput_swigregister(VaeGanDiscriminatorOutput)
+
+def VaeGanDiscriminator(discriminator, image, features=784, feature_width=8):
+    return _nn_native.VaeGanDiscriminator(discriminator, image, features, feature_width)
+class VaeGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_nn_native.VaeGanOutput_mu_get, _nn_native.VaeGanOutput_mu_set)
+    log_variance = property(_nn_native.VaeGanOutput_log_variance_get, _nn_native.VaeGanOutput_log_variance_set)
+    z = property(_nn_native.VaeGanOutput_z_get, _nn_native.VaeGanOutput_z_set)
+    probability = property(_nn_native.VaeGanOutput_probability_get, _nn_native.VaeGanOutput_probability_set)
+    prior_probability = property(_nn_native.VaeGanOutput_prior_probability_get, _nn_native.VaeGanOutput_prior_probability_set)
+    real_feature = property(_nn_native.VaeGanOutput_real_feature_get, _nn_native.VaeGanOutput_real_feature_set)
+    reconstruction_feature = property(_nn_native.VaeGanOutput_reconstruction_feature_get, _nn_native.VaeGanOutput_reconstruction_feature_set)
+    prior_feature = property(_nn_native.VaeGanOutput_prior_feature_get, _nn_native.VaeGanOutput_prior_feature_set)
+    real_logit = property(_nn_native.VaeGanOutput_real_logit_get, _nn_native.VaeGanOutput_real_logit_set)
+    reconstruction_logit = property(_nn_native.VaeGanOutput_reconstruction_logit_get, _nn_native.VaeGanOutput_reconstruction_logit_set)
+    prior_logit = property(_nn_native.VaeGanOutput_prior_logit_get, _nn_native.VaeGanOutput_prior_logit_set)
+    feature_nll = property(_nn_native.VaeGanOutput_feature_nll_get, _nn_native.VaeGanOutput_feature_nll_set)
+    kl = property(_nn_native.VaeGanOutput_kl_get, _nn_native.VaeGanOutput_kl_set)
+    pixel_nll = property(_nn_native.VaeGanOutput_pixel_nll_get, _nn_native.VaeGanOutput_pixel_nll_set)
+    mse = property(_nn_native.VaeGanOutput_mse_get, _nn_native.VaeGanOutput_mse_set)
+    encoder_loss = property(_nn_native.VaeGanOutput_encoder_loss_get, _nn_native.VaeGanOutput_encoder_loss_set)
+    generator_loss = property(_nn_native.VaeGanOutput_generator_loss_get, _nn_native.VaeGanOutput_generator_loss_set)
+    discriminator_loss = property(_nn_native.VaeGanOutput_discriminator_loss_get, _nn_native.VaeGanOutput_discriminator_loss_set)
+    generator_adversarial = property(_nn_native.VaeGanOutput_generator_adversarial_get, _nn_native.VaeGanOutput_generator_adversarial_set)
+
+    def __init__(self):
+        _nn_native.VaeGanOutput_swiginit(self, _nn_native.new_VaeGanOutput())
+    __swig_destroy__ = _nn_native.delete_VaeGanOutput
+
+# Register VaeGanOutput in _nn_native:
+_nn_native.VaeGanOutput_swigregister(VaeGanOutput)
+
+def VaeGan(encoder, generator, discriminator, image, epsilon, prior, features=784, latent=4, hidden=16, feature_width=8):
+    return _nn_native.VaeGan(encoder, generator, discriminator, image, epsilon, prior, features, latent, hidden, feature_width)
+
+def Widths(features, classes, latent, hidden):
+    return _nn_native.Widths(features, classes, latent, hidden)
+
+def Labels(labels, batch, classes):
+    return _nn_native.Labels(labels, batch, classes)
+
+def ConditionalVaeDecode(parameters, code, labels, features=784, classes=10, latent=2, hidden=64):
+    return _nn_native.ConditionalVaeDecode(parameters, code, labels, features, classes, latent, hidden)
+class ConditionalVaeOutput(GaussianVaeOutput):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    condition = property(_nn_native.ConditionalVaeOutput_condition_get, _nn_native.ConditionalVaeOutput_condition_set)
+    encoder_input = property(_nn_native.ConditionalVaeOutput_encoder_input_get, _nn_native.ConditionalVaeOutput_encoder_input_set)
+    decoder_input = property(_nn_native.ConditionalVaeOutput_decoder_input_get, _nn_native.ConditionalVaeOutput_decoder_input_set)
+
+    def __init__(self):
+        _nn_native.ConditionalVaeOutput_swiginit(self, _nn_native.new_ConditionalVaeOutput())
+    __swig_destroy__ = _nn_native.delete_ConditionalVaeOutput
+
+# Register ConditionalVaeOutput in _nn_native:
+_nn_native.ConditionalVaeOutput_swigregister(ConditionalVaeOutput)
+
+def ConditionalVariationalAutoencoder(parameters, image, labels, epsilon, features=784, classes=10, latent=2, hidden=64):
+    return _nn_native.ConditionalVariationalAutoencoder(parameters, image, labels, epsilon, features, classes, latent, hidden)
+
+def Geometry(height, width, latent, channels, base_channels):
+    return _nn_native.Geometry(height, width, latent, channels, base_channels)
+
+def Image(image, type):
+    return _nn_native.Image(image, type)
+
+def Relu():
+    return _nn_native.Relu()
+class ConvolutionalVaeDecoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    decoder_base = property(_nn_native.ConvolutionalVaeDecoderOutput_decoder_base_get, _nn_native.ConvolutionalVaeDecoderOutput_decoder_base_set)
+    decoder1 = property(_nn_native.ConvolutionalVaeDecoderOutput_decoder1_get, _nn_native.ConvolutionalVaeDecoderOutput_decoder1_set)
+    spatial_logits = property(_nn_native.ConvolutionalVaeDecoderOutput_spatial_logits_get, _nn_native.ConvolutionalVaeDecoderOutput_spatial_logits_set)
+    logits = property(_nn_native.ConvolutionalVaeDecoderOutput_logits_get, _nn_native.ConvolutionalVaeDecoderOutput_logits_set)
+    probability = property(_nn_native.ConvolutionalVaeDecoderOutput_probability_get, _nn_native.ConvolutionalVaeDecoderOutput_probability_set)
+
+    def __init__(self):
+        _nn_native.ConvolutionalVaeDecoderOutput_swiginit(self, _nn_native.new_ConvolutionalVaeDecoderOutput())
+    __swig_destroy__ = _nn_native.delete_ConvolutionalVaeDecoderOutput
+
+# Register ConvolutionalVaeDecoderOutput in _nn_native:
+_nn_native.ConvolutionalVaeDecoderOutput_swigregister(ConvolutionalVaeDecoderOutput)
+
+def ConvolutionalVaeDecode(parameters, code, height=28, width=28, latent=2, channels=8, base_channels=4):
+    return _nn_native.ConvolutionalVaeDecode(parameters, code, height, width, latent, channels, base_channels)
+class ConvolutionalVaeOutput(GaussianVaeOutput):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    conv1 = property(_nn_native.ConvolutionalVaeOutput_conv1_get, _nn_native.ConvolutionalVaeOutput_conv1_set)
+    pool1 = property(_nn_native.ConvolutionalVaeOutput_pool1_get, _nn_native.ConvolutionalVaeOutput_pool1_set)
+    conv2 = property(_nn_native.ConvolutionalVaeOutput_conv2_get, _nn_native.ConvolutionalVaeOutput_conv2_set)
+    pool2 = property(_nn_native.ConvolutionalVaeOutput_pool2_get, _nn_native.ConvolutionalVaeOutput_pool2_set)
+    decoder_base = property(_nn_native.ConvolutionalVaeOutput_decoder_base_get, _nn_native.ConvolutionalVaeOutput_decoder_base_set)
+    decoder1 = property(_nn_native.ConvolutionalVaeOutput_decoder1_get, _nn_native.ConvolutionalVaeOutput_decoder1_set)
+    spatial_logits = property(_nn_native.ConvolutionalVaeOutput_spatial_logits_get, _nn_native.ConvolutionalVaeOutput_spatial_logits_set)
+
+    def __init__(self):
+        _nn_native.ConvolutionalVaeOutput_swiginit(self, _nn_native.new_ConvolutionalVaeOutput())
+    __swig_destroy__ = _nn_native.delete_ConvolutionalVaeOutput
+
+# Register ConvolutionalVaeOutput in _nn_native:
+_nn_native.ConvolutionalVaeOutput_swigregister(ConvolutionalVaeOutput)
+
+def ConvolutionalVariationalAutoencoder(parameters, image, epsilon, latent=2, channels=8, base_channels=4):
+    return _nn_native.ConvolutionalVariationalAutoencoder(parameters, image, epsilon, latent, channels, base_channels)
+class EmpiricalTcOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    log_joint = property(_nn_native.EmpiricalTcOutput_log_joint_get, _nn_native.EmpiricalTcOutput_log_joint_set)
+    log_product = property(_nn_native.EmpiricalTcOutput_log_product_get, _nn_native.EmpiricalTcOutput_log_product_set)
+    per_case = property(_nn_native.EmpiricalTcOutput_per_case_get, _nn_native.EmpiricalTcOutput_per_case_set)
+    mean = property(_nn_native.EmpiricalTcOutput_mean_get, _nn_native.EmpiricalTcOutput_mean_set)
+
+    def __init__(self):
+        _nn_native.EmpiricalTcOutput_swiginit(self, _nn_native.new_EmpiricalTcOutput())
+    __swig_destroy__ = _nn_native.delete_EmpiricalTcOutput
+
+# Register EmpiricalTcOutput in _nn_native:
+_nn_native.EmpiricalTcOutput_swigregister(EmpiricalTcOutput)
+
+def EmpiricalTotalCorrelation(z, mu, log_variance):
+    return _nn_native.EmpiricalTotalCorrelation(z, mu, log_variance)
+
+def FactorDiscriminator(discriminator, z, latent=4, hidden=16):
+    return _nn_native.FactorDiscriminator(discriminator, z, latent, hidden)
+
+def FactorDiscriminatorLoss(discriminator, joint, product, latent=4, hidden=16):
+    return _nn_native.FactorDiscriminatorLoss(discriminator, joint, product, latent, hidden)
+
+def PermuteLatentColumns(joint, seed):
+    return _nn_native.PermuteLatentColumns(joint, seed)
+class TcVaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    net = property(_nn_native.TcVaeOutput_net_get, _nn_native.TcVaeOutput_net_set)
+    tc = property(_nn_native.TcVaeOutput_tc_get, _nn_native.TcVaeOutput_tc_set)
+    loss = property(_nn_native.TcVaeOutput_loss_get, _nn_native.TcVaeOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.TcVaeOutput_swiginit(self, _nn_native.new_TcVaeOutput())
+    __swig_destroy__ = _nn_native.delete_TcVaeOutput
+
+# Register TcVaeOutput in _nn_native:
+_nn_native.TcVaeOutput_swigregister(TcVaeOutput)
+
+def FactorVariationalAutoencoder(parameters, discriminator, image, epsilon, extra_weight=3, features=784, latent=4, hidden=32, disc_hidden=16):
+    return _nn_native.FactorVariationalAutoencoder(parameters, discriminator, image, epsilon, extra_weight, features, latent, hidden, disc_hidden)
+
+def BetaTcVariationalAutoencoder(parameters, image, epsilon, reference_images, extra_weight=3, features=784, latent=4, hidden=32):
+    return _nn_native.BetaTcVariationalAutoencoder(parameters, image, epsilon, reference_images, extra_weight, features, latent, hidden)
 class TensorPair(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -2939,6 +4628,638 @@ def encode_npz(arrays):
 
 def decode_npz(bytes):
     return _nn_native.decode_npz(bytes)
+class AffinePosteriorFlowOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.AffinePosteriorFlowOutput_value_get, _nn_native.AffinePosteriorFlowOutput_value_set)
+    log_determinant = property(_nn_native.AffinePosteriorFlowOutput_log_determinant_get, _nn_native.AffinePosteriorFlowOutput_log_determinant_set)
+    scale = property(_nn_native.AffinePosteriorFlowOutput_scale_get, _nn_native.AffinePosteriorFlowOutput_scale_set)
+    shift = property(_nn_native.AffinePosteriorFlowOutput_shift_get, _nn_native.AffinePosteriorFlowOutput_shift_set)
+
+    def __init__(self):
+        _nn_native.AffinePosteriorFlowOutput_swiginit(self, _nn_native.new_AffinePosteriorFlowOutput())
+    __swig_destroy__ = _nn_native.delete_AffinePosteriorFlowOutput
+
+# Register AffinePosteriorFlowOutput in _nn_native:
+_nn_native.AffinePosteriorFlowOutput_swigregister(AffinePosteriorFlowOutput)
+
+def ConditionalAffinePosteriorFlow(parameters, name, code, context, swap=False, inverse=False, latent=4, hidden=16):
+    return _nn_native.ConditionalAffinePosteriorFlow(parameters, name, code, context, swap, inverse, latent, hidden)
+class FlowVaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    context = property(_nn_native.FlowVaeOutput_context_get, _nn_native.FlowVaeOutput_context_set)
+    mu = property(_nn_native.FlowVaeOutput_mu_get, _nn_native.FlowVaeOutput_mu_set)
+    log_variance = property(_nn_native.FlowVaeOutput_log_variance_get, _nn_native.FlowVaeOutput_log_variance_set)
+    z0 = property(_nn_native.FlowVaeOutput_z0_get, _nn_native.FlowVaeOutput_z0_set)
+    z1 = property(_nn_native.FlowVaeOutput_z1_get, _nn_native.FlowVaeOutput_z1_set)
+    z = property(_nn_native.FlowVaeOutput_z_get, _nn_native.FlowVaeOutput_z_set)
+    logdet0 = property(_nn_native.FlowVaeOutput_logdet0_get, _nn_native.FlowVaeOutput_logdet0_set)
+    logdet1 = property(_nn_native.FlowVaeOutput_logdet1_get, _nn_native.FlowVaeOutput_logdet1_set)
+    logdet = property(_nn_native.FlowVaeOutput_logdet_get, _nn_native.FlowVaeOutput_logdet_set)
+    logq0 = property(_nn_native.FlowVaeOutput_logq0_get, _nn_native.FlowVaeOutput_logq0_set)
+    logq = property(_nn_native.FlowVaeOutput_logq_get, _nn_native.FlowVaeOutput_logq_set)
+    logp = property(_nn_native.FlowVaeOutput_logp_get, _nn_native.FlowVaeOutput_logp_set)
+    logratio = property(_nn_native.FlowVaeOutput_logratio_get, _nn_native.FlowVaeOutput_logratio_set)
+    probability = property(_nn_native.FlowVaeOutput_probability_get, _nn_native.FlowVaeOutput_probability_set)
+    nll = property(_nn_native.FlowVaeOutput_nll_get, _nn_native.FlowVaeOutput_nll_set)
+    loss = property(_nn_native.FlowVaeOutput_loss_get, _nn_native.FlowVaeOutput_loss_set)
+    inverse_z0 = property(_nn_native.FlowVaeOutput_inverse_z0_get, _nn_native.FlowVaeOutput_inverse_z0_set)
+    inverse_logdet = property(_nn_native.FlowVaeOutput_inverse_logdet_get, _nn_native.FlowVaeOutput_inverse_logdet_set)
+
+    def Named(self):
+        return _nn_native.FlowVaeOutput_Named(self)
+
+    def __init__(self):
+        _nn_native.FlowVaeOutput_swiginit(self, _nn_native.new_FlowVaeOutput())
+    __swig_destroy__ = _nn_native.delete_FlowVaeOutput
+
+# Register FlowVaeOutput in _nn_native:
+_nn_native.FlowVaeOutput_swigregister(FlowVaeOutput)
+
+def FlowVariationalAutoencoder(parameters, image, epsilon, features=784, latent=4, hidden=32, flow_hidden=16):
+    return _nn_native.FlowVariationalAutoencoder(parameters, image, epsilon, features, latent, hidden, flow_hidden)
+class GumbelCategoricalSample(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    log_probability = property(_nn_native.GumbelCategoricalSample_log_probability_get, _nn_native.GumbelCategoricalSample_log_probability_set)
+    probability = property(_nn_native.GumbelCategoricalSample_probability_get, _nn_native.GumbelCategoricalSample_probability_set)
+    relaxed = property(_nn_native.GumbelCategoricalSample_relaxed_get, _nn_native.GumbelCategoricalSample_relaxed_set)
+    indices = property(_nn_native.GumbelCategoricalSample_indices_get, _nn_native.GumbelCategoricalSample_indices_set)
+
+    def __init__(self):
+        _nn_native.GumbelCategoricalSample_swiginit(self, _nn_native.new_GumbelCategoricalSample())
+    __swig_destroy__ = _nn_native.delete_GumbelCategoricalSample
+
+# Register GumbelCategoricalSample in _nn_native:
+_nn_native.GumbelCategoricalSample_swigregister(GumbelCategoricalSample)
+
+def GumbelCategorical(logits, noise, temperature=.7):
+    return _nn_native.GumbelCategorical(logits, noise, temperature)
+
+def CategoricalUniformKl(probability, log_probability):
+    return _nn_native.CategoricalUniformKl(probability, log_probability)
+class GumbelNoiseBank(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    uniform = property(_nn_native.GumbelNoiseBank_uniform_get, _nn_native.GumbelNoiseBank_uniform_set)
+    gumbel = property(_nn_native.GumbelNoiseBank_gumbel_get, _nn_native.GumbelNoiseBank_gumbel_set)
+    noise = property(_nn_native.GumbelNoiseBank_noise_get, _nn_native.GumbelNoiseBank_noise_set)
+
+    def __init__(self):
+        _nn_native.GumbelNoiseBank_swiginit(self, _nn_native.new_GumbelNoiseBank())
+    __swig_destroy__ = _nn_native.delete_GumbelNoiseBank
+
+# Register GumbelNoiseBank in _nn_native:
+_nn_native.GumbelNoiseBank_swigregister(GumbelNoiseBank)
+
+def GumbelNoise(n, samples, seed, groups=4, classes=8):
+    return _nn_native.GumbelNoise(n, samples, seed, groups, classes)
+
+def GumbelDecodeSoft(parameters, simplex, features=784, groups=4, classes=8, hidden=32):
+    return _nn_native.GumbelDecodeSoft(parameters, simplex, features, groups, classes, hidden)
+
+def GumbelDecodeIds(parameters, ids, features=784, groups=4, classes=8, hidden=32):
+    return _nn_native.GumbelDecodeIds(parameters, ids, features, groups, classes, hidden)
+class GumbelCategoricalAutoencoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    logits = property(_nn_native.GumbelCategoricalAutoencoderOutput_logits_get, _nn_native.GumbelCategoricalAutoencoderOutput_logits_set)
+    log_probability = property(_nn_native.GumbelCategoricalAutoencoderOutput_log_probability_get, _nn_native.GumbelCategoricalAutoencoderOutput_log_probability_set)
+    probability = property(_nn_native.GumbelCategoricalAutoencoderOutput_probability_get, _nn_native.GumbelCategoricalAutoencoderOutput_probability_set)
+    relaxed = property(_nn_native.GumbelCategoricalAutoencoderOutput_relaxed_get, _nn_native.GumbelCategoricalAutoencoderOutput_relaxed_set)
+    indices = property(_nn_native.GumbelCategoricalAutoencoderOutput_indices_get, _nn_native.GumbelCategoricalAutoencoderOutput_indices_set)
+    hard = property(_nn_native.GumbelCategoricalAutoencoderOutput_hard_get, _nn_native.GumbelCategoricalAutoencoderOutput_hard_set)
+    code = property(_nn_native.GumbelCategoricalAutoencoderOutput_code_get, _nn_native.GumbelCategoricalAutoencoderOutput_code_set)
+    soft_prediction = property(_nn_native.GumbelCategoricalAutoencoderOutput_soft_prediction_get, _nn_native.GumbelCategoricalAutoencoderOutput_soft_prediction_set)
+    hard_prediction = property(_nn_native.GumbelCategoricalAutoencoderOutput_hard_prediction_get, _nn_native.GumbelCategoricalAutoencoderOutput_hard_prediction_set)
+    nll = property(_nn_native.GumbelCategoricalAutoencoderOutput_nll_get, _nn_native.GumbelCategoricalAutoencoderOutput_nll_set)
+    hard_nll = property(_nn_native.GumbelCategoricalAutoencoderOutput_hard_nll_get, _nn_native.GumbelCategoricalAutoencoderOutput_hard_nll_set)
+    kl = property(_nn_native.GumbelCategoricalAutoencoderOutput_kl_get, _nn_native.GumbelCategoricalAutoencoderOutput_kl_set)
+    loss = property(_nn_native.GumbelCategoricalAutoencoderOutput_loss_get, _nn_native.GumbelCategoricalAutoencoderOutput_loss_set)
+    hard_objective = property(_nn_native.GumbelCategoricalAutoencoderOutput_hard_objective_get, _nn_native.GumbelCategoricalAutoencoderOutput_hard_objective_set)
+
+    def __init__(self):
+        _nn_native.GumbelCategoricalAutoencoderOutput_swiginit(self, _nn_native.new_GumbelCategoricalAutoencoderOutput())
+    __swig_destroy__ = _nn_native.delete_GumbelCategoricalAutoencoderOutput
+
+# Register GumbelCategoricalAutoencoderOutput in _nn_native:
+_nn_native.GumbelCategoricalAutoencoderOutput_swigregister(GumbelCategoricalAutoencoderOutput)
+
+def GumbelCategoricalAutoencoder(parameters, image, noise, temperature=.7, features=784, groups=4, classes=8, hidden=32):
+    return _nn_native.GumbelCategoricalAutoencoder(parameters, image, noise, temperature, features, groups, classes, hidden)
+class HierarchyGaussian(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_nn_native.HierarchyGaussian_mu_get, _nn_native.HierarchyGaussian_mu_set)
+    log_variance = property(_nn_native.HierarchyGaussian_log_variance_get, _nn_native.HierarchyGaussian_log_variance_set)
+
+    def __init__(self):
+        _nn_native.HierarchyGaussian_swiginit(self, _nn_native.new_HierarchyGaussian())
+    __swig_destroy__ = _nn_native.delete_HierarchyGaussian
+
+# Register HierarchyGaussian in _nn_native:
+_nn_native.HierarchyGaussian_swigregister(HierarchyGaussian)
+
+def HierarchyPosterior(prior_mu, prior_lv, head_mu, head_lv, residual=True):
+    return _nn_native.HierarchyPosterior(prior_mu, prior_lv, head_mu, head_lv, residual)
+
+def ConditionalGaussianKl(mu, lv, prior_mu, prior_lv):
+    return _nn_native.ConditionalGaussianKl(mu, lv, prior_mu, prior_lv)
+
+def HierarchyNvaeCell(parameters, state, x, training=False, update_stats=False):
+    return _nn_native.HierarchyNvaeCell(parameters, state, x, training, update_stats)
+
+def HierarchyDecode(parameters, state, lower, top, nvae=False, height=28, width=28, channels=4):
+    return _nn_native.HierarchyDecode(parameters, state, lower, top, nvae, height, width, channels)
+class HierarchyPriorOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    top_z = property(_nn_native.HierarchyPriorOutput_top_z_get, _nn_native.HierarchyPriorOutput_top_z_set)
+    lower_noise = property(_nn_native.HierarchyPriorOutput_lower_noise_get, _nn_native.HierarchyPriorOutput_lower_noise_set)
+    prior_mu = property(_nn_native.HierarchyPriorOutput_prior_mu_get, _nn_native.HierarchyPriorOutput_prior_mu_set)
+    prior_lv = property(_nn_native.HierarchyPriorOutput_prior_lv_get, _nn_native.HierarchyPriorOutput_prior_lv_set)
+    lower_z = property(_nn_native.HierarchyPriorOutput_lower_z_get, _nn_native.HierarchyPriorOutput_lower_z_set)
+    probability = property(_nn_native.HierarchyPriorOutput_probability_get, _nn_native.HierarchyPriorOutput_probability_set)
+
+    def __init__(self):
+        _nn_native.HierarchyPriorOutput_swiginit(self, _nn_native.new_HierarchyPriorOutput())
+    __swig_destroy__ = _nn_native.delete_HierarchyPriorOutput
+
+# Register HierarchyPriorOutput in _nn_native:
+_nn_native.HierarchyPriorOutput_swigregister(HierarchyPriorOutput)
+
+def HierarchyPrior(parameters, state, top, lower_noise, nvae=False, height=28, width=28, channels=4):
+    return _nn_native.HierarchyPrior(parameters, state, top, lower_noise, nvae, height, width, channels)
+class HierarchicalVaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    encoder_feature = property(_nn_native.HierarchicalVaeOutput_encoder_feature_get, _nn_native.HierarchicalVaeOutput_encoder_feature_set)
+    top_feature = property(_nn_native.HierarchicalVaeOutput_top_feature_get, _nn_native.HierarchicalVaeOutput_top_feature_set)
+    top_mu = property(_nn_native.HierarchicalVaeOutput_top_mu_get, _nn_native.HierarchicalVaeOutput_top_mu_set)
+    top_lv = property(_nn_native.HierarchicalVaeOutput_top_lv_get, _nn_native.HierarchicalVaeOutput_top_lv_set)
+    top_z = property(_nn_native.HierarchicalVaeOutput_top_z_get, _nn_native.HierarchicalVaeOutput_top_z_set)
+    prior_mu = property(_nn_native.HierarchicalVaeOutput_prior_mu_get, _nn_native.HierarchicalVaeOutput_prior_mu_set)
+    prior_lv = property(_nn_native.HierarchicalVaeOutput_prior_lv_get, _nn_native.HierarchicalVaeOutput_prior_lv_set)
+    head_mu = property(_nn_native.HierarchicalVaeOutput_head_mu_get, _nn_native.HierarchicalVaeOutput_head_mu_set)
+    head_lv = property(_nn_native.HierarchicalVaeOutput_head_lv_get, _nn_native.HierarchicalVaeOutput_head_lv_set)
+    lower_mu = property(_nn_native.HierarchicalVaeOutput_lower_mu_get, _nn_native.HierarchicalVaeOutput_lower_mu_set)
+    lower_lv = property(_nn_native.HierarchicalVaeOutput_lower_lv_get, _nn_native.HierarchicalVaeOutput_lower_lv_set)
+    lower_z = property(_nn_native.HierarchicalVaeOutput_lower_z_get, _nn_native.HierarchicalVaeOutput_lower_z_set)
+    probability = property(_nn_native.HierarchicalVaeOutput_probability_get, _nn_native.HierarchicalVaeOutput_probability_set)
+    nll = property(_nn_native.HierarchicalVaeOutput_nll_get, _nn_native.HierarchicalVaeOutput_nll_set)
+    kl_lower = property(_nn_native.HierarchicalVaeOutput_kl_lower_get, _nn_native.HierarchicalVaeOutput_kl_lower_set)
+    kl_top = property(_nn_native.HierarchicalVaeOutput_kl_top_get, _nn_native.HierarchicalVaeOutput_kl_top_set)
+    loss = property(_nn_native.HierarchicalVaeOutput_loss_get, _nn_native.HierarchicalVaeOutput_loss_set)
+    regularizer = property(_nn_native.HierarchicalVaeOutput_regularizer_get, _nn_native.HierarchicalVaeOutput_regularizer_set)
+    train_loss = property(_nn_native.HierarchicalVaeOutput_train_loss_get, _nn_native.HierarchicalVaeOutput_train_loss_set)
+
+    def __init__(self):
+        _nn_native.HierarchicalVaeOutput_swiginit(self, _nn_native.new_HierarchicalVaeOutput())
+    __swig_destroy__ = _nn_native.delete_HierarchicalVaeOutput
+
+# Register HierarchicalVaeOutput in _nn_native:
+_nn_native.HierarchicalVaeOutput_swigregister(HierarchicalVaeOutput)
+
+def HierarchicalVariationalAutoencoder(parameters, state, image, epsilon, nvae=False, training=False, update_stats=False, height=28, width=28, channels=4, top_latent=2):
+    return _nn_native.HierarchicalVariationalAutoencoder(parameters, state, image, epsilon, nvae, training, update_stats, height, width, channels, top_latent)
+
+def IwaeLogMeanExp(log_weights):
+    return _nn_native.IwaeLogMeanExp(log_weights)
+class ImportanceWeightedOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    log_weights = property(_nn_native.ImportanceWeightedOutput_log_weights_get, _nn_native.ImportanceWeightedOutput_log_weights_set)
+    normalized_weights = property(_nn_native.ImportanceWeightedOutput_normalized_weights_get, _nn_native.ImportanceWeightedOutput_normalized_weights_set)
+    negative_bound = property(_nn_native.ImportanceWeightedOutput_negative_bound_get, _nn_native.ImportanceWeightedOutput_negative_bound_set)
+    effective_samples = property(_nn_native.ImportanceWeightedOutput_effective_samples_get, _nn_native.ImportanceWeightedOutput_effective_samples_set)
+    loss = property(_nn_native.ImportanceWeightedOutput_loss_get, _nn_native.ImportanceWeightedOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.ImportanceWeightedOutput_swiginit(self, _nn_native.new_ImportanceWeightedOutput())
+    __swig_destroy__ = _nn_native.delete_ImportanceWeightedOutput
+
+# Register ImportanceWeightedOutput in _nn_native:
+_nn_native.ImportanceWeightedOutput_swigregister(ImportanceWeightedOutput)
+
+def ImportanceWeightedBound(mu, log_variance, z, nll, samples):
+    return _nn_native.ImportanceWeightedBound(mu, log_variance, z, nll, samples)
+class ImportanceWeightedAutoencoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_nn_native.ImportanceWeightedAutoencoderOutput_mu_get, _nn_native.ImportanceWeightedAutoencoderOutput_mu_set)
+    log_variance = property(_nn_native.ImportanceWeightedAutoencoderOutput_log_variance_get, _nn_native.ImportanceWeightedAutoencoderOutput_log_variance_set)
+    z = property(_nn_native.ImportanceWeightedAutoencoderOutput_z_get, _nn_native.ImportanceWeightedAutoencoderOutput_z_set)
+    probability = property(_nn_native.ImportanceWeightedAutoencoderOutput_probability_get, _nn_native.ImportanceWeightedAutoencoderOutput_probability_set)
+    nll = property(_nn_native.ImportanceWeightedAutoencoderOutput_nll_get, _nn_native.ImportanceWeightedAutoencoderOutput_nll_set)
+    kl = property(_nn_native.ImportanceWeightedAutoencoderOutput_kl_get, _nn_native.ImportanceWeightedAutoencoderOutput_kl_set)
+    loss = property(_nn_native.ImportanceWeightedAutoencoderOutput_loss_get, _nn_native.ImportanceWeightedAutoencoderOutput_loss_set)
+    negative_bound = property(_nn_native.ImportanceWeightedAutoencoderOutput_negative_bound_get, _nn_native.ImportanceWeightedAutoencoderOutput_negative_bound_set)
+    log_weights = property(_nn_native.ImportanceWeightedAutoencoderOutput_log_weights_get, _nn_native.ImportanceWeightedAutoencoderOutput_log_weights_set)
+    normalized_weights = property(_nn_native.ImportanceWeightedAutoencoderOutput_normalized_weights_get, _nn_native.ImportanceWeightedAutoencoderOutput_normalized_weights_set)
+    effective_samples = property(_nn_native.ImportanceWeightedAutoencoderOutput_effective_samples_get, _nn_native.ImportanceWeightedAutoencoderOutput_effective_samples_set)
+
+    def __init__(self):
+        _nn_native.ImportanceWeightedAutoencoderOutput_swiginit(self, _nn_native.new_ImportanceWeightedAutoencoderOutput())
+    __swig_destroy__ = _nn_native.delete_ImportanceWeightedAutoencoderOutput
+
+# Register ImportanceWeightedAutoencoderOutput in _nn_native:
+_nn_native.ImportanceWeightedAutoencoderOutput_swigregister(ImportanceWeightedAutoencoderOutput)
+
+def ImportanceWeightedAutoencoder(parameters, image, epsilon, features=784, latent=4, hidden=32):
+    return _nn_native.ImportanceWeightedAutoencoder(parameters, image, epsilon, features, latent, hidden)
+
+def ImqKernel(x, y):
+    return _nn_native.ImqKernel(x, y)
+class MmdOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    xx = property(_nn_native.MmdOutput_xx_get, _nn_native.MmdOutput_xx_set)
+    yy = property(_nn_native.MmdOutput_yy_get, _nn_native.MmdOutput_yy_set)
+    xy = property(_nn_native.MmdOutput_xy_get, _nn_native.MmdOutput_xy_set)
+    within_x = property(_nn_native.MmdOutput_within_x_get, _nn_native.MmdOutput_within_x_set)
+    within_y = property(_nn_native.MmdOutput_within_y_get, _nn_native.MmdOutput_within_y_set)
+    cross = property(_nn_native.MmdOutput_cross_get, _nn_native.MmdOutput_cross_set)
+    value = property(_nn_native.MmdOutput_value_get, _nn_native.MmdOutput_value_set)
+
+    def __init__(self):
+        _nn_native.MmdOutput_swiginit(self, _nn_native.new_MmdOutput())
+    __swig_destroy__ = _nn_native.delete_MmdOutput
+
+# Register MmdOutput in _nn_native:
+_nn_native.MmdOutput_swigregister(MmdOutput)
+
+def ImqMmd(x, y):
+    return _nn_native.ImqMmd(x, y)
+
+def WaeSquaredPixelCost(image, probability):
+    return _nn_native.WaeSquaredPixelCost(image, probability)
+
+def WaeObjective(squared_cost, mmd, weight=10):
+    return _nn_native.WaeObjective(squared_cost, mmd, weight)
+
+def WaeDecode(parameters, code, features=784, latent=4, hidden=16):
+    return _nn_native.WaeDecode(parameters, code, features, latent, hidden)
+class WaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.WaeOutput_code_get, _nn_native.WaeOutput_code_set)
+    logits = property(_nn_native.WaeOutput_logits_get, _nn_native.WaeOutput_logits_set)
+    probability = property(_nn_native.WaeOutput_probability_get, _nn_native.WaeOutput_probability_set)
+    squared_cost = property(_nn_native.WaeOutput_squared_cost_get, _nn_native.WaeOutput_squared_cost_set)
+    reconstruction_loss = property(_nn_native.WaeOutput_reconstruction_loss_get, _nn_native.WaeOutput_reconstruction_loss_set)
+    loss = property(_nn_native.WaeOutput_loss_get, _nn_native.WaeOutput_loss_set)
+    mmd = property(_nn_native.WaeOutput_mmd_get, _nn_native.WaeOutput_mmd_set)
+
+    def __init__(self):
+        _nn_native.WaeOutput_swiginit(self, _nn_native.new_WaeOutput())
+    __swig_destroy__ = _nn_native.delete_WaeOutput
+
+# Register WaeOutput in _nn_native:
+_nn_native.WaeOutput_swigregister(WaeOutput)
+
+def WassersteinAutoencoder(parameters, image, prior, weight=10, features=784, latent=4, hidden=16):
+    return _nn_native.WassersteinAutoencoder(parameters, image, prior, weight, features, latent, hidden)
+
+def InfoVaeObjective(nll, kl, mmd, alpha=.5, lambda_weight=10):
+    return _nn_native.InfoVaeObjective(nll, kl, mmd, alpha, lambda_weight)
+
+def InfoVaeDecode(parameters, code, features=784, latent=4, hidden=16):
+    return _nn_native.InfoVaeDecode(parameters, code, features, latent, hidden)
+class InfoVaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_nn_native.InfoVaeOutput_mu_get, _nn_native.InfoVaeOutput_mu_set)
+    log_variance = property(_nn_native.InfoVaeOutput_log_variance_get, _nn_native.InfoVaeOutput_log_variance_set)
+    z = property(_nn_native.InfoVaeOutput_z_get, _nn_native.InfoVaeOutput_z_set)
+    logits = property(_nn_native.InfoVaeOutput_logits_get, _nn_native.InfoVaeOutput_logits_set)
+    probability = property(_nn_native.InfoVaeOutput_probability_get, _nn_native.InfoVaeOutput_probability_set)
+    nll = property(_nn_native.InfoVaeOutput_nll_get, _nn_native.InfoVaeOutput_nll_set)
+    kl = property(_nn_native.InfoVaeOutput_kl_get, _nn_native.InfoVaeOutput_kl_set)
+    negative_elbo = property(_nn_native.InfoVaeOutput_negative_elbo_get, _nn_native.InfoVaeOutput_negative_elbo_set)
+    mmd_xx = property(_nn_native.InfoVaeOutput_mmd_xx_get, _nn_native.InfoVaeOutput_mmd_xx_set)
+    mmd_yy = property(_nn_native.InfoVaeOutput_mmd_yy_get, _nn_native.InfoVaeOutput_mmd_yy_set)
+    mmd_xy = property(_nn_native.InfoVaeOutput_mmd_xy_get, _nn_native.InfoVaeOutput_mmd_xy_set)
+    mmd_within_x = property(_nn_native.InfoVaeOutput_mmd_within_x_get, _nn_native.InfoVaeOutput_mmd_within_x_set)
+    mmd_within_y = property(_nn_native.InfoVaeOutput_mmd_within_y_get, _nn_native.InfoVaeOutput_mmd_within_y_set)
+    mmd_cross = property(_nn_native.InfoVaeOutput_mmd_cross_get, _nn_native.InfoVaeOutput_mmd_cross_set)
+    mmd = property(_nn_native.InfoVaeOutput_mmd_get, _nn_native.InfoVaeOutput_mmd_set)
+    loss = property(_nn_native.InfoVaeOutput_loss_get, _nn_native.InfoVaeOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.InfoVaeOutput_swiginit(self, _nn_native.new_InfoVaeOutput())
+    __swig_destroy__ = _nn_native.delete_InfoVaeOutput
+
+# Register InfoVaeOutput in _nn_native:
+_nn_native.InfoVaeOutput_swigregister(InfoVaeOutput)
+
+def InfoVariationalAutoencoder(parameters, image, epsilon, prior, alpha=.5, lambda_weight=10, features=784, latent=4, hidden=16):
+    return _nn_native.InfoVariationalAutoencoder(parameters, image, epsilon, prior, alpha, lambda_weight, features, latent, hidden)
+class LadderGaussian(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mu = property(_nn_native.LadderGaussian_mu_get, _nn_native.LadderGaussian_mu_set)
+    log_variance = property(_nn_native.LadderGaussian_log_variance_get, _nn_native.LadderGaussian_log_variance_set)
+
+    def __init__(self):
+        _nn_native.LadderGaussian_swiginit(self, _nn_native.new_LadderGaussian())
+    __swig_destroy__ = _nn_native.delete_LadderGaussian
+
+# Register LadderGaussian in _nn_native:
+_nn_native.LadderGaussian_swigregister(LadderGaussian)
+
+def LadderPrecisionFusion(evidence_mu, evidence_lv, prior_mu, prior_lv):
+    return _nn_native.LadderPrecisionFusion(evidence_mu, evidence_lv, prior_mu, prior_lv)
+class LadderPriorOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    top_z = property(_nn_native.LadderPriorOutput_top_z_get, _nn_native.LadderPriorOutput_top_z_set)
+    lower_noise = property(_nn_native.LadderPriorOutput_lower_noise_get, _nn_native.LadderPriorOutput_lower_noise_set)
+    prior_mu = property(_nn_native.LadderPriorOutput_prior_mu_get, _nn_native.LadderPriorOutput_prior_mu_set)
+    prior_lv = property(_nn_native.LadderPriorOutput_prior_lv_get, _nn_native.LadderPriorOutput_prior_lv_set)
+    lower_z = property(_nn_native.LadderPriorOutput_lower_z_get, _nn_native.LadderPriorOutput_lower_z_set)
+    probability = property(_nn_native.LadderPriorOutput_probability_get, _nn_native.LadderPriorOutput_probability_set)
+
+    def __init__(self):
+        _nn_native.LadderPriorOutput_swiginit(self, _nn_native.new_LadderPriorOutput())
+    __swig_destroy__ = _nn_native.delete_LadderPriorOutput
+
+# Register LadderPriorOutput in _nn_native:
+_nn_native.LadderPriorOutput_swigregister(LadderPriorOutput)
+
+def LadderPrior(parameters, top, lower_noise, features=784, lower_latent=4, top_latent=2, hidden=32, top_hidden=16):
+    return _nn_native.LadderPrior(parameters, top, lower_noise, features, lower_latent, top_latent, hidden, top_hidden)
+class LadderVaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    evidence_mu = property(_nn_native.LadderVaeOutput_evidence_mu_get, _nn_native.LadderVaeOutput_evidence_mu_set)
+    evidence_lv = property(_nn_native.LadderVaeOutput_evidence_lv_get, _nn_native.LadderVaeOutput_evidence_lv_set)
+    top_mu = property(_nn_native.LadderVaeOutput_top_mu_get, _nn_native.LadderVaeOutput_top_mu_set)
+    top_lv = property(_nn_native.LadderVaeOutput_top_lv_get, _nn_native.LadderVaeOutput_top_lv_set)
+    top_z = property(_nn_native.LadderVaeOutput_top_z_get, _nn_native.LadderVaeOutput_top_z_set)
+    prior_mu = property(_nn_native.LadderVaeOutput_prior_mu_get, _nn_native.LadderVaeOutput_prior_mu_set)
+    prior_lv = property(_nn_native.LadderVaeOutput_prior_lv_get, _nn_native.LadderVaeOutput_prior_lv_set)
+    lower_mu = property(_nn_native.LadderVaeOutput_lower_mu_get, _nn_native.LadderVaeOutput_lower_mu_set)
+    lower_lv = property(_nn_native.LadderVaeOutput_lower_lv_get, _nn_native.LadderVaeOutput_lower_lv_set)
+    lower_z = property(_nn_native.LadderVaeOutput_lower_z_get, _nn_native.LadderVaeOutput_lower_z_set)
+    logits = property(_nn_native.LadderVaeOutput_logits_get, _nn_native.LadderVaeOutput_logits_set)
+    probability = property(_nn_native.LadderVaeOutput_probability_get, _nn_native.LadderVaeOutput_probability_set)
+    nll = property(_nn_native.LadderVaeOutput_nll_get, _nn_native.LadderVaeOutput_nll_set)
+    kl_lower = property(_nn_native.LadderVaeOutput_kl_lower_get, _nn_native.LadderVaeOutput_kl_lower_set)
+    kl_top = property(_nn_native.LadderVaeOutput_kl_top_get, _nn_native.LadderVaeOutput_kl_top_set)
+    loss = property(_nn_native.LadderVaeOutput_loss_get, _nn_native.LadderVaeOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.LadderVaeOutput_swiginit(self, _nn_native.new_LadderVaeOutput())
+    __swig_destroy__ = _nn_native.delete_LadderVaeOutput
+
+# Register LadderVaeOutput in _nn_native:
+_nn_native.LadderVaeOutput_swigregister(LadderVaeOutput)
+
+def LadderVariationalAutoencoder(parameters, image, epsilon, features=784, lower_latent=4, top_latent=2, hidden=32, top_hidden=16):
+    return _nn_native.LadderVariationalAutoencoder(parameters, image, epsilon, features, lower_latent, top_latent, hidden, top_hidden)
+class SequenceEncoderOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    state = property(_nn_native.SequenceEncoderOutput_state_get, _nn_native.SequenceEncoderOutput_state_set)
+    states = property(_nn_native.SequenceEncoderOutput_states_get, _nn_native.SequenceEncoderOutput_states_set)
+
+    def __init__(self):
+        _nn_native.SequenceEncoderOutput_swiginit(self, _nn_native.new_SequenceEncoderOutput())
+    __swig_destroy__ = _nn_native.delete_SequenceEncoderOutput
+
+# Register SequenceEncoderOutput in _nn_native:
+_nn_native.SequenceEncoderOutput_swigregister(SequenceEncoderOutput)
+
+def SequenceEncoder(parameters, tokens):
+    return _nn_native.SequenceEncoder(parameters, tokens)
+
+def SequenceDecoderInputs(tokens):
+    return _nn_native.SequenceDecoderInputs(tokens)
+class SequenceVaeOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    decoder_inputs = property(_nn_native.SequenceVaeOutput_decoder_inputs_get, _nn_native.SequenceVaeOutput_decoder_inputs_set)
+    encoder_state = property(_nn_native.SequenceVaeOutput_encoder_state_get, _nn_native.SequenceVaeOutput_encoder_state_set)
+    encoder_states = property(_nn_native.SequenceVaeOutput_encoder_states_get, _nn_native.SequenceVaeOutput_encoder_states_set)
+    mu = property(_nn_native.SequenceVaeOutput_mu_get, _nn_native.SequenceVaeOutput_mu_set)
+    log_variance = property(_nn_native.SequenceVaeOutput_log_variance_get, _nn_native.SequenceVaeOutput_log_variance_set)
+    z = property(_nn_native.SequenceVaeOutput_z_get, _nn_native.SequenceVaeOutput_z_set)
+    decoder_initial = property(_nn_native.SequenceVaeOutput_decoder_initial_get, _nn_native.SequenceVaeOutput_decoder_initial_set)
+    decoder_states = property(_nn_native.SequenceVaeOutput_decoder_states_get, _nn_native.SequenceVaeOutput_decoder_states_set)
+    logits = property(_nn_native.SequenceVaeOutput_logits_get, _nn_native.SequenceVaeOutput_logits_set)
+    probability = property(_nn_native.SequenceVaeOutput_probability_get, _nn_native.SequenceVaeOutput_probability_set)
+    predicted_ids = property(_nn_native.SequenceVaeOutput_predicted_ids_get, _nn_native.SequenceVaeOutput_predicted_ids_set)
+    mask = property(_nn_native.SequenceVaeOutput_mask_get, _nn_native.SequenceVaeOutput_mask_set)
+    token_nll = property(_nn_native.SequenceVaeOutput_token_nll_get, _nn_native.SequenceVaeOutput_token_nll_set)
+    nll = property(_nn_native.SequenceVaeOutput_nll_get, _nn_native.SequenceVaeOutput_nll_set)
+    kl = property(_nn_native.SequenceVaeOutput_kl_get, _nn_native.SequenceVaeOutput_kl_set)
+    correct = property(_nn_native.SequenceVaeOutput_correct_get, _nn_native.SequenceVaeOutput_correct_set)
+    valid_tokens = property(_nn_native.SequenceVaeOutput_valid_tokens_get, _nn_native.SequenceVaeOutput_valid_tokens_set)
+    loss = property(_nn_native.SequenceVaeOutput_loss_get, _nn_native.SequenceVaeOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.SequenceVaeOutput_swiginit(self, _nn_native.new_SequenceVaeOutput())
+    __swig_destroy__ = _nn_native.delete_SequenceVaeOutput
+
+# Register SequenceVaeOutput in _nn_native:
+_nn_native.SequenceVaeOutput_swigregister(SequenceVaeOutput)
+class SequenceTeacherOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    initial = property(_nn_native.SequenceTeacherOutput_initial_get, _nn_native.SequenceTeacherOutput_initial_set)
+    states = property(_nn_native.SequenceTeacherOutput_states_get, _nn_native.SequenceTeacherOutput_states_set)
+    logits = property(_nn_native.SequenceTeacherOutput_logits_get, _nn_native.SequenceTeacherOutput_logits_set)
+    probability = property(_nn_native.SequenceTeacherOutput_probability_get, _nn_native.SequenceTeacherOutput_probability_set)
+    predicted_ids = property(_nn_native.SequenceTeacherOutput_predicted_ids_get, _nn_native.SequenceTeacherOutput_predicted_ids_set)
+
+    def __init__(self):
+        _nn_native.SequenceTeacherOutput_swiginit(self, _nn_native.new_SequenceTeacherOutput())
+    __swig_destroy__ = _nn_native.delete_SequenceTeacherOutput
+
+# Register SequenceTeacherOutput in _nn_native:
+_nn_native.SequenceTeacherOutput_swigregister(SequenceTeacherOutput)
+
+def SequenceTeacher(parameters, z, inputs):
+    return _nn_native.SequenceTeacher(parameters, z, inputs)
+
+def SequenceVariationalAutoencoder(parameters, tokens, epsilon):
+    return _nn_native.SequenceVariationalAutoencoder(parameters, tokens, epsilon)
+
+def AnnealedSequenceObjective(net, beta):
+    return _nn_native.AnnealedSequenceObjective(net, beta)
+class SequenceGeneration(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    ids = property(_nn_native.SequenceGeneration_ids_get, _nn_native.SequenceGeneration_ids_set)
+    logits = property(_nn_native.SequenceGeneration_logits_get, _nn_native.SequenceGeneration_logits_set)
+    probability = property(_nn_native.SequenceGeneration_probability_get, _nn_native.SequenceGeneration_probability_set)
+    ended = property(_nn_native.SequenceGeneration_ended_get, _nn_native.SequenceGeneration_ended_set)
+
+    def __init__(self):
+        _nn_native.SequenceGeneration_swiginit(self, _nn_native.new_SequenceGeneration())
+    __swig_destroy__ = _nn_native.delete_SequenceGeneration
+
+# Register SequenceGeneration in _nn_native:
+_nn_native.SequenceGeneration_swigregister(SequenceGeneration)
+
+def SequenceGenerate(*args):
+    return _nn_native.SequenceGenerate(*args)
+
+def CollapseBeta(warmup, step, ramp_steps=18):
+    return _nn_native.CollapseBeta(warmup, step, ramp_steps)
+class CollapseSummary(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    unit_kl = property(_nn_native.CollapseSummary_unit_kl_get, _nn_native.CollapseSummary_unit_kl_set)
+    mu_variance = property(_nn_native.CollapseSummary_mu_variance_get, _nn_native.CollapseSummary_mu_variance_set)
+    analytic_kl = property(_nn_native.CollapseSummary_analytic_kl_get, _nn_native.CollapseSummary_analytic_kl_set)
+    sampled_conditional_kl = property(_nn_native.CollapseSummary_sampled_conditional_kl_get, _nn_native.CollapseSummary_sampled_conditional_kl_set)
+    mixture_information = property(_nn_native.CollapseSummary_mixture_information_get, _nn_native.CollapseSummary_mixture_information_set)
+    aggregate_kl = property(_nn_native.CollapseSummary_aggregate_kl_get, _nn_native.CollapseSummary_aggregate_kl_set)
+    active_units = property(_nn_native.CollapseSummary_active_units_get, _nn_native.CollapseSummary_active_units_set)
+
+    def __init__(self):
+        _nn_native.CollapseSummary_swiginit(self, _nn_native.new_CollapseSummary())
+    __swig_destroy__ = _nn_native.delete_CollapseSummary
+
+# Register CollapseSummary in _nn_native:
+_nn_native.CollapseSummary_swigregister(CollapseSummary)
+
+def CollapseStatistics(mu, log_variance, samples, active_threshold=.01):
+    return _nn_native.CollapseStatistics(mu, log_variance, samples, active_threshold)
+
+def prepare_example_data(*args):
+    return _nn_native.prepare_example_data(*args)
+
+def SequenceVocabulary():
+    return _nn_native.SequenceVocabulary()
+class SequenceVaeData(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    tokens = property(_nn_native.SequenceVaeData_tokens_get, _nn_native.SequenceVaeData_tokens_set)
+    inputs = property(_nn_native.SequenceVaeData_inputs_get, _nn_native.SequenceVaeData_inputs_set)
+    lengths = property(_nn_native.SequenceVaeData_lengths_get, _nn_native.SequenceVaeData_lengths_set)
+    factors = property(_nn_native.SequenceVaeData_factors_get, _nn_native.SequenceVaeData_factors_set)
+    source = property(_nn_native.SequenceVaeData_source_get, _nn_native.SequenceVaeData_source_set)
+
+    def __init__(self):
+        _nn_native.SequenceVaeData_swiginit(self, _nn_native.new_SequenceVaeData())
+    __swig_destroy__ = _nn_native.delete_SequenceVaeData
+
+# Register SequenceVaeData in _nn_native:
+_nn_native.SequenceVaeData_swigregister(SequenceVaeData)
+
+def LoadSequenceVaeData(root):
+    return _nn_native.LoadSequenceVaeData(root)
+
+def SequenceText(tokens, row):
+    return _nn_native.SequenceText(tokens, row)
+
+def SequenceGrammarValid(tokens, row):
+    return _nn_native.SequenceGrammarValid(tokens, row)
+
+def SequenceDataArrays(pools):
+    return _nn_native.SequenceDataArrays(pools)
+class SequenceVaePools(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def iterator(self):
+        return _nn_native.SequenceVaePools_iterator(self)
+    def __iter__(self):
+        return self.iterator()
+
+    def __bool__(self):
+        return _nn_native.SequenceVaePools___bool__(self)
+
+    def __len__(self):
+        return _nn_native.SequenceVaePools___len__(self)
+
+    def __delitem__(self, *args):
+        return _nn_native.SequenceVaePools___delitem__(self, *args)
+
+    def __getitem__(self, *args):
+        return _nn_native.SequenceVaePools___getitem__(self, *args)
+
+    def __setitem__(self, *args):
+        return _nn_native.SequenceVaePools___setitem__(self, *args)
+
+    def pop(self, i=-1):
+        return _nn_native.SequenceVaePools_pop(self, i)
+
+    def append(self, x):
+        return _nn_native.SequenceVaePools_append(self, x)
+
+    def empty(self):
+        return _nn_native.SequenceVaePools_empty(self)
+
+    def size(self):
+        return _nn_native.SequenceVaePools_size(self)
+
+    def swap(self, v):
+        return _nn_native.SequenceVaePools_swap(self, v)
+
+    def begin(self):
+        return _nn_native.SequenceVaePools_begin(self)
+
+    def end(self):
+        return _nn_native.SequenceVaePools_end(self)
+
+    def rbegin(self):
+        return _nn_native.SequenceVaePools_rbegin(self)
+
+    def rend(self):
+        return _nn_native.SequenceVaePools_rend(self)
+
+    def clear(self):
+        return _nn_native.SequenceVaePools_clear(self)
+
+    def get_allocator(self):
+        return _nn_native.SequenceVaePools_get_allocator(self)
+
+    def pop_back(self):
+        return _nn_native.SequenceVaePools_pop_back(self)
+
+    def erase(self, *args):
+        return _nn_native.SequenceVaePools_erase(self, *args)
+
+    def __init__(self, *args):
+        _nn_native.SequenceVaePools_swiginit(self, _nn_native.new_SequenceVaePools(*args))
+
+    def push_back(self, x):
+        return _nn_native.SequenceVaePools_push_back(self, x)
+
+    def front(self):
+        return _nn_native.SequenceVaePools_front(self)
+
+    def back(self):
+        return _nn_native.SequenceVaePools_back(self)
+
+    def assign(self, n, x):
+        return _nn_native.SequenceVaePools_assign(self, n, x)
+
+    def resize(self, *args):
+        return _nn_native.SequenceVaePools_resize(self, *args)
+
+    def insert(self, *args):
+        return _nn_native.SequenceVaePools_insert(self, *args)
+
+    def reserve(self, n):
+        return _nn_native.SequenceVaePools_reserve(self, n)
+
+    def capacity(self):
+        return _nn_native.SequenceVaePools_capacity(self)
+    __swig_destroy__ = _nn_native.delete_SequenceVaePools
+
+# Register SequenceVaePools in _nn_native:
+_nn_native.SequenceVaePools_swigregister(SequenceVaePools)
+
+def KnownFactorLattice():
+    return _nn_native.KnownFactorLattice()
+
+def LatentFactorDiagnostics(fit_mu_t, test_mu_t, fit_factors_t, test_factors_t, fit_log_variance_t, ridge=.001):
+    return _nn_native.LatentFactorDiagnostics(fit_mu_t, test_mu_t, fit_factors_t, test_factors_t, fit_log_variance_t, ridge)
 class ImageDataset(object):
     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
     __repr__ = _swig_repr
@@ -3837,6 +6158,46 @@ class Mt19937_64(object):
 
 # Register Mt19937_64 in _nn_native:
 _nn_native.Mt19937_64_swigregister(Mt19937_64)
+class WaveStackConfig(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    residual = property(_nn_native.WaveStackConfig_residual_get, _nn_native.WaveStackConfig_residual_set)
+    skip = property(_nn_native.WaveStackConfig_skip_get, _nn_native.WaveStackConfig_skip_set)
+    levels = property(_nn_native.WaveStackConfig_levels_get, _nn_native.WaveStackConfig_levels_set)
+    cycles = property(_nn_native.WaveStackConfig_cycles_get, _nn_native.WaveStackConfig_cycles_set)
+    classes = property(_nn_native.WaveStackConfig_classes_get, _nn_native.WaveStackConfig_classes_set)
+
+    def __init__(self):
+        _nn_native.WaveStackConfig_swiginit(self, _nn_native.new_WaveStackConfig())
+    __swig_destroy__ = _nn_native.delete_WaveStackConfig
+
+# Register WaveStackConfig in _nn_native:
+_nn_native.WaveStackConfig_swigregister(WaveStackConfig)
+
+def WaveStackField(config):
+    return _nn_native.WaveStackField(config)
+
+def WaveStackConv(p, name, x, out, kernel=1, dilation=1):
+    return _nn_native.WaveStackConv(p, name, x, out, kernel, dilation)
+class WaveStackOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    logits = property(_nn_native.WaveStackOutput_logits_get, _nn_native.WaveStackOutput_logits_set)
+    skip = property(_nn_native.WaveStackOutput_skip_get, _nn_native.WaveStackOutput_skip_set)
+    gates = property(_nn_native.WaveStackOutput_gates_get, _nn_native.WaveStackOutput_gates_set)
+
+    def __init__(self):
+        _nn_native.WaveStackOutput_swiginit(self, _nn_native.new_WaveStackOutput())
+    __swig_destroy__ = _nn_native.delete_WaveStackOutput
+
+# Register WaveStackOutput in _nn_native:
+_nn_native.WaveStackOutput_swigregister(WaveStackOutput)
+
+def WaveStack(*args):
+    return _nn_native.WaveStack(*args)
+
+def WaveNll(logits, target, classes=256, start=127):
+    return _nn_native.WaveNll(logits, target, classes, start)
 memory_components__Kind_Ntm = _nn_native.memory_components__Kind_Ntm
 memory_components__Kind_Dnc = _nn_native.memory_components__Kind_Dnc
 memory_components__Kind_MemNet = _nn_native.memory_components__Kind_MemNet
@@ -4922,34 +7283,6 @@ class ae__SaliencyDataVector(object):
 
 # Register ae__SaliencyDataVector in _nn_native:
 _nn_native.ae__SaliencyDataVector_swigregister(ae__SaliencyDataVector)
-
-def ae__CompetitiveMask(scores, lifetime, k=8):
-    return _nn_native.ae__CompetitiveMask(scores, lifetime, k)
-class ae__CompetitiveAutoencoderOutput(object):
-    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
-    __repr__ = _swig_repr
-    raw = property(_nn_native.ae__CompetitiveAutoencoderOutput_raw_get, _nn_native.ae__CompetitiveAutoencoderOutput_raw_set)
-    mask = property(_nn_native.ae__CompetitiveAutoencoderOutput_mask_get, _nn_native.ae__CompetitiveAutoencoderOutput_mask_set)
-    training_code = property(_nn_native.ae__CompetitiveAutoencoderOutput_training_code_get, _nn_native.ae__CompetitiveAutoencoderOutput_training_code_set)
-    code = property(_nn_native.ae__CompetitiveAutoencoderOutput_code_get, _nn_native.ae__CompetitiveAutoencoderOutput_code_set)
-    training_reconstruction = property(_nn_native.ae__CompetitiveAutoencoderOutput_training_reconstruction_get, _nn_native.ae__CompetitiveAutoencoderOutput_training_reconstruction_set)
-    reconstruction = property(_nn_native.ae__CompetitiveAutoencoderOutput_reconstruction_get, _nn_native.ae__CompetitiveAutoencoderOutput_reconstruction_set)
-
-    def __init__(self):
-        _nn_native.ae__CompetitiveAutoencoderOutput_swiginit(self, _nn_native.new_ae__CompetitiveAutoencoderOutput())
-    __swig_destroy__ = _nn_native.delete_ae__CompetitiveAutoencoderOutput
-
-# Register ae__CompetitiveAutoencoderOutput in _nn_native:
-_nn_native.ae__CompetitiveAutoencoderOutput_swigregister(ae__CompetitiveAutoencoderOutput)
-
-def ae__CompetitiveAutoencoder(p, input, lifetime, plain=False):
-    return _nn_native.ae__CompetitiveAutoencoder(p, input, lifetime, plain)
-
-def ae__CheckCompetitiveSupport(probe, lifetime, plain):
-    return _nn_native.ae__CheckCompetitiveSupport(probe, lifetime, plain)
-
-def ae__CompetitiveChecks():
-    return _nn_native.ae__CompetitiveChecks()
 
 def ae__SameTensorBits(first, second):
     return _nn_native.ae__SameTensorBits(first, second)
@@ -9276,4 +11609,1159 @@ def detection_evaluation__LoadEvaluationTruth(directory):
 
 def detection_evaluation__LoadPredictionsJson(path):
     return _nn_native.detection_evaluation__LoadPredictionsJson(path)
+class UniformCategoricalDraw(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    labels = property(_nn_native.UniformCategoricalDraw_labels_get, _nn_native.UniformCategoricalDraw_labels_set)
+    raw = property(_nn_native.UniformCategoricalDraw_raw_get, _nn_native.UniformCategoricalDraw_raw_set)
+
+    def __init__(self):
+        _nn_native.UniformCategoricalDraw_swiginit(self, _nn_native.new_UniformCategoricalDraw())
+    __swig_destroy__ = _nn_native.delete_UniformCategoricalDraw
+
+# Register UniformCategoricalDraw in _nn_native:
+_nn_native.UniformCategoricalDraw_swigregister(UniformCategoricalDraw)
+
+def UniformCategorical(rows, seed, classes=3):
+    return _nn_native.UniformCategorical(rows, seed, classes)
+
+def StarDomainImages(original, domain):
+    return _nn_native.StarDomainImages(original, domain)
+class StarDomains(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.StarDomains_image_get, _nn_native.StarDomains_image_set)
+    original = property(_nn_native.StarDomains_original_get, _nn_native.StarDomains_original_set)
+    domain = property(_nn_native.StarDomains_domain_get, _nn_native.StarDomains_domain_set)
+    digit = property(_nn_native.StarDomains_digit_get, _nn_native.StarDomains_digit_set)
+    source = property(_nn_native.StarDomains_source_get, _nn_native.StarDomains_source_set)
+    unused = property(_nn_native.StarDomains_unused_get, _nn_native.StarDomains_unused_set)
+
+    def __init__(self):
+        _nn_native.StarDomains_swiginit(self, _nn_native.new_StarDomains())
+    __swig_destroy__ = _nn_native.delete_StarDomains
+
+# Register StarDomains in _nn_native:
+_nn_native.StarDomains_swigregister(StarDomains)
+
+def SplitStarDomains(images, labels, source_ids, per_class=30):
+    return _nn_native.SplitStarDomains(images, labels, source_ids, per_class)
+class StarGanGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    code = property(_nn_native.StarGanGenerated_code_get, _nn_native.StarGanGenerated_code_set)
+    input = property(_nn_native.StarGanGenerated_input_get, _nn_native.StarGanGenerated_input_set)
+    down14 = property(_nn_native.StarGanGenerated_down14_get, _nn_native.StarGanGenerated_down14_set)
+    down7 = property(_nn_native.StarGanGenerated_down7_get, _nn_native.StarGanGenerated_down7_set)
+    up14 = property(_nn_native.StarGanGenerated_up14_get, _nn_native.StarGanGenerated_up14_set)
+    joined14 = property(_nn_native.StarGanGenerated_joined14_get, _nn_native.StarGanGenerated_joined14_set)
+    up28 = property(_nn_native.StarGanGenerated_up28_get, _nn_native.StarGanGenerated_up28_set)
+    joined28 = property(_nn_native.StarGanGenerated_joined28_get, _nn_native.StarGanGenerated_joined28_set)
+    image = property(_nn_native.StarGanGenerated_image_get, _nn_native.StarGanGenerated_image_set)
+
+    def __init__(self):
+        _nn_native.StarGanGenerated_swiginit(self, _nn_native.new_StarGanGenerated())
+    __swig_destroy__ = _nn_native.delete_StarGanGenerated
+
+# Register StarGanGenerated in _nn_native:
+_nn_native.StarGanGenerated_swigregister(StarGanGenerated)
+
+def StarGanGenerate(generator, source, target):
+    return _nn_native.StarGanGenerate(generator, source, target)
+class StarGanDiscriminated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    source = property(_nn_native.StarGanDiscriminated_source_get, _nn_native.StarGanDiscriminated_source_set)
+    domain_logits = property(_nn_native.StarGanDiscriminated_domain_logits_get, _nn_native.StarGanDiscriminated_domain_logits_set)
+    domain_probability = property(_nn_native.StarGanDiscriminated_domain_probability_get, _nn_native.StarGanDiscriminated_domain_probability_set)
+    down14 = property(_nn_native.StarGanDiscriminated_down14_get, _nn_native.StarGanDiscriminated_down14_set)
+    down7 = property(_nn_native.StarGanDiscriminated_down7_get, _nn_native.StarGanDiscriminated_down7_set)
+
+    def __init__(self):
+        _nn_native.StarGanDiscriminated_swiginit(self, _nn_native.new_StarGanDiscriminated())
+    __swig_destroy__ = _nn_native.delete_StarGanDiscriminated
+
+# Register StarGanDiscriminated in _nn_native:
+_nn_native.StarGanDiscriminated_swigregister(StarGanDiscriminated)
+
+def StarGanDiscriminate(critic, image):
+    return _nn_native.StarGanDiscriminate(critic, image)
+
+def StarDomainLoss(logits, target):
+    return _nn_native.StarDomainLoss(logits, target)
+class StarGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.StarGanOutput_fake_get, _nn_native.StarGanOutput_fake_set)
+    reconstruction = property(_nn_native.StarGanOutput_reconstruction_get, _nn_native.StarGanOutput_reconstruction_set)
+    real_source = property(_nn_native.StarGanOutput_real_source_get, _nn_native.StarGanOutput_real_source_set)
+    fake_source = property(_nn_native.StarGanOutput_fake_source_get, _nn_native.StarGanOutput_fake_source_set)
+    real_domain_logits = property(_nn_native.StarGanOutput_real_domain_logits_get, _nn_native.StarGanOutput_real_domain_logits_set)
+    fake_domain_logits = property(_nn_native.StarGanOutput_fake_domain_logits_get, _nn_native.StarGanOutput_fake_domain_logits_set)
+    real_domain_probability = property(_nn_native.StarGanOutput_real_domain_probability_get, _nn_native.StarGanOutput_real_domain_probability_set)
+    fake_domain_probability = property(_nn_native.StarGanOutput_fake_domain_probability_get, _nn_native.StarGanOutput_fake_domain_probability_set)
+    source_loss_g = property(_nn_native.StarGanOutput_source_loss_g_get, _nn_native.StarGanOutput_source_loss_g_set)
+    source_loss_d = property(_nn_native.StarGanOutput_source_loss_d_get, _nn_native.StarGanOutput_source_loss_d_set)
+    real_domain_loss = property(_nn_native.StarGanOutput_real_domain_loss_get, _nn_native.StarGanOutput_real_domain_loss_set)
+    fake_domain_loss = property(_nn_native.StarGanOutput_fake_domain_loss_get, _nn_native.StarGanOutput_fake_domain_loss_set)
+    reconstruction_loss = property(_nn_native.StarGanOutput_reconstruction_loss_get, _nn_native.StarGanOutput_reconstruction_loss_set)
+    generator_loss = property(_nn_native.StarGanOutput_generator_loss_get, _nn_native.StarGanOutput_generator_loss_set)
+    discriminator_loss = property(_nn_native.StarGanOutput_discriminator_loss_get, _nn_native.StarGanOutput_discriminator_loss_set)
+
+    def __init__(self):
+        _nn_native.StarGanOutput_swiginit(self, _nn_native.new_StarGanOutput())
+    __swig_destroy__ = _nn_native.delete_StarGanOutput
+
+# Register StarGanOutput in _nn_native:
+_nn_native.StarGanOutput_swigregister(StarGanOutput)
+
+def StarGan(generator, critic, source, original, target):
+    return _nn_native.StarGan(generator, critic, source, original, target)
+class RelativisticGanLoss(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    discriminator = property(_nn_native.RelativisticGanLoss_discriminator_get, _nn_native.RelativisticGanLoss_discriminator_set)
+    generator = property(_nn_native.RelativisticGanLoss_generator_get, _nn_native.RelativisticGanLoss_generator_set)
+    real_relative = property(_nn_native.RelativisticGanLoss_real_relative_get, _nn_native.RelativisticGanLoss_real_relative_set)
+    fake_relative = property(_nn_native.RelativisticGanLoss_fake_relative_get, _nn_native.RelativisticGanLoss_fake_relative_set)
+
+    def __init__(self):
+        _nn_native.RelativisticGanLoss_swiginit(self, _nn_native.new_RelativisticGanLoss())
+    __swig_destroy__ = _nn_native.delete_RelativisticGanLoss
+
+# Register RelativisticGanLoss in _nn_native:
+_nn_native.RelativisticGanLoss_swigregister(RelativisticGanLoss)
+
+def RelativisticAverageGan(real, fake):
+    return _nn_native.RelativisticAverageGan(real, fake)
+class AdversarialSRGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    image = property(_nn_native.AdversarialSRGenerated_image_get, _nn_native.AdversarialSRGenerated_image_set)
+    residual = property(_nn_native.AdversarialSRGenerated_residual_get, _nn_native.AdversarialSRGenerated_residual_set)
+    packed = property(_nn_native.AdversarialSRGenerated_packed_get, _nn_native.AdversarialSRGenerated_packed_set)
+    shuffled = property(_nn_native.AdversarialSRGenerated_shuffled_get, _nn_native.AdversarialSRGenerated_shuffled_set)
+    moments_mean = property(_nn_native.AdversarialSRGenerated_moments_mean_get, _nn_native.AdversarialSRGenerated_moments_mean_set)
+    moments_unbiased_variance = property(_nn_native.AdversarialSRGenerated_moments_unbiased_variance_get, _nn_native.AdversarialSRGenerated_moments_unbiased_variance_set)
+    head = property(_nn_native.AdversarialSRGenerated_head_get, _nn_native.AdversarialSRGenerated_head_set)
+    body = property(_nn_native.AdversarialSRGenerated_body_get, _nn_native.AdversarialSRGenerated_body_set)
+    upsampled = property(_nn_native.AdversarialSRGenerated_upsampled_get, _nn_native.AdversarialSRGenerated_upsampled_set)
+
+    def __init__(self):
+        _nn_native.AdversarialSRGenerated_swiginit(self, _nn_native.new_AdversarialSRGenerated())
+    __swig_destroy__ = _nn_native.delete_AdversarialSRGenerated
+
+# Register AdversarialSRGenerated in _nn_native:
+_nn_native.AdversarialSRGenerated_swigregister(AdversarialSRGenerated)
+
+def AdversarialSRGenerate(generator, stats, lr, bicubic, enhanced=False, batch_statistics=False):
+    return _nn_native.AdversarialSRGenerate(generator, stats, lr, bicubic, enhanced, batch_statistics)
+
+def AdversarialSRDiscriminate(critic, image, relative=False):
+    return _nn_native.AdversarialSRDiscriminate(critic, image, relative)
+
+def AdversarialSRFeatures(rgb, weight, bias):
+    return _nn_native.AdversarialSRFeatures(rgb, weight, bias)
+class AdversarialSROutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    prediction = property(_nn_native.AdversarialSROutput_prediction_get, _nn_native.AdversarialSROutput_prediction_set)
+    prediction_training = property(_nn_native.AdversarialSROutput_prediction_training_get, _nn_native.AdversarialSROutput_prediction_training_set)
+    residual = property(_nn_native.AdversarialSROutput_residual_get, _nn_native.AdversarialSROutput_residual_set)
+    real_score = property(_nn_native.AdversarialSROutput_real_score_get, _nn_native.AdversarialSROutput_real_score_set)
+    fake_score = property(_nn_native.AdversarialSROutput_fake_score_get, _nn_native.AdversarialSROutput_fake_score_set)
+    fake_inference_score = property(_nn_native.AdversarialSROutput_fake_inference_score_get, _nn_native.AdversarialSROutput_fake_inference_score_set)
+    d_loss = property(_nn_native.AdversarialSROutput_d_loss_get, _nn_native.AdversarialSROutput_d_loss_set)
+    g_loss = property(_nn_native.AdversarialSROutput_g_loss_get, _nn_native.AdversarialSROutput_g_loss_set)
+    gan_loss = property(_nn_native.AdversarialSROutput_gan_loss_get, _nn_native.AdversarialSROutput_gan_loss_set)
+    pixel_loss = property(_nn_native.AdversarialSROutput_pixel_loss_get, _nn_native.AdversarialSROutput_pixel_loss_set)
+    content_loss = property(_nn_native.AdversarialSROutput_content_loss_get, _nn_native.AdversarialSROutput_content_loss_set)
+    adversarial_loss = property(_nn_native.AdversarialSROutput_adversarial_loss_get, _nn_native.AdversarialSROutput_adversarial_loss_set)
+    relative_real = property(_nn_native.AdversarialSROutput_relative_real_get, _nn_native.AdversarialSROutput_relative_real_set)
+    relative_fake = property(_nn_native.AdversarialSROutput_relative_fake_get, _nn_native.AdversarialSROutput_relative_fake_set)
+    prediction_feature = property(_nn_native.AdversarialSROutput_prediction_feature_get, _nn_native.AdversarialSROutput_prediction_feature_set)
+    target_feature = property(_nn_native.AdversarialSROutput_target_feature_get, _nn_native.AdversarialSROutput_target_feature_set)
+    packed = property(_nn_native.AdversarialSROutput_packed_get, _nn_native.AdversarialSROutput_packed_set)
+    shuffled = property(_nn_native.AdversarialSROutput_shuffled_get, _nn_native.AdversarialSROutput_shuffled_set)
+    moments_mean = property(_nn_native.AdversarialSROutput_moments_mean_get, _nn_native.AdversarialSROutput_moments_mean_set)
+    moments_unbiased_variance = property(_nn_native.AdversarialSROutput_moments_unbiased_variance_get, _nn_native.AdversarialSROutput_moments_unbiased_variance_set)
+
+    def __init__(self):
+        _nn_native.AdversarialSROutput_swiginit(self, _nn_native.new_AdversarialSROutput())
+    __swig_destroy__ = _nn_native.delete_AdversarialSROutput
+
+# Register AdversarialSROutput in _nn_native:
+_nn_native.AdversarialSROutput_swigregister(AdversarialSROutput)
+
+def AdversarialSR(generator, critic, stats, lr, target, bicubic, feature_weight, feature_bias, enhanced=False, adversarial=False):
+    return _nn_native.AdversarialSR(generator, critic, stats, lr, target, bicubic, feature_weight, feature_bias, enhanced, adversarial)
+
+def SingleImageNoise(*args):
+    return _nn_native.SingleImageNoise(*args)
+
+def SingleImageAmplitude(real, previous_reconstruction, factor=.1):
+    return _nn_native.SingleImageAmplitude(real, previous_reconstruction, factor)
+class SingleImageGenerated(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    input = property(_nn_native.SingleImageGenerated_input_get, _nn_native.SingleImageGenerated_input_set)
+    head = property(_nn_native.SingleImageGenerated_head_get, _nn_native.SingleImageGenerated_head_set)
+    body = property(_nn_native.SingleImageGenerated_body_get, _nn_native.SingleImageGenerated_body_set)
+    residual = property(_nn_native.SingleImageGenerated_residual_get, _nn_native.SingleImageGenerated_residual_set)
+    image = property(_nn_native.SingleImageGenerated_image_get, _nn_native.SingleImageGenerated_image_set)
+
+    def __init__(self):
+        _nn_native.SingleImageGenerated_swiginit(self, _nn_native.new_SingleImageGenerated())
+    __swig_destroy__ = _nn_native.delete_SingleImageGenerated
+
+# Register SingleImageGenerated in _nn_native:
+_nn_native.SingleImageGenerated_swigregister(SingleImageGenerated)
+
+def SingleImageGenerate(generator, previous, noise, amplitude):
+    return _nn_native.SingleImageGenerate(generator, previous, noise, amplitude)
+
+def SingleImageDiscriminate(discriminator, image):
+    return _nn_native.SingleImageDiscriminate(discriminator, image)
+class SingleImageGanOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fake = property(_nn_native.SingleImageGanOutput_fake_get, _nn_native.SingleImageGanOutput_fake_set)
+    reconstruction = property(_nn_native.SingleImageGanOutput_reconstruction_get, _nn_native.SingleImageGanOutput_reconstruction_set)
+    real_score = property(_nn_native.SingleImageGanOutput_real_score_get, _nn_native.SingleImageGanOutput_real_score_set)
+    fake_score = property(_nn_native.SingleImageGanOutput_fake_score_get, _nn_native.SingleImageGanOutput_fake_score_set)
+    d_loss = property(_nn_native.SingleImageGanOutput_d_loss_get, _nn_native.SingleImageGanOutput_d_loss_set)
+    g_loss = property(_nn_native.SingleImageGanOutput_g_loss_get, _nn_native.SingleImageGanOutput_g_loss_set)
+    adversarial_loss = property(_nn_native.SingleImageGanOutput_adversarial_loss_get, _nn_native.SingleImageGanOutput_adversarial_loss_set)
+    reconstruction_loss = property(_nn_native.SingleImageGanOutput_reconstruction_loss_get, _nn_native.SingleImageGanOutput_reconstruction_loss_set)
+
+    def __init__(self):
+        _nn_native.SingleImageGanOutput_swiginit(self, _nn_native.new_SingleImageGanOutput())
+    __swig_destroy__ = _nn_native.delete_SingleImageGanOutput
+
+# Register SingleImageGanOutput in _nn_native:
+_nn_native.SingleImageGanOutput_swigregister(SingleImageGanOutput)
+
+def SingleImageGan(generator, discriminator, real, previous, noise, rec_previous, rec_noise, amplitude):
+    return _nn_native.SingleImageGan(generator, discriminator, real, previous, noise, rec_previous, rec_noise, amplitude)
+class FrozenGraph(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, *args):
+        _nn_native.FrozenGraph_swiginit(self, _nn_native.new_FrozenGraph(*args))
+
+    @staticmethod
+    def load(*args):
+        return _nn_native.FrozenGraph_load(*args)
+
+    def node_names(self):
+        return _nn_native.FrozenGraph_node_names(self)
+
+    def operation(self, name):
+        return _nn_native.FrozenGraph_operation(self, name)
+
+    def constant(self, name):
+        return _nn_native.FrozenGraph_constant(self, name)
+
+    def evaluate(self, feeds, fetches):
+        return _nn_native.FrozenGraph_evaluate(self, feeds, fetches)
+    __swig_destroy__ = _nn_native.delete_FrozenGraph
+
+# Register FrozenGraph in _nn_native:
+_nn_native.FrozenGraph_swigregister(FrozenGraph)
+class GaussianFrechetOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    fid = property(_nn_native.GaussianFrechetOutput_fid_get, _nn_native.GaussianFrechetOutput_fid_set)
+    raw_fid = property(_nn_native.GaussianFrechetOutput_raw_fid_get, _nn_native.GaussianFrechetOutput_raw_fid_set)
+    mean_term = property(_nn_native.GaussianFrechetOutput_mean_term_get, _nn_native.GaussianFrechetOutput_mean_term_set)
+    trace_a = property(_nn_native.GaussianFrechetOutput_trace_a_get, _nn_native.GaussianFrechetOutput_trace_a_set)
+    trace_b = property(_nn_native.GaussianFrechetOutput_trace_b_get, _nn_native.GaussianFrechetOutput_trace_b_set)
+    cross_trace = property(_nn_native.GaussianFrechetOutput_cross_trace_get, _nn_native.GaussianFrechetOutput_cross_trace_set)
+    cross_singular_values = property(_nn_native.GaussianFrechetOutput_cross_singular_values_get, _nn_native.GaussianFrechetOutput_cross_singular_values_set)
+
+    def __init__(self):
+        _nn_native.GaussianFrechetOutput_swiginit(self, _nn_native.new_GaussianFrechetOutput())
+    __swig_destroy__ = _nn_native.delete_GaussianFrechetOutput
+
+# Register GaussianFrechetOutput in _nn_native:
+_nn_native.GaussianFrechetOutput_swigregister(GaussianFrechetOutput)
+
+def GaussianFrechet(real, fake):
+    return _nn_native.GaussianFrechet(real, fake)
+
+def InceptionScore(probability):
+    return _nn_native.InceptionScore(probability)
+class InceptionSplitScores(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    scores = property(_nn_native.InceptionSplitScores_scores_get, _nn_native.InceptionSplitScores_scores_set)
+    mean = property(_nn_native.InceptionSplitScores_mean_get, _nn_native.InceptionSplitScores_mean_set)
+    population_std = property(_nn_native.InceptionSplitScores_population_std_get, _nn_native.InceptionSplitScores_population_std_set)
+
+    def __init__(self):
+        _nn_native.InceptionSplitScores_swiginit(self, _nn_native.new_InceptionSplitScores())
+    __swig_destroy__ = _nn_native.delete_InceptionSplitScores
+
+# Register InceptionSplitScores in _nn_native:
+_nn_native.InceptionSplitScores_swigregister(InceptionSplitScores)
+
+def InceptionScoreSplits(probability, splits=4):
+    return _nn_native.InceptionScoreSplits(probability, splits)
+class BinaryPixelData(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    gray = property(_nn_native.BinaryPixelData_gray_get, _nn_native.BinaryPixelData_gray_set)
+    images = property(_nn_native.BinaryPixelData_images_get, _nn_native.BinaryPixelData_images_set)
+
+    def __init__(self):
+        _nn_native.BinaryPixelData_swiginit(self, _nn_native.new_BinaryPixelData())
+    __swig_destroy__ = _nn_native.delete_BinaryPixelData
+
+# Register BinaryPixelData in _nn_native:
+_nn_native.BinaryPixelData_swigregister(BinaryPixelData)
+
+def BinaryPixels(images):
+    return _nn_native.BinaryPixels(images)
+
+def CausalPixelMask(*args):
+    return _nn_native.CausalPixelMask(*args)
+
+def MaskedPixelConv(parameters, name, input, mask):
+    return _nn_native.MaskedPixelConv(parameters, name, input, mask)
+class PixelCnnOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    input_features = property(_nn_native.PixelCnnOutput_input_features_get, _nn_native.PixelCnnOutput_input_features_set)
+    head = property(_nn_native.PixelCnnOutput_head_get, _nn_native.PixelCnnOutput_head_set)
+    hidden0 = property(_nn_native.PixelCnnOutput_hidden0_get, _nn_native.PixelCnnOutput_hidden0_set)
+    hidden1 = property(_nn_native.PixelCnnOutput_hidden1_get, _nn_native.PixelCnnOutput_hidden1_set)
+    hidden = property(_nn_native.PixelCnnOutput_hidden_get, _nn_native.PixelCnnOutput_hidden_set)
+    logits = property(_nn_native.PixelCnnOutput_logits_get, _nn_native.PixelCnnOutput_logits_set)
+
+    def __init__(self):
+        _nn_native.PixelCnnOutput_swiginit(self, _nn_native.new_PixelCnnOutput())
+    __swig_destroy__ = _nn_native.delete_PixelCnnOutput
+
+# Register PixelCnnOutput in _nn_native:
+_nn_native.PixelCnnOutput_swigregister(PixelCnnOutput)
+
+def PixelCnn(parameters, input):
+    return _nn_native.PixelCnn(parameters, input)
+class BernoulliPixelOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    probability = property(_nn_native.BernoulliPixelOutput_probability_get, _nn_native.BernoulliPixelOutput_probability_set)
+    pixel_nll = property(_nn_native.BernoulliPixelOutput_pixel_nll_get, _nn_native.BernoulliPixelOutput_pixel_nll_set)
+    per_image_nll = property(_nn_native.BernoulliPixelOutput_per_image_nll_get, _nn_native.BernoulliPixelOutput_per_image_nll_set)
+    loss = property(_nn_native.BernoulliPixelOutput_loss_get, _nn_native.BernoulliPixelOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.BernoulliPixelOutput_swiginit(self, _nn_native.new_BernoulliPixelOutput())
+    __swig_destroy__ = _nn_native.delete_BernoulliPixelOutput
+
+# Register BernoulliPixelOutput in _nn_native:
+_nn_native.BernoulliPixelOutput_swigregister(BernoulliPixelOutput)
+
+def BernoulliPixels(logits, binary):
+    return _nn_native.BernoulliPixels(logits, binary)
+
+def BinaryPixelUniforms(rows, seed):
+    return _nn_native.BinaryPixelUniforms(rows, seed)
+
+def GatedPixelMask(*args):
+    return _nn_native.GatedPixelMask(*args)
+
+def GatedPixelGate(preactivation):
+    return _nn_native.GatedPixelGate(preactivation)
+class GatedPixelOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    vertical0 = property(_nn_native.GatedPixelOutput_vertical0_get, _nn_native.GatedPixelOutput_vertical0_set)
+    horizontal0 = property(_nn_native.GatedPixelOutput_horizontal0_get, _nn_native.GatedPixelOutput_horizontal0_set)
+    vertical1 = property(_nn_native.GatedPixelOutput_vertical1_get, _nn_native.GatedPixelOutput_vertical1_set)
+    horizontal1 = property(_nn_native.GatedPixelOutput_horizontal1_get, _nn_native.GatedPixelOutput_horizontal1_set)
+    vertical = property(_nn_native.GatedPixelOutput_vertical_get, _nn_native.GatedPixelOutput_vertical_set)
+    horizontal = property(_nn_native.GatedPixelOutput_horizontal_get, _nn_native.GatedPixelOutput_horizontal_set)
+    logits = property(_nn_native.GatedPixelOutput_logits_get, _nn_native.GatedPixelOutput_logits_set)
+
+    def __init__(self):
+        _nn_native.GatedPixelOutput_swiginit(self, _nn_native.new_GatedPixelOutput())
+    __swig_destroy__ = _nn_native.delete_GatedPixelOutput
+
+# Register GatedPixelOutput in _nn_native:
+_nn_native.GatedPixelOutput_swigregister(GatedPixelOutput)
+
+def GatedPixelConvolutional(*args):
+    return _nn_native.GatedPixelConvolutional(*args)
+
+def GatedPixelCnn(parameters, image, labels, conditional):
+    return _nn_native.GatedPixelCnn(parameters, image, labels, conditional)
+class PixelRowLstmOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    gates = property(_nn_native.PixelRowLstmOutput_gates_get, _nn_native.PixelRowLstmOutput_gates_set)
+    input_gate = property(_nn_native.PixelRowLstmOutput_input_gate_get, _nn_native.PixelRowLstmOutput_input_gate_set)
+    forget_gate = property(_nn_native.PixelRowLstmOutput_forget_gate_get, _nn_native.PixelRowLstmOutput_forget_gate_set)
+    output_gate = property(_nn_native.PixelRowLstmOutput_output_gate_get, _nn_native.PixelRowLstmOutput_output_gate_set)
+    candidate = property(_nn_native.PixelRowLstmOutput_candidate_get, _nn_native.PixelRowLstmOutput_candidate_set)
+    cell = property(_nn_native.PixelRowLstmOutput_cell_get, _nn_native.PixelRowLstmOutput_cell_set)
+    hidden = property(_nn_native.PixelRowLstmOutput_hidden_get, _nn_native.PixelRowLstmOutput_hidden_set)
+
+    def __init__(self):
+        _nn_native.PixelRowLstmOutput_swiginit(self, _nn_native.new_PixelRowLstmOutput())
+    __swig_destroy__ = _nn_native.delete_PixelRowLstmOutput
+
+# Register PixelRowLstmOutput in _nn_native:
+_nn_native.PixelRowLstmOutput_swigregister(PixelRowLstmOutput)
+
+def PixelRowLstmStep(input_gates, previous_hidden, previous_cell, recurrent_kernel):
+    return _nn_native.PixelRowLstmStep(input_gates, previous_hidden, previous_cell, recurrent_kernel)
+class PixelRnnOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    initial_hidden = property(_nn_native.PixelRnnOutput_initial_hidden_get, _nn_native.PixelRnnOutput_initial_hidden_set)
+    initial_cell = property(_nn_native.PixelRnnOutput_initial_cell_get, _nn_native.PixelRnnOutput_initial_cell_set)
+    input_gates = property(_nn_native.PixelRnnOutput_input_gates_get, _nn_native.PixelRnnOutput_input_gates_set)
+    row_gates = property(_nn_native.PixelRnnOutput_row_gates_get, _nn_native.PixelRnnOutput_row_gates_set)
+    hidden = property(_nn_native.PixelRnnOutput_hidden_get, _nn_native.PixelRnnOutput_hidden_set)
+    cell = property(_nn_native.PixelRnnOutput_cell_get, _nn_native.PixelRnnOutput_cell_set)
+    logits = property(_nn_native.PixelRnnOutput_logits_get, _nn_native.PixelRnnOutput_logits_set)
+
+    def __init__(self):
+        _nn_native.PixelRnnOutput_swiginit(self, _nn_native.new_PixelRnnOutput())
+    __swig_destroy__ = _nn_native.delete_PixelRnnOutput
+
+# Register PixelRnnOutput in _nn_native:
+_nn_native.PixelRnnOutput_swigregister(PixelRnnOutput)
+
+def PixelRnn(parameters, image):
+    return _nn_native.PixelRnn(parameters, image)
+
+def AutoregressiveDegreeMask(*args):
+    return _nn_native.AutoregressiveDegreeMask(*args)
+class MadeMaskInventory(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    input_degrees = property(_nn_native.MadeMaskInventory_input_degrees_get, _nn_native.MadeMaskInventory_input_degrees_set)
+    hidden1_degrees = property(_nn_native.MadeMaskInventory_hidden1_degrees_get, _nn_native.MadeMaskInventory_hidden1_degrees_set)
+    hidden2_degrees = property(_nn_native.MadeMaskInventory_hidden2_degrees_get, _nn_native.MadeMaskInventory_hidden2_degrees_set)
+    input_mask = property(_nn_native.MadeMaskInventory_input_mask_get, _nn_native.MadeMaskInventory_input_mask_set)
+    hidden_mask = property(_nn_native.MadeMaskInventory_hidden_mask_get, _nn_native.MadeMaskInventory_hidden_mask_set)
+    output_mask = property(_nn_native.MadeMaskInventory_output_mask_get, _nn_native.MadeMaskInventory_output_mask_set)
+
+    def __init__(self):
+        _nn_native.MadeMaskInventory_swiginit(self, _nn_native.new_MadeMaskInventory())
+    __swig_destroy__ = _nn_native.delete_MadeMaskInventory
+
+# Register MadeMaskInventory in _nn_native:
+_nn_native.MadeMaskInventory_swigregister(MadeMaskInventory)
+
+def MadeMasks(*args):
+    return _nn_native.MadeMasks(*args)
+
+def MaskedDensityDense(parameters, name, input, mask):
+    return _nn_native.MaskedDensityDense(parameters, name, input, mask)
+class MadeDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    hidden1 = property(_nn_native.MadeDensityOutput_hidden1_get, _nn_native.MadeDensityOutput_hidden1_set)
+    hidden2 = property(_nn_native.MadeDensityOutput_hidden2_get, _nn_native.MadeDensityOutput_hidden2_set)
+    logits = property(_nn_native.MadeDensityOutput_logits_get, _nn_native.MadeDensityOutput_logits_set)
+
+    def __init__(self):
+        _nn_native.MadeDensityOutput_swiginit(self, _nn_native.new_MadeDensityOutput())
+    __swig_destroy__ = _nn_native.delete_MadeDensityOutput
+
+# Register MadeDensityOutput in _nn_native:
+_nn_native.MadeDensityOutput_swigregister(MadeDensityOutput)
+
+def MadeDensity(parameters, image, reverse=False):
+    return _nn_native.MadeDensity(parameters, image, reverse)
+class DensityMixtureOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    per_image_nll = property(_nn_native.DensityMixtureOutput_per_image_nll_get, _nn_native.DensityMixtureOutput_per_image_nll_set)
+    mean_nll = property(_nn_native.DensityMixtureOutput_mean_nll_get, _nn_native.DensityMixtureOutput_mean_nll_set)
+    responsibilities = property(_nn_native.DensityMixtureOutput_responsibilities_get, _nn_native.DensityMixtureOutput_responsibilities_set)
+
+    def __init__(self):
+        _nn_native.DensityMixtureOutput_swiginit(self, _nn_native.new_DensityMixtureOutput())
+    __swig_destroy__ = _nn_native.delete_DensityMixtureOutput
+
+# Register DensityMixtureOutput in _nn_native:
+_nn_native.DensityMixtureOutput_swigregister(DensityMixtureOutput)
+
+def EqualDensityMixture(per_model_nll):
+    return _nn_native.EqualDensityMixture(per_model_nll)
+class QuantizedRgbData(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    codes = property(_nn_native.QuantizedRgbData_codes_get, _nn_native.QuantizedRgbData_codes_set)
+    images = property(_nn_native.QuantizedRgbData_images_get, _nn_native.QuantizedRgbData_images_set)
+
+    def __init__(self):
+        _nn_native.QuantizedRgbData_swiginit(self, _nn_native.new_QuantizedRgbData())
+    __swig_destroy__ = _nn_native.delete_QuantizedRgbData
+
+# Register QuantizedRgbData in _nn_native:
+_nn_native.QuantizedRgbData_swigregister(QuantizedRgbData)
+
+def RgbAreaPixels(original, block_size=4):
+    return _nn_native.RgbAreaPixels(original, block_size)
+class LogisticRgbOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    pixel_log_probability = property(_nn_native.LogisticRgbOutput_pixel_log_probability_get, _nn_native.LogisticRgbOutput_pixel_log_probability_set)
+    component_log_probability = property(_nn_native.LogisticRgbOutput_component_log_probability_get, _nn_native.LogisticRgbOutput_component_log_probability_set)
+    mixture_log_probability = property(_nn_native.LogisticRgbOutput_mixture_log_probability_get, _nn_native.LogisticRgbOutput_mixture_log_probability_set)
+    means = property(_nn_native.LogisticRgbOutput_means_get, _nn_native.LogisticRgbOutput_means_set)
+    log_scales = property(_nn_native.LogisticRgbOutput_log_scales_get, _nn_native.LogisticRgbOutput_log_scales_set)
+    coefficients = property(_nn_native.LogisticRgbOutput_coefficients_get, _nn_native.LogisticRgbOutput_coefficients_set)
+    channel_log_mass = property(_nn_native.LogisticRgbOutput_channel_log_mass_get, _nn_native.LogisticRgbOutput_channel_log_mass_set)
+    mean_channel_nll = property(_nn_native.LogisticRgbOutput_mean_channel_nll_get, _nn_native.LogisticRgbOutput_mean_channel_nll_set)
+
+    def __init__(self):
+        _nn_native.LogisticRgbOutput_swiginit(self, _nn_native.new_LogisticRgbOutput())
+    __swig_destroy__ = _nn_native.delete_LogisticRgbOutput
+
+# Register LogisticRgbOutput in _nn_native:
+_nn_native.LogisticRgbOutput_swigregister(LogisticRgbOutput)
+
+def DiscretizedLogisticRGB(image, parameters, mixtures=3):
+    return _nn_native.DiscretizedLogisticRGB(image, parameters, mixtures)
+class PixelCnnPPOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    parameters = property(_nn_native.PixelCnnPPOutput_parameters_get, _nn_native.PixelCnnPPOutput_parameters_set)
+    vertical = property(_nn_native.PixelCnnPPOutput_vertical_get, _nn_native.PixelCnnPPOutput_vertical_set)
+    horizontal = property(_nn_native.PixelCnnPPOutput_horizontal_get, _nn_native.PixelCnnPPOutput_horizontal_set)
+    pixel_log_probability = property(_nn_native.PixelCnnPPOutput_pixel_log_probability_get, _nn_native.PixelCnnPPOutput_pixel_log_probability_set)
+    component_log_probability = property(_nn_native.PixelCnnPPOutput_component_log_probability_get, _nn_native.PixelCnnPPOutput_component_log_probability_set)
+    mixture_log_probability = property(_nn_native.PixelCnnPPOutput_mixture_log_probability_get, _nn_native.PixelCnnPPOutput_mixture_log_probability_set)
+    means = property(_nn_native.PixelCnnPPOutput_means_get, _nn_native.PixelCnnPPOutput_means_set)
+    log_scales = property(_nn_native.PixelCnnPPOutput_log_scales_get, _nn_native.PixelCnnPPOutput_log_scales_set)
+    coefficients = property(_nn_native.PixelCnnPPOutput_coefficients_get, _nn_native.PixelCnnPPOutput_coefficients_set)
+    channel_log_mass = property(_nn_native.PixelCnnPPOutput_channel_log_mass_get, _nn_native.PixelCnnPPOutput_channel_log_mass_set)
+    per_image_nll = property(_nn_native.PixelCnnPPOutput_per_image_nll_get, _nn_native.PixelCnnPPOutput_per_image_nll_set)
+    loss = property(_nn_native.PixelCnnPPOutput_loss_get, _nn_native.PixelCnnPPOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.PixelCnnPPOutput_swiginit(self, _nn_native.new_PixelCnnPPOutput())
+    __swig_destroy__ = _nn_native.delete_PixelCnnPPOutput
+
+# Register PixelCnnPPOutput in _nn_native:
+_nn_native.PixelCnnPPOutput_swigregister(PixelCnnPPOutput)
+
+def PixelCnnPP(parameters, image):
+    return _nn_native.PixelCnnPP(parameters, image)
+class WaveStackCache(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+
+    def __init__(self, parameters, config):
+        _nn_native.WaveStackCache_swiginit(self, _nn_native.new_WaveStackCache(parameters, config))
+
+    def next(self, code):
+        return _nn_native.WaveStackCache_next(self, code)
+
+    def reset(self):
+        return _nn_native.WaveStackCache_reset(self)
+
+    def consumed(self):
+        return _nn_native.WaveStackCache_consumed(self)
+
+    def clone(self):
+        return _nn_native.WaveStackCache_clone(self)
+    __swig_destroy__ = _nn_native.delete_WaveStackCache
+
+# Register WaveStackCache in _nn_native:
+_nn_native.WaveStackCache_swigregister(WaveStackCache)
+
+def BananaPoints(*args):
+    return _nn_native.BananaPoints(*args)
+
+def BananaLogProbability(points, curvature=.5):
+    return _nn_native.BananaLogProbability(points, curvature)
+
+def StandardNormalLogProbability(latent, rounded_constant=False):
+    return _nn_native.StandardNormalLogProbability(latent, rounded_constant)
+class NormalFlowDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    base_log_probability = property(_nn_native.NormalFlowDensityOutput_base_log_probability_get, _nn_native.NormalFlowDensityOutput_base_log_probability_set)
+    log_probability = property(_nn_native.NormalFlowDensityOutput_log_probability_get, _nn_native.NormalFlowDensityOutput_log_probability_set)
+    loss = property(_nn_native.NormalFlowDensityOutput_loss_get, _nn_native.NormalFlowDensityOutput_loss_set)
+
+    def __init__(self):
+        _nn_native.NormalFlowDensityOutput_swiginit(self, _nn_native.new_NormalFlowDensityOutput())
+    __swig_destroy__ = _nn_native.delete_NormalFlowDensityOutput
+
+# Register NormalFlowDensityOutput in _nn_native:
+_nn_native.NormalFlowDensityOutput_swigregister(NormalFlowDensityOutput)
+
+def NormalFlowDensity(latent, forward_logdet, rounded_constant=False):
+    return _nn_native.NormalFlowDensity(latent, forward_logdet, rounded_constant)
+
+def NiceCoupling(parameters, input, block, inverse=False):
+    return _nn_native.NiceCoupling(parameters, input, block, inverse)
+class NiceDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    coupling0 = property(_nn_native.NiceDensityOutput_coupling0_get, _nn_native.NiceDensityOutput_coupling0_set)
+    coupling1 = property(_nn_native.NiceDensityOutput_coupling1_get, _nn_native.NiceDensityOutput_coupling1_set)
+    coupling2 = property(_nn_native.NiceDensityOutput_coupling2_get, _nn_native.NiceDensityOutput_coupling2_set)
+    coupling3 = property(_nn_native.NiceDensityOutput_coupling3_get, _nn_native.NiceDensityOutput_coupling3_set)
+    unscaled = property(_nn_native.NiceDensityOutput_unscaled_get, _nn_native.NiceDensityOutput_unscaled_set)
+    latent = property(_nn_native.NiceDensityOutput_latent_get, _nn_native.NiceDensityOutput_latent_set)
+    logdet = property(_nn_native.NiceDensityOutput_logdet_get, _nn_native.NiceDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.NiceDensityOutput_swiginit(self, _nn_native.new_NiceDensityOutput())
+    __swig_destroy__ = _nn_native.delete_NiceDensityOutput
+
+# Register NiceDensityOutput in _nn_native:
+_nn_native.NiceDensityOutput_swigregister(NiceDensityOutput)
+
+def NiceDensity(parameters, input):
+    return _nn_native.NiceDensity(parameters, input)
+class FlowInverseOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.FlowInverseOutput_value_get, _nn_native.FlowInverseOutput_value_set)
+    logdet = property(_nn_native.FlowInverseOutput_logdet_get, _nn_native.FlowInverseOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.FlowInverseOutput_swiginit(self, _nn_native.new_FlowInverseOutput())
+    __swig_destroy__ = _nn_native.delete_FlowInverseOutput
+
+# Register FlowInverseOutput in _nn_native:
+_nn_native.FlowInverseOutput_swigregister(FlowInverseOutput)
+
+def NiceInverse(parameters, latent):
+    return _nn_native.NiceInverse(parameters, latent)
+class FlowScaleOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.FlowScaleOutput_value_get, _nn_native.FlowScaleOutput_value_set)
+    logdet = property(_nn_native.FlowScaleOutput_logdet_get, _nn_native.FlowScaleOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.FlowScaleOutput_swiginit(self, _nn_native.new_FlowScaleOutput())
+    __swig_destroy__ = _nn_native.delete_FlowScaleOutput
+
+# Register FlowScaleOutput in _nn_native:
+_nn_native.FlowScaleOutput_swigregister(FlowScaleOutput)
+
+def FlowDiagonalScale(parameters, input, incoming_logdet, inverse=False):
+    return _nn_native.FlowDiagonalScale(parameters, input, incoming_logdet, inverse)
+class RealNvpCouplingOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.RealNvpCouplingOutput_value_get, _nn_native.RealNvpCouplingOutput_value_set)
+    logdet = property(_nn_native.RealNvpCouplingOutput_logdet_get, _nn_native.RealNvpCouplingOutput_logdet_set)
+    scale = property(_nn_native.RealNvpCouplingOutput_scale_get, _nn_native.RealNvpCouplingOutput_scale_set)
+    shift = property(_nn_native.RealNvpCouplingOutput_shift_get, _nn_native.RealNvpCouplingOutput_shift_set)
+
+    def __init__(self):
+        _nn_native.RealNvpCouplingOutput_swiginit(self, _nn_native.new_RealNvpCouplingOutput())
+    __swig_destroy__ = _nn_native.delete_RealNvpCouplingOutput
+
+# Register RealNvpCouplingOutput in _nn_native:
+_nn_native.RealNvpCouplingOutput_swigregister(RealNvpCouplingOutput)
+
+def RealNvpCoupling(parameters, input, block, inverse=False):
+    return _nn_native.RealNvpCoupling(parameters, input, block, inverse)
+class RealNvpDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    coupling0 = property(_nn_native.RealNvpDensityOutput_coupling0_get, _nn_native.RealNvpDensityOutput_coupling0_set)
+    coupling_logdet0 = property(_nn_native.RealNvpDensityOutput_coupling_logdet0_get, _nn_native.RealNvpDensityOutput_coupling_logdet0_set)
+    coupling_scale0 = property(_nn_native.RealNvpDensityOutput_coupling_scale0_get, _nn_native.RealNvpDensityOutput_coupling_scale0_set)
+    coupling_shift0 = property(_nn_native.RealNvpDensityOutput_coupling_shift0_get, _nn_native.RealNvpDensityOutput_coupling_shift0_set)
+    coupling1 = property(_nn_native.RealNvpDensityOutput_coupling1_get, _nn_native.RealNvpDensityOutput_coupling1_set)
+    coupling_logdet1 = property(_nn_native.RealNvpDensityOutput_coupling_logdet1_get, _nn_native.RealNvpDensityOutput_coupling_logdet1_set)
+    coupling_scale1 = property(_nn_native.RealNvpDensityOutput_coupling_scale1_get, _nn_native.RealNvpDensityOutput_coupling_scale1_set)
+    coupling_shift1 = property(_nn_native.RealNvpDensityOutput_coupling_shift1_get, _nn_native.RealNvpDensityOutput_coupling_shift1_set)
+    coupling2 = property(_nn_native.RealNvpDensityOutput_coupling2_get, _nn_native.RealNvpDensityOutput_coupling2_set)
+    coupling_logdet2 = property(_nn_native.RealNvpDensityOutput_coupling_logdet2_get, _nn_native.RealNvpDensityOutput_coupling_logdet2_set)
+    coupling_scale2 = property(_nn_native.RealNvpDensityOutput_coupling_scale2_get, _nn_native.RealNvpDensityOutput_coupling_scale2_set)
+    coupling_shift2 = property(_nn_native.RealNvpDensityOutput_coupling_shift2_get, _nn_native.RealNvpDensityOutput_coupling_shift2_set)
+    coupling3 = property(_nn_native.RealNvpDensityOutput_coupling3_get, _nn_native.RealNvpDensityOutput_coupling3_set)
+    coupling_logdet3 = property(_nn_native.RealNvpDensityOutput_coupling_logdet3_get, _nn_native.RealNvpDensityOutput_coupling_logdet3_set)
+    coupling_scale3 = property(_nn_native.RealNvpDensityOutput_coupling_scale3_get, _nn_native.RealNvpDensityOutput_coupling_scale3_set)
+    coupling_shift3 = property(_nn_native.RealNvpDensityOutput_coupling_shift3_get, _nn_native.RealNvpDensityOutput_coupling_shift3_set)
+    unscaled = property(_nn_native.RealNvpDensityOutput_unscaled_get, _nn_native.RealNvpDensityOutput_unscaled_set)
+    latent = property(_nn_native.RealNvpDensityOutput_latent_get, _nn_native.RealNvpDensityOutput_latent_set)
+    logdet = property(_nn_native.RealNvpDensityOutput_logdet_get, _nn_native.RealNvpDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.RealNvpDensityOutput_swiginit(self, _nn_native.new_RealNvpDensityOutput())
+    __swig_destroy__ = _nn_native.delete_RealNvpDensityOutput
+
+# Register RealNvpDensityOutput in _nn_native:
+_nn_native.RealNvpDensityOutput_swigregister(RealNvpDensityOutput)
+
+def RealNvpDensity(parameters, input):
+    return _nn_native.RealNvpDensity(parameters, input)
+
+def RealNvpInverse(parameters, latent):
+    return _nn_native.RealNvpInverse(parameters, latent)
+class ActNormCalibration(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mean = property(_nn_native.ActNormCalibration_mean_get, _nn_native.ActNormCalibration_mean_set)
+    variance = property(_nn_native.ActNormCalibration_variance_get, _nn_native.ActNormCalibration_variance_set)
+    bias = property(_nn_native.ActNormCalibration_bias_get, _nn_native.ActNormCalibration_bias_set)
+    log_scale = property(_nn_native.ActNormCalibration_log_scale_get, _nn_native.ActNormCalibration_log_scale_set)
+
+    def __init__(self):
+        _nn_native.ActNormCalibration_swiginit(self, _nn_native.new_ActNormCalibration())
+    __swig_destroy__ = _nn_native.delete_ActNormCalibration
+
+# Register ActNormCalibration in _nn_native:
+_nn_native.ActNormCalibration_swigregister(ActNormCalibration)
+
+def FlowActNormCalibration(input, epsilon=1e-6):
+    return _nn_native.FlowActNormCalibration(input, epsilon)
+
+def FlowActNorm(parameters, name, input, inverse=False):
+    return _nn_native.FlowActNorm(parameters, name, input, inverse)
+
+def FlowMix2D(parameters, name, input, angle=.35, inverse=False):
+    return _nn_native.FlowMix2D(parameters, name, input, angle, inverse)
+class GlowDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    actnorm_input0 = property(_nn_native.GlowDensityOutput_actnorm_input0_get, _nn_native.GlowDensityOutput_actnorm_input0_set)
+    actnorm_output0 = property(_nn_native.GlowDensityOutput_actnorm_output0_get, _nn_native.GlowDensityOutput_actnorm_output0_set)
+    mixed0 = property(_nn_native.GlowDensityOutput_mixed0_get, _nn_native.GlowDensityOutput_mixed0_set)
+    coupling0 = property(_nn_native.GlowDensityOutput_coupling0_get, _nn_native.GlowDensityOutput_coupling0_set)
+    coupling_logdet0 = property(_nn_native.GlowDensityOutput_coupling_logdet0_get, _nn_native.GlowDensityOutput_coupling_logdet0_set)
+    coupling_scale0 = property(_nn_native.GlowDensityOutput_coupling_scale0_get, _nn_native.GlowDensityOutput_coupling_scale0_set)
+    coupling_shift0 = property(_nn_native.GlowDensityOutput_coupling_shift0_get, _nn_native.GlowDensityOutput_coupling_shift0_set)
+    actnorm_input1 = property(_nn_native.GlowDensityOutput_actnorm_input1_get, _nn_native.GlowDensityOutput_actnorm_input1_set)
+    actnorm_output1 = property(_nn_native.GlowDensityOutput_actnorm_output1_get, _nn_native.GlowDensityOutput_actnorm_output1_set)
+    mixed1 = property(_nn_native.GlowDensityOutput_mixed1_get, _nn_native.GlowDensityOutput_mixed1_set)
+    coupling1 = property(_nn_native.GlowDensityOutput_coupling1_get, _nn_native.GlowDensityOutput_coupling1_set)
+    coupling_logdet1 = property(_nn_native.GlowDensityOutput_coupling_logdet1_get, _nn_native.GlowDensityOutput_coupling_logdet1_set)
+    coupling_scale1 = property(_nn_native.GlowDensityOutput_coupling_scale1_get, _nn_native.GlowDensityOutput_coupling_scale1_set)
+    coupling_shift1 = property(_nn_native.GlowDensityOutput_coupling_shift1_get, _nn_native.GlowDensityOutput_coupling_shift1_set)
+    actnorm_input2 = property(_nn_native.GlowDensityOutput_actnorm_input2_get, _nn_native.GlowDensityOutput_actnorm_input2_set)
+    actnorm_output2 = property(_nn_native.GlowDensityOutput_actnorm_output2_get, _nn_native.GlowDensityOutput_actnorm_output2_set)
+    mixed2 = property(_nn_native.GlowDensityOutput_mixed2_get, _nn_native.GlowDensityOutput_mixed2_set)
+    coupling2 = property(_nn_native.GlowDensityOutput_coupling2_get, _nn_native.GlowDensityOutput_coupling2_set)
+    coupling_logdet2 = property(_nn_native.GlowDensityOutput_coupling_logdet2_get, _nn_native.GlowDensityOutput_coupling_logdet2_set)
+    coupling_scale2 = property(_nn_native.GlowDensityOutput_coupling_scale2_get, _nn_native.GlowDensityOutput_coupling_scale2_set)
+    coupling_shift2 = property(_nn_native.GlowDensityOutput_coupling_shift2_get, _nn_native.GlowDensityOutput_coupling_shift2_set)
+    actnorm_input3 = property(_nn_native.GlowDensityOutput_actnorm_input3_get, _nn_native.GlowDensityOutput_actnorm_input3_set)
+    actnorm_output3 = property(_nn_native.GlowDensityOutput_actnorm_output3_get, _nn_native.GlowDensityOutput_actnorm_output3_set)
+    mixed3 = property(_nn_native.GlowDensityOutput_mixed3_get, _nn_native.GlowDensityOutput_mixed3_set)
+    coupling3 = property(_nn_native.GlowDensityOutput_coupling3_get, _nn_native.GlowDensityOutput_coupling3_set)
+    coupling_logdet3 = property(_nn_native.GlowDensityOutput_coupling_logdet3_get, _nn_native.GlowDensityOutput_coupling_logdet3_set)
+    coupling_scale3 = property(_nn_native.GlowDensityOutput_coupling_scale3_get, _nn_native.GlowDensityOutput_coupling_scale3_set)
+    coupling_shift3 = property(_nn_native.GlowDensityOutput_coupling_shift3_get, _nn_native.GlowDensityOutput_coupling_shift3_set)
+    unscaled = property(_nn_native.GlowDensityOutput_unscaled_get, _nn_native.GlowDensityOutput_unscaled_set)
+    latent = property(_nn_native.GlowDensityOutput_latent_get, _nn_native.GlowDensityOutput_latent_set)
+    logdet = property(_nn_native.GlowDensityOutput_logdet_get, _nn_native.GlowDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.GlowDensityOutput_swiginit(self, _nn_native.new_GlowDensityOutput())
+    __swig_destroy__ = _nn_native.delete_GlowDensityOutput
+
+# Register GlowDensityOutput in _nn_native:
+_nn_native.GlowDensityOutput_swigregister(GlowDensityOutput)
+
+def GlowDensity(parameters, input):
+    return _nn_native.GlowDensity(parameters, input)
+
+def GlowInverse(parameters, latent):
+    return _nn_native.GlowInverse(parameters, latent)
+class MafMaskInventory(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    input_degrees = property(_nn_native.MafMaskInventory_input_degrees_get, _nn_native.MafMaskInventory_input_degrees_set)
+    hidden_degrees = property(_nn_native.MafMaskInventory_hidden_degrees_get, _nn_native.MafMaskInventory_hidden_degrees_set)
+    output_degrees = property(_nn_native.MafMaskInventory_output_degrees_get, _nn_native.MafMaskInventory_output_degrees_set)
+    input_mask = property(_nn_native.MafMaskInventory_input_mask_get, _nn_native.MafMaskInventory_input_mask_set)
+    output_mask = property(_nn_native.MafMaskInventory_output_mask_get, _nn_native.MafMaskInventory_output_mask_set)
+
+    def __init__(self):
+        _nn_native.MafMaskInventory_swiginit(self, _nn_native.new_MafMaskInventory())
+    __swig_destroy__ = _nn_native.delete_MafMaskInventory
+
+# Register MafMaskInventory in _nn_native:
+_nn_native.MafMaskInventory_swigregister(MafMaskInventory)
+
+def MafMasks(*args):
+    return _nn_native.MafMasks(*args)
+class MafConditionerOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mean = property(_nn_native.MafConditionerOutput_mean_get, _nn_native.MafConditionerOutput_mean_set)
+    scale = property(_nn_native.MafConditionerOutput_scale_get, _nn_native.MafConditionerOutput_scale_set)
+
+    def __init__(self):
+        _nn_native.MafConditionerOutput_swiginit(self, _nn_native.new_MafConditionerOutput())
+    __swig_destroy__ = _nn_native.delete_MafConditionerOutput
+
+# Register MafConditionerOutput in _nn_native:
+_nn_native.MafConditionerOutput_swigregister(MafConditionerOutput)
+
+def MafConditioner(parameters, input, block):
+    return _nn_native.MafConditioner(parameters, input, block)
+class MafDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    conditioner_input0 = property(_nn_native.MafDensityOutput_conditioner_input0_get, _nn_native.MafDensityOutput_conditioner_input0_set)
+    coupling0 = property(_nn_native.MafDensityOutput_coupling0_get, _nn_native.MafDensityOutput_coupling0_set)
+    coupling_logdet0 = property(_nn_native.MafDensityOutput_coupling_logdet0_get, _nn_native.MafDensityOutput_coupling_logdet0_set)
+    coupling_scale0 = property(_nn_native.MafDensityOutput_coupling_scale0_get, _nn_native.MafDensityOutput_coupling_scale0_set)
+    coupling_shift0 = property(_nn_native.MafDensityOutput_coupling_shift0_get, _nn_native.MafDensityOutput_coupling_shift0_set)
+    conditioner_input1 = property(_nn_native.MafDensityOutput_conditioner_input1_get, _nn_native.MafDensityOutput_conditioner_input1_set)
+    coupling1 = property(_nn_native.MafDensityOutput_coupling1_get, _nn_native.MafDensityOutput_coupling1_set)
+    coupling_logdet1 = property(_nn_native.MafDensityOutput_coupling_logdet1_get, _nn_native.MafDensityOutput_coupling_logdet1_set)
+    coupling_scale1 = property(_nn_native.MafDensityOutput_coupling_scale1_get, _nn_native.MafDensityOutput_coupling_scale1_set)
+    coupling_shift1 = property(_nn_native.MafDensityOutput_coupling_shift1_get, _nn_native.MafDensityOutput_coupling_shift1_set)
+    conditioner_input2 = property(_nn_native.MafDensityOutput_conditioner_input2_get, _nn_native.MafDensityOutput_conditioner_input2_set)
+    coupling2 = property(_nn_native.MafDensityOutput_coupling2_get, _nn_native.MafDensityOutput_coupling2_set)
+    coupling_logdet2 = property(_nn_native.MafDensityOutput_coupling_logdet2_get, _nn_native.MafDensityOutput_coupling_logdet2_set)
+    coupling_scale2 = property(_nn_native.MafDensityOutput_coupling_scale2_get, _nn_native.MafDensityOutput_coupling_scale2_set)
+    coupling_shift2 = property(_nn_native.MafDensityOutput_coupling_shift2_get, _nn_native.MafDensityOutput_coupling_shift2_set)
+    conditioner_input3 = property(_nn_native.MafDensityOutput_conditioner_input3_get, _nn_native.MafDensityOutput_conditioner_input3_set)
+    coupling3 = property(_nn_native.MafDensityOutput_coupling3_get, _nn_native.MafDensityOutput_coupling3_set)
+    coupling_logdet3 = property(_nn_native.MafDensityOutput_coupling_logdet3_get, _nn_native.MafDensityOutput_coupling_logdet3_set)
+    coupling_scale3 = property(_nn_native.MafDensityOutput_coupling_scale3_get, _nn_native.MafDensityOutput_coupling_scale3_set)
+    coupling_shift3 = property(_nn_native.MafDensityOutput_coupling_shift3_get, _nn_native.MafDensityOutput_coupling_shift3_set)
+    unscaled = property(_nn_native.MafDensityOutput_unscaled_get, _nn_native.MafDensityOutput_unscaled_set)
+    latent = property(_nn_native.MafDensityOutput_latent_get, _nn_native.MafDensityOutput_latent_set)
+    logdet = property(_nn_native.MafDensityOutput_logdet_get, _nn_native.MafDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.MafDensityOutput_swiginit(self, _nn_native.new_MafDensityOutput())
+    __swig_destroy__ = _nn_native.delete_MafDensityOutput
+
+# Register MafDensityOutput in _nn_native:
+_nn_native.MafDensityOutput_swigregister(MafDensityOutput)
+
+def MafDensity(parameters, input):
+    return _nn_native.MafDensity(parameters, input)
+
+def MafInverse(parameters, latent):
+    return _nn_native.MafInverse(parameters, latent)
+class IafDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    conditioner_input0 = property(_nn_native.IafDensityOutput_conditioner_input0_get, _nn_native.IafDensityOutput_conditioner_input0_set)
+    coupling0 = property(_nn_native.IafDensityOutput_coupling0_get, _nn_native.IafDensityOutput_coupling0_set)
+    coupling_logdet0 = property(_nn_native.IafDensityOutput_coupling_logdet0_get, _nn_native.IafDensityOutput_coupling_logdet0_set)
+    coupling_scale0 = property(_nn_native.IafDensityOutput_coupling_scale0_get, _nn_native.IafDensityOutput_coupling_scale0_set)
+    coupling_shift0 = property(_nn_native.IafDensityOutput_coupling_shift0_get, _nn_native.IafDensityOutput_coupling_shift0_set)
+    conditioner_input1 = property(_nn_native.IafDensityOutput_conditioner_input1_get, _nn_native.IafDensityOutput_conditioner_input1_set)
+    coupling1 = property(_nn_native.IafDensityOutput_coupling1_get, _nn_native.IafDensityOutput_coupling1_set)
+    coupling_logdet1 = property(_nn_native.IafDensityOutput_coupling_logdet1_get, _nn_native.IafDensityOutput_coupling_logdet1_set)
+    coupling_scale1 = property(_nn_native.IafDensityOutput_coupling_scale1_get, _nn_native.IafDensityOutput_coupling_scale1_set)
+    coupling_shift1 = property(_nn_native.IafDensityOutput_coupling_shift1_get, _nn_native.IafDensityOutput_coupling_shift1_set)
+    conditioner_input2 = property(_nn_native.IafDensityOutput_conditioner_input2_get, _nn_native.IafDensityOutput_conditioner_input2_set)
+    coupling2 = property(_nn_native.IafDensityOutput_coupling2_get, _nn_native.IafDensityOutput_coupling2_set)
+    coupling_logdet2 = property(_nn_native.IafDensityOutput_coupling_logdet2_get, _nn_native.IafDensityOutput_coupling_logdet2_set)
+    coupling_scale2 = property(_nn_native.IafDensityOutput_coupling_scale2_get, _nn_native.IafDensityOutput_coupling_scale2_set)
+    coupling_shift2 = property(_nn_native.IafDensityOutput_coupling_shift2_get, _nn_native.IafDensityOutput_coupling_shift2_set)
+    conditioner_input3 = property(_nn_native.IafDensityOutput_conditioner_input3_get, _nn_native.IafDensityOutput_conditioner_input3_set)
+    coupling3 = property(_nn_native.IafDensityOutput_coupling3_get, _nn_native.IafDensityOutput_coupling3_set)
+    coupling_logdet3 = property(_nn_native.IafDensityOutput_coupling_logdet3_get, _nn_native.IafDensityOutput_coupling_logdet3_set)
+    coupling_scale3 = property(_nn_native.IafDensityOutput_coupling_scale3_get, _nn_native.IafDensityOutput_coupling_scale3_set)
+    coupling_shift3 = property(_nn_native.IafDensityOutput_coupling_shift3_get, _nn_native.IafDensityOutput_coupling_shift3_set)
+    unscaled = property(_nn_native.IafDensityOutput_unscaled_get, _nn_native.IafDensityOutput_unscaled_set)
+    latent = property(_nn_native.IafDensityOutput_latent_get, _nn_native.IafDensityOutput_latent_set)
+    logdet = property(_nn_native.IafDensityOutput_logdet_get, _nn_native.IafDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.IafDensityOutput_swiginit(self, _nn_native.new_IafDensityOutput())
+    __swig_destroy__ = _nn_native.delete_IafDensityOutput
+
+# Register IafDensityOutput in _nn_native:
+_nn_native.IafDensityOutput_swigregister(IafDensityOutput)
+
+def IafDensity(parameters, input):
+    return _nn_native.IafDensity(parameters, input)
+
+def IafInverse(parameters, latent):
+    return _nn_native.IafInverse(parameters, latent)
+class RationalQuadraticSplineOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.RationalQuadraticSplineOutput_value_get, _nn_native.RationalQuadraticSplineOutput_value_set)
+    logdet = property(_nn_native.RationalQuadraticSplineOutput_logdet_get, _nn_native.RationalQuadraticSplineOutput_logdet_set)
+    widths = property(_nn_native.RationalQuadraticSplineOutput_widths_get, _nn_native.RationalQuadraticSplineOutput_widths_set)
+    heights = property(_nn_native.RationalQuadraticSplineOutput_heights_get, _nn_native.RationalQuadraticSplineOutput_heights_set)
+    derivatives = property(_nn_native.RationalQuadraticSplineOutput_derivatives_get, _nn_native.RationalQuadraticSplineOutput_derivatives_set)
+
+    def __init__(self):
+        _nn_native.RationalQuadraticSplineOutput_swiginit(self, _nn_native.new_RationalQuadraticSplineOutput())
+    __swig_destroy__ = _nn_native.delete_RationalQuadraticSplineOutput
+
+# Register RationalQuadraticSplineOutput in _nn_native:
+_nn_native.RationalQuadraticSplineOutput_swigregister(RationalQuadraticSplineOutput)
+
+def RationalQuadraticSpline(input, heads, inverse=False, bound=4., min_bin_fraction=.01, min_derivative=.001, rounded_offset=False):
+    return _nn_native.RationalQuadraticSpline(input, heads, inverse, bound, min_bin_fraction, min_derivative, rounded_offset)
+
+def SplineCoupling(parameters, input, block, inverse=False):
+    return _nn_native.SplineCoupling(parameters, input, block, inverse)
+class SplineDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    coupling0 = property(_nn_native.SplineDensityOutput_coupling0_get, _nn_native.SplineDensityOutput_coupling0_set)
+    coupling_logdet0 = property(_nn_native.SplineDensityOutput_coupling_logdet0_get, _nn_native.SplineDensityOutput_coupling_logdet0_set)
+    coupling_widths0 = property(_nn_native.SplineDensityOutput_coupling_widths0_get, _nn_native.SplineDensityOutput_coupling_widths0_set)
+    coupling_heights0 = property(_nn_native.SplineDensityOutput_coupling_heights0_get, _nn_native.SplineDensityOutput_coupling_heights0_set)
+    coupling_derivatives0 = property(_nn_native.SplineDensityOutput_coupling_derivatives0_get, _nn_native.SplineDensityOutput_coupling_derivatives0_set)
+    coupling1 = property(_nn_native.SplineDensityOutput_coupling1_get, _nn_native.SplineDensityOutput_coupling1_set)
+    coupling_logdet1 = property(_nn_native.SplineDensityOutput_coupling_logdet1_get, _nn_native.SplineDensityOutput_coupling_logdet1_set)
+    coupling_widths1 = property(_nn_native.SplineDensityOutput_coupling_widths1_get, _nn_native.SplineDensityOutput_coupling_widths1_set)
+    coupling_heights1 = property(_nn_native.SplineDensityOutput_coupling_heights1_get, _nn_native.SplineDensityOutput_coupling_heights1_set)
+    coupling_derivatives1 = property(_nn_native.SplineDensityOutput_coupling_derivatives1_get, _nn_native.SplineDensityOutput_coupling_derivatives1_set)
+    coupling2 = property(_nn_native.SplineDensityOutput_coupling2_get, _nn_native.SplineDensityOutput_coupling2_set)
+    coupling_logdet2 = property(_nn_native.SplineDensityOutput_coupling_logdet2_get, _nn_native.SplineDensityOutput_coupling_logdet2_set)
+    coupling_widths2 = property(_nn_native.SplineDensityOutput_coupling_widths2_get, _nn_native.SplineDensityOutput_coupling_widths2_set)
+    coupling_heights2 = property(_nn_native.SplineDensityOutput_coupling_heights2_get, _nn_native.SplineDensityOutput_coupling_heights2_set)
+    coupling_derivatives2 = property(_nn_native.SplineDensityOutput_coupling_derivatives2_get, _nn_native.SplineDensityOutput_coupling_derivatives2_set)
+    coupling3 = property(_nn_native.SplineDensityOutput_coupling3_get, _nn_native.SplineDensityOutput_coupling3_set)
+    coupling_logdet3 = property(_nn_native.SplineDensityOutput_coupling_logdet3_get, _nn_native.SplineDensityOutput_coupling_logdet3_set)
+    coupling_widths3 = property(_nn_native.SplineDensityOutput_coupling_widths3_get, _nn_native.SplineDensityOutput_coupling_widths3_set)
+    coupling_heights3 = property(_nn_native.SplineDensityOutput_coupling_heights3_get, _nn_native.SplineDensityOutput_coupling_heights3_set)
+    coupling_derivatives3 = property(_nn_native.SplineDensityOutput_coupling_derivatives3_get, _nn_native.SplineDensityOutput_coupling_derivatives3_set)
+    unscaled = property(_nn_native.SplineDensityOutput_unscaled_get, _nn_native.SplineDensityOutput_unscaled_set)
+    latent = property(_nn_native.SplineDensityOutput_latent_get, _nn_native.SplineDensityOutput_latent_set)
+    logdet = property(_nn_native.SplineDensityOutput_logdet_get, _nn_native.SplineDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.SplineDensityOutput_swiginit(self, _nn_native.new_SplineDensityOutput())
+    __swig_destroy__ = _nn_native.delete_SplineDensityOutput
+
+# Register SplineDensityOutput in _nn_native:
+_nn_native.SplineDensityOutput_swigregister(SplineDensityOutput)
+
+def SplineDensity(parameters, input):
+    return _nn_native.SplineDensity(parameters, input)
+
+def SplineInverse(parameters, latent):
+    return _nn_native.SplineInverse(parameters, latent)
+class ElementaryFlowOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.ElementaryFlowOutput_value_get, _nn_native.ElementaryFlowOutput_value_set)
+    logdet = property(_nn_native.ElementaryFlowOutput_logdet_get, _nn_native.ElementaryFlowOutput_logdet_set)
+    factor = property(_nn_native.ElementaryFlowOutput_factor_get, _nn_native.ElementaryFlowOutput_factor_set)
+    coordinate = property(_nn_native.ElementaryFlowOutput_coordinate_get, _nn_native.ElementaryFlowOutput_coordinate_set)
+
+    def __init__(self):
+        _nn_native.ElementaryFlowOutput_swiginit(self, _nn_native.new_ElementaryFlowOutput())
+    __swig_destroy__ = _nn_native.delete_ElementaryFlowOutput
+
+# Register ElementaryFlowOutput in _nn_native:
+_nn_native.ElementaryFlowOutput_swigregister(ElementaryFlowOutput)
+
+def PlanarFlow(input, angle, log_frequency, raw_projection, perpendicular, bias, inverse=False):
+    return _nn_native.PlanarFlow(input, angle, log_frequency, raw_projection, perpendicular, bias, inverse)
+
+def RadialFlow(input, center, raw_alpha, raw_beta, inverse=False):
+    return _nn_native.RadialFlow(input, center, raw_alpha, raw_beta, inverse)
+
+def ElementaryFlow(parameters, input, block, radial=False, inverse=False):
+    return _nn_native.ElementaryFlow(parameters, input, block, radial, inverse)
+class PlanarRadialDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    flow0 = property(_nn_native.PlanarRadialDensityOutput_flow0_get, _nn_native.PlanarRadialDensityOutput_flow0_set)
+    flow_logdet0 = property(_nn_native.PlanarRadialDensityOutput_flow_logdet0_get, _nn_native.PlanarRadialDensityOutput_flow_logdet0_set)
+    flow_factor0 = property(_nn_native.PlanarRadialDensityOutput_flow_factor0_get, _nn_native.PlanarRadialDensityOutput_flow_factor0_set)
+    flow_coordinate0 = property(_nn_native.PlanarRadialDensityOutput_flow_coordinate0_get, _nn_native.PlanarRadialDensityOutput_flow_coordinate0_set)
+    flow1 = property(_nn_native.PlanarRadialDensityOutput_flow1_get, _nn_native.PlanarRadialDensityOutput_flow1_set)
+    flow_logdet1 = property(_nn_native.PlanarRadialDensityOutput_flow_logdet1_get, _nn_native.PlanarRadialDensityOutput_flow_logdet1_set)
+    flow_factor1 = property(_nn_native.PlanarRadialDensityOutput_flow_factor1_get, _nn_native.PlanarRadialDensityOutput_flow_factor1_set)
+    flow_coordinate1 = property(_nn_native.PlanarRadialDensityOutput_flow_coordinate1_get, _nn_native.PlanarRadialDensityOutput_flow_coordinate1_set)
+    flow2 = property(_nn_native.PlanarRadialDensityOutput_flow2_get, _nn_native.PlanarRadialDensityOutput_flow2_set)
+    flow_logdet2 = property(_nn_native.PlanarRadialDensityOutput_flow_logdet2_get, _nn_native.PlanarRadialDensityOutput_flow_logdet2_set)
+    flow_factor2 = property(_nn_native.PlanarRadialDensityOutput_flow_factor2_get, _nn_native.PlanarRadialDensityOutput_flow_factor2_set)
+    flow_coordinate2 = property(_nn_native.PlanarRadialDensityOutput_flow_coordinate2_get, _nn_native.PlanarRadialDensityOutput_flow_coordinate2_set)
+    flow3 = property(_nn_native.PlanarRadialDensityOutput_flow3_get, _nn_native.PlanarRadialDensityOutput_flow3_set)
+    flow_logdet3 = property(_nn_native.PlanarRadialDensityOutput_flow_logdet3_get, _nn_native.PlanarRadialDensityOutput_flow_logdet3_set)
+    flow_factor3 = property(_nn_native.PlanarRadialDensityOutput_flow_factor3_get, _nn_native.PlanarRadialDensityOutput_flow_factor3_set)
+    flow_coordinate3 = property(_nn_native.PlanarRadialDensityOutput_flow_coordinate3_get, _nn_native.PlanarRadialDensityOutput_flow_coordinate3_set)
+    unscaled = property(_nn_native.PlanarRadialDensityOutput_unscaled_get, _nn_native.PlanarRadialDensityOutput_unscaled_set)
+    latent = property(_nn_native.PlanarRadialDensityOutput_latent_get, _nn_native.PlanarRadialDensityOutput_latent_set)
+    logdet = property(_nn_native.PlanarRadialDensityOutput_logdet_get, _nn_native.PlanarRadialDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.PlanarRadialDensityOutput_swiginit(self, _nn_native.new_PlanarRadialDensityOutput())
+    __swig_destroy__ = _nn_native.delete_PlanarRadialDensityOutput
+
+# Register PlanarRadialDensityOutput in _nn_native:
+_nn_native.PlanarRadialDensityOutput_swigregister(PlanarRadialDensityOutput)
+
+def PlanarRadialDensity(parameters, input, radial=False):
+    return _nn_native.PlanarRadialDensity(parameters, input, radial)
+
+def PlanarRadialInverse(parameters, latent, radial=False):
+    return _nn_native.PlanarRadialInverse(parameters, latent, radial)
+class CnfFieldOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    velocity = property(_nn_native.CnfFieldOutput_velocity_get, _nn_native.CnfFieldOutput_velocity_set)
+    divergence = property(_nn_native.CnfFieldOutput_divergence_get, _nn_native.CnfFieldOutput_divergence_set)
+    exact_trace = property(_nn_native.CnfFieldOutput_exact_trace_get, _nn_native.CnfFieldOutput_exact_trace_set)
+    hutchinson_plus = property(_nn_native.CnfFieldOutput_hutchinson_plus_get, _nn_native.CnfFieldOutput_hutchinson_plus_set)
+    hutchinson_minus = property(_nn_native.CnfFieldOutput_hutchinson_minus_get, _nn_native.CnfFieldOutput_hutchinson_minus_set)
+
+    def __init__(self):
+        _nn_native.CnfFieldOutput_swiginit(self, _nn_native.new_CnfFieldOutput())
+    __swig_destroy__ = _nn_native.delete_CnfFieldOutput
+
+# Register CnfFieldOutput in _nn_native:
+_nn_native.CnfFieldOutput_swigregister(CnfFieldOutput)
+
+def CnfField(parameters, input, time, trace_mode=3):
+    return _nn_native.CnfField(parameters, input, time, trace_mode)
+class CnfDensityOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    stage0 = property(_nn_native.CnfDensityOutput_stage0_get, _nn_native.CnfDensityOutput_stage0_set)
+    stage_logdet0 = property(_nn_native.CnfDensityOutput_stage_logdet0_get, _nn_native.CnfDensityOutput_stage_logdet0_set)
+    stage_divergence0 = property(_nn_native.CnfDensityOutput_stage_divergence0_get, _nn_native.CnfDensityOutput_stage_divergence0_set)
+    stage_velocity0 = property(_nn_native.CnfDensityOutput_stage_velocity0_get, _nn_native.CnfDensityOutput_stage_velocity0_set)
+    stage1 = property(_nn_native.CnfDensityOutput_stage1_get, _nn_native.CnfDensityOutput_stage1_set)
+    stage_logdet1 = property(_nn_native.CnfDensityOutput_stage_logdet1_get, _nn_native.CnfDensityOutput_stage_logdet1_set)
+    stage_divergence1 = property(_nn_native.CnfDensityOutput_stage_divergence1_get, _nn_native.CnfDensityOutput_stage_divergence1_set)
+    stage_velocity1 = property(_nn_native.CnfDensityOutput_stage_velocity1_get, _nn_native.CnfDensityOutput_stage_velocity1_set)
+    stage2 = property(_nn_native.CnfDensityOutput_stage2_get, _nn_native.CnfDensityOutput_stage2_set)
+    stage_logdet2 = property(_nn_native.CnfDensityOutput_stage_logdet2_get, _nn_native.CnfDensityOutput_stage_logdet2_set)
+    stage_divergence2 = property(_nn_native.CnfDensityOutput_stage_divergence2_get, _nn_native.CnfDensityOutput_stage_divergence2_set)
+    stage_velocity2 = property(_nn_native.CnfDensityOutput_stage_velocity2_get, _nn_native.CnfDensityOutput_stage_velocity2_set)
+    stage3 = property(_nn_native.CnfDensityOutput_stage3_get, _nn_native.CnfDensityOutput_stage3_set)
+    stage_logdet3 = property(_nn_native.CnfDensityOutput_stage_logdet3_get, _nn_native.CnfDensityOutput_stage_logdet3_set)
+    stage_divergence3 = property(_nn_native.CnfDensityOutput_stage_divergence3_get, _nn_native.CnfDensityOutput_stage_divergence3_set)
+    stage_velocity3 = property(_nn_native.CnfDensityOutput_stage_velocity3_get, _nn_native.CnfDensityOutput_stage_velocity3_set)
+    unscaled = property(_nn_native.CnfDensityOutput_unscaled_get, _nn_native.CnfDensityOutput_unscaled_set)
+    latent = property(_nn_native.CnfDensityOutput_latent_get, _nn_native.CnfDensityOutput_latent_set)
+    logdet = property(_nn_native.CnfDensityOutput_logdet_get, _nn_native.CnfDensityOutput_logdet_set)
+
+    def __init__(self):
+        _nn_native.CnfDensityOutput_swiginit(self, _nn_native.new_CnfDensityOutput())
+    __swig_destroy__ = _nn_native.delete_CnfDensityOutput
+
+# Register CnfDensityOutput in _nn_native:
+_nn_native.CnfDensityOutput_swigregister(CnfDensityOutput)
+
+def CnfIntegrate(parameters, input, inverse=False, steps=8, trace_mode=3):
+    return _nn_native.CnfIntegrate(parameters, input, inverse, steps, trace_mode)
+
+def CnfDensity(parameters, input, steps=8, trace_mode=3):
+    return _nn_native.CnfDensity(parameters, input, steps, trace_mode)
+
+def CnfInverse(parameters, latent, steps=8, trace_mode=3):
+    return _nn_native.CnfInverse(parameters, latent, steps, trace_mode)
+class FlowStudyPointsOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    points = property(_nn_native.FlowStudyPointsOutput_points_get, _nn_native.FlowStudyPointsOutput_points_set)
+    components = property(_nn_native.FlowStudyPointsOutput_components_get, _nn_native.FlowStudyPointsOutput_components_set)
+
+    def __init__(self):
+        _nn_native.FlowStudyPointsOutput_swiginit(self, _nn_native.new_FlowStudyPointsOutput())
+    __swig_destroy__ = _nn_native.delete_FlowStudyPointsOutput
+
+# Register FlowStudyPointsOutput in _nn_native:
+_nn_native.FlowStudyPointsOutput_swigregister(FlowStudyPointsOutput)
+
+def FlowStudyPoints(*args):
+    return _nn_native.FlowStudyPoints(*args)
+
+def FlowStudyLogProbability(points, kind):
+    return _nn_native.FlowStudyLogProbability(points, kind)
+class FlowStudyDiagnosticsOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    mode_counts = property(_nn_native.FlowStudyDiagnosticsOutput_mode_counts_get, _nn_native.FlowStudyDiagnosticsOutput_mode_counts_set)
+    checkerboard_support_fraction = property(_nn_native.FlowStudyDiagnosticsOutput_checkerboard_support_fraction_get, _nn_native.FlowStudyDiagnosticsOutput_checkerboard_support_fraction_set)
+    fraction_near_modes = property(_nn_native.FlowStudyDiagnosticsOutput_fraction_near_modes_get, _nn_native.FlowStudyDiagnosticsOutput_fraction_near_modes_set)
+    modes_covered = property(_nn_native.FlowStudyDiagnosticsOutput_modes_covered_get, _nn_native.FlowStudyDiagnosticsOutput_modes_covered_set)
+    banana_curvature_moment = property(_nn_native.FlowStudyDiagnosticsOutput_banana_curvature_moment_get, _nn_native.FlowStudyDiagnosticsOutput_banana_curvature_moment_set)
+
+    def __init__(self):
+        _nn_native.FlowStudyDiagnosticsOutput_swiginit(self, _nn_native.new_FlowStudyDiagnosticsOutput())
+    __swig_destroy__ = _nn_native.delete_FlowStudyDiagnosticsOutput
+
+# Register FlowStudyDiagnosticsOutput in _nn_native:
+_nn_native.FlowStudyDiagnosticsOutput_swigregister(FlowStudyDiagnosticsOutput)
+
+def FlowStudySampleDiagnostics(samples):
+    return _nn_native.FlowStudySampleDiagnostics(samples)
+class DiffusionScheduleOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    beta = property(_nn_native.DiffusionScheduleOutput_beta_get, _nn_native.DiffusionScheduleOutput_beta_set)
+    alpha = property(_nn_native.DiffusionScheduleOutput_alpha_get, _nn_native.DiffusionScheduleOutput_alpha_set)
+    alpha_bar = property(_nn_native.DiffusionScheduleOutput_alpha_bar_get, _nn_native.DiffusionScheduleOutput_alpha_bar_set)
+    alpha_bar_previous = property(_nn_native.DiffusionScheduleOutput_alpha_bar_previous_get, _nn_native.DiffusionScheduleOutput_alpha_bar_previous_set)
+    sqrt_alpha_bar = property(_nn_native.DiffusionScheduleOutput_sqrt_alpha_bar_get, _nn_native.DiffusionScheduleOutput_sqrt_alpha_bar_set)
+    sqrt_one_minus_alpha_bar = property(_nn_native.DiffusionScheduleOutput_sqrt_one_minus_alpha_bar_get, _nn_native.DiffusionScheduleOutput_sqrt_one_minus_alpha_bar_set)
+    posterior_variance = property(_nn_native.DiffusionScheduleOutput_posterior_variance_get, _nn_native.DiffusionScheduleOutput_posterior_variance_set)
+    posterior_coefficient1 = property(_nn_native.DiffusionScheduleOutput_posterior_coefficient1_get, _nn_native.DiffusionScheduleOutput_posterior_coefficient1_set)
+    posterior_coefficient2 = property(_nn_native.DiffusionScheduleOutput_posterior_coefficient2_get, _nn_native.DiffusionScheduleOutput_posterior_coefficient2_set)
+
+    def __init__(self):
+        _nn_native.DiffusionScheduleOutput_swiginit(self, _nn_native.new_DiffusionScheduleOutput())
+    __swig_destroy__ = _nn_native.delete_DiffusionScheduleOutput
+
+# Register DiffusionScheduleOutput in _nn_native:
+_nn_native.DiffusionScheduleOutput_swigregister(DiffusionScheduleOutput)
+
+def CosineDiffusionSchedule(timesteps=32, offset=.008, beta_cap=.999):
+    return _nn_native.CosineDiffusionSchedule(timesteps, offset, beta_cap)
+
+def DiffusionExtract(*args):
+    return _nn_native.DiffusionExtract(*args)
+
+def DiffusionTimeEmbedding(*args):
+    return _nn_native.DiffusionTimeEmbedding(*args)
+
+def DiffusionNoised(clean, noise, time, schedule):
+    return _nn_native.DiffusionNoised(clean, noise, time, schedule)
+class DdpmEpsilonOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    epsilon = property(_nn_native.DdpmEpsilonOutput_epsilon_get, _nn_native.DdpmEpsilonOutput_epsilon_set)
+    time_embedding = property(_nn_native.DdpmEpsilonOutput_time_embedding_get, _nn_native.DdpmEpsilonOutput_time_embedding_set)
+    hidden1 = property(_nn_native.DdpmEpsilonOutput_hidden1_get, _nn_native.DdpmEpsilonOutput_hidden1_set)
+    hidden2 = property(_nn_native.DdpmEpsilonOutput_hidden2_get, _nn_native.DdpmEpsilonOutput_hidden2_set)
+
+    def __init__(self):
+        _nn_native.DdpmEpsilonOutput_swiginit(self, _nn_native.new_DdpmEpsilonOutput())
+    __swig_destroy__ = _nn_native.delete_DdpmEpsilonOutput
+
+# Register DdpmEpsilonOutput in _nn_native:
+_nn_native.DdpmEpsilonOutput_swigregister(DdpmEpsilonOutput)
+
+def DdpmEpsilon(parameters, state, time):
+    return _nn_native.DdpmEpsilon(parameters, state, time)
+class DdpmReverseOutput(object):
+    thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+    __repr__ = _swig_repr
+    value = property(_nn_native.DdpmReverseOutput_value_get, _nn_native.DdpmReverseOutput_value_set)
+    mean = property(_nn_native.DdpmReverseOutput_mean_get, _nn_native.DdpmReverseOutput_mean_set)
+    variance = property(_nn_native.DdpmReverseOutput_variance_get, _nn_native.DdpmReverseOutput_variance_set)
+    x0_raw = property(_nn_native.DdpmReverseOutput_x0_raw_get, _nn_native.DdpmReverseOutput_x0_raw_set)
+    x0_clipped = property(_nn_native.DdpmReverseOutput_x0_clipped_get, _nn_native.DdpmReverseOutput_x0_clipped_set)
+
+    def __init__(self):
+        _nn_native.DdpmReverseOutput_swiginit(self, _nn_native.new_DdpmReverseOutput())
+    __swig_destroy__ = _nn_native.delete_DdpmReverseOutput
+
+# Register DdpmReverseOutput in _nn_native:
+_nn_native.DdpmReverseOutput_swigregister(DdpmReverseOutput)
+
+def DdpmReverse(state, time, epsilon, innovation, schedule):
+    return _nn_native.DdpmReverse(state, time, epsilon, innovation, schedule)
 

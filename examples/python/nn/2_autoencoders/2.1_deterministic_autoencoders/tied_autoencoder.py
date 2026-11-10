@@ -3,8 +3,8 @@
 """ONE live 784x32 parameter for encoder AND transposed decoder; two independent biases.
 Three default epochs, matched-initial untied control, and explicit gradient-path checks.
 
-Port of tflow's tied_autoencoder (model: examples/nn/common/tied_autoencoder.hpp).
-Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are read from
+Model arithmetic lives in datamunge's C++ tied_autoencoder.hpp.
+Preparation: just nn-autoencoder-data; data are read from
 $DATAMUNGE_DATA_DIR/saliency. Outputs (tied/ and untied/ training records, initial_forward.npz,
 data.npz, index.html and digit<k>.png galleries) go to output/nn/models/tied_autoencoder.
 Checkpoints are best.npz files instead of TF SaveV2 bundles; metrics.json gains
@@ -31,23 +31,9 @@ def f32(value):
     return struct.unpack("f", struct.pack("f", value))[0]
 
 
-class TiedOutput:
-    encoder_weight = decoder_weight = code = reconstruction = None
-
-
 def tied_autoencoder(p, image, features=784, latent=32, tied=True):
-    """code = ReLU(x W + eb); reconstruction = sigmoid(code D + db), D = transpose(W) when tied."""
-    checks.require(features > 1 and 0 < latent < features, "positive strict undercomplete tied architecture")
-    limit = math.sqrt(6.0 / (features + latent))
-    out = TiedOutput()
-    out.encoder_weight = p.get("encoder/W", [features, latent], nn.init.uniform(limit))
-    eb = p.get("encoder/b", [latent], nn.init.zeros())
-    out.code = nn.relu(nn.bias_add(nn.matmul(image, out.encoder_weight), eb))
-    out.decoder_weight = (nn.transpose(out.encoder_weight, [1, 0]) if tied
-                          else p.get("decoder/W", [latent, features], nn.init.uniform(limit)))
-    db = p.get("decoder/b", [features], nn.init.zeros())
-    out.reconstruction = nn.sigmoid(nn.bias_add(nn.matmul(out.code, out.decoder_weight), db))
-    return out
+    """Delegate shared model arithmetic to canonical C++; fitting stays here."""
+    return nn.TiedAutoencoder(p,image,features,latent,tied)
 
 
 class TiedModel:
@@ -71,8 +57,7 @@ class TiedModel:
 
     def decode(self, codes):
         with nn.no_grad():
-            d = nn.transpose(self.parameters.at("encoder/W"), [1, 0]) if self.tied else self.parameters.at("decoder/W")
-            return nn.sigmoid(nn.bias_add(nn.matmul(codes, d), self.parameters.at("decoder/b")))
+            return nn.TiedAutoencoderDecode(self.parameters,codes,784,32,self.tied)
 
     def load(self, arrays):
         """Loads every parameter by name (all must be supplied with matching shapes)."""

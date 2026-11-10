@@ -1,0 +1,37 @@
+testthat::test_that("native sigmoid layer lists retain ownership and all parameter gradients", {
+    nn <- datamungerNN::nn
+    p <- nn$ParameterStore(1543L)
+    widths <- c(4L,3L,2L,3L,4L)
+    x <- nn$from_vector(c(.1,.2,.3,.4,.5,.6,.7,.8),c(2L,4L))
+    layers <- nn$SigmoidAutoencoder(p,x,widths)
+    testthat::expect_type(layers,"list")
+    testthat::expect_length(layers,4L)
+    testthat::expect_equal(p$count(),48)
+    testthat::expect_equal(p$size(),8L)
+    code <- layers[[2L]]; prediction <- layers[[4L]]
+    expected <- prediction$values()
+    rm(layers);invisible(gc())
+    testthat::expect_equal(prediction$values(),expected)
+    testthat::expect_equal(nn$SigmoidAutoencoderDecode(p,code,widths)$values(),expected)
+    gradients <- nn$grad(nn$mse(prediction,x),p$parameters())
+    testthat::expect_length(gradients,8L)
+    testthat::expect_true(all(vapply(gradients,function(g) all(is.finite(g$values())) && any(g$values()!=0),logical(1))))
+    standalone <- nn$ParameterStore(1553L)
+    output <- nn$SigmoidAutoencoderDecode(standalone,nn$zeros(c(2L,16L)),c(784L,64L,16L,64L,784L))
+    testthat::expect_equal(output$shape(),c(2L,784L))
+    testthat::expect_equal(standalone$count(),52048)
+    testthat::expect_false(standalone$contains("layer0/W"))
+    testthat::expect_true(standalone$contains("layer2/W"))
+})
+
+testthat::test_that("native sigmoid geometry checks run before creating leaves", {
+    nn <- datamungerNN::nn
+    p <- nn$ParameterStore(1L)
+    x <- nn$zeros(c(1L,4L))
+    for(widths in list(numeric(),c(4,2),c(4,4,4),c(4,2,5),c(4,0,4),c(4,2,3,2,4)))
+        testthat::expect_error(nn$SigmoidAutoencoder(p,x,widths),"width|mirror|odd")
+    testthat::expect_error(nn$SigmoidAutoencoder(p,x,c(4,2.5,4)),"whole")
+    testthat::expect_error(nn$SigmoidAutoencoder(p,x,c(4,NaN,4)),"whole")
+    testthat::expect_error(nn$SigmoidAutoencoderDecode(p,nn$zeros(c(1L,3L)),c(4,2,4)),"features")
+    testthat::expect_equal(p$size(),0L)
+})

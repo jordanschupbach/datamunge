@@ -3,8 +3,8 @@
 """Greedy 784->64 and 64->16 pretraining, exact transfer into 784->64->16->64->784.
 Three epochs per stage/default; validation-only selection and same-stack scratch control.
 
-Port of tflow's stacked_autoencoder (model: examples/nn/common/stacked_autoencoder.hpp).
-Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are read from
+Port of tflow's stacked_autoencoder (model: include/datamunge/nn/layered_autoencoders.hpp).
+Preparation uses the native mnist-assets dataset API; data are read from
 $DATAMUNGE_DATA_DIR/saliency. Outputs (stage1/, stage2/, finetune/, scratch/ training records,
 transferred_arrays.npz, stacked.npz, metrics.json, index.html and digit<k>.png galleries) go
 to output/nn/models/stacked_autoencoder. Checkpoints are best.npz files instead of TF SaveV2
@@ -31,18 +31,7 @@ def f32(value):
     return struct.unpack("f", struct.pack("f", value))[0]
 
 
-def sigmoid_autoencoder(p, image, widths):
-    """Dense sigmoid layers "layer<i>" through mirrored, strictly decreasing widths; every layer output."""
-    checks.require(len(widths) >= 3 and len(widths) % 2 == 1, "odd symmetric width list includes input and output")
-    for i, width in enumerate(widths):
-        checks.require(width > 0 and width == widths[len(widths) - 1 - i], "positive mirrored encoder/decoder dimensions")
-        if i < len(widths) // 2:
-            checks.require(width > widths[i + 1], "strictly decreasing encoder widths")
-    outputs, value = [], image
-    for i in range(1, len(widths)):
-        value = nn.dense(p, f"layer{i - 1}", value, widths[i], nn.Activation.Sigmoid)
-        outputs.append(value)
-    return outputs
+sigmoid_autoencoder = nn.SigmoidAutoencoder
 
 
 class StackedModel:
@@ -70,10 +59,8 @@ class StackedModel:
     def decode(self, code):
         """The layers after the code layer, from an explicit code."""
         with nn.no_grad():
-            value = code
-            for i in range(self.code_index + 2, len(self.widths)):
-                value = nn.dense(self.parameters, f"layer{i - 1}", value, self.widths[i], nn.Activation.Sigmoid)
-            return value.contiguous()
+            return nn.SigmoidAutoencoderDecode(self.parameters, code, self.widths).contiguous()
+
 
     def load(self, arrays):
         """Explicit whole-model weight transfer (optimizer state unchanged)."""

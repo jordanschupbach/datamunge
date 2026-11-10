@@ -21,8 +21,8 @@ Scratch teaching experiment, not pretrained VOC/Cityscapes performance.
 
 TF -> datamunge: TF builds the full 473x473 model as a graph only; here the
 full model executes forward and backward on a 33x33 image (same parameter,
-state and derivative census). Weights come from datamunge's generator, so
-trained numbers match TF statistically; the shapes data are bit-identical.
+state and derivative census). Weights and shapes use tensor generators;
+shape pixels differ from TF's fixed-seed mt19937 implementation.
 Options: epochs=3 accuracy=0|1 (default 0; accuracy=1 retains .55 mIoU) threads=N.
 Artifacts: output/nn/models/pspnet_shapes/.
 

@@ -55,12 +55,20 @@ def test_common_modules_do_not_own_end_to_end_workflows():
         "seq2seq_example.hpp",
         "marked_sequence_demo.hpp",
         "binary_pixels.hpp",
-        "flow_density.hpp",
     ):
         source = (ROOT / "examples/nn/common" / name).read_text()
         assert not re.search(
             r"^(?:inline\s+)?(?:int|void|double|Result|ApResult|SegmentationMetrics)\s+"
             r"(?:Run|Main|RunCifar10|RunMarkedDemo|TrainImages|TrainSegmentation|TrainDetector)\s*\(",
+            source,
+            re.MULTILINE,
+        ), name
+    # The legacy flow harness is retired; its canonical replacements also
+    # supply operations rather than end-to-end fitting workflows.
+    for name in ("normalizing_flows.hpp", "affine_flows.hpp", "flow_study.hpp"):
+        source = (ROOT / "include/datamunge/nn" / name).read_text()
+        assert not re.search(
+            r"^(?:inline\s+)?(?:int|void|double|Result)\s+(?:Run|Main|Train)\s*\(",
             source,
             re.MULTILINE,
         ), name
@@ -88,7 +96,10 @@ def test_no_shared_header_owns_a_training_loop():
 
 def test_no_generic_training_runner_remains_in_canonical_cpp_examples():
     report = load_audit_module().audit()["examples"]
-    assert len(report) == 414
+    ledger = json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())
+    remaining_cpp = {Path(entry["source"]).stem for entry in ledger["examples"].values()
+                     if not entry["retired"] and entry["source"].endswith(".cpp")}
+    assert set(report) == remaining_cpp
     assert {name: entry["loop_owner"] for name, entry in report.items()
             if not entry["cpp_compliant"]} == {}
 
@@ -170,33 +181,60 @@ def test_component_bindings_cover_the_resnet_basic_example():
 
 def test_vision_and_competitive_workflows_use_concrete_loops_and_visible_steps():
     report = load_audit_module().audit()["examples"]
+    retired = {Path(record["report"]).stem: record for record in
+               json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())["examples"].values()
+               if record["retired"]}
     names = ("pointnet", "pointnet_plus_plus", "flownets", "pwcnet", "factorized_video", "i3d",
              "capsule_networks", "spatial_transformer", "k_sparse_autoencoder", "winner_take_all_autoencoder")
     for name in names:
-        entry = report[name]
-        assert entry["cpp_compliant"] and not entry["opaque_step_methods"], name
-        source = (ROOT / entry["cpp"]).read_text()
+        if name in report:
+            entry = report[name]
+            assert entry["cpp_compliant"] and not entry["opaque_step_methods"], name
+            source = (ROOT / entry["cpp"]).read_text()
+        else:
+            # Converted workflows must remain visible in their retained report;
+            # retirement is not an exemption from loop/step ownership checks.
+            record = retired[name]
+            assert not (ROOT / record["source"]).exists(), name
+            replacement = (ROOT / record["report"]).read_text()
+            programs = re.findall(r'^```\{cpp[^\n]*\}\n(.*?)^```', replacement, re.M | re.S)
+            assert programs and record["verification"]["blocks"] == len(programs), name
+            source = "\n".join(programs)
         assert "TrainVideoModel" not in source and "TrainOpticalFlow" not in source
         assert "TrainCompetitiveAutoencoder" not in source and "image_training::TrainImages" not in source
         assert "for (int epoch" in source
         assert re.search(r"optimizer(?:\.|->)(?:minimize|step)\(", source), name
     for name in ("k_sparse_autoencoder", "winner_take_all_autoencoder"):
-        assert report[name]["bindings_complete"], name
+        if name in report:
+            assert report[name]["bindings_complete"], name
+        else:
+            assert '%include "datamunge/nn/competitive_autoencoders.hpp"' in (ROOT / "prebindings/nn/src/nn.i").read_text()
     # The host helper must call the canonical C++ model, including discrete ranking.
     python = (ROOT / "examples/python/nn/common/competitive_autoencoder.py").read_text()
     r = (ROOT / "examples/r/nn/common/competitive_autoencoder.R").read_text()
-    assert "competitive_autoencoder = _core.CompetitiveAutoencoder" in python
-    assert "competitive_autoencoder_forward <- nn_components$ae$CompetitiveAutoencoder" in r
+    assert "competitive_autoencoder = nn.CompetitiveAutoencoder" in python
+    assert "competitive_autoencoder_forward <- nn$CompetitiveAutoencoder" in r
 
 
 def test_binary_density_convlstm_and_entropy_workflows_have_visible_updates():
     report = load_audit_module().audit()["examples"]
-    for name in ("pixel_cnn", "pixel_rnn", "gated_pixel_cnn", "made_density", "conv_lstm", "entropy_exploration"):
-        entry = report[name]
-        assert entry["loop_owner"] == "main" and not entry["opaque_step_methods"], name
-        source = (ROOT / entry["cpp"]).read_text()
+    retired = {Path(record["report"]).stem: record for record in
+               json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())["examples"].values()
+               if record["retired"]}
+    for name in ("pixel_cnn", "pixel_rnn", "gated_pixel_cnn", "made_density", "pixel_cnn_pp", "wavenet", "conv_lstm", "entropy_exploration"):
+        if name in report:
+            entry = report[name]
+            assert entry["loop_owner"] == "main" and not entry["opaque_step_methods"], name
+            source = (ROOT / entry["cpp"]).read_text()
+        else:
+            record = retired[name]
+            assert not (ROOT / record["source"]).exists(), name
+            replacement = (ROOT / record["report"]).read_text()
+            programs = re.findall(r'^```\{cpp[^\n]*\}\n(.*?)^```', replacement, re.M | re.S)
+            assert programs and record["verification"]["blocks"] == len(programs), name
+            source = "\n".join(programs)
         main = source[source.index("int main("):]
-        assert "nn::grad(" in main
+        assert re.search(r"\b(?:n|nn)::grad\(", main), name
         assert re.search(r"optimizer(?:\.|->)step\(", main), name
         assert not re.search(r"\b(?:bpix::)?Run\(", main)
         assert "model->Update(" not in main and "model->Gradient(" not in main
@@ -251,12 +289,27 @@ def test_audit_flags_pointer_calls_to_bundled_training_steps(tmp_path, monkeypat
 def test_flow_workflows_live_in_their_cpp_examples():
     audit = load_audit_module()
     report = audit.audit()["examples"]
+    retired = {Path(record["report"]).stem: record for record in
+               json.loads((ROOT / "docs/mepml/nn-conversion-status.json").read_text())["examples"].values()
+               if record["retired"]}
     for name in ("cnf_density", "flow_density_2d", "glow_density", "iaf_density", "maf_density",
                  "nice_density", "planar_radial_density", "real_nvp_density", "spline_density"):
-        entry = report[name]
-        assert entry["loop_owner"] == "main", name
-        source = (ROOT / entry["cpp"]).read_text()
-        assert "ParseOptions(argc, argv" in source
+        if name in report:
+            entry = report[name]
+            assert entry["loop_owner"] == "main", name
+            source = (ROOT / entry["cpp"]).read_text()
+            assert "ParseOptions(argc, argv" in source
+        else:
+            record = retired[name]
+            assert not (ROOT / record["source"]).exists(), name
+            replacement = (ROOT / record["report"]).read_text()
+            programs = re.findall(r'^```\{cpp[^\n]*\}\n(.*?)^```', replacement, re.M | re.S)
+            assert programs and record["verification"]["blocks"] == len(programs), name
+            source = "\n".join(programs)
+            assert re.search(r"for\s*\(\s*int\s+epoch", source), name
+            assert re.search(r"\b(?:n|nn)::grad\(", source), name
+            assert re.search(r"optimizer(?:\.|->)step\(", source), name
+            assert "model->Update(" not in source and "model->Gradient(" not in source
         assert not any(function[0] in ("Run", "Main") for function in audit.function_bodies(source)), name
 
 

@@ -1,0 +1,833 @@
+//? Title: InfoVAE and MMD-VAE: Local KL and Aggregate Matching
+//? Subtitle: Explicit Gaussian samples, signed unbiased IMQ discrepancy and separate validation objectives
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+InfoVAE combines pixel reconstruction, local posterior KL and a discrepancy between sampled
+aggregate posterior codes and independent prior draws. This report runs matched alpha0.5
+InfoVAE and alpha1 MMD-VAE teaching models with lambda10 on 294 known-factor binary images.
+Both receive 21 explicit Adam updates and select epoch3 by their own fixed four-draw validation
+objective. Test objectives are 404.911/403.818; the separate diagnostic negative ELBOs are
+406.237/410.269 nats per image. Decode(mu) MSE0.15241/0.15471 is worse than the fitting mean
+0.04855. Signed unbiased MMD, unfiltered images and poor generation remain visible. The
+objectives differ across variants; neither their optimized values nor this tiny short run
+establish mutual information, useful disentanglement or superiority on an image benchmark.
+)
+\toc
+
+> A local posterior and an aggregate discrepancy
+
+[Zhao, Song and Ermon's InfoVAE](https://arxiv.org/abs/1706.02262) separates local posterior
+regularization from aggregate matching. In this small adaptation the encoder is
+784→16 tanh→two four-coordinate linear Gaussian heads; the decoder is 4→16 tanh→784 logits.
+Ten Glorot/zero-bias tensors contain 26,104 scalars. Explicit epsilon gives
+z=mu+exp(l/2)⊙epsilon. The decoder uses only z; sigmoid logits give pixel probabilities,
+not sampled binary pixels. A separate caller-supplied standard-normal sample y enters the
+aggregate discrepancy, with no image-to-decoder or prior-sample-to-decoder bypass.
+
+$$
+\mathcal J_{\alpha,\lambda}=
+\frac1B\sum_b\left[\operatorname{NLL}_b+(1-\alpha)\operatorname{KL}_b\right]
++(\alpha+\lambda-1)\widehat{\operatorname{MMD}}_u^2(z,y).
+$$
+\alttext(The objective averages summed pixel NLL and local Gaussian KL over images, then adds a weighted signed aggregate discrepancy between sampled codes and independent prior draws.)
+
+Here alpha∈[0,1], lambda≥1. Pixel NLL sums 784 features, Gaussian KL sums four coordinates,
+and only cases are averaged. MMD acts on sampled **z**, not posterior means. Prior independence
+is the caller's statistical responsibility. Alpha1 removes local KL while retaining aggregate
+regularization. Mean(NLL+KL) is reported separately as a negative-ELBO diagnostic; the general
+training objective is not an ordinary ELBO or a direct mutual-information estimator.
+
+```{cpp, results="markdown", file="figures/info_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram          d(52, 1400);
+  dm::graphics::DiagramNodeStyle wide;
+  wide.width  = 4.6;
+  wide.height = 2.6;
+  dm::graphics::DiagramStroke arrow;
+  arrow.arrow   = true;
+  auto dashed   = arrow;
+  dashed.dashed = true;
+  d.node("x", {0, 0}, "Binary image x\n784 pixels", wide)
+      .node("q", {6, 0}, "Tanh Gaussian encoder\nmu / log variance", wide)
+      .node("e", {0, -4}, "Explicit posterior epsilon\nOne draw per image", wide)
+      .node("z", {6, -4}, "Reparameterized z\nFour latent coordinates", wide)
+      .node("dec", {12, -4}, "Code-only tanh decoder\nBernoulli logits", wide)
+      .node("nll", {18, -4}, "Summed pixel NLL\nMean over images", wide)
+      .node("prior", {0, -8}, "Independent prior y\nExplicit N(0,I) draws", wide)
+      .node("mmd", {12, -8}, "Signed unbiased IMQ MMD\nAll cross pairs", wide)
+      .node("kl", {12, 0}, "Local analytic KL\nStandard-normal prior", wide)
+      .node("loss", {24, -4}, "NLL + (1-alpha) KL\n+ (alpha+lambda-1) MMD\nCaller owns Adam", wide)
+      .edge("x", "q")
+      .edge("q", "z")
+      .edge("e", "z")
+      .edge("z", "dec")
+      .edge("dec", "nll")
+      .edge("nll", "loss")
+      .edge("q", "kl")
+      .edge("z", "mmd")
+      .edge("prior", "mmd")
+      .edge("mmd", "loss")
+      .path({{14.3, 0}, {24, 0}, {24, -2.7}}, arrow)
+      .path({{0, 1.3}, {0, 3}, {20.5, 3}, {20.5, -4}, {20.3, -4}}, dashed)
+      .save_svg("build/info_method.svg");
+}
+```
+// result_begin: markdown
+\image(figures/info_method.svg)
+// result_end
+
+\caption(The prior sample changes MMD/loss, while only sampled posterior z enters the decoder. Dashed input supplies the reconstruction target; the local KL and aggregate terms remain separate.)
+\alttext(An image and explicit posterior noise produce z and decoder logits. An independent prior sample joins z only at the signed MMD term; local KL and NLL join the weighted objective.)
+
+> A hand-checkable signed two-sample discrepancy
+
+Use the equally averaged fixed inverse-multiquadric kernels
+k(a,b)=(1/(1+d²)+4/(4+d²)+16/(16+d²))/3, with d²=||a−b||².
+No dimension scaling, learned bandwidth or single-kernel substitution is used. For x with N
+rows and y with M rows, N,M≥2 may differ:
+
+$$
+\widehat{\operatorname{MMD}}_u^2=
+\frac{\sum_{i\ne j}k(x_i,x_j)}{N(N-1)}+
+\frac{\sum_{i\ne j}k(y_i,y_j)}{M(M-1)}-
+\frac{2\sum_{i,j}k(x_i,y_j)}{NM}.
+$$
+\alttext(Within-sample sums exclude self-pairs and have separate unequal-count denominators. Every cross pair remains, including corresponding indices when the counts match.)
+
+The [unbiased quadratic estimator of Gretton et al.](https://www.jmlr.org/papers/v13/gretton12a.html)
+can be negative at finite sample size. This is squared MMD, with no square root, zero clipping
+or calibrated hypothesis-test p-value. With x=y=[0,1], let k01=(1/2+4/5+16/17)/3=127/170.
+Each within mean is k01 and the full cross mean is (1+k01)/2, giving k01−1=−43/170.
+Self-comparison is not an independent two-sample experiment. All-zero independent samples
+instead give exactly zero. The next plot also evaluates unequal samples x=[0,1], y=[0,2,3].
+
+```{cpp, results="markdown", file="figures/info_mmd.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n  = dm::nn;
+  namespace m  = n::models;
+  const auto t = n::DType::Float64;
+  auto       x = n::tensor({0., 1.}, {2, 1}, t), y = n::tensor({0., 2., 3.}, {3, 1}, t);
+  auto       same = m::ImqMmd(x, x), different = m::ImqMmd(x, y);
+  if (std::abs(same.value.item() + 43. / 170) > 1e-14)
+    return 1;
+  std::print(
+      "| sample comparison | within x | within y | cross | signed MMD squared "
+      "|\n|---|---:|---:|---:|---:|\n| same [0,1] | {:.9f} | {:.9f} | {:.9f} | {:.9f} |\n| unequal "
+      "[0,1]/[0,2,3] | {:.9f} | {:.9f} | {:.9f} | {:.9f} |\n",
+      same.within_x.item(),
+      same.within_y.item(),
+      same.cross.item(),
+      same.value.item(),
+      different.within_x.item(),
+      different.within_y.item(),
+      different.cross.item(),
+      different.value.item());
+  std::vector<double> shift, value;
+  for (int i = 0; i <= 40; ++i) {
+    double d = i / 10.;
+    shift.push_back(d);
+    value.push_back(m::ImqMmd(x, x + d).value.item());
+  }
+  auto chart = dm::graphics::RPlot::create();
+  chart.lines(shift, value, "signed unbiased MMD", dm::RGBA{37, 99, 235}, 2)
+      .title("Finite-sample MMD / two-point samples")
+      .x_label("shift of second sample")
+      .y_label("signed MMD squared")
+      .save_svg("build/info_mmd.svg");
+}
+```
+// result_begin: markdown
+| sample comparison | within x | within y | cross | signed MMD squared |
+|---|---:|---:|---:|---:|
+| same [0,1] | 0.747058824 | 0.747058824 | 0.873529412 | -0.252941176 |
+| unequal [0,1]/[0,2,3] | 0.747058824 | 0.532096531 | 0.640558069 | -0.001960784 |
+\image(figures/info_mmd.svg)
+// result_end
+
+\caption(The negative value at zero shift is retained. Increasing separation changes the discrepancy; a single signed estimate does not certify matching distributions.)
+\alttext(A curve starts below zero for identical two-point arrays, then rises as the second sample shifts away.)
+
+> Objective coefficients by hand
+
+For NLL=[4,6], KL=[2,4] and signed MMD=0.25, alpha0.5/lambda10 gives
+5+0.5×3+9.5×0.25=8.875. Alpha1/lambda10 gives 5+10×0.25=7.5, with zero local KL.
+Alpha0/lambda1 gives 5+3=8, the ordinary negative-ELBO expression. The alpha0.5 objective
+partials are 1/2 for each NLL value, 1/4 for each KL value and 9.5 for MMD.
+
+Float32 controls and coefficients retain the source's Float32 arithmetic; Float64 uses full
+precision. The native objective preserves signed finite estimates. A full forward still
+computes kernel diagnostics and requires both samples to have at least two rows even if the
+aggregate coefficient is zero. There is no annealing, batch-statistics update or hidden fitting.
+
+```{cpp, results="markdown", file="figures/info_coefficients.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  auto a = n::tensor({4., 6.}).requires_grad_(), b = n::tensor({2., 4.}).requires_grad_(),
+       c    = n::scalar(.25).requires_grad_();
+  auto loss = n::models::InfoVaeObjective(a, b, c);
+  auto g    = n::grad(loss, {a, b, c});
+  if (loss.item() != 8.875 || g[2].item() != 9.5)
+    return 1;
+  std::print(
+      "InfoVAE8.875 / MMD-VAE{:.3f} / base negative ELBO{:.3f}; derivatives NLL{} KL{} MMD{}.\n",
+      n::models::InfoVaeObjective(a, b, c, 1).item(),
+      n::models::InfoVaeObjective(a, b, c, 0, 1).item(),
+      g[0].values_str(),
+      g[1].values_str(),
+      g[2].item());
+  std::vector<double> alpha, local, aggregate;
+  for (int i = 0; i <= 20; ++i) {
+    double v = i / 20.;
+    alpha.push_back(v);
+    local.push_back(1 - v);
+    aggregate.push_back(v + 9);
+  }
+  auto chart = dm::graphics::RPlot::create();
+  chart.lines(alpha, local, "local KL coefficient", dm::RGBA{37, 99, 235}, 2)
+      .lines(alpha, aggregate, "aggregate MMD coefficient", dm::RGBA{220, 38, 38}, 2)
+      .title("InfoVAE coefficients / lambda10")
+      .x_label("alpha")
+      .y_label("coefficient")
+      .save_svg("build/info_coefficients.svg");
+}
+```
+// result_begin: markdown
+InfoVAE8.875 / MMD-VAE7.500 / base negative ELBO8.000; derivatives NLL[0.5, 0.5] KL[0.25, 0.25] MMD9.5.
+\image(figures/info_coefficients.svg)
+// result_end
+
+\caption(Alpha moves weight from the local KL term toward aggregate matching under fixed lambda10; changing the weights changes the selection objective too.)
+\alttext(The local KL coefficient decreases from one to zero, while the aggregate MMD coefficient rises from nine to ten.)
+
+> Native preparation and explicit paired training
+
+The native offline beta-vae-assets preparation exhausts 294 unique binary 28×28 images:
+2 shapes×3 sizes×7 x×7 y. Circles/squares have radius=size+2 and center=(3x+5,3y+5), with
+inclusive Euclidean/Chebyshev radii. Residue(x+2y+size+3shape) mod7 assigns test0,
+validation1, fit2–6, giving 210/42/42 disjoint combinations. This structured tiny teaching
+lattice is not an IID benchmark, MNIST/dSprites or a semantic-information measurement.
+Factors are not inputs, targets or checkpoint criteria; no factor probe is fitted here.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build/info_vae/info_vae");
+  const std::filesystem::path cache = dm::datasets::data_home();
+  dm::datasets::prepare_example_data("beta-vae-assets", cache.string());
+  auto                       arrays = n::load_npz((cache / "beta_vae/factors.npz").string());
+  std::set<int>              ids;
+  std::set<std::vector<int>> images;
+  for (auto& [name, value] : arrays) {
+    if (name.ends_with("_images")) {
+      for (int b = 0; b < value.size(0); ++b) {
+        auto row = n::select(value, 0, b).to_vector<int>();
+        if (!images.insert(row).second)
+          return 1;
+      }
+      value = n::cast(value, n::DType::Float32);
+    }
+    if (name.ends_with("_source_ids"))
+      for (int id : value.to_vector<int>())
+        if (!ids.insert(id).second)
+          return 1;
+  }
+  if (ids.size() != 294 || images.size() != 294)
+    return 1;
+  for (const std::string variant : {"info_vae", "mmd_vae"}) {
+    std::filesystem::create_directories("build/info_vae/" + variant);
+    n::save_npz("build/info_vae/" + variant + "/data.npz", arrays);
+  }
+  std::filesystem::copy_file(
+      cache / "beta_vae/manifest.json",
+      "build/info_vae/data_manifest.json",
+      std::filesystem::copy_options::overwrite_existing);
+  std::print(
+      "| split | images | features |\n|---|---:|---:|\n| fit |210|784|\n| validation |42|784|\n| "
+      "test |42|784|\n");
+}
+```
+// result_begin: markdown
+| split | images | features |
+|---|---:|---:|
+| fit |210|784|
+| validation |42|784|
+| test |42|784|
+// result_end
+
+Both variants use the same seed3901 parameter arrays, BatchOrder(210,32,3989), posterior banks
+and independent prior banks. Each epoch has seven updates, including the final 18-image batch;
+three epochs give 21 Adam steps per model at learning rate0.003, moments0.9/0.999, epsilon1e-8.
+Epoch training posterior/prior seeds are 4002/4014,4003/4015,4004/4016. Fixed four-draw banks
+use posterior fit3911/validation3917/test3923 and prior fit3943/validation3949/test3955.
+Prior generation uses seed3967. All Float64 MT19937/Box–Muller banks and Float32 casts are saved.
+
+Each completed epoch1–3 is eligible. The fixed four-draw validation **own objective** selects
+its checkpoint; alpha0.5 and alpha1 optimize different criteria. They share data and draws,
+not a common objective. Test values never select an epoch. NLL/KL accumulate per-row Float32
+values in Float64, while scalar MMD/objective/negative-ELBO values retain the source reductions.
+The full editable program exposes every gradient, Adam step, saved epoch and fresh restore.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <chrono>
+#include <dm/dm.hpp>
+#include <fstream>
+namespace nn = dm::nn;
+void Require(bool condition, const std::string& why) {
+  if (!condition)
+    throw std::runtime_error(why);
+}
+void Near(double x, double y, double tolerance, const std::string& why) {
+  Require(std::abs(x - y) <= tolerance, why);
+}
+struct BetaFactorData {
+  nn::Tensor images, factors, source;
+};
+struct VaeNoiseBank {
+  nn::Tensor standard, epsilon;
+};
+nn::Tensor Flatten(const nn::Tensor& t) {
+  return nn::reshape(t, {t.size(0), 784});
+}
+nn::Tensor Find(const nn::NamedTensors& a, const std::string& key) {
+  for (const auto& [k, v] : a)
+    if (k == key)
+      return v;
+  throw std::runtime_error(key);
+}
+std::vector<float> Bytes(const nn::Tensor& t) {
+  return t.contiguous().to_vector<float>();
+}
+nn::NamedTensors Arrays(const nn::ParameterStore& p) {
+  nn::NamedTensors a;
+  for (const auto& k : p.names())
+    a.emplace_back(k, p.at(k).detach().clone());
+  return a;
+}
+auto Snapshot(const nn::ParameterStore& p) {
+  return p.flatten();
+}
+nn::NamedTensors CheckGradients(
+    const nn::ParameterStore&      p,
+    const std::vector<nn::Tensor>& gs,
+    const std::string&,
+    const std::string&) {
+  nn::NamedTensors a;
+  Require(gs.size() == p.size(), "all10 gradients");
+  const auto names = p.names();
+  for (std::size_t i = 0; i < gs.size(); ++i) {
+    double norm = 0;
+    for (double x : gs[i].to_vector<double>()) {
+      Require(std::isfinite(x), "finite derivatives");
+      norm += x * x;
+    }
+    Require(norm > 0, "nonzero derivative in each tensor");
+    a.emplace_back(names[i], gs[i]);
+  }
+  return a;
+}
+VaeNoiseBank BetaVaeNoise(std::int64_t n, std::int64_t samples, std::uint32_t seed) {
+  const auto standard = nn::models::GaussianNoise({n, 4}, samples, seed);
+  return {standard, nn::cast(standard, nn::DType::Float32)};
+}
+nn::Tensor BetaVaeNoiseAt(const VaeNoiseBank& bank, int k) {
+  return nn::select(bank.epsilon, 0, k).contiguous();
+}
+
+nn::NamedTensors Evaluate(
+    nn::ParameterStore& p,
+    const nn::Tensor&   images,
+    const nn::Tensor&   noise,
+    const nn::Tensor&   prior,
+    double              alpha) {
+  nn::NoGradGuard guard;
+  auto o = nn::models::InfoVariationalAutoencoder(p, Flatten(images), noise, prior, alpha, 10);
+  nn::NamedTensors out{
+      {"mu", o.mu},
+      {"log_variance", o.log_variance},
+      {"z", o.z},
+      {"logits", o.logits},
+      {"probability", o.probability},
+      {"nll", o.nll},
+      {"kl", o.kl},
+      {"negative_elbo", o.negative_elbo},
+      {"mmd_xx", o.mmd_xx},
+      {"mmd_yy", o.mmd_yy},
+      {"mmd_xy", o.mmd_xy},
+      {"mmd_within_x", o.mmd_within_x},
+      {"mmd_within_y", o.mmd_within_y},
+      {"mmd_cross", o.mmd_cross},
+      {"mmd", o.mmd},
+      {"loss", o.loss}};
+  for (auto& [name, t] : out) {
+    t = t.contiguous();
+    for (float v : t.to_vector<float>())
+      Require(std::isfinite(v), "all sixteen InfoVAE fields finite");
+  }
+  return out;
+}
+nn::Tensor Decode(nn::ParameterStore& p, const nn::Tensor& code) {
+  nn::NoGradGuard guard;
+  return nn::sigmoid(nn::models::InfoVaeDecode(p, code)).contiguous();
+}
+bool SameBytes(const nn::Tensor& a, const nn::Tensor& b) {
+  return a.dtype() == b.dtype() && a.shape() == b.shape() && Bytes(a) == Bytes(b);
+}
+nn::Tensor PixelMean(const nn::Tensor& image) {
+  auto               x = Flatten(image).to_vector<float>();
+  std::vector<float> mean(784);
+  for (int j = 0; j < 784; ++j) {
+    double sum = 0;
+    for (int b = 0; b < image.size(0); ++b)
+      sum += x[b * 784 + j];
+    mean[j] = float(sum / image.size(0));
+  }
+  return nn::from_vector(mean, {784});
+}
+nn::Tensor Constant(const nn::Tensor& row, int n) {
+  return nn::broadcast_to(row.reshape({1, 784}), {n, 784}).contiguous();
+}
+double Mse(const nn::Tensor& a, const nn::Tensor& b) {
+  return nn::mean(
+             nn::square(
+                 nn::cast(Flatten(a), nn::DType::Float64) -
+                 nn::cast(Flatten(b), nn::DType::Float64)))
+      .item();
+}
+double Difference(const nn::Tensor& a, const nn::Tensor& b) {
+  Require(a.shape() == b.shape(), "matching outputs");
+  const auto x = a.contiguous().to_vector<float>(), y = b.contiguous().to_vector<float>();
+  double     d = 0;
+  for (size_t i = 0; i < x.size(); ++i)
+    d = std::max(d, std::abs(double(x[i]) - y[i]));
+  return d;
+}
+float Scalar(const nn::NamedTensors& f, const std::string& name) {
+  return Find(f, name).item<float>();
+}
+
+/// {NLL, KL, MMD, objective, negative ELBO} averaged over 4 fixed posterior/prior draws.
+std::vector<double> Score(
+    nn::ParameterStore& model,
+    const nn::Tensor&   x,
+    const VaeNoiseBank& noise,
+    const VaeNoiseBank& prior,
+    double              alpha) {
+  std::vector<double> sum(5);
+  const auto          n = x.size(0);
+  for (int k = 0; k < 4; ++k) {
+    auto       f   = Evaluate(model, x, BetaVaeNoiseAt(noise, k), BetaVaeNoiseAt(prior, k), alpha);
+    const auto nll = Find(f, "nll").to_vector<float>(), kl = Find(f, "kl").to_vector<float>();
+    double     a = 0, b = 0;
+    for (std::int64_t i = 0; i < n; ++i)
+      a += nll[i], b += kl[i];
+    sum[0] += a / n;
+    sum[1] += b / n;
+    sum[2] += Scalar(f, "mmd");
+    sum[3] += Scalar(f, "loss");
+    sum[4] += Scalar(f, "negative_elbo");
+  }
+  for (auto& v : sum)
+    v /= 4;
+  return sum;
+}
+
+void Algebra(const std::filesystem::path& root) {
+  auto nll = nn::tensor({4., 6.}).requires_grad_(), kl = nn::tensor({2., 4.}).requires_grad_(),
+       mmd     = nn::scalar(.25).requires_grad_();
+  auto info    = nn::models::InfoVaeObjective(nll, kl, mmd, .5f, 10.f),
+       mmdonly = nn::models::InfoVaeObjective(nll, kl, mmd, 1.f, 10.f),
+       vae     = nn::models::InfoVaeObjective(nll, kl, mmd, 0.f, 1.f);
+  auto g       = nn::grad(info, {nll, kl, mmd});
+  Near(info.item<float>(), 8.875, 0, "InfoVAE .5KL+9.5MMD");
+  Near(mmdonly.item<float>(), 7.5, 0, "MMDVAE0KL+10MMD");
+  Near(vae.item<float>(), 8, 0, "alpha0lambda1 EXACTbaseVAE");
+  const auto gn = g[0].to_vector<float>(), gk = g[1].to_vector<float>();
+  Require(
+      gn == std::vector<float>{.5f, .5f} && gk == std::vector<float>{.25f, .25f} &&
+          g[2].item<float>() == 9.5f,
+      "InfoVAE coefficient partials");
+  nn::NoGradGuard guard;
+  nn::save_npz(
+      (root / "coefficient_algebra.npz").string(),
+      {{"info", info.detach()},
+       {"mmd_only", mmdonly.detach()},
+       {"vae", vae.detach()},
+       {"gradient_nll", g[0]},
+       {"gradient_kl", g[1]},
+       {"gradient_mmd", g[2]}});
+}
+
+double Run(
+    const std::vector<BetaFactorData>& pools,
+    const std::filesystem::path&       root,
+    int                                epochs,
+    float                              alpha,
+    const std::string&                 init) {
+  std::filesystem::create_directories(root);
+  std::vector<VaeNoiseBank> priors, noise;
+  nn::NamedTensors          bank;
+  for (int k = 0; k < 3; ++k) {
+    const std::string split = k == 0 ? "fit" : k == 1 ? "validation" : "test";
+    noise.push_back(BetaVaeNoise(pools[k].images.size(0), 4, 3911 + k * 6));
+    priors.push_back(BetaVaeNoise(pools[k].images.size(0), 4, 3943 + k * 6));
+    bank.emplace_back(split + "_standard", noise[k].standard);
+    bank.emplace_back(split + "_epsilon", noise[k].epsilon);
+    bank.emplace_back(split + "_prior_standard", priors[k].standard);
+    bank.emplace_back(split + "_prior_epsilon", priors[k].epsilon);
+  }
+  auto generation = BetaVaeNoise(20, 1, 3967);
+  bank.emplace_back("generation_standard", generation.standard);
+  bank.emplace_back("generation_epsilon", generation.epsilon);
+  nn::save_npz((root / "fixed_noise.npz").string(), bank);
+  nn::ParameterStore model(3901);
+  {
+    nn::NoGradGuard guard;
+    nn::models::InfoVariationalAutoencoder(
+        model, nn::zeros({2, 784}), nn::zeros({2, 4}), nn::zeros({2, 4}), alpha, 10);
+  }
+  nn::OptimizerConfig config;
+  config.kind = nn::OptimizerKind::Adam;
+  nn::Optimizer optimizer(model, .003, config);
+  if (!init.empty())
+    model.load(init);
+  Require(model.count() == 26104 && model.size() == 10, "small InfoVAE census");
+  nn::save_npz((root / "initial_arrays.npz").string(), Arrays(model));
+  nn::BatchOrder order(210, 32, 3989);
+  std::ofstream  history(root / "history.tsv"), batches(root / "batches.tsv");
+  history.precision(17);
+  history << "epoch\tvalidation_nll\tvalidation_kl\tvalidation_mmd\tvalidation_"
+             "objective\tvalidation_negative_elbo\n";
+  batches << "epoch\tstep\trow\tsource_id\n";
+  const auto fit_source = pools[0].source.to_vector<int>();
+  const auto best_path  = (root / "best.npz").string();
+  double     best       = std::numeric_limits<double>::infinity();
+  int        selected = 0, steps = 0;
+  const auto started = std::chrono::steady_clock::now();
+  for (int epoch = 1; epoch <= epochs; ++epoch) {
+    auto e = BetaVaeNoise(210, 1, 4001 + epoch), p = BetaVaeNoise(210, 1, 4013 + epoch);
+    nn::save_npz(
+        (root / ("train_noise_epoch" + std::to_string(epoch) + ".npz")).string(),
+        {{"standard", e.standard},
+         {"epsilon", e.epsilon},
+         {"prior_standard", p.standard},
+         {"prior_epsilon", p.epsilon}});
+    auto epsilon = BetaVaeNoiseAt(e, 0), prior = BetaVaeNoiseAt(p, 0);
+    order.begin_epoch();
+    int seen = 0;
+    for (;;) {
+      auto rows = order.next();
+      if (rows.empty())
+        break;
+      auto x = nn::take_rows(pools[0].images, rows), ep = nn::take_rows(epsilon, rows),
+           pr = nn::take_rows(prior, rows);
+      if (steps == 0) {
+        nn::save_npz(
+            (root / "first_batch.npz").string(), {{"images", x}, {"epsilon", ep}, {"prior", pr}});
+        nn::save_npz((root / "first_forward.npz").string(), Evaluate(model, x, ep, pr, alpha));
+        nn::save_npz(
+            (root / "first_gradients.npz").string(),
+            CheckGradients(
+                model,
+                nn::grad(
+                    nn::models::InfoVariationalAutoencoder(model, Flatten(x), ep, pr, alpha, 10)
+                        .loss,
+                    model.parameters()),
+                "all InfoVAE derivatives finite",
+                "all10tensors receive InfoVAE gradients"));
+      }
+      auto train = nn::models::InfoVariationalAutoencoder(model, Flatten(x), ep, pr, alpha, 10);
+      optimizer.step(nn::grad(train.loss, model.parameters()));
+      if (steps == 0)
+        nn::save_npz((root / "first_update_arrays.npz").string(), Arrays(model));
+      for (auto row : rows)
+        batches << epoch << '\t' << steps << '\t' << row << '\t' << fit_source[row] << '\n';
+      ++steps;
+      seen += int(rows.size());
+    }
+    Require(seen == 210, "all fit cases once per epoch");
+    auto score = Score(model, pools[1].images, noise[1], priors[1], alpha);
+    history << epoch;
+    for (auto v : score)
+      history << '\t' << v;
+    history << '\n';
+    nn::save_npz(
+        (root / ("epoch" + std::to_string(epoch) + "_arrays.npz")).string(), Arrays(model));
+    if (score[3] < best) {
+      best     = score[3];
+      selected = epoch;
+      model.save(best_path); // fixed 4-draw validation InfoVAE objective selects checkpoint
+    }
+  }
+  const double seconds =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - started).count();
+  nn::ParameterStore deployed(3901);
+  {
+    nn::NoGradGuard guard;
+    nn::models::InfoVariationalAutoencoder(
+        deployed, nn::zeros({2, 784}), nn::zeros({2, 4}), nn::zeros({2, 4}), alpha, 10);
+  }
+  deployed.load(best_path); // fresh InfoVAE model-only restore
+  Near(
+      Score(deployed, pools[1].images, noise[1], priors[1], alpha)[3],
+      best,
+      1e-8,
+      "restored fixednoise validation objective");
+  const auto       before = Snapshot(deployed);
+  nn::NamedTensors outputs;
+  for (int k = 0; k < 3; ++k) {
+    const std::string split = k == 0 ? "fit" : k == 1 ? "validation" : "test";
+    auto              mean  = Evaluate(
+        deployed,
+        pools[k].images,
+        nn::zeros({pools[k].images.size(0), 4}),
+        BetaVaeNoiseAt(priors[k], 0),
+        alpha);
+    Require(Bytes(Find(mean, "z")) == Bytes(Find(mean, "mu")), "epsilon0 gives mu");
+    for (const auto& [key, v] : mean)
+      outputs.emplace_back(split + "_zero_" + key, v);
+    for (int draw = 0; draw < 4; ++draw) {
+      auto f = Evaluate(
+          deployed,
+          pools[k].images,
+          BetaVaeNoiseAt(noise[k], draw),
+          BetaVaeNoiseAt(priors[k], draw),
+          alpha);
+      for (const auto& [key, v] : f)
+        outputs.emplace_back(split + "_draw" + std::to_string(draw) + "_" + key, v);
+    }
+  }
+  auto ep = BetaVaeNoiseAt(noise[2], 0), pr = BetaVaeNoiseAt(priors[2], 0);
+  auto test   = Evaluate(deployed, pools[2].images, ep, pr, alpha),
+       repeat = Evaluate(deployed, pools[2].images, ep, pr, alpha),
+       other  = Evaluate(deployed, pools[2].images, BetaVaeNoiseAt(noise[2], 1), pr, alpha);
+  const auto probability = Find(test, "probability");
+  Require(
+      SameBytes(probability, Find(repeat, "probability")) &&
+          SameBytes(probability, Decode(deployed, Find(test, "z"))),
+      "repeat/code-only decoder BITEXACT");
+  Require(
+      SameBytes(Find(test, "mu"), Find(other, "mu")) &&
+          !SameBytes(Find(test, "z"), Find(other, "z")) &&
+          !SameBytes(probability, Find(other, "probability")),
+      "Gaussiannoise affects z/decoder,not posteriorheads");
+  auto small = Evaluate(
+      deployed,
+      nn::take_rows(pools[2].images, {0, 1}),
+      nn::take_rows(ep, {0, 1}),
+      nn::take_rows(pr, {0, 1, 2}),
+      alpha);
+  const double parity = Difference(Find(small, "probability"), nn::take_rows(probability, {0, 1}));
+  Require(parity < 2e-6, "posterior reconstruction smallbatch/unequalprior parity");
+  auto prior_z = BetaVaeNoiseAt(generation, 0), prior = Decode(deployed, prior_z);
+  nn::save_npz((root / "prior.npz").string(), {{"z", prior_z}, {"probability", prior}});
+  nn::save_npz((root / "outputs.npz").string(), outputs);
+  nn::save_npz((root / "model_arrays.npz").string(), Arrays(deployed));
+  Require(before == Snapshot(deployed), "InfoVAE all inference immutable");
+  auto          score            = Score(deployed, pools[2].images, noise[2], priors[2], alpha);
+  auto          mean             = Constant(PixelMean(pools[0].images), 42);
+  const auto    zero_probability = Find(outputs, "test_zero_probability");
+  const double  mse = Mse(zero_probability, pools[2].images), baseline = Mse(mean, pools[2].images);
+  std::ofstream meta(root / "metrics.json");
+  meta.precision(17);
+  meta << "{\"parameters\":26104,\"tensors\":10,\"epochs\":" << epochs << ",\"updates\":" << steps
+       << ",\"alpha\":" << alpha << ",\"lambda\":10,\"local_kl_weight\":" << 1 - alpha
+       << ",\"aggregate_mmd_weight\":" << alpha + 9 << ",\"selected_epoch\":" << selected
+       << ",\"mc_samples\":4,\"test_nll\":" << score[0] << ",\"test_kl\":" << score[1]
+       << ",\"test_mmd\":" << score[2] << ",\"test_objective\":" << score[3]
+       << ",\"test_diagnostic_negative_elbo\":" << score[4] << ",\"decode_mu_mse\":" << mse
+       << ",\"fit_mean_mse\":" << baseline << ",\"small_batch_max_error\":" << parity
+       << ",\"training_seconds\":" << seconds << "}\n";
+  Require(bool(meta) && bool(history) && bool(batches), "complete InfoVAE evidence");
+  std::print(
+      "| {:.1f} | {} | {:.9f} | {:.9f} | {:.9f} | {:.9f} | {:.9f} | {:.9f} |\n",
+      alpha,
+      selected,
+      score[0],
+      score[1],
+      score[2],
+      score[3],
+      score[4],
+      mse);
+  return seconds;
+}
+
+int main() {
+  auto                        data = nn::load_npz("build/info_vae/info_vae/data.npz");
+  std::vector<BetaFactorData> pools;
+  for (const std::string split : {"fit", "validation", "test"})
+    pools.push_back(
+        {Find(data, split + "_images"),
+         Find(data, split + "_factors"),
+         Find(data, split + "_source_ids")});
+  Algebra("build/info_vae");
+  std::print(
+      "| alpha | selected epoch | test NLL | test KL | test signed MMD | own objective | "
+      "diagnostic negative ELBO | decode(mu) MSE |\n|---|---:|---:|---:|---:|---:|---:|---:|\n");
+  Run(pools, "build/info_vae/info_vae", 3, .5f, "");
+  Run(pools, "build/info_vae/mmd_vae", 3, 1.f, "");
+  auto a = nn::load_npz("build/info_vae/info_vae/initial_arrays.npz"),
+       b = nn::load_npz("build/info_vae/mmd_vae/initial_arrays.npz");
+  for (const auto& [key, value] : a)
+    Require(SameBytes(value, Find(b, key)), "both variants have exact matched initialization");
+  std::print(
+      "Fitting-mean test MSE {:.12f}; both variants retain all 21 updates and own validation "
+      "selection.\n",
+      Mse(Constant(PixelMean(pools[0].images), 42), pools[2].images));
+}
+```
+// result_begin: markdown
+| alpha | selected epoch | test NLL | test KL | test signed MMD | own objective | diagnostic negative ELBO | decode(mu) MSE |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 0.5 | 3 | 395.865090870 | 10.372269137 | 0.406245336 | 404.910552979 | 406.237358093 | 0.152413267 |
+| 1.0 | 3 | 399.662248521 | 10.607052814 | 0.415610597 | 403.818367004 | 410.269317627 | 0.154711297 |
+Fitting-mean test MSE 0.048548290059; both variants retain all 21 updates and own validation selection.
+// result_end
+
+> Selected results and weak short-run behaviour
+
+Both select epoch3. Own-objective values cannot rank alpha0.5 against alpha1 as comparable
+ELBOs. Their separate diagnostic negative ELBOs are 406.237358/410.269318, and aggregate
+MMD is 0.406245/0.415611 on the fixed test draws. MMD remains positive and substantial:
+these short runs do not establish aggregate prior matching. Both mean-code reconstructions
+are worse than the fitting-mean baseline, and the unfiltered galleries retain those failures.
+
+```{cpp, results="markdown", file="figures/info_validation.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  auto chart = dm::graphics::RPlot::create();
+  for (const std::string model : {"info_vae", "mmd_vae"}) {
+    std::ifstream f("build/info_vae/" + model + "/history.tsv");
+    std::string   line;
+    std::getline(f, line);
+    std::vector<double> epoch, diagnostic;
+    while (std::getline(f, line)) {
+      std::istringstream row(line);
+      double             e, nll, kl, mmd, objective, elbo;
+      row >> e >> nll >> kl >> mmd >> objective >> elbo;
+      if (!row)
+        return 1;
+      epoch.push_back(e);
+      diagnostic.push_back(elbo);
+    }
+    chart.lines(
+        epoch,
+        diagnostic,
+        model,
+        model == "info_vae" ? dm::RGBA{37, 99, 235} : dm::RGBA{220, 38, 38},
+        2);
+  }
+  chart.title("Shared diagnostic / not checkpoint selection")
+      .x_label("completed epoch")
+      .y_label("four-draw validation NLL + KL / nats")
+      .save_svg("build/info_validation.svg");
+}
+```
+// result_begin: markdown
+\image(figures/info_validation.svg)
+// result_end
+
+\caption(The same NLL+KL diagnostic permits a shared scale. The actual checkpoint criteria are the different weighted objectives, saved separately in each history.)
+\alttext(Two diagnostic negative-ELBO curves decrease over three epochs; this chart is explicitly separate from own-objective checkpoint selection.)
+
+> Unfiltered reconstructions and image-free prior probabilities
+
+For each model, ten evenly spaced test indices floor(k×41/9) are shown without filtering:
+original, decode(mu), one posterior-draw probability image, fitting-only mean. The common
+grayscale is[0,1]. Decode(mu) is not the posterior predictive mean. The final prior gallery
+uses the same twenty standard-normal codes through the selected tanh decoders, with no image,
+encoder or MMD evaluation. These are probabilities, not Bernoulli pixel draws.
+
+```{cpp, results="markdown", file="figures/info_reconstructions.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  auto find   = [](const n::NamedTensors& a, const std::string& key) {
+    for (auto& [k, t] : a)
+      if (k == key)
+        return t;
+    throw std::runtime_error(key);
+  };
+  std::vector<n::Tensor>    panels;
+  std::vector<std::int64_t> rows;
+  for (int i = 0; i < 10; ++i)
+    rows.push_back(i * 41 / 9);
+  for (const std::string model : {"info_vae", "mmd_vae"}) {
+    auto data = n::load_npz("build/info_vae/" + model + "/data.npz"),
+         out  = n::load_npz("build/info_vae/" + model + "/outputs.npz");
+    auto mean = n::mean(find(data, "fit_images").reshape({210, 784}), {0}, true);
+    for (const auto& t : std::vector<n::Tensor>{
+             find(data, "test_images"),
+             find(out, "test_zero_probability"),
+             find(out, "test_draw0_probability"),
+             n::broadcast_to(mean, {42, 784})})
+      panels.push_back(n::take_rows(t, rows).reshape({10, 28, 28, 1}));
+  }
+  n::save_image_grid(
+      n::concat(panels, 0), "build/info_reconstructions.png", 10, 0, 1, 4, 220. / 255, 3);
+}
+```
+// result_begin: markdown
+\image(figures/info_reconstructions.png)
+// result_end
+
+\caption(First four rows: alpha0.5 InfoVAE. Last four: alpha1 MMD-VAE. All prescribed heldout cases and the stronger fitting-mean control are retained.)
+\alttext(Two groups each contain ten binary original shapes, diffuse mean-code reconstructions, one set of posterior probability draws, and repeated fitting-mean images.)
+
+```{cpp, results="markdown", file="figures/info_priors.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::vector<n::Tensor> panels;
+  for (const std::string model : {"info_vae", "mmd_vae"}) {
+    auto a = n::load_npz("build/info_vae/" + model + "/prior.npz");
+    for (const auto& [k, t] : a)
+      if (k == "probability")
+        panels.push_back(t);
+  }
+  n::save_image_grid(
+      n::concat(panels, 0).reshape({40, 28, 28, 1}),
+      "build/info_priors.png",
+      5,
+      0,
+      1,
+      4,
+      220. / 255,
+      3);
+}
+```
+// result_begin: markdown
+\image(figures/info_priors.png)
+// result_end
+
+\caption(First twenty priors use InfoVAE, then twenty use MMD-VAE with identical supplied codes. No generated cases are discarded.)
+\alttext(Two groups of broad probability images expose poor ancestral generation after the short fits.)
+
+> Reproduction evidence and binding scope
+
+All35 original source archives are compared by dtype, shape and every value byte, including
+coefficient algebra, data/noise, initial/first-update/every-epoch/selected weights, first
+gradients, all sixteen fields for the zero/four-draw evaluations of every pool and prior
+codes/probabilities. Both complete histories and batch/source orders match exactly. The optional
+independent NumPy oracle checks all first parameter derivatives, both exact first Adam steps,
+every saved kernel/within/cross term, Gaussian banks and all six eligible validation criteria.
+It does not fit models or prepare/download data.
+
+```
+python3 scripts/check_info_variational_autoencoder.py docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/build/info_vae --json build/nn-report-conversion/info_vae/oracle.json
+```
+
+Native functions are ImqKernel, ImqMmd, InfoVaeObjective, InfoVaeDecode and
+InfoVariationalAutoencoder, exposed in Python and R. All seven MMD and sixteen full-model
+fields own lifetime. Tests cover live Float64 image/noise/prior gradients, caller-owned Adam,
+unequal counts, signed estimates and image-free decoding through collection. This reusable
+API/report conversion does not mark independent Python/R experiment loops as completed ports.
+The shared WAE kernel adapter delegates to canonical C++ after separate original-run parity;
+its required compatibility include remains until that example is converted. GAN diagnostics'
+independent value-only copy remains for their later conversions.

@@ -3,7 +3,7 @@
 """YOLO v2 and YOLO9000: dimension priors, feature passthrough and WordTree supervision.
 
 Port of tflow's yolo_v2. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 
 Independently check space-to-depth ordering, its inverse and derivative,
 IoU dimension clustering, sigmoid/exp box decoding, the detection loss and

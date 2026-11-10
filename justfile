@@ -707,6 +707,14 @@ nn-mnist-assets:
 nn-mnist-assets-r: build-nn-r
   {{ NIX_DEVELOP }} .#r --command env R_LIBS_USER=build/r/library Rscript --vanilla -e 'root <- Sys.getenv("DATAMUNGE_DATA_DIR", "build/datasets"); datamungerNN::nn_components$dataset_assets$EnsureMnist(file.path(root,"mnist")); datamungerNN::nn_components$dataset_assets$EnsureSaliency(file.path(root,"saliency"))'
 
+# Exhaustive binary circle/square factors and fixed compositional holdouts.
+nn-beta-vae-assets:
+  {{ NIX_DEVELOP }} .#cpp --command datamunge-prepare-data beta-vae-assets
+
+# Prepare the exhaustive local compositional sentence grammar in the shared cache.
+nn-sequence-vae-assets:
+  {{ NIX_DEVELOP }} .#cpp --command datamunge-prepare-data sequence-vae-assets
+
 nn-memory-assets:
   {{ NIX_DEVELOP }} .#cpp --command datamunge-prepare-data memory
 
@@ -718,6 +726,10 @@ nn-memory-assets-r: build-nn-r
 # and docs/nn-example-audit.md; --check fails when a shared header owns a training loop.
 nn-audit *ARGS:
   {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/nn_example_audit.py --markdown docs/nn-example-audit.md {{ ARGS }}
+
+# Track literate NN replacements; --retire NAME requires mep --report evidence.
+nn-report-status *ARGS:
+  {{ NIX_DEVELOP }} .#cpp-tools --command python3 scripts/nn_report_migration.py {{ ARGS }}
 
 # Run C++/Python/R for each NAME (epochs=5) and record passing evidence in the ledger.
 validate-nn-ports *ARGS:
@@ -1164,7 +1176,7 @@ test-simulation-examples: test-simulation
 # Real Doxygen fixtures verify that incomplete or stale inventories cannot pass.
 test-docs:
     {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m unittest discover -s tests/python -p test_documentation_audit.py -v
-    {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m pytest -q tests/python/test_website_toolchain.py tests/python/test_website_model_diagrams.py
+    {{ NIX_DEVELOP }} .#cpp-tools --command python3 -m pytest -q tests/python/test_website_toolchain.py tests/python/test_website_model_diagrams.py tests/python/test_nn_report_migration.py
 
 docs-bindings: prebuild-swig
     @echo "Binding documentation is emitted as SWIG-generated docstrings/comments (per language)."

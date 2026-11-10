@@ -9,7 +9,9 @@ Three default epochs on true family-disjoint Middlebury crops; no pretraining.
 Native CPU forward/gradients, pair-only restored inference and baselines.
 
 Port of tflow's pwcnet. Preparation (in ~/projects/tflow_examples): just
-optical-flow-assets; pairs.npz is read from $DATAMUNGE_DATA_DIR/optical_flow.
+optical-flow-assets. Reproducible checkout preparation now also uses
+datamunge-prepare-data optical_flow (see the mepml report);pass data=PATH
+to its prepared directory,or use $DATAMUNGE_DATA_DIR/optical_flow.
 The crops, pyramid targets and batch order (nn::BatchOrder seed 167) are
 tflow's; weights come from datamunge's generator (He-normal with tflow's
 explicit fan-in), so trained numbers match TF statistically. The backward

@@ -1,0 +1,656 @@
+//? Title: RealNVP: Per-Point Volume Change and Exact-Form Inversion
+//? Subtitle: Bounded affine couplings, inverse-path determinants and a preserved banana fit
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+An invertible density model must assign normalized probabilities to observations
+and generate new observations from a simple base distribution. Affine couplings
+make both operations tractable while allowing local volume change. This native
+C++ study checks one hand-set coupling before fitting the original four-stage
+bounded RealNVP to procedural banana pools. The complete program retains all
+48 Adam writes, both actual Jacobians, per-point forward and inverse-path log
+determinants, and all 1,024 latent-only samples. The fixed-final test NLL is
+2.879116774 nats per two-coordinate row, better than the fitting-only full
+Gaussian's 2.994631823, while analytic truth scores 2.796480843. Exact source
+reproduction checks this compact experiment; it is not the full image model
+or a state-of-the-art density benchmark.
+)
+\toc
+
+> Allow local volume change with triangular affine couplings
+
+[Dinh, Sohl-Dickstein and Bengio, Density estimation using Real NVP
+(2016)](https://arxiv.org/abs/1605.08803) uses invertible affine couplings with
+tractable likelihoods. Split coordinates into a,b and preserve a:
+
+$$ y_A=a,\quad y_B=b\exp(s(a))+t(a),\qquad
+J=\begin{pmatrix}1&0\\b\exp(s)s'(a)+t'(a)&\exp(s)\end{pmatrix}. $$
+\alttext(The affine coupling keeps a and scales and shifts b using functions only of a. Its triangular Jacobian has determinant exp(s(a)).)
+
+Thus log|det J|=s(a). Invert with a=y_A and b=(y_B−t(a))exp(−s(a));
+the inverse logdet is −s(a), evaluated on that inverse path's conditioning
+coordinate. Reversing several stages requires recomputing each conditioner
+on its current inverse input, not reusing values from an unrelated forward pass.
+The compact source uses four alternating 1->16 tanh->2 conditioners, with
+**s=.8 tanh(raw_scale)** and t the second head. This bounded CPU adaptation
+omits the paper's image multiscale architecture and batch normalization.
+
+A final global positive diagonal scale gives z=exp(log_scale)×h. Accumulate
+four per-row coupling logdets in order, then add sum(log_scale):
+
+$$ \log p_X(x)=-\log(2\pi)-\tfrac12\|z\|^2+
+\sum_{i=0}^3s_i(h_i)+\sum_{c=0}^1\mathrm{log\_scale}_c. $$
+\alttext(The observation log density is Gaussian latent log density plus the four input-dependent coupling log determinants and the global scale log determinant.)
+
+The loss is negative mean log density over rows, in nats per two-dimensional
+observation. Sampling supplies Gaussian z, unscales it, then reverses blocks
+3,2,1,0. No rejection, ODE solve, approximate determinant or fitting loop is
+hidden inside the model API. Actual input Jacobians of both maps check the
+analytic determinants independently of the Gaussian density calculation.
+
+```{cpp, results="markdown", file="figures/rnvp_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ std::filesystem::create_directories("build");dm::graphics::Diagram d(28,1150);
+ dm::graphics::DiagramNodeStyle s;s.width=10;s.height=5;s.font_size=32;
+ d.node("split",{-24,0},"Coordinates a,b\nCondition on a",s)
+ .node("shift",{-11,0},"Heads s(a),t(a)\n1 -> 16 tanh -> 2",s)
+ .node("add",{2,0},"Keep a\nb exp(s) + t",s)
+ .node("stack",{15,0},"4 affine blocks\nPositive global scale",s)
+ .node("density",{28,0},"Gaussian base\nAdd per-row logdet",s)
+ .edge("split","shift").edge("shift","add").edge("add","stack").edge("stack","density")
+ .save_svg("build/rnvp_method.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_method.svg)
+// result_end
+
+\caption(The conditioner produces a bounded log scale and a shift; the changed coordinate is b×exp(s)+t. Four alternating stages accumulate per-point volume changes before the final global scale.)
+\alttext(Five boxes show two coordinates, a two-head conditioner, an affine change to only the other coordinate, four stages and global scale, then Gaussian density plus per-row log determinant.)
+
+> Hand-check an affine coupling and its determinant
+
+Use one active conditioner unit: h=tanh(.7a+.1), raw=.2h+.05,
+s=.8tanh(raw), t=.3h−.1, b=.5. The changed coordinate is .5exp(s)+t.
+Its derivative with respect to a is .5exp(s)s'(a)+t'(a); the derivative with
+respect to b is exp(s), so the determinant is exp(s), not one. The table checks
+five a values. The complete native program compares both Jacobian rows with
+these formulas, verifies the inverse and preserves the unchanged raw coordinate.
+There is no fitting in this example.
+
+```{cpp, results="markdown", file="figures/rnvp_coupling_toy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;namespace m=n::models;auto type=n::DType::Float64;n::ParameterStore p(1,type);
+ auto a=n::from_vector(std::vector<double>{-2,-1,0,1,2},{5});auto x=n::stack({a,n::full({5},.5,type)},1).requires_grad_();
+ m::RealNvpCoupling(p,x,0);for(auto name:p.names())p.set(name,n::zeros(p.at(name).shape(),type));
+ std::vector<double> w(16),bias(16),heads(32);w[0]=.7;bias[0]=.1;heads[0]=.2;heads[1]=.3;
+ p.set("coupling0/hidden/W",n::from_vector(w,{1,16}));p.set("coupling0/hidden/b",n::from_vector(bias,{16}));
+ p.set("coupling0/heads/W",n::from_vector(heads,{16,2}));p.set("coupling0/heads/b",n::from_vector(std::vector<double>{.05,-.1},{2}));
+ auto o=m::RealNvpCoupling(p,x,0),rec=m::RealNvpCoupling(p,o.value,0,true);
+ auto h=n::tanh(.7*a+.1),raw=.2*h+.05,s=.8*n::tanh(raw),t=.3*h-.1;
+ auto hs=.7*(1.-n::square(h)),ds=.8*(1.-n::square(n::tanh(raw)))*.2*hs,dt=.3*hs;
+ auto changed=n::select(o.value,1,1),expected=.5*n::exp(s)+t;
+ auto j0=n::grad(n::sum(n::slice_axis(o.value,1,0,1)),{x},n::GradOptions{true,false,false})[0];
+ auto j1=n::grad(n::sum(n::slice_axis(o.value,1,1,2)),{x})[0];
+ auto determinant=n::select(j0,1,0)*n::select(j1,1,1)-n::select(j0,1,1)*n::select(j1,1,0);
+ auto slope=n::select(j1,1,0),theory=.5*n::exp(s)*ds+dt;
+ if(n::max(n::abs(changed-expected)).item()>1e-14||n::max(n::abs(rec.value-x)).item()>1e-14||n::max(n::abs(slope-theory)).item()>1e-14||n::max(n::abs(determinant-n::exp(s))).item()>1e-14)throw std::runtime_error("Worked affine/Jacobian");
+ auto axis=n::arange(0,257,1,type)/64.-2.;auto grid=n::stack({axis,n::full({257},.5,type)},1);
+ auto curve=n::select(m::RealNvpCoupling(p,grid,0).value,1,1);
+ dm::graphics::RPlot::create().lines(axis.to_vector<double>(),curve.to_vector<double>(),"b exp(s) + t",{37,99,235})
+ .points(a.to_vector<double>(),std::vector<double>(5,.5),"Original b",{100,116,139},5)
+ .points(a.to_vector<double>(),changed.to_vector<double>(),"Native affine map",{220,38,38},4)
+ .y_limits(-.1,1.3).x_label("Conditioning coordinate a").y_label("Other coordinate")
+ .title("A bounded affine coupling changes local volume").save_svg("build/rnvp_coupling_toy.svg");
+ std::print("| a | Changed b | Log scale s | Actual determinant |\n|---:|---:|---:|---:|\n");
+ auto av=a.to_vector<double>(),yv=changed.to_vector<double>(),sv=s.to_vector<double>(),dv=determinant.to_vector<double>();
+ for(int i=0;i<5;++i)std::print("|{:.0f}|{:.9f}|{:.9f}|{:.9f}|\n",av[i],yv[i],sv[i],dv[i]);
+}
+```
+// result_begin: markdown
+| a | Changed b | Log scale s | Actual determinant |
+|---:|---:|---:|---:|
+|-2|0.095083994|-0.097390270|0.907201883|
+|-1|0.216464592|-0.045877539|0.955158925|
+|0|0.458623020|0.055855851|1.057445243|
+|1|0.677021762|0.144638262|1.155621463|
+|2|0.771114179|0.181604137|1.199139405|
+\image(figures/rnvp_coupling_toy.svg)
+// result_end
+
+\caption(The blue curve retains 257 native affine evaluations. Five red native outputs sit on it; gray points show the original b=.5. Both derivative and determinant vary with a, as the table verifies.)
+\alttext(A smooth bounded-scale affine curve changes the second coordinate. Five red outputs follow it; five gray original values stay at .5.)
+
+> Hand-check the banana transform before generating its pools
+
+The source distribution is deliberately synthetic and analytic:
+u,v independent standard normals, x0=u, x1=v+.5(u²−1). It is a triangular
+map with determinant one and inverse v=x1−.5(x0²−1). Therefore its true log
+density is the standard Gaussian log density of that inverse. For v=0 and
+u=(-2,-1,0,1,2), the changed coordinates are (1.5,0,-.5,0,1.5).
+The density has one curved mode. This analytic invertible transform gives an
+exact reference likelihood, independently of the learned affine model. Its
+unit determinant describes the data generator; the fitted model has its own
+input-dependent determinant, which must be included in its likelihood.
+
+```{cpp, results="markdown", file="figures/rnvp_banana_toy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;namespace m=n::models;auto type=n::DType::Float64;
+ auto u=n::from_vector(std::vector<double>{-2,-1,0,1,2},{5});auto base=n::stack({u,n::zeros({5},type)},1);
+ auto points=m::BananaPoints(base,.5,type);auto target=n::from_vector(std::vector<double>{1.5,0,-.5,0,1.5},{5});
+ if(!n::equal_bits(n::select(points,1,1),target)||n::max(n::abs(m::BananaLogProbability(points)-m::StandardNormalLogProbability(base))).item()>1e-14)throw std::runtime_error("Analytic banana");
+ auto axis=n::arange(0,129,1,type)/32.-2.;auto curve=m::BananaPoints(n::stack({axis,n::zeros({129},type)},1),.5,type);
+ dm::graphics::RPlot::create().lines(axis.to_vector<double>(),n::select(curve,1,1).to_vector<double>(),"v=0 banana curve",{37,99,235})
+ .points(u.to_vector<double>(),std::vector<double>(5,0),"Base v=0",{100,116,139},5)
+ .points(u.to_vector<double>(),target.to_vector<double>(),"Five native points",{220,38,38},4)
+ .y_limits(-.7,2.6).x_label("u = x0").y_label("x1 = v + .5(u^2 - 1)")
+ .title("Unit-volume bending gives an analytic teaching density").save_svg("build/rnvp_banana_toy.svg");
+ std::print("Five exact banana coordinates; native analytic log densities match their inverse standard-normal coordinates.\n");
+}
+```
+// result_begin: markdown
+Five exact banana coordinates; native analytic log densities match their inverse standard-normal coordinates.
+\image(figures/rnvp_banana_toy.svg)
+// result_end
+
+\caption(All five coordinates are checked exactly in Double. The 129-point native curve is a deterministic worked transform, separate from the seeded observation pools used below.)
+\alttext(A symmetric parabola bends the base horizontal line through five exact banana coordinates, with its minimum at (0,minus .5).)
+
+> Trace the executed compact affine architecture
+
+Each conditioner stores 16 hidden weights, 16 hidden biases, 32 head weights
+and two head biases: 66 values. Four give 264; log_scale adds two. The total is
+**266 values in 17 tensors**. Hidden weights use normal deviation .3 and bias
+.05; heads use deviation .01 and zero biases. Native seed 9403 initializes all
+forward blocks, then the global scale at zero. The original optional TensorFlow
+initial-array directory is absent, so its auto default selects this native
+initialization. The executed graph groups two affine stages per block for
+readability and counts the actual leaves, with 132 values in each pair.
+
+```{cpp, results="markdown", file="figures/rnvp_network.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;n::ParameterStore p(9403);
+ n::Module model([&](const n::Tensor& x){auto o=n::models::RealNvpDensity(p,x);
+  n::model_stage("Affine stages 0 / 1",x,o.coupling1);
+  n::model_stage("Affine stages 2 / 3",o.coupling1,o.unscaled);
+  return n::model_stage("Positive diagonal scale",o.unscaled,o.latent);
+ },"RealNVP: 266 values / 17 leaves");
+ n::ModelPlotOptions options;options.detail=n::ModelPlotDetail::Blocks;options.sizing.minimum_extent=2;options.sizing.max_planes=2;
+ auto figure=model.plot(n::zeros({1,2}),options);
+ if(figure.parameter_count()!=266||p.size()!=17)throw std::runtime_error("Executed RealNVP census");
+ figure.save_svg("build/rnvp_network.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_network.svg)
+// result_end
+
+\caption(The executed graph counts 132 values in each pair of affine stages and two in the scale. Every intermediate coordinate batch has width two; the total determinant accumulates all four per-point coupling terms plus the global scale.)
+\alttext(A two-coordinate input passes through two grouped pairs of affine stages and a positive diagonal scale; the graph reports 266 learned values.)
+
+> Keep the original data, fitting writes and latent-only sampling visible
+
+The original in-process protocol uses **512 fit / 128 validation / 128 test**
+observations. Independent Double Box-Muller banks use seeds 9203/9209/9221,
+with raw MT19937 midpoint uniforms, cosine partner before sine partner. Apply
+the banana map in Double and cast final observations once to Float32. Integer
+source IDs start at 0/10000/20000 for the three pools. These are procedural row
+identifiers, not real-world subjects or recordings. There is no downloaded or
+substituted dataset. All 1,024 prior rows come from seed 9257 and cast once to
+Float32; only these latent values enter inverse sampling.
+
+BatchOrder(512,32,9421) produces 16 full batches per epoch. Fit three fixed
+epochs, 48 Adam(.003) writes with betas(.9,.999), epsilon1e-8 and no weight
+decay. Epoch three is the predefined final selection, not a test-driven choice.
+Warm all leaves before optimizer construction. Evaluate NLL and both Jacobians
+with native operations; keep the update and epoch loops explicit. Restored
+weights, repeated samples and inference immutability are checked bit for bit.
+
+For exact source replay the model uses rounded_constant=true: log(2*pi) is
+first rounded to Float32, even if later promoted to Double. The analytic truth
+and full-precision Gaussian baselines use the full Double constant. This tiny
+rounding convention cannot explain the gap to truth. The fitting loss remains
+Float32 and matches the original exactly.
+
+The complete program also keeps every density grid position, each actual
+forward/inverse Jacobian and both roundtrip errors. Fitting-only Gaussian
+moments use the MLE divisor N, not N−1; held-out rows never enter them. Native
+Double cumulative sums preserve the source's divide-first, serial reduction
+order for moments and scalar baseline summaries. All numerical/model operations
+are in the datamunge API; the local functions below package named outputs,
+checks and file writes. There is no training or sampling loop in a helper header.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <fstream>
+namespace n=dm::nn;namespace m=n::models;namespace fs=std::filesystem;
+using T=n::Tensor;using A=std::map<std::string,T>;
+void Require(bool ok,const std::string& what){if(!ok)throw std::runtime_error(what);}
+void Save(const fs::path& file,const A& fields){
+ n::NamedTensors named;for(const auto& [key,value]:fields)named.emplace_back(key,value);
+ n::save_npz(file.string(),named);
+}
+A Weights(const n::ParameterStore& p){
+ A out;for(const auto& name:p.names())out.emplace(name,p.at(name).detach().clone());return out;
+}
+bool Equal(const A& a,const A& b){
+ if(a.size()!=b.size())return false;
+ for(const auto& [key,value]:a)if(!b.count(key)||!n::equal_bits(value,b.at(key)))return false;
+ return true;
+}
+T Column(const T& x,int k){return n::slice_axis(x,1,k,k+1);}
+A Evaluate(n::ParameterStore& p,const T& x){
+ auto input=x.detach().clone().requires_grad_();auto path=m::RealNvpDensity(p,input);
+ auto rec=m::RealNvpInverse(p,path.latent);auto density=m::NormalFlowDensity(path.latent,path.logdet,true);
+ A out{{"latent",path.latent},{"unscaled",path.unscaled},{"reconstruction",rec.value},
+  {"base_log_probability",density.base_log_probability},{"log_probability",density.log_probability},
+  {"forward_logdet",path.logdet},{"inverse_logdet",rec.logdet},{"loss",density.loss},
+  {"coupling0",path.coupling0},{"coupling_logdet0",path.coupling_logdet0},{"coupling_scale0",path.coupling_scale0},{"coupling_shift0",path.coupling_shift0},{"coupling1",path.coupling1},{"coupling_logdet1",path.coupling_logdet1},{"coupling_scale1",path.coupling_scale1},{"coupling_shift1",path.coupling_shift1},{"coupling2",path.coupling2},{"coupling_logdet2",path.coupling_logdet2},{"coupling_scale2",path.coupling_scale2},{"coupling_shift2",path.coupling_shift2},{"coupling3",path.coupling3},{"coupling_logdet3",path.coupling_logdet3},{"coupling_scale3",path.coupling_scale3},{"coupling_shift3",path.coupling_shift3}};
+ for(int k=0;k<2;++k)out["jacobian_row"+std::to_string(k)]=n::grad(n::sum(Column(path.latent,k)),{input},n::GradOptions{true,false,false})[0];
+ for(auto& [key,value]:out)value=value.detach().contiguous();return out;
+}
+A Sample(n::ParameterStore& p,const T& z){
+ auto prior=z.detach().clone().requires_grad_();auto inv=m::RealNvpInverse(p,prior);
+ auto roundtrip=m::RealNvpDensity(p,inv.value).latent;
+ A out{{"prior",z},{"samples",inv.value},{"prior_roundtrip",roundtrip},{"inverse_logdet",inv.logdet}};
+ for(int k=0;k<2;++k)out["inverse_jacobian_row"+std::to_string(k)]=n::grad(n::sum(Column(inv.value,k)),{prior},n::GradOptions{true,false,false})[0];
+ for(auto& [key,value]:out)value=value.detach().contiguous();return out;
+}
+T Loss(n::ParameterStore& p,const T& x){auto o=m::RealNvpDensity(p,x);return m::NormalFlowDensity(o.latent,o.logdet,true).loss;}
+A NamedGradients(n::ParameterStore& p,const std::vector<T>& gradients){
+ A out;auto names=p.names();for(std::size_t i=0;i<names.size();++i)out[names[i]]=gradients[i];return out;
+}
+// Preserve the source's serial Double reductions without hiding numerical math
+// in host loops: divide each row first, native cumulative sum, then last row.
+T SerialMean(const T& values){return n::select(n::cumsum(n::cast(values,n::DType::Float64)/double(values.size(0)),0),0,values.size(0)-1);}
+T ActualLogdet(const A& fields,const std::string& prefix){
+ auto a=n::cast(fields.at(prefix+"jacobian_row0"),n::DType::Float64);
+ auto b=n::cast(fields.at(prefix+"jacobian_row1"),n::DType::Float64);
+ auto det=n::reshape(Column(a,0)*Column(b,1)-Column(a,1)*Column(b,0),{-1});
+ Require(n::min(det).item()>0,"Orientation-preserving actual Jacobian");return n::log(det);
+}
+int main(){
+ n::set_num_threads(4);fs::path root="build/real_nvp_density";fs::create_directories(root);
+ A data;std::vector<T> pools;
+ for(int split=0;split<3;++split){
+  const int rows=split?128:512,seed=split==0?9203:split==1?9209:9221;
+  const std::string name=split==0?"fit":split==1?"validation":"test";
+  auto base=m::GaussianNoise({2},rows,seed);auto points=m::BananaPoints(base);
+  data[name+"_base"]=base;data[name+"_points"]=points;
+  data[name+"_source_ids"]=n::cast(n::arange(split*10000,split*10000+rows),n::DType::Int32);
+  pools.push_back(points);
+ }
+ // Explicit latent-only sampling bank: all 1024 rows, generated once with seed9257.
+ auto prior=n::cast(m::GaussianNoise({2},1024,9257),n::DType::Float32);
+ data["sample_prior"]=prior;Save(root/"data.npz",data);
+ std::ofstream protocol(root/"source_protocol.json");
+ protocol<<R"JSON({"distribution":"SYNTHETICanalyticbanana","base":"standardGaussian2D","mapping":"x0=u0;x1=u1+.5*(u0^2-1)","true_forward_logdet":0,"fit":512,"validation":128,"test":128,"seeds":[9203,9209,9221],"sample_prior_seed":9257,"sample_prior_count":1024,"source_id_offsets":[0,10000,20000]})JSON"<<'\n';protocol.close();
+ n::ParameterStore parameters(9403);
+ {n::NoGradGuard guard;m::RealNvpDensity(parameters,n::zeros({1,2}));m::RealNvpInverse(parameters,n::zeros({1,2}));}
+ Require(parameters.count()==266&&parameters.size()==17,"266 values /17 leaves");
+ Save(root/"initial_arrays.npz",Weights(parameters));Save(root/"initial_outputs.npz",Evaluate(parameters,pools[2]));
+ n::OptimizerConfig config;config.kind=n::OptimizerKind::Adam;config.beta1=.9;config.beta2=.999;config.epsilon=1e-8;
+ n::Optimizer optimizer(parameters,.003,config);n::BatchOrder order(512,32,9421);
+ std::ofstream history(root/"history.tsv"),batches(root/"batches.tsv");history.precision(17);
+ history<<"epoch\tvalidation_nll\tvalidation_mean_forward_logdet\n";batches<<"epoch\tstep\trow\n";
+ int step=0;T first;
+ for(int epoch=1;epoch<=3;++epoch){
+  order.begin_epoch();
+  for(;;){
+   auto rows=order.next();if(rows.empty())break;auto batch=n::take_rows(pools[0],rows);
+   if(step==0){first=batch;Save(root/"first_batch.npz",{{"points",batch}});Save(root/"first_forward.npz",Evaluate(parameters,batch));}
+   // Complete fitting step: native likelihood, explicit reverse-mode partials,
+   // caller-owned Adam write. No model helper owns any update or fitting loop.
+   auto loss=Loss(parameters,batch);auto gradients=n::grad(loss,parameters.parameters());
+   auto named=NamedGradients(parameters,gradients);Save(root/("batch"+std::to_string(step)+"-gradient.npz"),named);
+   if(step==0)Save(root/"initial_gradients.npz",named);
+   optimizer.step(gradients);
+   Save(root/("batch"+std::to_string(step)+"-after.npz"),Weights(parameters));
+   Save(root/("batch"+std::to_string(step)+"-iterations.npz"),{{"iterations",n::from_vector(std::vector<std::int64_t>{optimizer.iterations()},{1})}});
+   if(step==0)Save(root/"first_after.npz",Weights(parameters));
+   for(auto row:rows)batches<<epoch<<'\t'<<step<<'\t'<<row<<'\n';++step;
+  }
+  auto validation=Evaluate(parameters,pools[1]);
+  history<<epoch<<'\t'<<validation.at("loss").item<float>()<<'\t'<<SerialMean(validation.at("forward_logdet")).item()<<'\n';
+  Save(root/("epoch"+std::to_string(epoch)+"_arrays.npz"),Weights(parameters));
+  Save(root/("epoch"+std::to_string(epoch)+"_validation.npz"),validation);
+ }
+ Require(step==48&&optimizer.iterations()==48,"All48 Adam writes");history.close();batches.close();
+ parameters.save((root/"final.npz").string());
+ Save(root/"final_gradients.npz",NamedGradients(parameters,n::grad(Loss(parameters,first),parameters.parameters())));
+ n::ParameterStore deployed(9403);
+ {n::NoGradGuard guard;m::RealNvpDensity(deployed,n::zeros({1,2}));m::RealNvpInverse(deployed,n::zeros({1,2}));}
+ deployed.load((root/"final.npz").string(),true);Require(Equal(Weights(parameters),Weights(deployed)),"Bit-exact weight restore");
+ auto before=Weights(deployed);auto output=Evaluate(deployed,pools[2]);
+ Save(root/"outputs.npz",output);Save(root/"model_arrays.npz",Weights(deployed));
+ auto samples=Sample(deployed,prior);Require(Equal(samples,Sample(deployed,prior)),"Repeat inverse sampling and Jacobians bit exact");
+ Save(root/"samples.npz",samples);auto sample_density=Evaluate(deployed,samples.at("samples"));Save(root/"sample_density.npz",sample_density);
+ auto roundtrip=n::abs(n::cast(output.at("reconstruction"),n::DType::Float64)-n::cast(pools[2],n::DType::Float64));
+ auto prior_error=n::abs(n::cast(samples.at("prior_roundtrip"),n::DType::Float64)-n::cast(prior,n::DType::Float64));
+ auto actual=ActualLogdet(output,"");auto inverse_actual=ActualLogdet(samples,"inverse_");
+ auto det_error=n::abs(actual-n::cast(output.at("forward_logdet"),n::DType::Float64));
+ auto inverse_error=n::abs(inverse_actual-n::cast(samples.at("inverse_logdet"),n::DType::Float64));
+ auto base=m::StandardNormalLogProbability(n::cast(prior,n::DType::Float64));
+ auto normalization=n::abs(n::cast(sample_density.at("log_probability"),n::DType::Float64)+n::cast(samples.at("inverse_logdet"),n::DType::Float64)-base);
+ Require(n::max(roundtrip).item()<5e-6&&n::max(prior_error).item()<5e-6,"Both roundtrips");
+ Require(n::max(det_error).item()<5e-6&&n::max(inverse_error).item()<5e-6,"Both analytic/actual logdets");
+ Require(n::max(n::abs(output.at("forward_logdet")+output.at("inverse_logdet"))).item()<5e-6,"Per-point reconstruction logdet cancellation");
+ Require((n::max(output.at("forward_logdet"))-n::min(output.at("forward_logdet"))).item()>1e-5,"Spatially varying forward logdet");
+
+ Require(n::max(normalization).item()<2e-5,"All1024 change-of-variables identities");
+ auto single=Evaluate(deployed,n::take_rows(pools[2],{0}));
+ Require(n::max(n::abs(single.at("latent")-n::take_rows(output.at("latent"),{0}))).item()<2e-6,"Single/batch parity");
+ std::vector<float> grid;for(int y=0;y<128;++y)for(int x=0;x<128;++x){grid.push_back(float((x+.5)/16-4));grid.push_back(float(4-(y+.5)/16));}
+ auto coordinates=n::from_vector(grid,{128*128,2});auto density=Evaluate(deployed,coordinates);auto truth=m::BananaLogProbability(coordinates);
+ Save(root/"grid.npz",{{"points",coordinates},{"model_log_probability",density.at("log_probability")},{"true_log_probability",truth}});
+ // Fit-only MLE moments (divide by N), retaining the original serial Double
+ // order with native cumsum. No held-out rows enter these two moment estimates.
+ auto fit=n::cast(pools[0],n::DType::Float64);auto mean=SerialMean(fit);auto centered=fit-mean;
+ auto covariance=SerialMean(n::expand_dims(centered,2)*n::expand_dims(centered,1));
+ auto cov=covariance.to_vector<double>();auto test=n::cast(pools[2],n::DType::Float64);
+ auto a=n::reshape(Column(test,0),{-1})-n::select(mean,0,0),c=n::reshape(Column(test,1),{-1})-n::select(mean,0,1);
+ auto determinant=n::select(n::select(covariance,0,0),0,0)*n::select(n::select(covariance,0,1),0,1)-n::select(n::select(covariance,0,0),0,1)*n::select(n::select(covariance,0,1),0,0);
+ Require(determinant.item()>0,"Fitting covariance positive determinant");
+ auto full=std::log(2*std::acos(-1.))+.5*n::log(determinant)+.5*(a*a*cov[3]-2.*a*c*cov[1]+c*c*cov[0])/determinant;
+ auto diagonal=std::log(2*std::acos(-1.))+.5*std::log(cov[0]*cov[3])+.5*(a*a/cov[0]+c*c/cov[3]);
+ auto identity=-m::StandardNormalLogProbability(test);auto true_test=m::BananaLogProbability(pools[2]);
+ Save(root/"baseline.npz",{{"fit_mean",mean},{"fit_covariance",covariance},{"true_test_log_probability",true_test}});
+ Save(root/"plot_values.npz",{{"full_gaussian_point_nll",full},{"diagonal_gaussian_point_nll",diagonal},{"identity_point_nll",identity},
+  {"true_point_nll",-true_test},{"actual_logdet",actual},{"inverse_actual_logdet",inverse_actual},
+  {"normalization_error",normalization},{"forward_roundtrip_absolute_error",roundtrip},{"inverse_roundtrip_absolute_error",prior_error}});
+ Require(Equal(before,Weights(deployed)),"All inference immutable");
+ std::ofstream meta(root/"metrics.json");meta.precision(17);
+ meta<<"{\"parameters\":266,\"parameter_tensors\":17,\"coupling_layers\":4,\"hidden\":16,\"base\":\"standardGaussian2D\",\"epochs\":3,\"optimizer_updates\":48,\"selected_epoch_fixed_final\":3,\"test_nll\":"<<output.at("loss").item<float>()
+ <<",\"true_test_nll\":"<<SerialMean(-true_test).item()<<",\"fit_full_gaussian_nll\":"<<SerialMean(full).item()
+ <<",\"fit_diagonal_gaussian_nll\":"<<SerialMean(diagonal).item()<<",\"identity_gaussian_nll\":"<<SerialMean(identity).item()
+ <<",\"forward_logdet_min\":"<<n::min(output.at("forward_logdet")).item()<<",\"forward_logdet_max\":"<<n::max(output.at("forward_logdet")).item()<<",\"mean_forward_logdet\":"<<SerialMean(output.at("forward_logdet")).item()<<",\"forward_inverse_max_error\":"<<n::max(roundtrip).item()
+ <<",\"inverse_forward_max_error\":"<<n::max(prior_error).item()<<",\"actual_vs_analytic_logdet_max_error\":"<<n::max(det_error).item()<<",\"ancestral_samples\":1024}";
+ std::print("48 Adam writes;266 values/17 leaves;all1024 inverse samples and both Jacobians/roundtrips/normalization/restore/immutability pass. Test NLL {:.9f}.\n",output.at("loss").item());
+}
+```
+// result_begin: markdown
+48 Adam writes;266 values/17 leaves;all1024 inverse samples and both Jacobians/roundtrips/normalization/restore/immutability pass. Test NLL 2.879116774.
+// result_end
+
+> Inspect every observation without cutting off the high banana tail
+
+The displayed pool scatter retains all 768 rows. Both coordinate axes span
+[-4,7] at equal screen units, showing the test tail above y=5 that the source's
+[-4,4] plotting window hid. This plotting change does not change data, fitting,
+likelihoods or source IDs. Point overlap can conceal individual rows visually;
+the native arrays retain them all.
+
+```{cpp, results="markdown", file="figures/rnvp_data.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> data;
+ for(auto& [key,value]:n::load_npz("build/real_nvp_density/data.npz"))data[key]=value;
+ auto plot=dm::graphics::RPlot::create();int i=0;
+ std::vector<dm::graphics::RGB> colors{{148,163,184},{37,99,235},{234,88,12}};
+ for(auto split:{"fit","validation","test"}){auto points=data.at(std::string(split)+"_points");
+  plot.points(n::select(points,1,0).to_vector<double>(),n::select(points,1,1).to_vector<double>(),split,colors[i++],3);}
+ plot.size(900,942).margins(90,24,72,84).x_limits(-4,7).y_limits(-4,7)
+ .x_label("x0").y_label("x1").title("Original banana pools: every row retained")
+ .save_svg("build/rnvp_data.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_data.svg)
+// result_end
+
+\caption(Gray fit 512, blue validation 128 and orange test 128. Equal physical coordinate units preserve the banana geometry and show every held-out tail point.)
+\alttext(All 768 original points occupy a banana cloud; the orange test points extend above five vertically.)
+
+> Compare the fixed-final fit with fitting-only Gaussian baselines
+
+Validation NLL decreases from 2.82846 to 2.81098 over the three fixed epochs.
+The final test NLL is **2.879116774**, below the fitting-only full Gaussian's
+2.994631823 and diagonal Gaussian's 2.993811360, but above analytic truth's
+2.796480843. The identity Gaussian scores 3.013872927. This is the original
+single short run; no resampling interval, generalization significance claim
+or test-driven model selection is added. Every baseline is evaluated on the
+same held-out rows, with moments fitted only to the 512 fitting observations.
+
+```{cpp, results="markdown", file="figures/rnvp_history.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <fstream>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> out,v;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/outputs.npz"))out[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/plot_values.npz"))v[k]=x;
+ auto serial=[](const n::Tensor& x){return n::select(n::cumsum(x/double(x.size(0)),0),0,x.size(0)-1).item();};
+ std::ifstream f("build/real_nvp_density/history.tsv");std::string header;std::getline(f,header);
+ std::vector<double> epoch,loss;double e,l,d;while(f>>e>>l>>d){epoch.push_back(e);loss.push_back(l);}
+ double full=serial(v.at("full_gaussian_point_nll")),diag=serial(v.at("diagonal_gaussian_point_nll")),identity=serial(v.at("identity_point_nll")),truth=serial(v.at("true_point_nll"));
+ auto plot=dm::graphics::RPlot::create();plot.lines(epoch,loss,"Validation RealNVP",{37,99,235})
+ .lines({1,3},{full,full},"Test fitted full Gaussian",{220,38,38})
+ .lines({1,3},{diag,diag},"Test fitted diagonal",{234,88,12})
+ .lines({1,3},{identity,identity},"Test identity Gaussian",{100,116,139})
+ .lines({1,3},{truth,truth},"Test analytic truth",{22,163,74})
+ .points({3},{out.at("loss").item()},"Final test RealNVP",{126,34,206},5)
+ .y_limits(2.75,3.3).x_label("Fixed fitting epoch").y_label("NLL, nats per two-coordinate row")
+ .title("Final RealNVP improves on the fitted Gaussian baselines")
+ .save_svg("build/rnvp_history.svg");
+ std::print("| Fixed-final test method | NLL, nats/row |\n|---|---:|\n| RealNVP |{:.12f}|\n| Fitting-only full Gaussian |{:.12f}|\n| Fitting-only diagonal Gaussian |{:.12f}|\n| Identity Gaussian |{:.12f}|\n| Analytic banana truth |{:.12f}|\n",out.at("loss").item(),full,diag,identity,truth);
+}
+```
+// result_begin: markdown
+| Fixed-final test method | NLL, nats/row |
+|---|---:|
+| RealNVP |2.879116773605|
+| Fitting-only full Gaussian |2.994631823106|
+| Fitting-only diagonal Gaussian |2.993811360440|
+| Identity Gaussian |3.013872926549|
+| Analytic banana truth |2.796480843500|
+\image(figures/rnvp_history.svg)
+// result_end
+
+\caption(Three validation RealNVP points, one final test RealNVP point and four fixed held-out baselines. RealNVP lies below both fitted Gaussian baselines and above analytic truth. These are NLLs per two-dimensional row, not bits per pixel.)
+\alttext(The blue validation curve decreases from about 2.828 to 2.811. Final test RealNVP near 2.879 lies below fitted Gaussian baselines near 2.995 and above true density near 2.796.)
+
+> Compare true and learned densities on the same grid and colour scale
+
+All 16,384 grid centers lie in [-4,4]² at spacing 1/16. Rows run from high y
+to low y in the saved source arrays. The plot explicitly reverses that storage
+axis to draw physical y upward. Both panels use the same native terrain palette
+and density range 0..0.20, with square cells and equal coordinate units. The
+finite window is a visualization; it does not claim the density integrates to
+one within this box. The exact global normalization follows the invertible map
+and its Gaussian base, checked separately below.
+
+```{cpp, results="markdown", file="figures/rnvp_density.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> data;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/grid.npz"))data[k]=x;
+ std::vector<double> axis;for(int i=0;i<128;++i)axis.push_back((i+.5)/16-4);
+ auto panel=[&](const char* key,const char* title){auto p=n::exp(data.at(key)).to_vector<double>();
+  std::vector<std::vector<double>> z(128,std::vector<double>(128));
+  for(int x=0;x<128;++x)for(int y=0;y<128;++y)z[x][y]=p[(127-y)*128+x];
+  auto plot=dm::graphics::RPlot::create();plot.image(axis,axis,z,dm::graphics::terrain_colors(32),0,.20)
+  .margins(72,22,54,64).x_limits(-4,4).y_limits(-4,4).x_label("x0").y_label("x1").title(title);return plot;};
+ dm::graphics::RLayout::create(1,2).add(panel("true_log_probability","Analytic banana PDF"))
+ .add(panel("model_log_probability","Final RealNVP PDF")).size(1100,574).fit_panels()
+ .save_svg("build/rnvp_density.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_density.svg)
+// result_end
+
+\caption(Left: analytic banana; right: fixed-final RealNVP. Both retain all 128×128 cells and the same 0..0.20 density colour limits. The learned density bends toward the banana shape but remains different from truth after this short fit.)
+\alttext(Two equally scaled density maps show a curved banana ridge on the left and a partially bent learned density on the right.)
+
+> Retain all inverse samples and all transformed held-out points
+
+The first scatter overlays every generated point with every held-out point in
+observation coordinates. The next compares transformed held-out points with
+all Gaussian-prior draws in latent coordinates. Both retain points beyond the
+source's smaller plotting window, using equal coordinate scales. They are
+qualitative distribution views, not a two-sample test or proof of a good fit.
+
+```{cpp, results="markdown", file="figures/rnvp_samples.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> a,b;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/samples.npz"))a[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/data.npz"))b[k]=x;
+ auto left=a.at("samples"),right=b.at("test_points");
+ dm::graphics::RPlot::create().points(n::select(left,1,0).to_vector<double>(),n::select(left,1,1).to_vector<double>(),"Inverse samples",{148,163,184},3)
+ .points(n::select(right,1,0).to_vector<double>(),n::select(right,1,1).to_vector<double>(),"Held-out test",{234,88,12},4)
+ .size(900,942).margins(90,24,72,84).x_limits(-4,7).y_limits(-4,7)
+ .x_label("Coordinate 0").y_label("Coordinate 1").title("Observation space: held-out and all 1024 inverse samples").save_svg("build/rnvp_samples.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_samples.svg)
+// result_end
+
+\caption(All 1,024 inverse samples (gray) and 128 original test observations (orange), retaining the high banana tail.)
+\alttext(Gray inverse samples bend with the learned affine map; orange test points include the high banana tail.)
+
+```{cpp, results="markdown", file="figures/rnvp_latent.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> a,b;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/samples.npz"))a[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/outputs.npz"))b[k]=x;
+ auto left=a.at("prior"),right=b.at("latent");
+ dm::graphics::RPlot::create().points(n::select(left,1,0).to_vector<double>(),n::select(left,1,1).to_vector<double>(),"Gaussian prior",{148,163,184},3)
+ .points(n::select(right,1,0).to_vector<double>(),n::select(right,1,1).to_vector<double>(),"Transformed test",{234,88,12},4)
+ .size(900,942).margins(90,24,72,84).x_limits(-4,7).y_limits(-4,7)
+ .x_label("Coordinate 0").y_label("Coordinate 1").title("Latent space: transformed test and all 1024 Gaussian draws").save_svg("build/rnvp_latent.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_latent.svg)
+// result_end
+
+\caption(All 1,024 Gaussian-prior points (gray) and 128 transformed held-out points (orange), at the same equal coordinate scale as observation space.)
+\alttext(Gray Gaussian draws form an oval latent cloud while orange transformed held-out points retain a high vertical tail.)
+
+> Show the input-dependent volume factors on both paths
+
+These panels retain each analytic determinant and its actual-Jacobian check.
+Forward points use observed x0; inverse points use supplied Gaussian z0.
+The other coordinate also affects the map, so a vertical spread at the same
+horizontal coordinate is expected. These are point clouds, not single-variable
+functions or paired forward/inverse observations.
+
+```{cpp, results="markdown", file="figures/rnvp_volume.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> data,out,samples,v;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/data.npz"))data[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/outputs.npz"))out[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/samples.npz"))samples[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/plot_values.npz"))v[k]=x;
+ auto panel=[&](const n::Tensor& points,const n::Tensor& analytic,const n::Tensor& actual,const char* title,const char* xlabel){
+  auto x=n::select(points,1,0).to_vector<double>();auto p=dm::graphics::RPlot::create();
+  p.points(x,analytic.to_vector<double>(),"Analytic logdet",{37,99,235},3)
+  .points(x,actual.to_vector<double>(),"Actual Jacobian",{234,88,12},1)
+  .margins(72,22,54,64).y_limits(-1.3,1.6).x_label(xlabel).y_label("Log absolute determinant, nats").title(title);return p;};
+ dm::graphics::RLayout::create(1,2)
+ .add(panel(data.at("test_points"),out.at("forward_logdet"),v.at("actual_logdet"),"Forward: all128 test rows","Observed x0"))
+ .add(panel(samples.at("prior"),samples.at("inverse_logdet"),v.at("inverse_actual_logdet"),"Inverse: all1024 prior rows","Supplied latent z0"))
+ .size(1100,500).fit_panels().save_svg("build/rnvp_volume.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_volume.svg)
+// result_end
+
+\caption(All 128 forward and 1,024 inverse log determinants are retained twice, once from the analytic path and once from the actual Jacobian. Their input dependence is visible; the next plot resolves their small Float32 disagreement.)
+\alttext(Two scatter panels show variable forward and inverse log determinants. Small orange actual-Jacobian points coincide with larger blue analytic points for every row.)
+
+> Check actual forward and inverse determinants along their own paths
+
+Reverse-mode differentiation of each output coordinate yields two actual
+Jacobian rows. Their positive determinant agrees with the per-row analytic
+logdet on all 128 held-out points and all 1,024 inverse samples. The forward
+logdet ranges from −.897621274 to .506156325; it is not a global constant.
+The inverse logdet is computed from its supplied latent coordinates along the
+reversed affine path. The following residual plot retains all 1,152 values,
+subtracts the matching analytic value for each row and scales by 1e7 to reveal
+Float32 errors. The two row indices refer to different pools, not paired points.
+
+```{cpp, results="markdown", file="figures/rnvp_jacobians.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> v,o,samples;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/plot_values.npz"))v[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/outputs.npz"))o[k]=x;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/samples.npz"))samples[k]=x;
+ auto a=(v.at("actual_logdet")-n::cast(o.at("forward_logdet"),n::DType::Float64))*1e7,b=(v.at("inverse_actual_logdet")-n::cast(samples.at("inverse_logdet"),n::DType::Float64))*1e7;
+ auto p=dm::graphics::RPlot::create();p.points(n::arange(0,128).to_vector<double>(),a.to_vector<double>(),"Forward, all128 test rows",{37,99,235},3)
+ .points(n::arange(0,1024).to_vector<double>(),b.to_vector<double>(),"Inverse, all1024 prior rows",{234,88,12},2)
+ .y_limits(-5,7).x_label("Row index in its own pool").y_label("(Actual - analytic logdet) x 1e7")
+ .title("Actual Jacobians match each per-point log determinant")
+ .save_svg("build/rnvp_jacobians.svg");
+}
+```
+// result_begin: markdown
+\image(figures/rnvp_jacobians.svg)
+// result_end
+
+\caption(Every actual forward and inverse determinant is positive. The source maximum forward logdet error is 2.2819e-7; all inverse errors also satisfy 5e-6. Pool indices have separate meanings, so this overlay does not pair corresponding points.)
+\alttext(128 blue forward and 1024 orange inverse logdet residuals cluster near zero at the displayed 1e7 scale, with no omitted rows.)
+
+> Check normalization identities and both floating roundtrips
+
+For samples x=f⁻¹(z), log p_X(x)+log|det Df⁻¹(z)| must equal log p_Z(z).
+Every one of the 1,024 generated rows is checked, independently of the density
+window. This is a change-of-variables consistency check, not a finite-window
+quadrature approximation. The source tolerance is 2e-5 nats; its model base
+constant is rounded as described above. The following native table also retains
+the maximum errors of both floating roundtrips. Inversion has an exact algebraic
+form, while Float32 operations still incur rounding error.
+
+```{cpp, results="markdown", file="figures/rnvp_normalization.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main(){
+ namespace n=dm::nn;std::map<std::string,n::Tensor> v;
+ for(auto& [k,x]:n::load_npz("build/real_nvp_density/plot_values.npz"))v[k]=x;
+ auto error=v.at("normalization_error");
+ dm::graphics::RPlot::create().points(n::arange(0,1024).to_vector<double>(),(error*1e6).to_vector<double>(),"All prior rows",{37,99,235},2)
+ .y_limits(0,5).x_label("Original prior row index").y_label("Absolute identity residual x 1e6, nats")
+ .title("Every inverse sample satisfies change of variables")
+ .save_svg("build/rnvp_normalization.svg");
+ std::print("| Exact-form / Float32 check | Maximum absolute error |\n|---|---:|\n| inverse(forward(test)) |{:.12g}|\n| forward(inverse(prior)) |{:.12g}|\n| Change-of-variables log identity |{:.12g}|\n",n::max(v.at("forward_roundtrip_absolute_error")).item(),n::max(v.at("inverse_roundtrip_absolute_error")).item(),n::max(error).item());
+}
+```
+// result_begin: markdown
+| Exact-form / Float32 check | Maximum absolute error |
+|---|---:|
+| inverse(forward(test)) |4.76837158203e-07|
+| forward(inverse(prior)) |4.76837158203e-07|
+| Change-of-variables log identity |1.34568297128e-06|
+\image(figures/rnvp_normalization.svg)
+// result_end
+
+\caption(All 1,024 normalization residuals are plotted in original prior-row order, without subsampling. The checks also include bit-exact restore, repeated samples/Jacobians, single/batch parity, per-point determinant cancellation and immutable inference.)
+\alttext(1024 blue absolute normalization residuals remain small at the displayed million-fold scale; no row exceeds the original 2e-5-nat tolerance.)
+
+> What the checks establish
+
+All original procedural pools, learned states/gradients, 48 Adam writes,
+validation records, stage scale/shift fields, both actual Jacobians, every prior
+sample, density grid, fitting-only moments and non-timing scalar metrics match
+the source exactly. The independent NumPy audit composes analytic affine
+Jacobian matrices, checks all 17 parameter leaves by finite differences,
+verifies every update and inverse sample, and reconstructs all raw midpoint-MT
+Box-Muller banks. It checks spatially varying determinants on **both** paths
+without calling native model math or refitting a substitute.
+
+This four-stage two-dimensional model demonstrates tractable per-point volume
+change and exact-form inversion. Its original fixed-final likelihood improves
+on fitted Gaussian baselines, while analytic truth remains better. That result
+is specific to the retained 266-value architecture, seeds, tiny procedural pools
+and predefined final epoch. The study does not claim full-image RealNVP
+performance, a tuned best model or uncertainty quantified across training runs.
+

@@ -200,7 +200,7 @@ int main() {
 
   // The tape shows the custom node.
   auto z = nn::scalar(0.5, nn::DType::Float64).requires_grad_();
-  std::print("\n```\n{}```\n", nn::tape({nn::square(erfc_fn(z))}, {{z, "z"}}).to_text());
+  std::print("\n{}\n", nn::tape({nn::square(erfc_fn(z))}, {{z, "z"}}).to_markdown());
 
   // Ops with no useful derivative record no history: a gradient through them is an error.
   try {
@@ -224,51 +224,12 @@ int main() {
 - the same backward with the sign flipped: ok = false, largest error 2.257
   - first failure: input 0, jacobian entry 0: analytic 0.11893 vs numeric -0.11893
 
-```
-Square_168 [Square] [] <- Erfc_167
-Erfc_167 [Erfc] [] <- z
-z [Leaf] []
-```
+| Node | Operation | Shape | Inputs |
+| :--- | :--- | :--- | :--- |
+| Square&#95;168 | Square | &#91;&#93; | Erfc&#95;167 |
+| Erfc&#95;167 | Erfc | &#91;&#93; | z |
+| z | Leaf | &#91;&#93; |  |
 
-- gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
-// result_end
-```
-Square_168 [Square] [] <- Erfc_167
-Erfc_167 [Erfc] [] <- z
-z [Leaf] []
-```
-
-- gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
-// result_end
-```
-Square_168 [Square] [] <- Erfc_167
-Erfc_167 [Erfc] [] <- z
-z [Leaf] []
-```
-
-- gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
-// result_end
-```
-Square_168 [Square] [] <- Erfc_167
-Erfc_167 [Erfc] [] <- z
-z [Leaf] []
-```
-
-- gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
-// result_end
-```
-Square_168 [Square] [] <- Erfc_167
-Erfc_167 [Erfc] [] <- z
-z [Leaf] []
-```
-
-- gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
-// result_end
-```
-Square_168 [Square] [] <- Erfc_167
-Erfc_167 [Erfc] [] <- z
-z [Leaf] []
-```
 
 - gradient through ceil: `grad: output 0 does not require grad (it has no history connecting it to any input)`
 // result_end

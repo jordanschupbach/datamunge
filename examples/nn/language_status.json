@@ -1,978 +1,9 @@
 {
   "schema": 1,
-  "total": 415,
+  "total": 289,
   "test_epoch_limit": 5,
-  "api_sha256": "199bd4079a72eaacb403fce3d6d9c71237f414d02128b04aee84e33dec0db377",
+  "api_sha256": "0e672070aef6463dcf2f2dd2e53ce21b8ae2e36cae3d9db6d8d3598381a7c181",
   "examples": {
-    "autodiff": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/autodiff.cpp",
-      "cpp_sha256": "10292df94d94abe68807b8026fb964039c67409cbd860ef3b9aa47b52dbb0648",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/autodiff.py",
-        "implementation": "native",
-        "sha256": "de1f465c03e8551e064d52d1ca1a1ff248e3d3f96e30c2d0eab2534982b9fed4",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/autodiff.R",
-        "implementation": "native",
-        "sha256": "1a473edf30312cc4b6b9af84f00dde517658cb063663f8a37b40e76ef76d9ede",
-        "validation": null
-      }
-    },
-    "custom_gradient": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/custom_gradient.cpp",
-      "cpp_sha256": "e22a08457d4d960d567ce15e5ab68d3fee7c4c2ff892a077d89f9e9e9210d906",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/custom_gradient.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/custom_gradient.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "custom_op_kernel": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/custom_op_kernel.cpp",
-      "cpp_sha256": "0bbf549073a0dcd42e1567fa512a4168d9232dd4543aa7cfb7b8b201d8acc30b",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/custom_op_kernel.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/custom_op_kernel.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "graph_construction": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/graph_construction.cpp",
-      "cpp_sha256": "7fcea235c3a113e1d0d54c3bcdc40cb339b47eaf8d5e8266d6fd50a0ffedb025",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/graph_construction.py",
-        "implementation": "native",
-        "sha256": "c1f2b672972c2ae04f5ea14530104d87ac68b345275f770e71ffe1de104301fa",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/graph_construction.R",
-        "implementation": "native",
-        "sha256": "b75b02e3ca7b4d08c89c8754813064c700c5f81ee217f7954812438d36291d46",
-        "validation": null
-      }
-    },
-    "hello_tf": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/hello_tf.cpp",
-      "cpp_sha256": "87b2f31ada01d660d92f4ab5a1adfa2dfdf1c89b2d6d321b4ee2b077b9f5e6f2",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/hello_tf.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/hello_tf.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "sessions": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/sessions.cpp",
-      "cpp_sha256": "49b855b4e696ec6e02a71bb76701c7ef24c6ec14e23f88cc5256fc06548ad13b",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/sessions.py",
-        "implementation": "native",
-        "sha256": "95ef1a72c65275d8e4a1ba039d9825c432465c219befd51e285d41050a585a1a",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/sessions.R",
-        "implementation": "native",
-        "sha256": "3f061a69ae70cbb1b4cbf3a892891deaedab4cc0b5c50eda27c3afed9c5f259c",
-        "validation": null
-      }
-    },
-    "tensor_basics": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/tensor_basics.cpp",
-      "cpp_sha256": "70be07cada1487488ef39832bd6232550f9be16a34e201a1a61165c820d4fa00",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/tensor_basics.py",
-        "implementation": "native",
-        "sha256": "a9ce539f03d6f40bc30e6ab3212c922e7fd7ff4fb06cf5767f912a8aa7488476",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/tensor_basics.R",
-        "implementation": "native",
-        "sha256": "4632bb8b7d4b9adefb44e2979aeb39a707a7dc4c24d1f337e8cf71f13b0c7ce0",
-        "validation": null
-      }
-    },
-    "variables_initializers": {
-      "cpp": "examples/nn/0_foundations/0.1_tensors_graphs_sessions/variables_initializers.cpp",
-      "cpp_sha256": "d62fef779cc90e73c72f91f9ea3538286ff00e5511034bff2fae85bd7dcfb9ce",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/variables_initializers.py",
-        "implementation": "native",
-        "sha256": "eb1cea560c50db9834877be6007a17ef44d16e4673b0801d7b1d81990f5b1104",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.1_tensors_graphs_sessions/variables_initializers.R",
-        "implementation": "native",
-        "sha256": "d8c8ac7e10b2611209d856b5205b1e913fd639dbf31972478451e6f61c36ced7",
-        "validation": null
-      }
-    },
-    "activations": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/activations.cpp",
-      "cpp_sha256": "4dbd008c53a595ba72be3a608422811069212f354068bc1b6c48f7bea7a2cd70",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/activations.py",
-        "implementation": "native",
-        "sha256": "bac30ad743fcb02478d88f80b86b265b1e25540978d8810659aea8dcacc92bb2",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/activations.R",
-        "implementation": "native",
-        "sha256": "c3b8432e3e2c466d610ccb82680190bc90a28f84754961a76b92f8d108ff25c4",
-        "validation": null
-      }
-    },
-    "attention": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/attention.cpp",
-      "cpp_sha256": "63fcaaa7eeb9a783d997537950639a5a3f6cab1d6b9d85d8a30ea9404c0e0700",
-      "classification": true,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/attention.py",
-        "implementation": "native",
-        "sha256": "84a68624cdb28f09fb955149295b369491a985e8b47dc09ab48437e926a63fd3",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/attention.R",
-        "implementation": "native",
-        "sha256": "b5782029859466e5a82ebd8eda5e857c6306472d9eaf677086db653dbc520d40",
-        "validation": null
-      }
-    },
-    "batch_norm": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/batch_norm.cpp",
-      "cpp_sha256": "f123ddda0234e60b2850f976cdba4b7dd6c970980950edd0c0c2416a76817baf",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/batch_norm.py",
-        "implementation": "native",
-        "sha256": "b818a2bc288cb114832ce3478e14f18e8a834133b831b45369dc7f0f7183e994",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/batch_norm.R",
-        "implementation": "native",
-        "sha256": "9395d4e45c68043ce7e9b8d5b9cb5c2190d5678e67db28de43e55af0e980bfa8",
-        "validation": null
-      }
-    },
-    "conv_layers": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/conv_layers.cpp",
-      "cpp_sha256": "aafbf00dd99c16a5da73ce3bf743114d9bcb93afc802f283d0635f6b908757b9",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/conv_layers.py",
-        "implementation": "native",
-        "sha256": "19dee3766cac65d252169ce3bf02cae9e49396078fe4278f678a4868a11078c9",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/conv_layers.R",
-        "implementation": "native",
-        "sha256": "c983ae438d32fde12937716adab3ca65c7a55ad14b53d875f5e38f67d9da008b",
-        "validation": null
-      }
-    },
-    "dense_layer": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/dense_layer.cpp",
-      "cpp_sha256": "a4029925f7bde82e9160f96be00157317679b884ccb820722c47bc06497ccf84",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/dense_layer.py",
-        "implementation": "native",
-        "sha256": "11e56ad3e76f27da9db05d1c01e4a74a1bb8823a4a5f91c7be59f0e763236184",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/dense_layer.R",
-        "implementation": "native",
-        "sha256": "6ce7cb6e95a8d070016549cdc941306a9e7b15954253b5a1213be307d5c1dd36",
-        "validation": null
-      }
-    },
-    "dropout": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/dropout.cpp",
-      "cpp_sha256": "8bfffc9df1ffffa111e31a8c9b5f1048a7eff07adae7f6fa996f163d70388675",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/dropout.py",
-        "implementation": "native",
-        "sha256": "5d9a62a25b55a3c6105f66534d14e9e32c1eade9ced8c4f1699b3b34c81f97f8",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/dropout.R",
-        "implementation": "native",
-        "sha256": "be734dc0bfc97a4b0099cc752d38e2e4a49e21ff6fe0e420013a6735f391f116",
-        "validation": null
-      }
-    },
-    "embedding": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/embedding.cpp",
-      "cpp_sha256": "656b32a5d849a413d0710f89a573a3cf0c227d325a36daab39f7bff91f1ad988",
-      "classification": true,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/embedding.py",
-        "implementation": "native",
-        "sha256": "f0a12fe4eaad5d37556c99675d0813a437ab566967f30d546f097c31553bc92b",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/embedding.R",
-        "implementation": "native",
-        "sha256": "492293a7d1163068ea6f266461096a779002cc180e70a19997fcd2902793eb21",
-        "validation": null
-      }
-    },
-    "normalization_layers": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/normalization_layers.cpp",
-      "cpp_sha256": "9791c98cdf5b4f0c6d81b04381ad2bf0a72e879385bcd9b09928bd327012cc8b",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/normalization_layers.py",
-        "implementation": "native",
-        "sha256": "41322d256b7c7d078a36c68af3a69cefb6452bcc39f18cd53a452dd73e8dcdb7",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/normalization_layers.R",
-        "implementation": "native",
-        "sha256": "5de90b824d1869bd83a7e51b8f1e70a23354a21cad2a48c2e4f0b5998b7c820d",
-        "validation": null
-      }
-    },
-    "pooling": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/pooling.cpp",
-      "cpp_sha256": "d18c2345517645c5df79744fbbf9e6d2c8b7903e4889169dd93d7e502f69f5e3",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/pooling.py",
-        "implementation": "native",
-        "sha256": "7bb6ecd4bcb3962804a04fa32bc9a65117b99ecef45e7c6bfc1f4755844582d6",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/pooling.R",
-        "implementation": "native",
-        "sha256": "962549fdb769204dc84d2ed34f203b9a3aaaa2be5be19cb2e9fc890323f335f7",
-        "validation": null
-      }
-    },
-    "positional_encodings": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/positional_encodings.cpp",
-      "cpp_sha256": "0aab25e8826a77bf99abe249e97988326a05dced20336b7df6a43ef441a9ba73",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/positional_encodings.py",
-        "implementation": "native",
-        "sha256": "0b999fecee576271313a6f602dc76ebd90d7c7b58b3656254b8ae264fad96ad9",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/positional_encodings.R",
-        "implementation": "native",
-        "sha256": "844829142b5ad201bec9370dff65f6b50933f792df86ccdaf24ef24cc84fc0d2",
-        "validation": null
-      }
-    },
-    "recurrent_cells": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/recurrent_cells.cpp",
-      "cpp_sha256": "c47073ef71b56a15f8973caec9d6f23caaa6c348a10793d728446190c894a527",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/recurrent_cells.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/recurrent_cells.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "weight_spectral_norm": {
-      "cpp": "examples/nn/0_foundations/0.2_reusable_layer_library/weight_spectral_norm.cpp",
-      "cpp_sha256": "bf4325349c4cf579f988dbf8c8e8abee9623bbf28caf0f849fc9ef0789f13164",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.2_reusable_layer_library/weight_spectral_norm.py",
-        "implementation": "native",
-        "sha256": "2941b7ef450625fb3c8f3f4faebd5c7b9932bb62552b86ed4d432d138ba4ddfc",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.2_reusable_layer_library/weight_spectral_norm.R",
-        "implementation": "native",
-        "sha256": "186faf875dd3a5bbdc6d63baab9b2cd56b3bff19ab1aa339a36625832fe077b5",
-        "validation": null
-      }
-    },
-    "adaptive_optimizers": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/adaptive_optimizers.cpp",
-      "cpp_sha256": "259a9f6e5d5f12299d627e79c4ed09b6f8d1690ce9cb6e92dac02532f7c5f773",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/adaptive_optimizers.py",
-        "implementation": "native",
-        "sha256": "7c283d4bcbfba06b4b7ec5ddd75b5b986e0373377ae6a74440aa6145ff2d3465",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/adaptive_optimizers.R",
-        "implementation": "native",
-        "sha256": "dde3ab384dd8bc91033bb2ec71796e4cd239d6f093f339da32b37bdcc0903bb1",
-        "validation": null
-      }
-    },
-    "advanced_optimizers": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/advanced_optimizers.cpp",
-      "cpp_sha256": "88011d4dd32f113d01cf0b999fe536279dadd4d4ba1fd8224a2881aa458b87af",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/advanced_optimizers.py",
-        "implementation": "native",
-        "sha256": "63dc8d54d524e90b6ba8c98505a6e29b24ce3cddaa889629321b52eb60d9134b",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/advanced_optimizers.R",
-        "implementation": "native",
-        "sha256": "2d18a16f69e9ae19b28a794794f338842ce321671f4f1a083a2e564dcbcdc7f3",
-        "validation": null
-      }
-    },
-    "early_stopping_checkpoints": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/early_stopping_checkpoints.cpp",
-      "cpp_sha256": "ec428bff7acc07f15d3e30a0ea92de9099add791cd06b1106ff2dc0abd3ebfeb",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/early_stopping_checkpoints.py",
-        "implementation": "native",
-        "sha256": "c4657d74931b5796d84487aa558236dbd9008a60d215ddd58546686f824618ff",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/early_stopping_checkpoints.R",
-        "implementation": "native",
-        "sha256": "52ef7fc6842a18a74d1a7286f7a23624a7005b7a439863d12d2423f39f1c1edb",
-        "validation": null
-      }
-    },
-    "gradient_clipping_accumulation": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/gradient_clipping_accumulation.cpp",
-      "cpp_sha256": "b126687d6ba56ee8ac2bcb1d9d7d584862303a0cff315f60fa247e5e32c1721d",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/gradient_clipping_accumulation.py",
-        "implementation": "native",
-        "sha256": "8ba8bb5f02a7e347c36c6dbb0637f7ca47459d10b49ca1cceef48fb7a2c1ccf6",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/gradient_clipping_accumulation.R",
-        "implementation": "native",
-        "sha256": "74c30a9aa71e3794ebbba355b5e0bea5625f6418bda9b227b700c9a86bc40925",
-        "validation": null
-      }
-    },
-    "learning_rate_schedules": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/learning_rate_schedules.cpp",
-      "cpp_sha256": "ac41b3df9143de2bed593963ecb76a572d8fc82e596d4d73e1743b51a7e96f23",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/learning_rate_schedules.py",
-        "implementation": "native",
-        "sha256": "85056c7b2ac1a50c482357235c3510383af34f8057a217f3eea6286bdb4b6ded",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/learning_rate_schedules.R",
-        "implementation": "native",
-        "sha256": "9add784896de30f8a7fe71098f5d397eb8cd77bebcf9e64b620e98090577fafc",
-        "validation": null
-      }
-    },
-    "metrics": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/metrics.cpp",
-      "cpp_sha256": "fe930f169a84a89b2713892a185d337e37a324e842acfd251f36694c1e427085",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/metrics.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/metrics.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "mixed_precision": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/mixed_precision.cpp",
-      "cpp_sha256": "2df9ff72673966142d348345d413037ea4b33d63ca9c7b502213eef5e0af858e",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/mixed_precision.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/mixed_precision.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "sgd_momentum": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/sgd_momentum.cpp",
-      "cpp_sha256": "9748bc2f8a7270268f7ca25f881bafce94545a01df75bd9808dd831078233fbe",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/sgd_momentum.py",
-        "implementation": "native",
-        "sha256": "8ce18ce6eb44aa4a6ee78eca9da32576778d0e9d3b4d57a009079f73e54c49ac",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/sgd_momentum.R",
-        "implementation": "native",
-        "sha256": "614ad03d13ff46604a016cad713d1fca4da16dc86079184d7d6dffc7e9d3c4dd",
-        "validation": null
-      }
-    },
-    "training_loop": {
-      "cpp": "examples/nn/0_foundations/0.3_optimizers_and_training_loop/training_loop.cpp",
-      "cpp_sha256": "a5640a82973a6d14d5391d62265f67bd3c5b7d6ff14d50acccb6e888b098abcb",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/training_loop.py",
-        "implementation": "native",
-        "sha256": "51470c9dd7a9548e7f80344005cf82aaa7006cc79dbdab7d173d5368535f83e3",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.3_optimizers_and_training_loop/training_loop.R",
-        "implementation": "native",
-        "sha256": "430e833c570a0a6791d2e819f18bd39bf22730fee7e9fe025a12ea86ff074e8a",
-        "validation": null
-      }
-    },
-    "audio_features": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/audio_features.cpp",
-      "cpp_sha256": "32d2ba048cbaaf3cd57d95252c46e25ee3da7fbe149aa60a265b6c922fa6bd7c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/audio_features.py",
-        "implementation": "native",
-        "sha256": "02e040b2623ea0459560d4df222d2d427417a47a321e568ba33464f4342e2c85",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/audio_features.R",
-        "implementation": "native",
-        "sha256": "cadc856099b20bc62d1e3c30d18af0a8790a04dca83d19189033aae47197c431",
-        "validation": null
-      }
-    },
-    "cifar_loader": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/cifar_loader.cpp",
-      "cpp_sha256": "5e85ccc7184ad7b42cbbd911d1555e44b077b298f9684e5319fe01100bee814f",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/cifar_loader.py",
-        "implementation": "native",
-        "sha256": "2f8fb2f5e48e6343308a2a4bbf788edd858c9fc539edb2302cd18e131353c690",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/cifar_loader.R",
-        "implementation": "native",
-        "sha256": "e914f0adf5c65e3b70c492cc56d1c9c709d04d02574108711a2d69c2a091db39",
-        "validation": null
-      }
-    },
-    "csv_features": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/csv_features.cpp",
-      "cpp_sha256": "129fdf54c2862c16dcc3be027910381f9bc60268611ea9c387a43aa4bdcc5953",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/csv_features.py",
-        "implementation": "native",
-        "sha256": "ae94646b4d5c9a005ded95906b8580e956e816925b9983986d44745fec1e5996",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/csv_features.R",
-        "implementation": "native",
-        "sha256": "5db3b6a900395ae17325b1a61ade895bc28bf9dd4111f0588eea285c589af20d",
-        "validation": null
-      }
-    },
-    "data_augmentation": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/data_augmentation.cpp",
-      "cpp_sha256": "a82ff31a976204645f896ea20dfd3479a9e388a6ae6fe7e6e58b37a9789f9532",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/data_augmentation.py",
-        "implementation": "native",
-        "sha256": "017e2ab3605b074dfcdf950c2d7ba31df669a6013f403e7c557e8c526bfb787d",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/data_augmentation.R",
-        "implementation": "native",
-        "sha256": "0b5a0755d206d1b6c921f31331b88488a79be6f78f241ecf7de54cc33cb3e9dd",
-        "validation": null
-      }
-    },
-    "idx_loader": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/idx_loader.cpp",
-      "cpp_sha256": "b5530989d039453c701b75962e732327e298ed40ffb1ac8c967e07809c5d4ce5",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/idx_loader.py",
-        "implementation": "native",
-        "sha256": "f7bd07f68c7d5e9badd8d2af95772a6560352ef041329f925ea6ae179942b2a3",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/idx_loader.R",
-        "implementation": "native",
-        "sha256": "3c9be1134b3878155755d70bb061574aa9f2c67fad990cba84222edb60d6000c",
-        "validation": null
-      }
-    },
-    "image_folder_loader": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/image_folder_loader.cpp",
-      "cpp_sha256": "827acf9d0df9a4cedbcd91e5ad2466c14667d33cac2b6a537aa986b0878e246d",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/image_folder_loader.py",
-        "implementation": "native",
-        "sha256": "3917e2328bc8935eb99690ef2abfc561b51a260c511bc200ccc957568a75f399",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/image_folder_loader.R",
-        "implementation": "native",
-        "sha256": "5ecea6e89c14bdb44ff8bc4710c5eee344123f154fb864d1dd31b1c95ed91f49",
-        "validation": null
-      }
-    },
-    "text_tokenization": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/text_tokenization.cpp",
-      "cpp_sha256": "755035d4fe448d4139332702b13b994c514ce2ef0e9b2b37306b61aeee5e6dce",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/text_tokenization.py",
-        "implementation": "native",
-        "sha256": "93a275a2bbb87e33842206a8ee8ccb2c4ed40d85b34fcd25d02320038ff6c808",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/text_tokenization.R",
-        "implementation": "native",
-        "sha256": "eb73fe70beab76436bf2c7755a19e33e039a26a35fb9c68f642cbbe0314551d5",
-        "validation": null
-      }
-    },
-    "tfrecord_io": {
-      "cpp": "examples/nn/0_foundations/0.4_data_loading_and_preprocessing/tfrecord_io.cpp",
-      "cpp_sha256": "c5c901af55950c92bd122a53845e96008e08bc992a88b6116fccbba91397885e",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/tfrecord_io.py",
-        "implementation": "native",
-        "sha256": "0451df8598829cddba88ba26c025c760c3968ffb0a5666c74efe3b4a691bf4ae",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/tfrecord_io.R",
-        "implementation": "native",
-        "sha256": "924d06755a8ad215d212d392a259d49e02c23b1f6b685c2e0b001acedf57dda4",
-        "validation": null
-      }
-    },
-    "checkpoint_io": {
-      "cpp": "examples/nn/0_foundations/0.5_persistence_and_interoperability/checkpoint_io.cpp",
-      "cpp_sha256": "39b9fc58bab782c20b94a1f015ba6e6556a1a338a32545355b91a48042c41593",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.5_persistence_and_interoperability/checkpoint_io.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.5_persistence_and_interoperability/checkpoint_io.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "frozen_graph": {
-      "cpp": "examples/nn/0_foundations/0.5_persistence_and_interoperability/frozen_graph.cpp",
-      "cpp_sha256": "75c2b8f9f54876a438cdab639a6577cde9a94437996bc052646a2a240815c8ab",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.5_persistence_and_interoperability/frozen_graph.py",
-        "implementation": "native",
-        "sha256": "22d538e59485aacbe1dea062cd59af233385fb96f0b086c02de9ff5a595fa29d",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.5_persistence_and_interoperability/frozen_graph.R",
-        "implementation": "native",
-        "sha256": "e0aab4b31a01185ca6523c242d1283edcfebfe45ae5c000a89f8760a280b736d",
-        "validation": null
-      }
-    },
-    "numpy_weights": {
-      "cpp": "examples/nn/0_foundations/0.5_persistence_and_interoperability/numpy_weights.cpp",
-      "cpp_sha256": "332476843c12452f9fe585c6dbf4ed782e068539867c712aa4b4ec22cf1894b5",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.5_persistence_and_interoperability/numpy_weights.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.5_persistence_and_interoperability/numpy_weights.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "saved_model_inference": {
-      "cpp": "examples/nn/0_foundations/0.5_persistence_and_interoperability/saved_model_inference.cpp",
-      "cpp_sha256": "9d1a9d3dfe9c2e2728a1d31dcab7957dafe9bf9f7979d0e1e9eae9d5fd46e68b",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.5_persistence_and_interoperability/saved_model_inference.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.5_persistence_and_interoperability/saved_model_inference.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "tflite_inference": {
-      "cpp": "examples/nn/0_foundations/0.5_persistence_and_interoperability/tflite_inference.cpp",
-      "cpp_sha256": "348735412c8a973ee5b7804bfdcbb7f34c7e271a7d3304b0ce2ac1d7d905c415",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.5_persistence_and_interoperability/tflite_inference.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.5_persistence_and_interoperability/tflite_inference.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "cross_validation": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/cross_validation.cpp",
-      "cpp_sha256": "cdae872b201734cffd74ab2ffaf20d28595dc8f8548b9dd16a4d787a97a2a726",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/cross_validation.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/cross_validation.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "gaussian_mixtures": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/gaussian_mixtures.cpp",
-      "cpp_sha256": "3b91144eaf53a6af1e701c1f6b11df306f0d1502d39af4d6fcd85edbf6f7fc79",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/gaussian_mixtures.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/gaussian_mixtures.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "generalized_linear_models": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/generalized_linear_models.cpp",
-      "cpp_sha256": "0a33170de01621f80816dee014545e86f45d3413944f3ab79f5b2970294d50c3",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/generalized_linear_models.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/generalized_linear_models.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "hidden_markov_models": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/hidden_markov_models.cpp",
-      "cpp_sha256": "f4918d4ba887d999663c5ae0cd4f6ba975481aa38dd03112ab50998b17987ecf",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/hidden_markov_models.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/hidden_markov_models.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "kmeans_clustering": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/kmeans_clustering.cpp",
-      "cpp_sha256": "6c4376ff5a9e3150700bf7007364eecc20f9ab8c8b6d9948bce5850a2b54cf3b",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/kmeans_clustering.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/kmeans_clustering.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "linear_regression": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/linear_regression.cpp",
-      "cpp_sha256": "86b82fefde9ab0ccca0fa328544e87029d3184865c90642a0a945bcab5af85c3",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/linear_regression.py",
-        "implementation": "native",
-        "sha256": "42c3a901464980485ab4a9d0e55d494e7bb7b856335d8a0b0f49edf5d0f8ff10",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/linear_regression.R",
-        "implementation": "native",
-        "sha256": "7af78d0e4c1089b584c1b39a814c0424137851a957a4f6bce2174cd78e93e6ba",
-        "validation": null
-      }
-    },
-    "logistic_regression": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/logistic_regression.cpp",
-      "cpp_sha256": "ae966dac265864f63043fc3933d30e83545d4089d9e34e94543f648892e3433a",
-      "classification": true,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/logistic_regression.py",
-        "implementation": "native",
-        "sha256": "7c12298c12742e8e155d9b957208eecf726bf1378872e4519dc717726ce9900a",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/logistic_regression.R",
-        "implementation": "native",
-        "sha256": "d4aed11618fd4de339c4c4aca0bc1b931c154a9a6759bfdf5e0acf147b639e60",
-        "validation": null
-      }
-    },
-    "mlp_mnist": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/mlp_mnist.cpp",
-      "cpp_sha256": "93a3aeb5fecf4a1b1074829abc079e4b074e1bcc13af88616a2eced3a9c8a752",
-      "classification": true,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/mlp_mnist.py",
-        "implementation": "native",
-        "sha256": "063b9be260ebaf86e04e357ad28ac9b498de39f85b20cc6f2c7c48e318447846",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/mlp_mnist.R",
-        "implementation": "native",
-        "sha256": "6f256c06de87868ba363790d77ef394772ea434b1b75be3846575876b002c58b",
-        "validation": null
-      }
-    },
-    "naive_bayes": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/naive_bayes.cpp",
-      "cpp_sha256": "3fa36a9dd99a9168de2461058578e1e183f082fe38a6feb2f58c566b89b1a701",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/naive_bayes.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/naive_bayes.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "nearest_neighbors": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/nearest_neighbors.cpp",
-      "cpp_sha256": "c927a496325c37e0945c28a21df47dcc7600d42c769709d094d11e19f48b4459",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/nearest_neighbors.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/nearest_neighbors.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "polynomial_regression": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/polynomial_regression.cpp",
-      "cpp_sha256": "2aa2155a15b163c3a9e2da5b5b0ea6ef73ceb84e2511c922eb13654a242c24ff",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/polynomial_regression.py",
-        "implementation": "native",
-        "sha256": "d4e6b43fbcad8dfc9a32888ab2dbbefbeb712b59bdffc4bb099baa3d8ae694e6",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/polynomial_regression.R",
-        "implementation": "native",
-        "sha256": "3cf1880e3d6cf1abcd7d6bb87565c942aa488e5a4f9f79810b5b1cf81a969af1",
-        "validation": null
-      }
-    },
-    "principal_components": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/principal_components.cpp",
-      "cpp_sha256": "adf36eeca62b54481d5abc08412ef36cfc361a6a63c8bfaf78da8ec88dc8e0a2",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/principal_components.py",
-        "implementation": "native",
-        "sha256": "85775820ac4f7976956621e1566e3bd94af39c44ffd3267922b2b8d4db7a9c58",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/principal_components.R",
-        "implementation": "native",
-        "sha256": "39dcd9a96975eb4e59613e36a30a9f8b4231d70dc78009e481c53c19e9712798",
-        "validation": null
-      }
-    },
-    "regularized_regression": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/regularized_regression.cpp",
-      "cpp_sha256": "e0116c6e8f59845ac4aa9bb1e17cc523f4e3846c6a3c7b3bfdcddefdee6fd9e0",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/regularized_regression.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/regularized_regression.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "softmax_mnist": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/softmax_mnist.cpp",
-      "cpp_sha256": "c49c82fbede2bb17d7d1f348a1019f5cca2f55304290d420772e5b5839236756",
-      "classification": true,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/softmax_mnist.py",
-        "implementation": "native",
-        "sha256": "2f76596646e1db660f3619679586631cb606ef7c3550d8d8d74e411f95b88f23",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/softmax_mnist.R",
-        "implementation": "native",
-        "sha256": "37b67e6c7ad843ef34dac50e2ed5140941b57717a697f562b023b3e39a30ac76",
-        "validation": null
-      }
-    },
-    "support_vector_machines": {
-      "cpp": "examples/nn/0_foundations/0.6_classical_machine_learning/support_vector_machines.cpp",
-      "cpp_sha256": "c9f9900405447aad036a67d00ec7a7351a28cff50a2059cee1aa747b2be42b3f",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/0_foundations/0.6_classical_machine_learning/support_vector_machines.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/0_foundations/0.6_classical_machine_learning/support_vector_machines.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
     "c3d": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.cpp",
       "cpp_sha256": "576986022806e0583e5ef111e0edcd431e4bf8b919f12a3404c93503df848cbd",
@@ -1048,7 +79,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_geometry.py",
         "implementation": "reference_wrapper",
-        "sha256": "30f3dad053009b8a4584f73dd5708f21d6db89865c98ce9b8e0a6d41840cb9d9",
+        "sha256": "096c6a6d7bc986638eac84c45337a9a49c67dd356c083c7ae3eefa53e152ef6f",
         "validation": null
       },
       "r": {
@@ -2017,7 +1048,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/capsule_networks.py",
         "implementation": "reference_wrapper",
-        "sha256": "5c8fa3fb1505016f8d8ea121f8d7d001de5f046c517641bc984ed44c39d57e4b",
+        "sha256": "5efebf2598a30cfcdb54de3afced7e875306ebf425853134a87777aa4094cf33",
         "validation": null
       },
       "r": {
@@ -2204,7 +1235,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/spatial_transformer.py",
         "implementation": "reference_wrapper",
-        "sha256": "38201bb7e8e99c05414221bb470c872f449af24d8e0afd210f1fe6b66332ddf6",
+        "sha256": "a9b4d965a61e5a074b9a65347fe2bd166021e51c79ba07e638d57e329e859e38",
         "validation": null
       },
       "r": {
@@ -2221,7 +1252,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/centernet.py",
         "implementation": "reference_wrapper",
-        "sha256": "5425c65dc13824f74468b0d103ef5116789a7442b69d660cd08ac64140d7c9a3",
+        "sha256": "6a59a25aefbda11ef514d02c05f355e63e51b1b51d98f85c31b1031c9edec2f1",
         "validation": null
       },
       "r": {
@@ -2272,7 +1303,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/detr.py",
         "implementation": "reference_wrapper",
-        "sha256": "7d91955b49f16d006971b2edb59ac4685d5c67706f1ecb43890897710b54cfe9",
+        "sha256": "d304752bff493b951e18e98fa371a15c30b35568c51404de9d678a5d0574f197",
         "validation": null
       },
       "r": {
@@ -2289,7 +1320,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/efficientdet.py",
         "implementation": "reference_wrapper",
-        "sha256": "43b635051575eee5819a420a8e8f13753202753c9b9090e7417b1dd9064ccad4",
+        "sha256": "178456e6638ff1b786dbd7437fbf86efdc2e0f3d6c68140e0cfcf787be5cda63",
         "validation": null
       },
       "r": {
@@ -2306,7 +1337,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fast_rcnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "e4f88ecfa6a8a9d1a0bd1fa48228598e598a41c6501ac55372b15e49e99e4258",
+        "sha256": "28ef2d453778340e313506b867410728fe7d873d8602ff50fe058faf9e05e5a5",
         "validation": null
       },
       "r": {
@@ -2340,7 +1371,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fcos.py",
         "implementation": "reference_wrapper",
-        "sha256": "118fa15ac821c57f6cfe0c144cb7f4f335dd56f54cb5ab1b5e1a6af33a416d1e",
+        "sha256": "73061bd925dd0e203150297c92c2547ae4a4326e35ada87bc9b9d876696552ce",
         "validation": null
       },
       "r": {
@@ -2357,7 +1388,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fpn.py",
         "implementation": "reference_wrapper",
-        "sha256": "89471ba69b41ed1b3cb49aa69a7378c1a4c0665d240804f802bb52dbb76d2441",
+        "sha256": "2c1abb1aea7684a7830763bbe384636f06b3d12346f9f9be4a0ce29c253b7d95",
         "validation": null
       },
       "r": {
@@ -2391,7 +1422,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/rcnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "b903430dee442c8da009145fc73543f64087e5dd7aeb522aff4dea7c090aaf01",
+        "sha256": "02faba0029892f55b2a8c08505bac42c9868f283f81229f1a26dd7ad2afefc84",
         "validation": null
       },
       "r": {
@@ -2408,7 +1439,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/retinanet.py",
         "implementation": "reference_wrapper",
-        "sha256": "2b6c09d850c129f0c206474124141d12a8bfaae0f65a7015e9085a0628654054",
+        "sha256": "d0598276b51f7af678ac21cefc69422617b3a639c6f88b7a4a7a314df1ab7f8f",
         "validation": null
       },
       "r": {
@@ -2425,7 +1456,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/ssd.py",
         "implementation": "reference_wrapper",
-        "sha256": "285af94e215806b76382ca6c9d9b7dd477778543aa156fa229561a456680a241",
+        "sha256": "b4b0a2b62d94d598652d4db369ec7cc188a9972f4ec19b2930ad531e0dbd154b",
         "validation": null
       },
       "r": {
@@ -2442,7 +1473,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v1.py",
         "implementation": "reference_wrapper",
-        "sha256": "e215b0ada30ea26e5e982e0029f8ede205b779aaf0cb4899cee73c2026ba8149",
+        "sha256": "6318b1af6758e8799c4f9c1963daf8a86604524ac21c8c23c81ee9a89534e348",
         "validation": null
       },
       "r": {
@@ -2459,7 +1490,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v2.py",
         "implementation": "reference_wrapper",
-        "sha256": "b0fe77be2ac460b179cbd522aef91134d22161ea694052357d16ce953d53fc75",
+        "sha256": "501b7d31921a9e1d04adb341e7c8d7b72125690c88009bd239245f42ce6359d1",
         "validation": null
       },
       "r": {
@@ -2476,7 +1507,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v3.py",
         "implementation": "reference_wrapper",
-        "sha256": "3275b054ef1008e69d853a2304fffd9502386266afe3fe10c78d006675093bcd",
+        "sha256": "e2dc920421a660631e65ba1ec3b25ceaa4d6f14f545e716a30d0ec552a64e6c9",
         "validation": null
       },
       "r": {
@@ -2493,7 +1524,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v5_style.py",
         "implementation": "reference_wrapper",
-        "sha256": "bcf263854a8cfd3e1c1ae0c6834ef912625415f7bff0cfe17c1a934518bb21f5",
+        "sha256": "c8f33f2aabf8aa9af9196f0ae35eb2d2c0f2d1efab1cc98532f27bc39ecdc8fe",
         "validation": null
       },
       "r": {
@@ -2527,7 +1558,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/deeplab_v3_plus.py",
         "implementation": "reference_wrapper",
-        "sha256": "bb276a6978e066ca25d9648f8a1e6022e1740680e86fad20e190c38e3641a7ee",
+        "sha256": "cbae0426194b0aa0cc7ebbf95fe79c00f9346f2a823cd684d224e06d385940f9",
         "validation": null
       },
       "r": {
@@ -2578,7 +1609,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/mask_rcnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "81e1bc62e76986960ea3b25573079844c87beca8262839301d15360999c27e68",
+        "sha256": "237ad37761194eadf15f622fcf8acde2d348bbd36f5089a6616d988074551307",
         "validation": null
       },
       "r": {
@@ -2612,7 +1643,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/pspnet.py",
         "implementation": "reference_wrapper",
-        "sha256": "35565bab42e59e74ff6178d40c99958dcf5151fb30f9b2cf009d861f58dae2fe",
+        "sha256": "8db5825c70ca59476eb06da3274d7fa085166bd990dac338ea6adeba9dfca2db",
         "validation": null
       },
       "r": {
@@ -2629,7 +1660,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/segmentation_losses.py",
         "implementation": "reference_wrapper",
-        "sha256": "b65dabde1077903cc50c9f7d9c9c9a6323fce678aa9052a03fa9a95b43d71b3e",
+        "sha256": "b1bb4322764d244c21472682dcd07c01776647b0082c2f066eaa8d1df3af64f2",
         "validation": null
       },
       "r": {
@@ -2714,7 +1745,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/yolact.py",
         "implementation": "reference_wrapper",
-        "sha256": "8bd0ed3698cec90475770cf7235053861c155d900734da2ce00ead5821454ca0",
+        "sha256": "2cb6fde1c1fe3e41b886fd7598187f4c021af9503b68bcf8db8da87ee607baea",
         "validation": null
       },
       "r": {
@@ -2748,7 +1779,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/bilinear_cnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "d2f869c6a2b122426b36a67dd4e64bdad4b14e0cc4248b7c15930d4fd378a25c",
+        "sha256": "d6db21b532296aa89d1a52c37b01d7b461eb353c89058895d740c2930a09ceda",
         "validation": null
       },
       "r": {
@@ -2833,7 +1864,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/flownets.py",
         "implementation": "reference_wrapper",
-        "sha256": "cbefd9ee90db20b3313eefbea7f4517e7413af743c27798c1b101da202c4d559",
+        "sha256": "2e54688e0a7604ec99ff326aa5e29a35704b90a3729ba67d6fb0ae1727264bcb",
         "validation": null
       },
       "r": {
@@ -2850,7 +1881,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/gatys_style_transfer.py",
         "implementation": "reference_wrapper",
-        "sha256": "97e25448a2d7260b168ec9ce6038f6fa0cb2e8197044746887817f41229b4423",
+        "sha256": "0d89c90307f1721da862dadd3c29723fbf1e826e99d49630a42d82123d4b2164",
         "validation": null
       },
       "r": {
@@ -2986,7 +2017,7 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/pwcnet.py",
         "implementation": "reference_wrapper",
-        "sha256": "86bdad6032b6f0a3d54c1aeb15e193e48316c705c83b88dc3387e2e7f48f8574",
+        "sha256": "5f761192b9f07ba54ecd0aa222b8452ebcb7280b25dcccfef9727cd4be674caf",
         "validation": null
       },
       "r": {
@@ -3166,516 +2197,6 @@
         "validation": null
       }
     },
-    "contractive_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.cpp",
-      "cpp_sha256": "fa9f8d073d1f8973bc9552391a626f223d43eb7fb1a4ed957ad122dc13647210",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.py",
-        "implementation": "native",
-        "sha256": "66c77f3e4a5c6994579dc651d85c97d194cc755abbca24ae4536e5c6f4ab5339",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.R",
-        "implementation": "native",
-        "sha256": "550c01992926f4cdc5765f365563bf154edcb39e10bff90380da087bdbc23b7a",
-        "validation": null
-      }
-    },
-    "convolutional_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/convolutional_autoencoder.cpp",
-      "cpp_sha256": "1b0244bab780e6f68228423608e3ad82689368375d195f4c78489944b6487328",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/convolutional_autoencoder.py",
-        "implementation": "native",
-        "sha256": "03523af0701f32d54d6bacdee27ded16926bba8c20db76003732b00d95f88d53",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/convolutional_autoencoder.R",
-        "implementation": "native",
-        "sha256": "08a29532dfc4080969210851a1738db321e834e27f7128182716a88461aca2a2",
-        "validation": null
-      }
-    },
-    "denoising_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/denoising_autoencoder.cpp",
-      "cpp_sha256": "ecb4c875f2ce49abef390e8e3575ea62f951e8eaef0156434745f4a569255e68",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/denoising_autoencoder.py",
-        "implementation": "native",
-        "sha256": "725d887473750207595c90009d9a9e2722d232d98121ff8ccd45f0824ccdbaae",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/denoising_autoencoder.R",
-        "implementation": "native",
-        "sha256": "b6847445c68fbc83566c27a83e5f6ac07b28150baff82aa68d7eb0e9a46a1d79",
-        "validation": null
-      }
-    },
-    "k_sparse_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/k_sparse_autoencoder.cpp",
-      "cpp_sha256": "c5d728d66077a6a09430182f448ebde6edc358214cd2fafff1e8ad966cdfb5e7",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/k_sparse_autoencoder.py",
-        "implementation": "native",
-        "sha256": "4d021f19890a5b5dcfe4aae839950f5f15ec8828fea3ae2b6d81bec77889d18d",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/k_sparse_autoencoder.R",
-        "implementation": "native",
-        "sha256": "cf75ede5caf7223c8df0973123b4c65168e634afd42ccc91379761f830590743",
-        "validation": null
-      }
-    },
-    "masked_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.cpp",
-      "cpp_sha256": "3b2fb15613203aa749346ebb5aabe1ff7091b31b4ebb6f4c636a1a00b6a455d0",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.py",
-        "implementation": "native",
-        "sha256": "0f6abc825479be2ae2c960c6b93bceea554ed6b9301f7634088ec9f1735afa2b",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.R",
-        "implementation": "native",
-        "sha256": "b3080ffdd9fff4a77b93c7f326d3ceba244bf140f80f2b94925affff617c36a3",
-        "validation": null
-      }
-    },
-    "recurrent_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.cpp",
-      "cpp_sha256": "d052e7809d7ab04ccc0c5cba4050c53f61b519a44083c6aa075e3a9e0689dde3",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.py",
-        "implementation": "native",
-        "sha256": "0f7c37638889467a13e257d3477cdf903fedb7b5c667ad3381a00711f8b811ef",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.R",
-        "implementation": "native",
-        "sha256": "7965ad1f938cc3233d81c6907861fcb768e12104426399b3b5590e4140ba06f9",
-        "validation": null
-      }
-    },
-    "sparse_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.cpp",
-      "cpp_sha256": "e47eaae5d4f714d3f2a1ec55b71d2ee4d1987c07d46dbdf9e8d960ea129e35ad",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.py",
-        "implementation": "native",
-        "sha256": "4c5d0d6c94522af8ed93634df679335a30076da937ee5bd41f7c2de51432ef80",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.R",
-        "implementation": "native",
-        "sha256": "345edaac59b2d3c5dfab13969ececf6ba0624ed3407ae5f10a9e0d1edcd9b326",
-        "validation": null
-      }
-    },
-    "stacked_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/stacked_autoencoder.cpp",
-      "cpp_sha256": "b128db24b104bdb05b945136b6e903e3020f3c4706f5e4ba65253edaef030774",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/stacked_autoencoder.py",
-        "implementation": "native",
-        "sha256": "4ce5e137893c6e31e94942b4a25efb086ec34ed94bd2a495dc79cbfbfd78da4c",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/stacked_autoencoder.R",
-        "implementation": "native",
-        "sha256": "3ea3608dbd43e175b4eee3095e2f89305c7b7ffaa2dcedd1df4e3a6fd6b3aade",
-        "validation": null
-      }
-    },
-    "tied_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/tied_autoencoder.cpp",
-      "cpp_sha256": "5ab347bf33a72c43462c11cf1c554f6718a79f7f95b7becb438dbac3973b5fa4",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/tied_autoencoder.py",
-        "implementation": "native",
-        "sha256": "0aa7ba6529e7c010469db6107ea02b1d0bfbc9c0f58dba9b45d0604069054fbc",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/tied_autoencoder.R",
-        "implementation": "native",
-        "sha256": "a9f8ea169d60ca23c77aad3e64cef06290ff4e8ecb9bec820133f541e7e99669",
-        "validation": null
-      }
-    },
-    "undercomplete_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.cpp",
-      "cpp_sha256": "70d62bb4b7591552eac6578d5a6236ab675f8d81ba7c9930e04db54acf8f296c",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.py",
-        "implementation": "native",
-        "sha256": "7d62b873b77c360420ad7e17d3ab221d728df8ba5ab02af33df9ab7a0d730c42",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.R",
-        "implementation": "native",
-        "sha256": "73c2b442818ce90f2405a7b830fc4dd8dc5d47998870a35c9770c5063101c525",
-        "validation": null
-      }
-    },
-    "winner_take_all_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.1_deterministic_autoencoders/winner_take_all_autoencoder.cpp",
-      "cpp_sha256": "f1d623d187ca3df6f6af243abc572769f45a5425c69529a7bcaa737a13ceb539",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/winner_take_all_autoencoder.py",
-        "implementation": "native",
-        "sha256": "c3990608cb6039f0fd93554eec1b72ba078666bdca093d31c1636f2c5ef36113",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/winner_take_all_autoencoder.R",
-        "implementation": "native",
-        "sha256": "ecb4bcbd686eef73ecca27b6662703440a5f251051aba670e6444d0c46dbbe76",
-        "validation": null
-      }
-    },
-    "adversarial_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/adversarial_autoencoder.cpp",
-      "cpp_sha256": "0bebf8955e70b3f8f9866859d5e04072c706182889c6615fe6f87935426a6643",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/adversarial_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "44d9011627cac60601fdb2d4c8415282cf3dcdc854c8303a7525602e8a49e0df",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/adversarial_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "31f99d78f7bed89afe2edd4f71b25e94d566af40ed0e07261bc4c989c66a526e",
-        "validation": null
-      }
-    },
-    "beta_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/beta_variational_autoencoder.cpp",
-      "cpp_sha256": "37686355c983a03b6972798b38a61731e38c608b94b41b7fec7ec89bb34b603b",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/beta_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "1cf7c54ada077ef913084003a644d975a006b57be45ce9cbdb60e6cb1d24060a",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/beta_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "445b33831463133837b0a2c51303489392d5718cf13de3267fef9af3066b5125",
-        "validation": null
-      }
-    },
-    "conditional_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/conditional_variational_autoencoder.cpp",
-      "cpp_sha256": "47317432348b1adc8e164631c0f21ea2cd26cb3d2ce7e82c617fa8ba9838cf59",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/conditional_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "65330c20a95f78a36113a485e0e11e26603e4770e18a49625c7bcef1feb4f578",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/conditional_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "d0bfa0eb38529407a8e88334944c373ba2cd57b9dbe8b16968106f47c7aeeb12",
-        "validation": null
-      }
-    },
-    "convolutional_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/convolutional_variational_autoencoder.cpp",
-      "cpp_sha256": "46ff31e19a6f9a32bb522ebaf3f38fd63a3857c70cbac2351ca57111fc475210",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/convolutional_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "4d621abee8a47b32eab9564e5b5a4d4feb0e5ddca9eb8b045364dafce26357c6",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/convolutional_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "cb99f749d32c59e2047435d7b30302e2a8742388794bd85190ddb6188f7c6e79",
-        "validation": null
-      }
-    },
-    "factor_tc_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/factor_tc_variational_autoencoder.cpp",
-      "cpp_sha256": "51904481f26e9dd41d1a45d169657a5f718b831a39335a3370f6d2355de05b51",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/factor_tc_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "62e8caa09c7a6ec5938bdbc648a075f40e067b183e176f020f8e0efea4e42d60",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/factor_tc_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "a17dbec8fcc5cee5853b2771976361f56acaf7bdb535093928f63338e54f48f2",
-        "validation": null
-      }
-    },
-    "flow_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/flow_variational_autoencoder.cpp",
-      "cpp_sha256": "ad41d6f5cff6e9c54787653c2d1871cbcdca66fa59778c08dd73f905498ae5e0",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/flow_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "5b6310971244b150443e981a5db85867ac477f5b443b630f08331b63e8dd4b86",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/flow_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "243c2b2aae33427e9740b2e1a4feaebee44f1fdae0433d96e891ad2c27787054",
-        "validation": null
-      }
-    },
-    "gumbel_categorical_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/gumbel_categorical_autoencoder.cpp",
-      "cpp_sha256": "096c554b334bbf958da8d0da6fbc128da4784e49c47fa3498a771df6d8a171ae",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/gumbel_categorical_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "22ac58c695d3c7a259d0e7282a776f35e9aa7595e14e80e0d9346fb0c597cb3b",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/gumbel_categorical_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "95512978cca4e08b4788c94f6a8f71e32ce6c7f8577488dbde26f7018c7a4dc2",
-        "validation": null
-      }
-    },
-    "hierarchical_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/hierarchical_variational_autoencoder.cpp",
-      "cpp_sha256": "63022d5f26a444f8816ffdc39124ac04956e208d4c303e35da5161cc0e44b2b8",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/hierarchical_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "a1eb93e519110486ff83887a2fbad25608d83f48194c5f429084288a313216cf",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/hierarchical_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "987bd5fa45aa9308cc63b65858cb829ad08b57e9b42386b8d4b87d97417f4387",
-        "validation": null
-      }
-    },
-    "importance_weighted_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/importance_weighted_autoencoder.cpp",
-      "cpp_sha256": "cbc07bfcfa90c7e36f1e135d9d775d3100b1d4d6714ae4d0f4947f6792e46c6c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/importance_weighted_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "5252dc0d280f46773880f729e1953c725523f7e677697a924bee908a53373226",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/importance_weighted_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "b008af14d65b1dda29a39d117522f442d01e9c0b8a56e5ebf8f3dcdae6f711b9",
-        "validation": null
-      }
-    },
-    "info_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/info_variational_autoencoder.cpp",
-      "cpp_sha256": "1e2f7eeca3bf0a6dde3f00cc7e868abc8848676e48489b9eefaf9037bdd07f01",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/info_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "5c97e18b55a2739fc3cb621cc7bc19b2ae06ef10d39132dec017ed2a951b06e8",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/info_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "b2f79d448a5475944d41b2fb606f24a69182cad8c21fa19cd2dc7567b4197168",
-        "validation": null
-      }
-    },
-    "ladder_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/ladder_variational_autoencoder.cpp",
-      "cpp_sha256": "d9b6766dd1d884ccff85c410edb5ff1aa632f4ddc97619e45e11908b384c637f",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/ladder_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "4e9177bf15784d24ed9c434d1546fbcb580ea5839ab27ba5b7258c66dd95e6d7",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/ladder_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "08580679698a936fbd247e2b3179f65ac755d2a8819e7ae91f5d7c07c746b3f2",
-        "validation": null
-      }
-    },
-    "posterior_collapse": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/posterior_collapse.cpp",
-      "cpp_sha256": "78d4930e34f5bd398ddcff53d1bfe39e8d98f6ccd4e73a8a0987fa7becf7cd65",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/posterior_collapse.py",
-        "implementation": "reference_wrapper",
-        "sha256": "30b65f38f1f8b932d099c01980c2c7c2cde7c67f3c5ed46f28487b345534addb",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/posterior_collapse.R",
-        "implementation": "reference_wrapper",
-        "sha256": "1c657ad4204a74e0015bf4436aa40e62671b3df8667851624111b74f14c9f167",
-        "validation": null
-      }
-    },
-    "sequence_variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/sequence_variational_autoencoder.cpp",
-      "cpp_sha256": "a49422278dff3b74b0e5cb5400b546dcc130bd08640027f2456cd48929ffa29d",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/sequence_variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "090e670bbd4c860e4977baf94b29a30f298608eb27e024a3ef3f692de2a9acec",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/sequence_variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "0d98c6fdf46eeac2e59b6ea0d628dc4fce9b9c49a181178d53b428ae7970404c",
-        "validation": null
-      }
-    },
-    "vae_gan": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/vae_gan.cpp",
-      "cpp_sha256": "5e54567d572c2e81f7294f4c0e258997c36775e6371946554637aa44d1629e2a",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/vae_gan.py",
-        "implementation": "reference_wrapper",
-        "sha256": "3a3ca49b2457b888fb99228790a823d58d2e0ae81695f3b1f76f1108e1df68cc",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/vae_gan.R",
-        "implementation": "reference_wrapper",
-        "sha256": "f51c5276ac6db1e169ccf2c318878c16e8929b79878332d2698b12497f250ac6",
-        "validation": null
-      }
-    },
-    "variational_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/variational_autoencoder.cpp",
-      "cpp_sha256": "505b0a72a2522f6ed554be1b6a5f9f8bdcea5efb67af06e39b4463dd82b34b8c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/variational_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "1e518687706e73c3e9bf30f7cb22f6c8211dacbeb4c0198e1a4630972ba793ff",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/variational_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "c29786acca369ea95c90e484a7fbaa589b0c2e6c8cd10c71433e7c8ad81979d3",
-        "validation": null
-      }
-    },
-    "vector_quantized_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder.cpp",
-      "cpp_sha256": "2e21fb78ad11d0311e0a6a9ae3a43e0c6278a65df8ae6e2b021835a996ba34d9",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "ca2a3d218269d13de60667d4210bf78afe3535c66987492b7d373f5d7418fdae",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "f503e87b1c5c503ff55efe5ee284b4e2d672caf2197747b9880844533a82d7ee",
-        "validation": null
-      }
-    },
-    "vector_quantized_autoencoder_2": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder_2.cpp",
-      "cpp_sha256": "5a656b0c5bb406d7fe19a984a178a9692d0c746b7f4c5080f53ae8870c5e2b3c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder_2.py",
-        "implementation": "reference_wrapper",
-        "sha256": "ba897be2f915dd9863e14fa7c2ac5282adc72b3da8d16a208c42ede56b039bd1",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder_2.R",
-        "implementation": "reference_wrapper",
-        "sha256": "e54619a5cf4be11b4edb3d7f0256029b24fb91ed51c91edb10eb92ce9bf17cf2",
-        "validation": null
-      }
-    },
-    "wasserstein_autoencoder": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.2_variational_autoencoders/wasserstein_autoencoder.cpp",
-      "cpp_sha256": "74517d980cf4441f2a8a94bc4831abe2a3e1c2ec2fe4324e873aa706371869a0",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.2_variational_autoencoders/wasserstein_autoencoder.py",
-        "implementation": "reference_wrapper",
-        "sha256": "53758bdf9f0304a9f9ca5b718a7804b3f28a547f2f2d1e27a22c427e34b97a61",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.2_variational_autoencoders/wasserstein_autoencoder.R",
-        "implementation": "reference_wrapper",
-        "sha256": "9d8a2efee00f73f3de79268356a505d896ce65fc9515fb5165be2b1d801ca30f",
-        "validation": null
-      }
-    },
-    "autoencoder_restoration": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.3_applications/autoencoder_restoration.cpp",
-      "cpp_sha256": "63097447559dcbf5e0e60c3053c24433ec5c143212b106e7c7e5ca2cf93b976c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.3_applications/autoencoder_restoration.py",
-        "implementation": "reference_wrapper",
-        "sha256": "6ebbdf25ce22acf3b39a0b24a719d7df86413769a4cd35e286dfc0e981444d83",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.3_applications/autoencoder_restoration.R",
-        "implementation": "reference_wrapper",
-        "sha256": "14a9e3157bd3086e91956ab95a48d42c138976fb871e0d2c3e6ea0cf2f5f2d83",
-        "validation": null
-      }
-    },
     "autorec": {
       "cpp": "examples/cpp/source/nn/2_autoencoders/2.3_applications/autorec.cpp",
       "cpp_sha256": "936a49f5351dc02dd0e4a9937303a5e2fda414ea224a21d8d09f1fb6443e8c0c",
@@ -3693,193 +2214,6 @@
         "validation": null
       }
     },
-    "encoder_pretraining": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.3_applications/encoder_pretraining.cpp",
-      "cpp_sha256": "d613e63298745138d86d5113f42bb652f24ab327957dacde508620f3e907a873",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.3_applications/encoder_pretraining.py",
-        "implementation": "reference_wrapper",
-        "sha256": "e2a5cdb84ab8a9285bd1ca3b24a535b9b9617753ea25c36080c8fc0629cc8a0b",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.3_applications/encoder_pretraining.R",
-        "implementation": "reference_wrapper",
-        "sha256": "3dc587650898e0542ed781dfeba627ceb0aaddddd16e7a3b66198743b91ecfd0",
-        "validation": null
-      }
-    },
-    "latent_arithmetic": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.3_applications/latent_arithmetic.cpp",
-      "cpp_sha256": "4dca52c84971f9a24f2f8bfb41aa8fa2fe98d49fbfa72e2be8d05c81cd808d34",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.3_applications/latent_arithmetic.py",
-        "implementation": "reference_wrapper",
-        "sha256": "83c9c51be6d631a34a42c4cecdc1fd3997bbe548c3d42e16a7f3235585868c2c",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.3_applications/latent_arithmetic.R",
-        "implementation": "reference_wrapper",
-        "sha256": "5dc99f33dd98878248b264d8c85988ed154abf274ae0582bd2286818cd8565d8",
-        "validation": null
-      }
-    },
-    "latent_visualization": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.3_applications/latent_visualization.cpp",
-      "cpp_sha256": "d55a65e8198a3c1c51ff932d60335991bf0240c7b85ff835814231c435902014",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.3_applications/latent_visualization.py",
-        "implementation": "reference_wrapper",
-        "sha256": "4b65bbb2dcf6141d3895bac581a28cdb15523d39c406f798b339b663c8faf553",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.3_applications/latent_visualization.R",
-        "implementation": "reference_wrapper",
-        "sha256": "ab5b8bca3ab89fe1ea72d6e75927f655a51d6afb3badef874e8f14909178eeee",
-        "validation": null
-      }
-    },
-    "learned_image_codec": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.3_applications/learned_image_codec.cpp",
-      "cpp_sha256": "14592b549591eccf4042c47e7478668cad53c991a3f8e0b7e1ea8a9f3f32898f",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.3_applications/learned_image_codec.py",
-        "implementation": "reference_wrapper",
-        "sha256": "0977b399dcb72d008c291f1868cf0f8cab4688fdb2d81c0424cb191cdf1e9b73",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.3_applications/learned_image_codec.R",
-        "implementation": "reference_wrapper",
-        "sha256": "90e804b1e7ab3452df5d37271f6a47c71a8e0a781b3ad1cf803c1203242e2a55",
-        "validation": null
-      }
-    },
-    "reconstruction_anomaly": {
-      "cpp": "examples/cpp/source/nn/2_autoencoders/2.3_applications/reconstruction_anomaly.cpp",
-      "cpp_sha256": "02c0f45d5d80d23549b661edc6819f5e953ea519f2b1a64b13a5bf88fb829e28",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/2_autoencoders/2.3_applications/reconstruction_anomaly.py",
-        "implementation": "reference_wrapper",
-        "sha256": "3069df7655296bdfcc26ce476b218c5694cce7d219db62da015ab3871ba10bbc",
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/2_autoencoders/2.3_applications/reconstruction_anomaly.R",
-        "implementation": "reference_wrapper",
-        "sha256": "e3fcc227a2d884ed1ef90ab2ed66aa14483ddc9a355cb229d9f02810032be660",
-        "validation": null
-      }
-    },
-    "auxiliary_classifier_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/auxiliary_classifier_gan.cpp",
-      "cpp_sha256": "81bafc36ffc91c1dcaafc20c6173716b1beac5549049e78c5179452ef0530623",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/auxiliary_classifier_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/auxiliary_classifier_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "bidirectional_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/bidirectional_gan.cpp",
-      "cpp_sha256": "0910449336432bef41f970c90f0623433773982977d53fe2346a2023921c0a42",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/bidirectional_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/bidirectional_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "big_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/big_gan.cpp",
-      "cpp_sha256": "b8806d438bae9f1c4bd4be09ce35b8131c64cbd586ea49034123f35be57ce7f0",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/big_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/big_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "conditional_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/conditional_gan.cpp",
-      "cpp_sha256": "929346eaff6580ab7761a97f330bddc4d40fac9ff3784ee278e202415a2f002e",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/conditional_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/conditional_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "cycle_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/cycle_gan.cpp",
-      "cpp_sha256": "627d577d3e81d927d5992492e2ee7cf3cd874ec8a63ce1f447c990d5e53da422",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/cycle_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/cycle_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "dcgan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/dcgan.cpp",
-      "cpp_sha256": "0782aec5e1856490e1c129acde31a9556b5fdb787faf8fc9e6e4e85611a08d2a",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/dcgan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/dcgan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
     "gan_diagnostics": {
       "cpp": "examples/nn/3_generative_models/3.1_gans/gan_diagnostics.cpp",
       "cpp_sha256": "e3fa407daba8e2314e6ffa6adf8f48e4b07431ccfe747f7bfb887fcc3035da0f",
@@ -3892,227 +2226,6 @@
       },
       "r": {
         "path": "examples/r/nn/3_generative_models/3.1_gans/gan_diagnostics.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "hinge_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/hinge_gan.cpp",
-      "cpp_sha256": "e76052a3ba52ab17b9f2b3987268692bf92adb55fdb2d8b021b82e3b1185a28b",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/hinge_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/hinge_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "infogan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/infogan.cpp",
-      "cpp_sha256": "55309cd15cc8140627e1b07209f1eafac8f1e66aab2f306c8ce2f018501d5a8c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/infogan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/infogan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "lsgan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/lsgan.cpp",
-      "cpp_sha256": "eaec1c08c609267973dc220e4c94aeccab7e6dd09bc218f74fb9f56285d0fa75",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/lsgan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/lsgan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "pix2pix": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/pix2pix.cpp",
-      "cpp_sha256": "473383329c7ab887ef689c366840a407246bc25bb6baf0381a31dc10fd949e9c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/pix2pix.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/pix2pix.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "progressive_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/progressive_gan.cpp",
-      "cpp_sha256": "2ec1c2f0672c2269c85627a46da342bdca09ad8d786fe4cce6652ce9c1aac2a4",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/progressive_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/progressive_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "self_attention_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/self_attention_gan.cpp",
-      "cpp_sha256": "ca60556338bdade0a6aa714492b2e59526e5361a9ad606e8274d5dbb3c612195",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/self_attention_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/self_attention_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "singan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/singan.cpp",
-      "cpp_sha256": "d17e7925985219623fc1af599662593a97dfedefe2df1ce6b2d006ca0605bc67",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/singan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/singan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "spectral_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/spectral_gan.cpp",
-      "cpp_sha256": "3926f3d70354c119db00e4d96d51fa7897bd35e45c958eb8d4b7b9066588f917",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/spectral_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/spectral_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "srgan_esrgan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/srgan_esrgan.cpp",
-      "cpp_sha256": "3474678915ac3e512b88a25d6c282aa0093020dd20dda542ff951ecd05c6ff3b",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/srgan_esrgan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/srgan_esrgan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "star_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/star_gan.cpp",
-      "cpp_sha256": "aff3890dd5162f81708e02aa439196c0911696faf71dedf80d67255b4bf667cd",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/star_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/star_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "style_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/style_gan.cpp",
-      "cpp_sha256": "733805681dc68149818b572b1eb27bbf6162e24440f5ad63e65b48fd2c9730a0",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/style_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/style_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "vanilla_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/vanilla_gan.cpp",
-      "cpp_sha256": "d6f9f4f9b81efe8de9a2b937c86a343e287a26877f0ca8123f062a31fdbe8922",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/vanilla_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/vanilla_gan.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "wasserstein_gan": {
-      "cpp": "examples/nn/3_generative_models/3.1_gans/wasserstein_gan.cpp",
-      "cpp_sha256": "282452c312a2dbba293afb1877763df762dadd397a3d874ee3dfe1f966c5515c",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.1_gans/wasserstein_gan.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.1_gans/wasserstein_gan.R",
         "implementation": "missing",
         "sha256": null,
         "validation": null
@@ -4135,23 +2248,6 @@
         "validation": null
       }
     },
-    "gated_pixel_cnn": {
-      "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/gated_pixel_cnn.cpp",
-      "cpp_sha256": "6b80b8301c35acb969e964a9e3dec1035d8b41839ad486285b3dc7c972b1e071",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.2_autoregressive_models/gated_pixel_cnn.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.2_autoregressive_models/gated_pixel_cnn.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
     "image_gpt": {
       "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/image_gpt.cpp",
       "cpp_sha256": "e812ccda2ca337e770a367141571a7f3b92c1dd1a625641d866363ae336655ee",
@@ -4169,74 +2265,6 @@
         "validation": null
       }
     },
-    "made_density": {
-      "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/made_density.cpp",
-      "cpp_sha256": "1eba432e5957121e4d3461655fb753c4aea835a9ef2dd98027bcaa8188482d06",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.2_autoregressive_models/made_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.2_autoregressive_models/made_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "pixel_cnn": {
-      "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/pixel_cnn.cpp",
-      "cpp_sha256": "3759d17cf24edd5a8af1f27e2ee9da41d5f10772cba7ea9eaa4257bdce7ca828",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.2_autoregressive_models/pixel_cnn.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.2_autoregressive_models/pixel_cnn.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "pixel_cnn_pp": {
-      "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/pixel_cnn_pp.cpp",
-      "cpp_sha256": "f0355af3429628939cc5266de325c0cb4db38c3f733952a1b59f75ebedaf3798",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.2_autoregressive_models/pixel_cnn_pp.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.2_autoregressive_models/pixel_cnn_pp.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "pixel_rnn": {
-      "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/pixel_rnn.cpp",
-      "cpp_sha256": "11b0b7ac0c76de947cbc1b407e03ad1699ea8085ce712653935e3226d673a0dc",
-      "classification": false,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.2_autoregressive_models/pixel_rnn.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.2_autoregressive_models/pixel_rnn.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
     "transformer_lm": {
       "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/transformer_lm.cpp",
       "cpp_sha256": "7d1d0944bdac9ddbccd50d61c8f33b1a360c973446adba883e1d6248ca4de030",
@@ -4249,176 +2277,6 @@
       },
       "r": {
         "path": "examples/r/nn/3_generative_models/3.2_autoregressive_models/transformer_lm.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "wavenet": {
-      "cpp": "examples/nn/3_generative_models/3.2_autoregressive_models/wavenet.cpp",
-      "cpp_sha256": "b68fe368b07d2ad761f3e03d3aa2695cd24e49a77208059e458f0c13e9c9d144",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.2_autoregressive_models/wavenet.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.2_autoregressive_models/wavenet.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "cnf_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/cnf_density.cpp",
-      "cpp_sha256": "6c292fd6252bdb6f6d34a09ef3c9d77eb170411ab43cefe3b4b1da0aef119f92",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/cnf_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/cnf_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "flow_density_2d": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/flow_density_2d.cpp",
-      "cpp_sha256": "ca0b50557f36a2a81b27800cfecbd7f8da9cc0a9b53a6bf80a1e8425b66d7246",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/flow_density_2d.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/flow_density_2d.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "glow_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/glow_density.cpp",
-      "cpp_sha256": "e04e4db00f16be1c7b2a87e6cf8e50c5442f4195a2f5b2a875ca8ac0df9fb0c7",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/glow_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/glow_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "iaf_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/iaf_density.cpp",
-      "cpp_sha256": "d08713198a825c8824a0d9d717e7c429b3730408168b3eb6555468e02165ab9e",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/iaf_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/iaf_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "maf_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/maf_density.cpp",
-      "cpp_sha256": "9e72165b95798070ab77884e2636baecca9277b55bd7d75b311b107df6f49559",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/maf_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/maf_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "nice_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/nice_density.cpp",
-      "cpp_sha256": "00806fa82a71a5e5f2e31616e52a275a48f49131421ed5e83c24c4403bc3b79f",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/nice_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/nice_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "planar_radial_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/planar_radial_density.cpp",
-      "cpp_sha256": "29e073e222ef0e260a0de36dc025c26b03cbce98ab91d13df1b529b207dd1c3a",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/planar_radial_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/planar_radial_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "real_nvp_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/real_nvp_density.cpp",
-      "cpp_sha256": "3f5db15df6bcfcedcbafa03f5ab6098d04a578e85bf0783bf5b44e0c64441678",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/real_nvp_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/real_nvp_density.R",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      }
-    },
-    "spline_density": {
-      "cpp": "examples/nn/3_generative_models/3.3_normalizing_flows/spline_density.cpp",
-      "cpp_sha256": "f366209f7bfaa22798281d128caf7a6233a5dbe7de6aa0f1f7d6273dcfaeb6a7",
-      "classification": null,
-      "python": {
-        "path": "examples/python/nn/3_generative_models/3.3_normalizing_flows/spline_density.py",
-        "implementation": "missing",
-        "sha256": null,
-        "validation": null
-      },
-      "r": {
-        "path": "examples/r/nn/3_generative_models/3.3_normalizing_flows/spline_density.R",
         "implementation": "missing",
         "sha256": null,
         "validation": null

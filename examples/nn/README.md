@@ -1,5 +1,16 @@
 # Neural-network examples
 
+Executable reports in [`docs/mepml/examples/nn`](../../docs/mepml/examples/nn/)
+are replacing these standalone programs. The
+[conversion plan](../../docs/mepml/nn-conversion-plan.md) and
+[retirement ledger](../../docs/mepml/nn-conversion-status.json) record replacements,
+original source digests and verified removals. `just nn-report-status` shows
+progress. Run a retired example with `just docs-mepml-run REPORT.mepml`.
+Native Python/R examples remain available in their own language directories.
+Shared `common/` headers remain until their consumers use canonical library APIs.
+All 58 foundation originals (57 C++ programs and the NumPy companion) have been
+verified and retired; their reports retain the executable examples.
+
 Experiment orchestration lives in each `.cpp` example. Dataset setup, epoch and
 batch loops, optimizer updates, validation, checkpoint selection and result
 reporting are visible in that source file. Shared `common/` headers provide
@@ -14,7 +25,7 @@ SWIG-bound components (`examples/bindings/nn_components.i`). `just nn-audit`
 reports every example's status (see `docs/nn-example-audit.md`).
 
 
-Sections **1 (129 CNN examples)** and **2 (36 autoencoder examples)** now live
+Sections **1 (129 CNN examples)** and **2 (24 remaining autoencoder examples)** now live
 under [`examples/cpp/source/nn`](../cpp/source/nn/README.md). Their matching Python entry points
 are under [`examples/python/nn`](../python/nn/README.md). The commands below still
 discover both the migrated C++ sources and the remaining sections here. Shared

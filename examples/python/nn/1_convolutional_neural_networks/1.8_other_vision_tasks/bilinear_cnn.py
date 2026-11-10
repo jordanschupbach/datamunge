@@ -8,8 +8,9 @@ Three default epochs on real Oxford Flowers102 subset,official split isolation.
 Every bilinear/root/normalization/CE gradient,spatial invariance and both-stream
 parameter checks;restored independent immutable RGB-only inference and baselines.
 
-Port of tflow's bilinear_cnn. Preparation (in ~/projects/tflow_examples):
-just fine-grained-assets; flowers.npz is read from $DATAMUNGE_DATA_DIR/flowers102.
+Port of tflow's bilinear_cnn. Prepare the official cached image/label/split
+archives with datamunge-prepare-data flowers ROOT (see the literate report).
+flowers.npz is read from $DATAMUNGE_DATA_DIR/flowers102 or data=ROOT.
 The data and the batch order (nn::BatchOrder seed 239) are tflow's; weights
 come from datamunge's generator, so trained numbers match TF statistically.
 TF builds the full 102-way model as a graph only; here it also runs

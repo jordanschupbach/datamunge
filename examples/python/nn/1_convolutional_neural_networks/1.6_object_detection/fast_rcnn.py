@@ -3,7 +3,7 @@
 """Fast R-CNN: one convolutional pass per image and RoI pooling of every proposal.
 
 Port of tflow's fast_rcnn. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 
 On the synthetic digit scenes with the same tight-biased proposals as rcnn
 (connected components at thresholds 48 to 230), compute a stride-4 feature

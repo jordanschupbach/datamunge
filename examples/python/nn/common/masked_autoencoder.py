@@ -1,4 +1,4 @@
-"""Tiny asymmetric masked autoencoder (examples/nn/common/masked_autoencoder.hpp).
+"""Tiny asymmetric masked autoencoder (include/datamunge/nn/masked_autoencoder.hpp).
 
 He et al. MAE on 16 non-overlapping 7x7 MNIST patches: a visible-only width-32
 transformer encoder (4 of 16 tokens), a width-16 mask-token decoder, fixed 2-D
@@ -6,6 +6,7 @@ sin/cos positions and a hidden-only loss. Parameter names match tflow's. Model
 pieces, hash-derived patch selections and native metrics only: training steps
 (forward, mae_loss, nn.grad / optimizer) are written out in each example.
 """
+
 import math
 
 from pydatamunge import nn
@@ -15,80 +16,27 @@ ae = helper("autoencoder")
 require = ae.require
 
 
-def mae_position(width):
-    """Fixed 2-D sin/cos positions [16, width]: first half the patch row, second the column."""
-    out = [0.0] * (16 * width)
-    for patch in range(16):
-        for axis in range(2):
-            for k in range(width // 4):
-                a = (patch % 4 if axis else patch // 4) * math.pow(10000.0, -2.0 * k / (width // 2))
-                out[patch * width + axis * width // 2 + k] = math.sin(a)
-                out[patch * width + axis * width // 2 + width // 4 + k] = math.cos(a)
-    return nn.from_vector(out, [16, width])
-
-
-class MaeBlockOutput:
-    def __init__(self, output, attention):
-        self.output, self.attention = output, attention
-
-
-def mae_block(p, name, x, width):
-    """Pre-norm block: x + MHA(LN x) (2 heads, no biases), then + FF(LN .) ratio 2, tanh-GELU."""
-    normalized = nn.layer_norm(p, name + "/ln1", x)
-    options = nn.MultiHeadOptions()
-    options.need_weights = True
-    attended = nn.multi_head_attention(p, name + "/attention", normalized, normalized, 2, options)
-    residual = nn.add(x, attended.output)
-    ff = nn.dense(p, name + "/ff1", nn.layer_norm(p, name + "/ln2", residual), 2 * width, nn.Activation.GeluTanh)
-    return MaeBlockOutput(nn.add(residual, nn.dense(p, name + "/ff2", ff, width)), attended.weights)
+mae_position = nn.MaePosition
+mae_block = nn.MaeBlock
+mae_patches = nn.MaePatches
+masked_autoencoder = nn.MaskedAutoencoder
+mae_loss = nn.MaeLoss
 
 
 class MaskedAutoencoderOutput:
+    """Compatibility value for restoration helpers that fill encoder/decoder fields."""
     patches = visible = mask = code = prediction = encoder_attention = decoder_attention = None
 
 
-def mae_patches(image):
-    """[B, 28, 28, 1] -> [B, 16, 49] row-major 7x7 patches."""
-    b = image.size(0)
-    return nn.reshape(nn.transpose(nn.reshape(image, [b, 4, 7, 4, 7]), [0, 1, 3, 2, 4]), [b, 16, 49])
-
-
 def mae_encode(p, image, selector, out):
-    """Encoder half; selector [B, 4, 16] one-hot gather: hidden pixels never enter the encoder."""
-    out.patches = mae_patches(image)
-    out.visible = nn.matmul(selector, out.patches)
-    out.mask = nn.sub(1.0, nn.sum(selector, [1]))
-    embedded = nn.dense(p, "patch", out.visible, 32)
-    position = nn.matmul(selector, nn.expand_dims(mae_position(32), 0))
-    encoder = mae_block(p, "encoder", nn.add(embedded, position), 32)
-    out.code = nn.layer_norm(p, "encoder/norm", encoder.output)
-    out.encoder_attention = encoder.attention
+    result = nn.MaeEncode(p, image, selector)
+    out.patches, out.visible, out.mask = result.patches, result.visible, result.mask
+    out.code, out.encoder_attention = result.code, result.encoder_attention
 
 
 def mae_decode(p, code, selector, out):
-    """Decoder half: from the code and patch locations only (no image/target)."""
-    mask = nn.sub(1.0, nn.sum(selector, [1]))
-    projected = nn.dense(p, "decoder_projection", code, 16)
-    restored = nn.matmul(selector, projected, True)
-    token = p.get("mask_token", [16], nn.init.zeros())
-    decoder_input = nn.add(nn.add(restored, nn.mul(nn.expand_dims(mask, 2), token)), mae_position(16))
-    decoder = mae_block(p, "decoder", decoder_input, 16)
-    out.decoder_attention = decoder.attention
-    out.prediction = nn.dense(p, "prediction", nn.layer_norm(p, "decoder/norm", decoder.output), 49,
-                              nn.Activation.Sigmoid)
-
-
-def masked_autoencoder(p, image, selector):
-    out = MaskedAutoencoderOutput()
-    mae_encode(p, image, selector, out)
-    mae_decode(p, out.code, selector, out)
-    return out
-
-
-def mae_loss(prediction, patches, mask):
-    """Squared error over hidden patches only, / (49 x number of hidden patches)."""
-    error = nn.square(nn.sub(prediction, patches))
-    return nn.div(nn.sum(nn.mul(error, nn.expand_dims(mask, 2))), nn.mul(nn.sum(mask), 49.0))
+    result = nn.MaeDecode(p, code, selector)
+    out.prediction, out.decoder_attention = result.prediction, result.decoder_attention
 
 
 def _initial_selector():
@@ -133,54 +81,22 @@ class MaskedAutoencoderModel:
             return [n.patches, n.visible, n.mask, n.encoder_attention, n.decoder_attention]
 
 
-def mae_mix(x):
-    x &= 0xFFFFFFFF
-    x ^= x >> 16
-    x = (x * 0x7FEB352D) & 0xFFFFFFFF
-    x ^= x >> 15
-    x = (x * 0x846CA68B) & 0xFFFFFFFF
-    return x ^ (x >> 16)
-
-
 def mae_selection_values(ids, epoch=0, seed=1907):
-    """Flat [n, 4, 16] selection values for a list of source ids."""
-    out = [0.0] * (len(ids) * 64)
-    for b, identifier in enumerate(ids):
-        base = seed ^ ((int(identifier) * 0x9E3779B9) & 0xFFFFFFFF) ^ ((epoch * 0x85EBCA6B) & 0xFFFFFFFF)
-        keys = sorted((mae_mix(base ^ ((i * 0xC2B2AE35) & 0xFFFFFFFF)), i) for i in range(16))
-        for k in range(4):
-            out[b * 64 + k * 16 + keys[k][1]] = 1.0
-    return out
+    """Native deterministic selectors as flat values, for existing display helpers."""
+    source = nn.cast(nn.from_vector_double(list(ids), [len(ids)]), nn.DType.Int64)
+    return list(nn.MaeSelection(source, epoch, seed).values())
 
 
-def mae_selection(source, epoch=0, seed=1907):
-    """Reproducible per-example 4-of-16 visible patch selection [n, 4, 16]."""
-    ids = [int(v) for v in source.contiguous().values()]
-    return nn.from_vector(mae_selection_values(ids, epoch, seed), [len(ids), 4, 16])
-
-
-def mae_pixel(patch, within):
-    """Flat pixel index of element `within` of 7x7 patch `patch`."""
-    return ((patch // 4) * 7 + within // 7) * 28 + (patch % 4) * 7 + within % 7
-
-
+mae_selection = nn.MaeSelection
+mae_pixel = nn.MaePixel
 PIXEL = [[mae_pixel(p, i) for i in range(49)] for p in range(16)]
 
 
 def mae_image_values(values, n):
-    out = [0.0] * (n * 784)
-    for b in range(n):
-        for p in range(16):
-            base = (b * 16 + p) * 49
-            for i, j in enumerate(PIXEL[p]):
-                out[b * 784 + j] = values[base + i]
-    return out
+    return list(nn.MaeImage(nn.from_vector(list(values), [n, 16, 49])).values())
 
 
-def mae_image(patches):
-    """[n, 16, 49] patches -> [n, 784] image."""
-    n = patches.size(0)
-    return nn.from_vector(mae_image_values(patches.contiguous().values(), n), [n, 784])
+mae_image = nn.MaeImage
 
 
 def mae_hidden(selection, b, patch):

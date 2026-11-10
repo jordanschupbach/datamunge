@@ -175,7 +175,10 @@ def test_report_data_preparation_is_native_and_independent_of_checkout_scripts()
     for path in reports:
         text = path.read_text()
         assert "scripts/prepare_" not in text, path
-        assert not re.search(r"^```\{?python", text, re.M), path
+        # NN reports perform model/data work in C++; other collections may
+        # also demonstrate native Python/R bindings after native preparation.
+        if path.is_relative_to(ROOT / "docs/mepml/examples/nn"):
+            assert not re.search(r"^```\{?python", text, re.M), path
         for block in re.findall(r'^```[^\n]*\n(.*?)^```', text, re.M | re.S):
             assert not re.search(r"python(?:3(?:\.\d+)?)? .*prepare_", block), path
             assert "pip install" not in block, path
@@ -224,6 +227,37 @@ def test_parallel_reports_wait_for_native_checkpoint_producer(tmp_path, monkeypa
         assert "required report failed" in reports.load_status(jobs[0][1])["error"]
 
 
+def test_sibling_reports_cannot_capture_each_others_newest_figure(tmp_path, monkeypatch):
+    """Shared working directories serialize while independent directories overlap."""
+    import threading
+    import time
+    first_dir, other_dir = tmp_path / "first", tmp_path / "other"
+    first_dir.mkdir()
+    other_dir.mkdir()
+    paths = [first_dir / "a.mepml", first_dir / "b.mepml", other_dir / "c.mepml"]
+    for path in paths:
+        path.write_text("//? Title: Fixture\n")
+    overlap = threading.Barrier(2)
+    captured = {}
+
+    def run(executable, path, status, timeout, env):
+        path = Path(path)
+        newest = path.parent / "newest.svg"
+        newest.write_text(path.stem)
+        if path.stem in ("a", "c"):
+            overlap.wait(timeout=5)
+        time.sleep(.03)
+        captured[path.stem] = newest.read_text()
+        Path(status).write_text(json.dumps({"files": [{"file": str(path), "failed": 0,
+                                                       "skipped": 0, "blocks": []}]}))
+        return 0, ""
+
+    monkeypatch.setattr(reports, "run_report", run)
+    jobs = [(str(path), str(tmp_path / (path.stem + ".json"))) for path in paths]
+    reports.run_reports("fixture", jobs, jobs=3)
+    assert captured == {"a": "a", "b": "b", "c": "c"}
+
+
 def test_public_dataset_reads_acquire_missing_sources_natively():
     checked = 0
     for path in (ROOT / "docs/mepml/examples").rglob("*.mepml"):
@@ -236,3 +270,35 @@ def test_public_dataset_reads_acquire_missing_sources_natively():
                     assert 'dm::datasets::fetch("' + dataset + '"' in block, path
                     checked += 1
     assert checked >= 163
+
+
+def test_missing_local_audio_sources_make_a_successful_report_stale(tmp_path):
+    path=tmp_path/'wave.mepml';path.write_text(
+        '<audio controls src="figures/cold.wav"></audio>\n'
+        '<audio controls><source src="figures/prompt&amp;voice.wav" type="audio/wav"></audio>\n'
+        '<audio src="https://example.org/remote.wav"></audio>\n')
+    status=tmp_path/'status.json';status.write_text(json.dumps({'files':[{'failed':0}]}))
+    os.utime(path,(10,10));os.utime(status,(20,20))
+    assert reports.missing_figures(path)==['figures/cold.wav','figures/prompt&voice.wav']
+    assert reports.is_stale(path,status)
+    (tmp_path/'figures').mkdir();(tmp_path/'figures/cold.wav').write_bytes(b'cold')
+    (tmp_path/'figures/prompt&voice.wav').write_bytes(b'prompt')
+    assert not reports.missing_figures(path) and not reports.is_stale(path,status)
+    (tmp_path/'figures/cold.wav').unlink()
+    assert reports.is_stale(path,status)
+
+
+def test_website_export_copies_both_direct_and_nested_audio_sources(tmp_path,monkeypatch):
+    source=tmp_path/'source';source.mkdir();(source/'figures').mkdir()
+    for name,data in [('cold.wav',b'cold'),('prompt.wav',b'prompt')]:
+        (source/'figures'/name).write_bytes(data)
+    path=source/'wave.mepml';path.write_text('Fixture')
+    page='<body><audio controls src="figures/cold.wav"></audio><audio controls><source src="figures/prompt.wav" type="audio/wav"></audio></body>'
+    def convert(command,**kwargs):
+        Path(command[-1]).write_text(page)
+    monkeypatch.setattr(reports.subprocess,'run',convert)
+    report=reports.Report(str(path),'nn/wave.mepml');out=tmp_path/'site'
+    reports.export('fixture',report,out,lambda code,lang:code)
+    for name,data in [('cold.wav',b'cold'),('prompt.wav',b'prompt')]:
+        assert (out/'reports/nn/figures'/name).read_bytes()==data
+    assert report.body.count('<audio')==2 and '<source src="figures/prompt.wav"' in report.body

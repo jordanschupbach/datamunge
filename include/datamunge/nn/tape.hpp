@@ -56,6 +56,27 @@ struct Tape {
     /// @brief One line per node, `label [op] shape <- input labels` (constants shown as `const`).
     /// @return The listing, output first.
     [[nodiscard]] std::string to_text() const;
+    /// @brief Format the recorded nodes as a Markdown table without nested code fences.
+    ///
+    /// Rows follow nodes in reverse recording order. Columns contain the node label,
+    /// operation, output shape and ordered input labels; constants appear as `const`.
+    /// Escapes Markdown/HTML delimiters and line breaks in labels. An empty tape
+    /// produces only the table header. Does not mutate the graph or retain tensors.
+    /// Work and output size are linear in the displayed nodes, edges and label bytes.
+    /// Concurrent calls are safe while nodes are not modified.
+    /// @return A table ending in a newline, suitable for a report's Markdown results.
+    /// @throws std::out_of_range If a manually constructed node has an invalid input index.
+    ///
+    /// @par Example
+    /// @code
+    /// #include <dm/dm.hpp>
+    /// auto x = dm::nn::scalar(2.0).requires_grad_();
+    /// const auto graph = dm::nn::tape({x * x}, {{x, "x"}});
+    /// const auto table = graph.to_markdown();
+    /// // Includes one Mul row with inputs x, x and one Leaf row.
+    /// @endcode
+    /// @see to_text(), tape()
+    [[nodiscard]] std::string to_markdown() const;
     /// @brief The graph in Graphviz DOT, edges pointing in the forward direction (input to op).
     /// @return DOT source.
     [[nodiscard]] std::string to_dot() const;

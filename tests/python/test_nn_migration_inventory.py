@@ -121,3 +121,10 @@ def test_shared_component_changes_invalidate_validation_evidence(tmp_path, monke
     changed = migration.refresh(write_catalog=False)["examples"]["model"]
     assert changed["python"]["validation"] is None and changed["r"]["validation"] is None
     assert "cpp_reference_validation" not in changed
+    # Replacing the canonical C++ demonstration with a report must not remove
+    # the independent native language script from its generated catalogue.
+    (tmp_path / "examples/cpp/source/nn/1_demo/model.cpp").unlink()
+    assert migration.refresh()["examples"] == {}
+    catalogue = (tmp_path / "src/pydatamunge/_nn_catalog.py").read_text()
+    assert "'model': '1_demo/model.cpp'" in catalogue
+    assert "NATIVE_EXAMPLES = ('model',)" in catalogue

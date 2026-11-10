@@ -2,8 +2,8 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.py
 """Visible-only transformer MAE with 75 percent masking and a smaller mask-token decoder.
 
-Port of tflow's masked_autoencoder. Preparation (in ~/projects/tflow_examples):
-just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
+Port of tflow's masked_autoencoder. The canonical C++ dataset API prepares MNIST.
+Data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
 (history, per-epoch masks and arrays, probe.npz, outputs.npz, metrics.json, index.html
 and digit<k>.png galleries) go to output/nn/models/masked_autoencoder. The patch masks
 are the same hash-derived selections as tflow's (bit-identical). Checkpoints are

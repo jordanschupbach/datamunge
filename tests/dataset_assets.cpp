@@ -3,6 +3,10 @@
 #include <gtest/gtest.h>
 
 #include <atomic>
+#include <array>
+#include <cmath>
+#include <map>
+#include <set>
 #include <datamunge/image/detail/crc32.hpp>
 #include <dm/dm.hpp>
 #include <filesystem>
@@ -263,3 +267,200 @@ TEST_F(Workspace, NativeMemoryPreparationIsReusableAndRepairsMissingOutput) {
   EXPECT_THROW(d::prepare_example_data("unknown", root.string()), std::invalid_argument);
 }
 } // namespace
+
+TEST_F(Workspace, KnownFactorLatticeIsExhaustiveBalancedAndReproducible) {
+  const auto records=n::models::KnownFactorLattice();
+  ASSERT_EQ(records.size(),9u);
+  std::set<int> all_ids;std::set<std::vector<float>> unique_images;
+  for(int split=0;split<3;++split){
+    const int count=split==0?210:42;
+    const auto& images=records[3*split].second;const auto& factors=records[3*split+1].second;
+    const auto& ids=records[3*split+2].second;
+    EXPECT_EQ(images.shape(),(n::Shape{count,28,28,1}));EXPECT_EQ(images.dtype(),n::DType::Float32);
+    EXPECT_EQ(factors.dtype(),n::DType::Int32);EXPECT_EQ(ids.dtype(),n::DType::Int32);
+    EXPECT_FALSE(images.requires_grad());
+    const auto pixels=images.to_vector<float>();const auto source=ids.to_vector<int>(),f=factors.to_vector<int>();
+    int counts[4][7]={};
+    for(int row=0;row<count;++row){
+      const int id=source[row];ASSERT_TRUE(all_ids.insert(id).second);
+      if(row)EXPECT_LT(source[row-1],id);
+      const int y=id%7,x=(id/7)%7,size=(id/49)%3,shape=id/147;
+      EXPECT_EQ((std::vector<int>{f[4*row],f[4*row+1],f[4*row+2],f[4*row+3]}),(std::vector<int>{shape,size,x,y}));
+      const int residue=(x+2*y+size+3*shape)%7;
+      EXPECT_TRUE(split==2 ? residue==0 : split==1 ? residue==1 : residue>=2);
+      for(int j=0;j<4;++j)++counts[j][f[4*row+j]];
+      unique_images.insert(std::vector<float>(pixels.begin()+row*784,pixels.begin()+(row+1)*784));
+      for(int py=0;py<28;++py)for(int px=0;px<28;++px){
+        const double horizontal=std::abs(px-(3*x+5)),vertical=std::abs(py-(3*y+5));
+        const bool expected=shape ? std::max(horizontal,vertical)<=size+2 : std::hypot(horizontal,vertical)<=size+2;
+        EXPECT_EQ(pixels[row*784+py*28+px],float(expected));
+      }
+    }
+    for(int j=0;j<4;++j)for(int level=0;level<(j==0?2:j==1?3:7);++level)EXPECT_EQ(counts[j][level],count/(j==0?2:j==1?3:7));
+  }
+  EXPECT_EQ(all_ids.size(),294u);EXPECT_EQ(unique_images.size(),294u);
+  auto repeat=n::models::KnownFactorLattice();
+  for(std::size_t i=0;i<records.size();++i)EXPECT_TRUE(n::equal_bits(records[i].second,repeat[i].second));
+}
+TEST_F(Workspace, KnownFactorPreparationIsOfflineReusedAndRepairsMissingOutputs) {
+  const auto result=d::prepare_example_data("beta-vae-assets",root.string());EXPECT_EQ(result,fs::absolute(root).string());
+  const auto npz=root/"beta_vae/factors.npz",manifest=root/"beta_vae/manifest.json";
+  ASSERT_TRUE(fs::is_regular_file(npz));ASSERT_TRUE(fs::is_regular_file(manifest));
+  const auto expected=n::models::KnownFactorLattice(),actual=n::load_npz(npz.string());ASSERT_EQ(actual.size(),9u);
+  for(std::size_t i=0;i<actual.size();++i){EXPECT_EQ(actual[i].first,expected[i].first);EXPECT_EQ(actual[i].second.dtype(),n::DType::Int32);EXPECT_TRUE(n::equal_bits(actual[i].second,n::cast(expected[i].second,n::DType::Int32)));}
+  const auto bytes=read(npz),metadata=read(manifest);
+  d::prepare_example_data("beta-vae-assets",root.string());EXPECT_EQ(read(npz),bytes);EXPECT_EQ(read(manifest),metadata);
+  fs::remove(npz);d::prepare_example_data("beta-vae-assets",root.string());
+  const auto regenerated=n::load_npz(npz.string());for(std::size_t i=0;i<actual.size();++i)EXPECT_TRUE(n::equal_bits(actual[i].second,regenerated[i].second));
+  const auto provenance=nlohmann::json::parse(read(manifest));EXPECT_TRUE(provenance["generation_verified"].get<bool>());EXPECT_FALSE(provenance["external_source"].get<bool>());
+  EXPECT_EQ(provenance["fit"],210);EXPECT_EQ(provenance["validation"],42);EXPECT_EQ(provenance["test"],42);
+}
+
+TEST_F(Workspace, SentenceGrammarIsExhaustiveBalancedAndTeacherForced) {
+  d::prepare_example_data("sequence-vae-assets", root.string());
+  const auto records = n::load_npz((root / "sequence_vae/sentences.npz").string());
+  ASSERT_EQ(records.size(), 16u);
+  std::map<std::string, n::Tensor> arrays(records.begin(), records.end());
+  ASSERT_EQ(arrays.at("config").shape(), (n::Shape{2}));
+  EXPECT_EQ(arrays.at("config").to_vector<int>(), (std::vector<int>{19, 7}));
+  for (const auto& [name, tensor] : records) {
+    EXPECT_EQ(tensor.dtype(), n::DType::Int32) << name;
+    EXPECT_FALSE(tensor.requires_grad()) << name;
+  }
+  EXPECT_EQ(read(root / "sequence_vae/vocabulary.txt"),
+            "[pad]\n[bos]\n[eos]\na\nthe\nred\ngreen\nblue\ncircle\nsquare\ntriangle\n"
+            "moves\nrolls\nleft\nright\nup\ndown\nquickly\nslowly\n");
+  std::set<int> all_ids;
+  std::set<std::vector<int>> all_sentences;
+  const std::array<int, 6> cardinalities{2, 3, 3, 2, 4, 3};
+  for (const std::string split : {"fit", "validation", "test"}) {
+    const int count = split == "fit" ? 288 : 72;
+    ASSERT_EQ(arrays.at(split + "_tokens").shape(), (n::Shape{count, 7}));
+    ASSERT_EQ(arrays.at(split + "_decoder_inputs").shape(), (n::Shape{count, 7}));
+    ASSERT_EQ(arrays.at(split + "_lengths").shape(), (n::Shape{count}));
+    ASSERT_EQ(arrays.at(split + "_factors").shape(), (n::Shape{count, 6}));
+    ASSERT_EQ(arrays.at(split + "_source_ids").shape(), (n::Shape{count}));
+    const auto targets = arrays.at(split + "_tokens").to_vector<int>();
+    const auto inputs = arrays.at(split + "_decoder_inputs").to_vector<int>();
+    const auto lengths = arrays.at(split + "_lengths").to_vector<int>();
+    const auto factors = arrays.at(split + "_factors").to_vector<int>();
+    const auto sources = arrays.at(split + "_source_ids").to_vector<int>();
+    int marginals[6][4]{}, short_count = 0, token_count = 0;
+    for (int row = 0; row < count; ++row) {
+      SCOPED_TRACE(split + " row " + std::to_string(row));
+      int id = 0;
+      for (int j = 0; j < 6; ++j) {
+        const int f = factors[row * 6 + j];
+        ASSERT_GE(f, 0); ASSERT_LT(f, cardinalities[j]);
+        ++marginals[j][f];
+        id = id * cardinalities[j] + f;
+      }
+      EXPECT_EQ(id, sources[row]);
+      EXPECT_TRUE(all_ids.insert(id).second);
+      if (row) EXPECT_LT(sources[row - 1], sources[row]);
+      const auto f = factors.begin() + row * 6;
+      const int residue = 2 * ((f[1] + f[2] + f[5]) % 3) + (f[0] + f[3] + f[4]) % 2;
+      EXPECT_TRUE(split == "test" ? residue == 0 : split == "validation" ? residue == 1 : residue >= 2);
+      std::vector<int> sentence(targets.begin() + row * 7, targets.begin() + (row + 1) * 7);
+      EXPECT_TRUE(all_sentences.insert(sentence).second);
+      const std::array<int, 5> offsets{3, 5, 8, 11, 13};
+      for (int j = 0; j < 5; ++j) EXPECT_EQ(sentence[j], offsets[j] + f[j]);
+      const int eos = f[5] ? 6 : 5;
+      if (f[5]) EXPECT_EQ(sentence[5], 16 + f[5]);
+      EXPECT_EQ(sentence[eos], 2);
+      if (eos == 5) EXPECT_EQ(sentence[6], 0);
+      EXPECT_EQ(lengths[row], eos + 1);
+      short_count += eos == 5;
+      token_count += lengths[row];
+      EXPECT_EQ(inputs[row * 7], 1);
+      for (int t = 1; t < 7; ++t) EXPECT_EQ(inputs[row * 7 + t], sentence[t - 1]);
+    }
+    for (int j = 0; j < 6; ++j)
+      for (int value = 0; value < cardinalities[j]; ++value)
+        EXPECT_EQ(marginals[j][value], count / cardinalities[j]);
+    EXPECT_EQ(short_count, count / 3);
+    EXPECT_EQ(token_count, count * 20 / 3);
+  }
+  EXPECT_EQ(all_ids.size(), 432u); EXPECT_EQ(all_sentences.size(), 432u);
+  EXPECT_EQ(*all_ids.begin(), 0); EXPECT_EQ(*all_ids.rbegin(), 431);
+}
+
+TEST_F(Workspace, SentenceAssetsUseSharedCacheAndRepairEveryMissingOutput) {
+  Environment cache("DATAMUNGE_DATA_DIR", root.string());
+  Environment offline("DATAMUNGE_DATA_OFFLINE", "1");
+  EXPECT_EQ(d::prepare_example_data("sequence-vae-assets"), fs::absolute(root).string());
+  EXPECT_FALSE(fs::exists(root / "sequence-vae-assets"));
+  const auto directory = root / "sequence_vae";
+  const auto archive = directory / "sentences.npz", manifest = directory / "manifest.json";
+  const auto bytes = read(archive), vocabulary = read(directory / "vocabulary.txt"), metadata = read(manifest);
+  const auto expected = n::load_npz(archive.string());
+  const auto provenance = nlohmann::json::parse(metadata);
+  EXPECT_TRUE(provenance["generation_verified"].get<bool>());
+  EXPECT_FALSE(provenance["external_source"].get<bool>());
+  EXPECT_EQ(provenance["cardinalities"], (std::vector<int>{2, 3, 3, 2, 4, 3}));
+  EXPECT_EQ(provenance["fit"], 288); EXPECT_EQ(provenance["validation"], 72); EXPECT_EQ(provenance["test"], 72);
+  std::thread a([&] { d::prepare_example_data("sequence-vae-assets"); }),
+              b([&] { d::prepare_example_data("sequence-vae-assets"); });
+  a.join(); b.join();
+  EXPECT_EQ(read(archive), bytes); EXPECT_EQ(read(manifest), metadata);
+  fs::remove(directory / "vocabulary.txt");
+  d::prepare_example_data("sequence-vae-assets");
+  EXPECT_EQ(read(directory / "vocabulary.txt"), vocabulary);
+  EXPECT_EQ(read(archive), bytes); EXPECT_EQ(read(manifest), metadata);
+  fs::remove(manifest);
+  d::prepare_example_data("sequence-vae-assets");
+  EXPECT_EQ(read(archive), bytes);
+  EXPECT_FALSE(nlohmann::json::parse(read(manifest))["generation_verified"].get<bool>());
+  fs::remove(archive);
+  d::prepare_example_data("sequence-vae-assets");
+  const auto regenerated = n::load_npz(archive.string());
+  ASSERT_EQ(regenerated.size(), expected.size());
+  for (std::size_t i = 0; i < expected.size(); ++i) {
+    EXPECT_EQ(regenerated[i].first, expected[i].first);
+    EXPECT_TRUE(n::equal_bits(regenerated[i].second, expected[i].second));
+  }
+  EXPECT_EQ(read(manifest), metadata);
+  EXPECT_EQ(read(directory / "vocabulary.txt"), vocabulary);
+  for (const auto& entry : fs::directory_iterator(directory))
+    EXPECT_FALSE(entry.path().filename().string().starts_with(".native-"));
+}
+
+TEST_F(Workspace, SuppliedSentenceArchiveAndVocabularyKeepTheirBytesAndUnverifiedProvenance) {
+  const auto directory = root / "sequence_vae";
+  fs::create_directories(directory);
+  n::save_npz((directory / "sentences.npz").string(), {{"custom", n::tensor({7., 8.})}});
+  write(directory / "vocabulary.txt", "custom vocabulary\n");
+  const auto supplied = read(directory / "sentences.npz");
+  d::prepare_example_data("sequence-vae-assets", root.string());
+  EXPECT_EQ(read(directory / "sentences.npz"), supplied);
+  EXPECT_EQ(read(directory / "vocabulary.txt"), "custom vocabulary\n");
+  const auto manifest = nlohmann::json::parse(read(directory / "manifest.json"));
+  EXPECT_FALSE(manifest["generation_verified"].get<bool>());
+  EXPECT_FALSE(manifest.contains("generator"));
+  EXPECT_EQ(manifest["source"], "caller-supplied sentences.npz");
+  fs::remove(directory / "vocabulary.txt");
+  d::prepare_example_data("sequence-vae-assets", root.string());
+  EXPECT_EQ(read(directory / "sentences.npz"), supplied);
+  EXPECT_EQ(nlohmann::json::parse(read(directory / "manifest.json")), manifest);
+  EXPECT_TRUE(read(directory / "vocabulary.txt").starts_with("[pad]\n[bos]\n[eos]\n"));
+}
+
+TEST_F(Workspace, InceptionMetricRejectsCorruptSourceBeforeAnyExtractionOrDownload) {
+  write(root / "inception-2015-12-05.tgz", "invalid original archive");
+  EXPECT_THROW(d::prepare_example_data("inception-metric", root.string()), std::runtime_error);
+  EXPECT_FALSE(fs::exists(root / "classify_image_graph_def.pb"));
+  EXPECT_FALSE(fs::exists(root / ".native-inception-metric-v1.json"));
+  EXPECT_EQ(read(root / "inception-2015-12-05.tgz"), "invalid original archive");
+}
+
+TEST_F(Workspace, InceptionMetricRehashesCompletedGraphInsteadOfTrustingMarkerSizes) {
+  write(root / "classify_image_graph_def.pb", "altered graph");
+  write(root / "LICENSE", "license");
+  write(root / "manifest.json", "{}");
+  nlohmann::json sizes;
+  for (const auto& name : {"classify_image_graph_def.pb", "LICENSE", "manifest.json"})
+    sizes[name] = fs::file_size(root / name);
+  write(root / ".native-inception-metric-v1.json", sizes.dump());
+  EXPECT_THROW(d::prepare_example_data("inception-metric", root.string()), std::runtime_error);
+  EXPECT_EQ(read(root / "classify_image_graph_def.pb"), "altered graph");
+}

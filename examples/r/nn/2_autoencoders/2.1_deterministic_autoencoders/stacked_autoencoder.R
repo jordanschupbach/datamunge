@@ -8,8 +8,8 @@ rm(.nn_common)
 # Greedy 784->64 and 64->16 pretraining, exact transfer into 784->64->16->64->784.
 # Three epochs per stage/default; validation-only selection and same-stack scratch control.
 #
-# Port of tflow's stacked_autoencoder (model: examples/nn/common/stacked_autoencoder.hpp).
-# Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are read from
+# Port of tflow's stacked_autoencoder (model: include/datamunge/nn/layered_autoencoders.hpp).
+# Preparation uses the native mnist-assets dataset API; data are read from
 # $DATAMUNGE_DATA_DIR/saliency. Outputs (stage1/, stage2/, finetune/, scratch/ training records,
 # transferred_arrays.npz, stacked.npz, metrics.json, index.html and digit<k>.png galleries) go
 # to output/nn/models/stacked_autoencoder. Options: epochs=N data=PATH out=PATH init=DIR (a
@@ -23,22 +23,8 @@ nn_helper("autoencoder")
 fmt <- function(x) sprintf("%g", x)
 f32 <- function(x) readBin(writeBin(x, raw(), size = 4L), "double", size = 4L, n = length(x))
 
-# Dense sigmoid layers "layer<i>" through mirrored, strictly decreasing widths; every layer output.
-stacked_sigmoid_autoencoder <- function(p, image, widths) {
-    count <- length(widths)
-    nn_require(count >= 3L && count %% 2L == 1L, "odd symmetric width list includes input and output")
-    for (i in seq_len(count)) {
-        nn_require(widths[i] > 0L && widths[i] == widths[count + 1L - i], "positive mirrored encoder/decoder dimensions")
-        if (i <= count %/% 2L) nn_require(widths[i] > widths[i + 1L], "strictly decreasing encoder widths")
-    }
-    outputs <- list()
-    value <- image
-    for (i in 2L:count) {
-        value <- nn$dense(p, paste0("layer", i - 2L), value, as.integer(widths[i]), nn$Activation$Sigmoid)
-        outputs[[i - 1L]] <- value
-    }
-    outputs
-}
+# Forward layers are computed in the canonical C++ API.
+stacked_sigmoid_autoencoder <- nn$SigmoidAutoencoder
 
 # Parameters + optional Adam of one symmetric sigmoid stack (stacked_autoencoder.hpp).
 stacked_model <- function(widths, seed, training = TRUE) {
@@ -59,11 +45,7 @@ stacked_model <- function(widths, seed, training = TRUE) {
     model$evaluate <- function(x) nn$no_grad(function() lapply(model$net(x), function(t) t$contiguous()))
     # The layers after the code layer, from an explicit code.
     model$decode <- function(code) nn$no_grad(function() {
-        value <- code
-        for (i in seq.int(model$code_index + 2L, length(model$widths) - 1L))
-            value <- nn$dense(model$parameters, paste0("layer", i - 1L), value, model$widths[i + 1L],
-                              nn$Activation$Sigmoid)
-        value$contiguous()
+        nn$SigmoidAutoencoderDecode(model$parameters, code, model$widths)$contiguous()
     })
     # Explicit whole-model weight transfer (optimizer state unchanged).
     model$load <- function(arrays) {

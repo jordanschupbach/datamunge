@@ -2,7 +2,7 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/mask_rcnn.py
 """Mask R-CNN: learned RPN, aligned box head and class-specific mask branch.
 https://arxiv.org/abs/1703.06870
-Preparation (tflow): python3 scripts/fetch_datasets.py mnist --split both
+Preparation (tflow): dm::datasets::fetch("mnist")
 
 Port of tflow's mask_rcnn. Unquantized aligned RoI features use four
 regular bilinear samples per bin, averaged with replicated borders.
@@ -29,7 +29,8 @@ TF -> datamunge: eager training; the RPN proposals of a step come from the
 same forward pass that is differentiated (TF runs the RPN once more before
 the step, with the same weights, so the proposals are the same). MNIST
 comes from tflow's dataset cache (data=PATH overrides); the scenes and their
-instance supports are identical to TF's. Weights come from datamunge's
+instance supports share the tensor sampler with plain scenes. Borderline
+interpolation rounding may differ by one byte from the original host sampler. Weights come from datamunge's
 generator, so trained numbers match TF statistically. The full mask head is
 executed (TF builds it as a graph only).
 Options: data=PATH epochs=3 fit=N validation=N test=N accuracy=0|1 threads=N.

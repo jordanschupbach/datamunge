@@ -346,9 +346,9 @@ Weight-normalised softmax regression on all 1797 digits, full-batch gradient des
 
 | learning rate η | Σ_j norm(v_j)² at start | at end | largest per-step identity error | effective learning rate η g²/norm(v)², start → end |
 | ---: | ---: | ---: | ---: | ---: |
-| 0.5 | 16.8336 | 18.5794 | 1.1e-16 | 0.500 → 4.380 |
-| 2 | 16.8336 | 104.2946 | 1.5e-16 | 2.000 → 7.464 |
-| 8 | 16.8336 | 1747.2744 | 5.9e-16 | 8.000 → 3.584 |
+| 0.5 | 16.8336 | 18.4938 | 1.2e-16 | 0.500 → 4.397 |
+| 2 | 16.8336 | 104.2946 | 1.6e-16 | 2.000 → 7.464 |
+| 8 | 16.8336 | 1747.2744 | 9.5e-16 | 8.000 → 3.584 |
 \image(figures/spectral_theory.svg)
 // result_end
 

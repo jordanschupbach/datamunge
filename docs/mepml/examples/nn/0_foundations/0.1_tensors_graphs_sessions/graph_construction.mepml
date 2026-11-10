@@ -124,7 +124,7 @@ int main() {
   std::vector<std::pair<Tensor, std::string>> names;
   for (const auto& n : store.names()) names.emplace_back(store.at(n), n);
   const auto t = nn::tape({y}, names);
-  std::print("```\n{}```\n\n", t.to_text());
+  std::print("{}\n", t.to_markdown());
   const auto g = nn::grad(y, {a, p, w});
   std::print("- y = {}; dy/da = {}, dy/d(block/k) = {}, dy/dw = {}\n\n", y.item(), g[0].item(), g[1].item(), g[2].values_str());
 
@@ -153,113 +153,18 @@ int main() {
 - store.get("block/k") twice: same tensor = true, value 5
 - h1 = a + b records `Add`, h2 = h1 + c records `Add`, h2 = 6
 
-```
-Sum_10 [Sum] [] <- BatchMatMulV2_9
-BatchMatMulV2_9 [BatchMatMulV2] [1, 2] <- Mul_7 encoder/w
-encoder/w [Leaf] [2, 2]
-Mul_7 [Mul] [1, 2] <- Reshape_6 const
-Reshape_6 [Reshape] [1, 1] <- Mul_5
-Mul_5 [Mul] [] <- Add_3 block/k
-block/k [Leaf] []
-Add_3 [Add] [] <- Add_2 const
-Add_2 [Add] [] <- a const
-a [Leaf] []
-```
-
-- y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
-
-- counter reads: three plain, three after an increment, one plain: [0, 0, 0, 1, 2, 3, 3]
-- matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
-- the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
-// result_end
-```
-Sum_10 [Sum] [] <- BatchMatMulV2_9
-BatchMatMulV2_9 [BatchMatMulV2] [1, 2] <- Mul_7 encoder/w
-encoder/w [Leaf] [2, 2]
-Mul_7 [Mul] [1, 2] <- Reshape_6 const
-Reshape_6 [Reshape] [1, 1] <- Mul_5
-Mul_5 [Mul] [] <- Add_3 block/k
-block/k [Leaf] []
-Add_3 [Add] [] <- Add_2 const
-Add_2 [Add] [] <- a const
-a [Leaf] []
-```
-
-- y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
-
-- counter reads: three plain, three after an increment, one plain: [0, 0, 0, 1, 2, 3, 3]
-- matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
-- the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
-// result_end
-```
-Sum_10 [Sum] [] <- BatchMatMulV2_9
-BatchMatMulV2_9 [BatchMatMulV2] [1, 2] <- Mul_7 encoder/w
-encoder/w [Leaf] [2, 2]
-Mul_7 [Mul] [1, 2] <- Reshape_6 const
-Reshape_6 [Reshape] [1, 1] <- Mul_5
-Mul_5 [Mul] [] <- Add_3 block/k
-block/k [Leaf] []
-Add_3 [Add] [] <- Add_2 const
-Add_2 [Add] [] <- a const
-a [Leaf] []
-```
-
-- y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
-
-- counter reads: three plain, three after an increment, one plain: [0, 0, 0, 1, 2, 3, 3]
-- matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
-- the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
-// result_end
-```
-Sum_10 [Sum] [] <- BatchMatMulV2_9
-BatchMatMulV2_9 [BatchMatMulV2] [1, 2] <- Mul_7 encoder/w
-encoder/w [Leaf] [2, 2]
-Mul_7 [Mul] [1, 2] <- Reshape_6 const
-Reshape_6 [Reshape] [1, 1] <- Mul_5
-Mul_5 [Mul] [] <- Add_3 block/k
-block/k [Leaf] []
-Add_3 [Add] [] <- Add_2 const
-Add_2 [Add] [] <- a const
-a [Leaf] []
-```
-
-- y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
-
-- counter reads: three plain, three after an increment, one plain: [0, 0, 0, 1, 2, 3, 3]
-- matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
-- the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
-// result_end
-```
-Sum_10 [Sum] [] <- BatchMatMulV2_9
-BatchMatMulV2_9 [BatchMatMulV2] [1, 2] <- Mul_7 encoder/w
-encoder/w [Leaf] [2, 2]
-Mul_7 [Mul] [1, 2] <- Reshape_6 const
-Reshape_6 [Reshape] [1, 1] <- Mul_5
-Mul_5 [Mul] [] <- Add_3 block/k
-block/k [Leaf] []
-Add_3 [Add] [] <- Add_2 const
-Add_2 [Add] [] <- a const
-a [Leaf] []
-```
-
-- y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
-
-- counter reads: three plain, three after an increment, one plain: [0, 0, 0, 1, 2, 3, 3]
-- matmul([2, 3], [2, 3]): `matmul: inner dimensions differ: [2, 3] @ [2, 3]`
-- the next call runs normally: neg(m) = [[-1, -2, -3], [-4, -5, -6]]
-// result_end
-```
-Sum_10 [Sum] [] <- BatchMatMulV2_9
-BatchMatMulV2_9 [BatchMatMulV2] [1, 2] <- Mul_7 encoder/w
-encoder/w [Leaf] [2, 2]
-Mul_7 [Mul] [1, 2] <- Reshape_6 const
-Reshape_6 [Reshape] [1, 1] <- Mul_5
-Mul_5 [Mul] [] <- Add_3 block/k
-block/k [Leaf] []
-Add_3 [Add] [] <- Add_2 const
-Add_2 [Add] [] <- a const
-a [Leaf] []
-```
+| Node | Operation | Shape | Inputs |
+| :--- | :--- | :--- | :--- |
+| Sum&#95;10 | Sum | &#91;&#93; | BatchMatMulV2&#95;9 |
+| BatchMatMulV2&#95;9 | BatchMatMulV2 | &#91;1, 2&#93; | Mul&#95;7, encoder/w |
+| encoder/w | Leaf | &#91;2, 2&#93; |  |
+| Mul&#95;7 | Mul | &#91;1, 2&#93; | Reshape&#95;6, const |
+| Reshape&#95;6 | Reshape | &#91;1, 1&#93; | Mul&#95;5 |
+| Mul&#95;5 | Mul | &#91;&#93; | Add&#95;3, block/k |
+| block/k | Leaf | &#91;&#93; |  |
+| Add&#95;3 | Add | &#91;&#93; | Add&#95;2, const |
+| Add&#95;2 | Add | &#91;&#93; | a, const |
+| a | Leaf | &#91;&#93; |  |
 
 - y = 60; dy/da = 10, dy/d(block/k) = 12, dy/dw = [[30, 30], [30, 30]]
 
@@ -546,9 +451,9 @@ int main() {
 // result_begin: markdown
 | k | tied: loss | untied: loss | PCA optimum | tied: largest entry of WᵀW − I | untied: largest entry of EᵀE − I | tied: subspace distance to PCA | parameters tied / untied |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 2 | 0.052426 | 0.052426 | 0.052426 | 2.9e-05 | 0.10 | 6.1e-04 | 128 / 256 |
-| 5 | 0.033369 | 0.033369 | 0.033369 | 2.2e-04 | 0.09 | 8.9e-04 | 320 / 640 |
-| 10 | 0.019197 | 0.019197 | 0.019196 | 2.3e-03 | 0.13 | 6.3e-04 | 640 / 1280 |
+| 2 | 0.052426 | 0.052426 | 0.052426 | 1.5e-05 | 0.10 | 5.9e-04 | 128 / 256 |
+| 5 | 0.033369 | 0.033369 | 0.033369 | 2.6e-04 | 0.09 | 5.0e-04 | 320 / 640 |
+| 10 | 0.019197 | 0.019197 | 0.019196 | 2.8e-04 | 0.13 | 3.1e-04 | 640 / 1280 |
 
 Total variance per pixel 0.07333; the top 2, 5 and 10 components keep 28.5%, 54.5% and 73.8% of it.
 \image(figures/graph_construction_autoencoder.svg)

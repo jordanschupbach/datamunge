@@ -3,8 +3,8 @@
 """BOTH activation-L1 and mean-unit Bernoulli-KL sparse autoencoders with matched controls.
 Four matched 64-sigmoid variants, three epochs/default, no label targets.
 
-Port of tflow's sparse_autoencoder (model and penalties: examples/nn/common/sparse_autoencoder.hpp).
-Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are read from
+Port of tflow's sparse_autoencoder (model and penalties: include/datamunge/nn/activation_sparse_autoencoder.hpp).
+Preparation uses the native mnist-assets dataset API; data are read from
 $DATAMUNGE_DATA_DIR/saliency. Outputs (plain/, l1/, kl/, combined/ training records, data.npz,
 index.html and digit<k>.png galleries) go to output/nn/models/sparse_autoencoder. Checkpoints
 are best.npz files instead of TF SaveV2 bundles; metrics.json gains "training_seconds".
@@ -29,43 +29,10 @@ def float32(x):
     return struct.unpack("f", struct.pack("f", x))[0]
 
 
-# ---- model and penalties (examples/nn/common/sparse_autoencoder.hpp) -------------------------
+# ---- model and penalties (datamunge/nn/activation_sparse_autoencoder.hpp) -------------------------
 
-class SparsityPenalty:
-    l1 = kl = unit_mean = clipped_mean = total = None
-
-
-def activation_sparsity(code, l1_weight, kl_weight, rho=.05, epsilon=1e-5):
-    """l1 = mean |code|; kl = mean over units of KL(Bernoulli(rho) || Bernoulli(clamped batch mean));
-    total = l1_weight l1 + kl_weight kl. All constants are float32 values as in tflow."""
-    l1_weight, kl_weight, rho, epsilon = (float32(v) for v in (l1_weight, kl_weight, rho, epsilon))
-    checks.require(math.isfinite(l1_weight) and l1_weight >= 0 and math.isfinite(kl_weight) and kl_weight >= 0
-                   and 0 < rho < 1 and 0 < epsilon < .5, "valid sparsity weights/target/clamp")
-    out = SparsityPenalty()
-    out.l1 = nn.mean(nn.abs(code))
-    out.unit_mean = nn.mean(code, [0])
-    out.clipped_mean = nn.clip(out.unit_mean, epsilon, float32(1 - epsilon))
-    complement = float32(1 - rho)
-    positive = nn.mul(nn.log(nn.div(rho, out.clipped_mean)), rho)
-    negative = nn.mul(nn.log(nn.div(complement, nn.sub(1.0, out.clipped_mean))), complement)
-    out.kl = nn.mean(nn.add(positive, negative), [0])
-    out.total = nn.add(nn.mul(out.l1, l1_weight), nn.mul(out.kl, kl_weight))
-    return out
-
-
-class SparseAeOutput:
-    code = reconstruction = mse = loss = penalty = None
-
-
-def sparse_autoencoder(p, image, l1_weight, kl_weight):
-    """784 -> 64 sigmoid -> 784 sigmoid; loss = MSE + sparsity penalties."""
-    out = SparseAeOutput()
-    out.code = nn.dense(p, "encoder", image, 64, nn.Activation.Sigmoid)
-    out.reconstruction = nn.dense(p, "decoder", out.code, 784, nn.Activation.Sigmoid)
-    out.mse = ae.reconstruction_mse(out.reconstruction, image)
-    out.penalty = activation_sparsity(out.code, l1_weight, kl_weight)
-    out.loss = nn.add(out.mse, out.penalty.total)
-    return out
+activation_sparsity = nn.ActivationSparsity
+sparse_autoencoder = nn.SparseAutoencoder
 
 
 class SparseAutoencoderModel:

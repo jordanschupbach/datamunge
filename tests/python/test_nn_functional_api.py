@@ -47,6 +47,133 @@ def test_named_functional_model_gradients_optimizer_and_checkpoint(tmp_path):
     assert (tmp_path/'copies.npz').read_bytes() == (tmp_path/'parameters.npz').read_bytes()
 
 
+def test_canonical_contractive_model_keeps_complete_gradients_and_owned_results():
+    import gc
+    p = nn.ParameterStore(1753)
+    x = nn.full([2, 3], .25)
+    result = nn.ContractiveAutoencoder(p, x, .01, 3, 2)
+    assert tuple(result.code.shape()) == (2, 2)
+    assert tuple(result.reconstruction.shape()) == (2, 3)
+    assert p.count() == 17
+    assert result.loss.item() == pytest.approx(result.mse.item() + .01 * result.penalty.mean.item(), abs=1e-7)
+    gradients = nn.grad(result.loss, p.parameters())
+    assert len(gradients) == 4 and all(math.isfinite(v) for g in gradients for v in g.values())
+    penalty = result.penalty
+    expected = tuple(penalty.per_example.values())
+    del result
+    gc.collect()
+    assert tuple(penalty.per_example.values()) == expected
+    mean = penalty.mean
+    del penalty
+    gc.collect()
+    assert math.isfinite(mean.item())
+    weights = nn.ones([3, 2]).requires_grad_()
+    code = nn.sigmoid(nn.matmul(nn.zeros([4, 3]), weights))
+    regularizer = nn.SigmoidEncoderContraction(code, weights)
+    assert regularizer.mean.item() == pytest.approx(.375)
+    assert list(nn.grad(regularizer.mean, [weights])[0].values()) == pytest.approx([.125] * 6)
+    with pytest.raises(RuntimeError):
+        nn.ContractiveAutoencoder(nn.ParameterStore(1), x, -1, 3, 2)
+
+
+def test_canonical_spatial_autoencoder_keeps_decoder_gradients_and_owned_endpoints():
+    import gc
+    p = nn.ParameterStore(1801)
+    image = nn.full([2, 8, 12, 1], .25).requires_grad_()
+    result = nn.ConvolutionalAutoencoder(p, image)
+    assert p.count() == 741 and p.size() == 8
+    assert tuple(result.code.shape()) == (2, 2, 3, 4)
+    assert tuple(result.reconstruction.shape()) == (2, 8, 12, 1)
+    decoded = nn.ConvolutionalDecoder(p, result.code)
+    assert list(decoded.reconstruction.values()) == list(result.reconstruction.values())
+    assert list(decoded.hidden.values()) == list(result.decoder1.values())
+    gradients = nn.grad(nn.mse(result.reconstruction, image), list(p.parameters()) + [image])
+    assert len(gradients) == 9
+    assert all(all(math.isfinite(v) for v in g.values()) for g in gradients)
+    assert all(any(v != 0 for v in g.values()) for g in gradients)
+    code, reconstruction = result.code, decoded.reconstruction
+    expected = tuple(reconstruction.values())
+    del result, decoded
+    gc.collect()
+    assert tuple(reconstruction.values()) == expected
+    assert tuple(code.shape()) == (2, 2, 3, 4)
+    empty = nn.ParameterStore(1)
+    with pytest.raises(RuntimeError):
+        nn.ConvolutionalAutoencoder(empty, nn.zeros([1, 5, 4, 1]))
+    with pytest.raises(RuntimeError):
+        nn.ConvolutionalDecoder(empty, nn.zeros([1, 1, 1, 3]))
+    assert empty.size() == 0
+
+
+def test_native_gaussian_banks_and_clean_target_corruption_are_reproducible_and_owned():
+    import gc
+    bank = nn.GaussianNoise([2, 2], 1, 1673)
+    expected = tuple(bank.values())
+    nn.GaussianNoise([13], 2, 991)
+    assert tuple(nn.GaussianNoise([2, 2], 1, 1673).values()) == expected
+    assert tuple(nn.GaussianNoise([2, 2], 1, 1674).values()) != expected
+    assert list(nn.GaussianNoise([1], 1, 2147483648).values()) == pytest.approx([-0.9908843253272774], abs=1e-14)
+    assert list(nn.GaussianNoise([1], 1, 4294967295).values()) == pytest.approx([1.6481125509743353], abs=1e-14)
+    clean = nn.from_vector([0, .2, .8, 1], [2, 2]).requires_grad_()
+    noise = nn.from_vector_double([-2, 1, -1, 2], [1, 2, 2]).requires_grad_()
+    result = nn.CorruptForDenoising(clean, noise, .3)
+    assert list(result.values()) == pytest.approx([0, .5, .5, 1], abs=6e-8)
+    assert not result.requires_grad()
+    tiny = nn.CorruptForDenoising(nn.zeros([1, 2]),
+        nn.from_vector_double([-1e-308, 1e-308], [1, 1, 2]), 1).values()
+    assert math.copysign(1, tiny[0]) == -1 and math.copysign(1, tiny[1]) == 1
+    assert list(nn.CorruptForDenoising(clean, noise, 0).values()) == list(clean.values())
+    del clean, noise
+    gc.collect()
+    assert list(result.values()) == pytest.approx([0, .5, .5, 1], abs=6e-8)
+    with pytest.raises(RuntimeError):
+        nn.CorruptForDenoising(nn.zeros([2, 2]), bank, -1)
+    with pytest.raises(RuntimeError):
+        nn.GaussianNoise([-1], 1, 12)
+
+
+def test_canonical_competition_preserves_signed_gradients_and_owned_model_paths():
+    import gc
+    scores = nn.from_vector([-4, -1, -2, -3], [1, 4]).requires_grad_()
+    mask = nn.CompetitiveMask(scores, False, 2)
+    assert list(mask.values()) == [0, 1, 1, 0]
+    assert not mask.requires_grad()
+    assert list(nn.grad(nn.sum(nn.mul(scores, mask)), [scores])[0].values()) == [0, 1, 1, 0]
+    p = nn.ParameterStore(1931)
+    x = nn.from_vector([.1, .2, .8, .7, .3, .4], [2, 3])
+    result = nn.CompetitiveAutoencoder(p, x, False, False, 3, 4, 2)
+    assert p.count() == 31 and p.size() == 4
+    assert sum(result.mask.values()) == 4
+    assert list(result.code.values()) == list(result.training_code.values())
+    assert list(result.reconstruction.values()) == list(result.training_reconstruction.values())
+    gradients = nn.grad(nn.mse(result.training_reconstruction, x), p.parameters())
+    assert len(gradients) == 4 and all(math.isfinite(v) for g in gradients for v in g.values())
+    reconstruction = result.reconstruction
+    expected = tuple(reconstruction.values())
+    del result
+    gc.collect()
+    assert tuple(reconstruction.values()) == expected
+    with pytest.raises(RuntimeError):
+        nn.CompetitiveMask(nn.full([1, 4], math.nan), False, 2)
+
+
+def test_contractive_example_uses_the_canonical_model(monkeypatch):
+    example = runpy.run_path(str(ROOT / 'examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.py'))
+    example['fixtures']()
+    calls = []
+    original = nn.ContractiveAutoencoder
+
+    def forward(*args):
+        calls.append(True)
+        return original(*args)
+
+    monkeypatch.setattr(nn, 'ContractiveAutoencoder', forward)
+    model = example['ContractiveAutoencoderModel'](.01, training=False)
+    assert len(calls) == 1
+    assert tuple(model.forward(nn.zeros([2, 784])).code.shape()) == (2, 32)
+    assert len(calls) == 2
+
+
 def test_no_grad_nested_and_exception_restoration():
     previous = nn.is_grad_enabled()
     with pytest.raises(ValueError):

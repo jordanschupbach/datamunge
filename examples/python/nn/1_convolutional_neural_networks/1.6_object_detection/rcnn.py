@@ -3,7 +3,7 @@
 """R-CNN: classify warped region proposals with a CNN and refine their boxes.
 
 Port of tflow's rcnn. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 
 On the synthetic digit scenes (6000 training, 1000 test; see
 detection_baselines), propose regions classically from connected

@@ -1,0 +1,783 @@
+//? Title: Conditional GAN: Supply the Class to Both Networks
+//? Subtitle: Complete native MNIST experiment, separate Adam states and fixed final epoch
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+A compact adversarial game fits 1000 balanced MNIST digits, with 200 validation and
+200 held-out test images. The generator maps 16 Gaussian coordinates through 32 tanh
+units to 784 sigmoid pixels; the discriminator produces one raw source score.
+The same requested class enters both networks as a ten-way one-hot input.
+Three fixed epochs perform 96 discriminator writes and 96 generator writes, always
+recomputing the generator loss through the updated discriminator. Canonical C++ maps
+and objectives supply the model; the complete editable program exposes every update.
+The short run produces weak grey images. Game losses and coarse-pixel MMD remain
+diagnostics, and the fitting-mean baseline scores better on MMD. Exact source parity,
+independent numerical checks, checkpoint restore and noise controls preserve this result.
+)
+\toc
+
+> Follow the supplied inputs through the game
+
+The architecture and objective follow the repository's compact teaching experiment.
+The method reference is [Mirza and Osindero, Conditional Generative Adversarial Nets (2014)](https://arxiv.org/abs/1411.1784). Both G and D receive the class, including D on real images. No auxiliary class head or classification loss is fitted.
+This uses the non-saturating generator variant, minimizing stable softplus of minus the fake logit.
+
+
+```{cpp, results="markdown", file="figures/conditional_gan_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram          d(52, 1250);
+  dm::graphics::DiagramNodeStyle s;
+  s.width     = 7.5;
+  s.height    = 3.;
+  s.font_size = 28;
+  d.node("x", {-12, 5}, "Real pixels784\n+ class10", s)
+      .node("dr", {18, 5}, "Shared D\ntanh32 → raw1", s)
+      .node("z", {-12, -5}, "Noise16\n+ class10", s)
+      .node("g", {-2, -5}, "G: tanh32\nsigmoid784", s)
+      .node("f", {8, -5}, "Generated pixels784\n+ class10", s)
+      .node("df", {18, -5}, "Same D parameters", s)
+      .edge("x", "dr")
+      .edge("z", "g")
+      .edge("g", "f")
+      .edge("f", "df")
+      .text(
+          {3, -10}, "D write first; fresh G loss through updated D. Separate optimizer states.", 18)
+      .save_svg("build/conditional_gan_method.svg");
+}
+```
+// result_begin: markdown
+\image(figures/conditional_gan_method.svg)
+// result_end
+
+\caption(Two D boxes denote the same four parameter tensors. The class is supplied to G and to both discriminator branches.)
+\alttext(Explicit Gaussian input enters G; real and generated image branches enter a shared raw-score discriminator.)
+
+> Start with source scores whose losses can be checked by hand
+
+For separate real and fake logit pools, with sp the stable softplus,
+
+\[L_D=\operatorname{mean}sp(-r)+\operatorname{mean}sp(f),\quad L_G=\operatorname{mean}sp(-f).\]
+
+At scalar r=f=0, D=2log2 and G=log2. D derivatives are-σ(-r)/N andσ(f)/M;
+G's fake-logit derivative is-σ(-f)/M. Thus when D confidently calls a generated
+image fake, f=-80, the non-saturating G derivative remains near-1/M. Direct
+softplus(-f) also avoids cancellation in softplus(f)-f. The reporting sigmoid
+is explicit; fitting uses logits and stable softplus, never log of a rounded probability.
+
+```{cpp, results="markdown", file="figures/conditional_gan_derivatives.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::vector<double> x, dr, df, gf;
+  for (int k = -60; k <= 60; ++k) {
+    x.push_back(k / 20.);
+    auto r          = n::full({1, 1}, k / 20., n::DType::Float64).requires_grad_(),
+         f          = n::full({1, 1}, k / 20., n::DType::Float64).requires_grad_();
+    const auto loss = n::models::LogisticGanObjectives(r, f);
+    const auto d    = n::grad(loss.discriminator, {r, f});
+    dr.push_back(d[0].item());
+    df.push_back(d[1].item());
+    gf.push_back(n::grad(n::models::LogisticGanObjectives(r, f).generator, {f})[0].item());
+  }
+  auto p = dm::graphics::RPlot::create();
+  p.lines(x, dr, "D real derivative", {37, 99, 235}, 2.)
+      .lines(x, df, "D fake derivative", {22, 163, 74}, 2.)
+      .lines(x, gf, "G fake derivative", {220, 38, 38}, 2.)
+      .y_limits(-1.25, 1.5)
+      .x_label("Respective scalar raw source score")
+      .y_label("Derivative; each pool size1")
+      .title("Logistic objective: distinguish D and G directions")
+      .save_svg("build/conditional_gan_derivatives.svg");
+  auto r          = n::zeros({1, 1}, n::DType::Float64).requires_grad_(),
+       f          = n::zeros({1, 1}, n::DType::Float64).requires_grad_();
+  const auto loss = n::models::LogisticGanObjectives(r, f);
+  const auto d    = n::grad(loss.discriminator, {r, f});
+  const auto g    = n::grad(n::models::LogisticGanObjectives(r, f).generator, {f});
+  std::print(
+      "Hand-check: D={:.9f},G={:.9f}; D derivatives={},{}; G derivative={}.\n",
+      loss.discriminator.item(),
+      loss.generator.item(),
+      d[0].item(),
+      d[1].item(),
+      g[0].item());
+}
+```
+// result_begin: markdown
+Hand-check: D=1.386294361,G=0.693147181; D derivatives=-0.5,0.5; G derivative=-0.5.
+\image(figures/conditional_gan_derivatives.svg)
+// result_end
+
+\caption(Native autodiff supplies all three curves. These are scalar-pool derivatives; larger pools divide each branch by its own size. At the same score, D's real derivative and G's fake derivative coincide; the red curve overlays blue.)
+\alttext(Blue and green lines show discriminator derivatives; red shows the separate generator derivative.)
+
+> One-hot conditioning can be traced with one hidden unit
+
+Take two classes, one noise coordinate z=0 and one real pixel x=.25. Class0 has
+one-hot(1,0), class 1 has(0,1). Set all biases to zero, both output weights to one,
+G's hidden weights on(z,c0,c1) to(0,0,1), and D's on(x,c0,c1) to(1,0,2).
+Then G produces sigmoid(tanh(c1)): .5 or about .6817. On the same real pixel,
+D returns tanh(.25+2c1): about .2449 or .9780. Thus class enters each network
+before its nonlinearity; no class target or classifier head supplies these outputs.
+The two plotted outputs have different meanings: bounded G pixel and raw D score.
+Their common numerical range here does not make the D score a probability.
+
+```{cpp, results="markdown", file="figures/conditional_gan_toy.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n         = dm::nn;
+  namespace m         = n::models;
+  const auto        t = n::DType::Float64;
+  n::ParameterStore g(1, t), d(2, t);
+  auto              z = n::zeros({2, 1}, t), x = n::full({2, 1}, .25, t);
+  auto              labels = n::tensor({0, 1}, {2}, n::DType::Int64);
+  {
+    n::NoGradGuard guard;
+    m::ConditionalGan(g, d, x, z, labels, 1, 2, 1);
+  }
+  g.set("hidden/W", n::tensor({0, 0, 1}, {3, 1}, t));
+  g.set("output/W", n::ones({1, 1}, t));
+  d.set("hidden/W", n::tensor({1, 0, 2}, {3, 1}, t));
+  d.set("output/W", n::ones({1, 1}, t));
+  const auto out = m::ConditionalGan(g, d, x, z, labels, 1, 2, 1);
+  std::print(
+      "| class | one-hot | G pixel | D real raw score "
+      "|\n|---|---|---:|---:|\n|0|1,0|{:.9f}|{:.9f}|\n|1|0,1|{:.9f}|{:.9f}|\n",
+      out.fake.at({0, 0}),
+      out.real_logit.at({0, 0}),
+      out.fake.at({1, 0}),
+      out.real_logit.at({1, 0}));
+  auto p = dm::graphics::RPlot::create();
+  p.points({0, 1}, out.fake.to_vector<double>(), "G sigmoid pixel", {37, 99, 235}, 6.)
+      .points({0, 1}, out.real_logit.to_vector<double>(), "D real raw score", {220, 38, 38}, 6.)
+      .x_limits(-.4, 1.4)
+      .y_limits(0, 1.5)
+      .x_label("Supplied class0 or1; same z0 and real pixel0.25")
+      .y_label("Different output meanings: pixel and raw score")
+      .title("One-hot inputs change both small networks")
+      .save_svg("build/conditional_gan_toy.svg");
+}
+```
+// result_begin: markdown
+| class | one-hot | G pixel | D real raw score |
+|---|---|---:|---:|
+|0|1,0|0.500000000|0.244918662|
+|1|0,1|0.681699742|0.978026115|
+\image(figures/conditional_gan_toy.svg)
+// result_end
+
+\caption(One supplied class bit changes both networks, with no fitting or random input. Default-zero biases are retained.)
+\alttext(Two blue generator-pixel values and two red raw discriminator scores differ between the supplied classes.)
+
+> Native preparation and separated digit pools
+
+The program prepares the native `mnist-assets` recipe and loads its saliency pools.
+Fitting/validation are disjoint subsets of original MNIST training data; test IDs remain
+in the original test range. Every class contributes 100 fitting and 20 validation/test
+images. The loader checks shape, IDs, balance and pixel scaling to Float32[0,1].
+The preview takes the first two fitting observations per class, without model selection.
+Labels determine the requested class in both branches; they are not auxiliary predictions.
+The initial test forward is archived as an explicit diagnostic control; test outcomes never
+choose weights, noise banks, hyperparameters or epochs. Validation only logs diagnostics.
+
+```{cpp, results="markdown", file="figures/conditional_gan_pools.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  auto home   = std::filesystem::path(dm::datasets::data_home());
+  dm::datasets::prepare_example_data("mnist-assets", home);
+  auto                      pools = n::models::LoadSaliency(home / "saliency");
+  std::vector<std::int64_t> rows;
+  auto                      labels = pools[0].labels.to_vector<std::int32_t>();
+  for (int c = 0; c < 10; ++c) {
+    int count = 0;
+    for (std::int64_t k = 0; k < 1000 && count < 2; ++k)
+      if (labels[k] == c) {
+        rows.push_back(k);
+        ++count;
+      }
+  }
+  n::save_image_grid(
+      n::take_rows(pools[0].images, rows),
+      "build/conditional_gan_pools.png",
+      2,
+      0,
+      1,
+      4,
+      220 / 255.,
+      3);
+  std::print(
+      "| pool | rows | each class | role |\n|---|---:|---:|---|\n| fitting |1000|100| Adam updates "
+      "|\n| validation |200|20| log only |\n| test |200|20| fixed final evaluation |\n");
+}
+```
+// result_begin: markdown
+| pool | rows | each class | role |
+|---|---:|---:|---|
+| fitting |1000|100| Adam updates |
+| validation |200|20| log only |
+| test |200|20| fixed final evaluation |
+\image(figures/conditional_gan_pools.png)
+// result_end
+
+\caption(Ten rows correspond to classes 0 through9, with two fitting images per row.)
+\alttext(Two real MNIST examples for each digit class appear in a balanced ten-row grid.)
+
+> Complete experiment: two parameter stores and 192 explicit writes
+
+| Store | Creation order and mapping | Leaves | Values | Seed |
+|---|---|---:|---:|---:|
+| G | hidden W,b then output W,b;16 +10 condition→tanh32→sigmoid784 |4|26736|5101|
+| D | hidden W,b then output W,b;784 +10 condition→tanh32→raw1 |4|25473|5113|
+
+Each Adam state uses .0002,β1=.5,β2=.999,ε=1e-8. BatchOrder(1000,32,4847)
+visits each fitting row once per epoch:31 full batches and an eight-row tail. Training
+Gaussian banks use4862,4863,4864; fixed validation/test banks use4823/4831. The native
+Box–Muller bank is computed in Double and cast once to Float32. All source IDs and
+3000 fitting-row visits are retained. Each minibatch writes D, recomputes, then writes G.
+Only the selected store is passed to its optimizer; there is no shared Adam clock.
+
+The editable program includes preparation, all fitting, first-write ownership checks,
+checkpoint save/restore, standalone generation and immutable controls. The native forward
+returns live endpoints only; coarse MMD is added explicitly during evaluation, not hidden
+inside every gradient computation. The final third epoch is fixed before the run.
+One discrete label vector conditions the matching real and generated rows; continuous data/noise remain differentiable.
+
+```{cpp, results="markdown", file="figures/conditional_gan_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <chrono>
+#include <cmath>
+#include <dm/dm.hpp>
+#include <fstream>
+#include <iostream>
+
+namespace nn = dm::nn;
+namespace m  = nn::models;
+using Arrays = std::map<std::string, nn::Tensor>;
+using nn::Tensor;
+
+namespace {
+void Require(bool condition, const std::string& message) {
+  if (!condition)
+    throw std::runtime_error(message);
+}
+void Near(double actual, double expected, double tolerance, const std::string& message) {
+  Require(std::abs(actual - expected) <= tolerance, message);
+}
+void SaveArrays(const std::string& path, const Arrays& a) {
+  nn::save_npz(path, nn::NamedTensors(a.begin(), a.end()));
+}
+bool Equal(const Tensor& a, const Tensor& b) {
+  return nn::equal_bits(a, b);
+}
+bool Equal(const Arrays& a, const Arrays& b) {
+  if (a.size() != b.size())
+    return false;
+  for (const auto& [key, value] : a)
+    if (!b.count(key) || !Equal(value, b.at(key)))
+      return false;
+  return true;
+}
+Tensor Gaussian(std::int64_t rows, std::int64_t width, std::uint64_t seed) {
+  return nn::cast(
+      m::GaussianNoise({rows, width}, 1, seed).reshape({rows, width}), nn::DType::Float32);
+}
+double MaxAbsDiff(const Tensor& a, const Tensor& b) {
+  return nn::max(nn::abs(nn::cast(a, nn::DType::Float64) - nn::cast(b, nn::DType::Float64))).item();
+}
+void Mosaic(const std::filesystem::path& path, const Tensor& images, std::int64_t columns) {
+  nn::save_image_grid(
+      images.reshape({images.size(0), 28, 28, 1}), path.string(), columns, 0, 1, 4, 220 / 255., 3);
+}
+Arrays Fields(const m::ConditionalGanOutput& o) {
+  Arrays a{
+      {"fake", o.fake},
+      {"real_logit", o.real_logit},
+      {"fake_logit", o.fake_logit},
+      {"real_probability", o.real_probability},
+      {"fake_probability", o.fake_probability},
+      {"discriminator_loss", o.discriminator_loss},
+      {"generator_loss", o.generator_loss}};
+  return a;
+}
+
+double Value(const Arrays& a, const std::string& key) {
+  return a.at(key).item();
+}
+
+/// Logistic GAN algebra at extreme logits: finite losses and gradients, and
+/// a strong non-saturating G gradient when D is confident a sample is fake.
+void Algebra(const std::filesystem::path& root) {
+  Tensor real = nn::tensor({-80, -2, 2, 80}, {4, 1}), fake = nn::tensor({80, 2, -2, -80}, {4, 1});
+  real.requires_grad_();
+  fake.requires_grad_();
+  const auto loss = m::LogisticGanObjectives(real, fake);
+  const auto dg   = nn::grad(loss.discriminator, {real, fake});
+  const auto gg   = nn::grad(loss.generator, {fake});
+  Arrays     out{
+          {"real", real.detach()},
+          {"fake", fake.detach()},
+          {"discriminator_loss", loss.discriminator.detach()},
+          {"generator_loss", loss.generator.detach()},
+          {"d_real_gradient", dg[0]},
+          {"d_fake_gradient", dg[1]},
+          {"g_fake_gradient", gg[0]}};
+  for (const auto& [key, value] : out)
+    for (double x : value.to_vector<double>())
+      Require(std::isfinite(x), "finite " + key);
+  Require(gg[0].at({3, 0}) < -.24, "non-saturating G has strong gradient when D confident fake");
+  std::cout << "logistic algebra: D loss=" << loss.discriminator.item()
+            << ", G loss=" << loss.generator.item() << ", dG/dfake=" << gg[0].values_str() << '\n';
+  SaveArrays((root / "logistic_algebra.npz").string(), out);
+}
+
+} // namespace
+int main() {
+  const std::filesystem::path root   = "build/conditional_gan";
+  const int                   epochs = 3;
+  const auto                  data = std::filesystem::path(dm::datasets::data_home()) / "saliency";
+  dm::datasets::prepare_example_data("mnist-assets", data.parent_path());
+  const auto pools = m::LoadSaliency(data);
+  std::filesystem::create_directories(root);
+  Algebra(root);
+  const Tensor       validation_z = Gaussian(200, 16, 4823), test_z = Gaussian(200, 16, 4831);
+  nn::ParameterStore g(5101), d(5113);
+  std::vector<nn::ParameterStore*> stores{&g, &d};
+  {
+    nn::NoGradGuard guard;
+    m::ConditionalGan(
+        g, d, nn::zeros({2, 784}), nn::zeros({2, 16}), nn::zeros({2}, nn::DType::Int32));
+  }
+  auto snapshot = [&]() {
+    Arrays a;
+    for (int k = 0; k < 2; ++k)
+      for (const auto& key : stores[k]->names())
+        a.emplace(std::to_string(k) + "/" + key, stores[k]->at(key).detach().clone());
+    return a;
+  };
+  auto forward = [&](const Tensor& x, const Tensor& z, const Tensor& labels) {
+    return Fields(m::ConditionalGan(g, d, x.reshape({x.size(0), 784}), z, labels));
+  };
+  auto evaluate = [&](const Tensor& x, const Tensor& z, const Tensor& labels) {
+    nn::NoGradGuard guard;
+    auto            a = forward(x, z, labels);
+    a.emplace(
+        "pixel_mmd", m::ImqMmd(m::GanCoarsePixels(x), m::GanCoarsePixels(a.at("fake"))).value);
+    return a;
+  };
+  nn::OptimizerConfig config;
+  config.kind    = nn::OptimizerKind::Adam;
+  config.beta1   = .5;
+  config.beta2   = .999;
+  config.epsilon = 1e-8;
+  nn::Optimizer               go(g, .0002, config), disc(d, .0002, config);
+  std::vector<nn::Optimizer*> optimizers{&go, &disc};
+  Require(
+      g.count() == 26736 && d.count() == 25473 && g.size() + d.size() == 8,
+      "G 26736 + D 25473 = 52209 parameters, 8 tensors");
+  SaveArrays((root / "initial_arrays.npz").string(), snapshot());
+  SaveArrays(
+      (root / "initial_outputs.npz").string(), evaluate(pools[2].images, test_z, pools[2].labels));
+  nn::BatchOrder order(1000, 32, 4847);
+  std::ofstream  history(root / "history.tsv"), batches(root / "batches.tsv");
+  history.precision(17);
+  history << "epoch\tvalidation_discriminator_loss\tvalidation_generator_loss\tvalidation_coarse_"
+             "pixel_mmd\n";
+  batches << "epoch\tstep\trow\tsource_id\n";
+  const auto source  = nn::cast(pools[0].source, nn::DType::Int64).to_vector<std::int64_t>();
+  int        steps   = 0;
+  const auto started = std::chrono::steady_clock::now();
+  for (int epoch = 1; epoch <= epochs; ++epoch) {
+    const Tensor noise = Gaussian(1000, 16, 4861 + epoch);
+    order.begin_epoch();
+    int seen = 0;
+    for (;;) {
+      const auto rows = order.next();
+      if (rows.empty())
+        break;
+      const Tensor x = nn::take_rows(pools[0].images, rows), z = nn::take_rows(noise, rows),
+                   condition = nn::take_rows(pools[0].labels, rows);
+      if (!steps)
+        SaveArrays((root / "first_forward.npz").string(), evaluate(x, z, condition));
+      for (int group : {1, 0}) {
+        const auto before = steps ? Arrays{} : snapshot();
+        // D first; recompute a fresh forward through the updated D for G.
+        const auto fields = forward(x, z, condition);
+        const auto loss   = fields.at(group == 1 ? "discriminator_loss" : "generator_loss");
+        optimizers[group]->step(nn::grad(loss, stores[group]->parameters()));
+        if (!steps) {
+          const auto after   = snapshot();
+          bool       changed = false;
+          for (const auto& [key, value] : before) {
+            if (key.rfind(std::to_string(group) + "/", 0) == 0)
+              changed |= !nn::equal_bits(value, after.at(key));
+            else
+              Require(nn::equal_bits(value, after.at(key)), "unselected group unchanged");
+          }
+          Require(changed, "selected group changed");
+        }
+      }
+      for (auto row : rows)
+        batches << epoch << '\t' << steps << '\t' << row << '\t' << source[row] << '\n';
+      ++steps;
+      seen += int(rows.size());
+    }
+    Require(seen == 1000, "all fitting MNIST examples ONCE per epoch");
+    const auto v = evaluate(pools[1].images, validation_z, pools[1].labels);
+    history << epoch << '\t' << Value(v, "discriminator_loss") << '\t' << Value(v, "generator_loss")
+            << '\t' << Value(v, "pixel_mmd") << '\n';
+    std::cout << "epoch " << epoch << ": diagnostic D loss=" << Value(v, "discriminator_loss")
+              << ", G loss=" << Value(v, "generator_loss")
+              << ", coarse MMD=" << Value(v, "pixel_mmd") << std::endl;
+  }
+  const double seconds =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - started).count();
+
+  const auto checkpoint = (root / "final.npz").string();
+  Require(steps == 96 && go.iterations() == 96 && disc.iterations() == 96, "96 D and 96 G writes");
+  SaveArrays(checkpoint, snapshot());
+  nn::ParameterStore restored_g(1), restored_d(2);
+  {
+    nn::NoGradGuard guard;
+    m::ConditionalGan(
+        restored_g,
+        restored_d,
+        nn::zeros({2, 784}),
+        nn::zeros({2, 16}),
+        nn::zeros({2}, nn::DType::Int32));
+  }
+  for (const auto& [key, value] : nn::load_npz(checkpoint))
+    (key[0] == '0' ? restored_g : restored_d).set(key.substr(2), value);
+  auto restored_arrays = [&]() {
+    Arrays a;
+    for (int k = 0; k < 2; ++k) {
+      auto& store = k == 0 ? restored_g : restored_d;
+      for (const auto& key : store.names())
+        a.emplace(std::to_string(k) + "/" + key, store.at(key).detach().clone());
+    }
+    return a;
+  };
+  auto sample = [&](const Tensor& z, const Tensor& labels) {
+    nn::NoGradGuard guard;
+    return m::ConditionalGanGenerate(restored_g, z, labels);
+  };
+  auto restored_evaluate = [&](const Tensor& x, const Tensor& z, const Tensor& labels) {
+    nn::NoGradGuard guard;
+    auto            a =
+        Fields(m::ConditionalGan(restored_g, restored_d, x.reshape({x.size(0), 784}), z, labels));
+    a.emplace(
+        "pixel_mmd", m::ImqMmd(m::GanCoarsePixels(x), m::GanCoarsePixels(a.at("fake"))).value);
+    return a;
+  };
+  Require(Equal(snapshot(), restored_arrays()), "all final G/D weights restore BIT EXACT");
+  const auto   before = restored_arrays();
+  const auto   output = restored_evaluate(pools[2].images, test_z, pools[2].labels);
+  const Tensor repeat = sample(test_z, pools[2].labels);
+  Require(
+      Equal(output.at("fake"), repeat), "noise+class generation BIT EXACT matches GAN evaluation");
+  const double parity = MaxAbsDiff(
+      sample(nn::take_rows(test_z, {0}), nn::take_rows(pools[2].labels, {0})),
+      nn::take_rows(repeat, {0}));
+  Require(parity < 2e-6, "G single/batch parity");
+  const Tensor changed_z      = Gaussian(200, 16, 4877),
+               changed_images = sample(changed_z, pools[2].labels);
+  Require(!Equal(changed_images, repeat), "different noise affects G images");
+  const Tensor zero_images = sample(nn::zeros({200, 16}), pools[2].labels);
+  Require(!Equal(zero_images, repeat), "G not constant zero-latent mapping");
+  SaveArrays(
+      (root / "controls.npz").string(),
+      {{"changed_z", changed_z},
+       {"changed_images", changed_images},
+       {"zero_z", nn::zeros({200, 16})},
+       {"zero_images", zero_images}});
+  // Same ten test noise vectors for every class (row = class), and D's real
+  // logits under shifted labels: BOTH networks must depend on the class.
+  std::vector<std::int64_t> grid_rows;
+  std::vector<std::int32_t> grid_classes;
+  for (int c = 0; c < 10; ++c)
+    for (int k = 0; k < 10; ++k)
+      grid_rows.push_back(k), grid_classes.push_back(c);
+  const Tensor grid_z             = nn::take_rows(test_z, grid_rows),
+               grid_labels        = nn::from_vector(grid_classes, {100});
+  const Tensor grid               = sample(grid_z, grid_labels);
+  const double g_condition_effect = MaxAbsDiff(
+      nn::slice_axis(grid, 0, 10, 100), nn::tile(nn::slice_axis(grid, 0, 0, 10), {9, 1}));
+  auto wrong_classes = pools[2].labels.contiguous().to_vector<std::int32_t>();
+  for (auto& c : wrong_classes)
+    c = (c + 1) % 10;
+  Tensor       wrong_labels       = nn::from_vector(wrong_classes, {200});
+  const auto   wrong              = restored_evaluate(pools[2].images, test_z, wrong_labels);
+  const double d_condition_effect = MaxAbsDiff(output.at("real_logit"), wrong.at("real_logit"));
+  Require(
+      g_condition_effect > 1e-5 && d_condition_effect > 1e-5,
+      "BOTH G and D structurally depend on requested class");
+  int invalid_rejected = 0;
+  for (int invalid : {-1, 10}) {
+    auto bad = wrong_classes;
+    bad[0]   = invalid;
+    try {
+      sample(test_z, nn::from_vector(bad, {200}));
+    } catch (const std::exception&) {
+      ++invalid_rejected;
+    }
+  }
+  try {
+    sample(test_z, nn::take_rows(pools[2].labels, {0}));
+  } catch (const std::exception&) {
+    ++invalid_rejected;
+  }
+  Require(
+      invalid_rejected == 3,
+      "negative/out of range/mismatched class labels rejected before OneHot");
+  SaveArrays(
+      (root / "conditioning_controls.npz").string(),
+      {{"grid_z", grid_z},
+       {"grid_labels", grid_labels},
+       {"grid_images", grid},
+       {"wrong_real_logits", wrong.at("real_logit")}});
+  Mosaic(root / "same_z_class_grid.png", grid, 10);
+  Require(Equal(before, restored_arrays()), "all G/D diagnostic generation immutable");
+  SaveArrays((root / "outputs.npz").string(), output);
+
+  const Tensor fit_mean =
+      nn::tile(nn::mean(pools[0].images.reshape({1000, 784}), {0}, true), {200, 1});
+  const double mean_mmd =
+      m::ImqMmd(m::GanCoarsePixels(pools[2].images), m::GanCoarsePixels(fit_mean)).value.item();
+  double     real_accuracy = 0, fake_accuracy = 0;
+  const auto real_score = output.at("real_logit").to_vector<float>(),
+             fake_score = output.at("fake_logit").to_vector<float>();
+  for (int b = 0; b < 200; ++b)
+    real_accuracy += real_score[b] >= 0, fake_accuracy += fake_score[b] < 0;
+  const auto   pixel_mean = nn::mean(nn::cast(repeat, nn::DType::Float64), {0}, true);
+  const double mean_pixel = nn::mean(pixel_mean).item(),
+               pixel_variance =
+                   nn::mean(nn::square(nn::cast(repeat, nn::DType::Float64) - pixel_mean)).item();
+  Mosaic(root / "generated.png", nn::slice_axis(repeat, 0, 0, 40), 8);
+  Mosaic(root / "fit_mean.png", nn::slice_axis(fit_mean, 0, 0, 8), 8);
+  std::ofstream meta(root / "metrics.json");
+  meta.precision(17);
+  meta << "{\"generator_parameters\":26736,\"discriminator_parameters\":25473,\"epochs\":" << epochs
+       << ",\"steps_per_group\":" << steps << ",\"optimizer_updates\":" << 2 * steps
+       << ",\"selected_epoch_fixed_final\":" << epochs
+       << ",\"test_discriminator_loss\":" << Value(output, "discriminator_loss")
+       << ",\"test_generator_loss\":" << Value(output, "generator_loss")
+       << ",\"test_coarse_pixel_mmd\":" << Value(output, "pixel_mmd")
+       << ",\"fit_mean_coarse_pixel_mmd\":" << mean_mmd
+       << ",\"test_discriminator_real_accuracy\":" << real_accuracy / 200
+       << ",\"test_discriminator_fake_accuracy\":" << fake_accuracy / 200
+       << ",\"generated_mean_pixel\":" << mean_pixel
+       << ",\"generated_mean_per_pixel_variance\":" << pixel_variance
+       << ",\"generator_class_probability_max_effect\":" << g_condition_effect
+       << ",\"discriminator_real_class_logit_max_effect\":" << d_condition_effect
+       << ",\"invalid_condition_controls_rejected\":" << invalid_rejected
+       << ",\"single_batch_max_error\":" << parity << ",\"training_seconds\":" << seconds << "}\n";
+  Require(bool(meta) && bool(history) && bool(batches), "complete GAN artifacts");
+  history.close();
+  batches.close();
+  meta.close();
+  std::cout << "fixed FINAL epoch " << epochs
+            << ", test D/G=" << Value(output, "discriminator_loss") << "/"
+            << Value(output, "generator_loss") << ", coarse MMD=" << Value(output, "pixel_mmd")
+            << ", mean baseline=" << mean_mmd << ", D real/fake accuracy=" << real_accuracy / 200
+            << "/" << fake_accuracy / 200 << ", mean pixel=" << mean_pixel
+            << ", pixel variance=" << pixel_variance
+            << "; D then G/restore/noise+classOnly/immutable PASS (training " << seconds
+            << " s)\nArtifacts: " << root.string() << "\nAll conditional_gan checks passed.\n";
+  std::ifstream input(root / "history.tsv");
+  std::string   header;
+  std::getline(input, header);
+  std::vector<double> axis, dl, gl;
+  double              epoch, a, b, mmd;
+  while (input >> epoch >> a >> b >> mmd) {
+    axis.push_back(epoch);
+    dl.push_back(a);
+    gl.push_back(b);
+  }
+  const double low=std::min({0.,*std::min_element(dl.begin(),dl.end()),*std::min_element(gl.begin(),gl.end())});
+  const double high=std::max(*std::max_element(dl.begin(),dl.end()),*std::max_element(gl.begin(),gl.end()));
+  auto p = dm::graphics::RPlot::create();
+  p.y_limits(low-.05*(high-low),high+.4*(high-low)).lines(axis, dl, "Validation D", {37, 99, 235}, 2.)
+      .points(axis, dl, "", {37, 99, 235}, 4.)
+      .lines(axis, gl, "Validation G", {220, 38, 38}, 2.)
+      .points(axis, gl, "", {220, 38, 38}, 4.)
+      .x_label("Completed epoch; fixed final3")
+      .y_label("Separate game objectives")
+      .title("Validation logs do not select the checkpoint")
+      .save_svg("build/conditional_gan_learning.svg");
+}
+```
+// result_begin: markdown
+logistic algebra: D loss=41.1269, G loss=20.5635, dG/dfake=[[-4.51213e-36], [-0.0298007], [-0.220199], [-0.25]]
+epoch 1: diagnostic D loss=0.271719, G loss=2.6777, coarse MMD=0.120552
+epoch 2: diagnostic D loss=0.116838, G loss=3.54986, coarse MMD=0.12009
+epoch 3: diagnostic D loss=0.0712041, G loss=4.04661, coarse MMD=0.119395
+fixed FINAL epoch 3, test D/G=0.064464/4.03757, coarse MMD=0.11713, mean baseline=0.000135779, D real/fake accuracy=1/1, mean pixel=0.498581, pixel variance=0.00160298; D then G/restore/noise+classOnly/immutable PASS (training 1.78337 s)
+Artifacts: build/conditional_gan
+All conditional_gan checks passed.
+\image(figures/conditional_gan_learning.svg)
+// result_end
+
+\caption(All three validation observations are plotted for each objective. The checkpoint stays at epoch 3.)
+\alttext(Blue discriminator and red generator validation losses are plotted over the three completed epochs.)
+
+> The held-out samples remain weak
+
+| Fixed final diagnostic | Value |
+|---|---:|
+| D objective |0.0644639507|
+| G objective |4.0375733376|
+| Coarse-pixel MMD² |0.1171298027|
+| Repeated fitting-mean MMD² |0.0001357794|
+| D real/fake source accuracy |1.000/1.000|
+| Generated mean pixel |0.4985813689|
+| Mean per-pixel variance across generated rows |0.0016029808|
+
+Source accuracy uses raw score≥0 for real and score<0 for fake.
+It measures this discriminator on these two sources, not digit recognition, calibration
+or sample realism. The gallery retains the first 40 fixed-bank outputs, without choosing
+attractive samples. Most remain grey fields rather than convincing digits. A low D loss
+or finite G loss does not turn this short game into a successful image model.
+
+```{cpp, results="markdown", file="figures/conditional_gan_generated.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::copy_file(
+      "build/conditional_gan/generated.png",
+      "build/conditional_gan_generated.png",
+      std::filesystem::copy_options::overwrite_existing);
+  std::print("First40 fixed-bank samples; no gallery selection.\n");
+}
+```
+// result_begin: markdown
+First40 fixed-bank samples; no gallery selection.
+\image(figures/conditional_gan_generated.png)
+// result_end
+
+\caption(Five rows of eight generated images retain the original pixel display range[0,1].)
+\alttext(Mostly grey weak generated images appear in the fixed first-forty gallery.)
+
+> The coarse diagnostic has a deliberately visible blind spot
+
+The MMD diagnostic first averages each 7×7 pixel block, giving16 coordinates per image,
+and divides those coordinates by4. It then averages IMQ kernels with constants1,4,16
+and excludes within-pool diagonals in the unbiased two-sample estimate. This statistic
+can be negative at finite sample size and discards fine digit structure. The baseline
+repeats the fitting-only mean image200 times; it uses no held-out pixels to construct it.
+Its much smaller value shows why coarse MMD alone cannot certify sample quality or
+coverage. Neither the mean nor MMD adds a fitting objective or selects the checkpoint.
+
+```{cpp, results="markdown", file="figures/conditional_gan_mean.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::copy_file(
+      "build/conditional_gan/fit_mean.png",
+      "build/conditional_gan_mean.png",
+      std::filesystem::copy_options::overwrite_existing);
+  std::print(
+      "Repeated fitting mean: MMD²=0.0001357794; generator: 0.1171298027. Both use the same200 "
+      "held-out images.\n");
+}
+```
+// result_begin: markdown
+Repeated fitting mean: MMD²=0.0001357794; generator: 0.1171298027. Both use the same200 held-out images.
+\image(figures/conditional_gan_mean.png)
+// result_end
+
+\caption(The identical fitting-mean image is repeated eight times for display; its diagnostic score beats G despite lacking diversity.)
+\alttext(Eight identical blurry average digits demonstrate a constant predictor that scores well on coarse MMD.)
+
+> Changed noise is a control, not evidence of realistic samples
+
+Seed4877 supplies the changed bank; the zero bank has the same shape. The restored G
+responds to both changes, while standalone generation on the fixed bank matches the
+full forward bit for bit. The first sample agrees between single and batch inference
+(maximum error0). Every saved weight restores exactly, and all diagnostic calls leave
+both stores unchanged. Responsiveness proves dependence on the input, not useful mode
+coverage, diversity of recognizable digits or convergence.
+
+```{cpp, results="markdown", file="figures/conditional_gan_noise.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::map<std::string, n::Tensor> a, c;
+  for (const auto& [k, v] : n::load_npz("build/conditional_gan/outputs.npz"))
+    a.emplace(k, v);
+  for (const auto& [k, v] : n::load_npz("build/conditional_gan/controls.npz"))
+    c.emplace(k, v);
+  auto first  = [](const auto& x) { return n::slice_axis(x, 0, 0, 8); };
+  auto images = n::concat(
+      {first(a.at("fake")), first(c.at("changed_images")), first(c.at("zero_images"))}, 0);
+  n::save_image_grid(
+      images.reshape({24, 28, 28, 1}),
+      "build/conditional_gan_noise.png",
+      8,
+      0,
+      1,
+      4,
+      220 / 255.,
+      3);
+  std::print(
+      "Rows: fixed seed4831; changed seed4877; zero input. All control weights unchanged.\n");
+}
+```
+// result_begin: markdown
+Rows: fixed seed4831; changed seed4877; zero input. All control weights unchanged.
+\image(figures/conditional_gan_noise.png)
+// result_end
+
+\caption(Top: fixed noise; middle: changed noise; bottom: zero noise. The original per-row classes are held fixed.)
+\alttext(Three rows compare fixed, changed and zero Gaussian input while preserving the model weights.)
+
+> A shared noise bank exposes the class condition
+
+The same ten test noise vectors are repeated for every requested class. Row c supplies
+class c to G; columns retain noise identity. Changing the class changes a generated pixel
+by at most0.068083525; shifting each real image's
+class by one changes a real D logit by at most0.202480078.
+These are structural dependence controls. The weak gallery does not show that requested
+digits are recognizable. No auxiliary classifier is fitted, so no class accuracy is invented.
+Negative, out-of-range and mismatched labels are all rejected before one-hot expansion.
+
+```{cpp, results="markdown", file="figures/conditional_gan_classes.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::copy_file(
+      "build/conditional_gan/same_z_class_grid.png",
+      "build/conditional_gan_classes.png",
+      std::filesystem::copy_options::overwrite_existing);
+  std::print(
+      "Rows classes0..9; columns reuse the same ten noise vectors. Both G and D condition controls "
+      "pass.\n");
+}
+```
+// result_begin: markdown
+Rows classes0..9; columns reuse the same ten noise vectors. Both G and D condition controls pass.
+\image(figures/conditional_gan_classes.png)
+// result_end
+
+\caption(The class changes by row and the ten noise vectors repeat by column. Small changes remain visible without implying class fidelity.)
+\alttext(A ten-by-ten grey sample grid compares requested class rows for the same noise columns.)
+
+> Verification and limits
+
+The unchanged original delegated to the new core, and this complete report, each match
+all 8 archives/845165 values exactly in dtype, shape and value bytes,
+the history and batch TSVs, all 3 source PNGs and every non-timing JSON value. Duration is
+remeasured. Native source snapshots and checksums retain the frozen baseline.
+
+The independent NumPy checker imports no datamunge and performs no fitting. It checks
+732625 forward/control values, every one of the52209 initial parameter derivatives,
+22 scalar finite differences and all 3000 fitting-row visits. It includes stable extreme-logit derivatives and both class/noise controls.
+Component checks separately exercise owned records, malformed inputs, live continuous
+paths and D-then-fresh-G ownership in native C++, Python and R. Those component checks
+do not complete independent Python/R experiment loops.
+
+This is one fixed short run, with no seed sweep, uncertainty estimate or paper-scale
+image benchmark. The training schedule and width are intentionally preserved. The result
+illustrates conditioning and stable logistic objectives; it supplies no evidence that this small game has converged.
+The weak samples and strong constant-baseline MMD remain part of the explanation.
+
+Method reference: [Mirza and Osindero, Conditional Generative Adversarial Nets (2014)](https://arxiv.org/abs/1411.1784). Seeds, dimensions, source IDs, update order and artifacts follow
+the original repository experiment. Canonical native tensor maps, stable losses, seeded
+Gaussian generation and IMQ diagnostics provide the reusable computations.

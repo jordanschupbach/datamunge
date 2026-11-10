@@ -1,4 +1,4 @@
-# A namespace matching datamunge::nn. Keep model composition and loops in R.
+# A namespace matching datamunge::nn. Numerical components are C++; experiment loops stay in R.
 nn <- new.env(parent = emptyenv())
 .local_nn_enum <- function(prefix) {
   symbols <- ls(environment(.local_nn_enum), all.names = TRUE)
@@ -15,7 +15,7 @@ nn <- new.env(parent = emptyenv())
     if (is.function(value) && !startsWith(name, ".")) nn[[name]] <- value
   }
   nn$Tensor <- CoreTensor
-  for (kind in c("DType", "Activation", "Padding", "OptimizerKind", "Reduction", "AttentionImpl", "RotaryLayout",
+  for (kind in c("DType", "DenseGanObjective", "Activation", "Padding", "OptimizerKind", "Reduction", "AttentionImpl", "RotaryLayout",
                 "PadMode", "ResizeMethod", "DepthToSpaceMode", "GridSampleMode", "GridSamplePadding", "WavFormat"))
     nn[[kind]] <- .local_nn_enum(kind)
   initializer_names <- ls(namespace, pattern = "^init_")
@@ -121,6 +121,13 @@ nn_components <- new.env(parent = emptyenv())
   }
   .local_nn_tensor_list(grad(output, .local_nn_tensor_vector(inputs), options))
 }
+# Validate R widths before converting numeric vectors to native int64 geometry.
+.local_nn_autoencoder_widths <- function(widths) {
+  if (!is.numeric(widths) || base::any(!is.finite(widths) | widths != base::floor(widths) |
+                                     widths <= 0 | widths >= 2^63))
+    stop("widths must be positive whole int64 dimensions")
+  widths
+}
 .local_nn_image_size <- function(size) {
   if (!is.numeric(size)) return(size) # Already a bound C++ ImageSize.
   if (length(size) != 2L || base::any(!is.finite(size) | size != base::floor(size)))
@@ -140,6 +147,29 @@ nn_components <- new.env(parent = emptyenv())
   nn$tensor_vector <- .local_nn_tensor_vector
   nn$named_tensors <- .local_nn_named_tensors
   nn$named_list <- .local_nn_named_list
+  # Native fitting-only standardization/axis selection,13 owning detached arrays.
+  # Test R2 is unbounded below and each test target must vary; no VAE fitting is hidden.
+  nn$LatentFactorDiagnostics <- function(fit_mu, test_mu, fit_factors, test_factors, fit_log_variance, ridge=.001)
+    .local_nn_named_list(LatentFactorDiagnostics(fit_mu, test_mu, fit_factors, test_factors, fit_log_variance, ridge))
+  nn$KnownFactorLattice <- function() .local_nn_named_list(KnownFactorLattice())
+  # Copying pool output typemaps retain Tensor ownership after the vector is collected.
+  nn$LoadSequenceVaeData <- function(root) {
+    pools <- LoadSequenceVaeData(root)
+    lapply(seq_len(SequenceVaePools_size(pools)) - 1L,
+           function(i) SequenceVaePools___getitem__(pools, i))
+  }
+  nn$SequenceDataArrays <- function(pools) {
+    if (is.list(pools)) {
+      vector <- SequenceVaePools()
+      for (pool in pools) vector$push_back(pool)
+    } else vector <- pools
+    .local_nn_named_list(SequenceDataArrays(vector))
+  }
+
+  nn$SigmoidAutoencoder <- function(parameters, image, widths)
+    .local_nn_tensor_list(SigmoidAutoencoder(parameters, image, .local_nn_autoencoder_widths(widths)))
+  nn$SigmoidAutoencoderDecode <- function(parameters, code, widths)
+    SigmoidAutoencoderDecode(parameters, code, .local_nn_autoencoder_widths(widths))
   nn$resize_bilinear <- function(images, size, align_corners = FALSE, half_pixel_centers = FALSE)
     resize_bilinear(images, .local_nn_image_size(size), align_corners, half_pixel_centers)
   nn$resize_nearest <- function(images, size, align_corners = FALSE, half_pixel_centers = FALSE)

@@ -8,9 +8,9 @@ rm(.nn_common)
 # k-sparse: autoencoder with LINEAR encoder and top8signed activities per image.
 # Three default epochs per model; matched plain control.
 #
-# Port of tflow's k_sparse_autoencoder (the model is examples/nn/common/competitive_autoencoder.hpp,
+# Port of tflow's k_sparse_autoencoder (the model is include/datamunge/nn/competitive_autoencoders.hpp,
 # mirrored by examples/r/nn/common/competitive_autoencoder.R and shared with
-# winner_take_all_autoencoder). Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are
+# winner_take_all_autoencoder). Preparation: just nn-autoencoder-data; data are
 # read from $DATAMUNGE_DATA_DIR/saliency. Outputs (competitive/ and plain/ training records,
 # data.npz, index.html and digit<k>.png galleries) go to output/nn/models/k_sparse_autoencoder.
 # Options: epochs=N data=PATH out=PATH init=PATH (start both models from saved

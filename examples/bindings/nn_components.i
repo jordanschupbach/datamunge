@@ -592,10 +592,10 @@ NN_COMPONENT_INPUT_CHANNELS(repvgg::RepVGGBlockSpec)
 %ignore repvgg_checks::MaxDifference;
 %include "common/residual_validation.hpp"
 
-// Hard competition autoencoders: bind the canonical forward/mask and checks.
+// Compatibility autoencoder helpers; competitive forward/mask use the core nn API.
 // The host examples own Adam, epochs, diagnostics/checkpoint/report ordering.
 %{
-#include "common/competitive_autoencoder.hpp"
+#include "common/autoencoder.hpp"
 %}
 %rename("ae__%(strip:[ae::])s", regextarget=1, fullname=1) "^ae::[^:]+$";
 // These other autoencoder model wrappers still bundle optimizer steps. Their
@@ -603,7 +603,6 @@ NN_COMPONENT_INPUT_CHANNELS(repvgg::RepVGGBlockSpec)
 %ignore ae::ConvolutionalAutoencoderModel;
 %ignore ae::VariationalAutoencoderModel;
 %ignore ae::UndercompleteModel;
-%ignore ae::CompetitiveAutoencoderModel;
 %ignore ae::MakeAdam;
 %ignore ae::VaeScore;
 // These internal strings contain arbitrary tensor bytes, not text. Expose
@@ -621,7 +620,6 @@ NN_COMPONENT_INPUT_CHANNELS(repvgg::RepVGGBlockSpec)
 %ignore ae::Mosaic3;
 %include "common/autoencoder.hpp"
 %template(ae__SaliencyDataVector) std::vector<ae::SaliencyData>;
-%include "common/competitive_autoencoder.hpp"
 %rename(ae__LoadSaliency) ae::LoadSaliencyString;
 %rename(ae__SaveData) ae::SaveDataString;
 %inline %{

@@ -8,7 +8,6 @@ Only model pieces and numerical utilities live here: training loops stay in the
 example scripts (there is deliberately no update/train method).
 """
 import math
-import random
 import shutil
 import struct
 from pathlib import Path
@@ -311,39 +310,14 @@ class VariationalAutoencoderModel:
             return nn.sigmoid(vae_decode_logits(self.parameters, codes))
 
 
-def mt19937_raw(seed):
-    """A random.Random whose getrandbits(32) is std::mt19937(seed)() (init_genrand state)."""
-    state = [seed & 0xFFFFFFFF]
-    for i in range(1, 624):
-        previous = state[-1]
-        state.append((1812433253 * (previous ^ (previous >> 30)) + i) & 0xFFFFFFFF)
-    generator = random.Random()
-    generator.setstate((3, tuple(state) + (624,), None))
-    return generator
-
-
 def gaussian_values(count, seed):
-    """tflow's Box-Muller stream from std::mt19937(seed): `count` doubles."""
-    rng = mt19937_raw(seed)
-    tau = 6.283185307179586476925286766559
-    bank = [0.0] * count
-    for i in range(0, count, 2):
-        u = (rng.getrandbits(32) + 0.5) / 4294967296.0
-        v = (rng.getrandbits(32) + 0.5) / 4294967296.0
-        radius = math.sqrt(-2 * math.log(u))
-        bank[i] = radius * math.cos(tau * v)
-        if i + 1 < count:
-            bank[i + 1] = radius * math.sin(tau * v)
-    return bank
+    """Canonical Box-Muller stream as ordinary numeric values, for compatibility."""
+    return list(nn.GaussianNoise([count], 1, seed).values())
 
 
 def gaussian_noise(shape, samples, seed):
-    """tflow's nn::GaussianNoise as float64 [samples, shape...]."""
-    full = [samples] + list(shape)
-    count = 1
-    for d in full:
-        count *= d
-    return nn.from_vector_double(gaussian_values(count, seed), full)
+    """Canonical explicit MT19937/Box-Muller Float64 bank; no shared RNG state."""
+    return nn.GaussianNoise(list(shape), samples, seed)
 
 
 class VaeNoiseBank:
@@ -389,10 +363,8 @@ class DenseAeOutput:
 
 
 def undercomplete_autoencoder(p, x, features=784, latent=32):
-    """"encoder" features -> latent ReLU, "decoder" latent -> features sigmoid."""
-    require(features > 1 and 0 < latent < features, "strictly undercomplete positive bottleneck")
-    code = nn.dense(p, "encoder", x, latent, nn.Activation.Relu)
-    return DenseAeOutput(code, nn.dense(p, "decoder", code, features, nn.Activation.Sigmoid))
+    """Canonical independent ReLU encoder and sigmoid decoder; no fitting."""
+    return nn.UndercompleteAutoencoder(p, x, features, latent)
 
 
 def reconstruction_mse(prediction, original):
@@ -401,18 +373,8 @@ def reconstruction_mse(prediction, original):
 
 
 def corrupt_for_denoising(clean, standard_noise, sigma):
-    """clamp(float(x + sigma z), 0, 1) with z one float64 bank [1, shape...]."""
-    sigma = struct.unpack("f", struct.pack("f", sigma))[0]
-    require(clean.dtype() == nn.DType.Float32 and clean.dim() >= 2 and standard_noise.dtype() == nn.DType.Float64
-            and list(standard_noise.shape()) == [1] + list(clean.shape()) and math.isfinite(sigma) and sigma >= 0,
-            "aligned single Gaussian bank and nonnegative sigma")
-    x, z = clean.contiguous().values(), standard_noise.contiguous().values()
-    out = []
-    for a, b in zip(x, z):
-        require(math.isfinite(a) and 0 <= a <= 1 and math.isfinite(b), "finite unit-range clean pixels/noise")
-        out.append(a + sigma * b)
-    # float32 rounding first (from_vector), then the clamp in float32.
-    return nn.clip(nn.from_vector(out, list(clean.shape())), 0.0, 1.0)
+    """Canonical detached Float32 corruption: explicit bank, round then clamp."""
+    return nn.CorruptForDenoising(clean, standard_noise, sigma)
 
 
 def save_data(path, pools, extra=()):

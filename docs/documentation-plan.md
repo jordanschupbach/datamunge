@@ -9,6 +9,2538 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-10: DDPM native continuation (2026-11-10): independent NumPy verifies all 28
+source archives / 2,781,150 values and every captured optimizer write. It checks
+1,097,600 original pixels against all four raw MNIST IDX banks, all 1,400 labels/
+source IDs and 89,600 continuous half-pixel resized pixels; no threshold or
+substitute pool is introduced. All 288 Double schedule values, source Float32
+time features/coefficients, 3,000 batch rows, 397,894 forward values, 539,392
+parameter partials, 528,384 exact Adam-updated weights and all 5,504 parameter
+coordinate finite differences pass. Manual dense/SiLU pullbacks and all 12,800
+first-pixel input-gradient values/directional finite differences pass. All four
+ancestral banks (three epoch16 and final32) preserve 128 batched transitions,
+655,360 recorded field values and bit-exact reverse formulas on every source
+state. Every last transition ignores innovation exactly. Maximum forward/
+parameter-partial errors are 1.452e-6/2.218e-8; parameter FD1.394e-11 and input
+FD1.178e-10. No native model math, external autodiff or refitting enters this audit.
+
+Canonical `nn/diffusion.hpp` adds CosineDiffusionSchedule, DiffusionExtract,
+DiffusionTimeEmbedding, DiffusionNoised, DdpmEpsilon and DdpmReverse with flat
+owning records. The configurable cosine schedule owns detached Double tables
+without a mutable cache. Integer times are structural. Source Float32 phase/
+feature and extracted coefficient rounding survives Double promotion. Live
+first/higher applicable state, noise, table and parameter paths survive parent/
+store collection. The source72->32SiLU->32SiLU->64 MLP creates kernels/biases
+in source order: 5504 values/six leaves, seed11003. No fit, optimizer, noise/timestep sampler or
+complete sampling loop is hidden in these operations. Fixed posterior variance,
+raw versus clipped x0, nonsmooth clipping/sqrt conventions, last zero-innovation
+step, invalid geometry/types/options, finite overflow, strides, ownership and
+warmed store/RNG immutability are explicit and tested.
+
+Fourteen new native tests and 638 selected C++ tests, 331 Python checks,
+2,783 R expectations in 66 files and 65 metadata/toolchain checks pass. All 33
+new definitions, nine compiled examples, nine clangd hovers, checkout/installed
+standalone headers and Python/R help pass; affected coverage523/523. Core
+delegation and the complete editable C++ fitting/sampling program reproduce all
+28 source archives plus 288 update archives / 1,056,864 values exactly. Histories,
+batch orders, preparation manifest, every non-timing metric and all six original
+PNG files match byte for byte. The program keeps every96write and32step loop
+editable and uses canonical preparation/readers/resize/image-grid operations.
+
+The fixed-final source outcome is retained: test epsilon MSE .838227928 versus
+Gaussian pixel-prior .233514349 and zero predictor1.014657692. Clipped x0 MSE
+is .640106230; actual time-conditioning effect .510688901. Terminal alpha_bar
+2.369970271e-6 and average conditional terminal-prior KL6.619617340e-5 per image
+are source diagnostics, not a trained likelihood or sample-quality benchmark.
+Preparation records the existing C++ balanced distinct-image seed1931 selection;
+there is no claim of TensorFlow-identical row selection/initialization.
+
+Report narrative and native figures remain pending. Begin with a concept diagram
+and deterministic noising/reverse/clipping worked example, then actual5504value
+architecture, all schedule rows and source provenance, full96write program,
+epoch/final samples, trajectories, denoising cases, actual time/input-gradient
+controls and baseline shortfall. Verify plot values, bounds, palettes, layout and
+raw/site export assets before retirement. The original executable and shared
+legacy ddpm.hpp remain; that helper still serves other diffusion originals.
+Evidence: scripts/check_ddpm.py and build/nn-report-conversion/ddpm{,_core,_report}/.
+All416 original sources and earlier CNN retirement revalidation remain in scope.
+
+- 2026-11-10: Three-family flow-density report completed (2026-11-10). The independent
+NumPy audit reconstructs every source triple, erfc-Phi component/jitter, final
+Float32 observation and source ID: 22,272 data values. It checks 255,957 forward
+values, 39,900 parameter partials, all 144 Adam writes / 38,304 exact updated
+weights, all 798 parameter-coordinate finite differences, 4,608 batch rows,
+1,536 forward and 12,288 inverse Jacobian entries, and all 3,072 prior samples.
+The complete editable program and core delegation reproduce all 66 archives /
+433,485 values plus 432 phase archives / 76,752 values exactly; every source
+history, batch order, protocol, sample-diagnostic JSON and summary row matches.
+
+Canonical `nn/flow_study.hpp` supplies pure FlowStudyPoints,
+FlowStudyLogProbability and FlowStudySampleDiagnostics with owning flat records.
+Reuse RealNvpDensity/RealNvpInverse rather than duplicating the model. Data,
+truth and diagnostic outputs are deliberately detached; the caller owns all
+random banks, IDs, three separate stores/Adam states and complete fitting loops.
+Three-coordinate Box-Muller grouping, source erfc tails, half-open checker
+support, legitimate negative-infinite checker log densities, stable eight-term
+mixture log-sum-exp, inclusive .45 mode radius, serial Double curvature sums
+and final observation rounding are documented and tested. No boundary clipping,
+extra fitting, sample filtering or changed family budgets is introduced.
+
+The verified report contains 14 executed C++ blocks and 13 inspected native
+figures: concept diagram, worked affine coupling/three analytic laws, actual
+266-value/17-leaf graph, all pools, histories, paired density maps, samples,
+latents, quality counts, both path logdets, signed Jacobian residuals and every
+normalization identity. All 98,304 density cells, 16 worked checker cells and
+all source plot positions/colors/directions are independently checked. Common
+scatter limits [-5,7] retain every row and clear the legends; ring history
+upper limit 4.9 keeps its identity baseline outside the legend. Raw Markdown,
+HTML and actual website exports contain all 13 verified local assets.
+
+The unchanged outcomes are explicit: banana NLL 2.760811806 versus full
+Gaussian 2.837374308, curvature .719403856 versus expectation 1; eight-Gaussian
+NLL 3.523986816 versus truth .961499012, all eight modes visited but only
+161/1024 samples near a mode; checker NLL 3.139697790 exceeds full Gaussian
+3.139320070, with only 436/1024 generated samples on support. Fixed final epoch
+three remains selected despite banana validation doing better at epoch two.
+
+Nine new native tests, 624 selected C++ tests, 324 Python checks, 2,727 R
+expectations in 65 files and 65 metadata/toolchain checks pass. Documentation
+covers all 17 new definitions, five compiled public examples, five clangd hovers,
+checkout/installed standalone headers and native Python/R help; combined
+coverage is 490/490. Original executable and last-consumer legacy
+real_nvp_density.hpp/flow_density.hpp are removed. All normalizing-flow density
+reports now replace their originals; full Python/R experiment-loop ports and
+all remaining numbered NN sections remain in scope.
+
+DDPM is next. Its original run is frozen in 28 archives / 2,781,150 values,
+with nine source pins and two prepared-input hashes. All 96 update probes are
+pinned in 288 archives / 1,056,864 values; instrumented capture matches every
+source record except training_seconds. Existing saliency MNIST
+assets provide 1000/200/200 original 28x28 rows, labels/IDs and the preparation
+manifest; that manifest records distinct-image C++ selection seed 1931, not a
+claim of TensorFlow-identical row selection. Preserve source half-pixel 28->8
+continuous scaling (no threshold), native init 11003/order 11019, 5504 values /
+six leaves, all 96 Adam writes including eight-row last batches, 32 cosine
+levels, state-only ancestral trajectories, clipped x0 and the zero-noise final
+transition. Independently audit this frozen run before canonical APIs/bindings,
+full report and retirement. Evidence: scripts/check_flow_density_2d.py and
+build/nn-report-conversion/flow_density_2d{,_core,_report}/. All 416 sources
+remain in scope; earlier CNN report retirement revalidation is unfinished.
+
+- 2026-11-10: CNF native continuation (2026-11-10): independent NumPy checks all 21 source
+archives and 48 captured Adam writes, with 107,367 forward values, 2,600 partials,
+2,496 exact updated weights and all 52 model-coordinate finite differences.
+Manual dense/trace pullbacks and reverse RK4 accumulation agree with every
+source gradient; analytic RK4 matrix composition checks actual discrete-map
+Jacobians. All 5,888 procedural data values, 1,536 batch rows, 6,784 actual field
+Jacobian entries and 1,024 samples are retained. All 200 field parameter-mode
+finite differences, eight field input directions and 52 reverse-solver parameter
+finite differences pass. Maximum forward/partial errors are 4.977e-6 / 2.783e-7;
+model finite differences 7.499e-11, field finite differences 2.183e-12 and inverse
+finite differences 1.901e-10. Double normalization residual is 1.051e-10, a
+numerical ODE residual. Refinement checks 4/8/16/32 steps without claiming an
+exact discrete-map determinant or inverse.
+
+Canonical `nn/cnf_density.hpp` adds CnfField, CnfIntegrate, CnfDensity/CnfInverse
+and flat owning records. Hidden/output kernels initialize first; the actual
+shared field is 3->8 tanh->2 scaled .3, 50 values / 4 leaves, plus global scale
+for 52 / 5. Source seed 10003, BatchOrder 10021, Float32 dt/half/sixth and stage
+times before promotion, source RK4 grouping and four chronological quarter
+states are preserved. Stage logdets are CUMULATIVE selected-trace integrals;
+endpoint divergence/velocity fields retain live first/higher paths through the
+entire unrolled ordinary reverse-mode solver. No continuous adjoint, adaptive
+solve, constant-memory claim or hidden fitting loop is introduced.
+
+Only exact mode 0 and deterministic paired mode 3 approximate the flow
+likelihood. Modes 1/2 integrate fixed-probe diagnostic contractions and generally
+do not approximate full logdet or define a density. Tests verify identical
+states but different single-probe integrals, plus the paired mean. Finite RK4
+reverse paths and integrated divergence retain numerical inverse/Jacobian/
+normalization residuals, including a Float32 coefficient/time refinement floor.
+
+Fourteen new native tests and 615 selected C++ tests, 318 Python checks,
+2,670 R expectations across 64 files and 65 inventory/toolchain checks pass.
+All 34 new definitions, six compiled examples, six clangd hovers, checkout/
+installed standalone headers and Python/R help pass; affected coverage 473/473.
+Tests cover all field, fitting and inverse coordinates; both actual maps;
+quarter endpoints; analytic scalar-tanh ODE refinement; source rounding;
+lifetimes/higher graphs, strides, warmed immutability/RNG, invalid geometry/
+options and unsafe math. The core APIs and complete editable C++ program match
+all 21 source archives / 163,073 values and 144 update captures / 5,040 values
+exactly, with every batch/history TSV, protocol and non-timing metric.
+
+Fixed-final test NLL 2.994471788 only slightly improves full Gaussian
+2.994631823, remains above diagonal 2.993811360 and truth 2.796480843. Preserve
+the source generic hidden=16 metadata for parity while identifying actual hidden
+width 8 and one shared field, rather than four independent field networks.
+Evidence: `scripts/check_cnf_density.py`, `build/nn-report-conversion/cnf_density_core/`
+and `cnf_density_report/fit.cpp`, `source-parity.json`.
+
+All 18 report C++ blocks execute and all 17 native figures are rasterized and
+visually reviewed. A native method diagram, analytically solvable scalar tanh
+flow, five-resolution RK4 refinement and cross-coordinate probe example precede
+the source experiment. Independent checks verify 2,852 worked curve/check
+positions, all four trace-mode integrals, the retained coefficient error floor,
+3,072 source observation/sample/latent markers, 1,024 quarter input/state markers,
+2,048 cumulative/endpoint diagnostics and their time colours, 128 fitted velocity
+segments and every field trace/probe row. All 32,768 density cells retain exact
+colours, square geometry and source orientation. Every integrated/actual volume
+pair, signed residual and normalization row is retained within verified bounds;
+legends remain clear. The executed architecture has 52 unique values, sharing
+the same 50 field values across both solver halves. Raw Markdown/HTML and actual
+website exports include all 17 verified assets.
+
+The original executable and last-consumer legacy CNF helper are removed;
+canonical core APIs remain. Shared real_nvp_density/flow_density helpers still
+serve the three-dataset flow_density_2d study, which is next. Preserve its
+3-D base draws, erfc-based components/jitter, source IDs, equal per-family fit
+budgets and all support/mode/curvature diagnostics. All 416 sources remain in
+scope; the migration goal remains active.
+
+- 2026-11-10: CNF source preparation (2026-11-10): original frozen in 21 archives / 163,073
+values with nine source pins and no external inputs. Instrumented updates
+preserve every source array and all six other files; 144 phase captures retain
+5,040 values across 48 Adam writes. Independent audit and canonical APIs remain
+pending. Preserve source field 3->8 tanh->2 scaled .3, 52 values / 5 leaves,
+seed 10003 with hidden/output kernels created first, BatchOrder 10021 and eight
+fixed RK4 steps with Float32 coefficients/times before promotion. Differentiate
+through unrolled RK4, without a continuous adjoint. Deterministic paired probes
+(1,1) and (1,-1) average to exact 2-D field divergence; numerical integrated
+trace and reverse RK4 are approximate discrete-map likelihood/inverse paths.
+Keep all four quarter states, cumulative logdets, endpoint divergence/velocity,
+actual field/whole-map Jacobians and every sample/normalization check.
+
+The generic source metrics retain hidden=16 despite the actual hidden width 8;
+coupling_layers=4 counts quarter diagnostics, not independent field networks.
+Preserve source JSON parity while explaining the executed architecture. Final
+test NLL 2.994471788 barely beats fitted full Gaussian 2.994631823 and remains
+above diagonal Gaussian 2.993811360 and truth 2.796480843. Independent manual
+field/RK4 differentiation and matrix composition are next. Evidence:
+`build/nn-report-conversion/cnf_density/` and `cnf_density_core/capture-parity.json`.
+
+- 2026-11-10: Planar/radial native continuation (2026-11-10): canonical
+`nn/planar_radial_density.hpp` adds pure PlanarFlow/RadialFlow, named
+ElementaryFlow, PlanarRadialDensity/PlanarRadialInverse and flat owning records.
+The planar map retains source angle/frequency/projection/perpendicular/bias
+parameterization and 32-bisection inverse with a single stopped-root and
+stopped-denominator Newton correction. First derivatives use that source
+implicit rule; higher graphs follow the stopped correction, not an exact
+implicit Hessian. Radial retains the stable two-branch quadratic radius and
+finite center derivative, including the source tiny-positive-radius rule.
+Representability checks reject unsafe frequency, radius, discriminant, factors
+or global scale; no clipping, refit or hidden fitting loop is added.
+
+Both source stores remain independent: planar 22 values / 21 leaves, radial
+18 / 13, seed 9903, block order 0..3 and global scale last. Meaningful public
+factor/coordinate fields replace the archive's scale/shift diagnostic names.
+Fourteen new native tests and 601 selected C++ tests, 312 Python checks,
+2,584 R expectations across 63 files and 65 inventory/toolchain checks pass.
+Tests include both whole-map Jacobians, all 34 leaf NLL finite differences,
+all 40 inverse-objective parameter-coordinate finite differences, pure
+input/parameter partials, the planar stopped higher rule, radial center and
+both inverse branches, lifetimes/higher graphs, strides, warmed immutability,
+RNG stability, invalid shapes/dtypes and unrepresentable math. All 35 new
+definitions, seven compiled examples, seven clangd hovers, checkout/installed
+standalone headers and Python/R help pass; affected coverage is 439/439.
+
+The native overlay and complete editable report program match all 48 source
+archives / 281,879 values and all 288 update captures / 3,936 values exactly,
+including both explicit 48-write fits, every batch/history TSV, protocol,
+non-timing metric, strong-contraction fixture and inverse parameter gradient.
+Preserve fixed-final planar NLL 2.991511106 and radial 2.999574184 versus full
+fitted Gaussian 2.994631823 and truth 2.796480843; radial underperformance remains.
+Evidence: `build/nn-report-conversion/planar_radial_density_core/`,
+`planar_radial_density_report/fit.cpp`, `source-parity.json` and
+`scripts/check_planar_radial_density.py`.
+
+All 24 report C++ blocks execute and all 23 native figures are rasterized and
+visually reviewed. Native method and hand-checkable planar/radial maps precede
+the original banana data. Both nine-point contraction fixtures, all 40 inverse
+parameter partials and executed architecture counts retain their source values.
+Independent checks verify 1,308 worked curve/check positions, 5,376 observation/
+sample/latent markers, 54 fixture coordinate markers, 36 segment endpoints,
+72 fixture analytic/actual determinants, all 4,608 whole-map volume markers,
+2,304 signed Jacobian residuals and 2,048 normalization residuals. All 65,536
+density cells retain independently verified colours, square physical geometry
+and source orientation. Every source sample and high held-out tail is retained;
+legends are clear and bounds contain all data. Raw Markdown/HTML and actual
+website exports include all 23 verified assets. The original executable and
+last-consumer legacy planar/radial helper are removed; canonical core APIs
+remain. Shared affine/flow helpers still serve CNF and the remaining flow study.
+Next is CNF density, preserving its numerical RK4 inverse/likelihood and paired
+trace semantics. All 416 sources remain in scope; the migration remains active.
+
+- 2026-11-10: Planar/radial independent continuation (2026-11-10): both source variants are
+frozen in 48 archives / 281,879 values with nine source pins and no prepared
+external inputs. Instrumentation preserves every source archive and all 12 other
+files; 288 phase captures retain 3,936 values across 96 Adam writes (48 each).
+`scripts/check_planar_radial_density.py` independently checks 170,638 forward
+values, 2,040 partials, 1,920 exact updated weights, 34 model-leaf finite
+differences, all 11,776 procedural data values and 3,072 batch rows. Both whole
+maps' actual Jacobians, all 2,048 inverse samples and normalization identities
+pass. Maximum forward/partial errors are 6.306e-6 / 4.517e-7; model finite
+differences 5.679e-11 and normalization residual 3.553e-15.
+
+Both nine-point strong-contraction fixtures retain every field and both actual
+Jacobians (333 values), including the radial center's finite derivative and the
+source planar hinge. The inverse objective uses the original first eight prior
+rows per variant; all 40 parameter partials and all 40 coordinate finite
+differences pass, maximum error 1.877e-10. Planar inversion is numerical:
+32 bisections followed by one Newton correction with stopped root and denominator
+for source implicit first derivatives. Do not claim a closed-form inverse or
+mathematically exact implicit higher derivatives. Radial inversion uses the
+stable two-branch positive quadratic radius, with explicit zero-radius handling.
+
+Preserve four elementary maps plus global scale: planar 22 values / 21 leaves,
+radial 18 / 13, each seed 9903 and BatchOrder 9921. Fixed-final test NLL is
+2.991511106 for planar and 2.999574184 for radial, versus fitted full Gaussian
+2.994631823 and truth 2.796480843: retain the radial shortfall. Canonical APIs,
+bindings/docs and the full editable report are next; both original variants and
+their helper remain. Evidence: `build/nn-report-conversion/planar_radial_density/`
+and `planar_radial_density_core/capture-parity.json`. Shared affine/flow helpers
+remain in use; all 416 sources remain in scope.
+
+- 2026-11-10: Spline native continuation (2026-11-10): independent NumPy checks all22 source
+archives and48 captured Adam writes, with159,943 forward values,43,900 partials,
+42,144 exact updated weights and17 model-leaf finite differences. All5,888
+procedural data values,1,536 batch rows, both actual whole-map Jacobians and
+all1,024 inverse samples are checked. The272-point source fixture retains
+12,784 values, including3,264 input/head objective partials;3,192 finite
+differences check rows away from nondifferentiable log-derivative knot branches.
+Exact knots/neighbours/tails, positive first derivatives and the closed quadratic
+inverse are checked separately. Maximum forward/partial errors are7.986e-6/
+5.713e-7, model finite differences1.303e-10, fixture finite differences1.304e-9,
+and Double normalization residual6.218e-15. The source Float32-rounded softplus
+offset0.5397424101829529 is preserved. Evidence: `scripts/check_spline_density.py`
+and `build/nn-report-conversion/spline_density/independent-oracle.json`.
+
+Canonical `nn/spline_density.hpp` adds RationalQuadraticSpline, SplineCoupling,
+SplineDensity and SplineInverse with flat owning records. The pure primitive
+supports K>=2 bins, configurable symmetric bounds and positive bin/slope floors;
+Double offset precision is default and source rounded mode is explicit. Actual
+bin sizes come from adjacent source-order cumulative knots. Inclusive endpoints,
+right-bin knot ownership, strict identity tails and2c/(-b-sqrt(b*b-4ac)) inverse
+root preserve the source mechanism. Nonpositive represented bins, slopes,
+discriminants or derivative terms reject. No root search or fitting workflow
+enters the core. First/higher input/head/parameter graphs survive collection
+within structural branches; public widths/heights have meaningful names rather
+than the source archive's scale/shift labels. The compact model preserves
+878 values/17 leaves, seed9803 and BatchOrder9821. The shared private dense
+conditioner comment now covers its calling models' output widths.
+
+Fourteen new native tests and587 selected C++ tests,305 Python checks,2,538 R
+expectations in62 files and65 inventory/toolchain checks pass. Generic2/4/7-bin
+identity and nonuniform-head derivatives, custom bounds/floors, explicit rounded
+Double precision, both actual Jacobians, all17 leaf finite differences, first/
+higher graphs, strides, tails, bin metadata lifetimes, immutability and invalid/
+unrepresentable cases are verified. All35 new definitions, six compiled examples,
+six hovers, checkout/installed standalone headers and Python/R help pass;
+affected documentation coverage404/404.
+
+The native overlay matches all22 original archives/235,867 values and six
+other files exactly, plus144 update archives/84,336 values. The complete editable
+C++ report program also matches every source array, update, batch/history TSV,
+protocol and non-timing metric, including the entire272-point fixture and all48
+explicit Adam writes. Final test NLL2.871595860 improves on fitting-only
+Gaussian2.994631823, above truth2.796480843. Evidence:
+`build/nn-report-conversion/spline_density_core/` and
+`spline_density_report/fit.cpp`, `source-parity.json`.
+
+All 15 report C++ blocks execute and all 14 native figures are rasterized and
+visually reviewed. A hand-checkable two-bin spline on [-2,2], widths/heights 2
+and slopes 1,2,1, maps x=-1 to -1.2 with actual derivative .8. The native
+method diagram and executed 878-value architecture precede the full fitting
+program. All 272 original fixture rows, 816 residuals and 3,264 input/head
+gradient cells retain their source values. Independent checks cover 528 worked
+curve/marker positions, 1,088 fixture curve/marker positions, all gradient cell
+colours and positions, 3,072 observation/sample/latent markers, 32,768 density
+cells and 2,304 determinant markers. Every sample, tail and normalization check
+is retained within verified display bounds; raw and website exports include all
+14 assets. The original executable and unused legacy spline helper are removed.
+Shared affine/flow helpers still serve other originals. Next is the combined
+planar/radial source, with both independently fitted variants in scope. All 416
+sources remain in scope; the migration goal remains active.
+
+
+- 2026-11-10: IAF report continuation (2026-11-10): canonical `nn/iaf_density.hpp` adds
+IafDensity, IafInverse and a23-field flat owning IafDensityOutput. It reuses
+MafConditioner/MafMasks and global flow scaling. Density preserves reversed
+block order3..0, two recovered-prefix calls plus a final recovered-input head
+re-evaluation per block. Sampling uses one parallel pass per block0..3.
+Source initialization9703, BatchOrder9721,466 stored values/17 leaves and all
+160 masked coordinates are preserved. Live fields retain applicable first/
+higher input/parameter graphs through collection. Nine new tests and573
+selected C++ tests,300 Python checks and2,497 R expectations in61 files pass.
+All27 new definitions, three compiled examples, three hovers, checkout/installed
+standalone headers and Python/R help pass; affected coverage369/369.
+
+All15 report C++ blocks execute and14 native figures are rasterized and visually
+reviewed. A hand-set affine IAF checks parallel observation generation, explicit
+sequential density recovery and both actual triangular Jacobians before the
+original banana pools. Strict masks retain192 independently verified cells;
+all4,096 actual conditioner partials include3,072 exact forbidden zeros. The
+executed IAF density diagram correctly groups blocks3/2 and1/0,232 values each,
+plus global scale2. All3,072 observation/sample/latent markers have independently
+verified source positions. Both128-square density maps retain all32,768 cells,
+shared colours and physical orientation. Every forward/inverse determinant
+pair, normalization identity and original sample is retained with clear bounds.
+
+The native overlay and full editable program match22 original archives/226,631
+values and144 update captures/44,784 values exactly, including all48 Adam writes,
+batch/history TSVs, protocol and every non-timing metric. Fixed-final test NLL
+2.879989624 improves on fitting-only Gaussian2.994631823, above truth2.796480843.
+Raw Markdown/HTML bundles and actual website figure copies pass. The source
+remains a standalone affine exact-density adaptation, with no VAE/ELBO claim.
+Evidence: `build/nn-report-conversion/iaf_density_core/`, `iaf_density_report/`
+and `scripts/check_iaf_density.py`.
+
+The original executable and last-consumer `common/iaf_density.hpp` and
+`common/maf_density.hpp` are removed. Canonical native MAF/IAF headers remain;
+shared original affine/flow helpers are still used by other flows. The earlier
+independent checkpoint below preceded this completed API/report. Next is spline
+density: original frozen in22 archives/235,867 values, nine source pins, no
+external prepared inputs. Preserve source4-bin rational-quadratic couplings,
+C1 identity tails, analytic quadratic inverse,272-point fixture with knot/tail
+and input/head derivative checks,878 values/17 leaves, seed9803 and order9821.
+Independent audit, canonical spline API/bindings and full report are pending.
+
+
+- 2026-11-10: IAF independent continuation (2026-11-10): all22 pinned source archives and
+all48 captured Adam writes pass independent NumPy. The audit composes analytic
+Jacobians and manual parameter derivatives through sequential sample-to-base
+recovery in reversed block order, including the source's explicit final head
+re-evaluation on each fully recovered input. Base-to-sample inversion uses
+one parallel conditioner call per block in order0..3. All166,727 forward
+values,23,300 partials,22,368 exact updated weights,17 leaf finite differences,
+160 additional masked-coordinate finite differences,40,704 forbidden conditioner
+partials,1,536 batch rows and all1,024 samples are checked. All7,680 masked
+partials stay zero and their stored weights remain bit-exact across48 writes.
+Maximum forward/partial errors are2.618e-5/3.176e-7; finite differences4.983e-11,
+Double normalization residual4.441e-15. Both whole-map determinants agree with
+actual Jacobians and remain spatially varying. Source test NLL2.879989624
+improves on fitting-only Gaussian2.994631823, above truth2.796480843.
+
+Evidence: `scripts/check_iaf_density.py`,
+`build/nn-report-conversion/iaf_density/independent-oracle.json` and
+`iaf_density_core/capture-parity.json`. All22 original archives/226,631 values
+and six other files are unchanged by instrumentation;144 pinned phase archives
+retain44,784 values. Ten source files are pinned, no external inputs. Canonical
+IAF APIs, bindings/docs and the editable report remain pending. Preserve466
+stored values/17 leaves,160 masked kernel coordinates, reversed forward warmup
+with seed9703, BatchOrder9721, three epochs/48 Adam(.003) writes and the full
+original protocol. Reuse native MafConditioner/MafMasks and flow scaling;
+retain all live recovered stage inputs/means/scales/determinants and applicable
+first/higher graphs. Density uses two prefix calls plus one final re-evaluation
+per block; sampling uses one parallel call. Keep the original unchanged until
+its API/program/report and exported figures pass. The shared original MAF
+helper remains needed by IAF; other flows still use affine/flow helpers.
+
+
+- 2026-11-10: MAF report continuation (2026-11-10): all15 C++ blocks pass and14 native
+figures are rasterized and visually reviewed. A worked strict Gaussian
+conditioner with explicit dependency-ordered inverse and actual triangular
+Jacobian precedes the original banana pools. Both degree orders retain all192
+mask cells; independent colour/position checks verify every entry. All4,096
+actual final-test conditioner partials are displayed, including3,072 exact
+forbidden zeros. All3,072 observation/sample/latent plot markers have verified
+source coordinates. The executed network counts466 stored values including160
+masked coordinates. Every observation, inverse sample, density cell, forward/
+inverse determinant pair, normalization identity and original fitting write
+remains visible. Both128-square density maps share independently checked
+colours and physical orientation; equal coordinate axes retain all tails.
+
+The complete program matches22 original archives/226,631 values and144 update
+archives/44,784 values exactly, with original batch/history TSVs, protocol and
+every non-timing metric. Final test NLL2.878228426 improves on fitting-only
+Gaussian2.994631823, still above truth2.796480843. Raw Markdown/HTML figure
+bundles and actual website copies pass. Metadata/toolchain checks pass65/65.
+Evidence: `build/nn-report-conversion/maf_density_report/` and its
+`source-parity.json`, `figure-geometry.json`, `plot-values.json`,
+`density-colours.json`, `mask-and-points.json` and `website-export.json`.
+The original executable is removed. Retain `common/maf_density.hpp` for IAF,
+and shared affine/flow headers for remaining originals. The earlier native
+checkpoint below preceded this completed report.
+
+Next is IAF density: its unchanged original run is frozen in22 archives
+(226,631 values), with ten source pins and no external prepared inputs. It uses
+the same strict conditioner in the opposite computational direction: sequential
+density recovers coordinates in reversed block order, then re-evaluates heads
+on each recovered input for its determinant; inverse sampling is parallel in
+block order0..3. Preserve source466 values/17 leaves, reversed forward warmup,
+seed9703 and BatchOrder9721. Independent audit and canonical IAF API/report
+are pending. This standalone exact-density affine adaptation makes no VAE/ELBO
+claim; keep its distinction from the original paper's sigmoid gating explicit.
+
+
+- 2026-11-10: MAF native continuation (2026-11-10): independent NumPy checks all 22 original
+archives/226,631 values, 48 Adam writes and all 144 update archives/44,784 values.
+It verifies 166,727 forward values, 23,300 partials, 22,368 exact updated weights,
+17 leaf finite differences, 160 masked-coordinate finite differences, 40,704
+strict forbidden conditioner Jacobian entries and all 1,024 inverse samples.
+Every forbidden kernel coordinate has zero partials and remains unchanged at
+all 48 writes (7,680 checks each). The degree inventory has472 values. Analytic
+matrix composition verifies parallel density and the sequential inverse in
+alternating dependency order. Maximum forward/partial errors are1.907e-5/
+2.849e-7, leaf finite-difference error8.547e-11 and Double normalization
+residual2.665e-15. Original procedural rows/seeds are unchanged; no external
+prepared inputs. Evidence: `scripts/check_maf_density.py` and
+`build/nn-report-conversion/maf_density/independent-oracle.json`.
+
+Canonical `nn/maf_density.hpp` adds MafMasks, MafConditioner, MafDensity and
+MafInverse. It reuses native degree-mask comparison, masked dense projections
+and global flow scaling. Flat owning records retain all23 source stage/input/
+mean/log-scale/determinant fields and applicable first/higher graphs after
+collection. Source466 values/17 leaves,160 masked coordinates, seed9603 and
+order9621 are preserved. The parallel density pass evaluates each conditioner
+once; the inverse recomputes it on each recovered prefix and accumulates log
+scales in dependency order. Warm inference neither writes leaves nor draws RNG.
+Ten new tests and564 selected C++ tests,297 Python checks,2,445 R expectations
+in60 files and65 inventory/toolchain checks pass. All38 new definitions,
+seven compiled examples, seven hovers, checkout/installed standalone headers
+and Python/R help pass; affected documentation coverage342/342.
+
+The native overlay matches all22 original archives and six other files exactly,
+plus144 update captures. The complete editable report program also matches every
+array, update, batch/history TSV, protocol and non-timing source metric exactly.
+It retains actual conditioner Jacobians, both whole-map Jacobians, source masks,
+all48 explicit fitting writes and all1,024 inverse samples. Final test NLL
+2.878228426 improves on fitting-only Gaussian2.994631823 while truth remains
+better at2.796480843. Evidence: `build/nn-report-conversion/maf_density_core/`
+and `maf_density_report/fit.cpp`, `source-parity.json`.
+
+The MAF report narrative and figures remain pending. Next include a worked
+hand-set strict conditioner, explicit dependency-ordered inverse and Jacobian,
+native method/executed architecture diagrams, source degree/mask inventory and
+actual forbidden conditioner partials. Use the verified full program, retain
+all density cells, samples, per-point determinants and normalization identities,
+and verify raw/site exports before retirement. The original MAF executable is
+unchanged. Retain `common/maf_density.hpp` for IAF and shared affine/flow helpers
+for other originals. The completed Glow report below is the latest retirement.
+
+
+- 2026-11-10: Glow native continuation (2026-11-10): independent NumPy checks all 23 pinned
+archives and all 48 Adam writes, with 126,023 forward fields, 14,800 partials,
+14,208 exact updated weights, 28 model-leaf finite differences and four extra
+signed-matrix finite differences. It verifies all 5,888 procedural data values,
+1,536 batch rows, both actual Jacobians and all 1,024 inverse samples. Additional
+captures preserve every uncalibrated leaf and all four actual first-32-row
+calibration inputs (five archives/552 values). The independent serial Double
+mean/variance calculation reproduces all 16 ActNorm parameters exactly. The
+negative-determinant fixture checks log|det|, inverse and weight partials.
+Evidence: `scripts/check_glow_density.py` and `glow_density/independent-oracle.json`.
+
+Canonical `nn/glow_density.hpp` adds pure FlowActNormCalibration proposals,
+explicit named FlowActNorm, signed FlowMix2D, the compact GlowDensity and
+GlowInverse. No implicit calibration, statistics updates or fitting/sampling
+workflows enter the model API. Both matrix signs are supported; singular or
+unrepresentable squared determinants reject. Live flat fields retain first/
+higher graphs after parent/store collection. Source rotation initializers round
+to Float32 before promotion and consume no RNG. The forward has no extra final
+global scale. Ten new tests and 554 selected C++ tests, 293 Python checks,
+2,292 R expectations in 59 files and 65 inventory/toolchain checks pass.
+All 43 new definitions, seven compiled examples, seven hovers, native Python/R
+help and standalone checkout/installed headers pass; affected coverage304/304.
+
+The native overlay matches all 23 original archives/184,017 values and six
+other files exactly, all 144 update archives/28,464 values and all five
+calibration archives/552 values. The complete editable C++ report program also
+passes those exact array/calibration comparisons, batch/history TSVs, protocol
+and every non-timing source metric. It keeps the signed fixture, once-only
+first32 sequential calibration, all 48 writes, snapshots, both actual Jacobians
+and all inverse samples visible. The original final test NLL2.866107941 improves
+on fitted Gaussian2.994631823 while truth remains better at2.796480843.
+Evidence: `build/nn-report-conversion/glow_density_core/` and
+`glow_density_report/fit.cpp`, `source-parity.json`, `calibration-parity.json`.
+
+The completed Glow report executes all 15 C++ blocks and renders 14 native
+figures. Worked population-moment/ridge and signed-matrix examples precede the
+original data, once-only sequential calibration and complete editable fitting/
+sampling workflow. The executed architecture retains 296 values in 28 leaves;
+all 768 observations, 1,024 inverse samples, actual forward/inverse Jacobians,
+per-point determinant pairs, normalization and both density grids are retained.
+The four actual calibration inputs match source captures exactly; all sixteen
+plotted coordinate moments are independently checked. Equal coordinate scales
+retain every sample, including the lower tail beyond the original plotting
+window. All 32,768 density cells have independently verified common colours and
+physical orientation. Every figure is rasterized and visually reviewed; raw
+Markdown/HTML bundles and actual website copies pass. Metadata checks pass65/65.
+Evidence: `build/nn-report-conversion/glow_density_report/`, including
+`source-parity.json`, `calibration-parity.json`, `figure-geometry.json`,
+`plot-values.json`, `density-colours.json` and `website-export.json`.
+The original executable and last-consumer `common/glow_density.hpp` are removed.
+Shared `common/real_nvp_density.hpp` and `common/flow_density.hpp` remain for
+other originals.
+
+Next is MAF density: its unchanged original run is frozen in 22 archives
+(226,631 values), with nine source pins and no external prepared inputs.
+Preserve its strict degree masks, parallel density and sequential inverse,
+466 values/17 leaves, initialization9603 and BatchOrder9621. Capture all48
+Adam writes and independently audit the actual conditioner Jacobians, masked
+partials and inverse dependency order before adding canonical APIs/report.
+
+
+- 2026-11-10: RealNVP report continuation (2026-11-10): all 13 C++ blocks and 12 native
+figures pass with complete visible fitting and inverse sampling. It reproduces
+all 21 original archives (142,951 values), all 144 update archives (25,584 values),
+batch/history TSVs, data protocol and every non-timing metric exactly. Canonical
+`nn/affine_flows.hpp` adds FlowDiagonalScale, bounded RealNvpCoupling, the compact
+RealNvpDensity and RealNvpInverse, with flat owning live stage/scale/shift/logdet
+fields. Inverse determinants are computed on the inverse path's own points.
+The source .8*tanh bound, 266 values in 17 leaves, initializer 9403 and order
+seed 9421 are unchanged. Nine new tests and 544 selected C++ tests, 289 Python
+checks and 2,240 R expectations in 58 files pass, including first/higher paths,
+strides, global scaling, invalid inputs/overflow, immutability and collection
+lifetimes. All 33 new definitions, seven compiled examples, seven hovers,
+checkout/installed standalone headers and Python/R help pass; affected coverage
+is 261/261. Metadata/toolchain checks pass 65/65.
+
+The report shows a worked affine Jacobian, analytic banana coordinates, the
+executed 266-value network, all 768 observations and 1,024 inverse samples,
+both density grids (32,768 cells), all 1,152 forward/inverse determinant pairs,
+residuals and normalization identities. Equal coordinate scales retain every
+tail point; common density colours and physical grid orientation are checked.
+All 12 figures are rasterized and visually reviewed; raw Markdown/HTML bundles
+and actual website copies pass. The original final test NLL 2.879116774 is better
+than the fitting-only full Gaussian 2.994631823, still worse than analytic truth
+2.796480843. Evidence: `build/nn-report-conversion/real_nvp_density_report/`,
+`real_nvp_density_core/` and `scripts/check_real_nvp_density.py`.
+The original executable is removed. Retain `common/real_nvp_density.hpp` and
+`common/flow_density.hpp`: other flow originals still consume their helpers.
+The earlier independent-audit checkpoint below preceded this completed API/report.
+
+Next is Glow density: its unchanged original run is frozen in 23 archives
+(184,017 values), with nine source pins and no external data requirement.
+Instrumentation preserves all 23 archives and six other files exactly and
+captures 144 phase archives (28,464 values). Keep the once-only sequential
+ActNorm calibration from the first 32 fitting points, signed-mixing fixture,
+296 values/28 leaves, initialization 9503 and BatchOrder 9521. Independent audit,
+canonical calibration/mixing/flow operations and its report remain pending.
+
+
+- 2026-11-10: NICE report continuation (2026-11-10): all 12 C++ blocks and 11 native figures
+pass, with complete visible fitting and latent-only inverse sampling. It matches
+all 21 source archives (117,586 values), 144 update archives (19,056 values),
+batch/history TSVs, the original protocol and every non-timing metric exactly.
+Native cumulative sums preserve the original serial Double fitting-only moments
+and summaries; no new baseline helper was necessary. Worked nonlinear coupling
+and analytic banana examples precede the exact original procedural pools.
+The actual 198-value architecture, every observation/sample, both density grids,
+both actual Jacobians and all normalization residuals are rendered natively.
+All 768 observations, 1,024 inverse samples and transformed test points remain
+within equal coordinate scales; the high held-out tail hidden by the source's
+plotting window is visible. Every density-map cell is retained (32,768 total)
+with common colour limits and correct physical orientation. Readable method
+labels, clear legends and the fixed-final negative result are verified.
+
+All 11 figures are rasterized/visually reviewed and both raw export bundles plus
+actual website figure copies pass. C++535/Python285/R2165 and metadata65 pass;
+28 definitions, ten compiled examples, seven hovers and checkout/installed
+standalone headers remain verified. Evidence:
+`build/nn-report-conversion/nice_density_report/`, `nice_density_core/` and
+`scripts/check_nice_density.py`. Original NICE executable and its last-consumer
+`common/nice_density.hpp` are removed. The shared `common/flow_density.hpp`
+remains for eight other flow originals. The earlier native-only checkpoint below
+records the API work that preceded this report.
+
+The next source is RealNVP density: unchanged original run frozen in 21 archives
+(142,951 values), eight source pins and no external prepared inputs. Capturing
+all 48 updates preserves those archives and six other files exactly, adding
+144 pinned phase archives (25,584 values). Its independent audit now passes; affine coupling
+API and report are pending. The source uses four bounded affine couplings,
+266 values/17 leaves, store seed 9403 and BatchOrder seed 9421 on the same banana
+protocol. Keep its original input-dependent determinant and inverse-path checks.
+
+
+- 2026-11-10: NICE native flow API and independent original audit complete.
+  `nn/normalizing_flows.hpp` and `nn/nice_density.hpp` provide explicit banana
+  preparation/truth, Gaussian change-of-variables densities, additive couplings,
+  the compact 198-value NICE map and exact-form inverse. Flat fields retain live
+  first/higher graphs after parent/store collection; warmed inference is immutable.
+  All 28 definitions, ten compiled examples, seven hovers, native Python/R help
+  and checkout/installed standalone headers pass; affected coverage is 228/228.
+  Source parity is exact across 21 archives (117,586 values), six other files
+  and 144 update archives (19,056 values). Independent NumPy verifies all 48
+  Adam writes, 17 finite differences, both Jacobians and 1,024 inverse samples.
+  C++535/Python285/R2165 in 57 files and metadata65 pass. The report still needs
+  authoring; the original NICE executable and shared flow harness remain.
+  Evidence: `build/nn-report-conversion/nice_density_core/`,
+  `nice_density/independent-oracle.json` and `scripts/check_nice_density.py`.
+
+- 2026-11-10: WaveNet report continuation (2026-11-10): the13-block report now keeps all27
+Adam writes, warmup32 and both complete sampled-feedback loops editable. It
+matches all22 source NPZ archives/9283192 values,81 update archives/273699 values,
+source manifest and batch/history TSVs exactly. All eight WAVs are byte identical
+and independently match7170 PCM16 samples. Markdown/HTML players, adjacent WAV
+bundles and actual website image/audio copying pass. The website now tracks both
+direct/nested audio assets for staleness and copying, with two regression tests.
+All11 native figures are inspected: worked RF5/cache and256-code codec checks,
+method/executed5068-value architecture, all three384-code held-out references,
+all three epochs/baselines,224 losses per method, full64x256 structural partials,
+both2049-code cold streams, all three640-code continuations and369 probe errors.
+Every displayed waveform position is retained; offsets/physical time are explicit.
+The architecture uses readable executed composite stages with actual shapes.
+
+The negative result remains: final7.96727 bits/mu-law sample is worse than
+fitting-only unigram6.94609 and transition6.23728. All real FSDD source/speaker
+IDs, strict next-code shifts, case-major midpoint MT draws, observed128-code
+prefixes and RF33 checks remain. Native per-point Double loss plus serial scalar
+summaries preserve original17-digit history values without changing fitting.
+Nine new cache tests and527 selected C++ tests,281 Python tests,2119 R expectations
+in56 files and65 inventory/toolchain checks pass. All14 new definitions,6 compiled
+header examples,6 hovers and standalone checkout/installed headers pass; affected
+coverage202/202. Independent PCM/NumPy still verifies every5632 sampled code from
+RF33 contexts. Evidence: `build/nn-report-conversion/wavenet_report/`,
+`wavenet_core/`, `wavenet/independent-oracle.json` and
+`scripts/check_generative_wavenet.py`. Original executable and the now-unused
+`common/wavenet_generation.hpp` are removed. The older `common/wavenet_stack.hpp`
+shim still has SWIG consumers and remains until those consumers are migrated.
+
+The next independent source is NICE density, whose unchanged48-update procedural
+banana run is frozen in21 archives/117586 values with8 source pins and no external
+input requirement. Instrumentation preserves all21 archives and6 other files
+exactly, capturing144 update archives/19056 values. Its independent audit and
+native data/coupling/inverse APIs remain pending. The in-process synthetic density
+is explicit, not a substituted real dataset. Existing AutoRec/GAN diagnostics and
+character_rnn recipe questions remain pending; ImageGPT's original prepared
+palette corpus is also absent from the local cache, so its recipe needs recovery
+before that source can run. No substitute assets/splits are used.
+
+
+- 2026-11-10: WaveNet cache continuation (2026-11-10): native `nn/wavenet_generation.hpp`
+adds owning `WaveStackCache` with next/reset/consumed/clone. The constructor copies
+required finite Float32 CPU leaves from a warmed store, accepts strides, ignores
+unrelated leaves and retains no Tensor/store alias. Each block keeps its OWN
+input ring at its dilation; previous-code input taps, scalar Float32 accumulation,
+tanh/filter divided by1+exp gate, ordered skips and absent final residual match
+the source. Ring/previous-code writes commit only after finite candidate state/head
+and owning output allocation; invalid code and arithmetic failure preserve state.
+Snapshots, resets, C++ copies and host-language clones are independent; outputs
+are owning detached Float32 heads, with no sampling or training hidden in the cache.
+R calls its reserved-keyword method `next_code`; C++/Python use `next`.
+
+Canonical WaveStackConfig/Field/Conv/Output/Stack/Nll are also exported before
+legacy SWIG imports. Returned gate vectors copy owning Tensor handles, preserving
+live graphs after parent/vector/store collection. Thin Python/R documentation
+covers the explicit architecture, Float32 cache and warmup choices. Native codec,
+audio ingress and PCM16 writer already exist and are reused without duplication.
+Nine new C++ tests cover repeated cycles/ring wraps, snapshots, strides, retained
+heads, forks/reset, missing/dtype/shape/nonfinite inputs and transactional failed
+steps, including a finite ring candidate followed by an overflowing output.
+Selected527 C++ tests,281 Python tests,2119 R expectations in56 files and63
+metadata checks pass. All14 new definitions,6 compiled examples,6 hovers and
+checkout/installed standalone headers pass; combined affected coverage202/202.
+The final R help install uses the checkout pkg-config/rpath and its focused130
+expectations pass after installation; Python/R help and copied gate lifetimes pass.
+
+Native delegation reproduces22 source archives/9283192 values,16 other files
+(including all eight WAVs) and81 captured update archives/273699 values exactly.
+The prior independent PCM/NumPy audit verifies all27 writes and5632 sampled codes
+from full RF33 contexts. `wavenet_core/nll-probe.cpp` additionally proves source
+17-digit history/test summaries: native per-point Double max+logsumexp-minus-target,
+then serial row/time summation to preserve legacy scalar formatting. Whole-array
+native reductions differ only in the last bits; fitting retains native Float32
+WaveNll with start32. Evidence: `build/nn-report-conversion/wavenet_core/`,
+`wavenet/native-progress.json`, `wavenet/cache-design.md` and the independent oracle.
+The complete report with editable fitting/sampling loops, native figures and all
+audio exports remains pending. Original WaveNet source/helpers are retained;
+the older stack shim still has SWIG consumers and cannot yet be removed.
+
+
+- 2026-11-10: PixelCNN++ report continuation (2026-11-10): the complete native12-block
+report retains the48-step Adam loop and explicit component/quantized-R/G/B
+raster sampler. All24 original archives/1223447 values and144 captured update
+archives/135408 values match exactly, including batch/history TSVs. All11 figures
+and both exports are reviewed, with516096 original gallery channel values exact.
+Two executed worked checks precede real CIFAR inputs: all256 logistic bins need
+infinite endpoint tails, and triangular RGB means use preceding observed channels.
+The report separately verifies all nine extreme component/channel distributions,
+12288 causal entries,64 whole-pixel future flips and448 permanently masked
+coordinates. Sampling uses one component for all three channels, already quantized
+R/G for subsequent means, and full case/pixel/stream midpoint MT banks. Prefix
+completions retain all32 observed whole RGB pixels. The component-frequency plot
+retains the dominant.817 observed fraction without clipping; no semantic labels
+are assigned to mixture components.
+
+The original32x32 CIFAR bytes use exact integer4x4 area means, half-up codes and
+one Float32 signed representation cast. Fixed source rows are128 fit/32 validation/
+32 test, with unused labels retained and no TF initial arrays present. Final test
+7.48424 bits per8-bit RGB channel improves on fit-only histogram7.91458 and uniform8;
+unfiltered samples are noisy and no original-resolution benchmark claim is made.
+Native `nn/logistic_pixels.hpp` exposes preparation, exact-bin coupled likelihood
+and compact context density as flat owning live records. Tests518 C++,277 Python,
+1989 R expectations/55 files and63 inventory/toolchain checks pass. All29 definitions,
+6 compiled documentation examples/clangd hovers and standalone checkout/installed
+headers pass; combined coverage188/188. Independent NumPy covers379469 forwards,
+78420 partials,29 finite differences,48 exact Adam writes and9792 sampled channels.
+Evidence: `pixel_cnn_pp_report/`, `pixel_cnn_pp_core/`, `pixel_cnn_pp/independent-oracle.json`
+and `scripts/check_pixel_cnn_pp.py` under `build/nn-report-conversion/` as applicable.
+The original executable and now-unused `common/pixel_cnn_pp.hpp` and
+`common/gated_pixel_cnn.hpp` are removed; shared binary helpers still have consumers.
+
+WaveNet is the next independent source: its unchanged27-update native run is
+frozen in22 archives/9283192 values,13 source pins,2 native header pins and31
+original/prepared input pins. Its27 original FSDD WAV recordings, release archive,
+manifest/source IDs and72/12/24 speaker-disjoint windows remain intact. Existing
+canonical audio ingress, stack, tensor codec and PCM16 writer can be reused.
+Instrumentation preserves all22 archives and16 other files exactly and captures
+81 gradient/update/iteration archives/273699 values. `scripts/check_generative_wavenet.py`
+independently verifies27675 original PCM samples,55296 shifted code values,1152
+prompt codes,7618560 forwards,163356 partials,34 finite differences and27 exact
+Adam writes. It recomputes every one of5632 sampled heads from RF33 contexts,
+reproduces all5632 draws and validates7170 PCM16 samples in all eight generated/
+reference WAVs. Maximum forward/partial/next-head errors are2.55e-8/7.61e-9/3.06e-8.
+All16384 encoded-input causal derivatives retain exact zeros outside RF33 and
+in the future. Test7.96727 bits/mu-law sample remains worse than both fitting-only
+Laplace baselines. Initial zero post biases can sit on ReLU boundaries; finite
+differences use fitted smooth coordinates while initial VJPs retain derivative0
+at ReLU ties. Promote the owning per-layer synthesis cache next; exact source
+Float32 scalar accumulation and rings of each block's own inputs are essential.
+Cache API, bindings and complete report conversion remain pending. Evidence:
+`wavenet/native-progress.json`, `wavenet/cache-design.md` and the independent
+oracle under `build/nn-report-conversion/`. AutoRec/GAN diagnostics input questions and
+the original character_rnn corpus recipe remain pending; no substitute recipes.
+
+- 2026-11-10: MADE density continuation (2026-11-10): native `nn/made_density.hpp` promotes
+nonnegative integer degree masks, stopped structural masked dense projections,
+the fixed64-pixel/two16-unit sigmoid density in both orders, and a stable
+Float64 equal-probability mixture of normalized joint densities. Flat owning
+records expose degree/mask inventory, hidden features, logits, mixture NLLs
+and posterior component responsibilities. All applicable first/higher paths,
+mask detachment, invalid-before-leaves behavior and record lifetimes are tested.
+Each model retains2400 values in6 ordered leaves,1256 active and1144 masked;
+both begin with the same seed8803 draws but train separate stores and Adam states.
+Strict output degrees exclude self and future coordinates in each order.
+
+The12-block report preserves all192 Adam writes and complete sampling loops.
+It matches47 original archives/2799518 values and576 update archives/921792 values
+exactly. Independent NumPy checks139110 forwards,470400 partials,36 finite
+differences,192 Adam writes,6000 row visits,8192 causal derivatives,128 future
+flips and10752 sampled pixels. All1144 blocked weights/partials per order stay
+exact. Reverse sampling indexes uniforms by generation ordinal, keeps raw
+Jacobian coordinates, and observes the bottom half for completion; raster
+observes the top half. A four-bit worked density sums to one. A four-state
+mixture example and native gradient show why joint logmeanexp differs from
+mean component NLL. The final mixture is.552185 bits per binary pixel, between
+raster.558043 and reverse.551028; all remain worse than the original fit-only
+independent baseline.384447. Eleven figures and both export bundles are reviewed;
+four original galleries match1376256 decoded channel values exactly.
+
+All23 new definitions,8 compiled header examples/clangd hovers and standalone
+checkout/installed headers pass. Combined affected coverage159/159 is clean.
+Selected tests510 C++,273 Python,1966 R expectations in54 files and63 metadata
+checks pass. Evidence: `build/nn-report-conversion/made_density_core/`,
+`made_density_report/`, `made_density/independent-oracle.json` and
+`scripts/check_made_density.py`. The original executable and last-consumer
+`common/made_density.hpp` are removed. PixelCNN++ is the next independent source:
+its original48-update CIFAR-10 run is frozen in24 archives/1223447 values with
+12 source pins and two original binary input pins. Instrumentation retains all24
+original archives and7 other files exactly, recording144 update archives/135408
+values. Independent NumPy verifies589824 original RGB values,36864 integer-area
+codes,379469 forwards,78420 partials,29 finite differences,48 exact Adam writes,
+12288 causal entries,64 whole-pixel future flips and9792 sampled channel values.
+All nine256-bin tail distributions normalize, all448 blocked weights stay exact,
+and generation from independent NumPy heads reproduces every sampled code.
+Test7.48424 bits per8-bit RGB channel improves on the fit-only histogram7.91458
+and uniform8. The largest absolute forward difference.001451 is an extreme-tail
+component log probability (scaled error1.66e-7); max partial difference7.63e-7.
+Evidence: `scripts/check_pixel_cnn_pp.py` and `pixel_cnn_pp/independent-oracle.json`.
+Its reusable exact RGB likelihood/data primitives and complete report remain
+to be promoted and rendered. AutoRec/GAN diagnostics input questions and the
+original character_rnn corpus recipe remain pending; no substitute recipes.
+
+
+- 2026-11-10: PixelRNN continuation (2026-11-10): native `nn/recurrent_pixels.hpp` promotes
+an explicit convolutional Row-LSTM step and the compact one-layer binary density.
+The step accepts projected16-channel gates, prior hidden/cell rows and an
+unbiased1x3 recurrent kernel. Its i/f/o/candidate ordering and fixed forget+1
+are explicit; seven flat fields expose all gates and new states. The full model
+uses a biased mask-A3x3 input1-to16 projection, width4 row recurrence and biased
+1x1 binary head. Source seed8303 creates357 values in5 ordered leaves,277 active
+and80 masked. Initial h/c share the first input features times zero, retaining
+the connected zero path and signed-zero arithmetic. No learned initial state,
+recurrent bias, class conditioning, same-row hidden recurrence or batch coupling.
+Seven model fields expose actual zero/gate/state/logit boundaries. All supplied
+inputs validate before leaves; applicable first/higher paths and owning records
+survive parent/store collection. Core APIs hide no fitting/sampling/optimizer.
+
+The10-block report keeps all96 Adam writes and64 raster-sampling steps editable.
+It reproduces22 original archives/2028400 values and288 phase archives/68640 values
+byte-for-byte, including batch/history TSVs. Independent NumPy checks719283
+forwards,34986 partials,13 finite differences,96 Adam writes,3000 fitting-row
+visits,4096 causal derivatives,64 future flips and5376 sampled pixels. All80
+forbidden weights and partials remain exact. Nine figures and both export bundles
+are inspected; both original PNGs match688128 decoded channel values. A worked
+nonzero-cell/zero-kernel example verifies forget memory f^8 and its derivative;
+the real model uses linked zero states. The fixed-final test loss.677641 remains
+worse than the fit-only Bernoulli baseline.384447 bits per binary8x8 pixel, using
+the unrounded Double posterior for the baseline scalar. Actual hidden/cell row
+magnitudes are shown without interpreting them as accuracy or attribution.
+
+All19 new definitions,4 compiled header examples/clangd hovers and both
+standalone checkout/installed headers pass. Combined affected coverage136/136 is
+clean. Selected tests501 C++,269 Python,1932 R expectations in53 files and63
+inventory/toolchain checks pass. Evidence: `build/nn-report-conversion/pixel_rnn_core/`,
+`pixel_rnn_report/`, `pixel_rnn/independent-oracle.json` and
+`scripts/check_pixel_rnn.py`. The original PixelRNN executable and its now-unused
+shared header are removed. The next independent source is MADE density: both
+raster/reverse orders are frozen in47 archives/2799518 values with9 source pins
+and2 prepared-input pins,192 updates total. Instrumentation preserves all47
+originals exactly and records576 phase archives/921792 values. Its equal-order density
+mixture remains part of that future conversion. AutoRec/GAN diagnostics input
+questions and the original character_rnn corpus recipe remain pending; continue
+other independent examples without substituting a different recipe.
+
+
+- 2026-11-09: Gated PixelCNN continuation (2026-11-09): native `nn/gated_pixels.hpp` promotes
+vertical3x3/horizontal1x3 masks, paired tanh/sigmoid gates, seven owning stream
+boundaries, generic RGB context and mandatory-label binary variants. Three
+width4 blocks use unbiased vertical-to-horizontal1x1 links, biased horizontal
+projections and residuals above block0. Unconditional1073 values/23 leaves,
+conditional1553/29; both retain320 forbidden coordinates. Six learned10x8 tables
+supply class offsets before the gates. Core APIs expose no fitting/sampling
+loop or optimizer. `MaskedPixelConv` now accepts positive odd rectangular kernels;
+old3x3 PixelCNN behavior remains byte-exact. All supplied inputs validate before
+leaves, labels are discrete, and applicable image/weight first/higher paths stay
+live. The RGB3/30 context has1410/23 and448 masked coordinates; both Float32/64
+match the unchanged original RGB source in11800 values/six archives, with5320
+independent forward values and3240 analytic partials checked separately.
+
+The13-block report reproduces50 original archives/3231050 values and576 phase
+archives/504384 values byte-for-byte, including exact batch/history TSVs and
+all192 Adam writes. Independent NumPy checks553830 forwards,257348 partials,
+152 finite differences,6000 fitting-row visits,8192 causal Jacobian entries,
+128 future flips and15872 sampled pixels. All320 forbidden weights and partials
+per variant stay exact. Both class grids reuse four complete uniform streams
+across ten classes; only the conditional model responds to changed valid labels.
+Both gated models open the plain masked-CNN input28/logit34 blind spot. Twelve
+local figures and both export bundles are inspected; all six original PNGs match
+2359296 decoded channel values. The fixed-final test losses.582654/.578156 remain
+worse than the fit-only Bernoulli baseline.384447 bits per binary8x8 pixel.
+
+All15 new definitions,5 compiled examples/hovers and standalone checkout/installed
+headers pass, along with the changed binary-pixel header's25 definitions/9
+examples/hovers. Combined40/40 coverage is clean. Selected tests493 C++,266
+Python,1913 R expectations in52 files and63 inventory/toolchain checks pass.
+Evidence: `build/nn-report-conversion/gated_pixel_cnn_core/`,
+`gated_pixel_cnn_report/`, `gated_pixel_cnn/independent-oracle.json` and
+`scripts/check_gated_pixel_cnn.py`. The old Gated executable and now-unused
+`common/pixel_cnn.hpp` are removed. `common/gated_pixel_cnn.hpp` is reduced to
+native compatibility imports for PixelCNN++; PixelRNN includes binary helpers
+directly. Both remaining headers compile. A fresh old-PixelCNN run against the
+native compatibility adapter reproduces all22 archives/1820572 values exactly.
+PixelRNN is the next independent conversion: its unchanged357-value Row-LSTM
+run is frozen in22 archives/2028400 values, with288 captured phase archives/
+68640 values and exact original-output parity; its original recipe is available.
+AutoRec/GAN diagnostics input questions and the original character_rnn corpus
+recipe remain unresolved; these do not block the independent conversions.
+
+
+- 2026-11-09: PixelCNN continuation (2026-11-09): canonical `nn/autoregressive_pixels.hpp`
+provides detached Double-resize/Float32-threshold binary preparation, structural
+A/B masks, stopped-mask/live-kernel convolutions, six actual PixelCNN boundaries,
+a four-field live Bernoulli likelihood and a complete local midpoint-MT uniform
+bank. The source network has1841 values/10 leaves,1033 active and808 forbidden
+kernel coordinates; four width8 biased3x3 ReLU layers and a1x1 binary head.
+It accepts positive gray rectangles and keeps the ordinary masked-CNN blind spot.
+All supplied input contracts validate before leaf creation. Core APIs expose no
+fitting/sampling loop or optimizer; complete96-step fitting and64-site raster
+sampling remain editable in the report. Owning flat records, first/higher paths,
+all64 causal sites, fixed mask values, inference immutability, invalid geometry,
+unit-range/binary checks and parent/store collection are verified.
+
+The10-block report reproduces22 original archives/1820572 values and288 phase
+archives/353568 values byte-for-byte, with exact batch/history TSVs. A separate
+NumPy oracle checks498099 forwards,180418 partials,28 finite differences,
+all96 Adam writes, all3000 fitting-row visits,4096 causal derivatives,64 future
+flips and5376 sampled pixels. All808 forbidden weights remain unchanged and
+all their partials are zero. Both source PNGs match688128 decoded channel
+values exactly. Nine local figures, native introduction/mask/likelihood examples,
+an executed architecture and both Markdown/HTML figure bundles are inspected.
+The result deliberately preserves the source's worse density than its fit-only
+baseline: fixed-final test.616536 versus.384447 bits per binary8x8 pixel. The
+baseline evaluates the unrounded Double posterior, separately from archived
+Float32 probabilities. No accuracy or natural-image realism claim is made.
+
+All25 new definitions,9 compiled examples/clangd hovers and checkout/installed
+standalone headers pass. Selected C++ tests485, Python263, R1890 expectations
+in51 files and63 inventory/toolchain checks pass. Metric umbrella/Python/R exports
+are also complete. Evidence: `build/nn-report-conversion/pixel_cnn_core/`,
+`pixel_cnn_report/`, `pixel_cnn/independent-oracle.json` and
+`scripts/check_pixel_cnn.py`. The PixelCNN executable was retired here; its compatibility header was later
+removed in the Gated continuation. The next
+Gated PixelCNN source is frozen unchanged with both conditional/unconditional
+variants:50 archives/3231050 values,10 source pins,2 prepared-input pins;
+192 updates total,96 per variant. Instrumentation preserves all50 originals
+exactly and retains576 phase archives/504384 values. This baseline is now converted and retired above. AutoRec and GAN
+diagnostics input questions remain pending; four character-language examples
+also lack the original character_rnn corpus-preparation recipe. None of these
+missing recipes authorizes a substitute split. Continue independent conversions.
+
+
+- 2026-11-09: GAN diagnostics infrastructure (2026-11-09, report still pending): native
+`nn/frozen_graph.hpp`/`src/datamunge/nn/frozen_graph.cpp` provide immutable bounded
+GraphDef decoding and read-only numeric subgraph execution, without TensorFlow
+or protobuf runtime dependencies. Numeric Float32/64,Int32/64,Bool constants
+preserve exact bits/scalar rank. Explicit feeds cut upstream ancestry; output-zero
+names, control edges/CheckNumerics, cycle/depth checks, strict wire bounds and
+last-consumer release are preserved. Returned fields are detached owning copies;
+no internal model storage escapes. Native Python/R bindings include model loading,
+node/operation metadata, constant copies and named evaluation. A thin Python
+constructor adapter accepts the existing ByteVector proxy; R accepts integer bytes.
+
+Native `prepare_example_data("inception-metric")` obtains the original official
+2015 archive, unmodified GraphDef, LICENSE and manifest. Archive88931400 bytes/
+SHA256 f6b539e07358fc4622efdd40cdb5577672c46cd416bbfccf9d4d2438f9b93a1c;
+graph95673916 bytes/SHA256
+009d6814d1bc560d4e7b236e170e9b2d5ca6f4b57bd8037f6db05776204415c6.
+Completed graphs are rehashed, including same-size-corruption rejection. Native
+file-mirror ingress, repeated preparation and constructor/evaluation are verified.
+An isolated optional TensorFlow2.20 oracle verifies all488 numeric constants/
+23885410 values byte-for-byte and12751308 values at22 stages for each of two
+real CIFAR inputs. Preprocessing matches exactly; max pooled-feature difference
+2.3842e-5, max probability difference3.5167e-6. Overall early-stage max difference
+.00146484375 reflects Float32 kernel rounding. Both original MatMul and biased
+logits are retained and compared; no replacement feature network is used.
+
+Standalone `nn/generative_metrics.hpp` promotes detached Float64 low-rank Gaussian
+Frechet, probability-space Inception score and contiguous split/population-spread
+records. Source half/mean/covariance conventions and absolute negative-FID tolerance
+are explicit. All84 original algebra values match exactly; independent NumPy and
+five native mathematical cases cover unequal pools, same moments/different
+supports, collapse/uncertainty and unequal ordered splits. The main NN umbrella
+and native Python/R now export all three metric functions and their owning flat
+records. Mixed Float32/64 unequal pools, stopped fields after parent collection,
+ordered splits and invalid probability contracts pass in both bindings.
+FrozenGraph and metric bindings are complete.
+
+All77 affected definitions,12 compiled header examples,12 clangd hovers and both
+standalone checkout/installed headers pass. Native selected tests478=375 model+
+69 prior other+12 frozen graph+5 metric+17 dataset cases; Python260 and R1868
+expectations/50 files pass, plus63 inventory/toolchain checks. Current evidence:
+`build/nn-report-conversion/gan_diagnostics_core/`,
+`gan_diagnostics/frozen-inception-reference.json`, `metric-oracle.json`, and
+`scripts/nn_frozen_inception_reference.py`. No additional example is retired:
+GAN diagnostics still lacks its original recorded images/Inception/Frechet inputs
+and preparation recipe. A user question about their location is pending; do not
+repeat it. The native model/extractor infrastructure gap is resolved, while the
+full original experiment/report and explicit classifier-bias/generator protocol
+still require evidence. Do not substitute a toy extractor, fabricate an original
+baseline or retire the source from algebra-only checks. Continue other independent
+conversions if those inputs remain unavailable. AutoRec's earlier original-ratings
+question also remains pending. All416 originals remain in the goal's scope.
+
+- 2026-11-09: SinGAN continuation (2026-11-09): canonical `nn/single_image_gan.hpp`
+provides one local seeded Gaussian stream with optional coarse shared RGB, a
+detached Double RMS amplitude with one final cast, five-field residual generation,
+an image-only raw patch critic and an eight-field shared-weight two-branch game.
+Three biased SAME3x3 convolutions preserve arbitrary positive RGB rectangles;
+G371 values/6 leaves, D297/6. Explicit input mixture and previous-image skip remain
+live through higher derivatives. Output is unbounded previous+tanh correction.
+The compact source uses full G least squares plus10 reconstruction MSE and half
+D least squares, rather than the full paper's WGAN-GP. All supplied inputs/aliases
+validate before leaves; no API hides sampling, updates, optimizers or no-grad.
+
+The13-block report keeps every three-scale draw and fitting step editable. One
+CIFAR-10 training image produces16/24/32 targets with signed antialiased bicubic.
+Fixed reconstruction noise is shared RGB seed7411 at the coarse scale and zeros
+above. Higher amplitudes are measured once from the frozen lower reconstruction.
+Both G/D warm-start from the previous final weights; each scale has cold Adam
+(.0005,.5,.999,1e-8) clocks0/0. Each of48 fitting batches per scale refreshes the
+frozen lower random draw, then takes D and a fresh G capture,288 total writes.
+Completed scales keep no optimizers. Checkpoints restore exactly; all lower G/D
+weights and every unselected owner stay bit exact. Random12-image, rectangular
+40x48, fixed-reconstruction and all three zero-noise controls remain unchanged.
+
+All21 source archives/488107 values and1038 probe archives/1890142 values match
+byte-for-byte. Independent NumPy verifies99309 native partials(max5.96e-7),102
+scalar finite differences,800156 forwards(max3.48e-7), every batch seed/input,
+14208 exact preparation/noise values and all288 Adam writes exactly. All nine
+history rows and measured amplitudes match. Report galleries independently check
+1248768 RGB bytes, explicit[-1,1] range, half-up quantization, nearest enlargement
+and no gaps. Twelve figures, including a native7-node/7-edge concept diagram and
+two executed architectures, pass geometry/export checks and visual review. The
+G trace packs211 supplied coordinates solely for plotting and explicitly retains
+previous, noise and amplitude branches. Results remain weak: training MSE
+.1290045545 and sample pixel variance.006276357, no held-out/realism claim.
+
+All25 header definitions,seven compiled examples,seven clangd hovers and standalone
+checkout/installed header checks pass. Twelve new native cases bring selected
+coverage to375 model+69 other=444;254 Python checks and1836 R expectations/48
+files pass, including owning graph lifetimes, higher paths, unequal pools, cold
+warm-start clocks, residual/noise/amplitude derivatives and invalid-before-leaf
+validation. All63 metadata checks pass. Source and both last-consumer legacy
+single-image/adversarial-SR headers are removed; all reusable SRConv math remains
+canonical. Evidence: `build/nn-report-conversion/singan_core/`, `singan_report/`,
+and `scripts/check_single_image_gan.py`. GAN diagnostics is next: preserve its
+original Inception protocol and resolve preparation/native extraction before
+retirement. AutoRec's original ratings preparation and129 older CNN retirement
+revalidations remain outstanding; full independent Python/R fits remain separate.
+
+- 2026-11-09: SRGAN/ESRGAN continuation (2026-11-09): canonical `nn/relativistic_gan.hpp`
+provides stable unequal-pool relativistic-average losses with LIVE opposite-pool
+means, explicit half-scaled D/G terms and owning higher paths. Native
+`nn/adversarial_super_resolution.hpp` supplies both residual generators, ordinary/
+bias-free critics, frozen first-convolution features and twenty-field two-path
+games. Nine generated-path fields expose image/residual/packed/shuffled/head/
+body/upsampling and detached optional five-layer BN captures. Fixed source seeds,
+Float32 fan-in bounds, normal.001 output kernels, image-level bicubic shortcut,
+source RRDB scaling and CRD order are preserved. SRGAN G1591/25,D1673/8 plus
+BN40/10; ESRGAN G3511/40,D1672/7,no BN. Frozen1792 official VGG19 values are
+outside every optimizer. Native extraction stops all weight/bias paths and target
+extracted features; RGB/other target paths remain live. Both feature tensors divide
+by255 BEFORE post-ReLU MSE or pre-activation L1; SRGAN MSE thus scales by255².
+
+The complete editable report owns16 pixel-only warm-up G steps, a cold reset of
+BOTH Adam states without weight/statistic changes, then32 D-then-fresh-G steps
+per variant. Cumulative writes48G/32D end at counters32/32. After every SRGAN G
+weight write, explicit BN candidates use moments captured WITH that pre-write G
+partial, source-rounded momentum/unbiased correction. No API hides fitting,
+capture, detach, updates or later RNG. There is no generator weight EMA. Every
+forward evaluates saved-statistic inference and batch-statistic G; source losses
+use batch G even for read-only validation. Target canaries leave BOTH G paths
+bit exact, while ESRGAN's paths coincide because it has no BN.
+
+All19 original archives/3075843 values, both PNGs, four TSVs and non-timing
+metrics match exactly, as do515 phase/probe archives/9487714 values. Independent
+NumPy checks362343 native partials/moments(max8.06e-6),10013647 forwards
+(max1.88e-6),226 scalar finite differences, all160 Adam transitions bit exactly,
+every unselected-store/BN write, all768 row visits and1327104 exact HR/LR/bicubic
+pixels. Frozen1792 values match the full official VGG archive. All validation/
+final-test records, unequal-pool algebra and target canaries pass. Keeping old
+warm-up Adam moments changes the first GAN G write by.000184068/.000194842;
+post-write recomputed BN moments differ by.002699554. Another320 per-image
+metric values match independent Gaussian-SSIM/PSNR calculations(max5.71e-14).
+
+The18-block/16-figure report includes supplied BGR/feature-scale, CRD, BN and
+live-mean derivative checks; a7-node/7-edge native method diagram; three executed
+architecture traces; complete native preparation/capture/optimizer code; original
+RGB comparisons; all-image quality gains; all48 BN mean commits and counter
+resets. All2174448 RGB raster values, plot samples and adjacent HTML/Markdown
+figure bundles pass;16 figures were visually reviewed. It preserves small gains:
+mean PSNR26.75467688/26.73889463 versus bicubic26.71119211 dB, mean SSIM
+.85584107/.85522090 versus.85413543. Mean PSNR differs from pooled PSNR;
+one SRGAN image loses slightly. No perceptual/benchmark claim follows from this
+32-image fixed-final teaching experiment. Native CIFAR fetch/style preparation
+reuse existing official caches; no recorded-feature or other-checkout fallback.
+
+All52 affected definitions,eight compiled documentation examples,two standalone
+headers(checkout/installed),eight clangd hovers,363 native model plus69 selected
+other cases,249 focused Python checks,1803 R expectations across47 files and63
+metadata checks pass. A missing direct image_ops include was caught/fixed by
+standalone checks, then bindings/native/docs rebuilt. Tests cover higher/owning
+paths,frozen feature stops,rounded coefficients,real reset semantics,explicit BN
+commits and two-path target invariance. The completed source is retired and unused
+legacy model/BN/feature/relativistic code removed. Only the unchanged general
+SRConv compatibility helper remains for SinGAN; an unused legacy include in the
+older native-super-resolution forwarding header is removed and both compatibility
+headers compile together. Evidence: `build/nn-report-conversion/srgan_esrgan_core/`,
+`srgan_esrgan_report/` and `scripts/check_adversarial_sr.py`. Next SinGAN has21
+original archives/488107 values,eleven source/helper pins and one native CIFAR
+input digest frozen after cleanup; its independent oracle is pending;
+AutoRec awaits its original ratings recipe,129 older CNN reports need retirement
+revalidation, and independent Python/R fitting loops remain separate work.
+
+- 2026-11-09: StarGAN continuation (2026-11-09): canonical `nn/uniform_categorical.hpp`
+provides explicit local-MT rejection/modulo categorical draws with accepted raw
+words; a high-cardinality rejection fixture checks skipped words too. Native
+`nn/star_domains.hpp` supplies separate original/inversion/rotation domains and
+observed-order balanced disjoint selections with exact originals and explicit
+unused IDs. Source IDs preserve input dtype; classes/domains validate before
+one-hot/gathers. No helper certifies cross-pool provenance; LoadSaliency does.
+`nn/star_gan.hpp` provides the conditioned two-skip U-Net1609/10, image-only
+shared-trunk dual-head critic688/8, stable three-way CE and fifteen-field game.
+All flat records own applicable live graphs/storage, including higher paths.
+The domain head initializes before the source head, preserving source RNG order.
+
+One G produces fake(source,target) and reconstructs(fake,original) with shared
+weights and both paths live. G=(full fake-to1 mean+fake-domain CE)+10*roundtrip L1;
+D=half(real-to1+fake-to0 means)+real-domain CE, without a fake CE term. All inputs
+validate before leaves; only missing leaves initialize. No API hides fitting,
+noise, captures, detached paths or writes. Source seeds6301/6311 and batch6323
+are retained. Uniform target seeds6338/6339/6340 reject4294967295 before modulo3;
+fixed held-out requests use next domain. Each epoch visits900 rows with a final
+4-row batch:29 batches,87 writes per owner,174 total. Caller steps D then uses
+a fresh G forward on the same batch. The saved stale-G control changes the
+first generator partial vector by.00003471970558166504.
+
+The17-block/15-figure report supplies transform/partition/CE/shared-derivative/
+loss-scale hand checks, both executed architecture traces, an8-node/7-edge
+native method diagram and the complete editable C++ capture/Adam schedule.
+Original11 archives/4307530 values, PNG, both TSVs and non-timing metrics match
+exactly;363 phase/probe archives add2504554 exact values. Independent NumPy
+checks203745 native partials(max2.46e-6),2470079 forward values(max5.45e-7),49
+scalar finite differences, all174 Adam transitions bit exactly and every phase's
+unselected store. All2700 fitting visits/accepted target words, per-class selected/
+unused IDs, transforms, validation history and final loss/accuracy records pass.
+An additional143472 fitting-only mean/prediction pixels, three known-map errors
+and70560 balanced-gallery values pass independent checks. All1375120 raster
+pixels, plot samples, architecture counts and adjacent HTML/Markdown figure
+bundles pass;15 figures were visually reviewed. The stale-gradient plot uses
+explicit1e6 display units so its small values have readable ticks.
+
+Weak original translations remain: known-map MSE.202748341 versus fitting-only
+target-domain means.067819011 and unchanged-source.619213694. Real domain accuracy
+.683333333, generated requested-domain accuracy one third, roundtrip L1.438569665.
+All original54 panels remain, with90 added panels covering all ten digits under
+three source domains. No faithful translation/class-preservation/convergence
+claim follows from conditioning or roundtrip arithmetic. All52 affected
+definitions,twelve compiled documentation examples,three standalone headers in
+checkout/installed layouts,twelve clangd hovers,351 native model plus69 other
+selected cases,240 focused Python checks,1754 R expectations across46 files and
+63 metadata checks pass. Tests cover discrete validation before leaves, real
+skip joins, stable extreme CE, higher/owning paths, both shared G contributions,
+fresh-G scheduling and exact ownership. The completed source and unused StarGAN
+helper are removed. Its last legacy PixConv helper/common/pix2pix.hpp is removed
+too; canonical nn/pix2pix.hpp stays. Component checks do not finish independent
+Python/R fitting loops. Evidence: `build/nn-report-conversion/star_gan_core/`,
+`star_gan_report/` and `scripts/check_star_gan.py`. Next is SRGAN/ESRGAN, using the
+already prepared native CIFAR-10 and full official VGG19 cache in read-only mode
+for the frozen original run. Its19 archives/3075843 values, ten source/helper
+pins and four prepared-input digests are frozen; the independent oracle is pending.
+AutoRec awaits its original ratings recipe;129 older CNN reports still need retirement
+revalidation.
+
+- 2026-11-09: StyleGAN continuation (2026-11-09): canonical `nn/modulated_conv.hpp`
+provides per-example NHWC style modulation and optional live kernel demodulation,
+with source row-major tap accumulation, signed/zero gains, rectangular images and
+odd square kernels. Non-demodulated RGB retains the source computed factor times
+zero plus one path. `nn/spatial_instance_norm.hpp` supplies live per-row/channel
+population spatial centering and explicit division/sqrt with the source-rounded
+guard; affine style remains separate. `nn/style_gan.hpp` separates latent-only
+mapping, W-only synthesis, raw critic and the ten-field least-squares game. Nine
+flat synthesis fields expose constant/maps/styles/demodulators; binding fields own
+graph/storage. No API hides fitting, supplied noise, truncation, EMA or updates.
+
+Both independently initialized trials preserve Gseed6607/Dseed6619, mapping144/4,
+G661/17(AdaIN) or625/19(modulated), D493/6, zero initial noise strengths, full G
+fake-to1 mean and half-scaled D. AdaIN normalizes after conv/noise/bias/leaky,
+then applies scale/shift; version2 demodulates feature kernels and uses modulated
+RGB without demodulation. A single80-value per-row noise bank splits16/64; first
+style mixing and doubled actual first gains remain explicit. The complete editable
+program owns every fresh D/G capture and Adam write. Actual32 batches per epoch
+retain8 final rows,96 writes per owner,384 total across both trials; source comment
+claiming96 steps per epoch is corrected in prose, preserving actual arithmetic.
+
+The18-block/15-figure report includes supplied population-moment, live kernel-
+derivative, noise-learnability and loss-scale examples, two executed architecture
+traces, the complete native schedule, all six original galleries and all validation
+records. All19 original archives/1743020 values, six PNGs, four TSVs and non-timing
+metrics match exactly;792 phase/probe archives add928688 exact values. NumPy
+checks220384 native partials(max1.98e-7),576982 forward values(max1.97e-6),136
+scalar finite differences, all384 Adam transitions bit exactly and all unselected
+owners. All89600 resized pixels,6000 fitting visits, source Gaussian banks,
+initial zero-noise fields, style mixing, truncation and double-gain controls pass.
+Another25600 fixed-center/independent-noise pixels match independent forwards
+(max7.46e-8), demonstrating psi0 collapse requires shared noise too. Both style
+and noise effects remain measurable, while the fixed-final generated images stay
+weak. Test D/G=.345204055/.512427390(AdaIN),.342792064/.520632327(modulated).
+No image-quality, fidelity, diversity or convergence claim follows from controls.
+
+All1413168 gallery raster pixels, plot samples, architecture counts and adjacent
+HTML/Markdown figure bundles pass;15 figures were visually reviewed. All41 new
+definitions, nine compiled documentation examples, three standalone headers in
+checkout/installed layouts, nine clangd hovers,339 native model plus69 other
+selected native cases,232 focused Python checks,1704 R expectations across45
+files and63 metadata checks pass. Tests cover higher paths, owning fields,
+learnable zero strengths, style mixing, actual gain scaling, common-noise
+truncation, explicit fresh-G scheduling, update ownership and before-leaf errors.
+The completed source and unused StyleGAN helper are removed; shared PixConv stays
+for StarGAN. Component coverage does not finish independent Python/R experiment
+loops. Evidence: `build/nn-report-conversion/style_gan_core/`, `style_gan_report/`
+and `scripts/check_style_gan.py`. Next StarGAN has11 original archives/4307530 values and eight source/helper
+pins frozen after cleanup; its independent oracle is pending. AutoRec awaits its original
+ratings preparation and129 older CNN reports still need retirement revalidation.
+
+- 2026-11-09: CycleGAN continuation (2026-11-09): canonical `nn/cycle_domains.hpp`
+provides native live rotation/inversion and disjoint first-half-per-class domain
+gathers, preserving original IDs and exact original_B pixels. The inverse
+orientation is mathematical; floating cancellation need not recover original bits.
+Balanced integer metadata and unit images validate before gathers; the existing
+LoadSaliency supplies original provenance/cross-pool checks. No known mapping,
+label or opposite-domain target enters a generator. `nn/cycle_gan.hpp` reuses
+both actual Pix2Pix U-Net skips, adds unconditional661-value patch critics and
+exposes19 owning translation/cycle/identity/score/loss fields. Four distinct stores
+own4102 values/32 leaves; unequal unpaired row counts are allowed. G keeps full
+adversarial means plus cycle10/identity5 with source grouping; each D keeps its
+half-scaled patch means. No API hides capture, optimizer, fitting or batch state.
+
+The sixteen-block/sixteen-figure report includes supplied rotation, partition,
+coupled-gradient, loss-scale and correspondence-ambiguity examples; two executed
+architecture traces; a ten-node/eight-edge native method diagram; and the complete
+C++ schedule. Independent orders6233/6247 visit500 fitting rows per domain and
+retain the20-row final batch. D_a/D_b step separately, then ONE fresh common G
+forward supplies BOTH generator vectors before either G write. Four Adam states
+finish48 steps each,192 writes total. The first-step wrong control changes the
+second G gradient by.00081092119216918945. All ten original archives/2467653
+values, two PNGs, two TSVs and non-timing metrics match exactly, as do347 phase/
+probe archives/3988406 values. NumPy checks202388 native partials(max3.02e-6),
+4076881 forward values(max1.09e-6),86 scalar finite differences, all192 Adam
+transitions bit exactly and every phase's unselected owners. All1500 independent
+row pairs, disjoint source IDs, exact original_B targets and every validation/
+final-test scalar record pass. Another156800 Double fitting-mean pixels match
+exactly; four known-map errors and62720 balanced-gallery values pass. All1417728
+raster pixels, all plotted coordinates, two architecture traces and adjacent
+HTML/Markdown figure bundles pass; sixteen figures were visually reviewed.
+
+The report preserves weak translations, test cycles.458553344/.469415665 and
+mapping MSE.229144769/.210121211. Fitting-only target-domain means achieve
+.066571734/.069072913. It preserves both original ten-zero galleries and adds
+one ten-class/two-direction gallery; known mappings stay diagnostic only. No
+convergence, class-preservation or identification claim follows from valid cycle
+arithmetic. All32 affected definitions,six compiled documentation examples,two
+standalone public headers(checkout/installed),six clangd hovers,327 native model
+plus69 other selected native cases,224 focused Python checks,1649 R expectations
+across44 files and63 metadata checks pass. Tests cover unequal unpaired counts,
+actual generator coupling, both captures before writes, source-only translation,
+owning higher paths, all aliases, scales and before-leaf validation. The completed
+source and unused CycleGAN helper are removed. Unused legacy PixGenerate/
+PixDiscriminate/PixObjectives are removed too; shared PixConv stays for StyleGAN/
+StarGAN consumers. Component coverage does not finish independent Python/R full
+experiment loops. Evidence: `build/nn-report-conversion/cycle_gan_core/`,
+`cycle_gan_report/` and `scripts/check_cycle_gan.py`. Next StyleGAN has nineteen
+original archives/1743020 values and eight source/helper pins frozen after cleanup;
+its independent oracle/native promotion/report remain pending. Preserve both AdaIN
+and modulated/demodulated variants, explicit spatial noise and source optimizer
+schedules. AutoRec awaits its original ratings recipe;129 older CNN
+reports still need retirement revalidation.
+
+- 2026-11-09: Pix2Pix continuation (2026-11-09): canonical `nn/quantized_sobel.hpp`
+recovers8-bit unit pixels in Double before floor, applies native zero-padded
+Sobel convolutions and thresholds raw L1 magnitude inclusively(default256).
+The condition tensor is detached. `nn/pix2pix.hpp` exposes a source-only two-level
+U-Net with both actual concatenation skips, conditional49-patch raw scores and
+seven explicit paired objective fields. All biased kernels use normal(.02),
+source names/order and zero biases; G1390/10 leaves(seed6101),D725/6(seed6113).
+The two learned stride-two transposes and skip channel order are retained.
+D sums two patch logistic means without half; G adds100 times mean paired L1.
+No API hides fitting, optimizer writes, captures, no-grad or batch state.
+
+The thirteen-block/thirteen-figure report includes hand-checkable integer Sobel,
+L1 and patch-mean derivative examples, an executed seven-stage/nine-node U-Net
+trace with both multi-input skips, a native method diagram and the complete
+C++ training program. Each batch captures D partials/steps D, then makes a fresh
+G forward through updated D and steps G alone. Independent Adam states use
+.0002/.5/.999/1e-8. All96 batches keep their final8 rows, giving192 writes and
+all3000 fitting row visits. The final checkpoint is fixed at epoch3. All11
+original archives/3118891 values, source PNG, two TSVs and non-timing metrics
+match exactly, as do393 phase/probe archives/1673895 values. NumPy checks205155
+native parameter partials(max1.22e-6),1577832 forward values,43 scalar differences,
+all192 Adam transitions bit exactly and every phase's unselected owner.
+Another65856 actual skip values match(max6.46e-7), with exact concatenation channel
+order; all20 class-error values and200 held-out errors pass. All988128 gallery
+pixels independently decode exactly; all plot coordinates, six method nodes/five
+edges, thirteen reviewed figures and both adjacent export bundles pass.
+
+The report keeps test L1=.408497557/MSE=.191904112 beside the stronger fitting-only
+mean reference(.151756616/.067798074). It preserves the original ten-zero gallery,
+adds a ten-class preview and blank-condition G/D controls, and makes no quality
+or convergence claim. Both networks depend on source, inference stays immutable,
+and single/batch generation agrees exactly. All25 affected definitions,six compiled
+header examples,two standalone public headers(checkout/installed) and six clangd
+hovers pass. All317 model tests plus69 selected other native cases,217 focused
+Python checks,1613 R expectations across43 files and63 metadata tests pass.
+Owning fields/higher paths, source-only translation, actual skips, loss scales,
+explicit separate Adam writes and before-leaf validation are covered. The completed
+source and unused Pix2PixModel adapter are removed; shared pure PixConv/PixGenerate/
+PixDiscriminate/PixObjectives remain for CycleGAN consumers. Component coverage
+does not complete independent Python/R experiment loops. Evidence:
+`build/nn-report-conversion/pix2pix_core/`,`pix2pix_report/`,
+`scripts/check_pix2pix.py`. Next CycleGAN has ten original archives/2467653 values
+and eight source/helper pins frozen after cleanup. Its independent oracle/native
+promotion/report remain pending. Preserve disjoint unpaired partitions,
+rotation/inversion, two critics and jointly captured generator gradients.
+AutoRec awaits its original ratings recipe;129 older CNN reports need retirement
+revalidation.
+
+- 2026-11-09: Progressive GAN continuation (2026-11-09): canonical `nn/pixel_rms_norm.hpp`
+provides channel-wise live RMS division with the source-rounded epsilon, first
+and higher derivatives, and no centering/affine/batch state. The standalone
+`nn/progressive_gan.hpp` exposes the real old/new generator images and discriminator
+features, source-ordered active groups and seven forward fields. Both source fade
+formats (rank-zero and one-element tensors) work. Eight distinct stores initialize
+all2067 values/24 tensors before fitting. G blends post-sigmoid images; D blends
+4x4 features before its shared nonlinear score core. G retains its full least-
+squares objective without a half factor. Native BigGanResize8 preserves the
+source half-pixel Double accumulation and final Float32 cast.
+
+The fourteen-block/fourteen-figure report contains the complete three-stage loop,
+all-active-gradient capture before any phase write, selected D writes followed
+by a fresh G forward through updated D, and eight independent Adam states.
+Stable4/fade8/stable8 use1462/2067/2054 active values. All96 batches retain the
+last8 rows, giving576 group writes and final counters96,64,64,64,96,64,64,64.
+The final fade batch still steps the old RGB groups at alpha1; stable8 omits them.
+A supplied zero-gradient Adam toy explains momentum continuation. Shared cores
+continue changing after old RGB parameters freeze. No API hides fitting,
+optimizer writes or stage transitions.
+
+Both native delegation and the complete report preserve all eight original
+archives/1343565 values, four PNGs, two TSVs and non-timing metrics exactly.
+All399 additional phase/probe archives/804784 values match. Independent NumPy
+checks180723 native partials (maximum1.14e-7),282436 forward values,66 scalar
+finite differences and all576 Adam transitions bit exactly, with192 phase
+ownership checks. Another2056 actual discriminator feature values match within
+4.64e-8. All814992 gallery pixels independently decode exactly. Ten method nodes,
+eleven edges, all plotted coordinates, fourteen visually reviewed figures and
+both adjacent export bundles pass. The report preserves the weak nearly uniform
+patches and fixed-final test D/G=.344080687/.626963854, without a quality or
+convergence claim.
+
+All31 affected definitions,eight compiled documentation examples,two standalone
+public headers(checkout/installed) and eight clangd hovers pass. All309 native
+model tests plus69 selected other cases,212 focused Python checks,1584 R
+expectations across42 files and63 metadata checks pass. Tests cover higher
+paths, real fade endpoints, dual alpha formats, owning field lifetimes, explicit
+phase ownership, stage counters, inactive stores and the source G loss scale.
+The completed source and its unused progressive helper are removed; shared
+Pix2Pix/GAN support remains for other consumers. This does not finish independent
+Python/R full experiment loops. Evidence: `build/nn-report-conversion/progressive_gan_core/`,
+`progressive_gan_report/` and `scripts/check_progressive_gan.py`.
+Next Pix2Pix has eleven original archives/3118891 values and seven source/helper
+pins frozen; independent oracle/native promotion/report remain pending. Its
+integer Sobel threshold, paired U-Net skips/transposed convolutions, conditional
+PatchGAN and fresh-G-through-updated-D schedule must be preserved. AutoRec awaits
+the original ratings recipe;129 older CNN reports need retirement revalidation.
+
+- 2026-11-09: Wasserstein GAN continuation (2026-11-09): canonical `nn/midpoint_uniform.hpp`
+provides local raw-word MT midpoint matrices with one final cast;
+`nn/wasserstein_gan.hpp` reuses BiganMap for the source tanh16 generator/critic,
+exposes all eleven forward fields and actual/analytic input Jacobians, and clips
+all selected critic tensors explicitly, including biases. The detached interpolation
+stops external real/alpha/G penalty paths. create_graph retains critic history
+through the actual input derivative; evaluation disables that history under no-grad.
+Weight0 skips the penalty addition while retaining its diagnostics. No API hides
+an optimizer, clipping callback, fitting loop or persistent training-graph flag.
+
+The complete thirteen-block/thirteen-figure report shows both independent trials:
+clipped RMSProp5e-5/rho.9/epsilon inside the root, versus GP Adam1e-4/beta1=0/
+beta2=.9/coefficient10. Each real batch is reused for three fresh-noise critic
+steps, then a fresh G step through updated C. Both initialize G82/C65 values/eight
+tensors; clipping occurs before fitting and after every clipped critic write.
+Each trial makes117 C and39 G writes over three fixed epochs,312 writes total.
+Every unselected store stays bit exact; all1200 row visits per trial are checked.
+
+Both native delegation and the report preserve all five original archives/1900
+values, two source PNGs, four TSVs and both complete metric files exactly. All41
+phase probes/11112 values match exactly, including pre-clip steps and final
+Jacobian/gradient/noise fields. NumPy independently verifies6696 forwards,848
+parameter derivatives,42 final scalar differences,554 exact first-update values,
+all three clips per trial,1312 ring coordinates and all midpoint/Gaussian banks.
+Three additional65-coordinate gradients match closed form(max1.06e-6); the full
+vector matches frozen source exactly and its Float32 component sum differs by
+at most1.44e-6. All1572864 source raster RGB values match independent decoding;
+existing native Image/draw_circle replaces the example's pixel loop. All labelled
+SVG point/curve/epoch samples, eight method nodes/eight edges and both adjacent
+export bundles pass. The report shows the weak diagonal generated bands and
+unconverged gaps, rather than claiming ring coverage or a certified distance.
+
+All19 affected definitions,six compiled documentation examples,two standalone
+headers(checkout/installed) and six clangd hovers pass. All299 native model tests
+plus69 selected other cases,206 focused Python checks,1556 R expectations across
+41 files and63 metadata checks pass. Tests cover higher input/critic paths,
+stopped external penalty paths, guarded zero Jacobians, owning field lifetime,
+explicit optimizer choice,3-to1 step counts and bias-inclusive clipping. Source
+and its unused Wasserstein helper class are removed; shared GAN support remains
+for other consumers. Component tests do not finish independent Python/R full
+experiment loops. Evidence: `build/nn-report-conversion/wasserstein_gan_core/`,
+`wasserstein_gan_report/` and `scripts/check_wasserstein_gan.py`.
+Next Progressive GAN has eight archives/1343565 values and eight source/helper
+pins frozen after cleanup. Its independent oracle/native promotion/report remain
+pending. Preserve eight independent optimizer groups, stage-specific activity,
+all-active-gradient capture before any phase write, pixel normalization, resize
+rounding and actual old/new fade paths. AutoRec awaits the original ratings
+recipe;129 older CNN reports still need retirement revalidation.
+
+- 2026-11-09: DCGAN continuation (2026-11-09): canonical `nn/captured_affine_batch_norm.hpp`
+reuses fused learned-affine BN with detached mean/sample-variance captures;
+`nn/dcgan.hpp` exposes signed G, raw D, separate joint-D/fresh-G phase functions
+and saved-BN inference. Source kernels, names, creation order, transposed4x4
+stride2 maps, fused rounding and Double .001 epsilon are preserved. G has6873
+values/eight leaves, D989/seven; two saved-moment stores add40 values/six leaves.
+The visible loop normalizes concatenated real/fake rows once for D with a stopped
+G path, commits D moments with explicit Double .9 retention, then writes D Adam.
+A fresh batch-BN G passes through current saved-BN D; both G moment pairs commit
+before selected G Adam. No model API owns an optimizer, EMA write or fitting loop.
+
+The complete twelve-block/twelve-figure report preserves all four original
+archives/173429 values, both source PNGs, both TSVs and non-timing metrics exactly.
+Twelve phase probes match435581 values; direct native phase helpers independently
+match121981 frozen values. NumPy checks546880 forwards,22597 parameter derivatives,
+41 final scalar differences,22 extreme-logit values, both exact first Adam and
+moving updates,3000 row visits, and final validation/test metrics including coarse
+MMD. An extra313600 signed-pixel BN-path values match the independent decoder
+(max1.29e-7); four first-step effect rows match source checkpoint differences.
+All833456 independently decoded gallery pixels, all curve/epoch points, eight
+method nodes/nine edges and both adjacent export bundles pass. All four write
+owners are checked on every batch,96 writes per Adam over three fixed epochs.
+
+The samples remain blurry checkerboard-like textures. D real/fake accuracy1/.98
+and D/G losses.252165/1.994329 are game diagnostics. Test coarse MMD.054826617
+is much worse than repeated fitting mean.000135779; the report shows both images
+and explains this statistic's limited view. Hand examples establish transposed
+scatter/overlap, joint versus separate BN and stable raw-logit objectives before
+real data. No labels enter fitting or test/validation score selects a checkpoint.
+
+All45 affected definitions,11 compiled documentation examples,two standalone
+headers (checkout/installed) and11 clangd hovers pass. All289 native model tests
+plus69 selected other cases,200 focused Python checks,1510 R expectations across
+40 files and63 metadata checks pass. Owned flat records retain storage and live
+paths through parent/store collection; saved and captured moments stop. Source
+and its unused DCGAN helper section are removed; shared `common/gan.hpp` remains
+for WGAN and other consumers. Component tests do not finish independent Python/R
+full experiment loops. Evidence: `build/nn-report-conversion/dcgan_core/`,
+`dcgan_report/` and `scripts/check_dcgan.py`. Next `wasserstein_gan` has five
+archives/1900 values and six source/helper pins frozen after the helper cleanup;
+its independent oracle, native promotion and report remain pending. Preserve both
+clipping/RMSProp and symbolic-gradient-penalty/Adam paths and three critic steps
+per fresh G step. AutoRec still awaits its original ratings recipe;129 older CNN
+reports need retirement revalidation.
+
+- 2026-11-09: BigGAN continuation (2026-11-09): canonical `nn/captured_batch_norm.hpp`
+separates live batch-moment capture from detached moving-value arithmetic;
+`nn/gan_priors.hpp` exposes a locally seeded Gaussian rejection bank with every
+consumed Double proposal; `nn/big_gan.hpp` exposes hierarchical G, projection D,
+raw-kernel orthogonal penalty, both display paths and explicit captured-BN commit.
+The visible loop warms each spectral cache 16 times, then advances D cache,
+writes D, advances G cache, computes a fresh G gradient through updated D, writes
+G and commits moments from that same pre-write forward. There are 96 Adam writes
+per network over three fixed epochs. Five stores contain 1030 optimized values
+and 342 state values in 60 tensors. Both objectives use batch-statistics fake
+images even when the display flag selects saved-BN images; the report explains
+this original convention. Hierarchical chunks, shared raw class embedding,
+residual shapes, source-rounded normalization and rejection streams are retained.
+
+All 23 original archives/319761 values, three PNGs, two TSVs and non-timing
+metrics match exactly, both through native delegation and the complete report.
+Ten phase probes match 15268 values exactly. NumPy independently verifies 84708
+forward values, 4740 derivative/capture values, 74 final scalar differences,
+89600 exact resized pixels, 19669 exact proposals and all 3000 row visits.
+Two report-only archives additionally check 813 full-gradient/capture values and
+1800 projection components. All 14 C++ blocks, 14 inspected figures, 996432
+independently decoded gallery pixels and adjacent Markdown/HTML figure bundles
+pass. Hand examples distinguish population normalization from unbiased moving
+variance, isolate class projection, derive the off-diagonal penalty and display
+accepted/rejected proposals. Short-run samples remain weak; class response,
+projection changes and hierarchy/truncation controls do not establish class
+accuracy or realistic generation.
+
+All 60 affected definitions, 16 compiled documentation examples, three standalone
+headers (checkout and installed) and 16 clangd hovers pass. All 279 native model
+cases plus 69 selected other cases, 195 focused Python checks, 1468 R expectations
+across 39 files and 63 metadata checks pass. A SWIG owning-copy typemap for nested
+moment records fixes the dangling-parent lifetime found by collection tests;
+record fields preserve both storage and applicable graphs. Source and unused
+`common/big_gan.hpp` are removed; shared `common/gan.hpp` remains for consumers.
+Python/R component coverage does not finish independent full experiment loops.
+Evidence: `build/nn-report-conversion/big_gan_core/`, `big_gan_report/` and
+`scripts/check_big_gan.py`. Next DCGAN has four archives/173429 values and six
+source/helper pins frozen; its independent oracle, native promotion and report
+remain pending. AutoRec awaits the original ratings recipe; 129 older CNN
+reports still need retirement revalidation.
+
+- 2026-11-09: Self-Attention GAN continuation (2026-11-09): canonical
+`nn/cached_spectral_dense.hpp` exposes the shared dense cached-spectral map;
+`nn/self_attention_gan.hpp` exposes general spatial token attention and compact
+patch G/D maps with twelve live forward fields. Existing Plain attention at
+scale 1 supplies unscaled softmax; MaePatches/MaeImage supply the raster/patch
+permutations. Source projection order, biased maps, normal(.01) positions,
+gamma 0 initialization, Float32-rounded initializers/guards and all stopped-cache
+versus live-sigma derivatives are retained. The spectral GAN now delegates its
+private dense math to the same reusable layer. General attention permits
+positive B/T/C/Q/V with validated products and a configurable prefix. All four
+SAGAN stores must be distinct and dtype matched; real/fake row counts may differ.
+
+All 39 affected definitions, eleven compiled examples, three standalone headers
+and eleven clangd hovers pass. All 264 native model cases plus 69 selected other
+cases,189 Python checks,1415 R expectations across 38 files and 63 metadata checks
+pass. Record fields retain storage/graphs after parent/store collection; tests
+cover zero-gate projection partials versus live gate, first/higher paths, signed
+spectral normalization, strides, invalid geometry and all four explicit writes.
+The complete native program shows sixteen warm-up iterations per network,
+then D-cache advance, D write, G-cache advance, fresh G through updated D with
+unchanged D cache, and G write:96 writes per optimizer,192 total, fixed epoch 3.
+G 2730,D 650,G-cache 245,D-cache 110 values occupy 51 checkpoint tensors/3735 values;
+only 3380 values are optimized. No labels enter fitting. The initial test forward
+is diagnostic; no test result selects weights, seeds, hyperparameters or epochs.
+
+Both original-source delegation and the eleven-block/eleven-figure report retain
+all ten frozen archives/1226475 values in dtype/shape/value bytes, both source
+PNGs, both TSVs and all non-timing metrics. Twelve phase probes match 97010 native
+values exactly. The shared dense refactor preserves Spectral GAN's 364381 probe
+values and 764429 complete-run values exactly. NumPy independently verifies 892521
+forwards,15600 native derivatives,71 final scalar differences,355 cache values,
+16 warm-up iterations per network,3735 checkpoint values and 3000 row visits. It
+checks patch order, unscaled attention, normalization derivatives, gate identity,
+nonlocal/noise controls and state-D-state-fresh-G ownership. All 696672 gallery
+pixels, all curve samples, eight method nodes/six edges and both adjacent export
+bundles are verified. Small effects use a readable 1e-4 output-change axis.
+
+The run still produces weak grey fields, D real/fake accuracy 0/1 and coarse
+MMD.11777806 versus constant fitting mean.0001357794. Trained nonlocal effects
+about.000728369(G)/.000387209(D) demonstrate mixing, without certifying realistic
+generation or semantic localization. The report distinguishes the controlled toy
+from learned weights and the dense patch teaching architecture from the paper's
+convolutional benchmark. The standalone source and both now-unused Self-Attention
+GAN/shared spectral helper headers are removed. Shared big_gan.hpp/gan.hpp remain
+for their consumers. Component coverage does not complete independent Python/R
+full experiment loops. Evidence: `build/nn-report-conversion/self_attention_gan_core/`,
+`self_attention_gan_report/` and `scripts/check_self_attention_gan.py`.
+Next BigGAN has 23 archives/319761 values and seven source/helper pins frozen;
+its independent oracle and native promotion remain pending. Preserve hierarchical
+noise, class-conditional BN/moving moments, residual geometry, projection,
+orthogonal penalty, rejection truncation and per-group spectral state phases.
+AutoRec still awaits its original ratings recipe;129 older CNN reports need
+retirement revalidation.
+
+- 2026-11-09: Spectral GAN continuation (2026-11-09): canonical `nn/spectral_cache.hpp`
+provides detached column power iteration, cached normalization with a live signed
+sigma and explicit state-only advances. `nn/spectral_gan.hpp` reuses native
+MlpGanGenerate and HingeGanObjectives for five live endpoints. G 26416 and D 25153
+values are optimized;849 cached u/v values are separately checkpointed. Guard
+constants and D initialization preserve source Float32 rounding for both dtypes.
+Sixteen warm-up iterations precede the initial checkpoint; one state advance
+precedes each D write, then a fresh G forward uses updated D and the same cache.
+No power iteration, schedule, optimizer or MMD is hidden in model evaluation.
+Invalid/missing pairs fail before any cache writes. Cache flags follow
+ParameterStore, but vector paths stop while first/higher W/sigma paths stay live.
+
+All 20 definitions, seven compiled public examples, two standalone headers and
+seven clangd hovers pass. All 255 native model cases plus 69 selected other cases,
+184 Python checks,1381 R expectations across 37 files and 63 metadata checks pass.
+The nine complete report programs/nine inspected figures preserve all seven
+original archives/764429 values byte for byte, both source PNGs, both TSVs and
+non-timing JSON. An unchanged-source delegation matches the same artifacts.
+Ten phase probes additionally match 364381 initialization/state/gradient/update
+values exactly. NumPy independently checks 339561 forwards,313600 control pixels,
+129554 native derivative values,22 scalar differences,16 warm-up iterations,849
+cache values,52418 checkpoint values, all 3000 row visits and final SVD audits.
+All 696672 preview/gallery pixels, sampled plot vertices and epoch points, nine
+node boxes/seven edges, and adjacent HTML/Markdown figure bundles are verified.
+
+The final hidden/output audit norms 1.0086809859/1.0000000278 recompute sigma/Wbar
+from saved Float32 arrays in Float64 before SVD. Finite power iteration does not
+certify exact unit kernel or network norms. Weak grey samples, coarse MMD.11783564
+versus fitting-mean.0001357794, and perfect source separation are retained without
+claiming realism or convergence. The standalone source and unused model wrapper
+are removed; shared SpectralDense remains unchanged for Self-Attention GAN.
+No separate Python/R experiment loops are claimed by component coverage.
+Evidence: `build/nn-report-conversion/spectral_gan_core/`, `spectral_gan_report/`
+and `scripts/check_spectral_gan.py`. Next is Self-Attention GAN: ten archives/
+1226475 values and nine source/helper pins are now frozen; its independent oracle
+and native promotion remain pending before shared math changes.
+AutoRec still awaits original ratings preparation;129 older CNN reports need
+retirement revalidation.
+
+- 2026-11-09: InfoGAN continuation (2026-11-09): canonical `nn/info_gan.hpp` exposes
+row-interleaved generated priors, explicit noise/category/continuous generation,
+independent image-only Q, unit-Gaussian recognition loss and fifteen live forward
+endpoints. MlpGanGenerate/Discriminate, LogisticGanObjectives, AuxiliaryClassLoss,
+GaussianNoise and ImqMmd supply existing computations. Defaults create G26800,
+D25153,Q25516 values in fourteen leaves, with Q hidden/CATEGORY/CONTINUOUS order.
+Real and fake pools can differ; finite signed Float32/64 CPU matrices, discrete
+codes, bounded continuous priors, strides and representable geometry validate
+before leaves. All applicable continuous first/higher paths remain live; record
+fields survive parent/store collection. Prior category words use unbiased local
+mt19937 rejection, followed by two midpoint words per default row; final Float32
+rounding can reach endpoints. Raw words remain exact Float64 audit values.
+All 39 definitions, nine compiled examples, standalone header and nine clangd
+hovers pass. All 245 native model cases plus 69 other selected cases,180 focused
+Python checks,1350 R expectations across 36 files and63 tooling checks pass.
+
+Twelve complete report programs/twelve inspected native figures replace the
+standalone source and its unused model-specific helper. No Python/R launcher
+existed; component coverage does not complete independent host-language full
+experiment loops. The editable C++ program shows all 288 D-Q-G writes,96 per
+independent Adam state, all 3000 fitting-row visits and fixed final epoch3.
+G minimizes non-saturating source+recognition with weight1; Q minimizes recognition
+only. No digit label enters fitting and no entropy constant is subtracted from
+G's reported objective. D's write leaves Q's partial bit exact with G fixed.
+Every phase recomputes; checkpoint restore, image-only Q, code-only G, single/batch
+parity, inference immutability and all 100+55+55 traversal panels are retained.
+The initial test forward is a diagnostic control; no test result selects writes,
+noise banks, hyperparameters, epochs or weights.
+
+Both unchanged-source delegation and report preserve all eleven original archives/
+684712 values in dtype,shape,value bytes, two TSVs, all four source PNGs and
+non-timing JSON values; duration is remeasured. NumPy independently checks 516984
+forwards/controls,77469 initial derivatives,39 scalar finite differences,30800
+exact prior/noise values and all fitting rows. An additional report archive stores
+80400 G source/recognition/total partials; its independent matrix-calculus check
+agrees within 9.75e-9 and matches all 26800 frozen total-G derivatives exactly.
+All 2063856 gallery/preview pixels are independently decoded and verified; all
+sampled plot vertices and epoch points avoid legends and all six method edges
+avoid node interiors. HTML/Markdown exports include twelve adjacent figure files.
+
+Results remain weak: mostly grey fields, generated-prior category recovery.115,
+continuous-coordinate MSE.23072124 and empirical entropy-minus-R score-.67078066.
+Code recovery and pixel dependence do not certify digit semantics. The report
+explains that the finite Monte Carlo score has no sample-specific information
+bound guarantee and that a negative score is not negative true mutual information.
+Q's separate unit-variance architecture and the source's D-Q-G schedule differ
+from common paper implementations; no convergence or disentanglement is claimed.
+Evidence: `build/nn-report-conversion/infogan_core/` and `infogan_report/`.
+Next is spectral GAN: seven archives/764429 values and eight source/helper pins
+are frozen. Its independent oracle and promotion remain pending. Cached stopped
+singular vectors, differentiable sigma,16 warm-up updates and one state-only update
+before each D step must be retained; its final exact effective hidden norm 1.00868
+is not a strict unit-norm or Lipschitz certificate. AutoRec still needs its original
+ratings preparation;129 older CNN reports need retirement revalidation.
+
+- 2026-11-09: Compact dense GAN continuation (2026-11-09): `nn/dense_gan.hpp` and
+`nn/conditional_gan.hpp` expose explicit tanh/sigmoid generation, image-only raw
+scoring, required Logistic/LeastSquares/Hinge objectives and class-conditioned raw
+scoring on both networks. Existing AaeDecode, ConditionalGanGenerate,
+LogisticGanObjectives, GaussianNoise and ImqMmd are reused. DenseGan owns five live
+endpoints; ConditionalGan owns seven, without optimizer state or hidden quadratic
+MMD. Each default unconditional model has 26416+25153=51569 values/eight leaves;
+conditional G/D have 26736+25473=52209. Finite Float32/64 CPU matrices, strides,
+positive representable geometry and malformed options/labels validate before leaves;
+unconditional real/noise pools may differ. Continuous first/higher paths remain
+live where differentiable. Hinge uses zero D subgradient at exact margins and
+unhinged G=-mean(fake); least-squares preserves .5*(real mean+fake mean) with
+0/1 targets, without claiming the different-label Pearson derivation.
+
+All 33 definitions, eleven compiled examples, both standalone headers and eleven
+clangd hovers pass. All 235 native model cases plus 69 other selected cases,
+174 focused Python checks, 1301 R expectations across 35 files and 63 inventory/
+tooling checks pass. Python/R facades delegate all numerical work to C++.
+Component coverage does not finish independent host-language experiment loops.
+
+Thirty runnable report programs and thirty inspected native figures replace
+vanilla_gan, lsgan, hinge_gan and conditional_gan. Each report includes all fitting,
+96 D then 96 fresh-G writes, two independent Adam states, all 3000 fitting-row
+visits, fixed final epoch3, exact restore, immutable inference and fixed/changed/
+zero-noise controls. An initial test forward is archived only as a diagnostic;
+test outcomes never select the schedule or weights. Conditional GAN includes a
+hand-checkable one-unit class example, both-network class effects, invalid-label
+controls and all100 same-noise class-grid panels, without an auxiliary class head.
+The legacy MlpGanModel, its objective enum and unused class/least-squares helpers
+are removed after their four consumers retire. Shared common/gan.hpp remains for
+other models; InfoGAN has been frozen with 516984 independently checked forwards,
+77469 derivatives, 39 scalar finite differences and 30800 exact prior/noise values
+for the next conversion. Its native recognition components and report remain pending.
+
+Both unchanged-source core delegation and complete report programs preserve all
+29 archives/3134202 values in dtype, shape and value bytes, eight TSVs, nine source
+PNGs and non-timing JSON values; duration is remeasured. Independent NumPy checks
+2692972 forwards/controls, all206916 initial parameter derivatives and88 scalar
+finite differences across the four models, plus all12000 fitting-row visits.
+The independently decoded galleries preserve every panel/pixel, native curves
+retain every sampled vertex/epoch observation without legend overlap, and all
+sixteen method edges avoid node interiors. HTML/Markdown exports include verified
+adjacent figure bundles. Coincident logistic D-real/G-fake derivatives are explained.
+The result stays weak: mostly grey generated fields, coarse MMD² around.118 versus
+.0001358 for the repeated fitting mean. Source accuracies and the conditional
+pixel/logit effects are structural/game controls, not evidence of realistic digits,
+calibration or convergence. Evidence: `build/nn-report-conversion/mlp_gan_core/` and
+`mlp_gan_reports/`. Next is InfoGAN; AutoRec still awaits its original ratings recipe.
+
+- 2026-11-09: Bidirectional GAN continuation (2026-11-09): canonical `nn/gan_data.hpp` and
+`nn/bidirectional_gan.hpp` expose ordered seeded Gaussian-ring samples, signed
+unbounded tanh/linear maps, explicit joint data/code scores and eight live forward
+endpoints. Existing GaussianNoise, AaeDecode and LogisticGanObjectives supply the
+computations; no second RNG or MLP implementation is introduced. Three independent
+stores create hidden/output W,b in G,E,D order, with 82+82+97=261 default values
+in twelve leaves. Finite signed Float32/64 CPU matrices, positive representable
+widths, unequal real/prior pools, strides and continuous first/higher paths are
+supported. All user input checks precede leaf creation; owned Tensor fields survive
+parent/store collection. The deterministic ring cycles component i%K and casts only
+after Double centre/noise arithmetic, preserving all 1312 source point values.
+All 17 definitions, five compiled examples, both standalone headers and five clangd
+hovers pass. All 224 native model cases plus 69 other selected cases, 164 focused
+Python checks, 1244 R expectations across 34 files and 63 inventory/tooling
+checks pass.
+
+Twelve complete report programs and twelve inspected figures replace the original
+C++ source and its unused model-specific helper. No Python/R launchers existed for
+this model; component coverage does not finish independent host-language experiment
+loops. Shared common/gan.hpp remains for other models. The visible loop recomputes
+D then E then G with three independent Adam states: 39 writes/store, 117 updates,
+all 1200 fitting-row visits and fixed final epoch 3. E's write leaves G's partial bit
+exact with D fixed; reconstruction and latent cycle are live but unfitted diagnostics.
+All twelve checkpoint tensors restore exactly and inference is immutable. The
+initial test forward is an explicit diagnostic control; no test outcome chooses
+updates, schedule, hyperparameters or weights.
+
+All nine archives/6210 values, both TSV files and non-timing JSON values are exact;
+duration is remeasured. The core-delegated unchanged source also preserves all three
+original PNGs. The report intentionally replaces hand-drawn pixels with annotated
+native plots, preserving every point, fixed [-3,3] windows and all outside counts.
+Independent SVG projection checks 3360 coordinate values across the three main
+scatter panels, all 656 procedural-pool points and both 128-point noise controls,
+with equal coordinate aspect. Every plotted curve/point is retained without legend
+overlap; all six diagram edges avoid node interiors. Markdown/HTML exports include
+all twelve adjacent figure files.
+
+The independent NumPy receipt checks 3398 forwards (maxerror2.36e-7), 768 exact
+fixed/changed noise values, 32 scalar finite differences, all 1200 minibatch rows
+and the 82 stored G derivatives after first D-Adam. Its first-Adam replay explicitly
+uses widened equations then Float32 rounding, rather than claiming bit-exact native
+intermediate rounding. The result stays weak: reconstruction MSE 2.1331171 is worse
+than fitting-mean 2.0097662; latent-cycle MSE 1.2355026 is a separate unfitted metric.
+G concentrates away from ring modes and E produces tight groups rather than a
+Gaussian cloud. Joint zero-code/zero-image effects .2945093/.8831886, prior-only G,
+data-only E and all restore/immutability controls remain explicit. Idealized
+invertibility conditions are cited without claiming convergence or a learned inverse.
+Evidence: `build/nn-report-conversion/bigan_core/` and `bigan_report/`.
+Next is conditional GAN: its eight archives/845165 values, source pins and independent
+oracle are frozen; existing native components reproduce all 52209 initial parameters
+and 25219 first-forward values exactly. NumPy checks all 52209 initial derivatives,
+22 scalar differences and 732625 forwards. Both networks consume class conditions,
+unlike ACGAN's image-only D. AutoRec still needs its original ratings preparation.
+
+- 2026-11-09: Auxiliary-classifier GAN continuation (2026-11-09): canonical `nn/gan_models.hpp`
+and `nn/auxiliary_classifier_gan.hpp` expose stable logistic source objectives,
+conditional tanh/sigmoid generation, an image-only source/class discriminator,
+source-grouped categorical CE, fifteen live forward endpoints and explicit coarse
+pixel features. Default G has 26736 values/four leaves, D 25483/six; D creates
+hidden, CLASS, SOURCE in the original initializer order. Finite signed Float32/64
+CPU matrices, integer targets, strides and positive representable geometry are
+validated before leaf creation. All continuous first/higher paths remain live;
+caller-owned optimizers select writes. Owned field handles survive parent/store
+collection. Extreme raw logits preserve tiny positive-real D derivatives and
+strong negative-fake non-saturating G derivatives. All 37 definitions, nine
+compiled examples, both standalone includes and seven clangd hovers pass.
+All 216 native model cases plus 69 other selected cases, 159 focused Python checks,
+1199 R expectations across 33 files and 63 inventory/tooling checks pass.
+
+Twelve complete report programs and twelve inspected figures replace the original
+C++ source. No Python/R launchers existed for this source; its unused compatibility helper is
+removed; shared common/gan.hpp remains for other models. The full visible loop
+performs D then a fresh G forward through the updated D, using two independent
+Adam states, all 3000 fitting rows and 96 writes per store/192 updates. Final
+epoch 3 is fixed in advance, with no validation selection. An initial test forward
+is archived solely as a control; test outcomes never choose writes, epochs or
+hyperparameters. Checkpoint restore, inference immutability, isolated G source/class
+partials, image-only D invariance, wrong labels, same-noise class grid and zero/
+changed-noise controls remain explicit.
+
+All ten archives/919949 values, both TSV files, all three source PNGs and non-timing
+JSON values match bit for bit; duration is remeasured. The independent NumPy
+checker agrees on 749714 forward values, 53472 isolated G derivatives, 24 scalar
+finite differences and every minibatch source row. An independent PNG decoder
+checks all 1509808 pixels of five galleries, including all 100 class-grid panels
+and fixed two-per-digit fitting previews. Six numerical plots preserve every
+curve/point without legend overlap; all four diagram edges avoid node interiors.
+Existing native GaussianNoise, ImqKernel and ImqMmd are reused, with 57600 noise
+values and 240000 kernel entries previously verified exact; no second RNG/kernel.
+
+The weak result is retained: real/fake source accuracies 1/1 coexist with real/fake
+auxiliary accuracies .39/.185, mostly grey samples and mean intensity .4993914.
+Coarse generated MMD² .11794877 is worse than repeated fitting mean .0001357794;
+the nondiverse mean demonstrates the diagnostic's blind spot. No image-quality,
+invertibility or convergence guarantee is claimed. Component bindings do not
+finish separate Python/R experiment loops. Evidence: `build/nn-report-conversion/acgan_core/`
+and `acgan_report/`. Next is BiGAN: its frozen baseline/oracle and existing
+GaussianNoise/AaeDecode/LogisticGanObjectives reuse are verified for all 261 initial
+parameters, 1282 initial endpoints, 1312 point coordinates and 512 fixed-noise
+values. AutoRec still needs its original ratings preparation recipe.
+
+- 2026-11-09: Reconstruction-anomaly continuation (2026-11-09): canonical
+`nn/reconstruction_anomaly.hpp` owns detached per-case residual/mean-ink
+scores, explicit nearest-rank nominal calibration, canonical ROC/AP adaptation
+and the three fixed paired grayscale stress controls. Finite signed Float32/64
+sample rows accept strides and arbitrary matching flattened widths; differences
+widen before feature-order Double accumulation. Score computation stops paths
+without changing caller flags and rejects computed overflow. Quantiles use the
+explicit Double ceil(q*N) rule in(0,1], default .95, without interpolation/fuzz.
+Rankings accept unequal/mixed floating score vectors, group ties and use strict
+score>threshold. Existing canonical ROC/AP reproduce all nine original rows
+bit for bit; no second ranking implementation is added. Float32[N,28,28,1]
+patch/darkening/shift results own contiguous stopped storage, preserving unchanged
+and shifted signed-zero bits. All 13 definitions, six compiled examples, standalone
+include and six clangd hovers pass. All 207 native model cases plus 69 other
+selected cases, 154 focused Python checks, 1147 R expectations across
+32 files and 63 inventory/tooling checks pass.
+
+Fourteen complete report programs, thirteen inspected figures and both exports
+replace the standalone source and generated reference launchers; the unused
+compatibility helper is removed. Shared autoencoder helpers remain for remaining
+consumers. The visible 96-update prerequisite reproduces both checkpoints exactly
+(101,984 parameter values). Application inference adds zero updates and checks
+all 50,992 model values for immutability. Both archives/3,198,145 values, every
+JSON/TSV value and all ten source PNG strips are exact. Original/core/report
+independent receipts agree for 1,568,784 forwards (maxerror3.56e-7), 6,001 exact
+scores, 470,400 exact corrupted pixels, all nine rankings and calibration/tie
+controls. An independent PNG decoder checks all 624,144 pixels of the two split
+galleries and blank panels, all 80 case panels and ten eight-column source strips.
+
+The report explicitly discloses validation reuse: the same 200 images select the
+upstream checkpoint and calibrate thresholds, so empirical5% calibration FPR is
+not a fresh-holdout guarantee. It retains all 600 paired transformed cases from
+200 sources, all ten nominal digit classes and the separately excluded blank.
+AE white-patch/shift TPRs are1/.995, but darkening TPR .02, AUROC .4028 and AP
+.418652 remain visible. Mean-image darkening AUROC0/TPR0 and ink shift AUROC
+.486025/TPR .05 are retained. Nominal test FPRs .09/.07/.06 differ from calibration
+.05. The blank score .2130155 exceeds the AE threshold .0748985 but is excluded
+from rankings. Equal-pool AP prevalence and single-split/synthetic-pair limits
+are explicit; no deployment anomaly or class-rejection guarantee is claimed.
+Evidence: `build/nn-report-conversion/anomaly_core/` and `anomaly_report/`.
+Next: auxiliary-classifier GAN; AutoRec still awaits its original preparation recipe.
+
+- 2026-11-09: Learned-image-codec continuation (2026-11-09): canonical
+`nn/learned_image_codec.hpp` owns explicit fitting-only Float32 coordinate
+ranges, half-up/clamped byte symbols, detached dequantization, a live explicit
+affine-sigmoid decoder and the original bounded TFLCODE1 packet. Generic ranges
+support positive widths; the format fixes 32 coordinates/784 grayscale pixels.
+Finite CPU validation, strides, signed/constant ranges, exact little-endian
+binary32 bits, deep nested range exports, stopped packet paths, continuous first
+and second derivatives, exact length/count/shape guards and malformed fields
+are covered. Pack validates all caller fields as strictly as parse; no encoder,
+file IO, optimizer, checksum or entropy model is hidden. All 26 definitions,
+ten compiled examples, standalone include and nine clangd hovers pass.
+All 199 native model cases plus 69 other selected cases pass (five model cases
+excluded by the initial name filter were separately run). All 149 focused Python
+checks, 1087 R expectations across 31 files and 63 inventory/tooling checks pass.
+
+Twelve complete report programs, ten inspected figures and both exports replace
+the standalone source and generated reference launchers; its unused compatibility
+helper is removed. Shared autoencoder helpers remain for reconstruction anomaly.
+The visible 96-update prerequisite reproduces initial/selected checkpoint values
+exactly (101984 parameters). The codec adds zero updates and checks every 50992
+model value for immutability. All three archives / 1359472 values, every bitstream
+byte, TSV, 210 PNG files and other JSON values remain exact; report Float64 MSE
+reductions differ below 2e-15 and global PSNR by 1.73e-13. Prerequisite timing is
+measured anew. Original/core/report independent checks agree for 352000 forward
+values, 6496 symbols/dequantized coordinates, all 110972 packet bytes and 200 PNG
+files/156800 lossless pixels, allowing only the stated metric roundoff. Forward
+error is below 5e-6. A separate process decodes 156800 pixel probabilities / 200 IDs
+exactly with absent dataset and encoder paths. An independent PNG decoder checks
+all 304848 pixels of the fixed ten-case gallery, all 40 panels and ten source strips.
+
+The report keeps all clipping/constants/failures: three constant channels and
+nine clipped test-code entries. Actual file accounting is 28 header+256 ranges+
+103488 decoder+800 identities+6400 payload=110972 bytes. The complete 5.661837 bpp
+file is larger than the measured 49889-byte / 2.545357 bpp PNG collection; the old
+uncompressed-PNG comment is not repeated. Payload-only rate .326531 bpp is labeled
+separately. Decoded MSE .050327014 versus unquantized .050325811 and global PSNR
+12.981988 retain blurry reconstructions and unequal lossy/lossless quality. No
+competitive compression or joint rate-distortion training is claimed. Evidence:
+`build/nn-report-conversion/codec_core/` and `codec_report/`. Next: reconstruction
+anomaly; AutoRec still awaits its original preparation recipe.
+
+- 2026-11-09: Latent-visualization continuation (2026-11-09): canonical
+`nn/latent_visualization.hpp` owns finite signed Float32/64 CPU sample-row
+flattening, fitting-only centered thin-SVD PCA, exact feature-order double
+Euclidean neighbors and posthoc overlap/label summaries. PCA uses N-1 sample
+variances, unscaled axes, frozen owning fitting state and live query/inverse
+paths; exported state is detached and copied. Prefix inverse projection, strides,
+constant/rank-deficient data, row-index distance ties, labels supplied after
+retrieval, duplicate overlap semantics and validation/overflow are covered.
+All 20 definitions, eight compiled examples, standalone include and seven
+clangd hovers pass. Native model tests total 191; all 144 focused Python checks,
+1047 R expectations across 30 files and 63 inventory/tooling checks pass.
+
+Eleven complete report programs, ten inspected figures and both exports replace
+the source and generated reference launchers. The unused visualization and
+legacy tensor-PCA helpers are removed; shared autoencoder helpers remain.
+A visible 96-update prerequisite reproduces both checkpoints exactly (101,984
+parameter values); the application adds zero updates and checks all 50,992
+model values for immutability. Both archives / 3,833,394 values match exactly.
+Delegation preserves JSON and both source PNGs exactly. Report MSE reductions
+differ below 3.5e-14, elapsed timing is measured anew, and other JSON values
+are exact. Independent original/core/report NumPy checks agree for 1,299,200
+forward values, 1,190,000 projection/reconstruction values, sign-aligned SVD
+bases, all 10,000 neighbor indices and fitting-only display limits; metric
+comparisons allow only the stated MSE roundoff. Maximum widened forward error
+is below 5e-6. Both native scatter figures contain all 1,000 fitting and 200 test
+points, with no points under legends and zero boundary-clipped test points.
+Fixed first-per-digit reconstruction/retrieval galleries retain every failure.
+AE32 test MSE .050326 is worse than pixel-PCA32 .017631; projecting the code
+to two axes then decoding increases MSE to .063673. Pixel/AE32/PCA32 1NN
+accuracies are .89/.78/.88, falling to .325/.35 for code/pixel PCA2. The report
+states the information loss, unequal objectives/parameterization and single-run
+limits. Evidence: `build/nn-report-conversion/visualization_core/` and
+`visualization_report/`. Next: learned image codec; AutoRec still awaits its
+original asset preparation recipe.
+
+- 2026-11-09: Added canonical `nn/latent_arithmetic.hpp` now owns explicit affine interpolation/edits, detached
+fitting-label class centroids and owning path flattening. `UndercompleteDecoder`
+in `nn/autoencoder_models.hpp` accepts signed codes alone and creates/reuses
+only decoder leaves (25,872 default values). Finite signed Float32/64 CPU,
+strides, original grouping/row-order accumulation, input ownership, all affine
+mixed second paths, code/decoder derivatives and pre-leaf errors are covered.
+No clipping, model fitting or RNG is hidden. All 41 definitions in both affected
+headers, 18 compiled examples (five new), standalone include and 13 clangd
+hovers (five new) pass. Native tests total 183; all 139 focused Python checks,
+1011 R expectations across 29 files and 63 inventory/tooling checks pass.
+
+Eleven complete report programs, ten inspected figures and both exports replace
+the original/reference launchers. The unused latent-arithmetic compatibility
+header is removed; shared autoencoder/PCA helpers remain for other consumers.
+A visible 96-update prerequisite reproduces initial/selected checkpoint values
+exactly (101,984 parameters checked). The frozen application adds zero updates
+and verifies all 50,992 model values for immutability. Both archives / 1,448,809
+values, every JSON value and all five original PNGs are exact. Native norm
+matching reproduces every Float32 random direction. Original/core/report NumPy
+receipts agree for 13,760 affine path values, 8,160 class means, 651 actual path
+derivatives, 320 Gaussian values, 218,720 forward values, both pixel controls
+and fixed endpoint identities. Maximum widened forward error is below 5e-6.
+The report retains every pair and failure, all 89 negative edited coordinates
+and 8,587 clipped pixel-control entries. Decoder nonlinearity reaches 0.179131;
+this is not semantic success or a generative-prior result. Evidence:
+`build/nn-report-conversion/latent_core/` and `latent_report/`.
+
+- 2026-11-09: Added canonical `nn/encoder_pretraining.hpp` now owns frozen ReLU features, fitting-only
+population scaling and a frozen encoder/scaler with a caller-owned linear head.
+Finite signed Float32/64, strides, detached deep copies/exports, live input/head
+paths, pre-leaf validation and original two-pass double accumulation/casting
+are covered. Defaults preserve 25,120 frozen values and two head leaves / 330
+trainable values. All 28 definitions, seven compiled examples, standalone
+include and three clangd hovers pass. Native model tests total 175; all 134
+focused Python checks and 971 R expectations across 28 files pass.
+All 63 inventory/tooling checks pass after retirement.
+
+Nine complete report programs, eight inspected native figures and both exports
+replace the source and generated reference launchers. The unused C++ transfer
+adapter is removed; shared autoencoder helpers remain for other consumers.
+The visible prerequisite shows all 96 unsupervised Adam updates and reproduces
+initial/selected checkpoint parameters / 101,984 values exactly. The two heads
+then receive matching initialization/order and 96 supervised updates each;
+total compute is unequal because only one encoder receives pretraining.
+All 26 archives / 2,849,964 values remain exact. Delegation preserves all TSV
+and non-timing JSON values; report native Float64 probability-NLL reductions
+differ by at most 3.11e-15. Other TSV/non-timing JSON values are exact.
+Independent original/core/report NumPy receipts agree: 1,320 derivative values
+including shifted-label controls, exact first Adam, 240,576 forward values,
+6,000 batch rows, six eligible validation candidates, frozen encoder snapshots,
+all confusion counts and fixed first-per-class gallery identities. Maximum
+forward error is below 5e-6. Both branches select epoch 3; held-out accuracy is
+62% pretrained versus 44% random, with NLL 1.286701 versus 1.628766. The report
+states the single-seed and unmatched-compute limits. Evidence:
+`build/nn-report-conversion/pretraining_core/` and `pretraining_report/`.
+
+- 2026-11-09: Added `nn/patch_restoration.hpp`: generic target-free patch
+  visibility and exact observed/predicted composition, without model or optimizer
+  state. Contracts cover finite signed Float32/64 values, strides, positive axes,
+  detached binary masks, all-visible/all-hidden cases, fill conversion, owning
+  lifetime and selected continuous higher paths. Branch selection preserves
+  signed zeros and visible bits. All six definitions, two compiled examples,
+  standalone include and two clangd hovers pass. Native 168, Python 130,
+  R 941 expectations across 27 files and metadata 63 pass. Twelve report programs
+  and nine inspected figures preserve four archives / 4,704,817 values. Four
+  visible native prerequisite programs reproduce three checkpoint archives and
+  115,633 parameters exactly with 288 Adam steps; the application adds zero
+  updates. Source delegation preserves TSV/JSON exactly; report MSE/PSNR
+  reductions differ below 1.5e-14 / 3e-13. Independent NumPy checks all corruption,
+  dense/transformer predictions, mask provenance, hidden-value independence,
+  exact visible copies and metrics. Original, reference launchers and three
+  unused C++ compatibility headers are retired; host-language helper comments
+  point to canonical headers. AutoRec snapshots are pinned, with original asset
+  preparation still to be located. Evidence:
+  `build/nn-report-conversion/restoration_core/`, `restoration_report/` and
+  `autoencoder_restoration/prerequisites/`.
+
+- 2026-11-09: Added `nn/wasserstein_autoencoder.hpp`: deterministic tanh WAE,
+  code-only decoder, pixel-summed squared cost and explicitly weighted signed
+  unbiased MMD objective. Contracts cover eight source-ordered leaves / 26,036
+  scalars, unequal counts, Float32/64, strides, six owning Tensor fields plus
+  nested MMD record, explicit independent prior and continuous higher paths.
+  Original Tolstikhin/Bousquet/Gelly/Schoelkopf paper and compact fixed-scale
+  teaching differences are verified. All 16 definitions, five compiled examples,
+  standalone include and five clangd hovers pass. Native 161, Python 126,
+  R 910 expectations across 26 files and metadata 63 pass. SWIG declaration order and nested owning
+  record getter are covered by Python/R GC tests. Nine report programs/seven
+  inspected figures and both exports preserve 18 archives / 1,147,656 values and
+  exact histories; only two summary MSE reductions differ below 4e-15. NumPy
+  verifies 26,036 first derivatives, exact Adam, 52 endpoint fields and complete
+  Gaussian/validation/MMD controls. Original, reference launchers and three
+  unused compatibility headers are retired. Restoration's next baseline/oracle
+  preserve zero application updates and three frozen checkpoints, checking
+  1,593,600 forward values and exact visible copies. Evidence:
+  `build/nn-report-conversion/wae_core/`, `wae_report/` and
+  `autoencoder_restoration/`.
+
+- 2026-11-09: Added `nn/vector_quantized_autoencoder_2.hpp`: generic two-scale
+  VQ inference, coarse-conditioned fine encoding, code-only top/final decoders
+  and copied parent/previous-symbol conditional prior. Contracts cover original
+  fourteen-leaf order / 1,157 scalars, eleven owning fields and nested records,
+  Float32/64, strides, shape/ID/product validation, explicit uniforms, per-image
+  BOS, surrogate hierarchy paths and both reconstruction-to-book stops. Original
+  Razavi/van den Oord/Vinyals reference and compact gradient-update/Bernoulli
+  variant differences are verified. All 36 definitions, eight compiled examples,
+  standalone include and six clangd hovers pass. Native153, focused Python121,
+  R865/25 files and metadata63 pass. Ten report programs/eight inspected figures
+  and both exports preserve fifteen archives / 1,932,136 values and exact TSVs;
+  only two summary MSE reductions differ below 3e-15. NumPy verifies 1,157 first
+  derivatives, exact first Adam, 6,272 hierarchy derivatives, 68 endpoints and
+  complete prior/validation controls. The original, generated launchers and both
+  unused legacy VQ headers are retired. WAE's pre-kernel oracle/pins remain
+  unchanged; a later zero-update restoration baseline freezes three checkpoints.
+  Evidence: `build/nn-report-conversion/vq2_core/` and `vq2_report/`.
+
+- 2026-11-09: Added `nn/vector_quantized_autoencoder.hpp`: nearest dictionary
+  assignment/override, selected-vector-preserving identity surrogate, separate
+  dictionary/commitment targets, spatial VQ inference and code-only decoder,
+  usage diagnostics and explicit-uniform raster Markov prior. Contracts cover
+  Float32/64, strides, shapes/IDs/products, tie boundaries, intended surrogate
+  higher paths, ownership, creation order, reductions and fitting-only provenance.
+  Original van den Oord et al. reference and compact architecture/prior differences
+  are verified. All 39 definitions, 12 compiled examples, standalone include and
+  six clangd hovers pass. The hover driver closes stdin after LSP exit and allows
+  30 seconds for parser-worker shutdown. All 145 native cases, 116 focused Python
+  checks and 830 R expectations across 24 files pass; 63 metadata checks pass after
+  retirement. Eight report programs/six inspected figures preserve 14 archives/
+  759,770 values and exact histories; two MSE tensor reductions differ below
+  3e-14. NumPy verifies 805 first surrogate derivatives, exact first Adam, all
+  endpoints/priors and every validation candidate. The source, unused legacy
+  model/decoder adapters and generated launchers are retired; shared adapters
+  remain for VQ-VAE-2. Its 15 archives/1,932,136 values and independent hierarchy
+  checks remain exact. The later WAE baseline now has a full independent oracle
+  for 26,036 derivatives and signed MMD controls, with original pins preserved.
+  Evidence: `build/nn-report-conversion/vq_core/` and `vq_report/`.
+
+- 2026-11-09: Vanilla VAE now uses the existing canonical Gaussian API at
+  beta1/784 pixels/latent2/hidden64. Five shared compatibility math functions
+  forward to the core, retaining signatures, original eight fields and creation
+  order. Five canonical-equivalent examples compile/run; Python/R help includes
+  the configuration. New tests cover owned fields through GC, all ten parameter
+  gradients, explicit input/noise paths and caller Adam. All 135 native cases,
+  112 focused Python checks, 791 R expectations across 23 files and 63 metadata
+  checks pass. Nine report programs, seven inspected figures and both exports
+  preserve 16 archives/8,817,594 values and exact histories; one tensor Float64
+  summary MSE differs by 2.998e-15, with other non-timing JSON exact. NumPy
+  verifies all 101,652 first derivatives, exact first Adam, fixed/fresh Gaussian
+  streams, 5,747,784 endpoint values and all three validation candidates.
+  Both VQ examples retain all 29 archives/2,691,906 values and non-timing JSON
+  after shared delegation. The vanilla source/reference launchers are retired;
+  the shared helper remains for live consumers. No new public core symbol was
+  needed. Next: canonical VQ components and their reports. Evidence:
+  `build/nn-report-conversion/vanilla_vae_report/`.
+
+- 2026-11-09: Added `nn/vae_gan.hpp`: explicit code-only generator,
+  discriminator feature/logit records, detached-target learned feature distance
+  and all nineteen Gaussian VAE-GAN endpoints. Contracts specify source names/
+  creation order, separate selected-group objectives, balanced non-saturating
+  fake branches, diagnostic-only clipped pixel NLL, unequal prior batches,
+  Float32/64, strides, ownership, higher paths and checked architecture products.
+  The primary Larsen et al. reference and compact-recipe differences are verified.
+  All 30 definitions pass fresh Doxygen; six examples compile/run, the include
+  compiles alone and five clangd hovers pass. All 135 native cases, 111 focused
+  Python checks and 775 R expectations across 23 files pass; 63 metadata checks
+  pass after retirement. Eight report programs/five inspected figures
+  retain all 24 archives/3,078,235 values and exact histories. Two tensor Float64
+  MSE summary reductions differ below 1.1e-14; every other non-timing metric is
+  exact. NumPy verifies 64,786 initial/recomputed parameter derivatives, all
+  three exact first Adam states, group isolation, all nineteen forward fields,
+  explicit Gaussian banks and every eligible validation candidate. Source,
+  unused VAE-GAN helper and generated reference launchers are retired. The next
+  untouched vanilla VAE baseline contains 16 archives/8,817,594 finite values.
+  Its scratch canonical-API forwarding probe preserves every archive, history
+  and non-timing metric; independent checks cover all 101,652 first derivatives,
+  exact first Adam, 17,240 Gaussian values and all validation candidates.
+  Evidence: `build/nn-report-conversion/vae_gan_core/` and `vae_gan_report/`.
+
+- 2026-11-09: Added `MidpointUniformNoise` to `nn/autoencoder_models.hpp`:
+  exact source MT19937 raw-word midpoint uniforms, detached owning Float64,
+  explicit full-uint32 local streams, scalar/empty geometry and checked
+  element/byte/stride overflow. Contracts distinguish discrete resolution,
+  Float32 rounding to one and the separate general uniform generator; the
+  original MT reference is verified. All 31 header definitions pass fresh
+  Doxygen; all 13 public examples compile/run, the include compiles alone and
+  eight clangd hovers pass. All 128 native cases, 106 focused Python checks and
+  743 R expectations across 22 files pass; 63 metadata checks pass after
+  retirement. The sequence report has eight programs, five inspected figures
+  and both computed exports. All 20 archives/1,454,190 values, full TSVs,
+  vocabulary and non-timing JSON values remain exact. Independent NumPy verifies
+  all 3,243 first BPTT derivatives/exact first Adam, all eighteen endpoint fields,
+  all validation candidates, Gaussian/token banks, test scores and generation
+  counts. The source, unused sequence helper and reference launchers are retired.
+  The untouched VAE-GAN baseline and separate independent phase-gradient oracle
+  are ready for the next core/report conversion. Evidence:
+  `build/nn-report-conversion/sequence_report/` and `vae_gan/`.
+
+- 2026-11-09: Added sequence_vae_data.hpp with owning grammar pools, independent
+  vocabulary copies, complete corpus validation, prefix display/grammar policy
+  and original fifteen-array export. Contracts cover every schema/factor/identity,
+  split, EOS/PAD, prefix, balance and row-order rule, config shape compatibility,
+  I/O errors, shared Tensor storage and ignored post-EOS display suffixes. All 17
+  definitions pass fresh Doxygen; six public examples compile/run, the header
+  compiles alone and six clangd hovers pass. Python/R pool-vector output typemaps
+  copy handles;105 focused Python checks and 730 R expectations across 22 files
+  verify owning selected pools after GC and file removal.126 native model cases
+  and 63 metadata checks pass. The posterior-collapse report has nine programs,
+  six inspected figures and both computed exports. All 35 archives/2,265,740 values,
+  full TSVs and non-timing JSON values match the untouched source; independent
+  NumPy BPTT/Adam, all endpoints, common validation and mixture/ablation/generation
+  checks pass. The original posterior source/helper/reference launchers are
+  retired; the sequence adapter was retained at that checkpoint with all 20
+  archives/1,454,190 values exact and is now retired above. Evidence:
+  `build/nn-report-conversion/posterior_report/`.
+
+- 2026-11-09: Added sequence_variational_autoencoder.hpp and posterior_collapse.hpp:
+  PAD-masked GRU encoding, exact source-ordered eighteen-field sentence VAE,
+  prefix-only teacher decoder, greedy/explicit-uniform generation, KL schedule
+  and signed host-double empirical-mixture diagnostics. Contracts cover fixed
+  architecture, IDs/dtypes/strides, ownership, continuous BPTT/noise paths, hard
+  choices, raw scores after EOS, finite-sample bias and numerical overflow.
+  All 57 definitions pass fresh Doxygen; 13 public examples compile/run, both
+  includes compile alone and 10 clangd hovers pass. 121 native model cases include
+  all 3,243 Float64 leaf finite differences and noise second derivatives.
+  102 focused Python checks, 712 R expectations across 21 files and 63 metadata
+  checks pass. Both legacy programs now delegate mathematics to core and retain
+  all 55 archives/3,719,930 values, complete TSVs and non-timing JSON values exactly.
+  An independent NumPy BPTT/generation/mixture oracle passes on original and
+  delegated artifacts, including every eligible validation column and first Adam.
+  The report/corpus adapters remain for the next conversion step. Evidence:
+  `build/nn-report-conversion/sequence_vae_core/`.
+
+- 2026-11-09: Extended native `prepare_example_data` with sequence-vae-assets:
+  all 432 six-factor sentences, sixteen Int32 arrays, explicit previous-target
+  inputs, EOS/PAD lengths, 288/72/72 compositional splits and ascending source
+  IDs. Public help documents procedural provenance, cache location, supplied
+  archive preservation and missing-output behavior. Both public preparation
+  examples compile/run; all 69 definitions across assets.hpp, basic.cpp,
+  adapters.cpp and support.hpp pass fresh Doxygen, with three clangd hovers.
+  All 15 native dataset cases and 63 migration/website checks pass. Both untouched
+  sequence-VAE/posterior-collapse programs verify the exhaustive loader contract;
+  their 55 baseline archives are retained before shared model migration. The
+  constant-beta and standalone sequence trajectories match exactly. Evidence:
+  `build/nn-report-conversion/sequence_vae_data/`.
+
+- 2026-11-09: Added `nn/ladder_variational_autoencoder.hpp`: source-ordered
+  precision-weighted Gaussian fusion, explicit ancestral conditional-prior sampling
+  and a complete sixteen-field two-level Ladder forward. Contracts cover all four
+  fusion paths, detached stabilizing shift, extreme-log limits, explicit lower-
+  then-top noise order, lower-only decoding, conditional KL dependence, owning
+  endpoints and input/product checks before leaves. Existing conditional Gaussian
+  KL and ReLU decoding are reused. All 34 definitions pass fresh Doxygen; six
+  examples compile/run, the header compiles alone and six clangd hovers pass.
+  111 native model tests, 97 focused Python tests and 676 R expectations across
+  20 files pass. Seven report programs/five inspected figures preserve all 20
+  source archives (2,014,940 values), exact histories and batch orders. NumPy
+  checks 52,196 first parameter derivatives, exact first Adam, 16 fusion partials,
+  10,956 Gaussian values, 1,489,600 lattice/prediction pixels, all fifteen original
+  saved forward endpoints and three eligible validation scores. The full native
+  result additionally owns logits. The stronger fitting mean and missing BN/warmup
+  benchmark recipe remain explicit. The unused legacy helper is removed.
+  Evidence: `build/nn-report-conversion/ladder_vae/`.
+
+- 2026-11-08: Added `nn/kernel_discrepancy.hpp` and
+  `nn/info_variational_autoencoder.hpp`: fixed three-scale IMQ, all seven signed
+  unbiased MMD endpoints, coefficient-controlled InfoVAE objectives, image-free
+  tanh decoder and complete sixteen-field Gaussian forward. Contracts cover
+  unequal sample counts, within-only diagonal exclusion, independent explicit
+  prior draws, negative estimates, Float32 coefficient rounding, full Float64
+  gradients, owned fields, product checks and separate negative-ELBO diagnostics.
+  All 38 definitions pass fresh Doxygen; seven examples compile/run, the header
+  compiles alone and seven clangd hovers pass. 104 native model tests, 92 focused
+  Python tests and 638 R expectations across 19 files pass. Eight report programs
+  and six inspected figures preserve all 35 source archives (7,209,428 values),
+  exact histories and batch orders. NumPy checks 52,208 parameter derivatives,
+  both exact first Adam steps, 29,056 Gaussian values, 2,847,488 lattice/prediction
+  pixels, 1,434,984 kernel entries, all sixteen fields and six own-objective
+  validation scores. The unused InfoVAE helper is removed. WAE's required kernel
+  import delegates to core; its separate 18-archive pre-delegation comparison,
+  histories and every non-timing metric remain exact. Evidence:
+  `build/nn-report-conversion/info_vae/` and
+  `build/nn-report-conversion/wasserstein_vae-prekernel/`.
+
+- 2026-11-08: Added `nn/importance_weighted_autoencoder.hpp`: stable sample-axis
+  log-mean-exp, sampled Gaussian IWAE bounds, normalized weights/ESS and complete
+  Gaussian/Bernoulli multi-sample forwards. Contracts cover sample-major tiling,
+  finite signed NLL, Float32 source rounding versus full Float64 precision,
+  full ordinary pathwise gradients, K1 sampled versus analytic-KL estimators,
+  finite-draw nonmonotonicity, owning fields and validation before leaf creation.
+  All 22 definitions pass fresh Doxygen; five examples compile/run, the header
+  compiles alone and five clangd hovers pass. 96 native model tests, 87 focused
+  Python tests and 591 R expectations across 18 files pass. Seven report programs
+  and five inspected figures preserve all 34 source archives (10,980,972 values),
+  exact histories and batch orders. NumPy checks 102,832 parameter derivatives,
+  both exact first Adam steps, 36,200 Gaussian values, 9,942,688 lattice/prediction
+  pixels, all saved weight/ESS diagnostics and six common validation scores.
+  The stronger fitting-mean baseline and concentrated importance weights remain
+  explicit. Unused IWAE and compatibility-flow helpers are removed. Evidence:
+  `build/nn-report-conversion/importance_vae/`.
+
+- 2026-11-08: Added `nn/hierarchical_variational_autoencoder.hpp`: direct/residual
+  Gaussian posteriors, conditional diagonal KL, miniature NVAE cell, image-free
+  two-latent decoding, ancestral sampling and paired hierarchy forwards. Contracts
+  cover finite shapes/dtypes/overflow, caller-supplied noise, moving versus batch
+  moments, unbiased moving-variance updates, explicit BN mutation, separate
+  optimizer/state stores, owning endpoints and the two-kernel regularizer.
+  All 46 definitions pass fresh Doxygen; nine examples compile/run, the header
+  compiles alone and nine clangd hovers pass. 89 native model tests, 82 focused
+  Python tests and 560 R expectations across 17 files pass. Nine report programs
+  and seven inspected figures preserve all 41 original archives (5,808,422 values)
+  and exact histories/batch orders. NumPy checks 4,004 derivatives, both exact
+  first Adam updates, all six first moving-buffer updates, 186,252 Gaussian values,
+  2,797,312 lattice/prediction pixels, all 19 fields and six validation checkpoints.
+  The stronger fitting-mean baseline and miniature-model limitations remain
+  explicit. The unused hierarchy helper is removed; the ladder helper remains.
+  Evidence: `build/nn-report-conversion/hierarchical_vae/`.
+
+- 2026-11-08: Added `nn/gumbel_categorical_autoencoder.hpp`: explicit midpoint
+  uniform/Gumbel banks, categorical relaxation, discrete uniform-prior KL,
+  target-free simplex/ID decoding and categorical VAE forwards. Contracts cover
+  broadcast rows/strides, source Float32 rounding, full-uint32 local RNG,
+  temperature-invariant hard draws, absent straight-through gradients, soft
+  surrogate versus hard discrete diagnostics, owning endpoints, overflow and
+  validation timing.81 native tests,77 focused Python tests and516 R expectations
+  pass. Nine public examples compile/run; the header compiles alone,35/35 definitions
+  pass fresh Doxygen and nine clangd hovers pass. Eight report blocks/five inspected
+  figures preserve all18 original archives (3471217 values) and exact batch/history
+  data. NumPy checks53104 first derivatives, an exact first Adam step,70160 midpoint
+  uniforms/Gumbels,2551136 data/prediction pixels and4096 calibrated hard samples.
+  The stronger fitting-mean baseline and soft/hard mismatch remain explicit.
+  The unused legacy helper is removed. Evidence:
+  `build/nn-report-conversion/gumbel_vae/`.
+
+- 2026-11-08: Added `nn/flow_variational_autoencoder.hpp`: configurable conditional
+  affine posterior couplings with analytic inverses and signed log determinants,
+  plus two-coupling Gaussian VAE forwards. Full contracts cover live image context,
+  fixed-context code Jacobians, coordinate ordering, even-width validation,
+  creation order,18 leaves/52672 default scalars, caller-supplied noise, sampled
+  density signs, owning endpoints/named arrays and direct standard-normal prior
+  decoding. No optimizer/fit is hidden.75 native tests,73 focused Python tests
+  and477 R expectations pass. Five public examples compile/run; the header compiles
+  alone,28/28 definitions pass fresh Doxygen and five clangd hovers pass. Eight
+  report blocks/five inspected figures preserve all19 original archives (1984695
+  values), exact batch/history data and all18 fields for every saved draw. NumPy
+  checks52672 derivatives, an exact first Adam step,7304 Gaussian values,1398656
+  data/prediction pixels and all48 full Jacobian entries. The stronger fitting-mean
+  baseline and lack of matched no-flow ablation remain explicit. The legacy shared
+  header retains only the normalizer required by the pending IWAE conversion.
+  Evidence: `build/nn-report-conversion/flow_vae/`.
+
+- 2026-11-08: Added `nn/total_correlation_autoencoder.hpp` with exact finite-mixture
+  TC, a signed density-ratio discriminator, balanced discriminator loss, explicit
+  detached column permutations and FactorVAE/full-reference betaTCVAE forwards.
+  Full contracts distinguish live sample/reference derivatives, fitting-only
+  reference provenance, signed sample ratios, Float32 rounded constants, caller-owned
+  two-phase Adam, finite-batch product approximations, validation timing and nested
+  owning Gaussian results. The unused legacy helper is removed. All69 native
+  model tests,69 focused Python tests and447 R expectations pass. Eight public
+  examples compile/run; the header compiles alone,19/19 definitions pass fresh
+  Doxygen and eight clangd hovers pass. Ten report blocks/six inspected figures
+  preserve all45 original archives (3633019 values), exact VAE/D batch order and
+  complete histories. NumPy checks102929 derivatives, all first Adam updates,
+  12344 Gaussian values,2162272 data/prediction pixels, six eligible criteria and
+  fitting-only probes. The stronger fitting-mean reconstruction baseline stays visible.
+  Evidence: `build/nn-report-conversion/factor_tc_vae/`.
+
+- 2026-11-08: Added `nn/convolutional_variational_autoencoder.hpp`: spatial
+  Gaussian inference with a sample-only dense/repeat/convolution decoder. Full
+  contracts cover sixteen owning forward fields, five decoder fields,14 default
+  leaves/2117 scalars, all seven stages, mixed He/Glorot initialization, explicit
+  noise, reductions, continuous gradients, strides, non-square geometry, overflow
+  checks and error timing. Binary NLL differs from soft-target cross-entropy;
+  no deterministic spatial bypass, fitting or RNG is hidden. The unused legacy
+  helper is removed.63 native tests,65 focused Python tests and421 R expectations
+  pass. Four public examples compile/run; the header compiles alone,21/21 definitions
+  pass Doxygen and four clangd hovers pass. Ten report blocks/eight inspected figures
+  preserve all19 original archives and exact batch/history data. NumPy verifies4234
+  initial/selected derivatives, one exact first Adam step,17240 Gaussian values,
+  6821584 data/prediction pixels and seven complete spatial stages. Weak measured
+  reconstruction and the narrow improvement over the fitting mean remain explicit.
+  Evidence: `build/nn-report-conversion/convolutional_vae/`.
+
+
+- 2026-11-08: Added `nn/conditional_autoencoder.hpp`: configurable Gaussian
+  posterior and Bernoulli decoder conditioned on the same required class, plus
+  standalone code/class decoding. Full contracts cover all twelve owning fields,
+  ten named leaves/102932 default scalars, continuous gradients, computation-dtype
+  one-hot rows, discrete Int32/64 bounds, error timing, reductions and fixed shared
+  prior. Binary NLL and soft-target cross-entropy are distinguished. The old
+  unused helper is removed; Python/R expose the core with native help/tests.
+  All59 model tests,61 focused Python tests and393 R expectations pass. Three
+  public examples compile/run, the header compiles alone,10/10 definitions pass
+  fresh Doxygen and three clangd hovers pass. Nine report blocks/seven inspected
+  figures match all18 original archives plus exact batch/history files. NumPy
+  independently checks102932 derivatives, one exact first Adam update,17210
+  Gaussian values,7158704 data/prediction pixels and fitting-only class means.
+  The stronger class-mean baseline and the original seed reuse remain explicit.
+  Evidence: `build/nn-report-conversion/conditional_vae/`.
+
+
+- 2026-11-08: Added `nn/gaussian_autoencoder.hpp` and
+  `nn/latent_factor_diagnostics.hpp`: explicit pathwise noise, analytic summed KL,
+  configurable ReLU/Bernoulli beta-VAE and standalone decoder, plus generic
+  fitting-only standardized ridge/best-axis probes. Contracts cover all nine
+  owning forward fields, ten named leaves/51416 default scalars, exact reductions,
+  continuous gradients, stride/dtype/range/beta checks, error timing and13 detached
+  probe outputs with negative heldout R2. Shared example helpers delegate model,
+  decoding and probe arithmetic; Python/R bindings and help use the canonical API.
+  All55 native tests,57 focused Python tests and367 R expectations pass. Six public
+  examples compile/run,19/19 new-header definitions pass Doxygen and six clangd
+  hovers pass. Ten report blocks/eight inspected figures match all30 original NPZ
+  archives plus both exact batch/history files. Independent NumPy verifies102832
+  first-batch derivatives, two exact first Adam updates,7304 Gaussian values,
+  2162272 lattice/prediction pixels and every probe array. Higher beta's weaker
+  reconstruction and the limits of linear factor recovery remain explicit.
+  Evidence: `build/nn-report-conversion/beta_vae/`.
+
+
+- 2026-11-08: Added `nn/adversarial_autoencoder.hpp` and `nn/factor_lattice.hpp`,
+  plus native beta-vae-assets preparation. Full contracts cover deterministic E/G/D,
+  independent prior rows, unit-range soft/binary targets, stable summed Bernoulli
+  NLL, all continuous gradients, distinct store identities, ownership/error timing
+  and caller-owned snapshot/phase/four-state training. Native lattice generation
+  specifies all294 images, exact IDs, compositional splits, dtype/order and local
+  procedural provenance.50 model tests and12 dataset tests pass;53 focused Python
+  tests and337 R expectations cover owning values and host phase isolation.
+  Eight public examples compile/run,88/88 affected definitions pass fresh Doxygen
+  (21 in the two new headers), and six new clangd hovers pass. The eight-block/
+  six-figure report matches all26 original archives plus exact batch/history data.
+  Independent NumPy checks77,522 initial/actual derivatives, four exact first Adam
+  states,3,776 Gaussian values and633,472 lattice/prediction pixels. Poor measured
+  reconstruction and the limits of finite empirical aggregate matching stay explicit.
+  Evidence: `build/nn-report-conversion/adversarial/`.
+
+- 2026-11-08: Revalidated `nn/competitive_autoencoders.hpp` for the lifetime
+  winner-take-all conversion. Existing core symbols own stable column-wise
+  selection, detached masks and explicit gated-training/full-ReLU-deployment
+  endpoints; no new model math is duplicated in host languages. Removed the
+  retired example helper and its redundant legacy example bindings. Three public
+  examples compile/run,10/10 definitions remain documented and both clangd
+  hovers pass.46 native model tests include all lifetime small-model parameter
+  derivatives, input first/second checks, context dependence and zero-slot rules.
+  49 focused Python tests and295 R expectations across nine files pass. All source
+  arrays in29 archives match original C++, report and normal Python/R. Eight report
+  blocks/six reviewed figures preserve both96-update loops, ungated validation
+  selection and weak measured reconstruction. Independent NumPy checks202,400
+  derivatives, two exact first Adam updates, eight validation checkpoints,
+  179,200 code values and4,503,296 prediction pixels. Deployed competitive codes
+  are96.85% nonzero; training slot counts are not a deployment sparsity guarantee.
+  Evidence: `build/nn-report-conversion/winner_take_all/`.
+
+- 2026-11-08: Added `nn/tied_autoencoder.hpp`: live transposed-weight
+  ReLU/sigmoid forward values, independent-decoder control and target-free
+  decoding. Contracts cover complete geometry, fixed leaf names/order/counts,
+  both shared gradient paths, owning tensor fields/live aliases, standalone
+  decoder-only leaves, signed codes, error timing and caller-owned fitting.
+  All44 native model tests pass, including all original toy activities/eleven
+  analytic derivatives, tied/untied first and second finite differences,
+  live transpose checks after Adam and independent decoder divergence.
+  All three public examples compile/run, the header compiles standalone,
+  10/10 definitions pass fresh Doxygen and two clangd hovers pass.47 focused
+  Python tests and264 R expectations across eight files pass. All source
+  arrays in24 archives agree across original C++, report and normal Python/R.
+  The seven-block/five-figure report retains96 updates per model, completed-
+  epoch validation selection, raw controls and different-capacity limits.
+  Independent NumPy checks76,896 parameter derivatives, two first Adam updates,
+  eight validation checkpoints,89,600 code values and4,076,800 prediction pixels.
+  Evidence: `build/nn-report-conversion/tied/`.
+
+- 2026-11-08: Added `nn/layered_autoencoders.hpp`: configurable mirrored
+  sigmoid stacks with strict encoder narrowing and standalone decoding using
+  original layer indices. Contracts cover finite Float32/64, complete geometry,
+  output order/code index, independent weights, owning vector/list elements,
+  all gradients, error timing and caller-owned fitting/transfer policies.
+  All39 model tests pass (five new stack cases), including all24 original toy
+  activities/all48 analytic derivatives, first/second finite differences, frozen
+  detached caches, independent copies of both decoders and an optimizer created
+  before transfer. Both public examples compile/run, the header compiles
+  standalone,6/6 definitions pass fresh Doxygen and two clangd hovers pass.
+  Native Python/R use thin list/geometry facades;45 focused Python tests and239
+  R expectations across seven files pass. All source arrays in42 report archives
+  agree across original C++, native Python/R and the seven-block/five-figure
+  report. Independent NumPy checks309,984 first derivatives, four first Adam
+  updates,16 validation checkpoints and2,873,600 prediction pixels, with transfer,
+  cached-code and RMSE-bound checks. Evidence: `build/nn-report-conversion/stacked/`.
+
+- 2026-11-08: Added `nn/activation_sparse_autoencoder.hpp`: finite activation
+  L1, dtype-consistent clamped mean-unit Bernoulli KL and complete untied sigmoid
+  model objectives. Contracts cover units/normalization, batch coupling, signed
+  codes, inclusive clip endpoints, zero abs derivatives, scalar rounding,
+  invalid options before leaf creation and owning nested penalty lifetimes.
+  All34 model tests pass (five new sparse cases), all four public examples
+  compile/run, the header compiles standalone,27/27 definitions pass fresh Doxygen
+  and three clangd hovers pass.43 focused Python tests and217 R expectations
+  across six files pass. All source arrays in41 archives match original C++,
+  native Python/R and the report. Independent NumPy checks404,800 first parameter
+  derivatives,10,240 activity derivatives, four exact first Adam updates and
+  5,644,800 predictions. All eight blocks, seven inspected figures and both export
+  formats pass. Evidence: `build/nn-report-conversion/sparse/`.
+
+- 2026-11-08: Added `nn/sequence_autoencoders.hpp`: checked image-row sequence
+  conversion, final-state-only shared tanh encoding, independent repeated-code
+  decoding and owning full/partial state histories. Contracts specify finite
+  Float32/64, strict scalar bottlenecks, zero initial states, shared parameter
+  names, full BPTT, no teacher forcing and undefined partial-result fields.
+  All29 model tests pass (five new sequence tests); all five public examples
+  compile/run, the header compiles standalone,12/12 definitions pass fresh Doxygen
+  and four clangd hovers pass.41 focused Python tests and203 R expectations across
+  five files pass. R fixture arithmetic now parenthesizes multiplication before
+  modulo and checks [0,1] ranges, so its inputs match the C++/Python fixtures.
+  All source arrays in13 archives agree across original C++, native Python and R,
+  and with the eight-block/six-figure report. Independent NumPy verifies all4,956
+  first derivatives, first Adam rounding,1,724,800 prediction pixels,14,336 state
+  values and6,272 fixed-target input derivatives. Evidence:
+  `build/nn-report-conversion/recurrent/`.
+
+- 2026-11-08: Added `nn/masked_autoencoder.hpp`: checked patch indexing and
+  differentiable inversion, exact source hash selectors, grouped position tables,
+  visible-only transformer encoding, independent mask-token decoding and generic
+  hidden-pixel MSE. Contracts specify Float32/64, finite model inputs, unique
+  detached one-hot selectors, partial-result fields and owning tensor handles,
+  parameter layout, discrete masks and continuous target gradients. All24 model
+  tests pass; all12 public examples compile/run, the header compiles standalone,
+  fresh Doxygen covers30/30 definitions and four clangd hovers pass. Python/R
+  native help and owning-handle/error/unsigned-seed tests accompany normal package
+  builds and exact source-array parity across all three languages;39 focused
+  Python tests and180 R expectations across four files pass. Nine report
+  blocks, six reviewed figures and Markdown/HTML exports pass. Independent NumPy
+  checks all13,649 first gradients and1,724,800 predicted pixels. Evidence:
+  `build/nn-report-conversion/masked/`.
+
+- 2026-11-08: Added `nn/competitive_autoencoders.hpp`: detached stable signed
+  top-k/lifetime selectors, explicit training/deployment forward paths and owning
+  output handles. Full contracts cover ties, finite values, empty/strided inputs,
+  selected slots versus nonzero counts, original parameter layout and winner-only
+  local gradients. Extended `model_stage` to retain declared detached producers
+  in Blocks diagrams, with unchanged gradients, producer-order independence,
+  cycle rejection and documented view-dependent parameter reachability.
+  All77 model/layer/tape/plot tests pass; three model and five changed plotting
+  documentation examples compile/run,126/126 affected definitions and three
+  hovers pass. Python/R help and forwarding accompany their native ownership
+  tests;36 focused Python tests and152 R expectations across three files pass.
+  Evidence: `build/nn-report-conversion/k_sparse/`.
+
+- 2026-11-08: Added explicit MT19937/Box-Muller Gaussian banks and detached
+  clipped Gaussian corruption to `nn/autoencoder_models.hpp`. Contracts cover
+  Float32 coefficient/pixel rounding, signed zero, finite/range validation,
+  strided/empty inputs, independent RNG state and retained clean targets.
+  Thirteen native tests pass,12 header examples compile/run,30/30 definitions
+  pass fresh Doxygen and seven hovers pass. Independent checks cover2.8million
+  Gaussian values,3.1million corruption pixels and both complete first-step
+  parameter gradients/Adam updates. Python/R help and native forwarding replace
+  duplicated language-specific RNG/corruption and dense-model implementations.
+  Rebuilt bindings pass35 focused Python tests and141 R expectations across
+  three files; R numeric seed typemaps cover the full unsigned32 range.
+  Evidence: `build/nn-report-conversion/denoising/`.
+
+- 2026-11-08: Added the reusable spatial convolutional autoencoder and standalone
+  nearest-repeat decoder to `nn/autoencoder_models.hpp`. Contracts cover NHWC
+  geometry, dtype/stride support, original parameter names, initialization,
+  partial store mutation on incompatible leaves and retained endpoint gradients.
+  Ten model tests pass; all ten header examples compile/run,28/28 definitions
+  pass fresh Doxygen and five model hovers pass. Independent Float64 forward and
+  adjoint checks cover all741 parameter derivatives and156,800 held-out pixels.
+  Python/R ownership and garbage-collection tests pass, with34 focused Python
+  runtime tests and127 R expectations across three test files. Evidence:
+  `build/nn-report-conversion/convolutional/`.
+
+- 2026-11-08: Extended `nn/autoencoder_models.hpp` with the exact sigmoid
+  encoder-Jacobian penalty and untied contractive forward objective. Full
+  contracts cover coordinate sums versus batch means, retained activation/weight
+  derivatives, strided inputs, nonfinite propagation and parameter-store mutation.
+  Seven native tests include independent scalar gradients, full reverse-mode
+  Jacobians, second-derivative finite differences, geometry and original model
+  inventory. All six header examples compile/run, 16/16 definitions pass fresh
+  Doxygen and three model hovers pass. Python/R documentation and value ownership
+  accompany the SWIG surface; native garbage-collection tests pass in both.
+  Evidence: `build/nn-report-conversion/contractive/`.
+
+- 2026-11-08: Added `nn/autoencoder_models.hpp` with the reusable strict
+  undercomplete ReLU/sigmoid model and its differentiable output type; the
+  legacy SWIG-visible wrapper forwards to it. Added `Tape::to_markdown()` with
+  escaped table cells to avoid nested result fences in executable reports.
+  All three new documentation examples compile/run, 28/28 affected definitions
+  pass fresh Doxygen coverage, and both new clangd hovers pass. Three model tests
+  and the existing tape/model-plot suites pass (59 tests). Evidence:
+  `build/nn-report-conversion/coverage.json`, `hover.json`, `native-tests.log`,
+  `autoencoder-tests.log` and `header_examples.cpp`.
+
 - 2026-11-08: Extracted Goertzel into a shared checked ordered kernel
   in algorithms/goertzel.hpp/.cpp. The existing Hz/bin signatures preserve the
   legacy offset-then-truncate signed index, unsigned unreduced angle, ordered

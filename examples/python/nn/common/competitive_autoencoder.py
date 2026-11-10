@@ -1,4 +1,4 @@
-"""Hard winner competition autoencoders (examples/nn/common/competitive_autoencoder.hpp).
+"""Canonical C++ hard winner competition with host-owned experiment state.
 
 784 -> 64 -> 784 sigmoid autoencoders and their matched-weight plain controls,
 shared by k_sparse_autoencoder (per-image top-8 SIGNED activities of a LINEAR
@@ -8,15 +8,14 @@ values outside the graph (a constant), with TopK's tie rule: equal values select
 the lower index. Training steps are written out in each example.
 """
 from pydatamunge import nn
-from pydatamunge.nn_components import ae as _core
 from pydatamunge.nn_workflows import helper
 
 ae = helper("autoencoder")
 checks = helper("checks")
 
 
-competitive_mask = _core.CompetitiveMask
-competitive_autoencoder = _core.CompetitiveAutoencoder
+competitive_mask = nn.CompetitiveMask
+competitive_autoencoder = nn.CompetitiveAutoencoder
 
 
 class CompetitiveAutoencoderModel:
@@ -56,6 +55,29 @@ class CompetitiveAutoencoderModel:
             return [n.raw, n.mask, n.training_code, n.training_reconstruction]
 
 
-# The same C++ support/gradient fixtures used by the canonical examples.
-check_competitive_support = _core.CheckCompetitiveSupport
-competitive_checks = _core.CompetitiveChecks
+def check_competitive_support(probe, lifetime, plain):
+    """Check diagnostic invariants; the C++ core computes all masks and outputs."""
+    raw, mask, code = probe[:3]
+    b, f = raw.shape()
+    values = list(mask.values())
+    checks.require(all(v in (0, 1) for v in values), "binary selector")
+    checks.require(list(code.values()) == [a*m for a,m in zip(raw.values(),values)],
+                   "code equals selected actual activities")
+    if lifetime:
+        counts = [sum(values[row*f+column] for row in range(b)) for column in range(f)]
+        expected = b if plain else (b+7)//8
+    else:
+        counts = [sum(values[row*f:(row+1)*f]) for row in range(b)]
+        expected = f if plain else min(8,f)
+    checks.require(all(v == expected for v in counts), "exact selected slots on competition axis")
+
+
+def competitive_checks():
+    """Exercise native mask axes, stable signed ties and winner-only gradients."""
+    x = nn.from_vector([3,1,1,0,2,4,0,0,-1,-2,5,5,-4,-1,-2,-3], [4,4]).requires_grad_()
+    expected = ([1,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0],
+                [1,1,0,0,1,1,0,0,0,0,1,1,0,1,1,0])
+    for lifetime, values in zip((True,False),expected):
+        mask = nn.CompetitiveMask(x,lifetime,2)
+        checks.require(list(mask.values()) == values, "native toy winners")
+        checks.require(list(nn.grad(nn.sum(nn.mul(x,mask)),[x])[0].values()) == values, "native toy winner derivatives")

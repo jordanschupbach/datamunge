@@ -3,7 +3,7 @@
 """Spatial transformer networks: learned, differentiable affine warping of the input.
 
 Port of tflow's spatial_transformer. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 
 Check the grid generator and bilinear sampler (nn::affine_grid and
 nn::grid_sample with align_corners): the identity transform returns the

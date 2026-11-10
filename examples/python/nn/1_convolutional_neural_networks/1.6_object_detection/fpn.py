@@ -3,7 +3,7 @@
 """Feature pyramid networks: top-down semantics and lateral connections at every scale.
 
 Port of tflow's fpn. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 
 Check nearest-neighbour top-down fusion on odd rectangular maps against
 an independent host calculation, including every input derivative. Give

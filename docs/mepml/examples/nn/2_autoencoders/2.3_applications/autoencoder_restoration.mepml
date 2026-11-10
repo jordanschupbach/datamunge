@@ -1,0 +1,1102 @@
+//? Title: Autoencoder Restoration: Noisy Pixels and Missing Patches
+//? Subtitle: Three reproducible frozen models, target-free inference and exact observed-pixel copies
+//? Exports: both
+//? Lang: en-GB
+
+\abstract(
+Restoration applies a frozen model to a damaged observation; clean targets belong to evaluation.
+This report reuses two matched dense autoencoders and one visible-only masked transformer on
+200 held-out MNIST digits. Four complete native prerequisite programs reproduce the original
+three-epoch checkpoints; the restoration application then makes zero additional updates.
+At the training noise amplitude, denoising slightly improves on the noisy input but loses to
+the matched ordinary model. For missing patches, the masked model beats zero fill and the
+mismatched denoiser, but loses to a fitting-only pixel mean. All failures and unfiltered cases
+remain visible. Native patch selection preserves visible pixels bit-for-bit.
+)
+\toc
+
+> A damaged observation is the model input
+
+A denoising model learns to map corrupted observations to clean targets; here it is applied
+without a target, following the denoising criterion described by
+[Vincent et al. (2010)](https://www.jmlr.org/papers/v11/vincent10a.html).
+The masked model uses an encoder that sees visible patches only and a decoder that receives
+codes, locations and mask tokens, following the asymmetric idea of
+[He et al. (2021/2022)](https://arxiv.org/abs/2111.06377).
+These small teaching networks and short fits do not reproduce either paper's benchmark setup.
+
+```{cpp, results="markdown", file="figures/restoration_method.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::filesystem::create_directories("build");
+  dm::graphics::Diagram          d(51, 1100);
+  dm::graphics::DiagramNodeStyle st;
+  st.width     = 5.8;
+  st.height    = 2.8;
+  st.font_size = 18;
+  d.node("n", {0, 3}, "Corrupted observation\nGaussian noise + clipping", st)
+      .node("d", {8, 3}, "Frozen dense model\nObservation only", st)
+      .node("o", {16, 3}, "Denoised image\nClean target used to score", st)
+      .edge("n", "d")
+      .edge("d", "o");
+  d.node("v", {0, -4}, "Observed patches\n4 of 16 are visible", st)
+      .node("e", {8, -4}, "Frozen MAE encoder\nVisible patches + locations", st)
+      .node("g", {16, -4}, "Frozen MAE decoder\nCodes + locations + tokens", st)
+      .node("c", {24, -4}, "Composite image\nPredicted hidden / copied visible", st)
+      .edge("v", "e")
+      .edge("e", "g")
+      .edge("g", "c");
+  dm::graphics::DiagramStroke copy;
+  copy.arrow = true;
+  copy.color = {37, 99, 235};
+  d.path({{0, -5.4}, {0, -8}, {24, -8}, {24, -5.4}}, copy)
+      .text({12, -8.8}, "Visible observed pixels bypass prediction and are copied exactly", 18)
+      .text(
+          {12, -12},
+          "Clean hidden pixels are absent from inference.\nThree frozen stores stay unchanged; the "
+          "application has no optimizer.",
+          20)
+      .save_svg("build/restoration_method.svg");
+}
+```
+// result_begin: markdown
+\image(figures/restoration_method.svg)
+// result_end
+
+\caption(Gaussian denoising and patch completion have different inputs. The masked composite copies observations at visible locations and uses model predictions only at hidden locations.)
+\alttext(A denoising branch maps a corrupted observation through a frozen dense network. A separate masked branch encodes visible patches, decodes predictions and combines hidden predictions with exact visible observations.)
+
+> Four patches make the copy rule checkable
+
+Let hidden mask h=[0,1,0,1], observed patch values o=[2,9,4,9] and predictions p=[6,7,8,9].
+The composite is [2,7,4,9]. Hidden placeholders never become observed evidence. With target
+x=[2,1,4,3], hidden-only MSE is ((7−1)²+(9−3)²)/2=36; full-composite MSE is 18 because half
+the coordinates are hidden. The actual application hides twelve of sixteen equal-size patches,
+so its full-composite MSE is 0.75 times its hidden-only MSE.
+
+```{cpp, results="markdown", file="figures/restoration_copy_rule.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n           = dm::nn;
+  const auto t          = n::DType::Float64;
+  const auto observed   = n::tensor({2., 9., 4., 9.}, {1, 4, 1}, t),
+             prediction = n::tensor({6., 7., 8., 9.}, {1, 4, 1}, t),
+             hidden     = n::tensor({0., 1., 0., 1.}, {1, 4}, t),
+             target     = n::tensor({2., 1., 4., 3.}, {1, 4, 1}, t);
+  const auto visible    = n::models::VisiblePatchValues(observed, hidden),
+             composite  = n::models::CompositePatchValues(visible, prediction, hidden);
+  const double hm       = n::models::MaeLoss(composite, target, hidden).item(),
+               full     = n::mean(n::square(composite - target)).item();
+  if (hm != 36 || full != 18)
+    return 1;
+  std::print(
+      "| patch | hidden | observed placeholder | prediction | composite "
+      "|\n|---:|---:|---:|---:|---:|\n");
+  dm::graphics::Diagram          d(40, 1100);
+  dm::graphics::DiagramNodeStyle style;
+  style.width     = 4.2;
+  style.height    = 2.4;
+  style.font_size = 20;
+  for (int k = 0; k < 4; ++k) {
+    auto st          = style;
+    st.fill          = k % 2 ? dm::RGB{255, 237, 213} : dm::RGB{219, 234, 254};
+    const auto value = composite.at({0, k, 0});
+    d.node(
+        "p" + std::to_string(k),
+        {k * 5.6, 0},
+        std::format("Patch{}: {}\n{}", k, value, k % 2 ? "Predicted hidden" : "Copied visible"),
+        st);
+    std::print(
+        "| {} | {} | {} | {} | {} |\n",
+        k,
+        hidden.at({0, k}),
+        observed.at({0, k, 0}),
+        prediction.at({0, k, 0}),
+        value);
+  }
+  d.text(
+       {8.4, -4},
+       "Hidden MSE 36; full MSE 18 = one-half hidden MSE.\nThe original application uses hidden "
+       "fraction 12/16 = 0.75.",
+       20)
+      .save_svg("build/restoration_copy_rule.svg");
+}
+```
+// result_begin: markdown
+| patch | hidden | observed placeholder | prediction | composite |
+|---:|---:|---:|---:|---:|
+| 0 | 0 | 2 | 6 | 2 |
+| 1 | 1 | 9 | 7 | 7 |
+| 2 | 0 | 4 | 8 | 4 |
+| 3 | 1 | 9 | 9 | 9 |
+\image(figures/restoration_copy_rule.svg)
+// result_end
+
+\caption(The blue patches copy observed values exactly; orange patches use predictions. Arithmetic blending is unnecessary, so signed zeros in selected values are preserved too.)
+\alttext(Four coloured patch cells show copied visible values 2 and 4, with predicted hidden values 7 and 9. The hidden-only and full-error denominators are stated below.)
+
+The native generic functions accept finite signed Float32/64[B,P,D] patches and a detached
+same-dtype binary mask[B,P], with one meaning hidden. They support strides, all-visible and
+all-hidden masks, preserve selected values and retain selected continuous derivatives.
+Every value must be finite, including unselected branches. For image inference, MaePatches
+and MaeImage provide the fixed 7×7 tile mapping. A hidden mask is a location indicator, not
+a learned soft blending coefficient.
+
+> Reproduce the three prerequisite checkpoints locally
+
+The four complete programs below prepare genuine MNIST through the native configurable cache,
+then repeat the original three-epoch fits. They reproduce all 115,633 saved parameter values
+and the three checkpoint archives byte-for-byte. This preparation has 288 visible Adam updates:
+96 for each model. The restoration application that follows adds **zero** updates. No frozen
+weights are downloaded, embedded, manually placed or trained inside a preparation helper.
+
+All pools contain 1000 fit, 200 validation and 200 held-out test images, balanced by digit.
+Labels and source IDs describe provenance and masks; labels never enter autoencoder fitting.
+The two dense networks share seed 1657, 784→32 ReLU→784 sigmoid, 50,992 scalars and matched
+batch ordering. Each makes 96 Adam(.003) steps; the denoiser sees fresh sigma 0.35 corruption,
+while the ordinary control sees clean inputs. Both select on the same fixed noisy validation
+images and clean targets. The masked model has 13,649 scalars/35 leaves, two-head widths 32/16,
+four visible 7×7 patches and one block per side. Seed 1877, order 1889 and source-keyed masks
+reproduce its 96 steps. Validation hidden-pixel MSE selects its checkpoint.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build");
+  const std::filesystem::path cache = dm::datasets::data_home();
+  dm::datasets::prepare_example_data("mnist-assets", cache.string());
+  const auto pools           = n::models::LoadSaliency(cache / "saliency");
+  const auto validation_bank = n::models::GaussianNoise(pools[1].images.shape(), 1, 1709);
+  const auto test_bank       = n::models::GaussianNoise(pools[2].images.shape(), 1, 1711);
+  const auto second_bank     = n::models::GaussianNoise(pools[2].images.shape(), 1, 1717);
+  const auto validation = n::models::CorruptForDenoising(pools[1].images, validation_bank, .35f);
+  const auto test       = n::models::CorruptForDenoising(pools[2].images, test_bank, .35f);
+  n::save_npz(
+      "build/denoising_data.npz",
+      {{"fit_images", pools[0].images},
+       {"validation_images", pools[1].images},
+       {"test_images", pools[2].images},
+       {"fit_source_ids", pools[0].source},
+       {"validation_source_ids", pools[1].source},
+       {"test_source_ids", pools[2].source},
+       {"test_labels", pools[2].labels},
+       {"validation_standard_noise", validation_bank},
+       {"test_standard_noise", test_bank},
+       {"second_standard_noise", second_bank},
+       {"validation_corrupted", validation},
+       {"test_corrupted", test},
+       {"test_low", n::models::CorruptForDenoising(pools[2].images, test_bank, .15f)},
+       {"test_strong", n::models::CorruptForDenoising(pools[2].images, test_bank, .6f)},
+       {"test_second", n::models::CorruptForDenoising(pools[2].images, second_bank, .35f)}});
+  std::filesystem::copy_file(
+      cache / "saliency" / "manifest.json",
+      "build/denoising_data_manifest.json",
+      std::filesystem::copy_options::overwrite_existing);
+  std::print("| pool | images | pixels per image | examples per digit |\n|---|---:|---:|---:|\n");
+  for (int i = 0; i < 3; ++i)
+    std::print(
+        "| {} | {} | 784 | {} |\n",
+        i == 0   ? "fit"
+        : i == 1 ? "validation"
+                 : "test",
+        pools[i].images.size(0),
+        pools[i].images.size(0) / 10);
+}
+```
+// result_begin: markdown
+| pool | images | pixels per image | examples per digit |
+|---|---:|---:|---:|
+| fit | 1000 | 784 | 100 |
+| validation | 200 | 784 | 20 |
+| test | 200 | 784 | 20 |
+// result_end
+
+\caption(Native MNIST data and explicit Gaussian banks are prepared once; targets remain clean.)
+
+```{cpp, results="markdown", file="figures/restoration_denoising_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::map<std::string, n::Tensor> data;
+  for (const auto& [name, value] : n::load_npz("build/denoising_data.npz"))
+    data.emplace(name, value);
+  const auto               fit               = data.at("fit_images");
+  const auto               validation        = data.at("validation_corrupted").reshape({200, 784});
+  const auto               validation_target = data.at("validation_images").reshape({200, 784});
+  std::vector<double>      matched_initial;
+  auto                     plot = dm::graphics::RPlot::create();
+  std::vector<std::string> gradient_notes;
+  std::print(
+      "| fit | epoch | fitting pre-update clean-target MSE | fixed noisy-validation MSE "
+      "|\n|---|---:|---:|---:|\n");
+  for (const std::string variant : {"denoising", "ordinary"}) {
+    const std::string prefix = "build/denoising_" + variant;
+    n::ParameterStore p(1657);
+    {
+      n::NoGradGuard guard;
+      n::models::UndercompleteAutoencoder(p, n::zeros({1, 784}));
+    }
+    if (variant == "denoising")
+      matched_initial = p.flatten();
+    else if (matched_initial != p.flatten())
+      return 1;
+    p.save(prefix + "_initial.npz");
+    n::OptimizerConfig config;
+    config.kind = n::OptimizerKind::Adam;
+    n::Optimizer        optimizer(p, .003, config);
+    n::BatchOrder       batches(1000, 32, 1663);
+    double              best     = std::numeric_limits<double>::infinity();
+    int                 selected = 0, updates = 0;
+    std::vector<double> epochs, valid;
+    for (int epoch = 1; epoch <= 3; ++epoch) {
+      n::Tensor corrupted;
+      if (variant == "denoising") {
+        const auto bank = n::models::GaussianNoise(fit.shape(), 1, std::uint32_t(1671 + epoch));
+        corrupted       = n::models::CorruptForDenoising(fit, bank, .35f);
+        n::save_npz(
+            "build/denoising_train_epoch" + std::to_string(epoch) + ".npz",
+            {{"standard_noise", bank}, {"corrupted", corrupted}});
+      }
+      batches.begin_epoch();
+      double total = 0;
+      int    seen  = 0;
+      for (;;) {
+        const auto rows = batches.next();
+        if (rows.empty())
+          break;
+        const auto clean = n::take_rows(fit, rows);
+        const auto input = variant == "ordinary" ? clean : n::take_rows(corrupted, rows);
+        const auto net =
+            n::models::UndercompleteAutoencoder(p, input.reshape({input.size(0), 784}));
+        const auto objective = n::mse(net.reconstruction, clean.reshape({clean.size(0), 784}));
+        if (updates == 0) {
+          n::GradOptions keep;
+          keep.retain_graph         = true;
+          const auto      gradients = n::grad(objective, p.parameters(), keep);
+          n::NamedTensors arrays;
+          for (std::size_t i = 0; i < gradients.size(); ++i) {
+            const double norm = n::sqrt(n::sum(n::square(gradients[i]))).item();
+            if (!std::isfinite(norm) || norm <= 0)
+              return 1;
+            arrays.emplace_back(p.names()[i], gradients[i]);
+            gradient_notes.push_back(
+                std::format("| {} | {} | {:.8f} |\n", variant, p.names()[i], norm));
+          }
+          n::save_npz(prefix + "_first_gradients.npz", arrays);
+          n::save_npz(prefix + "_first_batch.npz", {{"input", input}, {"clean_target", clean}});
+        }
+        const double value = objective.item();
+        if (!std::isfinite(value) || value < 0)
+          return 1;
+        total += rows.size() * value;
+        seen += int(rows.size());
+        optimizer.minimize(objective);
+        if (updates == 0)
+          p.save(prefix + "_first_update.npz");
+        ++updates;
+      }
+      n::NoGradGuard guard;
+      const double   score =
+          n::mse(
+              n::models::UndercompleteAutoencoder(p, validation).reconstruction, validation_target)
+              .item();
+      if (seen != 1000 || !std::isfinite(score))
+        return 1;
+      p.save(prefix + "_epoch" + std::to_string(epoch) + ".npz");
+      if (score < best) {
+        best     = score;
+        selected = epoch;
+        p.save(prefix + "_best.npz");
+      }
+      epochs.push_back(epoch);
+      valid.push_back(score);
+      std::print("| {} | {} | {:.9f} | {:.9f} |\n", variant, epoch, total / seen, score);
+    }
+    if (updates != 96 || p.count() != 50992)
+      return 1;
+    n::save_npz(
+        prefix + "_selection.npz",
+        {{"epoch", n::full({}, selected, n::DType::Int32)},
+         {"validation_mse", n::full({}, best, n::DType::Float64)}});
+    plot.lines(
+        epochs,
+        valid,
+        variant + " validation",
+        variant == "denoising" ? dm::graphics::RGB{37, 99, 235} : dm::graphics::RGB{220, 38, 38},
+        2.);
+  }
+  std::print("\n| fit | parameter | first gradient L2 norm |\n|---|---|---:|\n");
+  for (const auto& line : gradient_notes)
+    std::print("{}", line);
+  plot.x_label("epoch")
+      .y_label("fixed noisy-validation MSE to clean target")
+      .title("Matched models: both selected for the same denoising task")
+      .save_svg("build/restoration_denoising_learning.svg");
+}
+```
+// result_begin: markdown
+| fit | epoch | fitting pre-update clean-target MSE | fixed noisy-validation MSE |
+|---|---:|---:|---:|
+| denoising | 1 | 0.108331573 | 0.069000944 |
+| denoising | 2 | 0.070445193 | 0.064252168 |
+| denoising | 3 | 0.064372182 | 0.057641771 |
+| ordinary | 1 | 0.110654088 | 0.067978129 |
+| ordinary | 2 | 0.065757466 | 0.059495557 |
+| ordinary | 3 | 0.055960271 | 0.051331125 |
+
+| fit | parameter | first gradient L2 norm |
+|---|---|---:|
+| denoising | encoder/W | 0.00998684 |
+| denoising | encoder/b | 0.00133143 |
+| denoising | decoder/W | 0.01424840 |
+| denoising | decoder/b | 0.00732623 |
+| ordinary | encoder/W | 0.00779895 |
+| ordinary | encoder/b | 0.00128825 |
+| ordinary | decoder/W | 0.01079268 |
+| ordinary | decoder/b | 0.00732713 |
+\image(figures/restoration_denoising_learning.svg)
+// result_end
+
+\caption(Both matched dense fits run three complete epochs; each has its own selected checkpoint.)
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::filesystem::create_directories("build");
+  const std::filesystem::path cache = dm::datasets::data_home();
+  dm::datasets::prepare_example_data("mnist-assets", cache.string());
+  const auto      pools = n::models::LoadSaliency(cache / "saliency");
+  n::NamedTensors data;
+  std::print("| pool | images | per digit | hidden pixels per image |\n|---|---:|---:|---:|\n");
+  for (int split = 0; split < 3; ++split) {
+    const std::string name = split == 0 ? "fit" : split == 1 ? "validation" : "test";
+    data.emplace_back(name + "_images", pools[split].images);
+    data.emplace_back(name + "_source_ids", pools[split].source);
+    data.emplace_back(name + "_labels", pools[split].labels);
+    std::print(
+        "| {} | {} | {} | 588 |\n",
+        name,
+        pools[split].images.size(0),
+        pools[split].images.size(0) / 10);
+  }
+  n::save_npz("build/masked_data.npz", data);
+  std::filesystem::copy_file(
+      cache / "saliency" / "manifest.json",
+      "build/masked_data_manifest.json",
+      std::filesystem::copy_options::overwrite_existing);
+}
+```
+// result_begin: markdown
+| pool | images | per digit | hidden pixels per image |
+|---|---:|---:|---:|
+| fit | 1000 | 100 | 588 |
+| validation | 200 | 20 | 588 |
+| test | 200 | 20 | 588 |
+// result_end
+
+\caption(Native MNIST inputs and source IDs prepare the masked fit without hidden-target leakage into its encoder.)
+
+```{cpp, results="markdown", file="figures/restoration_masked_learning.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n = dm::nn;
+  std::map<std::string, n::Tensor> data;
+  for (const auto& [name, value] : n::load_npz("build/masked_data.npz"))
+    data.emplace(name, value);
+  const auto fit = data.at("fit_images"), validation = data.at("validation_images"),
+             test = data.at("test_images");
+  n::ParameterStore p(1877);
+  {
+    n::NoGradGuard     guard;
+    std::vector<float> first(64);
+    for (int i = 0; i < 4; ++i)
+      first[i * 16 + i] = 1;
+    n::models::MaskedAutoencoder(p, n::zeros({1, 28, 28, 1}), n::from_vector(first, {1, 4, 16}));
+    p.save("build/masked_initial.npz");
+    const auto initial =
+        n::models::MaskedAutoencoder(p, test, n::models::MaeSelection(data.at("test_source_ids")));
+    n::save_npz(
+        "build/masked_initial_outputs.npz",
+        {{"code", initial.code}, {"prediction", initial.prediction}});
+  }
+  n::OptimizerConfig config;
+  config.kind = n::OptimizerKind::Adam;
+  n::Optimizer  optimizer(p, .003, config);
+  n::BatchOrder order(1000, 32, 1889);
+  const auto    validation_selection = n::models::MaeSelection(data.at("validation_source_ids"));
+  double        best                 = std::numeric_limits<double>::infinity();
+  int           selected = 0, updates = 0;
+  std::ofstream batches("build/masked_batches.tsv");
+  batches << "epoch\tstep\trow\tsource_id\n";
+  const auto          source = data.at("fit_source_ids").to_vector<int>();
+  std::vector<double> epochs, train, valid;
+  std::print(
+      "| epoch | fitting pre-update masked MSE | validation masked MSE |\n|---:|---:|---:|\n");
+  for (int epoch = 1; epoch <= 3; ++epoch) {
+    order.begin_epoch();
+    const auto all_masks = n::models::MaeSelection(data.at("fit_source_ids"), epoch);
+    n::save_npz(
+        "build/masked_epoch" + std::to_string(epoch) + "_mask.npz", {{"selection", all_masks}});
+    double total = 0;
+    int    seen  = 0;
+    for (;;) {
+      const auto rows = order.next();
+      if (rows.empty())
+        break;
+      const auto images = n::take_rows(fit, rows), selection = n::take_rows(all_masks, rows);
+      const auto net  = n::models::MaskedAutoencoder(p, images, selection);
+      const auto loss = n::models::MaeLoss(net.prediction, net.patches, net.mask);
+      if (updates == 0) {
+        n::GradOptions keep;
+        keep.retain_graph         = true;
+        const auto      gradients = n::grad(loss, p.parameters(), keep);
+        n::NamedTensors saved;
+        for (std::size_t i = 0; i < gradients.size(); ++i) {
+          const auto norm = n::sqrt(n::sum(n::square(gradients[i]))).item();
+          if (!std::isfinite(norm) || norm <= 0)
+            return 1;
+          saved.emplace_back(p.names()[i], gradients[i]);
+        }
+        n::save_npz("build/masked_first_gradients.npz", saved);
+        n::save_npz("build/masked_first_batch.npz", {{"images", images}, {"selection", selection}});
+      }
+      const double value = loss.item();
+      if (!std::isfinite(value) || value < 0)
+        return 1;
+      optimizer.minimize(loss);
+      total += rows.size() * value;
+      seen += int(rows.size());
+      for (auto row : rows)
+        batches << epoch << '\t' << updates << '\t' << row << '\t' << source[row] << '\n';
+      if (updates == 0)
+        p.save("build/masked_first_update.npz");
+      ++updates;
+    }
+    n::NoGradGuard guard;
+    const auto     net   = n::models::MaskedAutoencoder(p, validation, validation_selection);
+    const double   score = n::models::MaeLoss(
+                             n::cast(net.prediction, n::DType::Float64),
+                             n::cast(net.patches, n::DType::Float64),
+                             n::cast(net.mask, n::DType::Float64))
+                             .item();
+    if (seen != 1000 || !std::isfinite(score))
+      return 1;
+    p.save("build/masked_epoch" + std::to_string(epoch) + ".npz");
+    if (score < best) {
+      best     = score;
+      selected = epoch;
+      p.save("build/masked_best.npz");
+    }
+    epochs.push_back(epoch);
+    train.push_back(total / seen);
+    valid.push_back(score);
+    std::print("| {} | {:.9f} | {:.9f} |\n", epoch, total / seen, score);
+  }
+  if (updates != 96 || !batches)
+    return 1;
+  n::save_npz(
+      "build/masked_selection.npz",
+      {{"epoch", n::full({}, selected, n::DType::Int32)},
+       {"validation_mse", n::full({}, best, n::DType::Float64)},
+       {"epochs", n::from_vector(epochs, {3})},
+       {"fit_mse", n::from_vector(train, {3})},
+       {"validation_path", n::from_vector(valid, {3})}});
+  dm::graphics::RPlot::create()
+      .lines(epochs, train, "fit: changing masks", {37, 99, 235}, 2.)
+      .lines(epochs, valid, "validation: fixed masks", {220, 38, 38}, 2.)
+      .x_label("epoch")
+      .y_label("hidden-pixel MSE")
+      .title("Visible-only MAE: three epochs / 96 Adam updates")
+      .save_svg("build/restoration_masked_learning.svg");
+  std::print(
+      "Selected epoch {}; {} updates; every first parameter gradient finite and nonzero.\n",
+      selected,
+      updates);
+}
+```
+// result_begin: markdown
+| epoch | fitting pre-update masked MSE | validation masked MSE |
+|---:|---:|---:|
+| 1 | 0.149243645 | 0.100740956 |
+| 2 | 0.097578129 | 0.089629951 |
+| 3 | 0.085430081 | 0.076652002 |
+Selected epoch 3; 96 updates; every first parameter gradient finite and nonzero.
+\image(figures/restoration_masked_learning.svg)
+// result_end
+
+\caption(All 96 masked-model updates remain visible. Fixed validation masks, not test results, choose the saved weights.)
+
+> Freeze the models, then change the corruption
+
+The application restores all 4+4+35 leaves and checks all three stores for immutability.
+A new independent Gaussian bank uses seed 4229 for all 200 test cases. The same standard draws
+are reused at sigma 0,0.15,0.35 and 0.6, with Float32 sigma, Float64 addition, Float32 rounding
+and clipping to [0,1]. Only 0.35 matches the denoiser's training amplitude; the other settings
+are sensitivity controls. Raw noisy input, the matched ordinary network and a fitting-only
+pixel mean remain comparison baselines. PSNR is 10log10(1/global MSE), with unit pixel range;
+it is not an average of per-image PSNR values.
+
+Inpainting uses a fresh source-keyed selector with seed 4243 and epoch 0: four visible patches
+and twelve hidden, 588 hidden pixels per case. Inference receives observed pixels plus locations.
+The application replaces every hidden value with 0, then 1, then the true clean values and checks
+that the actual MAE code/prediction are bit-exact under all three inputs. Clean targets are
+used only to score the completed output. The Gaussian denoiser applied to a masked image is
+an explicit corruption mismatch baseline, not a fair architecture ranking.
+
+```{cpp, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+namespace nn = dm::nn;
+namespace ae {
+void Require(bool ok, const std::string& why) {
+  if (!ok)
+    throw std::runtime_error(why);
+}
+void Near(double a, double b, double tol, const std::string& why) {
+  Require(std::abs(a - b) <= tol, why);
+}
+nn::Tensor Find(const nn::NamedTensors& a, const std::string& name) {
+  for (const auto& [key, value] : a)
+    if (key == name)
+      return value;
+  throw std::runtime_error(name);
+}
+nn::NamedTensors Arrays(const nn::ParameterStore& p) {
+  nn::NamedTensors a;
+  for (const auto& name : p.names())
+    a.emplace_back(name, p.at(name).detach().clone());
+  return a;
+}
+auto Snapshot(const nn::ParameterStore& p) {
+  return p.flatten();
+}
+double Mse(const nn::Tensor& a, const nn::Tensor& b) {
+  return nn::mean(
+             nn::square(
+                 nn::cast(a.reshape({a.size(0), 784}), nn::DType::Float64) -
+                 nn::cast(b.reshape({b.size(0), 784}), nn::DType::Float64)))
+      .item();
+}
+nn::Tensor PixelMean(const nn::Tensor& x) {
+  return nn::cast(
+      nn::mean(nn::cast(x.reshape({x.size(0), 784}), nn::DType::Float64), {0}), nn::DType::Float32);
+}
+nn::Tensor Constant(const nn::Tensor& row, int n) {
+  return nn::broadcast_to(row.reshape({1, 784}), {n, 784}).contiguous();
+}
+
+using nn::models::CorruptForDenoising;
+using nn::models::GaussianNoise;
+using nn::models::LoadSaliency;
+using nn::models::MaeImage;
+using nn::models::MaeSelection;
+int MaePixel(int patch, int within) {
+  return int(nn::models::MaePixel(patch, within));
+}
+bool MaeHidden(const std::vector<float>& selection, std::int64_t row, int patch) {
+  float used = 0;
+  for (int r = 0; r < 4; ++r)
+    used += selection[(row * 4 + r) * 16 + patch];
+  return used == 0;
+}
+void WarmDense(nn::ParameterStore& p) {
+  nn::NoGradGuard guard;
+  nn::models::UndercompleteAutoencoder(p, nn::zeros({1, 784}));
+}
+void WarmMasked(nn::ParameterStore& p) {
+  nn::NoGradGuard    guard;
+  std::vector<float> s(64);
+  for (int k = 0; k < 4; ++k)
+    s[k * 16 + k] = 1;
+  nn::models::MaskedAutoencoder(p, nn::zeros({1, 28, 28, 1}), nn::from_vector(s, {1, 4, 16}));
+}
+std::vector<nn::Tensor> Predict(nn::ParameterStore& p, const nn::Tensor& images) {
+  nn::NoGradGuard guard;
+  const auto out = nn::models::UndercompleteAutoencoder(p, images.reshape({images.size(0), 784}));
+  return {out.code, out.reconstruction};
+}
+std::vector<nn::Tensor>
+RestoreVisible(nn::ParameterStore& p, const nn::Tensor& observed, const nn::Tensor& selector) {
+  nn::NoGradGuard guard;
+  const auto      e = nn::models::MaeEncode(p, observed, selector);
+  const auto      d = nn::models::MaeDecode(p, e.code, selector);
+  return {e.code.contiguous(), d.prediction.contiguous()};
+}
+nn::Tensor VisibleImage(const nn::Tensor& original, const nn::Tensor& selection, double fill = 0) {
+  const auto hidden = 1. - nn::sum(selection, {1});
+  return nn::models::MaeImage(
+             nn::models::VisiblePatchValues(nn::models::MaePatches(original), hidden, fill))
+      .reshape(original.shape());
+}
+nn::Tensor InpaintComposite(
+    const nn::Tensor& observed,
+    const nn::Tensor& prediction,
+    const nn::Tensor& selection) {
+  const auto n = observed.size(0);
+  return nn::models::MaeImage(
+      nn::models::CompositePatchValues(
+          nn::models::MaePatches(observed.reshape({n, 28, 28, 1})),
+          nn::models::MaePatches(prediction.reshape({n, 28, 28, 1})),
+          1. - nn::sum(selection, {1})));
+}
+double HiddenRestorationMse(
+    const nn::Tensor& prediction,
+    const nn::Tensor& clean,
+    const nn::Tensor& selection) {
+  const auto n = clean.size(0);
+  return nn::models::MaeLoss(
+             nn::models::MaePatches(
+                 nn::cast(prediction.reshape({n, 28, 28, 1}), nn::DType::Float64)),
+             nn::models::MaePatches(nn::cast(clean.reshape({n, 28, 28, 1}), nn::DType::Float64)),
+             nn::cast(1. - nn::sum(selection, {1}), nn::DType::Float64))
+      .item();
+}
+} // namespace ae
+namespace check {
+using ae::Near;
+using ae::Require;
+} // namespace check
+namespace {
+
+namespace nn = datamunge::nn;
+
+void Run(
+    const std::filesystem::path& data,
+    const std::filesystem::path& models,
+    const std::filesystem::path& root) {
+  auto pools = ae::LoadSaliency(data);
+  std::filesystem::create_directories(root);
+  nn::ParameterStore denoising(1657), ordinary(1657);
+  ae::WarmDense(denoising);
+  ae::WarmDense(ordinary);
+  nn::ParameterStore masked(1877);
+  ae::WarmMasked(masked);
+  denoising.load((models / "denoising_denoising_best.npz").string());
+  ordinary.load((models / "denoising_ordinary_best.npz").string());
+  masked.load((models / "masked_best.npz").string());
+  const auto db = ae::Snapshot(denoising), ob = ae::Snapshot(ordinary), mb = ae::Snapshot(masked);
+  const auto clean = pools[2].images;
+  std::map<std::string, nn::Tensor> arrays;
+  for (int k = 0; k < 3; ++k) {
+    const std::string split = k == 0 ? "fit" : k == 1 ? "validation" : "test";
+    arrays.emplace(split + "_images", pools[k].images);
+    arrays.emplace(split + "_labels", pools[k].labels);
+    arrays.emplace(split + "_source_ids", pools[k].source);
+  }
+  const auto standard = ae::GaussianNoise(clean.shape(), 1, 4229);
+  arrays.emplace("standard_noise", standard);
+  const auto mean = ae::PixelMean(pools[0].images), mean_images = ae::Constant(mean, 200);
+  arrays.emplace("fit_pixel_mean", mean);
+  arrays.emplace("mean_images", mean_images);
+  std::ofstream table(root / "denoising.tsv");
+  table.precision(17);
+  table << "condition\tsigma\tnoisy_input_mse\tdenoising_mse\tordinary_mse\tfit_mean_"
+           "mse\tdenoising_global_psnr_db\n";
+  const std::vector<std::string> conditions{"clean", "low", "trained_sigma", "high"};
+  const float                    sigmas[] = {0, .15f, .35f, .6f};
+  for (int k = 0; k < 4; ++k) {
+    auto input = ae::CorruptForDenoising(clean, standard, sigmas[k]);
+    auto d = ae::Predict(denoising, input), o = ae::Predict(ordinary, input);
+    if (!k)
+      check::Require(nn::equal_bits(input, clean), "sigma0exactcleanidentity");
+    arrays.emplace(conditions[k] + "_input", input);
+    arrays.emplace(conditions[k] + "_denoising", d[1]);
+    arrays.emplace(conditions[k] + "_ordinary", o[1]);
+    const double dm = ae::Mse(d[1], clean), raw = ae::Mse(input, clean), om = ae::Mse(o[1], clean);
+    table << conditions[k] << '\t' << sigmas[k] << '\t' << raw << '\t' << dm << '\t' << om << '\t'
+          << ae::Mse(mean_images, clean) << '\t' << 10 * std::log10(1 / dm) << '\n';
+    std::cout << conditions[k] << ":inputMSE=" << raw << ",denoised=" << dm << ",ordinary=" << om
+              << std::endl;
+  }
+  const auto selection   = ae::MaeSelection(pools[2].source, 0, 4243),
+             observed    = ae::VisibleImage(clean, selection, 0),
+             changed     = ae::VisibleImage(clean, selection, 1);
+  const auto inferred    = ae::RestoreVisible(masked, observed, selection),
+             probe       = ae::RestoreVisible(masked, changed, selection),
+             clean_probe = ae::RestoreVisible(masked, clean, selection);
+  check::Require(
+      nn::equal_bits(inferred[0], probe[0]) && nn::equal_bits(inferred[1], probe[1]) &&
+          nn::equal_bits(inferred[1], clean_probe[1]),
+      "actual MAEgraph predictions BITEXACTindependent of ALLhiddenpixel values");
+  const auto hidden_prediction = ae::MaeImage(inferred[1]),
+             composite         = ae::InpaintComposite(observed, hidden_prediction, selection),
+             mean_fill         = ae::InpaintComposite(observed, mean_images, selection);
+  const auto d_masked          = ae::Predict(denoising, observed)[1],
+             d_fill            = ae::InpaintComposite(observed, d_masked, selection);
+  {
+    const auto c = composite.to_vector<float>(), x = clean.contiguous().to_vector<float>(),
+               s = selection.to_vector<float>();
+    for (int b = 0; b < 200; ++b)
+      for (int p = 0; p < 16; ++p)
+        if (!ae::MaeHidden(s, b, p))
+          for (int i = 0; i < 49; ++i) {
+            const int index = b * 784 + ae::MaePixel(p, i);
+            check::Near(c[index], x[index], 0, "observed pixels copied BITEXACT");
+          }
+  }
+  for (const auto& [key, value] : std::map<std::string, nn::Tensor>{
+           {"selection", selection},
+           {"observed", observed},
+           {"hidden_changed", changed},
+           {"mae_code", inferred[0]},
+           {"mae_patch_prediction", inferred[1]},
+           {"mae_hidden_prediction", hidden_prediction},
+           {"mae_composite", composite},
+           {"mean_composite", mean_fill},
+           {"denoising_masked_prediction", d_masked},
+           {"denoising_composite", d_fill}})
+    arrays.emplace(key, value);
+  check::Require(
+      db == ae::Snapshot(denoising) && ob == ae::Snapshot(ordinary) && mb == ae::Snapshot(masked),
+      "all restoration calls leave THREE models immutable");
+  nn::save_npz((root / "analysis.npz").string(), nn::NamedTensors(arrays.begin(), arrays.end()));
+  nn::save_npz((root / "denoising_arrays.npz").string(), ae::Arrays(denoising));
+  nn::save_npz((root / "ordinary_arrays.npz").string(), ae::Arrays(ordinary));
+  nn::save_npz((root / "masked_arrays.npz").string(), ae::Arrays(masked));
+  if (std::filesystem::exists(data / "manifest.json"))
+    std::filesystem::copy_file(
+        data / "manifest.json",
+        root / "data_manifest.json",
+        std::filesystem::copy_options::overwrite_existing);
+  const double hidden_mse = ae::HiddenRestorationMse(composite, clean, selection),
+               mean_mse   = ae::HiddenRestorationMse(mean_fill, clean, selection),
+               d_mse      = ae::HiddenRestorationMse(d_fill, clean, selection),
+               zero_mse   = ae::HiddenRestorationMse(observed, clean, selection);
+  std::ofstream meta(root / "metrics.json");
+  meta.precision(17);
+  meta << "{\"additional_training_updates\":0,\"denoising_parameters\":" << denoising.count()
+       << ",\"ordinary_parameters\":" << ordinary.count()
+       << ",\"masked_parameters\":" << masked.count()
+       << ",\"test_records\":200,\"visible_patches\":4,\"hidden_patches\":12,\"hidden_pixels_per_"
+          "case\":588,\"mae_hidden_mse\":"
+       << hidden_mse << ",\"fit_mean_hidden_mse\":" << mean_mse
+       << ",\"denoising_hidden_mse\":" << d_mse << ",\"zero_hidden_mse\":" << zero_mse
+       << ",\"mae_composite_full_mse\":" << ae::Mse(composite, clean)
+       << ",\"hidden_values_prediction_max_effect\":0,\"observed_composite_max_error\":0}\n";
+  check::Require(denoising.count() == 50992 && masked.count() == 13649, "50992/13649 inventories");
+  check::Require(bool(meta) && bool(table), "complete frozen restoration evidence");
+  std::print(
+      "| application updates | hidden MAE MSE | hidden fit-mean MSE | hidden DAE mismatch MSE | "
+      "hidden zero-fill MSE |\n|---:|---:|---:|---:|---:|\n| 0 | {:.9f} | {:.9f} | {:.9f} | {:.9f} "
+      "|\n",
+      hidden_mse,
+      mean_mse,
+      d_mse,
+      zero_mse);
+}
+} // namespace
+int main() {
+  try {
+    const auto cache = std::filesystem::path(dm::datasets::data_home());
+    dm::datasets::prepare_example_data("mnist-assets", cache.string());
+    Run(cache / "saliency", "build", "build/restoration");
+    return 0;
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+    return 1;
+  }
+}
+```
+// result_begin: markdown
+clean:inputMSE=0,denoised=0.0649626,ordinary=0.0505124
+low:inputMSE=0.0120894,denoised=0.0609861,ordinary=0.0512714
+trained_sigma:inputMSE=0.0624788,denoised=0.0599199,ordinary=0.0538027
+high:inputMSE=0.150062,denoised=0.0626906,ordinary=0.0582024
+| application updates | hidden MAE MSE | hidden fit-mean MSE | hidden DAE mismatch MSE | hidden zero-fill MSE |
+|---:|---:|---:|---:|---:|
+| 0 | 0.080207870 | 0.068529514 | 0.128177904 | 0.116914096 |
+// result_end
+
+\caption(Application updates remain 0. Hidden MSE is 0.080207870 for MAE, 0.068529514 for the fitting mean, 0.128177904 for the denoiser on missing patches and 0.116914096 for zero fill. Visible observed pixels are copied exactly.)
+
+All four archives/4,704,817 values match the frozen original. The three model archives also
+match the freshly reproduced prerequisite files. Float64 tensor summaries may differ from
+host-order reductions at roundoff scale; they do not change predictions or any selected model.
+
+> Noise sensitivity includes the clean-input failure
+
+```{cpp, results="markdown", file="figures/restoration_noise.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  std::ifstream input("build/restoration/denoising.tsv");
+  std::string   header, name;
+  std::getline(input, header);
+  std::vector<double> sigma, raw, dae, ordinary, mean;
+  double              s, r, d, o, m, psnr;
+  std::print(
+      "| condition | sigma | raw MSE | denoiser MSE | ordinary MSE | fit mean MSE | denoiser "
+      "global PSNR dB |\n|---|---:|---:|---:|---:|---:|---:|\n");
+  while (input >> name >> s >> r >> d >> o >> m >> psnr) {
+    sigma.push_back(s);
+    raw.push_back(r);
+    dae.push_back(d);
+    ordinary.push_back(o);
+    mean.push_back(m);
+    std::print(
+        "| {} | {:.2f} | {:.9f} | {:.9f} | {:.9f} | {:.9f} | {:.6f} |\n",
+        name,
+        s,
+        r,
+        d,
+        o,
+        m,
+        psnr);
+  }
+  if (sigma.size() != 4)
+    return 1;
+  auto chart = dm::graphics::RPlot::create();
+  chart.lines(sigma, raw, "raw input", dm::RGBA{100, 116, 139}, 2)
+      .points(sigma, raw, "", dm::RGBA{100, 116, 139}, 5)
+      .lines(sigma, dae, "denoiser", dm::RGBA{37, 99, 235}, 2)
+      .points(sigma, dae, "", dm::RGBA{37, 99, 235}, 5)
+      .lines(sigma, ordinary, "ordinary", dm::RGBA{220, 38, 38}, 2)
+      .points(sigma, ordinary, "", dm::RGBA{220, 38, 38}, 5)
+      .lines(sigma, mean, "fit mean", dm::RGBA{147, 51, 234}, 2)
+      .title("Frozen-model Gaussian restoration / same draws across amplitudes")
+      .x_label("sigma before rounding and clipping")
+      .y_label("global test pixel MSE")
+      .x_limits(-.02, .86)
+      .x_ticks({0, .15, .35, .6}, {"0", "0.15", "0.35", "0.6"})
+      .save_svg("build/restoration_noise.svg");
+}
+```
+// result_begin: markdown
+| condition | sigma | raw MSE | denoiser MSE | ordinary MSE | fit mean MSE | denoiser global PSNR dB |
+|---|---:|---:|---:|---:|---:|---:|
+| clean | 0.00 | 0.000000000 | 0.064962645 | 0.050512425 | 0.067798074 | 11.873363 |
+| low | 0.15 | 0.012089430 | 0.060986053 | 0.051271381 | 0.067798074 | 12.147695 |
+| trained_sigma | 0.35 | 0.062478838 | 0.059919873 | 0.053802700 | 0.067798074 | 12.224291 |
+| high | 0.60 | 0.150061760 | 0.062690606 | 0.058202377 | 0.067798074 | 12.027975 |
+\image(figures/restoration_noise.svg)
+// result_end
+
+\caption(At sigma 0.35, denoising MSE 0.059920 is below raw input 0.062479 but above the ordinary model 0.053803. Clean and low-noise input can beat a blurry learned reconstruction; no hyperparameter is selected from these test curves.)
+\alttext(Four frozen-model error curves compare raw input, denoising, ordinary reconstruction and a fitting-only mean across the same four noise amplitudes.)
+
+> Score hidden patches with a hidden-only denominator
+
+The next program recomputes four hidden losses through native patch mapping and MaeLoss.
+It also checks full-composite MSE=0.75×hidden MSE for the masked composite. Because all visible
+pixels are copied, the full-image score includes zero visible error; using it without the
+hidden fraction would understate completion error.
+
+```{cpp, results="markdown", file="figures/restoration_hidden_mse.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n     = dm::nn;
+  const auto a    = n::load_npz("build/restoration/analysis.npz");
+  auto       find = [&](const std::string& name) {
+    for (const auto& [key, value] : a)
+      if (key == name)
+        return value;
+    throw std::runtime_error(name);
+  };
+  const auto hidden = n::cast(1. - n::sum(find("selection"), {1}), n::DType::Float64),
+             target = n::models::MaePatches(n::cast(find("test_images"), n::DType::Float64));
+  const std::vector<std::string> names{
+      "mae_composite", "mean_composite", "denoising_composite", "observed"},
+      labels{"MAE", "fit mean", "DAE mismatch", "zero fill"};
+  std::vector<double> cost;
+  std::print("| completion | hidden-only MSE |\n|---|---:|\n");
+  for (int i = 0; i < 4; ++i) {
+    const auto value =
+        n::models::MaePatches(n::cast(find(names[i]).reshape({200, 28, 28, 1}), n::DType::Float64));
+    cost.push_back(n::models::MaeLoss(value, target, hidden).item());
+    std::print("| {} | {:.9f} |\n", labels[i], cost.back());
+  }
+  const double full = n::mean(
+                          n::square(
+                              n::cast(find("mae_composite"), n::DType::Float64) -
+                              n::cast(find("test_images").reshape({200, 784}), n::DType::Float64)))
+                          .item();
+  if (std::abs(full - .75 * cost[0]) > 2e-13)
+    return 1;
+  auto chart = dm::graphics::RPlot::create();
+  chart.bars({0, 1, 2, 3}, cost, "hidden MSE", dm::RGBA{37, 99, 235}, .65)
+      .x_ticks({0, 1, 2, 3}, labels)
+      .x_limits(-.7, 4.4)
+      .title("Missing-patch restoration / all 200 held-out cases")
+      .x_label("frozen completion rule")
+      .y_label("mean squared error on 588 hidden pixels per case")
+      .save_svg("build/restoration_hidden_mse.svg");
+}
+```
+// result_begin: markdown
+| completion | hidden-only MSE |
+|---|---:|
+| MAE | 0.080207870 |
+| fit mean | 0.068529514 |
+| DAE mismatch | 0.128177904 |
+| zero fill | 0.116914096 |
+\image(figures/restoration_hidden_mse.svg)
+// result_end
+
+\caption(The fitting-only mean beats the masked model on global hidden MSE. The denoiser is not trained for missing patches and performs worst here; this is a stated task mismatch.)
+\alttext(Four bars compare hidden-only errors for MAE completion, fitting mean, Gaussian-denoiser completion and zero fill.)
+
+> Ten unfiltered held-out cases
+
+Rows are evenly spaced in source order without quality ranking. Columns are clean target,
+noisy input at 0.35, denoiser, ordinary reconstruction, masked observation, MAE composite,
+fitting-mean composite and denoiser composite. All panels use fixed 0–1 gray. Values are sigmoid
+reconstructions, not sampled binary pixels; clean targets and labels are display/evaluation only.
+
+```{cpp, results="markdown", file="figures/restoration_gallery.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n     = dm::nn;
+  const auto a    = n::load_npz("build/restoration/analysis.npz");
+  auto       find = [&](const std::string& name) {
+    for (const auto& [key, value] : a)
+      if (key == name)
+        return value;
+    throw std::runtime_error(name);
+  };
+  const std::vector<std::string> columns{
+      "test_images",
+      "trained_sigma_input",
+      "trained_sigma_denoising",
+      "trained_sigma_ordinary",
+      "observed",
+      "mae_composite",
+      "mean_composite",
+      "denoising_composite"};
+  std::vector<n::Tensor> panels;
+  const auto             ids = find("test_source_ids").to_vector<int>(),
+             labels          = find("test_labels").to_vector<int>();
+  std::print("Displayed (source,digit):");
+  for (int k = 0; k < 10; ++k) {
+    const int row = k * 199 / 9;
+    std::print(" ({},{})", ids[row], labels[row]);
+    for (const auto& name : columns)
+      panels.push_back(n::take_rows(find(name).reshape({200, 784}), {row}));
+  }
+  std::print(".\n");
+  n::save_image_grid(
+      n::concat(panels, 0).reshape({80, 28, 28, 1}),
+      "build/restoration_gallery.png",
+      8,
+      0,
+      1,
+      4,
+      220. / 255.,
+      3);
+}
+```
+// result_begin: markdown
+Displayed (source,digit): (66921,0) (69602,1) (62158,2) (68876,3) (68434,4) (62282,5) (62066,6) (63525,7) (64419,8) (64610,9).
+\image(figures/restoration_gallery.png)
+// result_end
+
+\caption(All eight stated columns and all ten selected-by-position rows are shown. Blurred predictions and poor completions remain visible.)
+\alttext(Ten held-out digit rows compare clean and noisy inputs, two dense reconstructions, a masked observation and three completion rules.)
+
+The following view uses the first test case, without selecting for appearance. Its raw MAE
+prediction contains values at visible sites too; those values are not copied into the final
+image. The composite takes the original visible observations instead.
+
+```{cpp, results="markdown", file="figures/restoration_masked_detail.png", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n     = dm::nn;
+  const auto a    = n::load_npz("build/restoration/analysis.npz");
+  auto       find = [&](const std::string& name) {
+    for (const auto& [key, value] : a)
+      if (key == name)
+        return value;
+    throw std::runtime_error(name);
+  };
+  const auto hidden = 1. - n::sum(n::take_rows(find("selection"), {0}), {1});
+  const auto mask_image =
+      n::models::MaeImage(n::broadcast_to(n::expand_dims(hidden, 2), {1, 16, 49}));
+  std::vector<n::Tensor> panels{
+      n::take_rows(find("test_images").reshape({200, 784}), {0}),
+      mask_image,
+      n::take_rows(find("observed").reshape({200, 784}), {0}),
+      n::take_rows(find("mae_hidden_prediction"), {0}),
+      n::take_rows(find("mae_composite"), {0})};
+  n::save_image_grid(
+      n::concat(panels, 0).reshape({5, 28, 28, 1}),
+      "build/restoration_masked_detail.png",
+      5,
+      0,
+      1,
+      4,
+      220. / 255.,
+      5);
+}
+```
+// result_begin: markdown
+\image(figures/restoration_masked_detail.png)
+// result_end
+
+\caption(Columns: target, hidden mask (white=hidden), observation, raw MAE prediction and copied-visible composite. The mask, not the clean target, identifies inference locations.)
+\alttext(One fixed digit is shown beside its twelve-hidden-patch mask, observed pixels, raw decoder prediction and final composite with visible pixels restored exactly.)
+
+> A global average does not rank every individual case
+
+```{cpp, results="markdown", file="figures/restoration_case_errors.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+int main() {
+  namespace n     = dm::nn;
+  const auto a    = n::load_npz("build/restoration/analysis.npz");
+  auto       find = [&](const std::string& name) {
+    for (const auto& [key, value] : a)
+      if (key == name)
+        return value;
+    throw std::runtime_error(name);
+  };
+  const auto hidden = n::cast(1. - n::sum(find("selection"), {1}), n::DType::Float64),
+             target = n::models::MaePatches(n::cast(find("test_images"), n::DType::Float64));
+  std::vector<std::vector<double>> errors;
+  for (const std::string name : {"mean_composite", "mae_composite"}) {
+    const auto prediction =
+        n::models::MaePatches(n::cast(find(name).reshape({200, 28, 28, 1}), n::DType::Float64));
+    errors.push_back((n::sum(n::square(prediction - target) * n::expand_dims(hidden, 2), {1, 2}) /
+                      (49. * n::sum(hidden, {1})))
+                         .to_vector<double>());
+  }
+  int    wins  = 0;
+  double limit = 0;
+  for (int i = 0; i < 200; ++i) {
+    wins += errors[1][i] < errors[0][i];
+    limit = std::max({limit, errors[0][i], errors[1][i]});
+  }
+  std::print("MAE lower hidden MSE on {}/200 cases; every case is plotted.\n", wins);
+  auto chart = dm::graphics::RPlot::create();
+  chart.points(errors[0], errors[1], "all test cases", dm::RGBA{37, 99, 235}, 4)
+      .lines({0, limit}, {0, limit}, "equal error", dm::RGBA{100, 116, 139}, 1.5)
+      .title("Per-case hidden errors / points below diagonal favour MAE")
+      .x_label("fitting-only mean hidden MSE")
+      .y_label("MAE composite hidden MSE")
+      .x_limits(0, limit * 1.25)
+      .y_limits(0, limit * 1.05)
+      .save_svg("build/restoration_case_errors.svg");
+}
+```
+// result_begin: markdown
+MAE lower hidden MSE on 15/200 cases; every case is plotted.
+\image(figures/restoration_case_errors.svg)
+// result_end
+
+\caption(All 200 cases appear. The diagonal compares the two completion rules within each case; it neither changes global MSE nor selects gallery rows.)
+\alttext(A scatter compares each test case's masked-model hidden MSE against its fitting-mean hidden MSE, with an equal-error diagonal.)
+
+> Evidence and limits
+
+The application checks all three stores for immutability, code/prediction invariance to
+hidden-value replacement, and exact copying of visible pixels. The optional independent
+NumPy oracle recomputes 156,800 Gaussian values, 627, 200 corrupted pixels, 1,593,600 forward values,
+all 200 masks, every denoising MSE/PSNR and all four hidden MSEs. It checks that full masked
+composite MSE is 0.75 times hidden MSE and never fits or prepares report data:
+
+```
+python3 scripts/check_autoencoder_restoration.py docs/mepml/examples/nn/2_autoencoders/2.3_applications/build/restoration
+```
+
+Dense inference costs O(B×784×32); the masked network processes four encoder tokens and
+sixteen decoder tokens, with width-squared projections and token-squared attention. Patch
+visibility/composition is O(BPD) and uses no parameters. These small finite checkpoints show
+mechanisms and failure modes, not photorealism, semantic completion or a general ranking of
+architectures. The four sensitivity conditions are reported together; none tunes the frozen models.

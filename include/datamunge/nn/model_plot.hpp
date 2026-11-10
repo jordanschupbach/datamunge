@@ -49,6 +49,7 @@ enum class ModelPlotStyle {
 /// @brief How named composite stages and functional layers are represented.
 ///
 /// Blocks uses model_stage() boundaries and falls back to named functional layers.
+/// Explicitly declared detached producers and their data dependencies are retained in Blocks.
 /// Layers ignores those composite boundaries. Operations expands both into recorded
 /// tensor primitives. No logical node is removed merely because a drawing is large.
 /// @par Example
@@ -323,8 +324,10 @@ class ModelDiagram {
 /// No optimizer or backward pass runs. The callback has its normal side effects:
 /// lazy parameter creation is allowed. Select inference mode to avoid dropout draws
 /// or normalization updates, and warm up before constructing an optimizer.
-/// Parameter totals deduplicate reachable gradient leaves, including those inside grouped layers;
-/// frozen constants or disconnected parameters are not counted.
+/// Parameter totals deduplicate reachable gradient leaves, including those inside grouped layers.
+/// Blocks also follows explicitly declared detached producers; Layers/Operations retain only
+/// recorded differentiable ancestry and can omit those branches and their parameters.
+/// Frozen constants or disconnected parameters are not counted.
 /// @param forward Nonempty tensor forward callback; captured objects must remain alive.
 /// @param example Defined Float32/Float64 example tensor, including its batch dimension.
 /// @param options Style, detail, colors, opacity, spacing, label and shape-sizing settings.
@@ -333,6 +336,7 @@ class ModelDiagram {
 /// undefined, or the output has no recorded differentiable history. Invalid styles,
 /// detail/label/scale levels, color strings, nonfinite/out-of-range numbers or sample
 /// limits are rejected before the callback runs.
+/// Cyclic explicitly declared stage dependencies in Blocks detail are rejected.
 /// Callback errors propagate.
 /// @par Example
 /// @code
@@ -353,9 +357,12 @@ ModelDiagram plot_model(
 ///
 /// Call inside a forward function after computing output from input. Outside plotting,
 /// this is an identity with no allocation or tensor mutation. A grouped stage stands
-/// for the differentiable subgraph between input and output; all external data inputs
+/// for the subgraph between input and output; all external data inputs
 /// must pass through input. For independent inputs, use the vector-input overload
 /// or concatenate them before computing the stage output.
+/// A detached output may declare a data-only producer for Blocks detail. A consumer
+/// must list that same output handle as a boundary to show the dependency; no gradient
+/// edge is created. Producers may be marked before or after their consumers.
 /// Named layer detail remains available with detail=Layers, and primitives with
 /// detail=Operations (or expand_layers=true). A later mark of
 /// the same output wins. Does not fit, detach, copy values or alter gradient flow.
@@ -377,9 +384,12 @@ Tensor model_stage(const std::string& name, const Tensor& input, const Tensor& o
 
 /// @brief Mark a composite stage with multiple external tensor inputs.
 ///
-/// Records one block with an incoming edge from each distinct differentiable input.
-/// Supply every external data boundary used by output; constants without gradient
-/// history are ignored. Inputs precede output in the recorded graph. Grouping does
+/// Records one block with an incoming edge from each distinct differentiable input
+/// or explicitly declared detached producer. Supply every external data boundary
+/// used by output; unnamed constants without gradient history are ignored. Detached
+/// producers are marked with model_stage() on the same tensor handle and may be
+/// declared before or after this consumer. Inputs precede output in the logical graph;
+/// cycles are rejected by plot_model() in Blocks detail. No gradient edges are added. Grouping does
 /// not recompute values or change gradients. Outside a plot it returns output without
 /// allocating. Layers/Operations detail expands the block as for the single-input form.
 /// @param name Display name for this stage.
@@ -394,6 +404,15 @@ Tensor model_stage(const std::string& name, const Tensor& input, const Tensor& o
 ///   const auto a=x*2., b=x*3.;
 ///   return n::model_stage("Two-branch merge",std::vector<n::Tensor>{a,b},n::relu(a+b));
 /// },n::ones({1,4}));
+/// @endcode
+/// @code
+/// namespace n=dm::nn;
+/// const auto masked=n::plot_model([](const n::Tensor& x){
+///   const auto mask=n::cast(n::greater(x,0.),x.dtype());
+///   n::model_stage("Detached sign selector",x,mask);
+///   return n::model_stage("Apply selector",std::vector<n::Tensor>{x,mask},x*mask);
+/// },n::ones({1,4}));
+/// // Blocks detail retains both the activity and detached-selector dependencies.
 /// @endcode
 /// @see model_stage(), plot_model()
 Tensor

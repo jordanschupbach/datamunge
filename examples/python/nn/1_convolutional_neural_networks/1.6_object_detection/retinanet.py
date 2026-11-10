@@ -3,7 +3,7 @@
 """RetinaNet and focal loss: dense detection without hard negative mining.
 
 Port of tflow's retinanet. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 Short default: three training epochs; use epochs=N for longer accuracy experiments.
 
 Check focal loss values and derivatives for alpha .25 and gamma 0/.5/2,

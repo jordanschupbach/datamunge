@@ -539,6 +539,74 @@ TEST(NnModelPlot, MultiInputStagesRetainBranchesSharedWeightsAndGradientBehavior
   EXPECT_EQ(x.grad().to_vector<float>(), (std::vector<float>{2, 2, 2, 2}));
 }
 
+TEST(NnModelPlot, DetachedStagesRetainDeclaredBranchesWithoutChangingGradients) {
+  n::ParameterStore p(1931, n::DType::Float64);
+  for (bool producer_first : {false, true}) {
+    bool detached = false;
+    const auto forward = [&](const n::Tensor& x) {
+      const auto raw = n::dense(p, "encoder", x, 4);
+      const auto mask = n::models::CompetitiveMask(raw, false, 2);
+      detached = !mask.requires_grad();
+      const auto code = raw * mask;
+      if (producer_first) n::model_stage("Rank selector", raw, mask);
+      n::model_stage("Apply selector", std::vector<n::Tensor>{raw, mask, mask}, code);
+      if (!producer_first) n::model_stage("Rank selector", raw, mask);
+      return n::dense(p, "decoder", code, 3, n::Activation::Sigmoid);
+    };
+    const auto x = n::full({2, 3}, .25, n::DType::Float64).requires_grad_();
+    const auto diagram = n::plot_model(forward, x);
+    EXPECT_TRUE(detached);
+    EXPECT_EQ(diagram.parameter_count(), 31);
+    std::size_t selector = diagram.nodes().size(), apply = selector;
+    for (std::size_t i = 0; i < diagram.nodes().size(); ++i) {
+      if (diagram.nodes()[i].label == "Rank selector") selector = i;
+      if (diagram.nodes()[i].label == "Apply selector") apply = i;
+    }
+    ASSERT_LT(selector, diagram.nodes().size());
+    ASSERT_LT(apply, diagram.nodes().size());
+    EXPECT_EQ(diagram.nodes()[selector].inputs.size(), 1);
+    ASSERT_EQ(diagram.nodes()[apply].inputs.size(), 2);
+    EXPECT_EQ(diagram.nodes()[apply].inputs[1], selector);
+    const auto plain = n::dense(p, "decoder", [&] {
+      const auto raw = n::dense(p, "encoder", x, 4);
+      return raw * n::models::CompetitiveMask(raw, false, 2);
+    }(), 3, n::Activation::Sigmoid);
+    const auto expected = n::grad(n::sum(plain), {x})[0];
+    const auto actual = n::grad(n::sum(forward(x)), {x})[0];
+    EXPECT_EQ(actual.to_vector<double>(), expected.to_vector<double>());
+    EXPECT_TRUE(x.requires_grad());
+    for (const auto detail : {n::ModelPlotDetail::Layers, n::ModelPlotDetail::Operations}) {
+      const auto expanded = n::plot_model(forward, x, {.detail=detail});
+      EXPECT_EQ(expanded.parameter_count(), 31);
+      for (const auto& node : expanded.nodes()) EXPECT_NE(node.label, "Rank selector");
+    }
+  }
+}
+
+TEST(NnModelPlot, DetachedProducerOnlyParametersAreCountedInDeclaredBlockView) {
+  n::ParameterStore p(1931);
+  const auto forward = [&](const n::Tensor& x) {
+    const auto raw = n::dense(p, "encoder", x, 4);
+    const auto mask = n::models::CompetitiveMask(raw, false, 2);
+    n::model_stage("Rank selector", raw, mask);
+    return n::model_stage("Decoder", mask, n::dense(p, "decoder", mask, 3));
+  };
+  EXPECT_EQ(n::plot_model(forward,n::ones({1,3})).parameter_count(),31);
+  EXPECT_EQ(n::plot_model(forward,n::ones({1,3}),{.detail=n::ModelPlotDetail::Operations}).parameter_count(),15);
+}
+
+TEST(NnModelPlot, CyclicDeclaredDataDependenciesFailAndRestoreTracingState) {
+  const auto forward = [](const n::Tensor& x) {
+    const auto a = x.detach(), b = (x * 2.).detach();
+    n::model_stage("a", b, a);
+    n::model_stage("b", a, b);
+    return n::model_stage("Consumer",std::vector<n::Tensor>{x,a},x*a);
+  };
+  EXPECT_THROW(n::plot_model(forward,n::ones({1,3})),std::invalid_argument);
+  EXPECT_NO_THROW(n::plot_model(forward,n::ones({1,3}),{.detail=n::ModelPlotDetail::Operations}));
+  EXPECT_NO_THROW(n::plot_model([](const auto& x){return x*2.;},n::ones({1,3})));
+}
+
 TEST(NnModelPlot, PwcCostVolumeBlocksRetainBothFeatureBranches) {
   n::ParameterStore p(17);
   auto              forward = [&](const n::Tensor& x) {

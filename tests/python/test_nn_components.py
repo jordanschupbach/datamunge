@@ -8,6 +8,15 @@ from pydatamunge import nn
 from pydatamunge import nn_components
 
 
+def test_unavailable_component_group_does_not_block_independent_groups(monkeypatch):
+    monkeypatch.setattr(nn_components, "NAMESPACES", (*nn_components.NAMESPACES, "missing_fixture"))
+    with pytest.raises(ImportError, match="no missing_fixture components"):
+        getattr(nn_components, "missing_fixture")
+    assert callable(nn_components.ae.UndercompleteAutoencoder)
+    assert callable(nn_components.dataset_assets.EnsureSaliency)
+    assert "missing_fixture" in dir(nn_components)
+
+
 def test_every_component_namespace_is_present():
     for name in nn_components.NAMESPACES:
         namespace = getattr(nn_components, name)
@@ -123,12 +132,13 @@ def test_competitive_cpp_masks_preserve_ties_signs_and_gradients():
     ae = nn_components.ae
     x = nn.from_vector([3, 1, 1, 0, 2, 4, 0, 0, -1, -2, 5, 5, -4, -1, -2, -3], [4, 4]).requires_grad_()
     expected = [1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0]
-    mask = ae.CompetitiveMask(x.detach(), False, 2)
+    mask = nn.CompetitiveMask(x.detach(), False, 2)
     assert list(mask.values()) == expected
     assert list(nn.grad(nn.sum(nn.mul(x, mask)), [x])[0].values()) == expected
-    lifetime = ae.CompetitiveMask(x.detach(), True)
+    lifetime = nn.CompetitiveMask(x.detach(), True)
     assert list(lifetime.values()) == [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0]
-    ae.CompetitiveChecks()
+    from pydatamunge.nn_workflows import helper
+    helper("competitive_autoencoder").competitive_checks()
     assert ae.SameTensorBits(nn.from_vector([0.0], [1]), nn.from_vector([0.0], [1]))
     assert not ae.SameTensorBits(nn.from_vector([0.0], [1]), nn.from_vector([-0.0], [1]))
     assert not ae.SameTensorBits(nn.zeros([1, 2]), nn.zeros([2, 1]))
@@ -142,13 +152,13 @@ def test_competitive_cpp_forward_connects_to_host_optimizer(lifetime):
     params = nn.ParameterStore(1931)
     x = nn.from_vector([((i * 13) % 31) / 30.0 for i in range(4 * 784)], [4, 784])
     with nn.no_grad():
-        ae.CompetitiveAutoencoder(params, x, lifetime, False)
+        nn.CompetitiveAutoencoder(params, x, lifetime, False)
     assert params.count() == 101200 and params.size() == 4
     before = list(params.at("encoder/W").values())
     config = nn.OptimizerConfig()
     config.kind = nn.OptimizerKind.Adam
     optimizer = nn.Optimizer(params, 0.003, config)
-    result = ae.CompetitiveAutoencoder(params, x, lifetime, False)
+    result = nn.CompetitiveAutoencoder(params, x, lifetime, False)
     # Reading a bound output struct must keep the C++ autograd graph alive.
     reconstruction = result.training_reconstruction
     del result
@@ -157,11 +167,12 @@ def test_competitive_cpp_forward_connects_to_host_optimizer(lifetime):
     assert math.isfinite(loss.item()) and loss.item() > 0
     assert list(params.at("encoder/W").values()) != before
     with nn.no_grad():
-        output = ae.CompetitiveAutoencoder(params, x, lifetime, False)
+        output = nn.CompetitiveAutoencoder(params, x, lifetime, False)
         assert list(output.code.shape()) == [4, 64]
         assert list(output.reconstruction.shape()) == [4, 784]
-        ae.CheckCompetitiveSupport([output.raw, output.mask, output.training_code,
-                                    output.training_reconstruction], lifetime, False)
+        from pydatamunge.nn_workflows import helper
+        helper("competitive_autoencoder").check_competitive_support(
+            [output.raw, output.mask, output.training_code, output.training_reconstruction], lifetime, False)
 
 
 def _memory_batch(copy_task):

@@ -15,16 +15,16 @@ reports every example's status (see `docs/nn-example-audit.md`).
 
 
 This is the canonical home for section 1 (129 convolutional / vision examples)
-and section 2 (36 autoencoder examples). Their numbered subdirectories and
+and the remaining section 2 autoencoder programs. Their numbered subdirectories and
 executable names are preserved. The remaining sections stay in `examples/nn`.
 Shared model, data, training and numerical-check headers currently remain in
 `examples/nn/common`, which both CMake projects include.
 
 ```sh
-just build-nn-sections          # build these 165 targets only
+just build-nn-sections          # build the remaining standalone targets
 just run-nn convolution_im2col  # data-free numerical / derivative fixtures
 just run-nn cnn_mnist           # quick training; downloads MNIST when missing
-just run-nn undercomplete_autoencoder epochs=1
+just docs-mepml-run docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.mepml
 just run-nn-full cnn_mnist      # explicit full-training opt-in
 ```
 
@@ -213,48 +213,48 @@ training behavior are unchanged from [the NN workflow](../../../nn/README.md).
 
 ### 2.1_deterministic_autoencoders
 
-- [contractive_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.cpp)
-- [convolutional_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/convolutional_autoencoder.cpp)
-- [denoising_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/denoising_autoencoder.cpp)
-- [k_sparse_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/k_sparse_autoencoder.cpp)
-- [masked_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.cpp)
-- [recurrent_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.cpp)
-- [sparse_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.cpp)
-- [stacked_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/stacked_autoencoder.cpp)
-- [tied_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/tied_autoencoder.cpp)
-- [undercomplete_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.cpp)
-- [winner_take_all_autoencoder](2_autoencoders/2.1_deterministic_autoencoders/winner_take_all_autoencoder.cpp)
+- [contractive_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/contractive_autoencoder.mepml) — original retired after verified execution
+- [convolutional_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/convolutional_autoencoder.mepml) — original retired after verified execution
+- [denoising_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/denoising_autoencoder.mepml) — original retired after verified execution
+- [k_sparse_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/k_sparse_autoencoder.mepml) — original retired after verified execution
+- [masked_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.mepml) — original retired after verified execution
+- [recurrent_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.mepml) — original retired after verified execution
+- [sparse_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.mepml) — original retired after verified execution
+- [stacked_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/stacked_autoencoder.mepml) — original retired after verified execution
+- [tied_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/tied_autoencoder.mepml) — original retired after verified execution
+- [undercomplete_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/undercomplete_autoencoder.mepml) — original retired after verified execution
+- [winner_take_all_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.1_deterministic_autoencoders/winner_take_all_autoencoder.mepml) — original retired after verified execution
 
 ### 2.2_variational_autoencoders
 
-- [adversarial_autoencoder](2_autoencoders/2.2_variational_autoencoders/adversarial_autoencoder.cpp)
-- [beta_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/beta_variational_autoencoder.cpp)
-- [conditional_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/conditional_variational_autoencoder.cpp)
-- [convolutional_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/convolutional_variational_autoencoder.cpp)
-- [factor_tc_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/factor_tc_variational_autoencoder.cpp)
-- [flow_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/flow_variational_autoencoder.cpp)
-- [gumbel_categorical_autoencoder](2_autoencoders/2.2_variational_autoencoders/gumbel_categorical_autoencoder.cpp)
-- [hierarchical_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/hierarchical_variational_autoencoder.cpp)
-- [importance_weighted_autoencoder](2_autoencoders/2.2_variational_autoencoders/importance_weighted_autoencoder.cpp)
-- [info_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/info_variational_autoencoder.cpp)
-- [ladder_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/ladder_variational_autoencoder.cpp)
-- [posterior_collapse](2_autoencoders/2.2_variational_autoencoders/posterior_collapse.cpp)
-- [sequence_variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/sequence_variational_autoencoder.cpp)
-- [vae_gan](2_autoencoders/2.2_variational_autoencoders/vae_gan.cpp)
-- [variational_autoencoder](2_autoencoders/2.2_variational_autoencoders/variational_autoencoder.cpp)
-- [vector_quantized_autoencoder](2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder.cpp)
-- [vector_quantized_autoencoder_2](2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder_2.cpp)
-- [wasserstein_autoencoder](2_autoencoders/2.2_variational_autoencoders/wasserstein_autoencoder.cpp)
+- [adversarial_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/adversarial_autoencoder.mepml) — original retired after verified execution
+- [beta_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/beta_variational_autoencoder.mepml) — original retired after verified execution
+- [conditional_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/conditional_variational_autoencoder.mepml) — original retired after verified execution
+- [convolutional_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/convolutional_variational_autoencoder.mepml) — original retired after verified execution
+- [factor_tc_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/factor_tc_variational_autoencoder.mepml) — original retired after verified execution
+- [flow_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/flow_variational_autoencoder.mepml) — original retired after verified execution
+- [gumbel_categorical_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/gumbel_categorical_autoencoder.mepml) — original retired after verified execution
+- [hierarchical_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/hierarchical_variational_autoencoder.mepml) — original retired after verified execution
+- [importance_weighted_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/importance_weighted_autoencoder.mepml) — original retired after verified execution
+- [info_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/info_variational_autoencoder.mepml) — original retired after verified execution
+- [ladder_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/ladder_variational_autoencoder.mepml) — original retired after verified execution
+- [posterior_collapse report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/posterior_collapse.mepml) — original retired after verified execution
+- [sequence_variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/sequence_variational_autoencoder.mepml) — original retired after verified execution
+- [vae_gan report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/vae_gan.mepml) — original retired after verified execution
+- [variational_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/variational_autoencoder.mepml) — original retired after verified execution
+- [vector_quantized_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder.mepml) — original retired after verified execution
+- [vector_quantized_autoencoder_2 report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/vector_quantized_autoencoder_2.mepml) — original retired after verified execution
+- [wasserstein_autoencoder report](../../../../docs/mepml/examples/nn/2_autoencoders/2.2_variational_autoencoders/wasserstein_autoencoder.mepml) — original retired after verified execution
 
 ### 2.3_applications
 
-- [autoencoder_restoration](2_autoencoders/2.3_applications/autoencoder_restoration.cpp)
+- [autoencoder_restoration report](../../../../docs/mepml/examples/nn/2_autoencoders/2.3_applications/autoencoder_restoration.mepml) — original retired after verified execution
 - [autorec](2_autoencoders/2.3_applications/autorec.cpp)
-- [encoder_pretraining](2_autoencoders/2.3_applications/encoder_pretraining.cpp)
-- [latent_arithmetic](2_autoencoders/2.3_applications/latent_arithmetic.cpp)
-- [latent_visualization](2_autoencoders/2.3_applications/latent_visualization.cpp)
-- [learned_image_codec](2_autoencoders/2.3_applications/learned_image_codec.cpp)
-- [reconstruction_anomaly](2_autoencoders/2.3_applications/reconstruction_anomaly.cpp)
+- [encoder_pretraining report](../../../../docs/mepml/examples/nn/2_autoencoders/2.3_applications/encoder_pretraining.mepml) — original retired after verified execution
+- [latent_arithmetic report](../../../../docs/mepml/examples/nn/2_autoencoders/2.3_applications/latent_arithmetic.mepml) — original retired after verified execution
+- [latent_visualization](../../../../docs/mepml/examples/nn/2_autoencoders/2.3_applications/latent_visualization.mepml)
+- [learned_image_codec](../../../../docs/mepml/examples/nn/2_autoencoders/2.3_applications/learned_image_codec.mepml)
+- [reconstruction_anomaly](../../../../docs/mepml/examples/nn/2_autoencoders/2.3_applications/reconstruction_anomaly.mepml)
 
 ## Validation
 

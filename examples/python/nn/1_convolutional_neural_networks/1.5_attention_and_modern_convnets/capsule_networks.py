@@ -3,7 +3,7 @@
 """Capsule networks: squashed vector capsules and dynamic routing by agreement.
 
 Port of tflow's capsule_networks. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both (found via
+dm::datasets::fetch("mnist") (found via
 common/paths.hpp, or data=).
 
 Check squash against its formula (direction kept, length |s|^2/(1+|s|^2)),

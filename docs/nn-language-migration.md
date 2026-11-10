@@ -7,13 +7,143 @@ model functions, data readers and numerical diagnostics are exposed through
 SWIG and reused by the matching R and Python loops. Shared high-level experiment
 `Run` functions and compiled example adapters do not count as language ports.
 
+
+The compact masked Gaussian conditioner and MAF now use canonical
+`nn.MafMasks`, `nn.MafConditioner`, `nn.MafDensity` and `nn.MafInverse` (R uses
+`$`). Native Python/R tests verify strict own/future input exclusion, owning flat
+fields through collection, higher graphs, sequential inverse recovery and
+explicit host-owned Adam with all160 masked kernel coordinates unchanged.
+The core operations and complete C++ report program reproduce the source
+exactly; the completed literate report replaces its standalone C++ original. These APIs do not
+mark a full independent Python/R experiment loop as ported.
+
+The compact affine IAF now uses canonical `nn.IafDensity` and `nn.IafInverse`
+(R uses `$`), sharing `MafMasks`/`MafConditioner`. Host tests verify reversed
+source warmup, recovered owning stage fields, live higher paths, parallel
+inverse recovery and host-owned Adam with every masked coordinate unchanged.
+The completed literate report replaces its original executable and unused
+legacy IAF/MAF helpers. Full independent Python/R experiment-loop ports remain
+unfinished; this source-exact affine density study makes no VAE/ELBO claim.
+
+The rational-quadratic spline flow now uses canonical
+`nn.RationalQuadraticSpline`, `nn.SplineCoupling`, `nn.SplineDensity` and
+`nn.SplineInverse` (R uses `$`). Host tests cover configurable bins/bounds,
+source-rounded Double precision, actual input derivatives, owning bin/stage
+fields through collection, higher paths and explicit host-owned Adam. The
+full C++ program matches every original record, including fixture input/head
+gradients. Its verified 15-block literate report replaces the standalone original
+and unused legacy spline helper; full independent Python/R experiment loops
+remain unfinished.
+
+The planar/radial maps now use canonical `nn.PlanarFlow`, `nn.RadialFlow`,
+`nn.ElementaryFlow`, `nn.PlanarRadialDensity` and `nn.PlanarRadialInverse`
+(R uses `$`). Both families' host tests verify owning fields/higher graphs,
+explicit Adam and parameter paths through inverses. Planar higher graphs follow
+the source stopped Newton correction, not an exact implicit Hessian; radial
+center derivatives retain the source finite convention. The complete C++
+program is source-exact for both independently fitted variants. The verified
+24-block literate report replaces its standalone original and unused legacy
+helper; full independent Python/R experiment-loop ports remain unfinished.
+
+The continuous flow now exposes canonical `nn.CnfField`, `nn.CnfIntegrate`,
+`nn.CnfDensity` and `nn.CnfInverse` (R uses `$`). Host tests check deterministic
+probe contractions, source Float32 times, owning quarter/field graphs, explicit
+Adam and reverse-solver parameter gradients. Full unrolled RK4 retains first/
+higher paths; no continuous adjoint or exact finite-map inverse/logdet is implied.
+Only exact/paired modes approximate likelihood; fixed single-probe modes are
+diagnostic integrals. The complete C++ program matches all original outputs and
+updates. Its verified 18-block literate report replaces the standalone original
+and unused legacy CNF helper; full independent Python/R experiment-loop ports
+remain unfinished.
+
+The three-family density study now uses canonical `nn.FlowStudyPoints`,
+`nn.FlowStudyLogProbability` and `nn.FlowStudySampleDiagnostics` (R uses `$`),
+with existing RealNvpDensity/RealNvpInverse. Native host tests verify all three
+explicit transforms, erfc tails, rounded boundary points, half-open checker
+support/negative-infinite reference log density, stable mixture tails, inclusive
+mode thresholds, owning detached records and invalid/overflow cases. Complete
+C++ loops reproduce all three original fits and quality summaries. The verified
+14-block report replaces its original executable and last-consumer affine/flow
+helpers; full independent Python/R experiment-loop ports remain unfinished.
+
+The compact DDPM operations now use canonical `nn.CosineDiffusionSchedule`,
+`nn.DiffusionExtract`, `nn.DiffusionTimeEmbedding`, `nn.DiffusionNoised`,
+`nn.DdpmEpsilon` and `nn.DdpmReverse` (R uses `$`). Native host tests verify
+owning schedule/predictor/posterior fields, applicable higher graphs, source
+Float32 rounding even for Double, explicit Adam, exact last zero-innovation
+behavior, clipping/raw estimates, strides, invalid math and warmed RNG/store
+immutability. Complete editable C++ loops reproduce every original state and
+update. Report narrative/figures and retirement remain pending; full independent
+Python/R experiment-loop ports remain unfinished.
+
 ## Inventory and validation
 
 `just nn-language-status` refreshes `examples/nn/language_status.json`. It scans
 both canonical source roots: sections 1 and 2 under `examples/cpp/source/nn`, and the
-remaining numbered sections under `examples/nn`. There are 414 distinct names:
-57 foundations, 129 CNN, 36 autoencoder, 53 generative, 36 recurrent,
-36 attention and 67 reinforcement-learning examples.
+remaining numbered sections under `examples/nn`. The ledger covers the remaining
+standalone C++ programs; its total decreases as verified literate reports replace
+them. The original inventory, replacement paths and retirement evidence are kept
+separately in [`mepml/nn-conversion-status.json`](mepml/nn-conversion-status.json).
+Native Python/R scripts remain runnable after their C++ counterpart is retired;
+the Python catalogue discovers those scripts independently of the live C++ list.
+
+The beta-VAE reusable Gaussian operations and fitting-only latent factor probes
+now belong to the canonical C++ API, exposed as `nn.BetaVariationalAutoencoder`,
+`nn.GaussianVaeDecode`, `nn.GaussianReparameterize`, `nn.DiagonalGaussianKl` and
+`nn.LatentFactorDiagnostics` (R uses `$`). Their native Python/R tests cover
+owning results, explicit caller-owned Adam, reductions and fitting-only probe
+selection. The full beta-VAE literate C++ report replaces its standalone original;
+this does not mark an unfinished Python/R experiment loop as native.
+
+The class-conditioned Gaussian VAE now uses native
+`nn.ConditionalVariationalAutoencoder` and `nn.ConditionalVaeDecode` (R uses `$`).
+Both posterior and decoder receive the same supplied class; labels are required
+conditions, not predictions. Binding tests cover inherited owning endpoints,
+Int64 validation, Float64 condition rows, code-only decoding and caller-owned Adam.
+Its completed literate report replaces the standalone original and obsolete
+reference launchers; no full Python/R experiment loop is marked native by this API addition.
+
+The convolutional Gaussian VAE exposes native
+`nn.ConvolutionalVariationalAutoencoder` and `nn.ConvolutionalVaeDecode` (R uses
+`$`). The explicit sampled z is the only decoder input; pooled encoder maps are
+inspection endpoints. Bindings retain all Gaussian/spatial results and decoder-only
+stages through collection, with Float64/non-square geometry, discrete geometry
+validation and caller-owned Adam checks. Its verified literate report replaces
+the standalone original and reference launchers; a reusable API is not a full
+native host-language experiment port.
+
+The total-correlation Gaussian forwards expose native
+`nn.FactorVariationalAutoencoder` and `nn.BetaTcVariationalAutoencoder`, with
+`nn.EmpiricalTotalCorrelation`, `nn.FactorDiscriminator`,
+`nn.FactorDiscriminatorLoss` and `nn.PermuteLatentColumns` (R uses `$`). The first
+keeps the z path live through a caller-frozen D; the second re-encodes all supplied
+fitting references with live shared weights. Host tests cover explicit alternating
+optimizers, detached products, signed ratios, live reference gradients and nested
+Gaussian ownership after collection. Its verified report replaces the standalone
+original, unused helper and reference launchers. Complete independent Python/R
+experiment loops remain unfinished.
+
+The conditional-flow posterior exposes native
+`nn.ConditionalAffinePosteriorFlow` and `nn.FlowVariationalAutoencoder` (R uses
+`$`), with `nn.GaussianVaeDecode` for final-code-only decoding. Both inverse and
+forward use the same leaves and fixed context for the code Jacobian; context
+still receives gradients during fitting. Tests cover all eighteen owning named
+endpoints through collection, live context, density signs, Float64, explicit host
+Adam and prior decoding without posterior inference. The verified literate report
+replaces its original and reference launchers. The old shared include was retained
+for IWAE and is now removed following that conversion. Complete Python/R
+experiment-loop ports remain unfinished.
+
+The categorical VAE exposes native `nn.GumbelNoise`, `nn.GumbelCategorical`,
+`nn.CategoricalUniformKl`, `nn.GumbelDecodeSoft`, `nn.GumbelDecodeIds` and
+`nn.GumbelCategoricalAutoencoder` (R uses `$`). Explicit local noise banks,
+source Float32 rounding and separate soft/hard diagnostics preserve the original
+trajectory. The soft reconstruction/discrete-KL sum is a continuous surrogate;
+no straight-through gradient or exact discrete-ELBO claim is inserted. Tests
+retain all bank/forward fields through collection, exercise live Float64 inputs,
+full-uint32 seeds, both target-free decoders and caller-owned Adam. The verified
+report replaces the original, unused helper and reference launchers; complete
+independent Python/R experiment loops remain unfinished.
 
 Each entry records C++ source, classification status, matching Python/R paths,
 implementation status and validation evidence. `reference_wrapper` and `missing`
@@ -87,11 +217,17 @@ and the `auto-assets-all-native-*` sweep logs under `build/nn-language-validatio
 
 ## Current checkpoint
 
-The current audit covers all 414 examples. There are 110 native Python scripts
+The [NN report ledger](mepml/nn-conversion-plan.md) now records 95 retired
+originals and 224 reports present out of 416 original sources; 192 reports still
+need conversion. The [standalone audit](nn-example-audit.md) describes the 321
+remaining C++ programs. The 414-source language checkpoint below predates the
+verified report retirements and is retained as historical evidence.
+
+The earlier audit covered all 414 examples. There were 110 native Python scripts
 and 95 native R scripts; these counts describe implementations, not completed
-validation. All 414 C++ examples now own their orchestration; no generic
+validation. At that checkpoint, all 414 C++ examples owned their orchestration; no generic
 training runner remains in a shared header or pasted into an example. The
-audit still flags 117 examples that call bundled per-step methods (including
+earlier audit flagged 117 examples that call bundled per-step methods (including
 pointer calls), and 324 without complete component bindings.
 Those findings still require work; the overall migration is unfinished.
 
@@ -153,6 +289,31 @@ and prepares balanced, disjoint 1000/200/200 autoencoder pools. Selection is
 deterministic and records every original source index in a manifest; it does
 not claim to reproduce tflow's selection. Repeated preparation preserves the
 NPZ bytes. Set `DATAMUNGE_DATA_DIR="$PWD/build/datasets"` when using these assets.
+
+The functional NN bindings now expose the native sentence-VAE components:
+`SequenceEncoder`, `SequenceDecoderInputs`, `SequenceTeacher`,
+`SequenceVariationalAutoencoder`, `AnnealedSequenceObjective` and
+`SequenceGenerate`. All eighteen forward, five teacher and four generation
+fields survive garbage collection. PAD-masked encoding, source 22 leaves/3,243
+scalars, explicit Gaussian/categorical draws and continuous BPTT/noise paths are
+shared across languages. `CollapseBeta` and `CollapseStatistics` supply the
+explicit source-rounded schedule and owned host-double finite-mixture summaries;
+negative Monte Carlo values and self-inclusion bias remain explicit. There is no
+hidden optimizer or selection. Both legacy C++ examples delegate their model and
+diagnostics mathematics to these APIs; their native Python/R experiment loops and
+report retirement still remain. Focused native/binding checks and the 55-archive
+source comparison pass; evidence is under
+`build/nn-report-conversion/sequence_vae_core/`.
+
+`just nn-sequence-vae-assets` prepares the local exhaustive sentence grammar
+through `dm::datasets::prepare_example_data("sequence-vae-assets")`. The shared
+cache gains `sequence_vae/sentences.npz`, `vocabulary.txt` and `manifest.json`:
+432 unique sentences, split 288/72/72, with nineteen fixed token IDs and seven
+steps. All sixteen arrays are Int32; decoder inputs use BOS followed by the
+previous target, and lengths include EOS but exclude PAD. Rows use ascending
+source IDs within each compositional split. This is procedural teaching data;
+the manifest records its grammar and ordering. Caller-supplied archives and
+vocabularies are preserved, with unverified provenance when no manifest exists.
 
 The earlier batch removes generic CIFAR workflows from 18 examples and expands
 25 detection/segmentation workflows into their example files. These workflows
@@ -417,3 +578,388 @@ Normal regeneration preserves native scripts. `scripts/prebuild_nn_api.py`
 refreshes the canonical Python catalogue through `scripts/nn_migration_status.py`.
 Legacy reference-generation tools must not shrink it back to the old 165-example
 CNN/autoencoder inventory.
+
+The paired spatial hierarchy exposes native `nn.HierarchyPosterior`,
+`nn.ConditionalGaussianKl`, `nn.HierarchyNvaeCell`, `nn.HierarchyDecode`,
+`nn.HierarchyPrior` and `nn.HierarchicalVariationalAutoencoder` (R uses `$`).
+Weights and BN moving buffers live in separate caller-owned stores. Host tests
+cover probe versus update passes, optimizer exclusion of state, image-free
+ancestral decoding, live Float64 gradients and all 19 owning forward endpoints
+through collection. The verified report replaces the original, unused hierarchy
+helper and reference launchers. The ladder helper was retained
+for its conversion and is now removed; independent Python/R experiment-loop ports remain unfinished.
+
+The importance-weighted Gaussian VAE exposes native `nn.IwaeLogMeanExp`,
+`nn.ImportanceWeightedBound` and `nn.ImportanceWeightedAutoencoder` (R uses `$`).
+All five bound and eleven forward fields own lifetime. Host tests exercise live
+Float64 image/noise/density paths, sample-major layouts, explicit caller-owned
+Adam and image-free `GaussianVaeDecode`. The loss uses sampled density ratios
+and ordinary pathwise gradients; analytic KL is diagnostic only. Its verified
+report replaces the original, unused IWAE/flow helpers and reference launchers.
+Independent Python/R experiment-loop ports remain unfinished.
+
+InfoVAE/MMD-VAE exposes native `nn.ImqKernel`, `nn.ImqMmd`,
+`nn.InfoVaeObjective`, `nn.InfoVaeDecode` and `nn.InfoVariationalAutoencoder`
+(R uses `$`). All seven MMD and sixteen full-forward fields own lifetime. Host
+tests exercise live Float64 image/noise/prior paths, signed unequal-count MMD,
+image-free tanh decoding and caller-owned Adam. The general training objective
+is separate from the diagnostic negative ELBO. Its verified report replaces
+the original, unused InfoVAE helper and reference launchers. The WAE kernel
+compatibility import remains and delegates to canonical C++ after original-run
+parity. Independent Python/R experiment-loop ports remain unfinished.
+
+The Ladder VAE exposes native `nn.LadderPrecisionFusion`, `nn.LadderPrior` and
+`nn.LadderVariationalAutoencoder` (R uses `$`), reusing conditional Gaussian KL
+and `GaussianVaeDecode`. All fusion, six ancestral and sixteen full-forward
+fields own lifetime. Host tests exercise Float64 paths through evidence/prior,
+images/noise, lower-first noise interventions, image-free lower-only decoding
+and caller-owned Adam. The verified report replaces the original, unused Ladder
+helper and reference launchers. Independent Python/R experiment-loop ports
+remain unfinished. Native sentence preparation, corpus validation and model APIs are now available;
+posterior-collapse and sequence-VAE retirements are verified.
+
+The posterior-collapse report now retires its standalone C++ source, unused
+posterior helper and generated reference launchers. Native corpus functions
+`SequenceVocabulary`, `LoadSequenceVaeData`, `SequenceDataArrays`, `SequenceText`
+and `SequenceGrammarValid` provide the complete checked local grammar and owning
+Python/R pool lists; `prepare_example_data` delegates native preparation. Corpus
+fields survive collection of both list/vector and backing files. All 105 focused
+Python checks and 730 R expectations across 22 files pass. The report preserves
+all 35 source archives/2,265,740 values, full TSVs and non-timing JSON values.
+At that checkpoint the sequence-VAE example retained its 20-archive baseline
+and shared helper; its verified report now retires both source and helper. These
+component checks do not claim completion of independent Python/R experiment-loop
+ports. Evidence: `build/nn-report-conversion/posterior_report/`.
+
+The sequence-VAE report replaces its standalone C++ source, unused compatibility
+helper and generated reference launchers. Native `nn.MidpointUniformNoise`
+(R uses `$`) supplies explicit owning Float64 categorical uniforms from a fresh
+full-uint32 MT19937 midpoint stream. Scalar/empty shapes and negative/overflow
+contracts match C++; Float64 avoids Float32 endpoint rounding. All 106 focused
+Python checks and 743 R expectations across 22 files pass. The complete report retains source training,
+all 20 archives/1,454,190 values, vocabulary, histories and non-timing metrics
+exactly, with independent BPTT/Adam, endpoint, validation and generation checks.
+These component checks do not complete the independent Python/R experiment loops.
+VAE-GAN now has its verified report and native components below. Evidence:
+`build/nn-report-conversion/sequence_report/` and `vae_gan/`.
+
+The VAE-GAN report retires its standalone C++ source, unused helper and generated
+reference launchers. Native `nn.VaeGanFeatureNll`, `nn.VaeGanDecode`,
+`nn.VaeGanDiscriminator` and `nn.VaeGan` (R uses `$`) provide the detached real
+feature target, code-only generation, feature/logit record and all nineteen
+owning endpoints. Float64 image/noise/prior paths and unequal prior counts remain
+live; the caller owns three separate Adam states and recomputes isolated D/E/G
+updates. Pixel NLL is diagnostic, not an optimized image ELBO. All 111 focused
+Python checks and 775 R expectations across 23 files pass. All 24 source archives/3,078,235 values and
+histories are retained; only the two Float64 summary MSE reductions have roundoff
+below 1.1e-14. These component checks do not complete independent Python/R
+experiment-loop ports. The vanilla VAE baseline is saved for the next conversion.
+Evidence: `build/nn-report-conversion/vae_gan_core/` and `vae_gan_report/`.
+
+The vanilla VAE report now replaces its standalone source and generated
+reference launchers. Existing `nn.BetaVariationalAutoencoder` and
+`nn.GaussianVaeDecode` (R uses `$`) supply beta1/latent2/hidden64 behavior;
+five legacy math functions forward to the canonical Gaussian core and retain
+the original eight-field compatibility record. The shared helper remains for
+latent diffusion and other consumers. All 112 focused Python checks and 791 R
+expectations across 23 files pass, including fields through GC, ten parameter
+leaves, input/noise paths and caller-owned Adam. Source arrays and histories
+remain exact; one report Float64 MSE reduction differs by 2.998e-15. Both VQ
+source runs retain all 29 archives after shared delegation. These component
+checks do not complete independent Python/R experiment-loop ports. Next:
+canonical VQ components and report conversion. Evidence:
+`build/nn-report-conversion/vanilla_vae_report/`.
+
+The spatial VQ-VAE report retires its C++ source, unused legacy model/decoder
+adapters and generated launchers. Native `nn.VectorQuantize`, `nn.VqLookup`,
+`nn.VqDecoder`, `nn.VectorQuantizedAutoencoder`, `nn.VqUsage` and
+`nn.VqMarkovPrior` (R uses `$`) expose discrete assignment, explicit gradient
+routes, generic Float32/64 spatial inference and a copied fitting-code prior.
+Nested fields survive GC; caller owns Adam and supplies Float64 prior uniforms.
+All 116 focused Python checks and 830 R expectations across 24 files pass.
+Both source VQ runs preserve all 29 archives/2,691,906 values and non-timing JSON
+through shared core delegation. Report array/history parity is exact, with only
+two summary MSE reductions differing below 3e-14. At that checkpoint shared compatibility remained
+for VQ-VAE-2; its subsequent conversion removes both legacy VQ headers. These component checks
+do not complete independent Python/R experiment-loop ports. Evidence:
+`build/nn-report-conversion/vq_core/` and `vq_report/`.
+
+The two-scale VQ-VAE-2 report now replaces its standalone source and generated
+reference launchers. Native `nn.Vq2TopDecoder`, `nn.Vq2Decoder`,
+`nn.VectorQuantizedAutoencoder2` and `nn.Vq2ConditionalPrior` (R uses `$`)
+expose coarse-conditioned fine inference, two-grid-only decoding and copied
+fitting-code conditional tables. Tests retain eleven fields and nested
+quantizers through GC, exercise Float64/non-square geometry, live hierarchy
+surrogates, both stopped dictionary paths, explicit uniforms and caller-owned
+Adam. All 121 focused Python checks and 865 R expectations across 25 files pass.
+All fifteen source archives / 1,932,136 values and TSV histories remain exact;
+only two report summary MSE reductions differ below 3e-15. Both unused legacy
+VQ headers are removed. These component checks do not complete independent
+Python/R experiment loops. That checkpoint preceded the WAE-MMD conversion below.
+Evidence: `build/nn-report-conversion/vq2_core/` and `vq2_report/`.
+
+The WAE-MMD report now replaces its source and generated reference launchers.
+Native `nn.WaeSquaredPixelCost`, `nn.WaeObjective`, `nn.WaeDecode` and
+`nn.WassersteinAutoencoder` (R uses `$`) expose pixel-summed squared cost,
+explicit signed discrepancy weighting and deterministic code-only decoding.
+Tests retain six Tensor fields and the nested seven-field MMD record through
+GC, exercise unequal Float64/strided input and prior counts, prior-only
+regularizer dependence and caller-owned Adam. All 126 focused Python checks and
+910 R expectations across 26 files pass. All 18 archives / 1,147,656 values and
+TSVs remain exact, with only two report MSE reductions differing below 4e-15.
+The unused WAE, beta-VAE and discrepancy compatibility headers are removed.
+These component checks do not complete independent Python/R experiment loops.
+Next: frozen-model restoration, whose zero-update baseline and independent
+oracle are pinned. Evidence: `build/nn-report-conversion/wae_core/` and
+`wae_report/`.
+
+The frozen restoration report now replaces its standalone source and generated
+reference launchers. Native `nn.VisiblePatchValues` and
+`nn.CompositePatchValues` (R uses `$`) expose generic target-free selection,
+preserving signed zeros and observed bits with selected continuous paths.
+They reuse existing native MAE encoding/decoding, mapping and hidden loss.
+All 130 focused Python checks and 941 R expectations across 27 files pass.
+Four visible prerequisite programs reproduce the three original model files;
+restoration itself adds zero updates. All four original archives / 4,704,817
+values remain exact; only Float64 metric reductions have small roundoff.
+The three unused C++ restoration/denoising/masked helpers are removed. These
+component checks do not complete independent Python/R experiment-loop ports.
+Next: locate AutoRec's original asset preparation before its numeric baseline.
+Evidence: `build/nn-report-conversion/restoration_core/` and `restoration_report/`.
+
+The encoder-pretraining report replaces its source and generated reference
+launchers. Native FrozenEncoderFeatures, FitTransferScaling and
+FrozenEncoderClassifier expose frozen owning state and caller-owned head
+updates in Python and R. All 134 focused Python checks and 971 R
+expectations across 28 files pass, including GC/ownership and stopped/live
+paths. All 26 source archives / 2,849,964 values remain exact; report probability
+NLL reductions differ by at most 3.11e-15. The unused C++ transfer adapter is
+removed. Component tests do not finish independent Python/R experiment loops.
+AutoRec still awaits its original preparation recipe. Latent arithmetic has a
+frozen original baseline for the next independent report.
+Evidence: `build/nn-report-conversion/pretraining_core/` and `pretraining_report/`.
+
+Latent arithmetic now has a verified executable report replacing its standalone
+source and generated reference launchers. Native LatentLerp, LatentDirection,
+LatentClassMeans, LatentFlatten and UndercompleteDecoder expose signed CPU
+Float32/64 arithmetic, stopped fitting summaries and code-only decoding.
+All 139 focused Python checks and 1011 R expectations across 29 files pass.
+Both archives / 1,448,809 values, every JSON value and all five original PNGs
+remain exact. The unused C++ arithmetic adapter is removed. These component
+checks do not finish independent Python/R experiment loops. AutoRec still
+awaits its original preparation recipe; latent visualization has a frozen
+baseline and independent PCA/retrieval oracle for the next conversion.
+Evidence: `build/nn-report-conversion/latent_core/` and `latent_report/`.
+
+Latent visualization now has a verified executable report replacing its source
+and generated reference launchers. Native DoubleSampleRows, SvdPca,
+NearestFitRows, NeighborOverlap and NeighborLabelAccuracy expose fitting-only
+owning state, live query/inverse paths and label-free retrieval in Python and R.
+All 144 focused Python checks and 1047 R expectations across 30 files pass.
+Both original archives / 3,833,394 values are exact; report Float64 MSE reductions
+differ below 3.5e-14, with timing remeasured and other JSON values exact.
+The unused visualization and legacy tensor-PCA helpers are removed. Component
+tests do not finish independent Python/R experiment loops. AutoRec awaits its
+original preparation recipe; learned image codec is the next independent report.
+Evidence: `build/nn-report-conversion/visualization_core/` and `visualization_report/`.
+
+Learned image codec now has a verified executable report replacing its source
+and generated reference launchers. Native CodecQuantizer, FitCodecQuantizer,
+QuantizeCodec, DequantizeCodec, SymbolTensor, LearnedCodecDecode, CodecPacket,
+PackCodec, UnpackCodec and DecodeCodec expose generic explicit Float32 ranges,
+exact byte operations, live continuous decoder paths and stopped packet decode.
+Nested range exports and Tensor handles survive parent collection. All 149 focused
+Python checks and 1087 R expectations across 31 files pass. All three original
+archives / 1359472 values, all 110972 bitstream bytes and 210 PNGs remain exact;
+report Float64 MSE/PSNR reductions differ below 2e-15/1.73e-13. The complete file
+is larger than the measured PNG baseline; payload-only rate is kept separate.
+The unused C++ codec helper is removed. Component checks do not finish independent
+Python/R experiment loops. AutoRec awaits its original preparation recipe;
+reconstruction anomaly is the next independent report.
+Evidence: `build/nn-report-conversion/codec_core/` and `codec_report/`.
+
+Reconstruction anomaly now has a verified executable report replacing its source
+and generated reference launchers. Native ReconstructionScores, InkScores,
+NominalThreshold, ReconstructionRanking, RankAnomalies and AnomalyCorruption expose
+owning stopped diagnostics, explicit calibration and strict/tied score evaluation.
+All 154 focused Python checks and 1147 R expectations across 32 files pass.
+Both original archives/3,198,145 values, every JSON/TSV value and all ten PNG strips
+are exact; native canonical ROC/AP are reused without another ranking algorithm.
+The report discloses reused validation for encoder selection/calibration, synthetic
+paired pools, AP prevalence and all failures. The unused C++ anomaly helper is
+removed. Component checks do not finish independent Python/R experiment loops.
+AutoRec awaits its original preparation recipe; auxiliary-classifier GAN is next.
+Evidence: `build/nn-report-conversion/anomaly_core/` and `anomaly_report/`.
+
+Auxiliary-classifier GAN now has a verified executable report replacing its C++ source.
+There were no Python/R launchers for this model. Native LogisticGanObjectives, ConditionalGanGenerate,
+AuxiliaryGanDiscriminate, AuxiliaryClassLoss, AuxiliaryClassifierGan and GanCoarsePixels
+expose explicit live components in Python and R. All 159 focused Python checks
+and 1199 R expectations across 33 files pass, including selected-store
+Adam writes and owned Tensor fields after collection. All ten original archives /
+919949 values, TSVs, three PNGs and non-timing JSON values are exact. The complete
+C++ loop keeps all 192 updates, fixed final epoch3 and the weak grey samples;
+initial test inference is an explicit nonselecting control. Component checks do
+not finish independent Python/R experiment loops. The unused model helper is
+removed; shared GAN helpers remain. AutoRec needs its original ratings recipe;
+BiGAN baseline/oracle and native primitive reuse are ready for the next report.
+Evidence: `build/nn-report-conversion/acgan_core/` and `acgan_report/`.
+
+Bidirectional GAN now has a verified executable report replacing its C++ source
+and unused model helper; no host-language launchers existed. Native GaussianRingPoints,
+BiganMap, BiganJointScore and BidirectionalGan expose explicit data and joint paths
+in Python/R. All 164 focused Python checks and 1244 R expectations across
+34 files pass, including owned fields after collection, unequal pools, selected
+D/E/G Adam writes and E-independent G partials. All nine archives/6210 values,
+TSVs and non-timing JSON values are exact; core delegation also preserves the
+three source PNGs. The report uses annotated native scatter plots with all points,
+equal aspect, explicit fixed windows/outside counts and weak outcomes retained.
+The complete C++ loop has all 117 updates, fixed finalepoch 3 and unfitted cycle
+residuals; no learned-inverse or convergence claim. Component checks do not finish
+independent Python/R experiment loops. AutoRec needs its original ratings recipe;
+conditional GAN's baseline, oracle and native reuse are ready for the next report.
+Evidence: `build/nn-report-conversion/bigan_core/` and `bigan_report/`.
+
+The compact dense GAN components now use native `DenseGan`, required
+`DenseGanObjective`, `MlpGanGenerate`, `MlpGanDiscriminate`,
+`LeastSquaresGanObjectives`, `HingeGanObjectives`, `ConditionalGan` and
+`ConditionalGanDiscriminate` (R uses `$`). Python/R tests cover raw-score algebra,
+exact hinge boundaries, owned five/seven-field endpoints, default parameter counts,
+both-network class inputs, malformed inputs and host-owned D-then-fresh-G Adam
+writes. The four complete C++ reports replace the standalone originals and unused
+MlpGanModel class. These component APIs do not mark independent Python/R full
+experiment loops complete.
+
+InfoGAN components now use native `InfoPrior`, `InfoGanGenerate`, `InfoGanRecognize`,
+`InfoGanRecognitionLoss` and `InfoGan` (R uses `$`). Generated code categories are
+not true image labels. Tests cover exact raw words and rejection, final casts,
+independent image-only Q, unit-variance loss, negative variational scores, owned
+records, continuous gradients and explicit host-owned D-Q-G writes. The complete
+C++ report replaces its original and unused helper; these component tests do not
+finish independent Python/R full experiment loops.
+
+Spectral GAN components now use native `cached_spectral_power_iteration`,
+`cached_spectral_kernel`, `advance_cached_spectral_state`,
+`SpectralGanDiscriminate` and `SpectralGan` (R uses `$`). Tests cover owning cache
+records, live denominator gradients, stopped columns, signed floors, zero kernels,
+initialization census, immutable inference and explicit state-D-fresh-G writes.
+The complete C++ report replaces its source; shared SpectralDense remains for
+Self-Attention GAN. Component tests do not finish independent Python/R experiments.
+
+Self-Attention GAN components use native `cached_spectral_dense`,
+`SpectralSpatialAttention`, `SelfAttentionGanGenerate`,
+`SelfAttentionGanDiscriminate` and `SelfAttentionGan` (R uses `$`). The shared
+layer also supplies spectral GAN dense math. Tests cover owned records, zero
+gates, continuous graphs, initialization census, row probabilities, invalid
+geometry and explicit D-state/D/G-state/fresh-G writes. The complete C++ report
+replaces its source and both unused helpers. Component coverage does not finish
+independent Python/R full experiment loops.
+
+BigGAN components use native `capture_batch_norm`, `batch_norm_moving_values`,
+`GaussianRejectionPrior`, `BigGanResize8`, `BigGanGenerate`, `BigGanDiscriminate`,
+`ModifiedOrthogonalPenalty`, `BigGanCommitMoments` and `BigGan` (R uses `$`).
+Tests cover audited rejection streams, detached moving candidates, owned nested
+moments through parent/store collection, live continuous paths and five explicit
+phase owners. Both game losses always use batch-statistics fake images even when
+saved BN supplies displayed images. The complete C++ report replaces its source
+and unused helper. Component coverage does not finish independent Python/R full
+experiment loops.
+
+DCGAN components use native `capture_affine_batch_norm`, `DcganGenerate`,
+`DcganDiscriminate`, `DcganDiscriminatorPhase`, `DcganGeneratorPhase` and `Dcgan`
+(R uses `$`). The fused BN returns detached sample-moment captures with live
+output graphs; moving candidates use explicit Double .9 retention. Tests cover
+stopped G during joint-BN D, batch-BN G through current saved-BN D, available D
+weight paths with caller-selected G updates, flat-record lifetime and four
+explicit write owners. The complete C++ report replaces its source and unused
+helper section. Component coverage does not finish independent Python/R full
+experiment loops.
+
+Wasserstein components use native `MidpointUniform`, `WassersteinGenerate`,
+`WassersteinCritic`, `WassersteinGan` and `ClipWassersteinCritic` (R uses `$`).
+The eleven-field record retains actual/analytic Jacobians and explicit objectives;
+penalty history through critic parameters is optional, while external real/alpha/G
+penalty paths stop. Tests cover owning fields, higher derivatives, no-grad input
+derivatives, both optimizers, all-bias clipping and three critic writes per fresh G.
+The complete C++ report replaces its source and unused helper class. Component
+coverage does not finish independent Python/R full experiment loops.
+
+Progressive components use native `pixel_rms_normalize`, `ProgressiveActiveGroups`,
+`ProgressiveGanGenerate`, `ProgressiveGanDiscriminate` and `ProgressiveGan` (R uses
+`$`). Activity returns native group indices; the flat records expose genuine old/
+new images, feature mixtures and full-scaled G loss. Tests cover owning fields,
+higher paths, both alpha formats, stage activity, independent Adam counters and
+capturing every active group before any selected phase write. The complete C++
+report replaces its source and unused helper. This component coverage does not
+finish independent Python/R full experiment loops.
+
+Pix2Pix components use native `quantized_sobel_edges`, `Pix2PixGenerate`,
+`Pix2PixDiscriminate` and `Pix2Pix` (R uses `$`). Conditions preserve Double-before-
+quantization and inclusive zero-padded raw Sobel. Owning generated boundaries
+retain both real concatenation skips; flat game fields retain paired L1 and
+patch-mean logistic losses. Tests cover higher paths, source-only G, conditional
+D, separate explicit Adam writes, exact skip order and invalid inputs before
+leaf creation. The C++ report replaces the original and unused Pix2PixModel
+adapter; pure shared Pix maps remain for CycleGAN. These component tests do not
+finish independent Python/R full experiment loops.
+
+CycleGAN components use native `RotateInvertGrayscale`, `SplitCycleDomains`,
+`CycleGanDiscriminate` and `CycleGan` (R uses `$`). The flat domain record preserves
+original IDs/untransformed B and live gathers. The19-field game permits unequal
+unpaired rows and retains both coupled generator paths, full G adversarial means
+and half-scaled critics. Tests capture both G vectors before either explicit Adam
+write, verify the changed sequential control, store ownership, higher paths and
+source-only translation. The C++ report replaces its original/helper; unused
+legacy Pix maps are removed and shared PixConv remains for StyleGAN/StarGAN.
+These component tests do not finish independent Python/R experiment loops.
+
+StyleGAN components use native `modulated_conv2d`, `spatial_instance_normalize`,
+`StyleGanMap`, `StyleGanSynthesize`, `StyleGanDiscriminate` and `StyleGan` (R uses
+`$`). The flat primitive/synthesis/game records own live fields after parent
+collection; all applicable higher paths survive. Tests check analytic modulation
+partials, both source censuses, zero initial noise with learnable strengths,
+style mixing, positive gain normalization, fixed-style/common-noise conditions,
+explicit D then fresh G captures and update ownership. The complete C++ report
+replaces its original/helper while shared PixConv remains for StarGAN. These
+component tests do not finish independent Python/R experiment loops.
+
+StarGAN components use native `UniformCategorical`, `StarDomainImages`,
+`SplitStarDomains`, `StarGanGenerate`, `StarGanDiscriminate`, `StarDomainLoss`
+and `StarGan` (R uses `$`). Five flat record types own live/detached fields as
+specified; higher paths through both shared G uses survive parent collection.
+Tests cover disjoint selected/unused identities, rejected RNG words, stable CE,
+actual conditioned skips, image-only D, explicit fresh-G scheduling and store
+ownership. The complete C++ report replaces its original/helper and retires the
+last unused legacy PixConv header. These component checks do not finish full
+independent Python/R fitting loops.
+
+SRGAN/ESRGAN components use native `RelativisticAverageGan`, `AdversarialSRGenerate`,
+`AdversarialSRDiscriminate`, `AdversarialSRFeatures` and `AdversarialSR` (R uses `$`).
+Flat generated/game/loss records own live fields and detached optional BN captures.
+Tests check source-rounded coefficients, frozen feature stops, target-independent
+two-path G pixels, cold Adam resets, same-capture post-G BN commits, live opposite-
+pool means and owning higher paths. The complete C++ report replaces its original
+and retires unused legacy model code; only SRConv remains for SinGAN. These
+component checks do not finish independent full Python/R fitting loops.
+
+SinGAN components use native `SingleImageNoise`, `SingleImageAmplitude`,
+`SingleImageGenerate`, `SingleImageDiscriminate` and `SingleImageGan` (R uses `$`).
+Five/eight flat owning record fields preserve applicable higher paths and storage.
+Tests cover shared RGB stream layout, detached Double RMS, signed rectangular
+residuals, full-G/half-D factors, both G branches, D-then-fresh-G ownership,
+cold clocks after weight warm-start and invalid inputs before leaves. Both
+unused legacy single-image/adversarial-SR headers are removed after the complete
+C++ report replaces the source. Full independent Python/R fitting loops remain
+separate work; component checks do not establish them.
+
+FrozenGraph component bindings now load immutable numeric GraphDef models from
+files or bytes, expose names/operations/constants and evaluate named CPU feed/
+fetch subgraphs without TensorFlow. Detached owning results survive model/feed
+collection, declared dtypes/ports/byte bounds are checked, and the existing
+ByteVector needs thin Python sequence conversion (R uses integer bytes).
+Tests exercise constructor/file lifetime, duplicate outputs, detached storage,
+malformed bytes and invalid endpoints. The original Inception graph is verified
+against TensorFlow only in an isolated optional development oracle. Native
+preparation uses inception-metric, including pinned archive/graph provenance and
+rehashed completed caches. The diagnostics report and metric Python/R exports
+remain unfinished; this is component infrastructure, not a complete conversion.

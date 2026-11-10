@@ -9,26 +9,28 @@
 #include <sstream>
 #include <stdexcept>
 #include <utility>
+#include <tuple>
 
 #include "datamunge/nn/autograd.hpp"
 
 namespace datamunge::nn {
 /// @brief Invocation-local tracing and private SVG layout helpers.
 namespace {
-/// @brief Operation identity including the output slot of multi-output primitives.
-using Key = std::pair<std::uint64_t, std::uint32_t>;
+/// @brief Disjoint identities for autograd output slots and declared detached stages.
+using Key = std::tuple<bool, std::uint64_t, std::uint32_t>;
 /// @brief Metadata for one grouped stage; lives only during the trace.
 struct Layer {
   std::string         name;       ///< Display name.
   std::string         kind;       ///< Layer type and options.
-  std::vector<Tensor> inputs;     ///< External differentiable data boundaries.
-  Tensor              output;     ///< Output boundary retaining recorded history.
+  std::vector<Tensor> inputs;     ///< Declared external data boundaries, including detached producers.
+  Tensor              output;     ///< Owned output boundary, with or without autograd history.
   std::vector<Tensor> parameters; ///< Reachable learned leaves inside the stage boundary.
 };
 /// @brief Invocation-local stage registry.
 struct Trace {
   std::map<Key, Layer> layers; ///< Named functional layers, keyed by output slot.
   std::map<Key, Layer> blocks; ///< Composite stages, separate from their underlying layers.
+  std::map<const TensorImpl*, Key> detached; ///< Detached producer identities, assigned in declaration order.
 };
 /// @brief Only this thread's active trace; ordinary forwards do not allocate a registry.
 thread_local Trace* active = nullptr;
@@ -42,13 +44,15 @@ struct TraceGuard {
   ~TraceGuard() { active = previous; }
 };
 /// @brief Identify one edge without process-specific pointer ordering.
+/// @param edge Non-null recorded autograd edge.
+/// @return Tagged autograd sequence/output-slot identity, disjoint from detached stage IDs.
 Key key(const Edge& edge) {
-  return {edge.node->sequence_nr(), edge.input_nr};
+  return {false, edge.node->sequence_nr(), edge.input_nr};
 }
-/// @brief Register an already-computed stage with all external differentiable boundaries.
+/// @brief Register an already-computed stage with its declared external boundaries.
 /// @param name Display name.
 /// @param kind Layer category or composite marker.
-/// @param inputs External boundaries; gradient-free constants are ignored.
+/// @param inputs External boundaries; unnamed constants are filtered when emitting the graph.
 /// @param output Previously computed stage output.
 /// @param composite Store as a block rather than a functional layer; default false.
 void capture(
@@ -60,22 +64,21 @@ void capture(
   if (!active || !output.defined() || inputs.empty())
     return;
   const auto b = gradient_edge(output);
-  if (!b.node)
+  if (!b.node && !composite)
     return;
   Layer         layer{name, kind, {}, output, {}};
   std::set<Key> boundaries;
+  std::set<const TensorImpl*> constants;
   for (const auto& input : inputs) {
     if (!input.defined())
       return;
     const auto edge = gradient_edge(input);
-    if (!edge.node)
-      continue;
-    if (key(edge) == key(b))
+    if (input.impl() == output.impl() || (edge.node && b.node && key(edge) == key(b)))
       return;
-    if (boundaries.insert(key(edge)).second)
+    if (edge.node ? boundaries.insert(key(edge)).second : constants.insert(input.impl()).second)
       layer.inputs.push_back(input);
   }
-  if (boundaries.empty())
+  if (layer.inputs.empty() || (!composite && boundaries.empty()))
     return;
   std::vector<Edge> pending{b};
   std::set<Key>     visited;
@@ -92,7 +95,13 @@ void capture(
         pending.push_back(upstream);
     }
   }
-  (composite ? active->blocks : active->layers)[key(b)] = std::move(layer);
+  if (b.node) {
+    (composite ? active->blocks : active->layers)[key(b)] = std::move(layer);
+  } else {
+    const auto it = active->detached.try_emplace(
+        output.impl(), Key{true, active->detached.size() + 1, 0}).first;
+    active->blocks[it->second] = std::move(layer);
+  }
 }
 } // namespace
 
@@ -146,6 +155,7 @@ plot_model(const ModelForward& forward, const Tensor& example, const ModelPlotOp
     for (const auto& [key, layer] : trace.blocks)
       grouped[key] = layer;
   std::map<Key, std::size_t>  seen;
+  std::set<Key> visiting;
   std::set<const TensorImpl*> counted;
   /// @brief Add a learned tensor once, including shared invocations hidden by grouping.
   const auto count_parameter = [&](const Tensor& parameter) {
@@ -153,10 +163,14 @@ plot_model(const ModelForward& forward, const Tensor& example, const ModelPlotOp
       graph.parameters_ += parameter.numel();
   };
   /// @brief Recursively emit upstream nodes before consumers, retaining output-slot shape metadata.
-  std::function<std::size_t(const Edge&)> visit = [&](const Edge& edge) -> std::size_t {
-    const auto k = key(edge);
+  /// @param k Tagged autograd or declared detached-stage identity.
+  /// @param edge Recorded edge, empty only for a registered detached producer.
+  /// @return Index of the emitted/reused node; cyclic declarations throw invalid_argument.
+  std::function<std::size_t(const Key&, const Edge&)> visit = [&](const Key& k, const Edge& edge) -> std::size_t {
     if (const auto it = seen.find(k); it != seen.end())
       return it->second;
+    if (!visiting.insert(k).second)
+      throw std::invalid_argument("plot_model: cyclic declared stage dependencies");
     ModelPlotNode node;
     if (k == key(input_edge)) {
       node.label = "Input";
@@ -168,8 +182,15 @@ plot_model(const ModelForward& forward, const Tensor& example, const ModelPlotOp
       node.label        = layer.name;
       node.kind         = layer.kind;
       node.shape        = layer.output.shape();
-      for (const auto& input : layer.inputs)
-        node.inputs.push_back(visit(gradient_edge(input)));
+      for (const auto& input : layer.inputs) {
+        const auto upstream = gradient_edge(input);
+        if (upstream.node) {
+          node.inputs.push_back(visit(key(upstream), upstream));
+        } else if (const auto declared = trace.detached.find(input.impl());
+                   detail == ModelPlotDetail::Blocks && declared != trace.detached.end()) {
+          node.inputs.push_back(visit(declared->second, {}));
+        }
+      }
       for (const auto& p : layer.parameters) {
         node.parameters += p.numel();
         count_parameter(p);
@@ -191,14 +212,16 @@ plot_model(const ModelForward& forward, const Tensor& example, const ModelPlotOp
         node.shape = meta[edge.input_nr].shape;
       for (const auto& e : edge.node->next_edges())
         if (e.node)
-          node.inputs.push_back(visit(e));
+          node.inputs.push_back(visit(key(e), e));
     }
     const auto id = graph.nodes_.size();
     graph.nodes_.push_back(std::move(node));
     seen[k] = id;
+    visiting.erase(k);
     return id;
   };
-  const auto last = visit(gradient_edge(output));
+  const auto last_edge = gradient_edge(output);
+  const auto last = visit(key(last_edge), last_edge);
   graph.nodes_.push_back({"Output", "Output", output.shape(), {last}, 0});
   return graph;
 }

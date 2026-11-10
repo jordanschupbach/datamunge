@@ -3,8 +3,8 @@
 """Exact sigmoid-encoder Jacobian-Frobenius penalty, plain and strong matched controls.
 Three epochs/default; differentiate through activation slopes AND encoder weights.
 
-Port of tflow's contractive_autoencoder. Preparation (in ~/projects/tflow_examples):
-just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
+Port of tflow's contractive_autoencoder. Missing MNIST pools are prepared through
+the canonical C++ dataset API in the shared cache ($DATAMUNGE_DATA_DIR/saliency). Outputs
 (per-variant plain/contractive/strong histories, npz arrays and metrics.json, data.npz,
 index.html and digit<k>.png galleries) go to output/nn/models/contractive_autoencoder.
 Checkpoints are best.npz files instead of TF SaveV2 bundles. Options: epochs=N
@@ -29,23 +29,8 @@ def float32(x):
     return struct.unpack("f", struct.pack("f", x))[0]
 
 
-# ---- model (examples/nn/common/contractive_autoencoder.hpp) ----------------------------------
-
-class ContractivePenalty:
-    def __init__(self, per_example, mean):
-        self.per_example, self.mean = per_example, mean
-
-
-def sigmoid_encoder_contraction(code, encoder_weight):
-    """sum_j (h_j (1 - h_j))^2 sum_i W_ij^2 per example, and its batch mean."""
-    slope = nn.mul(code, nn.sub(1.0, code))
-    squared_column_norm = nn.sum(nn.square(encoder_weight), [0])
-    per = nn.sum(nn.mul(nn.square(slope), squared_column_norm), [1])
-    return ContractivePenalty(per, nn.mean(per, [0]))
-
-
-class ContractiveOutput:
-    code = reconstruction = loss = mse = penalty = None
+# Canonical forward/penalty operations; the Python script still owns fitting.
+sigmoid_encoder_contraction = nn.SigmoidEncoderContraction
 
 
 class ContractiveAutoencoderModel:
@@ -63,13 +48,7 @@ class ContractiveAutoencoderModel:
         return nn.dense(self.parameters, "decoder", code, 784, nn.Activation.Sigmoid)
 
     def forward(self, image):
-        out = ContractiveOutput()
-        out.code = nn.dense(self.parameters, "encoder", image, 32, nn.Activation.Sigmoid)
-        out.reconstruction = self.decoder(out.code)
-        out.mse = ae.reconstruction_mse(out.reconstruction, image)
-        out.penalty = sigmoid_encoder_contraction(out.code, self.parameters.at("encoder/W"))
-        out.loss = nn.add(out.mse, nn.mul(out.penalty.mean, self.weight))
-        return out
+        return nn.ContractiveAutoencoder(self.parameters, image, self.weight)
 
     def evaluate(self, images):
         """[code, reconstruction, loss, mse, penalty mean, penalty per example]"""

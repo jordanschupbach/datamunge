@@ -143,8 +143,8 @@ struct MetadataRandom {
     }
   }
 };
-/// @brief Prepare the canonical local memory or balanced MNIST asset pools.
-/// @param name "memory" or "mnist-assets" adapter name.
+/// @brief Prepare canonical memory, balanced MNIST, known-factor images or sentence grammar assets.
+/// @param name "memory", "mnist-assets", "beta-vae-assets" or "sequence-vae-assets" adapter name.
 /// @param root Parent cache directory.
 void prepare_basic(const std::string& name, const fs::path& root);
 /// @brief Execute a codec process directly without shell interpolation.

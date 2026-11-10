@@ -3,7 +3,7 @@
 """EfficientDet: repeated weighted bidirectional feature fusion.
 
 Port of tflow's efficientdet. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 Short default: three training epochs; use epochs=N for longer accuracy experiments.
 https://arxiv.org/abs/1911.09070
 https://github.com/google/automl/tree/master/efficientdet

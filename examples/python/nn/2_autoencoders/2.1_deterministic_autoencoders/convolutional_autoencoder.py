@@ -3,8 +3,9 @@
 """Actual spatial 7x7x4 code / nearest-repeat convolutional decoder, 741 learned parameters.
 Three default epochs, mean/initial/pool-only/zero/shuffled-code controls.
 
-Port of tflow's convolutional_autoencoder. Preparation (in ~/projects/tflow_examples):
-just autoencoder-assets; data are read from $DATAMUNGE_DATA_DIR/saliency. Outputs
+Port of tflow's convolutional_autoencoder. The canonical dataset API prepares
+genuine MNIST in $DATAMUNGE_DATA_DIR/saliency. Model arithmetic delegates to
+datamunge::nn::models::ConvolutionalAutoencoder. Outputs
 (history, npz arrays, metrics.json, index.html and digit<k>.png galleries) go to
 output/nn/models/convolutional_autoencoder. Options: epochs=N data=PATH out=PATH
 init=PATH (start from saved parameters, e.g. tflow's initial_arrays.npz, to

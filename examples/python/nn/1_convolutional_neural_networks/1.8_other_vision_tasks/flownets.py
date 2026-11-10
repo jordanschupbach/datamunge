@@ -17,7 +17,9 @@ This implements the S variant;PWC-Net is the other required model in the
 combined catalogue item. No pretrained/FlyingChairs/benchmark claim.
 
 Port of tflow's flownets. Preparation (in ~/projects/tflow_examples): just
-optical-flow-assets; pairs.npz is read from $DATAMUNGE_DATA_DIR/optical_flow.
+optical-flow-assets. Reproducible checkout preparation now also uses
+datamunge-prepare-data optical_flow (see the mepml report). pairs.npz is
+read from $DATAMUNGE_DATA_DIR/optical_flow or an explicit data=PATH.
 The crops, pyramid targets and batch order (nn::BatchOrder seed 167) are
 tflow's; weights come from datamunge's generator, so trained numbers match
 TF statistically. The backward warp uses nn::sample_pixels (TF: explicit

@@ -45,7 +45,22 @@ def _namespace(prefix):
     return SimpleNamespace(**members)
 
 
-for _name in NAMESPACES:
-    globals()[_name] = _namespace(_name)
+def __getattr__(name):
+    """Load the requested component group and retain explicit missing-binding errors.
+
+    A compatibility namespace may contain only C++ using-declarations that SWIG
+    has not exported. Its absence must not prevent independent, available groups
+    such as ae or dataset_assets from loading. No empty placeholder is returned.
+    """
+    if name not in NAMESPACES:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    namespace = _namespace(name)
+    globals()[name] = namespace
+    return namespace
+
+
+def __dir__():
+    """Keep component namespace discovery available before lazy loading."""
+    return sorted(set(globals()) | set(NAMESPACES))
 
 __all__ = list(NAMESPACES)

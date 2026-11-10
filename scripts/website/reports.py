@@ -32,7 +32,7 @@ CODE_PLAIN = re.compile(r"<pre><code>(.*?)</code></pre>", re.S)
 TITLE = re.compile(r'<h1 class="title">(.*?)</h1>', re.S)
 SUBTITLE = re.compile(r'<p class="subtitle">(.*?)</p>', re.S)
 TOC = re.compile(r'<nav[^>]*class="toc"[^>]*>.*?</nav>', re.S)
-SRC = re.compile(r'(<(?:img|video|source)\b[^>]*?\s(?:src|poster)=")([^"]+)(")')
+SRC = re.compile(r'(<(?:img|audio|video|source)\b[^>]*?\s(?:src|poster)=")([^"]+)(")')
 IMG = re.compile(r'<img\b[^>]*>')
 ABSTRACT = re.compile(r'<section[^>]*class="abstract"[^>]*>(.*?)</section>', re.S)
 CPP_BLOCK = re.compile(r'^```(?:\{\s*(?:cpp|c\+\+)(?=[\s,}])[^\n]*\}|cpp|c\+\+)\s*\n(.*?)^```\s*$', re.M | re.S)
@@ -350,6 +350,7 @@ def missing_figures(path):
         text = source.read()
     base = os.path.dirname(path)
     refs = {a or b for a, b in FIGURE_REF.findall(text)}
+    refs.update(html.unescape(src) for _, src, _ in SRC.findall(text))
     return sorted(r for r in refs
                   if not re.match(r"^[a-z]+:|^/", r) and not os.path.exists(os.path.join(base, r)))
 
@@ -452,6 +453,19 @@ def run_reports(mep_mepml, jobs_list, timeout=0, jobs=1, env=None):
         ready = [path for path in pending if dependencies[path] <= completed]
         if not ready:
             raise ToolchainError("Cyclic report prerequisites")
+        # Blocks execute in the report's directory. mep discovers file= output
+        # there, so simultaneous sibling reports can copy one another's newest
+        # SVG (and overwrite shared fixture filenames). Schedule at most one
+        # report per working directory in each wave; other directories still
+        # run concurrently.
+        directories = set()
+        independent = []
+        for path in ready:
+            directory = os.path.realpath(os.path.dirname(path))
+            if directory not in directories:
+                independent.append(path)
+                directories.add(directory)
+        ready = independent
         runnable = []
         for path in ready:
             original, status = pending[path]

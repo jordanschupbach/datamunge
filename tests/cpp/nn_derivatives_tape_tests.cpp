@@ -6,6 +6,7 @@
 #include "datamunge/nn/tape.hpp"
 
 #include <cmath>
+#include <algorithm>
 #include <vector>
 
 namespace nn = datamunge::nn;
@@ -101,4 +102,23 @@ TEST(NnTape, NoHistoryIsEmpty) {
     const auto t = nn::tape({nn::scalar(1.0)});
     EXPECT_TRUE(t.nodes.empty());
     EXPECT_THROW((void)nn::plot_tape(t), std::invalid_argument);
+}
+
+TEST(NnTape, MarkdownPreservesInputOrderAndEscapesReportDelimiters) {
+    nn::Tape t;
+    t.nodes = {
+        {.id = 0, .op = "Add", .label = "sum", .inputs = {2, std::nullopt, 1}, .shape = {2, 3}},
+        {.id = 1, .op = "Leaf", .label = "x|`\n<&", .leaf = true},
+        {.id = 2, .op = "Leaf", .label = "雪", .leaf = true}
+    };
+    const auto text = t.to_markdown();
+    EXPECT_NE(text.find("| sum | Add | &#91;2, 3&#93; | 雪, const, x&#124;&#96;&#10;&#60;&#38; |\n"),
+              std::string::npos);
+    EXPECT_NE(text.find("雪, const, x&#124;&#96;&#10;&#60;&#38; |\n"), std::string::npos);
+    EXPECT_EQ(std::count(text.begin(), text.end(), '\n'), 5);
+    EXPECT_EQ(text.find("```"), std::string::npos);
+    EXPECT_EQ(nn::Tape{}.to_markdown(),
+              "| Node | Operation | Shape | Inputs |\n| :--- | :--- | :--- | :--- |\n");
+    t.nodes[0].inputs = {10};
+    EXPECT_THROW((void)t.to_markdown(), std::out_of_range);
 }

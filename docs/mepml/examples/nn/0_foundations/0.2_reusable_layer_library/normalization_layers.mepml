@@ -486,9 +486,9 @@ int main() {
 ```
 // result_begin: markdown
 Jacobians at x ∈ R^16: max |closed form − autodiff| = 1.1e-16 (layer norm), 1.1e-16 (RMSNorm).
-Layer norm: σ = 1.6055; singular values: 0.622849 (×14) then 2.416e-06 and 1.5e-18; predicted 1/σ = 0.622849 and ε/σ³ = 2.416e-06.
+Layer norm: σ = 1.6055; singular values: 0.622849 (×14) then 2.416e-06 and 6.1e-18; predicted 1/σ = 0.622849 and ε/σ³ = 2.416e-06.
 RMSNorm: r = 1.7079; singular values: 0.585528 (×15) then 2.007e-06; predicted 1/r = 0.585528 and ε/r³ = 2.007e-06.
-Largest deviation of the repeated singular values from 1/σ, 1/r: 4.4e-16, 1.1e-16.
+Largest deviation of the repeated singular values from 1/σ, 1/r: 5.6e-16, 8.9e-16.
 
 Upstream gradient of L = Σ r ⊙ LN(h) for 32 rows: max |Σ_j ∂L/∂h_j| = 6.7e-16; max cosine with the centred row = 7.2e-06.
 Weight W [10, 8] feeding layer norm (ε = 0): cos(∇W, W) = -2.7e-17; L(3W) − L(W) = 5.3e-15; max |∇L(3W) − ∇L(W)/3| = 1.1e-15.

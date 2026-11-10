@@ -1,0 +1,44 @@
+library(testthat)
+nn<-datamungerNN::nn
+test_that("row gate order plus-one forget bias and state paths are native",{
+ t<-nn$DType$Float64
+ pre<-nn$zeros(c(1L,1L,3L,16L),t)$requires_grad_()
+ h<-nn$zeros(c(1L,1L,3L,4L),t)$requires_grad_()
+ c0<-nn$full(c(1L,1L,3L,4L),2,t)$requires_grad_()
+ w<-nn$zeros(c(1L,3L,4L,16L),t)$requires_grad_()
+ o<-nn$PixelRowLstmStep(pre,h,c0,w)
+ expect_equal(o$forget_gate$values(),rep(plogis(1),12))
+ expect_equal(o$cell$values(),rep(2*plogis(1),12))
+ expect_equal(o$input_gate$values(),rep(.5,12))
+ expect_equal(o$candidate$values(),rep(0,12))
+ fields<-list(o$gates,o$input_gate,o$forget_gate,o$output_gate,o$candidate,o$cell,o$hidden)
+ rm(o);gc();graph<-nn$GradOptions();graph$create_graph<-TRUE
+ g<-nn$grad(nn$sum(fields[[6]]),list(c0),graph)[[1]]
+ expect_equal(g$values(),rep(plogis(1),12))
+ expect_gt(nn$max(nn$abs(nn$grad(nn$sum(g),list(pre))[[1]]))$item(),.1)
+ expect_error(nn$PixelRowLstmStep(nn$zeros(c(1L,2L,3L,16L),t),h,c0,w))
+})
+test_that("census linked-zero and causal graphs survive parent and store",{
+ t<-nn$DType$Float64;p<-nn$ParameterStore(8303,t)
+ x<-nn$full(c(1L,5L,7L,1L),.25,t)$requires_grad_()
+ o<-nn$PixelRnn(p,x)
+ expect_equal(c(p$count(),p$size()),c(357,5))
+ fields<-list(o$initial_hidden,o$initial_cell,o$input_gates,o$row_gates,o$hidden,o$cell,o$logits)
+ rm(o,p);gc();expect_true(nn$equal_bits(fields[[1]],fields[[2]]));expect_true(fields[[1]]$requires_grad())
+ keep<-nn$GradOptions();keep$retain_graph<-TRUE
+ g0<-nn$grad(nn$add(nn$sum(fields[[1]]),nn$sum(fields[[2]])),list(x),keep)[[1]]
+ expect_equal(nn$max(nn$abs(g0))$item(),0)
+ g<-nn$grad(nn$sum(nn$slice_axis(nn$reshape(fields[[7]],c(35L)),0L,17L,18L)),list(x))[[1]]
+ expect_true(all(g$values()[18:35]==0))
+ expect_equal(fields[[3]]$shape(),c(1,5,7,16));expect_equal(fields[[5]]$shape(),c(1,5,7,4))
+})
+test_that("rectangles are batch independent immutable and reject before leaves",{
+ p<-nn$ParameterStore(8303);x<-nn$full(c(2L,3L,5L,1L),.2)
+ o<-nn$PixelRnn(p,x);before<-p$flatten()
+ expect_true(nn$equal_bits(nn$take_rows(o$logits,c(0L)),nn$PixelRnn(p,nn$take_rows(x,c(0L)))$logits))
+ expect_identical(before,p$flatten())
+ p<-nn$ParameterStore(1)
+ expect_error(nn$PixelRnn(p,nn$zeros(c(1L,3L,5L,2L))))
+ expect_error(nn$PixelRnn(p,nn$zeros(c(1L,3L,5L,1L),nn$DType$Int64)))
+ expect_equal(p$size(),0)
+})

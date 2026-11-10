@@ -1,0 +1,51 @@
+library(testthat)
+nn <- datamungerNN::nn
+codec_packet <- function() {
+  q <- nn$CodecQuantizer();q$minimum <- rep(0,32);q$maximum <- rep(1,32)
+  p <- nn$CodecPacket();p$quantizer <- q;p$weights <- nn$zeros(c(32L,784L));p$bias <- nn$zeros(784L)
+  p$source_ids <- c(7L,2147483647L);p$symbols <- 0:63;p
+}
+test_that("Quantizer fitting owns signed strided ranges and uses exact half-up", {
+  fit <- nn$transpose(nn$from_vector(c(-2,1,4,.25,.25,.25),c(2L,3L)),c(1L,0L))$requires_grad_()
+  q <- nn$FitCodecQuantizer(fit);expect_equal(q$minimum,c(-2,.25),tolerance=0);expect_equal(q$maximum,c(4,.25),tolerance=0)
+  nn$no_grad(function()fit$fill_(9));expect_equal(q$minimum,c(-2,.25),tolerance=0)
+  q$minimum <- c(0,.25);q$maximum <- c(255,.25)
+  symbols <- nn$QuantizeCodec(nn$from_vector(c(.5,-9,1.5,.25,2.5,8),c(3L,2L)),q)
+  expect_equal(symbols,c(1L,0L,2L,0L,3L,0L),tolerance=0)
+  values <- nn$DequantizeCodec(symbols,q);expect_equal(values$values(),c(1,.25,2,.25,3,.25),tolerance=0)
+  expect_false(values$requires_grad());expect_equal(values$dtype(),nn$DType$Float32)
+  expect_equal(nn$SymbolTensor(symbols,2L)$values(),c(1,0,2,0,3,0),tolerance=0)
+})
+test_that("Continuous decoder retains all supplied paths and result lifetime", {
+  code <- nn$from_vector_double(c(-.4,.8),c(1L,2L))$requires_grad_()
+  weight <- nn$from_vector_double(c(.3,-.2,.7,.4),c(2L,2L))$requires_grad_();bias <- nn$from_vector_double(c(.1,-.3),2L)$requires_grad_()
+  prediction <- nn$LearnedCodecDecode(code,weight,bias);expect_equal(prediction$dtype(),nn$DType$Float64)
+  grads <- nn$grad(nn$sum(prediction),nn$tensor_vector(list(code,weight,bias)))
+  for(g in grads)expect_gt(nn$sum(nn$abs(g))$item(),0)
+  rm(code,weight,bias);gc();expect_equal(prediction$shape(),c(1,2))
+})
+test_that("Packet exact bytes own nested state after parent collection", {
+  p <- codec_packet();bytes <- nn$PackCodec(p);expect_length(bytes,103844)
+  expect_equal(bytes[1:8],as.integer(charToRaw("TFLCODE1")),tolerance=0)
+  expect_equal(bytes[9:12],c(2L,0L,0L,0L),tolerance=0)
+  expect_equal(bytes[103773:103780],c(7L,0L,0L,0L,255L,255L,255L,127L),tolerance=0)
+  expect_equal(bytes[103781:103844],0:63,tolerance=0)
+  parsed <- nn$UnpackCodec(bytes);expect_equal(nn$PackCodec(parsed),bytes,tolerance=0)
+  kept <- parsed$quantizer;kept$minimum <- rep(-1,32);expect_equal(parsed$quantizer$minimum,rep(0,32),tolerance=0)
+  rm(parsed,p);gc();expect_equal(kept$minimum,rep(-1,32),tolerance=0)
+})
+test_that("Fresh packet decoder stops trainable handles without changing their flags", {
+  p <- codec_packet();p$weights$requires_grad_();p$bias$requires_grad_();result <- nn$DecodeCodec(p)
+  expect_false(result$requires_grad());expect_true(result$is_contiguous());expect_true(p$weights$requires_grad());expect_true(p$bias$requires_grad())
+  expect_equal(result$shape(),c(2,784));expect_equal(result$values(),rep(.5,1568),tolerance=0)
+  fresh <- nn$UnpackCodec(nn$PackCodec(p));kept <- fresh$weights;rm(p,fresh);gc()
+  expect_equal(kept$shape(),c(32,784));expect_equal(result$values(),rep(.5,1568),tolerance=0)
+})
+test_that("Malformed packet ranges symbols and decoder geometry fail", {
+  p <- codec_packet();bytes <- nn$PackCodec(p)
+  for(bad in list(integer(),bytes[1:27],bytes[-length(bytes)],c(bytes,0L),c(88L,bytes[-1])))expect_error(nn$UnpackCodec(bad))
+  p$source_ids <- c(-1L,2L);expect_error(nn$PackCodec(p));p <- codec_packet();p$symbols <- 0L;expect_error(nn$DecodeCodec(p))
+  q <- nn$CodecQuantizer();q$minimum <- 2;q$maximum <- 1;expect_error(nn$QuantizeCodec(nn$zeros(c(1L,1L)),q))
+  expect_error(nn$SymbolTensor(0L,0L));expect_error(nn$FitCodecQuantizer(nn$ones(c(2L,2L),nn$DType$Float64)))
+  expect_error(nn$LearnedCodecDecode(nn$ones(c(1L,2L)),nn$ones(c(3L,1L)),nn$zeros(1L)))
+})

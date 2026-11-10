@@ -26,6 +26,23 @@ std::string shape_text(const Shape& shape) {
     return out + "]";
 }
 
+/// @brief Escape one table cell without introducing Markdown structure or HTML.
+/// @param value Raw UTF-8 label or shape text; UTF-8 bytes are preserved.
+/// @return Text with structural ASCII characters encoded as numeric entities.
+std::string markdown_cell(const std::string& value) {
+    std::string out;
+    for (const unsigned char c : value) {
+        switch (c) {
+            case '&': case '<': case '>': case '|': case '`': case '\\':
+            case '*': case '_': case '[': case ']': case '\n': case '\r': case '\t':
+                out += "&#" + std::to_string(c) + ";";
+                break;
+            default: out += static_cast<char>(c);
+        }
+    }
+    return out;
+}
+
 }  // namespace
 
 Tape tape(const std::vector<Tensor>& outputs, const std::vector<std::pair<Tensor, std::string>>& names) {
@@ -101,6 +118,22 @@ std::string Tape::to_text() const {
             for (const auto& in : n.inputs) out << ' ' << (in ? nodes[*in].label : std::string("const"));
         }
         out << '\n';
+    }
+    return out.str();
+}
+
+std::string Tape::to_markdown() const {
+    std::ostringstream out;
+    out << "| Node | Operation | Shape | Inputs |\n| :--- | :--- | :--- | :--- |\n";
+    for (const auto& node : nodes) {
+        out << "| " << markdown_cell(node.label) << " | " << markdown_cell(node.op)
+            << " | " << markdown_cell(shape_text(node.shape)) << " | ";
+        for (std::size_t i = 0; i < node.inputs.size(); ++i) {
+            if (i) out << ", ";
+            const auto& input = node.inputs[i];
+            out << (input ? markdown_cell(nodes.at(*input).label) : "const");
+        }
+        out << " |\n";
     }
     return out.str();
 }

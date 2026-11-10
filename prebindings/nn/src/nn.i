@@ -13,6 +13,19 @@ namespace std {
 #ifdef SWIGPYTHON
 %include <std_array.i>
 #else
+// R's integer type cannot represent all uint32 seeds (INT_MIN is NA). Keep
+// public seed arguments numeric, validate exactly, then narrow in C++.
+%typemap(rtype) std::uint32_t seed "numeric";
+%typemap(scoercein) std::uint32_t seed "$input = as.numeric($input);";
+%typemap(rtypecheck) std::uint32_t seed "is.numeric($arg) && length($arg) == 1";
+%typemap(in) std::uint32_t seed {
+  if ((!Rf_isReal($input) && !Rf_isInteger($input)) || Rf_length($input) != 1)
+    SWIG_exception_fail(SWIG_TypeError, "seed must be one uint32 numeric value");
+  const double value = Rf_asReal($input);
+  if (!std::isfinite(value) || value < 0 || value > 4294967295.0 || std::floor(value) != value)
+    SWIG_exception_fail(SWIG_ValueError, "seed must be an integer in [0,4294967295]");
+  $1 = static_cast<std::uint32_t>(value);
+}
 // Scalar integer literals are valid C++ double arguments. R's default
 // SWIG typemap uses REAL() directly and otherwise rejects values like 2L.
 %typemap(in) double {
@@ -149,6 +162,17 @@ using EarlyStoppingDecision = EarlyStopping::Decision;
 }
 %include "datamunge/nn/tensor.hpp"
 %template(TensorVector) std::vector<datamunge::nn::Tensor>;
+// Own vector-valued result members after their parent is collected. Copy the
+// vector of reference-counted handles, retaining each Tensor graph/storage.
+%typemap(out) std::vector<datamunge::nn::Tensor> & {
+  $result = SWIG_NewPointerObj(new std::vector<datamunge::nn::Tensor>(*$1),
+      $descriptor(std::vector<datamunge::nn::Tensor> *), SWIG_POINTER_OWN);
+}
+%typemap(out) const std::vector<datamunge::nn::Tensor> & {
+  $result = SWIG_NewPointerObj(new std::vector<datamunge::nn::Tensor>(*$1),
+      $descriptor(std::vector<datamunge::nn::Tensor> *), SWIG_POINTER_OWN);
+}
+
 %extend datamunge::nn::Tensor {
   double item() const { return $self->item<double>(); }
   std::vector<double> values() const { return $self->to_vector<double>(); }
@@ -183,6 +207,170 @@ namespace std {
 %include "datamunge/nn/params.hpp"
 %include "datamunge/nn/conv.hpp"
 %include "datamunge/nn/layers.hpp"
+// Canonical autoencoder forward values and exact encoder-Jacobian penalty.
+// Host languages retain their own optimizer, minibatch and checkpoint loops.
+// A saved nested penalty must outlive its parent result: return an owning value
+// handle rather than a pointer into ContractiveOutput's storage (Python and R).
+%typemap(out) datamunge::nn::models::ContractivePenalty & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::ContractivePenalty(*$1),
+      $descriptor(datamunge::nn::models::ContractivePenalty *), SWIG_POINTER_OWN);
+}
+%include "datamunge/nn/autoencoder_models.hpp"
+%ignore datamunge::nn::models::latent_path_detail::Finite;
+%ignore datamunge::nn::models::latent_path_detail::Product;
+%ignore datamunge::nn::models::latent_path_detail::Path;
+%include "datamunge/nn/latent_arithmetic.hpp"
+%ignore datamunge::nn::models::projection_detail::Floating;
+%ignore datamunge::nn::models::projection_detail::Indices;
+%include "datamunge/nn/latent_visualization.hpp"
+%ignore datamunge::nn::models::codec_detail::Floating;
+%ignore datamunge::nn::models::codec_detail::AppendU32;
+%ignore datamunge::nn::models::codec_detail::AppendFloat;
+%ignore datamunge::nn::models::codec_detail::ReadU32;
+%ignore datamunge::nn::models::codec_detail::ReadFloat;
+%ignore datamunge::nn::models::codec_detail::Width;
+%ignore datamunge::nn::models::codec_detail::Packet;
+%typemap(out) datamunge::nn::models::CodecQuantizer & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::CodecQuantizer(*$1),
+      $descriptor(datamunge::nn::models::CodecQuantizer *), SWIG_POINTER_OWN);
+}
+%include "datamunge/nn/learned_image_codec.hpp"
+%ignore datamunge::nn::models::anomaly_detail::Scores;
+%include "datamunge/nn/reconstruction_anomaly.hpp"
+%ignore datamunge::nn::models::gan_detail::Finite;
+%ignore datamunge::nn::models::gan_detail::Matrix;
+%ignore datamunge::nn::models::gan_detail::Widths;
+%ignore datamunge::nn::models::gan_detail::Rows;
+%ignore datamunge::nn::models::gan_detail::Labels;
+%include "datamunge/nn/gan_models.hpp"
+%include "datamunge/nn/auxiliary_classifier_gan.hpp"
+%include "datamunge/nn/gan_data.hpp"
+%ignore datamunge::nn::models::bigan_detail::Geometry;
+%include "datamunge/nn/bidirectional_gan.hpp"
+%ignore datamunge::nn::models::dense_gan_detail::Geometry;
+%ignore datamunge::nn::models::dense_gan_detail::Scores;
+%include "datamunge/nn/dense_gan.hpp"
+%include "datamunge/nn/conditional_gan.hpp"
+%ignore datamunge::nn::models::info_gan_detail::Width;
+%ignore datamunge::nn::models::info_gan_detail::Continuous;
+%ignore datamunge::nn::models::info_gan_detail::Heads;
+%include "datamunge/nn/info_gan.hpp"
+%ignore datamunge::nn::spectral_cache_detail::Finite;
+%ignore datamunge::nn::spectral_cache_detail::Matrix;
+%ignore datamunge::nn::spectral_cache_detail::Column;
+%ignore datamunge::nn::spectral_cache_detail::Positive;
+%include "datamunge/nn/spectral_cache.hpp"
+%include "datamunge/nn/cached_spectral_dense.hpp"
+%include "datamunge/nn/spectral_gan.hpp"
+%include "datamunge/nn/competitive_autoencoders.hpp"
+%ignore datamunge::nn::models::mae_detail::Floating;
+%ignore datamunge::nn::models::mae_detail::Selection;
+%ignore datamunge::nn::models::mae_detail::Mix;
+%include "datamunge/nn/masked_autoencoder.hpp"
+%ignore datamunge::nn::models::sag_detail::Tokens;
+%include "datamunge/nn/self_attention_gan.hpp"
+%ignore datamunge::nn::captured_bn_detail::Finite;
+%ignore datamunge::nn::captured_bn_detail::Moments;
+%include "datamunge/nn/captured_batch_norm.hpp"
+%include "datamunge/nn/gan_priors.hpp"
+%ignore datamunge::nn::models::big_detail::Image;
+%ignore datamunge::nn::models::big_detail::Stores;
+%ignore datamunge::nn::models::big_detail::Kernel;
+%ignore datamunge::nn::models::big_detail::Dense;
+%ignore datamunge::nn::models::big_detail::Conv;
+%ignore datamunge::nn::models::big_detail::ConditionalNorm;
+// Nested moment records must retain Tensor handles after the parent result is
+// collected, including when a G capture is saved across its Adam write.
+%typemap(out) datamunge::nn::models::BigGanMoments & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::BigGanMoments(*$1),
+      $descriptor(datamunge::nn::models::BigGanMoments *), SWIG_POINTER_OWN);
+}
+%include "datamunge/nn/big_gan.hpp"
+%include "datamunge/nn/captured_affine_batch_norm.hpp"
+%ignore datamunge::nn::models::dcgan_detail::Image;
+%ignore datamunge::nn::models::dcgan_detail::Pair;
+%ignore datamunge::nn::models::dcgan_detail::Inputs;
+%include "datamunge/nn/dcgan.hpp"
+%include "datamunge/nn/midpoint_uniform.hpp"
+%include "datamunge/nn/wasserstein_gan.hpp"
+%include "datamunge/nn/pixel_rms_norm.hpp"
+%ignore datamunge::nn::models::progressive_detail::Stores;
+%ignore datamunge::nn::models::progressive_detail::Alpha;
+%ignore datamunge::nn::models::progressive_detail::Image;
+%ignore datamunge::nn::models::progressive_detail::Conv;
+%ignore datamunge::nn::models::progressive_detail::Feature;
+%include "datamunge/nn/progressive_gan.hpp"
+%include "datamunge/nn/quantized_sobel.hpp"
+%ignore datamunge::nn::models::pix_detail::Image;
+%ignore datamunge::nn::models::pix_detail::Conv;
+%include "datamunge/nn/pix2pix.hpp"
+%include "datamunge/nn/cycle_domains.hpp"
+%include "datamunge/nn/cycle_gan.hpp"
+%ignore datamunge::nn::modulated_conv_detail::Finite;
+%ignore datamunge::nn::modulated_conv_detail::Product;
+%include "datamunge/nn/modulated_conv.hpp"
+%include "datamunge/nn/spatial_instance_norm.hpp"
+%ignore datamunge::nn::models::style_detail::Image;
+%ignore datamunge::nn::models::style_detail::Inputs;
+%ignore datamunge::nn::models::style_detail::ModConv;
+%ignore datamunge::nn::models::style_detail::Layer;
+%include "datamunge/nn/style_gan.hpp"
+%ignore datamunge::nn::models::restoration_detail::Patches;
+%ignore datamunge::nn::models::restoration_detail::Hidden;
+%include "datamunge/nn/patch_restoration.hpp"
+%ignore datamunge::nn::models::sequence_ae_detail::Floating;
+%include "datamunge/nn/sequence_autoencoders.hpp"
+%ignore datamunge::nn::models::activation_sparse_detail::Options;
+%ignore datamunge::nn::models::activation_sparse_detail::MakeOptions;
+%ignore datamunge::nn::models::activation_sparse_detail::Matrix;
+%typemap(out) datamunge::nn::models::SparsityPenalty & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::SparsityPenalty(*$1),
+      $descriptor(datamunge::nn::models::SparsityPenalty *), SWIG_POINTER_OWN);
+}
+%include "datamunge/nn/activation_sparse_autoencoder.hpp"
+%ignore datamunge::nn::models::layered_ae_detail::Widths;
+%ignore datamunge::nn::models::layered_ae_detail::Matrix;
+%include "datamunge/nn/layered_autoencoders.hpp"
+%ignore datamunge::nn::models::tied_ae_detail::Validate;
+%include "datamunge/nn/tied_autoencoder.hpp"
+%ignore datamunge::nn::models::aae_detail::Widths;
+%ignore datamunge::nn::models::aae_detail::Matrix;
+%include "datamunge/nn/adversarial_autoencoder.hpp"
+%ignore datamunge::nn::models::transfer_detail::Vector;
+%ignore datamunge::nn::models::transfer_detail::Geometry;
+%ignore datamunge::nn::models::transfer_detail::Labels;
+%include "datamunge/nn/encoder_pretraining.hpp"
+%include "datamunge/nn/gaussian_autoencoder.hpp"
+%ignore datamunge::nn::models::vq_detail::Product;
+%ignore datamunge::nn::models::vq_detail::Vocabulary;
+%ignore datamunge::nn::models::vq_detail::Ids;
+%ignore datamunge::nn::models::vq_detail::Grid;
+%ignore datamunge::nn::models::vq_detail::Geometry;
+// Nested quantizer handles must own their C++ record through Python/R GC.
+%typemap(out) datamunge::nn::models::VectorQuantizedOutput & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::VectorQuantizedOutput(*$1),
+      $descriptor(datamunge::nn::models::VectorQuantizedOutput *), SWIG_POINTER_OWN);
+}
+%include "datamunge/nn/vector_quantized_autoencoder.hpp"
+%ignore datamunge::nn::models::vq2_detail::Geometry;
+%ignore datamunge::nn::models::vq2_detail::Beta;
+%include "datamunge/nn/vector_quantized_autoencoder_2.hpp"
+
+
+
+
+%ignore datamunge::nn::models::vae_gan_detail::Geometry;
+%include "datamunge/nn/vae_gan.hpp"
+%include "datamunge/nn/conditional_autoencoder.hpp"
+%include "datamunge/nn/convolutional_variational_autoencoder.hpp"
+// TcVaeOutput.net must survive collection of its parent in Python and R.
+%typemap(out) datamunge::nn::models::GaussianVaeOutput & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::GaussianVaeOutput(*$1),
+      $descriptor(datamunge::nn::models::GaussianVaeOutput *), SWIG_POINTER_OWN);
+}
+%ignore datamunge::nn::models::tc_detail::Weight;
+%ignore datamunge::nn::models::tc_detail::Inputs;
+%include "datamunge/nn/total_correlation_autoencoder.hpp"
 %template(TensorPair) std::pair<datamunge::nn::Tensor, datamunge::nn::Tensor>;
 %include "datamunge/nn/attention.hpp"
 %include "datamunge/nn/losses.hpp"
@@ -237,6 +425,72 @@ public:
 %template(NamedTensor) std::pair<std::string, datamunge::nn::Tensor>;
 %template(NamedTensors) std::vector<std::pair<std::string, datamunge::nn::Tensor> >;
 %include "datamunge/nn/io.hpp"
+// Named() returns the already-declared native named-tensor vector.
+%include "datamunge/nn/flow_variational_autoencoder.hpp"
+%ignore datamunge::nn::models::gumbel_detail::Width;
+%ignore datamunge::nn::models::gumbel_detail::Temperature;
+%ignore datamunge::nn::models::gumbel_detail::Simplex;
+%include "datamunge/nn/gumbel_categorical_autoencoder.hpp"
+%ignore datamunge::nn::models::hierarchy_detail::Geometry;
+%ignore datamunge::nn::models::hierarchy_detail::Stores;
+%ignore datamunge::nn::models::hierarchy_detail::Spatial;
+%ignore datamunge::nn::models::hierarchy_detail::Swish;
+%ignore datamunge::nn::models::hierarchy_detail::Bn;
+%ignore datamunge::nn::models::hierarchy_detail::TopFeature;
+%ignore datamunge::nn::models::hierarchy_detail::PriorHeads;
+%ignore datamunge::nn::models::hierarchy_detail::Decoder;
+%include "datamunge/nn/hierarchical_variational_autoencoder.hpp"
+%include "datamunge/nn/importance_weighted_autoencoder.hpp"
+%ignore datamunge::nn::models::mmd_detail::Products;
+%ignore datamunge::nn::models::mmd_detail::Inputs;
+%include "datamunge/nn/kernel_discrepancy.hpp"
+%ignore datamunge::nn::models::wae_detail::Weight;
+%ignore datamunge::nn::models::wae_detail::Geometry;
+// WaeOutput.mmd must outlive its parent record in Python and R.
+%typemap(out) datamunge::nn::models::MmdOutput & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::MmdOutput(*$1),
+      $descriptor(datamunge::nn::models::MmdOutput *), SWIG_POINTER_OWN);
+}
+%include "datamunge/nn/wasserstein_autoencoder.hpp"
+%ignore datamunge::nn::models::info_detail::Weights;
+%ignore datamunge::nn::models::info_detail::Geometry;
+%include "datamunge/nn/info_variational_autoencoder.hpp"
+%ignore datamunge::nn::models::ladder_detail::Geometry;
+%ignore datamunge::nn::models::ladder_detail::PriorHeads;
+%include "datamunge/nn/ladder_variational_autoencoder.hpp"
+%ignore datamunge::nn::models::sequence_vae_detail::Geometry;
+%ignore datamunge::nn::models::sequence_vae_detail::Tokens;
+%ignore datamunge::nn::models::sequence_vae_detail::Store;
+%ignore datamunge::nn::models::sequence_vae_detail::Embedding;
+%ignore datamunge::nn::models::sequence_vae_detail::Teacher;
+%include "datamunge/nn/sequence_variational_autoencoder.hpp"
+%include "datamunge/nn/posterior_collapse.hpp"
+%ignore datamunge::nn::models::sequence_grammar_detail::Require;
+%ignore datamunge::nn::models::sequence_grammar_detail::Find;
+%ignore datamunge::nn::models::sequence_grammar_detail::Validate;
+%ignore datamunge::nn::models::sequence_grammar_detail::Row;
+// A selected pool must own its Tensor handles after the vector proxy is collected.
+%typemap(out) datamunge::nn::models::SequenceVaeData & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::SequenceVaeData(*$1),
+      $descriptor(datamunge::nn::models::SequenceVaeData *), SWIG_POINTER_OWN);
+}
+%typemap(out) const datamunge::nn::models::SequenceVaeData & {
+  $result = SWIG_NewPointerObj(new datamunge::nn::models::SequenceVaeData(*$1),
+      $descriptor(datamunge::nn::models::SequenceVaeData *), SWIG_POINTER_OWN);
+}
+// Use the canonical native preparation API from functional Python/R workflows.
+%{
+#include <datamunge/datasets/assets.hpp>
+%}
+%ignore datamunge::datasets::file_digest;
+%ignore datamunge::datasets::fetch_file;
+%ignore datamunge::datasets::extract_archive;
+%include "datamunge/datasets/assets.hpp"
+%include "datamunge/nn/sequence_vae_data.hpp"
+%template(SequenceVaePools) std::vector<datamunge::nn::models::SequenceVaeData>;
+
+%include "datamunge/nn/factor_lattice.hpp"
+%include "datamunge/nn/latent_factor_diagnostics.hpp"
 %include "datamunge/nn/datasets.hpp"
 
 
@@ -384,4 +638,87 @@ double top_k_accuracy(const Tensor& scores, const Tensor& labels, std::int64_t k
 
 // Shared example components (examples/nn/common), so the R and Python examples
 // run the same main loops over the same C++ pieces as the C++ examples.
+// Public canonical configuration/forward API must precede legacy component imports.
+%include "datamunge/nn/wavenet_stack_models.hpp"
 %include "nn_components.i"
+
+%include "datamunge/nn/uniform_categorical.hpp"
+%include "datamunge/nn/star_domains.hpp"
+%include "datamunge/nn/star_gan.hpp"
+
+%include "datamunge/nn/relativistic_gan.hpp"
+%ignore datamunge::nn::models::adversarial_sr_detail::Image;
+%ignore datamunge::nn::models::adversarial_sr_detail::Stores;
+%ignore datamunge::nn::models::adversarial_sr_detail::Features;
+%ignore datamunge::nn::models::adversarial_sr_detail::Conv;
+%ignore datamunge::nn::models::adversarial_sr_detail::Prelu;
+%ignore datamunge::nn::models::adversarial_sr_detail::BatchNorm;
+%ignore datamunge::nn::models::adversarial_sr_detail::Residual;
+%ignore datamunge::nn::models::adversarial_sr_detail::DenseBlock;
+%include "datamunge/nn/adversarial_super_resolution.hpp"
+
+%ignore datamunge::nn::models::single_image_detail::Image;
+%ignore datamunge::nn::models::single_image_detail::Amplitude;
+%ignore datamunge::nn::models::single_image_detail::Pair;
+%include "datamunge/nn/single_image_gan.hpp"
+
+%ignore datamunge::nn::FrozenGraph::Impl;
+%include "datamunge/nn/frozen_graph.hpp"
+
+%ignore datamunge::nn::models::generative_metric_detail::Matrix;
+%ignore datamunge::nn::models::generative_metric_detail::Probability;
+%include "datamunge/nn/generative_metrics.hpp"
+
+%ignore datamunge::nn::models::autoregressive_pixel_detail::Image;
+%ignore datamunge::nn::models::autoregressive_pixel_detail::Range;
+%include "datamunge/nn/autoregressive_pixels.hpp"
+
+%ignore datamunge::nn::models::gated_pixel_detail::Project;
+%include "datamunge/nn/gated_pixels.hpp"
+
+%include "datamunge/nn/recurrent_pixels.hpp"
+
+%ignore datamunge::nn::models::made_detail::Degrees;
+%include "datamunge/nn/made_density.hpp"
+
+%include "datamunge/nn/logistic_pixels.hpp"
+
+#ifdef SWIGR
+// next is a reserved R control-flow keyword; keep the public method callable
+// with ordinary R syntax while preserving the canonical C++/Python spelling.
+%rename(next_code) datamunge::nn::models::WaveStackCache::next;
+#endif
+%include "datamunge/nn/wavenet_generation.hpp"
+
+%ignore datamunge::nn::models::flow_detail::Matrix;
+%include "datamunge/nn/normalizing_flows.hpp"
+%ignore datamunge::nn::models::nice_detail::Dense;
+%include "datamunge/nn/nice_density.hpp"
+%include "datamunge/nn/affine_flows.hpp"
+%include "datamunge/nn/glow_density.hpp"
+
+%include "datamunge/nn/maf_density.hpp"
+
+%include "datamunge/nn/iaf_density.hpp"
+
+%include "datamunge/nn/spline_density.hpp"
+
+%ignore datamunge::nn::models::elementary_detail::Scalar;
+%ignore datamunge::nn::models::elementary_detail::Positive;
+%ignore datamunge::nn::models::elementary_detail::Radius;
+%include "datamunge/nn/planar_radial_density.hpp"
+
+%ignore datamunge::nn::models::cnf_detail::Inputs;
+%ignore datamunge::nn::models::cnf_detail::Steps;
+%include "datamunge/nn/cnf_density.hpp"
+
+%ignore datamunge::nn::models::flow_study_detail::Kind;
+%ignore datamunge::nn::models::flow_study_detail::Phi;
+%ignore datamunge::nn::models::flow_study_detail::Allowed;
+%include "datamunge/nn/flow_study.hpp"
+
+%ignore datamunge::nn::models::diffusion_detail::Floating;
+%ignore datamunge::nn::models::diffusion_detail::Time;
+%ignore datamunge::nn::models::diffusion_detail::Same;
+%ignore datamunge::nn::models::diffusion_detail::Positive;
+%include "datamunge/nn/diffusion.hpp"

@@ -8,8 +8,8 @@ rm(.nn_common)
 # ONE live 784x32 parameter for encoder AND transposed decoder; two independent biases.
 # Three default epochs, matched-initial untied control, and explicit gradient-path checks.
 #
-# Port of tflow's tied_autoencoder (model: examples/nn/common/tied_autoencoder.hpp).
-# Preparation (in ~/projects/tflow_examples): just autoencoder-assets; data are read from
+# Model arithmetic lives in datamunge's C++ tied_autoencoder.hpp.
+# Preparation: just nn-autoencoder-data; data are read from
 # $DATAMUNGE_DATA_DIR/saliency. Outputs (tied/ and untied/ training records, initial_forward.npz,
 # data.npz, index.html and digit<k>.png galleries) go to output/nn/models/tied_autoencoder.
 # The tie is the decoder weight being recomputed as transpose(encoder/W) on every forward pass
@@ -25,17 +25,7 @@ f32 <- function(x) readBin(writeBin(x, raw(), size = 4L), "double", size = 4L, n
 
 # code = ReLU(x W + eb); reconstruction = sigmoid(code D + db), D = transpose(W) when tied.
 tied_autoencoder <- function(p, image, features = 784L, latent = 32L, tied = TRUE) {
-    nn_require(features > 1L && latent > 0L && latent < features, "positive strict undercomplete tied architecture")
-    limit <- sqrt(6 / (features + latent))
-    out <- list()
-    out$encoder_weight <- p$get("encoder/W", c(features, latent), nn$init$uniform(limit))
-    eb <- p$get("encoder/b", latent, nn$init$zeros())
-    out$code <- nn$relu(nn$bias_add(nn$matmul(image, out$encoder_weight), eb))
-    out$decoder_weight <- if (tied) nn$transpose(out$encoder_weight, c(1L, 0L))
-                          else p$get("decoder/W", c(latent, features), nn$init$uniform(limit))
-    db <- p$get("decoder/b", features, nn$init$zeros())
-    out$reconstruction <- nn$sigmoid(nn$bias_add(nn$matmul(out$code, out$decoder_weight), db))
-    out
+    nn$TiedAutoencoder(p,image,features,latent,tied)
 }
 
 # Parameters (seed 1853) + optional Adam of the tied or untied model (tied_autoencoder.hpp).
@@ -52,8 +42,7 @@ tied_model <- function(tied = TRUE, training = TRUE) {
         list(n$code, n$reconstruction, autoencoder_reconstruction_mse(n$reconstruction, autoencoder_flatten(images)))
     })
     model$decode <- function(codes) nn$no_grad(function() {
-        d <- if (tied) nn$transpose(model$parameters$at("encoder/W"), c(1L, 0L)) else model$parameters$at("decoder/W")
-        nn$sigmoid(nn$bias_add(nn$matmul(codes, d), model$parameters$at("decoder/b")))
+        nn$TiedAutoencoderDecode(model$parameters,codes,784L,32L,tied)
     })
     # Loads every parameter by name (all must be supplied with matching shapes).
     model$load <- function(arrays) {

@@ -171,7 +171,7 @@ int main() {
   std::print("- gradcheck of sum(RowSums(ScaleShift(x²))²): ok = {}, error {:.1e}; gradgradcheck: ok = {}, error {:.1e}\n", r1.ok,
              r1.max_abs_error, r2.ok, r2.max_abs_error);
   const auto t = nn::tape({f({x64})}, {{x64, "x"}});
-  std::print("\n```\n{}```\n\n", t.to_text());
+  std::print("\n{}\n", t.to_markdown());
 
   for (auto&& [label, call] : std::vector<std::pair<std::string, std::function<void()>>>{
            {"RowSums of a vector", [] { (void)row_sums(nn::Summation::Naive)(nn::tensor({1, 2, 3})); }},
@@ -192,74 +192,14 @@ int main() {
 - d sum(RowSums(x)²)/dx = [[12, 12, 12], [30, 30, 30]] (2 · row sum, copied along each row)
 - gradcheck of sum(RowSums(ScaleShift(x²))²): ok = true, error 2.9e-06; gradgradcheck: ok = true, error 1.3e-06
 
-```
-Sum_308 [Sum] [] <- Square_307
-Square_307 [Square] [2] <- RowSums_306
-RowSums_306 [RowSums] [2] <- ScaleShift_305
-ScaleShift_305 [ScaleShift] [2, 3] <- Square_304
-Square_304 [Square] [2, 3] <- x
-x [Leaf] [2, 3]
-```
-
-- RowSums of a vector: `RowSums: expected a matrix, got shape [3]`
-- ScaleShift of int32: `map_elements: expected float32 or float64, got int32`
-// result_end
-```
-Sum_308 [Sum] [] <- Square_307
-Square_307 [Square] [2] <- RowSums_306
-RowSums_306 [RowSums] [2] <- ScaleShift_305
-ScaleShift_305 [ScaleShift] [2, 3] <- Square_304
-Square_304 [Square] [2, 3] <- x
-x [Leaf] [2, 3]
-```
-
-- RowSums of a vector: `RowSums: expected a matrix, got shape [3]`
-- ScaleShift of int32: `map_elements: expected float32 or float64, got int32`
-// result_end
-```
-Sum_308 [Sum] [] <- Square_307
-Square_307 [Square] [2] <- RowSums_306
-RowSums_306 [RowSums] [2] <- ScaleShift_305
-ScaleShift_305 [ScaleShift] [2, 3] <- Square_304
-Square_304 [Square] [2, 3] <- x
-x [Leaf] [2, 3]
-```
-
-- RowSums of a vector: `RowSums: expected a matrix, got shape [3]`
-- ScaleShift of int32: `map_elements: expected float32 or float64, got int32`
-// result_end
-```
-Sum_308 [Sum] [] <- Square_307
-Square_307 [Square] [2] <- RowSums_306
-RowSums_306 [RowSums] [2] <- ScaleShift_305
-ScaleShift_305 [ScaleShift] [2, 3] <- Square_304
-Square_304 [Square] [2, 3] <- x
-x [Leaf] [2, 3]
-```
-
-- RowSums of a vector: `RowSums: expected a matrix, got shape [3]`
-- ScaleShift of int32: `map_elements: expected float32 or float64, got int32`
-// result_end
-```
-Sum_308 [Sum] [] <- Square_307
-Square_307 [Square] [2] <- RowSums_306
-RowSums_306 [RowSums] [2] <- ScaleShift_305
-ScaleShift_305 [ScaleShift] [2, 3] <- Square_304
-Square_304 [Square] [2, 3] <- x
-x [Leaf] [2, 3]
-```
-
-- RowSums of a vector: `RowSums: expected a matrix, got shape [3]`
-- ScaleShift of int32: `map_elements: expected float32 or float64, got int32`
-// result_end
-```
-Sum_308 [Sum] [] <- Square_307
-Square_307 [Square] [2] <- RowSums_306
-RowSums_306 [RowSums] [2] <- ScaleShift_305
-ScaleShift_305 [ScaleShift] [2, 3] <- Square_304
-Square_304 [Square] [2, 3] <- x
-x [Leaf] [2, 3]
-```
+| Node | Operation | Shape | Inputs |
+| :--- | :--- | :--- | :--- |
+| Sum&#95;308 | Sum | &#91;&#93; | Square&#95;307 |
+| Square&#95;307 | Square | &#91;2&#93; | RowSums&#95;306 |
+| RowSums&#95;306 | RowSums | &#91;2&#93; | ScaleShift&#95;305 |
+| ScaleShift&#95;305 | ScaleShift | &#91;2, 3&#93; | Square&#95;304 |
+| Square&#95;304 | Square | &#91;2, 3&#93; | x |
+| x | Leaf | &#91;2, 3&#93; |  |
 
 - RowSums of a vector: `RowSums: expected a matrix, got shape [3]`
 - ScaleShift of int32: `map_elements: expected float32 or float64, got int32`
@@ -432,11 +372,11 @@ int main() {
 // result_begin: markdown
 | kernel | memory traffic (MiB) | median time (ms) | effective bandwidth (GiB/s) |
 | :--- | ---: | ---: | ---: |
-| copy (clone) | 128 | 17.5 | 7.1 |
-| fused ScaleShift (one pass) | 128 | 16.8 | 7.4 |
-| x * 2 + 0.5 (two passes) | 256 | 33.8 | 7.4 |
+| copy (clone) | 128 | 8.7 | 14.4 |
+| fused ScaleShift (one pass) | 128 | 8.3 | 15.1 |
+| x * 2 + 0.5 (two passes) | 256 | 16.8 | 14.8 |
 
-Fused against composed: 2.01 times faster; results identical: true
+Fused against composed: 2.03 times faster; results identical: true
 - map_elements with 1 thread and with 8 threads: bit-identical = true
 - naive float32 sum of all 16777216 values, split into k equal chunks:
 
@@ -567,7 +507,7 @@ int main() {
   (void)train(true, 1, &tf);
   (void)train(false, 1, &tc);
   std::print("Step size 1/L = {:.4f}. Ops on the tape of one loss evaluation: fused {}, composed {}.\n\n", step, tf.op_count(), tc.op_count());
-  std::print("```\n{}```\n\n", tf.to_text());
+  std::print("{}\n", tf.to_markdown());
   auto fig = dm::graphics::RLayout::create(1, 2);
   fig.add(nn::plot_tape(tf, "Fused loss: one FusedBCE node"));
   fig.add(nn::plot_tape(tc, "Composed loss: sigmoid_cross_entropy"));
@@ -608,180 +548,25 @@ int main() {
 // result_begin: markdown
 Step size 1/L = 0.2488. Ops on the tape of one loss evaluation: fused 9, composed 19.
 
-```
-Add_11 [Add] [] <- FusedBCE_7 Mul_10
-Mul_10 [Mul] [] <- const Sum_9
-Sum_9 [Sum] [] <- Square_8
-Square_8 [Square] [30] <- w
-FusedBCE_7 [FusedBCE] [] <- Add_6 const
-Add_6 [Add] [569] <- Reshape_4 b
-b [Leaf] []
-Reshape_4 [Reshape] [569] <- BatchMatMulV2_3
-BatchMatMulV2_3 [BatchMatMulV2] [569, 1] <- const Reshape_2
-Reshape_2 [Reshape] [30, 1] <- w
-w [Leaf] [30]
-```
+| Node | Operation | Shape | Inputs |
+| :--- | :--- | :--- | :--- |
+| Add&#95;11 | Add | &#91;&#93; | FusedBCE&#95;7, Mul&#95;10 |
+| Mul&#95;10 | Mul | &#91;&#93; | const, Sum&#95;9 |
+| Sum&#95;9 | Sum | &#91;&#93; | Square&#95;8 |
+| Square&#95;8 | Square | &#91;30&#93; | w |
+| FusedBCE&#95;7 | FusedBCE | &#91;&#93; | Add&#95;6, const |
+| Add&#95;6 | Add | &#91;569&#93; | Reshape&#95;4, b |
+| b | Leaf | &#91;&#93; |  |
+| Reshape&#95;4 | Reshape | &#91;569&#93; | BatchMatMulV2&#95;3 |
+| BatchMatMulV2&#95;3 | BatchMatMulV2 | &#91;569, 1&#93; | const, Reshape&#95;2 |
+| Reshape&#95;2 | Reshape | &#91;30, 1&#93; | w |
+| w | Leaf | &#91;30&#93; |  |
 
 After 3000 gradient steps:
 
 - penalised loss 0.099591; gradient norm 6.8e-07; training accuracy 561/569 = 0.986
 - largest difference between fused and composed coefficients: 1.7e-16
-- time for 3000 steps: fused 216 ms, composed 307 ms
-
-| feature (standardised) | coefficient |
-| :--- | ---: |
-| intercept | -0.4953 |
-| worst_texture | 0.7214 |
-| radius_error | 0.6455 |
-| worst_radius | 0.6298 |
-| worst_concave_points | 0.6109 |
-| worst_area | 0.5757 |
-| worst_perimeter | 0.5652 |
-\image(figures/custom_op_kernel_tapes.svg)
-// result_end
-```
-Add_11 [Add] [] <- FusedBCE_7 Mul_10
-Mul_10 [Mul] [] <- const Sum_9
-Sum_9 [Sum] [] <- Square_8
-Square_8 [Square] [30] <- w
-FusedBCE_7 [FusedBCE] [] <- Add_6 const
-Add_6 [Add] [569] <- Reshape_4 b
-b [Leaf] []
-Reshape_4 [Reshape] [569] <- BatchMatMulV2_3
-BatchMatMulV2_3 [BatchMatMulV2] [569, 1] <- const Reshape_2
-Reshape_2 [Reshape] [30, 1] <- w
-w [Leaf] [30]
-```
-
-After 3000 gradient steps:
-
-- penalised loss 0.099591; gradient norm 6.8e-07; training accuracy 561/569 = 0.986
-- largest difference between fused and composed coefficients: 1.7e-16
-- time for 3000 steps: fused 171 ms, composed 253 ms
-
-| feature (standardised) | coefficient |
-| :--- | ---: |
-| intercept | -0.4953 |
-| worst_texture | 0.7214 |
-| radius_error | 0.6455 |
-| worst_radius | 0.6298 |
-| worst_concave_points | 0.6109 |
-| worst_area | 0.5757 |
-| worst_perimeter | 0.5652 |
-\image(figures/custom_op_kernel_tapes.svg)
-// result_end
-```
-Add_11 [Add] [] <- FusedBCE_7 Mul_10
-Mul_10 [Mul] [] <- const Sum_9
-Sum_9 [Sum] [] <- Square_8
-Square_8 [Square] [30] <- w
-FusedBCE_7 [FusedBCE] [] <- Add_6 const
-Add_6 [Add] [569] <- Reshape_4 b
-b [Leaf] []
-Reshape_4 [Reshape] [569] <- BatchMatMulV2_3
-BatchMatMulV2_3 [BatchMatMulV2] [569, 1] <- const Reshape_2
-Reshape_2 [Reshape] [30, 1] <- w
-w [Leaf] [30]
-```
-
-After 3000 gradient steps:
-
-- penalised loss 0.099591; gradient norm 6.8e-07; training accuracy 561/569 = 0.986
-- largest difference between fused and composed coefficients: 1.7e-16
-- time for 3000 steps: fused 98 ms, composed 139 ms
-
-| feature (standardised) | coefficient |
-| :--- | ---: |
-| intercept | -0.4953 |
-| worst_texture | 0.7214 |
-| radius_error | 0.6455 |
-| worst_radius | 0.6298 |
-| worst_concave_points | 0.6109 |
-| worst_area | 0.5757 |
-| worst_perimeter | 0.5652 |
-\image(figures/custom_op_kernel_tapes.svg)
-// result_end
-```
-Add_11 [Add] [] <- FusedBCE_7 Mul_10
-Mul_10 [Mul] [] <- const Sum_9
-Sum_9 [Sum] [] <- Square_8
-Square_8 [Square] [30] <- w
-FusedBCE_7 [FusedBCE] [] <- Add_6 const
-Add_6 [Add] [569] <- Reshape_4 b
-b [Leaf] []
-Reshape_4 [Reshape] [569] <- BatchMatMulV2_3
-BatchMatMulV2_3 [BatchMatMulV2] [569, 1] <- const Reshape_2
-Reshape_2 [Reshape] [30, 1] <- w
-w [Leaf] [30]
-```
-
-After 3000 gradient steps:
-
-- penalised loss 0.099591; gradient norm 6.8e-07; training accuracy 561/569 = 0.986
-- largest difference between fused and composed coefficients: 1.7e-16
-- time for 3000 steps: fused 200 ms, composed 330 ms
-
-| feature (standardised) | coefficient |
-| :--- | ---: |
-| intercept | -0.4953 |
-| worst_texture | 0.7214 |
-| radius_error | 0.6455 |
-| worst_radius | 0.6298 |
-| worst_concave_points | 0.6109 |
-| worst_area | 0.5757 |
-| worst_perimeter | 0.5652 |
-\image(figures/custom_op_kernel_tapes.svg)
-// result_end
-```
-Add_11 [Add] [] <- FusedBCE_7 Mul_10
-Mul_10 [Mul] [] <- const Sum_9
-Sum_9 [Sum] [] <- Square_8
-Square_8 [Square] [30] <- w
-FusedBCE_7 [FusedBCE] [] <- Add_6 const
-Add_6 [Add] [569] <- Reshape_4 b
-b [Leaf] []
-Reshape_4 [Reshape] [569] <- BatchMatMulV2_3
-BatchMatMulV2_3 [BatchMatMulV2] [569, 1] <- const Reshape_2
-Reshape_2 [Reshape] [30, 1] <- w
-w [Leaf] [30]
-```
-
-After 3000 gradient steps:
-
-- penalised loss 0.099591; gradient norm 6.8e-07; training accuracy 561/569 = 0.986
-- largest difference between fused and composed coefficients: 1.7e-16
-- time for 3000 steps: fused 214 ms, composed 395 ms
-
-| feature (standardised) | coefficient |
-| :--- | ---: |
-| intercept | -0.4953 |
-| worst_texture | 0.7214 |
-| radius_error | 0.6455 |
-| worst_radius | 0.6298 |
-| worst_concave_points | 0.6109 |
-| worst_area | 0.5757 |
-| worst_perimeter | 0.5652 |
-\image(figures/custom_op_kernel_tapes.svg)
-// result_end
-```
-Add_11 [Add] [] <- FusedBCE_7 Mul_10
-Mul_10 [Mul] [] <- const Sum_9
-Sum_9 [Sum] [] <- Square_8
-Square_8 [Square] [30] <- w
-FusedBCE_7 [FusedBCE] [] <- Add_6 const
-Add_6 [Add] [569] <- Reshape_4 b
-b [Leaf] []
-Reshape_4 [Reshape] [569] <- BatchMatMulV2_3
-BatchMatMulV2_3 [BatchMatMulV2] [569, 1] <- const Reshape_2
-Reshape_2 [Reshape] [30, 1] <- w
-w [Leaf] [30]
-```
-
-After 3000 gradient steps:
-
-- penalised loss 0.099591; gradient norm 6.8e-07; training accuracy 561/569 = 0.986
-- largest difference between fused and composed coefficients: 1.7e-16
-- time for 3000 steps: fused 75 ms, composed 114 ms
+- time for 3000 steps: fused 87 ms, composed 131 ms
 
 | feature (standardised) | coefficient |
 | :--- | ---: |

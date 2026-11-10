@@ -8,7 +8,7 @@ https://arxiv.org/abs/1812.07032
 Port of tflow's segmentation_losses. Check closed-form soft overlap
 values/derivatives, FP/FN weighting, sorted Jaccard increments and every
 Lovasz subgradient, perfect/absent/void classes, detached signed-distance
-derivatives and empty masks. Compare exact linear-time squared Euclidean
+derivatives and empty masks. Compare exact separable tensor squared Euclidean
 transforms with exhaustive nearest-site search on 100 random rectangular
 grids. Check interior/boundary/exterior signed distances and zero maps for
 classes with no internal boundary.

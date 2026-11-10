@@ -3,7 +3,7 @@
 """YOLO v1: one grid, two responsible box predictors and conditional class scores.
 
 Port of tflow's yolo_v1. Preparation (in ~/projects/tflow_examples):
-python3 scripts/fetch_datasets.py mnist --split both.
+dm::datasets::fetch("mnist").
 Short default: three training epochs; use epochs=N for longer accuracy experiments.
 
 Check the complete squared-error loss and analytic derivatives on exact,
