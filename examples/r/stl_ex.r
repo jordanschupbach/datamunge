@@ -1,20 +1,23 @@
 # CMD: nix develop .#r --command Rscript examples/r/stl_ex.r
+# STL containers cross the binding as plain R values: std::vector as an atomic vector (or a
+# list for class elements), std::pair as list(first =, second =).
 library(datamunger)
 
-# Can only coerce (can't use methods directly without a wrapper)
+v <- make_dvector(1.5, 2.5, 3.5)
+print(v)
+print(sum_dvector(c(v, 10)))
+
+p <- make_dpair(1.1, 2.2)
+p$first
+p$second
+print(sum_dpair(p))
+
+# The DVector/DPair/IPair names of the old SWIG bindings build the same plain values.
 v <- datamunger::DVector(c(0.0, 0.0, 0.0,
     1.0, 0.0, 0.0,
     1.0, 1.0, 0.0,
     0.0, 1.0, 0.0))
-
-# This works as expected
-p <- datamunger::DPair(1.1, 2.2)
-p$first
-p$second
-
-# This works as expected
+print(length(v))
 p <- datamunger::IPair(1.1, 2.2) # converts to integer
 p$first
 p$second
-
-

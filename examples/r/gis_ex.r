@@ -2,7 +2,7 @@
 # Demonstrates ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes) and drawing it
 # as a map. Real .shp/.dbf files are large binary bundles that don't belong in this repo, so
 # this example first writes a tiny synthetic shapefile by hand (two "counties": one plain
-# square, one with a lake-shaped hole) using the same ESRI byte layout ShapeLayer_read() expects
+# square, one with a lake-shaped hole) using the same ESRI byte layout ShapeLayer$read() expects
 # -- see tests/testthat/test-gis.R for the shared writer helpers this is adapted from.
 library(datamunger)
 
@@ -103,7 +103,7 @@ with_lake <- list(
 write_counties_shp(paste0(base, ".shp"), list(with_lake, plain))
 write_counties_dbf(paste0(base, ".dbf"), c("Lakeside", "Plainview"), c("48231", "19876"))
 
-counties <- ShapeLayer_read(base)
+counties <- ShapeLayer$read(base)
 
 cat("shapes =", counties$size(), ", shape_type =", counties$shape_type(), "\n")
 cat("bounds =", counties$bounds(), "\n\n")
@@ -112,7 +112,7 @@ cat("attributes\n")
 cat(counties$attributes()$to_string(), "\n\n")
 
 for (i in 0:(counties$size() - 1)) {
-  cat(DataFrame_string_at(counties$attributes(), "NAME", i), ":", counties$num_parts(i), "ring(s)\n")
+  cat(counties$attributes()$string_at("NAME", i), ":", counties$num_parts(i), "ring(s)\n")
 }
 
 svg_path <- file.path(tempdir(), "datamunger_gis_ex_map.svg")

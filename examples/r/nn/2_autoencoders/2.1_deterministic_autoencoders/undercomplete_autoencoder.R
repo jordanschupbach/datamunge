@@ -149,7 +149,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         total <- 0
         seen <- 0L
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) 
                 break
             images <- nn$take_rows(fit, rows)

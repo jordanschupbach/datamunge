@@ -1,4 +1,4 @@
-# Native R NN example. ResNet-50/101/152: explicit CIFAR-10 training over SWIG components.
+# Native R NN example. ResNet-50/101/152: explicit CIFAR-10 training over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_bottleneck.R
 # Canonical bottleneck block, parameter/state, stage and gradient checks, then
 # compact quarter-width CIFAR-10 fits with Adam, crop/flip, L2, validation NLL
@@ -118,7 +118,7 @@ train_compact_bottleneck_resnet <- function(depth, development, test, cfg, expli
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

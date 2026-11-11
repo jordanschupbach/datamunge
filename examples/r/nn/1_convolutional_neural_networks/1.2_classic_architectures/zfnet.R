@@ -28,7 +28,7 @@
 #
 # The model components (zfnet::ZFNet and ZFNetDeconvolution, the deconvnet
 # primitives, architecture fixtures, image batching, cross-entropy and L2) are
-# the C++ ones through SWIG (datamungerNN::nn_components); the checks and the
+# the C++ ones through the bindings (datamungerNN::nn_components); the checks and the
 # workflow below mirror examples/cpp/source/nn/.../zfnet.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
 architecture <- nn_components$architecture
@@ -266,7 +266,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

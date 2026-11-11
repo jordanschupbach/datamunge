@@ -11,8 +11,7 @@ near <- function(actual,expected,tolerance=2e-6) stopifnot(abs(actual-expected)<
 f <- function(value) nn$scalar(value)$item()
 slot_floats <- function(opt) {
     state <- opt$state(); count <- 0
-    for (i in seq_len(state$size())-1L) {
-        pair <- state$`__getitem__`(i)
+    for (pair in state) {
         if (!pair$first %in% c("step","nadam_product")) count <- count+pair$second$numel()
     }
     count

@@ -21,6 +21,13 @@
       url = "path:/mnt/projects/crepl";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Rosetta generates the Python extension (pydatamunge._datamunge) from C++ headers.
+    # git+file reads the checkout's tracked files (uncommitted edits included) without
+    # copying its untracked build trees. Refresh with `nix flake update rosetta`.
+    rosetta = {
+      url = "git+file:///mnt/projects/rosetta";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # mep (editor and `mep-mepml`), from its main branch: the docs build runs and
     # exports the mepml reports with it. `just update-mep` bumps the lock to the
     # latest main. Only its package is used; its own nixpkgs pin is kept (that is
@@ -40,6 +47,7 @@
       php-from-source,
       swig,
       crepl,
+      rosetta,
       mep,
       ...
     }:
@@ -55,6 +63,7 @@
         # take swig from `pkgs`). Only used there, so nothing else in nixpkgs gets rebuilt.
         swigPkg = swig.packages.${system}.swig;
         creplPkg = crepl.packages.${system}.default;
+        rosettaPkg = rosetta.packages.${system}.default;
         mepPkg = mep.packages.${system}.default;
         bindingPkgs = pkgs // {
           swig = swigPkg;
@@ -176,7 +185,7 @@
 
         pythonPkgs = pkgs.python3.pkgs;
         pydatamunge = import ./nix/pydatamunge.nix {
-          inherit datamunge swigPkg;
+          inherit datamunge swigPkg rosettaPkg;
           inherit (pkgs)
             lib
             stdenv
@@ -208,10 +217,12 @@
             pkgs.xorg.libX11.dev
             datamunge
           ];
+          propagatedBuildInputs = [ pkgs.rPackages.R6 ];
           # Link the nix-built core instead of recompiling it here (see src/Makevars).
           env.DATAMUNGE_USE_SYSTEM_LIB = "1";
+          env.ROSETTA = "${rosettaPkg}/bin/rosetta";
           nativeBuildInputs = [
-            swigPkg
+            rosettaPkg
             pkgs.python3
             pkgs.pkg-config
           ];
@@ -1043,6 +1054,7 @@
         devShells.python = pkgs.mkShell {
           packages = [
             pkgs.curl
+            rosettaPkg
             swigPkg
             # pkgs.cmake
             pkgs.pkg-config
@@ -1095,7 +1107,9 @@
             swigPkg
             pkgs.python3
             pkgs.R
+            pkgs.rPackages.R6
             pkgs.rPackages.testthat
+            rosettaPkg
             pkgs.pkg-config
             pkgs.libxml2
             pkgs.xorg.libX11.dev

@@ -7,10 +7,10 @@ rm(.nn_common)
 
 batching_checks <- function() {
     original <- nn$BatchOrder(11L,4L,7L); restored <- nn$BatchOrder(11L,4L,999L)
-    original$begin_epoch(); first <- original$`_next`()
+    original$begin_epoch(); first <- original$next_()
     restored$restore_state(original$save_state()); seen <- first
     repeat {
-        batch <- original$`_next`(); stopifnot(identical(batch,restored$`_next`()))
+        batch <- original$next_(); stopifnot(identical(batch,restored$next_()))
         if (!length(batch)) break
         stopifnot(!length(intersect(seen,batch))); seen <- c(seen,batch)
     }
@@ -18,7 +18,7 @@ batching_checks <- function() {
     for (epoch in 1:3) {
         original$begin_epoch(); restored$begin_epoch()
         repeat {
-            batch <- original$`_next`(); stopifnot(identical(batch,restored$`_next`()))
+            batch <- original$next_(); stopifnot(identical(batch,restored$next_()))
             if (!length(batch)) break
         }
     }
@@ -26,9 +26,9 @@ batching_checks <- function() {
     rejected <- tryCatch({restored$restore_state(paste0(state," bad"));FALSE},error=function(e) TRUE)
     stopifnot(rejected,identical(restored$save_state(),state))
     drop <- nn$BatchOrder(10L,4L,0L,FALSE,TRUE); drop$begin_epoch()
-    stopifnot(identical(as.integer(drop$`_next`()),0L:3L),identical(as.integer(drop$`_next`()),4L:7L),!length(drop$`_next`()))
+    stopifnot(identical(as.integer(drop$next_()),0L:3L),identical(as.integer(drop$next_()),4L:7L),!length(drop$next_()))
     singleton <- nn$BatchOrder(1L,16L,0L); singleton$begin_epoch()
-    stopifnot(length(singleton$`_next`())==1L,!length(singleton$`_next`()))
+    stopifnot(length(singleton$next_())==1L,!length(singleton$next_()))
     source <- nn$reshape(nn$arange(0,6,1,nn$DType$Int32),c(3L,2L))
     stopifnot(identical(as.numeric(nn$take_rows(source,c(2L,0L,2L))$values()),c(4,5,0,1,4,5)))
     stopifnot(tryCatch({nn$take_rows(source,3L);FALSE},error=function(e) TRUE))
@@ -52,7 +52,7 @@ train <- function(epochs) {
     for (epoch in seq_len(epochs)) {
         sampler$begin_epoch(); epoch_loss <- nn$WeightedMean(); visited <- numeric(); batches <- 0L
         repeat {
-            rows <- sampler$`_next`()
+            rows <- sampler$next_()
             if (!length(rows)) break
             stopifnot(!length(intersect(visited,rows))); visited <- c(visited,rows)
             loss <- loss_of(nn$take_rows(inputs,rows),nn$take_rows(labels,rows))

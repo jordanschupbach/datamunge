@@ -23,7 +23,7 @@ testthat::test_that("MNIST honors edited defaults and explicit epochs in quick m
   api$BatchOrder <- function(samples, batch, seed) {
     if (samples == 60000L)
       return(list(begin_epoch = function() invisible(NULL),
-                  `_next` = function() rep(0L:63L, length.out = 60000L)))
+                  next_ = function() rep(0L:63L, length.out = 60000L)))
     core$BatchOrder(samples, batch, seed)
   }
   example$cnn_mnist_logits <- function(parameters, inputs, training = FALSE)

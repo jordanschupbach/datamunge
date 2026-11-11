@@ -76,6 +76,27 @@
         "type": "github"
       }
     },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": [
+          "rosetta",
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791914995,
+        "narHash": "sha256-Zf/xfQEAasnwnmEfHqW/4hjDE/s44yn2hD4RuVIZRjA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b7a79d3fea1e214f6d668d521cecec0c01e26544",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "mep": {
       "inputs": {
         "crepl": "crepl_2",
@@ -183,8 +204,30 @@
         "mep": "mep",
         "nixpkgs": "nixpkgs_3",
         "php-from-source": "php-from-source",
+        "rosetta": "rosetta",
         "swig": "swig",
+        "systems": "systems_3"
+      }
+    },
+    "rosetta": {
+      "inputs": {
+        "flake-utils": "flake-utils_3",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "systems": "systems_2"
+      },
+      "locked": {
+        "dirtyRev": "3214b840ca3f6426c434eae4c77ba89cedc13aa7-dirty",
+        "dirtyShortRev": "3214b84-dirty",
+        "lastModified": 1792677014,
+        "narHash": "sha256-mq7Sil/DK8QQLNNTX8ffxLbqh87euhYpyTJy49EBVu0=",
+        "type": "git",
+        "url": "file:///mnt/projects/rosetta"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///mnt/projects/rosetta"
       }
     },
     "swig": {
@@ -223,6 +266,21 @@
       }
     },
     "systems_2": {
+      "locked": {
+        "lastModified": 1791244623,
+        "narHash": "sha256-uuanbkFk8a313Zfrxdcz8Us/yQtaxNnKJtX8v0ZPpd8=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "d36eeed142f88b5a636f2e3856a53c61654cf29b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_3": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",

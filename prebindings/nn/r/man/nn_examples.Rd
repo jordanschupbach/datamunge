@@ -2,7 +2,7 @@
 \alias{nn_example_names}
 \alias{nn_example_run}
 \title{Run native R neural network examples}
-\description{List and execute R example scripts through the functional SWIG API.
+\description{List and execute R example scripts through the functional API.
 Models and training loops are implemented in the scripts, not compiled experiments.}
 \usage{
 nn_example_names()

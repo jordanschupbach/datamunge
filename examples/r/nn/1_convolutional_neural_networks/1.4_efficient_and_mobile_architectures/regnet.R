@@ -21,7 +21,7 @@
 #
 # The model components (regnet::RegNet and its design rule, the grouped
 # convolutions, mobile_checks fixtures, image batching, cross-entropy and L2)
-# are the C++ ones through SWIG (datamungerNN::nn_components); the checks and
+# are the C++ ones through the bindings (datamungerNN::nn_components); the checks and
 # the workflow below mirror examples/cpp/source/nn/.../regnet.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
 check <- nn_components$check
@@ -87,10 +87,7 @@ fused_group_checks <- function() {
 
 design_checks <- function() {
     d <- regnet$RegNetDesign(regnet$RegNetModel("y400mf"))
-    # BINDING GAP (R only): `d$continuous` (std::vector<float>) fails because the SWIG R
-    # getter wraps the converted numeric in an undefined pointer class; call the bound
-    # getter directly until the wrapper is fixed, then replace this with d$continuous.
-    continuous <- .Call("R_swig_regnet__RegNetStages_continuous_get", d@ref, FALSE, PACKAGE = "datamungerNN")
+    continuous <- d$continuous
     cat(sprintf("  Y-400MF (d=16, w0=48, wa=27.89, wm=2.09): u_j = 48, %s, %s, ..., %s quantize to %s -> stages %s with depths %s\n",
                 g6(continuous[2L]), g6(continuous[3L]), g6(continuous[length(continuous)]), join(d$quantized),
                 join(d$widths), join(d$depths)))
@@ -252,7 +249,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

@@ -170,7 +170,7 @@ tied_train_variant <- function(tied, pools, epochs, root, initial) {
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             input <- nn$take_rows(pools[[1L]]$images, rows)
             # Forward (live transposed decoder when tied), reconstruction MSE, gradients through BOTH paths.

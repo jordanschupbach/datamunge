@@ -17,10 +17,8 @@ rm(.nn_common)
 # decoder, bit-exact with TF's DecodeJpeg); nn$scan_image_folder validates the
 # root and class names. The JPEG fixture is TF's EncodeJpeg(quality=100,
 # chroma_downsampling=false) byte stream for a 4x4 solid image (datamunge has
-# no JPEG encoder). Labels are int64. The SWIG layer exposes
-# ImageFolder$images (std::vector<ImageFile>) only as an opaque pointer and has
-# no size_t row vector for load_image_batch, so image_folder_files lists the
-# class folders with scan_image_folder's documented rules and
+# no JPEG encoder). Labels are int64. image_folder_files lists the class
+# folders with scan_image_folder's documented rules in R, and
 # image_folder_load_batch stacks nn$load_image_rgb results. PNG fixtures are
 # written with nn$save_png from byte-valued tensors (low=0, high=255, exact).
 # Fixtures go to output/nn/r/<mode>/fixtures/images{,_validation}.

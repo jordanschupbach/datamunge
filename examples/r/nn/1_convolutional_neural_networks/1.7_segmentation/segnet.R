@@ -34,7 +34,7 @@
 #
 # The components (segnet::SegNet/PoolWithIndices/IndexUnpool, the seg::
 # procedural shapes, batching, balanced cross-entropy, confusion/mIoU and
-# preview) are the C++ ones through SWIG (datamungerNN::nn_components); the
+# preview) are the C++ ones through the bindings (datamungerNN::nn_components); the
 # checks and the training workflow below mirror examples/cpp/source/nn/.../segnet.cpp
 # line by line.
 suppressPackageStartupMessages(library(datamungerNN))
@@ -56,7 +56,7 @@ wave <- function(shape, scale) nn$from_vector(sin(scale * (seq_len(prod(shape)) 
 gradient_norms <- function(p, objective, nonzero, what) {
     params <- p$parameters()
     grads <- nn$grad(objective, params)
-    check$Require(length(grads) == params$size(), paste0(what, ": every parameter has a derivative"))
+    check$Require(length(grads) == length(params), paste0(what, ": every parameter has a derivative"))
     names <- p$names()
     low <- Inf
     high <- 0
@@ -144,8 +144,7 @@ model_checks <- function() {
         check$Require(identical(as.numeric(net$logits$shape()), c(2, side, side, 4)),
                       "saved shapes restore odd input dimensions")
         if (side != 96) next
-        for (k in seq_len(net$pooling$size()) - 1) {
-            record <- net$pooling$`__getitem__`(k)
+        for (record in net$pooling) {
             index_bytes <- index_bytes + 8 * length(record$indices)
             feature_bytes <- feature_bytes + 4 * prod(as.numeric(record$shape))
         }
@@ -266,7 +265,7 @@ train_segmentation <- function(training_cfg, builder, source_fit, source_validat
         total <- 0
         seen <- 0L
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             batch <- seg$SegmentationBatch(fit, as.integer(rows))
             model <- builder(p, state, batch$first, TRUE)

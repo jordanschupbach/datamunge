@@ -10,8 +10,7 @@ near <- function(actual,expected,tolerance=2e-6) stopifnot(abs(actual-expected)<
 config <- function(name) {cfg <- nn$OptimizerConfig(); cfg$kind <- nn$OptimizerKind[[name]]; cfg}
 state_arrays <- function(opt) {
     state <- opt$state(); result <- list()
-    for (i in seq_len(state$size())-1L) {
-        pair <- state$`__getitem__`(i)
+    for (pair in state) {
         result[[pair$first]] <- pair$second$clone()
     }
     result

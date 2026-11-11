@@ -85,7 +85,7 @@ denoising_train_variant <- function(name, pools, validation_noisy, epochs, root,
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             clean <- nn$take_rows(pools[[1L]]$images, rows)
             input <- if (name == "ordinary") clean else nn$take_rows(corruption, rows)

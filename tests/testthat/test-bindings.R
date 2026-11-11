@@ -3,13 +3,16 @@ test_that("hello() is callable", {
   expect_silent(datamunger::hello())
 })
 
-test_that("STL templates are usable", {
-  expect_true(exists("DVector", where = asNamespace("datamunger")))
-  expect_true(exists("DPair", where = asNamespace("datamunger")))
+test_that("STL containers cross as R values", {
+  expect_identical(make_dvector(1, 2, 3), c(1, 2, 3))
+  expect_equal(sum_dvector(c(1, 2, 3)), 6)
+  pair <- make_dpair(1, 2)
+  expect_equal(c(pair$first, pair$second), c(1, 2))
+  expect_equal(sum_dpair(pair), 3)
 })
 
 test_that("R dataframe wrapper supports the example workflow", {
-  sales <- DataFrame()
+  sales <- DataFrame$new()
   sales$add_column("region", c("west", "west", "east", "south", "south", "south"))
   sales$add_column("product", c("widget", "widget", "widget", "gizmo", "gizmo", "gizmo"))
   sales$add_column("sales", c(10, 10, 14, 8, NA, 11))
@@ -21,7 +24,7 @@ test_that("R dataframe wrapper supports the example workflow", {
 
   grouped <- cleaned$group_by_sum("region", "sales")$sort_by("sales", FALSE)
 
-  targets <- DataFrame()
+  targets <- DataFrame$new()
   targets$add_column("region", c("west", "east", "south"))
   targets$add_column("target", c(18, 12, 25))
   joined <- grouped$join(targets, "region", "region", JoinType$Left)
@@ -39,7 +42,7 @@ test_that("R dataframe wrapper supports the example workflow", {
 })
 
 test_that("R dataframe wrapper supports tibble-style piping via $", {
-  sales <- DataFrame()
+  sales <- DataFrame$new()
   sales$add_column("region", c("west", "west", "east", "south", "south"))
   sales$add_column("sales", c(10, 20, 14, 8, 11))
 
@@ -52,7 +55,7 @@ test_that("R dataframe wrapper supports tibble-style piping via $", {
   expect_equal(sales$n_distinct("region"), 3L)
   expect_equal(sales$relocate(c("sales"))$columns()[1], "sales")
 
-  with_na <- DataFrame()
+  with_na <- DataFrame$new()
   with_na$add_column("x", c(1, NA, 3))
   pulled <- with_na$pull("x")
   expect_true(is.na(pulled[2]))
@@ -62,7 +65,7 @@ test_that("R dataframe wrapper supports tibble-style piping via $", {
   expect_true(all(c("region", "total", "n") %in% grouped$columns()))
   expect_equal(sum(grouped$pull("total")), sum(sales$pull("sales")))
 
-  wide <- DataFrame()
+  wide <- DataFrame$new()
   wide$add_column("id", c("p1", "p2"))
   wide$add_column("q1", c(1, 3))
   wide$add_column("q2", c(2, 4))
@@ -72,12 +75,12 @@ test_that("R dataframe wrapper supports tibble-style piping via $", {
   expect_equal(wider$nrows(), 2L)
   expect_true(all(c("q1", "q2") %in% wider$columns()))
 
-  extra <- DataFrame()
+  extra <- DataFrame$new()
   extra$add_column("region", c("north"))
   extra$add_column("sales", c(5))
   expect_equal(sales$bind_rows(extra)$nrows(), 6L)
 
-  targets <- DataFrame()
+  targets <- DataFrame$new()
   targets$add_column("region", c("west", "east"))
   targets$add_column("target", c(100, 200))
   expect_equal(sales$join(targets, "region", "region", JoinType$Right)$nrows(), 3L)

@@ -1,28 +1,27 @@
 # CMD: nix develop .#r --command Rscript examples/r/gaussian_process_regression_iris_ex.r
-# See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 library(datamunger)
 
 FORMULA <- "Petal.Length ~ Petal.Width"
 
-iris <- DataFrame_iris()
-cat(DataFrame_nrows(iris), "rows x", DataFrame_ncols(iris), "cols\n")
+iris <- DataFrame$iris()
+cat(iris$nrows(), "rows x", iris$ncols(), "cols\n")
 cat("formula:", FORMULA, "\n\n")
 
 # Both the length scale and the noise ratio are auto-selected by maximizing the exact log
 # marginal likelihood.
-model <- GaussianProcessRegression(iris, FORMULA)
-GaussianProcessRegression_print_summary(model)
+model <- GaussianProcessRegression$new(iris, FORMULA)
+model$print_summary()
 
-Plot_save(GaussianProcessRegression_plot_fit(model, iris), "gpr_iris_fit.svg")
-Plot_save(GaussianProcessRegression_plot_length_scale_profile(model), "gpr_iris_length_scale_profile.svg")
+model$plot_fit(iris)$save("gpr_iris_fit.svg")
+model$plot_length_scale_profile()$save("gpr_iris_length_scale_profile.svg")
 cat("\nSaved gpr_iris_fit.svg and gpr_iris_length_scale_profile.svg\n")
 
 # Unlike every other regressor in this suite, a GP gives a genuine posterior confidence
 # interval at every point -- including far outside the training data.
-query <- DataFrame_empty()
-DataFrame_add_numeric_column(query, "Petal.Width", c(0.2, 1.3, 2.5, 10.0))
-detail <- GaussianProcessRegression_predict_frame(model, query, "confidence")
+query <- DataFrame$empty()
+query$add_numeric_column("Petal.Width", c(0.2, 1.3, 2.5, 10.0))
+detail <- model$predict_frame(query, "confidence")
 cat("\nPredictions with 95% confidence intervals:\n")
-cat(DataFrame_to_string(detail), "\n")
+cat(detail$to_string(), "\n")
 cat("(Petal.Width=10.0 is far outside the training range [0.1, 2.5] -- note how much wider its\n",
     " interval is than the in-range predictions.)\n")

@@ -2,7 +2,7 @@
   "schema": 1,
   "total": 289,
   "test_epoch_limit": 5,
-  "api_sha256": "0e672070aef6463dcf2f2dd2e53ce21b8ae2e36cae3d9db6d8d3598381a7c181",
+  "api_sha256": "eead013efe4dd32eb8119a40f229de5e1055207cddcca973f5047b56db164629",
   "examples": {
     "c3d": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.cpp",

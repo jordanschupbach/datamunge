@@ -1,4 +1,4 @@
-# R data, evaluation and training helpers; numerical ops use the SWIG NN API.
+# R data, evaluation and training helpers; numerical ops use the bound NN API.
 suppressPackageStartupMessages(library(datamungerNN))
 
 nn_data_root <- function() nn_components$dataset_assets$DataRoot()

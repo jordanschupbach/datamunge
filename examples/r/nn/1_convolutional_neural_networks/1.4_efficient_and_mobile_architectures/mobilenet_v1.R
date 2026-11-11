@@ -30,7 +30,7 @@
 # fit=12000 augment=0|1 threads=N seed=17.
 #
 # The model components (mobilenet::MobileNetV1 and its config, image batching,
-# cross-entropy and L2) are the C++ ones through SWIG (datamungerNN::nn_components);
+# cross-entropy and L2) are the C++ ones through the bindings (datamungerNN::nn_components);
 # the checks and the experiment workflow below mirror
 # examples/cpp/source/nn/.../mobilenet_v1.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
@@ -95,8 +95,7 @@ measure <- function(cfg, resolution) {
             table
         }
         layers <- net$layers
-        for (i in seq_len(layers$size()) - 1L) {
-            layer <- layers$`__getitem__`(i)
+        for (layer in layers) {
             name <- layer$name
             kind <- if (name == "conv0") "conv 3x3"
                     else if (grepl("depthwise", name, fixed = TRUE)) "depthwise 3x3"
@@ -294,7 +293,7 @@ train_compact_mobilenet_v1 <- function(alpha, development, test, cfg, explicit_e
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

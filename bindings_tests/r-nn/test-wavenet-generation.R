@@ -39,8 +39,8 @@ test_that("invalid snapshots never create parameters or accept bad leaves",{
 test_that("gate vectors own graphs and explicit warmup adjoints are zero",{
  s<-make_wave_stack();encoded<-nn$one_hot(nn$zeros(c(1L,8L),nn$DType$Int32),5L)$requires_grad_()
  o<-nn$WaveStack(s$p,encoded,s$config);gates<-o$gates;logits<-o$logits;rm(o,s);gc()
- expect_equal(nn$TensorVector_size(gates),2)
- gate<-nn$TensorVector___getitem__(gates,0L);rm(gates);gc();expect_equal(gate$shape(),c(1,8,2))
+ expect_equal(length(gates),2)
+ gate<-gates[[1L]];rm(gates);gc();expect_equal(gate$shape(),c(1,8,2))
  graph<-nn$GradOptions();graph$retain_graph<-TRUE
  expect_true(nn$grad(nn$sum(gate),list(encoded),graph)[[1]]$defined())
  loss<-nn$WaveNll(logits,nn$zeros(c(1L,8L),nn$DType$Int32),5L,3L)

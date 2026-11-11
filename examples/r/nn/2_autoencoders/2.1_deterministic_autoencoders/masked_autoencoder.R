@@ -77,7 +77,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             input <- nn$take_rows(pools[[1L]]$images, rows)
             selection <- nn$take_rows(epoch_selection, rows)

@@ -1,11 +1,12 @@
-# R's normal build rules compile only the selected core and SWIG objects.
+# R's normal build rules compile the core library and the generated rosetta wrapper parts.
 CXX_STD = CXX23
 ifeq ($(DATAMUNGE_USE_SYSTEM_LIB),1)
-SOURCES = datamunge_r_wrap.cpp
+SOURCES = $(wildcard datamunge_r_wrap*.cpp)
 PKG_CPPFLAGS = $(shell pkg-config --cflags datamunge)
 PKG_LIBS = $(shell pkg-config --libs datamunge) -Wl,-rpath,$(shell pkg-config --variable=libdir datamunge)
 else
-SOURCES = $(addsuffix .cpp,$(shell sed -e '/^[[:space:]]*\#/d' -e '/^[[:space:]]*$$/d' ../lib_sources.txt)) datamunge_r_wrap.cpp
+# Same core source set as the Python extension (every file under src/datamunge).
+SOURCES = $(sort $(shell find datamunge -name '*.cpp')) $(wildcard datamunge_r_wrap*.cpp)
 PKG_CPPFLAGS = -I../include
 PKG_LIBS = -pthread
 ifeq ($(shell uname -s),Darwin)

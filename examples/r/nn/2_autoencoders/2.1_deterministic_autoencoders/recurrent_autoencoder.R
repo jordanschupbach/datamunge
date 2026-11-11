@@ -77,7 +77,7 @@ recurrent_train <- function(pools, epochs, directory, init) {
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             input <- nn$take_rows(pools[[1L]]$images, rows)
             # Full backpropagation through all 28 encoder + 28 decoder steps.

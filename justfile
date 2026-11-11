@@ -7,7 +7,11 @@ NN_JOBS := env_var_or_default("DATAMUNGE_EXAMPLE_BUILD_JOBS", "4")
 # against it instead of the github:jordanschupbach/swig revision pinned in flake.lock.
 SWIG_SRC := env_var_or_default("DATAMUNGE_SWIG_SRC", "")
 SWIG_OVERRIDE := if SWIG_SRC == "" { "" } else { " --override-input swig git+file://" + SWIG_SRC }
-NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false" + SWIG_OVERRIDE
+# Likewise DATAMUNGE_ROSETTA_SRC: a Rosetta checkout to generate the Python bindings with,
+# instead of the revision in flake.lock (no relock needed after editing that checkout).
+ROSETTA_SRC := env_var_or_default("DATAMUNGE_ROSETTA_SRC", "")
+ROSETTA_OVERRIDE := if ROSETTA_SRC == "" { "" } else { " --override-input rosetta git+file://" + ROSETTA_SRC }
+NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false" + SWIG_OVERRIDE + ROSETTA_OVERRIDE
 # PKG_CONFIG_PATH the docs' mepml report blocks build against (empty: the shell's own;
 # a directory with a datamunge.pc for the working tree makes them use the current library).
 MEPML_PKG_CONFIG_PATH := env_var_or_default("DATAMUNGE_MEPML_PKG_CONFIG_PATH", "")

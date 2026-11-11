@@ -96,7 +96,7 @@ main <- function(arguments = commandArgs(TRUE)) {
     for (epoch in seq_len(args$epochs)) {
         order$begin_epoch()
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             x <- marked_sequence_data_rows(pools[[1]], rows)
             if (!updates) {

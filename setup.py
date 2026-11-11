@@ -1,4 +1,4 @@
-"""Self-contained SWIG extension, or an explicit pkg-config system-core build."""
+"""Self-contained native extension, or an explicit pkg-config system-core build."""
 
 import os
 import json
@@ -21,10 +21,13 @@ def pkg_config(*args):
 class BuildExt(build_ext):
     def initialize_options(self):
         super().initialize_options()
+        # Concurrent compiler processes: MAX_JOBS, else CMake's/Nix's job settings, else all CPUs.
         self.parallel = int(
-            os.environ.get(
-                "CMAKE_BUILD_PARALLEL_LEVEL", os.environ.get("NIX_BUILD_CORES", "4")
-            )
+            os.environ.get("MAX_JOBS")
+            or os.environ.get("CMAKE_BUILD_PARALLEL_LEVEL")
+            or os.environ.get("NIX_BUILD_CORES")
+            or os.cpu_count()
+            or 4
         )
 
     def build_extensions(self):
@@ -35,10 +38,26 @@ class BuildExt(build_ext):
                     extension.extra_compile_args += ["/fp:strict"]
             else:
                 extension.extra_compile_args += ["-O3", "-std=c++23"]
+                # Python's default flags include -g, which makes each extension ~500 MB and
+                # slows linking and wheel packing. DATAMUNGE_DEBUG_INFO=1 keeps debug info.
+                if os.environ.get("DATAMUNGE_DEBUG_INFO") != "1":
+                    extension.extra_compile_args += ["-g0"]
                 if sys.platform != "darwin":
                     extension.extra_compile_args += ["-pthread"]
                     extension.extra_link_args += ["-pthread"]
         compiler = self.compiler
+        # Objects are reused by timestamp alone, so recompile everything when the flags change.
+        flags_state = Path(self.build_temp) / "compile-flags.json"
+        flags_signature = json.dumps(
+            # Sets: build_extensions appends its flags again whenever it runs.
+            {e.name: [sorted(set(e.extra_compile_args)), sorted(map(str, e.define_macros)), sorted(set(e.include_dirs))]
+             for e in self.extensions},
+            sort_keys=True,
+        )
+        # A fresh build directory has nothing to recompile, so only a recorded change forces.
+        previous_compiler_force = compiler.force
+        if flags_state.exists() and flags_state.read_text() != flags_signature:
+            compiler.force = True
         # Build extensions in dependency order, parallelizing individual compiler
         # invocations instead. setuptools' parallel option otherwise only runs
         # different extension modules concurrently.
@@ -48,9 +67,7 @@ class BuildExt(build_ext):
         self._nn_core_objects = []
         for extension in self.extensions[1:]:
             if extension.name in ("pydatamunge._nn_examples", "pydatamunge._nn_native") and not system_core:
-                core_sources = [
-                    s for s in sources if s != "src/datamunge_python_wrap.cpp"
-                ]
+                core_sources = [s for s in sources if s not in wrapper_sources]
                 self._nn_core_objects = compiler.object_filenames(
                     core_sources, output_dir=self.build_temp
                 )
@@ -129,7 +146,10 @@ class BuildExt(build_ext):
             compiler.compile = compile_sources
         try:
             super().build_extensions()
+            flags_state.parent.mkdir(parents=True, exist_ok=True)
+            flags_state.write_text(flags_signature)
         finally:
+            compiler.force = previous_compiler_force
             compiler.compile = original_compile
             compiler.link_shared_object = original_link
             self.parallel = previous_parallel
@@ -172,7 +192,9 @@ class BuildExt(build_ext):
 
 
 system_core = os.environ.get("DATAMUNGE_USE_SYSTEM_LIB") == "1"
-sources = ["src/datamunge_python_wrap.cpp"]
+# Rosetta's generated extension, split into parts (scripts/prebuild_bindings.py).
+wrapper_sources = sorted(p.as_posix() for p in Path("src").glob("datamunge_python_wrap*.cpp"))
+sources = list(wrapper_sources)
 compile_args, link_args, macros = [], [], []
 if system_core:
     compile_args = shlex.split(pkg_config("--cflags"))
@@ -201,7 +223,7 @@ extensions = [
         extra_link_args=link_args,
         depends=sorted(
             p.as_posix()
-            for root in (Path("include"), Path("src/datamunge"))
+            for root in (Path("include"), Path("src/datamunge"), Path("src/pydatamunge/rosetta"))
             for p in root.rglob("*")
             if p.suffix in (".hpp", ".h")
         ),
@@ -212,11 +234,12 @@ extensions = [
 subprocess.run([sys.executable, "scripts/prebuild_nn_api.py", "python"], check=True)
 extensions.append(Extension(
     "pydatamunge._nn_native",
-    sources=["src/nn_python_wrap.cpp"],
-    # examples/nn: header-only example components bound by examples/bindings/nn_components.i.
+    # Rosetta's generated extension, split into parts (scripts/prebuild_nn_api.py).
+    sources=sorted(p.as_posix() for p in Path("src").glob("nn_python_wrap*.cpp")),
+    # examples/nn: header-only example components bound by src/pydatamunge/rosetta/nn_bindings.hpp.
     include_dirs=["include", "examples/nn", "examples/bindings"], language="c++", define_macros=macros,
     extra_compile_args=list(compile_args), extra_link_args=list(link_args),
-    depends=extensions[0].depends + ["prebindings/nn/src/nn.i", "examples/bindings/nn_components.i"]
+    depends=extensions[0].depends
     + sorted(p.as_posix() for p in Path("examples/nn/common").rglob("*.hpp")),
 ))
 

@@ -1,6 +1,7 @@
 include README.md LICENSE* lib_sources.txt
 recursive-include third_party_licenses *
-include src/datamunge_python_wrap.cpp src/datamunge_python_wrap.h
+include src/datamunge_python_wrap*.cpp
+recursive-include src/pydatamunge/rosetta *.hpp *.json
 recursive-include include *.h *.hpp *.i
 recursive-include src/datamunge *.h *.hpp *.c *.cc *.cpp *.cxx
 recursive-include src/pydatamunge *.py *.i
@@ -11,7 +12,7 @@ recursive-include examples/cpp/source/nn *.cpp
 recursive-include examples/nn/common *.hpp
 prune build
 
-include scripts/prebuild_nn_api.py src/nn_python_wrap.cpp
+include scripts/prebuild_nn_api.py src/nn_python_wrap*.cpp
 recursive-include prebindings/nn *.i
 recursive-include prebindings/simulation *.i
 # Embedded native render shaders build without a shader SDK; keep regeneration reproducible.

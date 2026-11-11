@@ -1,4 +1,4 @@
-testthat::test_that("component enum values and fixed-array accessors survive SWIG", {
+testthat::test_that("component enum values and fixed-array accessors survive the bindings", {
   cfg <- nn_components$attention_cnn$AttentionResNetConfig()
   cfg$attention <- nn_components$attention_cnn$ChannelAttention_kEca
   testthat::expect_identical(cfg$attention, nn_components$attention_cnn$ChannelAttention_kEca)

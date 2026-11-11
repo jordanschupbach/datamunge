@@ -9,6 +9,7 @@
   pkg-config,
   datamunge,
   swigPkg,
+  rosettaPkg,
 }:
 buildPythonPackage rec {
   pname = "pydatamunge";
@@ -36,6 +37,7 @@ buildPythonPackage rec {
   env.DATAMUNGE_USE_SYSTEM_LIB = "1";
   preBuild = "python scripts/prebuild_bindings.py python";
   nativeBuildInputs = [
+    rosettaPkg
     swigPkg
     pkg-config
   ];

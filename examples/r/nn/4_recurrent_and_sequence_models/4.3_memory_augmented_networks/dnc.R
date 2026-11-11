@@ -74,7 +74,7 @@ main <- function(arguments=commandArgs(trailingOnly=TRUE)) {
         for (epoch in seq_len(epochs)) {
             order$begin_epoch()
             repeat {
-                rows <- order$`_next`()
+                rows <- order$next_()
                 if (!length(rows)) break
                 batch <- memory_rows(fit, rows)
                 if (!updates) {

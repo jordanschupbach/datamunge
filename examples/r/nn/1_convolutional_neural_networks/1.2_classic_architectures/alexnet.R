@@ -1,4 +1,4 @@
-# Native R NN example. alexnet: explicit C++-equivalent CIFAR-10 workflow over SWIG components.
+# Native R NN example. alexnet: explicit C++-equivalent CIFAR-10 workflow over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/alexnet.R
 suppressPackageStartupMessages(library(datamungerNN))
 check <- nn_components$check
@@ -130,7 +130,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

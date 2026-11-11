@@ -55,7 +55,7 @@ main <- function(arguments = commandArgs(TRUE)) {
     test_x <- nn$reshape(test$images, c(10000L, 784L))
     split <- nn$BatchOrder(60000L, 60000L, 2026L)
     split$begin_epoch()
-    ordering <- split$`_next`()
+    ordering <- split$next_()
     fit <- ordering[seq_len(55000L)]
     validation <- ordering[55001L:60000L]
     testing <- 0L:9999L
@@ -89,7 +89,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         seen <- 0L
         repeat {
-            ids <- batches$`_next`()
+            ids <- batches$next_()
             if (!length(ids))
                 break
             rows <- fit[ids + 1L]

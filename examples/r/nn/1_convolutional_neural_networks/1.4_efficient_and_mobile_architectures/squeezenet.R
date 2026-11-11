@@ -29,7 +29,7 @@
 #
 # The model components (squeezenet::Fire/SqueezeNet, the mobile_checks sine
 # fixtures, architecture::GradientNormRange, image batching, cross-entropy and
-# L2) are the C++ ones through SWIG (datamungerNN::nn_components); the checks and
+# L2) are the C++ ones through the bindings (datamungerNN::nn_components); the checks and
 # the training workflow below mirror examples/cpp/source/nn/.../squeezenet.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
 architecture <- nn_components$architecture
@@ -44,12 +44,8 @@ Pattern <- mobile_checks$Pattern
 # C++ default ostream formatting (six significant digits).
 g6 <- function(x) sprintf("%g", x)
 
-# nn::pad's {{before, after}, ...} list as the bound PaddingPairs vector.
-padding_pairs <- function(...) {
-    pairs <- nn$PaddingPairs()
-    for (v in list(...)) pairs$push_back(nn$PaddingPair(v[1L], v[2L]))
-    pairs
-}
+# nn::pad's {{before, after}, ...} as a list of pairs.
+padding_pairs <- function(...) lapply(list(...), function(v) list(first = v[1L], second = v[2L]))
 
 # image_training::ParseCifarOption over key=value arguments; returns list(directory, explicit_epochs).
 parse_cifar_options <- function(arguments, cfg) {
@@ -241,7 +237,7 @@ main <- function(arguments = commandArgs(TRUE)) {
             batches$begin_epoch()
             used <- 0
             repeat {
-                rows <- batches$`_next`()
+                rows <- batches$next_()
                 if (!length(rows)) break
                 used <- used + length(rows)
                 rows <- fit[rows + 1]

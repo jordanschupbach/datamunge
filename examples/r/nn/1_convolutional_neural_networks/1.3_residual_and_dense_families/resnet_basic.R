@@ -8,7 +8,7 @@
 # Options: data=PATH epochs=12 batch=128 lr=.001 fit=12000 augment=0|1 threads=N seed=17.
 #
 # The model components (resnet_demo::CompactResNet, the block/full-network
-# checks, image batching, cross-entropy and L2) are the C++ ones through SWIG
+# checks, image batching, cross-entropy and L2) are the C++ ones through the bindings
 # (datamungerNN::nn_components); the workflow below mirrors
 # examples/cpp/source/nn/.../resnet_basic.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
@@ -124,7 +124,7 @@ train_compact_resnet <- function(depth, development, test, cfg, explicit_epochs)
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

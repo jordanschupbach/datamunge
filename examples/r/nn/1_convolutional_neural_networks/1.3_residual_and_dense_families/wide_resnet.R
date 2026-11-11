@@ -31,7 +31,7 @@
 #
 # The model components (wide_resnet::WideBasicBlock/WideResNet, preact
 # normalization, the sine fixtures, image batching, cross-entropy and L2) are
-# the C++ ones through SWIG (datamungerNN::nn_components); the checks and the
+# the C++ ones through the bindings (datamungerNN::nn_components); the checks and the
 # workflow below mirror examples/cpp/source/nn/.../wide_resnet.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
 architecture <- nn_components$architecture
@@ -275,7 +275,7 @@ train_wide_resnet <- function(width, dropout, arguments) {
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

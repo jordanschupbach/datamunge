@@ -37,7 +37,7 @@ main<-function(arguments=commandArgs(TRUE)){
   stopifnot(all(is.finite(expected)))
   if(epochs>=500L)stopifnot(max(abs(expected-c(-6.5,.5,7.5)))<1e-5,abs(new_batch-9.5)<1e-5)
   frozen<-freeze(model$store,endpoints,'predictions')
-  slots<-optimizer$state();training_count<-model$store$size()+slots$size()
+  slots<-optimizer$state();training_count<-model$store$size()+length(slots)
   stopifnot(length(frozen)==2L,length(frozen)<training_count,all(startsWith(names(frozen),'model/')),
             all(vapply(frozen,function(value)!value$requires_grad(),logical(1))))
   directory<-file.path(nn_output_root(options$full),'models/frozen_affine')

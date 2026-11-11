@@ -16,17 +16,17 @@ for (iy in 0:7) {
   }
 }
 
-data <- DataFrame_empty()
-DataFrame_add_numeric_column(data, "x", x)
-DataFrame_add_numeric_column(data, "y", y)
-DataFrame_add_numeric_column(data, "z", z)
+data <- DataFrame$empty()
+data$add_numeric_column("x", x)
+data$add_numeric_column("y", y)
+data$add_numeric_column("z", z)
 
-surface <- LM(data, "z ~ bs(x, y)")
+surface <- LM$new(data, "z ~ bs(x, y)")
 cat("Fitted z ~ bs(x, y)\n")
-LM_print_summary(surface)
+surface$print_summary()
 
-new_points <- DataFrame_empty()
-DataFrame_add_numeric_column(new_points, "x", c(0.25, 0.75))
-DataFrame_add_numeric_column(new_points, "y", c(0.50, 0.25))
+new_points <- DataFrame$empty()
+new_points$add_numeric_column("x", c(0.25, 0.75))
+new_points$add_numeric_column("y", c(0.50, 0.25))
 cat("Predictions:\n")
-print(LM_predict(surface, new_points))
+print(surface$predict(new_points))

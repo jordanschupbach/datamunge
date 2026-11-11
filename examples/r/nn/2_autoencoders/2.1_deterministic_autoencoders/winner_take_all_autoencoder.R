@@ -57,7 +57,7 @@ competitive_train_variant <- function(lifetime, plain, pools, epochs, root, init
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             images <- nn$take_rows(pools[[1L]]$images, rows)
             # Training forward (competition mask applied), reconstruction MSE against the input.

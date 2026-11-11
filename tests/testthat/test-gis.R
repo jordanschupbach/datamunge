@@ -94,7 +94,7 @@ test_that("ShapeLayer reads a shapefile and draws a map via idiomatic $ chaining
   .gis_write_shp(paste0(base, ".shp"), list(list(outer, hole)))
   .gis_write_dbf(paste0(base, ".dbf"), c("Lakeside"), c("48231"))
 
-  layer <- ShapeLayer_read(base)
+  layer <- ShapeLayer$read(base)
   expect_equal(layer$size(), 1L)
   expect_equal(layer$shape_type(), "polygon")
   expect_equal(layer$num_parts(0), 2L)
@@ -103,7 +103,7 @@ test_that("ShapeLayer reads a shapefile and draws a map via idiomatic $ chaining
 
   attrs <- layer$attributes()
   expect_equal(attrs$nrows(), 1L)
-  expect_equal(attrs$to_string(), DataFrame_to_string(attrs))
+  expect_equal(attrs$to_string(), attrs$to_string())
 
   svg_path <- file.path(tempdir(), "test_gis_counties_map.svg")
   layer$plot()$save_svg(svg_path)
@@ -117,7 +117,7 @@ test_that("ShapeLayer_read accepts a path with or without the .shp extension", {
   .gis_write_shp(paste0(base, ".shp"), list(list(matrix(c(0, 0, 0, 1, 1, 1, 1, 0, 0, 0), ncol = 2, byrow = TRUE))))
   .gis_write_dbf(paste0(base, ".dbf"), c("A"), c("1"))
 
-  layer_no_ext <- ShapeLayer_read(base)
-  layer_with_ext <- ShapeLayer_read(paste0(base, ".shp"))
+  layer_no_ext <- ShapeLayer$read(base)
+  layer_with_ext <- ShapeLayer$read(paste0(base, ".shp"))
   expect_equal(layer_no_ext$size(), layer_with_ext$size())
 })

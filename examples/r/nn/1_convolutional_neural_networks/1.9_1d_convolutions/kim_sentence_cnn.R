@@ -56,7 +56,7 @@ train_sentence <- function(root, epochs) {
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             # Dropout training graph, CE, all gradients and one Adadelta/max-norm step.
             batch <- sentence_rows(fit, rows)

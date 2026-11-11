@@ -2,6 +2,7 @@
 
 import ast
 import json
+import os
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -37,7 +38,7 @@ def test_core_prefix_change_forces_link_without_recompiling_objects(tmp_path):
         for node in tree.body
         if isinstance(node, ast.ClassDef) and node.name == "BuildExt"
     )
-    namespace = dict(build_ext=Parent, Path=Path, json=json, sys=sys, system_core=True)
+    namespace = dict(build_ext=Parent, Path=Path, json=json, os=os, sys=sys, system_core=True)
     exec(
         compile(ast.Module(body=[definition], type_ignores=[]), str(path), "exec"),
         namespace,
@@ -50,6 +51,8 @@ def test_core_prefix_change_forces_link_without_recompiling_objects(tmp_path):
     extension = SimpleNamespace(
         name="pydatamunge._nn_native",
         extra_compile_args=[],
+        define_macros=[],
+        include_dirs=[],
         extra_link_args=["-L/core/first"],
         libraries=[],
         library_dirs=[],

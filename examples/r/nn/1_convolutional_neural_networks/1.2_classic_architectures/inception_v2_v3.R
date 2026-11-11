@@ -1,4 +1,4 @@
-# Native R NN example. inception_v2_v3: factorization/BN/label-smoothing checks, full v2/v3 architecture checks and compact CIFAR-10 training of both versions over SWIG components.
+# Native R NN example. inception_v2_v3: factorization/BN/label-smoothing checks, full v2/v3 architecture checks and compact CIFAR-10 training of both versions over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v2_v3.R
 # Inception v2 and v3: batch normalization, factorization and label smoothing.
 #
@@ -32,7 +32,7 @@
 #
 # The model components (inception23::Inception23, normalized_conv::NormalizedConv,
 # the architecture helpers, image batching, cross-entropy and L2) are the C++ ones
-# through SWIG (datamungerNN::nn_components); the checks and the experiment workflow
+# through the bindings (datamungerNN::nn_components); the checks and the experiment workflow
 # below mirror examples/cpp/source/nn/.../inception_v2_v3.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
 architecture <- nn_components$architecture
@@ -335,7 +335,7 @@ main <- function(arguments = commandArgs(TRUE)) {
             batches$begin_epoch()
             used <- 0
             repeat {
-                rows <- batches$`_next`()
+                rows <- batches$next_()
                 if (!length(rows)) break
                 used <- used + length(rows)
                 rows <- fit[rows + 1]

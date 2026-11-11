@@ -104,7 +104,7 @@ sparse_train_variant <- function(name, l1, kl, pools, epochs, root, init) {
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             images <- nn$take_rows(pools[[1L]]$images, rows)
             # Forward: reconstruction MSE + L1/KL activation penalties of this batch.

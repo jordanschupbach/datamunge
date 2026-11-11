@@ -10,7 +10,7 @@
 if (!exists("autoencoder_undercomplete", inherits = TRUE)) nn_helper("autoencoder", environment())
 if (!exists("nn_require", inherits = TRUE)) nn_helper("checks", environment())
 
-# Canonical C++ forward, discrete mask and fixtures through SWIG.
+# Canonical C++ forward, discrete mask and fixtures through the bindings.
 competitive_autoencoder_mask <- nn$CompetitiveMask
 competitive_autoencoder_forward <- nn$CompetitiveAutoencoder
 

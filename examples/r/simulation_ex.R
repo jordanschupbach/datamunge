@@ -1,6 +1,6 @@
 # Native CPU pendulum batch with explicit end-of-episode handling.
 library(datamunger)
-task <- TaskBatch_create("InvertedPendulum", 4L, 2L, 42L, 100L)
+task <- TaskBatch$create("InvertedPendulum", 4L, 2L, 42L, 100L)
 returns <- numeric(4)
 active <- rep(1L, 4)
 for (tick in seq_len(100)) {

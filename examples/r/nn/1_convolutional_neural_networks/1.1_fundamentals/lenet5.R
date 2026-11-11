@@ -142,7 +142,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         samples <- 0L
         repeat {
-            ids <- batches$`_next`()
+            ids <- batches$next_()
             if (!length(ids)) break
             samples <- samples + length(ids)
             ids <- fit_rows[ids + 1L]

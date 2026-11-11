@@ -20,25 +20,23 @@ Model <- function(initial=0) {
         result <- list()
         for (name in store$names()) result[[paste0("params/",name)]] <- store$at(name)$detach()$clone()
         slots <- optimizer$state()
-        for (i in seq_len(slots$size())-1L) {
-            pair <- slots$`__getitem__`(i)
+        for (pair in slots) {
             result[[paste0("optimizer/",pair$first)]] <- pair$second$clone()
         }
         result
     }
     save <- function(path) nn$save_npz(path,state())
     restore <- function(path,weights_only=FALSE) {
-        archive <- nn$load_npz(path); params <- list(); slots <- nn$NamedTensors()
+        archive <- nn$load_npz(path); params <- list(); slots <- list()
         for (name in names(archive)) {
             if (startsWith(name,"params/")) params[[substring(name,8L)]] <- archive[[name]]
-            else if (startsWith(name,"optimizer/")) slots$push_back(nn$NamedTensor(substring(name,11L),archive[[name]]))
+            else if (startsWith(name,"optimizer/")) slots[[length(slots)+1L]] <- list(first=substring(name,11L),second=archive[[name]])
             else stop("unexpected checkpoint entry ",name)
         }
         if (!setequal(names(params),store$names())) stop("checkpoint parameter names do not match")
-        if (!weights_only&&slots$size()==0L) stop("checkpoint has no optimizer state")
+        if (!weights_only&&length(slots)==0L) stop("checkpoint has no optimizer state")
         if (!weights_only) {
-            for (i in seq_len(slots$size())-1L) {
-                pair <- slots$`__getitem__`(i)
+            for (pair in slots) {
                 if (!pair$first %in% c("step","nadam_product","m/0","v/0") || pair$second$dim()!=0L)
                     stop("invalid scalar Adam checkpoint slot ",pair$first)
             }

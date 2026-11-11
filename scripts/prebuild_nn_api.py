@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Generate the reusable NN core API bindings, independently of experiments."""
+"""Generate the reusable NN core API bindings, independently of experiments.
+
+Python bindings come from Rosetta (src/pydatamunge/rosetta/nn_bindings.hpp and nn_policy.json);
+R bindings from SWIG (prebindings/nn/src/nn.i)."""
 import argparse
 import re
 import subprocess
@@ -8,6 +11,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts'))
+
+# The extension is split into this many sources so they compile in parallel.
+PYTHON_PARTS = 24
 
 
 def generate(language, reference=False):
@@ -17,6 +24,12 @@ def generate(language, reference=False):
         # without it, and don't need the audit's catalog.
         if STATUS.exists():
             refresh()
+        from prebuild_bindings import generate_rosetta
+        bindings = Path('src/pydatamunge/rosetta')
+        # examples/bindings and examples/nn hold the shared example components it binds.
+        generate_rosetta(bindings / 'nn_bindings.hpp', bindings / 'nn_policy.json', 'pydatamunge._nn_native',
+                         'nn_python_wrap', PYTHON_PARTS, ('include', 'examples/bindings', 'examples/nn'))
+        return ROOT / 'src/nn_python_wrap.cpp'
     directory = ROOT / ('src/pydatamunge' if language == 'python' else 'prebindings/nn/r/R')
     directory.mkdir(parents=True, exist_ok=True)
     wrapper = ROOT / ('src/nn_python_wrap.cpp' if language == 'python' else 'build/nn-r/api/nn_r_wrap.cpp')

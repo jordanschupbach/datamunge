@@ -1,4 +1,4 @@
-# Native R NN example. mobilenet_v2: explicit C++-equivalent CIFAR-10 workflow over SWIG components.
+# Native R NN example. mobilenet_v2: explicit C++-equivalent CIFAR-10 workflow over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v2.R
 suppressPackageStartupMessages(library(datamungerNN))
 check <- nn_components$check
@@ -133,7 +133,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

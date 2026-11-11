@@ -134,9 +134,9 @@ def DdpmReverse(state, time, epsilon, innovation, schedule):
     return _native.DdpmReverse(state, time, epsilon, innovation, schedule)
 
 
-DiffusionScheduleOutput.__doc__ = "Nine owning detached Float64[T] cosine/fixed-posterior tables; first posterior variance0. No model/RNG/static cache; callers own consistency of manually supplied tables."
-DdpmEpsilonOutput.__doc__ = "Owning flat live epsilon[N,8,8,1], hidden1/hidden2[N,32] and detached source-rounded time_embedding[N,8]. Applicable first/higher graphs survive parent/store collection."
-DdpmReverseOutput.__doc__ = "Owning live flat value/mean/x0_raw/x0_clipped[N,...], variance[N,1,...,1]; source Float32 coefficients retained even for Double samples. No complete trajectory hidden inside."
+_native._set_doc(DiffusionScheduleOutput, "Nine owning detached Float64[T] cosine/fixed-posterior tables; first posterior variance0. No model/RNG/static cache; callers own consistency of manually supplied tables.")
+_native._set_doc(DdpmEpsilonOutput, "Owning flat live epsilon[N,8,8,1], hidden1/hidden2[N,32] and detached source-rounded time_embedding[N,8]. Applicable first/higher graphs survive parent/store collection.")
+_native._set_doc(DdpmReverseOutput, "Owning live flat value/mean/x0_raw/x0_clipped[N,...], variance[N,1,...,1]; source Float32 coefficients retained even for Double samples. No complete trajectory hidden inside.")
 
 
 def FlowStudyPoints(standard, kind, dtype=None):
@@ -201,8 +201,8 @@ def FlowStudySampleDiagnostics(samples):
     return _native.FlowStudySampleDiagnostics(samples)
 
 
-FlowStudyPointsOutput.__doc__ = "Owning detached points[N,2] and Int32 components[N], -1 for banana or0..7; components are diagnostics, never model features."
-FlowStudyDiagnosticsOutput.__doc__ = "Owning detached Int32 mode_counts[8], checkerboard_support_fraction, fraction_near_modes, modes_covered and banana_curvature_moment. Complete mode coverage does not establish concentration."
+_native._set_doc(FlowStudyPointsOutput, "Owning detached points[N,2] and Int32 components[N], -1 for banana or0..7; components are diagnostics, never model features.")
+_native._set_doc(FlowStudyDiagnosticsOutput, "Owning detached Int32 mode_counts[8], checkerboard_support_fraction, fraction_near_modes, modes_covered and banana_curvature_moment. Complete mode coverage does not establish concentration.")
 
 
 def CnfField(parameters, input, time, trace_mode=3):
@@ -333,8 +333,8 @@ def CnfInverse(parameters, latent, steps=8, trace_mode=3):
     return _native.CnfInverse(parameters, latent, steps, trace_mode)
 
 
-CnfFieldOutput.__doc__ = "Five owning live flat fields: velocity[N,2], divergence/exact_trace/hutchinson_plus/hutchinson_minus[N]. Fixed plus/minus probes average to the exact2D field trace within roundoff; first/higher paths survive collection."
-CnfDensityOutput.__doc__ = "Nineteen owning live flat fields: stage0..3[N,2], CUMULATIVE stage_logdet0..3[N], endpoint stage_divergence0..3[N]/stage_velocity0..3[N,2], unscaled/latent[N,2] and logdet[N]. Modes0/3 integrated trace approximates continuous-flow logdet, not exact discrete RK4-map logdet; modes1/2 fixed-probe diagnostic integrals generally do not approximate full logdet. All applicable first/higher paths survive collection."
+_native._set_doc(CnfFieldOutput, "Five owning live flat fields: velocity[N,2], divergence/exact_trace/hutchinson_plus/hutchinson_minus[N]. Fixed plus/minus probes average to the exact2D field trace within roundoff; first/higher paths survive collection.")
+_native._set_doc(CnfDensityOutput, "Nineteen owning live flat fields: stage0..3[N,2], CUMULATIVE stage_logdet0..3[N], endpoint stage_divergence0..3[N]/stage_velocity0..3[N,2], unscaled/latent[N,2] and logdet[N]. Modes0/3 integrated trace approximates continuous-flow logdet, not exact discrete RK4-map logdet; modes1/2 fixed-probe diagnostic integrals generally do not approximate full logdet. All applicable first/higher paths survive collection.")
 
 
 def PlanarFlow(input, angle, log_frequency, raw_projection, perpendicular, bias, inverse=False):
@@ -472,8 +472,8 @@ def PlanarRadialInverse(parameters, latent, radial=False):
     return _native.PlanarRadialInverse(parameters, latent, radial)
 
 
-ElementaryFlowOutput.__doc__ = "Four owning live flat fields: value[N,2], signed logdet[N], factor/coordinate[N,1]. Planar factor is determinant, coordinate solved t; radial factor tangential, coordinate source radius. Planar inverse higher graphs follow stopped correction, not exact implicit higher derivatives."
-PlanarRadialDensityOutput.__doc__ = "Nineteen owning live flat fields: flow/logdet/factor/coordinate0..3, unscaled/latent and full logdet. Factor/coordinate diagnostics are not affine scales/shifts; applicable graphs/storage survive collection."
+_native._set_doc(ElementaryFlowOutput, "Four owning live flat fields: value[N,2], signed logdet[N], factor/coordinate[N,1]. Planar factor is determinant, coordinate solved t; radial factor tangential, coordinate source radius. Planar inverse higher graphs follow stopped correction, not exact implicit higher derivatives.")
+_native._set_doc(PlanarRadialDensityOutput, "Nineteen owning live flat fields: flow/logdet/factor/coordinate0..3, unscaled/latent and full logdet. Factor/coordinate diagnostics are not affine scales/shifts; applicable graphs/storage survive collection.")
 
 
 def RationalQuadraticSpline(input, heads, inverse=False, bound=4.0,
@@ -554,8 +554,8 @@ def SplineInverse(parameters, latent):
     return _native.SplineInverse(parameters, latent)
 
 
-RationalQuadraticSplineOutput.__doc__ = "Five owning live floating fields: value[N,1] for pure spline or[N,2] for coupling, signed logdet[N], actual widths/heights[N,K] and positive knot derivatives[N,K+1]; first/higher graphs survive collection within structural bins."
-SplineDensityOutput.__doc__ = "Twenty-three owning live flat coupling, actual bin geometry and Gaussian-density fields; widths/heights are positive sizes, not log scales/shifts. Applicable first/higher graphs survive parent/store collection."
+_native._set_doc(RationalQuadraticSplineOutput, "Five owning live floating fields: value[N,1] for pure spline or[N,2] for coupling, signed logdet[N], actual widths/heights[N,K] and positive knot derivatives[N,K+1]; first/higher graphs survive collection within structural bins.")
+_native._set_doc(SplineDensityOutput, "Twenty-three owning live flat coupling, actual bin geometry and Gaussian-density fields; widths/heights are positive sizes, not log scales/shifts. Applicable first/higher graphs survive parent/store collection.")
 
 
 def IafDensity(parameters, input):
@@ -596,7 +596,7 @@ def IafInverse(parameters, latent):
     return _native.IafInverse(parameters, latent)
 
 
-IafDensityOutput.__doc__ = "Twenty-three owning live flat recovered IAF stage/head/density fields, applied in source block order3,2,1,0; unscaled aliases coupling0. Applicable first/higher graphs survive collection; no cached forward or fitting state."
+_native._set_doc(IafDensityOutput, "Twenty-three owning live flat recovered IAF stage/head/density fields, applied in source block order3,2,1,0; unscaled aliases coupling0. Applicable first/higher graphs survive collection; no cached forward or fitting state.")
 
 
 def MafMasks(block, dtype=None):
@@ -662,9 +662,9 @@ def MafInverse(parameters, latent):
     return _native.MafInverse(parameters, latent)
 
 
-MafMaskInventory.__doc__ = "Five owning detached fields: Int32 input/hidden/output degrees and floating input/output masks; no own/future head dependency, survives collection without a store or graph."
-MafConditionerOutput.__doc__ = "Two owning live floating[N,2] mean and bounded LOG scale fields, with strict masked first/higher graphs surviving collection."
-MafDensityOutput.__doc__ = "Twenty-three owning live flat conditioner/stage/density fields; all means/log scales/inputs and per-row determinants retain first/higher graphs after collection."
+_native._set_doc(MafMaskInventory, "Five owning detached fields: Int32 input/hidden/output degrees and floating input/output masks; no own/future head dependency, survives collection without a store or graph.")
+_native._set_doc(MafConditionerOutput, "Two owning live floating[N,2] mean and bounded LOG scale fields, with strict masked first/higher graphs surviving collection.")
+_native._set_doc(MafDensityOutput, "Twenty-three owning live flat conditioner/stage/density fields; all means/log scales/inputs and per-row determinants retain first/higher graphs after collection.")
 
 
 def FlowActNormCalibration(input, epsilon=1e-6):
@@ -746,8 +746,8 @@ def GlowInverse(parameters, latent):
     return _native.GlowInverse(parameters, latent)
 
 
-ActNormCalibration.__doc__ = "Four owning detached flat CPU[D] moments/proposals: mean and population variance Float64, bias/log_scale matching input floating dtype; survives collection, no store writes or calibration state."
-GlowDensityOutput.__doc__ = "Thirty-one owning live flat source ActNorm/mixing/affine fields, unscaled/latent and per-row full logdet; first/higher graphs survive parent/store collection, no hidden calibration state."
+_native._set_doc(ActNormCalibration, "Four owning detached flat CPU[D] moments/proposals: mean and population variance Float64, bias/log_scale matching input floating dtype; survives collection, no store writes or calibration state.")
+_native._set_doc(GlowDensityOutput, "Thirty-one owning live flat source ActNorm/mixing/affine fields, unscaled/latent and per-row full logdet; first/higher graphs survive parent/store collection, no hidden calibration state.")
 
 
 def FlowDiagonalScale(parameters, input, incoming_logdet, inverse=False):
@@ -815,9 +815,9 @@ def RealNvpInverse(parameters, latent):
     return _native.RealNvpInverse(parameters, latent)
 
 
-FlowScaleOutput.__doc__ = "Two owning live flat value[N,D] and scalar or per-row[N] logdet fields; matching floating dtype, applicable first/higher graphs/storage survive parent/store collection."
-RealNvpCouplingOutput.__doc__ = "Four owning live flat value[N,2], logdet[N], bounded LOG scale/shift[N,1]; applicable first/higher graphs survive parent/store collection."
-RealNvpDensityOutput.__doc__ = "Nineteen owning live flat source affine-stage, log-scale, shift, logdet, unscaled and latent fields; total logdet per row, applicable first/higher graphs survive parent/store collection."
+_native._set_doc(FlowScaleOutput, "Two owning live flat value[N,D] and scalar or per-row[N] logdet fields; matching floating dtype, applicable first/higher graphs/storage survive parent/store collection.")
+_native._set_doc(RealNvpCouplingOutput, "Four owning live flat value[N,2], logdet[N], bounded LOG scale/shift[N,1]; applicable first/higher graphs survive parent/store collection.")
+_native._set_doc(RealNvpDensityOutput, "Nineteen owning live flat source affine-stage, log-scale, shift, logdet, unscaled and latent fields; total logdet per row, applicable first/higher graphs survive parent/store collection.")
 
 
 def BananaPoints(standard, curvature=.5, dtype=None):
@@ -910,28 +910,28 @@ def NiceInverse(parameters, latent):
     return _native.NiceInverse(parameters, latent)
 
 
-NormalFlowDensityOutput.__doc__ = "Three owning live flat base_log_probability/log_probability[N] and scalar mean NLL loss; matching floating dtype; applicable graphs/storage survive parent collection."
-NiceDensityOutput.__doc__ = "Seven owning live flat coupling0..3/unscaled/latent[N,2] and scalar global logdet; matching floating dtype, applicable graphs/storage survive parent/store collection."
-FlowInverseOutput.__doc__ = "Two owning live flat value[N,2] and scalar inverse logdet; applicable input/parameter graphs and storage survive parent/store collection."
+_native._set_doc(NormalFlowDensityOutput, "Three owning live flat base_log_probability/log_probability[N] and scalar mean NLL loss; matching floating dtype; applicable graphs/storage survive parent collection.")
+_native._set_doc(NiceDensityOutput, "Seven owning live flat coupling0..3/unscaled/latent[N,2] and scalar global logdet; matching floating dtype, applicable graphs/storage survive parent/store collection.")
+_native._set_doc(FlowInverseOutput, "Two owning live flat value[N,2] and scalar inverse logdet; applicable input/parameter graphs and storage survive parent/store collection.")
 
 
-WaveStackConfig.__doc__ = """Native architecture metadata: positive residual/skip widths,
+_native._set_doc(WaveStackConfig, """Native architecture metadata: positive residual/skip widths,
 levels1..12, cycles1..4 and classes>=2. Defaults32/64/6/2/256. Set the compact
-source explicitly to4/8/5/1/256. Metadata is copied by WaveStackCache."""
-WaveStackField.__doc__ = """Native exact field2+cycles*(2**levels-1), including the initial
+source explicitly to4/8/5/1/256. Metadata is copied by WaveStackCache.""")
+_native._set_doc(WaveStackField, """Native exact field2+cycles*(2**levels-1), including the initial
 width2 ingress and every dilated gate. Positive residual/skip, levels1..12,
-cycles1..4,classes>=2; invalid config RuntimeError. No fitting/store mutation."""
-WaveStackConv.__doc__ = """Native live explicitly left-padded causal convolution.
+cycles1..4,classes>=2; invalid config RuntimeError. No fitting/store mutation.""")
+_native._set_doc(WaveStackConv, """Native live explicitly left-padded causal convolution.
 
 Matching floating encoded[N,T,C] and caller store, positive axes/output width,
 kernel(default1),dilation(default1), nonempty name. Create/reuse name/W of shape
 [1,kernel,C,out], Glorot uniform sqrt(6/(kernel*(C+out))), and name/b zero[out].
 Owning live[N,T,out], same-time inclusive causal input. No activation, fitting,
-optimizer or hidden no-grad. Invalid geometry/dtype/stored leaves RuntimeError."""
-WaveStackOutput.__doc__ = """Native owning live logits[N,T,classes], skip[N,T,S] and copied
+optimizer or hidden no-grad. Invalid geometry/dtype/stored leaves RuntimeError.""")
+_native._set_doc(WaveStackOutput, """Native owning live logits[N,T,classes], skip[N,T,S] and copied
 vector of gates[N,T,R] for every block. Tensor handles retain graph/storage
-after output/vector/store collection; no mutable synthesis state or fitting."""
-WaveStack.__doc__ = """Native differentiable two-tap gated causal stack.
+after output/vector/store collection; no mutable synthesis state or fitting.""")
+_native._set_doc(WaveStack, """Native differentiable two-tap gated causal stack.
 
 Matching floating encoded[N,T,classes] and caller ParameterStore; positive
 axes. Glorot kernels/zero biases create or reuse input, block1..L/gate+skip,
@@ -941,14 +941,14 @@ skip[N,T,S], and a copied vector of owning gates[N,T,R]. Each survives parent
 collection; no fitting, optimizer, dropout, conditioning or normalization.
 Config default32/64/6/2/256; source4/8/5/1/256,RF33,5068 values/34 leaves.
 Invalid geometry/config/dtype/leaves raise RuntimeError. Warm before optimizer
-or cache construction. Input is one-hot code data or continuous encoded probes."""
-WaveNll.__doc__ = """Native mean next-code cross entropy after an explicit warmup.
+or cache construction. Input is one-hot code data or continuous encoded probes.""")
+_native._set_doc(WaveNll, """Native mean next-code cross entropy after an explicit warmup.
 
 logits floating[N,T,classes], targets Int32/64[N,T] valid IDs, classes>=2
 (default256), 0<=start<T(default127). Source generative run uses start32.
 Owning live scalar mean over N*(T-start), earlier logit adjoints exactly zero.
-No parameter mutation/fitting; invalid geometry/IDs/config RuntimeError."""
-WaveStackCache.__doc__ = """Native owning Float32 WaveStack snapshot and circular per-layer histories.
+No parameter mutation/fitting; invalid geometry/IDs/config RuntimeError.""")
+_native._set_doc(WaveStackCache, """Native owning Float32 WaveStack snapshot and circular per-layer histories.
 
 WaveStackCache(parameters,config) requires warmed finite Float32 CPU leaves of
 matching architecture, copies required W/b values and ignores unrelated leaves.
@@ -961,12 +961,12 @@ shared cache. Full convolution can differ by Float32 roundoff. reset() clears
 histories and previous-code tap; clone() forks independent current state.
 Invalid construction/code/nonfinite candidate raises RuntimeError; failed next
 preserves all state. consumed() counts successful inputs. Explicit config,
-no architecture inference; compact source4/8/5/1/256 has RF33 and5068 values."""
-WaveStackCache.__init__.__doc__ = "Native independent Float32 CPU snapshot of required warmed WaveStack leaves; explicit matching config, unrelated leaves ignored; invalid config/dtype/shape/nonfinite/missing leaf RuntimeError. No store writes or RNG. Initial consumed0."
-WaveStackCache.next.__doc__ = "Native consume one valid code and return owning detached Float32[classes] logits for the following code. Snapshot never trains/samples; Float32 scalar cache order. Invalid code/count limit or nonfinite candidate rejects without changing history. No autograd/store writes."
-WaveStackCache.reset.__doc__ = "Native clear every ring, previous-code tap and consumed count to true beginning; fixed snapshot and existing heads/clones unchanged. No allocation/RNG."
-WaveStackCache.consumed.__doc__ = "Native nonnegative successful input-code count since construction/reset; failed steps do not increment."
-WaveStackCache.clone.__doc__ = "Native owning independent fork of snapshot, all rings, previous code and consumed count. Future next/reset calls on either cache leave the other unchanged."
+no architecture inference; compact source4/8/5/1/256 has RF33 and5068 values.""")
+_native._set_doc(WaveStackCache.__init__, "Native independent Float32 CPU snapshot of required warmed WaveStack leaves; explicit matching config, unrelated leaves ignored; invalid config/dtype/shape/nonfinite/missing leaf RuntimeError. No store writes or RNG. Initial consumed0.")
+_native._set_doc(WaveStackCache.next, "Native consume one valid code and return owning detached Float32[classes] logits for the following code. Snapshot never trains/samples; Float32 scalar cache order. Invalid code/count limit or nonfinite candidate rejects without changing history. No autograd/store writes.")
+_native._set_doc(WaveStackCache.reset, "Native clear every ring, previous-code tap and consumed count to true beginning; fixed snapshot and existing heads/clones unchanged. No allocation/RNG.")
+_native._set_doc(WaveStackCache.consumed, "Native nonnegative successful input-code count since construction/reset; failed steps do not increment.")
+_native._set_doc(WaveStackCache.clone, "Native owning independent fork of snapshot, all rings, previous code and consumed count. Future next/reset calls on either cache leave the other unchanged.")
 
 
 def RgbAreaPixels(original, block_size=4):
@@ -1089,9 +1089,9 @@ def EqualDensityMixture(per_model_nll):
     return _native.EqualDensityMixture(per_model_nll)
 
 
-MadeMaskInventory.__doc__ = "Six owning stopped input_degrees/hidden1_degrees/hidden2_degrees/input_mask/hidden_mask/output_mask fields; Int32 degrees, floating structural masks, parent-independent storage."
-MadeDensityOutput.__doc__ = "Three owning live hidden1/hidden2/logits fields for the chosen MADE degree order; graph/storage survive parent/store collection, raw logits remain raster-shaped."
-DensityMixtureOutput.__doc__ = "Three owning live Float64 per_image_nll/mean_nll/responsibilities fields; equally weighted normalized joint densities, not mean component NLL, graph/storage survive parent collection."
+_native._set_doc(MadeMaskInventory, "Six owning stopped input_degrees/hidden1_degrees/hidden2_degrees/input_mask/hidden_mask/output_mask fields; Int32 degrees, floating structural masks, parent-independent storage.")
+_native._set_doc(MadeDensityOutput, "Three owning live hidden1/hidden2/logits fields for the chosen MADE degree order; graph/storage survive parent/store collection, raw logits remain raster-shaped.")
+_native._set_doc(DensityMixtureOutput, "Three owning live Float64 per_image_nll/mean_nll/responsibilities fields; equally weighted normalized joint densities, not mean component NLL, graph/storage survive parent collection.")
 
 
 def PixelRowLstmStep(input_gates, previous_hidden, previous_cell, recurrent_kernel):
@@ -1131,8 +1131,8 @@ def PixelRnn(parameters, image):
     return _native.PixelRnn(parameters, image)
 
 
-PixelRowLstmOutput.__doc__ = "Seven owning live gates/input_gate/forget_gate/output_gate/candidate/cell/hidden fields; width4 Row-LSTM transition, i/f/o/candidate ordering, forget bias+1, graph/storage survive parent collection."
-PixelRnnOutput.__doc__ = "Seven owning live initial_hidden/initial_cell/input_gates/row_gates/hidden/cell/logits fields; initial h/c alias the same connected first-feature*0 tensor, no learned initial states; graph/storage survive parent/store collection."
+_native._set_doc(PixelRowLstmOutput, "Seven owning live gates/input_gate/forget_gate/output_gate/candidate/cell/hidden fields; width4 Row-LSTM transition, i/f/o/candidate ordering, forget bias+1, graph/storage survive parent collection.")
+_native._set_doc(PixelRnnOutput, "Seven owning live initial_hidden/initial_cell/input_gates/row_gates/hidden/cell/logits fields; initial h/c alias the same connected first-feature*0 tensor, no learned initial states; graph/storage survive parent/store collection.")
 
 
 def GatedPixelMask(input_channels, vertical, first, output_channels=8, dtype=None):
@@ -1195,7 +1195,7 @@ def GatedPixelCnn(parameters, image, labels, conditional):
     return _native.GatedPixelCnn(parameters, image, labels, conditional)
 
 
-GatedPixelOutput.__doc__ = "Seven owning live vertical0/horizontal0/vertical1/horizontal1/vertical/horizontal/logits fields; width4 stream maps, positive NHWC rectangles; graph/storage survive parent and store collection."
+_native._set_doc(GatedPixelOutput, "Seven owning live vertical0/horizontal0/vertical1/horizontal1/vertical/horizontal/logits fields; width4 stream maps, positive NHWC rectangles; graph/storage survive parent and store collection.")
 
 
 def BinaryPixels(images):
@@ -1268,9 +1268,9 @@ def BinaryPixelUniforms(rows, seed):
     return _native.BinaryPixelUniforms(rows, seed)
 
 
-BinaryPixelData.__doc__ = "Owning detached Float32 gray/images[N,8,8,1]; Double resize, Float32 threshold."
-PixelCnnOutput.__doc__ = "Six owning live input_features/head/hidden0/hidden1/hidden/logits boundaries; graph/storage survive parent collection."
-BernoulliPixelOutput.__doc__ = "Four owning live probability/pixel_nll/per_image_nll/loss fields, natural-log units; graph/storage survive parent collection."
+_native._set_doc(BinaryPixelData, "Owning detached Float32 gray/images[N,8,8,1]; Double resize, Float32 threshold.")
+_native._set_doc(PixelCnnOutput, "Six owning live input_features/head/hidden0/hidden1/hidden/logits boundaries; graph/storage survive parent collection.")
+_native._set_doc(BernoulliPixelOutput, "Four owning live probability/pixel_nll/per_image_nll/loss fields, natural-log units; graph/storage survive parent collection.")
 
 
 def GaussianFrechet(real, fake):
@@ -1316,8 +1316,8 @@ def InceptionScoreSplits(probability, splits=4):
     return _native.InceptionScoreSplits(probability,splits)
 
 
-GaussianFrechetOutput.__doc__ = "Seven owning detached Float64 fid/raw_fid/mean_term/trace_a/trace_b/cross_trace/cross_singular_values fields; low-rank unbiased feature-moment comparison."
-InceptionSplitScores.__doc__ = "Three owning detached Float64 scores/mean/population_std fields; contiguous source-order partitions, population divisor splits."
+_native._set_doc(GaussianFrechetOutput, "Seven owning detached Float64 fid/raw_fid/mean_term/trace_a/trace_b/cross_trace/cross_singular_values fields; low-rank unbiased feature-moment comparison.")
+_native._set_doc(InceptionSplitScores, "Three owning detached Float64 scores/mean/population_std fields; contiguous source-order partitions, population divisor splits.")
 
 
 _native_frozen_graph_init = FrozenGraph.__init__
@@ -1331,7 +1331,7 @@ def _frozen_graph_init(self, model_bytes, max_bytes=512 * 1024 * 1024):
 
 
 FrozenGraph.__init__ = _frozen_graph_init
-FrozenGraph.__doc__ = """Native immutable numeric TensorFlow GraphDef, without TensorFlow runtime.
+_native._set_doc(FrozenGraph, """Native immutable numeric TensorFlow GraphDef, without TensorFlow runtime.
 
 FrozenGraph(model_bytes, max_bytes=512MiB) accepts bytes, an integer sequence
 or ByteVector; FrozenGraph.load(path,
@@ -1358,13 +1358,13 @@ ConcatV2,Softmax,Float32 ResizeBilinear,NHWC Float32/64 Conv2D/AvgPool/MaxPool
 and legacy BatchNormWithGlobalNormalization. SAME/VALID,spatial strides/dilation,
 transpose flags,old BN epsilon/gamma and resize coordinate flags preserved.
 Invalid format/arguments/runtime restrictions raise RuntimeError.
-"""
-FrozenGraph.__init__.__doc__ = "Native owned GraphDef bytes (bytes, integer sequence or ByteVector); positive max_bytes defaults512MiB and bounds serialized bytes and decoded numeric constants. No TensorFlow runtime; malformed wire/names/shapes and unsupported input ports reject."
-FrozenGraph.load.__doc__ = "Native immutable GraphDef from a regular local file, positive max_bytes default512MiB. No downloads; read/format errors RuntimeError. Owns model independently of file lifetime."
-FrozenGraph.node_names.__doc__ = "Native owned list of all node names in serialized order, including unused unsupported operations; no execution or mutable model metadata exposure."
-FrozenGraph.operation.__doc__ = "Native copied operation name for an existing node or node:0. Unknown names, controls and other ports raise RuntimeError; no execution."
-FrozenGraph.constant.__doc__ = "Native independent owning detached copy of an exact numeric Const, preserving dtype/shape/bits. Internal model storage cannot be mutated. Non-Const, unsupported dtype or unknown endpoint raises RuntimeError."
-FrozenGraph.evaluate.__doc__ = "Native read-only supported numeric subgraph execution. Sequence(name,Tensor) CPU feeds override nodes and cut ancestry; fetch strings retain order/duplicates in named owning detached copies. Control/CheckNumerics execute, input higher paths stop, last-use storage releases. See FrozenGraph for supported ops/dtypes/bounds; errors RuntimeError."
+""")
+_native._set_doc(FrozenGraph.__init__, "Native owned GraphDef bytes (bytes, integer sequence or ByteVector); positive max_bytes defaults512MiB and bounds serialized bytes and decoded numeric constants. No TensorFlow runtime; malformed wire/names/shapes and unsupported input ports reject.")
+_native._set_doc(FrozenGraph.load, "Native immutable GraphDef from a regular local file, positive max_bytes default512MiB. No downloads; read/format errors RuntimeError. Owns model independently of file lifetime.")
+_native._set_doc(FrozenGraph.node_names, "Native owned list of all node names in serialized order, including unused unsupported operations; no execution or mutable model metadata exposure.")
+_native._set_doc(FrozenGraph.operation, "Native copied operation name for an existing node or node:0. Unknown names, controls and other ports raise RuntimeError; no execution.")
+_native._set_doc(FrozenGraph.constant, "Native independent owning detached copy of an exact numeric Const, preserving dtype/shape/bits. Internal model storage cannot be mutated. Non-Const, unsupported dtype or unknown endpoint raises RuntimeError.")
+_native._set_doc(FrozenGraph.evaluate, "Native read-only supported numeric subgraph execution. Sequence(name,Tensor) CPU feeds override nodes and cut ancestry; fetch strings retain order/duplicates in named owning detached copies. Control/CheckNumerics execute, input higher paths stop, last-use storage releases. See FrozenGraph for supported ops/dtypes/bounds; errors RuntimeError.")
 
 
 def SingleImageNoise(rows, height, width, shared_rgb, seed, dtype=_native.DType_Float32):
@@ -1440,8 +1440,8 @@ def SingleImageGan(generator, discriminator, real, previous, noise, rec_previous
     return _native.SingleImageGan(generator,discriminator,real,previous,noise,rec_previous,rec_noise,amplitude)
 
 
-SingleImageGenerated.__doc__ = "Five owning live input/head/body/residual/image fields; previous plus tanh residual, applicable higher paths survive parent/store collection."
-SingleImageGanOutput.__doc__ = "Eight owning live random/reconstruction/patch-score/loss fields; full G LSGAN+10MSE, half D LSGAN, no hidden writes or detach."
+_native._set_doc(SingleImageGenerated, "Five owning live input/head/body/residual/image fields; previous plus tanh residual, applicable higher paths survive parent/store collection.")
+_native._set_doc(SingleImageGanOutput, "Eight owning live random/reconstruction/patch-score/loss fields; full G LSGAN+10MSE, half D LSGAN, no hidden writes or detach.")
 
 
 def RelativisticAverageGan(real, fake):
@@ -1523,9 +1523,9 @@ def AdversarialSR(generator, critic, stats, lr, target, bicubic, feature_weight,
     return _native.AdversarialSR(generator,critic,stats,lr,target,bicubic,feature_weight,feature_bias,enhanced,adversarial)
 
 
-RelativisticGanLoss.__doc__ = "Four owning live discriminator,generator,real_relative,fake_relative fields, including both opposite-pool mean paths."
-AdversarialSRGenerated.__doc__ = "Nine owning image,residual,packed,shuffled,moments_mean,moments_unbiased_variance,head,body,upsampled fields; BN captures detached and optional."
-AdversarialSROutput.__doc__ = "Twenty owning two-path pixel/score/feature/objective fields and optional detached five-layer BN captures; no hidden optimizer or state write."
+_native._set_doc(RelativisticGanLoss, "Four owning live discriminator,generator,real_relative,fake_relative fields, including both opposite-pool mean paths.")
+_native._set_doc(AdversarialSRGenerated, "Nine owning image,residual,packed,shuffled,moments_mean,moments_unbiased_variance,head,body,upsampled fields; BN captures detached and optional.")
+_native._set_doc(AdversarialSROutput, "Twenty owning two-path pixel/score/feature/objective fields and optional detached five-layer BN captures; no hidden optimizer or state write.")
 
 
 def UniformCategorical(rows, seed, classes=3):
@@ -1617,11 +1617,11 @@ def StarGan(generator, critic, source, original, target):
     return _native.StarGan(generator,critic,source,original,target)
 
 
-UniformCategoricalDraw.__doc__ = "Owning detached Int32 labels and exact accepted Float64 raw words; no retained engine."
-StarDomains.__doc__ = "Owning image/original/domain/digit/source/unused fields, disjoint observed-order selected IDs and explicit unused IDs; live image paths."
-StarGanGenerated.__doc__ = "Nine owning code/input/down14/down7/up14/joined14/up28/joined28/image fields; both actual skips and higher paths."
-StarGanDiscriminated.__doc__ = "Five owning live source/domain_logits/domain_probability/down14/down7 fields; image-only shared trunk."
-StarGanOutput.__doc__ = "Fifteen owning live fake/reconstruction, real/fake source/domain fields and explicit losses; shared-G round trip, no hidden writes."
+_native._set_doc(UniformCategoricalDraw, "Owning detached Int32 labels and exact accepted Float64 raw words; no retained engine.")
+_native._set_doc(StarDomains, "Owning image/original/domain/digit/source/unused fields, disjoint observed-order selected IDs and explicit unused IDs; live image paths.")
+_native._set_doc(StarGanGenerated, "Nine owning code/input/down14/down7/up14/joined14/up28/joined28/image fields; both actual skips and higher paths.")
+_native._set_doc(StarGanDiscriminated, "Five owning live source/domain_logits/domain_probability/down14/down7 fields; image-only shared trunk.")
+_native._set_doc(StarGanOutput, "Fifteen owning live fake/reconstruction, real/fake source/domain fields and explicit losses; shared-G round trip, no hidden writes.")
 
 
 def modulated_conv2d(image, weight, style, demodulate=True, epsilon=None):
@@ -1708,9 +1708,9 @@ def StyleGan(generator, critic, real, z, noise4, noise8, version2=False):
     return _native.StyleGan(generator,critic,real,z,noise4,noise8,version2)
 
 
-ModulatedConv2DOutput.__doc__ = "Owning live image and per-example/output-channel demodulator; graph/storage survive parent collection."
-StyleGanSynthesis.__doc__ = "Nine owning live image,constant,first,upsampled,second,per-layer styles/demodulators; supplied noise only."
-StyleGanOutput.__doc__ = "Ten owning live fake,mapped,first/second styles/demodulators,real/fake scores,d_loss,g_loss; no hidden update."
+_native._set_doc(ModulatedConv2DOutput, "Owning live image and per-example/output-channel demodulator; graph/storage survive parent collection.")
+_native._set_doc(StyleGanSynthesis, "Nine owning live image,constant,first,upsampled,second,per-layer styles/demodulators; supplied noise only.")
+_native._set_doc(StyleGanOutput, "Ten owning live fake,mapped,first/second styles/demodulators,real/fake scores,d_loss,g_loss; no hidden update.")
 
 
 def RotateInvertGrayscale(image, inverse=False):
@@ -1772,8 +1772,8 @@ def CycleGan(a_to_b, b_to_a, critic_a, critic_b, a, b, cycle_weight=10, identity
     return _native.CycleGan(a_to_b, b_to_a, critic_a, critic_b, a, b, cycle_weight, identity_weight)
 
 
-CycleDomains.__doc__ = "Owning live a,b,original_b image fields and original ids_a/ids_b, from disjoint per-class halves; no pairing or fitted state."
-CycleGanOutput.__doc__ = "Owning19 live translation/cycle/identity,raw patch-score and objective fields; one shared coupled G loss, no capture/update/schedule hidden."
+_native._set_doc(CycleDomains, "Owning live a,b,original_b image fields and original ids_a/ids_b, from disjoint per-class halves; no pairing or fitted state.")
+_native._set_doc(CycleGanOutput, "Owning19 live translation/cycle/identity,raw patch-score and objective fields; one shared coupled G loss, no capture/update/schedule hidden.")
 
 
 def quantized_sobel_edges(image, threshold=256):
@@ -1831,8 +1831,8 @@ def Pix2Pix(generator, discriminator, target, source, l1_weight=100):
     return _native.Pix2Pix(generator, discriminator, target, source, l1_weight)
 
 
-Pix2PixGenerated.__doc__ = "Owning live down14,down7,up14,joined14,up28,joined28,image fields; both skip concatenations and their graphs outlive parents/stores."
-Pix2PixOutput.__doc__ = "Owning live fake,real_logit,fake_logit,g_adversarial,l1,discriminator_loss,generator_loss fields; paired L1 weight100, no hidden optimizer or fitting."
+_native._set_doc(Pix2PixGenerated, "Owning live down14,down7,up14,joined14,up28,joined28,image fields; both skip concatenations and their graphs outlive parents/stores.")
+_native._set_doc(Pix2PixOutput, "Owning live fake,real_logit,fake_logit,g_adversarial,l1,discriminator_loss,generator_loss fields; paired L1 weight100, no hidden optimizer or fitting.")
 
 
 def pixel_rms_normalize(input, epsilon=None):
@@ -1906,9 +1906,9 @@ def ProgressiveGan(g_core, g_old_rgb, g_new_block, g_new_rgb,
                                  d_core, d_old_rgb, d_new_block, d_new_rgb, image, noise, alpha)
 
 
-ProgressiveGanGenerated.__doc__ = "Owning live old4,new8,image fields, including both sigmoid endpoints and actual fade; tensors/graphs outlive parents/stores."
-ProgressiveGanDiscriminated.__doc__ = "Owning live old_path,new_path,mixed,base features[N,4,4,4] and raw score[N,1]; tensors/graphs outlive parents/stores."
-ProgressiveGanOutput.__doc__ = "Owning seven live fake/old4/new8/raw-score/loss fields; G loss has no half factor; no stage, capture, optimizer or fitting hidden."
+_native._set_doc(ProgressiveGanGenerated, "Owning live old4,new8,image fields, including both sigmoid endpoints and actual fade; tensors/graphs outlive parents/stores.")
+_native._set_doc(ProgressiveGanDiscriminated, "Owning live old_path,new_path,mixed,base features[N,4,4,4] and raw score[N,1]; tensors/graphs outlive parents/stores.")
+_native._set_doc(ProgressiveGanOutput, "Owning seven live fake/old4/new8/raw-score/loss fields; G loss has no half factor; no stage, capture, optimizer or fitting hidden.")
 
 
 def MidpointUniform(rows, columns=1, seed=6601, dtype=None):
@@ -1977,12 +1977,12 @@ def WassersteinGan(generator, critic, real, noise, alpha, penalty_weight=10., pe
     return _native.WassersteinGan(generator, critic, real, noise, alpha, penalty_weight, penalty_graph)
 
 
-WassersteinGanOutput.__doc__ = """Owning eleven Wasserstein fields with independent tensor storage/graph lifetimes.
+_native._set_doc(WassersteinGanOutput, """Owning eleven Wasserstein fields with independent tensor storage/graph lifetimes.
 
 Fake,raw scores,detached interpolation,analytic/symbolic Jacobians,norm,penalty,gap
 and G/C losses outlive parents/stores. Penalty stops external real/alpha/G paths;
 symbolic critic history is optional. No optimizer, clipping callback or mode retained.
-"""
+""")
 
 
 def capture_affine_batch_norm(parameters, moving, name, input, batch_statistics=False, epsilon=.001):
@@ -2063,11 +2063,11 @@ def Dcgan(generator, discriminator, g_moving, d_moving, image, noise):
     return _native.Dcgan(generator, discriminator, g_moving, d_moving, image, noise)
 
 
-AffineBatchNormCapture.__doc__ = "Owning live affine normalized value and optional detached mean/unbiased_variance; fields outlive parent/store collection."
-DcganGenerated.__doc__ = "Owning signed image[N,28,28,1] and four optional detached BN moment vectors; fields/graphs outlive parent/store collection."
-DcganDiscriminated.__doc__ = "Owning raw logit[N,1] and optional detached mean/variance[8]; fields/graphs outlive parent/store collection."
-DcganPhaseOutput.__doc__ = "Owning signed fake, phase-specific raw logits/loss and detached G/D BN captures; G phase has undefined real/D-capture fields; no hidden write."
-DcganOutput.__doc__ = "Owning seven saved-BN fields: unit fake[N,784], raw/probability real/fake scores and logistic d_loss/g_loss; fields/graphs outlive parents/stores."
+_native._set_doc(AffineBatchNormCapture, "Owning live affine normalized value and optional detached mean/unbiased_variance; fields outlive parent/store collection.")
+_native._set_doc(DcganGenerated, "Owning signed image[N,28,28,1] and four optional detached BN moment vectors; fields/graphs outlive parent/store collection.")
+_native._set_doc(DcganDiscriminated, "Owning raw logit[N,1] and optional detached mean/variance[8]; fields/graphs outlive parent/store collection.")
+_native._set_doc(DcganPhaseOutput, "Owning signed fake, phase-specific raw logits/loss and detached G/D BN captures; G phase has undefined real/D-capture fields; no hidden write.")
+_native._set_doc(DcganOutput, "Owning seven saved-BN fields: unit fake[N,784], raw/probability real/fake scores and logistic d_loss/g_loss; fields/graphs outlive parents/stores.")
 
 
 def capture_batch_norm(stats, name, input, batch_statistics=False, epsilon=None):
@@ -2201,39 +2201,39 @@ def BigGan(generator, discriminator, generator_spectral, discriminator_spectral,
                           image, noise, labels, display_batch_statistics)
 
 
-BatchNormCapture.__doc__ = """Owning normalized value and optional live mean/unbiased_variance[C].
+_native._set_doc(BatchNormCapture, """Owning normalized value and optional live mean/unbiased_variance[C].
 
 Moment fields are undefined in saved-statistics mode. Fields outlive parent/store
 collection; no EMA write, optimizer or deferred callback is retained.
-"""
-BatchNormMovingValues.__doc__ = """Owning detached moving mean/variance candidates, without any write.
+""")
+_native._set_doc(BatchNormMovingValues, """Owning detached moving mean/variance candidates, without any write.
 
 No store reference, graph, optimizer or update callback retained; fields outlive parent.
-"""
-GaussianRejectionDraw.__doc__ = """Owning detached accepted z[rows,features] and Float64 proposals[K].
+""")
+_native._set_doc(GaussianRejectionDraw, """Owning detached accepted z[rows,features] and Float64 proposals[K].
 
 Audit includes rejects and last acceptance, without unused trailing sine. Threshold
 precedes dtype rounding; no global generator or fitting state is retained.
-"""
-BigGanMoments.__doc__ = """Owning six live captured channel vectors: bn1/bn2/output mean/unbiased variance.
+""")
+_native._set_doc(BigGanMoments, """Owning six live captured channel vectors: bn1/bn2/output mean/unbiased variance.
 
 All tensor fields are undefined on inference-only G calls. Values and graphs
 outlive parent/store collection; commit these SAME pre-write captures after G Adam.
-"""
-BigGanGenerated.__doc__ = """Owning image[N,8,8,1] and nested BigGanMoments, without hidden state writes.
+""")
+_native._set_doc(BigGanGenerated, """Owning image[N,8,8,1] and nested BigGanMoments, without hidden state writes.
 
 Fields retain storage and applicable first/higher paths after parent/store collection.
-"""
-BigGanDiscriminated.__doc__ = """Owning score,source,projection[N,1] and sum-pooled features[N,4].
+""")
+_native._set_doc(BigGanDiscriminated, """Owning score,source,projection[N,1] and sum-pooled features[N,4].
 
 Score=source+projection, without class probabilities. Fields retain storage/graphs
 after parent/store collection; no optimizer or state mutation is retained.
-"""
-BigGanOutput.__doc__ = """Owning both G paths, raw scores, explicit game losses and nested captured moments.
+""")
+_native._set_doc(BigGanOutput, """Owning both G paths, raw scores, explicit game losses and nested captured moments.
 
 Display fake/fake_score select inference by default, but ALL losses use the batch
 fake. Tensor fields and moments outlive parent/stores; no updates or optimizer hidden.
-"""
+""")
 
 
 def cached_spectral_dense(parameters, state, name, x, units, activation=None):
@@ -2311,27 +2311,27 @@ def SelfAttentionGan(generator, discriminator, generator_state, discriminator_st
     return _native.SelfAttentionGan(generator, discriminator, generator_state, discriminator_state, image, noise)
 
 
-SpectralSpatialOutput.__doc__ = """Owning live input/output[B,T,C] and row probability[B,T,T].
+_native._set_doc(SpectralSpatialOutput, """Owning live input/output[B,T,C] and row probability[B,T,T].
 
 Fields retain storage and applicable first/higher paths after parent/store collection.
 No optimizer, fitting mode or cache reference; the initial zero gate gives identity.
-"""
-SelfAttentionGenerated.__doc__ = """Owning live pixels[B,784] and three G attention fields.
+""")
+_native._set_doc(SelfAttentionGenerated, """Owning live pixels[B,784] and three G attention fields.
 
 attention_input/output[B,16,8], attention_probability[B,16,16] retain storage and
 applicable first/higher paths after parent/store collection. No fitting state.
-"""
-SelfAttentionDiscriminated.__doc__ = """Owning raw score[B,1] and three D attention fields.
+""")
+_native._set_doc(SelfAttentionDiscriminated, """Owning raw score[B,1] and three D attention fields.
 
 attention_input/output[B,16,8], attention_probability[B,16,16] retain storage and
 applicable first/higher paths after parent/store collection. No sigmoid or fitting state.
-"""
-SelfAttentionGanOutput.__doc__ = """Twelve owning live patch SAGAN fields with explicit hinge objectives.
+""")
+_native._set_doc(SelfAttentionGanOutput, """Twelve owning live patch SAGAN fields with explicit hinge objectives.
 
 Fake pixels, real/fake scores, D/G losses, G input/probability/output, real-D
 input/probability/output and fake-D probability survive parent/store collection.
 No optimizer, cache advance, MMD or fitting state is retained.
-"""
+""")
 
 
 def cached_spectral_power_iteration(weight, u0, iterations=1, epsilon=None):
@@ -2408,16 +2408,16 @@ def SpectralGan(generator, discriminator, state, image, noise, features=784, hid
     return _native.SpectralGan(generator, discriminator, state, image, noise, features, hidden)
 
 
-SpectralPowerPair.__doc__ = """Owning detached columns u[out,1],v[in,1] from ordered power iteration.
+_native._set_doc(SpectralPowerPair, """Owning detached columns u[out,1],v[in,1] from ordered power iteration.
 
 Squared-norm epsilon allows lengths below one; zero kernels give zeros.
 Fields retain storage after parent/input collection; no store or graph retained.
-"""
-CachedSpectralKernel.__doc__ = """Owning live weight=W/max(sigma,floor) and raw signed scalar sigma.
+""")
+_native._set_doc(CachedSpectralKernel, """Owning live weight=W/max(sigma,floor) and raw signed scalar sigma.
 
 Fields retain first/higher W gradients after parent collection; cached u/v paths
 are stopped. Finite power iteration does not certify an exact unit operator norm.
-"""
+""")
 
 
 def BernoulliPixelNll(logits, target):
@@ -2431,14 +2431,13 @@ def BernoulliPixelNll(logits, target):
 
 
 def _codec_vector_field(descriptor, vector_type, export):
-    """Copy packet vector fields on export and construct SWIG vectors on assignment."""
+    """Copy packet vector fields on export and accept any sequence on assignment."""
     def assign(packet, values):
-        descriptor.fset(packet, values if isinstance(values, vector_type) else vector_type(list(values)))
-    return property(lambda packet: export(descriptor.fget(packet)), assign)
+        descriptor.__set__(packet, values if isinstance(values, vector_type) else vector_type(list(values)))
+    return property(lambda packet: export(descriptor.__get__(packet, type(packet))), assign)
 
 
-# These record fields precede IntVector/ByteVector instantiations in SWIG's
-# generated declarations. Keep Python's ordinary sequence ingress in this facade.
+# Export the vector fields as tuple/bytes copies and keep Python's ordinary sequence ingress.
 CodecPacket.source_ids = _codec_vector_field(CodecPacket.source_ids, _native.IntVector, tuple)
 CodecPacket.symbols = _codec_vector_field(CodecPacket.symbols, _native.ByteVector, bytes)
 
@@ -2448,18 +2447,18 @@ def _codec_bytes(values):
     return values if isinstance(values, _native.ByteVector) else _native.ByteVector(list(values))
 
 
-CodecQuantizer.__doc__ = """Owning finite Float32 minimum/maximum vectors of equal positive width.
+_native._set_doc(CodecQuantizer, """Owning finite Float32 minimum/maximum vectors of equal positive width.
 Every native consumer revalidates ordered bounds. Copies own vector values;
 fitting is explicit and stopped. Constant ranges are allowed. CPU only.
-"""
-CodecPacket.__doc__ = """Explicit self-contained TFLCODE1 packet, with no encoder state.
+""")
+_native._set_doc(CodecPacket, """Explicit self-contained TFLCODE1 packet, with no encoder state.
 Fields: quantizer (32 Float32 ranges), weights Float32[32,784], bias Float32[784],
 source_ids (1..10000 nonnegative Int32 identities), symbols (N*32 bytes).
 Their getters return owning tuple/bytes copies; assign a sequence to replace them.
 Tensor fields retain caller handles; UnpackCodec creates independent detached
 storage. The nested quantizer getter returns an owning copy: assign it back
 after edits. Pack/decode validate all fields. No checksum or entropy coding.
-"""
+""")
 
 
 def FitCodecQuantizer(code):
@@ -2543,25 +2542,25 @@ def DecodeCodec(packet):
     return _native.DecodeCodec(packet)
 
 
-InfoCodes.__doc__ = """Owning generated-prior category Int32[N], continuous Float32/64[N,U], raw Float64[N,U+1].
+_native._set_doc(InfoCodes, """Owning generated-prior category Int32[N], continuous Float32/64[N,U], raw Float64[N,U+1].
 Raw words store accepted category then continuous draws, without rejected words.
 Fields survive parent collection, have no graph and retain no RNG. IDs are not
 MNIST labels; consumers revalidate ranges. See InfoPrior for exact stream.
-"""
-InfoRecognition.__doc__ = """Owning image-only Q logits/probability [N,C] and unbounded means [N,U].
+""")
+_native._set_doc(InfoRecognition, """Owning image-only Q logits/probability [N,C] and unbounded means [N,U].
 All fields retain native graphs after parent/store collection. Q is separate
 from D; variance is fixed at one. No code, noise, target or digit label input.
 Probability is a convenience; the recognition loss consumes logits and mean.
-"""
-InfoRecognitionLoss.__doc__ = """Owning live categorical, continuous, total and lower_bound scalars.
+""")
+_native._set_doc(InfoRecognitionLoss, """Owning live categorical, continuous, total and lower_bound scalars.
 R is categorical CE plus per-row summed unit-Gaussian NLL. Bound is fixed
 uniform-prior entropy minus R; it can be negative and is not measured true MI.
-"""
-InfoGanOutput.__doc__ = """Fifteen owning live separate-Q InfoGAN fields without fitting state.
+""")
+_native._set_doc(InfoGanOutput, """Fifteen owning live separate-Q InfoGAN fields without fitting state.
 Includes generated pixels, image-only D logits/reporting sigmoids, D/G/R and
 component losses, variational bound and Q logits/probability/means. Fields retain
 native storage/graphs after record/store collection. No hidden MMD or optimizer.
-"""
+""")
 
 
 def InfoPrior(rows, seed, classes=10, continuous=2, dtype=None):
@@ -2635,18 +2634,18 @@ def InfoGan(generator, discriminator, recognizer, image, noise, category, contin
                            features, classes, hidden)
 
 
-DenseGanLoss.__doc__ = """Owning live scalar discriminator/generator objectives, with no fitting state.
+_native._set_doc(DenseGanLoss, """Owning live scalar discriminator/generator objectives, with no fitting state.
 LeastSquares uses a0,b=c1 half-weighted means; Hinge uses positive D margins
 and unhinged negative-mean G. Fields survive parent GC; raw scores are not probabilities.
-"""
-DenseGanOutput.__doc__ = """Five owning live dense-GAN endpoints: fake[M,F], real_score[N,1],
+""")
+_native._set_doc(DenseGanOutput, """Five owning live dense-GAN endpoints: fake[M,F], real_score[N,1],
 fake_score[M,1], discriminator_loss and generator_loss. No optimizer, mode,
 noise draw, checkpoint or quadratic MMD. Fields survive parent/store GC.
-"""
-ConditionalGanOutput.__doc__ = """Seven owning live endpoints with class conditions on BOTH G and D.
+""")
+_native._set_doc(ConditionalGanOutput, """Seven owning live endpoints with class conditions on BOTH G and D.
 Fake[N,F], real/fake logits and source probabilities[N,1], scalar D/G losses.
 There is no auxiliary class head or CE. Fields survive parent/store GC.
-"""
+""")
 
 
 def LeastSquaresGanObjectives(real, fake):
@@ -2739,11 +2738,11 @@ def ConditionalGan(generator, discriminator, image, noise, labels, features=784,
     return _native.ConditionalGan(generator, discriminator, image, noise, labels, features, classes, hidden)
 
 
-BiganOutput.__doc__ = """Eight owning live BiGAN endpoints, without optimizer or fitting state.
+_native._set_doc(BiganOutput, """Eight owning live BiGAN endpoints, without optimizer or fitting state.
 Fields: fake[M,F], encoded[N,Z], real_score[N,1], fake_score[M,1], scalar
 D/EG losses, reconstruction[N,F] and latent_cycle[M,Z]. Cycle residuals never
 enter the fit losses. Tensor fields survive parent/store GC; no inverse guarantee.
-"""
+""")
 
 
 def GaussianRingPoints(rows, seed=5507, components=8, radius=2., deviation=.08, dtype=None):
@@ -2800,16 +2799,16 @@ def BidirectionalGan(generator, encoder, discriminator, image, prior, hidden=16)
     return _native.BidirectionalGan(generator, encoder, discriminator, image, prior, hidden)
 
 
-LogisticGanLoss.__doc__ = """Owning live scalar discriminator and non-saturating generator losses.
+_native._set_doc(LogisticGanLoss, """Owning live scalar discriminator and non-saturating generator losses.
 No optimizer, store, labels or fitting state. Tensor fields survive parent GC.
-"""
-AuxiliaryDiscriminator.__doc__ = """Owning image-only source logits and auxiliary class logits/probabilities.
+""")
+_native._set_doc(AuxiliaryDiscriminator, """Owning image-only source logits and auxiliary class logits/probabilities.
 No class target enters D. Three live Tensor fields survive parent/store GC.
-"""
-AuxiliaryClassifierGanOutput.__doc__ = """Fifteen owning live conditional GAN endpoints and source/class losses.
+""")
+_native._set_doc(AuxiliaryClassifierGanOutput, """Fifteen owning live conditional GAN endpoints and source/class losses.
 No optimizer, fitting counter, checkpoint, noise draw or quadratic MMD diagnostic.
 Tensor fields survive parent GC; choose update groups and recompute after writes.
-"""
+""")
 
 
 def LogisticGanObjectives(real, fake):
@@ -2920,12 +2919,12 @@ def NominalThreshold(scores, quantile=.95):
     return _native.NominalThreshold(scores, quantile)
 
 
-ReconstructionRanking.__doc__ = """Owning detached AUROC, AP and strict operating-point fractions.
+_native._set_doc(ReconstructionRanking, """Owning detached AUROC, AP and strict operating-point fractions.
 Fields auroc, average_precision, normal_fpr, anomaly_tpr come from RankAnomalies.
 Larger scores rank supplied anomalies higher; AUROC gives half credit to ties,
 AP processes equal-score groups. AP depends on supplied prevalence. FPR/TPR
 use score>threshold, so exact threshold ties are unflagged. No Tensor lifetime.
-"""
+""")
 
 
 def RankAnomalies(normal_scores, anomaly_scores, threshold):
@@ -2964,7 +2963,7 @@ def DoubleSampleRows(value):
     return _native.DoubleSampleRows(value)
 
 
-SvdPca.__doc__ = """Native frozen tensor PCA using centered thin SVD, without variance scaling.
+_native._set_doc(SvdPca, """Native frozen tensor PCA using centered thin SVD, without variance scaling.
 
 SvdPca(fitting, retained=2) accepts finite signed Float32/64 CPU samples[N,...],
 N>=2 and positive axes; R lies in [1,min(N,flattened D)]. Uses only fitting
@@ -2983,7 +2982,7 @@ Strides are accepted. Invalid inputs/counts or nonfinite computations raise
 RuntimeError; native SVD convergence failures propagate. Const calls have no
 shared mutable caches. Reference: R prcomp(center=TRUE, scale.=FALSE),
 https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prcomp.html .
-"""
+""")
 
 
 def NearestFitRows(fitting, query, neighbors=10):
@@ -3115,7 +3114,7 @@ def FitTransferScaling(code, floor=1e-6):
     return _native.FitTransferScaling(code, floor)
 
 
-FrozenEncoderClassifier.__doc__ = """Native frozen ReLU encoder and caller-owned linear classifier.
+_native._set_doc(FrozenEncoderClassifier, """Native frozen ReLU encoder and caller-owned linear classifier.
 
 Constructor(weight[F,L], bias[L], center[L], scale[L], classes=10) validates
 finite matching Float32/64 arrays, positive scales/dimensions, and owns detached
@@ -3128,7 +3127,7 @@ Input/head paths remain live; encoder/scaling paths are stopped. Default
 L=32,C=10 gives two head leaves/330 scalars. Optimizer, fitting, split selection,
 head seed and updates remain caller-owned. Invalid input raises RuntimeError
 before head creation; incompatible existing leaves may fail later.
-"""
+""")
 
 
 def VisiblePatchValues(patches, hidden, fill=0):
@@ -3317,7 +3316,7 @@ def VectorQuantizedAutoencoder2(parameters, image, top_indices=None, entries=16,
 
 
 Vq2ConditionalPrior = _native.Vq2ConditionalPrior
-Vq2ConditionalPrior.__doc__ = """Native copied fine raster prior conditional on aligned top codes.
+_native._set_doc(Vq2ConditionalPrior, """Native copied fine raster prior conditional on aligned top codes.
 
 Vq2ConditionalPrior(top,bottom,top_height=7,top_width=7,entries=16,smoothing=.5)
 requires valid Int32[B,Ht*Wt] coarse and Int32[B,4*Ht*Wt] fitting-only fine codes.
@@ -3329,7 +3328,7 @@ Float64[B,4*Ht*Wt] in[0,1), strict inverse-CDF boundaries and final-code fallbac
 No RNG/model update; caller enforces split provenance. Read-only methods are
 thread-safe. Invalid options/IDs/geometry/uniforms/count overflow raise RuntimeError.
 This parent/previous-symbol half-count teaching baseline is not PixelCNN.
-"""
+""")
 
 
 def VqUsage(ids, entries=16):
@@ -3343,7 +3342,7 @@ def VqUsage(ids, entries=16):
 
 
 VqMarkovPrior = _native.VqMarkovPrior
-VqMarkovPrior.__doc__ = """Native copied first-order raster prior, fitted only to caller-supplied codes.
+_native._set_doc(VqMarkovPrior, """Native copied first-order raster prior, fitted only to caller-supplied codes.
 
 VqMarkovPrior(fitting, entries=16, smoothing=.5) copies nonempty valid Int32[B,T]
 codes. BOS=K resets at each row; positive half-count smoothing is the default.
@@ -3353,7 +3352,7 @@ Sample(uniforms) takes explicit Float64[B,T] in[0,1), without RNG, with strict
 inverse-CDF boundaries and last-code fallback. State is immutable to readers;
 invalid input/options/count overflow raise RuntimeError. This teaching Markov
 baseline is not the paper's PixelCNN. Caller enforces fitting-only provenance.
-"""
+""")
 
 
 def AaeEncode(encoder, image, features=784, latent=4, hidden=16):

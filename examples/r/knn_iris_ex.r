@@ -1,43 +1,42 @@
 # CMD: nix develop .#r --command Rscript examples/r/knn_iris_ex.r
-# See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
 library(datamunger)
 
-iris <- DataFrame_iris()
-n <- DataFrame_nrows(iris)
-cat(n, "rows x", DataFrame_ncols(iris), "cols\n\n")
+iris <- DataFrame$iris()
+n <- iris$nrows()
+cat(n, "rows x", iris$ncols(), "cols\n\n")
 
-model <- KNNClassifier(iris, "Species ~ Petal.Length + Petal.Width")
-KNNClassifier_print_summary(model)
+model <- KNNClassifier$new(iris, "Species ~ Petal.Length + Petal.Width")
+model$print_summary()
 
 cat("\nConfusion matrix (leave-one-out; rows = actual, cols = predicted):\n")
-cat(DataFrame_to_string(KNNClassifier_confusion_matrix(model)), "\n")
+cat(model$confusion_matrix()$to_string(), "\n")
 
 cat("\nLeave-one-out misclassified rows:\n")
-fitted <- KNNClassifier_predict(model, iris)
+fitted <- model$predict(iris)
 misclassified <- 0
 for (i in 0:(n - 1)) {
-  actual <- DataFrame_string_at(iris, "Species", i)
+  actual <- iris$string_at("Species", i)
   predicted <- fitted[i + 1]
   if (predicted == actual) next
   misclassified <- misclassified + 1
-  cat("  row", i, ": Petal.Length=", DataFrame_numeric_at(iris, "Petal.Length", i),
-      " Petal.Width=", DataFrame_numeric_at(iris, "Petal.Width", i),
+  cat("  row", i, ": Petal.Length=", iris$numeric_at("Petal.Length", i),
+      " Petal.Width=", iris$numeric_at("Petal.Width", i),
       " actual=", actual, " predicted=", predicted, "\n")
 }
 cat(misclassified, "of", n, "misclassified (", 100.0 * misclassified / n, "%)\n")
 
-Plot_save(KNNClassifier_plot_decision_regions(model, "Petal.Length", "Petal.Width"), "knn_iris_decision_regions_k5.svg")
+model$plot_decision_regions("Petal.Length", "Petal.Width")$save("knn_iris_decision_regions_k5.svg")
 cat("\nSaved knn_iris_decision_regions_k5.svg\n")
 
 # k=1 memorizes every training point exactly (jagged, overfit boundary); k=25 averages over a
 # much larger neighborhood (very smooth, underfit boundary).
 # KNNClassifier(data, formula, k, metric, weighted, standardize)
-k1 <- KNNClassifier(iris, "Species ~ Petal.Length + Petal.Width", 1)
-cat("\nk=1  leave-one-out accuracy:", KNNClassifier_training_accuracy(k1) * 100.0, "%\n")
-Plot_save(KNNClassifier_plot_decision_regions(k1, "Petal.Length", "Petal.Width"), "knn_iris_decision_regions_k1.svg")
+k1 <- KNNClassifier$new(iris, "Species ~ Petal.Length + Petal.Width", 1)
+cat("\nk=1  leave-one-out accuracy:", k1$training_accuracy() * 100.0, "%\n")
+k1$plot_decision_regions("Petal.Length", "Petal.Width")$save("knn_iris_decision_regions_k1.svg")
 cat("Saved knn_iris_decision_regions_k1.svg\n")
 
-k25 <- KNNClassifier(iris, "Species ~ Petal.Length + Petal.Width", 25)
-cat("\nk=25 leave-one-out accuracy:", KNNClassifier_training_accuracy(k25) * 100.0, "%\n")
-Plot_save(KNNClassifier_plot_decision_regions(k25, "Petal.Length", "Petal.Width"), "knn_iris_decision_regions_k25.svg")
+k25 <- KNNClassifier$new(iris, "Species ~ Petal.Length + Petal.Width", 25)
+cat("\nk=25 leave-one-out accuracy:", k25$training_accuracy() * 100.0, "%\n")
+k25$plot_decision_regions("Petal.Length", "Petal.Width")$save("knn_iris_decision_regions_k25.svg")
 cat("Saved knn_iris_decision_regions_k25.svg\n")

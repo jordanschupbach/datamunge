@@ -20,7 +20,7 @@ exercise_case <- function(args,name,heads,self_attention,strict,identity,seed) {
     if(identity||!is.null(reference)) {
         for(key in projections) {
             value <- if(identity) nn$eye(8L) else reference[[paste0("mha/",key)]]
-            stopifnot(identical(value$shape(),c(8L,8L)))
+            stopifnot(identical(as.integer(value$shape()),c(8L,8L)))
             parameter <- store$get(paste0("mha/",key),c(8L,8L),nn$init$constant(0))
             nn$no_grad(function() parameter$copy_(value))
         }

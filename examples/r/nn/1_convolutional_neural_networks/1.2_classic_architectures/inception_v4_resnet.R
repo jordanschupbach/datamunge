@@ -1,4 +1,4 @@
-# Native R NN example. inception_v4_resnet: residual-scale and full v4/Inception-ResNet-v2 checks, then compact CIFAR-10 training of both variants with an auxiliary head over SWIG components.
+# Native R NN example. inception_v4_resnet: residual-scale and full v4/Inception-ResNet-v2 checks, then compact CIFAR-10 training of both variants with an auxiliary head over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v4_resnet.R
 # Inception v4 and Inception-ResNet-v2: full depth and scaled residual branches.
 #
@@ -28,7 +28,7 @@
 #
 # The model components (inception4::Inception4, inception4::InceptionResidual,
 # inception23::InceptionBuilder, the architecture helpers, image batching,
-# cross-entropy and L2) are the C++ ones through SWIG (datamungerNN::nn_components);
+# cross-entropy and L2) are the C++ ones through the bindings (datamungerNN::nn_components);
 # the checks and the experiment workflow below mirror
 # examples/cpp/source/nn/.../inception_v4_resnet.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
@@ -271,7 +271,7 @@ main <- function(arguments = commandArgs(TRUE)) {
             batches$begin_epoch()
             used <- 0
             repeat {
-                rows <- batches$`_next`()
+                rows <- batches$next_()
                 if (!length(rows)) break
                 used <- used + length(rows)
                 rows <- fit[rows + 1]

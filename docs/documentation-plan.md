@@ -9,6 +9,14 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-10: Rust B-spline facade: `rustdatamunge::bspline_predict` documents
+  borrowed inputs, owned output, cubic basis constraints, empty queries, boundary
+  extrapolation and error handling. Its private `src/rustdatamunge/src/bspline.cpp`
+  bridge delegates to the existing canonical C++ fitter and catches exceptions.
+  Two unit tests, two existing integration tests and the Rustdoc example pass in
+  the Linux Nix package. The playground's native Rust fit has MSE 0.003079 against
+  the noiseless Doppler curve. No core numerical implementation was changed.
+
 - 2026-11-10: DDPM native continuation (2026-11-10): independent NumPy verifies all 28
 source archives / 2,781,150 values and every captured optimizer write. It checks
 1,097,600 original pixels against all four raw MNIST IDX banks, all 1,400 labels/

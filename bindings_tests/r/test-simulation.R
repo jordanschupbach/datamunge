@@ -1,5 +1,5 @@
 test_that("native task results survive task collection and preserve terminal observations", {
-  task <- TaskBatch_create("InvertedPendulum", 2L, 2L, 42L, 2L)
+  task <- TaskBatch$create("InvertedPendulum", 2L, 2L, 42L, 2L)
   expect_equal(task$size(), 2)
   expect_equal(task$observation_size(), 4)
   initial <- task$output()
@@ -18,7 +18,7 @@ test_that("native task results survive task collection and preserve terminal obs
 })
 
 test_that("native hopper actions and reset randomness follow the C++ core", {
-  task <- TaskBatch_create("Hopper", 1L)
+  task <- TaskBatch$create("Hopper", 1L)
   expect_equal(task$observation_size(), 11)
   expect_equal(task$action_size(), 3)
   expect_error(task$step(c(0, 0)))
@@ -29,5 +29,5 @@ test_that("native hopper actions and reset randomness follow the C++ core", {
   expect_false(identical(as.numeric(task$output()$observations), before))
   task$seed(123L)
   expect_equal(as.numeric(task$reset()$observations), before)
-  expect_error(TaskBatch_create("Hopper", 0L))
+  expect_error(TaskBatch$create("Hopper", 0L))
 })

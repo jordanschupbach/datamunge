@@ -1,5 +1,7 @@
 exportPattern("^[^.]")
 useDynLib(datamunger, .registration=TRUE)
+importFrom(R6, R6Class)
+S3method(Ops, RosettaObject, .rosetta_ops)
 S3method(t,Mat)
 S3method("%*%",Mat)
 S3method(solve,Mat)

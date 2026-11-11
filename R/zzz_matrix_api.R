@@ -12,7 +12,7 @@
 #' @export
 Mat <- function(x) {
   if (!is.matrix(x) || !is.numeric(x)) stop("x must be a numeric matrix")
-  .dm_matrix(LinalgMatrix(as.numeric(t(x)), nrow(x), ncol(x), FALSE))
+  .dm_matrix(LinalgMatrix$new(as.numeric(t(x)), nrow(x), ncol(x), FALSE))
 }
 
 #' Construct an owned native CSR matrix, omitting zero coefficients.
@@ -21,7 +21,7 @@ Mat <- function(x) {
 #' @export
 SpMat <- function(x) {
   if (!is.matrix(x) || !is.numeric(x)) stop("x must be a numeric matrix")
-  .dm_matrix(LinalgMatrix(as.numeric(t(x)), nrow(x), ncol(x), TRUE))
+  .dm_matrix(LinalgMatrix$new(as.numeric(t(x)), nrow(x), ncol(x), TRUE))
 }
 
 #' @export

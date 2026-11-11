@@ -132,7 +132,7 @@ contractive_train_variant <- function(name, weight, pools, epochs, root, init) {
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             images <- nn$take_rows(pools[[1L]]$images, rows)
             # Forward: MSE + weight * exact Jacobian penalty, differentiated through h AND W.

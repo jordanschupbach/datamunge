@@ -1,4 +1,4 @@
-# Native R NN example. googlenet: Inception v1 branch/auxiliary/full-architecture checks and compact CIFAR-10 training with auxiliary heads over SWIG components.
+# Native R NN example. googlenet: Inception v1 branch/auxiliary/full-architecture checks and compact CIFAR-10 training with auxiliary heads over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/googlenet.R
 # GoogLeNet / Inception v1: parallel receptive fields and auxiliary supervision.
 #
@@ -28,7 +28,7 @@
 #
 # The model components (googlenet::GoogLeNet, inception::InceptionV1, the
 # architecture helpers, image batching, cross-entropy and L2) are the C++ ones
-# through SWIG (datamungerNN::nn_components); the checks and the experiment
+# through the bindings (datamungerNN::nn_components); the checks and the experiment
 # workflow below mirror examples/cpp/source/nn/.../googlenet.cpp line by line.
 suppressPackageStartupMessages(library(datamungerNN))
 architecture <- nn_components$architecture
@@ -364,7 +364,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

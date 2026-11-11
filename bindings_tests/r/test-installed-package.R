@@ -1,5 +1,5 @@
-test_that("tensor values survive collection of temporary SWIG objects", {
-  x <- NnTensor(c(1, 2, 3, 4), as.integer(c(2, 2)), "float64")
+test_that("tensor values survive collection of temporary native objects", {
+  x <- NnTensor$new(c(1, 2, 3, 4), as.integer(c(2, 2)), "float64")
   result <- x$transpose()$add(x)
   rm(x)
   gc()
@@ -8,23 +8,21 @@ test_that("tensor values survive collection of temporary SWIG objects", {
 })
 
 test_that("formula models own their data and use the current native layout", {
-  data <- DataFrame_empty()
-  DataFrame_add_numeric_column(data, "x", c(0, 1, 2, 3))
-  DataFrame_add_numeric_column(data, "y", c(1, 3, 5, 7))
-  model <- LM(data, "y ~ x")
+  data <- DataFrame$empty()
+  data$add_numeric_column("x", c(0, 1, 2, 3))
+  data$add_numeric_column("y", c(1, 3, 5, 7))
+  model <- LM$new(data, "y ~ x")
   rm(data)
   gc()
-  newdata <- DataFrame_empty()
-  DataFrame_add_numeric_column(newdata, "x", c(4, 5))
+  newdata <- DataFrame$empty()
+  newdata$add_numeric_column("x", c(4, 5))
   expect_equal(as.numeric(model$coefficients()), c(1, 2), tolerance = 1e-10)
   expect_equal(as.numeric(model$predict(newdata)), c(9, 11), tolerance = 1e-10)
 })
 
 test_that("plot palettes recycle and subtitle chains retain their owner", {
-  colors <- RGBVector()
-  colors$push_back(RGB(10L, 20L, 30L, 0.25))
-  colors$push_back(RGB(40L, 50L, 60L))
-  plot <- RPlot_create()$points_colored(c(1, 2, 3), c(2, 3, 4), colors)$subtitle("Palette <test>")
+  colors <- list(RGB$new(10L, 20L, 30L, 0.25), RGB$new(40L, 50L, 60L))
+  plot <- RPlot$create()$points_colored(c(1, 2, 3), c(2, 3, 4), colors)$subtitle("Palette <test>")
   rm(colors)
   gc()
   expect_identical(plot$subtitle_text(), "Palette <test>")
@@ -34,7 +32,7 @@ test_that("plot palettes recycle and subtitle chains retain their owner", {
 })
 
 test_that("fluent plot labels retain their temporary owner", {
-  plot <- RPlot_create()$set_title("Iris <test>")$set_subtitle("Species")$
+  plot <- RPlot$create()$set_title("Iris <test>")$set_subtitle("Species")$
     set_xlab("Width")$set_ylab("Length")
   gc()
   expect_identical(plot$title_text(), "Iris <test>")
@@ -46,13 +44,13 @@ test_that("fluent plot labels retain their temporary owner", {
 })
 
 test_that("scatter constructors and histogram validation use the core", {
-  plot <- RPlot(c(0, 1), c(1, 2))$set_title("Samples")$set_col("blue")
+  plot <- RPlot$new(c(0, 1), c(1, 2))$set_title("Samples")$set_col("blue")
   gc()
   expect_identical(plot$title_text(), "Samples")
   expect_match(plot$to_svg(), "<circle", fixed = TRUE)
   expect_match(plot$to_svg(), 'fill="rgb(0,0,255)"', fixed = TRUE)
-  expect_error(RPlot(c(1), c(1, 2)))
-  expect_error(RPlot_hist(c(NaN)))
-  expect_error(RPlot_hist(c(Inf)))
+  expect_error(RPlot$new(c(1), c(1, 2)))
+  expect_error(RPlot$hist(c(NaN)))
+  expect_error(RPlot$hist(c(Inf)))
   expect_error(plot$set_col("unknown"))
 })

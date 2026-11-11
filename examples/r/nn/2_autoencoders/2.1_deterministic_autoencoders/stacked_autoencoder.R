@@ -171,7 +171,7 @@ stacked_train_stage <- function(model, fit, validation, source, epochs, director
         total <- 0
         seen <- 0L
         repeat {
-            rows <- order$`_next`()
+            rows <- order$next_()
             if (!length(rows)) break
             x <- nn$take_rows(fit, rows)
             # Forward the stage, reconstruction MSE against its own input.

@@ -27,7 +27,7 @@
 #
 # The components (deformable::DeformableConv2D, attention_cnn::AttentionResNet,
 # mobile_checks::Pattern and GradientNorms, image batching, cross-entropy and
-# L2) are the C++ ones through SWIG (datamungerNN::nn_components); the checks
+# L2) are the C++ ones through the bindings (datamungerNN::nn_components); the checks
 # and the experiment workflow below mirror examples/cpp/source/nn/.../deformable_conv.cpp
 # line by line.
 suppressPackageStartupMessages(library(datamungerNN))
@@ -295,7 +295,7 @@ train_deformable_resnet <- function(modulated, development, test, cfg, explicit_
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

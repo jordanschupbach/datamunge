@@ -1,5 +1,7 @@
 useDynLib(datamungerNN, .registration=TRUE)
 import(methods)
+importFrom(R6, R6Class)
+S3method(Ops, RosettaObject, .rosetta_ops)
 export(nn)
 export(nn_components)
 export(nn_example_names)

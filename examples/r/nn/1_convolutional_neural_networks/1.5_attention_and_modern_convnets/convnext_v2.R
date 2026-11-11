@@ -34,7 +34,7 @@
 #
 # The components (convnext::GlobalResponseNorm, ConvNeXtLayout and ConvNeXt,
 # mobile_checks::Pattern and GradientNorms, image batching, cross-entropy and
-# L2) are the C++ ones through SWIG (datamungerNN::nn_components); the checks
+# L2) are the C++ ones through the bindings (datamungerNN::nn_components); the checks
 # and the experiment workflow below mirror examples/cpp/source/nn/.../convnext_v2.cpp
 # line by line.
 suppressPackageStartupMessages(library(datamungerNN))
@@ -306,7 +306,7 @@ main <- function(arguments = commandArgs(TRUE)) {
         batches$begin_epoch()
         used <- 0
         repeat {
-            rows <- batches$`_next`()
+            rows <- batches$next_()
             if (!length(rows)) break
             used <- used + length(rows)
             rows <- fit[rows + 1]

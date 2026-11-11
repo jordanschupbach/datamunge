@@ -1,41 +1,38 @@
 # CMD: nix develop .#r --command Rscript examples/r/hypothesis_tests_ex.r
-# See examples/r/lm_ex.r for notes on the flat ClassName_method(obj, ...) call convention.
-# Hypothesis-test functions are free functions (not class methods), so they're already called
-# in their natural flat form: t_test_two_sample(x, y), etc. Alternative is passed as a plain
-# string matching the C++ enum member name ("TwoSided"/"Less"/"Greater") -- see
-# datamunge_r_dollar_dispatch_bug.md for the general enum-handling pattern.
+# Hypothesis-test functions are free functions: t_test_two_sample(x, y), etc. Enums such as
+# Alternative cross as their enumerator names ("TwoSided"/"Less"/"Greater", or Alternative$Less).
 library(datamunger)
 
 alt_names <- c("TwoSided" = "two.sided", "Less" = "less", "Greater" = "greater")
 
 print_result <- function(label, r) {
-  line <- paste0(label, ": statistic=", HypothesisTestResult_statistic_get(r))
-  if (HypothesisTestResult_parameter1_get(r) != 0.0) {
-    line <- paste0(line, ", df1=", HypothesisTestResult_parameter1_get(r))
+  line <- paste0(label, ": statistic=", r$statistic)
+  if (r$parameter1 != 0.0) {
+    line <- paste0(line, ", df1=", r$parameter1)
   }
-  if (HypothesisTestResult_parameter2_get(r) != 0.0) {
-    line <- paste0(line, ", df2=", HypothesisTestResult_parameter2_get(r))
+  if (r$parameter2 != 0.0) {
+    line <- paste0(line, ", df2=", r$parameter2)
   }
-  line <- paste0(line, ", p=", HypothesisTestResult_p_value_get(r),
-                 " (", alt_names[[HypothesisTestResult_alternative_get(r)]], ")")
-  if (HypothesisTestResult_has_conf_int_get(r)) {
-    line <- paste0(line, ", CI=[", HypothesisTestResult_conf_int_lower_get(r), ", ",
-                   HypothesisTestResult_conf_int_upper_get(r), "]")
+  line <- paste0(line, ", p=", r$p_value,
+                 " (", alt_names[[r$alternative]], ")")
+  if (r$has_conf_int) {
+    line <- paste0(line, ", CI=[", r$conf_int_lower, ", ",
+                   r$conf_int_upper, "]")
   }
-  line <- paste0(line, " -- ", HypothesisTestResult_method_get(r))
+  line <- paste0(line, " -- ", r$method)
   cat(line, "\n")
 }
 
 column_for_species <- function(df, column, species) {
-  n <- DataFrame_nrows(df)
+  n <- df$nrows()
   vals <- c()
   for (i in 0:(n - 1)) {
-    if (DataFrame_string_at(df, "Species", i) == species) vals <- c(vals, DataFrame_numeric_at(df, column, i))
+    if (df$string_at("Species", i) == species) vals <- c(vals, df$numeric_at(column, i))
   }
   vals
 }
 
-iris <- DataFrame_iris()
+iris <- DataFrame$iris()
 
 setosa_petal <- column_for_species(iris, "Petal.Length", "setosa")
 versicolor_petal <- column_for_species(iris, "Petal.Length", "versicolor")
@@ -52,9 +49,9 @@ print_result("One-way ANOVA", one_way_anova(all_petal, sizes))
 print_result("Kruskal-Wallis", kruskal_wallis_test(all_petal, sizes))
 
 cat("\n=================== Correlation: sepal length vs. petal length ===================\n")
-n <- DataFrame_nrows(iris)
-sepal_length <- sapply(0:(n - 1), function(i) DataFrame_numeric_at(iris, "Sepal.Length", i))
-petal_length <- sapply(0:(n - 1), function(i) DataFrame_numeric_at(iris, "Petal.Length", i))
+n <- iris$nrows()
+sepal_length <- sapply(0:(n - 1), function(i) iris$numeric_at("Sepal.Length", i))
+petal_length <- sapply(0:(n - 1), function(i) iris$numeric_at("Petal.Length", i))
 print_result("Pearson correlation", pearson_correlation_test(sepal_length, petal_length))
 print_result("Spearman correlation", spearman_correlation_test(sepal_length, petal_length))
 

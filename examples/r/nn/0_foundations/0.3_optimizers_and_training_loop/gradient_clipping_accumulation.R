@@ -27,8 +27,7 @@ clipping <- function() {
 
 slots <- function(optimizer) {
     state <- optimizer$state(); result <- list()
-    for (i in seq_len(state$size())-1L) {
-        pair <- state$`__getitem__`(i)
+    for (pair in state) {
         if (!pair$first %in% c("step","nadam_product")) result[[pair$first]] <- pair$second$clone()
     }
     result

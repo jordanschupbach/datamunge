@@ -8,6 +8,6 @@ memory_same <- function(first, second) {
     nn$equal_bits(first, second)
 }
 memory_save <- function(path, batch) {
-    if (is.list(batch)) batch <- batch[base::order(names(batch))]
+    if (is.list(batch) && !is.null(names(batch))) batch <- batch[base::order(names(batch))]
     nn$save_npz(path, batch)
 }

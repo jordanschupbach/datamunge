@@ -156,3 +156,28 @@ runs `scripts/prebuild_nn_r.R`, `build-nn-r` uses `R CMD INSTALL`, and
 `run-nn-r` invokes `Rscript` and `datamungerNN::nn_example_run` directly in the
 Nix R shell. Only genuine R implementations are listed; legacy compiled
 experiment wrappers and the Python R runner are outside this workflow.
+
+
+## Rust B-spline regression
+
+The Rust crate uses the canonical C++ `BSplineRegression` through a private C ABI
+bridge. The public facade borrows slices for the call and returns owned predictions:
+
+```rust
+let x = [0.0, 0.25, 0.5, 0.75, 1.0];
+let predicted = rustdatamunge::bspline_predict(&x, &x, 4, &[0.5]).unwrap();
+assert!((predicted[0] - 0.5).abs() < 1e-10);
+```
+
+This fits an ordinary least-squares cubic spline. The basis count must be at least
+four. Empty/mismatched training inputs, nonfinite values, rank-deficient fits and
+native failures return `Err`; C++ exceptions never cross into Rust. An empty query
+is valid, and queries outside the training domain use constant boundary extrapolation.
+No input storage is retained and every returned vector owns its allocation.
+
+Build with `just build-rust` and test with `just test-rust`. The crate's `cc` build
+dependency compiles only its small bridge; `pkg-config datamunge` selects the
+installed core and headers. A C++23 compiler and Rust/Cargo are required. The
+Linux playground package passed both new unit tests, both existing binding
+integration tests, and the executable Rustdoc example. Its noisy Doppler B-spline
+example also passed finite-output and recovery-error checks.
