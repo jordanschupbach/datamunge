@@ -66,7 +66,7 @@ Optimizer for \code{train_step}: "sgd", "momentum", "adam", "adamw", "rmsprop", 
 \item \verb{$train_step(x, y, loss = "mse")} -> \code{numeric}
 
 compute_gradients followed by one optimizer update. Returns the loss.
-\item \verb{$parameter_names()} -> \verb{vector<character>}
+\item \verb{$parameter_names()} -> \verb{character vector}
 \item \verb{$parameter(name)} -> \code{NnTensor}
 \item \verb{$set_parameter(name, value)}
 \item \verb{$parameter_count()} -> \code{integer}

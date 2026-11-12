@@ -10,7 +10,7 @@ square_free_factorization(p)
 \item{p}{\code{Polynomial}}
 }
 \value{
-\verb{vector<SquareFreeFactor>}
+\verb{list of SquareFreeFactor}
 }
 \description{
 Each returned \code{factor} is itself square-free (no repeated roots) and the \code{multiplicity}-i factors are pairwise coprime.

@@ -7,9 +7,9 @@
 dynamic_time_warping_trace(a, b, max_entries = 1000000)
 }
 \arguments{
-\item{a}{\verb{vector<numeric>}. Nonempty finite first input, length at most INT_MAX.}
+\item{a}{\verb{numeric vector}. Nonempty finite first input, length at most INT_MAX.}
 
-\item{b}{\verb{vector<numeric>}. Nonempty finite second input, length at most INT_MAX.}
+\item{b}{\verb{numeric vector}. Nonempty finite second input, length at most INT_MAX.}
 
 \item{max_entries}{\code{integer}. Complete logical entry cap, default 1000000; zero disables only cap.}
 }

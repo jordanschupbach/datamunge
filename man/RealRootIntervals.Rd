@@ -14,8 +14,8 @@ Found by bisecting a starting interval (a Cauchy bound on root magnitude) driven
 \section{Fields}{
 
 \itemize{
-\item \verb{$lower} (\verb{vector<numeric>})
-\item \verb{$upper} (\verb{vector<numeric>})
+\item \verb{$lower} (\verb{numeric vector})
+\item \verb{$upper} (\verb{numeric vector})
 }
 }
 

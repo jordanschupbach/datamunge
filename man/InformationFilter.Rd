@@ -10,12 +10,12 @@ Its measurement update is purely ADDITIVE (Y += H^T R^-1 H, y += H^T R^-1 z) -- 
 
 \code{InformationFilter$new(F, H, Q, R, x0, P0)}
 \itemize{
-\item \code{F} (\verb{vector<vector<numeric>>})
-\item \code{H} (\verb{vector<vector<numeric>>})
-\item \code{Q} (\verb{vector<vector<numeric>>})
-\item \code{R} (\verb{vector<vector<numeric>>})
-\item \code{x0} (\verb{vector<numeric>})
-\item \code{P0} (\verb{vector<vector<numeric>>})
+\item \code{F} (\verb{list of numeric vector})
+\item \code{H} (\verb{list of numeric vector})
+\item \code{Q} (\verb{list of numeric vector})
+\item \code{R} (\verb{list of numeric vector})
+\item \code{x0} (\verb{numeric vector})
+\item \code{P0} (\verb{list of numeric vector})
 }
 }
 
@@ -26,9 +26,9 @@ Its measurement update is purely ADDITIVE (Y += H^T R^-1 H, y += H^T R^-1 z) -- 
 \item \verb{$update(z)}
 
 The additive information-form update: Y += H^T R^-1 H, y += H^T R^-1 z.
-\item \verb{$state()} -> \verb{vector<numeric>}
-\item \verb{$covariance()} -> \verb{vector<vector<numeric>>}
-\item \verb{$filter(measurements)} -> \verb{vector<KalmanState>}
+\item \verb{$state()} -> \verb{numeric vector}
+\item \verb{$covariance()} -> \verb{list of numeric vector}
+\item \verb{$filter(measurements)} -> \verb{list of KalmanState}
 }
 }
 

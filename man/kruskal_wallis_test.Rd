@@ -7,9 +7,9 @@
 kruskal_wallis_test(values, group_sizes)
 }
 \arguments{
-\item{values}{\verb{vector<numeric>}. Finite observations concatenated by group.}
+\item{values}{\verb{numeric vector}. Finite observations concatenated by group.}
 
-\item{group_sizes}{\verb{vector<integer>}. At least two positive group sizes summing to values.size().}
+\item{group_sizes}{\verb{integer vector}. At least two positive group sizes summing to values.size().}
 }
 \value{
 \code{HypothesisTestResult}: statistic=H, parameter1=k-1 and upper-tail approximate p_value; no CI.

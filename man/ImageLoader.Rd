@@ -110,7 +110,7 @@ Channels per pixel: 1 for MNIST-style, 3 (RGB) for CIFAR.
 \item \verb{$num_classes()} -> \code{integer}
 
 Number of label classes (CIFAR-100: 100, or 20 with coarse labels).
-\item \verb{$class_names()} -> \verb{vector<character>}
+\item \verb{$class_names()} -> \verb{character vector}
 
 Label names, indexed by label (e.g. "airplane" for CIFAR-10 label 0).
 \item \verb{$epoch()} -> \code{integer}

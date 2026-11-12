@@ -21,8 +21,8 @@ One-dimensional spline curve on \code{basis}.
 Tensor-product spline over one basis per axis.
 \itemize{
 \item \code{basis} (\code{BSplineBasis}): Basis for the single axis.
-\item \code{coefficients} (\verb{vector<numeric>}): One coefficient per basis function.
-\item \code{bases} (\verb{vector<BSplineBasis>}): One basis per dimension (at least one).
+\item \code{coefficients} (\verb{numeric vector}): One coefficient per basis function.
+\item \code{bases} (\verb{list of BSplineBasis}): One basis per dimension (at least one).
 }
 }
 
@@ -35,13 +35,13 @@ Number of parameter dimensions d.
 \itemize{
 \item Returns: bases().size().
 }
-\item \verb{$bases()} -> \verb{vector<BSplineBasis>}
+\item \verb{$bases()} -> \verb{list of BSplineBasis}
 
 The per-axis bases.
 \itemize{
 \item Returns: Reference valid for the lifetime of this object.
 }
-\item \verb{$shape()} -> \verb{vector<integer>}
+\item \verb{$shape()} -> \verb{integer vector}
 
 Per-axis basis sizes, i.e. the shape of the coefficient net.
 \itemize{
@@ -53,19 +53,19 @@ Total number of coefficients (product of shape()).
 \itemize{
 \item Returns: Coefficient count.
 }
-\item \verb{$coefficients()} -> \verb{vector<numeric>}
+\item \verb{$coefficients()} -> \verb{numeric vector}
 
 The row-major coefficient net.
 \itemize{
 \item Returns: Reference valid until the next mutation of this object.
 }
-\item \verb{$domain_min()} -> \verb{vector<numeric>}
+\item \verb{$domain_min()} -> \verb{numeric vector}
 
 Lower corner of the parameter domain (each basis's first clamped knot).
 \itemize{
 \item Returns: d coordinates.
 }
-\item \verb{$domain_max()} -> \verb{vector<numeric>}
+\item \verb{$domain_max()} -> \verb{numeric vector}
 
 Upper corner of the parameter domain.
 \itemize{
@@ -99,14 +99,14 @@ Evaluates at one d-dimensional point (each coordinate clamped into the domain).
 \item \code{point}: d finite coordinates.
 \item Returns: f(point).
 }
-\item \verb{$evaluate_points(points)} -> \verb{vector<numeric>}
+\item \verb{$evaluate_points(points)} -> \verb{numeric vector}
 
 Evaluates at many points.
 \itemize{
 \item \code{points}: Points, each of length d.
 \item Returns: One value per point, in input order.
 }
-\item \verb{$evaluate_grid(axes)} -> \verb{vector<numeric>}
+\item \verb{$evaluate_grid(axes)} -> \verb{numeric vector}
 
 Evaluates on the Cartesian product of per-axis sample values.
 \itemize{

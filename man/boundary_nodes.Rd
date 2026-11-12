@@ -10,7 +10,7 @@ boundary_nodes(mesh)
 \item{mesh}{\code{Mesh2D}}
 }
 \value{
-\verb{vector<integer>}
+\verb{integer vector}
 }
 \description{
 Works generically for both a structured rectangular mesh (the domain's four sides) and an unstructured Delaunay mesh (the convex hull), returned in ascending order with no duplicates.

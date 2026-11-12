@@ -7,12 +7,12 @@
 simplify_polyline(points, epsilon)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}}
+\item{points}{\verb{list of Point2D}}
 
 \item{epsilon}{\code{numeric}}
 }
 \value{
-\verb{vector<Point2D>}
+\verb{list of Point2D}
 }
 \description{
 Fewer than 3 points are returned unchanged (nothing to simplify).

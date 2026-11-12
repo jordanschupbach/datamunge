@@ -36,7 +36,7 @@ Rows per chunk.
 \item \verb{$set_batch_size(rows)}
 
 Changes the rows per chunk.
-\item \verb{$column_names()} -> \verb{vector<character>}
+\item \verb{$column_names()} -> \verb{character vector}
 
 Column names, in file order.
 \item \verb{$rows_read()} -> \code{numeric}

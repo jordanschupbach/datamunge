@@ -12,7 +12,7 @@ SWIG-friendly facade for datamunge::stats::LDA — R-\code{MASS::lda()}-style li
 \itemize{
 \item \code{data} (\code{DataFrame})
 \item \code{formula} (\code{character})
-\item \code{priors} (\verb{vector<numeric>}): Optional class prior probabilities (must sum to 1, ordered as classes() once sorted
+\item \code{priors} (\verb{numeric vector}): Optional class prior probabilities (must sum to 1, ordered as classes() once sorted
 alphabetically); pass an empty vector (the default) to use observed class proportions.
 }
 }
@@ -20,18 +20,18 @@ alphabetically); pass an empty vector (the default) to use observed class propor
 \section{Methods}{
 
 \itemize{
-\item \verb{$classes()} -> \verb{vector<character>}
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$classes()} -> \verb{character vector}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$num_discriminants()} -> \code{integer}
-\item \verb{$priors()} -> \verb{vector<numeric>}
+\item \verb{$priors()} -> \verb{numeric vector}
 \item \verb{$group_means()} -> \verb{DataFrame or NULL}
 
 One row per class, one numeric column per predictor.
 \item \verb{$scaling()} -> \verb{DataFrame or NULL}
 
 One row per predictor, one numeric column per linear discriminant (LD1, LD2, ...).
-\item \verb{$proportion_of_trace()} -> \verb{vector<numeric>}
+\item \verb{$proportion_of_trace()} -> \verb{numeric vector}
 \item \verb{$training_accuracy()} -> \code{numeric}
 \item \verb{$confusion_matrix()} -> \verb{DataFrame or NULL}
 
@@ -41,7 +41,7 @@ One row per predictor, one numeric column per linear discriminant (LD1, LD2, ...
 \item \verb{$to_md(digits = 4)} -> \code{character}
 
 The fit as Markdown tables (priors, group means, coefficients, proportion of trace).
-\item \verb{$predict(newdata)} -> \verb{vector<character>}
+\item \verb{$predict(newdata)} -> \verb{character vector}
 \item \verb{$predict_frame(newdata)} -> \verb{DataFrame or NULL}
 
 "class" column, LD1/LD2/... discriminant scores, and posterior_\if{html}{\out{<class>}} probability columns.

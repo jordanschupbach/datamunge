@@ -24,7 +24,7 @@
 \itemize{
 \item \verb{$size()} -> \code{integer}
 \item \verb{$time_at(index)} -> \code{numeric}
-\item \verb{$state_at(index)} -> \verb{vector<numeric>}
+\item \verb{$state_at(index)} -> \verb{numeric vector}
 
 The full state vector at t[index].
 }

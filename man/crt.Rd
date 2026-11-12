@@ -7,9 +7,9 @@
 crt(remainders, moduli)
 }
 \arguments{
-\item{remainders}{\verb{vector<numeric>}}
+\item{remainders}{\verb{numeric vector}}
 
-\item{moduli}{\verb{vector<numeric>}}
+\item{moduli}{\verb{numeric vector}}
 }
 \value{
 \code{numeric}

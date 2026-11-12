@@ -30,28 +30,28 @@ See datamunge::bayes::INLA (C++-only, not exposed to bindings -- same reasoning 
 \item \verb{$formula_text()} -> \code{character}
 \item \verb{$family()} -> \code{character}
 \item \verb{$group_variable()} -> \code{character}
-\item \verb{$random_effect_names()} -> \verb{vector<character>}
+\item \verb{$random_effect_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$num_groups()} -> \code{integer}
-\item \verb{$fixed_effects_mean()} -> \verb{vector<numeric>}
-\item \verb{$fixed_effects_sd()} -> \verb{vector<numeric>}
-\item \verb{$coefficient_names()} -> \verb{vector<character>}
-\item \verb{$random_effect_std_devs()} -> \verb{vector<numeric>}
+\item \verb{$fixed_effects_mean()} -> \verb{numeric vector}
+\item \verb{$fixed_effects_sd()} -> \verb{numeric vector}
+\item \verb{$coefficient_names()} -> \verb{character vector}
+\item \verb{$random_effect_std_devs()} -> \verb{numeric vector}
 \item \verb{$residual_std_dev()} -> \code{numeric}
 
 Gaussian family only; throws for binomial/poisson (dispersion fixed at 1).
-\item \verb{$group_labels()} -> \verb{vector<character>}
-\item \verb{$random_effects_mean_for_group(group_index)} -> \verb{vector<numeric>}
+\item \verb{$group_labels()} -> \verb{character vector}
+\item \verb{$random_effects_mean_for_group(group_index)} -> \verb{numeric vector}
 
 The posterior-mean/sd BLUP-like random-effect vector for the group at
 \code{group_index} (see group_labels()), in random_effect_names() order.
-\item \verb{$random_effects_sd_for_group(group_index)} -> \verb{vector<numeric>}
+\item \verb{$random_effects_sd_for_group(group_index)} -> \verb{numeric vector}
 \item \verb{$log_marginal_likelihood()} -> \code{numeric}
 
 log p(y), approximated by the same INLA machinery used to fit the model.
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<numeric>}
+\item \verb{$predict(newdata)} -> \verb{numeric vector}
 }
 }
 

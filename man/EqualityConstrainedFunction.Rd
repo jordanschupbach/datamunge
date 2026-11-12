@@ -14,8 +14,8 @@ Smooth equality-constrained objective for constrained optimizers.
 \section{Methods}{
 
 \itemize{
-\item \verb{$constraints(coordinates)} -> \verb{vector<numeric>}
-\item \verb{$constraint_jacobian(coordinates)} -> \verb{vector<vector<numeric>>}
+\item \verb{$constraints(coordinates)} -> \verb{numeric vector}
+\item \verb{$constraint_jacobian(coordinates)} -> \verb{list of numeric vector}
 }
 }
 

@@ -15,10 +15,10 @@ lower/upper contain indices into sorted and include their endpoints. Inputs with
 
 \itemize{
 \item \verb{$analysis} (\code{ConvexHullAnalysis}): Actual hull, identities and work.
-\item \verb{$sorted} (\verb{vector<HullIndexedPoint>}): Actual sorted distinct input records.
-\item \verb{$events} (\verb{vector<HullEvent>}): Actual test/pop/push edits.
-\item \verb{$lower} (\verb{vector<integer>}): Actual final lower stack.
-\item \verb{$upper} (\verb{vector<integer>}): Actual final upper stack.
+\item \verb{$sorted} (\verb{list of HullIndexedPoint}): Actual sorted distinct input records.
+\item \verb{$events} (\verb{list of HullEvent}): Actual test/pop/push edits.
+\item \verb{$lower} (\verb{integer vector}): Actual final lower stack.
+\item \verb{$upper} (\verb{integer vector}): Actual final upper stack.
 }
 }
 

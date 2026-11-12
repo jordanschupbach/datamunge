@@ -7,13 +7,13 @@
 fit_tensor_pspline(bases, points, values, lambdas, order = 2, options = SplineSolveOptions$new())
 }
 \arguments{
-\item{bases}{\verb{vector<BSplineBasis>}. One basis per dimension.}
+\item{bases}{\verb{list of BSplineBasis}. One basis per dimension.}
 
-\item{points}{\verb{vector<vector<numeric>>}. Sample locations, each of length bases.size().}
+\item{points}{\verb{list of numeric vector}. Sample locations, each of length bases.size().}
 
-\item{values}{\verb{vector<numeric>}. One response per point.}
+\item{values}{\verb{numeric vector}. One response per point.}
 
-\item{lambdas}{\verb{vector<numeric>}. Nonnegative per-axis smoothing weights, one per basis.}
+\item{lambdas}{\verb{numeric vector}. Nonnegative per-axis smoothing weights, one per basis.}
 
 \item{order}{\code{integer}. Difference order (default 2, the conventional curvature penalty).}
 

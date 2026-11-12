@@ -14,7 +14,7 @@ Optimizers that consume this type (GradientDescent, Adam, LBFGS) use the full gr
 \section{Methods}{
 
 \itemize{
-\item \verb{$gradient(coordinates)} -> \verb{vector<numeric>}
+\item \verb{$gradient(coordinates)} -> \verb{numeric vector}
 
 Returns the gradient of the objective at \code{coordinates}.
 }

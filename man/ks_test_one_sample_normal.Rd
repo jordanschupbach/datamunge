@@ -7,7 +7,7 @@
 ks_test_one_sample_normal(x, mean = 0.0, sd = 1.0, alternative = "TwoSided")
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least two finite observations.}
+\item{x}{\verb{numeric vector}. At least two finite observations.}
 
 \item{mean}{\code{numeric}. Finite prespecified normal mean, default zero.}
 

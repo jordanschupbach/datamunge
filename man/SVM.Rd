@@ -24,8 +24,8 @@ SWIG-friendly facade for datamunge::stats::SVM — R-\code{e1071::svm()}-style m
 \section{Methods}{
 
 \itemize{
-\item \verb{$classes()} -> \verb{vector<character>}
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$classes()} -> \verb{character vector}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$num_support_vectors()} -> \code{integer}
 \item \verb{$training_accuracy()} -> \code{numeric}
@@ -34,7 +34,7 @@ SWIG-friendly facade for datamunge::stats::SVM — R-\code{e1071::svm()}-style m
 "actual" column plus one numeric column per class (counts), both ordered as classes().
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<character>}
+\item \verb{$predict(newdata)} -> \verb{character vector}
 \item \verb{$predict_frame(newdata)} -> \verb{DataFrame or NULL}
 
 "class" column plus one numeric vote-count column per class (votes_\if{html}{\out{<class>}}).

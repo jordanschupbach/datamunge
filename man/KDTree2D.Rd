@@ -10,7 +10,7 @@ A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built
 
 \code{KDTree2D$new(points)}
 \itemize{
-\item \code{points} (\verb{vector<Point2D>})
+\item \code{points} (\verb{list of Point2D})
 }
 }
 
@@ -22,11 +22,11 @@ A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built
 \item \verb{$nearest(query)} -> \code{Point2D}
 
 The closest point to \code{query}. Throws std::logic_error if the tree is empty.
-\item \verb{$k_nearest(query, k)} -> \verb{vector<Point2D>}
+\item \verb{$k_nearest(query, k)} -> \verb{list of Point2D}
 
 The \code{k} closest points to \code{query}, nearest first. Returns fewer than \code{k}
 points if the tree itself has fewer than \code{k}.
-\item \verb{$points_in_radius(query, radius)} -> \verb{vector<Point2D>}
+\item \verb{$points_in_radius(query, radius)} -> \verb{list of Point2D}
 
 All points within \code{radius} (inclusive) of \code{query}, in no particular order.
 }

@@ -7,9 +7,9 @@
 one_way_anova(values, group_sizes)
 }
 \arguments{
-\item{values}{\verb{vector<numeric>}. Finite observations concatenated group by group.}
+\item{values}{\verb{numeric vector}. Finite observations concatenated group by group.}
 
-\item{group_sizes}{\verb{vector<integer>}. At least two positive sizes summing exactly to values.size(); N must exceed
+\item{group_sizes}{\verb{integer vector}. At least two positive sizes summing exactly to values.size(); N must exceed
 the group count.}
 }
 \value{

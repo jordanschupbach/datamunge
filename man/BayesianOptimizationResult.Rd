@@ -14,12 +14,12 @@ Everything a BayesianOptimization::run() evaluated, in order.
 \section{Fields}{
 
 \itemize{
-\item \verb{$best_point} (\verb{vector<numeric>}): The evaluated point with the smallest value.
+\item \verb{$best_point} (\verb{numeric vector}): The evaluated point with the smallest value.
 \item \verb{$best_value} (\code{numeric}): The smallest observed value.
-\item \verb{$points} (\verb{vector<vector<numeric>>}): Every evaluated point: the initial design first, then one per iteration.
-\item \verb{$values} (\verb{vector<numeric>}): The objective value at each point.
-\item \verb{$best_values} (\verb{vector<numeric>}): Running minimum of values after each evaluation.
-\item \verb{$acquisition_values} (\verb{vector<numeric>}): The acquisition value of each proposed point (one per iteration, none for the design).
+\item \verb{$points} (\verb{list of numeric vector}): Every evaluated point: the initial design first, then one per iteration.
+\item \verb{$values} (\verb{numeric vector}): The objective value at each point.
+\item \verb{$best_values} (\verb{numeric vector}): Running minimum of values after each evaluation.
+\item \verb{$acquisition_values} (\verb{numeric vector}): The acquisition value of each proposed point (one per iteration, none for the design).
 }
 }
 

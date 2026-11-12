@@ -14,7 +14,7 @@ complex_roots(p, max_iterations = 200, tolerance = 9.9999999999999998E-13)
 \item{tolerance}{\code{numeric}}
 }
 \value{
-\verb{vector<Complex>}
+\verb{list of Complex}
 }
 \description{
 Converges quadratically once guesses are close, but -- unlike Sturm's theorem-based real_roots(), which isolates each real root to a provably correct interval before refining it -- this is a general iterative method with no convergence guarantee. For best results p should be square-free (see square_free_factorization()); repeated roots make two of the simultaneous iterates chase the same point, which both slows convergence and risks a near-zero denominator late in the iteration.

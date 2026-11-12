@@ -14,7 +14,7 @@ Director-enabled only in the Python binding, matching datamunge::filter::VectorF
 \section{Methods}{
 
 \itemize{
-\item \verb{$evaluate(t, y)} -> \verb{vector<numeric>}
+\item \verb{$evaluate(t, y)} -> \verb{numeric vector}
 }
 }
 

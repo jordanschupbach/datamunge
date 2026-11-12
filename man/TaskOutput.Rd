@@ -14,13 +14,13 @@ Observations are row-major [environments,observation_size]. Terminal observation
 \section{Fields}{
 
 \itemize{
-\item \verb{$observations} (\verb{vector<numeric>}): Current observations, including terminal states.
-\item \verb{$rewards} (\verb{vector<numeric>}): Reward from the last selected step, zero after reset.
-\item \verb{$terminated} (\verb{vector<integer>}): Physical failure, requiring explicit reset.
-\item \verb{$truncated} (\verb{vector<integer>}): Time limit, requiring explicit reset; bootstrap is valid.
-\item \verb{$final_observations} (\verb{vector<numeric>}): Last episode's final observations, meaningful when
+\item \verb{$observations} (\verb{numeric vector}): Current observations, including terminal states.
+\item \verb{$rewards} (\verb{numeric vector}): Reward from the last selected step, zero after reset.
+\item \verb{$terminated} (\verb{integer vector}): Physical failure, requiring explicit reset.
+\item \verb{$truncated} (\verb{integer vector}): Time limit, requiring explicit reset; bootstrap is valid.
+\item \verb{$final_observations} (\verb{numeric vector}): Last episode's final observations, meaningful when
 final_valid is one.
-\item \verb{$final_valid} (\verb{vector<integer>}): Whether a final observation has ever been recorded for this row.
+\item \verb{$final_valid} (\verb{integer vector}): Whether a final observation has ever been recorded for this row.
 }
 }
 

@@ -7,9 +7,9 @@
 delaunay_analyze(points, triangles, max_tests = 1000000)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}. Finite original sites, unchanged.}
+\item{points}{\verb{list of Point2D}. Finite original sites, unchanged.}
 
-\item{triangles}{\verb{vector<Triangle>}. Finite CCW faces with valid original indices, unchanged.}
+\item{triangles}{\verb{list of Triangle}. Finite CCW faces with valid original indices, unchanged.}
 
 \item{max_tests}{\code{integer}. Complete exact-circle query cap, default 1000000; zero disables.}
 }

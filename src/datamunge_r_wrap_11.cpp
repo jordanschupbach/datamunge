@@ -1512,6 +1512,29 @@ template<> struct Value<datamunge::Vector<double>> {
 };
 } }
 namespace ROSETTA_R_MODULE {
+SEXP rosetta_r_1(SEXP self, SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"a", "b"};
+                SEXP a[2]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
+                    if (n == 2) {
+                        rosetta_r::converting() = "argument 'a'";
+                        rosetta_r::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'b'";
+                        rosetta_r::Param<const datamunge::algebra::Polynomial &> p1(a[1]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::algebra::poly_remainder(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("poly_remainder", "    poly_remainder(a: Polynomial, b: Polynomial) -> Polynomial\n", args);
+    });
+}
 SEXP rosetta_r_8(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
@@ -1533,52 +1556,6 @@ SEXP rosetta_r_8(SEXP self, SEXP args) {
         rosetta_r::no_overload("monic", "    monic(p: Polynomial) -> Polynomial\n", args);
     });
 }
-SEXP rosetta_r_11(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"a", "b"};
-                SEXP a[2]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
-                    if (n == 2) {
-                        rosetta_r::converting() = "argument 'a'";
-                        rosetta_r::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'b'";
-                        rosetta_r::Param<const datamunge::algebra::Polynomial &> p1(a[1]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::algebra::poly_extended_gcd(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("poly_extended_gcd", "    poly_extended_gcd(a: Polynomial, b: Polynomial) -> PolyExtendedGcdResult\n", args);
-    });
-}
-SEXP rosetta_r_14(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"seq", "x"};
-                SEXP a[2]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
-                    if (n == 2) {
-                        rosetta_r::converting() = "argument 'seq'";
-                        rosetta_r::Param<const std::vector<datamunge::algebra::Polynomial> &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'x'";
-                        rosetta_r::Param<double> p1(a[1]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::sturm_sign_changes(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("sturm_sign_changes", "    sturm_sign_changes(seq: vector<Polynomial>, x: numeric) -> integer\n", args);
-    });
-}
 SEXP rosetta_r_30(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
@@ -1597,218 +1574,140 @@ SEXP rosetta_r_30(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("total_degree", "    total_degree(exponents: vector<integer>) -> integer\n", args);
+        rosetta_r::no_overload("total_degree", "    total_degree(exponents: integer vector) -> integer\n", args);
     });
 }
-SEXP rosetta_r_31(SEXP self, SEXP args) {
+SEXP rosetta_r_59(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"a", "b", "order"};
+                static const char* const names[] = {"r", "g", "b"};
                 SEXP a[3]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 3, 3, a, &n)) {
                     if (n == 3) {
-                        rosetta_r::converting() = "argument 'a'";
-                        rosetta_r::Param<const std::vector<int> &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'r'";
+                        rosetta_r::Param<unsigned char> p0(a[0]);
+                        rosetta_r::converting() = "argument 'g'";
+                        rosetta_r::Param<unsigned char> p1(a[1]);
                         rosetta_r::converting() = "argument 'b'";
-                        rosetta_r::Param<const std::vector<int> &> p1(a[1]);
-                        rosetta_r::converting() = "argument 'order'";
-                        rosetta_r::Param<datamunge::algebra::MonomialOrder> p2(a[2]);
+                        rosetta_r::Param<unsigned char> p2(a[2]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::compare_monomials(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::rgb_to_gray(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("compare_monomials", "    compare_monomials(a: vector<integer>, b: vector<integer>, order: character (MonomialOrder)) -> integer\n", args);
+        rosetta_r::no_overload("rgb_to_gray", "    rgb_to_gray(r: integer, g: integer, b: integer) -> integer\n", args);
     });
 }
-SEXP rosetta_r_63(SEXP self, SEXP args) {
+SEXP rosetta_r_83(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"src"};
+                static const char* const names[] = {"size"};
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 1, 1, a, &n)) {
                     if (n == 1) {
+                        rosetta_r::converting() = "argument 'size'";
+                        rosetta_r::Param<int> p0(a[0]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::box_kernel(p0.get()); }, nullptr, rosetta_r::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("box_kernel", "    box_kernel(size: integer) -> numeric vector\n", args);
+    });
+}
+SEXP rosetta_r_100(SEXP self, SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"src", "degrees", "fill_color"};
+                SEXP a[3]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 3, 2, a, &n)) {
+                    if (n == 2) {
                         rosetta_r::converting() = "argument 'src'";
                         rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'degrees'";
+                        rosetta_r::Param<double> p1(a[1]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::to_rgb(p0.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::rotate(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
+                    }
+                    if (n == 3) {
+                        rosetta_r::converting() = "argument 'src'";
+                        rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'degrees'";
+                        rosetta_r::Param<double> p1(a[1]);
+                        rosetta_r::converting() = "argument 'fill_color'";
+                        rosetta_r::Param<const datamunge::image::Pixel &> p2(a[2]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::rotate(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("to_rgb", "    to_rgb(src: Image) -> Image\n", args);
+        rosetta_r::no_overload("rotate", "    rotate(src: Image, degrees: numeric, fill_color: Pixel = ...) -> Image\n", args);
     });
 }
-SEXP rosetta_r_69(SEXP self, SEXP args) {
+SEXP rosetta_r_104(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"response", "width", "height", "threshold", "nms_radius"};
-                SEXP a[5]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 5, 5, a, &n)) {
-                    if (n == 5) {
-                        rosetta_r::converting() = "argument 'response'";
-                        rosetta_r::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'width'";
-                        rosetta_r::Param<int> p1(a[1]);
-                        rosetta_r::converting() = "argument 'height'";
-                        rosetta_r::Param<int> p2(a[2]);
-                        rosetta_r::converting() = "argument 'threshold'";
-                        rosetta_r::Param<double> p3(a[3]);
-                        rosetta_r::converting() = "argument 'nms_radius'";
-                        rosetta_r::Param<int> p4(a[4]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::detail::extract_local_maxima(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("extract_local_maxima", "    extract_local_maxima(response: vector<numeric>, width: integer, height: integer, threshold: numeric, nms_radius: integer) -> vector<Corner>\n", args);
-    });
-}
-SEXP rosetta_r_78(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"img", "se", "radius"};
-                SEXP a[3]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 3, 1, a, &n)) {
+                static const char* const names[] = {"img", "eight_connected"};
+                SEXP a[2]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 2, 1, a, &n)) {
                     if (n == 1) {
                         rosetta_r::converting() = "argument 'img'";
                         rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::erode(p0.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::connected_components(p0.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                     if (n == 2) {
                         rosetta_r::converting() = "argument 'img'";
                         rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'se'";
-                        rosetta_r::Param<datamunge::cv::StructuringElement> p1(a[1]);
+                        rosetta_r::converting() = "argument 'eight_connected'";
+                        rosetta_r::Param<bool> p1(a[1]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::erode(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_r::converting() = "argument 'img'";
-                        rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'se'";
-                        rosetta_r::Param<datamunge::cv::StructuringElement> p1(a[1]);
-                        rosetta_r::converting() = "argument 'radius'";
-                        rosetta_r::Param<int> p2(a[2]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::erode(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::connected_components(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("erode", "    erode(img: Image, se: character (StructuringElement) = ..., radius: integer = ...) -> Image\n", args);
+        rosetta_r::no_overload("connected_components", "    connected_components(img: Image, eight_connected: logical = ...) -> LabelMap\n", args);
     });
 }
-SEXP rosetta_r_93(SEXP self, SEXP args) {
+SEXP rosetta_r_150(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"a", "b", "t"};
+                static const char* const names[] = {"p", "q", "r"};
                 SEXP a[3]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 3, 3, a, &n)) {
                     if (n == 3) {
-                        rosetta_r::converting() = "argument 'a'";
-                        rosetta_r::Param<unsigned char> p0(a[0]);
-                        rosetta_r::converting() = "argument 'b'";
-                        rosetta_r::Param<unsigned char> p1(a[1]);
-                        rosetta_r::converting() = "argument 't'";
-                        rosetta_r::Param<double> p2(a[2]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::detail::lerp_byte(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("lerp_byte", "    lerp_byte(a: integer, b: integer, t: numeric) -> integer\n", args);
-    });
-}
-SEXP rosetta_r_106(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"img", "k", "max_iterations", "seed"};
-                SEXP a[4]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 4, 2, a, &n)) {
-                    if (n == 2) {
-                        rosetta_r::converting() = "argument 'img'";
-                        rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'k'";
-                        rosetta_r::Param<int> p1(a[1]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::kmeans_segment(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_r::converting() = "argument 'img'";
-                        rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'k'";
-                        rosetta_r::Param<int> p1(a[1]);
-                        rosetta_r::converting() = "argument 'max_iterations'";
-                        rosetta_r::Param<int> p2(a[2]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::kmeans_segment(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_r::converting() = "argument 'img'";
-                        rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'k'";
-                        rosetta_r::Param<int> p1(a[1]);
-                        rosetta_r::converting() = "argument 'max_iterations'";
-                        rosetta_r::Param<int> p2(a[2]);
-                        rosetta_r::converting() = "argument 'seed'";
-                        rosetta_r::Param<unsigned int> p3(a[3]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::cv::kmeans_segment(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("kmeans_segment", "    kmeans_segment(img: Image, k: integer, max_iterations: integer = ..., seed: integer = ...) -> Image\n", args);
-    });
-}
-SEXP rosetta_r_151(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"p1", "q1", "p2", "q2"};
-                SEXP a[4]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 4, 4, a, &n)) {
-                    if (n == 4) {
-                        rosetta_r::converting() = "argument 'p1'";
+                        rosetta_r::converting() = "argument 'p'";
                         rosetta_r::Param<const datamunge::geometry::Point2D &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'q1'";
+                        rosetta_r::converting() = "argument 'q'";
                         rosetta_r::Param<const datamunge::geometry::Point2D &> p1(a[1]);
-                        rosetta_r::converting() = "argument 'p2'";
+                        rosetta_r::converting() = "argument 'r'";
                         rosetta_r::Param<const datamunge::geometry::Point2D &> p2(a[2]);
-                        rosetta_r::converting() = "argument 'q2'";
-                        rosetta_r::Param<const datamunge::geometry::Point2D &> p3(a[3]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::geometry::segments_intersect(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::geometry::detail::on_segment(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("segments_intersect", "    segments_intersect(p1: Point2D, q1: Point2D, p2: Point2D, q2: Point2D) -> logical\n", args);
+        rosetta_r::no_overload("on_segment", "    on_segment(p: Point2D, q: Point2D, r: Point2D) -> logical\n", args);
     });
 }
 SEXP rosetta_r_158(SEXP self, SEXP args) {
@@ -1829,173 +1728,137 @@ SEXP rosetta_r_158(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("polygon_diameter", "    polygon_diameter(points: vector<Point2D>) -> DiameterResult\n", args);
+        rosetta_r::no_overload("polygon_diameter", "    polygon_diameter(points: list of Point2D) -> DiameterResult\n", args);
     });
 }
-SEXP rosetta_r_170(SEXP self, SEXP args) {
+SEXP rosetta_r_165(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"img", "cx", "cy", "radius", "color", "filled"};
-                SEXP a[6]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 6, 5, a, &n)) {
-                    if (n == 5) {
+                static const char* const names[] = {"img", "path"};
+                SEXP a[2]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
+                    if (n == 2) {
                         rosetta_r::converting() = "argument 'img'";
-                        rosetta_r::Param<datamunge::image::Image &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'cx'";
-                        rosetta_r::Param<int> p1(a[1]);
-                        rosetta_r::converting() = "argument 'cy'";
-                        rosetta_r::Param<int> p2(a[2]);
-                        rosetta_r::converting() = "argument 'radius'";
-                        rosetta_r::Param<int> p3(a[3]);
-                        rosetta_r::converting() = "argument 'color'";
-                        rosetta_r::Param<const datamunge::image::Pixel &> p4(a[4]);
+                        rosetta_r::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'path'";
+                        rosetta_r::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::draw_circle(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                    if (n == 6) {
-                        rosetta_r::converting() = "argument 'img'";
-                        rosetta_r::Param<datamunge::image::Image &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'cx'";
-                        rosetta_r::Param<int> p1(a[1]);
-                        rosetta_r::converting() = "argument 'cy'";
-                        rosetta_r::Param<int> p2(a[2]);
-                        rosetta_r::converting() = "argument 'radius'";
-                        rosetta_r::Param<int> p3(a[3]);
-                        rosetta_r::converting() = "argument 'color'";
-                        rosetta_r::Param<const datamunge::image::Pixel &> p4(a[4]);
-                        rosetta_r::converting() = "argument 'filled'";
-                        rosetta_r::Param<bool> p5(a[5]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::draw_circle(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::image::write_bmp(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("draw_circle", "    draw_circle(img: Image, cx: integer, cy: integer, radius: integer, color: Pixel, filled: logical = ...) -> NULL\n", args);
+        rosetta_r::no_overload("write_bmp", "    write_bmp(img: Image, path: character) -> NULL\n", args);
     });
 }
-SEXP rosetta_r_188(SEXP self, SEXP args) {
+SEXP rosetta_r_187(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"x", "y"};
-                SEXP a[2]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
+                static const char* const names[] = {"x", "y", "alternative"};
+                SEXP a[3]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 3, 2, a, &n)) {
                     if (n == 2) {
                         rosetta_r::converting() = "argument 'x'";
                         rosetta_r::Param<const std::vector<double> &> p0(a[0]);
                         rosetta_r::converting() = "argument 'y'";
                         rosetta_r::Param<const std::vector<double> &> p1(a[1]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::kendall_tau(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("kendall_tau", "    kendall_tau(x: vector<numeric>, y: vector<numeric>) -> KendallTau\n", args);
-    });
-}
-SEXP rosetta_r_199(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"successes", "n", "p", "alternative", "conf_level"};
-                SEXP a[5]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 5, 2, a, &n)) {
-                    if (n == 2) {
-                        rosetta_r::converting() = "argument 'successes'";
-                        rosetta_r::Param<unsigned long> p0(a[0]);
-                        rosetta_r::converting() = "argument 'n'";
-                        rosetta_r::Param<unsigned long> p1(a[1]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::spearman_correlation_test(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                     if (n == 3) {
-                        rosetta_r::converting() = "argument 'successes'";
-                        rosetta_r::Param<unsigned long> p0(a[0]);
-                        rosetta_r::converting() = "argument 'n'";
-                        rosetta_r::Param<unsigned long> p1(a[1]);
-                        rosetta_r::converting() = "argument 'p'";
-                        rosetta_r::Param<double> p2(a[2]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_r::converting() = "argument 'successes'";
-                        rosetta_r::Param<unsigned long> p0(a[0]);
-                        rosetta_r::converting() = "argument 'n'";
-                        rosetta_r::Param<unsigned long> p1(a[1]);
-                        rosetta_r::converting() = "argument 'p'";
-                        rosetta_r::Param<double> p2(a[2]);
+                        rosetta_r::converting() = "argument 'x'";
+                        rosetta_r::Param<const std::vector<double> &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'y'";
+                        rosetta_r::Param<const std::vector<double> &> p1(a[1]);
                         rosetta_r::converting() = "argument 'alternative'";
-                        rosetta_r::Param<datamunge::stats::Alternative> p3(a[3]);
+                        rosetta_r::Param<datamunge::stats::Alternative> p2(a[2]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_r::Return::automatic);
-                    }
-                    if (n == 5) {
-                        rosetta_r::converting() = "argument 'successes'";
-                        rosetta_r::Param<unsigned long> p0(a[0]);
-                        rosetta_r::converting() = "argument 'n'";
-                        rosetta_r::Param<unsigned long> p1(a[1]);
-                        rosetta_r::converting() = "argument 'p'";
-                        rosetta_r::Param<double> p2(a[2]);
-                        rosetta_r::converting() = "argument 'alternative'";
-                        rosetta_r::Param<datamunge::stats::Alternative> p3(a[3]);
-                        rosetta_r::converting() = "argument 'conf_level'";
-                        rosetta_r::Param<double> p4(a[4]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::spearman_correlation_test(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("binomial_test", "    binomial_test(successes: integer, n: integer, p: numeric = ..., alternative: character (Alternative) = ..., conf_level: numeric = ...) -> HypothesisTestResult\n", args);
+        rosetta_r::no_overload("spearman_correlation_test", "    spearman_correlation_test(x: numeric vector, y: numeric vector, alternative: character (Alternative) = ...) -> HypothesisTestResult\n", args);
     });
 }
-SEXP rosetta_r_204(SEXP self, SEXP args) {
+SEXP rosetta_r_190(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"x", "mu", "alternative"};
-                SEXP a[3]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 3, 1, a, &n)) {
+                static const char* const names[] = {"x", "mean", "sd", "alternative"};
+                SEXP a[4]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 4, 1, a, &n)) {
                     if (n == 1) {
                         rosetta_r::converting() = "argument 'x'";
                         rosetta_r::Param<const std::vector<double> &> p0(a[0]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                     if (n == 2) {
                         rosetta_r::converting() = "argument 'x'";
                         rosetta_r::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'mu'";
+                        rosetta_r::converting() = "argument 'mean'";
                         rosetta_r::Param<double> p1(a[1]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                     if (n == 3) {
                         rosetta_r::converting() = "argument 'x'";
                         rosetta_r::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'mu'";
+                        rosetta_r::converting() = "argument 'mean'";
                         rosetta_r::Param<double> p1(a[1]);
-                        rosetta_r::converting() = "argument 'alternative'";
-                        rosetta_r::Param<datamunge::stats::Alternative> p2(a[2]);
+                        rosetta_r::converting() = "argument 'sd'";
+                        rosetta_r::Param<double> p2(a[2]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::wilcoxon_signed_rank_test(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_r::Return::automatic);
+                    }
+                    if (n == 4) {
+                        rosetta_r::converting() = "argument 'x'";
+                        rosetta_r::Param<const std::vector<double> &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'mean'";
+                        rosetta_r::Param<double> p1(a[1]);
+                        rosetta_r::converting() = "argument 'sd'";
+                        rosetta_r::Param<double> p2(a[2]);
+                        rosetta_r::converting() = "argument 'alternative'";
+                        rosetta_r::Param<datamunge::stats::Alternative> p3(a[3]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::stats::ks_test_one_sample_normal(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("wilcoxon_signed_rank_test", "    wilcoxon_signed_rank_test(x: vector<numeric>, mu: numeric = ..., alternative: character (Alternative) = ...) -> HypothesisTestResult\n", args);
+        rosetta_r::no_overload("ks_test_one_sample_normal", "    ks_test_one_sample_normal(x: numeric vector, mean: numeric = ..., sd: numeric = ..., alternative: character (Alternative) = ...) -> HypothesisTestResult\n", args);
+    });
+}
+SEXP rosetta_r_210(SEXP self, SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"values", "cb"};
+                SEXP a[2]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
+                    if (n == 2) {
+                        rosetta_r::converting() = "argument 'values'";
+                        rosetta_r::Param<const std::vector<double> &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'cb'";
+                        rosetta_r::Param<datamunge::Callback *> p1(a[1]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::call([&]() -> decltype(auto) { return ::datamunge::map_dvector_with_callback(p0.get(), p1.get()); }, nullptr, rosetta_r::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("map_dvector_with_callback", "    map_dvector_with_callback(values: numeric vector, cb: Callback or NULL) -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_213(SEXP self, SEXP args) {
@@ -2021,64 +1884,45 @@ SEXP rosetta_r_213(SEXP self, SEXP args) {
         rosetta_r::no_overload("make_dpair", "    make_dpair(a: numeric, b: numeric) -> list(numeric, numeric)\n", args);
     });
 }
-SEXP rosetta_r_557(SEXP self) {
+SEXP rosetta_r_405(SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::cv::FlowVector>(self);
-        return rosetta_r::result<decltype((native->dx))>(native->dx, self, rosetta_r::Return::automatic);
+        auto* native = rosetta_r::native<datamunge::bayes::ImportanceSamplingOptions>(self);
+        return rosetta_r::result<decltype((native->num_samples))>(native->num_samples, self, rosetta_r::Return::automatic);
     });
 }
-SEXP rosetta_r_558(SEXP self, SEXP value) {
+SEXP rosetta_r_406(SEXP self, SEXP value) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::cv::FlowVector>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->dx)>>;
+        auto* native = rosetta_r::native<datamunge::bayes::ImportanceSamplingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->num_samples)>>;
         if constexpr (rosetta_r::bound_v<F>) {
             // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->dx) return R_NilValue;
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->num_samples) return R_NilValue;
         }
         rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->dx, converted.get());
+        rosetta_r::assign_field(native->num_samples, converted.get());
         return R_NilValue;
     });
 }
-SEXP rosetta_r_559(SEXP self) {
+SEXP rosetta_r_407(SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::cv::FlowVector>(self);
-        return rosetta_r::result<decltype((native->dy))>(native->dy, self, rosetta_r::Return::automatic);
+        auto* native = rosetta_r::native<datamunge::bayes::ImportanceSamplingOptions>(self);
+        return rosetta_r::result<decltype((native->seed))>(native->seed, self, rosetta_r::Return::automatic);
     });
 }
-SEXP rosetta_r_560(SEXP self, SEXP value) {
+SEXP rosetta_r_408(SEXP self, SEXP value) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::cv::FlowVector>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->dy)>>;
+        auto* native = rosetta_r::native<datamunge::bayes::ImportanceSamplingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
         if constexpr (rosetta_r::bound_v<F>) {
             // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->dy) return R_NilValue;
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->seed) return R_NilValue;
         }
         rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->dy, converted.get());
+        rosetta_r::assign_field(native->seed, converted.get());
         return R_NilValue;
     });
 }
-SEXP rosetta_r_561(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::cv::FlowVector>(self);
-        return rosetta_r::result<decltype((native->valid))>(native->valid, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_562(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::cv::FlowVector>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->valid)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->valid) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->valid, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_563(SEXP args) {
+SEXP rosetta_r_409(SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2087,12 +1931,179 @@ SEXP rosetta_r_563(SEXP args) {
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::cv::FlowVector());
+                        return rosetta_r::adopt(new datamunge::bayes::ImportanceSamplingOptions());
                     }
                 }
             }
         }
-        rosetta_r::no_overload("FlowVector$new", "    FlowVector$new()\n", args);
+        rosetta_r::no_overload("ImportanceSamplingOptions$new", "    ImportanceSamplingOptions$new()\n", args);
+    });
+}
+SEXP rosetta_r_518(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        return rosetta_r::result<decltype((native->x))>(native->x, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_519(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->x)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->x) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->x, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_520(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        return rosetta_r::result<decltype((native->y))>(native->y, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_521(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->y)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->y) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->y, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_522(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        return rosetta_r::result<decltype((native->scale))>(native->scale, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_523(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->scale)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->scale) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->scale, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_524(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        return rosetta_r::result<decltype((native->response))>(native->response, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_525(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::KeyPoint>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->response)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->response) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->response, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_526(SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        return rosetta_r::adopt(new datamunge::cv::KeyPoint());
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("KeyPoint$new", "    KeyPoint$new()\n", args);
+    });
+}
+SEXP rosetta_r_534(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::detail::StructureTensorField>(self);
+        return rosetta_r::result<decltype((native->sxx))>(native->sxx, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_535(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::detail::StructureTensorField>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->sxx)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->sxx) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->sxx, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_536(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::detail::StructureTensorField>(self);
+        return rosetta_r::result<decltype((native->syy))>(native->syy, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_537(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::detail::StructureTensorField>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->syy)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->syy) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->syy, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_538(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::detail::StructureTensorField>(self);
+        return rosetta_r::result<decltype((native->sxy))>(native->sxy, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_539(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::cv::detail::StructureTensorField>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->sxy)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->sxy) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->sxy, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_540(SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        return rosetta_r::adopt(new datamunge::cv::detail::StructureTensorField());
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("StructureTensorField$new", "    StructureTensorField$new()\n", args);
     });
 }
 SEXP rosetta_r_788(SEXP self, SEXP args) {
@@ -2131,7 +2142,7 @@ SEXP rosetta_r_789(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("update", "    update(z: vector<numeric>) -> NULL\n", args);
+        rosetta_r::no_overload("update", "    update(z: numeric vector) -> NULL\n", args);
     });
 }
 SEXP rosetta_r_790(SEXP self, SEXP args) {
@@ -2149,7 +2160,7 @@ SEXP rosetta_r_790(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("state", "    state() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("state", "    state() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_791(SEXP self, SEXP args) {
@@ -2167,7 +2178,7 @@ SEXP rosetta_r_791(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("covariance", "    covariance() -> vector<vector<numeric>>\n", args);
+        rosetta_r::no_overload("covariance", "    covariance() -> list of numeric vector\n", args);
     });
 }
 SEXP rosetta_r_792(SEXP self, SEXP args) {
@@ -2188,7 +2199,7 @@ SEXP rosetta_r_792(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("filter", "    filter(measurements: vector<vector<numeric>>) -> vector<KalmanState>\n", args);
+        rosetta_r::no_overload("filter", "    filter(measurements: list of numeric vector) -> list of KalmanState\n", args);
     });
 }
 SEXP rosetta_r_793(SEXP args) {
@@ -2256,268 +2267,67 @@ SEXP rosetta_r_793(SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("EnsembleKalmanFilter$new", "    EnsembleKalmanFilter$new(f: VectorFunction, h: VectorFunction, Q: vector<vector<numeric>>, R: vector<vector<numeric>>, x0: vector<numeric>, P0: vector<vector<numeric>>, ensemble_size: integer = ..., seed: integer = ...)\n", args);
+        rosetta_r::no_overload("EnsembleKalmanFilter$new", "    EnsembleKalmanFilter$new(f: VectorFunction, h: VectorFunction, Q: list of numeric vector, R: list of numeric vector, x0: numeric vector, P0: list of numeric vector, ensemble_size: integer = ..., seed: integer = ...)\n", args);
     });
 }
-SEXP rosetta_r_794(SEXP self, SEXP args) {
+SEXP rosetta_r_874(SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 0) {
-                        return rosetta_r::call([&]() -> decltype(auto) { return native->predict(); }, self, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("predict", "    predict() -> NULL\n", args);
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        return rosetta_r::result<decltype((native->hull))>(native->hull, self, rosetta_r::Return::automatic);
     });
 }
-SEXP rosetta_r_795(SEXP self, SEXP args) {
+SEXP rosetta_r_875(SEXP self, SEXP value) {
     return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"z"};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 1, 1, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 1) {
-                        rosetta_r::converting() = "argument 'z'";
-                        rosetta_r::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return native->update(p0.get()); }, self, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("update", "    update(z: vector<numeric>) -> NULL\n", args);
-    });
-}
-SEXP rosetta_r_796(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 0) {
-                        return rosetta_r::call([&]() -> decltype(auto) { return native->state(); }, self, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("state", "    state() -> vector<numeric>\n", args);
-    });
-}
-SEXP rosetta_r_797(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 0) {
-                        return rosetta_r::call([&]() -> decltype(auto) { return native->covariance(); }, self, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("covariance", "    covariance() -> vector<vector<numeric>>\n", args);
-    });
-}
-SEXP rosetta_r_798(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"measurements"};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 1, 1, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 1) {
-                        rosetta_r::converting() = "argument 'measurements'";
-                        rosetta_r::Param<const std::vector<std::vector<double>> &> p0(a[0]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { return native->filter(p0.get()); }, self, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("filter", "    filter(measurements: vector<vector<numeric>>) -> vector<KalmanState>\n", args);
-    });
-}
-SEXP rosetta_r_799(SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"f", "h", "Q", "R", "x0", "P0", "jacobian_step"};
-                SEXP a[7]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 7, 6, a, &n)) {
-                    if (n == 6) {
-                        rosetta_r::converting() = "argument 'f'";
-                        rosetta_r::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'h'";
-                        rosetta_r::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_r::converting() = "argument 'Q'";
-                        rosetta_r::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_r::converting() = "argument 'R'";
-                        rosetta_r::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_r::converting() = "argument 'x0'";
-                        rosetta_r::Param<std::vector<double>> p4(a[4]);
-                        rosetta_r::converting() = "argument 'P0'";
-                        rosetta_r::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::adopt(new datamunge::filter::ExtendedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()));
-                    }
-                    if (n == 7) {
-                        rosetta_r::converting() = "argument 'f'";
-                        rosetta_r::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'h'";
-                        rosetta_r::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_r::converting() = "argument 'Q'";
-                        rosetta_r::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_r::converting() = "argument 'R'";
-                        rosetta_r::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_r::converting() = "argument 'x0'";
-                        rosetta_r::Param<std::vector<double>> p4(a[4]);
-                        rosetta_r::converting() = "argument 'P0'";
-                        rosetta_r::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_r::converting() = "argument 'jacobian_step'";
-                        rosetta_r::Param<double> p6(a[6]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::adopt(new datamunge::filter::ExtendedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get()));
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("ExtendedKalmanFilter$new", "    ExtendedKalmanFilter$new(f: VectorFunction, h: VectorFunction, Q: vector<vector<numeric>>, R: vector<vector<numeric>>, x0: vector<numeric>, P0: vector<vector<numeric>>, jacobian_step: numeric = ...)\n", args);
-    });
-}
-SEXP rosetta_r_1196(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_r::result<decltype((native->step_size))>(native->step_size, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1197(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->hull)>>;
         if constexpr (rosetta_r::bound_v<F>) {
             // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->step_size) return R_NilValue;
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->hull) return R_NilValue;
         }
         rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->step_size, converted.get());
+        rosetta_r::assign_field(native->hull, converted.get());
         return R_NilValue;
     });
 }
-SEXP rosetta_r_1198(SEXP self) {
+SEXP rosetta_r_876(SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_r::result<decltype((native->beta1))>(native->beta1, self, rosetta_r::Return::automatic);
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        return rosetta_r::result<decltype((native->input_indices))>(native->input_indices, self, rosetta_r::Return::automatic);
     });
 }
-SEXP rosetta_r_1199(SEXP self, SEXP value) {
+SEXP rosetta_r_877(SEXP self, SEXP value) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->beta1)>>;
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->input_indices)>>;
         if constexpr (rosetta_r::bound_v<F>) {
             // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->beta1) return R_NilValue;
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->input_indices) return R_NilValue;
         }
         rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->beta1, converted.get());
+        rosetta_r::assign_field(native->input_indices, converted.get());
         return R_NilValue;
     });
 }
-SEXP rosetta_r_1200(SEXP self) {
+SEXP rosetta_r_878(SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_r::result<decltype((native->beta2))>(native->beta2, self, rosetta_r::Return::automatic);
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        return rosetta_r::result<decltype((native->work))>(native->work, self, rosetta_r::Return::automatic);
     });
 }
-SEXP rosetta_r_1201(SEXP self, SEXP value) {
+SEXP rosetta_r_879(SEXP self, SEXP value) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->beta2)>>;
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->work)>>;
         if constexpr (rosetta_r::bound_v<F>) {
             // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->beta2) return R_NilValue;
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->work) return R_NilValue;
         }
         rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->beta2, converted.get());
+        rosetta_r::assign_field(native->work, converted.get());
         return R_NilValue;
     });
 }
-SEXP rosetta_r_1202(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_r::result<decltype((native->epsilon))>(native->epsilon, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1203(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->epsilon)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->epsilon) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->epsilon, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1204(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_r::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1205(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->max_iterations) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->max_iterations, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1206(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_r::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1207(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::AdamOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->tolerance) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->tolerance, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1208(SEXP args) {
+SEXP rosetta_r_880(SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2526,76 +2336,215 @@ SEXP rosetta_r_1208(SEXP args) {
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::optim::AdamOptions());
+                        return rosetta_r::adopt(new datamunge::geometry::ConvexHullAnalysis());
                     }
                 }
             }
         }
-        rosetta_r::no_overload("AdamOptions$new", "    AdamOptions$new()\n", args);
+        rosetta_r::no_overload("ConvexHullAnalysis$new", "    ConvexHullAnalysis$new()\n", args);
     });
 }
-SEXP rosetta_r_1280(SEXP self, SEXP args) {
+SEXP rosetta_r_881(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        return rosetta_r::result<decltype((native->analysis))>(native->analysis, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_882(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->analysis)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->analysis) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->analysis, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_883(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        return rosetta_r::result<decltype((native->sorted))>(native->sorted, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_884(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->sorted)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->sorted) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->sorted, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_885(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        return rosetta_r::result<decltype((native->events))>(native->events, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_886(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->events)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->events) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->events, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_887(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        return rosetta_r::result<decltype((native->lower))>(native->lower, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_888(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->lower)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->lower) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->lower, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_889(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        return rosetta_r::result<decltype((native->upper))>(native->upper, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_890(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::geometry::ConvexHullTrace>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->upper)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->upper) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->upper, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_891(SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"points", "values"};
+                static const char* const names[] = {nullptr};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        return rosetta_r::adopt(new datamunge::geometry::ConvexHullTrace());
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("ConvexHullTrace$new", "    ConvexHullTrace$new()\n", args);
+    });
+}
+SEXP rosetta_r_935(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::graphics::LegendEntry>(self);
+        return rosetta_r::result<decltype((native->label))>(native->label, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_936(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::graphics::LegendEntry>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->label)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->label) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->label, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_937(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::graphics::LegendEntry>(self);
+        return rosetta_r::result<decltype((native->color))>(native->color, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_938(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::graphics::LegendEntry>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->color)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->color) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->color, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_939(SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        return rosetta_r::adopt(new datamunge::graphics::LegendEntry());
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("LegendEntry$new", "    LegendEntry$new()\n", args);
+    });
+}
+SEXP rosetta_r_1151(SEXP self, SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"t", "y"};
                 SEXP a[2]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::BayesianSurrogate>(self);
+                    auto* native = rosetta_r::native<datamunge::ode::RHS>(self);
                     if (n == 2) {
-                        rosetta_r::converting() = "argument 'points'";
-                        rosetta_r::Param<const std::vector<std::vector<double>> &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'values'";
+                        rosetta_r::converting() = "argument 't'";
+                        rosetta_r::Param<double> p0(a[0]);
+                        rosetta_r::converting() = "argument 'y'";
                         rosetta_r::Param<const std::vector<double> &> p1(a[1]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { if (rosetta_r::is_director(self)) { rosetta_r::pure_virtual("datamunge::optim::BayesianSurrogate::fit"); } return native->fit(p0.get(), p1.get()); }, self, rosetta_r::Return::automatic);
+                        return rosetta_r::call([&]() -> decltype(auto) { if (rosetta_r::is_director(self)) { rosetta_r::pure_virtual("datamunge::ode::RHS::evaluate"); } return native->evaluate(p0.get(), p1.get()); }, self, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("fit", "    fit(points: vector<vector<numeric>>, values: vector<numeric>) -> NULL\n", args);
+        rosetta_r::no_overload("evaluate", "    evaluate(t: numeric, y: numeric vector) -> numeric vector\n", args);
     });
 }
-SEXP rosetta_r_1281(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"point", "incumbent"};
-                SEXP a[2]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::BayesianSurrogate>(self);
-                    if (n == 2) {
-                        rosetta_r::converting() = "argument 'point'";
-                        rosetta_r::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'incumbent'";
-                        rosetta_r::Param<double> p1(a[1]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::call([&]() -> decltype(auto) { if (rosetta_r::is_director(self)) { rosetta_r::pure_virtual("datamunge::optim::BayesianSurrogate::acquisition"); } return native->acquisition(p0.get(), p1.get()); }, self, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("acquisition", "    acquisition(point: vector<numeric>, incumbent: numeric) -> numeric\n", args);
-    });
-}
-struct rosetta_director_datamunge__optim__BayesianSurrogate final : datamunge::optim::BayesianSurrogate, rosetta_r::Director {
-    template<class... A> explicit rosetta_director_datamunge__optim__BayesianSurrogate(A&&... arguments) : datamunge::optim::BayesianSurrogate(std::forward<A>(arguments)...) {}
-    void fit(const std::vector<std::vector<double>> & a0, const std::vector<double> & a1) override {
-        if (SEXP method = const_cast<rosetta_director_datamunge__optim__BayesianSurrogate*>(this)->rosetta_override("fit"))
-            return rosetta_r::invoke_r<void, const std::vector<std::vector<double>> &, const std::vector<double> &>(method, a0, a1);
-        rosetta_r::pure_virtual("datamunge::optim::BayesianSurrogate::fit");
-    }
-    double acquisition(const std::vector<double> & a0, double a1) override {
-        if (SEXP method = const_cast<rosetta_director_datamunge__optim__BayesianSurrogate*>(this)->rosetta_override("acquisition"))
-            return rosetta_r::invoke_r<double, const std::vector<double> &, double>(method, a0, std::move(a1));
-        rosetta_r::pure_virtual("datamunge::optim::BayesianSurrogate::acquisition");
+struct rosetta_director_datamunge__ode__RHS final : datamunge::ode::RHS, rosetta_r::Director {
+    template<class... A> explicit rosetta_director_datamunge__ode__RHS(A&&... arguments) : datamunge::ode::RHS(std::forward<A>(arguments)...) {}
+    std::vector<double> evaluate(double a0, const std::vector<double> & a1) override {
+        if (SEXP method = const_cast<rosetta_director_datamunge__ode__RHS*>(this)->rosetta_override("evaluate"))
+            return rosetta_r::invoke_r<std::vector<double>, double, const std::vector<double> &>(method, std::move(a0), a1);
+        rosetta_r::pure_virtual("datamunge::ode::RHS::evaluate");
     }
 };
-SEXP rosetta_r_1282(SEXP args, SEXP self) {
+SEXP rosetta_r_1152(SEXP args, SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        const bool director = rosetta_r::is_subclass(self, "BayesianSurrogate");
+        const bool director = rosetta_r::is_subclass(self, "RHS");
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
@@ -2603,129 +2552,17 @@ SEXP rosetta_r_1282(SEXP args, SEXP self) {
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        if (director) { auto* created = new rosetta_director_datamunge__optim__BayesianSurrogate();
-                            return rosetta_r::adopt_director<datamunge::optim::BayesianSurrogate>(created, created, self); }
-                        rosetta_r::fail("BayesianSurrogate is abstract; implement it with an R6 subclass");
+                        if (director) { auto* created = new rosetta_director_datamunge__ode__RHS();
+                            return rosetta_r::adopt_director<datamunge::ode::RHS>(created, created, self); }
+                        rosetta_r::fail("RHS is abstract; implement it with an R6 subclass");
                     }
                 }
             }
         }
-        rosetta_r::no_overload("BayesianSurrogate$new", "    BayesianSurrogate$new()\n", args);
+        rosetta_r::no_overload("RHS$new", "    RHS$new()\n", args);
     });
 }
-SEXP rosetta_r_1311(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        return rosetta_r::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1312(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->max_iterations) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->max_iterations, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1313(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        return rosetta_r::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1314(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->tolerance) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->tolerance, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1315(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        return rosetta_r::result<decltype((native->armijo_c1))>(native->armijo_c1, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1316(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->armijo_c1)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->armijo_c1) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->armijo_c1, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1317(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        return rosetta_r::result<decltype((native->backtracking_factor))>(native->backtracking_factor, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1318(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->backtracking_factor)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->backtracking_factor) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->backtracking_factor, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1319(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        return rosetta_r::result<decltype((native->max_line_search_trials))>(native->max_line_search_trials, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1320(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ConjugateGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_line_search_trials)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->max_line_search_trials) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->max_line_search_trials, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1321(SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::optim::ConjugateGradientOptions());
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("ConjugateGradientOptions$new", "    ConjugateGradientOptions$new()\n", args);
-    });
-}
-SEXP rosetta_r_1686(SEXP self, SEXP args) {
+SEXP rosetta_r_1263(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2733,7 +2570,7 @@ SEXP rosetta_r_1686(SEXP self, SEXP args) {
                 static const char* const names[] = {"function", "coordinates", "lower_bound", "upper_bound"};
                 SEXP a[4]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 4, 4, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::PSO>(self);
+                    auto* native = rosetta_r::native<datamunge::optim::ArtificialBeeColony>(self);
                     if (n == 4) {
                         rosetta_r::converting() = "argument 'function'";
                         rosetta_r::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
@@ -2751,10 +2588,10 @@ SEXP rosetta_r_1686(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: vector<numeric>, lower_bound: vector<numeric>, upper_bound: vector<numeric>) -> numeric\n", args);
+        rosetta_r::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: numeric vector, lower_bound: numeric vector, upper_bound: numeric vector) -> numeric\n", args);
     });
 }
-SEXP rosetta_r_1687(SEXP self, SEXP args) {
+SEXP rosetta_r_1264(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2762,17 +2599,17 @@ SEXP rosetta_r_1687(SEXP self, SEXP args) {
                 static const char* const names[] = {nullptr};
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::PSO>(self);
+                    auto* native = rosetta_r::native<datamunge::optim::ArtificialBeeColony>(self);
                     if (n == 0) {
                         return rosetta_r::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("options", "    options() -> PSOOptions\n", args);
+        rosetta_r::no_overload("options", "    options() -> ArtificialBeeColonyOptions\n", args);
     });
 }
-SEXP rosetta_r_1688(SEXP args) {
+SEXP rosetta_r_1265(SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2781,78 +2618,79 @@ SEXP rosetta_r_1688(SEXP args) {
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 1, 0, a, &n)) {
                     if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::optim::PSO());
+                        return rosetta_r::adopt(new datamunge::optim::ArtificialBeeColony());
                     }
                     if (n == 1) {
                         rosetta_r::converting() = "argument 'options'";
-                        rosetta_r::Param<datamunge::optim::PSOOptions> p0(a[0]);
+                        rosetta_r::Param<datamunge::optim::ArtificialBeeColonyOptions> p0(a[0]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::adopt(new datamunge::optim::PSO(p0.get()));
+                        return rosetta_r::adopt(new datamunge::optim::ArtificialBeeColony(p0.get()));
                     }
                 }
             }
         }
-        rosetta_r::no_overload("PSO$new", "    PSO$new(options: PSOOptions = ...)\n", args);
+        rosetta_r::no_overload("ArtificialBeeColony$new", "    ArtificialBeeColony$new(options: ArtificialBeeColonyOptions = ...)\n", args);
     });
 }
-SEXP rosetta_r_1689(SEXP self) {
+SEXP rosetta_r_1307(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ProximalGradientOptions>(self);
-        return rosetta_r::result<decltype((native->step_size))>(native->step_size, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1690(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ProximalGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->step_size) return R_NilValue;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"function", "lower", "upper", "surrogate"};
+                SEXP a[4]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 4, 4, a, &n)) {
+                    auto* native = rosetta_r::native<datamunge::optim::BayesianOptimization>(self);
+                    if (n == 4) {
+                        rosetta_r::converting() = "argument 'function'";
+                        rosetta_r::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'lower'";
+                        rosetta_r::Param<const std::vector<double> &> p1(a[1]);
+                        rosetta_r::converting() = "argument 'upper'";
+                        rosetta_r::Param<const std::vector<double> &> p2(a[2]);
+                        rosetta_r::converting() = "argument 'surrogate'";
+                        rosetta_r::Param<datamunge::optim::BayesianSurrogate &> p3(a[3]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::call([&]() -> decltype(auto) { return native->run(p0.get(), p1.get(), p2.get(), p3.get()); }, self, rosetta_r::Return::automatic);
+                    }
+                }
+            }
         }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->step_size, converted.get());
-        return R_NilValue;
+        rosetta_r::no_overload("run", "    run(function: ArbitraryFunction, lower: numeric vector, upper: numeric vector, surrogate: BayesianSurrogate) -> BayesianOptimizationResult\n", args);
     });
 }
-SEXP rosetta_r_1691(SEXP self) {
+SEXP rosetta_r_1308(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ProximalGradientOptions>(self);
-        return rosetta_r::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1692(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ProximalGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->max_iterations) return R_NilValue;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"function", "coordinates", "lower", "upper", "surrogate"};
+                SEXP a[5]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 5, 5, a, &n)) {
+                    auto* native = rosetta_r::native<datamunge::optim::BayesianOptimization>(self);
+                    if (n == 5) {
+                        rosetta_r::converting() = "argument 'function'";
+                        rosetta_r::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'coordinates'";
+                        rosetta_r::Param<std::vector<double> &> p1(a[1]);
+                        rosetta_r::converting() = "argument 'lower'";
+                        rosetta_r::Param<const std::vector<double> &> p2(a[2]);
+                        rosetta_r::converting() = "argument 'upper'";
+                        rosetta_r::Param<const std::vector<double> &> p3(a[3]);
+                        rosetta_r::converting() = "argument 'surrogate'";
+                        rosetta_r::Param<datamunge::optim::BayesianSurrogate &> p4(a[4]);
+                        rosetta_r::converting() = nullptr;
+                        rosetta_r::Protect result(rosetta_r::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, self, rosetta_r::Return::automatic));
+                        p1.writeback(a[1]);
+                        return result.get();
+                    }
+                }
+            }
         }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->max_iterations, converted.get());
-        return R_NilValue;
+        rosetta_r::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: numeric vector, lower: numeric vector, upper: numeric vector, surrogate: BayesianSurrogate) -> numeric\n", args);
     });
 }
-SEXP rosetta_r_1693(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ProximalGradientOptions>(self);
-        return rosetta_r::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1694(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::ProximalGradientOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->tolerance) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->tolerance, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1695(SEXP args) {
+SEXP rosetta_r_1309(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2860,16 +2698,40 @@ SEXP rosetta_r_1695(SEXP args) {
                 static const char* const names[] = {nullptr};
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_r::native<datamunge::optim::BayesianOptimization>(self);
                     if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::optim::ProximalGradientOptions());
+                        return rosetta_r::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("ProximalGradientOptions$new", "    ProximalGradientOptions$new()\n", args);
+        rosetta_r::no_overload("options", "    options() -> BayesianOptimizationOptions\n", args);
     });
 }
-SEXP rosetta_r_1696(SEXP self, SEXP args) {
+SEXP rosetta_r_1310(SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"options"};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 1, 0, a, &n)) {
+                    if (n == 0) {
+                        return rosetta_r::adopt(new datamunge::optim::BayesianOptimization());
+                    }
+                    if (n == 1) {
+                        rosetta_r::converting() = "argument 'options'";
+                        rosetta_r::Param<datamunge::optim::BayesianOptimizationOptions> p0(a[0]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::adopt(new datamunge::optim::BayesianOptimization(p0.get()));
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("BayesianOptimization$new", "    BayesianOptimization$new(options: BayesianOptimizationOptions = ...)\n", args);
+    });
+}
+SEXP rosetta_r_1516(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2877,10 +2739,10 @@ SEXP rosetta_r_1696(SEXP self, SEXP args) {
                 static const char* const names[] = {"function", "coordinates"};
                 SEXP a[2]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::ProximalGradient>(self);
+                    auto* native = rosetta_r::native<datamunge::optim::GradientDescent>(self);
                     if (n == 2) {
                         rosetta_r::converting() = "argument 'function'";
-                        rosetta_r::Param<datamunge::optim::ProximalFunction &> p0(a[0]);
+                        rosetta_r::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
                         rosetta_r::converting() = "argument 'coordinates'";
                         rosetta_r::Param<std::vector<double> &> p1(a[1]);
                         rosetta_r::converting() = nullptr;
@@ -2891,10 +2753,10 @@ SEXP rosetta_r_1696(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("optimize", "    optimize(function: ProximalFunction, coordinates: vector<numeric>) -> numeric\n", args);
+        rosetta_r::no_overload("optimize", "    optimize(function: DifferentiableFunction, coordinates: numeric vector) -> numeric\n", args);
     });
 }
-SEXP rosetta_r_1697(SEXP self, SEXP args) {
+SEXP rosetta_r_1517(SEXP self, SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2902,17 +2764,17 @@ SEXP rosetta_r_1697(SEXP self, SEXP args) {
                 static const char* const names[] = {nullptr};
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::ProximalGradient>(self);
+                    auto* native = rosetta_r::native<datamunge::optim::GradientDescent>(self);
                     if (n == 0) {
                         return rosetta_r::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_r::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_r::no_overload("options", "    options() -> ProximalGradientOptions\n", args);
+        rosetta_r::no_overload("options", "    options() -> GradientDescentOptions\n", args);
     });
 }
-SEXP rosetta_r_1698(SEXP args) {
+SEXP rosetta_r_1518(SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2921,133 +2783,29 @@ SEXP rosetta_r_1698(SEXP args) {
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 1, 0, a, &n)) {
                     if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::optim::ProximalGradient());
+                        return rosetta_r::adopt(new datamunge::optim::GradientDescent());
                     }
                     if (n == 1) {
                         rosetta_r::converting() = "argument 'options'";
-                        rosetta_r::Param<datamunge::optim::ProximalGradientOptions> p0(a[0]);
+                        rosetta_r::Param<datamunge::optim::GradientDescentOptions> p0(a[0]);
                         rosetta_r::converting() = nullptr;
-                        return rosetta_r::adopt(new datamunge::optim::ProximalGradient(p0.get()));
+                        return rosetta_r::adopt(new datamunge::optim::GradientDescent(p0.get()));
                     }
                 }
             }
         }
-        rosetta_r::no_overload("ProximalGradient$new", "    ProximalGradient$new(options: ProximalGradientOptions = ...)\n", args);
+        rosetta_r::no_overload("GradientDescent$new", "    GradientDescent$new(options: GradientDescentOptions = ...)\n", args);
     });
 }
-SEXP rosetta_r_1787(SEXP self, SEXP args) {
+SEXP rosetta_r_1563(SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "coordinates"};
-                SEXP a[2]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::SGD>(self);
-                    if (n == 2) {
-                        rosetta_r::converting() = "argument 'function'";
-                        rosetta_r::Param<datamunge::optim::DifferentiableSeparableFunction &> p0(a[0]);
-                        rosetta_r::converting() = "argument 'coordinates'";
-                        rosetta_r::Param<std::vector<double> &> p1(a[1]);
-                        rosetta_r::converting() = nullptr;
-                        rosetta_r::Protect result(rosetta_r::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_r::Return::automatic));
-                        p1.writeback(a[1]);
-                        return result.get();
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("optimize", "    optimize(function: DifferentiableSeparableFunction, coordinates: vector<numeric>) -> numeric\n", args);
-    });
-}
-SEXP rosetta_r_1788(SEXP self, SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_r::native<datamunge::optim::SGD>(self);
-                    if (n == 0) {
-                        return rosetta_r::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_r::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("options", "    options() -> SGDOptions\n", args);
-    });
-}
-SEXP rosetta_r_1789(SEXP args) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"options"};
-                SEXP a[1]; R_xlen_t n = 0;
-                if (rosetta_r::collect(args, names, 1, 0, a, &n)) {
-                    if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::optim::SGD());
-                    }
-                    if (n == 1) {
-                        rosetta_r::converting() = "argument 'options'";
-                        rosetta_r::Param<datamunge::optim::SGDOptions> p0(a[0]);
-                        rosetta_r::converting() = nullptr;
-                        return rosetta_r::adopt(new datamunge::optim::SGD(p0.get()));
-                    }
-                }
-            }
-        }
-        rosetta_r::no_overload("SGD$new", "    SGD$new(options: SGDOptions = ...)\n", args);
-    });
-}
-SEXP rosetta_r_1830(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
-        return rosetta_r::result<decltype((native->step_size))>(native->step_size, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1831(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->step_size) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->step_size, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1832(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
-        return rosetta_r::result<decltype((native->regularization))>(native->regularization, self, rosetta_r::Return::automatic);
-    });
-}
-SEXP rosetta_r_1833(SEXP self, SEXP value) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->regularization)>>;
-        if constexpr (rosetta_r::bound_v<F>) {
-            // obj$field$x <- v assigns the (modified) field object back to itself.
-            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->regularization) return R_NilValue;
-        }
-        rosetta_r::Param<const F&> converted(value);
-        rosetta_r::assign_field(native->regularization, converted.get());
-        return R_NilValue;
-    });
-}
-SEXP rosetta_r_1834(SEXP self) {
-    return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
         return rosetta_r::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_r::Return::automatic);
     });
 }
-SEXP rosetta_r_1835(SEXP self, SEXP value) {
+SEXP rosetta_r_1564(SEXP self, SEXP value) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
         if constexpr (rosetta_r::bound_v<F>) {
             // obj$field$x <- v assigns the (modified) field object back to itself.
@@ -3058,15 +2816,15 @@ SEXP rosetta_r_1835(SEXP self, SEXP value) {
         return R_NilValue;
     });
 }
-SEXP rosetta_r_1836(SEXP self) {
+SEXP rosetta_r_1565(SEXP self) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
         return rosetta_r::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_r::Return::automatic);
     });
 }
-SEXP rosetta_r_1837(SEXP self, SEXP value) {
+SEXP rosetta_r_1566(SEXP self, SEXP value) {
     return rosetta_r::boundary([&]() -> SEXP {
-        auto* native = rosetta_r::native<datamunge::optim::SQPOptions>(self);
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
         if constexpr (rosetta_r::bound_v<F>) {
             // obj$field$x <- v assigns the (modified) field object back to itself.
@@ -3077,7 +2835,83 @@ SEXP rosetta_r_1837(SEXP self, SEXP value) {
         return R_NilValue;
     });
 }
-SEXP rosetta_r_1838(SEXP args) {
+SEXP rosetta_r_1567(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        return rosetta_r::result<decltype((native->history_size))>(native->history_size, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1568(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->history_size)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->history_size) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->history_size, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1569(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        return rosetta_r::result<decltype((native->armijo_c1))>(native->armijo_c1, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1570(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->armijo_c1)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->armijo_c1) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->armijo_c1, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1571(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        return rosetta_r::result<decltype((native->wolfe_c2))>(native->wolfe_c2, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1572(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->wolfe_c2)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->wolfe_c2) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->wolfe_c2, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1573(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        return rosetta_r::result<decltype((native->max_line_search_trials))>(native->max_line_search_trials, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1574(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::LBFGSOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_line_search_trials)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->max_line_search_trials) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->max_line_search_trials, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1575(SEXP args) {
     return rosetta_r::boundary([&]() -> SEXP {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3086,12 +2920,228 @@ SEXP rosetta_r_1838(SEXP args) {
                 SEXP a[1]; R_xlen_t n = 0;
                 if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        return rosetta_r::adopt(new datamunge::optim::SQPOptions());
+                        return rosetta_r::adopt(new datamunge::optim::LBFGSOptions());
                     }
                 }
             }
         }
-        rosetta_r::no_overload("SQPOptions$new", "    SQPOptions$new()\n", args);
+        rosetta_r::no_overload("LBFGSOptions$new", "    LBFGSOptions$new()\n", args);
+    });
+}
+SEXP rosetta_r_1632(SEXP self, SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"function", "coordinates"};
+                SEXP a[2]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 2, 2, a, &n)) {
+                    auto* native = rosetta_r::native<datamunge::optim::Nadam>(self);
+                    if (n == 2) {
+                        rosetta_r::converting() = "argument 'function'";
+                        rosetta_r::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
+                        rosetta_r::converting() = "argument 'coordinates'";
+                        rosetta_r::Param<std::vector<double> &> p1(a[1]);
+                        rosetta_r::converting() = nullptr;
+                        rosetta_r::Protect result(rosetta_r::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_r::Return::automatic));
+                        p1.writeback(a[1]);
+                        return result.get();
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("optimize", "    optimize(function: DifferentiableFunction, coordinates: numeric vector) -> numeric\n", args);
+    });
+}
+SEXP rosetta_r_1633(SEXP self, SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_r::native<datamunge::optim::Nadam>(self);
+                    if (n == 0) {
+                        return rosetta_r::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_r::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("options", "    options() -> NadamOptions\n", args);
+    });
+}
+SEXP rosetta_r_1634(SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"options"};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 1, 0, a, &n)) {
+                    if (n == 0) {
+                        return rosetta_r::adopt(new datamunge::optim::Nadam());
+                    }
+                    if (n == 1) {
+                        rosetta_r::converting() = "argument 'options'";
+                        rosetta_r::Param<datamunge::optim::NadamOptions> p0(a[0]);
+                        rosetta_r::converting() = nullptr;
+                        return rosetta_r::adopt(new datamunge::optim::Nadam(p0.get()));
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("Nadam$new", "    Nadam$new(options: NadamOptions = ...)\n", args);
+    });
+}
+SEXP rosetta_r_1645(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        return rosetta_r::result<decltype((native->num_replicas))>(native->num_replicas, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1646(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->num_replicas)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->num_replicas) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->num_replicas, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1647(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        return rosetta_r::result<decltype((native->initial_temperature))>(native->initial_temperature, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1648(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial_temperature)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->initial_temperature) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->initial_temperature, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1649(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        return rosetta_r::result<decltype((native->final_temperature))>(native->final_temperature, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1650(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->final_temperature)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->final_temperature) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->final_temperature, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1651(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        return rosetta_r::result<decltype((native->step_std_dev))>(native->step_std_dev, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1652(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->step_std_dev)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->step_std_dev) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->step_std_dev, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1653(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        return rosetta_r::result<decltype((native->swap_interval))>(native->swap_interval, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1654(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->swap_interval)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->swap_interval) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->swap_interval, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1655(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        return rosetta_r::result<decltype((native->max_sweeps))>(native->max_sweeps, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1656(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_sweeps)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->max_sweeps) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->max_sweeps, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1657(SEXP self) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        return rosetta_r::result<decltype((native->seed))>(native->seed, self, rosetta_r::Return::automatic);
+    });
+}
+SEXP rosetta_r_1658(SEXP self, SEXP value) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        auto* native = rosetta_r::native<datamunge::optim::ParallelTemperingOptions>(self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
+        if constexpr (rosetta_r::bound_v<F>) {
+            // obj$field$x <- v assigns the (modified) field object back to itself.
+            if (rosetta_r::is_instance<F>(value) && rosetta_r::native<F>(value) == &native->seed) return R_NilValue;
+        }
+        rosetta_r::Param<const F&> converted(value);
+        rosetta_r::assign_field(native->seed, converted.get());
+        return R_NilValue;
+    });
+}
+SEXP rosetta_r_1659(SEXP args) {
+    return rosetta_r::boundary([&]() -> SEXP {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                SEXP a[1]; R_xlen_t n = 0;
+                if (rosetta_r::collect(args, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        return rosetta_r::adopt(new datamunge::optim::ParallelTemperingOptions());
+                    }
+                }
+            }
+        }
+        rosetta_r::no_overload("ParallelTemperingOptions$new", "    ParallelTemperingOptions$new()\n", args);
     });
 }
 SEXP rosetta_r_1957(SEXP self) {
@@ -3316,7 +3366,7 @@ SEXP rosetta_r_2283(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("classes", "    classes() -> vector<character>\n", args);
+        rosetta_r::no_overload("classes", "    classes() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2284(SEXP self, SEXP args) {
@@ -3334,7 +3384,7 @@ SEXP rosetta_r_2284(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("predictor_names", "    predictor_names() -> vector<character>\n", args);
+        rosetta_r::no_overload("predictor_names", "    predictor_names() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2285(SEXP self, SEXP args) {
@@ -3388,7 +3438,7 @@ SEXP rosetta_r_2287(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("priors", "    priors() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("priors", "    priors() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2288(SEXP self, SEXP args) {
@@ -3442,7 +3492,7 @@ SEXP rosetta_r_2290(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("proportion_of_trace", "    proportion_of_trace() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("proportion_of_trace", "    proportion_of_trace() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2291(SEXP self, SEXP args) {
@@ -3559,7 +3609,7 @@ SEXP rosetta_r_2296(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> vector<character>\n", args);
+        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2297(SEXP self, SEXP args) {
@@ -3675,7 +3725,7 @@ SEXP rosetta_r_2301(SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("LDA$new", "    LDA$new(data: DataFrame, formula: character, priors: vector<numeric> = ...)\n", args);
+        rosetta_r::no_overload("LDA$new", "    LDA$new(data: DataFrame, formula: character, priors: numeric vector = ...)\n", args);
     });
 }
 SEXP rosetta_r_2344(SEXP self, SEXP args) {
@@ -3693,7 +3743,7 @@ SEXP rosetta_r_2344(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("classes", "    classes() -> vector<character>\n", args);
+        rosetta_r::no_overload("classes", "    classes() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2345(SEXP self, SEXP args) {
@@ -3711,7 +3761,7 @@ SEXP rosetta_r_2345(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("predictor_names", "    predictor_names() -> vector<character>\n", args);
+        rosetta_r::no_overload("predictor_names", "    predictor_names() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2346(SEXP self, SEXP args) {
@@ -3783,7 +3833,7 @@ SEXP rosetta_r_2349(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("feature_importance", "    feature_importance() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("feature_importance", "    feature_importance() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2350(SEXP self, SEXP args) {
@@ -3894,7 +3944,7 @@ SEXP rosetta_r_2355(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> vector<character>\n", args);
+        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2356(SEXP self, SEXP args) {
@@ -4175,7 +4225,7 @@ SEXP rosetta_r_2646(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("predictor_names", "    predictor_names() -> vector<character>\n", args);
+        rosetta_r::no_overload("predictor_names", "    predictor_names() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2647(SEXP self, SEXP args) {
@@ -4229,7 +4279,7 @@ SEXP rosetta_r_2649(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("feature_importance", "    feature_importance() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("feature_importance", "    feature_importance() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2650(SEXP self, SEXP args) {
@@ -4247,7 +4297,7 @@ SEXP rosetta_r_2650(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("fitted_values", "    fitted_values() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("fitted_values", "    fitted_values() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2651(SEXP self, SEXP args) {
@@ -4301,7 +4351,7 @@ SEXP rosetta_r_2653(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("training_deviance", "    training_deviance() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("training_deviance", "    training_deviance() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2654(SEXP self, SEXP args) {
@@ -4358,7 +4408,7 @@ SEXP rosetta_r_2656(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> vector<numeric>\n", args);
+        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2657(SEXP self, SEXP args) {
@@ -4672,7 +4722,7 @@ SEXP rosetta_r_2750(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("coefficients", "    coefficients() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("coefficients", "    coefficients() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2751(SEXP self, SEXP args) {
@@ -4690,7 +4740,7 @@ SEXP rosetta_r_2751(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("coefficient_names", "    coefficient_names() -> vector<character>\n", args);
+        rosetta_r::no_overload("coefficient_names", "    coefficient_names() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_2752(SEXP self, SEXP args) {
@@ -4708,7 +4758,7 @@ SEXP rosetta_r_2752(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("fitted_values", "    fitted_values() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("fitted_values", "    fitted_values() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2753(SEXP self, SEXP args) {
@@ -4726,7 +4776,7 @@ SEXP rosetta_r_2753(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("linear_predictors", "    linear_predictors() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("linear_predictors", "    linear_predictors() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2754(SEXP self, SEXP args) {
@@ -4744,7 +4794,7 @@ SEXP rosetta_r_2754(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("residuals", "    residuals() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("residuals", "    residuals() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2755(SEXP self, SEXP args) {
@@ -4762,7 +4812,7 @@ SEXP rosetta_r_2755(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("pearson_residuals", "    pearson_residuals() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("pearson_residuals", "    pearson_residuals() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2756(SEXP self, SEXP args) {
@@ -4780,7 +4830,7 @@ SEXP rosetta_r_2756(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("standardized_residuals", "    standardized_residuals() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("standardized_residuals", "    standardized_residuals() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2757(SEXP self, SEXP args) {
@@ -4798,7 +4848,7 @@ SEXP rosetta_r_2757(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("leverage", "    leverage() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("leverage", "    leverage() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2758(SEXP self, SEXP args) {
@@ -4816,7 +4866,7 @@ SEXP rosetta_r_2758(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("standard_errors", "    standard_errors() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("standard_errors", "    standard_errors() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2759(SEXP self, SEXP args) {
@@ -4834,7 +4884,7 @@ SEXP rosetta_r_2759(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("test_statistics", "    test_statistics() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("test_statistics", "    test_statistics() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2760(SEXP self, SEXP args) {
@@ -4852,7 +4902,7 @@ SEXP rosetta_r_2760(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("p_values", "    p_values() -> vector<numeric>\n", args);
+        rosetta_r::no_overload("p_values", "    p_values() -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2761(SEXP self, SEXP args) {
@@ -4948,7 +4998,7 @@ SEXP rosetta_r_2765(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("confidence_interval_lower", "    confidence_interval_lower(level: numeric = ...) -> vector<numeric>\n", args);
+        rosetta_r::no_overload("confidence_interval_lower", "    confidence_interval_lower(level: numeric = ...) -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2766(SEXP self, SEXP args) {
@@ -4972,7 +5022,7 @@ SEXP rosetta_r_2766(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("confidence_interval_upper", "    confidence_interval_upper(level: numeric = ...) -> vector<numeric>\n", args);
+        rosetta_r::no_overload("confidence_interval_upper", "    confidence_interval_upper(level: numeric = ...) -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2767(SEXP self, SEXP args) {
@@ -5029,7 +5079,7 @@ SEXP rosetta_r_2769(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> vector<numeric>\n", args);
+        rosetta_r::no_overload("predict", "    predict(newdata: DataFrame) -> numeric vector\n", args);
     });
 }
 SEXP rosetta_r_2770(SEXP self, SEXP args) {
@@ -5472,7 +5522,7 @@ SEXP rosetta_r_3179(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("vertices", "    vertices() -> vector<character>\n", args);
+        rosetta_r::no_overload("vertices", "    vertices() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_3180(SEXP self, SEXP args) {
@@ -5493,7 +5543,7 @@ SEXP rosetta_r_3180(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("outgoing_neighbors", "    outgoing_neighbors(vertex: character) -> vector<character>\n", args);
+        rosetta_r::no_overload("outgoing_neighbors", "    outgoing_neighbors(vertex: character) -> character vector\n", args);
     });
 }
 SEXP rosetta_r_3181(SEXP self, SEXP args) {
@@ -5514,7 +5564,7 @@ SEXP rosetta_r_3181(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("incoming_neighbors", "    incoming_neighbors(vertex: character) -> vector<character>\n", args);
+        rosetta_r::no_overload("incoming_neighbors", "    incoming_neighbors(vertex: character) -> character vector\n", args);
     });
 }
 SEXP rosetta_r_3182(SEXP self, SEXP args) {
@@ -5577,7 +5627,7 @@ SEXP rosetta_r_3184(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("bfs", "    bfs(start: character) -> vector<character>\n", args);
+        rosetta_r::no_overload("bfs", "    bfs(start: character) -> character vector\n", args);
     });
 }
 SEXP rosetta_r_3185(SEXP self, SEXP args) {
@@ -5598,7 +5648,7 @@ SEXP rosetta_r_3185(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("dfs", "    dfs(start: character) -> vector<character>\n", args);
+        rosetta_r::no_overload("dfs", "    dfs(start: character) -> character vector\n", args);
     });
 }
 SEXP rosetta_r_3186(SEXP self, SEXP args) {
@@ -5657,7 +5707,7 @@ SEXP rosetta_r_3188(SEXP self, SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("topological_sort", "    topological_sort() -> vector<character>\n", args);
+        rosetta_r::no_overload("topological_sort", "    topological_sort() -> character vector\n", args);
     });
 }
 SEXP rosetta_r_3189(SEXP args) {
@@ -5687,7 +5737,7 @@ SEXP rosetta_r_3189(SEXP args) {
                 }
             }
         }
-        rosetta_r::no_overload("DirectedGraph$new", "    DirectedGraph$new()\n    DirectedGraph$new(vertices: vector<character>)\n", args);
+        rosetta_r::no_overload("DirectedGraph$new", "    DirectedGraph$new()\n    DirectedGraph$new(vertices: character vector)\n", args);
     });
 }
 } // namespace ROSETTA_R_MODULE

@@ -2572,30 +2572,88 @@ class Tensor {
 ///        with derivative=1) to read off an exact derivative alongside the value.
 class Dual {
  public:
+  /// @brief A dual number value + derivative·ε (ε² = 0).
+  ///
+  /// Seed the variable you differentiate with derivative 1 and constants with 0; every
+  /// operation then carries the exact derivative with respect to that seed.
+  /// @param value Real part, the function value.
+  /// @param derivative Dual part, the derivative with respect to the seed (default 0).
+  /// @par Example
+  /// @code
+  /// const dm::Dual x(2.0, 1.0);  // seed d/dx
+  /// std::print("{}\n", x.multiply(x).derivative());  // 4
+  /// @endcode
   explicit Dual(double value, double derivative = 0.0);
 
+  /// @brief The real part: the function value.
   [[nodiscard]] double value() const;
+  /// @brief The dual part: the exact derivative with respect to the seed.
   [[nodiscard]] double derivative() const;
 
+  /// @brief Sum: this + @p other, with derivative a' + b'.
+  /// @param other Right operand.
+  /// @return A new Dual; neither operand changes.
   [[nodiscard]] Dual add(const Dual& other) const;
+  /// @brief Difference: this - @p other, with derivative a' - b'.
+  /// @param other Right operand.
+  /// @return A new Dual; neither operand changes.
   [[nodiscard]] Dual subtract(const Dual& other) const;
+  /// @brief Product: this * @p other, with derivative a'b + ab' (product rule).
+  /// @param other Right operand.
+  /// @return A new Dual; neither operand changes.
   [[nodiscard]] Dual multiply(const Dual& other) const;
+  /// @brief Quotient: this / @p other, with derivative (a'b - ab')/b² (IEEE inf/NaN when other is 0).
+  /// @param other Right operand.
+  /// @return A new Dual; neither operand changes.
   [[nodiscard]] Dual divide(const Dual& other) const;
+  /// @brief Negation -x, with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual negate() const;
 
+  /// @brief Adds a constant @p scalar, derivative unchanged.
+  /// @param scalar Constant right operand.
+  /// @return A new Dual.
   [[nodiscard]] Dual add_scalar(double scalar) const;
+  /// @brief Subtracts a constant @p scalar, derivative unchanged.
+  /// @param scalar Constant right operand.
+  /// @return A new Dual.
   [[nodiscard]] Dual subtract_scalar(double scalar) const;
+  /// @brief Multiplies by a constant @p scalar, derivative scaled by it.
+  /// @param scalar Constant right operand.
+  /// @return A new Dual.
   [[nodiscard]] Dual multiply_scalar(double scalar) const;
+  /// @brief Divides by a constant @p scalar, derivative divided by it.
+  /// @param scalar Constant right operand.
+  /// @return A new Dual.
   [[nodiscard]] Dual divide_scalar(double scalar) const;
 
+  /// @brief Power x^p for a constant exponent, with derivative p·x^(p-1).
+  /// @param exponent Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+  /// @return A new Dual.
   [[nodiscard]] Dual pow(double exponent) const;
+  /// @brief Exponential e^x, with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual exp() const;
+  /// @brief Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual log() const;
+  /// @brief Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual sqrt() const;
+  /// @brief Sine (radians), with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual sin() const;
+  /// @brief Cosine (radians), with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual cos() const;
+  /// @brief Tangent (radians), with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual tan() const;
+  /// @brief Hyperbolic tangent, with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual tanh() const;
+  /// @brief Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.
+  /// @return A new Dual.
   [[nodiscard]] Dual abs() const;
 
  private:
@@ -2609,31 +2667,91 @@ class Dual {
 ///        their exact mixed second partial, for computing Hessian entries.
 class HyperDual {
  public:
+  /// @brief A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).
+  ///
+  /// Seed input i with eps1 = 1 and input j with eps2 = 1 (both on the same input for a
+  /// diagonal entry); the result's eps1eps2() is then the exact ∂²f/∂xᵢ∂xⱼ.
+  /// @param value Real part, the function value.
+  /// @param eps1 First derivative along the first seed direction (default 0).
+  /// @param eps2 First derivative along the second seed direction (default 0).
+  /// @param eps1eps2 Mixed second derivative part (default 0; leave 0 for inputs).
+  /// @par Example
+  /// @code
+  /// const dm::HyperDual x(3.0, 1.0, 1.0);
+  /// std::print("{}\n", x.multiply(x).eps1eps2());  // d²(x²)/dx² = 2
+  /// @endcode
   explicit HyperDual(double value, double eps1 = 0.0, double eps2 = 0.0, double eps1eps2 = 0.0);
 
+  /// @brief The real part: the function value.
   [[nodiscard]] double value() const;
+  /// @brief Derivative along the first seed direction (ε₁ part).
   [[nodiscard]] double eps1() const;
+  /// @brief Derivative along the second seed direction (ε₂ part).
   [[nodiscard]] double eps2() const;
+  /// @brief The mixed second derivative along both seed directions (ε₁ε₂ part): a Hessian entry.
   [[nodiscard]] double eps1eps2() const;
 
+  /// @brief Sum: this + @p other, with first and mixed second derivatives.
+  /// @param other Right operand.
+  /// @return A new HyperDual; neither operand changes.
   [[nodiscard]] HyperDual add(const HyperDual& other) const;
+  /// @brief Difference: this - @p other, with first and mixed second derivatives.
+  /// @param other Right operand.
+  /// @return A new HyperDual; neither operand changes.
   [[nodiscard]] HyperDual subtract(const HyperDual& other) const;
+  /// @brief Product: this * @p other, with first and mixed second derivatives.
+  /// @param other Right operand.
+  /// @return A new HyperDual; neither operand changes.
   [[nodiscard]] HyperDual multiply(const HyperDual& other) const;
+  /// @brief Quotient: this / @p other, with first and mixed second derivatives (IEEE inf/NaN when other is 0).
+  /// @param other Right operand.
+  /// @return A new HyperDual; neither operand changes.
   [[nodiscard]] HyperDual divide(const HyperDual& other) const;
+  /// @brief Negation -x, with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual negate() const;
 
+  /// @brief Adds a constant @p scalar, derivative parts unchanged.
+  /// @param scalar Constant right operand.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual add_scalar(double scalar) const;
+  /// @brief Subtracts a constant @p scalar, derivative parts unchanged.
+  /// @param scalar Constant right operand.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual subtract_scalar(double scalar) const;
+  /// @brief Multiplies by a constant @p scalar, derivative parts scaled accordingly.
+  /// @param scalar Constant right operand.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual multiply_scalar(double scalar) const;
+  /// @brief Divides by a constant @p scalar, derivative parts scaled accordingly.
+  /// @param scalar Constant right operand.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual divide_scalar(double scalar) const;
 
+  /// @brief Power x^p for a constant exponent, with derivative p·x^(p-1).
+  /// @param exponent Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual pow(double exponent) const;
+  /// @brief Exponential e^x, with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual exp() const;
+  /// @brief Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual log() const;
+  /// @brief Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual sqrt() const;
+  /// @brief Sine (radians), with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual sin() const;
+  /// @brief Cosine (radians), with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual cos() const;
+  /// @brief Tangent (radians), with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual tan() const;
+  /// @brief Hyperbolic tangent, with its exact chain-rule derivative.
+  /// @return A new HyperDual.
   [[nodiscard]] HyperDual tanh() const;
 
  private:
@@ -2651,10 +2769,29 @@ class Var;
 ///        (index a leaf's own index() into the result to read its gradient).
 class Tape {
  public:
+  /// @brief An empty tape; create leaf Vars against it with Var(tape, value).
   Tape() = default;
 
+  /// @brief Number of recorded nodes (leaves plus operation results).
   [[nodiscard]] std::size_t size() const;
+  /// @brief The value recorded at node @p index.
+  /// @param index Node index, as returned by Var::index().
+  /// @return The node's value.
+  /// @throws std::out_of_range When @p index >= size().
   [[nodiscard]] double value_at(std::size_t index) const;
+  /// @brief Reverse sweep from @p output: d(output)/d(node) for every node on the tape.
+  ///
+  /// The tape is unchanged, so backward() may be called again for other outputs.
+  /// @param output A Var recorded on this tape (usually the final expression).
+  /// @return One adjoint per node, indexed by Var::index() (0-based; add 1 in R).
+  /// @throws std::out_of_range When @p output is not a node of this tape.
+  /// @par Example
+  /// @code
+  /// dm::Tape tape;
+  /// const dm::Var a(tape, 2.0), b(tape, 3.0);
+  /// const auto grad = tape.backward(a.multiply(b));
+  /// std::print("{} {}\n", grad[a.index()], grad[b.index()]);  // 3 2
+  /// @endcode
   [[nodiscard]] std::vector<double> backward(const Var& output) const;
 
  private:
@@ -2666,30 +2803,80 @@ class Tape {
 class Var {
  public:
   /// @brief Records a new independent leaf variable on @p tape.
+  /// @param tape The tape that records this variable and every expression built from it;
+  ///        it must outlive the Var, and operands of one expression must share it.
+  /// @param value The leaf's value.
   explicit Var(Tape& tape, double value);
 
+  /// @brief The value of this node.
   [[nodiscard]] double      value() const;
+  /// @brief This node's index on its Tape: where to read its gradient in Tape::backward()'s result.
   [[nodiscard]] std::size_t index() const;
 
+  /// @brief Sum: this + @p other, with the node recorded on the shared Tape.
+  /// @param other Right operand (recorded on the same Tape).
+  /// @return A new Var; neither operand changes.
   [[nodiscard]] Var add(const Var& other) const;
+  /// @brief Difference: this - @p other, with the node recorded on the shared Tape.
+  /// @param other Right operand (recorded on the same Tape).
+  /// @return A new Var; neither operand changes.
   [[nodiscard]] Var subtract(const Var& other) const;
+  /// @brief Product: this * @p other, with the node recorded on the shared Tape.
+  /// @param other Right operand (recorded on the same Tape).
+  /// @return A new Var; neither operand changes.
   [[nodiscard]] Var multiply(const Var& other) const;
+  /// @brief Quotient: this / @p other, with the node recorded on the shared Tape (IEEE inf/NaN when other is 0).
+  /// @param other Right operand (recorded on the same Tape).
+  /// @return A new Var; neither operand changes.
   [[nodiscard]] Var divide(const Var& other) const;
+  /// @brief Negation -x, with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var negate() const;
 
+  /// @brief Adds a constant @p scalar, recorded on the Tape.
+  /// @param scalar Constant right operand.
+  /// @return A new Var.
   [[nodiscard]] Var add_scalar(double scalar) const;
+  /// @brief Subtracts a constant @p scalar, recorded on the Tape.
+  /// @param scalar Constant right operand.
+  /// @return A new Var.
   [[nodiscard]] Var subtract_scalar(double scalar) const;
+  /// @brief Multiplies by a constant @p scalar, recorded on the Tape.
+  /// @param scalar Constant right operand.
+  /// @return A new Var.
   [[nodiscard]] Var multiply_scalar(double scalar) const;
+  /// @brief Divides by a constant @p scalar, recorded on the Tape.
+  /// @param scalar Constant right operand.
+  /// @return A new Var.
   [[nodiscard]] Var divide_scalar(double scalar) const;
 
+  /// @brief Power x^p for a constant exponent, with derivative p·x^(p-1).
+  /// @param exponent Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+  /// @return A new Var.
   [[nodiscard]] Var pow(double exponent) const;
+  /// @brief Exponential e^x, with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var exp() const;
+  /// @brief Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var log() const;
+  /// @brief Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var sqrt() const;
+  /// @brief Sine (radians), with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var sin() const;
+  /// @brief Cosine (radians), with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var cos() const;
+  /// @brief Tangent (radians), with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var tan() const;
+  /// @brief Hyperbolic tangent, with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var tanh() const;
+  /// @brief Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.
+  /// @return A new Var.
   [[nodiscard]] Var abs() const;
 
  private:

@@ -14,7 +14,7 @@ Output of HMC::sample().
 \section{Fields}{
 
 \itemize{
-\item \verb{$samples} (\verb{vector<vector<numeric>>}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
+\item \verb{$samples} (\verb{list of numeric vector}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
 \item \verb{$accept_rate} (\code{numeric}): Fraction of all iterations (warmup included) whose proposal was accepted.
 \item \verb{$final_step_size} (\code{numeric}): Step size used after warmup.
 }

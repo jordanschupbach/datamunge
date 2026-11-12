@@ -7,9 +7,9 @@
 discrete_frechet_distance(p, q)
 }
 \arguments{
-\item{p}{\verb{vector<Point2D>}}
+\item{p}{\verb{list of Point2D}}
 
-\item{q}{\verb{vector<Point2D>}}
+\item{q}{\verb{list of Point2D}}
 }
 \value{
 \code{numeric}

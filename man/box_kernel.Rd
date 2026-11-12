@@ -10,7 +10,7 @@ box_kernel(size)
 \item{size}{\code{integer}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 A normalized (sums to 1) box blur kernel of the given odd size.

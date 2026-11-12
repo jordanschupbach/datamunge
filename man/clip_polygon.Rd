@@ -7,12 +7,12 @@
 clip_polygon(subject, clip)
 }
 \arguments{
-\item{subject}{\verb{vector<Point2D>}}
+\item{subject}{\verb{list of Point2D}}
 
-\item{clip}{\verb{vector<Point2D>}}
+\item{clip}{\verb{list of Point2D}}
 }
 \value{
-\verb{vector<Point2D>}
+\verb{list of Point2D}
 }
 \description{
 \code{clip} MUST be convex AND counterclockwise-ordered (exactly what convex_hull() produces) -- the algorithm processes it one directed edge at a time, keeping only the subject-polygon portion to the left of every edge, so a clockwise or non-convex clip polygon silently produces a wrong (or empty) result rather than an error. Returns an empty polygon if the two don't overlap at all.

@@ -7,12 +7,12 @@
 romano_wolf_adjust(resampled_p, sorted_p)
 }
 \arguments{
-\item{resampled_p}{\verb{vector<vector<numeric>>}}
+\item{resampled_p}{\verb{list of numeric vector}}
 
-\item{sorted_p}{\verb{vector<numeric>}}
+\item{sorted_p}{\verb{numeric vector}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 Monotonicity (adjusted p[k] >= adjusted p[k-1]) is enforced explicitly, since narrowing the comparison set at each step means it isn't automatic the way it is for the single-step procedure above.

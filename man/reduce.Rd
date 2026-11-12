@@ -9,7 +9,7 @@ reduce(p, basis, order)
 \arguments{
 \item{p}{\code{MultivariatePolynomial}}
 
-\item{basis}{\verb{vector<MultivariatePolynomial>}}
+\item{basis}{\verb{list of MultivariatePolynomial}}
 
 \item{order}{\code{character (MonomialOrder)}}
 }

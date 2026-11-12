@@ -15,7 +15,7 @@ Always kept trimmed -- no trailing (highest-degree) zero coefficients, except fo
 \code{Polynomial$new(coeffs)}
 \itemize{
 \item \code{constant} (\code{numeric})
-\item \code{coeffs} (\verb{vector<numeric>})
+\item \code{coeffs} (\verb{numeric vector})
 }
 }
 
@@ -31,7 +31,7 @@ every coefficient()/loop bound in this module well-defined).
 \item \verb{$coefficient(i)} -> \code{numeric}
 
 Coefficient of x^i; 0.0 for any i outside [0, degree()] (including negative i).
-\item \verb{$coefficients()} -> \verb{vector<numeric>}
+\item \verb{$coefficients()} -> \verb{numeric vector}
 \item \verb{$evaluate(x)} -> \code{numeric}
 
 Evaluates the polynomial at x via Horner's method.

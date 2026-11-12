@@ -10,7 +10,7 @@ SWIG-friendly facade for datamunge::linalg::Tensor -- a dense, row-major, N-dime
 
 \code{Tensor$new(shape, dtype = "float64")}
 \itemize{
-\item \code{shape} (\verb{vector<integer>})
+\item \code{shape} (\verb{integer vector})
 \item \code{dtype} (\code{character}): One of "float64", "bool", or "string".
 }
 }
@@ -19,7 +19,7 @@ SWIG-friendly facade for datamunge::linalg::Tensor -- a dense, row-major, N-dime
 
 \itemize{
 \item \verb{$ndim()} -> \code{integer}
-\item \verb{$shape()} -> \verb{vector<integer>}
+\item \verb{$shape()} -> \verb{integer vector}
 \item \verb{$size()} -> \code{integer}
 \item \verb{$dtype_name()} -> \code{character}
 \item \verb{$at(index)} -> \code{numeric}

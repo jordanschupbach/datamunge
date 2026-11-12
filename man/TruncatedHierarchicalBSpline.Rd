@@ -87,14 +87,14 @@ Depth (= level used there if it is a leaf).
 \item \code{cell}: Cell id.
 \item Returns: Depth.
 }
-\item \verb{$cell_min(cell)} -> \verb{vector<numeric>}
+\item \verb{$cell_min(cell)} -> \verb{numeric vector}
 
 Lower corner.
 \itemize{
 \item \code{cell}: Cell id.
 \item Returns: d coordinates.
 }
-\item \verb{$cell_max(cell)} -> \verb{vector<numeric>}
+\item \verb{$cell_max(cell)} -> \verb{numeric vector}
 
 Upper corner.
 \itemize{
@@ -117,7 +117,7 @@ level when first reached. The represented function is unchanged.
 \item \code{slot}: Child slot.
 \item Returns: Child id.
 }
-\item \verb{$subdivide(cell)} -> \verb{vector<integer>}
+\item \verb{$subdivide(cell)} -> \verb{integer vector}
 
 Creates all 2^d children of \code{cell}.
 \itemize{
@@ -133,7 +133,7 @@ Subdivides, down to depth \code{depth}, every cell overlapping the open box
 \item \code{region_max}: Upper corner (min < max per axis).
 \item \code{depth}: Deepest level to create.
 }
-\item \verb{$support_min(level, index)} -> \verb{vector<numeric>}
+\item \verb{$support_min(level, index)} -> \verb{numeric vector}
 
 Lower corner of the support box of basis function \code{index} at \code{level}.
 \itemize{
@@ -141,7 +141,7 @@ Lower corner of the support box of basis function \code{index} at \code{level}.
 \item \code{index}: Multi-index into that level's net.
 \item Returns: d coordinates.
 }
-\item \verb{$support_max(level, index)} -> \verb{vector<numeric>}
+\item \verb{$support_max(level, index)} -> \verb{numeric vector}
 
 Upper corner of the support box.
 \itemize{
@@ -158,7 +158,7 @@ Omega^level but not in Omega^(level+1)).
 \item \code{index}: Multi-index.
 \item Returns: Activity flag.
 }
-\item \verb{$active_indices(level)} -> \verb{vector<vector<integer>>}
+\item \verb{$active_indices(level)} -> \verb{list of integer vector}
 
 Every active multi-index at \code{level}, in row-major order.
 \itemize{
@@ -246,14 +246,14 @@ Evaluates the hierarchical spline (finest level covering \code{point}).
 \item \code{point}: d coordinates inside the domain.
 \item Returns: Value.
 }
-\item \verb{$evaluate_points(points)} -> \verb{vector<numeric>}
+\item \verb{$evaluate_points(points)} -> \verb{numeric vector}
 
 Evaluates at many points.
 \itemize{
 \item \code{points}: Points of length d.
 \item Returns: One value per point.
 }
-\item \verb{$evaluate_grid(axes)} -> \verb{vector<numeric>}
+\item \verb{$evaluate_grid(axes)} -> \verb{numeric vector}
 
 Evaluates on a Cartesian grid.
 \itemize{

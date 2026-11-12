@@ -10,7 +10,7 @@ refine_basis(basis, inserted_knots)
 \item{basis}{\code{BSplineBasis}. Basis to refine; its knot vector must be clamped (first and last knots
 repeated degree + 1 times, as produced by BSplineBasis::open_uniform()).}
 
-\item{inserted_knots}{\verb{vector<numeric>}. Knots to add, strictly inside the domain, in any order. Repeats
+\item{inserted_knots}{\verb{numeric vector}. Knots to add, strictly inside the domain, in any order. Repeats
 are allowed while every knot multiplicity stays <= degree + 1.}
 }
 \value{

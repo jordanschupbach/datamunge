@@ -15,7 +15,7 @@ Degree-0 basis with knots \{0, 1\}: one constant function on [0, 1].
 \code{BSplineBasis$new(degree, knots)}
 \itemize{
 \item \code{degree} (\code{integer})
-\item \code{knots} (\verb{vector<numeric>})
+\item \code{knots} (\verb{numeric vector})
 }
 }
 
@@ -24,7 +24,7 @@ Degree-0 basis with knots \{0, 1\}: one constant function on [0, 1].
 \itemize{
 \item \verb{$degree()} -> \code{integer}
 \item \verb{$basis_size()} -> \code{integer}
-\item \verb{$knots()} -> \verb{vector<numeric>}
+\item \verb{$knots()} -> \verb{numeric vector}
 \item \verb{$domain()} -> \code{list(numeric, numeric)}
 }
 }

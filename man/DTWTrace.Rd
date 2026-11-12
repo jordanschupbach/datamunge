@@ -14,10 +14,10 @@ Positive cells are row-major at i\emph{b.size()+j; sentinel border is implicit. 
 \section{Fields}{
 
 \itemize{
-\item \verb{$a} (\verb{vector<numeric>}): Owned first input, unchanged by alignment.
-\item \verb{$b} (\verb{vector<numeric>}): Owned second input.
-\item \verb{$cumulative} (\verb{vector<numeric>}): Actual positive-cell prefix costs, row-major.
-\item \verb{$predecessors} (\verb{vector<character (DTWPredecessor)>}): Actual selected directions, parallel to cumulative.
+\item \verb{$a} (\verb{numeric vector}): Owned first input, unchanged by alignment.
+\item \verb{$b} (\verb{numeric vector}): Owned second input.
+\item \verb{$cumulative} (\verb{numeric vector}): Actual positive-cell prefix costs, row-major.
+\item \verb{$predecessors} (\verb{list of character (DTWPredecessor)}): Actual selected directions, parallel to cumulative.
 \item \verb{$result} (\code{DTWResult}): Finite optimal distance and selected actual traceback.
 \item \verb{$work} (\code{DTWWork}): Counts from the same recurrence/traceback.
 \item \verb{$captured_entries} (\code{integer}): Complete logical capture cost described above.

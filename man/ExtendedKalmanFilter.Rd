@@ -12,10 +12,10 @@ Exactly reproduces KalmanFilter's result when \code{f} and \code{h} happen to be
 \itemize{
 \item \code{f} (\code{VectorFunction})
 \item \code{h} (\code{VectorFunction})
-\item \code{Q} (\verb{vector<vector<numeric>>})
-\item \code{R} (\verb{vector<vector<numeric>>})
-\item \code{x0} (\verb{vector<numeric>})
-\item \code{P0} (\verb{vector<vector<numeric>>})
+\item \code{Q} (\verb{list of numeric vector})
+\item \code{R} (\verb{list of numeric vector})
+\item \code{x0} (\verb{numeric vector})
+\item \code{P0} (\verb{list of numeric vector})
 \item \code{jacobian_step} (\code{numeric})
 }
 }
@@ -25,9 +25,9 @@ Exactly reproduces KalmanFilter's result when \code{f} and \code{h} happen to be
 \itemize{
 \item \verb{$predict()}
 \item \verb{$update(z)}
-\item \verb{$state()} -> \verb{vector<numeric>}
-\item \verb{$covariance()} -> \verb{vector<vector<numeric>>}
-\item \verb{$filter(measurements)} -> \verb{vector<KalmanState>}
+\item \verb{$state()} -> \verb{numeric vector}
+\item \verb{$covariance()} -> \verb{list of numeric vector}
+\item \verb{$filter(measurements)} -> \verb{list of KalmanState}
 }
 }
 

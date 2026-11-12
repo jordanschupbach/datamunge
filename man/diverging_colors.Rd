@@ -10,7 +10,7 @@ diverging_colors(n)
 \item{n}{\code{integer}. Number of colours (at least 1; 1 gives the white midpoint).}
 }
 \value{
-\verb{vector<RGB>}: The palette, low (blue) to high (red).
+\verb{list of RGB}: The palette, low (blue) to high (red).
 }
 \description{
 Interpolates linearly between the seven RdBu anchor colours; an odd \code{n} puts pure

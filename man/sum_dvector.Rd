@@ -7,7 +7,7 @@
 sum_dvector(values)
 }
 \arguments{
-\item{values}{\verb{vector<numeric>}. Vector of doubles to sum.}
+\item{values}{\verb{numeric vector}. Vector of doubles to sum.}
 }
 \value{
 \code{numeric}: Sum of all elements, or 0.0 if the vector is empty.

@@ -7,7 +7,7 @@
 t_test_one_sample(x, mu = 0.0, alternative = "TwoSided", conf_level = 0.94999999999999996)
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least two finite observations with positive representable sample variance.}
+\item{x}{\verb{numeric vector}. At least two finite observations with positive representable sample variance.}
 
 \item{mu}{\code{numeric}. Finite null mean, default zero, in observation units.}
 

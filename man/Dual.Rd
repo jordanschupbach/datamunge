@@ -9,9 +9,11 @@ Build an expression out of named operations (starting from a seed with derivativ
 \section{Constructor}{
 
 \code{Dual$new(value, derivative = 0.0)}
+
+A dual number value + derivative·ε (ε² = 0).
 \itemize{
-\item \code{value} (\code{numeric})
-\item \code{derivative} (\code{numeric})
+\item \code{value} (\code{numeric}): Real part, the function value.
+\item \code{derivative} (\code{numeric}): Dual part, the derivative with respect to the seed (default 0).
 }
 }
 
@@ -19,25 +21,128 @@ Build an expression out of named operations (starting from a seed with derivativ
 
 \itemize{
 \item \verb{$value()} -> \code{numeric}
+
+The real part: the function value.
 \item \verb{$derivative()} -> \code{numeric}
+
+The dual part: the exact derivative with respect to the seed.
 \item \verb{$add(other)} -> \code{Dual}
+
+Sum: this + \code{other}, with derivative a' + b'.
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new Dual; neither operand changes.
+}
 \item \verb{$subtract(other)} -> \code{Dual}
+
+Difference: this - \code{other}, with derivative a' - b'.
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new Dual; neither operand changes.
+}
 \item \verb{$multiply(other)} -> \code{Dual}
+
+Product: this * \code{other}, with derivative a'b + ab' (product rule).
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new Dual; neither operand changes.
+}
 \item \verb{$divide(other)} -> \code{Dual}
+
+Quotient: this / \code{other}, with derivative (a'b - ab')/b² (IEEE inf/NaN when other is 0).
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new Dual; neither operand changes.
+}
 \item \verb{$negate()} -> \code{Dual}
+
+Negation -x, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$add_scalar(scalar)} -> \code{Dual}
+
+Adds a constant \code{scalar}, derivative unchanged.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Dual.
+}
 \item \verb{$subtract_scalar(scalar)} -> \code{Dual}
+
+Subtracts a constant \code{scalar}, derivative unchanged.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Dual.
+}
 \item \verb{$multiply_scalar(scalar)} -> \code{Dual}
+
+Multiplies by a constant \code{scalar}, derivative scaled by it.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Dual.
+}
 \item \verb{$divide_scalar(scalar)} -> \code{Dual}
+
+Divides by a constant \code{scalar}, derivative divided by it.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Dual.
+}
 \item \verb{$pow(exponent)} -> \code{Dual}
+
+Power x^p for a constant exponent, with derivative p·x^(p-1).
+\itemize{
+\item \code{exponent}: Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+\item Returns: A new Dual.
+}
 \item \verb{$exp()} -> \code{Dual}
+
+Exponential e^x, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$log()} -> \code{Dual}
+
+Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$sqrt()} -> \code{Dual}
+
+Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$sin()} -> \code{Dual}
+
+Sine (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$cos()} -> \code{Dual}
+
+Cosine (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$tan()} -> \code{Dual}
+
+Tangent (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$tanh()} -> \code{Dual}
+
+Hyperbolic tangent, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 \item \verb{$abs()} -> \code{Dual}
+
+Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Dual.
+}
 }
 }
 

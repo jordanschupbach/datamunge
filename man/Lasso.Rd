@@ -25,22 +25,22 @@ SWIG-friendly facade for datamunge::stats::Lasso — pure L1-penalized ("lasso")
 \itemize{
 \item \verb{$formula_text()} -> \code{character}
 \item \verb{$has_intercept()} -> \code{logical}
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$lambda()} -> \code{numeric}
 \item \verb{$lambda_was_selected()} -> \code{logical}
-\item \verb{$lambda_path()} -> \verb{vector<numeric>}
-\item \verb{$cv_mean_squared_error()} -> \verb{vector<numeric>}
-\item \verb{$coefficients()} -> \verb{vector<numeric>}
+\item \verb{$lambda_path()} -> \verb{numeric vector}
+\item \verb{$cv_mean_squared_error()} -> \verb{numeric vector}
+\item \verb{$coefficients()} -> \verb{numeric vector}
 \item \verb{$intercept()} -> \code{numeric}
 \item \verb{$non_zero_coefficients()} -> \code{integer}
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
-\item \verb{$residuals()} -> \verb{vector<numeric>}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
+\item \verb{$residuals()} -> \verb{numeric vector}
 \item \verb{$r_squared()} -> \code{numeric}
 \item \verb{$rmse()} -> \code{numeric}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<numeric>}
+\item \verb{$predict(newdata)} -> \verb{numeric vector}
 \item \verb{$plot_coefficient_path()} -> \code{RPlot}
 \item \verb{$plot_cv_curve()} -> \code{RPlot}
 \item \verb{$plot_predicted_vs_actual()} -> \code{RPlot}

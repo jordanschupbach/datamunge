@@ -16,8 +16,8 @@ An empty (undefined) tensor.
 
 \code{values} in row-major order filling \code{shape}; dtype "float32", "float64", "int32", "int64" or "bool".
 \itemize{
-\item \code{values} (\verb{vector<numeric>})
-\item \code{shape} (\verb{vector<integer>})
+\item \code{values} (\verb{numeric vector})
+\item \code{shape} (\verb{integer vector})
 \item \code{dtype} (\code{character})
 }
 }
@@ -27,8 +27,8 @@ An empty (undefined) tensor.
 \itemize{
 \item \verb{$save_npy(path)}
 \item \verb{$defined()} -> \code{logical}
-\item \verb{$values()} -> \verb{vector<numeric>}
-\item \verb{$shape()} -> \verb{vector<integer>}
+\item \verb{$values()} -> \verb{numeric vector}
+\item \verb{$shape()} -> \verb{integer vector}
 \item \verb{$dtype()} -> \code{character}
 \item \verb{$ndim()} -> \code{integer}
 \item \verb{$numel()} -> \code{integer}

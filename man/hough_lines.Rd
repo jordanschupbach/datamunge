@@ -16,7 +16,7 @@ hough_lines(img, edge_threshold = 128, min_votes = 50, nms_radius = 5)
 \item{nms_radius}{\code{integer}}
 }
 \value{
-\verb{vector<HoughLine>}
+\verb{list of HoughLine}
 }
 \description{
 Returns every accumulator cell with at least \code{min_votes}, non-max-suppressed within a (2*nms_radius+1) rho-theta cell window so a single real line doesn't produce a cluster of near-duplicate near-identical results. Intended input is an edge map (e.g. image::sobel_edges()'s output), not a raw photo.

@@ -22,7 +22,7 @@ gives coefficients on the refined basis that represent exactly the same spline.
 \section{Methods}{
 
 \itemize{
-\item \verb{$apply(coefficients)} -> \verb{vector<numeric>}
+\item \verb{$apply(coefficients)} -> \verb{numeric vector}
 
 Maps coarse coefficients to the refined basis.
 \itemize{

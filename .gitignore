@@ -149,3 +149,7 @@ docs/examples/mepml/**/figures/*.gif
 
 # Shapefiles the GIS examples (gis_ex) write into the working directory.
 /datamunge_gis_ex_counties_*
+
+# Editor discovery links written by `just build-python` / `just build-r`.
+.venv
+.Renviron

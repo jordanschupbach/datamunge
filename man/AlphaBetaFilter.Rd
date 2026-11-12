@@ -45,7 +45,7 @@ The time step between measurements.
 \itemize{
 \item Returns: The value passed to the constructor.
 }
-\item \verb{$filter(measurements)} -> \verb{vector<AlphaBetaState>}
+\item \verb{$filter(measurements)} -> \verb{list of AlphaBetaState}
 }
 }
 

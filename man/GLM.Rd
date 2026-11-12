@@ -29,26 +29,26 @@ SWIG-friendly facade for datamunge::stats::GLM — a generalized linear model (g
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$rank()} -> \code{integer}
 \item \verb{$degrees_of_freedom()} -> \code{integer}
-\item \verb{$coefficients()} -> \verb{vector<numeric>}
-\item \verb{$coefficient_names()} -> \verb{vector<character>}
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
-\item \verb{$linear_predictors()} -> \verb{vector<numeric>}
-\item \verb{$residuals()} -> \verb{vector<numeric>}
-\item \verb{$pearson_residuals()} -> \verb{vector<numeric>}
-\item \verb{$standardized_residuals()} -> \verb{vector<numeric>}
-\item \verb{$leverage()} -> \verb{vector<numeric>}
-\item \verb{$standard_errors()} -> \verb{vector<numeric>}
-\item \verb{$test_statistics()} -> \verb{vector<numeric>}
-\item \verb{$p_values()} -> \verb{vector<numeric>}
+\item \verb{$coefficients()} -> \verb{numeric vector}
+\item \verb{$coefficient_names()} -> \verb{character vector}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
+\item \verb{$linear_predictors()} -> \verb{numeric vector}
+\item \verb{$residuals()} -> \verb{numeric vector}
+\item \verb{$pearson_residuals()} -> \verb{numeric vector}
+\item \verb{$standardized_residuals()} -> \verb{numeric vector}
+\item \verb{$leverage()} -> \verb{numeric vector}
+\item \verb{$standard_errors()} -> \verb{numeric vector}
+\item \verb{$test_statistics()} -> \verb{numeric vector}
+\item \verb{$p_values()} -> \verb{numeric vector}
 \item \verb{$deviance()} -> \code{numeric}
 \item \verb{$null_deviance()} -> \code{numeric}
 \item \verb{$dispersion()} -> \code{numeric}
 \item \verb{$aic()} -> \code{numeric}
-\item \verb{$confidence_interval_lower(level = 0.94999999999999996)} -> \verb{vector<numeric>}
-\item \verb{$confidence_interval_upper(level = 0.94999999999999996)} -> \verb{vector<numeric>}
+\item \verb{$confidence_interval_lower(level = 0.94999999999999996)} -> \verb{numeric vector}
+\item \verb{$confidence_interval_upper(level = 0.94999999999999996)} -> \verb{numeric vector}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<numeric>}
+\item \verb{$predict(newdata)} -> \verb{numeric vector}
 
 Response-scale predictions (back-transformed through the inverse link).
 \item \verb{$predict_frame(newdata, interval_kind = "none", level = 0.94999999999999996)} -> \verb{DataFrame or NULL}

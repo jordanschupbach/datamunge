@@ -7,12 +7,12 @@
 p_adjust(p, method = "BH")
 }
 \arguments{
-\item{p}{\verb{vector<numeric>}}
+\item{p}{\verb{numeric vector}}
 
 \item{method}{\code{character (PAdjustMethod)}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 \itemize{

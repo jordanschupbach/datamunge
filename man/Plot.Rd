@@ -205,7 +205,7 @@ Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.
 \itemize{
 \item Returns: The current y-axis label.
 }
-\item \verb{$series()} -> \verb{vector<DataSeries>}
+\item \verb{$series()} -> \verb{list of DataSeries}
 
 Borrows the drawn layers (points, lines, bars, ...) in the order they were added.
 \itemize{
@@ -277,37 +277,37 @@ Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.
 \itemize{
 \item Returns: False (the default) when axes are drawn.
 }
-\item \verb{$x_tick_label_list()} -> \verb{vector<character>}
+\item \verb{$x_tick_label_list()} -> \verb{character vector}
 
 Borrows the custom x tick texts; empty means numeric ticks.
 \itemize{
 \item Returns: Labels set by x_tick_labels() or x_ticks().
 }
-\item \verb{$x_tick_position_list()} -> \verb{vector<numeric>}
+\item \verb{$x_tick_position_list()} -> \verb{numeric vector}
 
 Data positions of x_tick_label_list(); empty means 0, 1, 2, ...
 \itemize{
 \item Returns: Positions set by x_ticks(); cleared by x_tick_labels().
 }
-\item \verb{$y_tick_label_list()} -> \verb{vector<character>}
+\item \verb{$y_tick_label_list()} -> \verb{character vector}
 
 Borrows the custom y tick texts; empty means numeric ticks.
 \itemize{
 \item Returns: Labels set by y_tick_labels() or y_ticks().
 }
-\item \verb{$y_tick_position_list()} -> \verb{vector<numeric>}
+\item \verb{$y_tick_position_list()} -> \verb{numeric vector}
 
 Data positions of y_tick_label_list(); empty means 0, 1, 2, ...
 \itemize{
 \item Returns: Positions set by y_ticks(); cleared by y_tick_labels().
 }
-\item \verb{$reference_lines()} -> \verb{vector<ABLine>}
+\item \verb{$reference_lines()} -> \verb{list of ABLine}
 
 Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().
 \itemize{
 \item Returns: Lines in insertion order; references are invalidated by adding another line.
 }
-\item \verb{$legend_entries()} -> \verb{vector<LegendEntry>}
+\item \verb{$legend_entries()} -> \verb{list of LegendEntry}
 
 Borrows the manual legend rows added by legend(); empty means an automatic legend.
 \itemize{
@@ -374,13 +374,13 @@ Writes to_svg() to \code{path} regardless of its extension.
 \itemize{
 \item \code{path}: Destination file; an existing file is overwritten.
 }
-\item \verb{$to_png()} -> \verb{vector<integer>}
+\item \verb{$to_png()} -> \verb{integer vector}
 
 Renders the plot as PNG image bytes (the same raster save() writes for \code{.png}).
 \itemize{
 \item Returns: The complete PNG file contents.
 }
-\item \verb{$to_pdf()} -> \verb{vector<integer>}
+\item \verb{$to_pdf()} -> \verb{integer vector}
 
 Renders the plot as a one-page PDF holding the raster image.
 \itemize{

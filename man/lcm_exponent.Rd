@@ -7,12 +7,12 @@
 lcm_exponent(a, b)
 }
 \arguments{
-\item{a}{\verb{vector<integer>}}
+\item{a}{\verb{integer vector}}
 
-\item{b}{\verb{vector<integer>}}
+\item{b}{\verb{integer vector}}
 }
 \value{
-\verb{vector<integer>}
+\verb{integer vector}
 }
 \description{
 C++ function \verb{datamunge::algebra::detail::lcm_exponent}

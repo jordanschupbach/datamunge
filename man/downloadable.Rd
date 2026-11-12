@@ -7,7 +7,7 @@
 downloadable()
 }
 \value{
-\verb{vector<character>}
+\verb{character vector}
 }
 \description{
 The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".

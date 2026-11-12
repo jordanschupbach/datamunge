@@ -7,7 +7,7 @@
 total_degree(exponents)
 }
 \arguments{
-\item{exponents}{\verb{vector<integer>}}
+\item{exponents}{\verb{integer vector}}
 }
 \value{
 \code{integer}

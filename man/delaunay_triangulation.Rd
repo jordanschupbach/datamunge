@@ -7,10 +7,10 @@
 delaunay_triangulation(points)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}. Borrowed finite planar sites, possibly empty/duplicate/collinear.}
+\item{points}{\verb{list of Point2D}. Borrowed finite planar sites, possibly empty/duplicate/collinear.}
 }
 \value{
-\verb{vector<Triangle>}: Owned complete finite mesh of the distinct sites' convex hull, or no faces for collinearity.
+\verb{list of Triangle}: Owned complete finite mesh of the distinct sites' convex hull, or no faces for collinearity.
 }
 \description{
 Retains the original one-vector signature and Triangle layout. Finite coordinate validation precedes even trivial results. Duplicates coalesce to earliest ids; collinear/fewer-than-three distinct sites return no faces. Uses Bowyer-Watson cavity replacement with symbolic hull ghosts, avoiding any finite super-triangle whose proximity could remove valid narrow faces. All orientation/incircle signs are exact for finite stored binary64, including subnormals/extreme scales. Cocircular ties retain existing faces under the ordering in DelaunayTrace. Faces are strictly CCW, contain no ghosts and reference original ids. Finite output order is canonical as documented on DelaunayTrace. No boundary constraints, holes, Steiner refinement or minimum-angle guarantee is supplied. Input unchanged; O(n log(n+1)+u^2 log(u+1)) worst-case work for n records/u distinct sites with ordered cavity maps and full live scans; O(n+u) working/output storage, no shared state or optional resource caps. Exact-predicate cost is bounded per binary64 query.

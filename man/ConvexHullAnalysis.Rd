@@ -14,8 +14,8 @@ Vertices start at the lexicographic minimum and run counterclockwise, without re
 \section{Fields}{
 
 \itemize{
-\item \verb{$hull} (\verb{vector<Point2D>}): Owned unclosed strict hull.
-\item \verb{$input_indices} (\verb{vector<integer>}): Earliest original identities in hull order.
+\item \verb{$hull} (\verb{list of Point2D}): Owned unclosed strict hull.
+\item \verb{$input_indices} (\verb{integer vector}): Earliest original identities in hull order.
 \item \verb{$work} (\code{ConvexHullWork}): Actual producing operations.
 }
 }

@@ -14,7 +14,7 @@ seql(from, to, n)
 \item{n}{\code{integer}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 n evenly spaced values from \code{from} to \code{to} inclusive.

@@ -7,9 +7,9 @@
 spearman_correlation_test(x, y, alternative = "TwoSided")
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least three finite nonconstant first measurements.}
+\item{x}{\verb{numeric vector}. At least three finite nonconstant first measurements.}
 
-\item{y}{\verb{vector<numeric>}. Same-length finite nonconstant paired second measurements.}
+\item{y}{\verb{numeric vector}. Same-length finite nonconstant paired second measurements.}
 
 \item{alternative}{\code{character (Alternative)}. TwoSided (default), Less or Greater for population rank correlation.}
 }

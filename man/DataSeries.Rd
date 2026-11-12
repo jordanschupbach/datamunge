@@ -20,15 +20,15 @@ layers through RPlot verbs (points(), lines(), bars(), ...) and only reads this 
 
 \itemize{
 \item \verb{$kind} (\code{character (Kind)}): How the layer is drawn (default Line).
-\item \verb{$x} (\verb{vector<numeric>}): Horizontal data coordinates; meaning depends on kind.
-\item \verb{$y} (\verb{vector<numeric>}): Vertical data coordinates; meaning depends on kind.
+\item \verb{$x} (\verb{numeric vector}): Horizontal data coordinates; meaning depends on kind.
+\item \verb{$y} (\verb{numeric vector}): Vertical data coordinates; meaning depends on kind.
 \item \verb{$label} (\code{character}): Legend text (or the drawn text for Kind::Text); empty omits it.
 \item \verb{$color} (\code{RGB}): Layer color, including alpha (default RGBA\{\}, dark slate).
 \item \verb{$stroke_width} (\code{numeric}): Line, Segment, and outline-Polygon width in pixels (default 2).
 \item \verb{$marker_size} (\code{numeric}): Scatter marker radius, or Text font size, in pixels (default 4).
 \item \verb{$bar_width} (\code{numeric}): Bar or Box width in data units (default 0.8).
 \item \verb{$filled} (\code{logical}): Polygon only: true fills it, false draws its outline (default false).
-\item \verb{$point_colors} (\verb{vector<RGB>}): Optional scatter palette, recycled in input order; empty uses color for every point.
+\item \verb{$point_colors} (\verb{list of RGB}): Optional scatter palette, recycled in input order; empty uses color for every point.
 }
 }
 

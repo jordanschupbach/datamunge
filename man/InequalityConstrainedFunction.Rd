@@ -14,8 +14,8 @@ C++ class \verb{datamunge::optim::InequalityConstrainedFunction}
 \section{Methods}{
 
 \itemize{
-\item \verb{$inequalities(coordinates)} -> \verb{vector<numeric>}
-\item \verb{$inequality_jacobian(coordinates)} -> \verb{vector<vector<numeric>>}
+\item \verb{$inequalities(coordinates)} -> \verb{numeric vector}
+\item \verb{$inequality_jacobian(coordinates)} -> \verb{list of numeric vector}
 }
 }
 

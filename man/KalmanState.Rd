@@ -14,8 +14,8 @@ One state estimate + its covariance -- the common return shape for every "give m
 \section{Fields}{
 
 \itemize{
-\item \verb{$x} (\verb{vector<numeric>})
-\item \verb{$P} (\verb{vector<vector<numeric>>})
+\item \verb{$x} (\verb{numeric vector})
+\item \verb{$P} (\verb{list of numeric vector})
 }
 }
 

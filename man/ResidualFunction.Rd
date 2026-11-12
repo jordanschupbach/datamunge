@@ -14,8 +14,8 @@ C++ class \verb{datamunge::optim::ResidualFunction}
 \section{Methods}{
 
 \itemize{
-\item \verb{$residuals(coordinates)} -> \verb{vector<numeric>}
-\item \verb{$jacobian(coordinates)} -> \verb{vector<vector<numeric>>}
+\item \verb{$residuals(coordinates)} -> \verb{numeric vector}
+\item \verb{$jacobian(coordinates)} -> \verb{list of numeric vector}
 }
 }
 

@@ -14,13 +14,13 @@ Numeric coordinate equality coalesces duplicates and signed zeros. Representativ
 \section{Fields}{
 
 \itemize{
-\item \verb{$points} (\verb{vector<Point2D>}): Complete copied original coordinates, including duplicates.
-\item \verb{$representatives} (\verb{vector<integer>}): Earliest unique ids in original input order.
-\item \verb{$representative_for_input} (\verb{vector<integer>}): Earliest equal-coordinate id per original record.
+\item \verb{$points} (\verb{list of Point2D}): Complete copied original coordinates, including duplicates.
+\item \verb{$representatives} (\verb{integer vector}): Earliest unique ids in original input order.
+\item \verb{$representative_for_input} (\verb{integer vector}): Earliest equal-coordinate id per original record.
 \item \verb{$has_seed} (\code{logical}): Whether three distinct noncollinear sites exist.
 \item \verb{$seed} (\code{Triangle}): Initial CCW finite seed, meaningful only when has_seed.
-\item \verb{$triangles} (\verb{vector<Triangle>}): Complete finite final CCW triangles, using earliest original ids.
-\item \verb{$steps} (\verb{vector<DelaunayInsertion>}): Actual non-seed cavity transitions, without replay.
+\item \verb{$triangles} (\verb{list of Triangle}): Complete finite final CCW triangles, using earliest original ids.
+\item \verb{$steps} (\verb{list of DelaunayInsertion}): Actual non-seed cavity transitions, without replay.
 \item \verb{$work} (\code{DelaunayWork}): Checked actual operations from the executing kernel.
 }
 }

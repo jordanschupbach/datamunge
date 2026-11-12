@@ -13,7 +13,7 @@ one-step-ahead sum of squared errors with DifferentialEvolution.
 
 \code{ExponentialSmoothing$new(y, options = ExponentialSmoothingOptions$new())}
 \itemize{
-\item \code{y} (\verb{vector<numeric>})
+\item \code{y} (\verb{numeric vector})
 \item \code{options} (\code{ExponentialSmoothingOptions})
 }
 }
@@ -32,13 +32,13 @@ one-step-ahead sum of squared errors with DifferentialEvolution.
 \item \verb{$log_likelihood()} -> \code{numeric}
 \item \verb{$aic()} -> \code{numeric}
 \item \verb{$bic()} -> \code{numeric}
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
 
 In-sample one-step-ahead fitted values, aligned to the input series. The
 warm-up prefix used to set initial states (see class docs) is copied from the
 observed values (residual exactly zero there).
-\item \verb{$residuals()} -> \verb{vector<numeric>}
-\item \verb{$forecast(horizon)} -> \verb{vector<numeric>}
+\item \verb{$residuals()} -> \verb{numeric vector}
+\item \verb{$forecast(horizon)} -> \verb{numeric vector}
 
 Point forecasts for the next \code{horizon} periods.
 }

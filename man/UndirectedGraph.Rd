@@ -12,7 +12,7 @@ C++ class \verb{datamunge::dstruct::UndirectedGraph<std::string>}
 
 \code{UndirectedGraph$new(vertices)}
 \itemize{
-\item \code{vertices} (\verb{vector<character>})
+\item \code{vertices} (\verb{character vector})
 }
 }
 
@@ -29,13 +29,13 @@ C++ class \verb{datamunge::dstruct::UndirectedGraph<std::string>}
 \item \verb{$add_edge(a, b)} -> \code{logical}
 \item \verb{$remove_edge(a, b)} -> \code{logical}
 \item \verb{$has_edge(a, b)} -> \code{logical}
-\item \verb{$vertices()} -> \verb{vector<character>}
-\item \verb{$neighbors(vertex)} -> \verb{vector<character>}
+\item \verb{$vertices()} -> \verb{character vector}
+\item \verb{$neighbors(vertex)} -> \verb{character vector}
 \item \verb{$degree(vertex)} -> \code{integer}
-\item \verb{$bfs(start)} -> \verb{vector<character>}
-\item \verb{$dfs(start)} -> \verb{vector<character>}
+\item \verb{$bfs(start)} -> \verb{character vector}
+\item \verb{$dfs(start)} -> \verb{character vector}
 \item \verb{$contains_path(src, dst)} -> \code{logical}
-\item \verb{$connected_components()} -> \verb{vector<vector<character>>}
+\item \verb{$connected_components()} -> \verb{list of character vector}
 
 The graph's connected components, each as a vector of vertices in BFS-visit
 order; components themselves appear in vertices() order.

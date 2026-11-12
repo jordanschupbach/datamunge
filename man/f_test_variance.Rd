@@ -7,9 +7,9 @@
 f_test_variance(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least two finite first-sample values with positive finite sample variance.}
+\item{x}{\verb{numeric vector}. At least two finite first-sample values with positive finite sample variance.}
 
-\item{y}{\verb{vector<numeric>}. At least two finite independent second-sample values with positive finite sample
+\item{y}{\verb{numeric vector}. At least two finite independent second-sample values with positive finite sample
 variance.}
 
 \item{alternative}{\code{character (Alternative)}. TwoSided (default), Less or Greater for population variance ratio relative to

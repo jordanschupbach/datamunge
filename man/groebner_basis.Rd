@@ -7,12 +7,12 @@
 groebner_basis(generators, order)
 }
 \arguments{
-\item{generators}{\verb{vector<MultivariatePolynomial>}}
+\item{generators}{\verb{list of MultivariatePolynomial}}
 
 \item{order}{\code{character (MonomialOrder)}}
 }
 \value{
-\verb{vector<MultivariatePolynomial>}
+\verb{list of MultivariatePolynomial}
 }
 \description{
 Basic textbook form (no Buchberger-criterion pair-skipping optimizations, matching this module's "simple, correct" scoping elsewhere) -- reduces every S-polynomial against the CURRENT basis and appends any nonzero remainder until no pair produces one.

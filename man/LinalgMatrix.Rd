@@ -12,7 +12,7 @@ Transpose, multiplication and inverse actions defer native computation until eva
 
 Construct an owned dense or CSR matrix from row-major values.
 \itemize{
-\item \code{values} (\verb{vector<numeric>}): Exactly rows * cols coefficients; sparse zero entries are omitted.
+\item \code{values} (\verb{numeric vector}): Exactly rows * cols coefficients; sparse zero entries are omitted.
 \item \code{rows} (\code{integer}): Number of rows, including zero.
 \item \code{cols} (\code{integer}): Number of columns, including zero.
 \item \code{sparse} (\code{logical}): Select CSR storage, default false.
@@ -74,7 +74,7 @@ Evaluate once into an owned snapshot with no deferred operands.
 \itemize{
 \item Returns: Materialised matrix handle, sharing immutable storage when already concrete.
 }
-\item \verb{$values()} -> \verb{vector<numeric>}
+\item \verb{$values()} -> \verb{numeric vector}
 
 Evaluate and copy all coefficients in row-major order.
 \itemize{

@@ -7,12 +7,12 @@
 map_dvector_with_callback(values, cb)
 }
 \arguments{
-\item{values}{\verb{vector<numeric>}. Source vector of doubles.}
+\item{values}{\verb{numeric vector}. Source vector of doubles.}
 
 \item{cb}{\verb{Callback or NULL}. Pointer to a \code{Callback} instance; must not be null.}
 }
 \value{
-\verb{vector<numeric>}: New vector where each element is the result of \code{cb->call(v)}
+\verb{numeric vector}: New vector where each element is the result of \code{cb->call(v)}
 for the corresponding element \code{v} in \code{values}.
 }
 \description{

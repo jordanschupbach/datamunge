@@ -7,7 +7,7 @@
 berlekamp_factor_count(poly, p)
 }
 \arguments{
-\item{poly}{\verb{vector<integer>}. ascending coefficients (made monic and reduced mod p first).}
+\item{poly}{\verb{integer vector}. ascending coefficients (made monic and reduced mod p first).}
 
 \item{p}{\code{integer}. a prime.}
 }

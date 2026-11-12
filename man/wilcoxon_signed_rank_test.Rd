@@ -7,7 +7,7 @@
 wilcoxon_signed_rank_test(x, mu = 0.0, alternative = "TwoSided")
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. Finite values; at least one nonzero difference from mu must remain.}
+\item{x}{\verb{numeric vector}. Finite values; at least one nonzero difference from mu must remain.}
 
 \item{mu}{\code{numeric}. Finite symmetry centre, default zero.}
 

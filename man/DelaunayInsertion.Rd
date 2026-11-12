@@ -17,9 +17,9 @@ removed/added may contain ghosts, identified by c=the original input count. boun
 \item \verb{$input_index} (\code{integer}): Earliest original id of the inserted distinct coordinate.
 \item \verb{$faces_before} (\code{integer}): Live real plus ghost faces before this insertion.
 \item \verb{$faces_after} (\code{integer}): Live real plus ghost faces after this insertion.
-\item \verb{$removed} (\verb{vector<Triangle>}): Exact actual conflicting faces, in scan order.
-\item \verb{$boundary} (\verb{vector<list(integer, integer)>}): Actual directed nonshared cavity edges.
-\item \verb{$added} (\verb{vector<Triangle>}): Actual replacement real/ghost faces, in boundary-key order.
+\item \verb{$removed} (\verb{list of Triangle}): Exact actual conflicting faces, in scan order.
+\item \verb{$boundary} (\verb{list of list(integer, integer)}): Actual directed nonshared cavity edges.
+\item \verb{$added} (\verb{list of Triangle}): Actual replacement real/ghost faces, in boundary-key order.
 }
 }
 

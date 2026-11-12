@@ -91,13 +91,13 @@ Validate topology, orientations and geometric boundary consistency.
 \itemize{
 \item Returns: True when the kernel validation report has no errors.
 }
-\item \verb{$edges()} -> \verb{vector<integer>}
+\item \verb{$edges()} -> \verb{integer vector}
 
 List the source edge IDs usable by filleted() and chamfered().
 \itemize{
 \item Returns: Owned vector of unique edge IDs.
 }
-\item \verb{$faces()} -> \verb{vector<integer>}
+\item \verb{$faces()} -> \verb{integer vector}
 
 List face IDs usable by shelled() and the low-level modifiers.
 \itemize{

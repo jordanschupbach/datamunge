@@ -7,12 +7,12 @@
 berlekamp_factor_mod(poly, prime)
 }
 \arguments{
-\item{poly}{\verb{vector<numeric>}}
+\item{poly}{\verb{numeric vector}}
 
 \item{prime}{\code{numeric}}
 }
 \value{
-\verb{vector<vector<numeric>>}
+\verb{list of numeric vector}
 }
 \description{
 See berlekamp_factor() for the algorithm and preconditions.

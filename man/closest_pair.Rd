@@ -7,7 +7,7 @@
 closest_pair(points)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}. Borrowed original finite planar coordinates, length at least two.}
+\item{points}{\verb{list of Point2D}. Borrowed original finite planar coordinates, length at least two.}
 }
 \value{
 \code{ClosestPairResult}: Owned selected point copies and checked finite-double measured distance.

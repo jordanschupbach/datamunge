@@ -27,12 +27,12 @@ SWIG-friendly facade for datamunge::stats::RandomForestClassifier — a bagged e
 \section{Methods}{
 
 \itemize{
-\item \verb{$classes()} -> \verb{vector<character>}
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$classes()} -> \verb{character vector}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$n_trees()} -> \code{integer}
 \item \verb{$max_features_used()} -> \code{integer}
-\item \verb{$feature_importance()} -> \verb{vector<numeric>}
+\item \verb{$feature_importance()} -> \verb{numeric vector}
 \item \verb{$training_accuracy()} -> \code{numeric}
 \item \verb{$oob_accuracy()} -> \code{numeric}
 
@@ -42,7 +42,7 @@ Out-of-bag accuracy estimate (majority vote among trees that did not train on ea
 "actual" column plus one numeric column per class (counts), both ordered as classes().
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<character>}
+\item \verb{$predict(newdata)} -> \verb{character vector}
 \item \verb{$predict_frame(newdata)} -> \verb{DataFrame or NULL}
 
 "class" column plus one numeric vote-share column per class (votes_\if{html}{\out{<class>}}).

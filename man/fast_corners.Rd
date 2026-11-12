@@ -14,7 +14,7 @@ fast_corners(img, threshold = 20, min_contiguous = 9)
 \item{min_contiguous}{\code{integer}}
 }
 \value{
-\verb{vector<Corner>}
+\verb{list of Corner}
 }
 \description{
 This is the direct O(16) full-circle test (no accelerated high-speed pre-rejection on pixels 1/5/9/13) -- simpler to verify correct, at the cost of the constant-factor speed FAST is normally chosen for. Response is the found arc's mean absolute deviation from the center intensity.

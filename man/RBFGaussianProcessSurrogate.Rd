@@ -84,13 +84,13 @@ The value scale: the standard deviation of the values when normalising, else 1.
 \itemize{
 \item Returns: The scale.
 }
-\item \verb{$points()} -> \verb{vector<vector<numeric>>}
+\item \verb{$points()} -> \verb{list of numeric vector}
 
 The training points from the last fit() (empty before fitting).
 \itemize{
 \item Returns: The stored training points.
 }
-\item \verb{$values()} -> \verb{vector<numeric>}
+\item \verb{$values()} -> \verb{numeric vector}
 
 The training values from the last fit() (empty before fitting).
 \itemize{

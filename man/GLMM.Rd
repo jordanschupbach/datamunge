@@ -29,21 +29,21 @@ SWIG-friendly facade for datamunge::stats::GLMM — a generalized linear mixed m
 \item \verb{$family()} -> \code{character}
 \item \verb{$group_variable()} -> \code{character}
 \item \verb{$has_random_intercept()} -> \code{logical}
-\item \verb{$random_effect_names()} -> \verb{vector<character>}
+\item \verb{$random_effect_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$num_groups()} -> \code{integer}
 \item \verb{$rank()} -> \code{integer}
 \item \verb{$iterations()} -> \code{integer}
-\item \verb{$coefficients()} -> \verb{vector<numeric>}
-\item \verb{$coefficient_names()} -> \verb{vector<character>}
-\item \verb{$standard_errors()} -> \verb{vector<numeric>}
-\item \verb{$z_values()} -> \verb{vector<numeric>}
-\item \verb{$p_values()} -> \verb{vector<numeric>}
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
-\item \verb{$random_effect_std_devs()} -> \verb{vector<numeric>}
+\item \verb{$coefficients()} -> \verb{numeric vector}
+\item \verb{$coefficient_names()} -> \verb{character vector}
+\item \verb{$standard_errors()} -> \verb{numeric vector}
+\item \verb{$z_values()} -> \verb{numeric vector}
+\item \verb{$p_values()} -> \verb{numeric vector}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
+\item \verb{$random_effect_std_devs()} -> \verb{numeric vector}
 \item \verb{$random_effect_correlation(i, j)} -> \code{numeric}
-\item \verb{$group_labels()} -> \verb{vector<character>}
-\item \verb{$random_effects_for_group(group_index)} -> \verb{vector<numeric>}
+\item \verb{$group_labels()} -> \verb{character vector}
+\item \verb{$random_effects_for_group(group_index)} -> \verb{numeric vector}
 
 The BLUP random-effect vector for the group at \code{group_index} (see group_labels()),
 in the same order as random_effect_names().
@@ -52,7 +52,7 @@ in the same order as random_effect_names().
 \item \verb{$bic()} -> \code{numeric}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<numeric>}
+\item \verb{$predict(newdata)} -> \verb{numeric vector}
 }
 }
 

@@ -20,7 +20,7 @@ hough_circles(img, min_radius, max_radius, gradient_threshold = 50.0, min_votes 
 \item{nms_radius}{\code{integer}}
 }
 \value{
-\verb{vector<HoughCircle>}
+\verb{list of HoughCircle}
 }
 \description{
 Each radius gets an independent 2D (cx, cy) accumulator and non-max suppression pass -- simpler to reason about than a combined 3D (cx, cy, r) accumulator, at the cost of not suppressing near-duplicate detections across adjacent radii.

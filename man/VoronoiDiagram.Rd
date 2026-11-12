@@ -14,11 +14,11 @@ C++ class \verb{datamunge::geometry::VoronoiDiagram}
 \section{Fields}{
 
 \itemize{
-\item \verb{$vertices} (\verb{vector<Point2D>}): The circumcenter of each Delaunay triangle -- the Voronoi diagram's vertices
+\item \verb{$vertices} (\verb{list of Point2D}): The circumcenter of each Delaunay triangle -- the Voronoi diagram's vertices
 (may repeat a coordinate if it's shared by multiple cells; kept as plain
 resolved points rather than a shared, index-referenced pool for a simpler,
 binding-friendly shape).
-\item \verb{$cells} (\verb{vector<vector<Point2D>>}): cells[i] is points[i]'s Voronoi cell boundary, as circumcenters in angular
+\item \verb{$cells} (\verb{list of list of Point2D}): cells[i] is points[i]'s Voronoi cell boundary, as circumcenters in angular
 order around points[i]. For an INTERIOR point this is a closed polygon (as with
 any polygon in this module, the closing edge back to cells[i].front() is
 implicit). For a point on the convex hull, the true Voronoi cell is unbounded --

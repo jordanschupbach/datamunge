@@ -7,7 +7,7 @@
 determinant(mat)
 }
 \arguments{
-\item{mat}{\verb{vector<vector<numeric>>}}
+\item{mat}{\verb{list of numeric vector}}
 }
 \value{
 \code{numeric}

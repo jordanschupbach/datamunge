@@ -14,15 +14,15 @@ Output of NUTS::sample().
 \section{Fields}{
 
 \itemize{
-\item \verb{$samples} (\verb{vector<vector<numeric>>}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
+\item \verb{$samples} (\verb{list of numeric vector}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
 \item \verb{$accept_rate} (\code{numeric}): Mean Metropolis acceptance statistic across all iterations (the same quantity
 the step-size adaptation targets).
 \item \verb{$final_step_size} (\code{numeric}): Step size used after warmup.
 \item \verb{$num_divergences} (\code{integer}): Number of iterations, warmup included, whose trajectory diverged.
-\item \verb{$divergent} (\verb{vector<integer>}): Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.
-\item \verb{$tree_depth} (\verb{vector<integer>}): Per post-warmup draw: number of trajectory doublings performed (tree depth).
-\item \verb{$n_leapfrog} (\verb{vector<integer>}): Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.
-\item \verb{$energy} (\verb{vector<numeric>}): Per post-warmup draw: the Hamiltonian
+\item \verb{$divergent} (\verb{integer vector}): Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.
+\item \verb{$tree_depth} (\verb{integer vector}): Per post-warmup draw: number of trajectory doublings performed (tree depth).
+\item \verb{$n_leapfrog} (\verb{integer vector}): Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.
+\item \verb{$energy} (\verb{numeric vector}): Per post-warmup draw: the Hamiltonian
 }
 }
 

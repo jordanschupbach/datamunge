@@ -14,7 +14,7 @@ sample_gaussian_points(count = 40, seed = 20240728, max_points = 1000000)
 \item{max_points}{\code{integer}. Complete draw cap, default one million; zero unlimited.}
 }
 \value{
-\verb{vector<Point2D>}: Owned unsnapped normal point cloud.
+\verb{list of Point2D}: Owned unsnapped normal point cloud.
 }
 \description{
 Reproduces the original hull report's mt19937/normal_distribution call order, including its cached normal variate. Distribution mappings can differ between standard libraries; a seed alone does not promise portable coordinate bits. Complete count cap precedes allocation. Empty count is valid. O(count) expected work/storage; no global RNG or mutation. Finite draws are checked before return.

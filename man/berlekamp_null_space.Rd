@@ -7,12 +7,12 @@
 berlekamp_null_space(f, p)
 }
 \arguments{
-\item{f}{\verb{vector<integer>}}
+\item{f}{\verb{integer vector}}
 
 \item{p}{\code{integer}}
 }
 \value{
-\verb{vector<vector<integer>>}
+\verb{list of integer vector}
 }
 \description{
 \verb{v^p\\equiv v \\pmod f}, as the null space of

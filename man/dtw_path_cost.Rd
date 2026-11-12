@@ -7,13 +7,13 @@
 dtw_path_cost(a, b, path_a, path_b)
 }
 \arguments{
-\item{a}{\verb{vector<numeric>}. Nonempty finite first sequence.}
+\item{a}{\verb{numeric vector}. Nonempty finite first sequence.}
 
-\item{b}{\verb{vector<numeric>}. Nonempty finite second sequence.}
+\item{b}{\verb{numeric vector}. Nonempty finite second sequence.}
 
-\item{path_a}{\verb{vector<integer>}. Borrowed signed first indices, zero through a.size()-1.}
+\item{path_a}{\verb{integer vector}. Borrowed signed first indices, zero through a.size()-1.}
 
-\item{path_b}{\verb{vector<integer>}. Borrowed parallel signed second indices, zero through b.size()-1.}
+\item{path_b}{\verb{integer vector}. Borrowed parallel signed second indices, zero through b.size()-1.}
 }
 \value{
 \code{numeric}: Finite forward-order sum of absolute differences on the supplied witness.

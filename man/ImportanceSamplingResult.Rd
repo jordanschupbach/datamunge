@@ -14,8 +14,8 @@ Output of ImportanceSampling::sample().
 \section{Fields}{
 
 \itemize{
-\item \verb{$samples} (\verb{vector<vector<numeric>>}): Draws from the N(proposal_mean, proposal_covariance) proposal (not the target).
-\item \verb{$normalized_weights} (\verb{vector<numeric>}): Self-normalized importance weights (sum to 1), in samples order.
+\item \verb{$samples} (\verb{list of numeric vector}): Draws from the N(proposal_mean, proposal_covariance) proposal (not the target).
+\item \verb{$normalized_weights} (\verb{numeric vector}): Self-normalized importance weights (sum to 1), in samples order.
 \item \verb{$effective_sample_size} (\code{numeric}): 1 / sum(normalized_weight_i^2) -- how many "effective" independent draws the
 weighted sample is worth. Low relative to num_samples signals a poor proposal
 (too narrow, wrong location, or lighter-tailed than the target).

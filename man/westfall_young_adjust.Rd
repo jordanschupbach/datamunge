@@ -7,12 +7,12 @@
 westfall_young_adjust(resampled_p, sorted_p)
 }
 \arguments{
-\item{resampled_p}{\verb{vector<vector<numeric>>}}
+\item{resampled_p}{\verb{list of numeric vector}}
 
-\item{sorted_p}{\verb{vector<numeric>}}
+\item{sorted_p}{\verb{numeric vector}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 \code{resampled_p} is a B x m matrix: row b holds the m p-values recomputed on the

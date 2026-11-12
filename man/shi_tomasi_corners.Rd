@@ -16,7 +16,7 @@ shi_tomasi_corners(img, sigma = 1.0, threshold_ratio = 0.01, nms_radius = 3)
 \item{nms_radius}{\code{integer}}
 }
 \value{
-\verb{vector<Corner>}
+\verb{list of Corner}
 }
 \description{
 Shi-Tomasi ("good features to track") corner detection: response = the structure tensor's SMALLER eigenvalue at every pixel (a corner needs strong gradient variation in BOTH directions, so the weaker direction is the limiting factor) -- otherwise identical thresholding/NMS pipeline to harris_corners().

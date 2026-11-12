@@ -14,7 +14,7 @@ native_runif(lower, upper, n)
 \item{n}{\code{integer}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 Alias for unif(lower, upper, n), sharing its generator and validation.

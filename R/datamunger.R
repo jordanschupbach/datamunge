@@ -192,14 +192,14 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' sturm_sequence(p)
 #' @param p `Polynomial`
-#' @return `vector<Polynomial>`
+#' @return `list of Polynomial`
 #' @md
 #'
 `sturm_sequence` <- function(...) .Call(`.rs_13`, NULL, list(...))
 #' C++ function `datamunge::algebra::detail::sturm_sign_changes`
 #' @usage
 #' sturm_sign_changes(seq, x)
-#' @param seq `vector<Polynomial>`
+#' @param seq `list of Polynomial`
 #' @param x `numeric`
 #' @return `integer`
 #' @md
@@ -247,7 +247,7 @@ rosetta_ref <- function(value = NULL) {
 #' real_roots(p, tolerance = 1.0E-10)
 #' @param p `Polynomial`
 #' @param tolerance `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `real_roots` <- function(...) .Call(`.rs_19`, NULL, list(...))
@@ -312,7 +312,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param p `Polynomial`
 #' @param max_iterations `integer`
 #' @param tolerance `numeric`
-#' @return `vector<Complex>`
+#' @return `list of Complex`
 #' @section Errors:
 #' Signals an R error (from the C++ exception):
 #'
@@ -327,7 +327,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param p `Polynomial`
 #' @param tolerance `numeric`. Used both to verify p's coefficients are within `tolerance` of integers
 #'   (required for the theorem to apply) and to test each candidate ratio's residual.
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @section Errors:
 #' Signals an R error (from the C++ exception):
 #'
@@ -341,7 +341,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' square_free_factorization(p)
 #' @param p `Polynomial`
-#' @return `vector<SquareFreeFactor>`
+#' @return `list of SquareFreeFactor`
 #' @md
 #'
 `square_free_factorization` <- function(...) .Call(`.rs_28`, NULL, list(...))
@@ -361,7 +361,7 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `datamunge::algebra::detail::total_degree`
 #' @usage
 #' total_degree(exponents)
-#' @param exponents `vector<integer>`
+#' @param exponents `integer vector`
 #' @return `integer`
 #' @md
 #'
@@ -371,8 +371,8 @@ rosetta_ref <- function(value = NULL) {
 #' `a` and `b` must have the same length.
 #' @usage
 #' compare_monomials(a, b, order)
-#' @param a `vector<integer>`
-#' @param b `vector<integer>`
+#' @param a `integer vector`
+#' @param b `integer vector`
 #' @param order `character (MonomialOrder)`
 #' @return `integer`
 #' @md
@@ -381,17 +381,17 @@ rosetta_ref <- function(value = NULL) {
 #' C++ function `datamunge::algebra::detail::lcm_exponent`
 #' @usage
 #' lcm_exponent(a, b)
-#' @param a `vector<integer>`
-#' @param b `vector<integer>`
-#' @return `vector<integer>`
+#' @param a `integer vector`
+#' @param b `integer vector`
+#' @return `integer vector`
 #' @md
 #'
 `lcm_exponent` <- function(...) .Call(`.rs_32`, NULL, list(...))
 #' C++ function `datamunge::algebra::detail::monomial_divides`
 #' @usage
 #' monomial_divides(divisor, dividend)
-#' @param divisor `vector<integer>`
-#' @param dividend `vector<integer>`
+#' @param divisor `integer vector`
+#' @param dividend `integer vector`
 #' @return `logical`
 #' @md
 #'
@@ -410,7 +410,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' reduce(p, basis, order)
 #' @param p `MultivariatePolynomial`
-#' @param basis `vector<MultivariatePolynomial>`
+#' @param basis `list of MultivariatePolynomial`
 #' @param order `character (MonomialOrder)`
 #' @return `MultivariatePolynomial`
 #' @md
@@ -422,7 +422,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' multivariate_reduce(p, basis, order)
 #' @param p `MultivariatePolynomial`
-#' @param basis `vector<MultivariatePolynomial>`
+#' @param basis `list of MultivariatePolynomial`
 #' @param order `character (MonomialOrder)`
 #' @return `MultivariatePolynomial`
 #' @md
@@ -433,17 +433,17 @@ rosetta_ref <- function(value = NULL) {
 #' Basic textbook form (no Buchberger-criterion pair-skipping optimizations, matching this module's "simple, correct" scoping elsewhere) -- reduces every S-polynomial against the CURRENT basis and appends any nonzero remainder until no pair produces one.
 #' @usage
 #' groebner_basis(generators, order)
-#' @param generators `vector<MultivariatePolynomial>`
+#' @param generators `list of MultivariatePolynomial`
 #' @param order `character (MonomialOrder)`
-#' @return `vector<MultivariatePolynomial>`
+#' @return `list of MultivariatePolynomial`
 #' @md
 #'
 `groebner_basis` <- function(...) .Call(`.rs_37`, NULL, list(...))
 #' The unique polynomial of degree < n through the n points (xs\[i\], ys\[i\]), built via Lagrange's basis-polynomial formula (O(n^2)).
 #' @usage
 #' lagrange_interpolate(xs, ys)
-#' @param xs `vector<numeric>`
-#' @param ys `vector<numeric>`
+#' @param xs `numeric vector`
+#' @param ys `numeric vector`
 #' @return `Polynomial`
 #' @section Errors:
 #' Signals an R error (from the C++ exception):
@@ -457,8 +457,8 @@ rosetta_ref <- function(value = NULL) {
 #' Included as the classical alternative construction: useful when points are added incrementally, since the divided-difference table extends by one row per new point rather than being rebuilt from scratch.
 #' @usage
 #' newton_interpolate(xs, ys)
-#' @param xs `vector<numeric>`
-#' @param ys `vector<numeric>`
+#' @param xs `numeric vector`
+#' @param ys `numeric vector`
 #' @return `Polynomial`
 #' @section Errors:
 #' Signals an R error (from the C++ exception):
@@ -507,8 +507,8 @@ rosetta_ref <- function(value = NULL) {
 #' Chinese Remainder Theorem: the unique x in \[0, product(moduli)) such that `x == remainders[i] (mod moduli[i])` for every i, given pairwise-coprime positive moduli.
 #' @usage
 #' crt(remainders, moduli)
-#' @param remainders `vector<numeric>`
-#' @param moduli `vector<numeric>`
+#' @param remainders `numeric vector`
+#' @param moduli `numeric vector`
 #' @return `numeric`
 #' @section Errors:
 #' Signals an R error (from the C++ exception):
@@ -522,10 +522,10 @@ rosetta_ref <- function(value = NULL) {
 #' Product of two polynomials over GF(p).
 #' @usage
 #' gf_mul(a, b, p)
-#' @param a `vector<integer>`
-#' @param b `vector<integer>`
+#' @param a `integer vector`
+#' @param b `integer vector`
 #' @param p `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `gf_mul` <- function(...) .Call(`.rs_44`, NULL, list(...))
@@ -534,18 +534,18 @@ rosetta_ref <- function(value = NULL) {
 #' `g(x^p)`.
 #' @usage
 #' gf_derivative(a, p)
-#' @param a `vector<integer>`
+#' @param a `integer vector`
 #' @param p `integer`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `gf_derivative` <- function(...) .Call(`.rs_45`, NULL, list(...))
 #' Square-free decomposition of a monic polynomial over GF(p) (Yun's algorithm, with the p-th-root step needed in characteristic p): pairs (g, m) with f = prod g^m, every g monic and square-free and the g pairwise coprime.
 #' @usage
 #' gf_square_free(f, p)
-#' @param f `vector<integer>`
+#' @param f `integer vector`
 #' @param p `integer`
-#' @return `vector<list(vector<integer>, integer)>`
+#' @return `list of list(integer vector, integer)`
 #' @md
 #'
 `gf_square_free` <- function(...) .Call(`.rs_46`, NULL, list(...))
@@ -556,9 +556,9 @@ rosetta_ref <- function(value = NULL) {
 #' f its dimension is the number of irreducible factors. The first vector is the constant 1.
 #' @usage
 #' berlekamp_null_space(f, p)
-#' @param f `vector<integer>`
+#' @param f `integer vector`
 #' @param p `integer`
-#' @return `vector<vector<integer>>`
+#' @return `list of integer vector`
 #' @md
 #'
 `berlekamp_null_space` <- function(...) .Call(`.rs_47`, NULL, list(...))
@@ -567,9 +567,9 @@ rosetta_ref <- function(value = NULL) {
 #' See berlekamp_factor() for the algorithm and preconditions.
 #' @usage
 #' berlekamp_factor_mod(poly, prime)
-#' @param poly `vector<numeric>`
+#' @param poly `numeric vector`
 #' @param prime `numeric`
-#' @return `vector<vector<numeric>>`
+#' @return `list of numeric vector`
 #' @md
 #'
 `berlekamp_factor_mod` <- function(...) .Call(`.rs_48`, NULL, list(...))
@@ -579,7 +579,7 @@ rosetta_ref <- function(value = NULL) {
 #' `n-\operatorname{rank}(Q-I)`. A square-free polynomial is irreducible exactly when it is 1.
 #' @usage
 #' berlekamp_factor_count(poly, p)
-#' @param poly `vector<integer>`. ascending coefficients (made monic and reduced mod p first).
+#' @param poly `integer vector`. ascending coefficients (made monic and reduced mod p first).
 #' @param p `integer`. a prime.
 #' @return `integer`: the number of distinct irreducible factors (for square-free input).
 #' @section Errors:
@@ -594,7 +594,7 @@ rosetta_ref <- function(value = NULL) {
 #' The square-free decomposition separates repeated factors (taking p-th roots where the derivative vanishes), and Berlekamp's algorithm splits each square-free part.
 #' @usage
 #' factor_gf_p(poly, p)
-#' @param poly `vector<integer>`. ascending coefficients; reduced mod p first.
+#' @param poly `integer vector`. ascending coefficients; reduced mod p first.
 #' @param p `integer`. a prime.
 #' @return `GfFactorization`: the leading coefficient, the factors and their multiplicities.
 #' @section Errors:
@@ -633,14 +633,14 @@ rosetta_ref <- function(value = NULL) {
 #' sylvester_matrix(a, b)
 #' @param a `Polynomial`
 #' @param b `Polynomial`
-#' @return `vector<vector<numeric>>`
+#' @return `list of numeric vector`
 #' @md
 #'
 `sylvester_matrix` <- function(...) .Call(`.rs_53`, NULL, list(...))
 #' C++ function `datamunge::algebra::detail::determinant`
 #' @usage
 #' determinant(mat)
-#' @param mat `vector<vector<numeric>>`
+#' @param mat `list of numeric vector`
 #' @return `numeric`
 #' @md
 #'
@@ -784,7 +784,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' split_channels(src)
 #' @param src `Image`
-#' @return `vector<Image>`
+#' @return `list of Image`
 #' @md
 #'
 `split_channels` <- function(...) .Call(`.rs_65`, NULL, list(...))
@@ -793,7 +793,7 @@ rosetta_ref <- function(value = NULL) {
 #' Throws std::invalid_argument if the plane count isn't 1-4 or the planes' dimensions disagree.
 #' @usage
 #' merge_channels(planes)
-#' @param planes `vector<Image>`
+#' @param planes `list of Image`
 #' @return `Image`
 #' @md
 #'
@@ -807,7 +807,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param num_scales `integer`
 #' @param sigma0 `numeric`
 #' @param threshold `numeric`
-#' @return `vector<KeyPoint>`
+#' @return `list of KeyPoint`
 #' @md
 #'
 `dog_blobs` <- function(...) .Call(`.rs_67`, NULL, list(...))
@@ -823,12 +823,12 @@ rosetta_ref <- function(value = NULL) {
 #' Keeps only the response-field entries that are a strict local maximum within a (2*radius+1)^2 window AND exceed `threshold`, as a sorted-by-descending-response Corner list -- the standard non-max-suppression + thresholding pass shared by every response-map-based corner detector.
 #' @usage
 #' extract_local_maxima(response, width, height, threshold, nms_radius)
-#' @param response `vector<numeric>`
+#' @param response `numeric vector`
 #' @param width `integer`
 #' @param height `integer`
 #' @param threshold `numeric`
 #' @param nms_radius `integer`
-#' @return `vector<Corner>`
+#' @return `list of Corner`
 #' @md
 #'
 `extract_local_maxima` <- function(...) .Call(`.rs_69`, NULL, list(...))
@@ -842,7 +842,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param sigma `numeric`
 #' @param threshold_ratio `numeric`
 #' @param nms_radius `integer`
-#' @return `vector<Corner>`
+#' @return `list of Corner`
 #' @md
 #'
 `harris_corners` <- function(...) .Call(`.rs_70`, NULL, list(...))
@@ -853,7 +853,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param sigma `numeric`
 #' @param threshold_ratio `numeric`
 #' @param nms_radius `integer`
-#' @return `vector<Corner>`
+#' @return `list of Corner`
 #' @md
 #'
 `shi_tomasi_corners` <- function(...) .Call(`.rs_71`, NULL, list(...))
@@ -865,7 +865,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param img `Image`
 #' @param threshold `integer`
 #' @param min_contiguous `integer`
-#' @return `vector<Corner>`
+#' @return `list of Corner`
 #' @md
 #'
 `fast_corners` <- function(...) .Call(`.rs_72`, NULL, list(...))
@@ -892,7 +892,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param edge_threshold `integer`
 #' @param min_votes `integer`
 #' @param nms_radius `integer`
-#' @return `vector<HoughLine>`
+#' @return `list of HoughLine`
 #' @md
 #'
 `hough_lines` <- function(...) .Call(`.rs_74`, NULL, list(...))
@@ -907,7 +907,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param gradient_threshold `numeric`
 #' @param min_votes `integer`
 #' @param nms_radius `integer`
-#' @return `vector<HoughCircle>`
+#' @return `list of HoughCircle`
 #' @md
 #'
 `hough_circles` <- function(...) .Call(`.rs_75`, NULL, list(...))
@@ -983,9 +983,9 @@ rosetta_ref <- function(value = NULL) {
 #' lucas_kanade_optical_flow(prev, `next`, points, window_radius = 7)
 #' @param prev `Image`
 #' @param next `Image`
-#' @param points `vector<list(integer, integer)>`
+#' @param points `list of list(integer, integer)`
 #' @param window_radius `integer`
-#' @return `vector<FlowVector>`
+#' @return `list of FlowVector`
 #' @md
 #'
 `lucas_kanade_optical_flow` <- function(...) .Call(`.rs_82`, NULL, list(...))
@@ -993,7 +993,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' box_kernel(size)
 #' @param size `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `box_kernel` <- function(...) .Call(`.rs_83`, NULL, list(...))
@@ -1001,7 +1001,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' gaussian_kernel(sigma)
 #' @param sigma `numeric`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `gaussian_kernel` <- function(...) .Call(`.rs_84`, NULL, list(...))
@@ -1011,7 +1011,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' image_convolve(src, kernel)
 #' @param src `Image`
-#' @param kernel `vector<numeric>`
+#' @param kernel `numeric vector`
 #' @return `Image`
 #' @md
 #'
@@ -1176,7 +1176,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param img `Image`
 #' @param levels `integer`
 #' @param sigma `numeric`
-#' @return `vector<Image>`
+#' @return `list of Image`
 #' @md
 #'
 `gaussian_pyramid` <- function(...) .Call(`.rs_101`, NULL, list(...))
@@ -1197,7 +1197,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param img `Image`
 #' @param levels `integer`
 #' @param sigma `numeric`
-#' @return `vector<Image>`
+#' @return `list of Image`
 #' @md
 #'
 `laplacian_pyramid` <- function(...) .Call(`.rs_103`, NULL, list(...))
@@ -1254,7 +1254,7 @@ rosetta_ref <- function(value = NULL) {
 #' The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".
 #' @usage
 #' downloadable()
-#' @return `vector<character>`
+#' @return `character vector`
 #' @section Examples (C++):
 #' ```cpp
 #' for (const auto& name : dm::datasets::downloadable()) std::print("{}\n", name);
@@ -1390,8 +1390,8 @@ rosetta_ref <- function(value = NULL) {
 #' Retains the original one-vector signature and Triangle layout. Finite coordinate validation precedes even trivial results. Duplicates coalesce to earliest ids; collinear/fewer-than-three distinct sites return no faces. Uses Bowyer-Watson cavity replacement with symbolic hull ghosts, avoiding any finite super-triangle whose proximity could remove valid narrow faces. All orientation/incircle signs are exact for finite stored binary64, including subnormals/extreme scales. Cocircular ties retain existing faces under the ordering in DelaunayTrace. Faces are strictly CCW, contain no ghosts and reference original ids. Finite output order is canonical as documented on DelaunayTrace. No boundary constraints, holes, Steiner refinement or minimum-angle guarantee is supplied. Input unchanged; O(n log(n+1)+u^2 log(u+1)) worst-case work for n records/u distinct sites with ordered cavity maps and full live scans; O(n+u) working/output storage, no shared state or optional resource caps. Exact-predicate cost is bounded per binary64 query.
 #' @usage
 #' delaunay_triangulation(points)
-#' @param points `vector<Point2D>`. Borrowed finite planar sites, possibly empty/duplicate/collinear.
-#' @return `vector<Triangle>`: Owned complete finite mesh of the distinct sites' convex hull, or no faces for collinearity.
+#' @param points `list of Point2D`. Borrowed finite planar sites, possibly empty/duplicate/collinear.
+#' @return `list of Triangle`: Owned complete finite mesh of the distinct sites' convex hull, or no faces for collinearity.
 #' @section Examples (C++):
 #' ```cpp
 #' std::print("{}\n",dm::geometry::delaunay_triangulation({{0,0},{1,0},{.5,.000001}}).size()); // 1
@@ -1414,7 +1414,7 @@ rosetta_ref <- function(value = NULL) {
 #' No replay. Full finite validation precedes the original-record cap and all allocation. max_tests bounds cumulative incircle plus hull-side calls, checked before each complete live-face scan. Trace entries charge one per insertion plus removed faces, boundary edges and added faces, including ghosts, checked before retaining the event. Points/maps/final output and temporary cavities are excluded from that entry count; caps do not bound bytes or wall time. Zero disables only an optional cap. O(sum cavity/event sizes) additional history, at worst O(u^2), beyond the ordinary solver. Failure returns no partial result.
 #' @usage
 #' delaunay_trace(points, max_points = 1000000, max_tests = 10000000, max_entries = 1000000)
-#' @param points `vector<Point2D>`. Finite original coordinates, unchanged.
+#' @param points `list of Point2D`. Finite original coordinates, unchanged.
 #' @param max_points `integer`. Complete original-record cap, default 1000000; zero disables.
 #' @param max_tests `integer`. Cumulative complete-scan conflict cap, default 10000000; zero disables.
 #' @param max_entries `integer`. Cumulative event-entry cap, default 1000000; zero disables.
@@ -1441,8 +1441,8 @@ rosetta_ref <- function(value = NULL) {
 #' Performs the structural checks on DelaunayAnalysis first. The complete prospective circle count faces*(unique_sites-3) is checked before circle queries; zero cap disables only that limit. O(n log(n+1)+f log(f+1)+fu) work and O(n+f) storage; minimum angles are floating diagnostics and are not certified bounds. This is a local property analysis, not a global embedding/coverage certificate.
 #' @usage
 #' delaunay_analyze(points, triangles, max_tests = 1000000)
-#' @param points `vector<Point2D>`. Finite original sites, unchanged.
-#' @param triangles `vector<Triangle>`. Finite CCW faces with valid original indices, unchanged.
+#' @param points `list of Point2D`. Finite original sites, unchanged.
+#' @param triangles `list of Triangle`. Finite CCW faces with valid original indices, unchanged.
 #' @param max_tests `integer`. Complete exact-circle query cap, default 1000000; zero disables.
 #' @return `DelaunayAnalysis`: Owned scalar topology, actual query/violation counts and approximate angle.
 #' @section Examples (C++):
@@ -1470,7 +1470,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param seed `integer`. mt19937 seed, default 20250728.
 #' @param extent `numeric`. Positive finite square extent, default 10; checked even for count zero.
 #' @param max_points `integer`. Optional complete output-record cap, default 1000000; zero disables.
-#' @return `vector<Point2D>`: Owned generated points in \[0,extent) on each axis.
+#' @return `list of Point2D`: Owned generated points in \[0,extent) on each axis.
 #' @section Examples (C++):
 #' ```cpp
 #' std::print("{}\n",dm::geometry::delaunay_uniform_cloud(30).size()); // 30
@@ -1503,7 +1503,7 @@ rosetta_ref <- function(value = NULL) {
 #' Builds a mesh over the convex hull of an arbitrary point cloud via Delaunay triangulation (datamunge::geometry::delaunay_triangulation) -- useful for unstructured domains a structured grid does not fit.
 #' @usage
 #' make_mesh2d_from_points(points)
-#' @param points `vector<Point2D>`
+#' @param points `list of Point2D`
 #' @return `Mesh2D`
 #' @md
 #'
@@ -1514,7 +1514,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' boundary_nodes(mesh)
 #' @param mesh `Mesh2D`
-#' @return `vector<integer>`
+#' @return `integer vector`
 #' @md
 #'
 `boundary_nodes` <- function(...) .Call(`.rs_121`, NULL, list(...))
@@ -1523,7 +1523,7 @@ rosetta_ref <- function(value = NULL) {
 #' Throws std::invalid_argument for an empty point set.
 #' @usage
 #' bounding_box(points)
-#' @param points `vector<Point2D>`
+#' @param points `list of Point2D`
 #' @return `BoundingBox`
 #' @md
 #'
@@ -1533,7 +1533,7 @@ rosetta_ref <- function(value = NULL) {
 #' Validates at least two finite points, visits every original i<j pair and compares widened hypot distances. Equal rounded distances keep the lexicographically first index pair. Duplicates are valid distinct records and can yield zero. No early stop, sorting or spatial pruning; O(n^2) work and O(1) auxiliary storage. No input mutation/shared state. Widened comparison can change former false zero/infinite results and last-bit ties; it is not an exact-real predicate. The old call/result layout remains; indexed/traced variants retain input ids.
 #' @usage
 #' closest_pair(points)
-#' @param points `vector<Point2D>`. Borrowed original finite planar coordinates, length at least two.
+#' @param points `list of Point2D`. Borrowed original finite planar coordinates, length at least two.
 #' @return `ClosestPairResult`: Owned selected point copies and checked finite-double measured distance.
 #' @section Examples (C++):
 #' ```cpp
@@ -1555,8 +1555,8 @@ rosetta_ref <- function(value = NULL) {
 #' Validates all coordinates before internal indexed copies or sorting; the original by-value argument copy occurs at the call boundary. Exact coordinate equality removes duplicates (including signed zero); the earliest matching original record supplies its representation. Returns lexicographic-minimum first, counterclockwise, no repeated endpoint and no collinear edge interiors. Empty/singleton/two-point/collinear outputs follow ConvexHullAnalysis. O(n log n) comparisons plus O(n) bounded exact-sign tests, O(n) scratch/output, no global state. The legacy by-value signature is retained and has no optional caps. Other geometry routines that use cross() retain their own floating contracts.
 #' @usage
 #' convex_hull(points)
-#' @param points `vector<Point2D>`. Finite planar records, copied by value as in the original API.
-#' @return `vector<Point2D>`: Owned strict hull of the represented coordinates.
+#' @param points `list of Point2D`. Finite planar records, copied by value as in the original API.
+#' @return `list of Point2D`: Owned strict hull of the represented coordinates.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto h=dm::geometry::convex_hull({{0,0},{2,0},{2,2},{0,2},{1,1}});
@@ -1578,7 +1578,7 @@ rosetta_ref <- function(value = NULL) {
 #' Same ordering, degeneracy and complexity contract as convex_hull(). Full finite validation precedes the complete max_points cap and scratch allocation. No events or completed-chain snapshots are retained; event cap is ignored.
 #' @usage
 #' convex_hull_analyze(points, options = ConvexHullOptions$new())
-#' @param points `vector<Point2D>`. Finite original records; not mutated.
+#' @param points `list of Point2D`. Finite original records; not mutated.
 #' @param options `ConvexHullOptions`. Complete original-record cap, zero unlimited; defaults one million.
 #' @return `ConvexHullAnalysis`: Owned hull, earliest original indices and actual counters.
 #' @section Examples (C++):
@@ -1601,7 +1601,7 @@ rosetta_ref <- function(value = NULL) {
 #' Same computation/work as analyze, plus O(n) owned sorted records, compact test/pop/push edits and completed lower/upper chains. Positive max_events is checked online on actual records, including pushes; zero disables the cap.
 #' @usage
 #' convex_hull_trace(points, options = ConvexHullOptions$new())
-#' @param points `vector<Point2D>`. Finite original records; not mutated.
+#' @param points `list of Point2D`. Finite original records; not mutated.
 #' @param options `ConvexHullOptions`. Complete point and actual event caps.
 #' @return `ConvexHullTrace`: Owned actual sorted coordinates, identities, work and scan edits.
 #' @section Examples (C++):
@@ -1627,7 +1627,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param count `integer`. Number of points, default forty.
 #' @param seed `integer`. Local mt19937 seed, default 20240728.
 #' @param max_points `integer`. Complete draw cap, default one million; zero unlimited.
-#' @return `vector<Point2D>`: Owned unsnapped normal point cloud.
+#' @return `list of Point2D`: Owned unsnapped normal point cloud.
 #' @section Examples (C++):
 #' ```cpp
 #' std::cout << dm::geometry::sample_gaussian_points(40,20240728).size(); // 40
@@ -1646,7 +1646,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' terrain_colors(n)
 #' @param n `integer`. Number of colours (at least 1).
-#' @return `vector<RGB>`: The palette, low to high.
+#' @return `list of RGB`: The palette, low to high.
 #' @section Errors:
 #' Signals an R error (from the C++ exception):
 #'
@@ -1662,7 +1662,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' diverging_colors(n)
 #' @param n `integer`. Number of colours (at least 1; 1 gives the white midpoint).
-#' @return `vector<RGB>`: The palette, low (blue) to high (red).
+#' @return `list of RGB`: The palette, low (blue) to high (red).
 #' @section Examples (C++):
 #' ```cpp
 #' const auto pal = dm::graphics::diverging_colors(3);
@@ -1685,7 +1685,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' viridis_colors(n)
 #' @param n `integer`. Number of colours (at least 1).
-#' @return `vector<RGB>`: The palette, low (purple) to high (yellow).
+#' @return `list of RGB`: The palette, low (purple) to high (yellow).
 #' @section Examples (C++):
 #' ```cpp
 #' const auto pal = dm::graphics::viridis_colors(10);
@@ -1707,12 +1707,12 @@ rosetta_ref <- function(value = NULL) {
 #' nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero
 #' range maps everything to the middle colour. Pass the result to RPlot::points_colored().
 #' @usage
-#' value_colors(values, palette = c(), z_min = <default>, z_max = <default>)
-#' @param values `vector<numeric>`. Values to colour.
-#' @param palette `vector<RGB>`. Colours from low to high (default viridis_colors(256)).
+#' value_colors(values, palette = list(), z_min = <default>, z_max = <default>)
+#' @param values `numeric vector`. Values to colour.
+#' @param palette `list of RGB`. Colours from low to high (default viridis_colors(256)).
 #' @param z_min `numeric`. Value of the first colour; NaN (the default) uses the smallest value.
 #' @param z_max `numeric`. Value of the last colour; NaN (the default) uses the largest value.
-#' @return `vector<RGB>`: One colour per value.
+#' @return `list of RGB`: One colour per value.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
@@ -1748,8 +1748,8 @@ rosetta_ref <- function(value = NULL) {
 #' Owns the result; borrows finite inputs without mutation. No band, slope bound, step weighting, length normalization or fitted parameters. Finite ties choose diagonal, then advance_a, then advance_b. O(n*m) recurrence time, O(n*m+n+m) scratch/output, with only two double cost rows and n*m predecessor bytes. Complete input/geometry validation precedes allocation. Positive overflowing off-path costs remain infinity; only a nonfinite final optimum is rejected. Under ordinary double arithmetic the returned witness sums to the returned distance in forward order. Concurrent independent calls share no mutable state.
 #' @usage
 #' dynamic_time_warping_work(a, b)
-#' @param a `vector<numeric>`. Nonempty finite scalar sequence, length at most INT_MAX.
-#' @param b `vector<numeric>`. Nonempty finite scalar sequence, length at most INT_MAX.
+#' @param a `numeric vector`. Nonempty finite scalar sequence, length at most INT_MAX.
+#' @param b `numeric vector`. Nonempty finite scalar sequence, length at most INT_MAX.
 #' @return `DTWComputation`: Independent optimal result and counts, with no retained input/cost history.
 #' @section Examples (C++):
 #' See DTWWork and DTWComputation for executed work examples.
@@ -1772,8 +1772,8 @@ rosetta_ref <- function(value = NULL) {
 #' Same validation, ownership, deterministic ties, numerical limits and complexity as dynamic_time_warping_work(); discards only its work counters. This distance is not a metric: unequal stretched sequences can have zero cost and the triangle inequality can fail. Equal-length diagonal alignment bounds it by rigid L1 loss.
 #' @usage
 #' dynamic_time_warping(a, b)
-#' @param a `vector<numeric>`. Nonempty finite first sequence, length at most INT_MAX.
-#' @param b `vector<numeric>`. Nonempty finite second sequence, length at most INT_MAX.
+#' @param a `numeric vector`. Nonempty finite first sequence, length at most INT_MAX.
+#' @param b `numeric vector`. Nonempty finite second sequence, length at most INT_MAX.
 #' @return `DTWResult`: Owned optimal distance and inclusive zero-based parallel int paths.
 #' @section Examples (C++):
 #' See DTWResult for the executed original stretched-sequence example.
@@ -1794,8 +1794,8 @@ rosetta_ref <- function(value = NULL) {
 #' Validates complete finite inputs/geometry before checking the optional complete capture budget, then copies inputs and runs once. Owns every snapshot. No partial trace/result escapes on failure. Same variant/ties/numerical rules as ordinary DTW.
 #' @usage
 #' dynamic_time_warping_trace(a, b, max_entries = 1000000)
-#' @param a `vector<numeric>`. Nonempty finite first input, length at most INT_MAX.
-#' @param b `vector<numeric>`. Nonempty finite second input, length at most INT_MAX.
+#' @param a `numeric vector`. Nonempty finite first input, length at most INT_MAX.
+#' @param b `numeric vector`. Nonempty finite second input, length at most INT_MAX.
 #' @param max_entries `integer`. Complete logical entry cap, default 1000000; zero disables only cap.
 #' @return `DTWTrace`: Independent input, costs, directions, optimal result, counts and capture cost.
 #' @section Examples (C++):
@@ -1817,10 +1817,10 @@ rosetta_ref <- function(value = NULL) {
 #' Checks all finite input and path geometry before numerical accumulation: equal nonempty path lengths, in-bounds indices, exact endpoints and unit advances (1,0), (0,1), (1,1). This certifies feasibility/cost, not optimality. O(n+m+L) validation/sum, no allocations, input unchanged; no shared mutable state.
 #' @usage
 #' dtw_path_cost(a, b, path_a, path_b)
-#' @param a `vector<numeric>`. Nonempty finite first sequence.
-#' @param b `vector<numeric>`. Nonempty finite second sequence.
-#' @param path_a `vector<integer>`. Borrowed signed first indices, zero through a.size()-1.
-#' @param path_b `vector<integer>`. Borrowed parallel signed second indices, zero through b.size()-1.
+#' @param a `numeric vector`. Nonempty finite first sequence.
+#' @param b `numeric vector`. Nonempty finite second sequence.
+#' @param path_a `integer vector`. Borrowed signed first indices, zero through a.size()-1.
+#' @param path_b `integer vector`. Borrowed parallel signed second indices, zero through b.size()-1.
 #' @return `numeric`: Finite forward-order sum of absolute differences on the supplied witness.
 #' @section Examples (C++):
 #' ```cpp
@@ -1842,8 +1842,8 @@ rosetta_ref <- function(value = NULL) {
 #' Costs use unshifted inputs; only drawing adds offset to a and subtracts it from b. Requires result.distance to equal the validated forward witness sum exactly; it does not independently prove optimality. Validates complete inputs/witness, finite plotted coordinates and optional path-pair cap before drawing allocation. Owns all series; no file I/O or model mutation. Concurrent calls share no state.
 #' @usage
 #' plot_dtw_alignment(a, b, result, offset = 1.6000000000000001, max_pairs = 4096)
-#' @param a `vector<numeric>`. Nonempty finite first sequence.
-#' @param b `vector<numeric>`. Nonempty finite second sequence.
+#' @param a `numeric vector`. Nonempty finite first sequence.
+#' @param b `numeric vector`. Nonempty finite second sequence.
 #' @param result `DTWResult`. Borrowed complete feasible result with exact finite witness cost.
 #' @param offset `numeric`. Finite nonnegative vertical display separation per series, default 1.6.
 #' @param max_pairs `integer`. Optional complete correspondence cap, default 4096; zero disables only cap.
@@ -1870,8 +1870,8 @@ rosetta_ref <- function(value = NULL) {
 #' Computed via the standard O(n*m) dynamic program (bottom-up, not the naive exponential recursion). Differs from DTW in exactly one respect: DTW sums (cumulative cost) where Fréchet takes a max (bottleneck cost) -- Fréchet cares about the worst single moment of divergence, DTW about total accumulated divergence.
 #' @usage
 #' discrete_frechet_distance(p, q)
-#' @param p `vector<Point2D>`
-#' @param q `vector<Point2D>`
+#' @param p `list of Point2D`
+#' @param q `list of Point2D`
 #' @return `numeric`
 #' @md
 #'
@@ -1917,7 +1917,7 @@ rosetta_ref <- function(value = NULL) {
 #' Points are shuffled first (fixed seed, for determinism) since the algorithm's expected running time depends on processing order; this implementation skips the further "move-to-front" optimization real Welzl uses for guaranteed expected-linear time; O(n^3) worst case here is still polynomial and far simpler to get right, matching this module's usual complexity/simplicity tradeoff. Throws std::invalid_argument for an empty input.
 #' @usage
 #' min_enclosing_circle(points)
-#' @param points `vector<Point2D>`
+#' @param points `list of Point2D`
 #' @return `Circle`
 #' @md
 #'
@@ -1928,7 +1928,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' point_in_polygon(point, vertices)
 #' @param point `Point2D`
-#' @param vertices `vector<Point2D>`
+#' @param vertices `list of Point2D`
 #' @return `logical`
 #' @md
 #'
@@ -1936,7 +1936,7 @@ rosetta_ref <- function(value = NULL) {
 #' The polygon's signed area via the shoelace formula: positive for counterclockwise-ordered vertices, negative for clockwise.
 #' @usage
 #' signed_polygon_area(vertices)
-#' @param vertices `vector<Point2D>`
+#' @param vertices `list of Point2D`
 #' @return `numeric`
 #' @md
 #'
@@ -1944,7 +1944,7 @@ rosetta_ref <- function(value = NULL) {
 #' The polygon's (unsigned) area, regardless of vertex winding order.
 #' @usage
 #' polygon_area(vertices)
-#' @param vertices `vector<Point2D>`
+#' @param vertices `list of Point2D`
 #' @return `numeric`
 #' @md
 #'
@@ -1954,7 +1954,7 @@ rosetta_ref <- function(value = NULL) {
 #' Throws std::invalid_argument for a degenerate (zero-area, e.g. collinear or fewer-than-3-vertex) polygon, since the formula divides by the signed area.
 #' @usage
 #' polygon_centroid(vertices)
-#' @param vertices `vector<Point2D>`
+#' @param vertices `list of Point2D`
 #' @return `Point2D`
 #' @md
 #'
@@ -1964,7 +1964,7 @@ rosetta_ref <- function(value = NULL) {
 #' Fewer than 3 vertices is never convex.
 #' @usage
 #' is_convex_polygon(vertices)
-#' @param vertices `vector<Point2D>`
+#' @param vertices `list of Point2D`
 #' @return `logical`
 #' @md
 #'
@@ -2043,9 +2043,9 @@ rosetta_ref <- function(value = NULL) {
 #' `clip` MUST be convex AND counterclockwise-ordered (exactly what convex_hull() produces) -- the algorithm processes it one directed edge at a time, keeping only the subject-polygon portion to the left of every edge, so a clockwise or non-convex clip polygon silently produces a wrong (or empty) result rather than an error. Returns an empty polygon if the two don't overlap at all.
 #' @usage
 #' clip_polygon(subject, clip)
-#' @param subject `vector<Point2D>`
-#' @param clip `vector<Point2D>`
-#' @return `vector<Point2D>`
+#' @param subject `list of Point2D`
+#' @param clip `list of Point2D`
+#' @return `list of Point2D`
 #' @md
 #'
 `clip_polygon` <- function(...) .Call(`.rs_155`, NULL, list(...))
@@ -2065,8 +2065,8 @@ rosetta_ref <- function(value = NULL) {
 #' O(n^3) worst case (each of the O(n) clipped ears requires an O(n) scan to verify, each vertex check O(1)) -- unlike delaunay_triangulation() (which only sees an unordered point SET), this respects the polygon's actual boundary, so it correctly handles concave (non-convex) shapes. Every triangle's vertices are indices into `polygon`. Works for any winding order (detects and internally corrects clockwise input). Returns empty for fewer than 3 vertices; a triangle input returns itself unchanged.
 #' @usage
 #' triangulate_polygon(polygon)
-#' @param polygon `vector<Point2D>`
-#' @return `vector<Triangle>`
+#' @param polygon `list of Point2D`
+#' @return `list of Triangle`
 #' @md
 #'
 `triangulate_polygon` <- function(...) .Call(`.rs_157`, NULL, list(...))
@@ -2075,7 +2075,7 @@ rosetta_ref <- function(value = NULL) {
 #' The farthest pair is always a pair of convex hull vertices, so this computes the hull first (convex_hull()) and then searches only among its (typically far fewer) vertices -- brute-force O(h^2) over the hull rather than the classical O(h) two-pointer rotating-calipers walk, the same "correct and simple over asymptotically optimal" tradeoff this module already makes for closest_pair(). Throws std::invalid_argument for fewer than 2 distinct points.
 #' @usage
 #' polygon_diameter(points)
-#' @param points `vector<Point2D>`
+#' @param points `list of Point2D`
 #' @return `DiameterResult`
 #' @md
 #'
@@ -2085,7 +2085,7 @@ rosetta_ref <- function(value = NULL) {
 #' By a classical theorem, the optimal rectangle always has one side collinear with a convex hull edge -- so this computes the hull, then for each hull edge, measures the bounding rectangle aligned with that edge's direction (projecting every hull point onto the edge direction and its perpendicular), keeping the smallest-area result. O(h^2) (h = hull size): the classical rotating-calipers formulation does this in O(h) via incrementally-advanced support points, but re-projecting from scratch for every edge is far simpler to get right and, again, this module's established complexity/simplicity tradeoff. Throws std::invalid_argument if the hull has fewer than 3 vertices (no well-defined minimum-area rectangle for a degenerate point set).
 #' @usage
 #' minimum_bounding_rectangle(points)
-#' @param points `vector<Point2D>`
+#' @param points `list of Point2D`
 #' @return `MinimumBoundingRectangle`
 #' @md
 #'
@@ -2105,9 +2105,9 @@ rosetta_ref <- function(value = NULL) {
 #' Fewer than 3 points are returned unchanged (nothing to simplify).
 #' @usage
 #' simplify_polyline(points, epsilon)
-#' @param points `vector<Point2D>`
+#' @param points `list of Point2D`
 #' @param epsilon `numeric`
-#' @return `vector<Point2D>`
+#' @return `list of Point2D`
 #' @md
 #'
 `simplify_polyline` <- function(...) .Call(`.rs_161`, NULL, list(...))
@@ -2126,7 +2126,7 @@ rosetta_ref <- function(value = NULL) {
 #' Fewer than 3 points produce an empty diagram (matching delaunay_triangulation()).
 #' @usage
 #' voronoi_diagram(points)
-#' @param points `vector<Point2D>`
+#' @param points `list of Point2D`
 #' @return `VoronoiDiagram`
 #' @md
 #'
@@ -2216,7 +2216,7 @@ rosetta_ref <- function(value = NULL) {
 #' @usage
 #' draw_polygon(img, points, color, filled = FALSE)
 #' @param img `Image`
-#' @param points `vector<list(integer, integer)>`
+#' @param points `list of list(integer, integer)`
 #' @param color `Pixel`
 #' @param filled `logical`
 #' @md
@@ -2350,8 +2350,8 @@ rosetta_ref <- function(value = NULL) {
 #' mutable state.
 #' @usage
 #' one_way_anova(values, group_sizes)
-#' @param values `vector<numeric>`. Finite observations concatenated group by group.
-#' @param group_sizes `vector<integer>`. At least two positive sizes summing exactly to values.size(); N must exceed
+#' @param values `numeric vector`. Finite observations concatenated group by group.
+#' @param group_sizes `integer vector`. At least two positive sizes summing exactly to values.size(); N must exceed
 #'   the group count.
 #' @return `HypothesisTestResult`: statistic=F, parameter1=k-1, parameter2=N-k and upper-tail p_value; no CI or group
 #' estimates.
@@ -2379,8 +2379,8 @@ rosetta_ref <- function(value = NULL) {
 #' space, no mutation, omission or shared state.
 #' @usage
 #' kruskal_wallis_test(values, group_sizes)
-#' @param values `vector<numeric>`. Finite observations concatenated by group.
-#' @param group_sizes `vector<integer>`. At least two positive group sizes summing to values.size().
+#' @param values `numeric vector`. Finite observations concatenated by group.
+#' @param group_sizes `integer vector`. At least two positive group sizes summing to values.size().
 #' @return `HypothesisTestResult`: statistic=H, parameter1=k-1 and upper-tail approximate p_value; no CI.
 #' @section Examples (C++):
 #' ```cpp
@@ -2404,8 +2404,8 @@ rosetta_ref <- function(value = NULL) {
 #' O(k) work/storage, inputs unchanged, no shared state or omission.
 #' @usage
 #' chi_squared_goodness_of_fit(observed, expected_probabilities = c())
-#' @param observed `vector<numeric>`. At least two finite nonnegative counts with positive finite total.
-#' @param expected_probabilities `vector<numeric>`. Empty (default) means uniform; otherwise positive finite
+#' @param observed `numeric vector`. At least two finite nonnegative counts with positive finite total.
+#' @param expected_probabilities `numeric vector`. Empty (default) means uniform; otherwise positive finite
 #'   probabilities matching counts and summing to one within 1e-10.
 #' @return `HypothesisTestResult`: statistic=X-squared, parameter1=k-1 and approximate upper-tail p_value; no CI.
 #' @section Examples (C++):
@@ -2430,7 +2430,7 @@ rosetta_ref <- function(value = NULL) {
 #' state.
 #' @usage
 #' chi_squared_test_independence(table, nrows, ncols, correct = TRUE)
-#' @param table `vector<numeric>`. Finite nonnegative row-major counts with strictly positive margins; integer counts
+#' @param table `numeric vector`. Finite nonnegative row-major counts with strictly positive margins; integer counts
 #'   are the usual sampling model.
 #' @param nrows `integer`. At least two rows.
 #' @param ncols `integer`. At least two columns; table length must equal nrows*ncols.
@@ -2459,8 +2459,8 @@ rosetta_ref <- function(value = NULL) {
 #' input mutation/omission or shared state.
 #' @usage
 #' pearson_correlation_test(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
-#' @param x `vector<numeric>`. At least three finite nonconstant first measurements.
-#' @param y `vector<numeric>`. Same-length finite nonconstant second measurements, paired by index.
+#' @param x `numeric vector`. At least three finite nonconstant first measurements.
+#' @param y `numeric vector`. Same-length finite nonconstant second measurements, paired by index.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for population correlation.
 #' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
 #' @return `HypothesisTestResult`: statistic=t, parameter1=n-2, estimate1=r and p_value; has_conf_int only for n>=4.
@@ -2486,8 +2486,8 @@ rosetta_ref <- function(value = NULL) {
 #' mutation/omission or shared state.
 #' @usage
 #' spearman_correlation_test(x, y, alternative = "TwoSided")
-#' @param x `vector<numeric>`. At least three finite nonconstant first measurements.
-#' @param y `vector<numeric>`. Same-length finite nonconstant paired second measurements.
+#' @param x `numeric vector`. At least three finite nonconstant first measurements.
+#' @param y `numeric vector`. Same-length finite nonconstant paired second measurements.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for population rank correlation.
 #' @return `HypothesisTestResult`: statistic=rank-correlation t, parameter1=n-2, estimate1=rho, approximate p_value; no
 #' CI.
@@ -2512,8 +2512,8 @@ rosetta_ref <- function(value = NULL) {
 #' calculation, not a hypothesis test; tau_b is zero when its denominator vanishes.
 #' @usage
 #' kendall_tau(x, y)
-#' @param x `vector<numeric>`. At least two finite first coordinates.
-#' @param y `vector<numeric>`. Equal-length finite second coordinates, paired by index.
+#' @param x `numeric vector`. At least two finite first coordinates.
+#' @param y `numeric vector`. Equal-length finite second coordinates, paired by index.
 #' @return `KendallTau`: Owned pair counts, tau_a and tie-adjusted tau_b.
 #' @section Examples (C++):
 #' ```cpp
@@ -2569,7 +2569,7 @@ rosetta_ref <- function(value = NULL) {
 #' unchanged, no omission/shared state.
 #' @usage
 #' ks_test_one_sample_normal(x, mean = 0.0, sd = 1.0, alternative = "TwoSided")
-#' @param x `vector<numeric>`. At least two finite observations.
+#' @param x `numeric vector`. At least two finite observations.
 #' @param mean `numeric`. Finite prespecified normal mean, default zero.
 #' @param sd `numeric`. Positive finite prespecified normal SD, default one.
 #' @param alternative `character (Alternative)`. TwoSided (default); Greater tests empirical CDF above reference, Less below
@@ -2596,7 +2596,7 @@ rosetta_ref <- function(value = NULL) {
 #' or shared state.
 #' @usage
 #' ks_test_one_sample_uniform(x, lower = 0.0, upper = 1.0, alternative = "TwoSided")
-#' @param x `vector<numeric>`. At least two finite observations.
+#' @param x `numeric vector`. At least two finite observations.
 #' @param lower `numeric`. Finite prespecified lower bound, default zero.
 #' @param upper `numeric`. Finite upper bound greater than lower, default one.
 #' @param alternative `character (Alternative)`. TwoSided (default), Greater for empirical CDF above reference or Less below.
@@ -2622,8 +2622,8 @@ rosetta_ref <- function(value = NULL) {
 #' work/O(N) storage; inputs unchanged, no omission/shared state.
 #' @usage
 #' ks_test_two_sample(x, y, alternative = "TwoSided")
-#' @param x `vector<numeric>`. Nonempty finite first sample.
-#' @param y `vector<numeric>`. Nonempty finite independent second sample.
+#' @param x `numeric vector`. Nonempty finite first sample.
+#' @param y `numeric vector`. Nonempty finite independent second sample.
 #' @param alternative `character (Alternative)`. TwoSided (default); Greater tests F_x above F_y, Less below, so Greater
 #'   corresponds to stochastically smaller x.
 #' @return `HypothesisTestResult`: statistic=D or D+/D-, parameter1=n_x, parameter2=n_y and approximate p_value; no CI.
@@ -2649,7 +2649,7 @@ rosetta_ref <- function(value = NULL) {
 #' omission/shared state.
 #' @usage
 #' shapiro_francia_test(x)
-#' @param x `vector<numeric>`. Between 5 and 5000 finite, nonconstant observations.
+#' @param x `numeric vector`. Between 5 and 5000 finite, nonconstant observations.
 #' @return `HypothesisTestResult`: statistic=estimate1=W-prime and approximate p_value; no CI.
 #' @section Examples (C++):
 #' ```cpp
@@ -2686,9 +2686,9 @@ rosetta_ref <- function(value = NULL) {
 #' `method`.
 #' @usage
 #' p_adjust(p, method = "BH")
-#' @param p `vector<numeric>`
+#' @param p `numeric vector`
 #' @param method `character (PAdjustMethod)`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `p_adjust` <- function(...) .Call(`.rs_194`, NULL, list(...))
@@ -2712,9 +2712,9 @@ rosetta_ref <- function(value = NULL) {
 #' responsible for mapping back to original hypothesis order if needed.
 #' @usage
 #' westfall_young_adjust(resampled_p, sorted_p)
-#' @param resampled_p `vector<vector<numeric>>`
-#' @param sorted_p `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param resampled_p `list of numeric vector`
+#' @param sorted_p `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `westfall_young_adjust` <- function(...) .Call(`.rs_195`, NULL, list(...))
@@ -2727,9 +2727,9 @@ rosetta_ref <- function(value = NULL) {
 #' sorted order.
 #' @usage
 #' romano_wolf_adjust(resampled_p, sorted_p)
-#' @param resampled_p `vector<vector<numeric>>`
-#' @param sorted_p `vector<numeric>`
-#' @return `vector<numeric>`
+#' @param resampled_p `list of numeric vector`
+#' @param sorted_p `numeric vector`
+#' @return `numeric vector`
 #' @md
 #'
 `romano_wolf_adjust` <- function(...) .Call(`.rs_196`, NULL, list(...))
@@ -2833,7 +2833,7 @@ rosetta_ref <- function(value = NULL) {
 #' leave inputs unchanged and use no shared mutable state. O(n) work; no null/nonfinite omission.
 #' @usage
 #' t_test_one_sample(x, mu = 0.0, alternative = "TwoSided", conf_level = 0.94999999999999996)
-#' @param x `vector<numeric>`. At least two finite observations with positive representable sample variance.
+#' @param x `numeric vector`. At least two finite observations with positive representable sample variance.
 #' @param mu `numeric`. Finite null mean, default zero, in observation units.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater, relative to mu.
 #' @param conf_level `numeric`. Finite confidence level strictly in (0,1), default .95.
@@ -2862,8 +2862,8 @@ rosetta_ref <- function(value = NULL) {
 #' inputs unchanged, no shared mutable state or omission.
 #' @usage
 #' t_test_two_sample(x, y, equal_variance = FALSE, alternative = "TwoSided", conf_level = 0.94999999999999996)
-#' @param x `vector<numeric>`. At least two finite observations in the first group.
-#' @param y `vector<numeric>`. At least two finite independent observations in the second group.
+#' @param x `numeric vector`. At least two finite observations in the first group.
+#' @param y `numeric vector`. At least two finite independent observations in the second group.
 #' @param equal_variance `logical`. False (default) uses Welch; true uses pooled variance.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for mean(x)-mean(y).
 #' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
@@ -2891,8 +2891,8 @@ rosetta_ref <- function(value = NULL) {
 #' are omitted. O(n) work/storage; inputs unchanged, no shared mutable state.
 #' @usage
 #' t_test_paired(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
-#' @param x `vector<numeric>`. At least two finite first measurements.
-#' @param y `vector<numeric>`. Equal-length finite second measurements paired by index.
+#' @param x `numeric vector`. At least two finite first measurements.
+#' @param y `numeric vector`. Equal-length finite second measurements paired by index.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for the population mean difference.
 #' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
 #' @return `HypothesisTestResult`: One-sample difference result with method Paired t-test; estimate1 is mean difference,
@@ -2920,8 +2920,8 @@ rosetta_ref <- function(value = NULL) {
 #' omission/shared state.
 #' @usage
 #' f_test_variance(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
-#' @param x `vector<numeric>`. At least two finite first-sample values with positive finite sample variance.
-#' @param y `vector<numeric>`. At least two finite independent second-sample values with positive finite sample
+#' @param x `numeric vector`. At least two finite first-sample values with positive finite sample variance.
+#' @param y `numeric vector`. At least two finite independent second-sample values with positive finite sample
 #'   variance.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for population variance ratio relative to
 #'   one.
@@ -2952,7 +2952,7 @@ rosetta_ref <- function(value = NULL) {
 #' unchanged, no shared state.
 #' @usage
 #' wilcoxon_signed_rank_test(x, mu = 0.0, alternative = "TwoSided")
-#' @param x `vector<numeric>`. Finite values; at least one nonzero difference from mu must remain.
+#' @param x `numeric vector`. Finite values; at least one nonzero difference from mu must remain.
 #' @param mu `numeric`. Finite symmetry centre, default zero.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for the signed location shift.
 #' @return `HypothesisTestResult`: statistic=positive rank sum V, estimate1=mu (not an estimated pseudomedian),
@@ -2981,8 +2981,8 @@ rosetta_ref <- function(value = NULL) {
 #' work/O(N) storage, inputs unchanged, no shared state.
 #' @usage
 #' wilcoxon_rank_sum_test(x, y, alternative = "TwoSided")
-#' @param x `vector<numeric>`. Nonempty finite first sample.
-#' @param y `vector<numeric>`. Nonempty finite independent second sample.
+#' @param x `numeric vector`. Nonempty finite first sample.
+#' @param y `numeric vector`. Nonempty finite independent second sample.
 #' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for first-versus-second stochastic
 #'   location.
 #' @return `HypothesisTestResult`: statistic=U=rank_sum(x)-n_x(n_x+1)/2 and approximate p_value; no CI or location
@@ -3009,7 +3009,7 @@ rosetta_ref <- function(value = NULL) {
 #' bs(lower, upper, knots, degree = 3, intercept = FALSE)
 #' @param lower `numeric`. Finite left boundary, strictly below upper.
 #' @param upper `numeric`. Finite right boundary.
-#' @param knots `vector<numeric>`. Finite, strictly increasing breakpoints in \[lower, upper\]. Boundary
+#' @param knots `numeric vector`. Finite, strictly increasing breakpoints in \[lower, upper\]. Boundary
 #'   entries are optional; an empty vector creates a basis without interior knots.
 #' @param degree `integer`. Polynomial degree, default 3 (cubic).
 #' @param intercept `logical`. Keep the first basis column, default false. Leave false with
@@ -3069,9 +3069,9 @@ rosetta_ref <- function(value = NULL) {
 #' Applies a callback to every element of a vector.
 #' @usage
 #' map_dvector_with_callback(values, cb)
-#' @param values `vector<numeric>`. Source vector of doubles.
+#' @param values `numeric vector`. Source vector of doubles.
 #' @param cb `Callback or NULL`. Pointer to a `Callback` instance; must not be null.
-#' @return `vector<numeric>`: New vector where each element is the result of `cb->call(v)`
+#' @return `numeric vector`: New vector where each element is the result of `cb->call(v)`
 #' for the corresponding element `v` in `values`.
 #' @md
 #'
@@ -3082,14 +3082,14 @@ rosetta_ref <- function(value = NULL) {
 #' @param a `numeric`. First element.
 #' @param b `numeric`. Second element.
 #' @param c `numeric`. Third element.
-#' @return `vector<numeric>`: `std::vector<double>{a`, b, c\}.
+#' @return `numeric vector`: `std::vector<double>{a`, b, c\}.
 #' @md
 #'
 `make_dvector` <- function(...) .Call(`.rs_211`, NULL, list(...))
 #' Computes the sum of all elements in a vector.
 #' @usage
 #' sum_dvector(values)
-#' @param values `vector<numeric>`. Vector of doubles to sum.
+#' @param values `numeric vector`. Vector of doubles to sum.
 #' @return `numeric`: Sum of all elements, or 0.0 if the vector is empty.
 #' @md
 #'
@@ -3120,7 +3120,7 @@ rosetta_ref <- function(value = NULL) {
 #' refine_basis(basis, inserted_knots)
 #' @param basis `BSplineBasis`. Basis to refine; its knot vector must be clamped (first and last knots
 #'   repeated degree + 1 times, as produced by BSplineBasis::open_uniform()).
-#' @param inserted_knots `vector<numeric>`. Knots to add, strictly inside the domain, in any order. Repeats
+#' @param inserted_knots `numeric vector`. Knots to add, strictly inside the domain, in any order. Repeats
 #'   are allowed while every knot multiplicity stays <= degree + 1.
 #' @return `BSplineRefinement`: The refined basis and its refinement operator.
 #' @section Examples (C++):
@@ -3173,9 +3173,9 @@ rosetta_ref <- function(value = NULL) {
 #' solves (B^T B) c = B^T y. Coordinates outside a basis domain are clamped to it.
 #' @usage
 #' fit_tensor_bspline(bases, points, values, options = SplineSolveOptions$new())
-#' @param bases `vector<BSplineBasis>`. One basis per dimension.
-#' @param points `vector<vector<numeric>>`. Sample locations, each of length bases.size().
-#' @param values `vector<numeric>`. One response per point.
+#' @param bases `list of BSplineBasis`. One basis per dimension.
+#' @param points `list of numeric vector`. Sample locations, each of length bases.size().
+#' @param values `numeric vector`. One response per point.
 #' @param options `SplineSolveOptions`. Solver settings (default: automatic).
 #' @return `TensorBSpline`: The fitted spline.
 #' @section Examples (C++):
@@ -3202,10 +3202,10 @@ rosetta_ref <- function(value = NULL) {
 #' determine the order-q polynomial null space).
 #' @usage
 #' fit_tensor_pspline(bases, points, values, lambdas, order = 2, options = SplineSolveOptions$new())
-#' @param bases `vector<BSplineBasis>`. One basis per dimension.
-#' @param points `vector<vector<numeric>>`. Sample locations, each of length bases.size().
-#' @param values `vector<numeric>`. One response per point.
-#' @param lambdas `vector<numeric>`. Nonnegative per-axis smoothing weights, one per basis.
+#' @param bases `list of BSplineBasis`. One basis per dimension.
+#' @param points `list of numeric vector`. Sample locations, each of length bases.size().
+#' @param values `numeric vector`. One response per point.
+#' @param lambdas `numeric vector`. Nonnegative per-axis smoothing weights, one per basis.
 #' @param order `integer`. Difference order (default 2, the conventional curvature penalty).
 #' @param options `SplineSolveOptions`. Solver settings (default: automatic).
 #' @return `TensorBSpline`: The fitted spline.
@@ -3265,7 +3265,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param lower `numeric`
 #' @param upper `numeric`
 #' @param n `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `unif` <- function(...) .Call(`.rs_223`, NULL, list(...))
@@ -3275,7 +3275,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param lower `numeric`
 #' @param upper `numeric`
 #' @param n `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `native_runif` <- function(...) .Call(`.rs_224`, NULL, list(...))
@@ -3285,7 +3285,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param mean `numeric`
 #' @param sd `numeric`
 #' @param n `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `native_rnorm` <- function(...) .Call(`.rs_225`, NULL, list(...))
@@ -3295,7 +3295,7 @@ rosetta_ref <- function(value = NULL) {
 #' @param from `numeric`
 #' @param to `numeric`
 #' @param n `integer`
-#' @return `vector<numeric>`
+#' @return `numeric vector`
 #' @md
 #'
 `seql` <- function(...) .Call(`.rs_226`, NULL, list(...))
@@ -3417,7 +3417,7 @@ rosetta_ref <- function(value = NULL) {
 #' `Polynomial$new(coeffs)`
 #'
 #' * `constant` (`numeric`)
-#' * `coeffs` (`vector<numeric>`)
+#' * `coeffs` (`numeric vector`)
 #' @section Methods:
 #' * `$degree()` -> `integer`
 #'
@@ -3431,7 +3431,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Coefficient of x^i; 0.0 for any i outside \[0, degree()\] (including negative i).
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
 #' * `$evaluate(x)` -> `numeric`
 #'
@@ -3524,8 +3524,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `RealRootIntervals$new()`
 #' @section Fields:
-#' * `$lower` (`vector<numeric>`)
-#' * `$upper` (`vector<numeric>`)
+#' * `$lower` (`numeric vector`)
+#' * `$upper` (`numeric vector`)
 #' @md
 #'
 `RealRootIntervals` <- R6::R6Class("RealRootIntervals", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -3672,8 +3672,8 @@ rosetta_ref <- function(value = NULL) {
 #' `MultivariatePolynomial$new(num_variables, exponents, coefficients)`
 #'
 #' * `num_variables` (`integer`)
-#' * `exponents` (`vector<vector<integer>>`): One entry per term; each inner vector has length num_variables.
-#' * `coefficients` (`vector<numeric>`): Parallel to exponents; terms with equal exponent vectors are
+#' * `exponents` (`list of integer vector`): One entry per term; each inner vector has length num_variables.
+#' * `coefficients` (`numeric vector`): Parallel to exponents; terms with equal exponent vectors are
 #'   summed, and any resulting zero coefficient is dropped.
 #' @section Methods:
 #' * `$num_variables()` -> `integer`
@@ -3682,9 +3682,9 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$is_zero()` -> `logical`
 #'
-#' * `$exponents()` -> `vector<vector<integer>>`
+#' * `$exponents()` -> `list of integer vector`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
 #' * `$evaluate(point)` -> `numeric`
 #'
@@ -3696,7 +3696,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$scale(factor)` -> `MultivariatePolynomial`
 #'
-#' * `$leading_exponent(order)` -> `vector<integer>`
+#' * `$leading_exponent(order)` -> `integer vector`
 #'
 #' * `$leading_coefficient(order)` -> `numeric`
 #'
@@ -3730,8 +3730,8 @@ rosetta_ref <- function(value = NULL) {
 #' `GfFactorization$new()`
 #' @section Fields:
 #' * `$leading` (`integer`): Leading coefficient, in \[1, p).
-#' * `$factors` (`vector<vector<integer>>`): Distinct monic irreducible factors, by degree then coefficients.
-#' * `$multiplicities` (`vector<integer>`): Multiplicity of each factor.
+#' * `$factors` (`list of integer vector`): Distinct monic irreducible factors, by degree then coefficients.
+#' * `$multiplicities` (`integer vector`): Multiplicity of each factor.
 #' @md
 #'
 `GfFactorization` <- R6::R6Class("GfFactorization", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -3826,7 +3826,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `DifferentiableFunction$new()`
 #' @section Methods:
-#' * `$gradient(coordinates)` -> `vector<numeric>`
+#' * `$gradient(coordinates)` -> `numeric vector`
 #'
 #'   Returns the gradient of the objective at `coordinates`.
 #' @section Inherits:
@@ -3888,13 +3888,13 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Evaluates just term `i` of the objective at `coordinates`.
 #'
-#' * `$gradient_term(coordinates, i)` -> `vector<numeric>`
+#' * `$gradient_term(coordinates, i)` -> `numeric vector`
 #'
 #'   Returns the gradient of just term `i` of the objective at `coordinates`.
 #'
 #' * `$evaluate(coordinates)` -> `numeric`
 #'
-#' * `$gradient(coordinates)` -> `vector<numeric>`
+#' * `$gradient(coordinates)` -> `numeric vector`
 #' @section Inherits:
 #' `DifferentiableFunction`
 #' @md
@@ -3919,7 +3919,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ProximalFunction$new()`
 #' @section Methods:
-#' * `$proximal(point, step)` -> `vector<numeric>`
+#' * `$proximal(point, step)` -> `numeric vector`
 #' @section Inherits:
 #' `DifferentiableFunction`
 #' @md
@@ -3938,7 +3938,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `HessianFunction$new()`
 #' @section Methods:
-#' * `$hessian(coordinates)` -> `vector<vector<numeric>>`
+#' * `$hessian(coordinates)` -> `list of numeric vector`
 #' @section Inherits:
 #' `DifferentiableFunction`
 #' @md
@@ -3957,9 +3957,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `EqualityConstrainedFunction$new()`
 #' @section Methods:
-#' * `$constraints(coordinates)` -> `vector<numeric>`
+#' * `$constraints(coordinates)` -> `numeric vector`
 #'
-#' * `$constraint_jacobian(coordinates)` -> `vector<vector<numeric>>`
+#' * `$constraint_jacobian(coordinates)` -> `list of numeric vector`
 #' @section Inherits:
 #' `DifferentiableFunction`
 #' @md
@@ -3979,9 +3979,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `InequalityConstrainedFunction$new()`
 #' @section Methods:
-#' * `$inequalities(coordinates)` -> `vector<numeric>`
+#' * `$inequalities(coordinates)` -> `numeric vector`
 #'
-#' * `$inequality_jacobian(coordinates)` -> `vector<vector<numeric>>`
+#' * `$inequality_jacobian(coordinates)` -> `list of numeric vector`
 #' @section Inherits:
 #' `DifferentiableFunction`
 #' @md
@@ -4001,9 +4001,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ResidualFunction$new()`
 #' @section Methods:
-#' * `$residuals(coordinates)` -> `vector<numeric>`
+#' * `$residuals(coordinates)` -> `numeric vector`
 #'
-#' * `$jacobian(coordinates)` -> `vector<vector<numeric>>`
+#' * `$jacobian(coordinates)` -> `list of numeric vector`
 #' @md
 #'
 `ResidualFunction` <- R6::R6Class("ResidualFunction", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -4023,7 +4023,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$num_samples` (`integer`): Number of post-warmup sweeps kept.
 #' * `$num_warmup` (`integer`): Number of warmup sweeps (per-coordinate step adaptation).
-#' * `$initial_step_sizes` (`vector<numeric>`): Initial per-coordinate proposal std dev. A single entry is broadcast to every
+#' * `$initial_step_sizes` (`numeric vector`): Initial per-coordinate proposal std dev. A single entry is broadcast to every
 #'   coordinate; otherwise its length must match the parameter vector, and each
 #'   coordinate is adapted independently via dual averaging during warmup.
 #' * `$target_accept_rate` (`numeric`): Target per-coordinate acceptance rate -- 0.44 is the asymptotically optimal
@@ -4052,9 +4052,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `GibbsResult$new()`
 #' @section Fields:
-#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
-#' * `$accept_rates` (`vector<numeric>`): Mean acceptance rate per coordinate (across all iterations), in parameter order.
-#' * `$final_step_sizes` (`vector<numeric>`): Per-coordinate step sizes after warmup.
+#' * `$samples` (`list of numeric vector`): Post-warmup draws, one vector<double> per sample.
+#' * `$accept_rates` (`numeric vector`): Mean acceptance rate per coordinate (across all iterations), in parameter order.
+#' * `$final_step_sizes` (`numeric vector`): Per-coordinate step sizes after warmup.
 #' @md
 #'
 `GibbsResult` <- R6::R6Class("GibbsResult", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -4138,7 +4138,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `HMCResult$new()`
 #' @section Fields:
-#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
+#' * `$samples` (`list of numeric vector`): Post-warmup draws, one vector<double> per sample.
 #' * `$accept_rate` (`numeric`): Fraction of all iterations (warmup included) whose proposal was accepted.
 #' * `$final_step_size` (`numeric`): Step size used after warmup.
 #' @md
@@ -4216,8 +4216,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ImportanceSamplingResult$new()`
 #' @section Fields:
-#' * `$samples` (`vector<vector<numeric>>`): Draws from the N(proposal_mean, proposal_covariance) proposal (not the target).
-#' * `$normalized_weights` (`vector<numeric>`): Self-normalized importance weights (sum to 1), in samples order.
+#' * `$samples` (`list of numeric vector`): Draws from the N(proposal_mean, proposal_covariance) proposal (not the target).
+#' * `$normalized_weights` (`numeric vector`): Self-normalized importance weights (sum to 1), in samples order.
 #' * `$effective_sample_size` (`numeric`): 1 / sum(normalized_weight_i^2) -- how many "effective" independent draws the
 #'   weighted sample is worth. Low relative to num_samples signals a poor proposal
 #'   (too narrow, wrong location, or lighter-tailed than the target).
@@ -4363,15 +4363,15 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `NUTSResult$new()`
 #' @section Fields:
-#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
+#' * `$samples` (`list of numeric vector`): Post-warmup draws, one vector<double> per sample.
 #' * `$accept_rate` (`numeric`): Mean Metropolis acceptance statistic across all iterations (the same quantity
 #'   the step-size adaptation targets).
 #' * `$final_step_size` (`numeric`): Step size used after warmup.
 #' * `$num_divergences` (`integer`): Number of iterations, warmup included, whose trajectory diverged.
-#' * `$divergent` (`vector<integer>`): Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.
-#' * `$tree_depth` (`vector<integer>`): Per post-warmup draw: number of trajectory doublings performed (tree depth).
-#' * `$n_leapfrog` (`vector<integer>`): Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.
-#' * `$energy` (`vector<numeric>`): Per post-warmup draw: the Hamiltonian
+#' * `$divergent` (`integer vector`): Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.
+#' * `$tree_depth` (`integer vector`): Per post-warmup draw: number of trajectory doublings performed (tree depth).
+#' * `$n_leapfrog` (`integer vector`): Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.
+#' * `$energy` (`numeric vector`): Per post-warmup draw: the Hamiltonian
 #' @md
 #'
 `NUTSResult` <- R6::R6Class("NUTSResult", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -4466,11 +4466,11 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `RWMResult$new()`
 #' @section Fields:
-#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
+#' * `$samples` (`list of numeric vector`): Post-warmup draws, one vector<double> per sample.
 #' * `$accept_rate` (`numeric`): Mean Metropolis acceptance statistic across all iterations (the same quantity
 #'   the step-size adaptation targets).
 #' * `$final_step_size` (`numeric`): Step size used after warmup.
-#' * `$proposal_covariance` (`vector<vector<numeric>>`): Learned proposal covariance
+#' * `$proposal_covariance` (`list of numeric vector`): Learned proposal covariance
 #' @md
 #'
 `RWMResult` <- R6::R6Class("RWMResult", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -4573,7 +4573,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$channels()` -> `integer`
 #'
-#' * `$data()` -> `vector<integer>`
+#' * `$data()` -> `integer vector`
 #'
 #' * `$get_pixel(x, y)` -> `Pixel`
 #'
@@ -4680,9 +4680,9 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `StructureTensorField$new()`
 #' @section Fields:
-#' * `$sxx` (`vector<numeric>`)
-#' * `$syy` (`vector<numeric>`)
-#' * `$sxy` (`vector<numeric>`)
+#' * `$sxx` (`numeric vector`)
+#' * `$syy` (`numeric vector`)
+#' * `$sxy` (`numeric vector`)
 #' @md
 #'
 `StructureTensorField` <- R6::R6Class("StructureTensorField", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -4780,7 +4780,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `LabelMap$new()`
 #' @section Fields:
-#' * `$labels` (`vector<integer>`)
+#' * `$labels` (`integer vector`)
 #' * `$width` (`integer`)
 #' * `$height` (`integer`)
 #' * `$count` (`integer`)
@@ -4810,10 +4810,10 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ImageBatch$new()`
 #' @section Fields:
-#' * `$pixels` (`vector<numeric>`): Image values, row-major per `shape`.
-#' * `$labels` (`vector<integer>`): Class index of each image (see ImageLoader::class_names()).
-#' * `$indices` (`vector<integer>`): Position of each image within its split, 0-based.
-#' * `$shape` (`vector<integer>`): Dimensions of `pixels`; shape\[0\] is the number of images.
+#' * `$pixels` (`numeric vector`): Image values, row-major per `shape`.
+#' * `$labels` (`integer vector`): Class index of each image (see ImageLoader::class_names()).
+#' * `$indices` (`integer vector`): Position of each image within its split, 0-based.
+#' * `$shape` (`integer vector`): Dimensions of `pixels`; shape\[0\] is the number of images.
 #' @section Methods:
 #' * `$size()` -> `integer`
 #'
@@ -4823,7 +4823,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Values per image (height * width * channels).
 #'
-#' * `$image(i)` -> `vector<numeric>`
+#' * `$image(i)` -> `numeric vector`
 #'
 #'   A copy of image `i's` features() values.
 #' @md
@@ -4971,7 +4971,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Number of label classes (CIFAR-100: 100, or 20 with coarse labels).
 #'
-#' * `$class_names()` -> `vector<character>`
+#' * `$class_names()` -> `character vector`
 #'
 #'   Label names, indexed by label (e.g. "airplane" for CIFAR-10 label 0).
 #'
@@ -5495,9 +5495,9 @@ rosetta_ref <- function(value = NULL) {
 #' * `$input_index` (`integer`): Earliest original id of the inserted distinct coordinate.
 #' * `$faces_before` (`integer`): Live real plus ghost faces before this insertion.
 #' * `$faces_after` (`integer`): Live real plus ghost faces after this insertion.
-#' * `$removed` (`vector<Triangle>`): Exact actual conflicting faces, in scan order.
-#' * `$boundary` (`vector<list(integer, integer)>`): Actual directed nonshared cavity edges.
-#' * `$added` (`vector<Triangle>`): Actual replacement real/ghost faces, in boundary-key order.
+#' * `$removed` (`list of Triangle`): Exact actual conflicting faces, in scan order.
+#' * `$boundary` (`list of list(integer, integer)`): Actual directed nonshared cavity edges.
+#' * `$added` (`list of Triangle`): Actual replacement real/ghost faces, in boundary-key order.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}});
@@ -5529,13 +5529,13 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `DelaunayTrace$new()`
 #' @section Fields:
-#' * `$points` (`vector<Point2D>`): Complete copied original coordinates, including duplicates.
-#' * `$representatives` (`vector<integer>`): Earliest unique ids in original input order.
-#' * `$representative_for_input` (`vector<integer>`): Earliest equal-coordinate id per original record.
+#' * `$points` (`list of Point2D`): Complete copied original coordinates, including duplicates.
+#' * `$representatives` (`integer vector`): Earliest unique ids in original input order.
+#' * `$representative_for_input` (`integer vector`): Earliest equal-coordinate id per original record.
 #' * `$has_seed` (`logical`): Whether three distinct noncollinear sites exist.
 #' * `$seed` (`Triangle`): Initial CCW finite seed, meaningful only when has_seed.
-#' * `$triangles` (`vector<Triangle>`): Complete finite final CCW triangles, using earliest original ids.
-#' * `$steps` (`vector<DelaunayInsertion>`): Actual non-seed cavity transitions, without replay.
+#' * `$triangles` (`list of Triangle`): Complete finite final CCW triangles, using earliest original ids.
+#' * `$steps` (`list of DelaunayInsertion`): Actual non-seed cavity transitions, without replay.
 #' * `$work` (`DelaunayWork`): Checked actual operations from the executing kernel.
 #' @section Examples (C++):
 #' ```cpp
@@ -5753,7 +5753,7 @@ rosetta_ref <- function(value = NULL) {
 #'   The time step between measurements.
 #'   - Returns: The value passed to the constructor.
 #'
-#' * `$filter(measurements)` -> `vector<AlphaBetaState>`
+#' * `$filter(measurements)` -> `list of AlphaBetaState`
 #' @md
 #'
 `AlphaBetaFilter` <- R6::R6Class("AlphaBetaFilter", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -5837,7 +5837,7 @@ rosetta_ref <- function(value = NULL) {
 #'   The time step between measurements.
 #'   - Returns: The value passed to the constructor.
 #'
-#' * `$filter(measurements)` -> `vector<AlphaBetaGammaState>`
+#' * `$filter(measurements)` -> `list of AlphaBetaGammaState`
 #' @md
 #'
 `AlphaBetaGammaFilter` <- R6::R6Class("AlphaBetaGammaFilter", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -5862,8 +5862,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `KalmanState$new()`
 #' @section Fields:
-#' * `$x` (`vector<numeric>`)
-#' * `$P` (`vector<vector<numeric>>`)
+#' * `$x` (`numeric vector`)
+#' * `$P` (`list of numeric vector`)
 #' @md
 #'
 `KalmanState` <- R6::R6Class("KalmanState", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -5885,8 +5885,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `SmoothResult$new()`
 #' @section Fields:
-#' * `$filtered` (`vector<KalmanState>`)
-#' * `$smoothed` (`vector<KalmanState>`)
+#' * `$filtered` (`list of KalmanState`)
+#' * `$smoothed` (`list of KalmanState`)
 #' @md
 #'
 `SmoothResult` <- R6::R6Class("SmoothResult", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -5908,12 +5908,12 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `KalmanFilter$new(F, H, Q, R, x0, P0)`
 #'
-#' * `F` (`vector<vector<numeric>>`)
-#' * `H` (`vector<vector<numeric>>`)
-#' * `Q` (`vector<vector<numeric>>`)
-#' * `R` (`vector<vector<numeric>>`)
-#' * `x0` (`vector<numeric>`)
-#' * `P0` (`vector<vector<numeric>>`)
+#' * `F` (`list of numeric vector`)
+#' * `H` (`list of numeric vector`)
+#' * `Q` (`list of numeric vector`)
+#' * `R` (`list of numeric vector`)
+#' * `x0` (`numeric vector`)
+#' * `P0` (`list of numeric vector`)
 #' @section Methods:
 #' * `$predict()`
 #'
@@ -5927,11 +5927,11 @@ rosetta_ref <- function(value = NULL) {
 #'   this codebase's general preference for the textbook formula over a more robust
 #'   but more complex alternative.
 #'
-#' * `$state()` -> `vector<numeric>`
+#' * `$state()` -> `numeric vector`
 #'
-#' * `$covariance()` -> `vector<vector<numeric>>`
+#' * `$covariance()` -> `list of numeric vector`
 #'
-#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' * `$filter(measurements)` -> `list of KalmanState`
 #'
 #'   Runs predict() then update(z) for every z in `measurements`, in order, mutating
 #'   this filter's running state -- the ordinary causal (online) filtered estimate at
@@ -5967,7 +5967,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `VectorFunction$new()`
 #' @section Methods:
-#' * `$evaluate(x)` -> `vector<numeric>`
+#' * `$evaluate(x)` -> `numeric vector`
 #'
 #'   Evaluates the function at `x`.
 #' @md
@@ -5990,10 +5990,10 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `f` (`VectorFunction`)
 #' * `h` (`VectorFunction`)
-#' * `Q` (`vector<vector<numeric>>`)
-#' * `R` (`vector<vector<numeric>>`)
-#' * `x0` (`vector<numeric>`)
-#' * `P0` (`vector<vector<numeric>>`)
+#' * `Q` (`list of numeric vector`)
+#' * `R` (`list of numeric vector`)
+#' * `x0` (`numeric vector`)
+#' * `P0` (`list of numeric vector`)
 #' * `ensemble_size` (`integer`)
 #' * `seed` (`integer`)
 #' @section Methods:
@@ -6012,11 +6012,11 @@ rosetta_ref <- function(value = NULL) {
 #'   them, is what keeps the ensemble's spread statistically consistent after the
 #'   update instead of collapsing it.
 #'
-#' * `$state()` -> `vector<numeric>`
+#' * `$state()` -> `numeric vector`
 #'
-#' * `$covariance()` -> `vector<vector<numeric>>`
+#' * `$covariance()` -> `list of numeric vector`
 #'
-#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' * `$filter(measurements)` -> `list of KalmanState`
 #' @md
 #'
 `EnsembleKalmanFilter` <- R6::R6Class("EnsembleKalmanFilter", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -6041,21 +6041,21 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `f` (`VectorFunction`)
 #' * `h` (`VectorFunction`)
-#' * `Q` (`vector<vector<numeric>>`)
-#' * `R` (`vector<vector<numeric>>`)
-#' * `x0` (`vector<numeric>`)
-#' * `P0` (`vector<vector<numeric>>`)
+#' * `Q` (`list of numeric vector`)
+#' * `R` (`list of numeric vector`)
+#' * `x0` (`numeric vector`)
+#' * `P0` (`list of numeric vector`)
 #' * `jacobian_step` (`numeric`)
 #' @section Methods:
 #' * `$predict()`
 #'
 #' * `$update(z)`
 #'
-#' * `$state()` -> `vector<numeric>`
+#' * `$state()` -> `numeric vector`
 #'
-#' * `$covariance()` -> `vector<vector<numeric>>`
+#' * `$covariance()` -> `list of numeric vector`
 #'
-#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' * `$filter(measurements)` -> `list of KalmanState`
 #' @md
 #'
 `ExtendedKalmanFilter` <- R6::R6Class("ExtendedKalmanFilter", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -6078,12 +6078,12 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `InformationFilter$new(F, H, Q, R, x0, P0)`
 #'
-#' * `F` (`vector<vector<numeric>>`)
-#' * `H` (`vector<vector<numeric>>`)
-#' * `Q` (`vector<vector<numeric>>`)
-#' * `R` (`vector<vector<numeric>>`)
-#' * `x0` (`vector<numeric>`)
-#' * `P0` (`vector<vector<numeric>>`)
+#' * `F` (`list of numeric vector`)
+#' * `H` (`list of numeric vector`)
+#' * `Q` (`list of numeric vector`)
+#' * `R` (`list of numeric vector`)
+#' * `x0` (`numeric vector`)
+#' * `P0` (`list of numeric vector`)
 #' @section Methods:
 #' * `$predict()`
 #'
@@ -6091,11 +6091,11 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   The additive information-form update: Y += H^T R^-1 H, y += H^T R^-1 z.
 #'
-#' * `$state()` -> `vector<numeric>`
+#' * `$state()` -> `numeric vector`
 #'
-#' * `$covariance()` -> `vector<vector<numeric>>`
+#' * `$covariance()` -> `list of numeric vector`
 #'
-#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' * `$filter(measurements)` -> `list of KalmanState`
 #' @md
 #'
 `InformationFilter` <- R6::R6Class("InformationFilter", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -6120,10 +6120,10 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `f` (`VectorFunction`)
 #' * `h` (`VectorFunction`)
-#' * `Q` (`vector<vector<numeric>>`)
-#' * `R` (`vector<vector<numeric>>`)
-#' * `x0` (`vector<numeric>`)
-#' * `P0` (`vector<vector<numeric>>`)
+#' * `Q` (`list of numeric vector`)
+#' * `R` (`list of numeric vector`)
+#' * `x0` (`numeric vector`)
+#' * `P0` (`list of numeric vector`)
 #' * `num_particles` (`integer`)
 #' * `seed` (`integer`)
 #' @section Methods:
@@ -6143,11 +6143,11 @@ rosetta_ref <- function(value = NULL) {
 #'   size drops" scheme real-time systems often use, at the cost of extra Monte Carlo
 #'   noise from resampling more often than strictly necessary).
 #'
-#' * `$state()` -> `vector<numeric>`
+#' * `$state()` -> `numeric vector`
 #'
-#' * `$covariance()` -> `vector<vector<numeric>>`
+#' * `$covariance()` -> `list of numeric vector`
 #'
-#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' * `$filter(measurements)` -> `list of KalmanState`
 #' @md
 #'
 `ParticleFilter` <- R6::R6Class("ParticleFilter", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -6172,10 +6172,10 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `f` (`VectorFunction`)
 #' * `h` (`VectorFunction`)
-#' * `Q` (`vector<vector<numeric>>`)
-#' * `R` (`vector<vector<numeric>>`)
-#' * `x0` (`vector<numeric>`)
-#' * `P0` (`vector<vector<numeric>>`)
+#' * `Q` (`list of numeric vector`)
+#' * `R` (`list of numeric vector`)
+#' * `x0` (`numeric vector`)
+#' * `P0` (`list of numeric vector`)
 #' * `alpha` (`numeric`)
 #' * `beta` (`numeric`)
 #' * `kappa` (`numeric`)
@@ -6184,11 +6184,11 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$update(z)`
 #'
-#' * `$state()` -> `vector<numeric>`
+#' * `$state()` -> `numeric vector`
 #'
-#' * `$covariance()` -> `vector<vector<numeric>>`
+#' * `$covariance()` -> `list of numeric vector`
 #'
-#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' * `$filter(measurements)` -> `list of KalmanState`
 #' @md
 #'
 `UnscentedKalmanFilter` <- R6::R6Class("UnscentedKalmanFilter", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -6403,8 +6403,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ConvexHullAnalysis$new()`
 #' @section Fields:
-#' * `$hull` (`vector<Point2D>`): Owned unclosed strict hull.
-#' * `$input_indices` (`vector<integer>`): Earliest original identities in hull order.
+#' * `$hull` (`list of Point2D`): Owned unclosed strict hull.
+#' * `$input_indices` (`integer vector`): Earliest original identities in hull order.
 #' * `$work` (`ConvexHullWork`): Actual producing operations.
 #' @section Examples (C++):
 #' ```cpp
@@ -6435,10 +6435,10 @@ rosetta_ref <- function(value = NULL) {
 #' `ConvexHullTrace$new()`
 #' @section Fields:
 #' * `$analysis` (`ConvexHullAnalysis`): Actual hull, identities and work.
-#' * `$sorted` (`vector<HullIndexedPoint>`): Actual sorted distinct input records.
-#' * `$events` (`vector<HullEvent>`): Actual test/pop/push edits.
-#' * `$lower` (`vector<integer>`): Actual final lower stack.
-#' * `$upper` (`vector<integer>`): Actual final upper stack.
+#' * `$sorted` (`list of HullIndexedPoint`): Actual sorted distinct input records.
+#' * `$events` (`list of HullEvent`): Actual test/pop/push edits.
+#' * `$lower` (`integer vector`): Actual final lower stack.
+#' * `$upper` (`integer vector`): Actual final upper stack.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});
@@ -6581,15 +6581,15 @@ rosetta_ref <- function(value = NULL) {
 #' `DataSeries$new()`
 #' @section Fields:
 #' * `$kind` (`character (Kind)`): How the layer is drawn (default Line).
-#' * `$x` (`vector<numeric>`): Horizontal data coordinates; meaning depends on kind.
-#' * `$y` (`vector<numeric>`): Vertical data coordinates; meaning depends on kind.
+#' * `$x` (`numeric vector`): Horizontal data coordinates; meaning depends on kind.
+#' * `$y` (`numeric vector`): Vertical data coordinates; meaning depends on kind.
 #' * `$label` (`character`): Legend text (or the drawn text for Kind::Text); empty omits it.
 #' * `$color` (`RGB`): Layer color, including alpha (default RGBA\{\}, dark slate).
 #' * `$stroke_width` (`numeric`): Line, Segment, and outline-Polygon width in pixels (default 2).
 #' * `$marker_size` (`numeric`): Scatter marker radius, or Text font size, in pixels (default 4).
 #' * `$bar_width` (`numeric`): Bar or Box width in data units (default 0.8).
 #' * `$filled` (`logical`): Polygon only: true fills it, false draws its outline (default false).
-#' * `$point_colors` (`vector<RGB>`): Optional scatter palette, recycled in input order; empty uses color for every point.
+#' * `$point_colors` (`list of RGB`): Optional scatter palette, recycled in input order; empty uses color for every point.
 #' @section Examples (C++):
 #' ```cpp
 #' auto plt = dm::Plot().points(dm::c(1.0, 2.0), dm::c(3.0, 4.0), "pts");
@@ -6865,7 +6865,7 @@ rosetta_ref <- function(value = NULL) {
 #'   Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.
 #'   - Returns: The current y-axis label.
 #'
-#' * `$series()` -> `vector<DataSeries>`
+#' * `$series()` -> `list of DataSeries`
 #'
 #'   Borrows the drawn layers (points, lines, bars, ...) in the order they were added.
 #'   - Returns: The series list; references are invalidated by adding another layer.
@@ -6925,32 +6925,32 @@ rosetta_ref <- function(value = NULL) {
 #'   Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.
 #'   - Returns: False (the default) when axes are drawn.
 #'
-#' * `$x_tick_label_list()` -> `vector<character>`
+#' * `$x_tick_label_list()` -> `character vector`
 #'
 #'   Borrows the custom x tick texts; empty means numeric ticks.
 #'   - Returns: Labels set by x_tick_labels() or x_ticks().
 #'
-#' * `$x_tick_position_list()` -> `vector<numeric>`
+#' * `$x_tick_position_list()` -> `numeric vector`
 #'
 #'   Data positions of x_tick_label_list(); empty means 0, 1, 2, ...
 #'   - Returns: Positions set by x_ticks(); cleared by x_tick_labels().
 #'
-#' * `$y_tick_label_list()` -> `vector<character>`
+#' * `$y_tick_label_list()` -> `character vector`
 #'
 #'   Borrows the custom y tick texts; empty means numeric ticks.
 #'   - Returns: Labels set by y_tick_labels() or y_ticks().
 #'
-#' * `$y_tick_position_list()` -> `vector<numeric>`
+#' * `$y_tick_position_list()` -> `numeric vector`
 #'
 #'   Data positions of y_tick_label_list(); empty means 0, 1, 2, ...
 #'   - Returns: Positions set by y_ticks(); cleared by y_tick_labels().
 #'
-#' * `$reference_lines()` -> `vector<ABLine>`
+#' * `$reference_lines()` -> `list of ABLine`
 #'
 #'   Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().
 #'   - Returns: Lines in insertion order; references are invalidated by adding another line.
 #'
-#' * `$legend_entries()` -> `vector<LegendEntry>`
+#' * `$legend_entries()` -> `list of LegendEntry`
 #'
 #'   Borrows the manual legend rows added by legend(); empty means an automatic legend.
 #'   - Returns: Manual entries in insertion order.
@@ -7006,12 +7006,12 @@ rosetta_ref <- function(value = NULL) {
 #'   Writes to_svg() to `path` regardless of its extension.
 #'   - `path`: Destination file; an existing file is overwritten.
 #'
-#' * `$to_png()` -> `vector<integer>`
+#' * `$to_png()` -> `integer vector`
 #'
 #'   Renders the plot as PNG image bytes (the same raster save() writes for `.png`).
 #'   - Returns: The complete PNG file contents.
 #'
-#' * `$to_pdf()` -> `vector<integer>`
+#' * `$to_pdf()` -> `integer vector`
 #'
 #'   Renders the plot as a one-page PDF holding the raster image.
 #'   - Returns: The complete PDF file contents.
@@ -7134,8 +7134,8 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Constructs a scatter plot of `y` against `x`, like R's `plot(x, y)`.
 #'
-#' * `x` (`vector<numeric>`): Horizontal coordinates, one per point.
-#' * `y` (`vector<numeric>`): Vertical coordinates, paired with `x` by position.
+#' * `x` (`numeric vector`): Horizontal coordinates, one per point.
+#' * `y` (`numeric vector`): Vertical coordinates, paired with `x` by position.
 #' @section Methods:
 #' * `$size(width, height)` -> `RPlot`
 #'
@@ -7501,7 +7501,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `filled`: True (the default) fills; false draws the outline only.
 #'   - Returns: This plot, for chaining.
 #'
-#' * `$image(x, y, z, palette = c(), z_min = <default>, z_max = <default>)` -> `RPlot`
+#' * `$image(x, y, z, palette = list(), z_min = <default>, z_max = <default>)` -> `RPlot`
 #'
 #'   Draws a grid of coloured rectangles, one per value of `z`, like R's `image(x, y, z)`.
 #'   - `x`: Cell centres along x, increasing (at least 2).
@@ -7577,7 +7577,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `colors`: Box colors, recycled when shorter than `groups`; must be nonempty.
 #'   - Returns: A new plot holding one Box series per group.
 #'
-#' * `RPlot$pie(values, names = c(), colors = c())` -> `RPlot`
+#' * `RPlot$pie(values, names = c(), colors = list())` -> `RPlot`
 #'
 #'   Builds a pie chart with one wedge per value, like R's
 #'   `pie(x, labels = names, col = colors, clockwise = TRUE)`.
@@ -7774,12 +7774,12 @@ rosetta_ref <- function(value = NULL) {
 #'   Writes to_svg() to `path` regardless of its extension.
 #'   - `path`: Destination file; an existing file is overwritten.
 #'
-#' * `$to_png()` -> `vector<integer>`
+#' * `$to_png()` -> `integer vector`
 #'
 #'   Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).
 #'   - Returns: The complete PNG file contents.
 #'
-#' * `$to_pdf()` -> `vector<integer>`
+#' * `$to_pdf()` -> `integer vector`
 #'
 #'   Renders the tiled figure as a one-page PDF holding the raster image.
 #'   - Returns: The complete PDF file contents.
@@ -7872,8 +7872,8 @@ rosetta_ref <- function(value = NULL) {
 #' `DTWResult$new()`
 #' @section Fields:
 #' * `$distance` (`numeric`): Finite nonnegative summed absolute loss for a computed result.
-#' * `$path_a` (`vector<integer>`): Owned zero-based a indices, from zero to a.size()-1.
-#' * `$path_b` (`vector<integer>`): Owned parallel b indices, from zero to b.size()-1.
+#' * `$path_a` (`integer vector`): Owned zero-based a indices, from zero to a.size()-1.
+#' * `$path_b` (`integer vector`): Owned parallel b indices, from zero to b.size()-1.
 #' @section Examples (C++):
 #' ```cpp
 #' const auto r=dm::geometry::dynamic_time_warping({1,2,3},{1,1,2,3});
@@ -7962,10 +7962,10 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `DTWTrace$new()`
 #' @section Fields:
-#' * `$a` (`vector<numeric>`): Owned first input, unchanged by alignment.
-#' * `$b` (`vector<numeric>`): Owned second input.
-#' * `$cumulative` (`vector<numeric>`): Actual positive-cell prefix costs, row-major.
-#' * `$predecessors` (`vector<character (DTWPredecessor)>`): Actual selected directions, parallel to cumulative.
+#' * `$a` (`numeric vector`): Owned first input, unchanged by alignment.
+#' * `$b` (`numeric vector`): Owned second input.
+#' * `$cumulative` (`numeric vector`): Actual positive-cell prefix costs, row-major.
+#' * `$predecessors` (`list of character (DTWPredecessor)`): Actual selected directions, parallel to cumulative.
 #' * `$result` (`DTWResult`): Finite optimal distance and selected actual traceback.
 #' * `$work` (`DTWWork`): Counts from the same recurrence/traceback.
 #' * `$captured_entries` (`integer`): Complete logical capture cost described above.
@@ -7999,7 +7999,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `KDTree2D$new(points)`
 #'
-#' * `points` (`vector<Point2D>`)
+#' * `points` (`list of Point2D`)
 #' @section Methods:
 #' * `$empty()` -> `logical`
 #'
@@ -8009,12 +8009,12 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   The closest point to `query`. Throws std::logic_error if the tree is empty.
 #'
-#' * `$k_nearest(query, k)` -> `vector<Point2D>`
+#' * `$k_nearest(query, k)` -> `list of Point2D`
 #'
 #'   The `k` closest points to `query`, nearest first. Returns fewer than `k`
 #'   points if the tree itself has fewer than `k`.
 #'
-#' * `$points_in_radius(query, radius)` -> `vector<Point2D>`
+#' * `$points_in_radius(query, radius)` -> `list of Point2D`
 #'
 #'   All points within `radius` (inclusive) of `query`, in no particular order.
 #' @md
@@ -8081,7 +8081,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `MinimumBoundingRectangle$new()`
 #' @section Fields:
-#' * `$corners` (`vector<Point2D>`): The four corners, in order (so consecutive corners are adjacent, matching this
+#' * `$corners` (`list of Point2D`): The four corners, in order (so consecutive corners are adjacent, matching this
 #'   module's polygon convention elsewhere).
 #' * `$width` (`numeric`)
 #' * `$height` (`numeric`)
@@ -8107,11 +8107,11 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `VoronoiDiagram$new()`
 #' @section Fields:
-#' * `$vertices` (`vector<Point2D>`): The circumcenter of each Delaunay triangle -- the Voronoi diagram's vertices
+#' * `$vertices` (`list of Point2D`): The circumcenter of each Delaunay triangle -- the Voronoi diagram's vertices
 #'   (may repeat a coordinate if it's shared by multiple cells; kept as plain
 #'   resolved points rather than a shared, index-referenced pool for a simpler,
 #'   binding-friendly shape).
-#' * `$cells` (`vector<vector<Point2D>>`): cells\[i\] is points\[i\]'s Voronoi cell boundary, as circumcenters in angular
+#' * `$cells` (`list of list of Point2D`): cells\[i\] is points\[i\]'s Voronoi cell boundary, as circumcenters in angular
 #'   order around points\[i\]. For an INTERIOR point this is a closed polygon (as with
 #'   any polygon in this module, the closing edge back to cells\[i\].front() is
 #'   implicit). For a point on the convex hull, the true Voronoi cell is unbounded --
@@ -8142,7 +8142,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Construct an owned dense or CSR matrix from row-major values.
 #'
-#' * `values` (`vector<numeric>`): Exactly rows * cols coefficients; sparse zero entries are omitted.
+#' * `values` (`numeric vector`): Exactly rows * cols coefficients; sparse zero entries are omitted.
 #' * `rows` (`integer`): Number of rows, including zero.
 #' * `cols` (`integer`): Number of columns, including zero.
 #' * `sparse` (`logical`): Select CSR storage, default false.
@@ -8191,7 +8191,7 @@ rosetta_ref <- function(value = NULL) {
 #'   Evaluate once into an owned snapshot with no deferred operands.
 #'   - Returns: Materialised matrix handle, sharing immutable storage when already concrete.
 #'
-#' * `$values()` -> `vector<numeric>`
+#' * `$values()` -> `numeric vector`
 #'
 #'   Evaluate and copy all coefficients in row-major order.
 #'   - Returns: Dense vector, including sparse zeros.
@@ -8236,7 +8236,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `RHS$new()`
 #' @section Methods:
-#' * `$evaluate(t, y)` -> `vector<numeric>`
+#' * `$evaluate(t, y)` -> `numeric vector`
 #' @md
 #'
 `RHS` <- R6::R6Class("RHS", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -8292,7 +8292,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$time_at(index)` -> `numeric`
 #'
-#' * `$state_at(index)` -> `vector<numeric>`
+#' * `$state_at(index)` -> `numeric vector`
 #'
 #'   The full state vector at t\[index\].
 #' @md
@@ -8931,12 +8931,12 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `BayesianOptimizationResult$new()`
 #' @section Fields:
-#' * `$best_point` (`vector<numeric>`): The evaluated point with the smallest value.
+#' * `$best_point` (`numeric vector`): The evaluated point with the smallest value.
 #' * `$best_value` (`numeric`): The smallest observed value.
-#' * `$points` (`vector<vector<numeric>>`): Every evaluated point: the initial design first, then one per iteration.
-#' * `$values` (`vector<numeric>`): The objective value at each point.
-#' * `$best_values` (`vector<numeric>`): Running minimum of values after each evaluation.
-#' * `$acquisition_values` (`vector<numeric>`): The acquisition value of each proposed point (one per iteration, none for the design).
+#' * `$points` (`list of numeric vector`): Every evaluated point: the initial design first, then one per iteration.
+#' * `$values` (`numeric vector`): The objective value at each point.
+#' * `$best_values` (`numeric vector`): Running minimum of values after each evaluation.
+#' * `$acquisition_values` (`numeric vector`): The acquisition value of each proposed point (one per iteration, none for the design).
 #' @md
 #'
 `BayesianOptimizationResult` <- R6::R6Class("BayesianOptimizationResult", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -11105,12 +11105,12 @@ rosetta_ref <- function(value = NULL) {
 #'   The value scale: the standard deviation of the values when normalising, else 1.
 #'   - Returns: The scale.
 #'
-#' * `$points()` -> `vector<vector<numeric>>`
+#' * `$points()` -> `list of numeric vector`
 #'
 #'   The training points from the last fit() (empty before fitting).
 #'   - Returns: The stored training points.
 #'
-#' * `$values()` -> `vector<numeric>`
+#' * `$values()` -> `numeric vector`
 #'
 #'   The training values from the last fit() (empty before fitting).
 #'   - Returns: The stored training values.
@@ -11678,13 +11678,13 @@ rosetta_ref <- function(value = NULL) {
 #' `BSplineBasis$new(degree, knots)`
 #'
 #' * `degree` (`integer`)
-#' * `knots` (`vector<numeric>`)
+#' * `knots` (`numeric vector`)
 #' @section Methods:
 #' * `$degree()` -> `integer`
 #'
 #' * `$basis_size()` -> `integer`
 #'
-#' * `$knots()` -> `vector<numeric>`
+#' * `$knots()` -> `numeric vector`
 #'
 #' * `$domain()` -> `list(numeric, numeric)`
 #' @section Static methods:
@@ -11815,7 +11815,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Fit the model to a series.
 #'
-#' * `y` (`vector<numeric>`): The observed series, in time order.
+#' * `y` (`numeric vector`): The observed series, in time order.
 #' * `options` (`ARIMAOptions`): Model orders and optimizer settings.
 #' @section Methods:
 #' * `$options()` -> `ARIMAOptions`
@@ -11823,22 +11823,22 @@ rosetta_ref <- function(value = NULL) {
 #'   The options the model was fit with.
 #'   - Returns: The stored ARIMAOptions.
 #'
-#' * `$ar_coefficients()` -> `vector<numeric>`
+#' * `$ar_coefficients()` -> `numeric vector`
 #'
 #'   Fitted non-seasonal AR coefficients
 #'   - Returns: A vector of length p; the AR polynomial is
 #'
-#' * `$ma_coefficients()` -> `vector<numeric>`
+#' * `$ma_coefficients()` -> `numeric vector`
 #'
 #'   Fitted non-seasonal MA coefficients
 #'   - Returns: A vector of length q; the MA polynomial is
 #'
-#' * `$seasonal_ar_coefficients()` -> `vector<numeric>`
+#' * `$seasonal_ar_coefficients()` -> `numeric vector`
 #'
 #'   Fitted seasonal AR coefficients
 #'   - Returns: A vector of length P; the polynomial is
 #'
-#' * `$seasonal_ma_coefficients()` -> `vector<numeric>`
+#' * `$seasonal_ma_coefficients()` -> `numeric vector`
 #'
 #'   Fitted seasonal MA coefficients
 #'   - Returns: A vector of length Q; the polynomial is
@@ -11875,40 +11875,40 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Bayesian information criterion.
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #'   One-step-ahead fitted values on the original scale, aligned to the input
 #'   series (the first `observations() - n_used()` entries -- the presample points
 #'   conditioned on by CSS -- are copies of the observed value, matching a
 #'   residual of exactly zero there rather than an undefined value).
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
 #'   One-step-ahead residuals on the original scale (zero for the presample points).
 #'
-#' * `$forecast(horizon)` -> `vector<numeric>`
+#' * `$forecast(horizon)` -> `numeric vector`
 #'
 #'   Point forecasts for the next `horizon` periods, on the original scale.
 #'   - `horizon`: Number of steps ahead to forecast.
 #'   - Returns: A vector of length `horizon` (empty when `horizon` is 0).
 #'
-#' * `$expanded_ar_coefficients()` -> `vector<numeric>`
+#' * `$expanded_ar_coefficients()` -> `numeric vector`
 #'
 #'   AR coefficients of the stationary (differenced) model after multiplying the regular
 #'   and seasonal polynomials,
 #'   - Returns: The
 #'
-#' * `$expanded_ma_coefficients()` -> `vector<numeric>`
+#' * `$expanded_ma_coefficients()` -> `numeric vector`
 #'
 #'   MA coefficients
 #'   - Returns: The
 #'
-#' * `$psi_weights(count)` -> `vector<numeric>`
+#' * `$psi_weights(count)` -> `numeric vector`
 #'
 #'   The first `count`
 #'   - `count`: Number of weights.
 #'
-#' * `$forecast_with_intervals(horizon)` -> `list(vector<numeric>, vector<numeric>)`
+#' * `$forecast_with_intervals(horizon)` -> `list(numeric vector, numeric vector)`
 #'
 #'   Point forecasts and their standard errors (from the psi-weight / MA(infinity)
 #'   expansion of the full, non-stationary AR/MA representation of y), on the
@@ -12028,7 +12028,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `ExponentialSmoothing$new(y, options = ExponentialSmoothingOptions$new())`
 #'
-#' * `y` (`vector<numeric>`)
+#' * `y` (`numeric vector`)
 #' * `options` (`ExponentialSmoothingOptions`)
 #' @section Methods:
 #' * `$options()` -> `ExponentialSmoothingOptions`
@@ -12053,15 +12053,15 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$bic()` -> `numeric`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #'   In-sample one-step-ahead fitted values, aligned to the input series. The
 #'   warm-up prefix used to set initial states (see class docs) is copied from the
 #'   observed values (residual exactly zero there).
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
-#' * `$forecast(horizon)` -> `vector<numeric>`
+#' * `$forecast(horizon)` -> `numeric vector`
 #'
 #'   Point forecasts for the next `horizon` periods.
 #' @md
@@ -12099,7 +12099,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `lower` (`numeric`): Finite left boundary, strictly below upper.
 #' * `upper` (`numeric`): Finite right boundary.
-#' * `knots` (`vector<numeric>`): Finite increasing breakpoints inside \[lower, upper\]; boundary
+#' * `knots` (`numeric vector`): Finite increasing breakpoints inside \[lower, upper\]; boundary
 #'   entries are optional and ignored when building interior knots. May be empty.
 #' * `degree` (`integer`): Polynomial degree, default 3 (cubic).
 #' * `intercept` (`logical`): Include the first basis column, default false; use a
@@ -12380,16 +12380,16 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Copy a numeric vector into a one-column DataFrame.
 #'
-#' * `values` (`vector<numeric>`): Copied row values, including nonfinite values.
-#' * `names` (`vector<character>`): Exactly one nonempty column name.
+#' * `values` (`numeric vector`): Copied row values, including nonfinite values.
+#' * `names` (`character vector`): Exactly one nonempty column name.
 #' @section Methods:
 #' * `$nrows()` -> `integer`
 #'
 #' * `$ncols()` -> `integer`
 #'
-#' * `$shape()` -> `vector<integer>`
+#' * `$shape()` -> `integer vector`
 #'
-#' * `$columns()` -> `vector<character>`
+#' * `$columns()` -> `character vector`
 #'
 #' * `$add_numeric_column(column_name, values, valid_mask = c())`
 #'
@@ -12444,17 +12444,17 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$distinct_encoded(encoded_subset)` -> `DataFrame or NULL`
 #'
-#' * `$pull_numeric(column_name)` -> `vector<numeric>`
+#' * `$pull_numeric(column_name)` -> `numeric vector`
 #'
 #'   dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / "" (string)
 #'   in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =
 #'   null, same convention as add_numeric_column's valid_mask) if nulls matter.
 #'
-#' * `$pull_numeric_valid(column_name)` -> `vector<integer>`
+#' * `$pull_numeric_valid(column_name)` -> `integer vector`
 #'
-#' * `$pull_string(column_name)` -> `vector<character>`
+#' * `$pull_string(column_name)` -> `character vector`
 #'
-#' * `$pull_string_valid(column_name)` -> `vector<integer>`
+#' * `$pull_string_valid(column_name)` -> `integer vector`
 #'
 #' * `$n_distinct(column_name)` -> `integer`
 #'
@@ -12776,7 +12776,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   Changes the rows per chunk.
 #'
-#' * `$column_names()` -> `vector<character>`
+#' * `$column_names()` -> `character vector`
 #'
 #'   Column names, in file order.
 #'
@@ -12825,7 +12825,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   One of "point", "polyline", "polygon", "multipoint", or "null" (an empty layer).
 #'
-#' * `$bounds()` -> `vector<numeric>`
+#' * `$bounds()` -> `numeric vector`
 #'
 #'   \{xmin, ymin, xmax, ymax\}, from the shapefile's own declared bounding box.
 #'
@@ -12838,15 +12838,15 @@ rosetta_ref <- function(value = NULL) {
 #'   Number of parts (rings for Polygon, lines for PolyLine; 0 for Point/MultiPoint,
 #'   which use point_x()/point_y() instead).
 #'
-#' * `$part_x(shape_index, part_index)` -> `vector<numeric>`
+#' * `$part_x(shape_index, part_index)` -> `numeric vector`
 #'
-#' * `$part_y(shape_index, part_index)` -> `vector<numeric>`
+#' * `$part_y(shape_index, part_index)` -> `numeric vector`
 #'
-#' * `$point_x(shape_index)` -> `vector<numeric>`
+#' * `$point_x(shape_index)` -> `numeric vector`
 #'
 #'   Every point's x/y in a Point or MultiPoint shape (a single element for Point).
 #'
-#' * `$point_y(shape_index)` -> `vector<numeric>`
+#' * `$point_y(shape_index)` -> `numeric vector`
 #'
 #' * `$plot(fill_color = <default>, border_color = <default>, width = 800, height = 800)` -> `RPlot`
 #' @section Static methods:
@@ -12958,7 +12958,7 @@ rosetta_ref <- function(value = NULL) {
 #'   Number of geom layers added so far.
 #'   - Returns: The layer count.
 #'
-#' * `$layer_kinds()` -> `vector<character>`
+#' * `$layer_kinds()` -> `character vector`
 #'
 #'   The geom of each layer in drawing order ("point", "line", "smooth", ...).
 #'   - Returns: One name per layer.
@@ -13051,7 +13051,7 @@ rosetta_ref <- function(value = NULL) {
 #' Builds the matrix from a facade DataFrame (the overload SWIG bindings use).
 #'
 #' * `data` (`DataFrame`): Source frame; its values are copied.
-#' * `columns` (`vector<character>`): Columns to include in order; empty selects every numeric column plus every
+#' * `columns` (`character vector`): Columns to include in order; empty selects every numeric column plus every
 #'   string column with at most graphics::Splom::max_default_levels distinct values.
 #' @section Methods:
 #' * `$set_col(color)` -> `Splom`
@@ -13085,7 +13085,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `value`: Point color (default `{37, 99, 235}`).
 #'   - Returns: This matrix, for chaining.
 #'
-#' * `$group_by(column, palette = c())` -> `Splom`
+#' * `$group_by(column, palette = list())` -> `Splom`
 #'
 #'   Splits every numeric panel by the groups of string column `column` (GGally's
 #'   `ggpairs(aes(colour = group))`); an empty palette uses the default level palette.
@@ -13152,12 +13152,12 @@ rosetta_ref <- function(value = NULL) {
 #'   - `enabled`: True draws the grid.
 #'   - Returns: This matrix, for chaining.
 #'
-#' * `$variables()` -> `vector<character>`
+#' * `$variables()` -> `character vector`
 #'
 #'   Variable names in panel order.
 #'   - Returns: A copy of the selected column names.
 #'
-#' * `$groups()` -> `vector<character>`
+#' * `$groups()` -> `character vector`
 #'
 #'   Sorted group labels set by group_by(), in palette order; empty without grouping.
 #'   - Returns: A copy of the group labels; also empty after the factor form of set_col().
@@ -13270,19 +13270,19 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$degrees_of_freedom()` -> `integer`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
-#' * `$coefficient_names()` -> `vector<character>`
+#' * `$coefficient_names()` -> `character vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
-#' * `$standard_errors()` -> `vector<numeric>`
+#' * `$standard_errors()` -> `numeric vector`
 #'
-#' * `$t_values()` -> `vector<numeric>`
+#' * `$t_values()` -> `numeric vector`
 #'
-#' * `$p_values()` -> `vector<numeric>`
+#' * `$p_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -13294,23 +13294,23 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$f_p_value()` -> `numeric`
 #'
-#' * `$confidence_interval_lower(level = 0.94999999999999996)` -> `vector<numeric>`
+#' * `$confidence_interval_lower(level = 0.94999999999999996)` -> `numeric vector`
 #'
-#' * `$confidence_interval_upper(level = 0.94999999999999996)` -> `vector<numeric>`
+#' * `$confidence_interval_upper(level = 0.94999999999999996)` -> `numeric vector`
 #'
-#' * `$leverage()` -> `vector<numeric>`
+#' * `$leverage()` -> `numeric vector`
 #'
-#' * `$standardized_residuals()` -> `vector<numeric>`
+#' * `$standardized_residuals()` -> `numeric vector`
 #'
-#' * `$studentized_residuals()` -> `vector<numeric>`
+#' * `$studentized_residuals()` -> `numeric vector`
 #'
-#' * `$cooks_distance()` -> `vector<numeric>`
+#' * `$cooks_distance()` -> `numeric vector`
 #'
 #' * `$summary()` -> `character`
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$predict_frame(newdata, interval_kind = "none", level = 0.94999999999999996)` -> `DataFrame or NULL`
 #'   - `interval_kind`: One of "none", "confidence", "prediction". Returned DataFrame has a "fit" column,
@@ -13395,7 +13395,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$has_random_intercept()` -> `logical`
 #'
-#' * `$random_effect_names()` -> `vector<character>`
+#' * `$random_effect_names()` -> `character vector`
 #'
 #' * `$is_reml()` -> `logical`
 #'
@@ -13405,31 +13405,31 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$rank()` -> `integer`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
-#' * `$coefficient_names()` -> `vector<character>`
+#' * `$coefficient_names()` -> `character vector`
 #'
-#' * `$standard_errors()` -> `vector<numeric>`
+#' * `$standard_errors()` -> `numeric vector`
 #'
-#' * `$z_values()` -> `vector<numeric>`
+#' * `$z_values()` -> `numeric vector`
 #'
-#' * `$p_values()` -> `vector<numeric>`
+#' * `$p_values()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
 #' * `$residual_variance()` -> `numeric`
 #'
 #' * `$residual_std_dev()` -> `numeric`
 #'
-#' * `$random_effect_std_devs()` -> `vector<numeric>`
+#' * `$random_effect_std_devs()` -> `numeric vector`
 #'
 #' * `$random_effect_correlation(i, j)` -> `numeric`
 #'
-#' * `$group_labels()` -> `vector<character>`
+#' * `$group_labels()` -> `character vector`
 #'
-#' * `$random_effects_for_group(group_index)` -> `vector<numeric>`
+#' * `$random_effects_for_group(group_index)` -> `numeric vector`
 #'
 #'   The BLUP random-effect vector for the group at `group_index` (see group_labels()),
 #'   in the same order as random_effect_names().
@@ -13446,7 +13446,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #' @md
 #'
 `LMM` <- R6::R6Class("LMM", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -13508,7 +13508,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$has_random_intercept()` -> `logical`
 #'
-#' * `$random_effect_names()` -> `vector<character>`
+#' * `$random_effect_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -13518,25 +13518,25 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$iterations()` -> `integer`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
-#' * `$coefficient_names()` -> `vector<character>`
+#' * `$coefficient_names()` -> `character vector`
 #'
-#' * `$standard_errors()` -> `vector<numeric>`
+#' * `$standard_errors()` -> `numeric vector`
 #'
-#' * `$z_values()` -> `vector<numeric>`
+#' * `$z_values()` -> `numeric vector`
 #'
-#' * `$p_values()` -> `vector<numeric>`
+#' * `$p_values()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
-#' * `$random_effect_std_devs()` -> `vector<numeric>`
+#' * `$random_effect_std_devs()` -> `numeric vector`
 #'
 #' * `$random_effect_correlation(i, j)` -> `numeric`
 #'
-#' * `$group_labels()` -> `vector<character>`
+#' * `$group_labels()` -> `character vector`
 #'
-#' * `$random_effects_for_group(group_index)` -> `vector<numeric>`
+#' * `$random_effects_for_group(group_index)` -> `numeric vector`
 #'
 #'   The BLUP random-effect vector for the group at `group_index` (see group_labels()),
 #'   in the same order as random_effect_names().
@@ -13551,7 +13551,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #' @md
 #'
 `GLMM` <- R6::R6Class("GLMM", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -13612,32 +13612,32 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$group_variable()` -> `character`
 #'
-#' * `$random_effect_names()` -> `vector<character>`
+#' * `$random_effect_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$num_groups()` -> `integer`
 #'
-#' * `$fixed_effects_mean()` -> `vector<numeric>`
+#' * `$fixed_effects_mean()` -> `numeric vector`
 #'
-#' * `$fixed_effects_sd()` -> `vector<numeric>`
+#' * `$fixed_effects_sd()` -> `numeric vector`
 #'
-#' * `$coefficient_names()` -> `vector<character>`
+#' * `$coefficient_names()` -> `character vector`
 #'
-#' * `$random_effect_std_devs()` -> `vector<numeric>`
+#' * `$random_effect_std_devs()` -> `numeric vector`
 #'
 #' * `$residual_std_dev()` -> `numeric`
 #'
 #'   Gaussian family only; throws for binomial/poisson (dispersion fixed at 1).
 #'
-#' * `$group_labels()` -> `vector<character>`
+#' * `$group_labels()` -> `character vector`
 #'
-#' * `$random_effects_mean_for_group(group_index)` -> `vector<numeric>`
+#' * `$random_effects_mean_for_group(group_index)` -> `numeric vector`
 #'
 #'   The posterior-mean/sd BLUP-like random-effect vector for the group at
 #'   `group_index` (see group_labels()), in random_effect_names() order.
 #'
-#' * `$random_effects_sd_for_group(group_index)` -> `vector<numeric>`
+#' * `$random_effects_sd_for_group(group_index)` -> `numeric vector`
 #'
 #' * `$log_marginal_likelihood()` -> `numeric`
 #'
@@ -13647,7 +13647,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #' @md
 #'
 `INLAMixedModel` <- R6::R6Class("INLAMixedModel", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -13683,18 +13683,18 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `data` (`DataFrame`)
 #' * `formula` (`character`)
-#' * `priors` (`vector<numeric>`): Optional class prior probabilities (must sum to 1, ordered as classes() once sorted
+#' * `priors` (`numeric vector`): Optional class prior probabilities (must sum to 1, ordered as classes() once sorted
 #'   alphabetically); pass an empty vector (the default) to use observed class proportions.
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$num_discriminants()` -> `integer`
 #'
-#' * `$priors()` -> `vector<numeric>`
+#' * `$priors()` -> `numeric vector`
 #'
 #' * `$group_means()` -> `DataFrame or NULL`
 #'
@@ -13704,7 +13704,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   One row per predictor, one numeric column per linear discriminant (LD1, LD2, ...).
 #'
-#' * `$proportion_of_trace()` -> `vector<numeric>`
+#' * `$proportion_of_trace()` -> `numeric vector`
 #'
 #' * `$training_accuracy()` -> `numeric`
 #'
@@ -13720,7 +13720,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   The fit as Markdown tables (priors, group means, coefficients, proportion of trace).
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -13777,9 +13777,9 @@ rosetta_ref <- function(value = NULL) {
 #' * `degree` (`integer`)
 #' * `scale` (`logical`)
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -13795,7 +13795,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -13832,9 +13832,9 @@ rosetta_ref <- function(value = NULL) {
 #' * `min_samples_leaf` (`integer`)
 #' * `criterion` (`character`): "gini" (default) or "entropy".
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -13844,7 +13844,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$depth()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
 #' * `$training_accuracy()` -> `numeric`
 #'
@@ -13856,7 +13856,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -13906,7 +13906,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `min_samples_split` (`integer`)
 #' * `min_samples_leaf` (`integer`)
 #' @section Methods:
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -13916,9 +13916,9 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$depth()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -13928,7 +13928,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_predicted_vs_actual()` -> `RPlot`
 #'
@@ -13974,9 +13974,9 @@ rosetta_ref <- function(value = NULL) {
 #' * `sample_fraction` (`numeric`)
 #' * `seed` (`integer`)
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -13984,7 +13984,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$max_features_used()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
 #' * `$training_accuracy()` -> `numeric`
 #'
@@ -14000,7 +14000,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -14056,7 +14056,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `sample_fraction` (`numeric`)
 #' * `seed` (`integer`)
 #' @section Methods:
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -14064,9 +14064,9 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$max_features_used()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -14080,7 +14080,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_predicted_vs_actual()` -> `RPlot`
 #'
@@ -14129,7 +14129,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$has_intercept()` -> `logical`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -14142,19 +14142,19 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$lambda_was_selected()` -> `logical`
 #'
-#' * `$lambda_path()` -> `vector<numeric>`
+#' * `$lambda_path()` -> `numeric vector`
 #'
-#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#' * `$cv_mean_squared_error()` -> `numeric vector`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
 #' * `$intercept()` -> `numeric`
 #'
 #' * `$non_zero_coefficients()` -> `integer`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -14164,7 +14164,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_coefficient_path()` -> `RPlot`
 #'
@@ -14229,7 +14229,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$has_intercept()` -> `logical`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -14237,17 +14237,17 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$lambda_was_selected()` -> `logical`
 #'
-#' * `$lambda_path()` -> `vector<numeric>`
+#' * `$lambda_path()` -> `numeric vector`
 #'
-#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#' * `$cv_mean_squared_error()` -> `numeric vector`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
 #' * `$intercept()` -> `numeric`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -14257,7 +14257,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_coefficient_path()` -> `RPlot`
 #'
@@ -14314,7 +14314,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$has_intercept()` -> `logical`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -14322,19 +14322,19 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$lambda_was_selected()` -> `logical`
 #'
-#' * `$lambda_path()` -> `vector<numeric>`
+#' * `$lambda_path()` -> `numeric vector`
 #'
-#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#' * `$cv_mean_squared_error()` -> `numeric vector`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
 #' * `$intercept()` -> `numeric`
 #'
 #' * `$non_zero_coefficients()` -> `integer`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -14344,7 +14344,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_coefficient_path()` -> `RPlot`
 #'
@@ -14399,9 +14399,9 @@ rosetta_ref <- function(value = NULL) {
 #' * `weighted` (`logical`)
 #' * `standardize` (`logical`)
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -14417,7 +14417,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -14467,13 +14467,13 @@ rosetta_ref <- function(value = NULL) {
 #' * `weighted` (`logical`)
 #' * `standardize` (`logical`)
 #' @section Methods:
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$k()` -> `integer`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -14483,7 +14483,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_predicted_vs_actual()` -> `RPlot`
 #'
@@ -14522,7 +14522,7 @@ rosetta_ref <- function(value = NULL) {
 #' default arguments (see DataFrame::add_string_column_encoded()).
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_clusters` (`integer`)
 #' * `max_iterations` (`integer`)
 #' * `n_init` (`integer`)
@@ -14530,7 +14530,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `seed` (`integer`)
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$n_clusters()` -> `integer`
 #'
@@ -14538,15 +14538,15 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$iterations_used()` -> `integer`
 #'
-#' * `$labels()` -> `vector<integer>`
+#' * `$labels()` -> `integer vector`
 #'
 #' * `$inertia()` -> `numeric`
 #'
-#' * `$cluster_center(cluster_index)` -> `vector<numeric>`
+#' * `$cluster_center(cluster_index)` -> `numeric vector`
 #'
 #'   The feature vector of cluster `cluster_index's` center.
 #'
-#' * `$predict(newdata)` -> `vector<integer>`
+#' * `$predict(newdata)` -> `integer vector`
 #'
 #' * `$summary()` -> `character`
 #'
@@ -14582,34 +14582,34 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `center` (`logical`): Mean-center each feature before fitting; almost always left true.
 #' * `scale` (`logical`): Standardize each feature to unit variance before fitting (i.e. fit on the
 #'   correlation matrix rather than the covariance matrix); recommended whenever
 #'   features are on different scales, and the default here.
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$num_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
 #'   Row indices (into the DataFrame passed to the constructor) that survived
 #'   null-dropping, in fitted order -- use to align an external label vector for
 #'   plot_scores_grouped().
 #'
-#' * `$explained_variance()` -> `vector<numeric>`
+#' * `$explained_variance()` -> `numeric vector`
 #'
-#' * `$explained_variance_ratio()` -> `vector<numeric>`
+#' * `$explained_variance_ratio()` -> `numeric vector`
 #'
-#' * `$cumulative_explained_variance_ratio()` -> `vector<numeric>`
+#' * `$cumulative_explained_variance_ratio()` -> `numeric vector`
 #'
-#' * `$component_loadings(component_index)` -> `vector<numeric>`
+#' * `$component_loadings(component_index)` -> `numeric vector`
 #'
-#' * `$component_scores(component_index)` -> `vector<numeric>`
+#' * `$component_scores(component_index)` -> `numeric vector`
 #'
 #' * `$scores_frame()` -> `DataFrame or NULL`
 #'
@@ -14674,28 +14674,28 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
 #'   Row indices (into the DataFrame passed to the constructor) that survived
 #'   null-dropping, in fitted order -- use to align an external label vector for
 #'   plot_embedding_grouped().
 #'
-#' * `$eigenvalues()` -> `vector<numeric>`
+#' * `$eigenvalues()` -> `numeric vector`
 #'
 #' * `$goodness_of_fit()` -> `numeric`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -14749,25 +14749,25 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `n_neighbors` (`integer`)
 #' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$eigenvalues()` -> `vector<numeric>`
+#' * `$eigenvalues()` -> `numeric vector`
 #'
 #' * `$goodness_of_fit()` -> `numeric`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -14814,24 +14814,24 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `n_neighbors` (`integer`)
 #' * `regularization` (`numeric`)
 #' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$eigenvalues()` -> `vector<numeric>`
+#' * `$eigenvalues()` -> `numeric vector`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -14874,7 +14874,7 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `perplexity` (`numeric`)
 #' * `max_iterations` (`integer`)
@@ -14888,20 +14888,20 @@ rosetta_ref <- function(value = NULL) {
 #' * `seed` (`integer`)
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$achieved_perplexity()` -> `vector<numeric>`
+#' * `$achieved_perplexity()` -> `numeric vector`
 #'
 #'   The achieved perplexity for each fitted point after the per-point binary search --
 #'   should be close to the constructor's perplexity argument if calibration converged.
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -14946,23 +14946,23 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `n_neighbors` (`integer`)
 #' * `heat_kernel_t` (`numeric`)
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$eigenvalues()` -> `vector<numeric>`
+#' * `$eigenvalues()` -> `numeric vector`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -15007,24 +15007,24 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `heat_kernel_epsilon` (`numeric`)
 #' * `alpha` (`numeric`)
 #' * `diffusion_time` (`numeric`)
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$eigenvalues()` -> `vector<numeric>`
+#' * `$eigenvalues()` -> `numeric vector`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -15069,7 +15069,7 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `kernel` (`character`): One of "linear", "rbf" (default), "polynomial".
 #' * `gamma` (`numeric`)
@@ -15077,17 +15077,17 @@ rosetta_ref <- function(value = NULL) {
 #' * `coef0` (`numeric`)
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$eigenvalues()` -> `vector<numeric>`
+#' * `$eigenvalues()` -> `numeric vector`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -15130,7 +15130,7 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `learning_rate` (`numeric`)
 #' * `max_iterations` (`integer`)
@@ -15139,15 +15139,15 @@ rosetta_ref <- function(value = NULL) {
 #' * `seed` (`integer`)
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
@@ -15199,7 +15199,7 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_components` (`integer`)
 #' * `n_neighbors` (`integer`)
 #' * `min_dist` (`numeric`)
@@ -15210,23 +15210,23 @@ rosetta_ref <- function(value = NULL) {
 #' * `seed` (`integer`)
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_components()` -> `integer`
 #'
-#' * `$kept_row_indices()` -> `vector<integer>`
+#' * `$kept_row_indices()` -> `integer vector`
 #'
-#' * `$dimension(index)` -> `vector<numeric>`
+#' * `$dimension(index)` -> `numeric vector`
 #'
 #' * `$embedding_frame()` -> `DataFrame or NULL`
 #'
-#' * `$sigmas()` -> `vector<numeric>`
+#' * `$sigmas()` -> `numeric vector`
 #'
 #'   Per-point sigma_i / rho_i from the smooth k-NN calibration -- mainly for diagnostics.
 #'
-#' * `$rhos()` -> `vector<numeric>`
+#' * `$rhos()` -> `numeric vector`
 #'
 #' * `$summary()` -> `character`
 #'
@@ -15268,19 +15268,19 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `n_clusters` (`integer`)
 #' * `linkage` (`character`): One of "single", "complete", "average", "ward" (default).
 #' * `metric` (`character`): One of "euclidean" (default) or "manhattan"; ward linkage requires euclidean.
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
-#' * `$labels()` -> `vector<integer>`
+#' * `$labels()` -> `integer vector`
 #'
-#' * `$cut(n_clusters)` -> `vector<integer>`
+#' * `$cut(n_clusters)` -> `integer vector`
 #'
 #'   Re-cuts the already-built dendrogram to produce `n_clusters` clusters, without refitting.
 #'
@@ -15329,13 +15329,13 @@ rosetta_ref <- function(value = NULL) {
 #' col1..."-encoded string -- see KMeans's encoded constructor for why.
 #'
 #' * `data` (`DataFrame`)
-#' * `feature_columns` (`vector<character>`)
+#' * `feature_columns` (`character vector`)
 #' * `eps` (`numeric`)
 #' * `min_samples` (`integer`)
 #' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
 #' * `encoded_feature_columns` (`character`)
 #' @section Methods:
-#' * `$feature_names()` -> `vector<character>`
+#' * `$feature_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -15343,7 +15343,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$n_noise()` -> `integer`
 #'
-#' * `$labels()` -> `vector<integer>`
+#' * `$labels()` -> `integer vector`
 #'
 #'   Cluster index (0-based) assigned to each fitted row, or -1 for noise.
 #'
@@ -15382,15 +15382,15 @@ rosetta_ref <- function(value = NULL) {
 #' * `subsample` (`numeric`)
 #' * `seed` (`integer`)
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_trees()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
 #' * `$training_accuracy()` -> `numeric`
 #'
@@ -15398,7 +15398,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   "actual" column plus one numeric column per class (counts), both ordered as classes().
 #'
-#' * `$training_deviance()` -> `vector<numeric>`
+#' * `$training_deviance()` -> `numeric vector`
 #'
 #'   Multinomial deviance on the training set after each boosting round (length n_trees()).
 #'
@@ -15406,7 +15406,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -15457,21 +15457,21 @@ rosetta_ref <- function(value = NULL) {
 #' * `subsample` (`numeric`)
 #' * `seed` (`integer`)
 #' @section Methods:
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_trees()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
 #' * `$rmse()` -> `numeric`
 #'
-#' * `$training_deviance()` -> `vector<numeric>`
+#' * `$training_deviance()` -> `numeric vector`
 #'
 #'   Mean squared error on the training set after each boosting round (length n_trees()).
 #'
@@ -15479,7 +15479,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_predicted_vs_actual()` -> `RPlot`
 #'
@@ -15529,15 +15529,15 @@ rosetta_ref <- function(value = NULL) {
 #' * `colsample_bytree` (`numeric`)
 #' * `seed` (`integer`)
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_trees()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
 #'   Gain-based importance (XGBoost's default "gain" metric), normalized to sum to 1.
 #'
@@ -15547,7 +15547,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   "actual" column plus one numeric column per class (counts), both ordered as classes().
 #'
-#' * `$training_deviance()` -> `vector<numeric>`
+#' * `$training_deviance()` -> `numeric vector`
 #'
 #'   Multinomial deviance on the training set after each boosting round (length n_trees()).
 #'
@@ -15555,7 +15555,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -15610,27 +15610,27 @@ rosetta_ref <- function(value = NULL) {
 #' * `colsample_bytree` (`numeric`)
 #' * `seed` (`integer`)
 #' @section Methods:
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
 #' * `$n_trees()` -> `integer`
 #'
-#' * `$feature_importance()` -> `vector<numeric>`
+#' * `$feature_importance()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
 #' * `$rmse()` -> `numeric`
 #'
-#' * `$training_deviance()` -> `vector<numeric>`
+#' * `$training_deviance()` -> `numeric vector`
 #'
 #' * `$summary()` -> `character`
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_predicted_vs_actual()` -> `RPlot`
 #'
@@ -15674,7 +15674,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `n_bandwidth` (`integer`)
 #' * `standardize` (`logical`)
 #' @section Methods:
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -15684,11 +15684,11 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$bandwidth_was_selected()` -> `logical`
 #'
-#' * `$bandwidth_grid()` -> `vector<numeric>`
+#' * `$bandwidth_grid()` -> `numeric vector`
 #'
-#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#' * `$cv_mean_squared_error()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -15698,7 +15698,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$plot_fit(data, grid_resolution = 200)` -> `RPlot`
 #'
@@ -15752,7 +15752,7 @@ rosetta_ref <- function(value = NULL) {
 #' * `n_noise_grid` (`integer`)
 #' * `standardize` (`logical`)
 #' @section Methods:
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
@@ -15768,11 +15768,11 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$noise_ratio_was_selected()` -> `logical`
 #'
-#' * `$length_scale_grid()` -> `vector<numeric>`
+#' * `$length_scale_grid()` -> `numeric vector`
 #'
-#' * `$length_scale_profile_log_likelihood()` -> `vector<numeric>`
+#' * `$length_scale_profile_log_likelihood()` -> `numeric vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
 #' * `$r_squared()` -> `numeric`
 #'
@@ -15782,7 +15782,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #' * `$predict_frame(newdata, interval_kind = "none", level = 0.94999999999999996)` -> `DataFrame or NULL`
 #'   - `interval_kind`: One of "none" or "confidence". Returned DataFrame has a "fit" column, plus
@@ -15836,13 +15836,13 @@ rosetta_ref <- function(value = NULL) {
 #' * `laplace_smoothing` (`numeric`)
 #' * `var_smoothing` (`numeric`)
 #' @section Methods:
-#' * `$classes()` -> `vector<character>`
+#' * `$classes()` -> `character vector`
 #'
-#' * `$predictor_names()` -> `vector<character>`
+#' * `$predictor_names()` -> `character vector`
 #'
 #' * `$observations()` -> `integer`
 #'
-#' * `$class_priors()` -> `vector<numeric>`
+#' * `$class_priors()` -> `numeric vector`
 #'
 #' * `$training_accuracy()` -> `numeric`
 #'
@@ -15854,7 +15854,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<character>`
+#' * `$predict(newdata)` -> `character vector`
 #'
 #' * `$predict_frame(newdata)` -> `DataFrame or NULL`
 #'
@@ -15912,27 +15912,27 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$degrees_of_freedom()` -> `integer`
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
-#' * `$coefficient_names()` -> `vector<character>`
+#' * `$coefficient_names()` -> `character vector`
 #'
-#' * `$fitted_values()` -> `vector<numeric>`
+#' * `$fitted_values()` -> `numeric vector`
 #'
-#' * `$linear_predictors()` -> `vector<numeric>`
+#' * `$linear_predictors()` -> `numeric vector`
 #'
-#' * `$residuals()` -> `vector<numeric>`
+#' * `$residuals()` -> `numeric vector`
 #'
-#' * `$pearson_residuals()` -> `vector<numeric>`
+#' * `$pearson_residuals()` -> `numeric vector`
 #'
-#' * `$standardized_residuals()` -> `vector<numeric>`
+#' * `$standardized_residuals()` -> `numeric vector`
 #'
-#' * `$leverage()` -> `vector<numeric>`
+#' * `$leverage()` -> `numeric vector`
 #'
-#' * `$standard_errors()` -> `vector<numeric>`
+#' * `$standard_errors()` -> `numeric vector`
 #'
-#' * `$test_statistics()` -> `vector<numeric>`
+#' * `$test_statistics()` -> `numeric vector`
 #'
-#' * `$p_values()` -> `vector<numeric>`
+#' * `$p_values()` -> `numeric vector`
 #'
 #' * `$deviance()` -> `numeric`
 #'
@@ -15942,15 +15942,15 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$aic()` -> `numeric`
 #'
-#' * `$confidence_interval_lower(level = 0.94999999999999996)` -> `vector<numeric>`
+#' * `$confidence_interval_lower(level = 0.94999999999999996)` -> `numeric vector`
 #'
-#' * `$confidence_interval_upper(level = 0.94999999999999996)` -> `vector<numeric>`
+#' * `$confidence_interval_upper(level = 0.94999999999999996)` -> `numeric vector`
 #'
 #' * `$summary()` -> `character`
 #'
 #' * `$print_summary()`
 #'
-#' * `$predict(newdata)` -> `vector<numeric>`
+#' * `$predict(newdata)` -> `numeric vector`
 #'
 #'   Response-scale predictions (back-transformed through the inverse link).
 #'
@@ -16014,12 +16014,12 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `Tensor$new(shape, dtype = "float64")`
 #'
-#' * `shape` (`vector<integer>`)
+#' * `shape` (`integer vector`)
 #' * `dtype` (`character`): One of "float64", "bool", or "string".
 #' @section Methods:
 #' * `$ndim()` -> `integer`
 #'
-#' * `$shape()` -> `vector<integer>`
+#' * `$shape()` -> `integer vector`
 #'
 #' * `$size()` -> `integer`
 #'
@@ -16295,48 +16295,117 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `Dual$new(value, derivative = 0.0)`
 #'
-#' * `value` (`numeric`)
-#' * `derivative` (`numeric`)
+#' A dual number value + derivative·ε (ε² = 0).
+#'
+#' * `value` (`numeric`): Real part, the function value.
+#' * `derivative` (`numeric`): Dual part, the derivative with respect to the seed (default 0).
 #' @section Methods:
 #' * `$value()` -> `numeric`
 #'
+#'   The real part: the function value.
+#'
 #' * `$derivative()` -> `numeric`
+#'
+#'   The dual part: the exact derivative with respect to the seed.
 #'
 #' * `$add(other)` -> `Dual`
 #'
+#'   Sum: this + `other`, with derivative a' + b'.
+#'   - `other`: Right operand.
+#'   - Returns: A new Dual; neither operand changes.
+#'
 #' * `$subtract(other)` -> `Dual`
+#'
+#'   Difference: this - `other`, with derivative a' - b'.
+#'   - `other`: Right operand.
+#'   - Returns: A new Dual; neither operand changes.
 #'
 #' * `$multiply(other)` -> `Dual`
 #'
+#'   Product: this * `other`, with derivative a'b + ab' (product rule).
+#'   - `other`: Right operand.
+#'   - Returns: A new Dual; neither operand changes.
+#'
 #' * `$divide(other)` -> `Dual`
+#'
+#'   Quotient: this / `other`, with derivative (a'b - ab')/b² (IEEE inf/NaN when other is 0).
+#'   - `other`: Right operand.
+#'   - Returns: A new Dual; neither operand changes.
 #'
 #' * `$negate()` -> `Dual`
 #'
+#'   Negation -x, with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
+#'
 #' * `$add_scalar(scalar)` -> `Dual`
+#'
+#'   Adds a constant `scalar`, derivative unchanged.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Dual.
 #'
 #' * `$subtract_scalar(scalar)` -> `Dual`
 #'
+#'   Subtracts a constant `scalar`, derivative unchanged.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Dual.
+#'
 #' * `$multiply_scalar(scalar)` -> `Dual`
+#'
+#'   Multiplies by a constant `scalar`, derivative scaled by it.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Dual.
 #'
 #' * `$divide_scalar(scalar)` -> `Dual`
 #'
+#'   Divides by a constant `scalar`, derivative divided by it.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Dual.
+#'
 #' * `$pow(exponent)` -> `Dual`
+#'
+#'   Power x^p for a constant exponent, with derivative p·x^(p-1).
+#'   - `exponent`: Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+#'   - Returns: A new Dual.
 #'
 #' * `$exp()` -> `Dual`
 #'
+#'   Exponential e^x, with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
+#'
 #' * `$log()` -> `Dual`
+#'
+#'   Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
 #'
 #' * `$sqrt()` -> `Dual`
 #'
+#'   Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
+#'
 #' * `$sin()` -> `Dual`
+#'
+#'   Sine (radians), with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
 #'
 #' * `$cos()` -> `Dual`
 #'
+#'   Cosine (radians), with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
+#'
 #' * `$tan()` -> `Dual`
+#'
+#'   Tangent (radians), with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
 #'
 #' * `$tanh()` -> `Dual`
 #'
+#'   Hyperbolic tangent, with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
+#'
 #' * `$abs()` -> `Dual`
+#'
+#'   Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.
+#'   - Returns: A new Dual.
 #' @md
 #'
 `Dual` <- R6::R6Class("Dual", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -16372,52 +16441,122 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `HyperDual$new(value, eps1 = 0.0, eps2 = 0.0, eps1eps2 = 0.0)`
 #'
-#' * `value` (`numeric`)
-#' * `eps1` (`numeric`)
-#' * `eps2` (`numeric`)
-#' * `eps1eps2` (`numeric`)
+#' A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).
+#'
+#' * `value` (`numeric`): Real part, the function value.
+#' * `eps1` (`numeric`): First derivative along the first seed direction (default 0).
+#' * `eps2` (`numeric`): First derivative along the second seed direction (default 0).
+#' * `eps1eps2` (`numeric`): Mixed second derivative part (default 0; leave 0 for inputs).
 #' @section Methods:
 #' * `$value()` -> `numeric`
 #'
+#'   The real part: the function value.
+#'
 #' * `$eps1()` -> `numeric`
+#'
+#'   Derivative along the first seed direction (ε₁ part).
 #'
 #' * `$eps2()` -> `numeric`
 #'
+#'   Derivative along the second seed direction (ε₂ part).
+#'
 #' * `$eps1eps2()` -> `numeric`
+#'
+#'   The mixed second derivative along both seed directions (ε₁ε₂ part): a Hessian entry.
 #'
 #' * `$add(other)` -> `HyperDual`
 #'
+#'   Sum: this + `other`, with first and mixed second derivatives.
+#'   - `other`: Right operand.
+#'   - Returns: A new HyperDual; neither operand changes.
+#'
 #' * `$subtract(other)` -> `HyperDual`
+#'
+#'   Difference: this - `other`, with first and mixed second derivatives.
+#'   - `other`: Right operand.
+#'   - Returns: A new HyperDual; neither operand changes.
 #'
 #' * `$multiply(other)` -> `HyperDual`
 #'
+#'   Product: this * `other`, with first and mixed second derivatives.
+#'   - `other`: Right operand.
+#'   - Returns: A new HyperDual; neither operand changes.
+#'
 #' * `$divide(other)` -> `HyperDual`
+#'
+#'   Quotient: this / `other`, with first and mixed second derivatives (IEEE inf/NaN when other is 0).
+#'   - `other`: Right operand.
+#'   - Returns: A new HyperDual; neither operand changes.
 #'
 #' * `$negate()` -> `HyperDual`
 #'
+#'   Negation -x, with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
+#'
 #' * `$add_scalar(scalar)` -> `HyperDual`
+#'
+#'   Adds a constant `scalar`, derivative parts unchanged.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new HyperDual.
 #'
 #' * `$subtract_scalar(scalar)` -> `HyperDual`
 #'
+#'   Subtracts a constant `scalar`, derivative parts unchanged.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new HyperDual.
+#'
 #' * `$multiply_scalar(scalar)` -> `HyperDual`
+#'
+#'   Multiplies by a constant `scalar`, derivative parts scaled accordingly.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new HyperDual.
 #'
 #' * `$divide_scalar(scalar)` -> `HyperDual`
 #'
+#'   Divides by a constant `scalar`, derivative parts scaled accordingly.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new HyperDual.
+#'
 #' * `$pow(exponent)` -> `HyperDual`
+#'
+#'   Power x^p for a constant exponent, with derivative p·x^(p-1).
+#'   - `exponent`: Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+#'   - Returns: A new HyperDual.
 #'
 #' * `$exp()` -> `HyperDual`
 #'
+#'   Exponential e^x, with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
+#'
 #' * `$log()` -> `HyperDual`
+#'
+#'   Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
 #'
 #' * `$sqrt()` -> `HyperDual`
 #'
+#'   Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
+#'
 #' * `$sin()` -> `HyperDual`
+#'
+#'   Sine (radians), with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
 #'
 #' * `$cos()` -> `HyperDual`
 #'
+#'   Cosine (radians), with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
+#'
 #' * `$tan()` -> `HyperDual`
 #'
+#'   Tangent (radians), with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
+#'
 #' * `$tanh()` -> `HyperDual`
+#'
+#'   Hyperbolic tangent, with its exact chain-rule derivative.
+#'   - Returns: A new HyperDual.
 #' @md
 #'
 `HyperDual` <- R6::R6Class("HyperDual", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -16456,48 +16595,116 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Records a new independent leaf variable on `tape`.
 #'
-#' * `tape` (`Tape`)
-#' * `value` (`numeric`)
+#' * `tape` (`Tape`): The tape that records this variable and every expression built from it;
+#'   it must outlive the Var, and operands of one expression must share it.
+#' * `value` (`numeric`): The leaf's value.
 #' @section Methods:
 #' * `$value()` -> `numeric`
 #'
+#'   The value of this node.
+#'
 #' * `$index()` -> `integer`
+#'
+#'   This node's index on its Tape: where to read its gradient in Tape::backward()'s result.
 #'
 #' * `$add(other)` -> `Var`
 #'
+#'   Sum: this + `other`, with the node recorded on the shared Tape.
+#'   - `other`: Right operand (recorded on the same Tape).
+#'   - Returns: A new Var; neither operand changes.
+#'
 #' * `$subtract(other)` -> `Var`
+#'
+#'   Difference: this - `other`, with the node recorded on the shared Tape.
+#'   - `other`: Right operand (recorded on the same Tape).
+#'   - Returns: A new Var; neither operand changes.
 #'
 #' * `$multiply(other)` -> `Var`
 #'
+#'   Product: this * `other`, with the node recorded on the shared Tape.
+#'   - `other`: Right operand (recorded on the same Tape).
+#'   - Returns: A new Var; neither operand changes.
+#'
 #' * `$divide(other)` -> `Var`
+#'
+#'   Quotient: this / `other`, with the node recorded on the shared Tape (IEEE inf/NaN when other is 0).
+#'   - `other`: Right operand (recorded on the same Tape).
+#'   - Returns: A new Var; neither operand changes.
 #'
 #' * `$negate()` -> `Var`
 #'
+#'   Negation -x, with its exact chain-rule derivative.
+#'   - Returns: A new Var.
+#'
 #' * `$add_scalar(scalar)` -> `Var`
+#'
+#'   Adds a constant `scalar`, recorded on the Tape.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Var.
 #'
 #' * `$subtract_scalar(scalar)` -> `Var`
 #'
+#'   Subtracts a constant `scalar`, recorded on the Tape.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Var.
+#'
 #' * `$multiply_scalar(scalar)` -> `Var`
+#'
+#'   Multiplies by a constant `scalar`, recorded on the Tape.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Var.
 #'
 #' * `$divide_scalar(scalar)` -> `Var`
 #'
+#'   Divides by a constant `scalar`, recorded on the Tape.
+#'   - `scalar`: Constant right operand.
+#'   - Returns: A new Var.
+#'
 #' * `$pow(exponent)` -> `Var`
+#'
+#'   Power x^p for a constant exponent, with derivative p·x^(p-1).
+#'   - `exponent`: Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+#'   - Returns: A new Var.
 #'
 #' * `$exp()` -> `Var`
 #'
+#'   Exponential e^x, with its exact chain-rule derivative.
+#'   - Returns: A new Var.
+#'
 #' * `$log()` -> `Var`
+#'
+#'   Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+#'   - Returns: A new Var.
 #'
 #' * `$sqrt()` -> `Var`
 #'
+#'   Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+#'   - Returns: A new Var.
+#'
 #' * `$sin()` -> `Var`
+#'
+#'   Sine (radians), with its exact chain-rule derivative.
+#'   - Returns: A new Var.
 #'
 #' * `$cos()` -> `Var`
 #'
+#'   Cosine (radians), with its exact chain-rule derivative.
+#'   - Returns: A new Var.
+#'
 #' * `$tan()` -> `Var`
+#'
+#'   Tangent (radians), with its exact chain-rule derivative.
+#'   - Returns: A new Var.
 #'
 #' * `$tanh()` -> `Var`
 #'
+#'   Hyperbolic tangent, with its exact chain-rule derivative.
+#'   - Returns: A new Var.
+#'
 #' * `$abs()` -> `Var`
+#'
+#'   Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.
+#'   - Returns: A new Var.
 #' @md
 #'
 `Var` <- R6::R6Class("Var", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -16534,12 +16741,24 @@ rosetta_ref <- function(value = NULL) {
 #' Create leaf Vars against a Tape, build an expression out of named Var operations, then call backward() on the output Var to get the derivative of that output with respect to every node on the tape (index a leaf's own index() into the result to read its gradient).
 #' @section Constructor:
 #' `Tape$new()`
+#'
+#' An empty tape; create leaf Vars against it with Var(tape, value).
 #' @section Methods:
 #' * `$size()` -> `integer`
 #'
+#'   Number of recorded nodes (leaves plus operation results).
+#'
 #' * `$value_at(index)` -> `numeric`
 #'
-#' * `$backward(output)` -> `vector<numeric>`
+#'   The value recorded at node `index`.
+#'   - `index`: Node index, as returned by Var::index().
+#'   - Returns: The node's value.
+#'
+#' * `$backward(output)` -> `numeric vector`
+#'
+#'   Reverse sweep from `output`: d(output)/d(node) for every node on the tape.
+#'   - `output`: A Var recorded on this tape (usually the final expression).
+#'   - Returns: One adjoint per node, indexed by Var::index() (0-based; add 1 in R).
 #' @md
 #'
 `Tape` <- R6::R6Class("Tape", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -16627,12 +16846,12 @@ rosetta_ref <- function(value = NULL) {
 #'   Validate topology, orientations and geometric boundary consistency.
 #'   - Returns: True when the kernel validation report has no errors.
 #'
-#' * `$edges()` -> `vector<integer>`
+#' * `$edges()` -> `integer vector`
 #'
 #'   List the source edge IDs usable by filleted() and chamfered().
 #'   - Returns: Owned vector of unique edge IDs.
 #'
-#' * `$faces()` -> `vector<integer>`
+#' * `$faces()` -> `integer vector`
 #'
 #'   List face IDs usable by shelled() and the low-level modifiers.
 #'   - Returns: Owned vector of face IDs.
@@ -16724,7 +16943,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `name`: Joint name.
 #'   - `value`: Coordinate in radians/metres, within limits.
 #'
-#' * `$joint_names()` -> `vector<character>`
+#' * `$joint_names()` -> `character vector`
 #'
 #'   List independent movable joints of a URDF view.
 #'   - Returns: Owned names; empty for ordinary scenes.
@@ -16903,7 +17122,7 @@ rosetta_ref <- function(value = NULL) {
 #' @section Fields:
 #' * `$basis` (`BSplineBasis`): Refined basis (same degree and domain).
 #' @section Methods:
-#' * `$apply(coefficients)` -> `vector<numeric>`
+#' * `$apply(coefficients)` -> `numeric vector`
 #'
 #'   Maps coarse coefficients to the refined basis.
 #'   - `coefficients`: One coefficient per coarse basis function.
@@ -16947,20 +17166,20 @@ rosetta_ref <- function(value = NULL) {
 #' Tensor-product spline over one basis per axis.
 #'
 #' * `basis` (`BSplineBasis`): Basis for the single axis.
-#' * `coefficients` (`vector<numeric>`): One coefficient per basis function.
-#' * `bases` (`vector<BSplineBasis>`): One basis per dimension (at least one).
+#' * `coefficients` (`numeric vector`): One coefficient per basis function.
+#' * `bases` (`list of BSplineBasis`): One basis per dimension (at least one).
 #' @section Methods:
 #' * `$dimensions()` -> `integer`
 #'
 #'   Number of parameter dimensions d.
 #'   - Returns: bases().size().
 #'
-#' * `$bases()` -> `vector<BSplineBasis>`
+#' * `$bases()` -> `list of BSplineBasis`
 #'
 #'   The per-axis bases.
 #'   - Returns: Reference valid for the lifetime of this object.
 #'
-#' * `$shape()` -> `vector<integer>`
+#' * `$shape()` -> `integer vector`
 #'
 #'   Per-axis basis sizes, i.e. the shape of the coefficient net.
 #'   - Returns: d sizes in axis order.
@@ -16970,17 +17189,17 @@ rosetta_ref <- function(value = NULL) {
 #'   Total number of coefficients (product of shape()).
 #'   - Returns: Coefficient count.
 #'
-#' * `$coefficients()` -> `vector<numeric>`
+#' * `$coefficients()` -> `numeric vector`
 #'
 #'   The row-major coefficient net.
 #'   - Returns: Reference valid until the next mutation of this object.
 #'
-#' * `$domain_min()` -> `vector<numeric>`
+#' * `$domain_min()` -> `numeric vector`
 #'
 #'   Lower corner of the parameter domain (each basis's first clamped knot).
 #'   - Returns: d coordinates.
 #'
-#' * `$domain_max()` -> `vector<numeric>`
+#' * `$domain_max()` -> `numeric vector`
 #'
 #'   Upper corner of the parameter domain.
 #'   - Returns: d coordinates.
@@ -17008,13 +17227,13 @@ rosetta_ref <- function(value = NULL) {
 #'   - `point`: d finite coordinates.
 #'   - Returns: f(point).
 #'
-#' * `$evaluate_points(points)` -> `vector<numeric>`
+#' * `$evaluate_points(points)` -> `numeric vector`
 #'
 #'   Evaluates at many points.
 #'   - `points`: Points, each of length d.
 #'   - Returns: One value per point, in input order.
 #'
-#' * `$evaluate_grid(axes)` -> `vector<numeric>`
+#' * `$evaluate_grid(axes)` -> `numeric vector`
 #'
 #'   Evaluates on the Cartesian product of per-axis sample values.
 #'   - `axes`: d non-empty coordinate lists.
@@ -17071,8 +17290,8 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Creates the root cell \[lo, hi\].
 #'
-#' * `lo` (`vector<numeric>`): Lower corner.
-#' * `hi` (`vector<numeric>`): Upper corner, with lo\[k\] < hi\[k\].
+#' * `lo` (`numeric vector`): Lower corner.
+#' * `hi` (`numeric vector`): Upper corner, with lo\[k\] < hi\[k\].
 #' @section Methods:
 #' * `$dimensions()` -> `integer`
 #'
@@ -17104,13 +17323,13 @@ rosetta_ref <- function(value = NULL) {
 #'   Throws std::out_of_range unless 0 <= `slot` < arity().
 #'   - `slot`: Child slot.
 #'
-#' * `$lo(cell)` -> `vector<numeric>`
+#' * `$lo(cell)` -> `numeric vector`
 #'
 #'   Cell lower corner.
 #'   - `cell`: Cell id.
 #'   - Returns: d coordinates.
 #'
-#' * `$hi(cell)` -> `vector<numeric>`
+#' * `$hi(cell)` -> `numeric vector`
 #'
 #'   Cell upper corner.
 #'   - `cell`: Cell id.
@@ -17148,7 +17367,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `slot`: Child slot.
 #'   - Returns: Child id.
 #'
-#' * `$child_box(cell, slot)` -> `list(vector<numeric>, vector<numeric>)`
+#' * `$child_box(cell, slot)` -> `list(numeric vector, numeric vector)`
 #'
 #'   Box of the (possibly not yet created) child at `slot`.
 #'   - `cell`: Parent id.
@@ -17175,7 +17394,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `point`: d coordinates.
 #'   - Returns: Cell id, or -1 outside the root box.
 #'
-#' * `$cells_at_depth(depth)` -> `vector<integer>`
+#' * `$cells_at_depth(depth)` -> `integer vector`
 #'
 #'   Ids of every cell at `depth`.
 #'   - `depth`: Depth.
@@ -17237,8 +17456,8 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `AxisRefinement$new()`
 #' @section Fields:
-#' * `$rows` (`vector<vector<list(integer, numeric)>>`): rows\[i\]: (coarse j, R(i, j)) for refined index i.
-#' * `$cols` (`vector<vector<list(integer, numeric)>>`): cols\[j\]: (refined i, R(i, j)) for coarse index j.
+#' * `$rows` (`list of list of list(integer, numeric)`): rows\[i\]: (coarse j, R(i, j)) for refined index i.
+#' * `$cols` (`list of list of list(integer, numeric)`): cols\[j\]: (refined i, R(i, j)) for coarse index j.
 #' @md
 #'
 `AxisRefinement` <- R6::R6Class("AxisRefinement", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -17266,8 +17485,8 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' Creates a hierarchy whose root cell is \[domain_min, domain_max\], with no patches.
 #'
-#' * `domain_min` (`vector<numeric>`): Lower corner (length d >= 1).
-#' * `domain_max` (`vector<numeric>`): Upper corner, with domain_min\[k\] < domain_max\[k\].
+#' * `domain_min` (`numeric vector`): Lower corner (length d >= 1).
+#' * `domain_max` (`numeric vector`): Upper corner, with domain_min\[k\] < domain_max\[k\].
 #' @section Methods:
 #' * `$dimensions()` -> `integer`
 #'
@@ -17303,13 +17522,13 @@ rosetta_ref <- function(value = NULL) {
 #'   - `cell`: Cell id.
 #'   - Returns: Depth.
 #'
-#' * `$cell_min(cell)` -> `vector<numeric>`
+#' * `$cell_min(cell)` -> `numeric vector`
 #'
 #'   Lower corner of `cell`.
 #'   - `cell`: Cell id.
 #'   - Returns: d coordinates.
 #'
-#' * `$cell_max(cell)` -> `vector<numeric>`
+#' * `$cell_max(cell)` -> `numeric vector`
 #'
 #'   Upper corner of `cell`.
 #'   - `cell`: Cell id.
@@ -17344,7 +17563,7 @@ rosetta_ref <- function(value = NULL) {
 #'   Removes the patch of `cell` (no-op if none).
 #'   - `cell`: Cell id.
 #'
-#' * `$subdivide(cell)` -> `vector<integer>`
+#' * `$subdivide(cell)` -> `integer vector`
 #'
 #'   Creates all 2^d children of `cell` (existing ones are kept), without patches.
 #'   - `cell`: Cell id.
@@ -17408,13 +17627,13 @@ rosetta_ref <- function(value = NULL) {
 #'   - `point`: d coordinates inside the domain.
 #'   - Returns: Hierarchy value (0 where no patch applies).
 #'
-#' * `$evaluate_points(points)` -> `vector<numeric>`
+#' * `$evaluate_points(points)` -> `numeric vector`
 #'
 #'   Evaluates at many points.
 #'   - `points`: Points of length d.
 #'   - Returns: One value per point.
 #'
-#' * `$evaluate_grid(axes)` -> `vector<numeric>`
+#' * `$evaluate_grid(axes)` -> `numeric vector`
 #'
 #'   Evaluates on a Cartesian grid.
 #'   - `axes`: d non-empty coordinate lists.
@@ -17534,13 +17753,13 @@ rosetta_ref <- function(value = NULL) {
 #'   - `cell`: Cell id.
 #'   - Returns: Depth.
 #'
-#' * `$cell_min(cell)` -> `vector<numeric>`
+#' * `$cell_min(cell)` -> `numeric vector`
 #'
 #'   Lower corner.
 #'   - `cell`: Cell id.
 #'   - Returns: d coordinates.
 #'
-#' * `$cell_max(cell)` -> `vector<numeric>`
+#' * `$cell_max(cell)` -> `numeric vector`
 #'
 #'   Upper corner.
 #'   - `cell`: Cell id.
@@ -17560,7 +17779,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `slot`: Child slot.
 #'   - Returns: Child id.
 #'
-#' * `$subdivide(cell)` -> `vector<integer>`
+#' * `$subdivide(cell)` -> `integer vector`
 #'
 #'   Creates all 2^d children of `cell`.
 #'   - `cell`: Cell id.
@@ -17574,14 +17793,14 @@ rosetta_ref <- function(value = NULL) {
 #'   - `region_max`: Upper corner (min < max per axis).
 #'   - `depth`: Deepest level to create.
 #'
-#' * `$support_min(level, index)` -> `vector<numeric>`
+#' * `$support_min(level, index)` -> `numeric vector`
 #'
 #'   Lower corner of the support box of basis function `index` at `level`.
 #'   - `level`: Level.
 #'   - `index`: Multi-index into that level's net.
 #'   - Returns: d coordinates.
 #'
-#' * `$support_max(level, index)` -> `vector<numeric>`
+#' * `$support_max(level, index)` -> `numeric vector`
 #'
 #'   Upper corner of the support box.
 #'   - `level`: Level.
@@ -17596,7 +17815,7 @@ rosetta_ref <- function(value = NULL) {
 #'   - `index`: Multi-index.
 #'   - Returns: Activity flag.
 #'
-#' * `$active_indices(level)` -> `vector<vector<integer>>`
+#' * `$active_indices(level)` -> `list of integer vector`
 #'
 #'   Every active multi-index at `level`, in row-major order.
 #'   - `level`: Level.
@@ -17674,13 +17893,13 @@ rosetta_ref <- function(value = NULL) {
 #'   - `point`: d coordinates inside the domain.
 #'   - Returns: Value.
 #'
-#' * `$evaluate_points(points)` -> `vector<numeric>`
+#' * `$evaluate_points(points)` -> `numeric vector`
 #'
 #'   Evaluates at many points.
 #'   - `points`: Points of length d.
 #'   - Returns: One value per point.
 #'
-#' * `$evaluate_grid(axes)` -> `vector<numeric>`
+#' * `$evaluate_grid(axes)` -> `numeric vector`
 #'
 #'   Evaluates on a Cartesian grid.
 #'   - `axes`: d non-empty coordinate lists.
@@ -17750,17 +17969,17 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' `values` in row-major order filling `shape`; dtype "float32", "float64", "int32", "int64" or "bool".
 #'
-#' * `values` (`vector<numeric>`)
-#' * `shape` (`vector<integer>`)
+#' * `values` (`numeric vector`)
+#' * `shape` (`integer vector`)
 #' * `dtype` (`character`)
 #' @section Methods:
 #' * `$save_npy(path)`
 #'
 #' * `$defined()` -> `logical`
 #'
-#' * `$values()` -> `vector<numeric>`
+#' * `$values()` -> `numeric vector`
 #'
-#' * `$shape()` -> `vector<integer>`
+#' * `$shape()` -> `integer vector`
 #'
 #' * `$dtype()` -> `character`
 #'
@@ -18036,7 +18255,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #'   compute_gradients followed by one optimizer update. Returns the loss.
 #'
-#' * `$parameter_names()` -> `vector<character>`
+#' * `$parameter_names()` -> `character vector`
 #'
 #' * `$parameter(name)` -> `NnTensor`
 #'
@@ -18094,13 +18313,13 @@ rosetta_ref <- function(value = NULL) {
 #' @section Constructor:
 #' `TaskOutput$new()`
 #' @section Fields:
-#' * `$observations` (`vector<numeric>`): Current observations, including terminal states.
-#' * `$rewards` (`vector<numeric>`): Reward from the last selected step, zero after reset.
-#' * `$terminated` (`vector<integer>`): Physical failure, requiring explicit reset.
-#' * `$truncated` (`vector<integer>`): Time limit, requiring explicit reset; bootstrap is valid.
-#' * `$final_observations` (`vector<numeric>`): Last episode's final observations, meaningful when
+#' * `$observations` (`numeric vector`): Current observations, including terminal states.
+#' * `$rewards` (`numeric vector`): Reward from the last selected step, zero after reset.
+#' * `$terminated` (`integer vector`): Physical failure, requiring explicit reset.
+#' * `$truncated` (`integer vector`): Time limit, requiring explicit reset; bootstrap is valid.
+#' * `$final_observations` (`numeric vector`): Last episode's final observations, meaningful when
 #'   final_valid is one.
-#' * `$final_valid` (`vector<integer>`): Whether a final observation has ever been recorded for this row.
+#' * `$final_valid` (`integer vector`): Whether a final observation has ever been recorded for this row.
 #' @section Examples (C++):
 #' ```cpp
 #' dm::sim::TaskBatch task(dm::sim::Task::InvertedPendulum,2);
@@ -18206,7 +18425,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' `DirectedGraph$new(vertices)`
 #'
-#' * `vertices` (`vector<character>`)
+#' * `vertices` (`character vector`)
 #' @section Methods:
 #' * `$empty()` -> `logical`
 #'
@@ -18228,25 +18447,25 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$has_edge(src, dst)` -> `logical`
 #'
-#' * `$vertices()` -> `vector<character>`
+#' * `$vertices()` -> `character vector`
 #'
-#' * `$outgoing_neighbors(vertex)` -> `vector<character>`
+#' * `$outgoing_neighbors(vertex)` -> `character vector`
 #'
-#' * `$incoming_neighbors(vertex)` -> `vector<character>`
+#' * `$incoming_neighbors(vertex)` -> `character vector`
 #'
 #' * `$out_degree(vertex)` -> `integer`
 #'
 #' * `$in_degree(vertex)` -> `integer`
 #'
-#' * `$bfs(start)` -> `vector<character>`
+#' * `$bfs(start)` -> `character vector`
 #'
-#' * `$dfs(start)` -> `vector<character>`
+#' * `$dfs(start)` -> `character vector`
 #'
 #' * `$contains_path(src, dst)` -> `logical`
 #'
 #' * `$transpose()` -> `DirectedGraph`
 #'
-#' * `$topological_sort()` -> `vector<character>`
+#' * `$topological_sort()` -> `character vector`
 #' @md
 #'
 `DirectedGraph` <- R6::R6Class("DirectedGraph", inherit = `.rosetta_object`, cloneable = FALSE,
@@ -18284,7 +18503,7 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' `UndirectedGraph$new(vertices)`
 #'
-#' * `vertices` (`vector<character>`)
+#' * `vertices` (`character vector`)
 #' @section Methods:
 #' * `$empty()` -> `logical`
 #'
@@ -18306,19 +18525,19 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$has_edge(a, b)` -> `logical`
 #'
-#' * `$vertices()` -> `vector<character>`
+#' * `$vertices()` -> `character vector`
 #'
-#' * `$neighbors(vertex)` -> `vector<character>`
+#' * `$neighbors(vertex)` -> `character vector`
 #'
 #' * `$degree(vertex)` -> `integer`
 #'
-#' * `$bfs(start)` -> `vector<character>`
+#' * `$bfs(start)` -> `character vector`
 #'
-#' * `$dfs(start)` -> `vector<character>`
+#' * `$dfs(start)` -> `character vector`
 #'
 #' * `$contains_path(src, dst)` -> `logical`
 #'
-#' * `$connected_components()` -> `vector<vector<character>>`
+#' * `$connected_components()` -> `list of character vector`
 #'
 #'   The graph's connected components, each as a vector of vertices in BFS-visit
 #'   order; components themselves appear in vertices() order.
@@ -18363,7 +18582,7 @@ rosetta_ref <- function(value = NULL) {
 #' `WeightedGraph$new(vertices, directed)`
 #'
 #' * `directed` (`logical`)
-#' * `vertices` (`vector<character>`)
+#' * `vertices` (`character vector`)
 #' @section Methods:
 #' * `$directed()` -> `logical`
 #'
@@ -18393,20 +18612,20 @@ rosetta_ref <- function(value = NULL) {
 #'
 #' * `$edge_weight(src, dst)` -> `numeric`
 #'
-#' * `$vertices()` -> `vector<character>`
+#' * `$vertices()` -> `character vector`
 #'
-#' * `$neighbors(vertex)` -> `vector<character>`
+#' * `$neighbors(vertex)` -> `character vector`
 #'
 #'   Outgoing neighbors if directed(); all incident neighbors if !directed().
 #'
-#' * `$dijkstra_distances(source)` -> `vector<list(character, numeric)>`
+#' * `$dijkstra_distances(source)` -> `list of list(character, numeric)`
 #'
 #'   Same computation as dijkstra(), but returned as (vertex, distance) pairs in
 #'   vertices() order rather than an unordered_map -- a binding-friendly shape (plain
 #'   vector<pair<>>, using the same std_pair/std_vector machinery already relied on
 #'   elsewhere) for language bindings where std::unordered_map isn't cleanly exposed.
 #'
-#' * `$bellman_ford_distances(source)` -> `vector<list(character, numeric)>`
+#' * `$bellman_ford_distances(source)` -> `list of list(character, numeric)`
 #'
 #'   Same computation as bellman_ford(), but returned as (vertex, distance) pairs in
 #'   vertices() order rather than an unordered_map -- see dijkstra_distances() for why.
@@ -18421,12 +18640,12 @@ rosetta_ref <- function(value = NULL) {
 #'   containing every vertex and the selected edges. Throws std::logic_error if
 #'   directed() (MST is only defined for undirected graphs).
 #'
-#' * `$connected_components()` -> `vector<vector<character>>`
+#' * `$connected_components()` -> `list of character vector`
 #'
 #'   Connected components (ignoring weights). Throws std::logic_error if directed()
 #'   (use strongly_connected_components() instead).
 #'
-#' * `$strongly_connected_components()` -> `vector<vector<character>>`
+#' * `$strongly_connected_components()` -> `list of character vector`
 #'
 #'   Strongly connected components (Tarjan's algorithm), each as a vector of
 #'   vertices; components are returned in reverse-topological order (a component with

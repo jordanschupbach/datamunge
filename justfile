@@ -382,7 +382,12 @@ build-javascript: prebuild-javascript
     {{ NIX_DEVELOP }} .#jsbuild --command bash -c "npm --prefix . run build"
 
 build-python: prebuild-python
-  {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
+  # Recreate the venv when its interpreter is gone (a nix garbage collection removes the shell's python).
+  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-run/bin/python -c "" 2>/dev/null || python -m venv --clear --system-site-packages build/venv/pydatamunge-run'
+  # Root the interpreter and the linked datamunge library so nix garbage collection keeps them while the venv uses them.
+  {{ NIX_DEVELOP }} .#python --command bash -c 'mkdir -p build/venv/gcroots && rm -f build/venv/gcroots/* && for p in "$(python -c "import sys; print(sys.prefix)")" "$(pkg-config --variable=prefix datamunge)"; do nix-store --add-root "build/venv/gcroots/$(basename "$p")" --indirect --realise "$p" > /dev/null; done'
+  # .venv lets editors (mep's Python hover/completion) find the interpreter outside the dev shell.
+  test -e .venv || ln -s build/venv/pydatamunge-run .venv
   # Link the shell's datamunge library (built with native data assets) rather than recompiling the core without them.
   {{ NIX_DEVELOP }} .#python --command bash -c 'if test -f build/nn-python/enabled; then export DATAMUNGE_BUILD_NN_EXAMPLES=${DATAMUNGE_BUILD_NN_EXAMPLES:-1}; fi; DATAMUNGE_USE_SYSTEM_LIB=1 CMAKE_BUILD_PARALLEL_LEVEL={{ JOBS }} build/venv/pydatamunge-run/bin/python -m pip install --force-reinstall . --no-deps --no-build-isolation'
 
@@ -424,6 +429,8 @@ package-r: prebuild-r
 
 build-r: prebuild-r
   {{ NIX_DEVELOP }} .#r --command bash -c 'mkdir -p build/r/library && R CMD INSTALL -l build/r/library .'
+  # .Renviron lets R started here, and editors reading installed help (mep's K), find the package.
+  if ! test -e .Renviron || head -1 .Renviron | grep -q '^# Written by just build-r'; then printf '# Written by just build-r\nR_LIBS_USER=%s/build/r/library\n' "$(pwd)" > .Renviron; fi
 
 build-tcl: prebuild-tcl
   rm -rf build/datamungetcl
@@ -649,7 +656,10 @@ prebuild-nn-python: prebuild-python
   {{ NIX_DEVELOP }} .#python --command python scripts/prebuild_nn_examples.py
 
 build-nn-python: prebuild-nn-python
-  {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
+  # Recreate the venv when its interpreter is gone (a nix garbage collection removes the shell's python).
+  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-run/bin/python -c "" 2>/dev/null || python -m venv --clear --system-site-packages build/venv/pydatamunge-run'
+  # .venv lets editors (mep's Python hover/completion) find the interpreter outside the dev shell.
+  test -e .venv || ln -s build/venv/pydatamunge-run .venv
   {{ NIX_DEVELOP }} .#python --command bash -c 'DATAMUNGE_BUILD_NN_EXAMPLES=1 CMAKE_BUILD_PARALLEL_LEVEL={{ NN_JOBS }} build/venv/pydatamunge-run/bin/python -m pip install --force-reinstall . --no-deps --no-build-isolation'
   touch build/nn-python/enabled
 
@@ -689,7 +699,10 @@ run-all-nn-r *ARGS: build-nn-r
 
 # Genuine language implementations; these commands never build C++ experiment adapters.
 build-nn-api-python: prebuild-python
-  {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
+  # Recreate the venv when its interpreter is gone (a nix garbage collection removes the shell's python).
+  {{ NIX_DEVELOP }} .#python --command bash -c 'build/venv/pydatamunge-run/bin/python -c "" 2>/dev/null || python -m venv --clear --system-site-packages build/venv/pydatamunge-run'
+  # .venv lets editors (mep's Python hover/completion) find the interpreter outside the dev shell.
+  test -e .venv || ln -s build/venv/pydatamunge-run .venv
   {{ NIX_DEVELOP }} .#python --command bash -c 'DATAMUNGE_USE_SYSTEM_LIB=1 DATAMUNGE_BUILD_NN_EXAMPLES=0 CMAKE_BUILD_PARALLEL_LEVEL={{ NN_JOBS }} build/venv/pydatamunge-run/bin/python -m pip install . --no-deps --no-build-isolation'
 
 # Native workflows and reusable SWIG components; excludes the optional C++ experiment bridge.

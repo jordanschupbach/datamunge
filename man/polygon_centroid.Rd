@@ -7,7 +7,7 @@
 polygon_centroid(vertices)
 }
 \arguments{
-\item{vertices}{\verb{vector<Point2D>}}
+\item{vertices}{\verb{list of Point2D}}
 }
 \value{
 \code{Point2D}

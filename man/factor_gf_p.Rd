@@ -7,7 +7,7 @@
 factor_gf_p(poly, p)
 }
 \arguments{
-\item{poly}{\verb{vector<integer>}. ascending coefficients; reduced mod p first.}
+\item{poly}{\verb{integer vector}. ascending coefficients; reduced mod p first.}
 
 \item{p}{\code{integer}. a prime.}
 }

@@ -27,8 +27,8 @@ Constructs an empty plot with default labels and styling, ready for layers.
 
 Constructs a scatter plot of \code{y} against \code{x}, like R's \code{plot(x, y)}.
 \itemize{
-\item \code{x} (\verb{vector<numeric>}): Horizontal coordinates, one per point.
-\item \code{y} (\verb{vector<numeric>}): Vertical coordinates, paired with \code{x} by position.
+\item \code{x} (\verb{numeric vector}): Horizontal coordinates, one per point.
+\item \code{y} (\verb{numeric vector}): Vertical coordinates, paired with \code{x} by position.
 }
 }
 
@@ -449,7 +449,7 @@ Draws the closed polygon through the vertices (x[i], y[i]), like R's
 \item \code{filled}: True (the default) fills; false draws the outline only.
 \item Returns: This plot, for chaining.
 }
-\item \verb{$image(x, y, z, palette = c(), z_min = <default>, z_max = <default>)} -> \code{RPlot}
+\item \verb{$image(x, y, z, palette = list(), z_min = <default>, z_max = <default>)} -> \code{RPlot}
 
 Draws a grid of coloured rectangles, one per value of \code{z}, like R's \code{image(x, y, z)}.
 \itemize{
@@ -540,7 +540,7 @@ boxplot() with one color per box, like R's \code{boxplot(..., col = colors)}.
 \item \code{colors}: Box colors, recycled when shorter than \code{groups}; must be nonempty.
 \item Returns: A new plot holding one Box series per group.
 }
-\item \code{RPlot$pie(values, names = c(), colors = c())} -> \code{RPlot}
+\item \code{RPlot$pie(values, names = c(), colors = list())} -> \code{RPlot}
 
 Builds a pie chart with one wedge per value, like R's
 \code{pie(x, labels = names, col = colors, clockwise = TRUE)}.

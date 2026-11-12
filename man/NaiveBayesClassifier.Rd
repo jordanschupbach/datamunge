@@ -20,17 +20,17 @@ SWIG-friendly facade for datamunge::stats::NaiveBayesClassifier — a Naive Baye
 \section{Methods}{
 
 \itemize{
-\item \verb{$classes()} -> \verb{vector<character>}
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$classes()} -> \verb{character vector}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
-\item \verb{$class_priors()} -> \verb{vector<numeric>}
+\item \verb{$class_priors()} -> \verb{numeric vector}
 \item \verb{$training_accuracy()} -> \code{numeric}
 \item \verb{$confusion_matrix()} -> \verb{DataFrame or NULL}
 
 "actual" column plus one numeric column per class (counts), both ordered as classes().
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<character>}
+\item \verb{$predict(newdata)} -> \verb{character vector}
 \item \verb{$predict_frame(newdata)} -> \verb{DataFrame or NULL}
 
 "class" column plus one numeric probability column per class (prob_\if{html}{\out{<class>}}).

@@ -13,7 +13,7 @@ C++ class \verb{datamunge::dstruct::WeightedGraph<std::string, double>}
 \code{WeightedGraph$new(vertices, directed)}
 \itemize{
 \item \code{directed} (\code{logical})
-\item \code{vertices} (\verb{vector<character>})
+\item \code{vertices} (\verb{character vector})
 }
 }
 
@@ -36,17 +36,17 @@ of this class, so re-adding with a new weight is the natural way to update one).
 \item \verb{$remove_edge(src, dst)} -> \code{logical}
 \item \verb{$has_edge(src, dst)} -> \code{logical}
 \item \verb{$edge_weight(src, dst)} -> \code{numeric}
-\item \verb{$vertices()} -> \verb{vector<character>}
-\item \verb{$neighbors(vertex)} -> \verb{vector<character>}
+\item \verb{$vertices()} -> \verb{character vector}
+\item \verb{$neighbors(vertex)} -> \verb{character vector}
 
 Outgoing neighbors if directed(); all incident neighbors if !directed().
-\item \verb{$dijkstra_distances(source)} -> \verb{vector<list(character, numeric)>}
+\item \verb{$dijkstra_distances(source)} -> \verb{list of list(character, numeric)}
 
 Same computation as dijkstra(), but returned as (vertex, distance) pairs in
 vertices() order rather than an unordered_map -- a binding-friendly shape (plain
 vector<pair<>>, using the same std_pair/std_vector machinery already relied on
 elsewhere) for language bindings where std::unordered_map isn't cleanly exposed.
-\item \verb{$bellman_ford_distances(source)} -> \verb{vector<list(character, numeric)>}
+\item \verb{$bellman_ford_distances(source)} -> \verb{list of list(character, numeric)}
 
 Same computation as bellman_ford(), but returned as (vertex, distance) pairs in
 vertices() order rather than an unordered_map -- see dijkstra_distances() for why.
@@ -58,11 +58,11 @@ cycle makes the distances themselves meaningless.
 Kruskal's minimum spanning tree/forest, as a new undirected WeightedGraph
 containing every vertex and the selected edges. Throws std::logic_error if
 directed() (MST is only defined for undirected graphs).
-\item \verb{$connected_components()} -> \verb{vector<vector<character>>}
+\item \verb{$connected_components()} -> \verb{list of character vector}
 
 Connected components (ignoring weights). Throws std::logic_error if directed()
 (use strongly_connected_components() instead).
-\item \verb{$strongly_connected_components()} -> \verb{vector<vector<character>>}
+\item \verb{$strongly_connected_components()} -> \verb{list of character vector}
 
 Strongly connected components (Tarjan's algorithm), each as a vector of
 vertices; components are returned in reverse-topological order (a component with

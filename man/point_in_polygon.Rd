@@ -9,7 +9,7 @@ point_in_polygon(point, vertices)
 \arguments{
 \item{point}{\code{Point2D}}
 
-\item{vertices}{\verb{vector<Point2D>}}
+\item{vertices}{\verb{list of Point2D}}
 }
 \value{
 \code{logical}

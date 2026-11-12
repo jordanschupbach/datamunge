@@ -16,7 +16,7 @@ Same as the vector\if{html}{\out{<string>}} constructor, but feature_columns is 
 col1..."-encoded string -- see KMeans's encoded constructor for why.
 \itemize{
 \item \code{data} (\code{DataFrame})
-\item \code{feature_columns} (\verb{vector<character>})
+\item \code{feature_columns} (\verb{character vector})
 \item \code{n_clusters} (\code{integer})
 \item \code{linkage} (\code{character}): One of "single", "complete", "average", "ward" (default).
 \item \code{metric} (\code{character}): One of "euclidean" (default) or "manhattan"; ward linkage requires euclidean.
@@ -27,10 +27,10 @@ col1..."-encoded string -- see KMeans's encoded constructor for why.
 \section{Methods}{
 
 \itemize{
-\item \verb{$feature_names()} -> \verb{vector<character>}
+\item \verb{$feature_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
-\item \verb{$labels()} -> \verb{vector<integer>}
-\item \verb{$cut(n_clusters)} -> \verb{vector<integer>}
+\item \verb{$labels()} -> \verb{integer vector}
+\item \verb{$cut(n_clusters)} -> \verb{integer vector}
 
 Re-cuts the already-built dendrogram to produce \code{n_clusters} clusters, without refitting.
 \item \verb{$num_merges()} -> \code{integer}

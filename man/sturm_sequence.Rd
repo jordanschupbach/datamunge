@@ -10,7 +10,7 @@ sturm_sequence(p)
 \item{p}{\code{Polynomial}}
 }
 \value{
-\verb{vector<Polynomial>}
+\verb{list of Polynomial}
 }
 \description{
 Used to count/isolate the real roots of p in an interval via sign changes (Sturm's theorem). p should be square-free for the sign-change count to equal the number of DISTINCT real roots exactly; callers with a polynomial that may have repeated roots should first run square_free_factorization() and apply Sturm's theorem to each factor.

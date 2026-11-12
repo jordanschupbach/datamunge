@@ -7,14 +7,14 @@
 gf_mul(a, b, p)
 }
 \arguments{
-\item{a}{\verb{vector<integer>}}
+\item{a}{\verb{integer vector}}
 
-\item{b}{\verb{vector<integer>}}
+\item{b}{\verb{integer vector}}
 
 \item{p}{\code{integer}}
 }
 \value{
-\verb{vector<integer>}
+\verb{integer vector}
 }
 \description{
 Product of two polynomials over GF(p).

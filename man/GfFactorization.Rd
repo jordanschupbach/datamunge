@@ -15,8 +15,8 @@ Complete factorization over GF(p) from factor_gf_p().
 
 \itemize{
 \item \verb{$leading} (\code{integer}): Leading coefficient, in [1, p).
-\item \verb{$factors} (\verb{vector<vector<integer>>}): Distinct monic irreducible factors, by degree then coefficients.
-\item \verb{$multiplicities} (\verb{vector<integer>}): Multiplicity of each factor.
+\item \verb{$factors} (\verb{list of integer vector}): Distinct monic irreducible factors, by degree then coefficients.
+\item \verb{$multiplicities} (\verb{integer vector}): Multiplicity of each factor.
 }
 }
 

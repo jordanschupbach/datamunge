@@ -18,7 +18,7 @@ No public constructor.
 \item \verb{$shape_type()} -> \code{character}
 
 One of "point", "polyline", "polygon", "multipoint", or "null" (an empty layer).
-\item \verb{$bounds()} -> \verb{vector<numeric>}
+\item \verb{$bounds()} -> \verb{numeric vector}
 
 \{xmin, ymin, xmax, ymax\}, from the shapefile's own declared bounding box.
 \item \verb{$attributes()} -> \verb{DataFrame or NULL}
@@ -27,12 +27,12 @@ One of "point", "polyline", "polygon", "multipoint", or "null" (an empty layer).
 
 Number of parts (rings for Polygon, lines for PolyLine; 0 for Point/MultiPoint,
 which use point_x()/point_y() instead).
-\item \verb{$part_x(shape_index, part_index)} -> \verb{vector<numeric>}
-\item \verb{$part_y(shape_index, part_index)} -> \verb{vector<numeric>}
-\item \verb{$point_x(shape_index)} -> \verb{vector<numeric>}
+\item \verb{$part_x(shape_index, part_index)} -> \verb{numeric vector}
+\item \verb{$part_y(shape_index, part_index)} -> \verb{numeric vector}
+\item \verb{$point_x(shape_index)} -> \verb{numeric vector}
 
 Every point's x/y in a Point or MultiPoint shape (a single element for Point).
-\item \verb{$point_y(shape_index)} -> \verb{vector<numeric>}
+\item \verb{$point_y(shape_index)} -> \verb{numeric vector}
 \item \verb{$plot(fill_color = <default>, border_color = <default>, width = 800, height = 800)} -> \code{RPlot}
 }
 }

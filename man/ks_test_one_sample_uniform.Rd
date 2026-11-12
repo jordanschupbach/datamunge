@@ -7,7 +7,7 @@
 ks_test_one_sample_uniform(x, lower = 0.0, upper = 1.0, alternative = "TwoSided")
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least two finite observations.}
+\item{x}{\verb{numeric vector}. At least two finite observations.}
 
 \item{lower}{\code{numeric}. Finite prespecified lower bound, default zero.}
 

@@ -16,7 +16,7 @@ delaunay_uniform_cloud(count, seed = 20250728, extent = 10.0, max_points = 10000
 \item{max_points}{\code{integer}. Optional complete output-record cap, default 1000000; zero disables.}
 }
 \value{
-\verb{vector<Point2D>}: Owned generated points in [0,extent) on each axis.
+\verb{list of Point2D}: Owned generated points in [0,extent) on each axis.
 }
 \description{
 Uses mt19937(seed) and uniform_real_distribution\if{html}{\out{<double>}}(0,extent), x then y for each point. Same-library runs reproduce the original report's seed20250728 and 30-site square when defaults are used. Standard distribution algorithms need not match across C++ libraries, so the seed is not a universal byte fixture. Coincident draws are allowed and later triangulation deduplicates them. O(count) work/storage, owned output, no global RNG or shared mutation.

@@ -7,11 +7,11 @@
 fit_tensor_bspline(bases, points, values, options = SplineSolveOptions$new())
 }
 \arguments{
-\item{bases}{\verb{vector<BSplineBasis>}. One basis per dimension.}
+\item{bases}{\verb{list of BSplineBasis}. One basis per dimension.}
 
-\item{points}{\verb{vector<vector<numeric>>}. Sample locations, each of length bases.size().}
+\item{points}{\verb{list of numeric vector}. Sample locations, each of length bases.size().}
 
-\item{values}{\verb{vector<numeric>}. One response per point.}
+\item{values}{\verb{numeric vector}. One response per point.}
 
 \item{options}{\code{SplineSolveOptions}. Solver settings (default: automatic).}
 }

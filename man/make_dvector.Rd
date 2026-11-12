@@ -14,7 +14,7 @@ make_dvector(a, b, c)
 \item{c}{\code{numeric}. Third element.}
 }
 \value{
-\verb{vector<numeric>}: \verb{std::vector<double>\{a}, b, c\}.
+\verb{numeric vector}: \verb{std::vector<double>\{a}, b, c\}.
 }
 \description{
 Constructs a three-element vector from individual values.

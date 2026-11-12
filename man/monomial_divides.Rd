@@ -7,9 +7,9 @@
 monomial_divides(divisor, dividend)
 }
 \arguments{
-\item{divisor}{\verb{vector<integer>}}
+\item{divisor}{\verb{integer vector}}
 
-\item{dividend}{\verb{vector<integer>}}
+\item{dividend}{\verb{integer vector}}
 }
 \value{
 \code{logical}

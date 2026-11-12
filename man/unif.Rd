@@ -14,7 +14,7 @@ unif(lower, upper, n)
 \item{n}{\code{integer}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 n draws from Uniform[lower, upper).

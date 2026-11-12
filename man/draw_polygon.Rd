@@ -9,7 +9,7 @@ draw_polygon(img, points, color, filled = FALSE)
 \arguments{
 \item{img}{\code{Image}}
 
-\item{points}{\verb{vector<list(integer, integer)>}}
+\item{points}{\verb{list of list(integer, integer)}}
 
 \item{color}{\code{Pixel}}
 

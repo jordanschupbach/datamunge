@@ -25,7 +25,7 @@ automatically the same way (0 is a legal fixed value: a noiseless/interpolating 
 \section{Methods}{
 
 \itemize{
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$length_scale()} -> \code{numeric}
 \item \verb{$signal_variance()} -> \code{numeric}
@@ -33,14 +33,14 @@ automatically the same way (0 is a legal fixed value: a noiseless/interpolating 
 \item \verb{$log_marginal_likelihood()} -> \code{numeric}
 \item \verb{$length_scale_was_selected()} -> \code{logical}
 \item \verb{$noise_ratio_was_selected()} -> \code{logical}
-\item \verb{$length_scale_grid()} -> \verb{vector<numeric>}
-\item \verb{$length_scale_profile_log_likelihood()} -> \verb{vector<numeric>}
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
+\item \verb{$length_scale_grid()} -> \verb{numeric vector}
+\item \verb{$length_scale_profile_log_likelihood()} -> \verb{numeric vector}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
 \item \verb{$r_squared()} -> \code{numeric}
 \item \verb{$rmse()} -> \code{numeric}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<numeric>}
+\item \verb{$predict(newdata)} -> \verb{numeric vector}
 \item \verb{$predict_frame(newdata, interval_kind = "none", level = 0.94999999999999996)} -> \verb{DataFrame or NULL}
 \itemize{
 \item \code{interval_kind}: One of "none" or "confidence". Returned DataFrame has a "fit" column, plus

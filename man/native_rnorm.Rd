@@ -14,7 +14,7 @@ native_rnorm(mean, sd, n)
 \item{n}{\code{integer}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 n draws from Normal(mean, sd).

@@ -16,7 +16,7 @@ dog_blobs(img, num_scales = 4, sigma0 = 1.6000000000000001, threshold = 3.0)
 \item{threshold}{\code{numeric}}
 }
 \value{
-\verb{vector<KeyPoint>}
+\verb{list of KeyPoint}
 }
 \description{
 A single octave only (no image-halving between octaves like full SIFT) -- simpler, and sufficient for detecting blobs across a single order-of-magnitude size range.

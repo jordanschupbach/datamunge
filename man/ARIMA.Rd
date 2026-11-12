@@ -20,7 +20,7 @@ method (R's arima(method = "CSS")) but will differ slightly from exact-ML fits.
 
 Fit the model to a series.
 \itemize{
-\item \code{y} (\verb{vector<numeric>}): The observed series, in time order.
+\item \code{y} (\verb{numeric vector}): The observed series, in time order.
 \item \code{options} (\code{ARIMAOptions}): Model orders and optimizer settings.
 }
 }
@@ -34,25 +34,25 @@ The options the model was fit with.
 \itemize{
 \item Returns: The stored ARIMAOptions.
 }
-\item \verb{$ar_coefficients()} -> \verb{vector<numeric>}
+\item \verb{$ar_coefficients()} -> \verb{numeric vector}
 
 Fitted non-seasonal AR coefficients
 \itemize{
 \item Returns: A vector of length p; the AR polynomial is
 }
-\item \verb{$ma_coefficients()} -> \verb{vector<numeric>}
+\item \verb{$ma_coefficients()} -> \verb{numeric vector}
 
 Fitted non-seasonal MA coefficients
 \itemize{
 \item Returns: A vector of length q; the MA polynomial is
 }
-\item \verb{$seasonal_ar_coefficients()} -> \verb{vector<numeric>}
+\item \verb{$seasonal_ar_coefficients()} -> \verb{numeric vector}
 
 Fitted seasonal AR coefficients
 \itemize{
 \item Returns: A vector of length P; the polynomial is
 }
-\item \verb{$seasonal_ma_coefficients()} -> \verb{vector<numeric>}
+\item \verb{$seasonal_ma_coefficients()} -> \verb{numeric vector}
 
 Fitted seasonal MA coefficients
 \itemize{
@@ -91,42 +91,42 @@ Akaike information criterion.
 \item \verb{$bic()} -> \code{numeric}
 
 Bayesian information criterion.
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
 
 One-step-ahead fitted values on the original scale, aligned to the input
 series (the first \code{observations() - n_used()} entries -- the presample points
 conditioned on by CSS -- are copies of the observed value, matching a
 residual of exactly zero there rather than an undefined value).
-\item \verb{$residuals()} -> \verb{vector<numeric>}
+\item \verb{$residuals()} -> \verb{numeric vector}
 
 One-step-ahead residuals on the original scale (zero for the presample points).
-\item \verb{$forecast(horizon)} -> \verb{vector<numeric>}
+\item \verb{$forecast(horizon)} -> \verb{numeric vector}
 
 Point forecasts for the next \code{horizon} periods, on the original scale.
 \itemize{
 \item \code{horizon}: Number of steps ahead to forecast.
 \item Returns: A vector of length \code{horizon} (empty when \code{horizon} is 0).
 }
-\item \verb{$expanded_ar_coefficients()} -> \verb{vector<numeric>}
+\item \verb{$expanded_ar_coefficients()} -> \verb{numeric vector}
 
 AR coefficients of the stationary (differenced) model after multiplying the regular
 and seasonal polynomials,
 \itemize{
 \item Returns: The
 }
-\item \verb{$expanded_ma_coefficients()} -> \verb{vector<numeric>}
+\item \verb{$expanded_ma_coefficients()} -> \verb{numeric vector}
 
 MA coefficients
 \itemize{
 \item Returns: The
 }
-\item \verb{$psi_weights(count)} -> \verb{vector<numeric>}
+\item \verb{$psi_weights(count)} -> \verb{numeric vector}
 
 The first \code{count}
 \itemize{
 \item \code{count}: Number of weights.
 }
-\item \verb{$forecast_with_intervals(horizon)} -> \verb{list(vector<numeric>, vector<numeric>)}
+\item \verb{$forecast_with_intervals(horizon)} -> \verb{list(numeric vector, numeric vector)}
 
 Point forecasts and their standard errors (from the psi-weight / MA(infinity)
 expansion of the full, non-stationary AR/MA representation of y), on the

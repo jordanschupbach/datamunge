@@ -7,9 +7,9 @@
 dynamic_time_warping(a, b)
 }
 \arguments{
-\item{a}{\verb{vector<numeric>}. Nonempty finite first sequence, length at most INT_MAX.}
+\item{a}{\verb{numeric vector}. Nonempty finite first sequence, length at most INT_MAX.}
 
-\item{b}{\verb{vector<numeric>}. Nonempty finite second sequence, length at most INT_MAX.}
+\item{b}{\verb{numeric vector}. Nonempty finite second sequence, length at most INT_MAX.}
 }
 \value{
 \code{DTWResult}: Owned optimal distance and inclusive zero-based parallel int paths.

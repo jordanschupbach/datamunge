@@ -23,7 +23,7 @@ Set a movable independent joint on a view loaded from URDF.
 \item \code{name}: Joint name.
 \item \code{value}: Coordinate in radians/metres, within limits.
 }
-\item \verb{$joint_names()} -> \verb{vector<character>}
+\item \verb{$joint_names()} -> \verb{character vector}
 
 List independent movable joints of a URDF view.
 \itemize{

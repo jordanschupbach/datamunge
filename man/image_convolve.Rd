@@ -9,7 +9,7 @@ image_convolve(src, kernel)
 \arguments{
 \item{src}{\code{Image}}
 
-\item{kernel}{\verb{vector<numeric>}}
+\item{kernel}{\verb{numeric vector}}
 }
 \value{
 \code{Image}

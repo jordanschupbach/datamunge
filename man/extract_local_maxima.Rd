@@ -7,7 +7,7 @@
 extract_local_maxima(response, width, height, threshold, nms_radius)
 }
 \arguments{
-\item{response}{\verb{vector<numeric>}}
+\item{response}{\verb{numeric vector}}
 
 \item{width}{\code{integer}}
 
@@ -18,7 +18,7 @@ extract_local_maxima(response, width, height, threshold, nms_radius)
 \item{nms_radius}{\code{integer}}
 }
 \value{
-\verb{vector<Corner>}
+\verb{list of Corner}
 }
 \description{
 Keeps only the response-field entries that are a strict local maximum within a (2*radius+1)^2 window AND exceed \code{threshold}, as a sorted-by-descending-response Corner list -- the standard non-max-suppression + thresholding pass shared by every response-map-based corner detector.

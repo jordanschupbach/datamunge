@@ -14,8 +14,8 @@ SWIG-friendly facade for the C++ dataframe API exposed to bindings.
 
 Copy a numeric vector into a one-column DataFrame.
 \itemize{
-\item \code{values} (\verb{vector<numeric>}): Copied row values, including nonfinite values.
-\item \code{names} (\verb{vector<character>}): Exactly one nonempty column name.
+\item \code{values} (\verb{numeric vector}): Copied row values, including nonfinite values.
+\item \code{names} (\verb{character vector}): Exactly one nonempty column name.
 }
 }
 
@@ -24,8 +24,8 @@ Copy a numeric vector into a one-column DataFrame.
 \itemize{
 \item \verb{$nrows()} -> \code{integer}
 \item \verb{$ncols()} -> \code{integer}
-\item \verb{$shape()} -> \verb{vector<integer>}
-\item \verb{$columns()} -> \verb{vector<character>}
+\item \verb{$shape()} -> \verb{integer vector}
+\item \verb{$columns()} -> \verb{character vector}
 \item \verb{$add_numeric_column(column_name, values, valid_mask = c())}
 \item \verb{$add_string_column(column_name, values, valid_mask = c())}
 \item \verb{$add_string_column_encoded(column_name, encoded_values, valid_mask = c())}
@@ -59,14 +59,14 @@ provided it must have the same length as \code{columns}.
 
 dplyr::distinct() alias for drop_duplicates().
 \item \verb{$distinct_encoded(encoded_subset)} -> \verb{DataFrame or NULL}
-\item \verb{$pull_numeric(column_name)} -> \verb{vector<numeric>}
+\item \verb{$pull_numeric(column_name)} -> \verb{numeric vector}
 
 dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / "" (string)
 in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =
 null, same convention as add_numeric_column's valid_mask) if nulls matter.
-\item \verb{$pull_numeric_valid(column_name)} -> \verb{vector<integer>}
-\item \verb{$pull_string(column_name)} -> \verb{vector<character>}
-\item \verb{$pull_string_valid(column_name)} -> \verb{vector<integer>}
+\item \verb{$pull_numeric_valid(column_name)} -> \verb{integer vector}
+\item \verb{$pull_string(column_name)} -> \verb{character vector}
+\item \verb{$pull_string_valid(column_name)} -> \verb{integer vector}
 \item \verb{$n_distinct(column_name)} -> \code{integer}
 
 Number of distinct values in column_name; a null counts as one additional distinct

@@ -7,7 +7,7 @@
 voronoi_diagram(points)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}}
+\item{points}{\verb{list of Point2D}}
 }
 \value{
 \code{VoronoiDiagram}

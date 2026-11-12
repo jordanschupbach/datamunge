@@ -74,7 +74,7 @@ Number of geom layers added so far.
 \itemize{
 \item Returns: The layer count.
 }
-\item \verb{$layer_kinds()} -> \verb{vector<character>}
+\item \verb{$layer_kinds()} -> \verb{character vector}
 
 The geom of each layer in drawing order ("point", "line", "smooth", ...).
 \itemize{

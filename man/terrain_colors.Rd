@@ -10,7 +10,7 @@ terrain_colors(n)
 \item{n}{\code{integer}. Number of colours (at least 1).}
 }
 \value{
-\verb{vector<RGB>}: The palette, low to high.
+\verb{list of RGB}: The palette, low to high.
 }
 \description{
 \code{n} colours from green through yellow and brown to near-white, as R's \code{terrain.colors(n)}.

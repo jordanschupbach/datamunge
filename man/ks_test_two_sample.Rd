@@ -7,9 +7,9 @@
 ks_test_two_sample(x, y, alternative = "TwoSided")
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. Nonempty finite first sample.}
+\item{x}{\verb{numeric vector}. Nonempty finite first sample.}
 
-\item{y}{\verb{vector<numeric>}. Nonempty finite independent second sample.}
+\item{y}{\verb{numeric vector}. Nonempty finite independent second sample.}
 
 \item{alternative}{\code{character (Alternative)}. TwoSided (default); Greater tests F_x above F_y, Less below, so Greater
 corresponds to stochastically smaller x.}

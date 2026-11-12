@@ -12,7 +12,7 @@ real_roots(p, tolerance = 1.0E-10)
 \item{tolerance}{\code{numeric}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 All distinct real roots of p, isolated via Sturm's theorem then refined by bisection to within \code{tolerance}.

@@ -14,7 +14,7 @@ gaussian_pyramid(img, levels, sigma = 1.0)
 \item{sigma}{\code{numeric}}
 }
 \value{
-\verb{vector<Image>}
+\verb{list of Image}
 }
 \description{
 as the natural foundation for a pyramidal optical-flow extension, though lucas_kanade_optical_flow() itself stays single-level). Stops early (producing fewer than \code{levels} images) if a level's dimensions would shrink below 1x1. Throws std::invalid_argument for levels < 1.

@@ -12,7 +12,7 @@ sylvester_matrix(a, b)
 \item{b}{\code{Polynomial}}
 }
 \value{
-\verb{vector<vector<numeric>>}
+\verb{list of numeric vector}
 }
 \description{
 C++ function \verb{datamunge::algebra::detail::sylvester_matrix}

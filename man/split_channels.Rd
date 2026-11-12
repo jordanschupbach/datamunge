@@ -10,7 +10,7 @@ split_channels(src)
 \item{src}{\code{Image}}
 }
 \value{
-\verb{vector<Image>}
+\verb{list of Image}
 }
 \description{
 Splits \code{src} into one Grayscale-mode Image per channel, in the source's own channel order (so RGB -> \{R, G, B\}, RGBA -> \{R, G, B, A\}, etc.).

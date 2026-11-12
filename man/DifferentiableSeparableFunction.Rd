@@ -20,11 +20,11 @@ The number of additive terms the objective decomposes into.
 \item \verb{$evaluate_term(coordinates, i)} -> \code{numeric}
 
 Evaluates just term \code{i} of the objective at \code{coordinates}.
-\item \verb{$gradient_term(coordinates, i)} -> \verb{vector<numeric>}
+\item \verb{$gradient_term(coordinates, i)} -> \verb{numeric vector}
 
 Returns the gradient of just term \code{i} of the objective at \code{coordinates}.
 \item \verb{$evaluate(coordinates)} -> \code{numeric}
-\item \verb{$gradient(coordinates)} -> \verb{vector<numeric>}
+\item \verb{$gradient(coordinates)} -> \verb{numeric vector}
 }
 }
 

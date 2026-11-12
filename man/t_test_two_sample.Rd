@@ -7,9 +7,9 @@
 t_test_two_sample(x, y, equal_variance = FALSE, alternative = "TwoSided", conf_level = 0.94999999999999996)
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least two finite observations in the first group.}
+\item{x}{\verb{numeric vector}. At least two finite observations in the first group.}
 
-\item{y}{\verb{vector<numeric>}. At least two finite independent observations in the second group.}
+\item{y}{\verb{numeric vector}. At least two finite independent observations in the second group.}
 
 \item{equal_variance}{\code{logical}. False (default) uses Welch; true uses pooled variance.}
 

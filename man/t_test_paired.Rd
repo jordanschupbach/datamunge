@@ -7,9 +7,9 @@
 t_test_paired(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least two finite first measurements.}
+\item{x}{\verb{numeric vector}. At least two finite first measurements.}
 
-\item{y}{\verb{vector<numeric>}. Equal-length finite second measurements paired by index.}
+\item{y}{\verb{numeric vector}. Equal-length finite second measurements paired by index.}
 
 \item{alternative}{\code{character (Alternative)}. TwoSided (default), Less or Greater for the population mean difference.}
 

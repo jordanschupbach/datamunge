@@ -7,7 +7,7 @@
 delaunay_trace(points, max_points = 1000000, max_tests = 10000000, max_entries = 1000000)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}. Finite original coordinates, unchanged.}
+\item{points}{\verb{list of Point2D}. Finite original coordinates, unchanged.}
 
 \item{max_points}{\code{integer}. Complete original-record cap, default 1000000; zero disables.}
 

@@ -16,7 +16,7 @@ Same as the vector\if{html}{\out{<string>}} constructor, but feature_columns is 
 col1..."-encoded string -- see KMeans's encoded constructor for why.
 \itemize{
 \item \code{data} (\code{DataFrame})
-\item \code{feature_columns} (\verb{vector<character>})
+\item \code{feature_columns} (\verb{character vector})
 \item \code{n_components} (\code{integer})
 \item \code{metric} (\code{character}): One of "euclidean" (default) or "manhattan".
 \item \code{encoded_feature_columns} (\code{character})
@@ -26,17 +26,17 @@ col1..."-encoded string -- see KMeans's encoded constructor for why.
 \section{Methods}{
 
 \itemize{
-\item \verb{$feature_names()} -> \verb{vector<character>}
+\item \verb{$feature_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$n_components()} -> \code{integer}
-\item \verb{$kept_row_indices()} -> \verb{vector<integer>}
+\item \verb{$kept_row_indices()} -> \verb{integer vector}
 
 Row indices (into the DataFrame passed to the constructor) that survived
 null-dropping, in fitted order -- use to align an external label vector for
 plot_embedding_grouped().
-\item \verb{$eigenvalues()} -> \verb{vector<numeric>}
+\item \verb{$eigenvalues()} -> \verb{numeric vector}
 \item \verb{$goodness_of_fit()} -> \code{numeric}
-\item \verb{$dimension(index)} -> \verb{vector<numeric>}
+\item \verb{$dimension(index)} -> \verb{numeric vector}
 \item \verb{$embedding_frame()} -> \verb{DataFrame or NULL}
 
 The fitted embedding as a DataFrame ("Dim1", "Dim2", ... columns), one row per kept

@@ -13,7 +13,7 @@ rational_roots(p, tolerance = 1.0000000000000001E-9)
 (required for the theorem to apply) and to test each candidate ratio's residual.}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 All rational roots of p, via the Rational Root Theorem: every rational root a/b in lowest terms has a dividing the constant term and b dividing the leading coefficient, so trying every such ratio (after first dividing out any factors of x, i.e. any roots at exactly 0) finds every rational root exactly -- a finite, exact search, in contrast to real_roots()'s numeric bisection or complex_roots()'s general iteration.

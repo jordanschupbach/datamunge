@@ -14,8 +14,8 @@ smoothed.back() always exactly equals filtered.back() (the smoother has no futur
 \section{Fields}{
 
 \itemize{
-\item \verb{$filtered} (\verb{vector<KalmanState>})
-\item \verb{$smoothed} (\verb{vector<KalmanState>})
+\item \verb{$filtered} (\verb{list of KalmanState})
+\item \verb{$smoothed} (\verb{list of KalmanState})
 }
 }
 

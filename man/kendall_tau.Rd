@@ -7,9 +7,9 @@
 kendall_tau(x, y)
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least two finite first coordinates.}
+\item{x}{\verb{numeric vector}. At least two finite first coordinates.}
 
-\item{y}{\verb{vector<numeric>}. Equal-length finite second coordinates, paired by index.}
+\item{y}{\verb{numeric vector}. Equal-length finite second coordinates, paired by index.}
 }
 \value{
 \code{KendallTau}: Owned pair counts, tau_a and tie-adjusted tau_b.

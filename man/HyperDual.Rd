@@ -9,11 +9,13 @@ SWIG-friendly facade for datamunge::autodiff::HyperDual -- a second-order forwar
 \section{Constructor}{
 
 \code{HyperDual$new(value, eps1 = 0.0, eps2 = 0.0, eps1eps2 = 0.0)}
+
+A hyper-dual number value + eps1·ε₁ + eps2·ε₂ + eps1eps2·ε₁ε₂ (ε₁² = ε₂² = 0).
 \itemize{
-\item \code{value} (\code{numeric})
-\item \code{eps1} (\code{numeric})
-\item \code{eps2} (\code{numeric})
-\item \code{eps1eps2} (\code{numeric})
+\item \code{value} (\code{numeric}): Real part, the function value.
+\item \code{eps1} (\code{numeric}): First derivative along the first seed direction (default 0).
+\item \code{eps2} (\code{numeric}): First derivative along the second seed direction (default 0).
+\item \code{eps1eps2} (\code{numeric}): Mixed second derivative part (default 0; leave 0 for inputs).
 }
 }
 
@@ -21,26 +23,128 @@ SWIG-friendly facade for datamunge::autodiff::HyperDual -- a second-order forwar
 
 \itemize{
 \item \verb{$value()} -> \code{numeric}
+
+The real part: the function value.
 \item \verb{$eps1()} -> \code{numeric}
+
+Derivative along the first seed direction (ε₁ part).
 \item \verb{$eps2()} -> \code{numeric}
+
+Derivative along the second seed direction (ε₂ part).
 \item \verb{$eps1eps2()} -> \code{numeric}
+
+The mixed second derivative along both seed directions (ε₁ε₂ part): a Hessian entry.
 \item \verb{$add(other)} -> \code{HyperDual}
+
+Sum: this + \code{other}, with first and mixed second derivatives.
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new HyperDual; neither operand changes.
+}
 \item \verb{$subtract(other)} -> \code{HyperDual}
+
+Difference: this - \code{other}, with first and mixed second derivatives.
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new HyperDual; neither operand changes.
+}
 \item \verb{$multiply(other)} -> \code{HyperDual}
+
+Product: this * \code{other}, with first and mixed second derivatives.
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new HyperDual; neither operand changes.
+}
 \item \verb{$divide(other)} -> \code{HyperDual}
+
+Quotient: this / \code{other}, with first and mixed second derivatives (IEEE inf/NaN when other is 0).
+\itemize{
+\item \code{other}: Right operand.
+\item Returns: A new HyperDual; neither operand changes.
+}
 \item \verb{$negate()} -> \code{HyperDual}
+
+Negation -x, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 \item \verb{$add_scalar(scalar)} -> \code{HyperDual}
+
+Adds a constant \code{scalar}, derivative parts unchanged.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new HyperDual.
+}
 \item \verb{$subtract_scalar(scalar)} -> \code{HyperDual}
+
+Subtracts a constant \code{scalar}, derivative parts unchanged.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new HyperDual.
+}
 \item \verb{$multiply_scalar(scalar)} -> \code{HyperDual}
+
+Multiplies by a constant \code{scalar}, derivative parts scaled accordingly.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new HyperDual.
+}
 \item \verb{$divide_scalar(scalar)} -> \code{HyperDual}
+
+Divides by a constant \code{scalar}, derivative parts scaled accordingly.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new HyperDual.
+}
 \item \verb{$pow(exponent)} -> \code{HyperDual}
+
+Power x^p for a constant exponent, with derivative p·x^(p-1).
+\itemize{
+\item \code{exponent}: Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+\item Returns: A new HyperDual.
+}
 \item \verb{$exp()} -> \code{HyperDual}
+
+Exponential e^x, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 \item \verb{$log()} -> \code{HyperDual}
+
+Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 \item \verb{$sqrt()} -> \code{HyperDual}
+
+Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 \item \verb{$sin()} -> \code{HyperDual}
+
+Sine (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 \item \verb{$cos()} -> \code{HyperDual}
+
+Cosine (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 \item \verb{$tan()} -> \code{HyperDual}
+
+Tangent (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 \item \verb{$tanh()} -> \code{HyperDual}
+
+Hyperbolic tangent, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new HyperDual.
+}
 }
 }
 

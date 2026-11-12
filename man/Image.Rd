@@ -28,7 +28,7 @@ Pixel data is always stored as the mode's exact channel count (1/2/3/4 bytes per
 \item \verb{$height()} -> \code{integer}
 \item \verb{$mode()} -> \code{character (ImageMode)}
 \item \verb{$channels()} -> \code{integer}
-\item \verb{$data()} -> \verb{vector<integer>}
+\item \verb{$data()} -> \verb{integer vector}
 \item \verb{$get_pixel(x, y)} -> \code{Pixel}
 \item \verb{$set_pixel(x, y, p)}
 \item \verb{$fill(p)}

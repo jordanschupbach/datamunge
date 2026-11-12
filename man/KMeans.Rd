@@ -18,7 +18,7 @@ overload resolution can't pass a real string vector to a constructor with other
 default arguments (see DataFrame::add_string_column_encoded()).
 \itemize{
 \item \code{data} (\code{DataFrame})
-\item \code{feature_columns} (\verb{vector<character>})
+\item \code{feature_columns} (\verb{character vector})
 \item \code{n_clusters} (\code{integer})
 \item \code{max_iterations} (\code{integer})
 \item \code{n_init} (\code{integer})
@@ -31,16 +31,16 @@ default arguments (see DataFrame::add_string_column_encoded()).
 \section{Methods}{
 
 \itemize{
-\item \verb{$feature_names()} -> \verb{vector<character>}
+\item \verb{$feature_names()} -> \verb{character vector}
 \item \verb{$n_clusters()} -> \code{integer}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$iterations_used()} -> \code{integer}
-\item \verb{$labels()} -> \verb{vector<integer>}
+\item \verb{$labels()} -> \verb{integer vector}
 \item \verb{$inertia()} -> \code{numeric}
-\item \verb{$cluster_center(cluster_index)} -> \verb{vector<numeric>}
+\item \verb{$cluster_center(cluster_index)} -> \verb{numeric vector}
 
 The feature vector of cluster \verb{cluster_index's} center.
-\item \verb{$predict(newdata)} -> \verb{vector<integer>}
+\item \verb{$predict(newdata)} -> \verb{integer vector}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
 }

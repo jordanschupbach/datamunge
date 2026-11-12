@@ -4,19 +4,19 @@
 \alias{value_colors}
 \title{One colour per value on a continuous scale, for colouring scatter points by a numeric variable (ggplot2's \code{scale_colour_viridis_c()}).}
 \usage{
-value_colors(values, palette = c(), z_min = <default>, z_max = <default>)
+value_colors(values, palette = list(), z_min = <default>, z_max = <default>)
 }
 \arguments{
-\item{values}{\verb{vector<numeric>}. Values to colour.}
+\item{values}{\verb{numeric vector}. Values to colour.}
 
-\item{palette}{\verb{vector<RGB>}. Colours from low to high (default viridis_colors(256)).}
+\item{palette}{\verb{list of RGB}. Colours from low to high (default viridis_colors(256)).}
 
 \item{z_min}{\code{numeric}. Value of the first colour; NaN (the default) uses the smallest value.}
 
 \item{z_max}{\code{numeric}. Value of the last colour; NaN (the default) uses the largest value.}
 }
 \value{
-\verb{vector<RGB>}: One colour per value.
+\verb{list of RGB}: One colour per value.
 }
 \description{
 Each value is mapped linearly from [\code{z_min}, \code{z_max}] to the palette and rounded to the

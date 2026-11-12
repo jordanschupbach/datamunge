@@ -13,8 +13,8 @@ demand by halving every axis; slot bit k selects the upper half of axis k.
 
 Creates the root cell [lo, hi].
 \itemize{
-\item \code{lo} (\verb{vector<numeric>}): Lower corner.
-\item \code{hi} (\verb{vector<numeric>}): Upper corner, with lo[k] < hi[k].
+\item \code{lo} (\verb{numeric vector}): Lower corner.
+\item \code{hi} (\verb{numeric vector}): Upper corner, with lo[k] < hi[k].
 }
 }
 
@@ -57,14 +57,14 @@ Throws std::out_of_range unless 0 <= \code{slot} < arity().
 \itemize{
 \item \code{slot}: Child slot.
 }
-\item \verb{$lo(cell)} -> \verb{vector<numeric>}
+\item \verb{$lo(cell)} -> \verb{numeric vector}
 
 Cell lower corner.
 \itemize{
 \item \code{cell}: Cell id.
 \item Returns: d coordinates.
 }
-\item \verb{$hi(cell)} -> \verb{vector<numeric>}
+\item \verb{$hi(cell)} -> \verb{numeric vector}
 
 Cell upper corner.
 \itemize{
@@ -108,7 +108,7 @@ Returns the child at \code{slot}, creating it if needed.
 \item \code{slot}: Child slot.
 \item Returns: Child id.
 }
-\item \verb{$child_box(cell, slot)} -> \verb{list(vector<numeric>, vector<numeric>)}
+\item \verb{$child_box(cell, slot)} -> \verb{list(numeric vector, numeric vector)}
 
 Box of the (possibly not yet created) child at \code{slot}.
 \itemize{
@@ -139,7 +139,7 @@ Deepest existing cell containing \code{point}.
 \item \code{point}: d coordinates.
 \item Returns: Cell id, or -1 outside the root box.
 }
-\item \verb{$cells_at_depth(depth)} -> \verb{vector<integer>}
+\item \verb{$cells_at_depth(depth)} -> \verb{integer vector}
 
 Ids of every cell at \code{depth}.
 \itemize{

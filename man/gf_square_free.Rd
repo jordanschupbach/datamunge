@@ -7,12 +7,12 @@
 gf_square_free(f, p)
 }
 \arguments{
-\item{f}{\verb{vector<integer>}}
+\item{f}{\verb{integer vector}}
 
 \item{p}{\code{integer}}
 }
 \value{
-\verb{vector<list(vector<integer>, integer)>}
+\verb{list of list(integer vector, integer)}
 }
 \description{
 Square-free decomposition of a monic polynomial over GF(p) (Yun's algorithm, with the p-th-root step needed in characteristic p): pairs (g, m) with f = prod g^m, every g monic and square-free and the g pairwise coprime.

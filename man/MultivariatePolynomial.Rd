@@ -15,8 +15,8 @@ Exposed to bindings via parallel arrays (exponents()/coefficients()) rather than
 \code{MultivariatePolynomial$new(num_variables, exponents, coefficients)}
 \itemize{
 \item \code{num_variables} (\code{integer})
-\item \code{exponents} (\verb{vector<vector<integer>>}): One entry per term; each inner vector has length num_variables.
-\item \code{coefficients} (\verb{vector<numeric>}): Parallel to exponents; terms with equal exponent vectors are
+\item \code{exponents} (\verb{list of integer vector}): One entry per term; each inner vector has length num_variables.
+\item \code{coefficients} (\verb{numeric vector}): Parallel to exponents; terms with equal exponent vectors are
 summed, and any resulting zero coefficient is dropped.
 }
 }
@@ -27,14 +27,14 @@ summed, and any resulting zero coefficient is dropped.
 \item \verb{$num_variables()} -> \code{integer}
 \item \verb{$num_terms()} -> \code{integer}
 \item \verb{$is_zero()} -> \code{logical}
-\item \verb{$exponents()} -> \verb{vector<vector<integer>>}
-\item \verb{$coefficients()} -> \verb{vector<numeric>}
+\item \verb{$exponents()} -> \verb{list of integer vector}
+\item \verb{$coefficients()} -> \verb{numeric vector}
 \item \verb{$evaluate(point)} -> \code{numeric}
 \item \verb{$add(other)} -> \code{MultivariatePolynomial}
 \item \verb{$subtract(other)} -> \code{MultivariatePolynomial}
 \item \verb{$multiply(other)} -> \code{MultivariatePolynomial}
 \item \verb{$scale(factor)} -> \code{MultivariatePolynomial}
-\item \verb{$leading_exponent(order)} -> \verb{vector<integer>}
+\item \verb{$leading_exponent(order)} -> \verb{integer vector}
 \item \verb{$leading_coefficient(order)} -> \code{numeric}
 \item \verb{$to_string()} -> \code{character}
 }

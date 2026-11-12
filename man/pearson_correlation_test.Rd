@@ -7,9 +7,9 @@
 pearson_correlation_test(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. At least three finite nonconstant first measurements.}
+\item{x}{\verb{numeric vector}. At least three finite nonconstant first measurements.}
 
-\item{y}{\verb{vector<numeric>}. Same-length finite nonconstant second measurements, paired by index.}
+\item{y}{\verb{numeric vector}. Same-length finite nonconstant second measurements, paired by index.}
 
 \item{alternative}{\code{character (Alternative)}. TwoSided (default), Less or Greater for population correlation.}
 

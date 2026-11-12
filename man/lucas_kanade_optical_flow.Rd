@@ -11,12 +11,12 @@ lucas_kanade_optical_flow(prev, `next`, points, window_radius = 7)
 
 \item{next}{\code{Image}}
 
-\item{points}{\verb{vector<list(integer, integer)>}}
+\item{points}{\verb{list of list(integer, integer)}}
 
 \item{window_radius}{\code{integer}}
 }
 \value{
-\verb{vector<FlowVector>}
+\verb{list of FlowVector}
 }
 \description{
 Single-level (not the pyramidal coarse-to-fine extension real implementations use for large motions) -- correctly handles motions up to roughly \code{window_radius} pixels, which is this module's documented scope tradeoff; use gaussian_pyramid() externally and call this once per level if larger motions matter.

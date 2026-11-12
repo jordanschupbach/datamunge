@@ -14,7 +14,7 @@ Director-enabled (subclass directly in C++, or via SWIG directors in any bound l
 \section{Methods}{
 
 \itemize{
-\item \verb{$evaluate(x)} -> \verb{vector<numeric>}
+\item \verb{$evaluate(x)} -> \verb{numeric vector}
 
 Evaluates the function at \code{x}.
 }

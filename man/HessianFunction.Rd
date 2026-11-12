@@ -14,7 +14,7 @@ C++ class \verb{datamunge::optim::HessianFunction}
 \section{Methods}{
 
 \itemize{
-\item \verb{$hessian(coordinates)} -> \verb{vector<vector<numeric>>}
+\item \verb{$hessian(coordinates)} -> \verb{list of numeric vector}
 }
 }
 

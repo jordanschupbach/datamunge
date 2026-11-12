@@ -18,7 +18,7 @@ harris_corners(img, k = 0.040000000000000001, sigma = 1.0, threshold_ratio = 0.0
 \item{nms_radius}{\code{integer}}
 }
 \value{
-\verb{vector<Corner>}
+\verb{list of Corner}
 }
 \description{
 \code{k} is the classical Harris free parameter (0.04-0.06).

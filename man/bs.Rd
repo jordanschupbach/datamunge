@@ -11,7 +11,7 @@ bs(lower, upper, knots, degree = 3, intercept = FALSE)
 
 \item{upper}{\code{numeric}. Finite right boundary.}
 
-\item{knots}{\verb{vector<numeric>}. Finite, strictly increasing breakpoints in [lower, upper]. Boundary
+\item{knots}{\verb{numeric vector}. Finite, strictly increasing breakpoints in [lower, upper]. Boundary
 entries are optional; an empty vector creates a basis without interior knots.}
 
 \item{degree}{\code{integer}. Polynomial degree, default 3 (cubic).}

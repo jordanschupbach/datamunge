@@ -7,7 +7,7 @@
 sturm_sign_changes(seq, x)
 }
 \arguments{
-\item{seq}{\verb{vector<Polynomial>}}
+\item{seq}{\verb{list of Polynomial}}
 
 \item{x}{\code{numeric}}
 }

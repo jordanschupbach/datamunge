@@ -7,9 +7,9 @@
 lagrange_interpolate(xs, ys)
 }
 \arguments{
-\item{xs}{\verb{vector<numeric>}}
+\item{xs}{\verb{numeric vector}}
 
-\item{ys}{\verb{vector<numeric>}}
+\item{ys}{\verb{numeric vector}}
 }
 \value{
 \code{Polynomial}

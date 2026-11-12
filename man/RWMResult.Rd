@@ -14,11 +14,11 @@ Output of RandomWalkMetropolis::sample().
 \section{Fields}{
 
 \itemize{
-\item \verb{$samples} (\verb{vector<vector<numeric>>}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
+\item \verb{$samples} (\verb{list of numeric vector}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
 \item \verb{$accept_rate} (\code{numeric}): Mean Metropolis acceptance statistic across all iterations (the same quantity
 the step-size adaptation targets).
 \item \verb{$final_step_size} (\code{numeric}): Step size used after warmup.
-\item \verb{$proposal_covariance} (\verb{vector<vector<numeric>>}): Learned proposal covariance
+\item \verb{$proposal_covariance} (\verb{list of numeric vector}): Learned proposal covariance
 }
 }
 

@@ -12,10 +12,10 @@ Like UnscentedKalmanFilter, needs no Jacobian; unlike it, scales to very high-di
 \itemize{
 \item \code{f} (\code{VectorFunction})
 \item \code{h} (\code{VectorFunction})
-\item \code{Q} (\verb{vector<vector<numeric>>})
-\item \code{R} (\verb{vector<vector<numeric>>})
-\item \code{x0} (\verb{vector<numeric>})
-\item \code{P0} (\verb{vector<vector<numeric>>})
+\item \code{Q} (\verb{list of numeric vector})
+\item \code{R} (\verb{list of numeric vector})
+\item \code{x0} (\verb{numeric vector})
+\item \code{P0} (\verb{list of numeric vector})
 \item \code{ensemble_size} (\code{integer})
 \item \code{seed} (\code{integer})
 }
@@ -37,9 +37,9 @@ statistics, then updates each member with an INDEPENDENTLY perturbed copy of \co
 observation per member, rather than applying one shared correction to all of
 them, is what keeps the ensemble's spread statistically consistent after the
 update instead of collapsing it.
-\item \verb{$state()} -> \verb{vector<numeric>}
-\item \verb{$covariance()} -> \verb{vector<vector<numeric>>}
-\item \verb{$filter(measurements)} -> \verb{vector<KalmanState>}
+\item \verb{$state()} -> \verb{numeric vector}
+\item \verb{$covariance()} -> \verb{list of numeric vector}
+\item \verb{$filter(measurements)} -> \verb{list of KalmanState}
 }
 }
 

@@ -29,7 +29,7 @@ figure is 960 by 960 pixels with blue \verb{\{37, 99, 235\}} points of radius 2.
 Builds the matrix from a facade DataFrame (the overload SWIG bindings use).
 \itemize{
 \item \code{data} (\code{DataFrame}): Source frame; its values are copied.
-\item \code{columns} (\verb{vector<character>}): Columns to include in order; empty selects every numeric column plus every
+\item \code{columns} (\verb{character vector}): Columns to include in order; empty selects every numeric column plus every
 string column with at most graphics::Splom::max_default_levels distinct values.
 }
 }
@@ -73,7 +73,7 @@ Uses one color for all points and clears any grouping.
 \item \code{value}: Point color (default \verb{\{37, 99, 235\}}).
 \item Returns: This matrix, for chaining.
 }
-\item \verb{$group_by(column, palette = c())} -> \code{Splom}
+\item \verb{$group_by(column, palette = list())} -> \code{Splom}
 
 Splits every numeric panel by the groups of string column \code{column} (GGally's
 \code{ggpairs(aes(colour = group))}); an empty palette uses the default level palette.
@@ -151,13 +151,13 @@ Toggles the light background grid of the scatter and violin panels (default on).
 \item \code{enabled}: True draws the grid.
 \item Returns: This matrix, for chaining.
 }
-\item \verb{$variables()} -> \verb{vector<character>}
+\item \verb{$variables()} -> \verb{character vector}
 
 Variable names in panel order.
 \itemize{
 \item Returns: A copy of the selected column names.
 }
-\item \verb{$groups()} -> \verb{vector<character>}
+\item \verb{$groups()} -> \verb{character vector}
 
 Sorted group labels set by group_by(), in palette order; empty without grouping.
 \itemize{

@@ -12,7 +12,7 @@ C++ class \verb{datamunge::dstruct::DirectedGraph<std::string>}
 
 \code{DirectedGraph$new(vertices)}
 \itemize{
-\item \code{vertices} (\verb{vector<character>})
+\item \code{vertices} (\verb{character vector})
 }
 }
 
@@ -29,16 +29,16 @@ C++ class \verb{datamunge::dstruct::DirectedGraph<std::string>}
 \item \verb{$add_edge(src, dst)} -> \code{logical}
 \item \verb{$remove_edge(src, dst)} -> \code{logical}
 \item \verb{$has_edge(src, dst)} -> \code{logical}
-\item \verb{$vertices()} -> \verb{vector<character>}
-\item \verb{$outgoing_neighbors(vertex)} -> \verb{vector<character>}
-\item \verb{$incoming_neighbors(vertex)} -> \verb{vector<character>}
+\item \verb{$vertices()} -> \verb{character vector}
+\item \verb{$outgoing_neighbors(vertex)} -> \verb{character vector}
+\item \verb{$incoming_neighbors(vertex)} -> \verb{character vector}
 \item \verb{$out_degree(vertex)} -> \code{integer}
 \item \verb{$in_degree(vertex)} -> \code{integer}
-\item \verb{$bfs(start)} -> \verb{vector<character>}
-\item \verb{$dfs(start)} -> \verb{vector<character>}
+\item \verb{$bfs(start)} -> \verb{character vector}
+\item \verb{$dfs(start)} -> \verb{character vector}
 \item \verb{$contains_path(src, dst)} -> \code{logical}
 \item \verb{$transpose()} -> \code{DirectedGraph}
-\item \verb{$topological_sort()} -> \verb{vector<character>}
+\item \verb{$topological_sort()} -> \verb{character vector}
 }
 }
 

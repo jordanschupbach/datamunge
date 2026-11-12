@@ -7,9 +7,9 @@
 plot_dtw_alignment(a, b, result, offset = 1.6000000000000001, max_pairs = 4096)
 }
 \arguments{
-\item{a}{\verb{vector<numeric>}. Nonempty finite first sequence.}
+\item{a}{\verb{numeric vector}. Nonempty finite first sequence.}
 
-\item{b}{\verb{vector<numeric>}. Nonempty finite second sequence.}
+\item{b}{\verb{numeric vector}. Nonempty finite second sequence.}
 
 \item{result}{\code{DTWResult}. Borrowed complete feasible result with exact finite witness cost.}
 

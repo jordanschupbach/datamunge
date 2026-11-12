@@ -16,8 +16,8 @@ THB-spline construction. Cells are identified by integer ids (root 0).
 
 Creates a hierarchy whose root cell is [domain_min, domain_max], with no patches.
 \itemize{
-\item \code{domain_min} (\verb{vector<numeric>}): Lower corner (length d >= 1).
-\item \code{domain_max} (\verb{vector<numeric>}): Upper corner, with domain_min[k] < domain_max[k].
+\item \code{domain_min} (\verb{numeric vector}): Lower corner (length d >= 1).
+\item \code{domain_max} (\verb{numeric vector}): Upper corner, with domain_min[k] < domain_max[k].
 }
 }
 
@@ -64,14 +64,14 @@ Depth of \code{cell} (root 0).
 \item \code{cell}: Cell id.
 \item Returns: Depth.
 }
-\item \verb{$cell_min(cell)} -> \verb{vector<numeric>}
+\item \verb{$cell_min(cell)} -> \verb{numeric vector}
 
 Lower corner of \code{cell}.
 \itemize{
 \item \code{cell}: Cell id.
 \item Returns: d coordinates.
 }
-\item \verb{$cell_max(cell)} -> \verb{vector<numeric>}
+\item \verb{$cell_max(cell)} -> \verb{numeric vector}
 
 Upper corner of \code{cell}.
 \itemize{
@@ -112,7 +112,7 @@ Removes the patch of \code{cell} (no-op if none).
 \itemize{
 \item \code{cell}: Cell id.
 }
-\item \verb{$subdivide(cell)} -> \verb{vector<integer>}
+\item \verb{$subdivide(cell)} -> \verb{integer vector}
 
 Creates all 2^d children of \code{cell} (existing ones are kept), without patches.
 \itemize{
@@ -186,14 +186,14 @@ Sum of the patches along the path of cells containing \code{point}.
 \item \code{point}: d coordinates inside the domain.
 \item Returns: Hierarchy value (0 where no patch applies).
 }
-\item \verb{$evaluate_points(points)} -> \verb{vector<numeric>}
+\item \verb{$evaluate_points(points)} -> \verb{numeric vector}
 
 Evaluates at many points.
 \itemize{
 \item \code{points}: Points of length d.
 \item Returns: One value per point.
 }
-\item \verb{$evaluate_grid(axes)} -> \verb{vector<numeric>}
+\item \verb{$evaluate_grid(axes)} -> \verb{numeric vector}
 
 Evaluates on a Cartesian grid.
 \itemize{

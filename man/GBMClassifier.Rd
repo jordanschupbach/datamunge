@@ -25,21 +25,21 @@ SWIG-friendly facade for datamunge::stats::GBMClassifier — multiclass gradient
 \section{Methods}{
 
 \itemize{
-\item \verb{$classes()} -> \verb{vector<character>}
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$classes()} -> \verb{character vector}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$n_trees()} -> \code{integer}
-\item \verb{$feature_importance()} -> \verb{vector<numeric>}
+\item \verb{$feature_importance()} -> \verb{numeric vector}
 \item \verb{$training_accuracy()} -> \code{numeric}
 \item \verb{$confusion_matrix()} -> \verb{DataFrame or NULL}
 
 "actual" column plus one numeric column per class (counts), both ordered as classes().
-\item \verb{$training_deviance()} -> \verb{vector<numeric>}
+\item \verb{$training_deviance()} -> \verb{numeric vector}
 
 Multinomial deviance on the training set after each boosting round (length n_trees()).
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<character>}
+\item \verb{$predict(newdata)} -> \verb{character vector}
 \item \verb{$predict_frame(newdata)} -> \verb{DataFrame or NULL}
 
 "class" column plus one numeric probability column per class (prob_\if{html}{\out{<class>}}).

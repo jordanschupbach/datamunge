@@ -7,7 +7,7 @@
 chi_squared_test_independence(table, nrows, ncols, correct = TRUE)
 }
 \arguments{
-\item{table}{\verb{vector<numeric>}. Finite nonnegative row-major counts with strictly positive margins; integer counts
+\item{table}{\verb{numeric vector}. Finite nonnegative row-major counts with strictly positive margins; integer counts
 are the usual sampling model.}
 
 \item{nrows}{\code{integer}. At least two rows.}

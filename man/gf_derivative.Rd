@@ -7,12 +7,12 @@
 gf_derivative(a, p)
 }
 \arguments{
-\item{a}{\verb{vector<integer>}}
+\item{a}{\verb{integer vector}}
 
 \item{p}{\code{integer}}
 }
 \value{
-\verb{vector<integer>}
+\verb{integer vector}
 }
 \description{
 \code{g(x^p)}.

@@ -16,7 +16,7 @@ Same as the vector\if{html}{\out{<string>}} constructor, but feature_columns is 
 col1..."-encoded string -- see KMeans's encoded constructor for why.
 \itemize{
 \item \code{data} (\code{DataFrame})
-\item \code{feature_columns} (\verb{vector<character>})
+\item \code{feature_columns} (\verb{character vector})
 \item \code{n_components} (\code{integer})
 \item \code{n_neighbors} (\code{integer})
 \item \code{min_dist} (\code{numeric})
@@ -32,16 +32,16 @@ col1..."-encoded string -- see KMeans's encoded constructor for why.
 \section{Methods}{
 
 \itemize{
-\item \verb{$feature_names()} -> \verb{vector<character>}
+\item \verb{$feature_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$n_components()} -> \code{integer}
-\item \verb{$kept_row_indices()} -> \verb{vector<integer>}
-\item \verb{$dimension(index)} -> \verb{vector<numeric>}
+\item \verb{$kept_row_indices()} -> \verb{integer vector}
+\item \verb{$dimension(index)} -> \verb{numeric vector}
 \item \verb{$embedding_frame()} -> \verb{DataFrame or NULL}
-\item \verb{$sigmas()} -> \verb{vector<numeric>}
+\item \verb{$sigmas()} -> \verb{numeric vector}
 
 Per-point sigma_i / rho_i from the smooth k-NN calibration -- mainly for diagnostics.
-\item \verb{$rhos()} -> \verb{vector<numeric>}
+\item \verb{$rhos()} -> \verb{numeric vector}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
 \item \verb{$plot_embedding(dimension_x = 0, dimension_y = 1)} -> \code{RPlot}

@@ -10,12 +10,12 @@ Stateful: holds the current (x, P) estimate,   mutated in place by predict()/upd
 
 \code{KalmanFilter$new(F, H, Q, R, x0, P0)}
 \itemize{
-\item \code{F} (\verb{vector<vector<numeric>>})
-\item \code{H} (\verb{vector<vector<numeric>>})
-\item \code{Q} (\verb{vector<vector<numeric>>})
-\item \code{R} (\verb{vector<vector<numeric>>})
-\item \code{x0} (\verb{vector<numeric>})
-\item \code{P0} (\verb{vector<vector<numeric>>})
+\item \code{F} (\verb{list of numeric vector})
+\item \code{H} (\verb{list of numeric vector})
+\item \code{Q} (\verb{list of numeric vector})
+\item \code{R} (\verb{list of numeric vector})
+\item \code{x0} (\verb{numeric vector})
+\item \code{P0} (\verb{list of numeric vector})
 }
 }
 
@@ -32,9 +32,9 @@ innovation-covariance / Kalman-gain form (S = H P H^T + R, K = P H^T S^-1, x +=
 K(z - Hx), P = (I - KH) P) -- not the numerically-hardened Joseph form, matching
 this codebase's general preference for the textbook formula over a more robust
 but more complex alternative.
-\item \verb{$state()} -> \verb{vector<numeric>}
-\item \verb{$covariance()} -> \verb{vector<vector<numeric>>}
-\item \verb{$filter(measurements)} -> \verb{vector<KalmanState>}
+\item \verb{$state()} -> \verb{numeric vector}
+\item \verb{$covariance()} -> \verb{list of numeric vector}
+\item \verb{$filter(measurements)} -> \verb{list of KalmanState}
 
 Runs predict() then update(z) for every z in \code{measurements}, in order, mutating
 this filter's running state -- the ordinary causal (online) filtered estimate at

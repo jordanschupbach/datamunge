@@ -7,7 +7,7 @@
 make_mesh2d_from_points(points)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}}
+\item{points}{\verb{list of Point2D}}
 }
 \value{
 \code{Mesh2D}

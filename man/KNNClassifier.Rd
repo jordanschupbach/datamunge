@@ -22,8 +22,8 @@ Since a training point's nearest neighbor is always itself, training_accuracy()/
 \section{Methods}{
 
 \itemize{
-\item \verb{$classes()} -> \verb{vector<character>}
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$classes()} -> \verb{character vector}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$k()} -> \code{integer}
 \item \verb{$training_accuracy()} -> \code{numeric}
@@ -32,7 +32,7 @@ Since a training point's nearest neighbor is always itself, training_accuracy()/
 "actual" column plus one numeric column per class (counts), both ordered as classes(); leave-one-out.
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<character>}
+\item \verb{$predict(newdata)} -> \verb{character vector}
 \item \verb{$predict_frame(newdata)} -> \verb{DataFrame or NULL}
 
 "class" column plus one numeric vote-share column per class (votes_\if{html}{\out{<class>}}).

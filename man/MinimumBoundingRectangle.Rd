@@ -14,7 +14,7 @@ C++ class \verb{datamunge::geometry::MinimumBoundingRectangle}
 \section{Fields}{
 
 \itemize{
-\item \verb{$corners} (\verb{vector<Point2D>}): The four corners, in order (so consecutive corners are adjacent, matching this
+\item \verb{$corners} (\verb{list of Point2D}): The four corners, in order (so consecutive corners are adjacent, matching this
 module's polygon convention elsewhere).
 \item \verb{$width} (\code{numeric})
 \item \verb{$height} (\code{numeric})

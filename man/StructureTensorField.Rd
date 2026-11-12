@@ -14,9 +14,9 @@ C++ class \verb{datamunge::cv::detail::StructureTensorField}
 \section{Fields}{
 
 \itemize{
-\item \verb{$sxx} (\verb{vector<numeric>})
-\item \verb{$syy} (\verb{vector<numeric>})
-\item \verb{$sxy} (\verb{vector<numeric>})
+\item \verb{$sxx} (\verb{numeric vector})
+\item \verb{$syy} (\verb{numeric vector})
+\item \verb{$sxy} (\verb{numeric vector})
 }
 }
 

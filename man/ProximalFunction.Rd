@@ -14,7 +14,7 @@ gradient() is the gradient of the smooth component, and proximal() applies the n
 \section{Methods}{
 
 \itemize{
-\item \verb{$proximal(point, step)} -> \verb{vector<numeric>}
+\item \verb{$proximal(point, step)} -> \verb{numeric vector}
 }
 }
 

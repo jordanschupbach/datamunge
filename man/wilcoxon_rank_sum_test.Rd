@@ -7,9 +7,9 @@
 wilcoxon_rank_sum_test(x, y, alternative = "TwoSided")
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. Nonempty finite first sample.}
+\item{x}{\verb{numeric vector}. Nonempty finite first sample.}
 
-\item{y}{\verb{vector<numeric>}. Nonempty finite independent second sample.}
+\item{y}{\verb{numeric vector}. Nonempty finite independent second sample.}
 
 \item{alternative}{\code{character (Alternative)}. TwoSided (default), Less or Greater for first-versus-second stochastic
 location.}

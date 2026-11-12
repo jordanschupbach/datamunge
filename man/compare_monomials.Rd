@@ -7,9 +7,9 @@
 compare_monomials(a, b, order)
 }
 \arguments{
-\item{a}{\verb{vector<integer>}}
+\item{a}{\verb{integer vector}}
 
-\item{b}{\verb{vector<integer>}}
+\item{b}{\verb{integer vector}}
 
 \item{order}{\code{character (MonomialOrder)}}
 }

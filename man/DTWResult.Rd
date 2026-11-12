@@ -15,8 +15,8 @@ Distance is the unnormalized sum of absolute differences along the returned incl
 
 \itemize{
 \item \verb{$distance} (\code{numeric}): Finite nonnegative summed absolute loss for a computed result.
-\item \verb{$path_a} (\verb{vector<integer>}): Owned zero-based a indices, from zero to a.size()-1.
-\item \verb{$path_b} (\verb{vector<integer>}): Owned parallel b indices, from zero to b.size()-1.
+\item \verb{$path_a} (\verb{integer vector}): Owned zero-based a indices, from zero to a.size()-1.
+\item \verb{$path_b} (\verb{integer vector}): Owned parallel b indices, from zero to b.size()-1.
 }
 }
 

@@ -14,7 +14,7 @@ laplacian_pyramid(img, levels, sigma = 1.0)
 \item{sigma}{\code{numeric}}
 }
 \value{
-\verb{vector<Image>}
+\verb{list of Image}
 }
 \description{
 Reconstructing the original from a Laplacian pyramid is the classical use (progressively add each un-recentered level back onto the upsampled reconstruction-so-far) but isn't implemented here -- this module only needed the decomposition direction.

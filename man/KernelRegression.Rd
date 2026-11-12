@@ -23,20 +23,20 @@ it automatically via leave-one-out cross-validation.
 \section{Methods}{
 
 \itemize{
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$bandwidth()} -> \code{numeric}
 
 The bandwidth actually used -- either the caller-supplied value or the cross-validation-selected one.
 \item \verb{$bandwidth_was_selected()} -> \code{logical}
-\item \verb{$bandwidth_grid()} -> \verb{vector<numeric>}
-\item \verb{$cv_mean_squared_error()} -> \verb{vector<numeric>}
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
+\item \verb{$bandwidth_grid()} -> \verb{numeric vector}
+\item \verb{$cv_mean_squared_error()} -> \verb{numeric vector}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
 \item \verb{$r_squared()} -> \code{numeric}
 \item \verb{$rmse()} -> \code{numeric}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<numeric>}
+\item \verb{$predict(newdata)} -> \verb{numeric vector}
 \item \verb{$plot_fit(data, grid_resolution = 200)} -> \code{RPlot}
 
 Scatter of \code{data} plus the fitted kernel-regression curve; only valid for a single-predictor model.

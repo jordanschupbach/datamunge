@@ -104,13 +104,13 @@ Writes to_svg() to \code{path} regardless of its extension.
 \itemize{
 \item \code{path}: Destination file; an existing file is overwritten.
 }
-\item \verb{$to_png()} -> \verb{vector<integer>}
+\item \verb{$to_png()} -> \verb{integer vector}
 
 Renders the tiled figure as PNG image bytes (the raster save() writes for \code{.png}).
 \itemize{
 \item Returns: The complete PNG file contents.
 }
-\item \verb{$to_pdf()} -> \verb{vector<integer>}
+\item \verb{$to_pdf()} -> \verb{integer vector}
 
 Renders the tiled figure as a one-page PDF holding the raster image.
 \itemize{

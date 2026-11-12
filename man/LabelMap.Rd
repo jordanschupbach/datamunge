@@ -14,7 +14,7 @@ Label 0 is always background; foreground components are numbered 1..count.
 \section{Fields}{
 
 \itemize{
-\item \verb{$labels} (\verb{vector<integer>})
+\item \verb{$labels} (\verb{integer vector})
 \item \verb{$width} (\code{integer})
 \item \verb{$height} (\code{integer})
 \item \verb{$count} (\code{integer})

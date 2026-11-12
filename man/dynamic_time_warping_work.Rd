@@ -7,9 +7,9 @@
 dynamic_time_warping_work(a, b)
 }
 \arguments{
-\item{a}{\verb{vector<numeric>}. Nonempty finite scalar sequence, length at most INT_MAX.}
+\item{a}{\verb{numeric vector}. Nonempty finite scalar sequence, length at most INT_MAX.}
 
-\item{b}{\verb{vector<numeric>}. Nonempty finite scalar sequence, length at most INT_MAX.}
+\item{b}{\verb{numeric vector}. Nonempty finite scalar sequence, length at most INT_MAX.}
 }
 \value{
 \code{DTWComputation}: Independent optimal result and counts, with no retained input/cost history.

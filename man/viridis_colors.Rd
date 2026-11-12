@@ -10,7 +10,7 @@ viridis_colors(n)
 \item{n}{\code{integer}. Number of colours (at least 1).}
 }
 \value{
-\verb{vector<RGB>}: The palette, low (purple) to high (yellow).
+\verb{list of RGB}: The palette, low (purple) to high (yellow).
 }
 \description{
 Viridis is perceptually uniform, so equal steps in value look like equal steps in colour,

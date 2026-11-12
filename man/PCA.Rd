@@ -16,7 +16,7 @@ Same as the vector\if{html}{\out{<string>}} constructor, but feature_columns is 
 col1..."-encoded string -- see KMeans's encoded constructor for why.
 \itemize{
 \item \code{data} (\code{DataFrame})
-\item \code{feature_columns} (\verb{vector<character>})
+\item \code{feature_columns} (\verb{character vector})
 \item \code{center} (\code{logical}): Mean-center each feature before fitting; almost always left true.
 \item \code{scale} (\code{logical}): Standardize each feature to unit variance before fitting (i.e. fit on the
 correlation matrix rather than the covariance matrix); recommended whenever
@@ -28,19 +28,19 @@ features are on different scales, and the default here.
 \section{Methods}{
 
 \itemize{
-\item \verb{$feature_names()} -> \verb{vector<character>}
+\item \verb{$feature_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$num_components()} -> \code{integer}
-\item \verb{$kept_row_indices()} -> \verb{vector<integer>}
+\item \verb{$kept_row_indices()} -> \verb{integer vector}
 
 Row indices (into the DataFrame passed to the constructor) that survived
 null-dropping, in fitted order -- use to align an external label vector for
 plot_scores_grouped().
-\item \verb{$explained_variance()} -> \verb{vector<numeric>}
-\item \verb{$explained_variance_ratio()} -> \verb{vector<numeric>}
-\item \verb{$cumulative_explained_variance_ratio()} -> \verb{vector<numeric>}
-\item \verb{$component_loadings(component_index)} -> \verb{vector<numeric>}
-\item \verb{$component_scores(component_index)} -> \verb{vector<numeric>}
+\item \verb{$explained_variance()} -> \verb{numeric vector}
+\item \verb{$explained_variance_ratio()} -> \verb{numeric vector}
+\item \verb{$cumulative_explained_variance_ratio()} -> \verb{numeric vector}
+\item \verb{$component_loadings(component_index)} -> \verb{numeric vector}
+\item \verb{$component_scores(component_index)} -> \verb{numeric vector}
 \item \verb{$scores_frame()} -> \verb{DataFrame or NULL}
 
 The fitted training scores as a DataFrame ("PC1", "PC2", ... columns), one row per

@@ -14,9 +14,9 @@ Output of GibbsSampler::sample().
 \section{Fields}{
 
 \itemize{
-\item \verb{$samples} (\verb{vector<vector<numeric>>}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
-\item \verb{$accept_rates} (\verb{vector<numeric>}): Mean acceptance rate per coordinate (across all iterations), in parameter order.
-\item \verb{$final_step_sizes} (\verb{vector<numeric>}): Per-coordinate step sizes after warmup.
+\item \verb{$samples} (\verb{list of numeric vector}): Post-warmup draws, one vector\if{html}{\out{<double>}} per sample.
+\item \verb{$accept_rates} (\verb{numeric vector}): Mean acceptance rate per coordinate (across all iterations), in parameter order.
+\item \verb{$final_step_sizes} (\verb{numeric vector}): Per-coordinate step sizes after warmup.
 }
 }
 

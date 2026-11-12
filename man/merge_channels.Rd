@@ -7,7 +7,7 @@
 merge_channels(planes)
 }
 \arguments{
-\item{planes}{\verb{vector<Image>}}
+\item{planes}{\verb{list of Image}}
 }
 \value{
 \code{Image}

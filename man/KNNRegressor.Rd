@@ -22,15 +22,15 @@ As with KNNClassifier, fitted_values()/r_squared()/rmse() report leave-one-out p
 \section{Methods}{
 
 \itemize{
-\item \verb{$predictor_names()} -> \verb{vector<character>}
+\item \verb{$predictor_names()} -> \verb{character vector}
 \item \verb{$observations()} -> \code{integer}
 \item \verb{$k()} -> \code{integer}
-\item \verb{$fitted_values()} -> \verb{vector<numeric>}
+\item \verb{$fitted_values()} -> \verb{numeric vector}
 \item \verb{$r_squared()} -> \code{numeric}
 \item \verb{$rmse()} -> \code{numeric}
 \item \verb{$summary()} -> \code{character}
 \item \verb{$print_summary()}
-\item \verb{$predict(newdata)} -> \verb{vector<numeric>}
+\item \verb{$predict(newdata)} -> \verb{numeric vector}
 \item \verb{$plot_predicted_vs_actual()} -> \code{RPlot}
 \item \verb{$plot_residuals_vs_fitted()} -> \code{RPlot}
 }

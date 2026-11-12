@@ -7,7 +7,7 @@
 is_convex_polygon(vertices)
 }
 \arguments{
-\item{vertices}{\verb{vector<Point2D>}}
+\item{vertices}{\verb{list of Point2D}}
 }
 \value{
 \code{logical}

@@ -19,10 +19,10 @@
 \section{Fields}{
 
 \itemize{
-\item \verb{$pixels} (\verb{vector<numeric>}): Image values, row-major per \code{shape}.
-\item \verb{$labels} (\verb{vector<integer>}): Class index of each image (see ImageLoader::class_names()).
-\item \verb{$indices} (\verb{vector<integer>}): Position of each image within its split, 0-based.
-\item \verb{$shape} (\verb{vector<integer>}): Dimensions of \code{pixels}; shape[0] is the number of images.
+\item \verb{$pixels} (\verb{numeric vector}): Image values, row-major per \code{shape}.
+\item \verb{$labels} (\verb{integer vector}): Class index of each image (see ImageLoader::class_names()).
+\item \verb{$indices} (\verb{integer vector}): Position of each image within its split, 0-based.
+\item \verb{$shape} (\verb{integer vector}): Dimensions of \code{pixels}; shape[0] is the number of images.
 }
 }
 
@@ -35,7 +35,7 @@ Number of images in the batch.
 \item \verb{$features()} -> \code{integer}
 
 Values per image (height * width * channels).
-\item \verb{$image(i)} -> \verb{vector<numeric>}
+\item \verb{$image(i)} -> \verb{numeric vector}
 
 A copy of image \verb{i's} features() values.
 }

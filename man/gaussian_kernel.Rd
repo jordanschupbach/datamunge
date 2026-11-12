@@ -10,7 +10,7 @@ gaussian_kernel(sigma)
 \item{sigma}{\code{numeric}}
 }
 \value{
-\verb{vector<numeric>}
+\verb{numeric vector}
 }
 \description{
 A normalized 2D Gaussian kernel with standard deviation \code{sigma}; the kernel radius is chosen as ceil(3\emph{sigma) (covers >99.7\% of the distribution's mass), size = 2}radius+1.

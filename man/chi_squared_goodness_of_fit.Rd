@@ -7,9 +7,9 @@
 chi_squared_goodness_of_fit(observed, expected_probabilities = c())
 }
 \arguments{
-\item{observed}{\verb{vector<numeric>}. At least two finite nonnegative counts with positive finite total.}
+\item{observed}{\verb{numeric vector}. At least two finite nonnegative counts with positive finite total.}
 
-\item{expected_probabilities}{\verb{vector<numeric>}. Empty (default) means uniform; otherwise positive finite
+\item{expected_probabilities}{\verb{numeric vector}. Empty (default) means uniform; otherwise positive finite
 probabilities matching counts and summing to one within 1e-10.}
 }
 \value{

@@ -7,10 +7,10 @@
 convex_hull(points)
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}. Finite planar records, copied by value as in the original API.}
+\item{points}{\verb{list of Point2D}. Finite planar records, copied by value as in the original API.}
 }
 \value{
-\verb{vector<Point2D>}: Owned strict hull of the represented coordinates.
+\verb{list of Point2D}: Owned strict hull of the represented coordinates.
 }
 \description{
 Validates all coordinates before internal indexed copies or sorting; the original by-value argument copy occurs at the call boundary. Exact coordinate equality removes duplicates (including signed zero); the earliest matching original record supplies its representation. Returns lexicographic-minimum first, counterclockwise, no repeated endpoint and no collinear edge interiors. Empty/singleton/two-point/collinear outputs follow ConvexHullAnalysis. O(n log n) comparisons plus O(n) bounded exact-sign tests, O(n) scratch/output, no global state. The legacy by-value signature is retained and has no optional caps. Other geometry routines that use cross() retain their own floating contracts.

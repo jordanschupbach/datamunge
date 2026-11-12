@@ -16,7 +16,7 @@ Settings for GibbsSampler.
 \itemize{
 \item \verb{$num_samples} (\code{integer}): Number of post-warmup sweeps kept.
 \item \verb{$num_warmup} (\code{integer}): Number of warmup sweeps (per-coordinate step adaptation).
-\item \verb{$initial_step_sizes} (\verb{vector<numeric>}): Initial per-coordinate proposal std dev. A single entry is broadcast to every
+\item \verb{$initial_step_sizes} (\verb{numeric vector}): Initial per-coordinate proposal std dev. A single entry is broadcast to every
 coordinate; otherwise its length must match the parameter vector, and each
 coordinate is adapted independently via dual averaging during warmup.
 \item \verb{$target_accept_rate} (\code{numeric}): Target per-coordinate acceptance rate -- 0.44 is the asymptotically optimal

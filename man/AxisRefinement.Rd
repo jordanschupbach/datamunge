@@ -14,8 +14,8 @@ One axis's level-to-level refinement operator stored both ways.
 \section{Fields}{
 
 \itemize{
-\item \verb{$rows} (\verb{vector<vector<list(integer, numeric)>>}): rows[i]: (coarse j, R(i, j)) for refined index i.
-\item \verb{$cols} (\verb{vector<vector<list(integer, numeric)>>}): cols[j]: (refined i, R(i, j)) for coarse index j.
+\item \verb{$rows} (\verb{list of list of list(integer, numeric)}): rows[i]: (coarse j, R(i, j)) for refined index i.
+\item \verb{$cols} (\verb{list of list of list(integer, numeric)}): cols[j]: (refined i, R(i, j)) for coarse index j.
 }
 }
 

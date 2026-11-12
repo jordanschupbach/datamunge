@@ -14,7 +14,7 @@ Build a clamped basis from strictly increasing knot breakpoints.
 \itemize{
 \item \code{lower} (\code{numeric}): Finite left boundary, strictly below upper.
 \item \code{upper} (\code{numeric}): Finite right boundary.
-\item \code{knots} (\verb{vector<numeric>}): Finite increasing breakpoints inside [lower, upper]; boundary
+\item \code{knots} (\verb{numeric vector}): Finite increasing breakpoints inside [lower, upper]; boundary
 entries are optional and ignored when building interior knots. May be empty.
 \item \code{degree} (\code{integer}): Polynomial degree, default 3 (cubic).
 \item \code{intercept} (\code{logical}): Include the first basis column, default false; use a

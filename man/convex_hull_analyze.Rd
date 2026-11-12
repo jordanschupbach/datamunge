@@ -7,7 +7,7 @@
 convex_hull_analyze(points, options = ConvexHullOptions$new())
 }
 \arguments{
-\item{points}{\verb{vector<Point2D>}. Finite original records; not mutated.}
+\item{points}{\verb{list of Point2D}. Finite original records; not mutated.}
 
 \item{options}{\code{ConvexHullOptions}. Complete original-record cap, zero unlimited; defaults one million.}
 }

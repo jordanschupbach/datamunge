@@ -7,7 +7,7 @@
 shapiro_francia_test(x)
 }
 \arguments{
-\item{x}{\verb{vector<numeric>}. Between 5 and 5000 finite, nonconstant observations.}
+\item{x}{\verb{numeric vector}. Between 5 and 5000 finite, nonconstant observations.}
 }
 \value{
 \code{HypothesisTestResult}: statistic=estimate1=W-prime and approximate p_value; no CI.

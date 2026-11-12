@@ -7,10 +7,10 @@
 triangulate_polygon(polygon)
 }
 \arguments{
-\item{polygon}{\verb{vector<Point2D>}}
+\item{polygon}{\verb{list of Point2D}}
 }
 \value{
-\verb{vector<Triangle>}
+\verb{list of Triangle}
 }
 \description{
 O(n^3) worst case (each of the O(n) clipped ears requires an O(n) scan to verify, each vertex check O(1)) -- unlike delaunay_triangulation() (which only sees an unordered point SET), this respects the polygon's actual boundary, so it correctly handles concave (non-convex) shapes. Every triangle's vertices are indices into \code{polygon}. Works for any winding order (detects and internally corrects clockwise input). Returns empty for fewer than 3 vertices; a triangle input returns itself unchanged.

@@ -12,8 +12,9 @@ SWIG-friendly facade for datamunge::autodiff::Var -- a handle into a Tape.
 
 Records a new independent leaf variable on \code{tape}.
 \itemize{
-\item \code{tape} (\code{Tape})
-\item \code{value} (\code{numeric})
+\item \code{tape} (\code{Tape}): The tape that records this variable and every expression built from it;
+it must outlive the Var, and operands of one expression must share it.
+\item \code{value} (\code{numeric}): The leaf's value.
 }
 }
 
@@ -21,25 +22,128 @@ Records a new independent leaf variable on \code{tape}.
 
 \itemize{
 \item \verb{$value()} -> \code{numeric}
+
+The value of this node.
 \item \verb{$index()} -> \code{integer}
+
+This node's index on its Tape: where to read its gradient in Tape::backward()'s result.
 \item \verb{$add(other)} -> \code{Var}
+
+Sum: this + \code{other}, with the node recorded on the shared Tape.
+\itemize{
+\item \code{other}: Right operand (recorded on the same Tape).
+\item Returns: A new Var; neither operand changes.
+}
 \item \verb{$subtract(other)} -> \code{Var}
+
+Difference: this - \code{other}, with the node recorded on the shared Tape.
+\itemize{
+\item \code{other}: Right operand (recorded on the same Tape).
+\item Returns: A new Var; neither operand changes.
+}
 \item \verb{$multiply(other)} -> \code{Var}
+
+Product: this * \code{other}, with the node recorded on the shared Tape.
+\itemize{
+\item \code{other}: Right operand (recorded on the same Tape).
+\item Returns: A new Var; neither operand changes.
+}
 \item \verb{$divide(other)} -> \code{Var}
+
+Quotient: this / \code{other}, with the node recorded on the shared Tape (IEEE inf/NaN when other is 0).
+\itemize{
+\item \code{other}: Right operand (recorded on the same Tape).
+\item Returns: A new Var; neither operand changes.
+}
 \item \verb{$negate()} -> \code{Var}
+
+Negation -x, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$add_scalar(scalar)} -> \code{Var}
+
+Adds a constant \code{scalar}, recorded on the Tape.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Var.
+}
 \item \verb{$subtract_scalar(scalar)} -> \code{Var}
+
+Subtracts a constant \code{scalar}, recorded on the Tape.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Var.
+}
 \item \verb{$multiply_scalar(scalar)} -> \code{Var}
+
+Multiplies by a constant \code{scalar}, recorded on the Tape.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Var.
+}
 \item \verb{$divide_scalar(scalar)} -> \code{Var}
+
+Divides by a constant \code{scalar}, recorded on the Tape.
+\itemize{
+\item \code{scalar}: Constant right operand.
+\item Returns: A new Var.
+}
 \item \verb{$pow(exponent)} -> \code{Var}
+
+Power x^p for a constant exponent, with derivative p·x^(p-1).
+\itemize{
+\item \code{exponent}: Constant exponent p; non-integer p needs x ≥ 0 (NaN otherwise).
+\item Returns: A new Var.
+}
 \item \verb{$exp()} -> \code{Var}
+
+Exponential e^x, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$log()} -> \code{Var}
+
+Natural logarithm ln x (NaN for x < 0, -inf at 0), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$sqrt()} -> \code{Var}
+
+Square root √x (NaN for x < 0; infinite derivative at 0), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$sin()} -> \code{Var}
+
+Sine (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$cos()} -> \code{Var}
+
+Cosine (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$tan()} -> \code{Var}
+
+Tangent (radians), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$tanh()} -> \code{Var}
+
+Hyperbolic tangent, with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 \item \verb{$abs()} -> \code{Var}
+
+Absolute value |x| (the derivative at 0 uses the x ≥ 0 branch), with its exact chain-rule derivative.
+\itemize{
+\item Returns: A new Var.
+}
 }
 }
 

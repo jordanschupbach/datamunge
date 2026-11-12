@@ -12,10 +12,10 @@ Costs scale with particle count and can need many particles in high dimensions (
 \itemize{
 \item \code{f} (\code{VectorFunction})
 \item \code{h} (\code{VectorFunction})
-\item \code{Q} (\verb{vector<vector<numeric>>})
-\item \code{R} (\verb{vector<vector<numeric>>})
-\item \code{x0} (\verb{vector<numeric>})
-\item \code{P0} (\verb{vector<vector<numeric>>})
+\item \code{Q} (\verb{list of numeric vector})
+\item \code{R} (\verb{list of numeric vector})
+\item \code{x0} (\verb{numeric vector})
+\item \code{P0} (\verb{list of numeric vector})
 \item \code{num_particles} (\code{integer})
 \item \code{seed} (\code{integer})
 }
@@ -38,9 +38,9 @@ resulting weighted distribution (multinomial resampling, done unconditionally
 every step -- simpler than the adaptive "resample only when the effective sample
 size drops" scheme real-time systems often use, at the cost of extra Monte Carlo
 noise from resampling more often than strictly necessary).
-\item \verb{$state()} -> \verb{vector<numeric>}
-\item \verb{$covariance()} -> \verb{vector<vector<numeric>>}
-\item \verb{$filter(measurements)} -> \verb{vector<KalmanState>}
+\item \verb{$state()} -> \verb{numeric vector}
+\item \verb{$covariance()} -> \verb{list of numeric vector}
+\item \verb{$filter(measurements)} -> \verb{list of KalmanState}
 }
 }
 
