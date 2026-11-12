@@ -1230,7 +1230,21 @@ inline PyObject* set_doc(PyObject* module, PyObject* args) {
     }
     const char* utf8 = PyUnicode_AsUTF8(text);
     if (!utf8) return nullptr;
-    try { keep(module, text); } catch (const python_error&) { return nullptr; }  // owns the text
+    // A text signature ("name(a, b)\n--\n\n") stays in front of the new text, for inspect.signature().
+    Ref combined(Py_NewRef(text));
+    const std::string_view old_doc = definition->ml_doc ? definition->ml_doc : "";
+    const auto marker = old_doc.find(")\n--\n\n");
+    const std::string_view name = definition->ml_name ? definition->ml_name : "";
+    if (marker != std::string_view::npos && old_doc.substr(0, name.size()) == name && old_doc.size() > name.size() &&
+        old_doc[name.size()] == '(' && old_doc.substr(0, marker).find('\n') == std::string_view::npos &&
+        std::string_view(utf8).find(")\n--\n\n") == std::string_view::npos) {
+        const auto signature = std::string(old_doc.substr(0, marker + 6)) + utf8;
+        combined = Ref(PyUnicode_FromStringAndSize(signature.data(), static_cast<Py_ssize_t>(signature.size())));
+        if (!combined) return nullptr;
+        utf8 = PyUnicode_AsUTF8(combined.get());
+        if (!utf8) return nullptr;
+    }
+    try { keep(module, combined.get()); } catch (const python_error&) { return nullptr; }  // owns the text
     definition->ml_doc = utf8;
     Py_RETURN_NONE;
 }
@@ -1886,25 +1900,100 @@ struct rosetta_class_181_director final : datamunge::optim::RBFGaussianProcessSu
 };
 }
 namespace ROSETTA_PY_MODULE {
-PyObject* rosetta_function_285(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_272(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"p"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Polynomial &>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::isolate_real_roots(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                static const char* const names[] = {"f", "var", "a", "b", "tolerance", "max_depth"};
+                PyObject* a[6]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 6, 4, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Expr &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
+                    && (n <= 3 || rosetta_py::Param<double>::check(a[3], strict))
+                    && (n <= 4 || rosetta_py::Param<double>::check(a[4], strict))
+                    && (n <= 5 || rosetta_py::Param<int>::check(a[5], strict))) {
+                    if (n == 4) {
+                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::definite_integral(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                    if (n == 5) {
+                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        rosetta_py::Param<double> p4(a[4]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::definite_integral(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                    if (n == 6) {
+                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        rosetta_py::Param<double> p4(a[4]);
+                        rosetta_py::Param<int> p5(a[5]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::definite_integral(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("isolate_real_roots", "    isolate_real_roots(p: Polynomial) -> RealRootIntervals\n", args, kwargs);
+        rosetta_py::no_overload("definite_integral", "    definite_integral(f: Expr, var: str, a: float, b: float, tolerance: float = ..., max_depth: int = ...) -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_282(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"seq", "x"};
+                PyObject* a[2]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::vector<datamunge::algebra::Polynomial> &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_py::Param<const std::vector<datamunge::algebra::Polynomial> &> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::sturm_sign_changes(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("sturm_sign_changes", "    sturm_sign_changes(seq: list[Polynomial], x: float) -> int\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_284(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"p", "a", "b"};
+                PyObject* a[3]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 3, 3, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Polynomial &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))) {
+                    if (n == 3) {
+                        rosetta_py::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::sturm_root_count(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("sturm_root_count", "    sturm_root_count(p: Polynomial, a: float, b: float) -> int\n", args, kwargs);
     }, nullptr);
 }
 PyObject* rosetta_function_287(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -1935,13 +2024,13 @@ PyObject* rosetta_function_287(PyObject* self, PyObject* args, PyObject* kwargs)
         rosetta_py::no_overload("real_roots", "    real_roots(p: Polynomial, tolerance: float = ...) -> list[float]\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_306(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_311(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"xs", "ys"};
+                static const char* const names[] = {"remainders", "moduli"};
                 PyObject* a[2]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
                     && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))
@@ -1949,213 +2038,39 @@ PyObject* rosetta_function_306(PyObject* self, PyObject* args, PyObject* kwargs)
                     if (n == 2) {
                         rosetta_py::Param<const std::vector<double> &> p0(a[0]);
                         rosetta_py::Param<const std::vector<double> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::lagrange_interpolate(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::crt(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("lagrange_interpolate", "    lagrange_interpolate(xs: list[float], ys: list[float]) -> Polynomial\n", args, kwargs);
+        rosetta_py::no_overload("crt", "    crt(remainders: list[float], moduli: list[float]) -> float\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_322(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_318(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"mat"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<std::vector<std::vector<double>>> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::determinant(p0.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("determinant", "    determinant(mat: list[list[float]]) -> float\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_343(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"img", "min_radius", "max_radius", "gradient_threshold", "min_votes", "nms_radius"};
-                PyObject* a[6]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 6, 3, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<int>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<int>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<double>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<int>::check(a[4], strict))
-                    && (n <= 5 || rosetta_py::Param<int>::check(a[5], strict))) {
-                    if (n == 3) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_py::Param<int> p1(a[1]);
-                        rosetta_py::Param<int> p2(a[2]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 4) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_py::Param<int> p1(a[1]);
-                        rosetta_py::Param<int> p2(a[2]);
-                        rosetta_py::Param<double> p3(a[3]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 5) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_py::Param<int> p1(a[1]);
-                        rosetta_py::Param<int> p2(a[2]);
-                        rosetta_py::Param<double> p3(a[3]);
-                        rosetta_py::Param<int> p4(a[4]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 6) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_py::Param<int> p1(a[1]);
-                        rosetta_py::Param<int> p2(a[2]);
-                        rosetta_py::Param<double> p3(a[3]);
-                        rosetta_py::Param<int> p4(a[4]);
-                        rosetta_py::Param<int> p5(a[5]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::hough_circles(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("hough_circles", "    hough_circles(img: Image, min_radius: int, max_radius: int, gradient_threshold: float = ..., min_votes: int = ..., nms_radius: int = ...) -> list[HoughCircle]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_352(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"sigma"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<double> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::gaussian_kernel(p0.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("gaussian_kernel", "    gaussian_kernel(sigma: float) -> list[float]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_355(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"src", "sigma"};
+                static const char* const names[] = {"poly", "p"};
                 PyObject* a[2]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))) {
+                    && (n <= 0 || rosetta_py::Param<std::vector<long long>>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<long long>::check(a[1], strict))) {
                     if (n == 2) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::gaussian_blur(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        rosetta_py::Param<std::vector<long long>> p0(a[0]);
+                        rosetta_py::Param<long long> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::factor_gf_p(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("gaussian_blur", "    gaussian_blur(src: Image, sigma: float) -> Image\n", args, kwargs);
+        rosetta_py::no_overload("factor_gf_p", "    factor_gf_p(poly: list[int], p: int) -> GfFactorization\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_362(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"src", "x", "y"};
-                PyObject* a[3]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 3, 3, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))) {
-                    if (n == 3) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::detail::bilinear_sample(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("bilinear_sample", "    bilinear_sample(src: Image, x: float, y: float) -> Pixel\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_385(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"points", "triangles", "max_tests"};
-                PyObject* a[3]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 3, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::vector<datamunge::geometry::Triangle> &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<unsigned long>::check(a[2], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<datamunge::geometry::Triangle> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::geometry::delaunay_analyze(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 3) {
-                        rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<datamunge::geometry::Triangle> &> p1(a[1]);
-                        rosetta_py::Param<unsigned long> p2(a[2]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::geometry::delaunay_analyze(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("delaunay_analyze", "    delaunay_analyze(points: list[Point2D], triangles: list[Triangle], max_tests: int = ...) -> DelaunayAnalysis\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_397(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"n"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::graphics::diverging_colors(p0.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("diverging_colors", "    diverging_colors(n: int) -> list[RGB]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_408(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_321(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
@@ -2164,41 +2079,214 @@ PyObject* rosetta_function_408(PyObject* self, PyObject* args, PyObject* kwargs)
                 static const char* const names[] = {"a", "b"};
                 PyObject* a[2]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::geometry::Point2D &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const datamunge::geometry::Point2D &>::check(a[1], strict))) {
+                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Polynomial &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<const datamunge::algebra::Polynomial &>::check(a[1], strict))) {
                     if (n == 2) {
-                        rosetta_py::Param<const datamunge::geometry::Point2D &> p0(a[0]);
-                        rosetta_py::Param<const datamunge::geometry::Point2D &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::geometry::detail::circle_from_two_points(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        rosetta_py::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
+                        rosetta_py::Param<const datamunge::algebra::Polynomial &> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::sylvester_matrix(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("circle_from_two_points", "    circle_from_two_points(a: Point2D, b: Point2D) -> Circle\n", args, kwargs);
+        rosetta_py::no_overload("sylvester_matrix", "    sylvester_matrix(a: Polynomial, b: Polynomial) -> list[list[float]]\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_423(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_325(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"subject", "clip"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::geometry::clip_polygon(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                static const char* const names[] = {"step_size", "num_steps", "sd", "angles"};
+                PyObject* a[4]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 4, 3, a, &n)
+                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<unsigned long>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
+                    && (n <= 3 || rosetta_py::Param<unsigned long>::check(a[3], strict))) {
+                    if (n == 3) {
+                        rosetta_py::Param<double> p0(a[0]);
+                        rosetta_py::Param<unsigned long> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::bayes::leapfrog_gaussian_acceptance(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                    if (n == 4) {
+                        rosetta_py::Param<double> p0(a[0]);
+                        rosetta_py::Param<unsigned long> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        rosetta_py::Param<unsigned long> p3(a[3]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::bayes::leapfrog_gaussian_acceptance(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("clip_polygon", "    clip_polygon(subject: list[Point2D], clip: list[Point2D]) -> list[Point2D]\n", args, kwargs);
+        rosetta_py::no_overload("leapfrog_gaussian_acceptance", "    leapfrog_gaussian_acceptance(step_size: float, num_steps: int, sd: float, angles: int = ...) -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_330(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"src"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::to_grayscale(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("to_grayscale", "    to_grayscale(src: Image) -> Image\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_338(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"img", "k", "sigma", "threshold_ratio", "nms_radius"};
+                PyObject* a[5]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 5, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
+                    && (n <= 3 || rosetta_py::Param<double>::check(a[3], strict))
+                    && (n <= 4 || rosetta_py::Param<int>::check(a[4], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                    if (n == 2) {
+                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                    if (n == 3) {
+                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                    if (n == 4) {
+                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                    if (n == 5) {
+                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        rosetta_py::Param<int> p4(a[4]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("harris_corners", "    harris_corners(img: Image, k: float = ..., sigma: float = ..., threshold_ratio: float = ..., nms_radius: int = ...) -> list[Corner]\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_345(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"img", "x", "y"};
+                PyObject* a[3]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 3, 3, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<int>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<int>::check(a[2], strict))) {
+                    if (n == 3) {
+                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
+                        rosetta_py::Param<int> p1(a[1]);
+                        rosetta_py::Param<int> p2(a[2]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::cv::detail::is_foreground(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("is_foreground", "    is_foreground(img: Image, x: int, y: int) -> bool\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_375(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::datasets::data_home(); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("data_home", "    data_home() -> str\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_431(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"points"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::geometry::voronoi_diagram(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("voronoi_diagram", "    voronoi_diagram(points: list[Point2D]) -> VoronoiDiagram\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_432(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"path"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::read_bmp(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("read_bmp", "    read_bmp(path: str) -> Image\n", args, kwargs);
     }, nullptr);
 }
 PyObject* rosetta_function_439(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -2235,79 +2323,6 @@ PyObject* rosetta_function_439(PyObject* self, PyObject* args, PyObject* kwargs)
         rosetta_py::no_overload("draw_polygon", "    draw_polygon(img: Image, points: list[tuple[int, int]], color: Pixel, filled: bool = ...) -> None\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_456(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"x", "y"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::vector<double> &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<double> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::stats::kendall_tau(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("kendall_tau", "    kendall_tau(x: list[float], y: list[float]) -> KendallTau\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_467(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"successes", "n", "p", "alternative", "conf_level"};
-                PyObject* a[5]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 5, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<unsigned long>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<datamunge::stats::Alternative>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<double>::check(a[4], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 3) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 4) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        rosetta_py::Param<datamunge::stats::Alternative> p3(a[3]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 5) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        rosetta_py::Param<datamunge::stats::Alternative> p3(a[3]);
-                        rosetta_py::Param<double> p4(a[4]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::stats::binomial_test(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("binomial_test", "    binomial_test(successes: int, n: int, p: float = ..., alternative: Alternative = ..., conf_level: float = ...) -> HypothesisTestResult\n", args, kwargs);
-    }, nullptr);
-}
 PyObject* rosetta_function_473(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
@@ -2339,777 +2354,7 @@ PyObject* rosetta_function_473(PyObject* self, PyObject* args, PyObject* kwargs)
         rosetta_py::no_overload("wilcoxon_rank_sum_test", "    wilcoxon_rank_sum_test(x: list[float], y: list[float], alternative: Alternative = ...) -> HypothesisTestResult\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_495(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"value"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<double> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::Expr::constant(p0.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("constant", "    constant(value: float) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_496(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"name"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::Expr::variable(p0.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("variable", "    variable(name: str) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_497(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"other"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Expr &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->add(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("add", "    add(other: Expr) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_498(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"other"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Expr &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->subtract(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("subtract", "    subtract(other: Expr) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_499(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"other"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Expr &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->multiply(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("multiply", "    multiply(other: Expr) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_500(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"other"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Expr &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->divide(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("divide", "    divide(other: Expr) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_501(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"exponent"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Expr &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const datamunge::algebra::Expr &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->power(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("power", "    power(exponent: Expr) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_502(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->negate(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("negate", "    negate() -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_503(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->sin(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("sin", "    sin() -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_504(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->cos(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("cos", "    cos() -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_505(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->exp(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("exp", "    exp() -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_506(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->log(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("log", "    log() -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_507(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"var"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->differentiate(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("differentiate", "    differentiate(var: str) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_508(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"var"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->integrate(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("integrate", "    integrate(var: str) -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_509(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->simplify(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("simplify", "    simplify() -> Expr\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_510(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"names", "values"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<std::__cxx11::basic_string<char>> &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::vector<double> &>::check(a[1], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 2) {
-                        rosetta_py::Param<const std::vector<std::__cxx11::basic_string<char>> &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<double> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->evaluate(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("evaluate", "    evaluate(names: list[str], values: list[float]) -> float\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_511(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::Expr>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->to_string(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("to_string", "    to_string() -> str\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_512(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"precision"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n) && rosetta_py::Param<const datamunge::algebra::Expr &>::check(self, false)
-                    && (n <= 0 || rosetta_py::Param<int>::check(a[0], strict))) {
-                    rosetta_py::Param<const datamunge::algebra::Expr &> self_param(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::python_bindings::expr_to_tex(self_param.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 1) {
-                        rosetta_py::Param<int> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::python_bindings::expr_to_tex(self_param.get(), p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("to_tex", "    to_tex(precision: int = ...) -> str\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_0_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 0; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        datamunge::algebra::Expr* created = nullptr;
-                        created = new datamunge::algebra::Expr();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::algebra::Expr>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-            {
-                static const char* const names[] = {"value"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<double> p0(a[0]);
-                        datamunge::algebra::Expr* created = nullptr;
-                        created = new datamunge::algebra::Expr(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::algebra::Expr>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("Expr", "    Expr()\n    Expr(value: float)\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_0_methods[] = {
-    {"constant", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_495)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "constant(value: float) -> Expr\n"},
-    {"variable", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_496)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "variable(name: str) -> Expr\n"},
-    {"add", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_497)), METH_VARARGS | METH_KEYWORDS, "add(other: Expr) -> Expr\n"},
-    {"subtract", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_498)), METH_VARARGS | METH_KEYWORDS, "subtract(other: Expr) -> Expr\n"},
-    {"multiply", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_499)), METH_VARARGS | METH_KEYWORDS, "multiply(other: Expr) -> Expr\n"},
-    {"divide", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_500)), METH_VARARGS | METH_KEYWORDS, "divide(other: Expr) -> Expr\n"},
-    {"power", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_501)), METH_VARARGS | METH_KEYWORDS, "power(exponent: Expr) -> Expr\n"},
-    {"negate", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_502)), METH_VARARGS | METH_KEYWORDS, "negate() -> Expr\n"},
-    {"sin", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_503)), METH_VARARGS | METH_KEYWORDS, "sin() -> Expr\n"},
-    {"cos", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_504)), METH_VARARGS | METH_KEYWORDS, "cos() -> Expr\n"},
-    {"exp", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_505)), METH_VARARGS | METH_KEYWORDS, "exp() -> Expr\n"},
-    {"log", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_506)), METH_VARARGS | METH_KEYWORDS, "log() -> Expr\n"},
-    {"differentiate", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_507)), METH_VARARGS | METH_KEYWORDS, "differentiate(var: str) -> Expr\n\nThe symbolic derivative with respect to `var` (any other variable name is\n       treated as a constant).\n\nthrows: if the expression contains `base ^ exponent` where\n        `exponent` is not a constant (only the constant-exponent power rule is\n        supported)."},
-    {"integrate", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_508)), METH_VARARGS | METH_KEYWORDS, "integrate(var: str) -> Expr\n\nThe symbolic antiderivative with respect to `var` (any other variable name is\n       treated as a constant, matching differentiate()). Supports: the sum/difference\n       and constant-multiple rules; the power rule x^c (any real c != -1) and its log\n       special case (c == -1); sin/cos/exp/log of any expression that is affine\n       (a*var + b) in var, via the standard substitution result for each; a constant\n       divided by an affine expression (reduces to the log rule); and, for a product of\n       two var-dependent factors, generic tabular integration by parts -- reusing\n       differentiate() to peel one factor down to the constant 0 across at most 15\n       repeated derivatives (terminates for any genuine polynomial factor), paired with\n       repeated antiderivatives of the other factor. Not a full computer-algebra\n       integrator: general rational functions (a non-constant denominator that isn't\n       affine), a variable exponent, and products/quotients outside the forms above\n       (e.g. sin(x)*cos(x), which never reduces to zero under repeated differentiation)\n       are not attempted.\n\nthrows: when no rule above applies."},
-    {"simplify", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_509)), METH_VARARGS | METH_KEYWORDS, "simplify() -> Expr\n\nBasic algebraic simplification: constant folding, plus identities like x+0, x*1,\n       x*0, x/1, x^0, x^1. Not a full computer-algebra simplifier (no factoring,\n       collecting like terms, or trig identities)."},
-    {"evaluate", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_510)), METH_VARARGS | METH_KEYWORDS, "evaluate(names: list[str], values: list[float]) -> float\n\nEvaluates the expression, binding each entry of `names` to the corresponding\n       entry of `values` (parallel arrays, must be the same length).\n\nthrows: if names/values sizes disagree or a variable in the\n        expression has no binding."},
-    {"to_string", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_511)), METH_VARARGS | METH_KEYWORDS, "to_string() -> str\n"},
-    {"to_tex", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_512)), METH_VARARGS | METH_KEYWORDS, "to_tex(precision: int = ...) -> str\n\nRender the expression using native grouping and precision; return raw TeX without math delimiters."},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_0_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_0_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_0_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_0_methods},
-    {Py_tp_getset, rosetta_class_0_getset},
-    {Py_tp_doc, const_cast<char*>("Expr()\nExpr(value: float)\n\nA symbolic expression tree over +, -, *, /, ^ (power) and sin/cos/exp/log, supporting\n       symbolic differentiation, basic algebraic simplification, and numeric evaluation.\n       Value type wrapping a shared, immutable node tree -- copies are cheap and structural\n       sharing across copies is always safe since nodes are never mutated after\n       construction.")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_0_spec = {"pydatamunge._datamunge.Expr", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_0_slots};
-PyObject* rosetta_function_545(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::algebra::RealFactorization>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->num_factors(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("num_factors", "    num_factors() -> int\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_546(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"index"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::algebra::RealFactorization>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->factor_at(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("factor_at", "    factor_at(index: int) -> RealFactor\n", args, kwargs);
-    }, nullptr);
-}
-static PyObject* rosetta_field_547_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::algebra::RealFactorization>(self);
-        return rosetta_py::result<decltype((native->leading_coefficient))>(native->leading_coefficient, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_547_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::algebra::RealFactorization>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->leading_coefficient)>>&> converted(value);
-        rosetta_py::assign_field(native->leading_coefficient, converted.get());
-        return 0;
-    }, -1);
-}
-static int rosetta_class_8_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        datamunge::algebra::RealFactorization* created = nullptr;
-                        created = new datamunge::algebra::RealFactorization();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::algebra::RealFactorization>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("RealFactorization", "    RealFactorization()\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_8_methods[] = {
-    {"num_factors", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_545)), METH_VARARGS | METH_KEYWORDS, "num_factors() -> int\n"},
-    {"factor_at", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_546)), METH_VARARGS | METH_KEYWORDS, "factor_at(index: int) -> RealFactor\n"},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_8_getset[] = {
-    {"leading_coefficient", rosetta_field_547_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::algebra::RealFactorization::leading_coefficient)>> ? rosetta_field_547_set : nullptr, "", nullptr},
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_8_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_8_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_8_methods},
-    {Py_tp_getset, rosetta_class_8_getset},
-    {Py_tp_doc, const_cast<char*>("RealFactorization()\n\nFactors p over the reals into irreducible linear/quadratic pieces plus the overall\n       scale needed to reconstruct p exactly:\n       p == leading_coefficient * prod(factors[i].factor ^ factors[i].multiplicity).")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_8_spec = {"pydatamunge._datamunge.RealFactorization", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_8_slots};
-PyObject* rosetta_function_575(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::SeparableFunction>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { if (rosetta_py::is_director(self)) rosetta_py::pure_virtual("datamunge::optim::SeparableFunction::num_functions"); return native->num_functions(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("num_functions", "    num_functions() -> int\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_576(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"coordinates", "i"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<unsigned long>::check(a[1], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::SeparableFunction>(self);
-                    if (n == 2) {
-                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { if (rosetta_py::is_director(self)) rosetta_py::pure_virtual("datamunge::optim::SeparableFunction::evaluate_term"); return native->evaluate_term(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("evaluate_term", "    evaluate_term(coordinates: list[float], i: int) -> float\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_577(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"coordinates"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::SeparableFunction>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { if (rosetta_py::is_director(self)) return native->datamunge::optim::SeparableFunction::evaluate(p0.get()); return native->evaluate(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("evaluate", "    evaluate(coordinates: list[float]) -> float\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_14_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        const bool director = Py_TYPE(self) != rosetta_py::Info<datamunge::optim::SeparableFunction>::value.type;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        datamunge::optim::SeparableFunction* created = nullptr;
-                        if (director) created = new rosetta_class_14_director(self);
-                        else rosetta_py::fail(PyExc_TypeError, "SeparableFunction is abstract; subclass it and implement its pure virtual methods");
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::SeparableFunction>::value;
-                        object->owned = 1; object->director = director;
-                        if (director) static_cast<rosetta_py::Director*>(static_cast<rosetta_class_14_director*>(created))->rosetta_self = self;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("SeparableFunction", "    SeparableFunction()\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_14_methods[] = {
-    {"num_functions", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_575)), METH_VARARGS | METH_KEYWORDS, "num_functions() -> int\n\nThe number of additive terms the objective decomposes into."},
-    {"evaluate_term", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_576)), METH_VARARGS | METH_KEYWORDS, "evaluate_term(coordinates: list[float], i: int) -> float\n\nEvaluates just term i\nof the objective at coordinates."},
-    {"evaluate", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_577)), METH_VARARGS | METH_KEYWORDS, "evaluate(coordinates: list[float]) -> float\n"},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_14_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_14_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_14_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_14_methods},
-    {Py_tp_getset, rosetta_class_14_getset},
-    {Py_tp_doc, const_cast<char*>("SeparableFunction()\n\nAn objective that decomposes as a sum over num_functions() independent terms\n       (e.g. one term per training example). evaluate() defaults to summing every term,\n       but remains overridable for a more efficient full-objective computation.")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_14_spec = {"pydatamunge._datamunge.SeparableFunction", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_14_slots};
-static PyObject* rosetta_field_601_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        return rosetta_py::result<decltype((native->num_samples))>(native->num_samples, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_601_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->num_samples)>>&> converted(value);
-        rosetta_py::assign_field(native->num_samples, converted.get());
-        return 0;
-    }, -1);
-}
-static PyObject* rosetta_field_602_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        return rosetta_py::result<decltype((native->num_warmup))>(native->num_warmup, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_602_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->num_warmup)>>&> converted(value);
-        rosetta_py::assign_field(native->num_warmup, converted.get());
-        return 0;
-    }, -1);
-}
-static PyObject* rosetta_field_603_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        return rosetta_py::result<decltype((native->num_leapfrog_steps))>(native->num_leapfrog_steps, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_603_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->num_leapfrog_steps)>>&> converted(value);
-        rosetta_py::assign_field(native->num_leapfrog_steps, converted.get());
-        return 0;
-    }, -1);
-}
-static PyObject* rosetta_field_604_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        return rosetta_py::result<decltype((native->initial_step_size))>(native->initial_step_size, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_604_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->initial_step_size)>>&> converted(value);
-        rosetta_py::assign_field(native->initial_step_size, converted.get());
-        return 0;
-    }, -1);
-}
-static PyObject* rosetta_field_605_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        return rosetta_py::result<decltype((native->target_accept_rate))>(native->target_accept_rate, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_605_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->target_accept_rate)>>&> converted(value);
-        rosetta_py::assign_field(native->target_accept_rate, converted.get());
-        return 0;
-    }, -1);
-}
-static PyObject* rosetta_field_606_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        return rosetta_py::result<decltype((native->seed))>(native->seed, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_606_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::HMCOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>&> converted(value);
-        rosetta_py::assign_field(native->seed, converted.get());
-        return 0;
-    }, -1);
-}
-static int rosetta_class_24_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        datamunge::bayes::HMCOptions* created = nullptr;
-                        created = new datamunge::bayes::HMCOptions();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::bayes::HMCOptions>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("HMCOptions", "    HMCOptions()\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_24_methods[] = {
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_24_getset[] = {
-    {"num_samples", rosetta_field_601_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::HMCOptions::num_samples)>> ? rosetta_field_601_set : nullptr, "Number of post-warmup draws.", nullptr},
-    {"num_warmup", rosetta_field_602_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::HMCOptions::num_warmup)>> ? rosetta_field_602_set : nullptr, "Number of warmup iterations (step-size adaptation; 0 keeps initial_step_size).", nullptr},
-    {"num_leapfrog_steps", rosetta_field_603_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::HMCOptions::num_leapfrog_steps)>> ? rosetta_field_603_set : nullptr, "Number of leapfrog steps per proposal (trajectory length = num_leapfrog_steps * step size).", nullptr},
-    {"initial_step_size", rosetta_field_604_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::HMCOptions::initial_step_size)>> ? rosetta_field_604_set : nullptr, "Leapfrog step size at the start of warmup.", nullptr},
-    {"target_accept_rate", rosetta_field_605_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::HMCOptions::target_accept_rate)>> ? rosetta_field_605_set : nullptr, "Target Metropolis acceptance rate the dual-averaging adaptation aims for during warmup.", nullptr},
-    {"seed", rosetta_field_606_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::HMCOptions::seed)>> ? rosetta_field_606_set : nullptr, "Random seed.", nullptr},
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_24_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_24_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_24_methods},
-    {Py_tp_getset, rosetta_class_24_getset},
-    {Py_tp_doc, const_cast<char*>("HMCOptions()\n\nSettings for HMC.")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_24_spec = {"pydatamunge._datamunge.HMCOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_24_slots};
-PyObject* rosetta_function_640(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_599(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3117,11 +2362,11 @@ PyObject* rosetta_function_640(PyObject* self, PyObject* args, PyObject* kwargs)
                 static const char* const names[] = {"log_posterior", "initial_params"};
                 PyObject* a[2]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::DifferentiableFunction &>::check(a[0], strict))
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
                     && (n <= 1 || rosetta_py::Param<const std::vector<double> &>::check(a[1], strict))) {
-                    auto* native = rosetta_py::native<datamunge::bayes::NUTS>(self);
+                    auto* native = rosetta_py::native<datamunge::bayes::GibbsSampler>(self);
                     if (n == 2) {
-                        rosetta_py::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
+                        rosetta_py::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
                         rosetta_py::Param<const std::vector<double> &> p1(a[1]);
                         PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->sample(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
                         return result;
@@ -3129,10 +2374,10 @@ PyObject* rosetta_function_640(PyObject* self, PyObject* args, PyObject* kwargs)
                 }
             }
         }
-        rosetta_py::no_overload("sample", "    sample(log_posterior: DifferentiableFunction, initial_params: list[float]) -> NUTSResult\n", args, kwargs);
+        rosetta_py::no_overload("sample", "    sample(log_posterior: ArbitraryFunction, initial_params: list[float]) -> GibbsResult\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_641(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_600(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3140,7 +2385,7 @@ PyObject* rosetta_function_641(PyObject* self, PyObject* args, PyObject* kwargs)
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::bayes::NUTS>(self);
+                    auto* native = rosetta_py::native<datamunge::bayes::GibbsSampler>(self);
                     if (n == 0) {
                         PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
                         return result;
@@ -3148,10 +2393,10 @@ PyObject* rosetta_function_641(PyObject* self, PyObject* args, PyObject* kwargs)
                 }
             }
         }
-        rosetta_py::no_overload("options", "    options() -> NUTSOptions\n", args, kwargs);
+        rosetta_py::no_overload("options", "    options() -> GibbsOptions\n", args, kwargs);
     }, nullptr);
 }
-static int rosetta_class_34_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_23_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -3161,226 +2406,547 @@ static int rosetta_class_34_init(PyObject* self, PyObject* args, PyObject* kwarg
                 static const char* const names[] = {"options"};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::bayes::NUTSOptions>::check(a[0], strict))) {
+                    && (n <= 0 || rosetta_py::Param<datamunge::bayes::GibbsOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::bayes::NUTS* created = nullptr;
-                        created = new datamunge::bayes::NUTS();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::bayes::NUTS>::value;
+                        datamunge::bayes::GibbsSampler* created = nullptr;
+                        created = new datamunge::bayes::GibbsSampler();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::bayes::GibbsSampler>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                     if (n == 1) {
-                        rosetta_py::Param<datamunge::bayes::NUTSOptions> p0(a[0]);
-                        datamunge::bayes::NUTS* created = nullptr;
-                        created = new datamunge::bayes::NUTS(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::bayes::NUTS>::value;
+                        rosetta_py::Param<datamunge::bayes::GibbsOptions> p0(a[0]);
+                        datamunge::bayes::GibbsSampler* created = nullptr;
+                        created = new datamunge::bayes::GibbsSampler(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::bayes::GibbsSampler>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("NUTS", "    NUTS(options: NUTSOptions = ...)\n", args, kwargs);
+        rosetta_py::no_overload("GibbsSampler", "    GibbsSampler(options: GibbsOptions = ...)\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_34_methods[] = {
-    {"sample", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_640)), METH_VARARGS | METH_KEYWORDS, "sample(log_posterior: DifferentiableFunction, initial_params: list[float]) -> NUTSResult\n\nRuns one chain: warmup with step-size adaptation, then num_samples draws.\n\nParameters:\n    log_posterior: Log density (up to a constant) and its gradient.\n    initial_params: Starting point on the unconstrained scale.\n\nReturns: Draws plus acceptance, step size and per-draw diagnostics."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_641)), METH_VARARGS | METH_KEYWORDS, "options() -> NUTSOptions\n\nThe options this NUTS was configured with.\n\nReturns: The stored options."},
+static PyMethodDef rosetta_class_23_methods[] = {
+    {"sample", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_599)), METH_VARARGS | METH_KEYWORDS, "sample($self, log_posterior, initial_params)\n--\n\nRuns warmup sweeps (adapting each coordinate's step), then num_samples sweeps.\n\nParameters\n----------\nlog_posterior : ArbitraryFunction\n    Log density up to a constant; only evaluate() is used.\ninitial_params : list[float]\n    Starting point.\n\nReturns\n-------\nGibbsResult\n    Draws, per-coordinate acceptance rates and step sizes."},
+    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_600)), METH_VARARGS | METH_KEYWORDS, "options($self)\n--\n\nThe options this GibbsSampler was configured with.\n\nReturns\n-------\nGibbsOptions\n    The stored options."},
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_34_getset[] = {
+static PyGetSetDef rosetta_class_23_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_34_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_34_init)},
+static PyType_Slot rosetta_class_23_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_23_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_34_methods},
-    {Py_tp_getset, rosetta_class_34_getset},
-    {Py_tp_doc, const_cast<char*>("NUTS(options: NUTSOptions = ...)\n\nThe No-U-Turn Sampler (Hoffman\n&\nGelman 2014, the efficient slice-sampling\n       variant, Algorithm 3): Hamiltonian Monte Carlo with an automatically chosen\n       trajectory length -- the leapfrog trajectory is grown by repeated doubling until\n       it would start turning back on itself (a \"U-turn\"), removing the need to hand-tune\n       a fixed number of leapfrog steps. Step size is still adapted via the same\n       dual-averaging scheme as HMC. Uses an identity mass matrix.")},
+    {Py_tp_methods, rosetta_class_23_methods},
+    {Py_tp_getset, rosetta_class_23_getset},
+    {Py_tp_doc, const_cast<char*>("GibbsSampler(options=...)\n--\n\nMetropolis-within-Gibbs: updates one coordinate at a time, each via a scalar\nrandom-walk Metropolis step evaluated against the SAME joint log-density with every\nother coordinate held fixed -- mathematically equivalent to a Metropolis step\ntargeting the exact full conditional p(x_i | x_-i), since the joint-density ratio\nwith everything else held fixed IS the full-conditional-density ratio. This is the\nstandard fallback used whenever a full conditional isn't conjugate/directly\nsampleable (what BUGS/JAGS call \"Metropolis-within-Gibbs\"), not exact Gibbs sampling\nvia closed-form conditional samplers -- those are necessarily model-specific (they\nneed to know each conditional's actual distributional family) and aren't something\na generic engine driven only by a joint log-density can provide. Updating one\ncoordinate at a time (rather than proposing the whole vector jointly, as\nRandomWalkMetropolis does) can mix substantially better when parameters live on very\ndifferent scales or are only weakly correlated.\n\nStores the sampler settings.\n\nParameters\n----------\noptions : GibbsOptions, optional\n    Sampler settings.")},
     {0, nullptr}};
-PyType_Spec rosetta_class_34_spec = {"pydatamunge._datamunge.NUTS", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_34_slots};
-PyObject* rosetta_function_848(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyType_Spec rosetta_class_23_spec = {"pydatamunge._datamunge.GibbsSampler", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_23_slots};
+static PyObject* rosetta_field_674_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::ParticleFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->predict(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("predict", "    predict() -> None\n", args, kwargs);
+        auto* native = rosetta_py::native<datamunge::cv::Corner>(self);
+        return rosetta_py::result<decltype((native->x))>(native->x, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-PyObject* rosetta_function_849(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_field_674_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::cv::Corner>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->x)>>&> converted(value);
+        rosetta_py::assign_field(native->x, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_675_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"z"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::filter::ParticleFilter>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->update(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("update", "    update(z: list[float]) -> None\n", args, kwargs);
+        auto* native = rosetta_py::native<datamunge::cv::Corner>(self);
+        return rosetta_py::result<decltype((native->y))>(native->y, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-PyObject* rosetta_function_850(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_field_675_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::cv::Corner>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->y)>>&> converted(value);
+        rosetta_py::assign_field(native->y, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_676_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::ParticleFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->state(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("state", "    state() -> list[float]\n", args, kwargs);
+        auto* native = rosetta_py::native<datamunge::cv::Corner>(self);
+        return rosetta_py::result<decltype((native->response))>(native->response, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-PyObject* rosetta_function_851(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::ParticleFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->covariance(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("covariance", "    covariance() -> list[list[float]]\n", args, kwargs);
-    }, nullptr);
+static int rosetta_field_676_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::cv::Corner>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->response)>>&> converted(value);
+        rosetta_py::assign_field(native->response, converted.get());
+        return 0;
+    }, -1);
 }
-PyObject* rosetta_function_852(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"measurements"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<std::vector<double>> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::filter::ParticleFilter>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<std::vector<double>> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->filter(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("filter", "    filter(measurements: list[list[float]]) -> list[KalmanState]\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_77_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_42_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"f", "h", "Q", "R", "x0", "P0", "num_particles", "seed"};
-                PyObject* a[8]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 8, 6, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::filter::VectorFunction &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<datamunge::filter::VectorFunction &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<std::vector<double>>::check(a[4], strict))
-                    && (n <= 5 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[5], strict))
-                    && (n <= 6 || rosetta_py::Param<int>::check(a[6], strict))
-                    && (n <= 7 || rosetta_py::Param<unsigned int>::check(a[7], strict))) {
-                    if (n == 6) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        datamunge::filter::ParticleFilter* created = nullptr;
-                        created = new datamunge::filter::ParticleFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::ParticleFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 7) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_py::Param<int> p6(a[6]);
-                        datamunge::filter::ParticleFilter* created = nullptr;
-                        created = new datamunge::filter::ParticleFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::ParticleFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 8) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_py::Param<int> p6(a[6]);
-                        rosetta_py::Param<unsigned int> p7(a[7]);
-                        datamunge::filter::ParticleFilter* created = nullptr;
-                        created = new datamunge::filter::ParticleFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::ParticleFilter>::value;
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::cv::Corner* created = nullptr;
+                        created = new datamunge::cv::Corner();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::cv::Corner>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("ParticleFilter", "    ParticleFilter(f: VectorFunction, h: VectorFunction, Q: list[list[float]], R: list[list[float]], x0: list[float], P0: list[list[float]], num_particles: int = ..., seed: int = ...)\n", args, kwargs);
+        rosetta_py::no_overload("Corner", "    Corner()\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_77_methods[] = {
-    {"predict", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_848)), METH_VARARGS | METH_KEYWORDS, "predict() -> None\n\nPropagates every particle through the nonlinear f, each perturbed by an\n       independently-sampled draw from N(0, Q). Weights are untouched (the transition\n       density cancels out of the importance weight for this proposal, the standard\n       bootstrap-filter simplification)."},
-    {"update", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_849)), METH_VARARGS | METH_KEYWORDS, "update(z: list[float]) -> None\n\nReweights every particle by its Gaussian (N(h(x), R)) observation likelihood\n       given z,\nnormalizes the weights, then resamples the whole swarm from the\n       resulting weighted distribution (multinomial resampling, done unconditionally\n       every step -- simpler than the adaptive \"resample only when the effective sample\n       size drops\" scheme real-time systems often use, at the cost of extra Monte Carlo\n       noise from resampling more often than strictly necessary)."},
-    {"state", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_850)), METH_VARARGS | METH_KEYWORDS, "state() -> list[float]\n"},
-    {"covariance", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_851)), METH_VARARGS | METH_KEYWORDS, "covariance() -> list[list[float]]\n"},
-    {"filter", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_852)), METH_VARARGS | METH_KEYWORDS, "filter(measurements: list[list[float]]) -> list[KalmanState]\n"},
+static PyMethodDef rosetta_class_42_methods[] = {
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_77_getset[] = {
+static PyGetSetDef rosetta_class_42_getset[] = {
+    {"x", rosetta_field_674_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::cv::Corner::x)>> ? rosetta_field_674_set : nullptr, "Type: int", nullptr},
+    {"y", rosetta_field_675_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::cv::Corner::y)>> ? rosetta_field_675_set : nullptr, "Type: int", nullptr},
+    {"response", rosetta_field_676_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::cv::Corner::response)>> ? rosetta_field_676_set : nullptr, "Type: float", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_77_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_77_init)},
+static PyType_Slot rosetta_class_42_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_42_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_77_methods},
-    {Py_tp_getset, rosetta_class_77_getset},
-    {Py_tp_doc, const_cast<char*>("ParticleFilter(f: VectorFunction, h: VectorFunction, Q: list[list[float]], R: list[list[float]], x0: list[float], P0: list[list[float]], num_particles: int = ..., seed: int = ...)\n\nA bootstrap particle filter (Sequential Importance Resampling): the fully general,\n       non-Gaussian generalization of the Kalman family -- represents the state's entire\n       posterior distribution as a weighted swarm of sample points rather than assuming any\n       particular family of distribution (Gaussian, etc.), so it remains correct even for\n       strongly non-Gaussian or multimodal posteriors where every other filter in this\n       module (which all assume approximately-Gaussian beliefs) can fail. Costs scale with\n       particle count and can need many particles in high dimensions (\"the curse of\n       dimensionality\" for particle filters) -- EnsembleKalmanFilter is usually preferred\n       for high-dimensional problems where the Gaussian assumption is acceptable.")},
+    {Py_tp_methods, rosetta_class_42_methods},
+    {Py_tp_getset, rosetta_class_42_getset},
+    {Py_tp_doc, const_cast<char*>("Corner()\n--\n\nA detected corner: its pixel location and a detector-specific response score (higher\nis a stronger corner). Meant to be independently sortable/filterable by the caller.\n\nAttributes\n----------\nx : int\ny : int\nresponse : float")},
     {0, nullptr}};
-PyType_Spec rosetta_class_77_spec = {"pydatamunge._datamunge.ParticleFilter", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_77_slots};
+PyType_Spec rosetta_class_42_spec = {"pydatamunge._datamunge.Corner", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_42_slots};
+PyObject* rosetta_function_747(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::fem::FEM1DTimeSeries>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->num_steps(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("num_steps", "    num_steps() -> int\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_748(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::fem::FEM1DTimeSeries>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->num_nodes(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("num_nodes", "    num_nodes() -> int\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_749(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"index"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))) {
+                    auto* native = rosetta_py::native<datamunge::fem::FEM1DTimeSeries>(self);
+                    if (n == 1) {
+                        rosetta_py::Param<unsigned long> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->node_at(p0.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("node_at", "    node_at(index: int) -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_750(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"step"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))) {
+                    auto* native = rosetta_py::native<datamunge::fem::FEM1DTimeSeries>(self);
+                    if (n == 1) {
+                        rosetta_py::Param<unsigned long> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->time_at(p0.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("time_at", "    time_at(step: int) -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_751(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"step", "node_index"};
+                PyObject* a[2]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
+                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<unsigned long>::check(a[1], strict))) {
+                    auto* native = rosetta_py::native<datamunge::fem::FEM1DTimeSeries>(self);
+                    if (n == 2) {
+                        rosetta_py::Param<unsigned long> p0(a[0]);
+                        rosetta_py::Param<unsigned long> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->value_at(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("value_at", "    value_at(step: int, node_index: int) -> float\n", args, kwargs);
+    }, nullptr);
+}
+static int rosetta_class_55_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::fem::FEM1DTimeSeries* created = nullptr;
+                        created = new datamunge::fem::FEM1DTimeSeries();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::fem::FEM1DTimeSeries>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("FEM1DTimeSeries", "    FEM1DTimeSeries()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_55_methods[] = {
+    {"num_steps", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_747)), METH_VARARGS | METH_KEYWORDS, "num_steps($self)\n--\n\nCount stored time levels, including the initial state.\n\nReturns\n-------\nint\n    Actual times.size(), rather than the number of time advances."},
+    {"num_nodes", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_748)), METH_VARARGS | METH_KEYWORDS, "num_nodes($self)\n--\n\nCount stored spatial coordinates.\n\nReturns\n-------\nint\n    Actual nodes.size(); no allocation or shared mutation."},
+    {"node_at", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_749)), METH_VARARGS | METH_KEYWORDS, "node_at($self, index)\n--\n\nRead a spatial coordinate with vector bounds checking.\n\nParameters\n----------\nindex : int\n    Zero-based coordinate index.\n\nReturns\n-------\nfloat\n    Owned coordinate by value.\n\nRaises\n------\nIndexError\n    If index is outside nodes."},
+    {"time_at", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_750)), METH_VARARGS | METH_KEYWORDS, "time_at($self, step)\n--\n\nRead an actual stored time level with bounds checking.\n\nParameters\n----------\nstep : int\n    Zero-based frame index, including initial frame zero.\n\nReturns\n-------\nfloat\n    Actual stored time by value.\n\nRaises\n------\nIndexError\n    If step is outside times."},
+    {"value_at", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_751)), METH_VARARGS | METH_KEYWORDS, "value_at($self, step, node_index)\n--\n\nRead a stored nodal time-slice value with both vector bounds checked.\n\nParameters\n----------\nstep : int\n    Zero-based time-frame index in u.\nnode_index : int\n    Zero-based spatial index within that row.\n\nReturns\n-------\nfloat\n    Stored nodal value by value.\n\nRaises\n------\nIndexError\n    If either index is outside the actual stored vectors."},
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_55_getset[] = {
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_55_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_55_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_55_methods},
+    {Py_tp_getset, rosetta_class_55_getset},
+    {Py_tp_doc, const_cast<char*>("FEM1DTimeSeries()\n--\n\nOwned initial state and actual strictly advancing backward-Euler time slices.\nSolver output has one u row per time and one value per spatial node. Initial\ntime zero/u0 are retained as supplied; later rows satisfy imposed boundary data.\nTimes retain rounded nominal-step products with a shortened final interval;\nan already reached endpoint is not appended twice. Copies retain no mesh/source\nalias. Public edits may break consistency; accessors check actual vector bounds.\n\nSee Also\n--------\nFEM1D::solve_transient()\nFEM1D::solve_transient_builtin()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto t=dm::fem::FEM1D::solve_transient_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},\"constant\",{1},{},{},{0,0,0},.5,.5);\n    std::print(\"{} {:.6f}\\n\",t.num_steps(),t.value_at(1,1)); // 2 0.107143")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_55_spec = {"pydatamunge._datamunge.FEM1DTimeSeries", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_55_slots};
+PyObject* rosetta_function_756(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"other"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::geometry::Point2D &>::check(a[0], strict))) {
+                    auto* native = rosetta_py::native<datamunge::geometry::Point2D>(self);
+                    if (n == 1) {
+                        rosetta_py::Param<const datamunge::geometry::Point2D &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->operator==(p0.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        Py_RETURN_NOTIMPLEMENTED;
+    }, nullptr);
+}
+PyObject* rosetta_function_757(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"other"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::geometry::Point2D &>::check(a[0], strict))) {
+                    auto* native = rosetta_py::native<datamunge::geometry::Point2D>(self);
+                    if (n == 1) {
+                        rosetta_py::Param<const datamunge::geometry::Point2D &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->operator!=(p0.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        Py_RETURN_NOTIMPLEMENTED;
+    }, nullptr);
+}
+static PyObject* rosetta_field_758_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::Point2D>(self);
+        return rosetta_py::result<decltype((native->x))>(native->x, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_758_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::Point2D>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->x)>>&> converted(value);
+        rosetta_py::assign_field(native->x, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_759_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::Point2D>(self);
+        return rosetta_py::result<decltype((native->y))>(native->y, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_759_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::Point2D>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->y)>>&> converted(value);
+        rosetta_py::assign_field(native->y, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_57_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::geometry::Point2D* created = nullptr;
+                        created = new datamunge::geometry::Point2D();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::geometry::Point2D>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("Point2D", "    Point2D()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_57_methods[] = {
+    {"__eq__", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_756)), METH_VARARGS | METH_KEYWORDS, "__eq__($self, other)\n--\n\nCompare both coordinates with ordinary double equality.\n\nParameters\n----------\nother : Point2D\n    Point to compare without mutation.\n\nReturns\n-------\nbool\n    Both coordinate comparisons are true; signed zeros compare equal.\n\nSee Also\n--------\noperator!=()\n\nExamples\n--------\n.. code-block:: cpp\n\n    std::cout << (dm::geometry::Point2D{0,1}==dm::geometry::Point2D{-0.,1}); // 1"},
+    {"__ne__", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_757)), METH_VARARGS | METH_KEYWORDS, "__ne__($self, other)\n--\n\nNegate coordinate equality, including unequal NaN coordinates.\n\nParameters\n----------\nother : Point2D\n    Point to compare without mutation.\n\nReturns\n-------\nbool\n    Logical negation of operator==().\n\nSee Also\n--------\noperator==()\n\nExamples\n--------\n.. code-block:: cpp\n\n    std::cout << (dm::geometry::Point2D{0,1}!=dm::geometry::Point2D{0,2}); // 1"},
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_57_getset[] = {
+    {"x", rosetta_field_758_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::Point2D::x)>> ? rosetta_field_758_set : nullptr, "Horizontal coordinate, default zero.\n\nType: float", nullptr},
+    {"y", rosetta_field_759_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::Point2D::y)>> ? rosetta_field_759_set : nullptr, "Vertical coordinate, default zero.\n\nType: float", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_57_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_57_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_57_methods},
+    {Py_tp_getset, rosetta_class_57_getset},
+    {Py_tp_doc, const_cast<char*>("Point2D()\n--\n\nA copied point or free vector with ordinary double coordinates.\nConstruction does not validate finiteness; checked algorithms document their\nown input contracts. Default coordinates are zero. Equality is numeric, so\nsigned zeros compare equal and NaN coordinates do not compare equal.\n\nAttributes\n----------\nx : float\n    Horizontal coordinate, default zero.\ny : float\n    Vertical coordinate, default zero.\n\nSee Also\n--------\nsquared_distance()\ndistance()\ncross()\norientation_sign()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const dm::geometry::Point2D p{3,4};\n    std::cout << p.x << ' ' << p.y; // 3 4")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_57_spec = {"pydatamunge._datamunge.Point2D", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_57_slots};
+static PyObject* rosetta_field_776_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->points))>(native->points, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_776_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->points)>>&> converted(value);
+        rosetta_py::assign_field(native->points, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_777_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->representatives))>(native->representatives, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_777_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->representatives)>>&> converted(value);
+        rosetta_py::assign_field(native->representatives, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_778_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->representative_for_input))>(native->representative_for_input, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_778_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->representative_for_input)>>&> converted(value);
+        rosetta_py::assign_field(native->representative_for_input, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_779_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->has_seed))>(native->has_seed, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_779_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->has_seed)>>&> converted(value);
+        rosetta_py::assign_field(native->has_seed, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_780_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->seed))>(native->seed, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_780_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>&> converted(value);
+        rosetta_py::assign_field(native->seed, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_781_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->triangles))>(native->triangles, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_781_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->triangles)>>&> converted(value);
+        rosetta_py::assign_field(native->triangles, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_782_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->steps))>(native->steps, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_782_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->steps)>>&> converted(value);
+        rosetta_py::assign_field(native->steps, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_783_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        return rosetta_py::result<decltype((native->work))>(native->work, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_783_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DelaunayTrace>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->work)>>&> converted(value);
+        rosetta_py::assign_field(native->work, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_61_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::geometry::DelaunayTrace* created = nullptr;
+                        created = new datamunge::geometry::DelaunayTrace();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::geometry::DelaunayTrace>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("DelaunayTrace", "    DelaunayTrace()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_61_methods[] = {
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_61_getset[] = {
+    {"points", rosetta_field_776_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::points)>> ? rosetta_field_776_set : nullptr, "Complete copied original coordinates, including duplicates.\n\nType: list[Point2D]", nullptr},
+    {"representatives", rosetta_field_777_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::representatives)>> ? rosetta_field_777_set : nullptr, "Earliest unique ids in original input order.\n\nType: list[int]", nullptr},
+    {"representative_for_input", rosetta_field_778_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::representative_for_input)>> ? rosetta_field_778_set : nullptr, "Earliest equal-coordinate id per original record.\n\nType: list[int]", nullptr},
+    {"has_seed", rosetta_field_779_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::has_seed)>> ? rosetta_field_779_set : nullptr, "Whether three distinct noncollinear sites exist.\n\nType: bool", nullptr},
+    {"seed", rosetta_field_780_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::seed)>> ? rosetta_field_780_set : nullptr, "Initial CCW finite seed, meaningful only when has_seed.\n\nType: Triangle", nullptr},
+    {"triangles", rosetta_field_781_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::triangles)>> ? rosetta_field_781_set : nullptr, "Complete finite final CCW triangles, using earliest original ids.\n\nType: list[Triangle]", nullptr},
+    {"steps", rosetta_field_782_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::steps)>> ? rosetta_field_782_set : nullptr, "Actual non-seed cavity transitions, without replay.\n\nType: list[DelaunayInsertion]", nullptr},
+    {"work", rosetta_field_783_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DelaunayTrace::work)>> ? rosetta_field_783_set : nullptr, "Checked actual operations from the executing kernel.\n\nType: DelaunayWork", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_61_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_61_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_61_methods},
+    {Py_tp_getset, rosetta_class_61_getset},
+    {Py_tp_doc, const_cast<char*>("DelaunayTrace()\n--\n\nComplete owned sites, earliest-identity mapping, finite mesh and actual events.\nNumeric coordinate equality coalesces duplicates and signed zeros. Representatives\nretain earliest input indices in input order. Seed is the first two distinct\nsites and first later noncollinear site; remaining distinct sites are inserted\nin input order. Strict positive incircle conflicts retain an existing diagonal\non an exact cocircular tie; permutations may therefore select another valid mesh.\nFinal finite triangles rotate their smallest id first and are lexicographically\nsorted, independent of map/hash traversal. All-collinear/fewer than three\ndistinct sites have no seed, faces or insertion events. All fields own data;\npublic edits are unchecked and independent calls share no mutable state.\n\nAttributes\n----------\npoints : list[Point2D]\n    Complete copied original coordinates, including duplicates.\nrepresentatives : list[int]\n    Earliest unique ids in original input order.\nrepresentative_for_input : list[int]\n    Earliest equal-coordinate id per original record.\nhas_seed : bool\n    Whether three distinct noncollinear sites exist.\nseed : Triangle\n    Initial CCW finite seed, meaningful only when has_seed.\ntriangles : list[Triangle]\n    Complete finite final CCW triangles, using earliest original ids.\nsteps : list[DelaunayInsertion]\n    Actual non-seed cavity transitions, without replay.\nwork : DelaunayWork\n    Checked actual operations from the executing kernel.\n\nSee Also\n--------\ndelaunay_trace()\ndelaunay_triangulation()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto t=dm::geometry::delaunay_trace({{0,0},{1,0},{0,1},{0,0}});\n    std::print(\"{} {} {}\\n\",t.representatives.size(),t.representative_for_input.back(),t.triangles.size()); // 3 0 1")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_61_spec = {"pydatamunge._datamunge.DelaunayTrace", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_61_slots};
 PyObject* rosetta_function_1023(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
@@ -3838,27 +3404,27 @@ static int rosetta_class_94_init(PyObject* self, PyObject* args, PyObject* kwarg
     }, -1);
 }
 static PyMethodDef rosetta_class_94_methods[] = {
-    {"create", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1023)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "create(rows: int, cols: int) -> RLayout\n\nCreates an empty layout with rows\nby cols\ncells, like R's\n       `par(mfrow = c(rows, cols))`.\n\nThe figure starts at 960 by 640 pixels with no title.\n\nthrows: If rows\nor cols\nis 0.\n\npar: See RLayout.\n\npar: - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nsee: add()\n\nParameters:\n    rows: Number of panel rows; must be positive.\n    cols: Number of panel columns; must be positive.\n\nReturns: The empty layout."},
-    {"add", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1024)), METH_VARARGS | METH_KEYWORDS, "add(panel: Plot) -> RLayout\n\nCopies panel\ninto the next free cell, filling rows left to right, top to bottom.\n\nThe panel's SVG is rendered immediately and stored with the copy, so rendering errors\nsurface here and later edits to the original plot have no effect on the layout.\n\nthrows: If all rows * cols cells are already filled.\n\nthrows: If panel\nhas no data series or its canvas is smaller than\n        its margins.\n\n auto fig = dm::graphics::RLayout::create(1, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)));\n try {\n   fig.add(dm::Plot(dm::c(1.0), dm::c(1.0)));\n } catch (const std::invalid_argument& e) {\n   std::print(\"{}\\n\", e.what());  // RLayout::add: layout is already full\n }\n\nsee: panel(), panel_count()\n\nParameters:\n    panel: The plot to add; any RPlot (or other Plot) converts.\n\nReturns: This layout, for chaining."},
-    {"size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1025)), METH_VARARGS | METH_KEYWORDS, "size(width: int, height: int) -> RLayout\n\nSets the size of the whole figure in pixels (default 960 by 640).\n\nPanels keep their own canvas sizes and are scaled into their cells, so text in a panel\nshrinks or grows with it; give panels a size close to their cell for readable labels.\n\npar: See RLayout.\n\nsee: title()\n\nParameters:\n    width: Figure width in pixels.\n    height: Figure height in pixels, including the title band.\n\nReturns: This layout, for chaining."},
-    {"title", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1026)), METH_VARARGS | METH_KEYWORDS, "title(value: str) -> RLayout\n\nSets an optional figure-level heading drawn in a band above the panels, like R's\n       `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.\n\npar: See RLayout.\n\npar: - R `mtext()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/mtext.html\n\nsee: title_text()\n\nParameters:\n    value: Heading text; the band is title_band_px pixels tall.\n\nReturns: This layout, for chaining."},
-    {"rows", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1027)), METH_VARARGS | METH_KEYWORDS, "rows() -> int\n\nReturns the number of panel rows given to create().\n\nReturns: Row count (at least 1)."},
-    {"cols", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1028)), METH_VARARGS | METH_KEYWORDS, "cols() -> int\n\nReturns the number of panel columns given to create().\n\nReturns: Column count (at least 1)."},
-    {"width", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1029)), METH_VARARGS | METH_KEYWORDS, "width() -> int\n\nReturns the figure width in pixels.\n\nReturns: Width set by size() (default 960)."},
-    {"height", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1030)), METH_VARARGS | METH_KEYWORDS, "height() -> int\n\nReturns the figure height in pixels.\n\nReturns: Height set by size() (default 640)."},
-    {"panel_count", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1031)), METH_VARARGS | METH_KEYWORDS, "panel_count() -> int\n\nReturns how many panels have been added.\n\nReturns: Panel count, at most rows() * cols()."},
-    {"title_text", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1032)), METH_VARARGS | METH_KEYWORDS, "title_text() -> str\n\nBorrows the figure-level heading for the lifetime of this layout.\n\nReturns: The title; empty (the default) when none is drawn."},
-    {"panel", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1033)), METH_VARARGS | METH_KEYWORDS, "panel(index: int) -> Plot\n\nBorrows the copy of the index-th\nadded panel.\n\nthrows: If index\nis not below panel_count().\n\n auto fig = dm::graphics::RLayout::create(1, 2).add(dm::Plot(dm::c(1.0), dm::c(1.0)).set_title(\"A\"));\n std::print(\"{}\\n\", fig.panel(0).title_text());  // A\n\nParameters:\n    index: Zero-based panel index, in the order panels were added.\n\nReturns: The stored copy, valid until the next add() or the layout's destruction."},
-    {"to_svg", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1034)), METH_VARARGS | METH_KEYWORDS, "to_svg() -> str\n\nRenders the multi-panel figure as a standalone SVG document and returns it as a string.\n\nEach panel becomes a nested `\n<svg\n>` scaled into its cell. A layout with no panels renders\nas an empty white figure. The layout is not modified.\n\n auto fig = dm::graphics::RLayout::create(2, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)));\n std::print(\"{}\\n\", fig.to_svg().starts_with(\"<\?xml\"));  // true\n\nsee: save()\n\nReturns: The complete SVG text."},
-    {"save", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1035)), METH_VARARGS | METH_KEYWORDS, "save(path: str) -> None\n\nSaves the figure, choosing the format from the extension: `.svg` (or none) writes\n       SVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.\n\nThe extension is case-sensitive and an existing file is overwritten. Raster panels are\nre-rendered from the stored copies and scaled into their cells.\n\nthrows: For any other extension.\n\nthrows: If the file cannot be written.\n\npar: See RLayout.\n\nsee: save_svg(), to_svg(), show()\n\nParameters:\n    path: Destination file."},
-    {"save_svg", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1036)), METH_VARARGS | METH_KEYWORDS, "save_svg(path: str) -> None\n\nWrites to_svg() to path\nregardless of its extension.\n\nthrows: If the file cannot be opened for writing.\n\nsee: save()\n\nParameters:\n    path: Destination file; an existing file is overwritten."},
-    {"to_png", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1037)), METH_VARARGS | METH_KEYWORDS, "to_png() -> list[int]\n\nRenders the tiled figure as PNG image bytes (the raster save() writes for `.png`).\n\nthrows: If a panel cannot be rendered.\n\nsee: save_png(), to_svg()\n\nReturns: The complete PNG file contents."},
-    {"to_pdf", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1038)), METH_VARARGS | METH_KEYWORDS, "to_pdf() -> list[int]\n\nRenders the tiled figure as a one-page PDF holding the raster image.\n\nthrows: If a panel cannot be rendered.\n\nsee: save_pdf(), to_png()\n\nReturns: The complete PDF file contents."},
-    {"save_png", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1039)), METH_VARARGS | METH_KEYWORDS, "save_png(path: str) -> None\n\nWrites to_png() to path\nregardless of its extension.\n\nthrows: If the file cannot be written or a panel cannot be rendered.\n\nParameters:\n    path: Destination file; an existing file is overwritten."},
-    {"save_pdf", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1040)), METH_VARARGS | METH_KEYWORDS, "save_pdf(path: str) -> None\n\nWrites to_pdf() to path\nregardless of its extension.\n\nthrows: If the file cannot be written or a panel cannot be rendered.\n\nParameters:\n    path: Destination file; an existing file is overwritten."},
-    {"fit_panels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1041)), METH_VARARGS | METH_KEYWORDS, "fit_panels() -> RLayout\n\nResizes every stored panel's canvas to its cell, so text keeps its pixel size\n       instead of being scaled with the panel.\n\nCall it after size() and title() (the title band changes the cell height). Panels added\nlater keep their own size until fit_panels() is called again. A cell whose shorter side is\nunder min_panel_px gets a canvas scaled up to that side (same aspect ratio), so its text is\ndrawn proportionally smaller instead of the margins overflowing the panel.\n\n auto fig = dm::graphics::RLayout::create(1, 2)\n                .add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)))\n                .add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)))\n                .size(1000, 400)\n                .fit_panels();\n std::print(\"{}x{}\\n\", fig.panel(0).width(), fig.panel(0).height());  // 500x400\n\nsee: size()\n\nReturns: This layout, for chaining."},
-    {"show", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1042)), METH_VARARGS | METH_KEYWORDS, "show(title_hint: str = ...) -> None\n\nOpens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons\n       act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.\n\nBlocks until the window is closed (q or Escape). Use save() in headless code.\n\nthrows: If X11 support was not enabled at build time or no display is\n        available.\n\nthrows: If no panel was added.\n\n const auto x = dm::seql(0.0, 6.0, 30);\n dm::graphics::RLayout::create(1, 2)\n     .add(dm::Plot(x, dm::sin(x)))\n     .add(dm::Plot(x, dm::cos(x)))\n     .show(\"Trig\");\n\nsee: save(), Plot::show()\n\nParameters:\n    title_hint: Window title; empty (the default) uses title_text()."},
-    {"view", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1043)), METH_VARARGS | METH_KEYWORDS, "view(title_hint: str = ...) -> None\n\nSame as show(); kept as an alias for older code.\n\nthrows: As for show().\n\nthrows: If no panel was added.\n\nsee: show()\n\nParameters:\n    title_hint: Window title; empty (the default) uses title_text()."},
+    {"create", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1023)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "create(rows, cols)\n--\n\nCreates an empty layout with `rows` by `cols` cells, like R's\n`par(mfrow = c(rows, cols))`.\n\nThe figure starts at 960 by 640 pixels with no title.\n\nParameters\n----------\nrows : int\n    Number of panel rows; must be positive.\ncols : int\n    Number of panel columns; must be positive.\n\nReturns\n-------\nRLayout\n    The empty layout.\n\nRaises\n------\nValueError\n    If `rows` or `cols` is 0.\n\nSee Also\n--------\nadd()\n\nReferences\n----------\n- R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nExamples\n--------\nSee RLayout."},
+    {"add", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1024)), METH_VARARGS | METH_KEYWORDS, "add($self, panel)\n--\n\nCopies `panel` into the next free cell, filling rows left to right, top to bottom.\n\nThe panel's SVG is rendered immediately and stored with the copy, so rendering errors\nsurface here and later edits to the original plot have no effect on the layout.\n\nParameters\n----------\npanel : Plot\n    The plot to add; any RPlot (or other Plot) converts.\n\nReturns\n-------\nRLayout\n    This layout, for chaining.\n\nRaises\n------\nValueError\n    If all rows * cols cells are already filled.\nRuntimeError\n    `std::runtime_error`: If `panel` has no data series or its canvas is smaller than\n    its margins.\n\nSee Also\n--------\npanel()\npanel_count()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto fig = dm::graphics::RLayout::create(1, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)));\n    try {\n      fig.add(dm::Plot(dm::c(1.0), dm::c(1.0)));\n    } catch (const std::invalid_argument& e) {\n      std::print(\"{}\\n\", e.what());  // RLayout::add: layout is already full\n    }"},
+    {"size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1025)), METH_VARARGS | METH_KEYWORDS, "size($self, width, height)\n--\n\nSets the size of the whole figure in pixels (default 960 by 640).\n\nPanels keep their own canvas sizes and are scaled into their cells, so text in a panel\nshrinks or grows with it; give panels a size close to their cell for readable labels.\n\nParameters\n----------\nwidth : int\n    Figure width in pixels.\nheight : int\n    Figure height in pixels, including the title band.\n\nReturns\n-------\nRLayout\n    This layout, for chaining.\n\nSee Also\n--------\ntitle()\n\nExamples\n--------\nSee RLayout."},
+    {"title", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1026)), METH_VARARGS | METH_KEYWORDS, "title($self, value)\n--\n\nSets an optional figure-level heading drawn in a band above the panels, like R's\n`mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.\n\nParameters\n----------\nvalue : str\n    Heading text; the band is title_band_px pixels tall.\n\nReturns\n-------\nRLayout\n    This layout, for chaining.\n\nSee Also\n--------\ntitle_text()\n\nReferences\n----------\n- R `mtext()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/mtext.html\n\nExamples\n--------\nSee RLayout."},
+    {"rows", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1027)), METH_VARARGS | METH_KEYWORDS, "rows($self)\n--\n\nReturns the number of panel rows given to create().\n\nReturns\n-------\nint\n    Row count (at least 1)."},
+    {"cols", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1028)), METH_VARARGS | METH_KEYWORDS, "cols($self)\n--\n\nReturns the number of panel columns given to create().\n\nReturns\n-------\nint\n    Column count (at least 1)."},
+    {"width", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1029)), METH_VARARGS | METH_KEYWORDS, "width($self)\n--\n\nReturns the figure width in pixels.\n\nReturns\n-------\nint\n    Width set by size() (default 960)."},
+    {"height", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1030)), METH_VARARGS | METH_KEYWORDS, "height($self)\n--\n\nReturns the figure height in pixels.\n\nReturns\n-------\nint\n    Height set by size() (default 640)."},
+    {"panel_count", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1031)), METH_VARARGS | METH_KEYWORDS, "panel_count($self)\n--\n\nReturns how many panels have been added.\n\nReturns\n-------\nint\n    Panel count, at most rows() * cols()."},
+    {"title_text", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1032)), METH_VARARGS | METH_KEYWORDS, "title_text($self)\n--\n\nBorrows the figure-level heading for the lifetime of this layout.\n\nReturns\n-------\nstr\n    The title; empty (the default) when none is drawn."},
+    {"panel", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1033)), METH_VARARGS | METH_KEYWORDS, "panel($self, index)\n--\n\nBorrows the copy of the `index-th` added panel.\n\nParameters\n----------\nindex : int\n    Zero-based panel index, in the order panels were added.\n\nReturns\n-------\nPlot\n    The stored copy, valid until the next add() or the layout's destruction.\n\nRaises\n------\nIndexError\n    If `index` is not below panel_count().\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto fig = dm::graphics::RLayout::create(1, 2).add(dm::Plot(dm::c(1.0), dm::c(1.0)).set_title(\"A\"));\n    std::print(\"{}\\n\", fig.panel(0).title_text());  // A"},
+    {"to_svg", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1034)), METH_VARARGS | METH_KEYWORDS, "to_svg($self)\n--\n\nRenders the multi-panel figure as a standalone SVG document and returns it as a string.\n\nEach panel becomes a nested `<svg>` scaled into its cell. A layout with no panels renders\nas an empty white figure. The layout is not modified.\n\nReturns\n-------\nstr\n    The complete SVG text.\n\nSee Also\n--------\nsave()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto fig = dm::graphics::RLayout::create(2, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)));\n    std::print(\"{}\\n\", fig.to_svg().starts_with(\"<\?xml\"));  // true"},
+    {"save", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1035)), METH_VARARGS | METH_KEYWORDS, "save($self, path)\n--\n\nSaves the figure, choosing the format from the extension: `.svg` (or none) writes\nSVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.\n\nThe extension is case-sensitive and an existing file is overwritten. Raster panels are\nre-rendered from the stored copies and scaled into their cells.\n\nParameters\n----------\npath : str\n    Destination file.\n\nRaises\n------\nValueError\n    For any other extension.\nRuntimeError\n    `std::runtime_error`: If the file cannot be written.\n\nSee Also\n--------\nsave_svg()\nto_svg()\nshow()\n\nExamples\n--------\nSee RLayout."},
+    {"save_svg", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1036)), METH_VARARGS | METH_KEYWORDS, "save_svg($self, path)\n--\n\nWrites to_svg() to `path` regardless of its extension.\n\nParameters\n----------\npath : str\n    Destination file; an existing file is overwritten.\n\nRaises\n------\nRuntimeError\n    `std::runtime_error`: If the file cannot be opened for writing.\n\nSee Also\n--------\nsave()"},
+    {"to_png", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1037)), METH_VARARGS | METH_KEYWORDS, "to_png($self)\n--\n\nRenders the tiled figure as PNG image bytes (the raster save() writes for `.png`).\n\nReturns\n-------\nlist[int]\n    The complete PNG file contents.\n\nRaises\n------\nRuntimeError\n    `std::runtime_error`: If a panel cannot be rendered.\n\nSee Also\n--------\nsave_png()\nto_svg()"},
+    {"to_pdf", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1038)), METH_VARARGS | METH_KEYWORDS, "to_pdf($self)\n--\n\nRenders the tiled figure as a one-page PDF holding the raster image.\n\nReturns\n-------\nlist[int]\n    The complete PDF file contents.\n\nRaises\n------\nRuntimeError\n    `std::runtime_error`: If a panel cannot be rendered.\n\nSee Also\n--------\nsave_pdf()\nto_png()"},
+    {"save_png", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1039)), METH_VARARGS | METH_KEYWORDS, "save_png($self, path)\n--\n\nWrites to_png() to `path` regardless of its extension.\n\nParameters\n----------\npath : str\n    Destination file; an existing file is overwritten.\n\nRaises\n------\nRuntimeError\n    `std::runtime_error`: If the file cannot be written or a panel cannot be rendered."},
+    {"save_pdf", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1040)), METH_VARARGS | METH_KEYWORDS, "save_pdf($self, path)\n--\n\nWrites to_pdf() to `path` regardless of its extension.\n\nParameters\n----------\npath : str\n    Destination file; an existing file is overwritten.\n\nRaises\n------\nRuntimeError\n    `std::runtime_error`: If the file cannot be written or a panel cannot be rendered."},
+    {"fit_panels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1041)), METH_VARARGS | METH_KEYWORDS, "fit_panels($self)\n--\n\nResizes every stored panel's canvas to its cell, so text keeps its pixel size\ninstead of being scaled with the panel.\n\nCall it after size() and title() (the title band changes the cell height). Panels added\nlater keep their own size until fit_panels() is called again. A cell whose shorter side is\nunder min_panel_px gets a canvas scaled up to that side (same aspect ratio), so its text is\ndrawn proportionally smaller instead of the margins overflowing the panel.\n\nReturns\n-------\nRLayout\n    This layout, for chaining.\n\nSee Also\n--------\nsize()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto fig = dm::graphics::RLayout::create(1, 2)\n                   .add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)))\n                   .add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)))\n                   .size(1000, 400)\n                   .fit_panels();\n    std::print(\"{}x{}\\n\", fig.panel(0).width(), fig.panel(0).height());  // 500x400"},
+    {"show", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1042)), METH_VARARGS | METH_KEYWORDS, "show($self, title_hint=\"\")\n--\n\nOpens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons\nact on every panel's data bounds at once, keyboard zoom/pan scales the whole image.\n\nBlocks until the window is closed (q or Escape). Use save() in headless code.\n\nParameters\n----------\ntitle_hint : str, default \"\"\n    Window title; empty (the default) uses title_text().\n\nRaises\n------\nRuntimeError\n    `std::runtime_error`: If X11 support was not enabled at build time or no display is\n    available.\nValueError\n    If no panel was added.\n\nSee Also\n--------\nsave()\nPlot::show()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::seql(0.0, 6.0, 30);\n    dm::graphics::RLayout::create(1, 2)\n        .add(dm::Plot(x, dm::sin(x)))\n        .add(dm::Plot(x, dm::cos(x)))\n        .show(\"Trig\");"},
+    {"view", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1043)), METH_VARARGS | METH_KEYWORDS, "view($self, title_hint=\"\")\n--\n\nSame as show(); kept as an alias for older code.\n\nParameters\n----------\ntitle_hint : str, default \"\"\n    Window title; empty (the default) uses title_text().\n\nRaises\n------\nRuntimeError\n    `std::runtime_error`: As for show().\nValueError\n    If no panel was added.\n\nSee Also\n--------\nshow()"},
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_94_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
@@ -3868,9 +3434,93 @@ static PyType_Slot rosetta_class_94_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_94_methods},
     {Py_tp_getset, rosetta_class_94_getset},
-    {Py_tp_doc, const_cast<char*>("RLayout()\n\nTiles independently built plots into one multi-panel figure, like R's\n       `par(mfrow = c(rows, cols))` followed by one plot per panel.\n\nCreate it with create(rows, cols), then add() up to rows * cols panels; they fill the grid\nrow by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to\nthe original plot do not show and panels need not outlive the layout. Each cell is\n`width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a\nfigure title is set and 0 otherwise; every panel is scaled from its own canvas size into its\ncell. The figure background is white. Unused cells stay empty.\n\n const auto x = dm::seql(0.0, 6.0, 30);\n auto fig = dm::graphics::RLayout::create(1, 2)\n                .size(1200, 500)\n                .title(\"Two views\")\n                .add(dm::Plot(x, dm::sin(x)).set_title(\"sin\"))\n                .add(dm::Plot(x, dm::cos(x)).set_title(\"cos\"));\n std::print(\"{} panels in {}x{}\\n\", fig.panel_count(), fig.rows(), fig.cols());\n // 2 panels in 1x2\n fig.save(\"two_views.svg\");\n\npar: - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nsee: RPlot, RPlot::margins(), dm::Splom")},
+    {Py_tp_doc, const_cast<char*>("RLayout()\n--\n\nTiles independently built plots into one multi-panel figure, like R's\n`par(mfrow = c(rows, cols))` followed by one plot per panel.\n\nCreate it with create(rows, cols), then add() up to rows * cols panels; they fill the grid\nrow by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to\nthe original plot do not show and panels need not outlive the layout. Each cell is\n`width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a\nfigure title is set and 0 otherwise; every panel is scaled from its own canvas size into its\ncell. The figure background is white. Unused cells stay empty.\n\nSee Also\n--------\nRPlot\nRPlot::margins()\ndm::Splom\n\nReferences\n----------\n- R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::seql(0.0, 6.0, 30);\n    auto fig = dm::graphics::RLayout::create(1, 2)\n                   .size(1200, 500)\n                   .title(\"Two views\")\n                   .add(dm::Plot(x, dm::sin(x)).set_title(\"sin\"))\n                   .add(dm::Plot(x, dm::cos(x)).set_title(\"cos\"));\n    std::print(\"{} panels in {}x{}\\n\", fig.panel_count(), fig.rows(), fig.cols());\n    // 2 panels in 1x2\n    fig.save(\"two_views.svg\");")},
     {0, nullptr}};
 PyType_Spec rosetta_class_94_spec = {"pydatamunge._datamunge.RLayout", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_94_slots};
+static PyObject* rosetta_field_1044_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DTWResult>(self);
+        return rosetta_py::result<decltype((native->distance))>(native->distance, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1044_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DTWResult>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->distance)>>&> converted(value);
+        rosetta_py::assign_field(native->distance, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1045_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DTWResult>(self);
+        return rosetta_py::result<decltype((native->path_a))>(native->path_a, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1045_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DTWResult>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->path_a)>>&> converted(value);
+        rosetta_py::assign_field(native->path_a, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1046_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::DTWResult>(self);
+        return rosetta_py::result<decltype((native->path_b))>(native->path_b, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1046_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::DTWResult>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->path_b)>>&> converted(value);
+        rosetta_py::assign_field(native->path_b, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_95_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::geometry::DTWResult* created = nullptr;
+                        created = new datamunge::geometry::DTWResult();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::geometry::DTWResult>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("DTWResult", "    DTWResult()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_95_methods[] = {
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_95_getset[] = {
+    {"distance", rosetta_field_1044_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DTWResult::distance)>> ? rosetta_field_1044_set : nullptr, "Finite nonnegative summed absolute loss for a computed result.\n\nType: float", nullptr},
+    {"path_a", rosetta_field_1045_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DTWResult::path_a)>> ? rosetta_field_1045_set : nullptr, "Owned zero-based a indices, from zero to a.size()-1.\n\nType: list[int]", nullptr},
+    {"path_b", rosetta_field_1046_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DTWResult::path_b)>> ? rosetta_field_1046_set : nullptr, "Owned parallel b indices, from zero to b.size()-1.\n\nType: list[int]", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_95_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_95_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_95_methods},
+    {Py_tp_getset, rosetta_class_95_getset},
+    {Py_tp_doc, const_cast<char*>("DTWResult()\n--\n\nOwned unrestricted scalar DTW result, preserving the original three-field layout.\nDistance is the unnormalized sum of absolute differences along the returned\ninclusive path. Default construction is an uncomputed placeholder. Copies own\nindependent buffers. Positive lengths fit int; steps advance a, b or both by one.\n\nAttributes\n----------\ndistance : float\n    Finite nonnegative summed absolute loss for a computed result.\npath_a : list[int]\n    Owned zero-based a indices, from zero to a.size()-1.\npath_b : list[int]\n    Owned parallel b indices, from zero to b.size()-1.\n\nSee Also\n--------\ndynamic_time_warping()\ndtw_path_cost()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto r=dm::geometry::dynamic_time_warping({1,2,3},{1,1,2,3});\n    std::print(\"{} {}\\n\",r.distance,r.path_a.size()); // 0 4")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_95_spec = {"pydatamunge._datamunge.DTWResult", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_95_slots};
 static PyObject* rosetta_field_1050_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         auto* native = rosetta_py::native<datamunge::geometry::DTWComputation>(self);
@@ -3927,8 +3577,8 @@ static int rosetta_class_97_init(PyObject* self, PyObject* args, PyObject* kwarg
 static PyMethodDef rosetta_class_97_methods[] = {
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_97_getset[] = {
-    {"result", rosetta_field_1050_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DTWComputation::result)>> ? rosetta_field_1050_set : nullptr, "Optimal path and its unnormalized absolute loss.", nullptr},
-    {"work", rosetta_field_1051_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DTWComputation::work)>> ? rosetta_field_1051_set : nullptr, "Actual recurrence and traceback counts.", nullptr},
+    {"result", rosetta_field_1050_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DTWComputation::result)>> ? rosetta_field_1050_set : nullptr, "Optimal path and its unnormalized absolute loss.\n\nType: DTWResult", nullptr},
+    {"work", rosetta_field_1051_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::DTWComputation::work)>> ? rosetta_field_1051_set : nullptr, "Actual recurrence and traceback counts.\n\nType: DTWWork", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
 static PyType_Slot rosetta_class_97_slots[] = {
     {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_97_init)},
@@ -3936,10 +3586,10 @@ static PyType_Slot rosetta_class_97_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_97_methods},
     {Py_tp_getset, rosetta_class_97_getset},
-    {Py_tp_doc, const_cast<char*>("DTWComputation()\n\nOwned ordinary result and logical work, without retained cost-table history.\nScratch consists of two cost rows and one predecessor byte per positive cell.\nNo input references survive return. Copies own independent result paths.\n\n const auto c=dm::geometry::dynamic_time_warping_work({0,1},{0,1});\n std::print(\"{} {}\\n\",c.result.distance,c.work.cells); // 0 4\n\nsee: dynamic_time_warping_work(), DTWTrace")},
+    {Py_tp_doc, const_cast<char*>("DTWComputation()\n--\n\nOwned ordinary result and logical work, without retained cost-table history.\nScratch consists of two cost rows and one predecessor byte per positive cell.\nNo input references survive return. Copies own independent result paths.\n\nAttributes\n----------\nresult : DTWResult\n    Optimal path and its unnormalized absolute loss.\nwork : DTWWork\n    Actual recurrence and traceback counts.\n\nSee Also\n--------\ndynamic_time_warping_work()\nDTWTrace\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto c=dm::geometry::dynamic_time_warping_work({0,1},{0,1});\n    std::print(\"{} {}\\n\",c.result.distance,c.work.cells); // 0 4")},
     {0, nullptr}};
 PyType_Spec rosetta_class_97_spec = {"pydatamunge._datamunge.DTWComputation", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_97_slots};
-PyObject* rosetta_function_1179(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1127(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3947,11 +3597,11 @@ PyObject* rosetta_function_1179(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {"function", "coordinates"};
                 PyObject* a[2]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::DifferentiableFunction &>::check(a[0], strict))
                     && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::CMAES>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::AdaDelta>(self);
                     if (n == 2) {
-                        rosetta_py::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
+                        rosetta_py::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
                         rosetta_py::Param<std::vector<double> &> p1(a[1]);
                         PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
                         if (result) {
@@ -3962,10 +3612,10 @@ PyObject* rosetta_function_1179(PyObject* self, PyObject* args, PyObject* kwargs
                 }
             }
         }
-        rosetta_py::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: list[float]) -> float\n", args, kwargs);
+        rosetta_py::no_overload("optimize", "    optimize(function: DifferentiableFunction, coordinates: list[float]) -> float\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_1180(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1128(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3973,7 +3623,7 @@ PyObject* rosetta_function_1180(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::CMAES>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::AdaDelta>(self);
                     if (n == 0) {
                         PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
                         return result;
@@ -3981,10 +3631,10 @@ PyObject* rosetta_function_1180(PyObject* self, PyObject* args, PyObject* kwargs
                 }
             }
         }
-        rosetta_py::no_overload("options", "    options() -> CMAESOptions\n", args, kwargs);
+        rosetta_py::no_overload("options", "    options() -> AdaDeltaOptions\n", args, kwargs);
     }, nullptr);
 }
-static int rosetta_class_130_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_116_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -3994,62 +3644,58 @@ static int rosetta_class_130_init(PyObject* self, PyObject* args, PyObject* kwar
                 static const char* const names[] = {"options"};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::CMAESOptions>::check(a[0], strict))) {
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::AdaDeltaOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::optim::CMAES* created = nullptr;
-                        created = new datamunge::optim::CMAES();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::CMAES>::value;
+                        datamunge::optim::AdaDelta* created = nullptr;
+                        created = new datamunge::optim::AdaDelta();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::AdaDelta>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                     if (n == 1) {
-                        rosetta_py::Param<datamunge::optim::CMAESOptions> p0(a[0]);
-                        datamunge::optim::CMAES* created = nullptr;
-                        created = new datamunge::optim::CMAES(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::CMAES>::value;
+                        rosetta_py::Param<datamunge::optim::AdaDeltaOptions> p0(a[0]);
+                        datamunge::optim::AdaDelta* created = nullptr;
+                        created = new datamunge::optim::AdaDelta(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::AdaDelta>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("CMAES", "    CMAES(options: CMAESOptions = ...)\n", args, kwargs);
+        rosetta_py::no_overload("AdaDelta", "    AdaDelta(options: AdaDeltaOptions = ...)\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_130_methods[] = {
-    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1179)), METH_VARARGS | METH_KEYWORDS, "optimize(function: ArbitraryFunction, coordinates: list[float]) -> float\n\nRun CMAES from the supplied point using the configured finite budget.\nUnbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.\n\nthrows: CMAES: initial_step_size must be positive; CMAES: tolerance must be non-negative; CMAES: population_size must be at least 2.\n\nthrows: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\n dm::optim::QuadraticObjective f({2,8},{1,-2});\n dm::optim::CMAESOptions controls;controls.max_generations=5;\n std::vector<double> x{0,0};\n const auto value=dm::optim::CMAES(controls).optimize(f,x);\n std::print(\"{}\\n\",std::isfinite(value)); // true\n\nsee: trace_optimize(), CMAESOptions\n\nParameters:\n    function: Borrowed ArbitraryFunction with matching finite output shapes.\n    coordinates: Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns: Objective at the native returned coordinates; not a stop-status code."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1180)), METH_VARARGS | METH_KEYWORDS, "options() -> CMAESOptions\n\nBorrow this optimizer's stored configuration.\n\nReturns: Const option reference, valid during this object's lifetime; no mutation."},
+static PyMethodDef rosetta_class_116_methods[] = {
+    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1127)), METH_VARARGS | METH_KEYWORDS, "optimize($self, function, coordinates)\n--\n\nRun AdaDelta from the supplied point using the configured finite budget.\nUses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state.\n\nParameters\n----------\nfunction : DifferentiableFunction\n    Borrowed DifferentiableFunction with matching finite output shapes.\ncoordinates : list[float]\n    Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns\n-------\nfloat\n    Objective at the native returned coordinates; not a stop-status code.\n\nRaises\n------\nValueError\n    AdaDelta: decay_rate must be in [0, 1); AdaDelta: epsilon must be positive; AdaDelta: tolerance must be non-negative.\nRuntimeError\n    `std::exception`: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\nSee Also\n--------\ntrace_optimize()\nAdaDeltaOptions\n\nExamples\n--------\n.. code-block:: cpp\n\n    dm::optim::QuadraticObjective f({2,8},{1,-2});\n    dm::optim::AdaDeltaOptions controls;controls.max_iterations=5;\n    std::vector<double> x{0,0};\n    const auto value=dm::optim::AdaDelta(controls).optimize(f,x);\n    std::print(\"{}\\n\",std::isfinite(value)); // true"},
+    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1128)), METH_VARARGS | METH_KEYWORDS, "options($self)\n--\n\nBorrow this optimizer's stored configuration.\n\nReturns\n-------\nAdaDeltaOptions\n    Const option reference, valid during this object's lifetime; no mutation."},
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_130_getset[] = {
+static PyGetSetDef rosetta_class_116_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_130_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_130_init)},
+static PyType_Slot rosetta_class_116_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_116_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_130_methods},
-    {Py_tp_getset, rosetta_class_130_getset},
-    {Py_tp_doc, const_cast<char*>("CMAES(options: CMAESOptions = ...)\n\nCMAES on the ArbitraryFunction callback interface.\nUnbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\n const dm::optim::CMAES optimizer;\n std::print(\"{}\\n\",optimizer.options().max_generations); // 500\n\npar: - N. Hansen and A. Ostermeier (2001), Completely Derandomized Self-Adaptation in Evolution Strategies, https://doi.org/10.1162/106365601750190398\n\nsee: CMAESOptions, trace_optimize()")},
+    {Py_tp_methods, rosetta_class_116_methods},
+    {Py_tp_getset, rosetta_class_116_getset},
+    {Py_tp_doc, const_cast<char*>("AdaDelta(options=...)\n--\n\nAdaDelta on the DifferentiableFunction callback interface.\nUses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\nStore a copy of the controls without running the objective.\n\nParameters\n----------\noptions : AdaDeltaOptions, optional\n    Method-specific controls; defaults are listed by AdaDeltaOptions.\n\nSee Also\n--------\nAdaDeltaOptions\ntrace_optimize()\noptimize()\n\nReferences\n----------\n- M. D. Zeiler (2012), ADADELTA: An Adaptive Learning Rate Method, https://arxiv.org/abs/1212.5701\n\nExamples\n--------\n.. code-block:: cpp\n\n    const dm::optim::AdaDelta optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_iterations); // 10000\n.. code-block:: cpp\n\n    const dm::optim::AdaDelta optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_iterations); // 10000")},
     {0, nullptr}};
-PyType_Spec rosetta_class_130_spec = {"pydatamunge._datamunge.CMAES", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_130_slots};
-PyObject* rosetta_function_1275(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyType_Spec rosetta_class_116_spec = {"pydatamunge._datamunge.AdaDelta", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_116_slots};
+PyObject* rosetta_function_1149(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"function", "coordinates", "lower_bound", "upper_bound"};
-                PyObject* a[4]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 4, 4, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<const std::vector<double> &>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<const std::vector<double> &>::check(a[3], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizer>(self);
-                    if (n == 4) {
-                        rosetta_py::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
+                static const char* const names[] = {"function", "coordinates"};
+                PyObject* a[2]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::EqualityConstrainedFunction &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))) {
+                    auto* native = rosetta_py::native<datamunge::optim::AugmentedLagrangian>(self);
+                    if (n == 2) {
+                        rosetta_py::Param<datamunge::optim::EqualityConstrainedFunction &> p0(a[0]);
                         rosetta_py::Param<std::vector<double> &> p1(a[1]);
-                        rosetta_py::Param<const std::vector<double> &> p2(a[2]);
-                        rosetta_py::Param<const std::vector<double> &> p3(a[3]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get(), p2.get(), p3.get()); }, self, rosetta_py::Return::automatic);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
                         if (result) {
                         p1.writeback(a[1]);
                         }
@@ -4058,10 +3704,10 @@ PyObject* rosetta_function_1275(PyObject* self, PyObject* args, PyObject* kwargs
                 }
             }
         }
-        rosetta_py::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: list[float], lower_bound: list[float], upper_bound: list[float]) -> float\n", args, kwargs);
+        rosetta_py::no_overload("optimize", "    optimize(function: EqualityConstrainedFunction, coordinates: list[float]) -> float\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_1276(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1150(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -4069,7 +3715,7 @@ PyObject* rosetta_function_1276(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizer>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::AugmentedLagrangian>(self);
                     if (n == 0) {
                         PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
                         return result;
@@ -4077,10 +3723,10 @@ PyObject* rosetta_function_1276(PyObject* self, PyObject* args, PyObject* kwargs
                 }
             }
         }
-        rosetta_py::no_overload("options", "    options() -> GreyWolfOptimizerOptions\n", args, kwargs);
+        rosetta_py::no_overload("options", "    options() -> AugmentedLagrangianOptions\n", args, kwargs);
     }, nullptr);
 }
-static int rosetta_class_152_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_122_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -4090,134 +3736,119 @@ static int rosetta_class_152_init(PyObject* self, PyObject* args, PyObject* kwar
                 static const char* const names[] = {"options"};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::GreyWolfOptimizerOptions>::check(a[0], strict))) {
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::AugmentedLagrangianOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::optim::GreyWolfOptimizer* created = nullptr;
-                        created = new datamunge::optim::GreyWolfOptimizer();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::GreyWolfOptimizer>::value;
+                        datamunge::optim::AugmentedLagrangian* created = nullptr;
+                        created = new datamunge::optim::AugmentedLagrangian();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::AugmentedLagrangian>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                     if (n == 1) {
-                        rosetta_py::Param<datamunge::optim::GreyWolfOptimizerOptions> p0(a[0]);
-                        datamunge::optim::GreyWolfOptimizer* created = nullptr;
-                        created = new datamunge::optim::GreyWolfOptimizer(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::GreyWolfOptimizer>::value;
+                        rosetta_py::Param<datamunge::optim::AugmentedLagrangianOptions> p0(a[0]);
+                        datamunge::optim::AugmentedLagrangian* created = nullptr;
+                        created = new datamunge::optim::AugmentedLagrangian(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::AugmentedLagrangian>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("GreyWolfOptimizer", "    GreyWolfOptimizer(options: GreyWolfOptimizerOptions = ...)\n", args, kwargs);
+        rosetta_py::no_overload("AugmentedLagrangian", "    AugmentedLagrangian(options: AugmentedLagrangianOptions = ...)\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_152_methods[] = {
-    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1275)), METH_VARARGS | METH_KEYWORDS, "optimize(function: ArbitraryFunction, coordinates: list[float], lower_bound: list[float], upper_bound: list[float]) -> float\n\nMinimizes function\nwithin [ lower_bound,\nupper_bound],\nupdating\ncoordinates\nin place to the best point found, and returns its value. The\n       initial coordinates\n(clamped into bounds) seed one wolf of the population."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1276)), METH_VARARGS | METH_KEYWORDS, "options() -> GreyWolfOptimizerOptions\n\nThe options this GreyWolfOptimizer was configured with.\n\nReturns: The stored options."},
+static PyMethodDef rosetta_class_122_methods[] = {
+    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1149)), METH_VARARGS | METH_KEYWORDS, "optimize($self, function, coordinates)\n--\n\nRun AugmentedLagrangian from the supplied point using the configured finite budget.\nUses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.\n\nParameters\n----------\nfunction : EqualityConstrainedFunction\n    Borrowed EqualityConstrainedFunction with matching finite output shapes.\ncoordinates : list[float]\n    Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns\n-------\nfloat\n    Objective at the native returned coordinates; not a stop-status code.\n\nRaises\n------\nValueError\n    AugmentedLagrangian: positive step_size and penalty required.\nRuntimeError\n    `std::exception`: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\nSee Also\n--------\ntrace_optimize()\nAugmentedLagrangianOptions\n\nExamples\n--------\n.. code-block:: cpp\n\n    dm::optim::EqualityQuadratic f({2,0},1);\n    dm::optim::AugmentedLagrangianOptions controls;controls.max_outer_iterations=5;\n    std::vector<double> x{0,0};\n    const auto value=dm::optim::AugmentedLagrangian(controls).optimize(f,x);\n    std::print(\"{}\\n\",std::isfinite(value)); // true"},
+    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1150)), METH_VARARGS | METH_KEYWORDS, "options($self)\n--\n\nBorrow this optimizer's stored configuration.\n\nReturns\n-------\nAugmentedLagrangianOptions\n    Const option reference, valid during this object's lifetime; no mutation."},
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_152_getset[] = {
+static PyGetSetDef rosetta_class_122_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_152_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_152_init)},
+static PyType_Slot rosetta_class_122_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_122_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_152_methods},
-    {Py_tp_getset, rosetta_class_152_getset},
-    {Py_tp_doc, const_cast<char*>("GreyWolfOptimizer(options: GreyWolfOptimizerOptions = ...)\n\nGrey Wolf Optimizer (GWO) on an ArbitraryFunction within a box constraint: a\n       population of wolves is guided each iteration by its three best members (alpha,\n       beta, delta), moving every wolf to the elementwise average of three independently\n       randomized pulls toward those leaders. Derivative-free. Mirjalili, Mirjalili\n&\n       Lewis (2014), \"Grey wolf optimizer\", Advances in Engineering Software, 69, 46-61.")},
+    {Py_tp_methods, rosetta_class_122_methods},
+    {Py_tp_getset, rosetta_class_122_getset},
+    {Py_tp_doc, const_cast<char*>("AugmentedLagrangian(options=...)\n--\n\nAugmentedLagrangian on the EqualityConstrainedFunction callback interface.\nUses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\nStore a copy of the controls without running the objective.\n\nParameters\n----------\noptions : AugmentedLagrangianOptions, optional\n    Method-specific controls; defaults are listed by AugmentedLagrangianOptions.\n\nSee Also\n--------\nAugmentedLagrangianOptions\ntrace_optimize()\noptimize()\n\nReferences\n----------\n- J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.\n\nExamples\n--------\n.. code-block:: cpp\n\n    const dm::optim::AugmentedLagrangian optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_outer_iterations); // 50\n.. code-block:: cpp\n\n    const dm::optim::AugmentedLagrangian optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_outer_iterations); // 50")},
     {0, nullptr}};
-PyType_Spec rosetta_class_152_spec = {"pydatamunge._datamunge.GreyWolfOptimizer", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_152_slots};
-static PyObject* rosetta_field_1293_get(PyObject* self, void*) {
+PyType_Spec rosetta_class_122_spec = {"pydatamunge._datamunge.AugmentedLagrangian", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_122_slots};
+static PyObject* rosetta_field_1167_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         return rosetta_py::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1293_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1167_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>&> converted(value);
         rosetta_py::assign_field(native->max_iterations, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1294_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1168_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         return rosetta_py::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1294_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1168_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>&> converted(value);
         rosetta_py::assign_field(native->tolerance, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1295_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1169_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
-        return rosetta_py::result<decltype((native->history_size))>(native->history_size, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_1295_set(PyObject* self, PyObject* value, void*) {
-    return rosetta_py::guard<int>([&]() -> int {
-        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->history_size)>>&> converted(value);
-        rosetta_py::assign_field(native->history_size, converted.get());
-        return 0;
-    }, -1);
-}
-static PyObject* rosetta_field_1296_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         return rosetta_py::result<decltype((native->armijo_c1))>(native->armijo_c1, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1296_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1169_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->armijo_c1)>>&> converted(value);
         rosetta_py::assign_field(native->armijo_c1, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1297_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1170_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
-        return rosetta_py::result<decltype((native->wolfe_c2))>(native->wolfe_c2, self, rosetta_py::Return::automatic);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
+        return rosetta_py::result<decltype((native->backtracking_factor))>(native->backtracking_factor, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1297_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1170_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->wolfe_c2)>>&> converted(value);
-        rosetta_py::assign_field(native->wolfe_c2, converted.get());
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->backtracking_factor)>>&> converted(value);
+        rosetta_py::assign_field(native->backtracking_factor, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1298_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1171_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         return rosetta_py::result<decltype((native->max_line_search_trials))>(native->max_line_search_trials, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1298_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1171_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::LBFGSOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::ConjugateGradientOptions>(self);
         rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->max_line_search_trials)>>&> converted(value);
         rosetta_py::assign_field(native->max_line_search_trials, converted.get());
         return 0;
     }, -1);
 }
-static int rosetta_class_157_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_127_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -4228,64 +3859,481 @@ static int rosetta_class_157_init(PyObject* self, PyObject* args, PyObject* kwar
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        datamunge::optim::LBFGSOptions* created = nullptr;
-                        created = new datamunge::optim::LBFGSOptions();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::LBFGSOptions>::value;
+                        datamunge::optim::ConjugateGradientOptions* created = nullptr;
+                        created = new datamunge::optim::ConjugateGradientOptions();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::ConjugateGradientOptions>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("LBFGSOptions", "    LBFGSOptions()\n", args, kwargs);
+        rosetta_py::no_overload("ConjugateGradientOptions", "    ConjugateGradientOptions()\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_157_methods[] = {
+static PyMethodDef rosetta_class_127_methods[] = {
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_157_getset[] = {
-    {"max_iterations", rosetta_field_1293_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::LBFGSOptions::max_iterations)>> ? rosetta_field_1293_set : nullptr, "Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 500.", nullptr},
-    {"tolerance", rosetta_field_1294_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::LBFGSOptions::tolerance)>> ? rosetta_field_1294_set : nullptr, "Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.", nullptr},
-    {"history_size", rosetta_field_1295_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::LBFGSOptions::history_size)>> ? rosetta_field_1295_set : nullptr, "Positive maximum stored curvature-pair count. Default 10.", nullptr},
-    {"armijo_c1", rosetta_field_1296_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::LBFGSOptions::armijo_c1)>> ? rosetta_field_1296_set : nullptr, "Sufficient-decrease fraction in (0,1). Default 1e-4.", nullptr},
-    {"wolfe_c2", rosetta_field_1297_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::LBFGSOptions::wolfe_c2)>> ? rosetta_field_1297_set : nullptr, "Weak-Wolfe curvature fraction. Default 0.9.", nullptr},
-    {"max_line_search_trials", rosetta_field_1298_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::LBFGSOptions::max_line_search_trials)>> ? rosetta_field_1298_set : nullptr, "Maximum candidate line-search trials per update. Default 50.", nullptr},
+static PyGetSetDef rosetta_class_127_getset[] = {
+    {"max_iterations", rosetta_field_1167_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::ConjugateGradientOptions::max_iterations)>> ? rosetta_field_1167_set : nullptr, "Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 1000.\n\nType: int", nullptr},
+    {"tolerance", rosetta_field_1168_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::ConjugateGradientOptions::tolerance)>> ? rosetta_field_1168_set : nullptr, "Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.\n\nType: float", nullptr},
+    {"armijo_c1", rosetta_field_1169_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::ConjugateGradientOptions::armijo_c1)>> ? rosetta_field_1169_set : nullptr, "Sufficient-decrease fraction in (0,1). Default 1e-4.\n\nType: float", nullptr},
+    {"backtracking_factor", rosetta_field_1170_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::ConjugateGradientOptions::backtracking_factor)>> ? rosetta_field_1170_set : nullptr, "Trial-step multiplier in (0,1). Default 0.5.\n\nType: float", nullptr},
+    {"max_line_search_trials", rosetta_field_1171_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::ConjugateGradientOptions::max_line_search_trials)>> ? rosetta_field_1171_set : nullptr, "Maximum candidate line-search trials per update. Default 30.\n\nType: int", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_157_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_157_init)},
+static PyType_Slot rosetta_class_127_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_127_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_157_methods},
-    {Py_tp_getset, rosetta_class_157_getset},
-    {Py_tp_doc, const_cast<char*>("LBFGSOptions()\n\nConfiguration for LBFGS; fields retain their documented native defaults.\nSupply finite values in the supported ranges. Controls are copied at construction;\nvalidation, stopping and loss scaling belong to optimize().\n\n dm::optim::LBFGSOptions o;\n std::print(\"{}\\n\",o.max_iterations); // 500\n\nsee: LBFGS")},
+    {Py_tp_methods, rosetta_class_127_methods},
+    {Py_tp_getset, rosetta_class_127_getset},
+    {Py_tp_doc, const_cast<char*>("ConjugateGradientOptions()\n--\n\nConfiguration for ConjugateGradient; fields retain their documented native defaults.\nSupply finite values in the supported ranges. Controls are copied at construction;\nvalidation, stopping and loss scaling belong to optimize().\n\nAttributes\n----------\nmax_iterations : int\n    Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 1000.\ntolerance : float\n    Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.\narmijo_c1 : float\n    Sufficient-decrease fraction in (0,1). Default 1e-4.\nbacktracking_factor : float\n    Trial-step multiplier in (0,1). Default 0.5.\nmax_line_search_trials : int\n    Maximum candidate line-search trials per update. Default 30.\n\nSee Also\n--------\nConjugateGradient\n\nExamples\n--------\n.. code-block:: cpp\n\n    dm::optim::ConjugateGradientOptions o;\n    std::print(\"{}\\n\",o.max_iterations); // 1000")},
     {0, nullptr}};
-PyType_Spec rosetta_class_157_spec = {"pydatamunge._datamunge.LBFGSOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_157_slots};
-PyObject* rosetta_function_1429(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyType_Spec rosetta_class_127_spec = {"pydatamunge._datamunge.ConjugateGradientOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_127_slots};
+static PyObject* rosetta_field_1217_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        return rosetta_py::result<decltype((native->population_size))>(native->population_size, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1217_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->population_size)>>&> converted(value);
+        rosetta_py::assign_field(native->population_size, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1218_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        return rosetta_py::result<decltype((native->selection_ratio))>(native->selection_ratio, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1218_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->selection_ratio)>>&> converted(value);
+        rosetta_py::assign_field(native->selection_ratio, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1219_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        return rosetta_py::result<decltype((native->initial_std_dev))>(native->initial_std_dev, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1219_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->initial_std_dev)>>&> converted(value);
+        rosetta_py::assign_field(native->initial_std_dev, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1220_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        return rosetta_py::result<decltype((native->covariance_regularization))>(native->covariance_regularization, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1220_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->covariance_regularization)>>&> converted(value);
+        rosetta_py::assign_field(native->covariance_regularization, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1221_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        return rosetta_py::result<decltype((native->max_generations))>(native->max_generations, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1221_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->max_generations)>>&> converted(value);
+        rosetta_py::assign_field(native->max_generations, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1222_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        return rosetta_py::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1222_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>&> converted(value);
+        rosetta_py::assign_field(native->tolerance, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1223_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        return rosetta_py::result<decltype((native->seed))>(native->seed, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1223_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistributionOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>&> converted(value);
+        rosetta_py::assign_field(native->seed, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_139_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"function", "coordinates"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::DifferentiableSeparableFunction &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::SVRG>(self);
-                    if (n == 2) {
-                        rosetta_py::Param<datamunge::optim::DifferentiableSeparableFunction &> p0(a[0]);
-                        rosetta_py::Param<std::vector<double> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
-                        if (result) {
-                        p1.writeback(a[1]);
-                        }
-                        return result;
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::optim::EstimationOfDistributionOptions* created = nullptr;
+                        created = new datamunge::optim::EstimationOfDistributionOptions();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::EstimationOfDistributionOptions>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("optimize", "    optimize(function: DifferentiableSeparableFunction, coordinates: list[float]) -> float\n", args, kwargs);
+        rosetta_py::no_overload("EstimationOfDistributionOptions", "    EstimationOfDistributionOptions()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_139_methods[] = {
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_139_getset[] = {
+    {"population_size", rosetta_field_1217_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::EstimationOfDistributionOptions::population_size)>> ? rosetta_field_1217_set : nullptr, "Lambda: candidates sampled from the Gaussian model each generation.\n\nType: int", nullptr},
+    {"selection_ratio", rosetta_field_1218_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::EstimationOfDistributionOptions::selection_ratio)>> ? rosetta_field_1218_set : nullptr, "Fraction of population_size kept as \"elite\" each generation to re-estimate the\nGaussian from; mu = max(2, ceil(population_size * selection_ratio)).\n\nType: float", nullptr},
+    {"initial_std_dev", rosetta_field_1219_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::EstimationOfDistributionOptions::initial_std_dev)>> ? rosetta_field_1219_set : nullptr, "Per-dimension standard deviation of the initial diagonal covariance.\n\nType: float", nullptr},
+    {"covariance_regularization", rosetta_field_1220_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::EstimationOfDistributionOptions::covariance_regularization)>> ? rosetta_field_1220_set : nullptr, "Diagonal regularization added to the re-estimated covariance every generation, to\nkeep it numerically well-conditioned (needed whenever mu <= dimension, or whenever\nthe elite set happens to be nearly coplanar).\n\nType: float", nullptr},
+    {"max_generations", rosetta_field_1221_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::EstimationOfDistributionOptions::max_generations)>> ? rosetta_field_1221_set : nullptr, "Type: int", nullptr},
+    {"tolerance", rosetta_field_1222_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::EstimationOfDistributionOptions::tolerance)>> ? rosetta_field_1222_set : nullptr, "Stops after the best-ever value has improved by less than this for 20 consecutive\ngenerations, or once the covariance has collapsed to near-zero.\n\nType: float", nullptr},
+    {"seed", rosetta_field_1223_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::EstimationOfDistributionOptions::seed)>> ? rosetta_field_1223_set : nullptr, "Type: int", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_139_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_139_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_139_methods},
+    {Py_tp_getset, rosetta_class_139_getset},
+    {Py_tp_doc, const_cast<char*>("EstimationOfDistributionOptions()\n--\n\nAttributes\n----------\npopulation_size : int\n    Lambda: candidates sampled from the Gaussian model each generation.\nselection_ratio : float\n    Fraction of population_size kept as \"elite\" each generation to re-estimate the\n    Gaussian from; mu = max(2, ceil(population_size * selection_ratio)).\ninitial_std_dev : float\n    Per-dimension standard deviation of the initial diagonal covariance.\ncovariance_regularization : float\n    Diagonal regularization added to the re-estimated covariance every generation, to\n    keep it numerically well-conditioned (needed whenever mu <= dimension, or whenever\n    the elite set happens to be nearly coplanar).\nmax_generations : int\ntolerance : float\n    Stops after the best-ever value has improved by less than this for 20 consecutive\n    generations, or once the covariance has collapsed to near-zero.\nseed : int")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_139_spec = {"pydatamunge._datamunge.EstimationOfDistributionOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_139_slots};
+static PyObject* rosetta_field_1329_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::NewtonOptions>(self);
+        return rosetta_py::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-PyObject* rosetta_function_1430(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_field_1329_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::NewtonOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>&> converted(value);
+        rosetta_py::assign_field(native->max_iterations, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1330_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::NewtonOptions>(self);
+        return rosetta_py::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1330_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::NewtonOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>&> converted(value);
+        rosetta_py::assign_field(native->tolerance, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1331_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::NewtonOptions>(self);
+        return rosetta_py::result<decltype((native->damping))>(native->damping, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1331_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::NewtonOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->damping)>>&> converted(value);
+        rosetta_py::assign_field(native->damping, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_167_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::optim::NewtonOptions* created = nullptr;
+                        created = new datamunge::optim::NewtonOptions();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::NewtonOptions>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("NewtonOptions", "    NewtonOptions()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_167_methods[] = {
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_167_getset[] = {
+    {"max_iterations", rosetta_field_1329_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::NewtonOptions::max_iterations)>> ? rosetta_field_1329_set : nullptr, "Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 100.\n\nType: int", nullptr},
+    {"tolerance", rosetta_field_1330_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::NewtonOptions::tolerance)>> ? rosetta_field_1330_set : nullptr, "Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.\n\nType: float", nullptr},
+    {"damping", rosetta_field_1331_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::NewtonOptions::damping)>> ? rosetta_field_1331_set : nullptr, "Fixed diagonal Hessian shift; not adaptive damping. Default 1e-10.\n\nType: float", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_167_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_167_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_167_methods},
+    {Py_tp_getset, rosetta_class_167_getset},
+    {Py_tp_doc, const_cast<char*>("NewtonOptions()\n--\n\nConfiguration for Newton; fields retain their documented native defaults.\nSupply finite values in the supported ranges. Controls are copied at construction;\nvalidation, stopping and loss scaling belong to optimize().\n\nAttributes\n----------\nmax_iterations : int\n    Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 100.\ntolerance : float\n    Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.\ndamping : float\n    Fixed diagonal Hessian shift; not adaptive damping. Default 1e-10.\n\nSee Also\n--------\nNewton\n\nExamples\n--------\n.. code-block:: cpp\n\n    dm::optim::NewtonOptions o;\n    std::print(\"{}\\n\",o.max_iterations); // 100")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_167_spec = {"pydatamunge._datamunge.NewtonOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_167_slots};
+static PyObject* rosetta_field_1380_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->length_scale))>(native->length_scale, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1380_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->length_scale)>>&> converted(value);
+        rosetta_py::assign_field(native->length_scale, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1381_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->signal_variance))>(native->signal_variance, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1381_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->signal_variance)>>&> converted(value);
+        rosetta_py::assign_field(native->signal_variance, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1382_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->noise))>(native->noise, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1382_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->noise)>>&> converted(value);
+        rosetta_py::assign_field(native->noise, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1383_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->normalize_values))>(native->normalize_values, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1383_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->normalize_values)>>&> converted(value);
+        rosetta_py::assign_field(native->normalize_values, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1384_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->fit_hyperparameters))>(native->fit_hyperparameters, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1384_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->fit_hyperparameters)>>&> converted(value);
+        rosetta_py::assign_field(native->fit_hyperparameters, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1385_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->fit_noise))>(native->fit_noise, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1385_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->fit_noise)>>&> converted(value);
+        rosetta_py::assign_field(native->fit_noise, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1386_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->min_length_scale))>(native->min_length_scale, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1386_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->min_length_scale)>>&> converted(value);
+        rosetta_py::assign_field(native->min_length_scale, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1387_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->max_length_scale))>(native->max_length_scale, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1387_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->max_length_scale)>>&> converted(value);
+        rosetta_py::assign_field(native->max_length_scale, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1388_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->acquisition))>(native->acquisition, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1388_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->acquisition)>>&> converted(value);
+        rosetta_py::assign_field(native->acquisition, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1389_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->exploration))>(native->exploration, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1389_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->exploration)>>&> converted(value);
+        rosetta_py::assign_field(native->exploration, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1390_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        return rosetta_py::result<decltype((native->kappa))>(native->kappa, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1390_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GaussianProcessSurrogateOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->kappa)>>&> converted(value);
+        rosetta_py::assign_field(native->kappa, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_180_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::optim::GaussianProcessSurrogateOptions* created = nullptr;
+                        created = new datamunge::optim::GaussianProcessSurrogateOptions();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::GaussianProcessSurrogateOptions>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("GaussianProcessSurrogateOptions", "    GaussianProcessSurrogateOptions()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_180_methods[] = {
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_180_getset[] = {
+    {"length_scale", rosetta_field_1380_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::length_scale)>> ? rosetta_field_1380_set : nullptr, "Kernel length scale\n\n`\\ell` (the starting point is ignored when fitting).\n\nType: float", nullptr},
+    {"signal_variance", rosetta_field_1381_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::signal_variance)>> ? rosetta_field_1381_set : nullptr, "Prior variance\n\n`s` of the (normalised) objective.\n\nType: float", nullptr},
+    {"noise", rosetta_field_1382_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::noise)>> ? rosetta_field_1382_set : nullptr, "Observation-noise variance added to the kernel diagonal. When fitting, the ratio\nnoise / signal_variance (the nugget) is what stays fixed.\n\nType: float", nullptr},
+    {"normalize_values", rosetta_field_1383_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::normalize_values)>> ? rosetta_field_1383_set : nullptr, "Centre and scale the values before fitting.\n\nType: bool", nullptr},
+    {"fit_hyperparameters", rosetta_field_1384_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::fit_hyperparameters)>> ? rosetta_field_1384_set : nullptr, "Maximise the marginal likelihood over\n\n`\\ell` (and `s`) at every fit().\n\nType: bool", nullptr},
+    {"fit_noise", rosetta_field_1385_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::fit_noise)>> ? rosetta_field_1385_set : nullptr, "Also maximise over the nugget ratio, from\n\n`10^{-8}` to 1 (for noisy objectives).\n\nType: bool", nullptr},
+    {"min_length_scale", rosetta_field_1386_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::min_length_scale)>> ? rosetta_field_1386_set : nullptr, "Smallest length scale searched; 0 means 0.01 times the widest coordinate range of the data.\n\nType: float", nullptr},
+    {"max_length_scale", rosetta_field_1387_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::max_length_scale)>> ? rosetta_field_1387_set : nullptr, "Largest length scale searched; 0 means 10 times the widest coordinate range of the data.\n\nType: float", nullptr},
+    {"acquisition", rosetta_field_1388_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::acquisition)>> ? rosetta_field_1388_set : nullptr, "Acquisition function.\n\nType: Acquisition", nullptr},
+    {"exploration", rosetta_field_1389_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::exploration)>> ? rosetta_field_1389_set : nullptr, "Margin\n\n`\\xi` for expected or probability of improvement, in objective units.\n\nType: float", nullptr},
+    {"kappa", rosetta_field_1390_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GaussianProcessSurrogateOptions::kappa)>> ? rosetta_field_1390_set : nullptr, "Width\n\n`\\kappa` of the lower confidence bound.\n\nType: float", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_180_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_180_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_180_methods},
+    {Py_tp_getset, rosetta_class_180_getset},
+    {Py_tp_doc, const_cast<char*>("GaussianProcessSurrogateOptions()\n--\n\nSettings of an RBFGaussianProcessSurrogate built from options.\n\nWith `normalize_values`, the values are centred at their mean (the prior mean) and divided\nby their standard deviation before fitting, so the kernel hyperparameters are on a fixed\nscale whatever the objective's units. With `fit_hyperparameters`, the length scale (and the\nsignal variance, in closed form) maximise the marginal likelihood at every fit().\n\nAttributes\n----------\nlength_scale : float\n    Kernel length scale\n    `\\ell` (the starting point is ignored when fitting).\nsignal_variance : float\n    Prior variance\n    `s` of the (normalised) objective.\nnoise : float\n    Observation-noise variance added to the kernel diagonal. When fitting, the ratio\n    noise / signal_variance (the nugget) is what stays fixed.\nnormalize_values : bool\n    Centre and scale the values before fitting.\nfit_hyperparameters : bool\n    Maximise the marginal likelihood over\n    `\\ell` (and `s`) at every fit().\nfit_noise : bool\n    Also maximise over the nugget ratio, from\n    `10^{-8}` to 1 (for noisy objectives).\nmin_length_scale : float\n    Smallest length scale searched; 0 means 0.01 times the widest coordinate range of the data.\nmax_length_scale : float\n    Largest length scale searched; 0 means 10 times the widest coordinate range of the data.\nacquisition : Acquisition\n    Acquisition function.\nexploration : float\n    Margin\n    `\\xi` for expected or probability of improvement, in objective units.\nkappa : float\n    Width\n    `\\kappa` of the lower confidence bound.")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_180_spec = {"pydatamunge._datamunge.GaussianProcessSurrogateOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_180_slots};
+PyObject* rosetta_function_1879(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -4293,105 +4341,248 @@ PyObject* rosetta_function_1430(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::SVRG>(self);
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
                     if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->predictor_names(); }, self, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("options", "    options() -> SVRGOptions\n", args, kwargs);
+        rosetta_py::no_overload("predictor_names", "    predictor_names() -> list[str]\n", args, kwargs);
     }, nullptr);
 }
-static int rosetta_class_189_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+PyObject* rosetta_function_1880(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"options"};
+                static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::SVRGOptions>::check(a[0], strict))) {
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
                     if (n == 0) {
-                        datamunge::optim::SVRG* created = nullptr;
-                        created = new datamunge::optim::SVRG();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::SVRG>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->observations(); }, self, rosetta_py::Return::automatic);
+                        return result;
                     }
+                }
+            }
+        }
+        rosetta_py::no_overload("observations", "    observations() -> int\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1881(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->n_trees(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("n_trees", "    n_trees() -> int\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1882(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->max_features_used(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("max_features_used", "    max_features_used() -> int\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1883(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->feature_importance(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("feature_importance", "    feature_importance() -> list[float]\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1884(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->fitted_values(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("fitted_values", "    fitted_values() -> list[float]\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1885(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->r_squared(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("r_squared", "    r_squared() -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1886(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->rmse(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("rmse", "    rmse() -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1887(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->oob_r_squared(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("oob_r_squared", "    oob_r_squared() -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1888(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->oob_rmse(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("oob_rmse", "    oob_rmse() -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1889(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->summary(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("summary", "    summary() -> str\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1890(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->print_summary(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("print_summary", "    print_summary() -> None\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1891(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"newdata"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::DataFrame &>::check(a[0], strict))) {
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
                     if (n == 1) {
-                        rosetta_py::Param<datamunge::optim::SVRGOptions> p0(a[0]);
-                        datamunge::optim::SVRG* created = nullptr;
-                        created = new datamunge::optim::SVRG(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::SVRG>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("SVRG", "    SVRG(options: SVRGOptions = ...)\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_189_methods[] = {
-    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1429)), METH_VARARGS | METH_KEYWORDS, "optimize(function: DifferentiableSeparableFunction, coordinates: list[float]) -> float\n\nRun SVRG from the supplied point using the configured finite budget.\nUses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.\n\nthrows: SVRG: step_size must be positive; SVRG: tolerance must be non-negative; SVRG: function has zero terms.\n\nthrows: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\n dm::optim::LeastSquaresObjective f({{1},{1}},{1,3});\n dm::optim::SVRGOptions controls;controls.max_epochs=5;\n std::vector<double> x{0};\n const auto value=dm::optim::SVRG(controls).optimize(f,x);\n std::print(\"{}\\n\",std::isfinite(value)); // true\n\nsee: trace_optimize(), SVRGOptions\n\nParameters:\n    function: Borrowed DifferentiableSeparableFunction with matching finite output shapes.\n    coordinates: Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns: Objective at the native returned coordinates; not a stop-status code."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1430)), METH_VARARGS | METH_KEYWORDS, "options() -> SVRGOptions\n\nBorrow this optimizer's stored configuration.\n\nReturns: Const option reference, valid during this object's lifetime; no mutation."},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_189_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_189_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_189_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_189_methods},
-    {Py_tp_getset, rosetta_class_189_getset},
-    {Py_tp_doc, const_cast<char*>("SVRG(options: SVRGOptions = ...)\n\nSVRG on the DifferentiableSeparableFunction callback interface.\nUses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\n const dm::optim::SVRG optimizer;\n std::print(\"{}\\n\",optimizer.options().max_epochs); // 100\n\npar: - R. Johnson and T. Zhang (2013), Accelerating Stochastic Gradient Descent using Predictive Variance Reduction, https://proceedings.neurips.cc/paper/2013/hash/ac1dd209cbcc5e5d1c6e28598e8cbbe8-Abstract.html\n\nsee: SVRGOptions, trace_optimize()")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_189_spec = {"pydatamunge._datamunge.SVRG", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_189_slots};
-PyObject* rosetta_function_1450(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"degree", "basis_size", "min_x", "max_x"};
-                PyObject* a[4]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 4, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<unsigned long>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<double>::check(a[3], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 3) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                    if (n == 4) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<unsigned long> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        rosetta_py::Param<double> p3(a[3]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::fda::BSplineBasis::open_uniform(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_py::Return::automatic);
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->predict(p0.get()); }, self, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("open_uniform", "    open_uniform(degree: int, basis_size: int, min_x: float = ..., max_x: float = ...) -> BSplineBasis\n", args, kwargs);
+        rosetta_py::no_overload("predict", "    predict(newdata: DataFrame) -> list[float]\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_1451(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1892(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -4399,18 +4590,18 @@ PyObject* rosetta_function_1451(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::fda::BSplineBasis>(self);
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
                     if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->degree(); }, self, rosetta_py::Return::automatic);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->plot_predicted_vs_actual(); }, self, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("degree", "    degree() -> int\n", args, kwargs);
+        rosetta_py::no_overload("plot_predicted_vs_actual", "    plot_predicted_vs_actual() -> RPlot\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_1452(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1893(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -4418,180 +4609,188 @@ PyObject* rosetta_function_1452(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::fda::BSplineBasis>(self);
+                    auto* native = rosetta_py::native<datamunge::RandomForestRegressor>(self);
                     if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->basis_size(); }, self, rosetta_py::Return::automatic);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->plot_residuals_vs_fitted(); }, self, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("basis_size", "    basis_size() -> int\n", args, kwargs);
+        rosetta_py::no_overload("plot_residuals_vs_fitted", "    plot_residuals_vs_fitted() -> RPlot\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_1453(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::fda::BSplineBasis>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->knots(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("knots", "    knots() -> list[float]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_1454(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::fda::BSplineBasis>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->domain(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("domain", "    domain() -> tuple[float, float]\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_196_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 0; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        datamunge::fda::BSplineBasis* created = nullptr;
-                        created = new datamunge::fda::BSplineBasis();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::fda::BSplineBasis>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-            {
-                static const char* const names[] = {"degree", "knots"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<std::vector<double>>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        rosetta_py::Param<std::vector<double>> p1(a[1]);
-                        datamunge::fda::BSplineBasis* created = nullptr;
-                        created = new datamunge::fda::BSplineBasis(p0.get(), p1.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::fda::BSplineBasis>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("BSplineBasis", "    BSplineBasis()\n    BSplineBasis(degree: int, knots: list[float])\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_196_methods[] = {
-    {"open_uniform", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1450)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "open_uniform(degree: int, basis_size: int, min_x: float = ..., max_x: float = ...) -> BSplineBasis\n"},
-    {"degree", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1451)), METH_VARARGS | METH_KEYWORDS, "degree() -> int\n"},
-    {"basis_size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1452)), METH_VARARGS | METH_KEYWORDS, "basis_size() -> int\n"},
-    {"knots", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1453)), METH_VARARGS | METH_KEYWORDS, "knots() -> list[float]\n"},
-    {"domain", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1454)), METH_VARARGS | METH_KEYWORDS, "domain() -> tuple[float, float]\n"},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_196_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_196_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_196_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_196_methods},
-    {Py_tp_getset, rosetta_class_196_getset},
-    {Py_tp_doc, const_cast<char*>("BSplineBasis()\nBSplineBasis(degree: int, knots: list[float])\n")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_196_spec = {"pydatamunge._datamunge.BSplineBasis", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_196_slots};
-static int rosetta_class_203_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_220_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"lower", "upper", "knots", "degree", "intercept"};
-                PyObject* a[5]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 5, 3, a, &n)
-                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<const std::vector<double> &>::check(a[2], strict))
+                static const char* const names[] = {"data", "formula", "n_trees", "max_depth", "min_samples_split", "min_samples_leaf", "max_features", "bootstrap", "sample_fraction", "seed"};
+                PyObject* a[10]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 10, 2, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::DataFrame &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<unsigned long>::check(a[2], strict))
                     && (n <= 3 || rosetta_py::Param<unsigned long>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<bool>::check(a[4], strict))) {
+                    && (n <= 4 || rosetta_py::Param<unsigned long>::check(a[4], strict))
+                    && (n <= 5 || rosetta_py::Param<unsigned long>::check(a[5], strict))
+                    && (n <= 6 || rosetta_py::Param<unsigned long>::check(a[6], strict))
+                    && (n <= 7 || rosetta_py::Param<bool>::check(a[7], strict))
+                    && (n <= 8 || rosetta_py::Param<double>::check(a[8], strict))
+                    && (n <= 9 || rosetta_py::Param<unsigned long>::check(a[9], strict))) {
+                    if (n == 2) {
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
                     if (n == 3) {
-                        rosetta_py::Param<double> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        rosetta_py::Param<const std::vector<double> &> p2(a[2]);
-                        datamunge::Bspline* created = nullptr;
-                        created = new datamunge::Bspline(p0.get(), p1.get(), p2.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::Bspline>::value;
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                     if (n == 4) {
-                        rosetta_py::Param<double> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        rosetta_py::Param<const std::vector<double> &> p2(a[2]);
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
                         rosetta_py::Param<unsigned long> p3(a[3]);
-                        datamunge::Bspline* created = nullptr;
-                        created = new datamunge::Bspline(p0.get(), p1.get(), p2.get(), p3.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::Bspline>::value;
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get(), p3.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                     if (n == 5) {
-                        rosetta_py::Param<double> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        rosetta_py::Param<const std::vector<double> &> p2(a[2]);
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
                         rosetta_py::Param<unsigned long> p3(a[3]);
-                        rosetta_py::Param<bool> p4(a[4]);
-                        datamunge::Bspline* created = nullptr;
-                        created = new datamunge::Bspline(p0.get(), p1.get(), p2.get(), p3.get(), p4.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::Bspline>::value;
+                        rosetta_py::Param<unsigned long> p4(a[4]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get(), p3.get(), p4.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 6) {
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
+                        rosetta_py::Param<unsigned long> p3(a[3]);
+                        rosetta_py::Param<unsigned long> p4(a[4]);
+                        rosetta_py::Param<unsigned long> p5(a[5]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 7) {
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
+                        rosetta_py::Param<unsigned long> p3(a[3]);
+                        rosetta_py::Param<unsigned long> p4(a[4]);
+                        rosetta_py::Param<unsigned long> p5(a[5]);
+                        rosetta_py::Param<unsigned long> p6(a[6]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 8) {
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
+                        rosetta_py::Param<unsigned long> p3(a[3]);
+                        rosetta_py::Param<unsigned long> p4(a[4]);
+                        rosetta_py::Param<unsigned long> p5(a[5]);
+                        rosetta_py::Param<unsigned long> p6(a[6]);
+                        rosetta_py::Param<bool> p7(a[7]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 9) {
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
+                        rosetta_py::Param<unsigned long> p3(a[3]);
+                        rosetta_py::Param<unsigned long> p4(a[4]);
+                        rosetta_py::Param<unsigned long> p5(a[5]);
+                        rosetta_py::Param<unsigned long> p6(a[6]);
+                        rosetta_py::Param<bool> p7(a[7]);
+                        rosetta_py::Param<double> p8(a[8]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get(), p8.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 10) {
+                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
+                        rosetta_py::Param<unsigned long> p3(a[3]);
+                        rosetta_py::Param<unsigned long> p4(a[4]);
+                        rosetta_py::Param<unsigned long> p5(a[5]);
+                        rosetta_py::Param<unsigned long> p6(a[6]);
+                        rosetta_py::Param<bool> p7(a[7]);
+                        rosetta_py::Param<double> p8(a[8]);
+                        rosetta_py::Param<unsigned long> p9(a[9]);
+                        datamunge::RandomForestRegressor* created = nullptr;
+                        created = new datamunge::RandomForestRegressor(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get(), p8.get(), p9.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::RandomForestRegressor>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("Bspline", "    Bspline(lower: float, upper: float, knots: list[float], degree: int = ..., intercept: bool = ...)\n", args, kwargs);
+        rosetta_py::no_overload("RandomForestRegressor", "    RandomForestRegressor(data: DataFrame, formula: str, n_trees: int = ..., max_depth: int = ..., min_samples_split: int = ..., min_samples_leaf: int = ..., max_features: int = ..., bootstrap: bool = ..., sample_fraction: float = ..., seed: int = ...)\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_203_methods[] = {
+static PyMethodDef rosetta_class_220_methods[] = {
+    {"predictor_names", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1879)), METH_VARARGS | METH_KEYWORDS, "predictor_names($self)\n--\n\nReturns\n-------\nlist[str]"},
+    {"observations", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1880)), METH_VARARGS | METH_KEYWORDS, "observations($self)\n--\n\nReturns\n-------\nint"},
+    {"n_trees", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1881)), METH_VARARGS | METH_KEYWORDS, "n_trees($self)\n--\n\nReturns\n-------\nint"},
+    {"max_features_used", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1882)), METH_VARARGS | METH_KEYWORDS, "max_features_used($self)\n--\n\nReturns\n-------\nint"},
+    {"feature_importance", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1883)), METH_VARARGS | METH_KEYWORDS, "feature_importance($self)\n--\n\nReturns\n-------\nlist[float]"},
+    {"fitted_values", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1884)), METH_VARARGS | METH_KEYWORDS, "fitted_values($self)\n--\n\nReturns\n-------\nlist[float]"},
+    {"r_squared", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1885)), METH_VARARGS | METH_KEYWORDS, "r_squared($self)\n--\n\nReturns\n-------\nfloat"},
+    {"rmse", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1886)), METH_VARARGS | METH_KEYWORDS, "rmse($self)\n--\n\nReturns\n-------\nfloat"},
+    {"oob_r_squared", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1887)), METH_VARARGS | METH_KEYWORDS, "oob_r_squared($self)\n--\n\nReturns\n-------\nfloat"},
+    {"oob_rmse", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1888)), METH_VARARGS | METH_KEYWORDS, "oob_rmse($self)\n--\n\nReturns\n-------\nfloat"},
+    {"summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1889)), METH_VARARGS | METH_KEYWORDS, "summary($self)\n--\n\nReturns\n-------\nstr"},
+    {"print_summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1890)), METH_VARARGS | METH_KEYWORDS, "print_summary($self)\n--\n\n"},
+    {"predict", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1891)), METH_VARARGS | METH_KEYWORDS, "predict($self, newdata)\n--\n\nParameters\n----------\nnewdata : DataFrame\n\nReturns\n-------\nlist[float]"},
+    {"plot_predicted_vs_actual", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1892)), METH_VARARGS | METH_KEYWORDS, "plot_predicted_vs_actual($self)\n--\n\nReturns\n-------\nRPlot"},
+    {"plot_residuals_vs_fitted", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1893)), METH_VARARGS | METH_KEYWORDS, "plot_residuals_vs_fitted($self)\n--\n\nReturns\n-------\nRPlot"},
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_203_getset[] = {
+static PyGetSetDef rosetta_class_220_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_203_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_203_init)},
+static PyType_Slot rosetta_class_220_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_220_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_203_methods},
-    {Py_tp_getset, rosetta_class_203_getset},
-    {Py_tp_doc, const_cast<char*>("Bspline(lower: float, upper: float, knots: list[float], degree: int = ..., intercept: bool = ...)\n\nB-spline design factory, analogous to R's splines::bs().\nOwns a clamped basis on fixed boundaries, reused for training and prediction.\nBy default the first basis column is omitted, so a formula's intercept does\nnot duplicate the partition of unity. No fitting or smoothing is performed.\nConst evaluations are independent and safe to run concurrently.\n\n const dm::Bspline basis(0, 1, {0, 0.5, 1});\n const auto design = basis.eval({0, 0.5, 1});\n std::print(\"{} {}\\n\", design.rows(), design.cols()); // 3 4\n\npar: - C. de Boor (1972). \"On calculating with B-splines\". Journal of Approximation\n  Theory 6(1), 50-62. doi:10.1016/0021-9045(72)90080-9.\n\nsee: bs(), fda::BSplineBasis, stats::LM")},
+    {Py_tp_methods, rosetta_class_220_methods},
+    {Py_tp_getset, rosetta_class_220_getset},
+    {Py_tp_doc, const_cast<char*>("RandomForestRegressor(data, formula, n_trees=100, max_depth=10, min_samples_split=2, min_samples_leaf=1, max_features=0, bootstrap=True, sample_fraction=1.0, seed=42)\n--\n\nSWIG-friendly facade for datamunge::stats::RandomForestRegressor — a bagged ensemble of CART regression\ntrees, each fit on a bootstrap sample with a random subset of predictors considered at every split.\n\nParameters\n----------\ndata : DataFrame\nformula : str\nn_trees : int, default 100\nmax_depth : int, default 10\nmin_samples_split : int, default 2\nmin_samples_leaf : int, default 1\nmax_features : int, default 0\n    0 = auto (floor(number of predictors / 3)).\nbootstrap : bool, default True\nsample_fraction : float, default 1.0\nseed : int, default 42")},
     {0, nullptr}};
-PyType_Spec rosetta_class_203_spec = {"pydatamunge._datamunge.Bspline", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_203_slots};
+PyType_Spec rosetta_class_220_spec = {"pydatamunge._datamunge.RandomForestRegressor", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_220_slots};
 PyObject* rosetta_function_2044(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
@@ -5230,17 +5429,17 @@ static int rosetta_class_231_init(PyObject* self, PyObject* args, PyObject* kwar
     }, -1);
 }
 static PyMethodDef rosetta_class_231_methods[] = {
-    {"feature_names", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2044)), METH_VARARGS | METH_KEYWORDS, "feature_names() -> list[str]\n"},
-    {"observations", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2045)), METH_VARARGS | METH_KEYWORDS, "observations() -> int\n"},
-    {"n_components", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2046)), METH_VARARGS | METH_KEYWORDS, "n_components() -> int\n"},
-    {"kept_row_indices", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2047)), METH_VARARGS | METH_KEYWORDS, "kept_row_indices() -> list[int]\n"},
-    {"achieved_perplexity", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2048)), METH_VARARGS | METH_KEYWORDS, "achieved_perplexity() -> list[float]\n\nThe achieved perplexity for each fitted point after the per-point binary search --\n       should be close to the constructor's perplexity argument if calibration converged."},
-    {"dimension", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2049)), METH_VARARGS | METH_KEYWORDS, "dimension(index: int) -> list[float]\n"},
-    {"embedding_frame", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2050)), METH_VARARGS | METH_KEYWORDS, "embedding_frame() -> DataFrame | None\n"},
-    {"summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2051)), METH_VARARGS | METH_KEYWORDS, "summary() -> str\n"},
-    {"print_summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2052)), METH_VARARGS | METH_KEYWORDS, "print_summary() -> None\n"},
-    {"plot_embedding", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2053)), METH_VARARGS | METH_KEYWORDS, "plot_embedding(dimension_x: int = ..., dimension_y: int = ...) -> RPlot\n"},
-    {"plot_embedding_grouped", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2054)), METH_VARARGS | METH_KEYWORDS, "plot_embedding_grouped(group_labels: list[str], dimension_x: int = ..., dimension_y: int = ...) -> RPlot\n"},
+    {"feature_names", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2044)), METH_VARARGS | METH_KEYWORDS, "feature_names($self)\n--\n\nReturns\n-------\nlist[str]"},
+    {"observations", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2045)), METH_VARARGS | METH_KEYWORDS, "observations($self)\n--\n\nReturns\n-------\nint"},
+    {"n_components", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2046)), METH_VARARGS | METH_KEYWORDS, "n_components($self)\n--\n\nReturns\n-------\nint"},
+    {"kept_row_indices", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2047)), METH_VARARGS | METH_KEYWORDS, "kept_row_indices($self)\n--\n\nReturns\n-------\nlist[int]"},
+    {"achieved_perplexity", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2048)), METH_VARARGS | METH_KEYWORDS, "achieved_perplexity($self)\n--\n\nThe achieved perplexity for each fitted point after the per-point binary search --\nshould be close to the constructor's perplexity argument if calibration converged.\n\nReturns\n-------\nlist[float]"},
+    {"dimension", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2049)), METH_VARARGS | METH_KEYWORDS, "dimension($self, index)\n--\n\nParameters\n----------\nindex : int\n\nReturns\n-------\nlist[float]"},
+    {"embedding_frame", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2050)), METH_VARARGS | METH_KEYWORDS, "embedding_frame($self)\n--\n\nReturns\n-------\nDataFrame | None"},
+    {"summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2051)), METH_VARARGS | METH_KEYWORDS, "summary($self)\n--\n\nReturns\n-------\nstr"},
+    {"print_summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2052)), METH_VARARGS | METH_KEYWORDS, "print_summary($self)\n--\n\n"},
+    {"plot_embedding", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2053)), METH_VARARGS | METH_KEYWORDS, "plot_embedding($self, dimension_x=0, dimension_y=1)\n--\n\nParameters\n----------\ndimension_x : int, default 0\ndimension_y : int, default 1\n\nReturns\n-------\nRPlot"},
+    {"plot_embedding_grouped", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2054)), METH_VARARGS | METH_KEYWORDS, "plot_embedding_grouped($self, group_labels, dimension_x=0, dimension_y=1)\n--\n\nParameters\n----------\ngroup_labels : list[str]\ndimension_x : int, default 0\ndimension_y : int, default 1\n\nReturns\n-------\nRPlot"},
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_231_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
@@ -5250,7 +5449,7 @@ static PyType_Slot rosetta_class_231_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_231_methods},
     {Py_tp_getset, rosetta_class_231_getset},
-    {Py_tp_doc, const_cast<char*>("TSNE(data: DataFrame, feature_columns: list[str], n_components: int = ..., perplexity: float = ..., max_iterations: int = ..., learning_rate: float = ..., early_exaggeration: float = ..., early_exaggeration_iterations: int = ..., initial_momentum: float = ..., final_momentum: float = ..., momentum_switch_iteration: int = ..., metric: str = ..., seed: int = ...)\nTSNE(data: DataFrame, encoded_feature_columns: str, n_components: int = ..., perplexity: float = ..., max_iterations: int = ..., learning_rate: float = ..., early_exaggeration: float = ..., early_exaggeration_iterations: int = ..., initial_momentum: float = ..., final_momentum: float = ..., momentum_switch_iteration: int = ..., metric: str = ..., seed: int = ...)\n\nSWIG-friendly facade for datamunge::stats::TSNE — t-distributed Stochastic Neighbor\n       Embedding, a nonlinear method that preserves local neighborhood structure (via a\n       perplexity-calibrated probability distribution) primarily for 2D/3D visualization.")},
+    {Py_tp_doc, const_cast<char*>("TSNE(data: DataFrame, feature_columns: list[str], n_components: int = ..., perplexity: float = ..., max_iterations: int = ..., learning_rate: float = ..., early_exaggeration: float = ..., early_exaggeration_iterations: int = ..., initial_momentum: float = ..., final_momentum: float = ..., momentum_switch_iteration: int = ..., metric: str = ..., seed: int = ...)\nTSNE(data: DataFrame, encoded_feature_columns: str, n_components: int = ..., perplexity: float = ..., max_iterations: int = ..., learning_rate: float = ..., early_exaggeration: float = ..., early_exaggeration_iterations: int = ..., initial_momentum: float = ..., final_momentum: float = ..., momentum_switch_iteration: int = ..., metric: str = ..., seed: int = ...)\n\nSWIG-friendly facade for datamunge::stats::TSNE — t-distributed Stochastic Neighbor\nEmbedding, a nonlinear method that preserves local neighborhood structure (via a\nperplexity-calibrated probability distribution) primarily for 2D/3D visualization.\n\nSame as the vector<string> constructor, but feature_columns is a single \"<count>\ncol1...\"-encoded string -- see KMeans's encoded constructor for why.\n\nParameters\n----------\ndata : DataFrame\nfeature_columns : list[str]\nn_components : int, default 2\nperplexity : float, default 30.0\nmax_iterations : int, default 1000\nlearning_rate : float, default 200.0\nearly_exaggeration : float, default 12.0\nearly_exaggeration_iterations : int, default 250\ninitial_momentum : float, default 0.5\nfinal_momentum : float, default 0.80000000000000004\nmomentum_switch_iteration : int, default 250\nmetric : str, default \"euclidean\"\n    One of \"euclidean\" (default) or \"manhattan\".\nseed : int, default 42\nencoded_feature_columns : str")},
     {0, nullptr}};
 PyType_Spec rosetta_class_231_spec = {"pydatamunge._datamunge.TSNE", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_231_slots};
 PyObject* rosetta_function_2112(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -5589,17 +5788,17 @@ static int rosetta_class_237_init(PyObject* self, PyObject* args, PyObject* kwar
     }, -1);
 }
 static PyMethodDef rosetta_class_237_methods[] = {
-    {"feature_names", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2112)), METH_VARARGS | METH_KEYWORDS, "feature_names() -> list[str]\n"},
-    {"observations", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2113)), METH_VARARGS | METH_KEYWORDS, "observations() -> int\n"},
-    {"labels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2114)), METH_VARARGS | METH_KEYWORDS, "labels() -> list[int]\n"},
-    {"cut", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2115)), METH_VARARGS | METH_KEYWORDS, "cut(n_clusters: int) -> list[int]\n\nRe-cuts the already-built dendrogram to produce n_clusters\nclusters, without refitting."},
-    {"num_merges", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2116)), METH_VARARGS | METH_KEYWORDS, "num_merges() -> int\n"},
-    {"merge_cluster_a", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2117)), METH_VARARGS | METH_KEYWORDS, "merge_cluster_a(merge_index: int) -> int\n"},
-    {"merge_cluster_b", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2118)), METH_VARARGS | METH_KEYWORDS, "merge_cluster_b(merge_index: int) -> int\n"},
-    {"merge_distance", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2119)), METH_VARARGS | METH_KEYWORDS, "merge_distance(merge_index: int) -> float\n"},
-    {"merge_size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2120)), METH_VARARGS | METH_KEYWORDS, "merge_size(merge_index: int) -> int\n"},
-    {"summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2121)), METH_VARARGS | METH_KEYWORDS, "summary() -> str\n"},
-    {"print_summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2122)), METH_VARARGS | METH_KEYWORDS, "print_summary() -> None\n"},
+    {"feature_names", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2112)), METH_VARARGS | METH_KEYWORDS, "feature_names($self)\n--\n\nReturns\n-------\nlist[str]"},
+    {"observations", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2113)), METH_VARARGS | METH_KEYWORDS, "observations($self)\n--\n\nReturns\n-------\nint"},
+    {"labels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2114)), METH_VARARGS | METH_KEYWORDS, "labels($self)\n--\n\nReturns\n-------\nlist[int]"},
+    {"cut", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2115)), METH_VARARGS | METH_KEYWORDS, "cut($self, n_clusters)\n--\n\nRe-cuts the already-built dendrogram to produce `n_clusters` clusters, without refitting.\n\nParameters\n----------\nn_clusters : int\n\nReturns\n-------\nlist[int]"},
+    {"num_merges", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2116)), METH_VARARGS | METH_KEYWORDS, "num_merges($self)\n--\n\nReturns\n-------\nint"},
+    {"merge_cluster_a", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2117)), METH_VARARGS | METH_KEYWORDS, "merge_cluster_a($self, merge_index)\n--\n\nParameters\n----------\nmerge_index : int\n\nReturns\n-------\nint"},
+    {"merge_cluster_b", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2118)), METH_VARARGS | METH_KEYWORDS, "merge_cluster_b($self, merge_index)\n--\n\nParameters\n----------\nmerge_index : int\n\nReturns\n-------\nint"},
+    {"merge_distance", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2119)), METH_VARARGS | METH_KEYWORDS, "merge_distance($self, merge_index)\n--\n\nParameters\n----------\nmerge_index : int\n\nReturns\n-------\nfloat"},
+    {"merge_size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2120)), METH_VARARGS | METH_KEYWORDS, "merge_size($self, merge_index)\n--\n\nParameters\n----------\nmerge_index : int\n\nReturns\n-------\nint"},
+    {"summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2121)), METH_VARARGS | METH_KEYWORDS, "summary($self)\n--\n\nReturns\n-------\nstr"},
+    {"print_summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2122)), METH_VARARGS | METH_KEYWORDS, "print_summary($self)\n--\n\n"},
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_237_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
@@ -5609,278 +5808,9 @@ static PyType_Slot rosetta_class_237_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_237_methods},
     {Py_tp_getset, rosetta_class_237_getset},
-    {Py_tp_doc, const_cast<char*>("AgglomerativeClustering(data: DataFrame, feature_columns: list[str], n_clusters: int = ..., linkage: str = ..., metric: str = ...)\nAgglomerativeClustering(data: DataFrame, encoded_feature_columns: str, n_clusters: int = ..., linkage: str = ..., metric: str = ...)\n\nSWIG-friendly facade for datamunge::stats::AgglomerativeClustering — bottom-up\n       hierarchical clustering fit from a DataFrame and a list of numeric feature columns.")},
+    {Py_tp_doc, const_cast<char*>("AgglomerativeClustering(data: DataFrame, feature_columns: list[str], n_clusters: int = ..., linkage: str = ..., metric: str = ...)\nAgglomerativeClustering(data: DataFrame, encoded_feature_columns: str, n_clusters: int = ..., linkage: str = ..., metric: str = ...)\n\nSWIG-friendly facade for datamunge::stats::AgglomerativeClustering — bottom-up\nhierarchical clustering fit from a DataFrame and a list of numeric feature columns.\n\nSame as the vector<string> constructor, but feature_columns is a single \"<count>\ncol1...\"-encoded string -- see KMeans's encoded constructor for why.\n\nParameters\n----------\ndata : DataFrame\nfeature_columns : list[str]\nn_clusters : int, default 2\nlinkage : str, default \"ward\"\n    One of \"single\", \"complete\", \"average\", \"ward\" (default).\nmetric : str, default \"euclidean\"\n    One of \"euclidean\" (default) or \"manhattan\"; ward linkage requires euclidean.\nencoded_feature_columns : str")},
     {0, nullptr}};
 PyType_Spec rosetta_class_237_spec = {"pydatamunge._datamunge.AgglomerativeClustering", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_237_slots};
-PyObject* rosetta_function_2123(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::DBSCAN>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->feature_names(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("feature_names", "    feature_names() -> list[str]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_2124(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::DBSCAN>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->observations(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("observations", "    observations() -> int\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_2125(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::DBSCAN>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->n_clusters(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("n_clusters", "    n_clusters() -> int\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_2126(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::DBSCAN>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->n_noise(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("n_noise", "    n_noise() -> int\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_2127(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::DBSCAN>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->labels(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("labels", "    labels() -> list[int]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_2128(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::DBSCAN>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->summary(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("summary", "    summary() -> str\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_2129(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::DBSCAN>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->print_summary(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("print_summary", "    print_summary() -> None\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_238_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 0; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"data", "feature_columns", "eps", "min_samples", "metric"};
-                PyObject* a[5]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 5, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::DataFrame &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::vector<std::__cxx11::basic_string<char>> &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<unsigned long>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[4], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(a[1]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 3) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get(), p2.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 4) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        rosetta_py::Param<unsigned long> p3(a[3]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 5) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        rosetta_py::Param<unsigned long> p3(a[3]);
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p4(a[4]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get(), p4.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-            {
-                static const char* const names[] = {"data", "encoded_feature_columns", "eps", "min_samples", "metric"};
-                PyObject* a[5]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 5, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::DataFrame &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<unsigned long>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[4], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 3) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get(), p2.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 4) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        rosetta_py::Param<unsigned long> p3(a[3]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 5) {
-                        rosetta_py::Param<const datamunge::DataFrame &> p0(a[0]);
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p1(a[1]);
-                        rosetta_py::Param<double> p2(a[2]);
-                        rosetta_py::Param<unsigned long> p3(a[3]);
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p4(a[4]);
-                        datamunge::DBSCAN* created = nullptr;
-                        created = new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get(), p4.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::DBSCAN>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("DBSCAN", "    DBSCAN(data: DataFrame, feature_columns: list[str], eps: float = ..., min_samples: int = ..., metric: str = ...)\n    DBSCAN(data: DataFrame, encoded_feature_columns: str, eps: float = ..., min_samples: int = ..., metric: str = ...)\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_238_methods[] = {
-    {"feature_names", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2123)), METH_VARARGS | METH_KEYWORDS, "feature_names() -> list[str]\n"},
-    {"observations", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2124)), METH_VARARGS | METH_KEYWORDS, "observations() -> int\n"},
-    {"n_clusters", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2125)), METH_VARARGS | METH_KEYWORDS, "n_clusters() -> int\n"},
-    {"n_noise", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2126)), METH_VARARGS | METH_KEYWORDS, "n_noise() -> int\n"},
-    {"labels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2127)), METH_VARARGS | METH_KEYWORDS, "labels() -> list[int]\n\nCluster index (0-based) assigned to each fitted row, or -1 for noise."},
-    {"summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2128)), METH_VARARGS | METH_KEYWORDS, "summary() -> str\n"},
-    {"print_summary", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2129)), METH_VARARGS | METH_KEYWORDS, "print_summary() -> None\n"},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_238_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_238_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_238_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_238_methods},
-    {Py_tp_getset, rosetta_class_238_getset},
-    {Py_tp_doc, const_cast<char*>("DBSCAN(data: DataFrame, feature_columns: list[str], eps: float = ..., min_samples: int = ..., metric: str = ...)\nDBSCAN(data: DataFrame, encoded_feature_columns: str, eps: float = ..., min_samples: int = ..., metric: str = ...)\n\nSWIG-friendly facade for datamunge::stats::DBSCAN — density-based clustering fit\n       from a DataFrame and a list of numeric feature columns.")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_238_spec = {"pydatamunge._datamunge.DBSCAN", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_238_slots};
 PyObject* rosetta_function_2632(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
@@ -6347,26 +6277,26 @@ static int rosetta_class_265_init(PyObject* self, PyObject* args, PyObject* kwar
     }, -1);
 }
 static PyMethodDef rosetta_class_265_methods[] = {
-    {"empty", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2632)), METH_VARARGS | METH_KEYWORDS, "empty() -> bool\n"},
-    {"vertex_count", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2633)), METH_VARARGS | METH_KEYWORDS, "vertex_count() -> int\n"},
-    {"edge_count", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2634)), METH_VARARGS | METH_KEYWORDS, "edge_count() -> int\n"},
-    {"clear", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2635)), METH_VARARGS | METH_KEYWORDS, "clear() -> None\n"},
-    {"add_vertex", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2636)), METH_VARARGS | METH_KEYWORDS, "add_vertex(vertex: str) -> bool\nadd_vertex(vertex: str) -> bool\n"},
-    {"remove_vertex", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2637)), METH_VARARGS | METH_KEYWORDS, "remove_vertex(vertex: str) -> bool\n"},
-    {"has_vertex", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2638)), METH_VARARGS | METH_KEYWORDS, "has_vertex(vertex: str) -> bool\n"},
-    {"add_edge", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2639)), METH_VARARGS | METH_KEYWORDS, "add_edge(src: str, dst: str) -> bool\n"},
-    {"remove_edge", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2640)), METH_VARARGS | METH_KEYWORDS, "remove_edge(src: str, dst: str) -> bool\n"},
-    {"has_edge", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2641)), METH_VARARGS | METH_KEYWORDS, "has_edge(src: str, dst: str) -> bool\n"},
-    {"vertices", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2642)), METH_VARARGS | METH_KEYWORDS, "vertices() -> list[str]\n"},
-    {"outgoing_neighbors", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2643)), METH_VARARGS | METH_KEYWORDS, "outgoing_neighbors(vertex: str) -> list[str]\n"},
-    {"incoming_neighbors", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2644)), METH_VARARGS | METH_KEYWORDS, "incoming_neighbors(vertex: str) -> list[str]\n"},
-    {"out_degree", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2645)), METH_VARARGS | METH_KEYWORDS, "out_degree(vertex: str) -> int\n"},
-    {"in_degree", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2646)), METH_VARARGS | METH_KEYWORDS, "in_degree(vertex: str) -> int\n"},
-    {"bfs", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2647)), METH_VARARGS | METH_KEYWORDS, "bfs(start: str) -> list[str]\n"},
-    {"dfs", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2648)), METH_VARARGS | METH_KEYWORDS, "dfs(start: str) -> list[str]\n"},
-    {"contains_path", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2649)), METH_VARARGS | METH_KEYWORDS, "contains_path(src: str, dst: str) -> bool\n"},
-    {"transpose", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2650)), METH_VARARGS | METH_KEYWORDS, "transpose() -> DirectedGraph\n"},
-    {"topological_sort", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2651)), METH_VARARGS | METH_KEYWORDS, "topological_sort() -> list[str]\n"},
+    {"empty", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2632)), METH_VARARGS | METH_KEYWORDS, "empty($self)\n--\n\nReturns\n-------\nbool"},
+    {"vertex_count", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2633)), METH_VARARGS | METH_KEYWORDS, "vertex_count($self)\n--\n\nReturns\n-------\nint"},
+    {"edge_count", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2634)), METH_VARARGS | METH_KEYWORDS, "edge_count($self)\n--\n\nReturns\n-------\nint"},
+    {"clear", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2635)), METH_VARARGS | METH_KEYWORDS, "clear($self)\n--\n\n"},
+    {"add_vertex", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2636)), METH_VARARGS | METH_KEYWORDS, "add_vertex(vertex: str) -> bool\nadd_vertex(vertex: str) -> bool\n\nParameters\n----------\nvertex : str\n\nReturns\n-------\nbool"},
+    {"remove_vertex", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2637)), METH_VARARGS | METH_KEYWORDS, "remove_vertex($self, vertex)\n--\n\nParameters\n----------\nvertex : str\n\nReturns\n-------\nbool"},
+    {"has_vertex", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2638)), METH_VARARGS | METH_KEYWORDS, "has_vertex($self, vertex)\n--\n\nParameters\n----------\nvertex : str\n\nReturns\n-------\nbool"},
+    {"add_edge", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2639)), METH_VARARGS | METH_KEYWORDS, "add_edge($self, src, dst)\n--\n\nParameters\n----------\nsrc : str\ndst : str\n\nReturns\n-------\nbool"},
+    {"remove_edge", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2640)), METH_VARARGS | METH_KEYWORDS, "remove_edge($self, src, dst)\n--\n\nParameters\n----------\nsrc : str\ndst : str\n\nReturns\n-------\nbool"},
+    {"has_edge", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2641)), METH_VARARGS | METH_KEYWORDS, "has_edge($self, src, dst)\n--\n\nParameters\n----------\nsrc : str\ndst : str\n\nReturns\n-------\nbool"},
+    {"vertices", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2642)), METH_VARARGS | METH_KEYWORDS, "vertices($self)\n--\n\nReturns\n-------\nlist[str]"},
+    {"outgoing_neighbors", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2643)), METH_VARARGS | METH_KEYWORDS, "outgoing_neighbors($self, vertex)\n--\n\nParameters\n----------\nvertex : str\n\nReturns\n-------\nlist[str]"},
+    {"incoming_neighbors", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2644)), METH_VARARGS | METH_KEYWORDS, "incoming_neighbors($self, vertex)\n--\n\nParameters\n----------\nvertex : str\n\nReturns\n-------\nlist[str]"},
+    {"out_degree", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2645)), METH_VARARGS | METH_KEYWORDS, "out_degree($self, vertex)\n--\n\nParameters\n----------\nvertex : str\n\nReturns\n-------\nint"},
+    {"in_degree", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2646)), METH_VARARGS | METH_KEYWORDS, "in_degree($self, vertex)\n--\n\nParameters\n----------\nvertex : str\n\nReturns\n-------\nint"},
+    {"bfs", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2647)), METH_VARARGS | METH_KEYWORDS, "bfs($self, start)\n--\n\nParameters\n----------\nstart : str\n\nReturns\n-------\nlist[str]"},
+    {"dfs", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2648)), METH_VARARGS | METH_KEYWORDS, "dfs($self, start)\n--\n\nParameters\n----------\nstart : str\n\nReturns\n-------\nlist[str]"},
+    {"contains_path", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2649)), METH_VARARGS | METH_KEYWORDS, "contains_path($self, src, dst)\n--\n\nParameters\n----------\nsrc : str\ndst : str\n\nReturns\n-------\nbool"},
+    {"transpose", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2650)), METH_VARARGS | METH_KEYWORDS, "transpose($self)\n--\n\nReturns\n-------\nDirectedGraph"},
+    {"topological_sort", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2651)), METH_VARARGS | METH_KEYWORDS, "topological_sort($self)\n--\n\nReturns\n-------\nlist[str]"},
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_265_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
@@ -6376,7 +6306,7 @@ static PyType_Slot rosetta_class_265_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_265_methods},
     {Py_tp_getset, rosetta_class_265_getset},
-    {Py_tp_doc, const_cast<char*>("DirectedGraph()\nDirectedGraph(vertices: list[str])\n")},
+    {Py_tp_doc, const_cast<char*>("DirectedGraph()\nDirectedGraph(vertices: list[str])\n\nParameters\n----------\nvertices : list[str]")},
     {0, nullptr}};
 PyType_Spec rosetta_class_265_spec = {"pydatamunge._datamunge.DirectedGraph", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_265_slots};
 } // namespace ROSETTA_PY_MODULE

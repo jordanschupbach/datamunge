@@ -218,10 +218,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "dirtyRev": "ebf1844acfd37b150e30bfdbe5b9a5fd12e7ac8d-dirty",
-        "dirtyShortRev": "ebf1844-dirty",
-        "lastModified": 1794418029,
-        "narHash": "sha256-ki2/SIMwe6G10+ij263/mpMY8fNp5uyZsazM4/uyWFc=",
+        "lastModified": 1794443096,
+        "narHash": "sha256-amhc4Qwe5fpYmnAb0XW6VzKeKwyARAZKviUKSCscKaQ=",
+        "ref": "refs/heads/master",
+        "rev": "16296d586438e2db4d4deac31177d64419e29aca",
+        "revCount": 9,
         "type": "git",
         "url": "file:///mnt/projects/rosetta"
       },

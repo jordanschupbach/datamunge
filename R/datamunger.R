@@ -20,7 +20,14 @@
   if (unary) method() else method(e2)
 }
 .rosetta_callable <- function(ptr) { force(ptr); function(...) .Call(`.rs_invoke`, ptr, list(...)) }
-# A mutable cell for C++ reference parameters: f(x) with x <- rosetta_ref(value) updates x$value.
+#' A mutable cell for C++ reference parameters
+#'
+#' A native function that takes a non-const C++ reference updates `x$value` when called with
+#' `x <- rosetta_ref(value)`; plain R values are passed by copy.
+#'
+#' @param value The initial value.
+#' @return An environment of class `rosetta_ref` holding `value`.
+#' @md
 rosetta_ref <- function(value = NULL) {
   ref <- new.env(parent = emptyenv())
   ref$value <- value
@@ -36,233 +43,3340 @@ rosetta_ref <- function(value = NULL) {
   native <- is.call(code) && identical(code[[1L]], quote(.Call)) && is.name(code[[2L]]) && startsWith(as.character(code[[2L]]), ".rs_")
   if (native) NULL else method
 }
+#' The quotient from a.divmod(b) -- a binding-friendly alternative to divmod() itself, which returns a std::pair<Polynomial, Polynomial> that this codebase avoids exposing directly to SWIG bindings (matching the vector-returning-alternative pattern used elsewhere for similarly pair/map-shaped C++ APIs).
+#' @usage
+#' poly_quotient(a, b)
+#' @param a `Polynomial`
+#' @param b `Polynomial`
+#' @return `Polynomial`
+#' @md
+#'
 `poly_quotient` <- function(...) .Call(`.rs_0`, NULL, list(...))
+#' The remainder from a.divmod(b); see poly_quotient() for why this exists alongside the pair-returning divmod() method.
+#' @usage
+#' poly_remainder(a, b)
+#' @param a `Polynomial`
+#' @param b `Polynomial`
+#' @return `Polynomial`
+#' @md
+#'
 `poly_remainder` <- function(...) .Call(`.rs_1`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::simpson_estimate`
+#' @usage
+#' simpson_estimate(f, var, a, b)
+#' @param f `Expr`
+#' @param var `character`
+#' @param a `numeric`
+#' @param b `numeric`
+#' @return `numeric`
+#' @md
+#'
 `simpson_estimate` <- function(...) .Call(`.rs_2`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::adaptive_simpson_recurse`
+#' @usage
+#' adaptive_simpson_recurse(f, var, a, b, whole, tol, depth)
+#' @param f `Expr`
+#' @param var `character`
+#' @param a `numeric`
+#' @param b `numeric`
+#' @param whole `numeric`
+#' @param tol `numeric`
+#' @param depth `integer`
+#' @return `numeric`
+#' @md
+#'
 `adaptive_simpson_recurse` <- function(...) .Call(`.rs_3`, NULL, list(...))
+#' The definite integral of f (with every other name in f bound as usual by evaluate()) from a to b with respect to var, via adaptive Simpson's rule -- a numeric fallback/ complement to Expr::integrate() for cases outside that method's supported symbolic forms (e.g.
+#'
+#' sin(x)*cos(x), or any other integrand it throws on), or simply to check a symbolic result. Handles a > b by returning the negated integral over \[b, a\].
+#' @usage
+#' definite_integral(f, var, a, b, tolerance = 1.0000000000000001E-9, max_depth = 50)
+#' @param f `Expr`
+#' @param var `character`
+#' @param a `numeric`
+#' @param b `numeric`
+#' @param tolerance `numeric`. Target absolute error per the adaptive refinement's own error estimate; not
+#'   a hard guarantee for a pathological (e.g. discontinuous or highly oscillatory)
+#'   integrand.
+#' @param max_depth `integer`. Hard cap on recursive bisection depth, bounding worst-case cost.
+#' @return `numeric`
+#' @md
+#'
 `definite_integral` <- function(...) .Call(`.rs_4`, NULL, list(...))
+#' The degree-`order` Taylor polynomial of f around var = center, built from `order` repeated symbolic differentiations of f (each evaluated at center and divided by the matching factorial) -- the returned polynomial q approximates f near center as q.evaluate(x - center), NOT q.evaluate(x) directly (q's coefficients are for powers of (x - center), matching the standard Taylor series form f(x) ~= sum_k f^(k)(center)/k! * (x-center)^k).
+#' @usage
+#' taylor_series(f, var, center, order)
+#' @param f `Expr`
+#' @param var `character`
+#' @param center `numeric`
+#' @param order `integer`
+#' @return `Polynomial`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if order is negative, or std::invalid_argument propagated from
+#'   Expr::differentiate() if f contains a non-constant exponent.
+#' @md
+#'
 `taylor_series` <- function(...) .Call(`.rs_5`, NULL, list(...))
+#' Descartes' rule of signs: the number of sign changes in p's coefficient sequence (highest to lowest degree, skipping zero coefficients) -- an upper bound on the number of positive real roots of p (counted with multiplicity); the true count differs from this bound by a nonnegative even number.
+#' @usage
+#' descartes_sign_changes(p)
+#' @param p `Polynomial`
+#' @return `integer`
+#' @md
+#'
 `descartes_sign_changes` <- function(...) .Call(`.rs_6`, NULL, list(...))
+#' Upper bound on the number of NEGATIVE real roots of p, via Descartes' rule applied to p(-x) (same even-gap caveat as descartes_sign_changes()).
+#' @usage
+#' descartes_negative_root_bound(p)
+#' @param p `Polynomial`
+#' @return `integer`
+#' @md
+#'
 `descartes_negative_root_bound` <- function(...) .Call(`.rs_7`, NULL, list(...))
+#' Monic-normalizes p by dividing through by its leading coefficient (no-op on the zero polynomial).
+#' @usage
+#' monic(p)
+#' @param p `Polynomial`
+#' @return `Polynomial`
+#' @md
+#'
 `monic` <- function(...) .Call(`.rs_8`, NULL, list(...))
+#' True when every coefficient of `r` is negligible relative to `scale_reference`'s largest-magnitude coefficient.
+#'
+#' The classical Euclidean algorithm's termination test (`remainder.is_zero()`) assumes a remainder that is mathematically zero comes back as *exactly* zero -- true over an exact field, but not over doubles: a genuine (e.g. repeated) common factor can leave a remainder like 1.78e-15 instead of 0.0, which Polynomial::is_zero()'s exact-equality check treats as a nonzero polynomial, making the Euclidean algorithm take one more spurious step and converge on a meaningless near-zero-constant "GCD" instead of the true, higher-degree one. Treating such a remainder as zero (this function) fixes that without weakening Polynomial::is_zero() itself, which is used elsewhere for genuine exact-zero checks (e.g. rejecting division by the zero polynomial).
+#' @usage
+#' is_negligible_remainder(r, scale_reference, relative_tolerance = 1.0000000000000001E-9)
+#' @param r `Polynomial`
+#' @param scale_reference `Polynomial`
+#' @param relative_tolerance `numeric`
+#' @return `logical`
+#' @md
+#'
 `is_negligible_remainder` <- function(...) .Call(`.rs_9`, NULL, list(...))
+#' GCD of two polynomials via the classical Euclidean algorithm (repeated divmod-and-swap), returned monic.
+#' @usage
+#' poly_gcd(a, b)
+#' @param a `Polynomial`
+#' @param b `Polynomial`
+#' @return `Polynomial`
+#' @md
+#'
 `poly_gcd` <- function(...) .Call(`.rs_10`, NULL, list(...))
+#' Extended Euclidean algorithm: computes gcd(a, b) along with Bezout coefficients s, t satisfying `s*a + t*b == gcd`.
+#'
+#' `gcd` is returned monic (s and t are scaled to match).
+#' @usage
+#' poly_extended_gcd(a, b)
+#' @param a `Polynomial`
+#' @param b `Polynomial`
+#' @return `PolyExtendedGcdResult`
+#' @md
+#'
 `poly_extended_gcd` <- function(...) .Call(`.rs_11`, NULL, list(...))
+#' GCD via a pseudo-remainder sequence: like poly_gcd(), but each step scales the dividend by lc(divisor)^(degree gap + 1) before dividing (pseudo-division), the classical technique subresultant-PRS algorithms are built on.
+#'
+#' This is the basic (unscaled) variant -- it avoids the fraction-heavy divisions plain Euclidean division would need over an exact (e.g. integer) coefficient field, but does not add the further subresultant coefficient-growth control a full implementation would. Over doubles it is numerically a different (and typically larger-magnitude-intermediate) path to the same monic result as poly_gcd().
+#' @usage
+#' poly_gcd_pseudo_remainder_sequence(a, b)
+#' @param a `Polynomial`
+#' @param b `Polynomial`
+#' @return `Polynomial`
+#' @md
+#'
 `poly_gcd_pseudo_remainder_sequence` <- function(...) .Call(`.rs_12`, NULL, list(...))
+#' Builds the Sturm sequence of p: p0 = p, p1 = p', and p_(i+1) = -rem(p_(i-1), p_i) until reaching a constant (or zero) polynomial.
+#'
+#' Used to count/isolate the real roots of p in an interval via sign changes (Sturm's theorem). p should be square-free for the sign-change count to equal the number of DISTINCT real roots exactly; callers with a polynomial that may have repeated roots should first run square_free_factorization() and apply Sturm's theorem to each factor.
+#' @usage
+#' sturm_sequence(p)
+#' @param p `Polynomial`
+#' @return `vector<Polynomial>`
+#' @md
+#'
 `sturm_sequence` <- function(...) .Call(`.rs_13`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::sturm_sign_changes`
+#' @usage
+#' sturm_sign_changes(seq, x)
+#' @param seq `vector<Polynomial>`
+#' @param x `numeric`
+#' @return `integer`
+#' @md
+#'
 `sturm_sign_changes` <- function(...) .Call(`.rs_14`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::cauchy_root_bound`
+#' @usage
+#' cauchy_root_bound(p)
+#' @param p `Polynomial`
+#' @return `numeric`
+#' @md
+#'
 `cauchy_root_bound` <- function(...) .Call(`.rs_15`, NULL, list(...))
+#' The number of DISTINCT real roots of p in the interval (a, b\], via Sturm's theorem (the difference in sign-change count between the sequence evaluated at a and at b).
+#' @usage
+#' sturm_root_count(p, a, b)
+#' @param p `Polynomial`
+#' @param a `numeric`
+#' @param b `numeric`
+#' @return `integer`
+#' @md
+#'
 `sturm_root_count` <- function(...) .Call(`.rs_16`, NULL, list(...))
+#' C++ function `datamunge::algebra::isolate_real_roots`
+#' @usage
+#' isolate_real_roots(p)
+#' @param p `Polynomial`
+#' @return `RealRootIntervals`
+#' @md
+#'
 `isolate_real_roots` <- function(...) .Call(`.rs_17`, NULL, list(...))
+#' Refines a single isolating interval \[lo, hi\] (known to contain exactly one root) to within `tolerance` via sign-based bisection (cheaper than re-running Sturm's theorem once a root is already isolated to one per interval).
+#' @usage
+#' refine_root(p, lo, hi, tolerance = 1.0E-10)
+#' @param p `Polynomial`
+#' @param lo `numeric`
+#' @param hi `numeric`
+#' @param tolerance `numeric`
+#' @return `numeric`
+#' @md
+#'
 `refine_root` <- function(...) .Call(`.rs_18`, NULL, list(...))
+#' All distinct real roots of p, isolated via Sturm's theorem then refined by bisection to within `tolerance`.
+#' @usage
+#' real_roots(p, tolerance = 1.0E-10)
+#' @param p `Polynomial`
+#' @param tolerance `numeric`
+#' @return `vector<numeric>`
+#' @md
+#'
 `real_roots` <- function(...) .Call(`.rs_19`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::c_add`
+#' @usage
+#' c_add(a, b)
+#' @param a `Cplx`
+#' @param b `Cplx`
+#' @return `Cplx`
+#' @md
+#'
 `c_add` <- function(...) .Call(`.rs_20`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::c_sub`
+#' @usage
+#' c_sub(a, b)
+#' @param a `Cplx`
+#' @param b `Cplx`
+#' @return `Cplx`
+#' @md
+#'
 `c_sub` <- function(...) .Call(`.rs_21`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::c_mul`
+#' @usage
+#' c_mul(a, b)
+#' @param a `Cplx`
+#' @param b `Cplx`
+#' @return `Cplx`
+#' @md
+#'
 `c_mul` <- function(...) .Call(`.rs_22`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::c_div`
+#' @usage
+#' c_div(a, b)
+#' @param a `Cplx`
+#' @param b `Cplx`
+#' @return `Cplx`
+#' @md
+#'
 `c_div` <- function(...) .Call(`.rs_23`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::c_abs`
+#' @usage
+#' c_abs(a)
+#' @param a `Cplx`
+#' @return `numeric`
+#' @md
+#'
 `c_abs` <- function(...) .Call(`.rs_24`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::c_eval`
+#' @usage
+#' c_eval(p, x)
+#' @param p `Polynomial`
+#' @param x `Cplx`
+#' @return `Cplx`
+#' @md
+#'
 `c_eval` <- function(...) .Call(`.rs_25`, NULL, list(...))
+#' All n = p.degree() complex roots of p (real roots included, with a negligible imaginary part), via the Durand-Kerner (Weierstrass) method: simultaneous fixed-point iteration z_k <- z_k - p(z_k) / prod_\{j != k\}(z_k - z_j), starting from n points evenly spaced (with a fixed angular offset to avoid real-axis symmetry, which would otherwise stall convergence to any non-real root of a real-coefficient polynomial) around a circle whose radius is a Cauchy bound on root magnitude.
+#'
+#' Converges quadratically once guesses are close, but -- unlike Sturm's theorem-based real_roots(), which isolates each real root to a provably correct interval before refining it -- this is a general iterative method with no convergence guarantee. For best results p should be square-free (see square_free_factorization()); repeated roots make two of the simultaneous iterates chase the same point, which both slows convergence and risks a near-zero denominator late in the iteration.
+#' @usage
+#' complex_roots(p, max_iterations = 200, tolerance = 9.9999999999999998E-13)
+#' @param p `Polynomial`
+#' @param max_iterations `integer`
+#' @param tolerance `numeric`
+#' @return `vector<Complex>`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if p has degree 0 (a nonzero constant has no roots; the zero
+#'   polynomial is degenerate).
+#' @md
+#'
 `complex_roots` <- function(...) .Call(`.rs_26`, NULL, list(...))
+#' All rational roots of p, via the Rational Root Theorem: every rational root a/b in lowest terms has a dividing the constant term and b dividing the leading coefficient, so trying every such ratio (after first dividing out any factors of x, i.e. any roots at exactly 0) finds every rational root exactly -- a finite, exact search, in contrast to real_roots()'s numeric bisection or complex_roots()'s general iteration.
+#' @usage
+#' rational_roots(p, tolerance = 1.0000000000000001E-9)
+#' @param p `Polynomial`
+#' @param tolerance `numeric`. Used both to verify p's coefficients are within `tolerance` of integers
+#'   (required for the theorem to apply) and to test each candidate ratio's residual.
+#' @return `vector<numeric>`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if p's coefficients are not within `tolerance` of integers.
+#' @md
+#'
 `rational_roots` <- function(...) .Call(`.rs_27`, NULL, list(...))
+#' Yun's algorithm: factors p (char-0 coefficients, doubles here) into square-free pieces, each paired with its multiplicity, such that p equals the product of `factor_i ^ multiplicity_i` up to an overall constant.
+#'
+#' Each returned `factor` is itself square-free (no repeated roots) and the `multiplicity`-i factors are pairwise coprime.
+#' @usage
+#' square_free_factorization(p)
+#' @param p `Polynomial`
+#' @return `vector<SquareFreeFactor>`
+#' @md
+#'
 `square_free_factorization` <- function(...) .Call(`.rs_28`, NULL, list(...))
+#' Factors p over the reals: splits it into square-free pieces via square_free_factorization() (each with its own multiplicity), then finds every root of each piece via complex_roots() -- safe here since a square-free piece has, by construction, only distinct roots, exactly the case complex_roots() converges best on -- and pairs up complex-conjugate roots into real quadratic factors, leaving real roots as linear factors.
+#'
+#' This is the numeric analog of "factor()" in an exact CAS: for a floating-point polynomial with no assumed rational structure, linear and quadratic real factors are as far as factoring over R can go (see rational_roots() for an exact search restricted to genuinely rational roots instead).
+#' @usage
+#' factor_over_reals(p, conjugate_tolerance = 9.9999999999999995E-7)
+#' @param p `Polynomial`
+#' @param conjugate_tolerance `numeric`. Two roots are treated as a real root (imaginary part ~ 0) or a
+#'   conjugate pair (matching real parts, opposite imaginary parts) when within this
+#'   tolerance of the corresponding exact relationship.
+#' @return `RealFactorization`
+#' @md
+#'
 `factor_over_reals` <- function(...) .Call(`.rs_29`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::total_degree`
+#' @usage
+#' total_degree(exponents)
+#' @param exponents `vector<integer>`
+#' @return `integer`
+#' @md
+#'
 `total_degree` <- function(...) .Call(`.rs_30`, NULL, list(...))
+#' Returns -1, 0, or 1 as monomial `a` is smaller, equal to, or larger than `b` under `order`.
+#'
+#' `a` and `b` must have the same length.
+#' @usage
+#' compare_monomials(a, b, order)
+#' @param a `vector<integer>`
+#' @param b `vector<integer>`
+#' @param order `character (MonomialOrder)`
+#' @return `integer`
+#' @md
+#'
 `compare_monomials` <- function(...) .Call(`.rs_31`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::lcm_exponent`
+#' @usage
+#' lcm_exponent(a, b)
+#' @param a `vector<integer>`
+#' @param b `vector<integer>`
+#' @return `vector<integer>`
+#' @md
+#'
 `lcm_exponent` <- function(...) .Call(`.rs_32`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::monomial_divides`
+#' @usage
+#' monomial_divides(divisor, dividend)
+#' @param divisor `vector<integer>`
+#' @param dividend `vector<integer>`
+#' @return `logical`
+#' @md
+#'
 `monomial_divides` <- function(...) .Call(`.rs_33`, NULL, list(...))
+#' S-polynomial of f and g: the combination that cancels their leading terms via the LCM of their leading monomials -- Buchberger's algorithm's basic building block.
+#' @usage
+#' s_polynomial(f, g, order)
+#' @param f `MultivariatePolynomial`
+#' @param g `MultivariatePolynomial`
+#' @param order `character (MonomialOrder)`
+#' @return `MultivariatePolynomial`
+#' @md
+#'
 `s_polynomial` <- function(...) .Call(`.rs_34`, NULL, list(...))
+#' Reduces p modulo `basis` (repeated division: subtract a multiple of whichever basis element's leading term divides p's current leading term, moving undivided leading terms into the remainder) until nothing is left, returning the remainder.
+#' @usage
+#' reduce(p, basis, order)
+#' @param p `MultivariatePolynomial`
+#' @param basis `vector<MultivariatePolynomial>`
+#' @param order `character (MonomialOrder)`
+#' @return `MultivariatePolynomial`
+#' @md
+#'
 `reduce` <- function(...) .Call(`.rs_35`, NULL, list(...))
+#' Reduces p modulo `basis` under `order`, returning the remainder (the "normal form" of p with respect to basis).
+#'
+#' Zero if and only if p lies in the ideal generated by a Groebner basis `basis`.
+#' @usage
+#' multivariate_reduce(p, basis, order)
+#' @param p `MultivariatePolynomial`
+#' @param basis `vector<MultivariatePolynomial>`
+#' @param order `character (MonomialOrder)`
+#' @return `MultivariatePolynomial`
+#' @md
+#'
 `multivariate_reduce` <- function(...) .Call(`.rs_36`, NULL, list(...))
+#' Buchberger's algorithm: computes a Groebner basis of the ideal generated by `generators` under `order`.
+#'
+#' Basic textbook form (no Buchberger-criterion pair-skipping optimizations, matching this module's "simple, correct" scoping elsewhere) -- reduces every S-polynomial against the CURRENT basis and appends any nonzero remainder until no pair produces one.
+#' @usage
+#' groebner_basis(generators, order)
+#' @param generators `vector<MultivariatePolynomial>`
+#' @param order `character (MonomialOrder)`
+#' @return `vector<MultivariatePolynomial>`
+#' @md
+#'
 `groebner_basis` <- function(...) .Call(`.rs_37`, NULL, list(...))
+#' The unique polynomial of degree < n through the n points (xs\[i\], ys\[i\]), built via Lagrange's basis-polynomial formula (O(n^2)).
+#' @usage
+#' lagrange_interpolate(xs, ys)
+#' @param xs `vector<numeric>`
+#' @param ys `vector<numeric>`
+#' @return `Polynomial`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if xs/ys sizes disagree, are empty, or xs has a duplicate.
+#' @md
+#'
 `lagrange_interpolate` <- function(...) .Call(`.rs_38`, NULL, list(...))
+#' The same unique interpolating polynomial as lagrange_interpolate(), built instead via Newton's divided differences (an O(n^2) triangular table, then expanded into standard-basis coefficients).
+#'
+#' Included as the classical alternative construction: useful when points are added incrementally, since the divided-difference table extends by one row per new point rather than being rebuilt from scratch.
+#' @usage
+#' newton_interpolate(xs, ys)
+#' @param xs `vector<numeric>`
+#' @param ys `vector<numeric>`
+#' @return `Polynomial`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if xs/ys sizes disagree, are empty, or xs has a duplicate.
+#' @md
+#'
 `newton_interpolate` <- function(...) .Call(`.rs_39`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::to_integer`
+#' @usage
+#' to_integer(v)
+#' @param v `numeric`
+#' @return `integer`
+#' @md
+#'
 `to_integer` <- function(...) .Call(`.rs_40`, NULL, list(...))
+#' (base^exponent) mod modulus via binary exponentiation.
+#'
+#' All three arguments and the result are doubles holding exact integer values -- this module avoids std::size_t and other unsigned fixed-width types in binding-facing signatures, so plain `double` (exact up to 2^53) is used for modular-integer arithmetic throughout.
+#' @usage
+#' mod_pow(base, exponent, modulus)
+#' @param base `numeric`
+#' @param exponent `numeric`
+#' @param modulus `numeric`
+#' @return `numeric`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if modulus <= 0 or exponent < 0.
+#' @md
+#'
 `mod_pow` <- function(...) .Call(`.rs_41`, NULL, list(...))
+#' Modular multiplicative inverse of a mod m, via the extended Euclidean algorithm.
+#' @usage
+#' mod_inverse(a, m)
+#' @param a `numeric`
+#' @param m `numeric`
+#' @return `numeric`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if gcd(a, m) != 1 (no inverse exists) or m <= 0.
+#' @md
+#'
 `mod_inverse` <- function(...) .Call(`.rs_42`, NULL, list(...))
+#' Chinese Remainder Theorem: the unique x in \[0, product(moduli)) such that `x == remainders[i] (mod moduli[i])` for every i, given pairwise-coprime positive moduli.
+#' @usage
+#' crt(remainders, moduli)
+#' @param remainders `vector<numeric>`
+#' @param moduli `vector<numeric>`
+#' @return `numeric`
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if sizes disagree, are empty, a modulus is non-positive, the
+#'   moduli aren't pairwise coprime, or the combined modulus would exceed 2^53 (past the
+#'   point a double can represent every integer exactly).
+#' @md
+#'
 `crt` <- function(...) .Call(`.rs_43`, NULL, list(...))
+#' Product of two polynomials over GF(p).
+#' @usage
+#' gf_mul(a, b, p)
+#' @param a `vector<integer>`
+#' @param b `vector<integer>`
+#' @param p `integer`
+#' @return `vector<integer>`
+#' @md
+#'
 `gf_mul` <- function(...) .Call(`.rs_44`, NULL, list(...))
+#' Formal derivative over GF(p); it vanishes for p-th powers
+#'
+#' `g(x^p)`.
+#' @usage
+#' gf_derivative(a, p)
+#' @param a `vector<integer>`
+#' @param p `integer`
+#' @return `vector<integer>`
+#' @md
+#'
 `gf_derivative` <- function(...) .Call(`.rs_45`, NULL, list(...))
+#' Square-free decomposition of a monic polynomial over GF(p) (Yun's algorithm, with the p-th-root step needed in characteristic p): pairs (g, m) with f = prod g^m, every g monic and square-free and the g pairwise coprime.
+#' @usage
+#' gf_square_free(f, p)
+#' @param f `vector<integer>`
+#' @param p `integer`
+#' @return `vector<list(vector<integer>, integer)>`
+#' @md
+#'
 `gf_square_free` <- function(...) .Call(`.rs_46`, NULL, list(...))
+#' Basis of the Berlekamp subalgebra of a monic polynomial `f` of degree n >= 1: the polynomials v of degree < n with
+#'
+#' `v^p\equiv v \pmod f`, as the null space of
+#' `Q-I`, where row i of Q holds the coefficients of `x^{ip}\bmod f`. For square-free
+#' f its dimension is the number of irreducible factors. The first vector is the constant 1.
+#' @usage
+#' berlekamp_null_space(f, p)
+#' @param f `vector<integer>`
+#' @param p `integer`
+#' @return `vector<vector<integer>>`
+#' @md
+#'
 `berlekamp_null_space` <- function(...) .Call(`.rs_47`, NULL, list(...))
+#' Binding-friendly wrapper around berlekamp_factor() using doubles (exact up to 2^53) for both the input polynomial and the prime, matching this module's std::size_t/fixed-width-integer-avoidance convention for SWIG-facing signatures (`std::vector<long long>` has no proven binding template in this codebase, while `std::vector<double>` already does).
+#'
+#' See berlekamp_factor() for the algorithm and preconditions.
+#' @usage
+#' berlekamp_factor_mod(poly, prime)
+#' @param poly `vector<numeric>`
+#' @param prime `numeric`
+#' @return `vector<vector<numeric>>`
+#' @md
+#'
 `berlekamp_factor_mod` <- function(...) .Call(`.rs_48`, NULL, list(...))
+#' Number of irreducible factors of a monic square-free polynomial over GF(p), by Berlekamp's theorem: the dimension of the null space of
+#'
+#' `(Q-I)^{\mathsf T}`, that is
+#' `n-\operatorname{rank}(Q-I)`. A square-free polynomial is irreducible exactly when it is 1.
+#' @usage
+#' berlekamp_factor_count(poly, p)
+#' @param poly `vector<integer>`. ascending coefficients (made monic and reduced mod p first).
+#' @param p `integer`. a prime.
+#' @return `integer`: the number of distinct irreducible factors (for square-free input).
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: if poly is constant.
+#' @md
+#'
 `berlekamp_factor_count` <- function(...) .Call(`.rs_49`, NULL, list(...))
+#' Complete factorization of a polynomial over GF(p): leading coefficient times monic irreducible factors with multiplicities.
+#'
+#' The square-free decomposition separates repeated factors (taking p-th roots where the derivative vanishes), and Berlekamp's algorithm splits each square-free part.
+#' @usage
+#' factor_gf_p(poly, p)
+#' @param poly `vector<integer>`. ascending coefficients; reduced mod p first.
+#' @param p `integer`. a prime.
+#' @return `GfFactorization`: the leading coefficient, the factors and their multiplicities.
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: for the zero polynomial.
+#' @md
+#'
 `factor_gf_p` <- function(...) .Call(`.rs_50`, NULL, list(...))
+#' Number of monic irreducible polynomials of degree `d` over GF(p), by Gauss's formula
+#'
+#' `I_d=\frac1d\sum_{e\mid d}\mu(d/e)\,p^{e}`, as a double (exact while below 2^53).
+#'
+#' `I_d`.
+#' @usage
+#' count_monic_irreducibles(p, d)
+#' @param p `integer`. a prime.
+#' @param d `integer`. degree, at least 1.
+#' @return `numeric`
+#' @md
+#'
 `count_monic_irreducibles` <- function(...) .Call(`.rs_51`, NULL, list(...))
+#' Expected number of distinct monic irreducible factors of a uniformly random monic polynomial of degree `n` over GF(p): each irreducible g of degree d <= n divides it with probability
+#'
+#' `p^{-d}`, so the expectation is `\sum_{d=1}^{n}I_d\,p^{-d}\approx H_n`.
+#' @usage
+#' expected_distinct_irreducible_factors(p, n)
+#' @param p `integer`. a prime.
+#' @param n `integer`. degree, at least 1.
+#' @return `numeric`: the expected count.
+#' @md
+#'
 `expected_distinct_irreducible_factors` <- function(...) .Call(`.rs_52`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::sylvester_matrix`
+#' @usage
+#' sylvester_matrix(a, b)
+#' @param a `Polynomial`
+#' @param b `Polynomial`
+#' @return `vector<vector<numeric>>`
+#' @md
+#'
 `sylvester_matrix` <- function(...) .Call(`.rs_53`, NULL, list(...))
+#' C++ function `datamunge::algebra::detail::determinant`
+#' @usage
+#' determinant(mat)
+#' @param mat `vector<vector<numeric>>`
+#' @return `numeric`
+#' @md
+#'
 `determinant` <- function(...) .Call(`.rs_54`, NULL, list(...))
+#' The resultant of a and b: the determinant of their Sylvester matrix.
+#'
+#' Zero if and only if a and b share a common root (equivalently, a nonconstant common factor).
+#' @usage
+#' resultant(a, b)
+#' @param a `Polynomial`
+#' @param b `Polynomial`
+#' @return `numeric`
+#' @md
+#'
 `resultant` <- function(...) .Call(`.rs_55`, NULL, list(...))
+#' The discriminant of p: `(-1)^(n(n-1)/2) * resultant(p, p') / lc(p)`, where n = degree(p).
+#'
+#' Zero if and only if p has a repeated root.
+#' @usage
+#' discriminant(p)
+#' @param p `Polynomial`
+#' @return `numeric`
+#' @md
+#'
 `discriminant` <- function(...) .Call(`.rs_56`, NULL, list(...))
+#' Exact expected Metropolis acceptance of one HMC proposal (fixed step size and number of leapfrog steps, unit mass) on a one-dimensional
+#'
+#' `N(m,s^2)` target, started
+#' in equilibrium.
+#'
+#' In scaled coordinates `x=((q-m)/s,\,p)` each leapfrog step is the linear map
+#' `M=\begin{pmatrix}1&0\\-h/2&1\end{pmatrix}\begin{pmatrix}1&h\\0&1\end{pmatrix}\begin{pmatrix}1&0\\-h/2&1\end{pmatrix}`
+#' with `h=\varepsilon/s`, `\det M=1` and `\operatorname{tr}M=2-h^2`, so it is stable
+#' exactly when `\varepsilon<2s`. Writing `x_0=r(\cos\phi,\sin\phi)` the energy error is
+#' `\Delta H=r^2f(\phi)` with `f=\tfrac12(|M^L(\cos\phi,\sin\phi)|^2-1)`, and because
+#' `r^2/2\sim\text{Exp}(1)` the radial average of `\min(1,e^{-\Delta H})` is
+#' `1/(1+2f)` for `f>0` and 1 otherwise. The angle is integrated numerically.
+#'
+#' `\varepsilon>0`.
+#'
+#' `L\geq1`.
+#'
+#' `s>0`.
+#' @usage
+#' leapfrog_gaussian_acceptance(step_size, num_steps, sd, angles = 4096)
+#' @param step_size `numeric`. Leapfrog step size
+#' @param num_steps `integer`. Number of leapfrog steps
+#' @param sd `numeric`. Target standard deviation
+#' @param angles `integer`. Number of quadrature angles (at least 8).
+#' @return `numeric`: The expected acceptance probability.
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: for non-positive arguments.
+#' @md
+#'
 `leapfrog_gaussian_acceptance` <- function(...) .Call(`.rs_57`, NULL, list(...))
+#' Asymptotic effective-sample-size fraction
+#'
+#' `N_{\text{eff}}/N` of importance sampling
+#' a `d`-dimensional Gaussian target with a Gaussian proposal of the same mean and
+#' covariance scaled by `k^2`.
+#'
+#' `N_{\text{eff}}/N\to1/E_q[w^2]` for weights `w=p/q` normalised to mean 1. In one
+#' dimension `E_q[w^2]=\int p^2/q=k^2/\sqrt{2k^2-1}`, finite only for `k^2>1/2`, and the
+#' dimensions multiply, giving `\bigl(\sqrt{2k^2-1}/k^2\bigr)^d`. It is 1 at `k=1` and
+#' 0 (infinite weight variance) for `k\le1/\sqrt2`.
+#'
+#' `k>0`.
+#'
+#' `d\ge1`.
+#' @usage
+#' gaussian_importance_efficiency(scale, dimension)
+#' @param scale `numeric`. Proposal scale factor
+#' @param dimension `integer`. Dimension
+#' @return `numeric`: The efficiency in \[0, 1\].
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: for non-positive `scale` or `dimension`.
+#' @md
+#'
 `gaussian_importance_efficiency` <- function(...) .Call(`.rs_58`, NULL, list(...))
+#' The standard luma-weighted RGB -> grayscale conversion (ITU-R BT.601 coefficients, the same weights Pillow's "L" conversion and most other libraries use).
+#' @usage
+#' rgb_to_gray(r, g, b)
+#' @param r `integer`
+#' @param g `integer`
+#' @param b `integer`
+#' @return `integer`
+#' @md
+#'
 `rgb_to_gray` <- function(...) .Call(`.rs_59`, NULL, list(...))
+#' C++ function `datamunge::image::rgb_to_hsv`
+#' @usage
+#' rgb_to_hsv(r8, g8, b8)
+#' @param r8 `integer`
+#' @param g8 `integer`
+#' @param b8 `integer`
+#' @return `HSV`
+#' @md
+#'
 `rgb_to_hsv` <- function(...) .Call(`.rs_60`, NULL, list(...))
+#' C++ function `datamunge::image::hsv_to_rgb`
+#' @usage
+#' hsv_to_rgb(hsv)
+#' @param hsv `HSV`
+#' @return `Pixel`
+#' @md
+#'
 `hsv_to_rgb` <- function(...) .Call(`.rs_61`, NULL, list(...))
+#' A new image converted to Grayscale mode.
+#'
+#' Any existing alpha channel is dropped.
+#' @usage
+#' to_grayscale(src)
+#' @param src `Image`
+#' @return `Image`
+#' @md
+#'
 `to_grayscale` <- function(...) .Call(`.rs_62`, NULL, list(...))
+#' A new image converted to RGB mode.
+#'
+#' Grayscale sources are expanded (r=g=b); any existing alpha channel is dropped.
+#' @usage
+#' to_rgb(src)
+#' @param src `Image`
+#' @return `Image`
+#' @md
+#'
 `to_rgb` <- function(...) .Call(`.rs_63`, NULL, list(...))
+#' A new RGBA image with the same colors as `src` and every pixel's alpha set to `src's` existing alpha (255 for modes with no alpha channel).
+#' @usage
+#' to_rgba(src)
+#' @param src `Image`
+#' @return `Image`
+#' @md
+#'
 `to_rgba` <- function(...) .Call(`.rs_64`, NULL, list(...))
+#' Splits `src` into one Grayscale-mode Image per channel, in the source's own channel order (so RGB -> \{R, G, B\}, RGBA -> \{R, G, B, A\}, etc.).
+#' @usage
+#' split_channels(src)
+#' @param src `Image`
+#' @return `vector<Image>`
+#' @md
+#'
 `split_channels` <- function(...) .Call(`.rs_65`, NULL, list(...))
+#' The inverse of split_channels(): combines Grayscale-mode `planes` (same width and height, one plane per output channel, in channel order) into a single image of the matching mode.
+#'
+#' Throws std::invalid_argument if the plane count isn't 1-4 or the planes' dimensions disagree.
+#' @usage
+#' merge_channels(planes)
+#' @param planes `vector<Image>`
+#' @return `Image`
+#' @md
+#'
 `merge_channels` <- function(...) .Call(`.rs_66`, NULL, list(...))
+#' Difference-of-Gaussians blob detection (the detector SIFT keypoints are built on, without the orientation/descriptor stages): builds `num_scales` + 1 Gaussian- blurred copies of `img` at geometrically-spaced sigma_i = `sigma0` * 2^(i / num_scales), subtracts consecutive pairs to get `num_scales` DoG images, then keeps every point that is a strict extremum (min or max) among its 26 neighbors in the resulting (x, y, scale) volume -- 8 in its own DoG layer plus 9 in each adjacent layer -- and whose |response| exceeds `threshold`.
+#'
+#' A single octave only (no image-halving between octaves like full SIFT) -- simpler, and sufficient for detecting blobs across a single order-of-magnitude size range.
+#' @usage
+#' dog_blobs(img, num_scales = 4, sigma0 = 1.6000000000000001, threshold = 3.0)
+#' @param img `Image`
+#' @param num_scales `integer`
+#' @param sigma0 `numeric`
+#' @param threshold `numeric`
+#' @return `vector<KeyPoint>`
+#' @md
+#'
 `dog_blobs` <- function(...) .Call(`.rs_67`, NULL, list(...))
+#' The Gaussian-smoothed second-moment (structure) tensor at every pixel: Sobel gradients Ix/Iy, their per-pixel outer product Ix^2/Iy^2/IxIy, then smoothed with a Gaussian window of the given `sigma` -- the shared computation behind both Harris and Shi-Tomasi corner response, which differ only in how they combine these three fields into a single scalar score.
+#' @usage
+#' structure_tensor(img, sigma)
+#' @param img `Image`
+#' @param sigma `numeric`
+#' @return `StructureTensorField`
+#' @md
+#'
 `structure_tensor` <- function(...) .Call(`.rs_68`, NULL, list(...))
+#' Keeps only the response-field entries that are a strict local maximum within a (2*radius+1)^2 window AND exceed `threshold`, as a sorted-by-descending-response Corner list -- the standard non-max-suppression + thresholding pass shared by every response-map-based corner detector.
+#' @usage
+#' extract_local_maxima(response, width, height, threshold, nms_radius)
+#' @param response `vector<numeric>`
+#' @param width `integer`
+#' @param height `integer`
+#' @param threshold `numeric`
+#' @param nms_radius `integer`
+#' @return `vector<Corner>`
+#' @md
+#'
 `extract_local_maxima` <- function(...) .Call(`.rs_69`, NULL, list(...))
+#' Harris corner detection: response = det(M) - k*trace(M)^2 of the structure tensor M at every pixel, thresholded at `threshold_ratio` * (the response map's own max, so callers don't have to guess an absolute scale) and non-max-suppressed within a (2*nms_radius+1)^2 window.
+#'
+#' `k` is the classical Harris free parameter (0.04-0.06).
+#' @usage
+#' harris_corners(img, k = 0.040000000000000001, sigma = 1.0, threshold_ratio = 0.01, nms_radius = 3)
+#' @param img `Image`
+#' @param k `numeric`
+#' @param sigma `numeric`
+#' @param threshold_ratio `numeric`
+#' @param nms_radius `integer`
+#' @return `vector<Corner>`
+#' @md
+#'
 `harris_corners` <- function(...) .Call(`.rs_70`, NULL, list(...))
+#' Shi-Tomasi ("good features to track") corner detection: response = the structure tensor's SMALLER eigenvalue at every pixel (a corner needs strong gradient variation in BOTH directions, so the weaker direction is the limiting factor) -- otherwise identical thresholding/NMS pipeline to harris_corners().
+#' @usage
+#' shi_tomasi_corners(img, sigma = 1.0, threshold_ratio = 0.01, nms_radius = 3)
+#' @param img `Image`
+#' @param sigma `numeric`
+#' @param threshold_ratio `numeric`
+#' @param nms_radius `integer`
+#' @return `vector<Corner>`
+#' @md
+#'
 `shi_tomasi_corners` <- function(...) .Call(`.rs_71`, NULL, list(...))
+#' FAST corner detection: a pixel is a corner if `min_contiguous` (out of 16) pixels on the Bresenham circle of radius 3 around it are ALL brighter than center+ `threshold` or ALL darker than center- `threshold`.
+#'
+#' This is the direct O(16) full-circle test (no accelerated high-speed pre-rejection on pixels 1/5/9/13) -- simpler to verify correct, at the cost of the constant-factor speed FAST is normally chosen for. Response is the found arc's mean absolute deviation from the center intensity.
+#' @usage
+#' fast_corners(img, threshold = 20, min_contiguous = 9)
+#' @param img `Image`
+#' @param threshold `integer`
+#' @param min_contiguous `integer`
+#' @return `vector<Corner>`
+#' @md
+#'
 `fast_corners` <- function(...) .Call(`.rs_72`, NULL, list(...))
+#' The two points where the infinite line `line` crosses the border of a `image_width` x `image_height` image, for drawing/visualization.
+#'
+#' Returns false (and leaves the output points unchanged) if the line doesn't intersect the image rectangle at all (only possible for a line entirely outside it).
+#' @usage
+#' line_endpoints(line, image_width, image_height, p1, p2)
+#' @param line `HoughLine`
+#' @param image_width `integer`
+#' @param image_height `integer`
+#' @param p1 `list(integer, integer)`
+#' @param p2 `list(integer, integer)`
+#' @return `logical`
+#' @md
+#'
 `line_endpoints` <- function(...) .Call(`.rs_73`, NULL, list(...))
+#' Standard Hough line transform: every pixel of `img` whose grayscale luma is >= `edge_threshold` votes, in a rho-theta accumulator (theta stepped every degree over \[0, pi), rho stepped every pixel over the image's diagonal range), for every line that could pass through it.
+#'
+#' Returns every accumulator cell with at least `min_votes`, non-max-suppressed within a (2*nms_radius+1) rho-theta cell window so a single real line doesn't produce a cluster of near-duplicate near-identical results. Intended input is an edge map (e.g. image::sobel_edges()'s output), not a raw photo.
+#' @usage
+#' hough_lines(img, edge_threshold = 128, min_votes = 50, nms_radius = 5)
+#' @param img `Image`
+#' @param edge_threshold `integer`
+#' @param min_votes `integer`
+#' @param nms_radius `integer`
+#' @return `vector<HoughLine>`
+#' @md
+#'
 `hough_lines` <- function(...) .Call(`.rs_74`, NULL, list(...))
+#' Gradient-direction-guided Hough circle transform: for every edge pixel (Sobel gradient magnitude >= `gradient_threshold` on `img's` grayscale conversion), and for every candidate radius in \[`min_radius`, `max_radius`\], votes for the two candidate centers at that distance along the pixel's gradient line (handles both bright-disk-on-dark and dark-disk-on-bright edge polarity).
+#'
+#' Each radius gets an independent 2D (cx, cy) accumulator and non-max suppression pass -- simpler to reason about than a combined 3D (cx, cy, r) accumulator, at the cost of not suppressing near-duplicate detections across adjacent radii.
+#' @usage
+#' hough_circles(img, min_radius, max_radius, gradient_threshold = 50.0, min_votes = 20, nms_radius = 10)
+#' @param img `Image`
+#' @param min_radius `integer`
+#' @param max_radius `integer`
+#' @param gradient_threshold `numeric`
+#' @param min_votes `integer`
+#' @param nms_radius `integer`
+#' @return `vector<HoughCircle>`
+#' @md
+#'
 `hough_circles` <- function(...) .Call(`.rs_75`, NULL, list(...))
+#' C++ function `datamunge::cv::detail::in_structuring_element`
+#' @usage
+#' in_structuring_element(se, dx, dy, radius)
+#' @param se `character (StructuringElement)`
+#' @param dx `integer`
+#' @param dy `integer`
+#' @param radius `integer`
+#' @return `logical`
+#' @md
+#'
 `in_structuring_element` <- function(...) .Call(`.rs_76`, NULL, list(...))
+#' C++ function `datamunge::cv::detail::is_foreground`
+#' @usage
+#' is_foreground(img, x, y)
+#' @param img `Image`
+#' @param x `integer`
+#' @param y `integer`
+#' @return `logical`
+#' @md
+#'
 `is_foreground` <- function(...) .Call(`.rs_77`, NULL, list(...))
+#' Binary erosion: a pixel stays foreground (luma >= 128, matching image::threshold()'s convention) only if EVERY pixel within the structuring element centered on it is also foreground -- shrinks foreground regions and removes thin protrusions.
+#'
+#' Returns a Grayscale image with 0/255 values. Pixels outside the image count as background.
+#' @usage
+#' erode(img, se = "Square", radius = 1)
+#' @param img `Image`
+#' @param se `character (StructuringElement)`
+#' @param radius `integer`
+#' @return `Image`
+#' @md
+#'
 `erode` <- function(...) .Call(`.rs_78`, NULL, list(...))
+#' Binary dilation: a pixel becomes foreground if ANY pixel within the structuring element centered on it is foreground -- grows foreground regions and fills small gaps.
+#'
+#' Returns a Grayscale image with 0/255 values.
+#' @usage
+#' dilate(img, se = "Square", radius = 1)
+#' @param img `Image`
+#' @param se `character (StructuringElement)`
+#' @param radius `integer`
+#' @return `Image`
+#' @md
+#'
 `dilate` <- function(...) .Call(`.rs_79`, NULL, list(...))
+#' Morphological opening (erode then dilate): removes small foreground specks and thin protrusions while leaving the size of larger regions roughly unchanged.
+#' @usage
+#' morphological_open(img, se = "Square", radius = 1)
+#' @param img `Image`
+#' @param se `character (StructuringElement)`
+#' @param radius `integer`
+#' @return `Image`
+#' @md
+#'
 `morphological_open` <- function(...) .Call(`.rs_80`, NULL, list(...))
+#' Morphological closing (dilate then erode): fills small holes and gaps in foreground regions while leaving their overall size roughly unchanged.
+#' @usage
+#' morphological_close(img, se = "Square", radius = 1)
+#' @param img `Image`
+#' @param se `character (StructuringElement)`
+#' @param radius `integer`
+#' @return `Image`
+#' @md
+#'
 `morphological_close` <- function(...) .Call(`.rs_81`, NULL, list(...))
+#' Sparse Lucas-Kanade optical flow: for each of `points`, solves the classical 2x2 windowed least-squares system (built from Sobel spatial gradients Ix/Iy on `prev` and the temporal gradient It = next - prev, both accumulated over a (2*window_radius+1)^2 window) for the local translation (dx, dy) that best explains the window's brightness change under the standard optical-flow brightness-constancy assumption.
+#'
+#' Single-level (not the pyramidal coarse-to-fine extension real implementations use for large motions) -- correctly handles motions up to roughly `window_radius` pixels, which is this module's documented scope tradeoff; use gaussian_pyramid() externally and call this once per level if larger motions matter.
+#' @usage
+#' lucas_kanade_optical_flow(prev, `next`, points, window_radius = 7)
+#' @param prev `Image`
+#' @param next `Image`
+#' @param points `vector<list(integer, integer)>`
+#' @param window_radius `integer`
+#' @return `vector<FlowVector>`
+#' @md
+#'
 `lucas_kanade_optical_flow` <- function(...) .Call(`.rs_82`, NULL, list(...))
+#' A normalized (sums to 1) box blur kernel of the given odd size.
+#' @usage
+#' box_kernel(size)
+#' @param size `integer`
+#' @return `vector<numeric>`
+#' @md
+#'
 `box_kernel` <- function(...) .Call(`.rs_83`, NULL, list(...))
+#' A normalized 2D Gaussian kernel with standard deviation `sigma`; the kernel radius is chosen as ceil(3*sigma) (covers >99.7% of the distribution's mass), size = 2*radius+1.
+#' @usage
+#' gaussian_kernel(sigma)
+#' @param sigma `numeric`
+#' @return `vector<numeric>`
+#' @md
+#'
 `gaussian_kernel` <- function(...) .Call(`.rs_84`, NULL, list(...))
+#' Applies a square convolution `kernel` to every channel of `src` (alpha included), clamping accesses at the border (edge-replicate padding, avoiding any darkening artifact a zero-padded border would introduce).
+#'
+#' `kernel's` side length must be odd.
+#' @usage
+#' image_convolve(src, kernel)
+#' @param src `Image`
+#' @param kernel `vector<numeric>`
+#' @return `Image`
+#' @md
+#'
 `image_convolve` <- function(...) .Call(`.rs_85`, NULL, list(...))
+#' C++ function `datamunge::image::box_blur`
+#' @usage
+#' box_blur(src, radius)
+#' @param src `Image`
+#' @param radius `integer`
+#' @return `Image`
+#' @md
+#'
 `box_blur` <- function(...) .Call(`.rs_86`, NULL, list(...))
+#' C++ function `datamunge::image::gaussian_blur`
+#' @usage
+#' gaussian_blur(src, sigma)
+#' @param src `Image`
+#' @param sigma `numeric`
+#' @return `Image`
+#' @md
+#'
 `gaussian_blur` <- function(...) .Call(`.rs_87`, NULL, list(...))
+#' Sharpens `src` via an unsharp-mask kernel: the center weight grows (and the neighbor weights, already negative, grow more negative) as `amount` increases past its neutral value of 0 (0 = no change).
+#' @usage
+#' sharpen(src, amount = 1.0)
+#' @param src `Image`
+#' @param amount `numeric`
+#' @return `Image`
+#' @md
+#'
 `sharpen` <- function(...) .Call(`.rs_88`, NULL, list(...))
+#' Sobel gradient-magnitude edge detection: converts to grayscale first, then computes the horizontal and vertical Sobel gradients at every pixel and returns their Euclidean magnitude (clamped to \[0, 255\]) as a new Grayscale image.
+#' @usage
+#' sobel_edges(src)
+#' @param src `Image`
+#' @return `Image`
+#' @md
+#'
 `sobel_edges` <- function(...) .Call(`.rs_89`, NULL, list(...))
+#' Adds `delta` to every color channel (alpha untouched), clamped to \[0, 255\].
+#'
+#' Negative `delta` darkens, positive brightens.
+#' @usage
+#' adjust_brightness(src, delta)
+#' @param src `Image`
+#' @param delta `integer`
+#' @return `Image`
+#' @md
+#'
 `adjust_brightness` <- function(...) .Call(`.rs_90`, NULL, list(...))
+#' Scales every color channel's distance from mid-gray (128) by `factor` (alpha untouched), clamped to \[0, 255\].
+#'
+#' factor=1 is a no-op; factor=0 collapses to solid gray; factor>1 increases contrast.
+#' @usage
+#' adjust_contrast(src, factor)
+#' @param src `Image`
+#' @param factor `numeric`
+#' @return `Image`
+#' @md
+#'
 `adjust_contrast` <- function(...) .Call(`.rs_91`, NULL, list(...))
+#' A binary (black/white) Grayscale image: pixels whose luma (rgb_to_gray) is >= `level` become 255 (white), everything else becomes 0 (black).
+#' @usage
+#' threshold(src, level)
+#' @param src `Image`
+#' @param level `integer`
+#' @return `Image`
+#' @md
+#'
 `threshold` <- function(...) .Call(`.rs_92`, NULL, list(...))
+#' C++ function `datamunge::image::detail::lerp_byte`
+#' @usage
+#' lerp_byte(a, b, t)
+#' @param a `integer`
+#' @param b `integer`
+#' @param t `numeric`
+#' @return `integer`
+#' @md
+#'
 `lerp_byte` <- function(...) .Call(`.rs_93`, NULL, list(...))
+#' C++ function `datamunge::image::detail::bilinear_sample`
+#' @usage
+#' bilinear_sample(src, x, y)
+#' @param src `Image`
+#' @param x `numeric`
+#' @param y `numeric`
+#' @return `Pixel`
+#' @md
+#'
 `bilinear_sample` <- function(...) .Call(`.rs_94`, NULL, list(...))
+#' A new image of size `new_width` x `new_height`, resampled from `src`.
+#'
+#' Nearest maps each destination pixel to its closest source pixel (blocky, but exact for integer scale factors); Bilinear interpolates the four surrounding source pixels (smoother, the usual default for photographic content).
+#' @usage
+#' resize(src, new_width, new_height, filter = "Bilinear")
+#' @param src `Image`
+#' @param new_width `integer`
+#' @param new_height `integer`
+#' @param filter `character (ResampleFilter)`
+#' @return `Image`
+#' @md
+#'
 `resize` <- function(...) .Call(`.rs_95`, NULL, list(...))
+#' The sub-image \[x, x+width) x \[y, y+height) of `src`.
+#'
+#' Throws std::out_of_range if the requested rectangle isn't fully contained in `src`.
+#' @usage
+#' crop(src, x, y, width, height)
+#' @param src `Image`
+#' @param x `integer`
+#' @param y `integer`
+#' @param width `integer`
+#' @param height `integer`
+#' @return `Image`
+#' @md
+#'
 `crop` <- function(...) .Call(`.rs_96`, NULL, list(...))
+#' A new image with every row reversed left-to-right (mirror image).
+#' @usage
+#' flip_horizontal(src)
+#' @param src `Image`
+#' @return `Image`
+#' @md
+#'
 `flip_horizontal` <- function(...) .Call(`.rs_97`, NULL, list(...))
+#' A new image with every column reversed top-to-bottom (upside down).
+#' @usage
+#' flip_vertical(src)
+#' @param src `Image`
+#' @return `Image`
+#' @md
+#'
 `flip_vertical` <- function(...) .Call(`.rs_98`, NULL, list(...))
+#' A new image rotated clockwise by exactly 90, 180, or 270 degrees (any other value throws std::invalid_argument -- use rotate() for arbitrary angles).
+#'
+#' 90/270 swap width and height; 180 keeps them.
+#' @usage
+#' rotate90(src, degrees)
+#' @param src `Image`
+#' @param degrees `integer`
+#' @return `Image`
+#' @md
+#'
 `rotate90` <- function(...) .Call(`.rs_99`, NULL, list(...))
+#' A new image rotated clockwise by an arbitrary angle (in degrees) about its center, via inverse-mapping + bilinear resampling.
+#'
+#' The output canvas is exactly large enough to contain the fully-rotated source (like Pillow's expand=True), and pixels sourced from outside the original image are filled with `fill_color`.
+#' @usage
+#' rotate(src, degrees, fill_color = Pixel$new())
+#' @param src `Image`
+#' @param degrees `numeric`
+#' @param fill_color `Pixel`
+#' @return `Image`
+#' @md
+#'
 `rotate` <- function(...) .Call(`.rs_100`, NULL, list(...))
+#' The classical Gaussian pyramid: level 0 is `img` itself; each subsequent level is the previous level Gaussian-blurred (sigma = `sigma`) then downsampled by 2x (bilinear resize) -- a coarse-to-fine multi-resolution representation used throughout this module (e.g.
+#'
+#' as the natural foundation for a pyramidal optical-flow extension, though lucas_kanade_optical_flow() itself stays single-level). Stops early (producing fewer than `levels` images) if a level's dimensions would shrink below 1x1. Throws std::invalid_argument for levels < 1.
+#' @usage
+#' gaussian_pyramid(img, levels, sigma = 1.0)
+#' @param img `Image`
+#' @param levels `integer`
+#' @param sigma `numeric`
+#' @return `vector<Image>`
+#' @md
+#'
 `gaussian_pyramid` <- function(...) .Call(`.rs_101`, NULL, list(...))
+#' Per-channel signed difference (cur - upsampled), re-centered at 128 and clamped to \[0, 255\] so it stores in an ordinary Image -- the standard way to make a Laplacian pyramid level (which is naturally signed) visualizable/storable without introducing a separate signed-pixel image type just for this.
+#' @usage
+#' signed_difference_image(cur, upsampled)
+#' @param cur `Image`
+#' @param upsampled `Image`
+#' @return `Image`
+#' @md
+#'
 `signed_difference_image` <- function(...) .Call(`.rs_102`, NULL, list(...))
+#' The Laplacian pyramid: for every level except the last, level_i = (Gaussian level i) minus (Gaussian level i+1 upsampled back to level i's size) -- the detail lost by blurring+downsampling at that scale, re-centered at 128 (see detail::signed_difference_image()) so it stores as an ordinary image; the final level is the smallest Gaussian level kept as-is (the residual low-frequency image the whole pyramid was built from).
+#'
+#' Reconstructing the original from a Laplacian pyramid is the classical use (progressively add each un-recentered level back onto the upsampled reconstruction-so-far) but isn't implemented here -- this module only needed the decomposition direction.
+#' @usage
+#' laplacian_pyramid(img, levels, sigma = 1.0)
+#' @param img `Image`
+#' @param levels `integer`
+#' @param sigma `numeric`
+#' @return `vector<Image>`
+#' @md
+#'
 `laplacian_pyramid` <- function(...) .Call(`.rs_103`, NULL, list(...))
+#' Labels every foreground (luma >= 128) connected region of `img` with a distinct positive integer via flood fill (simple breadth-first flood fill per unvisited foreground pixel, rather than the classical two-pass union-find labeling algorithm -- same asymptotic complexity, much easier to verify correct, matching this module's established simplicity-over-cleverness bias).
+#'
+#' `eight_connected` selects 8- neighborhood (diagonals count) vs. 4-neighborhood (orthogonal only) connectivity.
+#' @usage
+#' connected_components(img, eight_connected = TRUE)
+#' @param img `Image`
+#' @param eight_connected `logical`
+#' @return `LabelMap`
+#' @md
+#'
 `connected_components` <- function(...) .Call(`.rs_104`, NULL, list(...))
+#' Otsu's method: the grayscale threshold (0-255) that maximizes the between-class variance of the pixels it would split into "below" and "at-or-above" groups -- the standard automatic threshold selection when a fixed threshold isn't known in advance.
+#'
+#' Pairs directly with image::threshold(img, otsu_threshold(img)).
+#' @usage
+#' otsu_threshold(img)
+#' @param img `Image`
+#' @return `integer`
+#' @md
+#'
 `otsu_threshold` <- function(...) .Call(`.rs_105`, NULL, list(...))
+#' K-means color segmentation: clusters every pixel of `img` by its RGB value into `k` clusters (Lloyd's algorithm, deterministic fixed-seed initialization by sampling k distinct pixels) and returns a new RGB image where every pixel is replaced by its assigned cluster's mean color.
+#'
+#' Throws std::invalid_argument if `k` exceeds the number of distinct pixels available to seed from.
+#' @usage
+#' kmeans_segment(img, k, max_iterations = 20, seed = 42)
+#' @param img `Image`
+#' @param k `integer`
+#' @param max_iterations `integer`
+#' @param seed `integer`
+#' @return `Image`
+#' @md
+#'
 `kmeans_segment` <- function(...) .Call(`.rs_106`, NULL, list(...))
+#' The cache root where downloaded datasets are stored.
+#'
+#' The first of: `$DATAMUNGE_DATA_DIR`; `$XDG_CACHE_HOME/datamunge/datasets`;
+#' `$HOME/.cache/datamunge/datasets`; on Windows `%LOCALAPPDATA%/datamunge/datasets`;
+#' otherwise `build/datasets` relative to the working directory. Nothing is created.
+#' @usage
+#' data_home()
+#' @return `character`: The directory path (it may not exist yet).
+#' @section Examples (C++):
+#' ```cpp
+#' std::print("{}\n", dm::datasets::data_home());   // e.g. /home/me/.cache/datamunge/datasets
+#' ```
+#' @seealso fetch()
+#' @md
+#'
 `data_home` <- function(...) .Call(`.rs_107`, NULL, list(...))
+#' The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".
+#' @usage
+#' downloadable()
+#' @return `vector<character>`
+#' @section Examples (C++):
+#' ```cpp
+#' for (const auto& name : dm::datasets::downloadable()) std::print("{}\n", name);
+#' ```
+#' @md
+#'
 `downloadable` <- function(...) .Call(`.rs_108`, NULL, list(...))
+#' Makes sure a downloadable dataset is on disk and returns where it is.
+#'
+#' For the tabular datasets ("diamonds", "california_housing") this is the CSV file. For the
+#' image datasets it is a directory: "mnist" and "fashion_mnist" hold the four uncompressed
+#' IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
+#' `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
+#' "sudoku" holds Norvig's `easy50.txt`, `top95.txt` and `hardest.txt`.
+#' "karate_club" holds the970-byte original ZIP, GML topology and source README;
+#' every cached archive/member is checksum-verified. karate_club() reads34nodes/78edges.
+#' "rebot_devarm" holds 38 pinned Seeed DevArm CAD/URDF/STL files and the
+#' CERN-OHL-W-2.0 source license in their upstream relative directory layout.
+#' DevArm verifies the size and SHA-256 of every cached file on every call;
+#' changed files throw without replacement. Missing files are staged and verified
+#' before publication. It uses the same offline/mirror/cache controls, and works
+#' without the optional native data-preparation dependencies. Hashing uses memory
+#' proportional to the largest source file (about 35 MB).
+#' Approximate download sizes: diamonds 2.7 MB, california_housing 1.4 MB, MNIST 11 MB,
+#' Fashion-MNIST 30 MB, CIFAR-10 163 MB, CIFAR-100 161 MB, sudoku 14 KB, DevArm 56 MB.
+#' @usage
+#' fetch(name, directory = "")
+#' @param name `character`. One of downloadable().
+#' @param directory `character`. Where the files live; empty means `data_home() + "/" + name`. Files
+#'   already present there are used as they are, except DevArm and karate_club's verified files.
+#' @return `character`: The local path of the CSV file or the dataset directory.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto housing = dm::datasets::read_csv(dm::datasets::fetch("california_housing"));
+#' ```
+#'
+#' For a complete CAD asset tree, use `dm::datasets::fetch("rebot_devarm")`.
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: for an unknown name.
+#' * `std::runtime_error`: if files are missing and downloading is disabled or fails, or
+#'   a download does not match its checksum.
+#' @references - Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm
+#' @seealso data_home(), downloadable(), download_file(), karate_club()
+#' @md
+#'
 `fetch` <- function(...) .Call(`.rs_109`, NULL, list(...))
+#' Downloads `url` to `destination` with curl, unless the destination already exists.
+#'
+#' The file is downloaded into a temporary directory next to `destination`, checked, and only
+#' then renamed into place. Parent directories are created as needed. `DATAMUNGE_DATA_OFFLINE`
+#' is honored; `DATAMUNGE_DATA_MIRROR` is not (fetch() applies it).
+#' @usage
+#' download_file(url, destination, md5 = "")
+#' @param url `character`. An `https://`, `http://` or `file://` URL.
+#' @param destination `character`. The final file path.
+#' @param md5 `character`. Expected lowercase hex MD5 of the downloaded bytes; empty skips the check.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::datasets::download_file("https://example.org/data.csv", "/tmp/data.csv");
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::runtime_error`: if downloading is disabled or fails, or the checksum differs.
+#' @md
+#'
 `download_file` <- function(...) invisible(.Call(`.rs_110`, NULL, list(...)))
+#' Builds a uniform mesh of `num_elements` equal-length elements on \[a, b\].
+#'
+#' Throws std::invalid_argument if num_elements is 0 or b <= a.
+#' @usage
+#' make_uniform_mesh1d(a, b, num_elements)
+#' @param a `numeric`
+#' @param b `numeric`
+#' @param num_elements `integer`
+#' @return `Mesh1D`
+#' @md
+#'
 `make_uniform_mesh1d` <- function(...) .Call(`.rs_111`, NULL, list(...))
+#' Evaluate squared Euclidean distance using the original double arithmetic.
+#'
+#' No finite/range validation. Differences, products and sum can overflow, underflow or lose low bits; NaNs propagate according to floating arithmetic.
+#' @usage
+#' squared_distance(a, b)
+#' @param a `Point2D`. First point.
+#' @param b `Point2D`. Second point.
+#' @return `numeric`: Rounded squared distance, possibly infinity/NaN or underflowed zero.
+#' @section Examples (C++):
+#' ```cpp
+#' std::cout << dm::geometry::squared_distance({0,0},{3,4}); // 25
+#' ```
+#' @seealso distance()
+#' @md
+#'
 `squared_distance` <- function(...) .Call(`.rs_112`, NULL, list(...))
+#' Return sqrt(squared_distance(a,b)) with its original range limitations.
+#'
+#' A finite mathematical distance may overflow through the squared intermediate; this convenience primitive performs no checked hypot or input validation.
+#' @usage
+#' distance(a, b)
+#' @param a `Point2D`. First point.
+#' @param b `Point2D`. Second point.
+#' @return `numeric`: Rounded square root of the double-valued squared distance.
+#' @section Examples (C++):
+#' ```cpp
+#' std::cout << dm::geometry::distance({0,0},{3,4}); // 5
+#' ```
+#' @seealso squared_distance()
+#' @md
+#'
 `distance` <- function(...) .Call(`.rs_113`, NULL, list(...))
+#' Evaluate the original double determinant (b-a) cross (c-a).
+#'
+#' A positive exact determinant means counterclockwise, but this approximation can cancel, overflow or underflow and its returned sign is not certified. No tolerance or finite validation is applied. orientation_sign() supplies an exact sign for finite stored binary64 points; this primitive remains unchanged.
+#' @usage
+#' cross(a, b, c)
+#' @param a `Point2D`. First point.
+#' @param b `Point2D`. Second point.
+#' @param c `Point2D`. Third point.
+#' @return `numeric`: Rounded double determinant, possibly infinity/NaN or a misleading zero.
+#' @section Examples (C++):
+#' ```cpp
+#' std::cout << dm::geometry::cross({0,0},{1,0},{0,1}); // 1
+#' ```
+#' @seealso orientation_sign()
+#' @md
+#'
 `cross` <- function(...) .Call(`.rs_114`, NULL, list(...))
+#' Construct a complete unconstrained Delaunay triangulation with exact signs.
+#'
+#' Retains the original one-vector signature and Triangle layout. Finite coordinate validation precedes even trivial results. Duplicates coalesce to earliest ids; collinear/fewer-than-three distinct sites return no faces. Uses Bowyer-Watson cavity replacement with symbolic hull ghosts, avoiding any finite super-triangle whose proximity could remove valid narrow faces. All orientation/incircle signs are exact for finite stored binary64, including subnormals/extreme scales. Cocircular ties retain existing faces under the ordering in DelaunayTrace. Faces are strictly CCW, contain no ghosts and reference original ids. Finite output order is canonical as documented on DelaunayTrace. No boundary constraints, holes, Steiner refinement or minimum-angle guarantee is supplied. Input unchanged; O(n log(n+1)+u^2 log(u+1)) worst-case work for n records/u distinct sites with ordered cavity maps and full live scans; O(n+u) working/output storage, no shared state or optional resource caps. Exact-predicate cost is bounded per binary64 query.
+#' @usage
+#' delaunay_triangulation(points)
+#' @param points `vector<Point2D>`. Borrowed finite planar sites, possibly empty/duplicate/collinear.
+#' @return `vector<Triangle>`: Owned complete finite mesh of the distinct sites' convex hull, or no faces for collinearity.
+#' @section Examples (C++):
+#' ```cpp
+#' std::print("{}\n",dm::geometry::delaunay_triangulation({{0,0},{1,0},{.5,.000001}}).size()); // 1
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Any nonfinite coordinate, even on short input.
+#' * `std::length_error`: Counter arithmetic or container capacity exceeded.
+#' * `std::logic_error`: Internal cavity topology invariant fails; no partial mesh returned.
+#' * `std::bad_alloc`: Allocation fails.
+#' @references - A. Bowyer (1981), Computing Dirichlet tessellations, Computer Journal 24(2),162–166, doi:10.1093/comjnl/24.2.162.
+#' - D. F. Watson (1981), Computing the n-dimensional Delaunay tessellation with application to Voronoi polytopes, Computer Journal 24(2),167–172, doi:10.1093/comjnl/24.2.167. This variant uses symbolic boundary faces, exact decoded-dyadic signs, earliest duplicate identities and ordered cavity edges.
+#' @seealso delaunay_trace(), incircle_sign()
+#' @md
+#'
 `delaunay_triangulation` <- function(...) .Call(`.rs_115`, NULL, list(...))
+#' Capture actual symbolic-boundary cavity transitions from the same solver.
+#'
+#' No replay. Full finite validation precedes the original-record cap and all allocation. max_tests bounds cumulative incircle plus hull-side calls, checked before each complete live-face scan. Trace entries charge one per insertion plus removed faces, boundary edges and added faces, including ghosts, checked before retaining the event. Points/maps/final output and temporary cavities are excluded from that entry count; caps do not bound bytes or wall time. Zero disables only an optional cap. O(sum cavity/event sizes) additional history, at worst O(u^2), beyond the ordinary solver. Failure returns no partial result.
+#' @usage
+#' delaunay_trace(points, max_points = 1000000, max_tests = 10000000, max_entries = 1000000)
+#' @param points `vector<Point2D>`. Finite original coordinates, unchanged.
+#' @param max_points `integer`. Complete original-record cap, default 1000000; zero disables.
+#' @param max_tests `integer`. Cumulative complete-scan conflict cap, default 10000000; zero disables.
+#' @param max_entries `integer`. Cumulative event-entry cap, default 1000000; zero disables.
+#' @return `DelaunayTrace`: Owned points, original-id maps, finite mesh, actual events and work.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}},5,10);
+#' std::print("{} {}\n",t.triangles.size(),t.work.incircle_tests+t.work.hull_side_tests); // 4 10
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Any nonfinite coordinate.
+#' * `std::length_error`: Optional cap, count arithmetic or container capacity exceeded.
+#' * `std::logic_error`: Internal cavity invariant fails.
+#' * `std::bad_alloc`: Allocation fails.
+#' @references - Bowyer (1981), doi:10.1093/comjnl/24.2.162; Watson (1981), doi:10.1093/comjnl/24.2.167; records the symbolic-boundary variant rather than a geometric replay.
+#' @seealso DelaunayTrace, delaunay_triangulation()
+#' @md
+#'
 `delaunay_trace` <- function(...) .Call(`.rs_116`, NULL, list(...))
+#' Measure a supplied mesh and test every nonvertex site against every circle.
+#'
+#' Performs the structural checks on DelaunayAnalysis first. The complete prospective circle count faces*(unique_sites-3) is checked before circle queries; zero cap disables only that limit. O(n log(n+1)+f log(f+1)+fu) work and O(n+f) storage; minimum angles are floating diagnostics and are not certified bounds. This is a local property analysis, not a global embedding/coverage certificate.
+#' @usage
+#' delaunay_analyze(points, triangles, max_tests = 1000000)
+#' @param points `vector<Point2D>`. Finite original sites, unchanged.
+#' @param triangles `vector<Triangle>`. Finite CCW faces with valid original indices, unchanged.
+#' @param max_tests `integer`. Complete exact-circle query cap, default 1000000; zero disables.
+#' @return `DelaunayAnalysis`: Owned scalar topology, actual query/violation counts and approximate angle.
+#' @section Examples (C++):
+#' ```cpp
+#' const std::vector<dm::geometry::Point2D> p{{0,0},{1,0},{1,1},{0,1}};
+#' const auto a=dm::geometry::delaunay_analyze(p,dm::geometry::delaunay_triangulation(p));
+#' std::print("{} {} {}\n",a.edges,a.boundary_edges,a.circle_tests); // 5 4 2
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Nonfinite coordinates, bad/degenerate/non-CCW/duplicate faces or nonmanifold edges.
+#' * `std::length_error`: Circle-count arithmetic or optional cap exceeded.
+#' * `std::bad_alloc`: Allocation fails.
+#' @seealso DelaunayAnalysis, delaunay_triangulation()
+#' @md
+#'
 `delaunay_analyze` <- function(...) .Call(`.rs_117`, NULL, list(...))
+#' Generate the report's seeded uniform square-cloud control in the core.
+#'
+#' Uses mt19937(seed) and uniform_real_distribution<double>(0,extent), x then y for each point. Same-library runs reproduce the original report's seed20250728 and 30-site square when defaults are used. Standard distribution algorithms need not match across C++ libraries, so the seed is not a universal byte fixture. Coincident draws are allowed and later triangulation deduplicates them. O(count) work/storage, owned output, no global RNG or shared mutation.
+#' @usage
+#' delaunay_uniform_cloud(count, seed = 20250728, extent = 10.0, max_points = 1000000)
+#' @param count `integer`. Number of original generated records, zero allowed.
+#' @param seed `integer`. mt19937 seed, default 20250728.
+#' @param extent `numeric`. Positive finite square extent, default 10; checked even for count zero.
+#' @param max_points `integer`. Optional complete output-record cap, default 1000000; zero disables.
+#' @return `vector<Point2D>`: Owned generated points in \[0,extent) on each axis.
+#' @section Examples (C++):
+#' ```cpp
+#' std::print("{}\n",dm::geometry::delaunay_uniform_cloud(30).size()); // 30
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Nonpositive or nonfinite extent.
+#' * `std::length_error`: Optional count cap or container capacity exceeded before allocation.
+#' * `std::bad_alloc`: Allocation fails.
+#' @seealso delaunay_trace()
+#' @md
+#'
 `delaunay_uniform_cloud` <- function(...) .Call(`.rs_118`, NULL, list(...))
+#' Builds a structured rectangular mesh on \[x0, x1\] x \[y0, y1\]: nx * ny grid cells, each split into two counterclockwise triangles, for a total of nx*ny*2 triangles and (nx+1)*(ny+1) nodes, ordered row-major (x fastest, then y).
+#'
+#' Throws std::invalid_argument if nx or ny is 0, or if x1 <= x0 or y1 <= y0.
+#' @usage
+#' make_rectangular_mesh2d(x0, y0, x1, y1, nx, ny)
+#' @param x0 `numeric`
+#' @param y0 `numeric`
+#' @param x1 `numeric`
+#' @param y1 `numeric`
+#' @param nx `integer`
+#' @param ny `integer`
+#' @return `Mesh2D`
+#' @md
+#'
 `make_rectangular_mesh2d` <- function(...) .Call(`.rs_119`, NULL, list(...))
+#' Builds a mesh over the convex hull of an arbitrary point cloud via Delaunay triangulation (datamunge::geometry::delaunay_triangulation) -- useful for unstructured domains a structured grid does not fit.
+#' @usage
+#' make_mesh2d_from_points(points)
+#' @param points `vector<Point2D>`
+#' @return `Mesh2D`
+#' @md
+#'
 `make_mesh2d_from_points` <- function(...) .Call(`.rs_120`, NULL, list(...))
+#' Node indices lying on the mesh's outer boundary: every node incident to a boundary edge (an edge belonging to exactly one triangle).
+#'
+#' Works generically for both a structured rectangular mesh (the domain's four sides) and an unstructured Delaunay mesh (the convex hull), returned in ascending order with no duplicates.
+#' @usage
+#' boundary_nodes(mesh)
+#' @param mesh `Mesh2D`
+#' @return `vector<integer>`
+#' @md
+#'
 `boundary_nodes` <- function(...) .Call(`.rs_121`, NULL, list(...))
+#' The axis-aligned bounding box of `points`.
+#'
+#' Throws std::invalid_argument for an empty point set.
+#' @usage
+#' bounding_box(points)
+#' @param points `vector<Point2D>`
+#' @return `BoundingBox`
+#' @md
+#'
 `bounding_box` <- function(...) .Call(`.rs_122`, NULL, list(...))
+#' Return the closest point copies and finite-double distance using the checked all-pairs kernel.
+#'
+#' Validates at least two finite points, visits every original i<j pair and compares widened hypot distances. Equal rounded distances keep the lexicographically first index pair. Duplicates are valid distinct records and can yield zero. No early stop, sorting or spatial pruning; O(n^2) work and O(1) auxiliary storage. No input mutation/shared state. Widened comparison can change former false zero/infinite results and last-bit ties; it is not an exact-real predicate. The old call/result layout remains; indexed/traced variants retain input ids.
+#' @usage
+#' closest_pair(points)
+#' @param points `vector<Point2D>`. Borrowed original finite planar coordinates, length at least two.
+#' @return `ClosestPairResult`: Owned selected point copies and checked finite-double measured distance.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::geometry::closest_pair({{0,0},{3,4},{0,1}});
+#' std::print("{}\n",r.distance); // 1
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: If point count is too small or any coordinate is nonfinite.
+#' * `std::length_error`: If complete pair count cannot fit size_t.
+#' * `std::overflow_error`: If arithmetic/counters or the selected legacy distance cannot fit.
+#' @seealso closest_pair_indexed(), closest_pair_trace()
+#' @md
+#'
 `closest_pair` <- function(...) .Call(`.rs_123`, NULL, list(...))
+#' Compute Andrew's strict monotone-chain hull using exact binary64 orientation signs.
+#'
+#' Validates all coordinates before internal indexed copies or sorting; the original by-value argument copy occurs at the call boundary. Exact coordinate equality removes duplicates (including signed zero); the earliest matching original record supplies its representation. Returns lexicographic-minimum first, counterclockwise, no repeated endpoint and no collinear edge interiors. Empty/singleton/two-point/collinear outputs follow ConvexHullAnalysis. O(n log n) comparisons plus O(n) bounded exact-sign tests, O(n) scratch/output, no global state. The legacy by-value signature is retained and has no optional caps. Other geometry routines that use cross() retain their own floating contracts.
+#' @usage
+#' convex_hull(points)
+#' @param points `vector<Point2D>`. Finite planar records, copied by value as in the original API.
+#' @return `vector<Point2D>`: Owned strict hull of the represented coordinates.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto h=dm::geometry::convex_hull({{0,0},{2,0},{2,2},{0,2},{1,1}});
+#' std::cout << h.size(); // 4
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Any nonfinite coordinate.
+#' * `std::length_error`: Work/container size exhaustion.
+#' @references - A. M. Andrew (1979), Another efficient algorithm for convex hulls in two
+#'   dimensions, https://doi.org/10.1016/0020-0190(79)90072-3 .
+#' @seealso convex_hull_analyze(), convex_hull_trace(), orientation_sign()
+#' @md
+#'
 `convex_hull` <- function(...) .Call(`.rs_124`, NULL, list(...))
+#' Execute the same exact-sign hull kernel with identities and actual work.
+#'
+#' Same ordering, degeneracy and complexity contract as convex_hull(). Full finite validation precedes the complete max_points cap and scratch allocation. No events or completed-chain snapshots are retained; event cap is ignored.
+#' @usage
+#' convex_hull_analyze(points, options = ConvexHullOptions$new())
+#' @param points `vector<Point2D>`. Finite original records; not mutated.
+#' @param options `ConvexHullOptions`. Complete original-record cap, zero unlimited; defaults one million.
+#' @return `ConvexHullAnalysis`: Owned hull, earliest original indices and actual counters.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto a=dm::geometry::convex_hull_analyze({{0,0},{1,0},{2,0}});
+#' std::cout << a.hull.size() << ' ' << a.work.distinct_points; // 2 3
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Nonfinite coordinate.
+#' * `std::length_error`: Complete point cap or work/container exhaustion.
+#' @references - Andrew (1979), https://doi.org/10.1016/0020-0190(79)90072-3 .
+#' @seealso convex_hull(), ConvexHullOptions
+#' @md
+#'
 `convex_hull_analyze` <- function(...) .Call(`.rs_125`, NULL, list(...))
+#' Capture the hull kernel's actual stack events without replay or quadratic snapshots.
+#'
+#' Same computation/work as analyze, plus O(n) owned sorted records, compact test/pop/push edits and completed lower/upper chains. Positive max_events is checked online on actual records, including pushes; zero disables the cap.
+#' @usage
+#' convex_hull_trace(points, options = ConvexHullOptions$new())
+#' @param points `vector<Point2D>`. Finite original records; not mutated.
+#' @param options `ConvexHullOptions`. Complete point and actual event caps.
+#' @return `ConvexHullTrace`: Owned actual sorted coordinates, identities, work and scan edits.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});
+#' std::cout << t.events.size(); // 4
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Nonfinite coordinate.
+#' * `std::length_error`: Point/event cap or work/container exhaustion.
+#' @references - Andrew (1979), https://doi.org/10.1016/0020-0190(79)90072-3 .
+#' @seealso convex_hull_analyze(), HullEvent
+#' @md
+#'
 `convex_hull_trace` <- function(...) .Call(`.rs_126`, NULL, list(...))
+#' Draw unsnapped independent standard-normal x,y pairs with a local 32-bit MT stream.
+#'
+#' Reproduces the original hull report's mt19937/normal_distribution call order, including its cached normal variate. Distribution mappings can differ between standard libraries; a seed alone does not promise portable coordinate bits. Complete count cap precedes allocation. Empty count is valid. O(count) expected work/storage; no global RNG or mutation. Finite draws are checked before return.
+#' @usage
+#' sample_gaussian_points(count = 40, seed = 20240728, max_points = 1000000)
+#' @param count `integer`. Number of points, default forty.
+#' @param seed `integer`. Local mt19937 seed, default 20240728.
+#' @param max_points `integer`. Complete draw cap, default one million; zero unlimited.
+#' @return `vector<Point2D>`: Owned unsnapped normal point cloud.
+#' @section Examples (C++):
+#' ```cpp
+#' std::cout << dm::geometry::sample_gaussian_points(40,20240728).size(); // 40
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::length_error`: Complete draw cap/container exhaustion.
+#' * `std::overflow_error`: A generated coordinate is nonfinite.
+#' @references - C++ normal_distribution specification: https://eel.is/c++draft/rand.dist.norm.normal .
+#' @seealso convex_hull(), random_point_cloud()
+#' @md
+#'
 `sample_gaussian_points` <- function(...) .Call(`.rs_127`, NULL, list(...))
+#' `n` colours from green through yellow and brown to near-white, as R's `terrain.colors(n)`.
+#' @usage
+#' terrain_colors(n)
+#' @param n `integer`. Number of colours (at least 1).
+#' @return `vector<RGB>`: The palette, low to high.
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: If `n` is 0.
+#' @md
+#'
 `terrain_colors` <- function(...) .Call(`.rs_128`, NULL, list(...))
+#' `n` colours from dark blue through white to dark red, a diverging palette for signed values such as correlations (ColorBrewer's RdBu, reversed so that low is blue).
+#'
+#' Interpolates linearly between the seven RdBu anchor colours; an odd `n` puts pure
+#' near-white (247, 247, 247) in the middle, so with `z_min = -z_max` in RPlot::image() zero
+#' maps to white.
+#' @usage
+#' diverging_colors(n)
+#' @param n `integer`. Number of colours (at least 1; 1 gives the white midpoint).
+#' @return `vector<RGB>`: The palette, low (blue) to high (red).
+#' @section Examples (C++):
+#' ```cpp
+#' const auto pal = dm::graphics::diverging_colors(3);
+#' std::print("{} {} {}\n", pal[0].r, pal[1].g, pal[2].r);  // 33 247 178
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: If `n` is 0.
+#' @references - C. Brewer, ColorBrewer 2.0 (RdBu scheme): https://colorbrewer2.org
+#' @seealso terrain_colors(), RPlot::image()
+#' @md
+#'
 `diverging_colors` <- function(...) .Call(`.rs_129`, NULL, list(...))
+#' `n` colours of the viridis scale, from dark purple through blue and green to yellow, matching R's `viridisLite::viridis(n)` at n = 10.
+#'
+#' Viridis is perceptually uniform, so equal steps in value look like equal steps in colour,
+#' and it stays readable in greyscale and for the common forms of colour blindness. Colours are
+#' interpolated linearly between viridis(10)'s ten anchors.
+#' @usage
+#' viridis_colors(n)
+#' @param n `integer`. Number of colours (at least 1).
+#' @return `vector<RGB>`: The palette, low (purple) to high (yellow).
+#' @section Examples (C++):
+#' ```cpp
+#' const auto pal = dm::graphics::viridis_colors(10);
+#' std::print("{} {} {}\n", pal[0].r, pal[5].g, pal[9].b);  // 68 158 37
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: If `n` is 0.
+#' @references - S. van der Walt and N. Smith (2015). "mpl colourmaps" (viridis): https://bids.github.io/colormap/
+#' - viridisLite: https://sjmgarnier.github.io/viridisLite/
+#' @seealso value_colors(), terrain_colors()
+#' @md
+#'
 `viridis_colors` <- function(...) .Call(`.rs_130`, NULL, list(...))
+#' One colour per value on a continuous scale, for colouring scatter points by a numeric variable (ggplot2's `scale_colour_viridis_c()`).
+#'
+#' Each value is mapped linearly from \[`z_min`, `z_max`\] to the palette and rounded to the
+#' nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero
+#' range maps everything to the middle colour. Pass the result to RPlot::points_colored().
+#' @usage
+#' value_colors(values, palette = c(), z_min = <default>, z_max = <default>)
+#' @param values `vector<numeric>`. Values to colour.
+#' @param palette `vector<RGB>`. Colours from low to high (default viridis_colors(256)).
+#' @param z_min `numeric`. Value of the first colour; NaN (the default) uses the smallest value.
+#' @param z_max `numeric`. Value of the last colour; NaN (the default) uses the largest value.
+#' @return `vector<RGB>`: One colour per value.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
+#' std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
+#' ```
+#' @seealso viridis_colors(), RPlot::points_colored()
+#' @md
+#'
 `value_colors` <- function(...) .Call(`.rs_131`, NULL, list(...))
+#' Compute the complete logical capture size without allocating a DTW matrix.
+#'
+#' Checks positive lengths, int path-index representability and size_t geometry. A representable count does not promise that the corresponding buffers fit memory.
+#' @usage
+#' dtw_trace_entries(n, m)
+#' @param n `integer`. Positive first length, at most INT_MAX.
+#' @param m `integer`. Positive second length, at most INT_MAX.
+#' @return `integer`: n+m+2*n*m logical entries, excluding result paths and scratch rows.
+#' @section Examples (C++):
+#' ```cpp
+#' std::print("{}\n",dm::geometry::dtw_trace_entries(3,4)); // 31
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: For either zero length.
+#' * `std::length_error`: For index, product or capture-count overflow.
+#' @seealso dynamic_time_warping_trace()
+#' @md
+#'
 `dtw_trace_entries` <- function(...) .Call(`.rs_132`, NULL, list(...))
+#' Compute unrestricted absolute-loss DTW and actual logical work without cost history.
+#'
+#' Owns the result; borrows finite inputs without mutation. No band, slope bound, step weighting, length normalization or fitted parameters. Finite ties choose diagonal, then advance_a, then advance_b. O(n*m) recurrence time, O(n*m+n+m) scratch/output, with only two double cost rows and n*m predecessor bytes. Complete input/geometry validation precedes allocation. Positive overflowing off-path costs remain infinity; only a nonfinite final optimum is rejected. Under ordinary double arithmetic the returned witness sums to the returned distance in forward order. Concurrent independent calls share no mutable state.
+#' @usage
+#' dynamic_time_warping_work(a, b)
+#' @param a `vector<numeric>`. Nonempty finite scalar sequence, length at most INT_MAX.
+#' @param b `vector<numeric>`. Nonempty finite scalar sequence, length at most INT_MAX.
+#' @return `DTWComputation`: Independent optimal result and counts, with no retained input/cost history.
+#' @section Examples (C++):
+#' See DTWWork and DTWComputation for executed work examples.
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: For empty or nonfinite input.
+#' * `std::length_error`: For geometry/index/container bounds.
+#' * `std::overflow_error`: If the final minimum is not finite double.
+#' * `std::bad_alloc`: If scratch or result storage cannot be allocated.
+#' @references - H. Sakoe and S. Chiba (1978), Dynamic programming algorithm optimization for
+#'   spoken word recognition, IEEE TASSP26(1):43-49. doi:10.1109/TASSP.1978.1163055.
+#'   This is the unrestricted scalar absolute-loss variant, without the paper's window/slope rules.
+#' @seealso dynamic_time_warping(), dynamic_time_warping_trace()
+#' @md
+#'
 `dynamic_time_warping_work` <- function(...) .Call(`.rs_133`, NULL, list(...))
+#' Preserve the original two-argument unrestricted absolute-loss DTW entry point.
+#'
+#' Same validation, ownership, deterministic ties, numerical limits and complexity as dynamic_time_warping_work(); discards only its work counters. This distance is not a metric: unequal stretched sequences can have zero cost and the triangle inequality can fail. Equal-length diagonal alignment bounds it by rigid L1 loss.
+#' @usage
+#' dynamic_time_warping(a, b)
+#' @param a `vector<numeric>`. Nonempty finite first sequence, length at most INT_MAX.
+#' @param b `vector<numeric>`. Nonempty finite second sequence, length at most INT_MAX.
+#' @return `DTWResult`: Owned optimal distance and inclusive zero-based parallel int paths.
+#' @section Examples (C++):
+#' See DTWResult for the executed original stretched-sequence example.
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: For empty or nonfinite input.
+#' * `std::length_error`: For geometry/index/container bounds.
+#' * `std::overflow_error`: If the final optimum is not finite double.
+#' * `std::bad_alloc`: If scratch or result storage cannot be allocated.
+#' @references - H. Sakoe and S. Chiba (1978), IEEE TASSP26(1):43-49, doi:10.1109/TASSP.1978.1163055.
+#' @seealso dynamic_time_warping_work(), dtw_path_cost()
+#' @md
+#'
 `dynamic_time_warping` <- function(...) .Call(`.rs_134`, NULL, list(...))
+#' Capture actual positive-cell costs and predecessor choices from the shared DTW kernel.
+#'
+#' Validates complete finite inputs/geometry before checking the optional complete capture budget, then copies inputs and runs once. Owns every snapshot. No partial trace/result escapes on failure. Same variant/ties/numerical rules as ordinary DTW.
+#' @usage
+#' dynamic_time_warping_trace(a, b, max_entries = 1000000)
+#' @param a `vector<numeric>`. Nonempty finite first input, length at most INT_MAX.
+#' @param b `vector<numeric>`. Nonempty finite second input, length at most INT_MAX.
+#' @param max_entries `integer`. Complete logical entry cap, default 1000000; zero disables only cap.
+#' @return `DTWTrace`: Independent input, costs, directions, optimal result, counts and capture cost.
+#' @section Examples (C++):
+#' See DTWTrace and DTWPredecessor for executed capture examples.
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: For empty or nonfinite input, before budget checks.
+#' * `std::length_error`: For geometry/index/container/capture limits.
+#' * `std::overflow_error`: If the final optimum is not finite double.
+#' * `std::bad_alloc`: If owned or working storage cannot be allocated.
+#' @references - H. Sakoe and S. Chiba (1978), IEEE TASSP26(1):43-49, doi:10.1109/TASSP.1978.1163055.
+#' @seealso dtw_trace_entries(), dynamic_time_warping_work()
+#' @md
+#'
 `dynamic_time_warping_trace` <- function(...) .Call(`.rs_135`, NULL, list(...))
+#' Validate a complete monotone witness and sum its unshifted absolute losses.
+#'
+#' Checks all finite input and path geometry before numerical accumulation: equal nonempty path lengths, in-bounds indices, exact endpoints and unit advances (1,0), (0,1), (1,1). This certifies feasibility/cost, not optimality. O(n+m+L) validation/sum, no allocations, input unchanged; no shared mutable state.
+#' @usage
+#' dtw_path_cost(a, b, path_a, path_b)
+#' @param a `vector<numeric>`. Nonempty finite first sequence.
+#' @param b `vector<numeric>`. Nonempty finite second sequence.
+#' @param path_a `vector<integer>`. Borrowed signed first indices, zero through a.size()-1.
+#' @param path_b `vector<integer>`. Borrowed parallel signed second indices, zero through b.size()-1.
+#' @return `numeric`: Finite forward-order sum of absolute differences on the supplied witness.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::geometry::dynamic_time_warping({1,2},{1,2});
+#' std::print("{}\n",dm::geometry::dtw_path_cost({1,2},{1,2},r.path_a,r.path_b)); // 0
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: For invalid finite inputs or path shape/indices/steps/endpoints.
+#' * `std::length_error`: For input index/geometry bounds.
+#' * `std::overflow_error`: If the supplied path's accumulated cost is not finite double.
+#' @seealso DTWResult, plot_dtw_alignment()
+#' @md
+#'
 `dtw_path_cost` <- function(...) .Call(`.rs_136`, NULL, list(...))
+#' Draw two scalar series and their validated DTW correspondence segments natively.
+#'
+#' Costs use unshifted inputs; only drawing adds offset to a and subtracts it from b. Requires result.distance to equal the validated forward witness sum exactly; it does not independently prove optimality. Validates complete inputs/witness, finite plotted coordinates and optional path-pair cap before drawing allocation. Owns all series; no file I/O or model mutation. Concurrent calls share no state.
+#' @usage
+#' plot_dtw_alignment(a, b, result, offset = 1.6000000000000001, max_pairs = 4096)
+#' @param a `vector<numeric>`. Nonempty finite first sequence.
+#' @param b `vector<numeric>`. Nonempty finite second sequence.
+#' @param result `DTWResult`. Borrowed complete feasible result with exact finite witness cost.
+#' @param offset `numeric`. Finite nonnegative vertical display separation per series, default 1.6.
+#' @param max_pairs `integer`. Optional complete correspondence cap, default 4096; zero disables only cap.
+#' @return `RPlot`: Editable owned RPlot with two lines and gray correspondence segments.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::geometry::dynamic_time_warping({1,2},{1,2});
+#' const auto p=dm::geometry::plot_dtw_alignment({1,2},{1,2},r);
+#' std::print("{}\n",p.series().size()); // 3
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: For invalid inputs/witness/distance/offset.
+#' * `std::length_error`: For input geometry/index limits or exceeded nonzero pair cap.
+#' * `std::overflow_error`: For witness cost or shifted drawing-coordinate overflow.
+#' * `std::bad_alloc`: If owned plot storage cannot be allocated.
+#' @seealso dtw_path_cost(), graphics::RPlot
+#' @md
+#'
 `plot_dtw_alignment` <- function(...) .Call(`.rs_137`, NULL, list(...))
+#' The discrete Fréchet distance between two point sequences ("curves") p and q (Eiter & Mannila, 1994): the minimum, over every monotone coupling between the two curves, of the MAXIMUM pairwise distance along that coupling -- informally, the shortest leash length needed for a person walking along p and a dog walking along q (both only moving forward, never backward) to stay connected the whole way.
+#'
+#' Computed via the standard O(n*m) dynamic program (bottom-up, not the naive exponential recursion). Differs from DTW in exactly one respect: DTW sums (cumulative cost) where Fréchet takes a max (bottleneck cost) -- Fréchet cares about the worst single moment of divergence, DTW about total accumulated divergence.
+#' @usage
+#' discrete_frechet_distance(p, q)
+#' @param p `vector<Point2D>`
+#' @param q `vector<Point2D>`
+#' @return `numeric`
+#' @md
+#'
 `discrete_frechet_distance` <- function(...) .Call(`.rs_138`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::circle_from_one_point`
+#' @usage
+#' circle_from_one_point(p)
+#' @param p `Point2D`
+#' @return `Circle`
+#' @md
+#'
 `circle_from_one_point` <- function(...) .Call(`.rs_139`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::circle_from_two_points`
+#' @usage
+#' circle_from_two_points(a, b)
+#' @param a `Point2D`
+#' @param b `Point2D`
+#' @return `Circle`
+#' @md
+#'
 `circle_from_two_points` <- function(...) .Call(`.rs_140`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::circle_from_three_points`
+#' @usage
+#' circle_from_three_points(a, b, c)
+#' @param a `Point2D`
+#' @param b `Point2D`
+#' @param c `Point2D`
+#' @return `Circle`
+#' @md
+#'
 `circle_from_three_points` <- function(...) .Call(`.rs_141`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::circle_contains`
+#' @usage
+#' circle_contains(circle, p)
+#' @param circle `Circle`
+#' @param p `Point2D`
+#' @return `logical`
+#' @md
+#'
 `circle_contains` <- function(...) .Call(`.rs_142`, NULL, list(...))
+#' The smallest circle enclosing every point in `points` (Welzl's algorithm, the classical "incremental with boundary point sets" formulation: a point violating the current circle must lie on the boundary of the true minimal circle, so it's fixed in place and the problem re-solved for the remaining points).
+#'
+#' Points are shuffled first (fixed seed, for determinism) since the algorithm's expected running time depends on processing order; this implementation skips the further "move-to-front" optimization real Welzl uses for guaranteed expected-linear time; O(n^3) worst case here is still polynomial and far simpler to get right, matching this module's usual complexity/simplicity tradeoff. Throws std::invalid_argument for an empty input.
+#' @usage
+#' min_enclosing_circle(points)
+#' @param points `vector<Point2D>`
+#' @return `Circle`
+#' @md
+#'
 `min_enclosing_circle` <- function(...) .Call(`.rs_143`, NULL, list(...))
+#' True if `point` lies strictly inside the simple polygon `vertices` (given in either winding order), via the standard even-odd ray-casting rule (Franklin's PNPOLY).
+#'
+#' Behavior for a point exactly on an edge is unspecified (as it is for every ray-casting implementation) -- it may be reported as inside or outside depending on which edge and floating-point rounding.
+#' @usage
+#' point_in_polygon(point, vertices)
+#' @param point `Point2D`
+#' @param vertices `vector<Point2D>`
+#' @return `logical`
+#' @md
+#'
 `point_in_polygon` <- function(...) .Call(`.rs_144`, NULL, list(...))
+#' The polygon's signed area via the shoelace formula: positive for counterclockwise-ordered vertices, negative for clockwise.
+#' @usage
+#' signed_polygon_area(vertices)
+#' @param vertices `vector<Point2D>`
+#' @return `numeric`
+#' @md
+#'
 `signed_polygon_area` <- function(...) .Call(`.rs_145`, NULL, list(...))
+#' The polygon's (unsigned) area, regardless of vertex winding order.
+#' @usage
+#' polygon_area(vertices)
+#' @param vertices `vector<Point2D>`
+#' @return `numeric`
+#' @md
+#'
 `polygon_area` <- function(...) .Call(`.rs_146`, NULL, list(...))
+#' The centroid (center of mass, assuming uniform density) of the polygon's ENCLOSED AREA -- not the average of its vertex coordinates, which is a different point for any non-regular polygon.
+#'
+#' Throws std::invalid_argument for a degenerate (zero-area, e.g. collinear or fewer-than-3-vertex) polygon, since the formula divides by the signed area.
+#' @usage
+#' polygon_centroid(vertices)
+#' @param vertices `vector<Point2D>`
+#' @return `Point2D`
+#' @md
+#'
 `polygon_centroid` <- function(...) .Call(`.rs_147`, NULL, list(...))
+#' True if `vertices` form a convex polygon: every triple of consecutive vertices turns the same way (all left turns or all right turns), with no reflex vertices.
+#'
+#' Fewer than 3 vertices is never convex.
+#' @usage
+#' is_convex_polygon(vertices)
+#' @param vertices `vector<Point2D>`
+#' @return `logical`
+#' @md
+#'
 `is_convex_polygon` <- function(...) .Call(`.rs_148`, NULL, list(...))
+#' C++ function `datamunge::geometry::orientation`
+#' @usage
+#' orientation(a, b, c)
+#' @param a `Point2D`
+#' @param b `Point2D`
+#' @param c `Point2D`
+#' @return `character (Orientation)`
+#' @md
+#'
 `orientation` <- function(...) .Call(`.rs_149`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::on_segment`
+#' @usage
+#' on_segment(p, q, r)
+#' @param p `Point2D`
+#' @param q `Point2D`
+#' @param r `Point2D`
+#' @return `logical`
+#' @md
+#'
 `on_segment` <- function(...) .Call(`.rs_150`, NULL, list(...))
+#' True if segments p1-q1 and p2-q2 intersect (including touching at an endpoint, or overlapping collinear segments) -- the standard CLRS-style orientation-based test.
+#' @usage
+#' segments_intersect(p1, q1, p2, q2)
+#' @param p1 `Point2D`
+#' @param q1 `Point2D`
+#' @param p2 `Point2D`
+#' @param q2 `Point2D`
+#' @return `logical`
+#' @md
+#'
 `segments_intersect` <- function(...) .Call(`.rs_151`, NULL, list(...))
+#' The intersection point of INFINITE lines through (p1, p2) and through (p3, p4), if one exists (writes it to `out` and returns true) -- false for parallel or (exactly) coincident lines.
+#'
+#' Unlike segments_intersect(), this treats both inputs as unbounded lines, not segments.
+#' @usage
+#' line_intersection_point(p1, p2, p3, p4, out)
+#' @param p1 `Point2D`
+#' @param p2 `Point2D`
+#' @param p3 `Point2D`
+#' @param p4 `Point2D`
+#' @param out `Point2D`
+#' @return `logical`
+#' @md
+#'
 `line_intersection_point` <- function(...) .Call(`.rs_152`, NULL, list(...))
+#' The (single) intersection point of segments p1-q1 and p2-q2, if one exists (writes it to `out` and returns true).
+#'
+#' Returns false whenever segments_intersect() would (non-intersecting segments) AND for the collinear-overlapping case that segments_intersect() reports as true -- there, infinitely many points satisfy the intersection, so no single Point2D can represent it.
+#' @usage
+#' segment_intersection_point(p1, q1, p2, q2, out)
+#' @param p1 `Point2D`
+#' @param q1 `Point2D`
+#' @param p2 `Point2D`
+#' @param q2 `Point2D`
+#' @param out `Point2D`
+#' @return `logical`
+#' @md
+#'
 `segment_intersection_point` <- function(...) .Call(`.rs_153`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::inside_clip_edge`
+#' @usage
+#' inside_clip_edge(p, edge_a, edge_b)
+#' @param p `Point2D`
+#' @param edge_a `Point2D`
+#' @param edge_b `Point2D`
+#' @return `logical`
+#' @md
+#'
 `inside_clip_edge` <- function(...) .Call(`.rs_154`, NULL, list(...))
+#' Clips `subject` (any simple polygon, convex or not) against `clip` (Sutherland- Hodgman) and returns their intersection as a new polygon.
+#'
+#' `clip` MUST be convex AND counterclockwise-ordered (exactly what convex_hull() produces) -- the algorithm processes it one directed edge at a time, keeping only the subject-polygon portion to the left of every edge, so a clockwise or non-convex clip polygon silently produces a wrong (or empty) result rather than an error. Returns an empty polygon if the two don't overlap at all.
+#' @usage
+#' clip_polygon(subject, clip)
+#' @param subject `vector<Point2D>`
+#' @param clip `vector<Point2D>`
+#' @return `vector<Point2D>`
+#' @md
+#'
 `clip_polygon` <- function(...) .Call(`.rs_155`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::point_in_triangle`
+#' @usage
+#' point_in_triangle(p, a, b, c)
+#' @param p `Point2D`
+#' @param a `Point2D`
+#' @param b `Point2D`
+#' @param c `Point2D`
+#' @return `logical`
+#' @md
+#'
 `point_in_triangle` <- function(...) .Call(`.rs_156`, NULL, list(...))
+#' Triangulates a SIMPLE polygon (convex or not, but not self-intersecting) by ear clipping: repeatedly finds a "ear" -- a convex vertex whose neighbor-triangle contains no other polygon vertex -- clips it off as one output triangle, and repeats on the remaining (n-1)-vertex polygon.
+#'
+#' O(n^3) worst case (each of the O(n) clipped ears requires an O(n) scan to verify, each vertex check O(1)) -- unlike delaunay_triangulation() (which only sees an unordered point SET), this respects the polygon's actual boundary, so it correctly handles concave (non-convex) shapes. Every triangle's vertices are indices into `polygon`. Works for any winding order (detects and internally corrects clockwise input). Returns empty for fewer than 3 vertices; a triangle input returns itself unchanged.
+#' @usage
+#' triangulate_polygon(polygon)
+#' @param polygon `vector<Point2D>`
+#' @return `vector<Triangle>`
+#' @md
+#'
 `triangulate_polygon` <- function(...) .Call(`.rs_157`, NULL, list(...))
+#' The diameter of a point set: the farthest pair of points, by Euclidean distance.
+#'
+#' The farthest pair is always a pair of convex hull vertices, so this computes the hull first (convex_hull()) and then searches only among its (typically far fewer) vertices -- brute-force O(h^2) over the hull rather than the classical O(h) two-pointer rotating-calipers walk, the same "correct and simple over asymptotically optimal" tradeoff this module already makes for closest_pair(). Throws std::invalid_argument for fewer than 2 distinct points.
+#' @usage
+#' polygon_diameter(points)
+#' @param points `vector<Point2D>`
+#' @return `DiameterResult`
+#' @md
+#'
 `polygon_diameter` <- function(...) .Call(`.rs_158`, NULL, list(...))
+#' The minimum-AREA bounding rectangle of a point set (not necessarily axis-aligned).
+#'
+#' By a classical theorem, the optimal rectangle always has one side collinear with a convex hull edge -- so this computes the hull, then for each hull edge, measures the bounding rectangle aligned with that edge's direction (projecting every hull point onto the edge direction and its perpendicular), keeping the smallest-area result. O(h^2) (h = hull size): the classical rotating-calipers formulation does this in O(h) via incrementally-advanced support points, but re-projecting from scratch for every edge is far simpler to get right and, again, this module's established complexity/simplicity tradeoff. Throws std::invalid_argument if the hull has fewer than 3 vertices (no well-defined minimum-area rectangle for a degenerate point set).
+#' @usage
+#' minimum_bounding_rectangle(points)
+#' @param points `vector<Point2D>`
+#' @return `MinimumBoundingRectangle`
+#' @md
+#'
 `minimum_bounding_rectangle` <- function(...) .Call(`.rs_159`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::point_to_line_distance`
+#' @usage
+#' point_to_line_distance(p, a, b)
+#' @param p `Point2D`
+#' @param a `Point2D`
+#' @param b `Point2D`
+#' @return `numeric`
+#' @md
+#'
 `point_to_line_distance` <- function(...) .Call(`.rs_160`, NULL, list(...))
+#' Simplifies a polyline (Douglas-Peucker): recursively keeps only the point(s) farthest from the current baseline segment whenever that distance exceeds `epsilon`, discarding everything closer.
+#'
+#' Fewer than 3 points are returned unchanged (nothing to simplify).
+#' @usage
+#' simplify_polyline(points, epsilon)
+#' @param points `vector<Point2D>`
+#' @param epsilon `numeric`
+#' @return `vector<Point2D>`
+#' @md
+#'
 `simplify_polyline` <- function(...) .Call(`.rs_161`, NULL, list(...))
+#' C++ function `datamunge::geometry::detail::circumcenter`
+#' @usage
+#' circumcenter(a, b, c)
+#' @param a `Point2D`
+#' @param b `Point2D`
+#' @param c `Point2D`
+#' @return `Point2D`
+#' @md
+#'
 `circumcenter` <- function(...) .Call(`.rs_162`, NULL, list(...))
+#' The Voronoi diagram of `points`, computed as the dual of their Delaunay triangulation (delaunay_triangulation()) -- see VoronoiDiagram's cells field for the important caveat about unbounded cells at the convex hull boundary.
+#'
+#' Fewer than 3 points produce an empty diagram (matching delaunay_triangulation()).
+#' @usage
+#' voronoi_diagram(points)
+#' @param points `vector<Point2D>`
+#' @return `VoronoiDiagram`
+#' @md
+#'
 `voronoi_diagram` <- function(...) .Call(`.rs_163`, NULL, list(...))
+#' Reads an uncompressed (BI_RGB) Windows BMP file as an RGB image.
+#'
+#' Accepts 24-bit (BGR), 32-bit (BGRx -- the 4th byte is ignored, never treated as alpha, since plain BITMAPINFOHEADER 32-bit files don't reliably agree on what that byte means), and 8-bit palette (indexed-color) files; any other bit depth or a compressed (non-BI_RGB) file throws std::runtime_error.
+#' @usage
+#' read_bmp(path)
+#' @param path `character`
+#' @return `Image`
+#' @md
+#'
 `read_bmp` <- function(...) .Call(`.rs_164`, NULL, list(...))
+#' Writes `img` as an uncompressed 24-bit BGR Windows BMP (BITMAPINFOHEADER, BI_RGB), converting to RGB first if it isn't already (see to_rgb()) -- any alpha channel is dropped, matching write_ppm()'s same RGB-only-on-disk tradeoff.
+#' @usage
+#' write_bmp(img, path)
+#' @param img `Image`
+#' @param path `character`
+#' @md
+#'
 `write_bmp` <- function(...) invisible(.Call(`.rs_165`, NULL, list(...)))
+#' C++ function `datamunge::image::detail::set_pixel_clipped`
+#' @usage
+#' set_pixel_clipped(img, x, y, color)
+#' @param img `Image`
+#' @param x `integer`
+#' @param y `integer`
+#' @param color `Pixel`
+#' @md
+#'
 `set_pixel_clipped` <- function(...) invisible(.Call(`.rs_166`, NULL, list(...)))
+#' C++ function `datamunge::image::detail::stamp`
+#' @usage
+#' stamp(img, cx, cy, color, thickness)
+#' @param img `Image`
+#' @param cx `integer`
+#' @param cy `integer`
+#' @param color `Pixel`
+#' @param thickness `integer`
+#' @md
+#'
 `stamp` <- function(...) invisible(.Call(`.rs_167`, NULL, list(...)))
+#' Draws a straight line from (x0,y0) to (x1,y1) directly onto `img` (Bresenham's integer algorithm).
+#'
+#' `thickness` > 1 stamps a (thickness x thickness) square at every line pixel -- simple, not a true round/mitered stroke, but sufficient for this module's scope. Points (and any square stamps) outside `img's` bounds are silently clipped rather than throwing, matching typical drawing-library behavior for partially-offscreen shapes.
+#' @usage
+#' draw_line(img, x0, y0, x1, y1, color, thickness = 1)
+#' @param img `Image`
+#' @param x0 `integer`
+#' @param y0 `integer`
+#' @param x1 `integer`
+#' @param y1 `integer`
+#' @param color `Pixel`
+#' @param thickness `integer`
+#' @md
+#'
 `draw_line` <- function(...) invisible(.Call(`.rs_168`, NULL, list(...)))
+#' Draws the rectangle with corners (x0,y0) and (x1,y1) (either diagonal order works) onto `img`, either as a one-pixel-wide outline or filled solid.
+#' @usage
+#' draw_rectangle(img, x0, y0, x1, y1, color, filled = FALSE)
+#' @param img `Image`
+#' @param x0 `integer`
+#' @param y0 `integer`
+#' @param x1 `integer`
+#' @param y1 `integer`
+#' @param color `Pixel`
+#' @param filled `logical`
+#' @md
+#'
 `draw_rectangle` <- function(...) invisible(.Call(`.rs_169`, NULL, list(...)))
+#' Draws a circle of the given `radius` centered at (cx,cy) onto `img`, either as a one-pixel-wide outline (the midpoint circle algorithm) or filled solid (bounding-box scan with a squared-distance test).
+#' @usage
+#' draw_circle(img, cx, cy, radius, color, filled = FALSE)
+#' @param img `Image`
+#' @param cx `integer`
+#' @param cy `integer`
+#' @param radius `integer`
+#' @param color `Pixel`
+#' @param filled `logical`
+#' @md
+#'
 `draw_circle` <- function(...) invisible(.Call(`.rs_170`, NULL, list(...)))
+#' Draws the polygon defined by `points` (in order, implicitly closed back to the first point) onto `img`.
+#'
+#' Outline mode connects consecutive vertices with draw_line(); filled mode uses a standard even-odd scanline fill. Fewer than 3 points draws nothing.
+#' @usage
+#' draw_polygon(img, points, color, filled = FALSE)
+#' @param img `Image`
+#' @param points `vector<list(integer, integer)>`
+#' @param color `Pixel`
+#' @param filled `logical`
+#' @md
+#'
 `draw_polygon` <- function(...) invisible(.Call(`.rs_171`, NULL, list(...)))
+#' Reads a binary (P6) Netpbm color image.
+#'
+#' Only 8-bit-per-channel (maxval <= 255) files are supported. Throws std::runtime_error on a malformed file or I/O failure.
+#' @usage
+#' read_ppm(path)
+#' @param path `character`
+#' @return `Image`
+#' @md
+#'
 `read_ppm` <- function(...) .Call(`.rs_172`, NULL, list(...))
+#' Writes `img` as a binary (P6) Netpbm color image, converting to RGB first if it isn't already (see to_rgb()).
+#' @usage
+#' write_ppm(img, path)
+#' @param img `Image`
+#' @param path `character`
+#' @md
+#'
 `write_ppm` <- function(...) invisible(.Call(`.rs_173`, NULL, list(...)))
+#' Reads a binary (P5) Netpbm grayscale image.
+#'
+#' Only 8-bit (maxval <= 255) files are supported. Throws std::runtime_error on a malformed file or I/O failure.
+#' @usage
+#' read_pgm(path)
+#' @param path `character`
+#' @return `Image`
+#' @md
+#'
 `read_pgm` <- function(...) .Call(`.rs_174`, NULL, list(...))
+#' Writes `img` as a binary (P5) Netpbm grayscale image, converting to Grayscale first if it isn't already (see to_grayscale()).
+#' @usage
+#' write_pgm(img, path)
+#' @param img `Image`
+#' @param path `character`
+#' @md
+#'
 `write_pgm` <- function(...) invisible(.Call(`.rs_175`, NULL, list(...)))
+#' Reads a binary (P4) Netpbm bitmap image (1 bit per pixel: set bits are black) as a Grayscale image (0 = black, 255 = white).
+#'
+#' Throws std::runtime_error on a malformed file or I/O failure.
+#' @usage
+#' read_pbm(path)
+#' @param path `character`
+#' @return `Image`
+#' @md
+#'
 `read_pbm` <- function(...) .Call(`.rs_176`, NULL, list(...))
+#' Writes `img` as a binary (P4) Netpbm bitmap, converting to grayscale first and then thresholding: pixels with luma strictly below `threshold` become set (black) bits.
+#' @usage
+#' write_pbm(img, path, threshold = 128)
+#' @param img `Image`
+#' @param path `character`
+#' @param threshold `integer`
+#' @md
+#'
 `write_pbm` <- function(...) invisible(.Call(`.rs_177`, NULL, list(...)))
+#' Reads a PNG file as an Image (mode matches the file's color type: Grayscale, GrayscaleAlpha, RGB, or RGBA).
+#'
+#' Only 8-bit-depth, non-interlaced, non-palette PNGs are supported (the overwhelming majority of real-world PNGs); indexed-color (palette), 16-bit-depth, and Adam7-interlaced files throw std::runtime_error, as does a corrupt file (bad signature, chunk CRC mismatch, or truncated/invalid zlib stream).
+#' @usage
+#' read_png(path)
+#' @param path `character`
+#' @return `Image`
+#' @md
+#'
 `read_png` <- function(...) .Call(`.rs_178`, NULL, list(...))
+#' Writes `img` as an 8-bit-depth, non-interlaced PNG, using its ImageMode directly as the PNG color type (Grayscale/GrayscaleAlpha/RGB/RGBA all have a direct PNG equivalent, so no conversion is ever needed).
+#'
+#' Every scanline is written with filter type 0 (None) -- simpler and always correct, at the cost of a somewhat larger file than a filter-optimizing encoder would produce; any standard PNG decoder still reads the result correctly.
+#' @usage
+#' write_png(img, path)
+#' @param img `Image`
+#' @param path `character`
+#' @md
+#'
 `write_png` <- function(...) invisible(.Call(`.rs_179`, NULL, list(...)))
+#' Expected improvement of a Gaussian prediction below an incumbent (minimisation).
+#'
+#' For `Y\sim N(\mu,\sigma^2)` and target `t=\text{incumbent}-\xi`,
+#' `\operatorname{E}\max(t-Y,0)=(t-\mu)\Phi(u)+\sigma\varphi(u)` with `u=(t-\mu)/\sigma`.
+#'
+#' `\mu`.
+#'
+#' `\sigma\ge0`; 0 gives `\max(t-\mu,0)`.
+#'
+#' `\xi\ge0` an improvement must exceed.
+#' @usage
+#' expected_improvement(mean, sd, incumbent, exploration = 0.0)
+#' @param mean `numeric`. Predicted mean
+#' @param sd `numeric`. Predicted standard deviation
+#' @param incumbent `numeric`. Smallest value observed so far.
+#' @param exploration `numeric`. Margin
+#' @return `numeric`: The expected improvement (never negative).
+#' @section Examples (C++):
+#' ```cpp
+#' std::print("{:.4f}\n", dm::optim::expected_improvement(0.0, 1.0, 0.0));  // 0.3989 = phi(0)
+#' ```
+#' @md
+#'
 `expected_improvement` <- function(...) .Call(`.rs_180`, NULL, list(...))
+#' Probability that a Gaussian prediction falls below incumbent − exploration.
+#'
+#' `\mu`.
+#'
+#' `\xi\ge0`.
+#'
+#' `\Phi\big((\text{incumbent}-\xi-\mu)/\sigma\big)`.
+#' @usage
+#' probability_of_improvement(mean, sd, incumbent, exploration = 0.0)
+#' @param mean `numeric`. Predicted mean
+#' @param sd `numeric`. Predicted standard deviation; 0 gives 0 or 1.
+#' @param incumbent `numeric`. Smallest value observed so far.
+#' @param exploration `numeric`. Margin
+#' @return `numeric`
+#' @section Examples (C++):
+#' ```cpp
+#' std::print("{:.4f}\n", dm::optim::probability_of_improvement(1.0, 1.0, 0.0));  // 0.1587
+#' ```
+#' @md
+#'
 `probability_of_improvement` <- function(...) .Call(`.rs_181`, NULL, list(...))
+#' Classical equal-variance one-way ANOVA, like R oneway.test(var.equal=TRUE).
+#'
+#' Tests equality of group means with between/within mean-square ratio. Independent normal
+#' observations and a common within-group population variance give the exact F reference. This is
+#' not Welch ANOVA. O(N) work, O(1) auxiliary storage; input unchanged, no omission or shared
+#' mutable state.
+#' @usage
+#' one_way_anova(values, group_sizes)
+#' @param values `vector<numeric>`. Finite observations concatenated group by group.
+#' @param group_sizes `vector<integer>`. At least two positive sizes summing exactly to values.size(); N must exceed
+#'   the group count.
+#' @return `HypothesisTestResult`: statistic=F, parameter1=k-1, parameter2=N-k and upper-tail p_value; no CI or group
+#' estimates.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto a=dm::stats::one_way_anova({1,2,3,4,5,6,7,8,9},{3,3,3});
+#' std::print("{:.0f}\n",a.statistic); // 27
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid grouping/nonfinite input, no residual df, zero within-
+#'   group variation or arithmetic overflow.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/oneway.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `one_way_anova` <- function(...) .Call(`.rs_182`, NULL, list(...))
+#' Tie-corrected Kruskal-Wallis rank test, like R kruskal.test().
+#'
+#' Ranks the pooled observations with average ties and uses the chi-square(k-1) approximation.
+#' The usual exchangeability null is identical independent group distributions; a common-shape
+#' shift model permits a location interpretation. It is not an omnibus test for every possible
+#' distributional difference. Small groups can invalidate the approximation. O(N log N) work/O(N)
+#' space, no mutation, omission or shared state.
+#' @usage
+#' kruskal_wallis_test(values, group_sizes)
+#' @param values `vector<numeric>`. Finite observations concatenated by group.
+#' @param group_sizes `vector<integer>`. At least two positive group sizes summing to values.size().
+#' @return `HypothesisTestResult`: statistic=H, parameter1=k-1 and upper-tail approximate p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto h=dm::stats::kruskal_wallis_test({1,2,3,4,5,6,7,8,9},{3,3,3});
+#' std::print("{:.1f}\n",h.statistic); // 7.2
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid groups, nonfinite input or all observations tied.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kruskal.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `kruskal_wallis_test` <- function(...) .Call(`.rs_183`, NULL, list(...))
+#' Pearson chi-square test of specified category probabilities, like R chisq.test().
+#'
+#' Uses sum((observed-expected)^2/expected) and chi-square(k-1); the probabilities are fixed, not
+#' estimated here. Expected counts must be sufficiently large for the approximation. Nonnegative
+#' fractional counts are accepted algebraically but do not automatically define a sampling model.
+#' O(k) work/storage, inputs unchanged, no shared state or omission.
+#' @usage
+#' chi_squared_goodness_of_fit(observed, expected_probabilities = c())
+#' @param observed `vector<numeric>`. At least two finite nonnegative counts with positive finite total.
+#' @param expected_probabilities `vector<numeric>`. Empty (default) means uniform; otherwise positive finite
+#'   probabilities matching counts and summing to one within 1e-10.
+#' @return `HypothesisTestResult`: statistic=X-squared, parameter1=k-1 and approximate upper-tail p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto q=dm::stats::chi_squared_goodness_of_fit({10,10});
+#' std::print("{:.0f}\n",q.statistic); // 0
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid counts/probabilities, sizes or zero/nonfinite total.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `chi_squared_goodness_of_fit` <- function(...) .Call(`.rs_184`, NULL, list(...))
+#' Pearson chi-square test for a contingency table, like R chisq.test().
+#'
+#' Expected counts are row_sum*column_sum/total; df=(rows-1)(columns-1). The asymptotic reference
+#' assumes independent multinomial/product-multinomial observations and adequately populated
+#' expected cells. O(rows*columns) work and O(rows+columns) space; inputs unchanged, no shared
+#' state.
+#' @usage
+#' chi_squared_test_independence(table, nrows, ncols, correct = TRUE)
+#' @param table `vector<numeric>`. Finite nonnegative row-major counts with strictly positive margins; integer counts
+#'   are the usual sampling model.
+#' @param nrows `integer`. At least two rows.
+#' @param ncols `integer`. At least two columns; table length must equal nrows*ncols.
+#' @param correct `logical`. True (default) subtracts min(.5,abs(O-E)) from each absolute residual only for
+#'   2x2 tables.
+#' @return `HypothesisTestResult`: statistic=X-squared, parameter1=df, approximate upper-tail p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto q=dm::stats::chi_squared_test_independence({10,10,10,10},2,2);
+#' std::print("{:.0f}\n",q.statistic); // 0
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid shape, counts/margins or nonfinite total.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/chisq.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `chi_squared_test_independence` <- function(...) .Call(`.rs_185`, NULL, list(...))
+#' Pearson product-moment correlation test with Fisher-z confidence bounds.
+#'
+#' Uses t=r*sqrt((n-2)/(1-r^2)). The exact zero-correlation null reference requires independent
+#' bivariate-normal pairs; Fisher-z intervals are approximate. At n=3 no confidence interval is
+#' reported; n>=4 gets one. Perfect correlations use infinite-statistic limits. O(n) work, no
+#' input mutation/omission or shared state.
+#' @usage
+#' pearson_correlation_test(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
+#' @param x `vector<numeric>`. At least three finite nonconstant first measurements.
+#' @param y `vector<numeric>`. Same-length finite nonconstant second measurements, paired by index.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for population correlation.
+#' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
+#' @return `HypothesisTestResult`: statistic=t, parameter1=n-2, estimate1=r and p_value; has_conf_int only for n>=4.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::stats::pearson_correlation_test({1,2,3,4},{2,4,6,8});
+#' std::print("{:.1f}\n",r.estimate1); // 1.0
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid lengths, nonfinite/constant samples or invalid controls.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `pearson_correlation_test` <- function(...) .Call(`.rs_186`, NULL, list(...))
+#' Spearman correlation with average ranks and a t-approximation p-value.
+#'
+#' Computes Pearson correlation on ranks. The reference is always t(n-2), not a small-sample
+#' exact permutation distribution; ties receive average ranks. Tests zero rank correlation under
+#' the approximation, not arbitrary independence. O(n log n) work/O(n) storage, no
+#' mutation/omission or shared state.
+#' @usage
+#' spearman_correlation_test(x, y, alternative = "TwoSided")
+#' @param x `vector<numeric>`. At least three finite nonconstant first measurements.
+#' @param y `vector<numeric>`. Same-length finite nonconstant paired second measurements.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for population rank correlation.
+#' @return `HypothesisTestResult`: statistic=rank-correlation t, parameter1=n-2, estimate1=rho, approximate p_value; no
+#' CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::stats::spearman_correlation_test({1,2,3,4},{10,20,30,40});
+#' std::print("{:.1f}\n",r.estimate1); // 1.0
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid lengths, nonfinite/constant samples or alternative.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `spearman_correlation_test` <- function(...) .Call(`.rs_187`, NULL, list(...))
+#' Kendall rank coefficients by Knight inversion counting.
+#'
+#' Sorts paired values and counts concordant, discordant and tied pairs in O(n log n) work/O(n)
+#' storage. Inputs are unchanged and calls share no mutable state. This is a coefficient
+#' calculation, not a hypothesis test; tau_b is zero when its denominator vanishes.
+#' @usage
+#' kendall_tau(x, y)
+#' @param x `vector<numeric>`. At least two finite first coordinates.
+#' @param y `vector<numeric>`. Equal-length finite second coordinates, paired by index.
+#' @return `KendallTau`: Owned pair counts, tau_a and tie-adjusted tau_b.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto k=dm::stats::kendall_tau({1,2,3,4},{1,2,3,4});
+#' std::print("{}\n",k.concordant); // 6
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Lengths differ, fewer than two values, or nonfinite
+#'   observations.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `kendall_tau` <- function(...) .Call(`.rs_188`, NULL, list(...))
+#' Conditional Fisher exact test of a 2x2 table with fixed margins.
+#'
+#' Conditions on row/column totals and tests odds ratio one. Two-sided p-values sum probabilities
+#' no larger than the observed table (relative ordering tolerance 1e-7); they are not generally
+#' twice the smaller tail. Direct tail summation avoids 1-CDF cancellation. Empty margins give
+#' p=1. O(s) work/O(1) auxiliary storage for feasible support s; inputs unchanged, no shared
+#' state.
+#' @usage
+#' fisher_exact_test_2x2(a, b, c, d, alternative = "TwoSided")
+#' @param a `integer`. Top-left nonnegative integer count.
+#' @param b `integer`. Top-right count.
+#' @param c `integer`. Bottom-left count.
+#' @param d `integer`. Bottom-right count; total must fit size_t.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for the odds ratio relative to one.
+#' @return `HypothesisTestResult`: statistic=a, p_value and estimate1=sample odds ratio a*d/(b*c), not R conditional MLE;
+#' denominator zero gives infinity for positive numerator or NaN for 0/0. No confidence interval.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto f=dm::stats::fisher_exact_test_2x2(0,3,3,0);
+#' std::print("{:.1f}\n",f.p_value); // 0.1
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Count-total overflow or invalid alternative.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fisher.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `fisher_exact_test_2x2` <- function(...) .Call(`.rs_189`, NULL, list(...))
+#' One-sample KS test against a fully specified continuous normal CDF.
+#'
+#' Two-sided p-values use the Stephens corrected asymptotic Kolmogorov reference; one-sided
+#' values use exp(-2*n*D^2). Mean and sd must be fixed independently of this sample: fitting them
+#' here invalidates the stated calibration. This is not a Lilliefors test. Ties are accepted, but
+#' continuous-null calibration is affected by rounding. O(n log n) work/O(n) storage, input
+#' unchanged, no omission/shared state.
+#' @usage
+#' ks_test_one_sample_normal(x, mean = 0.0, sd = 1.0, alternative = "TwoSided")
+#' @param x `vector<numeric>`. At least two finite observations.
+#' @param mean `numeric`. Finite prespecified normal mean, default zero.
+#' @param sd `numeric`. Positive finite prespecified normal SD, default one.
+#' @param alternative `character (Alternative)`. TwoSided (default); Greater tests empirical CDF above reference, Less below
+#'   (opposite to a location alternative).
+#' @return `HypothesisTestResult`: statistic=D or D+/D-, parameter1=n and approximate p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto k=dm::stats::ks_test_one_sample_normal({-1,0,1});
+#' std::print("{:.0f}\n",k.parameter1); // 3
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Too few/nonfinite values, invalid mean/sd or alternative.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `ks_test_one_sample_normal` <- function(...) .Call(`.rs_190`, NULL, list(...))
+#' One-sample KS test against a specified continuous uniform CDF.
+#'
+#' Same asymptotic p-value and tie caveats as ks_test_one_sample_normal(); limits must be
+#' prespecified rather than estimated from x. O(n log n) work/O(n) storage; no mutation, omission
+#' or shared state.
+#' @usage
+#' ks_test_one_sample_uniform(x, lower = 0.0, upper = 1.0, alternative = "TwoSided")
+#' @param x `vector<numeric>`. At least two finite observations.
+#' @param lower `numeric`. Finite prespecified lower bound, default zero.
+#' @param upper `numeric`. Finite upper bound greater than lower, default one.
+#' @param alternative `character (Alternative)`. TwoSided (default), Greater for empirical CDF above reference or Less below.
+#' @return `HypothesisTestResult`: statistic=D or D+/D-, parameter1=n, approximate p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto k=dm::stats::ks_test_one_sample_uniform({.2,.4,.6,.8});
+#' std::print("{:.1f}\n",k.statistic); // 0.2
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid sample, limits or alternative.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `ks_test_one_sample_uniform` <- function(...) .Call(`.rs_191`, NULL, list(...))
+#' Two-sample KS comparison of empirical CDFs with asymptotic p-values.
+#'
+#' Uses effective n=n_x*n_y/(n_x+n_y) in the asymptotic reference. This is not an exact finite-
+#' sample calculation; ties/rounding and very small groups affect calibration. O(N log N)
+#' work/O(N) storage; inputs unchanged, no omission/shared state.
+#' @usage
+#' ks_test_two_sample(x, y, alternative = "TwoSided")
+#' @param x `vector<numeric>`. Nonempty finite first sample.
+#' @param y `vector<numeric>`. Nonempty finite independent second sample.
+#' @param alternative `character (Alternative)`. TwoSided (default); Greater tests F_x above F_y, Less below, so Greater
+#'   corresponds to stochastically smaller x.
+#' @return `HypothesisTestResult`: statistic=D or D+/D-, parameter1=n_x, parameter2=n_y and approximate p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto k=dm::stats::ks_test_two_sample({1,2,3},{1,2,3});
+#' std::print("{:.0f}\n",k.statistic); // 0
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Empty/nonfinite samples or invalid alternative.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `ks_test_two_sample` <- function(...) .Call(`.rs_192`, NULL, list(...))
+#' Shapiro-Francia composite normality test, like R nortest::sf.test().
+#'
+#' Squared correlation of sorted observations with Blom normal scores, using Royston (1993) log-
+#' normal p-value approximation. Tests some normal distribution; a large p-value does not prove
+#' normality. Rounding/ties affect calibration. O(n log n) work/O(n) storage; input unchanged, no
+#' omission/shared state.
+#' @usage
+#' shapiro_francia_test(x)
+#' @param x `vector<numeric>`. Between 5 and 5000 finite, nonconstant observations.
+#' @return `HypothesisTestResult`: statistic=estimate1=W-prime and approximate p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto s=dm::stats::shapiro_francia_test({1,2,3,4,5});
+#' std::print("{}\n",s.has_conf_int); // false
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid sample size, nonfinite input or constant sample.
+#' @references - https://search.r-project.org/CRAN/refmans/nortest/html/sf.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `shapiro_francia_test` <- function(...) .Call(`.rs_193`, NULL, list(...))
+#' Adjust a vector of p-values for multiple comparisons, matching R's p.adjust().
+#'
+#' - Bonferroni: p\[i\] * n, capped at 1 -- simplest and most conservative FWER control.
+#' - Holm: step-down Bonferroni (Holm-Bonferroni) -- uniformly more powerful than
+#'   plain Bonferroni while still controlling FWER, no extra assumptions.
+#' - Hochberg: step-up FWER control -- more powerful than Holm, but assumes the test
+#'   statistics are independent (or positively dependent).
+#' - Hommel: step-up FWER control, uniformly more powerful than Hochberg under the
+#'   same independence assumption; the most expensive to compute (O(n^2)). For n == 2
+#'   this degenerates to (and is computed as) Hochberg, matching R.
+#' - BH (Benjamini-Hochberg, aka "fdr" in R): controls the false discovery rate under
+#'   independence or positive regression dependence -- the standard choice for large-
+#'   scale testing (e.g. genomics, many simultaneous hypothesis tests).
+#' - BY (Benjamini-Yekutieli): controls the FDR under arbitrary dependence; more
+#'   conservative than BH.
+#' - None: returns the input p-values unchanged.
+#'
+#' As in R, a single p-value (n <= 1) is always returned unchanged regardless of
+#' `method`.
+#' @usage
+#' p_adjust(p, method = "BH")
+#' @param p `vector<numeric>`
+#' @param method `character (PAdjustMethod)`
+#' @return `vector<numeric>`
+#' @md
+#'
 `p_adjust` <- function(...) .Call(`.rs_194`, NULL, list(...))
+#' Westfall-Young single-step minP adjustment (Westfall & Young, 1993) -- a resampling- based FWER correction that accounts for the actual dependence structure between tests (unlike the analytic methods above, which either assume independence or make no assumption at all).
+#'
+#' `resampled_p` is a B x m matrix: row b holds the m p-values recomputed on the
+#' b-th permutation or bootstrap resample (generated by the caller -- this function is
+#' purely the combinatorial engine, not the resampling scheme itself). `sorted_p` is
+#' the m original p-values sorted ascending, and column k of every row in `resampled_p`
+#' must correspond to the same hypothesis as sorted_p\[k\] (i.e. the caller sorts once and
+#' reorders both consistently before calling).
+#'
+#' Single-step: every hypothesis is compared against the same reference distribution --
+#' the per-resample minimum p-value taken over *all* m hypotheses -- so adjusted p\[k\] =
+#' (fraction of resamples whose overall minimum p-value <= sorted_p\[k\]). This is
+#' automatically monotonic in sorted_p and valid under subset pivotality, but less
+#' powerful than the step-down refinement below since it never narrows the comparison
+#' set as hypotheses are resolved.
+#'
+#' Returned in the same (ascending sorted_p) order as the input; the caller is
+#' responsible for mapping back to original hypothesis order if needed.
+#' @usage
+#' westfall_young_adjust(resampled_p, sorted_p)
+#' @param resampled_p `vector<vector<numeric>>`
+#' @param sorted_p `vector<numeric>`
+#' @return `vector<numeric>`
+#' @md
+#'
 `westfall_young_adjust` <- function(...) .Call(`.rs_195`, NULL, list(...))
+#' Romano-Wolf step-down resampling adjustment (Romano & Wolf, 2005) -- like westfall_young_adjust, but more powerful: at each step k (in ascending sorted_p order), the reference distribution is the per-resample minimum p-value taken only over the *remaining* hypotheses k..m-1, narrowing by one hypothesis at each step rather than always using all m. This is the step-down generalization that controls FWER without requiring subset pivotality.
+#'
+#' Monotonicity (adjusted p\[k\] >= adjusted p\[k-1\]) is enforced explicitly, since narrowing the comparison set at each step means it isn't automatic the way it is for the single-step procedure above.
+#'
+#' Same input/output conventions as westfall_young_adjust: `resampled_p` is a B x m
+#' matrix with column k aligned to sorted_p\[k\], and the result is returned in the same
+#' sorted order.
+#' @usage
+#' romano_wolf_adjust(resampled_p, sorted_p)
+#' @param resampled_p `vector<vector<numeric>>`
+#' @param sorted_p `vector<numeric>`
+#' @return `vector<numeric>`
+#' @md
+#'
 `romano_wolf_adjust` <- function(...) .Call(`.rs_196`, NULL, list(...))
+#' One-proportion score test with an uncorrected Wilson confidence interval.
+#'
+#' Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;
+#' statistic stores z^2 but the chosen tail uses its sign. The optional continuity correction
+#' affects the test only: its Wilson interval is uncorrected and need not invert that test.
+#' Approximation requires sufficiently populated success/failure counts. O(1) work/storage, no
+#' shared state.
+#' @usage
+#' proportion_test_one_sample(successes, n, p = 0.5, alternative = "TwoSided", correct = TRUE, conf_level = 0.94999999999999996)
+#' @param successes `integer`. Integer successes in \[0,n\].
+#' @param n `integer`. Positive independent-trial count.
+#' @param p `numeric`. Finite null probability strictly in (0,1), default .5.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for true probability relative to p.
+#' @param correct `logical`. True (default) applies the capped half-count correction to z.
+#' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
+#' @return `HypothesisTestResult`: statistic=z^2, parameter1=1, estimate1=successes/n, p_value and uncorrected Wilson
+#' confidence bounds.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto p=dm::stats::proportion_test_one_sample(45,100);
+#' std::print("{:.2f}\n",p.estimate1); // 0.45
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid counts, null probability, alternative or confidence
+#'   level.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `proportion_test_one_sample` <- function(...) .Call(`.rs_197`, NULL, list(...))
+#' Pooled score test for two proportions, with an unpooled difference interval.
+#'
+#' Tests equality using the pooled null SE and optionally a capped continuity correction. The
+#' difference CI uses an unpooled Wald SE and an uncapped half-count width correction when
+#' requested; it is approximate and is not a Wilson/Newcombe interval. All-zero/all-one pooled
+#' samples return z=0,p=1. O(1) work/storage, no shared state.
+#' @usage
+#' proportion_test_two_sample(successes1, n1, successes2, n2, alternative = "TwoSided", correct = TRUE, conf_level = 0.94999999999999996)
+#' @param successes1 `integer`. First success count in \[0,n1\].
+#' @param n1 `integer`. Positive first independent-trial count.
+#' @param successes2 `integer`. Second success count in \[0,n2\].
+#' @param n2 `integer`. Positive independent second-trial count.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for p1-p2.
+#' @param correct `logical`. True (default) corrects the score test and adds a half-count CI width.
+#' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
+#' @return `HypothesisTestResult`: statistic=z^2, parameter1=1, estimates=sample proportions, p_value and confidence
+#' bounds for p1-p2, clamped to \[-1,1\].
+#' @section Examples (C++):
+#' ```cpp
+#' const auto p=dm::stats::proportion_test_two_sample(2,10,3,10);
+#' std::print("{:.1f}\n",p.estimate1); // 0.2
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid counts, alternative or confidence level.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `proportion_test_two_sample` <- function(...) .Call(`.rs_198`, NULL, list(...))
+#' Exact binomial test with Clopper-Pearson confidence bounds, like R binom.test().
+#'
+#' One-sided p-values are inclusive tails. Two-sided p-values sum PMFs no larger than the
+#' observed PMF, using relative comparison tolerance 1e-7. The equal-tailed Clopper-Pearson
+#' interval has at-least-nominal coverage but need not invert the probability-ordered two-sided
+#' test. Null endpoints zero/one are supported. Two-sided enumeration costs O(n), intervals use
+#' bounded beta-CDF bisection; O(1) auxiliary storage, no shared state.
+#' @usage
+#' binomial_test(successes, n, p = 0.5, alternative = "TwoSided", conf_level = 0.94999999999999996)
+#' @param successes `integer`. Integer observed successes in \[0,n\].
+#' @param n `integer`. Positive independent Bernoulli trial count.
+#' @param p `numeric`. Finite null probability in \[0,1\], default .5.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for true success probability.
+#' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
+#' @return `HypothesisTestResult`: statistic=successes, parameter1=n, estimate1=successes/n, p_value and Clopper-Pearson
+#' interval; one-sided intervals end at zero/one.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto b=dm::stats::binomial_test(9,10);
+#' std::print("{:.6f}\n",b.p_value); // 0.021484
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid counts, probability, alternative or confidence level.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/binom.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `binomial_test` <- function(...) .Call(`.rs_199`, NULL, list(...))
+#' One-sample Student t-test of a population mean, like R t.test().
+#'
+#' Independent normal observations give t=(mean-mu)/SE with n-1 df. The CI estimates the
+#' population mean, not mean-mu. Inputs are copied only for paired differences; all routines
+#' leave inputs unchanged and use no shared mutable state. O(n) work; no null/nonfinite omission.
+#' @usage
+#' t_test_one_sample(x, mu = 0.0, alternative = "TwoSided", conf_level = 0.94999999999999996)
+#' @param x `vector<numeric>`. At least two finite observations with positive representable sample variance.
+#' @param mu `numeric`. Finite null mean, default zero, in observation units.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater, relative to mu.
+#' @param conf_level `numeric`. Finite confidence level strictly in (0,1), default .95.
+#' @return `HypothesisTestResult`: statistic=t, parameter1=df, estimate1=sample mean, p_value and mean confidence bounds;
+#' remaining scalars retain defaults. One-sided intervals have one infinite endpoint.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+#' std::print("{:.0f}\n",t.parameter1); // 3
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Too few/nonfinite values, invalid mu/alternative/confidence or
+#'   zero/nonfinite standard error.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `t_test_one_sample` <- function(...) .Call(`.rs_200`, NULL, list(...))
+#' Independent two-sample Welch or pooled Student mean test, like R t.test().
+#'
+#' Welch uses unequal sample variances and Satterthwaite approximate df; normality alone does not
+#' make its reference exact. Pooled Student requires equal population variances and independent
+#' normal observations for its exact reference. CI estimates mean(x)-mean(y). O(n_x+n_y) work,
+#' inputs unchanged, no shared mutable state or omission.
+#' @usage
+#' t_test_two_sample(x, y, equal_variance = FALSE, alternative = "TwoSided", conf_level = 0.94999999999999996)
+#' @param x `vector<numeric>`. At least two finite observations in the first group.
+#' @param y `vector<numeric>`. At least two finite independent observations in the second group.
+#' @param equal_variance `logical`. False (default) uses Welch; true uses pooled variance.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for mean(x)-mean(y).
+#' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
+#' @return `HypothesisTestResult`: statistic=t, parameter1=df, estimate1/2=group means, p_value and confidence bounds for
+#' their difference. One-sided bounds can be infinite.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::stats::t_test_two_sample({1,2,3},{4,5,6});
+#' std::print("{:.0f}\n",t.estimate1); // 2
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Invalid sample sizes/values, alternative/confidence,
+#'   unrepresentable mean difference or zero/nonfinite combined standard error.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `t_test_two_sample` <- function(...) .Call(`.rs_201`, NULL, list(...))
+#' Paired Student t-test on aligned differences, like R t.test(paired=TRUE).
+#'
+#' Runs the one-sample test on x\[i\]-y\[i\]. Differences, rather than the two marginal samples, need
+#' independent normal sampling for the exact t reference. Row order defines pairing; no values
+#' are omitted. O(n) work/storage; inputs unchanged, no shared mutable state.
+#' @usage
+#' t_test_paired(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
+#' @param x `vector<numeric>`. At least two finite first measurements.
+#' @param y `vector<numeric>`. Equal-length finite second measurements paired by index.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for the population mean difference.
+#' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
+#' @return `HypothesisTestResult`: One-sample difference result with method Paired t-test; estimate1 is mean difference,
+#' CI targets the same difference.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::stats::t_test_paired({2,4,7},{1,2,4});
+#' std::print("{:.0f}\n",t.parameter1); // 2
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Length mismatch, nonfinite data/differences, invalid controls or
+#'   zero/nonfinite difference standard error.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `t_test_paired` <- function(...) .Call(`.rs_202`, NULL, list(...))
+#' F-test and interval for a ratio of variances, like R var.test().
+#'
+#' Uses sample variance(x)/sample variance(y). Independent normal populations give the
+#' F(df_x,df_y) reference; it is sensitive to nonnormality and is not a gatekeeper for choosing
+#' Welch versus pooled t tests. O(n_x+n_y) work/O(1) auxiliary storage; inputs unchanged, no
+#' omission/shared state.
+#' @usage
+#' f_test_variance(x, y, alternative = "TwoSided", conf_level = 0.94999999999999996)
+#' @param x `vector<numeric>`. At least two finite first-sample values with positive finite sample variance.
+#' @param y `vector<numeric>`. At least two finite independent second-sample values with positive finite sample
+#'   variance.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for population variance ratio relative to
+#'   one.
+#' @param conf_level `numeric`. Finite confidence level in (0,1), default .95.
+#' @return `HypothesisTestResult`: statistic=estimate1=variance ratio, parameter1/2=sample sizes minus one, p_value and
+#' ratio confidence bounds; one-sided interval ends at zero or infinity.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto f=dm::stats::f_test_variance({1,2,3},{2,4,6});
+#' std::print("{:.2f}\n",f.estimate1); // 0.25
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Too few/nonfinite observations, nonpositive/nonfinite variances
+#'   or invalid controls.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/var.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `f_test_variance` <- function(...) .Call(`.rs_203`, NULL, list(...))
+#' Normal-approximation Wilcoxon signed-rank test with tie/continuity corrections.
+#'
+#' Tests symmetry of x-mu about zero under independent observations, not an arbitrary-population
+#' mean or median null. For paired data pass aligned differences. Exact-zero differences are
+#' removed; absolute differences receive average ranks. Always uses a normal approximation, even
+#' for small tie-free samples; no exact option or CI. O(n log n) work/O(n) storage; input
+#' unchanged, no shared state.
+#' @usage
+#' wilcoxon_signed_rank_test(x, mu = 0.0, alternative = "TwoSided")
+#' @param x `vector<numeric>`. Finite values; at least one nonzero difference from mu must remain.
+#' @param mu `numeric`. Finite symmetry centre, default zero.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for the signed location shift.
+#' @return `HypothesisTestResult`: statistic=positive rank sum V, estimate1=mu (not an estimated pseudomedian),
+#' approximate p_value; no CI.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto w=dm::stats::wilcoxon_signed_rank_test({1,2,3,4});
+#' std::print("{:.0f}\n",w.statistic); // 10
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Nonfinite input/mu, invalid alternative, no nonzero differences
+#'   or zero rank variance.
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `wilcoxon_signed_rank_test` <- function(...) .Call(`.rs_204`, NULL, list(...))
+#' Tie/continuity-corrected Mann-Whitney U test using a normal approximation.
+#'
+#' Pools ranks, giving average ranks to ties, and reports U for the first sample. Its identical-
+#' distribution null requires independent exchangeable samples. A common-shape shift model
+#' supports a location interpretation; equal medians alone is insufficient. U/(n_x*n_y) estimates
+#' P(X>Y)+P(X=Y)/2, not a mean difference. Approximation is used at every size. O(N log N)
+#' work/O(N) storage, inputs unchanged, no shared state.
+#' @usage
+#' wilcoxon_rank_sum_test(x, y, alternative = "TwoSided")
+#' @param x `vector<numeric>`. Nonempty finite first sample.
+#' @param y `vector<numeric>`. Nonempty finite independent second sample.
+#' @param alternative `character (Alternative)`. TwoSided (default), Less or Greater for first-versus-second stochastic
+#'   location.
+#' @return `HypothesisTestResult`: statistic=U=rank_sum(x)-n_x(n_x+1)/2 and approximate p_value; no CI or location
+#' estimate.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto w=dm::stats::wilcoxon_rank_sum_test({1,2,3},{4,5,6});
+#' std::print("{:.0f}\n",w.statistic); // 0
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: Empty/nonfinite samples, invalid alternative or zero rank
+#'   variance (all pooled observations tied).
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `wilcoxon_rank_sum_test` <- function(...) .Call(`.rs_205`, NULL, list(...))
+#' Construct an owned B-spline basis for repeated evaluation with eval().
+#'
+#' Free-function spelling of Bspline: construction fixes the knots and boundaries without evaluating a design matrix or fitting a model. The returned value owns its basis; the input knot vector may be modified or destroyed after this call.
+#' @usage
+#' bs(lower, upper, knots, degree = 3, intercept = FALSE)
+#' @param lower `numeric`. Finite left boundary, strictly below upper.
+#' @param upper `numeric`. Finite right boundary.
+#' @param knots `vector<numeric>`. Finite, strictly increasing breakpoints in \[lower, upper\]. Boundary
+#'   entries are optional; an empty vector creates a basis without interior knots.
+#' @param degree `integer`. Polynomial degree, default 3 (cubic).
+#' @param intercept `logical`. Keep the first basis column, default false. Leave false with
+#'   an intercept formula such as `y ~ .`; use a no-intercept formula when true.
+#' @return `Bspline`: Owned Bspline with the same degree, intercept policy and validation
+#' as its constructor. Call eval() on training and prediction coordinates.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto basis = dm::bs(0, 1, dm::seql(0, 1, 3));
+#' const auto design = basis.eval(dm::c(0, 0.5, 1));
+#' std::print("{} {}\n", design.rows(), design.cols()); // 3 4
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: For invalid boundaries, knots or overflowing degree.
+#' @seealso Bspline, Bspline::eval()
+#' @md
+#'
 `bs` <- function(...) .Call(`.rs_206`, NULL, list(...))
+#' Create a directory and any missing parent directories.
+#'
+#' Accepts native filesystem paths, strings and string literals. An existing directory is a successful no-op; an existing file at the target or along its parents is an error. Relative paths use the current working directory, which this function does not change. Permissions follow the native filesystem and process defaults. A failed recursive operation may leave created parents. This C++ convenience forwards to std::filesystem::create_directories().
+#' @usage
+#' mkdir(path)
+#' @param path `character`. Directory to create, including any missing parents; must not be empty.
+#' @return `logical`: True if the target directory was created, false if it already existed.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::mkdir("build/figs");
+#' std::print("{}\n", std::filesystem::is_directory("build/figs")); // true
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::filesystem::filesystem_error`: For an empty path, a conflicting file,
+#'   insufficient permissions or other operating-system filesystem errors.
+#' @seealso std::filesystem::create_directories()
+#' @md
+#'
 `mkdir` <- function(...) .Call(`.rs_207`, NULL, list(...))
+#' Prints a hello message to standard output.
+#' @usage
+#' hello()
+#' @md
+#'
 `hello` <- function(...) invisible(.Call(`.rs_208`, NULL, list(...)))
+#' Invokes a callback with the given value.
+#' @usage
+#' call_with_callback(x, cb)
+#' @param x `numeric`. Input value passed to the callback.
+#' @param cb `Callback or NULL`. Pointer to a `Callback` instance; must not be null.
+#' @return `numeric`: Result of `cb->call(x)`.
+#' @md
+#'
 `call_with_callback` <- function(...) .Call(`.rs_209`, NULL, list(...))
+#' Applies a callback to every element of a vector.
+#' @usage
+#' map_dvector_with_callback(values, cb)
+#' @param values `vector<numeric>`. Source vector of doubles.
+#' @param cb `Callback or NULL`. Pointer to a `Callback` instance; must not be null.
+#' @return `vector<numeric>`: New vector where each element is the result of `cb->call(v)`
+#' for the corresponding element `v` in `values`.
+#' @md
+#'
 `map_dvector_with_callback` <- function(...) .Call(`.rs_210`, NULL, list(...))
+#' Constructs a three-element vector from individual values.
+#' @usage
+#' make_dvector(a, b, c)
+#' @param a `numeric`. First element.
+#' @param b `numeric`. Second element.
+#' @param c `numeric`. Third element.
+#' @return `vector<numeric>`: `std::vector<double>{a`, b, c\}.
+#' @md
+#'
 `make_dvector` <- function(...) .Call(`.rs_211`, NULL, list(...))
+#' Computes the sum of all elements in a vector.
+#' @usage
+#' sum_dvector(values)
+#' @param values `vector<numeric>`. Vector of doubles to sum.
+#' @return `numeric`: Sum of all elements, or 0.0 if the vector is empty.
+#' @md
+#'
 `sum_dvector` <- function(...) .Call(`.rs_212`, NULL, list(...))
+#' Constructs a pair of doubles.
+#' @usage
+#' make_dpair(a, b)
+#' @param a `numeric`. First element.
+#' @param b `numeric`. Second element.
+#' @return `list(numeric, numeric)`: `std::pair<double`, double>\{a, b\}.
+#' @md
+#'
 `make_dpair` <- function(...) .Call(`.rs_213`, NULL, list(...))
+#' Computes the sum of both elements in a pair.
+#' @usage
+#' sum_dpair(values)
+#' @param values `list(numeric, numeric)`. Pair of doubles.
+#' @return `numeric`: `values.first` + values.second.
+#' @md
+#'
 `sum_dpair` <- function(...) .Call(`.rs_214`, NULL, list(...))
+#' Inserts knots into a clamped B-spline basis (Oslo algorithm).
+#'
+#' Builds the refined knot vector (old knots merged with `inserted_knots`) and the sparse
+#' discrete-B-spline operator that re-expresses every coarse spline on it exactly. Each
+#' row has at most degree + 1 nonzeros and the work is O(m p^2) for m refined functions.
+#' @usage
+#' refine_basis(basis, inserted_knots)
+#' @param basis `BSplineBasis`. Basis to refine; its knot vector must be clamped (first and last knots
+#'   repeated degree + 1 times, as produced by BSplineBasis::open_uniform()).
+#' @param inserted_knots `vector<numeric>`. Knots to add, strictly inside the domain, in any order. Repeats
+#'   are allowed while every knot multiplicity stays <= degree + 1.
+#' @return `BSplineRefinement`: The refined basis and its refinement operator.
+#' @section Examples (C++):
+#' ```cpp
+#' auto coarse = dm::fda::BSplineBasis::open_uniform(1, 2);   // knots 0 0 1 1
+#' auto r = dm::fda::refine_basis(coarse, {0.25});
+#' std::print("{}\n", r.apply({0.0, 4.0}));                   // [0, 1, 4]
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: If the basis is not clamped, a knot is outside the open
+#'   domain or non-finite, or a multiplicity would exceed degree + 1.
+#' @references - E. Cohen, T. Lyche and R. Riesenfeld (1980). Discrete B-splines and subdivision
+#'   techniques in computer-aided geometric design and computer graphics. Computer Graphics
+#'   and Image Processing 14(2), 87-111. https://doi.org/10.1016/0146-664X(80)90040-4
+#' - W. Boehm (1980). Inserting new knots into B-spline curves. Computer-Aided Design
+#'   12(4), 199-201. https://doi.org/10.1016/0010-4485(80)90154-2
+#' @seealso dyadic_refine()
+#' @md
+#'
 `refine_basis` <- function(...) .Call(`.rs_215`, NULL, list(...))
+#' Halves every knot span of a clamped basis (inserts each positive span's midpoint).
+#'
+#' This is the nested-space step between consecutive levels of HB/THB splines: the refined
+#' space contains the coarse one, and the operator maps coefficients exactly.
+#' @usage
+#' dyadic_refine(basis)
+#' @param basis `BSplineBasis`. Clamped basis to refine.
+#' @return `BSplineRefinement`: The refined basis and its refinement operator.
+#' @section Examples (C++):
+#' ```cpp
+#' auto r = dm::fda::dyadic_refine(dm::fda::BSplineBasis::open_uniform(3, 5));
+#' std::print("{} -> {}\n", 5, r.basis.basis_size()); // 5 -> 7
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: If the basis is not clamped.
+#' @references - E. Cohen, T. Lyche and R. Riesenfeld (1980). Discrete B-splines and subdivision
+#'   techniques in computer-aided geometric design and computer graphics.
+#'   https://doi.org/10.1016/0146-664X(80)90040-4
+#' @seealso refine_basis(), TensorBSpline::dyadic_refine()
+#' @md
+#'
 `dyadic_refine` <- function(...) .Call(`.rs_216`, NULL, list(...))
+#' Fits a tensor-product B-spline to scattered data by ordinary least squares.
+#'
+#' Builds the sparse design B (each row has at most prod(degree_k + 1) nonzeros), then
+#' solves (B^T B) c = B^T y. Coordinates outside a basis domain are clamped to it.
+#' @usage
+#' fit_tensor_bspline(bases, points, values, options = SplineSolveOptions$new())
+#' @param bases `vector<BSplineBasis>`. One basis per dimension.
+#' @param points `vector<vector<numeric>>`. Sample locations, each of length bases.size().
+#' @param values `vector<numeric>`. One response per point.
+#' @param options `SplineSolveOptions`. Solver settings (default: automatic).
+#' @return `TensorBSpline`: The fitted spline.
+#' @section Examples (C++):
+#' ```cpp
+#' auto b = dm::fda::BSplineBasis::open_uniform(1, 2);
+#' auto f = dm::fda::fit_tensor_bspline({b}, {{0.0}, {0.5}, {1.0}}, {1.0, 2.0, 3.0});
+#' std::print("{:.3f}\n", f.evaluate(0.25)); // 1.500
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: On empty or mismatched inputs, or non-finite data.
+#' * `std::runtime_error`: If the normal equations are singular (some basis function has
+#'   too little data; use a penalized fit or fewer functions).
+#' @references - C. de Boor (2001). A Practical Guide to Splines, revised edition. Springer.
+#' @seealso fit_tensor_pspline()
+#' @md
+#'
 `fit_tensor_bspline` <- function(...) .Call(`.rs_217`, NULL, list(...))
+#' Fits a tensor-product P-spline: least squares plus an anisotropic difference penalty, solving (B^T B + P) c = B^T y with P from tensor_difference_penalty().
+#'
+#' All-zero lambdas reproduce fit_tensor_bspline(). Positive lambdas keep the system
+#' well-posed even with fewer points than coefficients (for order 0, or once the data
+#' determine the order-q polynomial null space).
+#' @usage
+#' fit_tensor_pspline(bases, points, values, lambdas, order = 2, options = SplineSolveOptions$new())
+#' @param bases `vector<BSplineBasis>`. One basis per dimension.
+#' @param points `vector<vector<numeric>>`. Sample locations, each of length bases.size().
+#' @param values `vector<numeric>`. One response per point.
+#' @param lambdas `vector<numeric>`. Nonnegative per-axis smoothing weights, one per basis.
+#' @param order `integer`. Difference order (default 2, the conventional curvature penalty).
+#' @param options `SplineSolveOptions`. Solver settings (default: automatic).
+#' @return `TensorBSpline`: The fitted spline.
+#' @section Examples (C++):
+#' ```cpp
+#' auto b = dm::fda::BSplineBasis::open_uniform(3, 8);
+#' auto f = dm::fda::fit_tensor_pspline({b}, {{0.0}, {1.0}}, {0.0, 1.0}, {1e3});
+#' std::print("{:.3f}\n", f.evaluate(0.5)); // 0.500
+#' ```
+#' @section Errors:
+#' Signals an R error (from the C++ exception):
+#'
+#' * `std::invalid_argument`: On empty/mismatched inputs, invalid lambdas, or an axis
+#'   with no more functions than `order`.
+#' * `std::runtime_error`: If the penalized normal equations are singular.
+#' @references - P. H. C. Eilers and B. D. Marx (1996). Flexible smoothing with B-splines and penalties.
+#'   https://doi.org/10.1214/ss/1038425655
+#' - P. H. C. Eilers, I. D. Currie and M. Durban (2006). Fast and compact smoothing on large
+#'   multidimensional grids. https://doi.org/10.1016/j.csda.2004.07.008
+#' @seealso fit_tensor_bspline(), fit_pspline()
+#' @md
+#'
 `fit_tensor_pspline` <- function(...) .Call(`.rs_218`, NULL, list(...))
+#' The GEMM backend nn uses: "inhouse-<isa>" (e.g.
+#'
+#' "inhouse-avx512"), or "accelerate", "openblas" or "cblas" in DATAMUNGE_USE_BLAS builds.
+#' @usage
+#' nn_gemm_backend()
+#' @return `character`
+#' @md
+#'
 `nn_gemm_backend` <- function(...) .Call(`.rs_219`, NULL, list(...))
+#' Threads used by nn kernels.
+#' @usage
+#' nn_get_num_threads()
+#' @return `integer`
+#' @md
+#'
 `nn_get_num_threads` <- function(...) .Call(`.rs_220`, NULL, list(...))
+#' C++ function `datamunge::nn::nn_set_num_threads`
+#' @usage
+#' nn_set_num_threads(threads)
+#' @param threads `integer`
+#' @md
+#'
 `nn_set_num_threads` <- function(...) invisible(.Call(`.rs_221`, NULL, list(...)))
+#' Reseeds the generator shared by unif() and rnorm(), like R's set.seed().
+#' @usage
+#' set_seed(seed)
+#' @param seed `integer`
+#' @md
+#'
 `set_seed` <- function(...) invisible(.Call(`.rs_222`, NULL, list(...)))
+#' n draws from Uniform\[lower, upper).
+#' @usage
+#' unif(lower, upper, n)
+#' @param lower `numeric`
+#' @param upper `numeric`
+#' @param n `integer`
+#' @return `vector<numeric>`
+#' @md
+#'
 `unif` <- function(...) .Call(`.rs_223`, NULL, list(...))
+#' Alias for unif(lower, upper, n), sharing its generator and validation.
+#' @usage
+#' native_runif(lower, upper, n)
+#' @param lower `numeric`
+#' @param upper `numeric`
+#' @param n `integer`
+#' @return `vector<numeric>`
+#' @md
+#'
 `native_runif` <- function(...) .Call(`.rs_224`, NULL, list(...))
+#' n draws from Normal(mean, sd).
+#' @usage
+#' native_rnorm(mean, sd, n)
+#' @param mean `numeric`
+#' @param sd `numeric`
+#' @param n `integer`
+#' @return `vector<numeric>`
+#' @md
+#'
 `native_rnorm` <- function(...) .Call(`.rs_225`, NULL, list(...))
+#' n evenly spaced values from `from` to `to` inclusive.
+#' @usage
+#' seql(from, to, n)
+#' @param from `numeric`
+#' @param to `numeric`
+#' @param n `integer`
+#' @return `vector<numeric>`
+#' @md
+#'
 `seql` <- function(...) .Call(`.rs_226`, NULL, list(...))
+#' A symbolic expression tree over +, -, *, /, ^ (power) and sin/cos/exp/log, supporting symbolic differentiation, basic algebraic simplification, and numeric evaluation.
+#'
+#' Value type wrapping a shared, immutable node tree -- copies are cheap and structural sharing across copies is always safe since nodes are never mutated after construction.
+#' @section Constructor:
+#' `Expr$new()`
+#'
+#' `Expr$new(value)`
+#'
+#' Construct a symbolic constant from a C++ numeric value, including implicit conversion.
+#'
+#' * `value` (`numeric`): Numeric constant, stored as a double without evaluation or simplification.
+#' @section Methods:
+#' * `$add(other)` -> `Expr`
+#'
+#' * `$subtract(other)` -> `Expr`
+#'
+#' * `$multiply(other)` -> `Expr`
+#'
+#' * `$divide(other)` -> `Expr`
+#'
+#' * `$power(exponent)` -> `Expr`
+#'
+#' * `$negate()` -> `Expr`
+#'
+#' * `$sin()` -> `Expr`
+#'
+#' * `$cos()` -> `Expr`
+#'
+#' * `$exp()` -> `Expr`
+#'
+#' * `$log()` -> `Expr`
+#'
+#' * `$differentiate(var)` -> `Expr`
+#'
+#'   The symbolic derivative with respect to `var` (any other variable name is
+#'   treated as a constant).
+#'
+#' * `$integrate(var)` -> `Expr`
+#'
+#'   The symbolic antiderivative with respect to `var` (any other variable name is
+#'   treated as a constant, matching differentiate()). Supports: the sum/difference
+#'   and constant-multiple rules; the power rule x^c (any real c != -1) and its log
+#'   special case (c == -1); sin/cos/exp/log of any expression that is affine
+#'   (a*var + b) in var, via the standard substitution result for each; a constant
+#'   divided by an affine expression (reduces to the log rule); and, for a product of
+#'   two var-dependent factors, generic tabular integration by parts -- reusing
+#'   differentiate() to peel one factor down to the constant 0 across at most 15
+#'   repeated derivatives (terminates for any genuine polynomial factor), paired with
+#'   repeated antiderivatives of the other factor. Not a full computer-algebra
+#'   integrator: general rational functions (a non-constant denominator that isn't
+#'   affine), a variable exponent, and products/quotients outside the forms above
+#'   (e.g. sin(x)*cos(x), which never reduces to zero under repeated differentiation)
+#'   are not attempted.
+#'
+#' * `$simplify()` -> `Expr`
+#'
+#'   Basic algebraic simplification: constant folding, plus identities like x+0, x*1,
+#'   x*0, x/1, x^0, x^1. Not a full computer-algebra simplifier (no factoring,
+#'   collecting like terms, or trig identities).
+#'
+#' * `$evaluate(names, values)` -> `numeric`
+#'
+#'   Evaluates the expression, binding each entry of `names` to the corresponding
+#'   entry of `values` (parallel arrays, must be the same length).
+#'
+#' * `$to_string()` -> `character`
+#'
+#' * `$to_tex(precision = 7)` -> `character`
+#'
+#'   Render the expression using native grouping and precision; return raw TeX without math delimiters.
+#' @section Static methods:
+#' * `Expr$constant(value)` -> `Expr`
+#'
+#' * `Expr$variable(name)` -> `Expr`
+#' @section Errors:
+#' * `std::bad_alloc`: If the constant node cannot be allocated.
+#' @md
+#'
 `Expr` <- R6::R6Class("Expr", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -292,6 +3406,70 @@ rosetta_ref <- function(value = NULL) {
 )
 `Expr`$`constant` <- function(...) .Call(`.rs_227`, NULL, list(...))
 `Expr`$`variable` <- function(...) .Call(`.rs_228`, NULL, list(...))
+#' Dense univariate polynomial over the reals, stored as coefficients in ascending degree order (coefficients()\[i\] is the coefficient of x^i).
+#'
+#' Always kept trimmed -- no trailing (highest-degree) zero coefficients, except for the zero polynomial itself, which is stored as the single coefficient \{0.0\}.
+#' @section Constructor:
+#' `Polynomial$new()`
+#'
+#' `Polynomial$new(constant)`
+#'
+#' `Polynomial$new(coeffs)`
+#'
+#' * `constant` (`numeric`)
+#' * `coeffs` (`vector<numeric>`)
+#' @section Methods:
+#' * `$degree()` -> `integer`
+#'
+#'   Degree of the polynomial; the zero polynomial has degree 0 (there is no
+#'   universally-agreed convention for its "true" degree of -infinity, and 0 keeps
+#'   every coefficient()/loop bound in this module well-defined).
+#'
+#' * `$is_zero()` -> `logical`
+#'
+#' * `$coefficient(i)` -> `numeric`
+#'
+#'   Coefficient of x^i; 0.0 for any i outside \[0, degree()\] (including negative i).
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$evaluate(x)` -> `numeric`
+#'
+#'   Evaluates the polynomial at x via Horner's method.
+#'
+#' * `$derivative()` -> `Polynomial`
+#'
+#' * `$antiderivative()` -> `Polynomial`
+#'
+#'   The antiderivative with zero constant term (i.e. integral from 0 to x, as a
+#'   polynomial in x).
+#'
+#' * `$add(other)` -> `Polynomial`
+#'
+#' * `$subtract(other)` -> `Polynomial`
+#'
+#' * `$multiply(other)` -> `Polynomial`
+#'
+#' * `$scale(factor)` -> `Polynomial`
+#'
+#' * `$negate()` -> `Polynomial`
+#'
+#' * `$to_string()` -> `character`
+#'
+#' * `$__eq__(other)` -> `logical`
+#'
+#'   Member (not free-function) equality, matching Point2D's convention -- SWIG maps
+#'   a free `operator==` to a single module-level `__eq__` in the Python backend,
+#'   which collides across every type that defines one (e.g. image::Pixel's), while
+#'   a member operator becomes a per-class `__eq__` with no such collision.
+#'
+#' * `$__ne__(other)` -> `logical`
+#'
+#' * `$to_tex(variable = "x", precision = 7)` -> `character`
+#'
+#'   Render descending powers using a raw TeX symbol and 1-17 significant digits; return raw TeX.
+#' @md
+#'
 `Polynomial` <- R6::R6Class("Polynomial", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -317,6 +3495,15 @@ rosetta_ref <- function(value = NULL) {
     `to_tex` = function(...) .Call(`.rs_261`, self, list(...))
   )
 )
+#' Result of the extended Euclidean algorithm on two polynomials: `gcd`, plus the Bezout coefficients `s`/`t` such that `s.multiply(a).add(t.multiply(b)) == gcd`.
+#' @section Constructor:
+#' `PolyExtendedGcdResult$new()`
+#' @section Fields:
+#' * `$gcd` (`Polynomial`)
+#' * `$s` (`Polynomial`)
+#' * `$t` (`Polynomial`)
+#' @md
+#'
 `PolyExtendedGcdResult` <- R6::R6Class("PolyExtendedGcdResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -331,6 +3518,16 @@ rosetta_ref <- function(value = NULL) {
     `t` = function(value) if (missing(value)) .Call(`.rs_267`, self) else invisible(.Call(`.rs_268`, self, value))
   )
 )
+#' Isolating intervals for every distinct real root of p: parallel lower/upper bound vectors where each (lower\[i\], upper\[i\]) contains exactly one root.
+#'
+#' Found by bisecting a starting interval (a Cauchy bound on root magnitude) driven by sturm_root_count().
+#' @section Constructor:
+#' `RealRootIntervals$new()`
+#' @section Fields:
+#' * `$lower` (`vector<numeric>`)
+#' * `$upper` (`vector<numeric>`)
+#' @md
+#'
 `RealRootIntervals` <- R6::R6Class("RealRootIntervals", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -344,6 +3541,22 @@ rosetta_ref <- function(value = NULL) {
     `upper` = function(value) if (missing(value)) .Call(`.rs_272`, self) else invisible(.Call(`.rs_273`, self, value))
   )
 )
+#' A complex number, used to report polynomial roots that are not real.
+#'
+#' Plain re/im fields (no arithmetic operators exposed) matching Polynomial's convention of a member `operator==` over a free one (SWIG's Python backend maps a free `operator==` to a single module-level `__eq__` that collides across every type that defines one).
+#' @section Constructor:
+#' `Complex$new()`
+#' @section Fields:
+#' * `$re` (`numeric`)
+#' * `$im` (`numeric`)
+#' @section Methods:
+#' * `$modulus()` -> `numeric`
+#'
+#' * `$__eq__(other)` -> `logical`
+#'
+#' * `$__ne__(other)` -> `logical`
+#' @md
+#'
 `Complex` <- R6::R6Class("Complex", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -360,6 +3573,14 @@ rosetta_ref <- function(value = NULL) {
     `im` = function(value) if (missing(value)) .Call(`.rs_280`, self) else invisible(.Call(`.rs_281`, self, value))
   )
 )
+#' C++ class `datamunge::algebra::detail::Cplx`
+#' @section Constructor:
+#' `Cplx$new()`
+#' @section Fields:
+#' * `$re` (`numeric`)
+#' * `$im` (`numeric`)
+#' @md
+#'
 `Cplx` <- R6::R6Class("Cplx", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -373,6 +3594,14 @@ rosetta_ref <- function(value = NULL) {
     `im` = function(value) if (missing(value)) .Call(`.rs_285`, self) else invisible(.Call(`.rs_286`, self, value))
   )
 )
+#' One factor of a square-free decomposition: `factor` (itself square-free, i.e. no repeated roots) appears with multiplicity `multiplicity` in the original polynomial.
+#' @section Constructor:
+#' `SquareFreeFactor$new()`
+#' @section Fields:
+#' * `$factor` (`Polynomial`)
+#' * `$multiplicity` (`integer`)
+#' @md
+#'
 `SquareFreeFactor` <- R6::R6Class("SquareFreeFactor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -386,6 +3615,14 @@ rosetta_ref <- function(value = NULL) {
     `multiplicity` = function(value) if (missing(value)) .Call(`.rs_290`, self) else invisible(.Call(`.rs_291`, self, value))
   )
 )
+#' One irreducible-over-R factor of a real factorization: `factor` is either linear (x - r) for a real root r, or an irreducible real quadratic (x^2 + bx + c, for a complex-conjugate root pair), appearing with `multiplicity` in the original polynomial.
+#' @section Constructor:
+#' `RealFactor$new()`
+#' @section Fields:
+#' * `$factor` (`Polynomial`)
+#' * `$multiplicity` (`integer`)
+#' @md
+#'
 `RealFactor` <- R6::R6Class("RealFactor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -399,6 +3636,17 @@ rosetta_ref <- function(value = NULL) {
     `multiplicity` = function(value) if (missing(value)) .Call(`.rs_295`, self) else invisible(.Call(`.rs_296`, self, value))
   )
 )
+#' Factors p over the reals into irreducible linear/quadratic pieces plus the overall scale needed to reconstruct p exactly: p == leading_coefficient * prod(factors\[i\].factor ^ factors\[i\].multiplicity).
+#' @section Constructor:
+#' `RealFactorization$new()`
+#' @section Fields:
+#' * `$leading_coefficient` (`numeric`)
+#' @section Methods:
+#' * `$num_factors()` -> `integer`
+#'
+#' * `$factor_at(index)` -> `RealFactor`
+#' @md
+#'
 `RealFactorization` <- R6::R6Class("RealFactorization", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -413,6 +3661,48 @@ rosetta_ref <- function(value = NULL) {
     `leading_coefficient` = function(value) if (missing(value)) .Call(`.rs_300`, self) else invisible(.Call(`.rs_301`, self, value))
   )
 )
+#' Sparse multivariate polynomial over the reals in a fixed number of variables (x0, x1, ...), stored internally as a map from exponent vector to coefficient.
+#'
+#' Exposed to bindings via parallel arrays (exponents()/coefficients()) rather than the internal map, matching this module's std::map-avoidance convention for SWIG-facing types.
+#' @section Constructor:
+#' `MultivariatePolynomial$new()`
+#'
+#' `MultivariatePolynomial$new(num_variables)`
+#'
+#' `MultivariatePolynomial$new(num_variables, exponents, coefficients)`
+#'
+#' * `num_variables` (`integer`)
+#' * `exponents` (`vector<vector<integer>>`): One entry per term; each inner vector has length num_variables.
+#' * `coefficients` (`vector<numeric>`): Parallel to exponents; terms with equal exponent vectors are
+#'   summed, and any resulting zero coefficient is dropped.
+#' @section Methods:
+#' * `$num_variables()` -> `integer`
+#'
+#' * `$num_terms()` -> `integer`
+#'
+#' * `$is_zero()` -> `logical`
+#'
+#' * `$exponents()` -> `vector<vector<integer>>`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$evaluate(point)` -> `numeric`
+#'
+#' * `$add(other)` -> `MultivariatePolynomial`
+#'
+#' * `$subtract(other)` -> `MultivariatePolynomial`
+#'
+#' * `$multiply(other)` -> `MultivariatePolynomial`
+#'
+#' * `$scale(factor)` -> `MultivariatePolynomial`
+#'
+#' * `$leading_exponent(order)` -> `vector<integer>`
+#'
+#' * `$leading_coefficient(order)` -> `numeric`
+#'
+#' * `$to_string()` -> `character`
+#' @md
+#'
 `MultivariatePolynomial` <- R6::R6Class("MultivariatePolynomial", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -435,6 +3725,15 @@ rosetta_ref <- function(value = NULL) {
     `to_string` = function(...) .Call(`.rs_315`, self, list(...))
   )
 )
+#' Complete factorization over GF(p) from factor_gf_p().
+#' @section Constructor:
+#' `GfFactorization$new()`
+#' @section Fields:
+#' * `$leading` (`integer`): Leading coefficient, in \[1, p).
+#' * `$factors` (`vector<vector<integer>>`): Distinct monic irreducible factors, by degree then coefficients.
+#' * `$multiplicities` (`vector<integer>`): Multiplicity of each factor.
+#' @md
+#'
 `GfFactorization` <- R6::R6Class("GfFactorization", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -449,6 +3748,36 @@ rosetta_ref <- function(value = NULL) {
     `multiplicities` = function(value) if (missing(value)) .Call(`.rs_321`, self) else invisible(.Call(`.rs_322`, self, value))
   )
 )
+#' A ratio of two polynomials (numerator / denominator), kept automatically reduced by their GCD -- e.g. (x^2-1)/(x-1) simplifies to x+1 -- with the denominator normalized to monic.
+#' @section Constructor:
+#' `RationalFunction$new()`
+#'
+#' `RationalFunction$new(numerator, denominator)`
+#'
+#' * `numerator` (`Polynomial`)
+#' * `denominator` (`Polynomial`)
+#' @section Methods:
+#' * `$numerator()` -> `Polynomial`
+#'
+#' * `$denominator()` -> `Polynomial`
+#'
+#' * `$evaluate(x)` -> `numeric`
+#'
+#' * `$add(other)` -> `RationalFunction`
+#'
+#' * `$subtract(other)` -> `RationalFunction`
+#'
+#' * `$multiply(other)` -> `RationalFunction`
+#'
+#' * `$divide(other)` -> `RationalFunction`
+#'
+#' * `$to_string()` -> `character`
+#'
+#' * `$to_tex(variable = "x", precision = 7)` -> `character`
+#'
+#'   Render the native reduced rational function as raw TeX, omitting a unit denominator.
+#' @md
+#'
 `RationalFunction` <- R6::R6Class("RationalFunction", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -467,6 +3796,20 @@ rosetta_ref <- function(value = NULL) {
     `to_tex` = function(...) .Call(`.rs_332`, self, list(...))
   )
 )
+#' The most general objective function: only supports evaluation.
+#'
+#' Optimizers that consume this type (e.g. SimulatedAnnealing) are derivative-free.
+#'
+#' This is a director-enabled extension point: subclass it directly (in C++, or, via
+#' SWIG directors, in any supported language) to define a custom objective.
+#' @section Constructor:
+#' `ArbitraryFunction$new()`
+#' @section Methods:
+#' * `$evaluate(coordinates)` -> `numeric`
+#'
+#'   Evaluates the objective at `coordinates`.
+#' @md
+#'
 `ArbitraryFunction` <- R6::R6Class("ArbitraryFunction", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -477,6 +3820,19 @@ rosetta_ref <- function(value = NULL) {
     `evaluate` = function(...) .Call(`.rs_334`, self, list(...))
   )
 )
+#' An objective function that additionally supports exact gradient evaluation.
+#'
+#' Optimizers that consume this type (GradientDescent, Adam, LBFGS) use the full gradient at every step.
+#' @section Constructor:
+#' `DifferentiableFunction$new()`
+#' @section Methods:
+#' * `$gradient(coordinates)` -> `vector<numeric>`
+#'
+#'   Returns the gradient of the objective at `coordinates`.
+#' @section Inherits:
+#' `ArbitraryFunction`
+#' @md
+#'
 `DifferentiableFunction` <- R6::R6Class("DifferentiableFunction", inherit = `ArbitraryFunction`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -487,6 +3843,25 @@ rosetta_ref <- function(value = NULL) {
     `gradient` = function(...) .Call(`.rs_336`, self, list(...))
   )
 )
+#' An objective that decomposes as a sum over num_functions() independent terms (e.g.
+#'
+#' one term per training example). evaluate() defaults to summing every term, but remains overridable for a more efficient full-objective computation.
+#' @section Constructor:
+#' `SeparableFunction$new()`
+#' @section Methods:
+#' * `$num_functions()` -> `integer`
+#'
+#'   The number of additive terms the objective decomposes into.
+#'
+#' * `$evaluate_term(coordinates, i)` -> `numeric`
+#'
+#'   Evaluates just term `i` of the objective at `coordinates`.
+#'
+#' * `$evaluate(coordinates)` -> `numeric`
+#' @section Inherits:
+#' `ArbitraryFunction`
+#' @md
+#'
 `SeparableFunction` <- R6::R6Class("SeparableFunction", inherit = `ArbitraryFunction`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -499,6 +3874,31 @@ rosetta_ref <- function(value = NULL) {
     `evaluate` = function(...) .Call(`.rs_340`, self, list(...))
   )
 )
+#' A function that is both differentiable and separable -- the common case for machine learning loss functions (a sum of per-example losses).
+#'
+#' Optimizers that consume this type (SGD) can update coordinates from a single term's gradient without evaluating the full objective.
+#' @section Constructor:
+#' `DifferentiableSeparableFunction$new()`
+#' @section Methods:
+#' * `$num_functions()` -> `integer`
+#'
+#'   The number of additive terms the objective decomposes into.
+#'
+#' * `$evaluate_term(coordinates, i)` -> `numeric`
+#'
+#'   Evaluates just term `i` of the objective at `coordinates`.
+#'
+#' * `$gradient_term(coordinates, i)` -> `vector<numeric>`
+#'
+#'   Returns the gradient of just term `i` of the objective at `coordinates`.
+#'
+#' * `$evaluate(coordinates)` -> `numeric`
+#'
+#' * `$gradient(coordinates)` -> `vector<numeric>`
+#' @section Inherits:
+#' `DifferentiableFunction`
+#' @md
+#'
 `DifferentiableSeparableFunction` <- R6::R6Class("DifferentiableSeparableFunction", inherit = `DifferentiableFunction`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -513,6 +3913,17 @@ rosetta_ref <- function(value = NULL) {
     `gradient` = function(...) .Call(`.rs_346`, self, list(...))
   )
 )
+#' Composite objective for proximal methods.
+#'
+#' gradient() is the gradient of the smooth component, and proximal() applies the non-smooth component's proximal operator.
+#' @section Constructor:
+#' `ProximalFunction$new()`
+#' @section Methods:
+#' * `$proximal(point, step)` -> `vector<numeric>`
+#' @section Inherits:
+#' `DifferentiableFunction`
+#' @md
+#'
 `ProximalFunction` <- R6::R6Class("ProximalFunction", inherit = `DifferentiableFunction`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -523,6 +3934,15 @@ rosetta_ref <- function(value = NULL) {
     `proximal` = function(...) .Call(`.rs_348`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::HessianFunction`
+#' @section Constructor:
+#' `HessianFunction$new()`
+#' @section Methods:
+#' * `$hessian(coordinates)` -> `vector<vector<numeric>>`
+#' @section Inherits:
+#' `DifferentiableFunction`
+#' @md
+#'
 `HessianFunction` <- R6::R6Class("HessianFunction", inherit = `DifferentiableFunction`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -533,6 +3953,17 @@ rosetta_ref <- function(value = NULL) {
     `hessian` = function(...) .Call(`.rs_350`, self, list(...))
   )
 )
+#' Smooth equality-constrained objective for constrained optimizers.
+#' @section Constructor:
+#' `EqualityConstrainedFunction$new()`
+#' @section Methods:
+#' * `$constraints(coordinates)` -> `vector<numeric>`
+#'
+#' * `$constraint_jacobian(coordinates)` -> `vector<vector<numeric>>`
+#' @section Inherits:
+#' `DifferentiableFunction`
+#' @md
+#'
 `EqualityConstrainedFunction` <- R6::R6Class("EqualityConstrainedFunction", inherit = `DifferentiableFunction`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -544,6 +3975,17 @@ rosetta_ref <- function(value = NULL) {
     `constraint_jacobian` = function(...) .Call(`.rs_353`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::InequalityConstrainedFunction`
+#' @section Constructor:
+#' `InequalityConstrainedFunction$new()`
+#' @section Methods:
+#' * `$inequalities(coordinates)` -> `vector<numeric>`
+#'
+#' * `$inequality_jacobian(coordinates)` -> `vector<vector<numeric>>`
+#' @section Inherits:
+#' `DifferentiableFunction`
+#' @md
+#'
 `InequalityConstrainedFunction` <- R6::R6Class("InequalityConstrainedFunction", inherit = `DifferentiableFunction`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -555,6 +3997,15 @@ rosetta_ref <- function(value = NULL) {
     `inequality_jacobian` = function(...) .Call(`.rs_356`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::ResidualFunction`
+#' @section Constructor:
+#' `ResidualFunction$new()`
+#' @section Methods:
+#' * `$residuals(coordinates)` -> `vector<numeric>`
+#'
+#' * `$jacobian(coordinates)` -> `vector<vector<numeric>>`
+#' @md
+#'
 `ResidualFunction` <- R6::R6Class("ResidualFunction", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -566,6 +4017,21 @@ rosetta_ref <- function(value = NULL) {
     `jacobian` = function(...) .Call(`.rs_359`, self, list(...))
   )
 )
+#' Settings for GibbsSampler.
+#' @section Constructor:
+#' `GibbsOptions$new()`
+#' @section Fields:
+#' * `$num_samples` (`integer`): Number of post-warmup sweeps kept.
+#' * `$num_warmup` (`integer`): Number of warmup sweeps (per-coordinate step adaptation).
+#' * `$initial_step_sizes` (`vector<numeric>`): Initial per-coordinate proposal std dev. A single entry is broadcast to every
+#'   coordinate; otherwise its length must match the parameter vector, and each
+#'   coordinate is adapted independently via dual averaging during warmup.
+#' * `$target_accept_rate` (`numeric`): Target per-coordinate acceptance rate -- 0.44 is the asymptotically optimal
+#'   rate for a SCALAR random-walk proposal (Roberts & Rosenthal 2001), unlike
+#'   RandomWalkMetropolis's 0.234 (the multivariate-proposal optimum).
+#' * `$seed` (`integer`): Random seed.
+#' @md
+#'
 `GibbsOptions` <- R6::R6Class("GibbsOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -582,6 +4048,15 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_369`, self) else invisible(.Call(`.rs_370`, self, value))
   )
 )
+#' Output of GibbsSampler::sample().
+#' @section Constructor:
+#' `GibbsResult$new()`
+#' @section Fields:
+#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
+#' * `$accept_rates` (`vector<numeric>`): Mean acceptance rate per coordinate (across all iterations), in parameter order.
+#' * `$final_step_sizes` (`vector<numeric>`): Per-coordinate step sizes after warmup.
+#' @md
+#'
 `GibbsResult` <- R6::R6Class("GibbsResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -596,6 +4071,29 @@ rosetta_ref <- function(value = NULL) {
     `final_step_sizes` = function(value) if (missing(value)) .Call(`.rs_376`, self) else invisible(.Call(`.rs_377`, self, value))
   )
 )
+#' Metropolis-within-Gibbs: updates one coordinate at a time, each via a scalar random-walk Metropolis step evaluated against the SAME joint log-density with every other coordinate held fixed -- mathematically equivalent to a Metropolis step targeting the exact full conditional p(x_i | x_-i), since the joint-density ratio with everything else held fixed IS the full-conditional-density ratio.
+#'
+#' This is the standard fallback used whenever a full conditional isn't conjugate/directly sampleable (what BUGS/JAGS call "Metropolis-within-Gibbs"), not exact Gibbs sampling via closed-form conditional samplers -- those are necessarily model-specific (they need to know each conditional's actual distributional family) and aren't something a generic engine driven only by a joint log-density can provide. Updating one coordinate at a time (rather than proposing the whole vector jointly, as RandomWalkMetropolis does) can mix substantially better when parameters live on very different scales or are only weakly correlated.
+#' @section Constructor:
+#' `GibbsSampler$new(options = GibbsOptions$new())`
+#'
+#' Stores the sampler settings.
+#'
+#' * `options` (`GibbsOptions`): Sampler settings.
+#' @section Methods:
+#' * `$sample(log_posterior, initial_params)` -> `GibbsResult`
+#'
+#'   Runs warmup sweeps (adapting each coordinate's step), then num_samples sweeps.
+#'   - `log_posterior`: Log density up to a constant; only evaluate() is used.
+#'   - `initial_params`: Starting point.
+#'   - Returns: Draws, per-coordinate acceptance rates and step sizes.
+#'
+#' * `$options()` -> `GibbsOptions`
+#'
+#'   The options this GibbsSampler was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `GibbsSampler` <- R6::R6Class("GibbsSampler", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -607,6 +4105,18 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_380`, self, list(...))
   )
 )
+#' Settings for HMC.
+#' @section Constructor:
+#' `HMCOptions$new()`
+#' @section Fields:
+#' * `$num_samples` (`integer`): Number of post-warmup draws.
+#' * `$num_warmup` (`integer`): Number of warmup iterations (step-size adaptation; 0 keeps initial_step_size).
+#' * `$num_leapfrog_steps` (`integer`): Number of leapfrog steps per proposal (trajectory length = num_leapfrog_steps * step size).
+#' * `$initial_step_size` (`numeric`): Leapfrog step size at the start of warmup.
+#' * `$target_accept_rate` (`numeric`): Target Metropolis acceptance rate the dual-averaging adaptation aims for during warmup.
+#' * `$seed` (`integer`): Random seed.
+#' @md
+#'
 `HMCOptions` <- R6::R6Class("HMCOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -624,6 +4134,15 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_392`, self) else invisible(.Call(`.rs_393`, self, value))
   )
 )
+#' Output of HMC::sample().
+#' @section Constructor:
+#' `HMCResult$new()`
+#' @section Fields:
+#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
+#' * `$accept_rate` (`numeric`): Fraction of all iterations (warmup included) whose proposal was accepted.
+#' * `$final_step_size` (`numeric`): Step size used after warmup.
+#' @md
+#'
 `HMCResult` <- R6::R6Class("HMCResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -638,6 +4157,29 @@ rosetta_ref <- function(value = NULL) {
     `final_step_size` = function(value) if (missing(value)) .Call(`.rs_399`, self) else invisible(.Call(`.rs_400`, self, value))
   )
 )
+#' Hamiltonian Monte Carlo with a fixed leapfrog trajectory length and Nesterov dual-averaging step-size adaptation during warmup (Hoffman & Gelman 2014), using an identity mass matrix.
+#'
+#' Samples from the distribution proportional to exp(log_posterior) over unconstrained real parameters.
+#' @section Constructor:
+#' `HMC$new(options = HMCOptions$new())`
+#'
+#' Stores the sampler settings.
+#'
+#' * `options` (`HMCOptions`): Sampler settings.
+#' @section Methods:
+#' * `$sample(log_posterior, initial_params)` -> `HMCResult`
+#'
+#'   Runs warmup (adapting the step size unless num_warmup is 0) then num_samples draws.
+#'   - `log_posterior`: Log density (up to a constant) and its gradient.
+#'   - `initial_params`: Starting point on the unconstrained scale.
+#'   - Returns: Draws, acceptance rate and final step size.
+#'
+#' * `$options()` -> `HMCOptions`
+#'
+#'   The options this HMC was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `HMC` <- R6::R6Class("HMC", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -649,6 +4191,14 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_403`, self, list(...))
   )
 )
+#' Settings for ImportanceSampling.
+#' @section Constructor:
+#' `ImportanceSamplingOptions$new()`
+#' @section Fields:
+#' * `$num_samples` (`integer`): Number of proposal draws.
+#' * `$seed` (`integer`): Random seed.
+#' @md
+#'
 `ImportanceSamplingOptions` <- R6::R6Class("ImportanceSamplingOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -662,6 +4212,20 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_407`, self) else invisible(.Call(`.rs_408`, self, value))
   )
 )
+#' Output of ImportanceSampling::sample().
+#' @section Constructor:
+#' `ImportanceSamplingResult$new()`
+#' @section Fields:
+#' * `$samples` (`vector<vector<numeric>>`): Draws from the N(proposal_mean, proposal_covariance) proposal (not the target).
+#' * `$normalized_weights` (`vector<numeric>`): Self-normalized importance weights (sum to 1), in samples order.
+#' * `$effective_sample_size` (`numeric`): 1 / sum(normalized_weight_i^2) -- how many "effective" independent draws the
+#'   weighted sample is worth. Low relative to num_samples signals a poor proposal
+#'   (too narrow, wrong location, or lighter-tailed than the target).
+#' * `$log_evidence` (`numeric`): log-mean-exp(log_target(x_i) - log_proposal(x_i)) -- the standard importance-
+#'   sampling estimator of log p(y) (the target's normalizing constant), directly
+#'   comparable to e.g. INLAMixedModel::log_marginal_likelihood().
+#' @md
+#'
 `ImportanceSamplingResult` <- R6::R6Class("ImportanceSamplingResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -677,6 +4241,30 @@ rosetta_ref <- function(value = NULL) {
     `log_evidence` = function(value) if (missing(value)) .Call(`.rs_416`, self) else invisible(.Call(`.rs_417`, self, value))
   )
 )
+#' Importance sampling against a multivariate Gaussian proposal N(mean, covariance) -- a natural choice when a Laplace approximation is available and reasonably close to the target's shape (e.g.
+#'
+#' bayes::MAP's mode paired with a numerically estimated Hessian there). Produces a weighted i.i.d. sample in one shot rather than a Markov chain -- no warmup, nothing to check for mixing -- but accuracy depends entirely on how well the Gaussian proposal covers the target's mass; effective_sample_size is the diagnostic to check before trusting the result.
+#' @section Constructor:
+#' `ImportanceSampling$new(options = ImportanceSamplingOptions$new())`
+#'
+#' Stores the sampler settings.
+#'
+#' * `options` (`ImportanceSamplingOptions`): Sampler settings.
+#' @section Methods:
+#' * `$sample(log_target, proposal_mean, proposal_covariance)` -> `ImportanceSamplingResult`
+#'
+#'   `log_target` need only be evaluable (optim::ArbitraryFunction), not
+#'   differentiable. `proposal_covariance` (a plain d x d nested vector, not
+#'   linalg::DenseMatrix -- matrices never cross the SWIG boundary as DenseMatrix
+#'   anywhere in this library, only as nested vectors) must be symmetric positive
+#'   definite.
+#'
+#' * `$options()` -> `ImportanceSamplingOptions`
+#'
+#'   The options this ImportanceSampling was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `ImportanceSampling` <- R6::R6Class("ImportanceSampling", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -688,6 +4276,15 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_420`, self, list(...))
   )
 )
+#' C++ class `datamunge::bayes::MAPOptions`
+#' @section Constructor:
+#' `MAPOptions$new()`
+#' @section Fields:
+#' * `$max_iterations` (`integer`)
+#' * `$tolerance` (`numeric`)
+#' * `$history_size` (`integer`)
+#' @md
+#'
 `MAPOptions` <- R6::R6Class("MAPOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -702,6 +4299,23 @@ rosetta_ref <- function(value = NULL) {
     `history_size` = function(value) if (missing(value)) .Call(`.rs_426`, self) else invisible(.Call(`.rs_427`, self, value))
   )
 )
+#' Maximum a posteriori estimation: finds the mode of a log-posterior density via L-BFGS (datamunge::optim::LBFGS), analogous to Stan's `optimizing()`.
+#' @section Constructor:
+#' `MAP$new(options = MAPOptions$new())`
+#'
+#' * `options` (`MAPOptions`)
+#' @section Methods:
+#' * `$optimize(log_posterior, coordinates)` -> `numeric`
+#'
+#'   Maximizes `log_posterior` starting from `coordinates`, updating it in place
+#'   to the mode found, and returns the log-posterior density there.
+#'
+#' * `$options()` -> `MAPOptions`
+#'
+#'   The options this MAP was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `MAP` <- R6::R6Class("MAP", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -713,6 +4327,20 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_430`, self, list(...))
   )
 )
+#' Settings for NUTS.
+#' @section Constructor:
+#' `NUTSOptions$new()`
+#' @section Fields:
+#' * `$num_samples` (`integer`): Number of post-warmup draws.
+#' * `$num_warmup` (`integer`): Number of warmup iterations (step-size adaptation).
+#' * `$max_tree_depth` (`integer`): Caps the recursive trajectory-doubling at 2^max_tree_depth leapfrog steps per iteration.
+#' * `$initial_step_size` (`numeric`): Leapfrog step size at the start of warmup.
+#' * `$target_accept_rate` (`numeric`): Mean acceptance statistic the dual-averaging adaptation aims for.
+#' * `$max_delta_error` (`numeric`): A trajectory is flagged as diverging once the Hamiltonian drifts by more than
+#'   this from its initial value (Stan's default of 1000).
+#' * `$seed` (`integer`): Random seed (chain k of sample_chains() uses seed + k).
+#' @md
+#'
 `NUTSOptions` <- R6::R6Class("NUTSOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -731,6 +4359,21 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_444`, self) else invisible(.Call(`.rs_445`, self, value))
   )
 )
+#' Output of NUTS::sample().
+#' @section Constructor:
+#' `NUTSResult$new()`
+#' @section Fields:
+#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
+#' * `$accept_rate` (`numeric`): Mean Metropolis acceptance statistic across all iterations (the same quantity
+#'   the step-size adaptation targets).
+#' * `$final_step_size` (`numeric`): Step size used after warmup.
+#' * `$num_divergences` (`integer`): Number of iterations, warmup included, whose trajectory diverged.
+#' * `$divergent` (`vector<integer>`): Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.
+#' * `$tree_depth` (`vector<integer>`): Per post-warmup draw: number of trajectory doublings performed (tree depth).
+#' * `$n_leapfrog` (`vector<integer>`): Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.
+#' * `$energy` (`vector<numeric>`): Per post-warmup draw: the Hamiltonian
+#' @md
+#'
 `NUTSResult` <- R6::R6Class("NUTSResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -750,6 +4393,29 @@ rosetta_ref <- function(value = NULL) {
     `energy` = function(value) if (missing(value)) .Call(`.rs_461`, self) else invisible(.Call(`.rs_462`, self, value))
   )
 )
+#' The No-U-Turn Sampler (Hoffman & Gelman 2014, the efficient slice-sampling variant, Algorithm 3): Hamiltonian Monte Carlo with an automatically chosen trajectory length -- the leapfrog trajectory is grown by repeated doubling until it would start turning back on itself (a "U-turn"), removing the need to hand-tune a fixed number of leapfrog steps.
+#'
+#' Step size is still adapted via the same dual-averaging scheme as HMC. Uses an identity mass matrix.
+#' @section Constructor:
+#' `NUTS$new(options = NUTSOptions$new())`
+#'
+#' Stores the sampler settings.
+#'
+#' * `options` (`NUTSOptions`): Sampler settings.
+#' @section Methods:
+#' * `$sample(log_posterior, initial_params)` -> `NUTSResult`
+#'
+#'   Runs one chain: warmup with step-size adaptation, then num_samples draws.
+#'   - `log_posterior`: Log density (up to a constant) and its gradient.
+#'   - `initial_params`: Starting point on the unconstrained scale.
+#'   - Returns: Draws plus acceptance, step size and per-draw diagnostics.
+#'
+#' * `$options()` -> `NUTSOptions`
+#'
+#'   The options this NUTS was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `NUTS` <- R6::R6Class("NUTS", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -761,6 +4427,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_465`, self, list(...))
   )
 )
+#' Settings for RandomWalkMetropolis.
+#' @section Constructor:
+#' `RWMOptions$new()`
+#' @section Fields:
+#' * `$num_samples` (`integer`): Number of post-warmup draws.
+#' * `$num_warmup` (`integer`): Number of warmup iterations (adaptation).
+#' * `$initial_step_size` (`numeric`): Initial isotropic proposal std dev, adapted via dual averaging during warmup
+#'   (the same scheme HMC/NUTS use for their step size).
+#' * `$target_accept_rate` (`numeric`): Target Metropolis acceptance rate for warmup adaptation -- 0.234 is the
+#'   asymptotically optimal rate for a multivariate random-walk proposal in high
+#'   dimensions (Roberts, Gelman & Gilks 1997), a different theoretical optimum than
+#'   HMC/NUTS's 0.8 (trajectory-based proposals) or GibbsSampler's 0.44 (a scalar
+#'   per-coordinate proposal).
+#' * `$seed` (`integer`): Random seed.
+#' * `$adapt_covariance` (`logical`): Learn a proposal covariance during warmup (adaptive Metropolis, Haario et al.
+#'   2001). The first half of warmup is isotropic; at its end the covariance
+#' @md
+#'
 `RWMOptions` <- R6::R6Class("RWMOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -778,6 +4462,17 @@ rosetta_ref <- function(value = NULL) {
     `adapt_covariance` = function(value) if (missing(value)) .Call(`.rs_477`, self) else invisible(.Call(`.rs_478`, self, value))
   )
 )
+#' Output of RandomWalkMetropolis::sample().
+#' @section Constructor:
+#' `RWMResult$new()`
+#' @section Fields:
+#' * `$samples` (`vector<vector<numeric>>`): Post-warmup draws, one vector<double> per sample.
+#' * `$accept_rate` (`numeric`): Mean Metropolis acceptance statistic across all iterations (the same quantity
+#'   the step-size adaptation targets).
+#' * `$final_step_size` (`numeric`): Step size used after warmup.
+#' * `$proposal_covariance` (`vector<vector<numeric>>`): Learned proposal covariance
+#' @md
+#'
 `RWMResult` <- R6::R6Class("RWMResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -793,6 +4488,30 @@ rosetta_ref <- function(value = NULL) {
     `proposal_covariance` = function(value) if (missing(value)) .Call(`.rs_486`, self) else invisible(.Call(`.rs_487`, self, value))
   )
 )
+#' Random-walk Metropolis-Hastings: the classic gradient-free MCMC baseline, proposing x' = x + step_size * N(0, I) and accepting with probability min(1, exp(log_posterior(x') - log_posterior(x))).
+#'
+#' Complements HMC/NUTS (which need a gradient via optim::DifferentiableFunction) for targets where only a log-density evaluation is available -- a black-box model, a discontinuous/non-differentiable posterior, or a director-subclassed optim::ArbitraryFunction in a language without access to this library's autodiff.
+#' @section Constructor:
+#' `RandomWalkMetropolis$new(options = RWMOptions$new())`
+#'
+#' Stores the sampler settings.
+#'
+#' * `options` (`RWMOptions`): Sampler settings.
+#' @section Methods:
+#' * `$sample(log_posterior, initial_params)` -> `RWMResult`
+#'
+#'   Runs warmup (adapting the step size, and optionally the proposal covariance),
+#'   then num_samples draws.
+#'   - `log_posterior`: Log density up to a constant; only evaluate() is used.
+#'   - `initial_params`: Starting point.
+#'   - Returns: Draws, acceptance rate, final step size and learned covariance.
+#'
+#' * `$options()` -> `RWMOptions`
+#'
+#'   The options this RandomWalkMetropolis was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `RandomWalkMetropolis` <- R6::R6Class("RandomWalkMetropolis", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -804,6 +4523,18 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_490`, self, list(...))
   )
 )
+#' A pixel value in fully-expanded RGBA form, regardless of the owning Image's actual mode -- always 4 plain uint8 fields (rather than a variable-length per-mode vector) so this stays trivially bindable across languages, matching this codebase's established preference for fixed-shape structs.
+#'
+#' get_pixel()/set_pixel() handle the expansion/truncation to and from the Image's real stored channel count.
+#' @section Constructor:
+#' `Pixel$new()`
+#' @section Fields:
+#' * `$r` (`integer`)
+#' * `$g` (`integer`)
+#' * `$b` (`integer`)
+#' * `$a` (`integer`)
+#' @md
+#'
 `Pixel` <- R6::R6Class("Pixel", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -819,6 +4550,40 @@ rosetta_ref <- function(value = NULL) {
     `a` = function(value) if (missing(value)) .Call(`.rs_498`, self) else invisible(.Call(`.rs_499`, self, value))
   )
 )
+#' A 2D raster image: row-major, top-left origin, interleaved channel bytes (matching the layout every common image codec uses on disk, so I/O needs no reshuffling).
+#'
+#' Pixel data is always stored as the mode's exact channel count (1/2/3/4 bytes per pixel) -- get_pixel()/set_pixel() are the only place mode-specific expansion happens.
+#' @section Constructor:
+#' `Image$new()`
+#'
+#' `Image$new(width, height, mode = "RGB")`
+#'
+#' `Image$new(width, height, mode, fill_color)`
+#'
+#' * `width` (`integer`)
+#' * `height` (`integer`)
+#' * `mode` (`character (ImageMode)`)
+#' * `fill_color` (`Pixel`)
+#' @section Methods:
+#' * `$width()` -> `integer`
+#'
+#' * `$height()` -> `integer`
+#'
+#' * `$mode()` -> `character (ImageMode)`
+#'
+#' * `$channels()` -> `integer`
+#'
+#' * `$data()` -> `vector<integer>`
+#'
+#' * `$get_pixel(x, y)` -> `Pixel`
+#'
+#' * `$set_pixel(x, y, p)`
+#'
+#' * `$fill(p)`
+#' @section Static methods:
+#' * `Image$channel_count(mode)` -> `integer`
+#' @md
+#'
 `Image` <- R6::R6Class("Image", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -838,6 +4603,15 @@ rosetta_ref <- function(value = NULL) {
   )
 )
 `Image`$`channel_count` <- function(...) .Call(`.rs_509`, NULL, list(...))
+#' A pixel color in HSV space: h in \[0, 360), s and v in \[0, 1\].
+#' @section Constructor:
+#' `HSV$new()`
+#' @section Fields:
+#' * `$h` (`numeric`)
+#' * `$s` (`numeric`)
+#' * `$v` (`numeric`)
+#' @md
+#'
 `HSV` <- R6::R6Class("HSV", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -852,6 +4626,16 @@ rosetta_ref <- function(value = NULL) {
     `v` = function(value) if (missing(value)) .Call(`.rs_515`, self) else invisible(.Call(`.rs_516`, self, value))
   )
 )
+#' A detected blob keypoint: its pixel location, the Gaussian scale (sigma) at which it was found, and the Difference-of-Gaussians response at that scale (higher magnitude is a stronger blob).
+#' @section Constructor:
+#' `KeyPoint$new()`
+#' @section Fields:
+#' * `$x` (`integer`)
+#' * `$y` (`integer`)
+#' * `$scale` (`numeric`)
+#' * `$response` (`numeric`)
+#' @md
+#'
 `KeyPoint` <- R6::R6Class("KeyPoint", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -867,6 +4651,17 @@ rosetta_ref <- function(value = NULL) {
     `response` = function(value) if (missing(value)) .Call(`.rs_524`, self) else invisible(.Call(`.rs_525`, self, value))
   )
 )
+#' A detected corner: its pixel location and a detector-specific response score (higher is a stronger corner).
+#'
+#' Meant to be independently sortable/filterable by the caller.
+#' @section Constructor:
+#' `Corner$new()`
+#' @section Fields:
+#' * `$x` (`integer`)
+#' * `$y` (`integer`)
+#' * `$response` (`numeric`)
+#' @md
+#'
 `Corner` <- R6::R6Class("Corner", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -881,6 +4676,15 @@ rosetta_ref <- function(value = NULL) {
     `response` = function(value) if (missing(value)) .Call(`.rs_531`, self) else invisible(.Call(`.rs_532`, self, value))
   )
 )
+#' C++ class `datamunge::cv::detail::StructureTensorField`
+#' @section Constructor:
+#' `StructureTensorField$new()`
+#' @section Fields:
+#' * `$sxx` (`vector<numeric>`)
+#' * `$syy` (`vector<numeric>`)
+#' * `$sxy` (`vector<numeric>`)
+#' @md
+#'
 `StructureTensorField` <- R6::R6Class("StructureTensorField", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -895,6 +4699,17 @@ rosetta_ref <- function(value = NULL) {
     `sxy` = function(value) if (missing(value)) .Call(`.rs_538`, self) else invisible(.Call(`.rs_539`, self, value))
   )
 )
+#' A detected line in the classical (rho, theta) normal-form parameterization: every point (x, y) on the line satisfies x*cos(theta) + y*sin(theta) = rho.
+#'
+#' Represents an INFINITE line, not a segment -- see line_endpoints() to clip it to an image.
+#' @section Constructor:
+#' `HoughLine$new()`
+#' @section Fields:
+#' * `$rho` (`numeric`)
+#' * `$theta` (`numeric`)
+#' * `$votes` (`integer`)
+#' @md
+#'
 `HoughLine` <- R6::R6Class("HoughLine", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -909,6 +4724,16 @@ rosetta_ref <- function(value = NULL) {
     `votes` = function(value) if (missing(value)) .Call(`.rs_545`, self) else invisible(.Call(`.rs_546`, self, value))
   )
 )
+#' A detected circle: center, radius, and the raw vote count that found it.
+#' @section Constructor:
+#' `HoughCircle$new()`
+#' @section Fields:
+#' * `$cx` (`integer`)
+#' * `$cy` (`integer`)
+#' * `$radius` (`integer`)
+#' * `$votes` (`integer`)
+#' @md
+#'
 `HoughCircle` <- R6::R6Class("HoughCircle", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -924,6 +4749,17 @@ rosetta_ref <- function(value = NULL) {
     `votes` = function(value) if (missing(value)) .Call(`.rs_554`, self) else invisible(.Call(`.rs_555`, self, value))
   )
 )
+#' The estimated motion of one tracked point between two frames.
+#'
+#' `valid` is false when the point's window was too close to the image border, or too textureless/aperture- ambiguous (the same "does the structure tensor have two strong eigenvalues" criterion shi_tomasi_corners() uses to pick good points to track in the first place -- Lucas-Kanade windows should generally be centered on such points).
+#' @section Constructor:
+#' `FlowVector$new()`
+#' @section Fields:
+#' * `$dx` (`numeric`)
+#' * `$dy` (`numeric`)
+#' * `$valid` (`logical`)
+#' @md
+#'
 `FlowVector` <- R6::R6Class("FlowVector", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -938,6 +4774,18 @@ rosetta_ref <- function(value = NULL) {
     `valid` = function(value) if (missing(value)) .Call(`.rs_561`, self) else invisible(.Call(`.rs_562`, self, value))
   )
 )
+#' The result of connected_components(): a per-pixel label image (row-major, same layout as image::Image::data() but one int per pixel rather than per channel byte).
+#'
+#' Label 0 is always background; foreground components are numbered 1..count.
+#' @section Constructor:
+#' `LabelMap$new()`
+#' @section Fields:
+#' * `$labels` (`vector<integer>`)
+#' * `$width` (`integer`)
+#' * `$height` (`integer`)
+#' * `$count` (`integer`)
+#' @md
+#'
 `LabelMap` <- R6::R6Class("LabelMap", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -953,6 +4801,33 @@ rosetta_ref <- function(value = NULL) {
     `count` = function(value) if (missing(value)) .Call(`.rs_570`, self) else invisible(.Call(`.rs_571`, self, value))
   )
 )
+#' One batch of images and labels returned by ImageLoader.
+#'
+#' `pixels` holds size() images back to back, each laid out as `shape` describes:
+#' - "nhwc": shape \{n, height, width, channels\}, channels interleaved per pixel;
+#' - "nchw": shape \{n, channels, height, width\}, one full plane per channel;
+#' - "flat": shape \{n, height * width * channels\}, in "nhwc" order.
+#' @section Constructor:
+#' `ImageBatch$new()`
+#' @section Fields:
+#' * `$pixels` (`vector<numeric>`): Image values, row-major per `shape`.
+#' * `$labels` (`vector<integer>`): Class index of each image (see ImageLoader::class_names()).
+#' * `$indices` (`vector<integer>`): Position of each image within its split, 0-based.
+#' * `$shape` (`vector<integer>`): Dimensions of `pixels`; shape\[0\] is the number of images.
+#' @section Methods:
+#' * `$size()` -> `integer`
+#'
+#'   Number of images in the batch.
+#'
+#' * `$features()` -> `integer`
+#'
+#'   Values per image (height * width * channels).
+#'
+#' * `$image(i)` -> `vector<numeric>`
+#'
+#'   A copy of image `i's` features() values.
+#' @md
+#'
 `ImageBatch` <- R6::R6Class("ImageBatch", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -971,6 +4846,182 @@ rosetta_ref <- function(value = NULL) {
     `shape` = function(value) if (missing(value)) .Call(`.rs_582`, self) else invisible(.Call(`.rs_583`, self, value))
   )
 )
+#' A configurable, disk-backed batch iterator over a standard image dataset.
+#'
+#' Datasets: "mnist" and "fashion_mnist" (28x28 grayscale, 10 classes; 60000 train / 10000
+#' test), "cifar10" (32x32 RGB, 10 classes; 50000 / 10000) and "cifar100" (32x32 RGB, 100 fine
+#' or 20 coarse classes; 50000 / 10000).
+#'
+#' Iteration works in epochs. has_next()/next() walk the current epoch's order; reset() starts
+#' the next epoch (with a fresh shuffle when shuffling is on). Every setter returns the loader
+#' for chaining and rewinds the current epoch, so configure before iterating.
+#'
+#' Reading is const and opens files per call, so batch()/take() may be called from several
+#' threads at once; next()/reset() and the setters mutate and must not race.
+#' @section Constructor:
+#' `ImageLoader$new(dataset, split = "train", directory = "")`
+#'
+#' Opens a dataset split, downloading the files first if they are missing.
+#'
+#' * `dataset` (`character`): "mnist", "fashion_mnist", "cifar10" or "cifar100".
+#' * `split` (`character`): "train" or "test".
+#' * `directory` (`character`): Where the dataset's files are (or should be downloaded); empty means
+#'   `data_home() + "/" + dataset`.
+#' @section Methods:
+#' * `$set_batch_size(size)` -> `ImageLoader`
+#'
+#'   Images per batch (default 32).
+#'
+#' * `$set_shuffle(shuffle)` -> `ImageLoader`
+#'
+#'   Turns shuffling on or off (default off). Epoch e's order is a permutation drawn
+#'   from (seed(), e), so the same seed always gives the same sequence of epochs.
+#'
+#' * `$set_seed(seed)` -> `ImageLoader`
+#'
+#'   Sets the shuffle seed (default 0); see set_shuffle().
+#'
+#' * `$set_drop_last(drop_last)` -> `ImageLoader`
+#'
+#'   When true, a final batch smaller than batch_size() is skipped (default false).
+#'
+#' * `$set_normalize(normalize)` -> `ImageLoader`
+#'
+#'   true scales pixels to \[0, 1\] (default); false keeps the raw 0..255 values.
+#'
+#' * `$set_layout(layout)` -> `ImageLoader`
+#'
+#'   Memory layout of ImageBatch::pixels: "nhwc" (default), "nchw" or "flat".
+#'
+#' * `$set_limit(count)` -> `ImageLoader`
+#'
+#'   Uses only the first `count` examples of the split (0, the default, means all).
+#'   Handy for quick experiments. Shuffling then permutes just those examples.
+#'
+#' * `$set_coarse_labels(coarse)` -> `ImageLoader`
+#'
+#'   CIFAR-100 only: true labels images with the 20 superclasses, false (default)
+#'   with the 100 fine classes. Ignored by the other datasets.
+#'
+#' * `$dataset()` -> `character`
+#'
+#'   The dataset name given to the constructor.
+#'
+#' * `$split()` -> `character`
+#'
+#'   "train" or "test".
+#'
+#' * `$directory()` -> `character`
+#'
+#'   The directory the files are read from.
+#'
+#' * `$batch_size()` -> `integer`
+#'
+#'   Images per batch.
+#'
+#' * `$shuffle()` -> `logical`
+#'
+#'   Whether each epoch is shuffled.
+#'
+#' * `$seed()` -> `integer`
+#'
+#'   The shuffle seed.
+#'
+#' * `$drop_last()` -> `logical`
+#'
+#'   Whether a short final batch is skipped.
+#'
+#' * `$normalize()` -> `logical`
+#'
+#'   Whether pixels are scaled to \[0, 1\].
+#'
+#' * `$layout()` -> `character`
+#'
+#'   "nhwc", "nchw" or "flat".
+#'
+#' * `$coarse_labels()` -> `logical`
+#'
+#'   Whether CIFAR-100 uses coarse labels.
+#'
+#' * `$size()` -> `integer`
+#'
+#'   Examples per epoch: the split size, or the limit if one is set and smaller.
+#'
+#' * `$split_size()` -> `integer`
+#'
+#'   Examples in the split on disk, ignoring any limit.
+#'
+#' * `$num_batches()` -> `integer`
+#'
+#'   Batches per epoch, honoring drop_last().
+#'
+#' * `$height()` -> `integer`
+#'
+#'   Image height in pixels.
+#'
+#' * `$width()` -> `integer`
+#'
+#'   Image width in pixels.
+#'
+#' * `$channels()` -> `integer`
+#'
+#'   Channels per pixel: 1 for MNIST-style, 3 (RGB) for CIFAR.
+#'
+#' * `$num_classes()` -> `integer`
+#'
+#'   Number of label classes (CIFAR-100: 100, or 20 with coarse labels).
+#'
+#' * `$class_names()` -> `vector<character>`
+#'
+#'   Label names, indexed by label (e.g. "airplane" for CIFAR-10 label 0).
+#'
+#' * `$epoch()` -> `integer`
+#'
+#'   The current epoch number, starting at 0 and advanced by reset().
+#'
+#' * `$position()` -> `integer`
+#'
+#'   Index of the batch next() will return in this epoch.
+#'
+#' * `$has_next()` -> `logical`
+#'
+#'   true while the current epoch has batches left.
+#'
+#' * `$next_batch()` -> `ImageBatch`
+#'
+#'   Reads the next batch of the current epoch.
+#'
+#' * `$reset()`
+#'
+#'   Starts the next epoch: the position returns to 0 and, if shuffling, a new
+#'   order is drawn.
+#'
+#' * `$batch(index)` -> `ImageBatch`
+#'
+#'   Reads batch `index` of the current epoch without moving the position.
+#'
+#' * `$take(indices)` -> `ImageBatch`
+#'
+#'   Reads the listed examples (split positions), in the order given.
+#'
+#' * `$load_all()` -> `ImageBatch`
+#'
+#'   Reads every example of the epoch (all of size()) into one batch, in split order.
+#'   Mind memory: all 60000 MNIST images take ~376 MB as doubles; see set_limit().
+#' @section Examples (C++):
+#' ```cpp
+#' dm::datasets::ImageLoader test("cifar10", "test");
+#' test.set_batch_size(500).set_layout("nchw").set_normalize(false);
+#' const auto first = test.next();          // shape {500, 3, 32, 32}, values 0..255
+#' std::print("{}\n", test.class_names()[first.labels[0]]);   // "cat"
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: for an unknown dataset or split.
+#'
+#' * `std::runtime_error`: if the files are missing and cannot be downloaded, or are
+#' not valid files of that dataset.
+#' @md
+#'
 `ImageLoader` <- R6::R6Class("ImageLoader", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1014,6 +5065,21 @@ rosetta_ref <- function(value = NULL) {
     `load_all` = function(...) .Call(`.rs_618`, self, list(...))
   )
 )
+#' A 1D finite-element mesh: a strictly increasing sequence of node coordinates.
+#'
+#' Element i spans \[nodes\[i\], nodes\[i+1\]\] for i in \[0, num_elements()) -- no separate connectivity array is needed since consecutive nodes are always the two endpoints of one linear (P1) element. `nodes` is a public field for direct C++ construction, but (matching datamunge::ode::ODESolution's t/y fields -- a swig-jse R-backend codegen bug hits plain vector<double> struct *field* getters) is not exposed to language bindings; node_at()/num_nodes() are the cross-language-safe accessors.
+#' @section Constructor:
+#' `Mesh1D$new()`
+#' @section Methods:
+#' * `$num_nodes()` -> `integer`
+#'
+#' * `$num_elements()` -> `integer`
+#'
+#' * `$node_at(index)` -> `numeric`
+#'
+#' * `$element_length(element_index)` -> `numeric`
+#' @md
+#'
 `Mesh1D` <- R6::R6Class("Mesh1D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1027,6 +5093,15 @@ rosetta_ref <- function(value = NULL) {
     `element_length` = function(...) .Call(`.rs_623`, self, list(...))
   )
 )
+#' A user-supplied scalar source-term function of one spatial variable, f(x).
+#'
+#' Director-enabled extension point (same pattern as datamunge::ode::RHS and datamunge::optim::ArbitraryFunction elsewhere in this codebase): subclass and override evaluate() in C++, or, via SWIG directors, in any binding with director support. Bindings without director support must instead use FEM1D::solve_builtin()'s fixed set of named source terms.
+#' @section Constructor:
+#' `ScalarField1D$new()`
+#' @section Methods:
+#' * `$evaluate(x)` -> `numeric`
+#' @md
+#'
 `ScalarField1D` <- R6::R6Class("ScalarField1D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1037,6 +5112,15 @@ rosetta_ref <- function(value = NULL) {
     `evaluate` = function(...) .Call(`.rs_625`, self, list(...))
   )
 )
+#' A user-supplied scalar source-term function of two spatial variables, f(x, y).
+#'
+#' Same director-enabled pattern as ScalarField1D; FEM2D::solve_builtin() is the fallback for bindings without director support.
+#' @section Constructor:
+#' `ScalarField2D$new()`
+#' @section Methods:
+#' * `$evaluate(x, y)` -> `numeric`
+#' @md
+#'
 `ScalarField2D` <- R6::R6Class("ScalarField2D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1047,6 +5131,23 @@ rosetta_ref <- function(value = NULL) {
     `evaluate` = function(...) .Call(`.rs_627`, self, list(...))
   )
 )
+#' Owned endpoint data for Dirichlet, outward-conormal Neumann or Robin conditions.
+#'
+#' Dirichlet uses value as u; Neumann uses it as p*du/dn; Robin uses it as the reference value in p*du/dn+alpha*(u-value)=0. Alpha zero gives zero conormal. For coercive diffusion/heat models use nonnegative Robin alpha and sufficient constraints/reaction to remove the constant nullspace. Unsupported enum values and nonfinite data are outside the solver's preconditions, not fully validated.
+#' @section Constructor:
+#' `BoundaryCondition1D$new()`
+#' @section Fields:
+#' * `$type` (`character (BCType)`): Supported condition kind; defaults to Dirichlet.
+#' * `$value` (`numeric`): Prescribed value, conormal or Robin reference, as selected by type.
+#' * `$robin_coefficient` (`numeric`): Robin alpha; ignored for other kinds.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::fem::BoundaryCondition1D right{dm::fem::BCType::Robin,4,3};
+#' std::print("{} {}\n",right.value,right.robin_coefficient); // 4 3
+#' ```
+#' @seealso FEM1D, BCType
+#' @md
+#'
 `BoundaryCondition1D` <- R6::R6Class("BoundaryCondition1D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1061,6 +5162,36 @@ rosetta_ref <- function(value = NULL) {
     `robin_coefficient` = function(value) if (missing(value)) .Call(`.rs_633`, self) else invisible(.Call(`.rs_634`, self, value))
   )
 )
+#' Owned nodal P1 steady solution, with checked scalar accessors for language bindings.
+#'
+#' The continuous finite-element field is the piecewise-linear interpolant of these values; nodal agreement alone does not imply agreement between nodes. Copies own their arrays, with no mesh/callback alias. Public edits can break array consistency; accessors check the actual requested vector bounds.
+#' @section Constructor:
+#' `FEM1DResult$new()`
+#' @section Methods:
+#' * `$size()` -> `integer`
+#'
+#'   Count stored solution values without changing either array.
+#'   - Returns: Actual u.size(); no allocation or shared mutation.
+#'
+#' * `$node_at(index)` -> `numeric`
+#'
+#'   Read an owned spatial coordinate with vector bounds checking.
+#'   - `index`: Zero-based coordinate index.
+#'   - Returns: Stored coordinate by value.
+#'
+#' * `$value_at(index)` -> `numeric`
+#'
+#'   Read an owned nodal value with vector bounds checking.
+#'   - `index`: Zero-based value index.
+#'   - Returns: Stored solution value by value.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::fem::FEM1D::solve_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{1},{},{});
+#' std::print("{} {}\n",r.size(),r.value_at(1)); // 3 0.125
+#' ```
+#' @seealso FEM1D::solve(), algorithms::linear_interpolate()
+#' @md
+#'
 `FEM1DResult` <- R6::R6Class("FEM1DResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1073,6 +5204,48 @@ rosetta_ref <- function(value = NULL) {
     `value_at` = function(...) .Call(`.rs_638`, self, list(...))
   )
 )
+#' Owned initial state and actual strictly advancing backward-Euler time slices.
+#'
+#' Solver output has one u row per time and one value per spatial node. Initial time zero/u0 are retained as supplied; later rows satisfy imposed boundary data. Times retain rounded nominal-step products with a shortened final interval; an already reached endpoint is not appended twice. Copies retain no mesh/source alias. Public edits may break consistency; accessors check actual vector bounds.
+#' @section Constructor:
+#' `FEM1DTimeSeries$new()`
+#' @section Methods:
+#' * `$num_steps()` -> `integer`
+#'
+#'   Count stored time levels, including the initial state.
+#'   - Returns: Actual times.size(), rather than the number of time advances.
+#'
+#' * `$num_nodes()` -> `integer`
+#'
+#'   Count stored spatial coordinates.
+#'   - Returns: Actual nodes.size(); no allocation or shared mutation.
+#'
+#' * `$node_at(index)` -> `numeric`
+#'
+#'   Read a spatial coordinate with vector bounds checking.
+#'   - `index`: Zero-based coordinate index.
+#'   - Returns: Owned coordinate by value.
+#'
+#' * `$time_at(step)` -> `numeric`
+#'
+#'   Read an actual stored time level with bounds checking.
+#'   - `step`: Zero-based frame index, including initial frame zero.
+#'   - Returns: Actual stored time by value.
+#'
+#' * `$value_at(step, node_index)` -> `numeric`
+#'
+#'   Read a stored nodal time-slice value with both vector bounds checked.
+#'   - `step`: Zero-based time-frame index in u.
+#'   - `node_index`: Zero-based spatial index within that row.
+#'   - Returns: Stored nodal value by value.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::fem::FEM1D::solve_transient_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{1},{},{},{0,0,0},.5,.5);
+#' std::print("{} {:.6f}\n",t.num_steps(),t.value_at(1,1)); // 2 0.107143
+#' ```
+#' @seealso FEM1D::solve_transient(), FEM1D::solve_transient_builtin()
+#' @md
+#'
 `FEM1DTimeSeries` <- R6::R6Class("FEM1DTimeSeries", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1087,6 +5260,103 @@ rosetta_ref <- function(value = NULL) {
     `value_at` = function(...) .Call(`.rs_644`, self, list(...))
   )
 )
+#' Solve steady or transient one-dimensional divergence-form problems with P1 Galerkin FEM.
+#'
+#' Models -(p*u')'+q*u=f and u_t-(p*u')'+q*u=f on a caller-supplied mesh. Requires at least two finite strictly increasing nodes, finite coefficient/ boundary/source data and finite assembled arithmetic with nonzero Thomas pivots; those mathematical/geometry preconditions are not fully validated. Positive p, nonnegative q/Robin data and adequate constraints give the usual coercive model. Piecewise-constant p/q can be scalar or one per element. Results own their values; input mesh/data are unchanged. Calls share no mutable global state, while callback side effects/concurrency belong to the caller.
+#' @section Constructor:
+#' `FEM1D$new()`
+#' @section Static methods:
+#' * `FEM1D$solve(mesh, p, q, f, left, right)` -> `FEM1DResult`
+#'
+#'   Solve the steady P1 system for -(p*u')'+q*u=f with endpoint boundary data.
+#'   Follows FEM1D's mesh/coefficient/finite-arithmetic/nonsingular-pivot preconditions.
+#'   Uses three-point Gauss-Legendre quadrature of f times each local basis, natural
+#'   boundary terms and symmetric Dirichlet elimination, then Thomas elimination.
+#'   O(N) work/storage for N nodes; invokes the source three times per element.
+#'   No callback pointer is retained. Independent calls share no mutable state.
+#'   - `mesh`: Borrowed mesh with at least two finite strictly increasing nodes.
+#'   - `p`: Borrowed diffusion coefficient: length1 or one per element.
+#'   - `q`: Borrowed reaction coefficient: length1 or one per element.
+#'   - `f`: Borrowed spatial source; evaluate() may have caller-owned side effects.
+#'   - `left`: Left endpoint condition, with outward normal -1.
+#'   - `right`: Right endpoint condition, with outward normal +1.
+#'   - Returns: Owned original nodes and computed nodal values.
+#'
+#' * `FEM1D$solve_builtin(mesh, p, q, source, source_params, left, right)` -> `FEM1DResult`
+#'
+#'   Solve the steady system using an owned named spatial source, without a director callback.
+#'   Shares the live-source solver and its mathematical/precondition/storage contracts.
+#'   Sources: zero=0 (params unused); constant=c (\{1\}); linear=m*x+c (\{1,0\});
+#'   polynomial=sum(params\[i\]*x^i) (empty gives0); sine=A*sin(w*x+phase) (\{1,1,0\}).
+#'   Missing trailing parameters use those defaults; extra parameters are ignored
+#'   except polynomial, which uses all entries. Name matching is exact/case-sensitive.
+#'   - `mesh`: Borrowed valid finite interval mesh; unchanged.
+#'   - `p`: Borrowed scalar/per-element diffusion coefficient.
+#'   - `q`: Borrowed scalar/per-element reaction coefficient.
+#'   - `source`: Exact name zero, constant, linear, polynomial or sine.
+#'   - `source_params`: Borrowed positional source parameters, with defaults described above.
+#'   - `left`: Left endpoint data using outward normal -1.
+#'   - `right`: Right endpoint data using outward normal +1.
+#'   - Returns: Owned computed nodal result, retaining no source or input reference.
+#'
+#' * `FEM1D$solve_transient(mesh, p, q, f, left, right, u0, t_end, dt)` -> `FEM1DTimeSeries`
+#'
+#'   Integrate u_t-(p*u')'+q*u=f with P1 space and actual backward-Euler time intervals.
+#'   Shares FEM1D's spatial/finite-arithmetic/nonzero-pivot preconditions. Source
+#'   and boundary data represent a time-independent model; the live callback is
+#'   actually reevaluated three times per element at every time advance, not cached.
+#'   Stores initial u0 as supplied, then imposes boundary data at later solves.
+#'   Nominal step dt is shortened at t_end; actual positive time differences enter
+#'   the mass term. Stops once t_end is reached, avoiding a duplicate rounded last
+#'   time even when ceil(t_end/dt) overestimates the number of advances.
+#'   O(S*N) work/output storage for S advances/N nodes, O(N) assembly temporaries;
+#'   no optional trace or quota. Backward Euler is unconditionally stable for the
+#'   coercive semidiscrete model, not a guarantee of arbitrary-step accuracy or
+#'   finite arithmetic for arbitrary parameters. Input arrays remain unchanged;
+#'   callback exceptions/side effects/concurrent safety belong to caller.
+#'   - `mesh`: Borrowed valid mesh with at least two finite increasing nodes.
+#'   - `p`: Borrowed scalar/per-element diffusion coefficient.
+#'   - `q`: Borrowed scalar/per-element reaction coefficient.
+#'   - `f`: Borrowed spatial callback, reevaluated at every advance.
+#'   - `left`: Fixed left condition, with outward normal -1.
+#'   - `right`: Fixed right condition, with outward normal +1.
+#'   - `u0`: Borrowed finite initial nodal values, exactly one per mesh node.
+#'   - `t_end`: Positive finite final time, in time units.
+#'   - `dt`: Positive finite nominal time step in the same units; may exceed t_end.
+#'   - Returns: Owned nodes, initial state and strictly advancing slices ending at t_end.
+#'
+#' * `FEM1D$solve_transient_builtin(mesh, p, q, source, source_params, left, right, u0, t_end, dt)` -> `FEM1DTimeSeries`
+#'
+#'   Integrate the same backward-Euler model with a named source and no callback subclass.
+#'   Uses the same private source construction as solve_builtin() and the same
+#'   actual time loop as solve_transient(); no second solver or per-language glue.
+#'   Names/defaults: zero=0; constant=c (\{1\}); linear=m*x+c (\{1,0\});
+#'   polynomial=sum(params\[i\]*x^i) (empty0); sine=A*sin(w*x+phase) (\{1,1,0\}).
+#'   Extra entries ignored except polynomial; exact case-sensitive names. Source
+#'   objects are local and synchronous; results own values, not callback aliases.
+#'   All spatial/time/initial-state, complexity and stability contracts follow
+#'   solve_transient(); ordinary output has no optional history/quota.
+#'   - `mesh`: Borrowed valid finite increasing mesh, with at least two nodes.
+#'   - `p`: Borrowed scalar/per-element diffusion coefficient.
+#'   - `q`: Borrowed scalar/per-element reaction coefficient.
+#'   - `source`: Exact name zero, constant, linear, polynomial or sine.
+#'   - `source_params`: Borrowed positional parameters; omitted trailing values use the defaults above.
+#'   - `left`: Fixed left boundary condition using outward normal -1.
+#'   - `right`: Fixed right boundary condition using outward normal +1.
+#'   - `u0`: Borrowed finite initial values, exactly one per spatial node.
+#'   - `t_end`: Positive finite final time.
+#'   - `dt`: Positive finite nominal time step; final interval is shortened as needed.
+#'   - Returns: Owned initial state and actual strictly advancing backward-Euler slices.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::fem::FEM1D::solve_builtin(dm::fem::make_uniform_mesh1d(0,1,2),{1},{0},"constant",{1},{},{});
+#' std::print("{}\n",r.value_at(1)); // 0.125
+#' ```
+#' @references - MFEM, Weak Formulations: https://mfem.org/fem_weak_form/ . This native implementation
+#'   uses P1 intervals, three-point Gauss-Legendre loads and a tridiagonal direct solve.
+#' @seealso Mesh1D, FEM1DResult, FEM1DTimeSeries
+#' @md
+#'
 `FEM1D` <- R6::R6Class("FEM1D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1104,6 +5374,34 @@ rosetta_ref <- function(value = NULL) {
 `FEM1D`$`solve_builtin` <- function(...) .Call(`.rs_647`, NULL, list(...))
 `FEM1D`$`solve_transient` <- function(...) .Call(`.rs_648`, NULL, list(...))
 `FEM1D`$`solve_transient_builtin` <- function(...) .Call(`.rs_649`, NULL, list(...))
+#' A copied point or free vector with ordinary double coordinates.
+#'
+#' Construction does not validate finiteness; checked algorithms document their own input contracts. Default coordinates are zero. Equality is numeric, so signed zeros compare equal and NaN coordinates do not compare equal.
+#' @section Constructor:
+#' `Point2D$new()`
+#' @section Fields:
+#' * `$x` (`numeric`): Horizontal coordinate, default zero.
+#' * `$y` (`numeric`): Vertical coordinate, default zero.
+#' @section Methods:
+#' * `$__eq__(other)` -> `logical`
+#'
+#'   Compare both coordinates with ordinary double equality.
+#'   - `other`: Point to compare without mutation.
+#'   - Returns: Both coordinate comparisons are true; signed zeros compare equal.
+#'
+#' * `$__ne__(other)` -> `logical`
+#'
+#'   Negate coordinate equality, including unequal NaN coordinates.
+#'   - `other`: Point to compare without mutation.
+#'   - Returns: Logical negation of operator==().
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::geometry::Point2D p{3,4};
+#' std::cout << p.x << ' ' << p.y; // 3 4
+#' ```
+#' @seealso squared_distance(), distance(), cross(), orientation_sign()
+#' @md
+#'
 `Point2D` <- R6::R6Class("Point2D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1119,6 +5417,22 @@ rosetta_ref <- function(value = NULL) {
     `y` = function(value) if (missing(value)) .Call(`.rs_655`, self) else invisible(.Call(`.rs_656`, self, value))
   )
 )
+#' Three original point indices in counterclockwise order for finite mesh faces.
+#'
+#' Original field layout/defaults are retained. A trace ghost uses c=points.size() as a symbolic infinity marker, with a,b the reversed finite hull edge; it is never returned by delaunay_triangulation(). No coordinate is constructed for it.
+#' @section Constructor:
+#' `Triangle$new()`
+#' @section Fields:
+#' * `$a` (`integer`): First original index, finite also for a trace ghost.
+#' * `$b` (`integer`): Second original index, finite also for a trace ghost.
+#' * `$c` (`integer`): Third original index; points.size() denotes a trace ghost only.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::geometry::Triangle t{0,1,2};std::print("{} {} {}\n",t.a,t.b,t.c); // 0 1 2
+#' ```
+#' @seealso delaunay_triangulation(), DelaunayInsertion
+#' @md
+#'
 `Triangle` <- R6::R6Class("Triangle", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1133,6 +5447,27 @@ rosetta_ref <- function(value = NULL) {
     `c` = function(value) if (missing(value)) .Call(`.rs_662`, self) else invisible(.Call(`.rs_663`, self, value))
   )
 )
+#' Actual seed and cavity operations, excluding validation, sorting and copies.
+#'
+#' A conflict test is either an incircle test on a finite face or an exact half-plane test on a ghost. Counters exclude CCW checks on newly created faces, between-endpoint comparisons, map operations, allocation, trace copies and final sorting. Initial seed plus three ghosts are excluded from creation/removal counts. No counts are estimates of time or fixed-predicate internal arithmetic.
+#' @section Constructor:
+#' `DelaunayWork$new()`
+#' @section Fields:
+#' * `$seed_orientation_tests` (`integer`): Exact tests finding the first noncollinear seed.
+#' * `$insertions` (`integer`): Actual non-seed distinct sites inserted.
+#' * `$incircle_tests` (`integer`): Finite live faces tested against an inserted site.
+#' * `$hull_side_tests` (`integer`): Symbolic boundary faces tested by orientation.
+#' * `$removed_faces` (`integer`): All conflicting real/ghost faces removed.
+#' * `$boundary_edges` (`integer`): Actual directed cavity edges retained once.
+#' * `$created_faces` (`integer`): New real/ghost faces, one per boundary edge.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}});
+#' std::print("{} {}\n",t.work.insertions,t.work.incircle_tests+t.work.hull_side_tests); // 2 10
+#' ```
+#' @seealso DelaunayTrace
+#' @md
+#'
 `DelaunayWork` <- R6::R6Class("DelaunayWork", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1151,6 +5486,26 @@ rosetta_ref <- function(value = NULL) {
     `created_faces` = function(value) if (missing(value)) .Call(`.rs_677`, self) else invisible(.Call(`.rs_678`, self, value))
   )
 )
+#' Owned actual cavity removal, directed boundary and replacement for one site.
+#'
+#' removed/added may contain ghosts, identified by c=the original input count. boundary is ordered by canonical undirected endpoint key but retains the first directed occurrence; shared interior edges are cancelled. Actual face scans precede this event. No full before/after mesh snapshot or geometric replay is retained. All vectors own their entries and have no input lifetime dependency.
+#' @section Constructor:
+#' `DelaunayInsertion$new()`
+#' @section Fields:
+#' * `$input_index` (`integer`): Earliest original id of the inserted distinct coordinate.
+#' * `$faces_before` (`integer`): Live real plus ghost faces before this insertion.
+#' * `$faces_after` (`integer`): Live real plus ghost faces after this insertion.
+#' * `$removed` (`vector<Triangle>`): Exact actual conflicting faces, in scan order.
+#' * `$boundary` (`vector<list(integer, integer)>`): Actual directed nonshared cavity edges.
+#' * `$added` (`vector<Triangle>`): Actual replacement real/ghost faces, in boundary-key order.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::delaunay_trace({{0,0},{4,0},{4,4},{0,4},{2,2}});
+#' std::print("{} {} {}\n",t.steps.back().input_index,t.steps.back().removed.size(),t.steps.back().added.size()); // 4 2 4
+#' ```
+#' @seealso DelaunayTrace
+#' @md
+#'
 `DelaunayInsertion` <- R6::R6Class("DelaunayInsertion", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1168,6 +5523,28 @@ rosetta_ref <- function(value = NULL) {
     `added` = function(value) if (missing(value)) .Call(`.rs_690`, self) else invisible(.Call(`.rs_691`, self, value))
   )
 )
+#' Complete owned sites, earliest-identity mapping, finite mesh and actual events.
+#'
+#' Numeric coordinate equality coalesces duplicates and signed zeros. Representatives retain earliest input indices in input order. Seed is the first two distinct sites and first later noncollinear site; remaining distinct sites are inserted in input order. Strict positive incircle conflicts retain an existing diagonal on an exact cocircular tie; permutations may therefore select another valid mesh. Final finite triangles rotate their smallest id first and are lexicographically sorted, independent of map/hash traversal. All-collinear/fewer than three distinct sites have no seed, faces or insertion events. All fields own data; public edits are unchecked and independent calls share no mutable state.
+#' @section Constructor:
+#' `DelaunayTrace$new()`
+#' @section Fields:
+#' * `$points` (`vector<Point2D>`): Complete copied original coordinates, including duplicates.
+#' * `$representatives` (`vector<integer>`): Earliest unique ids in original input order.
+#' * `$representative_for_input` (`vector<integer>`): Earliest equal-coordinate id per original record.
+#' * `$has_seed` (`logical`): Whether three distinct noncollinear sites exist.
+#' * `$seed` (`Triangle`): Initial CCW finite seed, meaningful only when has_seed.
+#' * `$triangles` (`vector<Triangle>`): Complete finite final CCW triangles, using earliest original ids.
+#' * `$steps` (`vector<DelaunayInsertion>`): Actual non-seed cavity transitions, without replay.
+#' * `$work` (`DelaunayWork`): Checked actual operations from the executing kernel.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::delaunay_trace({{0,0},{1,0},{0,1},{0,0}});
+#' std::print("{} {} {}\n",t.representatives.size(),t.representative_for_input.back(),t.triangles.size()); // 3 0 1
+#' ```
+#' @seealso delaunay_trace(), delaunay_triangulation()
+#' @md
+#'
 `DelaunayTrace` <- R6::R6Class("DelaunayTrace", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1187,6 +5564,29 @@ rosetta_ref <- function(value = NULL) {
     `work` = function(value) if (missing(value)) .Call(`.rs_707`, self) else invisible(.Call(`.rs_708`, self, value))
   )
 )
+#' Coordinate-deduplicated topology counts and exact local empty-circle checks.
+#'
+#' Counts are independent of triangle order. Duplicate-coordinate ids are mapped to earliest originals. Triangle indices must be valid, distinct in coordinate, exactly CCW, with no duplicate face and at most two incident faces per edge. These checks do not certify global nonoverlap, hull coverage or planar embedding of an arbitrary supplied mesh. minimum_angle_degrees is a scaled floating diagnostic, NaN for no faces and potentially zero after extreme scale loss; it never controls topology. Empty-circle signs are exact for stored binary64.
+#' @section Constructor:
+#' `DelaunayAnalysis$new()`
+#' @section Fields:
+#' * `$distinct_points` (`integer`): Number of unique coordinates, including unused sites.
+#' * `$used_points` (`integer`): Unique sites incident to at least one supplied face.
+#' * `$triangles` (`integer`): Number of supplied distinct CCW faces.
+#' * `$edges` (`integer`): Distinct undirected coordinate edges.
+#' * `$boundary_edges` (`integer`): Edges incident to exactly one face.
+#' * `$circle_tests` (`integer`): Actual nonvertex distinct-site queries for every face.
+#' * `$interior_violations` (`integer`): Strictly positive exact incircle queries.
+#' * `$minimum_angle_degrees` (`numeric`): Approximate minimum interior angle, NaN for no faces.
+#' @section Examples (C++):
+#' ```cpp
+#' const std::vector<dm::geometry::Point2D> p{{0,0},{4,0},{4,4},{0,4},{2,2}};
+#' const auto a=dm::geometry::delaunay_analyze(p,dm::geometry::delaunay_triangulation(p));
+#' std::print("{} {} {} {}\n",a.distinct_points,a.triangles,a.boundary_edges,a.interior_violations); // 5 4 4 0
+#' ```
+#' @seealso delaunay_analyze()
+#' @md
+#'
 `DelaunayAnalysis` <- R6::R6Class("DelaunayAnalysis", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1206,6 +5606,21 @@ rosetta_ref <- function(value = NULL) {
     `minimum_angle_degrees` = function(value) if (missing(value)) .Call(`.rs_724`, self) else invisible(.Call(`.rs_725`, self, value))
   )
 )
+#' A 2D triangular finite-element mesh: shared vertex coordinates plus a triangle connectivity list.
+#'
+#' Reuses datamunge::geometry's Point2D and (Delaunay-oriented, always-counterclockwise) Triangle index type directly rather than duplicating them. `nodes`/`triangles` are public fields for direct C++ construction, but -- same rationale as Mesh1D::nodes -- are not exposed to language bindings; node_at()/ triangle_at()/num_nodes()/num_triangles() are the cross-language-safe accessors.
+#' @section Constructor:
+#' `Mesh2D$new()`
+#' @section Methods:
+#' * `$num_nodes()` -> `integer`
+#'
+#' * `$num_triangles()` -> `integer`
+#'
+#' * `$node_at(index)` -> `Point2D`
+#'
+#' * `$triangle_at(index)` -> `Triangle`
+#' @md
+#'
 `Mesh2D` <- R6::R6Class("Mesh2D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1219,6 +5634,17 @@ rosetta_ref <- function(value = NULL) {
     `triangle_at` = function(...) .Call(`.rs_730`, self, list(...))
   )
 )
+#' The nodal solution of a 2D FEM Poisson solve.
+#' @section Constructor:
+#' `FEM2DResult$new()`
+#' @section Methods:
+#' * `$size()` -> `integer`
+#'
+#' * `$node_at(index)` -> `Point2D`
+#'
+#' * `$value_at(index)` -> `numeric`
+#' @md
+#'
 `FEM2DResult` <- R6::R6Class("FEM2DResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1231,6 +5657,32 @@ rosetta_ref <- function(value = NULL) {
     `value_at` = function(...) .Call(`.rs_734`, self, list(...))
   )
 )
+#' Galerkin finite-element solver for the 2D Poisson equation -k * (u_xx + u_yy) = f(x, y) on a triangular mesh, using piecewise-linear (P1) Lagrange elements and Dirichlet boundary conditions only (this "basic" 2D solver does not offer FEM1D's Neumann/Robin options).
+#'
+#' Internally assembles a sparse stiffness system and solves it with the conjugate-gradient solver (datamunge::linalg::cg) -- the assembled matrices themselves are never exposed, matching this codebase's rule that linalg's sparse/dense matrix types are never SWIG-bound.
+#' @section Constructor:
+#' `FEM2D$new()`
+#' @section Static methods:
+#' * `FEM2D$solve(mesh, k, f, dirichlet_nodes, dirichlet_values)` -> `FEM2DResult`
+#'
+#'   Solves -k * Laplacian(u) = f with Dirichlet data u = dirichlet_values\[i\] at node
+#'   dirichlet_nodes\[i\] (every other node is a free unknown); k is the constant,
+#'   isotropic diffusion coefficient. Throws std::invalid_argument if
+#'   dirichlet_nodes.size() != dirichlet_values.size(), if any index in
+#'   dirichlet_nodes is out of range, or if every node is constrained (nothing to
+#'   solve for).
+#'
+#' * `FEM2D$solve_builtin(mesh, k, source, source_params, dirichlet_nodes, dirichlet_values)` -> `FEM2DResult`
+#'
+#'   Same as solve(), but f is one of a fixed set of named source terms instead of a
+#'   live user-supplied callback. source_params is interpreted positionally, with the
+#'   listed defaults used for any parameter past the end of source_params:
+#'   - "zero":     f(x, y) = 0.                                source_params unused.
+#'   - "constant": f(x, y) = c.                                \{c=1\}.
+#'   - "sine":     f(x, y) = amplitude*sin(fx*x)*sin(fy*y).    \{amplitude=1, fx=1, fy=1\}.
+#'     Throws std::invalid_argument for an unknown source name.
+#' @md
+#'
 `FEM2D` <- R6::R6Class("FEM2D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1244,6 +5696,14 @@ rosetta_ref <- function(value = NULL) {
 )
 `FEM2D`$`solve` <- function(...) .Call(`.rs_736`, NULL, list(...))
 `FEM2D`$`solve_builtin` <- function(...) .Call(`.rs_737`, NULL, list(...))
+#' The position/velocity estimate returned by AlphaBetaFilter at each step.
+#' @section Constructor:
+#' `AlphaBetaState$new()`
+#' @section Fields:
+#' * `$position` (`numeric`)
+#' * `$velocity` (`numeric`)
+#' @md
+#'
 `AlphaBetaState` <- R6::R6Class("AlphaBetaState", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1257,6 +5717,45 @@ rosetta_ref <- function(value = NULL) {
     `velocity` = function(value) if (missing(value)) .Call(`.rs_741`, self) else invisible(.Call(`.rs_742`, self, value))
   )
 )
+#' The constant-gain alpha-beta ("g-h") filter: a constant-velocity tracker that uses the SAME predict/correct structure as KalmanFilter, but with fixed gains alpha (position correction) and beta (velocity correction) instead of a covariance-driven Kalman gain -- it is exactly the steady-state behavior a 1D constant-velocity KalmanFilter converges to once its covariance stops changing, with the covariance bookkeeping stripped out entirely.
+#'
+#' Far cheaper per step (no matrices at all) at the cost of not adapting its gain to changing noise conditions the way a real Kalman filter does.
+#' @section Constructor:
+#' `AlphaBetaFilter$new(alpha, beta, dt, x0 = 0.0, v0 = 0.0)`
+#'
+#' * `alpha` (`numeric`)
+#' * `beta` (`numeric`)
+#' * `dt` (`numeric`)
+#' * `x0` (`numeric`)
+#' * `v0` (`numeric`)
+#' @section Methods:
+#' * `$update(z)`
+#'
+#'   Predicts one step ahead, then corrects toward measurement `z`: x_pred = x +
+#'   v*dt; residual = z - x_pred; x = x_pred + alpha*residual; v += (beta/dt)*residual.
+#'
+#' * `$position()` -> `numeric`
+#'
+#' * `$velocity()` -> `numeric`
+#'
+#' * `$alpha()` -> `numeric`
+#'
+#'   The position-correction gain alpha.
+#'   - Returns: The value passed to the constructor.
+#'
+#' * `$beta()` -> `numeric`
+#'
+#'   The velocity-correction gain beta.
+#'   - Returns: The value passed to the constructor.
+#'
+#' * `$dt()` -> `numeric`
+#'
+#'   The time step between measurements.
+#'   - Returns: The value passed to the constructor.
+#'
+#' * `$filter(measurements)` -> `vector<AlphaBetaState>`
+#' @md
+#'
 `AlphaBetaFilter` <- R6::R6Class("AlphaBetaFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1273,6 +5772,15 @@ rosetta_ref <- function(value = NULL) {
     `filter` = function(...) .Call(`.rs_750`, self, list(...))
   )
 )
+#' The position/velocity/acceleration estimate returned by AlphaBetaGammaFilter.
+#' @section Constructor:
+#' `AlphaBetaGammaState$new()`
+#' @section Fields:
+#' * `$position` (`numeric`)
+#' * `$velocity` (`numeric`)
+#' * `$acceleration` (`numeric`)
+#' @md
+#'
 `AlphaBetaGammaState` <- R6::R6Class("AlphaBetaGammaState", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1287,6 +5795,51 @@ rosetta_ref <- function(value = NULL) {
     `acceleration` = function(value) if (missing(value)) .Call(`.rs_756`, self) else invisible(.Call(`.rs_757`, self, value))
   )
 )
+#' The constant-gain alpha-beta-gamma filter: AlphaBetaFilter's constant-ACCELERATION generalization (a 3-state g-h-k filter), adding a third fixed gain gamma for the acceleration correction.
+#'
+#' Same fixed-gain-vs-adaptive-Kalman-gain tradeoff as AlphaBetaFilter, one derivative order higher.
+#' @section Constructor:
+#' `AlphaBetaGammaFilter$new(alpha, beta, gamma, dt, x0 = 0.0, v0 = 0.0, a0 = 0.0)`
+#'
+#' * `alpha` (`numeric`)
+#' * `beta` (`numeric`)
+#' * `gamma` (`numeric`)
+#' * `dt` (`numeric`)
+#' * `x0` (`numeric`)
+#' * `v0` (`numeric`)
+#' * `a0` (`numeric`)
+#' @section Methods:
+#' * `$update(z)`
+#'
+#' * `$position()` -> `numeric`
+#'
+#' * `$velocity()` -> `numeric`
+#'
+#' * `$acceleration()` -> `numeric`
+#'
+#' * `$alpha()` -> `numeric`
+#'
+#'   The position-correction gain alpha.
+#'   - Returns: The value passed to the constructor.
+#'
+#' * `$beta()` -> `numeric`
+#'
+#'   The velocity-correction gain beta.
+#'   - Returns: The value passed to the constructor.
+#'
+#' * `$gamma()` -> `numeric`
+#'
+#'   The acceleration-correction gain gamma.
+#'   - Returns: The value passed to the constructor.
+#'
+#' * `$dt()` -> `numeric`
+#'
+#'   The time step between measurements.
+#'   - Returns: The value passed to the constructor.
+#'
+#' * `$filter(measurements)` -> `vector<AlphaBetaGammaState>`
+#' @md
+#'
 `AlphaBetaGammaFilter` <- R6::R6Class("AlphaBetaGammaFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1305,6 +5858,14 @@ rosetta_ref <- function(value = NULL) {
     `filter` = function(...) .Call(`.rs_767`, self, list(...))
   )
 )
+#' One state estimate + its covariance -- the common return shape for every "give me the state at every timestep" result in this module (filtered sequences, smoothed sequences, ensemble-filter output, ...).
+#' @section Constructor:
+#' `KalmanState$new()`
+#' @section Fields:
+#' * `$x` (`vector<numeric>`)
+#' * `$P` (`vector<vector<numeric>>`)
+#' @md
+#'
 `KalmanState` <- R6::R6Class("KalmanState", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1318,6 +5879,16 @@ rosetta_ref <- function(value = NULL) {
     `P` = function(value) if (missing(value)) .Call(`.rs_771`, self) else invisible(.Call(`.rs_772`, self, value))
   )
 )
+#' The result of KalmanFilter::smooth(): the forward-pass (filtered, causal) estimates alongside the RTS backward-pass (smoothed, uses the whole sequence) estimates.
+#'
+#' smoothed.back() always exactly equals filtered.back() (the smoother has no future data at the final step); every earlier smoothed covariance is <= the corresponding filtered covariance (in the positive-semidefinite order) since it incorporates more information.
+#' @section Constructor:
+#' `SmoothResult$new()`
+#' @section Fields:
+#' * `$filtered` (`vector<KalmanState>`)
+#' * `$smoothed` (`vector<KalmanState>`)
+#' @md
+#'
 `SmoothResult` <- R6::R6Class("SmoothResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1331,6 +5902,50 @@ rosetta_ref <- function(value = NULL) {
     `smoothed` = function(value) if (missing(value)) .Call(`.rs_776`, self) else invisible(.Call(`.rs_777`, self, value))
   )
 )
+#' The standard discrete-time linear Kalman filter: x_k = F x_\{k-1\} + w_k, z_k = H x_k + v_k, w_k ~ N(0, Q), v_k ~ N(0, R) -- the minimum-mean-squared-error linear   estimator for exactly this model.
+#'
+#' Stateful: holds the current (x, P) estimate,   mutated in place by predict()/update(); F, H, Q, R are fixed for the filter's   lifetime (construct a new filter if they change over time).
+#' @section Constructor:
+#' `KalmanFilter$new(F, H, Q, R, x0, P0)`
+#'
+#' * `F` (`vector<vector<numeric>>`)
+#' * `H` (`vector<vector<numeric>>`)
+#' * `Q` (`vector<vector<numeric>>`)
+#' * `R` (`vector<vector<numeric>>`)
+#' * `x0` (`vector<numeric>`)
+#' * `P0` (`vector<vector<numeric>>`)
+#' @section Methods:
+#' * `$predict()`
+#'
+#'   The time-update (prediction) step: x = F x, P = F P F^T + Q.
+#'
+#' * `$update(z)`
+#'
+#'   The measurement-update (correction) step given observation `z`: the standard
+#'   innovation-covariance / Kalman-gain form (S = H P H^T + R, K = P H^T S^-1, x +=
+#'   K(z - Hx), P = (I - KH) P) -- not the numerically-hardened Joseph form, matching
+#'   this codebase's general preference for the textbook formula over a more robust
+#'   but more complex alternative.
+#'
+#' * `$state()` -> `vector<numeric>`
+#'
+#' * `$covariance()` -> `vector<vector<numeric>>`
+#'
+#' * `$filter(measurements)` -> `vector<KalmanState>`
+#'
+#'   Runs predict() then update(z) for every z in `measurements`, in order, mutating
+#'   this filter's running state -- the ordinary causal (online) filtered estimate at
+#'   every timestep.
+#'
+#' * `$smooth(measurements)` -> `SmoothResult`
+#'
+#'   filter() followed by an RTS (Rauch-Tung-Striebel) backward smoothing pass, which
+#'   uses the ENTIRE sequence (not just data up to each point) to refine every
+#'   estimate -- always at least as accurate as the filtered estimate, at the cost of
+#'   needing the full sequence in advance (not usable online). Leaves this filter's
+#'   running (x, P) at its post-filter state, same as filter() would.
+#' @md
+#'
 `KalmanFilter` <- R6::R6Class("KalmanFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1346,6 +5961,17 @@ rosetta_ref <- function(value = NULL) {
     `smooth` = function(...) .Call(`.rs_784`, self, list(...))
   )
 )
+#' A vector-valued function R^n -> R^m: the state-transition or observation model supplied to this module's nonlinear filters (ExtendedKalmanFilter, UnscentedKalmanFilter, EnsembleKalmanFilter, ParticleFilter).
+#'
+#' Director-enabled (subclass directly in C++, or via SWIG directors in any bound language) so this module never needs to know the concrete form of the caller's dynamics.
+#' @section Constructor:
+#' `VectorFunction$new()`
+#' @section Methods:
+#' * `$evaluate(x)` -> `vector<numeric>`
+#'
+#'   Evaluates the function at `x`.
+#' @md
+#'
 `VectorFunction` <- R6::R6Class("VectorFunction", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1356,6 +5982,43 @@ rosetta_ref <- function(value = NULL) {
     `evaluate` = function(...) .Call(`.rs_786`, self, list(...))
   )
 )
+#' The (stochastic, "perturbed observations") Ensemble Kalman Filter: represents the state distribution as a finite ensemble of sample state vectors rather than an explicit mean/covariance, propagating each member through the true nonlinear f (plus sampled process noise) and estimating the covariances the Kalman update needs from the ensemble's own sample statistics.
+#'
+#' Like UnscentedKalmanFilter, needs no Jacobian; unlike it, scales to very high-dimensional states (the classical use case this filter was designed for -- e.g. geophysical data assimilation with millions of state variables) since its cost scales with ensemble size, not state dimension squared/cubed. Statistical, not exact: converges toward the optimal (linear-Gaussian case: KalmanFilter's) estimate as `ensemble_size` grows, with Monte Carlo sampling noise at any finite size.
+#' @section Constructor:
+#' `EnsembleKalmanFilter$new(f, h, Q, R, x0, P0, ensemble_size = 100, seed = 42)`
+#'
+#' * `f` (`VectorFunction`)
+#' * `h` (`VectorFunction`)
+#' * `Q` (`vector<vector<numeric>>`)
+#' * `R` (`vector<vector<numeric>>`)
+#' * `x0` (`vector<numeric>`)
+#' * `P0` (`vector<vector<numeric>>`)
+#' * `ensemble_size` (`integer`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$predict()`
+#'
+#'   Propagates every ensemble member through the nonlinear f, each perturbed by an
+#'   independently-sampled draw from N(0, Q).
+#'
+#' * `$update(z)`
+#'
+#'   The stochastic EnKF update (Evensen/Burgers): estimates the state-observation
+#'   cross-covariance and innovation covariance from the ensemble's own sample
+#'   statistics, then updates each member with an INDEPENDENTLY perturbed copy of `z`
+#'   (adding a fresh N(0, R) draw to each member's correction) -- perturbing the
+#'   observation per member, rather than applying one shared correction to all of
+#'   them, is what keeps the ensemble's spread statistically consistent after the
+#'   update instead of collapsing it.
+#'
+#' * `$state()` -> `vector<numeric>`
+#'
+#' * `$covariance()` -> `vector<vector<numeric>>`
+#'
+#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' @md
+#'
 `EnsembleKalmanFilter` <- R6::R6Class("EnsembleKalmanFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1370,6 +6033,31 @@ rosetta_ref <- function(value = NULL) {
     `filter` = function(...) .Call(`.rs_792`, self, list(...))
   )
 )
+#' The Extended Kalman Filter: the standard first-order generalization of KalmanFilter to a nonlinear model x_k = f(x_\{k-1\}) + w_k, z_k = h(x_k) + v_k -- linearizes f and h (via numerical Jacobians, see detail::numerical_jacobian()) about the current state estimate at every step and otherwise runs the exact same predict/update algebra as the linear filter.
+#'
+#' Exactly reproduces KalmanFilter's result when `f` and `h` happen to be linear (their Jacobian is then the same constant matrix everywhere).
+#' @section Constructor:
+#' `ExtendedKalmanFilter$new(f, h, Q, R, x0, P0, jacobian_step = 1.0000000000000001E-5)`
+#'
+#' * `f` (`VectorFunction`)
+#' * `h` (`VectorFunction`)
+#' * `Q` (`vector<vector<numeric>>`)
+#' * `R` (`vector<vector<numeric>>`)
+#' * `x0` (`vector<numeric>`)
+#' * `P0` (`vector<vector<numeric>>`)
+#' * `jacobian_step` (`numeric`)
+#' @section Methods:
+#' * `$predict()`
+#'
+#' * `$update(z)`
+#'
+#' * `$state()` -> `vector<numeric>`
+#'
+#' * `$covariance()` -> `vector<vector<numeric>>`
+#'
+#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' @md
+#'
 `ExtendedKalmanFilter` <- R6::R6Class("ExtendedKalmanFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1384,6 +6072,32 @@ rosetta_ref <- function(value = NULL) {
     `filter` = function(...) .Call(`.rs_798`, self, list(...))
   )
 )
+#' The Information Filter: the algebraic dual of KalmanFilter, tracking the information matrix Y = P^-1 and information vector y = Y x instead of (x, P) directly.
+#'
+#' Its measurement update is purely ADDITIVE (Y += H^T R^-1 H, y += H^T R^-1 z) -- the classical advantage of this form is that fusing several independent sensors, or distributing a filter across nodes that each see part of the measurement stream, is just summing information contributions, with no matrix inversion per sensor. The time-update (predict) step has no equally simple additive form for general F, so this implementation converts to covariance form, applies the ordinary KalmanFilter-style predict, and converts back -- mathematically exact, and produces IDENTICAL results to KalmanFilter given the same model (the two are the same estimator in a different parameterization, not an approximation of each other).
+#' @section Constructor:
+#' `InformationFilter$new(F, H, Q, R, x0, P0)`
+#'
+#' * `F` (`vector<vector<numeric>>`)
+#' * `H` (`vector<vector<numeric>>`)
+#' * `Q` (`vector<vector<numeric>>`)
+#' * `R` (`vector<vector<numeric>>`)
+#' * `x0` (`vector<numeric>`)
+#' * `P0` (`vector<vector<numeric>>`)
+#' @section Methods:
+#' * `$predict()`
+#'
+#' * `$update(z)`
+#'
+#'   The additive information-form update: Y += H^T R^-1 H, y += H^T R^-1 z.
+#'
+#' * `$state()` -> `vector<numeric>`
+#'
+#' * `$covariance()` -> `vector<vector<numeric>>`
+#'
+#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' @md
+#'
 `InformationFilter` <- R6::R6Class("InformationFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1398,6 +6112,44 @@ rosetta_ref <- function(value = NULL) {
     `filter` = function(...) .Call(`.rs_804`, self, list(...))
   )
 )
+#' A bootstrap particle filter (Sequential Importance Resampling): the fully general, non-Gaussian generalization of the Kalman family -- represents the state's entire posterior distribution as a weighted swarm of sample points rather than assuming any particular family of distribution (Gaussian, etc.), so it remains correct even for strongly non-Gaussian or multimodal posteriors where every other filter in this module (which all assume approximately-Gaussian beliefs) can fail.
+#'
+#' Costs scale with particle count and can need many particles in high dimensions ("the curse of dimensionality" for particle filters) -- EnsembleKalmanFilter is usually preferred for high-dimensional problems where the Gaussian assumption is acceptable.
+#' @section Constructor:
+#' `ParticleFilter$new(f, h, Q, R, x0, P0, num_particles = 200, seed = 42)`
+#'
+#' * `f` (`VectorFunction`)
+#' * `h` (`VectorFunction`)
+#' * `Q` (`vector<vector<numeric>>`)
+#' * `R` (`vector<vector<numeric>>`)
+#' * `x0` (`vector<numeric>`)
+#' * `P0` (`vector<vector<numeric>>`)
+#' * `num_particles` (`integer`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$predict()`
+#'
+#'   Propagates every particle through the nonlinear f, each perturbed by an
+#'   independently-sampled draw from N(0, Q). Weights are untouched (the transition
+#'   density cancels out of the importance weight for this proposal, the standard
+#'   bootstrap-filter simplification).
+#'
+#' * `$update(z)`
+#'
+#'   Reweights every particle by its Gaussian (N(h(x), R)) observation likelihood
+#'   given `z`, normalizes the weights, then resamples the whole swarm from the
+#'   resulting weighted distribution (multinomial resampling, done unconditionally
+#'   every step -- simpler than the adaptive "resample only when the effective sample
+#'   size drops" scheme real-time systems often use, at the cost of extra Monte Carlo
+#'   noise from resampling more often than strictly necessary).
+#'
+#' * `$state()` -> `vector<numeric>`
+#'
+#' * `$covariance()` -> `vector<vector<numeric>>`
+#'
+#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' @md
+#'
 `ParticleFilter` <- R6::R6Class("ParticleFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1412,6 +6164,33 @@ rosetta_ref <- function(value = NULL) {
     `filter` = function(...) .Call(`.rs_810`, self, list(...))
   )
 )
+#' The Unscented Kalman Filter: propagates a small deterministic set of "sigma points" through the true nonlinear f/h (rather than linearizing f/h itself, as ExtendedKalmanFilter does), then reconstructs the predicted mean/covariance from the propagated points' weighted statistics.
+#'
+#' Captures nonlinearity to (at least) second order without ever needing a Jacobian -- generally more accurate than EKF for strongly nonlinear models, at the cost of 2n+1 function evaluations per step instead of one. Exactly reproduces KalmanFilter's result when `f` and `h` are linear.
+#' @section Constructor:
+#' `UnscentedKalmanFilter$new(f, h, Q, R, x0, P0, alpha = 0.001, beta = 2.0, kappa = 0.0)`
+#'
+#' * `f` (`VectorFunction`)
+#' * `h` (`VectorFunction`)
+#' * `Q` (`vector<vector<numeric>>`)
+#' * `R` (`vector<vector<numeric>>`)
+#' * `x0` (`vector<numeric>`)
+#' * `P0` (`vector<vector<numeric>>`)
+#' * `alpha` (`numeric`)
+#' * `beta` (`numeric`)
+#' * `kappa` (`numeric`)
+#' @section Methods:
+#' * `$predict()`
+#'
+#' * `$update(z)`
+#'
+#' * `$state()` -> `vector<numeric>`
+#'
+#' * `$covariance()` -> `vector<vector<numeric>>`
+#'
+#' * `$filter(measurements)` -> `vector<KalmanState>`
+#' @md
+#'
 `UnscentedKalmanFilter` <- R6::R6Class("UnscentedKalmanFilter", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1426,6 +6205,14 @@ rosetta_ref <- function(value = NULL) {
     `filter` = function(...) .Call(`.rs_816`, self, list(...))
   )
 )
+#' C++ class `datamunge::geometry::BoundingBox`
+#' @section Constructor:
+#' `BoundingBox$new()`
+#' @section Fields:
+#' * `$min` (`Point2D`)
+#' * `$max` (`Point2D`)
+#' @md
+#'
 `BoundingBox` <- R6::R6Class("BoundingBox", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1439,6 +6226,23 @@ rosetta_ref <- function(value = NULL) {
     `max` = function(value) if (missing(value)) .Call(`.rs_820`, self) else invisible(.Call(`.rs_821`, self, value))
   )
 )
+#' Owned closest-point coordinate copies and legacy finite-double distance.
+#'
+#' Original field order/types are retained. Equal measured distances keep the earliest original index pair in the scan. Default storage alone is not a valid search result. No input references or global mutable state are retained.
+#' @section Constructor:
+#' `ClosestPairResult$new()`
+#' @section Fields:
+#' * `$a` (`Point2D`): Owned coordinate copy of the lower-index selected input record.
+#' * `$b` (`Point2D`): Owned coordinate copy of the higher-index selected input record.
+#' * `$distance` (`numeric`): Checked finite-double conversion of the selected widened distance.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::geometry::closest_pair({{0,0},{3,4}});
+#' std::print("{}\n",r.distance); // 5
+#' ```
+#' @seealso closest_pair(), ClosestPairSelection
+#' @md
+#'
 `ClosestPairResult` <- R6::R6Class("ClosestPairResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1453,6 +6257,22 @@ rosetta_ref <- function(value = NULL) {
     `distance` = function(value) if (missing(value)) .Call(`.rs_827`, self) else invisible(.Call(`.rs_828`, self, value))
   )
 )
+#' Limits for complete input storage and actual optional hull trace events.
+#'
+#' Full finite validation precedes max_points preflight; max_events is an online count of actual test/pop/push records, ignored by untraced calls. Zero disables either cap. No partial result escapes a failed cap.
+#' @section Constructor:
+#' `ConvexHullOptions$new()`
+#' @section Fields:
+#' * `$max_points` (`integer`): Complete original-record cap, including duplicates.
+#' * `$max_events` (`integer`): Actual trace-record cap.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::geometry::ConvexHullOptions o;
+#' std::cout << o.max_points << ' ' << o.max_events; // 1000000 1000000
+#' ```
+#' @seealso convex_hull_trace()
+#' @md
+#'
 `ConvexHullOptions` <- R6::R6Class("ConvexHullOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1466,6 +6286,22 @@ rosetta_ref <- function(value = NULL) {
     `max_events` = function(value) if (missing(value)) .Call(`.rs_832`, self) else invisible(.Call(`.rs_833`, self, value))
   )
 )
+#' Owned distinct coordinate with the earliest matching input identity.
+#'
+#' Exact equality coalesces duplicates and signed zeros; sorting ties by original index retains the earliest coordinate representation. Output owns the point.
+#' @section Constructor:
+#' `HullIndexedPoint$new()`
+#' @section Fields:
+#' * `$point` (`Point2D`): Copied original coordinate.
+#' * `$input_index` (`integer`): Earliest matching original record index.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::convex_hull_trace({{1,0},{0,0},{1,0}});
+#' std::cout << t.sorted[1].input_index; // 0
+#' ```
+#' @seealso ConvexHullTrace
+#' @md
+#'
 `HullIndexedPoint` <- R6::R6Class("HullIndexedPoint", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1479,6 +6315,28 @@ rosetta_ref <- function(value = NULL) {
     `input_index` = function(value) if (missing(value)) .Call(`.rs_837`, self) else invisible(.Call(`.rs_838`, self, value))
   )
 )
+#' Actual sorting, deduplication and two-scan work, with checked counters.
+#'
+#' Comparison counts depend on the standard-library sort and original order. For at least two distinct points each pass pushes each point once. Tests count exact orientation requests; every nonpositive test causes one pop. max_stack is the greatest length of either separate chain, not their sum.
+#' @section Constructor:
+#' `ConvexHullWork$new()`
+#' @section Fields:
+#' * `$input_points` (`integer`): Fully validated original point count.
+#' * `$distinct_points` (`integer`): Unique coordinate count after sorting.
+#' * `$sort_comparisons` (`integer`): Actual lexicographic record comparisons.
+#' * `$duplicate_comparisons` (`integer`): Actual adjacent-equality comparisons.
+#' * `$orientation_tests` (`integer`): Exact determinant-sign calls during scans.
+#' * `$pushes` (`integer`): Actual separate-chain pushes.
+#' * `$pops` (`integer`): Actual non-left-turn removals.
+#' * `$max_stack` (`integer`): Maximum single-chain length reached.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto a=dm::geometry::convex_hull_analyze({{0,0},{1,0},{0,1}});
+#' std::cout << a.work.distinct_points << ' ' << a.work.pushes; // 3 6
+#' ```
+#' @seealso ConvexHullAnalysis
+#' @md
+#'
 `ConvexHullWork` <- R6::R6Class("ConvexHullWork", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1498,6 +6356,28 @@ rosetta_ref <- function(value = NULL) {
     `max_stack` = function(value) if (missing(value)) .Call(`.rs_854`, self) else invisible(.Call(`.rs_855`, self, value))
   )
 )
+#' Actual scan event, referring to indices in the trace's sorted unique points.
+#'
+#' candidate is the pending point; point is the pushed/popped point, or candidate for a test. a,b,turn are meaningful only for test events and otherwise zero. stack_size is the actual size after the event (unchanged for tests). Together these compact edits describe every stack state without quadratic snapshots.
+#' @section Constructor:
+#' `HullEvent$new()`
+#' @section Fields:
+#' * `$pass` (`character (HullPass)`): Producing scan direction.
+#' * `$action` (`character (HullAction)`): Actual test, pop or push.
+#' * `$candidate` (`integer`): Pending sorted unique point.
+#' * `$point` (`integer`): Actual edited point, or candidate for a test.
+#' * `$a` (`integer`): Test's next-to-top point; otherwise zero placeholder.
+#' * `$b` (`integer`): Test's top point; otherwise zero placeholder.
+#' * `$turn` (`integer`): Exact test sign -1,0,+1; otherwise zero placeholder.
+#' * `$stack_size` (`integer`): Size immediately after this event.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});
+#' std::cout << t.events[0].stack_size; // 1
+#' ```
+#' @seealso ConvexHullTrace, HullPass, HullAction
+#' @md
+#'
 `HullEvent` <- R6::R6Class("HullEvent", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1517,6 +6397,23 @@ rosetta_ref <- function(value = NULL) {
     `stack_size` = function(value) if (missing(value)) .Call(`.rs_871`, self) else invisible(.Call(`.rs_872`, self, value))
   )
 )
+#' Owned strict hull, earliest original identities and actual work without history.
+#'
+#' Vertices start at the lexicographic minimum and run counterclockwise, without repeating the first. Collinear edge points are omitted. Empty gives no points; one distinct point gives one; a collinear set gives its sorted two endpoints. Identity vector aligns one-for-one with hull vertices.
+#' @section Constructor:
+#' `ConvexHullAnalysis$new()`
+#' @section Fields:
+#' * `$hull` (`vector<Point2D>`): Owned unclosed strict hull.
+#' * `$input_indices` (`vector<integer>`): Earliest original identities in hull order.
+#' * `$work` (`ConvexHullWork`): Actual producing operations.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto a=dm::geometry::convex_hull_analyze({{1,0},{0,0},{0,1}});
+#' std::cout << a.hull.size() << ' ' << a.input_indices[0]; // 3 1
+#' ```
+#' @seealso convex_hull_analyze()
+#' @md
+#'
 `ConvexHullAnalysis` <- R6::R6Class("ConvexHullAnalysis", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1531,6 +6428,25 @@ rosetta_ref <- function(value = NULL) {
     `work` = function(value) if (missing(value)) .Call(`.rs_878`, self) else invisible(.Call(`.rs_879`, self, value))
   )
 )
+#' Owned actual sorted identities, compact stack edits and completed scan chains.
+#'
+#' lower/upper contain indices into sorted and include their endpoints. Inputs with fewer than two distinct points take no scans and have empty chains/events. Trace capture performs no extra sorting or orientation replay. All storage is independent of the caller, result and other snapshots; O(n) extra space.
+#' @section Constructor:
+#' `ConvexHullTrace$new()`
+#' @section Fields:
+#' * `$analysis` (`ConvexHullAnalysis`): Actual hull, identities and work.
+#' * `$sorted` (`vector<HullIndexedPoint>`): Actual sorted distinct input records.
+#' * `$events` (`vector<HullEvent>`): Actual test/pop/push edits.
+#' * `$lower` (`vector<integer>`): Actual final lower stack.
+#' * `$upper` (`vector<integer>`): Actual final upper stack.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::convex_hull_trace({{0,0},{1,0}});
+#' std::cout << t.lower.size() << ' ' << t.upper.size(); // 2 2
+#' ```
+#' @seealso convex_hull_trace()
+#' @md
+#'
 `ConvexHullTrace` <- R6::R6Class("ConvexHullTrace", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1547,6 +6463,20 @@ rosetta_ref <- function(value = NULL) {
     `upper` = function(value) if (missing(value)) .Call(`.rs_889`, self) else invisible(.Call(`.rs_890`, self, value))
   )
 )
+#' Base class for user-defined callbacks invoked by datamunge functions.
+#'
+#' Derive from this class and override `call()` to supply custom behavior
+#' wherever a `Callback*` is accepted.
+#' @section Constructor:
+#' `Callback$new()`
+#' @section Methods:
+#' * `$call(x)` -> `numeric`
+#'
+#'   Applies the callback to a single value.
+#'   - `x`: Input value.
+#'   - Returns: Transformed value; the default implementation returns `x` unchanged.
+#' @md
+#'
 `Callback` <- R6::R6Class("Callback", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1557,6 +6487,73 @@ rosetta_ref <- function(value = NULL) {
     `call` = function(...) .Call(`.rs_892`, self, list(...))
   )
 )
+#' A plotting color: 8-bit red, green, and blue channels plus an alpha opacity, the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.
+#'
+#' Brace-initialize numeric channels: `dm::RGB{255, 0, 0}` is opaque red and
+#' `dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the
+#' library's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep
+#' them in \[0, 255\] (both the raster and SVG renderers clamp out-of-range channels), and
+#' keep alpha in \[0, 1\] (both renderers clamp it). Every plotting API takes RGBA (the same type as RGB) by value,
+#' and `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().
+#' Color strings convert implicitly: names are case-insensitive black, white, red, green,
+#' blue, yellow, cyan, magenta, gray/grey and transparent; hex accepts #RRGGBB and
+#' \#RRGGBBAA, with alpha last and scaled to \[0, 1\]. Malformed text throws before a
+#' plot is changed. RGB and RGBA remain the same type, preserving existing palettes
+#' and the binary layout of numeric colors. Parsing owns no reference to the string.
+#' @section Constructor:
+#' `RGB$new()`
+#'
+#' Construct the default opaque dark-slate ink color.
+#'
+#' `RGB$new(red, green, blue, opacity = 1.0)`
+#'
+#' Construct numeric RGB channels and an optional normalized alpha.
+#' Channels and alpha are retained; renderers clamp them when drawing.
+#'
+#' `RGB$new(red)`
+#'
+#' Preserve direct initialization with a red channel and default remaining channels.
+#' Explicit so a number cannot accidentally become a color argument.
+#'
+#' `RGB$new(red, green)`
+#'
+#' Preserve direct initialization with red/green and default blue/alpha.
+#'
+#' `RGB$new(color)`
+#'
+#' Implicitly parse a color name, #RRGGBB or #RRGGBBAA string.
+#' Names and hexadecimal digits are case-insensitive. Hex alpha is the final
+#' byte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named
+#' green is (0, 128, 0); transparent is black with alpha zero. The input is copied
+#' while parsing and is never borrowed by a plot or palette.
+#'
+#' Accept a string literal with the same parsing rules as the string constructor.
+#'
+#' * `red` (`integer`): Red channel, conventionally 0-255.
+#' * `green` (`integer`): Green channel, conventionally 0-255.
+#' * `blue` (`integer`): Blue channel, conventionally 0-255.
+#' * `opacity` (`numeric`): Alpha in \[0, 1\], default 1 (opaque).
+#' * `color` (`character`): Color text; supported names are listed in the class description.
+#' @section Fields:
+#' * `$r` (`integer`): Red channel, 0-255 (default 31).
+#' * `$g` (`integer`): Green channel, 0-255 (default 41).
+#' * `$b` (`integer`): Blue channel, 0-255 (default 55).
+#' * `$alpha` (`numeric`): Opacity in \[0, 1\]; 1 (the default) is opaque, 0 is invisible.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto gold = dm::RGB{255, 215, 0};
+#' const auto glass = dm::RGBA{37, 99, 235, 0.3};  // translucent blue
+#' const dm::RGB ink;                              // {31, 41, 55}, opaque
+#' std::print("{} {} {}\n", gold.r, glass.alpha, ink.r);  // 255 0.3 31
+#' const auto palette = dm::c(gold, glass);       // a dm::Vector<dm::RGB>
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: For empty text, unknown names or malformed hex.
+#'
+#' * `std::invalid_argument`: For null, empty or malformed text.
+#' @seealso dm::RGBA, dm::Plot::set_col(), dm::points()
+#' @md
+#'
 `RGB` <- R6::R6Class("RGB", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1572,6 +6569,37 @@ rosetta_ref <- function(value = NULL) {
     `alpha` = function(value) if (missing(value)) .Call(`.rs_900`, self) else invisible(.Call(`.rs_901`, self, value))
   )
 )
+#' One drawn layer of a plot (points, a line, bars, a box, a polygon, a label, or segments), as stored by RPlot's layer verbs and read back through Plot::series().
+#'
+#' A plain aggregate holding data coordinates and styling. Which fields matter depends on
+#' kind; each Kind value documents how it reads x, y, and the other fields. Layers are drawn
+#' in insertion order, after the reference lines, and every layer's coordinates widen the
+#' automatic axis ranges (bars also pull the y range down or up to 0). A nonempty label puts
+#' the layer in the automatic legend unless it is a Text layer. User code normally creates
+#' layers through RPlot verbs (points(), lines(), bars(), ...) and only reads this struct.
+#' @section Constructor:
+#' `DataSeries$new()`
+#' @section Fields:
+#' * `$kind` (`character (Kind)`): How the layer is drawn (default Line).
+#' * `$x` (`vector<numeric>`): Horizontal data coordinates; meaning depends on kind.
+#' * `$y` (`vector<numeric>`): Vertical data coordinates; meaning depends on kind.
+#' * `$label` (`character`): Legend text (or the drawn text for Kind::Text); empty omits it.
+#' * `$color` (`RGB`): Layer color, including alpha (default RGBA\{\}, dark slate).
+#' * `$stroke_width` (`numeric`): Line, Segment, and outline-Polygon width in pixels (default 2).
+#' * `$marker_size` (`numeric`): Scatter marker radius, or Text font size, in pixels (default 4).
+#' * `$bar_width` (`numeric`): Bar or Box width in data units (default 0.8).
+#' * `$filled` (`logical`): Polygon only: true fills it, false draws its outline (default false).
+#' * `$point_colors` (`vector<RGB>`): Optional scatter palette, recycled in input order; empty uses color for every point.
+#' @section Examples (C++):
+#' ```cpp
+#' auto plt = dm::Plot().points(dm::c(1.0, 2.0), dm::c(3.0, 4.0), "pts");
+#' const dm::graphics::DataSeries& s = plt.series()[0];
+#' std::print("{} {} {} {}\n", s.kind == dm::graphics::DataSeries::Kind::Scatter, s.x.size(),
+#'            s.label, s.marker_size);  // true 2 pts 4
+#' ```
+#' @seealso Plot::series(), RPlot::points(), RPlot::lines()
+#' @md
+#'
 `DataSeries` <- R6::R6Class("DataSeries", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1593,6 +6621,31 @@ rosetta_ref <- function(value = NULL) {
     `point_colors` = function(value) if (missing(value)) .Call(`.rs_921`, self) else invisible(.Call(`.rs_922`, self, value))
   )
 )
+#' A straight reference line across the whole plotting area, as drawn by R's `abline(a, b)`, `abline(h =)` and `abline(v =)`.
+#'
+#' A sloped or horizontal line is y = value + slope * x evaluated at both ends of the visible
+#' x range; a vertical line sits at x = value and ignores slope. Reference lines are drawn
+#' beneath every DataSeries. Vertical lines widen the automatic x range to include them;
+#' sloped and horizontal lines never change the axis ranges. Created by RPlot::abline(),
+#' abline_h(), abline_v(), and qqline(); read back through Plot::reference_lines().
+#' @section Constructor:
+#' `ABLine$new()`
+#' @section Fields:
+#' * `$vertical` (`logical`): True for a vertical line at x = value (default false).
+#' * `$value` (`numeric`): y-intercept for a sloped/horizontal line; x-position for a vertical line
+#' * `$slope` (`numeric`): Change in y per unit x; ignored when vertical (default 0).
+#' * `$color` (`RGB`): Line color (default opaque black).
+#' * `$stroke_width` (`numeric`): Line width in pixels (default 1).
+#' @section Examples (C++):
+#' ```cpp
+#' auto plt = dm::Plot(dm::c(0.0, 1.0), dm::c(0.0, 2.0)).abline(0.5, 2.0).abline_v(0.25);
+#' const auto& lines = plt.reference_lines();
+#' std::print("{} {} {}\n", lines[0].slope, lines[1].vertical, lines[1].value);  // 2 true 0.25
+#' ```
+#' @references - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+#' @seealso RPlot::abline(), Plot::reference_lines()
+#' @md
+#'
 `ABLine` <- R6::R6Class("ABLine", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1609,6 +6662,25 @@ rosetta_ref <- function(value = NULL) {
     `stroke_width` = function(value) if (missing(value)) .Call(`.rs_932`, self) else invisible(.Call(`.rs_933`, self, value))
   )
 )
+#' One manually specified legend row, as drawn by R's `legend()`.
+#'
+#' When a plot has any manual entries, they replace the default auto-generated
+#' (one-row-per-labeled-series) legend. Each row is a color swatch followed by the label,
+#' stacked from the top-right corner of the plotting area in insertion order.
+#' @section Constructor:
+#' `LegendEntry$new()`
+#' @section Fields:
+#' * `$label` (`character`): Row text.
+#' * `$color` (`RGB`): Swatch color, including alpha (default opaque black).
+#' @section Examples (C++):
+#' ```cpp
+#' auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).legend({"data"}, {dm::RGB{0, 0, 255}});
+#' std::print("{} {}\n", plt.legend_entries()[0].label, plt.legend_entries()[0].color.b);  // data 255
+#' ```
+#' @references - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
+#' @seealso RPlot::legend(), dm::legend(), Plot::legend_entries()
+#' @md
+#'
 `LegendEntry` <- R6::R6Class("LegendEntry", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1622,6 +6694,356 @@ rosetta_ref <- function(value = NULL) {
     `color` = function(value) if (missing(value)) .Call(`.rs_937`, self) else invisible(.Call(`.rs_938`, self, value))
   )
 )
+#' Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.
+#'
+#' User code works with the derived RPlot (spelled `dm::Plot`), whose setters return `RPlot&`;
+#' this base holds the data, the read-only accessors, and the output functions to_svg(),
+#' save(), and show(). The base-class setters below return `Plot&` and are what RPlot's
+#' same-named setters forward to; call the RPlot forms in user code so chains keep the RPlot
+#' type. A `const Plot&` is also what RLayout::add() accepts and RLayout::panel() returns.
+#'
+#' Every output function renders from the stored state, so it throws std::runtime_error for a
+#' plot with no data series (reference lines and legend rows alone are not enough) or a canvas
+#' too small for its margins. Plots are copyable values with no shared state; distinct plots may
+#' be used from different threads, but one plot must not be mutated while it is rendered.
+#' @section Constructor:
+#' `Plot$new()`
+#' @section Methods:
+#' * `$size(width, height)` -> `Plot`
+#'
+#'   Base-class form of RPlot::size(): sets the canvas size in pixels (default 960x640).
+#'   - `width`: Canvas width in pixels.
+#'   - `height`: Canvas height in pixels.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$title(value)` -> `Plot`
+#'
+#'   Base-class form of RPlot::title(): sets the main heading; empty removes it.
+#'   - `value`: Heading text (moved into the plot).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$subtitle(value)` -> `Plot`
+#'
+#'   Sets an optional subtitle displayed beneath the title; owns the supplied text.
+#'   - `value`: Subtitle text; empty removes it.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_label(value)` -> `Plot`
+#'
+#'   Base-class form of RPlot::x_label(): sets the horizontal-axis label.
+#'   - `value`: Label text (moved into the plot).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_label(value)` -> `Plot`
+#'
+#'   Base-class form of RPlot::y_label(): sets the vertical-axis label.
+#'   - `value`: Label text (moved into the plot).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$background(color)` -> `Plot`
+#'
+#'   Base-class form of RPlot::background(): sets the canvas fill color.
+#'   - `color`: Fill for the whole canvas (default white).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$axis_color(color)` -> `Plot`
+#'
+#'   Base-class form of RPlot::axis_color(): sets the axis-line and text color.
+#'   - `color`: Color for axis lines, ticks, axis labels, title, and subtitle.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$grid_color(color)` -> `Plot`
+#'
+#'   Base-class form of RPlot::grid_color(): sets the grid-line color.
+#'   - `color`: Grid-line color (default light gray `{229, 231, 235}`).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$show_grid(enabled = TRUE)` -> `Plot`
+#'
+#'   Base-class form of RPlot::show_grid(): turns the background grid on or off.
+#'   - `enabled`: True (the default) draws the grid.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_limits(min_x, max_x)` -> `Plot`
+#'
+#'   Base-class form of RPlot::x_limits(): fixes the visible x range.
+#'   - `min_x`: Left edge of the plotting area, in data units.
+#'   - `max_x`: Right edge; must be greater than `min_x`.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_limits(min_y, max_y)` -> `Plot`
+#'
+#'   Base-class form of RPlot::y_limits(): fixes the visible y range.
+#'   - `min_y`: Bottom edge of the plotting area, in data units.
+#'   - `max_y`: Top edge; must be greater than `min_y`.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$hide_axes(enabled = TRUE)` -> `Plot`
+#'
+#'   Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.
+#'   - `enabled`: True (the default) hides them.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_tick_labels(labels)` -> `Plot`
+#'
+#'   Base-class form of RPlot::x_tick_labels(): labels the x axis at 0, 1, 2, ...
+#'   - `labels`: Tick texts; empty restores the numeric ticks.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_ticks(positions, labels)` -> `Plot`
+#'
+#'   Replaces the numeric x ticks with `labels` drawn at data positions `positions`.
+#'   - `positions`: x data coordinates of the ticks.
+#'   - `labels`: Tick texts, one per position.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_tick_labels(labels)` -> `Plot`
+#'
+#'   Replaces the numeric y ticks with `labels` drawn at y = 0, 1, 2, ...
+#'   - `labels`: Tick texts; empty restores the numeric ticks.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_ticks(positions, labels)` -> `Plot`
+#'
+#'   Replaces the numeric y ticks with `labels` drawn at data positions `positions`.
+#'   - `positions`: y data coordinates of the ticks.
+#'   - `labels`: Tick texts, one per position.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$margins(left, right, top, bottom)` -> `Plot`
+#'
+#'   Overrides the automatic outer margins (in pixels) around the plotting area, e.g. for
+#'   small multi-panel tiles. The defaults leave room for a title, axis labels, and ticks;
+#'   tight margins suit panels whose title and axis labels are empty.
+#'   - `left`: Left margin in pixels (default 90).
+#'   - `right`: Right margin in pixels (default 24).
+#'   - `top`: Top margin in pixels (default 72, plus 24 when a subtitle is set).
+#'   - `bottom`: Bottom margin in pixels (default 84).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$tick_font_size(pixels)` -> `Plot`
+#'
+#'   Sets the tick-label font size in pixels (default 12); the raster viewer draws ticks
+#'   at half-size glyphs when this is below 12.
+#'   - `pixels`: Font size in pixels.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$pretty_ticks(enabled = TRUE)` -> `Plot`
+#'
+#'   Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like
+#'   R's `pretty()`) instead of six evenly spaced ticks across the range (default on).
+#'   - `enabled`: True turns round ticks on; false restores six even ticks.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$width()` -> `integer`
+#'
+#'   Returns the canvas width in pixels (default 960).
+#'   - Returns: Width set by size().
+#'
+#' * `$height()` -> `integer`
+#'
+#'   Returns the canvas height in pixels (default 640).
+#'   - Returns: Height set by size().
+#'
+#' * `$title_text()` -> `character`
+#'
+#'   Borrows the main heading ("datamunge plot" until set) for the lifetime of this plot.
+#'   - Returns: The current title; empty when the heading was cleared.
+#'
+#' * `$subtitle_text()` -> `character`
+#'
+#'   Borrows the subtitle for the lifetime of this plot.
+#'   - Returns: The current subtitle; empty (the default) when none is drawn.
+#'
+#' * `$x_label_text()` -> `character`
+#'
+#'   Borrows the horizontal-axis label ("x" until set) for the lifetime of this plot.
+#'   - Returns: The current x-axis label.
+#'
+#' * `$y_label_text()` -> `character`
+#'
+#'   Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.
+#'   - Returns: The current y-axis label.
+#'
+#' * `$series()` -> `vector<DataSeries>`
+#'
+#'   Borrows the drawn layers (points, lines, bars, ...) in the order they were added.
+#'   - Returns: The series list; references are invalidated by adding another layer.
+#'
+#' * `$background_color()` -> `RGB`
+#'
+#'   Returns the canvas fill color set by background().
+#'   - Returns: The background color (default white `{255, 255, 255}`).
+#'
+#' * `$axes_color()` -> `RGB`
+#'
+#'   Returns the axis and text color set by axis_color().
+#'   - Returns: The axis color (default gray `{55, 65, 81}`).
+#'
+#' * `$major_grid_color()` -> `RGB`
+#'
+#'   Returns the grid-line color set by grid_color().
+#'   - Returns: The grid color (default light gray `{229, 231, 235}`).
+#'
+#' * `$grid_visible()` -> `logical`
+#'
+#'   Reports whether the background grid is drawn (see show_grid()).
+#'   - Returns: True (the default) when the grid is drawn.
+#'
+#' * `$has_x_limits()` -> `logical`
+#'
+#'   Reports whether x_limits() fixed the x range.
+#'   - Returns: False (the default) while the x range is fitted to the data.
+#'
+#' * `$has_y_limits()` -> `logical`
+#'
+#'   Reports whether y_limits() fixed the y range.
+#'   - Returns: False (the default) while the y range is fitted to the data.
+#'
+#' * `$x_min()` -> `numeric`
+#'
+#'   Returns the fixed left x limit; meaningful only when has_x_limits() is true.
+#'   - Returns: The stored lower x limit (0 until x_limits() is called).
+#'
+#' * `$x_max()` -> `numeric`
+#'
+#'   Returns the fixed right x limit; meaningful only when has_x_limits() is true.
+#'   - Returns: The stored upper x limit (1 until x_limits() is called).
+#'
+#' * `$y_min()` -> `numeric`
+#'
+#'   Returns the fixed bottom y limit; meaningful only when has_y_limits() is true.
+#'   - Returns: The stored lower y limit (0 until y_limits() is called).
+#'
+#' * `$y_max()` -> `numeric`
+#'
+#'   Returns the fixed top y limit; meaningful only when has_y_limits() is true.
+#'   - Returns: The stored upper y limit (1 until y_limits() is called).
+#'
+#' * `$axes_hidden()` -> `logical`
+#'
+#'   Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.
+#'   - Returns: False (the default) when axes are drawn.
+#'
+#' * `$x_tick_label_list()` -> `vector<character>`
+#'
+#'   Borrows the custom x tick texts; empty means numeric ticks.
+#'   - Returns: Labels set by x_tick_labels() or x_ticks().
+#'
+#' * `$x_tick_position_list()` -> `vector<numeric>`
+#'
+#'   Data positions of x_tick_label_list(); empty means 0, 1, 2, ...
+#'   - Returns: Positions set by x_ticks(); cleared by x_tick_labels().
+#'
+#' * `$y_tick_label_list()` -> `vector<character>`
+#'
+#'   Borrows the custom y tick texts; empty means numeric ticks.
+#'   - Returns: Labels set by y_tick_labels() or y_ticks().
+#'
+#' * `$y_tick_position_list()` -> `vector<numeric>`
+#'
+#'   Data positions of y_tick_label_list(); empty means 0, 1, 2, ...
+#'   - Returns: Positions set by y_ticks(); cleared by y_tick_labels().
+#'
+#' * `$reference_lines()` -> `vector<ABLine>`
+#'
+#'   Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().
+#'   - Returns: Lines in insertion order; references are invalidated by adding another line.
+#'
+#' * `$legend_entries()` -> `vector<LegendEntry>`
+#'
+#'   Borrows the manual legend rows added by legend(); empty means an automatic legend.
+#'   - Returns: Manual entries in insertion order.
+#'
+#' * `$has_custom_margins()` -> `logical`
+#'
+#'   True once margins() has been called; the renderer then uses the explicit margins.
+#'   - Returns: False (the default) while the automatic margins apply.
+#'
+#' * `$margin_left()` -> `numeric`
+#'
+#'   Returns the left margin in pixels; used only when has_custom_margins() is true.
+#'   - Returns: The stored left margin (default 90).
+#'
+#' * `$margin_right()` -> `numeric`
+#'
+#'   Returns the right margin in pixels; used only when has_custom_margins() is true.
+#'   - Returns: The stored right margin (default 24).
+#'
+#' * `$margin_top()` -> `numeric`
+#'
+#'   Returns the top margin in pixels; used only when has_custom_margins() is true.
+#'   - Returns: The stored top margin (default 72).
+#'
+#' * `$margin_bottom()` -> `numeric`
+#'
+#'   Returns the bottom margin in pixels; used only when has_custom_margins() is true.
+#'   - Returns: The stored bottom margin (default 84).
+#'
+#' * `$tick_font_px()` -> `numeric`
+#'
+#'   Returns the tick-label font size set by tick_font_size().
+#'   - Returns: Font size in pixels (default 12).
+#'
+#' * `$pretty_ticks_enabled()` -> `logical`
+#'
+#'   Reports whether pretty_ticks() is on.
+#'   - Returns: False (the default) for six evenly spaced numeric ticks.
+#'
+#' * `$to_svg()` -> `character`
+#'
+#'   Renders the plot as a standalone SVG document and returns it as a string.
+#'   - Returns: The complete SVG text.
+#'
+#' * `$save(path)`
+#'
+#'   Writes the plot to `path`, choosing the format from the file extension
+#'   (R's `svg()`/`png()`/`pdf()` devices followed by `dev.off()`, in one call).
+#'   - `path`: Destination file; relative paths resolve against the working directory.
+#'
+#' * `$save_svg(path)`
+#'
+#'   Writes to_svg() to `path` regardless of its extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$to_png()` -> `vector<integer>`
+#'
+#'   Renders the plot as PNG image bytes (the same raster save() writes for `.png`).
+#'   - Returns: The complete PNG file contents.
+#'
+#' * `$to_pdf()` -> `vector<integer>`
+#'
+#'   Renders the plot as a one-page PDF holding the raster image.
+#'   - Returns: The complete PDF file contents.
+#'
+#' * `$save_png(path)`
+#'
+#'   Writes to_png() to `path` regardless of its extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$save_pdf(path)`
+#'
+#'   Writes to_pdf() to `path` regardless of its extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$view(title_hint = "")`
+#'
+#'   Same as show(); kept as an alias for older code.
+#'   - `title_hint`: Window title; empty uses the plot's title.
+#'
+#' * `$show(title_hint = "")`
+#'
+#'   Opens the plot in an interactive X11 window and blocks until it is closed
+#'   (like printing a plot in an interactive R session).
+#'   - `title_hint`: Window title; empty (the default) uses the plot's title.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::graphics::Plot& base = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 4.0)).set_title("Base");
+#' std::print("{} {}x{}\n", base.title_text(), base.width(), base.height());  // Base 960x640
+#' ```
+#' @seealso RPlot, RLayout
+#' @md
+#'
 `Plot` <- R6::R6Class("Plot", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1690,6 +7112,517 @@ rosetta_ref <- function(value = NULL) {
     `show` = function(...) invisible(.Call(`.rs_998`, self, list(...)))
   )
 )
+#' A single R-base-graphics-style plot, spelled `dm::Plot` in user code.
+#'
+#' Covers R's high-level plotting calls (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
+#' `curve()`, `qqnorm()`, ...) as constructors and static factories, plus the "add to the
+#' current plot" verbs R exposes as separate functions (`points()`, `lines()`, `abline()`,
+#' `legend()`, `text()`, ...) as chainable member functions. A plot is an ordinary value: it
+#' owns copies of its data, copies cheaply enough to pass around, and draws nothing until it
+#' is rendered with to_svg(), save(), or show().
+#'
+#' Two composition styles mix freely. Setters such as set_title() and verbs such as points()
+#' mutate the plot and return `RPlot&` for chaining; the pipe `plot | dm::points(...)` (see
+#' compose.hpp) appends a reusable layer to a copy. A fresh plot has the title
+#' "datamunge plot", axis labels "x" and "y", a 960x640 canvas, and a light grid.
+#' @section Constructor:
+#' `RPlot$new()`
+#'
+#' Constructs an empty plot with default labels and styling, ready for layers.
+#'
+#' `RPlot$new(x, y)`
+#'
+#' Constructs a scatter plot of `y` against `x`, like R's `plot(x, y)`.
+#'
+#' * `x` (`vector<numeric>`): Horizontal coordinates, one per point.
+#' * `y` (`vector<numeric>`): Vertical coordinates, paired with `x` by position.
+#' @section Methods:
+#' * `$size(width, height)` -> `RPlot`
+#'
+#'   Sets the canvas size in pixels (default 960 by 640), like the `width`/`height`
+#'   of R's `png()` or `svg()` device.
+#'   - `width`: Canvas width in pixels.
+#'   - `height`: Canvas height in pixels.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$title(value)` -> `RPlot`
+#'
+#'   Sets the main heading, like R's `main =`; an empty string removes it.
+#'   - `value`: Heading text (copied).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$subtitle(value)` -> `RPlot`
+#'
+#'   Sets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().
+#'   - `value`: Subtitle text drawn under the title; empty removes it.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_label(value)` -> `RPlot`
+#'
+#'   Sets the horizontal-axis label; same as xlab() and set_xlab().
+#'   - `value`: Label text (copied).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_label(value)` -> `RPlot`
+#'
+#'   Sets the vertical-axis label; same as ylab() and set_ylab().
+#'   - `value`: Label text (copied).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$xlab(value)` -> `RPlot`
+#'
+#'   R-style alias for x_label(), like R's `xlab =`.
+#'   - `value`: Label text (copied).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$ylab(value)` -> `RPlot`
+#'
+#'   R-style alias for y_label(), like R's `ylab =`.
+#'   - `value`: Label text (copied).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$set_title(value)` -> `RPlot`
+#'
+#'   Sets the main heading drawn above the plotting area (R's `main =`).
+#'   - `value`: Heading text.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$set_subtitle(value)` -> `RPlot`
+#'
+#'   Sets the smaller second heading drawn beneath the title (unlike R's `sub =`,
+#'   which sits below the x axis).
+#'   - `value`: Subtitle text.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$set_xlab(value)` -> `RPlot`
+#'
+#'   Sets the horizontal-axis label (R's `xlab =`).
+#'   - `value`: Axis label text.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$set_ylab(value)` -> `RPlot`
+#'
+#'   Sets the vertical-axis label (R's `ylab =`).
+#'   - `value`: Axis label text.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$set_col(color)` -> `RPlot`
+#'
+#'   Recolors every data series already on the plot (R's `col =` applied after the fact).
+#'   - `color`: New color, including its alpha.
+#'   - Returns: This plot, for chaining.
+#'
+#'   Same as set_col(RGB) but takes a color name or hex string, like R's `col = "blue"`.
+#'   - `color`: Color name or hex string.
+#'   - Returns: This plot, for chaining.
+#'
+#'   Parse a literal color without ambiguity between the string and RGBA overloads.
+#'   - `color`: Null-terminated color name or hex text; must be non-null.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$background(color)` -> `RPlot`
+#'
+#'   Sets the fill color of the whole canvas, like R's `par(bg =)`.
+#'   - `color`: Canvas fill color.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$axis_color(color)` -> `RPlot`
+#'
+#'   Sets the color of the axis lines and of all plot-level text: tick labels, axis
+#'   labels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).
+#'   - `color`: Axis and text color.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$grid_color(color)` -> `RPlot`
+#'
+#'   Sets the color of the background grid lines (default light gray `{229, 231, 235}`).
+#'   - `color`: Grid-line color.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$show_grid(enabled = TRUE)` -> `RPlot`
+#'
+#'   Turns the light background grid on or off (on by default), like adding or
+#'   omitting R's `grid()`.
+#'   - `enabled`: True (the default) draws the grid; false omits it.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_limits(min_x, max_x)` -> `RPlot`
+#'
+#'   Fixes the visible x range, like R's `xlim = c(min_x, max_x)`.
+#'   - `min_x`: Left edge of the plotting area, in data units.
+#'   - `max_x`: Right edge; must be greater than `min_x`.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_limits(min_y, max_y)` -> `RPlot`
+#'
+#'   Fixes the visible y range, like R's `ylim = c(min_y, max_y)`.
+#'   - `min_y`: Bottom edge of the plotting area, in data units.
+#'   - `max_y`: Top edge; must be greater than `min_y`.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$xlim(min_x, max_x)` -> `RPlot`
+#'
+#'   Short spelling of x_limits(), matching R's xlim plot argument.
+#'   Fixes the horizontal plotting range without automatic padding. Data outside
+#'   the range follows x_limits() rendering behavior; this does not filter layers.
+#'   - `min_x`: Left edge in data units.
+#'   - `max_x`: Right edge; must be greater than min_x.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$ylim(min_y, max_y)` -> `RPlot`
+#'
+#'   Short spelling of y_limits(), matching R's ylim plot argument.
+#'   Fixes the vertical plotting range without automatic padding; layers are retained.
+#'   - `min_y`: Bottom edge in data units.
+#'   - `max_y`: Top edge; must be greater than min_y.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$hide_axes(enabled = TRUE)` -> `RPlot`
+#'
+#'   Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,
+#'   ann = FALSE` (the title and subtitle are still drawn).
+#'   - `enabled`: True (the default) hides them; false shows them again.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_tick_labels(labels)` -> `RPlot`
+#'
+#'   Replaces the numeric x ticks with `labels` at x = 0, 1, 2, ..., like R's
+#'   `axis(1, at = 0:(n - 1), labels = labels)`.
+#'   - `labels`: Tick texts, in order.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$x_ticks(positions, labels)` -> `RPlot`
+#'
+#'   Replaces the numeric x ticks with `labels` drawn at data positions `positions`,
+#'   like R's `axis(1, at = positions, labels = labels)`.
+#'   - `positions`: x data coordinates of the ticks.
+#'   - `labels`: Tick texts, one per position.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_tick_labels(labels)` -> `RPlot`
+#'
+#'   Replaces the numeric y ticks with `labels` at y = 0, 1, 2, ..., like R's
+#'   `axis(2, at = 0:(n - 1), labels = labels)`.
+#'   - `labels`: Tick texts, in order.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$y_ticks(positions, labels)` -> `RPlot`
+#'
+#'   Replaces the numeric y ticks with `labels` drawn at data positions `positions`,
+#'   like R's `axis(2, at = positions, labels = labels)`.
+#'   - `positions`: y data coordinates of the ticks.
+#'   - `labels`: Tick texts, one per position.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$margins(left, right, top, bottom)` -> `RPlot`
+#'
+#'   Overrides the automatic outer margins around the plotting area, in pixels, like
+#'   R's `par(mai =)` (which uses inches and orders bottom, left, top, right).
+#'   - `left`: Left margin in pixels.
+#'   - `right`: Right margin in pixels.
+#'   - `top`: Top margin in pixels.
+#'   - `bottom`: Bottom margin in pixels.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$tick_font_size(pixels)` -> `RPlot`
+#'
+#'   Sets the tick-label font size in pixels (default 12), like R's `cex.axis`.
+#'   - `pixels`: Font size in pixels.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$pretty_ticks(enabled = TRUE)` -> `RPlot`
+#'
+#'   Places numeric ticks at round values (default on) instead of six evenly spaced
+#'   ticks across the range, in the spirit of R's `pretty()`.
+#'   - `enabled`: True turns round ticks on; false restores six even ticks.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$points(x, y, label = "", color = <default>, marker_size = 4.0)` -> `RPlot`
+#'   `$points(x, y, color, marker_size = 4.0)` -> `RPlot`
+#'   `$points(x, y, label)` -> `RPlot`
+#'
+#'   Adds a scatter series to this plot, like R's `points(x, y, col = color)`.
+#'   - `x`: Horizontal coordinates, one per point.
+#'   - `y`: Vertical coordinates, paired with `x` by position.
+#'   - `label`: Legend text for this series; empty (the default) keeps it out of the legend.
+#'   - `color`: Marker color for every point (default blue `{37, 99, 235}`).
+#'   - `marker_size`: Marker radius in pixels (default 4).
+#'   - Returns: This plot, for chaining.
+#'
+#'   Same as points(x, y, label, color, marker_size) with an empty label, so the
+#'   series stays out of the automatic legend.
+#'   - `x`: Horizontal coordinates.
+#'   - `y`: Vertical coordinates, paired with `x`.
+#'   - `color`: Marker color for every point.
+#'   - `marker_size`: Marker radius in pixels (default 4).
+#'   - Returns: This plot, for chaining.
+#'
+#'   Preserve a three-argument literal label when colors also accept string literals.
+#'   - `x`: Horizontal coordinates.
+#'   - `y`: Vertical coordinates, paired with x.
+#'   - `label`: Legend label, including text that resembles a color; null means empty.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$points_colored(x, y, colors, marker_size = 4.0)` -> `RPlot`
+#'
+#'   Appends scatter points with a recycled per-point RGB(A) palette.
+#'   Coordinates must have equal nonzero lengths; colors must not be empty.
+#'   A partial palette cycle is allowed without a warning. Colors retain their own alpha.
+#'   The series is unlabeled, so it never appears in the automatic legend.
+#'   - `x`: Horizontal coordinates.
+#'   - `y`: Vertical coordinates, paired with `x`.
+#'   - `colors`: Palette; point i uses `colors[i % colors.size()]`.
+#'   - `marker_size`: Marker radius in pixels (default 4).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$line(x, y, label = "", color = <default>, stroke_width = 2.0)` -> `RPlot`
+#'
+#'   Adds a line joining the points in input order, like R's `lines(x, y, col = color,
+#'   lwd = stroke_width)`; same as lines().
+#'   - `x`: Horizontal coordinates, one per vertex.
+#'   - `y`: Vertical coordinates, paired with `x` by position.
+#'   - `label`: Legend text; empty (the default) keeps it out of the legend.
+#'   - `color`: Line color (default red `{220, 38, 38}`).
+#'   - `stroke_width`: Line width in pixels (default 2).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$lines(x, y, label = "", color = <default>, stroke_width = 2.0)` -> `RPlot`
+#'   `$lines(x, y, color, stroke_width = 2.0)` -> `RPlot`
+#'   `$lines(x, y, label)` -> `RPlot`
+#'
+#'   Adds a line joining the points in input order, like R's `lines(x, y, col = color,
+#'   lwd = stroke_width)`.
+#'   - `x`: Horizontal coordinates, one per vertex.
+#'   - `y`: Vertical coordinates, paired with `x` by position.
+#'   - `label`: Legend text; empty (the default) keeps it out of the legend.
+#'   - `color`: Line color (default red `{220, 38, 38}`).
+#'   - `stroke_width`: Line width in pixels (default 2).
+#'   - Returns: This plot, for chaining.
+#'
+#'   Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.
+#'   - `x`: Horizontal coordinates.
+#'   - `y`: Vertical coordinates, paired with `x`.
+#'   - `color`: Line color.
+#'   - `stroke_width`: Line width in pixels (default 2).
+#'   - Returns: This plot, for chaining.
+#'
+#'   Preserve a three-argument literal label when colors also accept string literals.
+#'   - `x`: Horizontal coordinates.
+#'   - `y`: Vertical coordinates, paired with x.
+#'   - `label`: Legend label, including text that resembles a color; null means empty.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$bars(x, y, label = "", color = <default>, bar_width = 0.80000000000000004)` -> `RPlot`
+#'
+#'   Adds vertical bars centered at arbitrary x positions, the low-level form behind
+#'   barplot() and hist() (R's `rect()` from 0 to each height).
+#'   - `x`: Bar centers, in data units.
+#'   - `y`: Bar heights, paired with `x` by position.
+#'   - `label`: Legend text; empty (the default) keeps it out of the legend.
+#'   - `color`: Bar color (default green `{22, 163, 74}`).
+#'   - `bar_width`: Bar width in data units (default 0.8).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$box(position, whisker_lo, q1, median, q3, whisker_hi, outliers = c(), color = <default>, width = 0.59999999999999998)` -> `RPlot`
+#'
+#'   Adds one box-and-whisker from precomputed statistics at an arbitrary x position,
+#'   the low-level form behind boxplot() (R's `bxp()`).
+#'   - `position`: Box center, in x data units.
+#'   - `whisker_lo`: Lower whisker end.
+#'   - `q1`: Lower box edge (first quartile).
+#'   - `median`: Median line.
+#'   - `q3`: Upper box edge (third quartile).
+#'   - `whisker_hi`: Upper whisker end.
+#'   - `outliers`: Values drawn as individual points (default none).
+#'   - `color`: Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
+#'   - `width`: Box width in data units (default 0.6).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$abline(intercept, slope, color = <default>, stroke_width = 1.0)` -> `RPlot`
+#'
+#'   Adds the reference line y = intercept + slope * x across the plotting area, like
+#'   R's `abline(a = intercept, b = slope)`.
+#'   - `intercept`: y value at x = 0.
+#'   - `slope`: Change in y per unit x.
+#'   - `color`: Line color (default opaque black).
+#'   - `stroke_width`: Line width in pixels (default 1).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$abline_h(y_value, color = <default>, stroke_width = 1.0)` -> `RPlot`
+#'
+#'   Adds a horizontal reference line at y = `y_value`, like R's `abline(h = y_value)`.
+#'   - `y_value`: Height of the line, in data units.
+#'   - `color`: Line color (default opaque black).
+#'   - `stroke_width`: Line width in pixels (default 1).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$abline_v(x_value, color = <default>, stroke_width = 1.0)` -> `RPlot`
+#'
+#'   Adds a vertical reference line at x = `x_value`, like R's `abline(v = x_value)`.
+#'   - `x_value`: Horizontal position of the line, in data units.
+#'   - `color`: Line color (default opaque black).
+#'   - `stroke_width`: Line width in pixels (default 1).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$qqline(data, color = <default>, stroke_width = 1.5)` -> `RPlot`
+#'
+#'   Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line
+#'   through the first and third quartiles of `data` and of the standard normal.
+#'   - `data`: The sample; at least two values. Taken by value, so the caller's data is unchanged.
+#'   - `color`: Line color (default red `{220, 38, 38}`).
+#'   - `stroke_width`: Line width in pixels (default 1.5).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$legend(labels, colors)` -> `RPlot`
+#'
+#'   Adds manual legend rows, like R's `legend(legend = labels, col = colors)`.
+#'   - `labels`: Row texts, in display order.
+#'   - `colors`: Swatch colors, one per label.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$text(x, y, label, color = <default>, font_size = 14.0)` -> `RPlot`
+#'
+#'   Draws `label` centered on the data point (`x`, `y`), like R's
+#'   `text(x, y, labels = label)`.
+#'   - `x`: Horizontal position, in data units.
+#'   - `y`: Vertical position, in data units.
+#'   - `label`: The text to draw (XML-escaped in SVG output).
+#'   - `color`: Text color (default near-black `{17, 24, 39}`).
+#'   - `font_size`: Font size in pixels (default 14).
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$polygon(x, y, color = <default>, filled = TRUE)` -> `RPlot`
+#'
+#'   Draws the closed polygon through the vertices (x\[i\], y\[i\]), like R's
+#'   `polygon(x, y, col = color)`.
+#'   - `x`: Vertex x coordinates, in order around the polygon.
+#'   - `y`: Vertex y coordinates, paired with `x`.
+#'   - `color`: Fill (and outline) color (default blue `{37, 99, 235}`).
+#'   - `filled`: True (the default) fills; false draws the outline only.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$image(x, y, z, palette = c(), z_min = <default>, z_max = <default>)` -> `RPlot`
+#'
+#'   Draws a grid of coloured rectangles, one per value of `z`, like R's `image(x, y, z)`.
+#'   - `x`: Cell centres along x, increasing (at least 2).
+#'   - `y`: Cell centres along y, increasing (at least 2).
+#'   - `z`: Values, z\[i\]\[j\] at (x\[i\], y\[j\]); z.size() == x.size() and each row has y.size() entries.
+#'   - `palette`: Colours from low to high (default terrain_colors(12)).
+#'   - `z_min`: Value mapped to the first colour; NaN (the default) uses the smallest z.
+#'   - `z_max`: Value mapped to the last colour; NaN (the default) uses the largest z.
+#'   - Returns: This plot, for chaining.
+#'
+#' * `$segments(x0, y0, x1, y1, color = <default>, stroke_width = 1.0)` -> `RPlot`
+#'
+#'   Draws one straight segment from (x0\[i\], y0\[i\]) to (x1\[i\], y1\[i\]) for each i, like
+#'   R's `segments(x0, y0, x1, y1)`.
+#'   - `x0`: Start x coordinates.
+#'   - `y0`: Start y coordinates.
+#'   - `x1`: End x coordinates.
+#'   - `y1`: End y coordinates.
+#'   - `color`: Segment color (default opaque black).
+#'   - `stroke_width`: Segment width in pixels (default 1).
+#'   - Returns: This plot, for chaining.
+#' @section Static methods:
+#' * `RPlot$create()` -> `RPlot`
+#'
+#'   Returns a fresh empty plot; same as the default constructor `dm::Plot()`.
+#'   - Returns: An empty plot with default labels and styling.
+#'
+#' * `RPlot$plot(x, y, type = "p", label = "", color = <default>)` -> `RPlot`
+#'
+#'   Builds a scatter, line, or line-plus-points plot of `y` against `x`, like R's
+#'   `plot(x, y, type = "p" | "l" | "b")`.
+#'   - `x`: Horizontal coordinates, one per point.
+#'   - `y`: Vertical coordinates, paired with `x` by position.
+#'   - `type`: `"p"` (default), `"l"`, or `"b"`; case-sensitive.
+#'   - `label`: Legend text; empty (the default) keeps the plot out of the automatic legend.
+#'     With `"b"` only the line carries it.
+#'   - `color`: Color of the points and line (default blue `{37, 99, 235}`).
+#'   - Returns: A new plot holding the series.
+#'
+#' * `RPlot$hist(data, bins = 10, label = "", color = <default>)` -> `RPlot`
+#'
+#'   Builds a frequency histogram of `data` with `bins` equal-width bins, like R's
+#'   `hist(x, breaks = bins)`.
+#'   - `data`: Observations; all must be finite.
+#'   - `bins`: Number of bins (default 10).
+#'   - `label`: Legend text; empty (the default) shows no legend.
+#'   - `color`: Bar color (default light blue `{96, 165, 250}`).
+#'   - Returns: A new plot holding one Bar series.
+#'
+#' * `RPlot$barplot(heights, names = c(), label = "", color = <default>)` -> `RPlot`
+#'
+#'   Builds a bar chart with one bar per height, like R's
+#'   `barplot(heights, names.arg = names)`.
+#'   - `heights`: Bar heights, in display order.
+#'   - `names`: Tick labels, one per bar; empty (the default) keeps numeric ticks.
+#'   - `label`: Legend text; empty (the default) shows no legend.
+#'   - `color`: Bar color (default green `{22, 163, 74}`).
+#'   - Returns: A new plot holding one Bar series.
+#'
+#' * `RPlot$boxplot(groups, names = c(), color = <default>)` -> `RPlot`
+#'   `RPlot$boxplot(groups, names, colors)` -> `RPlot`
+#'
+#'   Builds side-by-side box-and-whisker plots, one per group, like R's
+#'   `boxplot(list(...), names = names)`.
+#'   - `groups`: One vector of observations per box; each must be nonempty.
+#'   - `names`: Tick labels under the boxes; empty (the default) keeps numeric ticks.
+#'   - `color`: Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
+#'   - Returns: A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).
+#'
+#'   boxplot() with one color per box, like R's `boxplot(..., col = colors)`.
+#'   - `groups`: One vector of observations per box; each must be nonempty.
+#'   - `names`: Tick labels under the boxes; empty keeps numeric ticks.
+#'   - `colors`: Box colors, recycled when shorter than `groups`; must be nonempty.
+#'   - Returns: A new plot holding one Box series per group.
+#'
+#' * `RPlot$pie(values, names = c(), colors = c())` -> `RPlot`
+#'
+#'   Builds a pie chart with one wedge per value, like R's
+#'   `pie(x, labels = names, col = colors, clockwise = TRUE)`.
+#'   - `values`: Wedge sizes; nonnegative, with a positive sum.
+#'   - `names`: Wedge labels; empty (the default) draws none.
+#'   - `colors`: Wedge colors, recycled; empty (the default) uses the built-in palette.
+#'   - Returns: A new plot holding one Polygon series per wedge plus one Text series per name.
+#'
+#' * `RPlot$curve(f, from, to, n = 101, label = "", color = <default>)` -> `RPlot`
+#'
+#'   Plots a function over \[`from`, `to`\] as a line, like R's `curve(expr, from, to, n)`.
+#'   - `f`: The function to draw: a dm::Callback subclass overriding `call(double)`.
+#'   - `from`: Left end of the range.
+#'   - `to`: Right end; must be greater than `from`.
+#'   - `n`: Number of sample points, at least 2 (default 101, as in R).
+#'   - `label`: Legend text; empty (the default) shows no legend.
+#'   - `color`: Line color (default red `{220, 38, 38}`).
+#'   - Returns: A new plot holding one Line series.
+#'
+#' * `RPlot$qqnorm(data, label = "sample", color = <default>)` -> `RPlot`
+#'
+#'   Builds a normal Q-Q plot: the sorted `data` against standard-normal quantiles,
+#'   like R's `qqnorm(y)`.
+#'   - `data`: The sample; at least two values. Consumed (sorted in place).
+#'   - `label`: Legend text (default "sample", so the automatic legend shows one row; pass
+#'     "" to hide it).
+#'   - `color`: Point color (default blue `{37, 99, 235}`).
+#'   - Returns: A new plot holding one Scatter series.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto x = dm::seql(-2.0, 2.0, 9);
+#' auto plt = dm::Plot(x, x * x)
+#'                .set_title("Parabola")
+#'                .set_xlab("x")
+#'                .set_ylab("x squared");
+#' plt.lines(x, x * x, dm::RGB{220, 38, 38}).abline_h(0.0);
+#' plt.save("parabola.svg");
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: If the coordinates are empty or have different lengths.
+#' @section Inherits:
+#' `Plot`
+#' @seealso dm::points(), dm::legend(), dm::Histogram, dm::Splom, RLayout
+#' @md
+#'
 `RPlot` <- R6::R6Class("RPlot", inherit = `Plot`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1758,6 +7691,149 @@ rosetta_ref <- function(value = NULL) {
 `RPlot`$`pie` <- function(...) .Call(`.rs_1033`, NULL, list(...))
 `RPlot`$`curve` <- function(...) .Call(`.rs_1034`, NULL, list(...))
 `RPlot`$`qqnorm` <- function(...) .Call(`.rs_1035`, NULL, list(...))
+#' Tiles independently built plots into one multi-panel figure, like R's `par(mfrow = c(rows, cols))` followed by one plot per panel.
+#'
+#' Create it with create(rows, cols), then add() up to rows * cols panels; they fill the grid
+#' row by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to
+#' the original plot do not show and panels need not outlive the layout. Each cell is
+#' `width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a
+#' figure title is set and 0 otherwise; every panel is scaled from its own canvas size into its
+#' cell. The figure background is white. Unused cells stay empty.
+#' @section Constructor:
+#' `RLayout$new()`
+#' @section Methods:
+#' * `$add(panel)` -> `RLayout`
+#'
+#'   Copies `panel` into the next free cell, filling rows left to right, top to bottom.
+#'   - `panel`: The plot to add; any RPlot (or other Plot) converts.
+#'   - Returns: This layout, for chaining.
+#'
+#' * `$size(width, height)` -> `RLayout`
+#'
+#'   Sets the size of the whole figure in pixels (default 960 by 640).
+#'   - `width`: Figure width in pixels.
+#'   - `height`: Figure height in pixels, including the title band.
+#'   - Returns: This layout, for chaining.
+#'
+#' * `$title(value)` -> `RLayout`
+#'
+#'   Sets an optional figure-level heading drawn in a band above the panels, like R's
+#'   `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.
+#'   - `value`: Heading text; the band is title_band_px pixels tall.
+#'   - Returns: This layout, for chaining.
+#'
+#' * `$rows()` -> `integer`
+#'
+#'   Returns the number of panel rows given to create().
+#'   - Returns: Row count (at least 1).
+#'
+#' * `$cols()` -> `integer`
+#'
+#'   Returns the number of panel columns given to create().
+#'   - Returns: Column count (at least 1).
+#'
+#' * `$width()` -> `integer`
+#'
+#'   Returns the figure width in pixels.
+#'   - Returns: Width set by size() (default 960).
+#'
+#' * `$height()` -> `integer`
+#'
+#'   Returns the figure height in pixels.
+#'   - Returns: Height set by size() (default 640).
+#'
+#' * `$panel_count()` -> `integer`
+#'
+#'   Returns how many panels have been added.
+#'   - Returns: Panel count, at most rows() * cols().
+#'
+#' * `$title_text()` -> `character`
+#'
+#'   Borrows the figure-level heading for the lifetime of this layout.
+#'   - Returns: The title; empty (the default) when none is drawn.
+#'
+#' * `$panel(index)` -> `Plot`
+#'
+#'   Borrows the copy of the `index-th` added panel.
+#'   - `index`: Zero-based panel index, in the order panels were added.
+#'   - Returns: The stored copy, valid until the next add() or the layout's destruction.
+#'
+#' * `$to_svg()` -> `character`
+#'
+#'   Renders the multi-panel figure as a standalone SVG document and returns it as a string.
+#'   - Returns: The complete SVG text.
+#'
+#' * `$save(path)`
+#'
+#'   Saves the figure, choosing the format from the extension: `.svg` (or none) writes
+#'   SVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.
+#'   - `path`: Destination file.
+#'
+#' * `$save_svg(path)`
+#'
+#'   Writes to_svg() to `path` regardless of its extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$to_png()` -> `vector<integer>`
+#'
+#'   Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).
+#'   - Returns: The complete PNG file contents.
+#'
+#' * `$to_pdf()` -> `vector<integer>`
+#'
+#'   Renders the tiled figure as a one-page PDF holding the raster image.
+#'   - Returns: The complete PDF file contents.
+#'
+#' * `$save_png(path)`
+#'
+#'   Writes to_png() to `path` regardless of its extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$save_pdf(path)`
+#'
+#'   Writes to_pdf() to `path` regardless of its extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$fit_panels()` -> `RLayout`
+#'
+#'   Resizes every stored panel's canvas to its cell, so text keeps its pixel size
+#'   instead of being scaled with the panel.
+#'   - Returns: This layout, for chaining.
+#'
+#' * `$show(title_hint = "")`
+#'
+#'   Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons
+#'   act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.
+#'   - `title_hint`: Window title; empty (the default) uses title_text().
+#'
+#' * `$view(title_hint = "")`
+#'
+#'   Same as show(); kept as an alias for older code.
+#'   - `title_hint`: Window title; empty (the default) uses title_text().
+#' @section Static methods:
+#' * `RLayout$create(rows, cols)` -> `RLayout`
+#'
+#'   Creates an empty layout with `rows` by `cols` cells, like R's
+#'   `par(mfrow = c(rows, cols))`.
+#'   - `rows`: Number of panel rows; must be positive.
+#'   - `cols`: Number of panel columns; must be positive.
+#'   - Returns: The empty layout.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto x = dm::seql(0.0, 6.0, 30);
+#' auto fig = dm::graphics::RLayout::create(1, 2)
+#'                .size(1200, 500)
+#'                .title("Two views")
+#'                .add(dm::Plot(x, dm::sin(x)).set_title("sin"))
+#'                .add(dm::Plot(x, dm::cos(x)).set_title("cos"));
+#' std::print("{} panels in {}x{}\n", fig.panel_count(), fig.rows(), fig.cols());
+#' // 2 panels in 1x2
+#' fig.save("two_views.svg");
+#' ```
+#' @references - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+#' @seealso RPlot, RPlot::margins(), dm::Splom
+#' @md
+#'
 `RLayout` <- R6::R6Class("RLayout", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1789,6 +7865,23 @@ rosetta_ref <- function(value = NULL) {
   )
 )
 `RLayout`$`create` <- function(...) .Call(`.rs_1052`, NULL, list(...))
+#' Owned unrestricted scalar DTW result, preserving the original three-field layout.
+#'
+#' Distance is the unnormalized sum of absolute differences along the returned inclusive path. Default construction is an uncomputed placeholder. Copies own independent buffers. Positive lengths fit int; steps advance a, b or both by one.
+#' @section Constructor:
+#' `DTWResult$new()`
+#' @section Fields:
+#' * `$distance` (`numeric`): Finite nonnegative summed absolute loss for a computed result.
+#' * `$path_a` (`vector<integer>`): Owned zero-based a indices, from zero to a.size()-1.
+#' * `$path_b` (`vector<integer>`): Owned parallel b indices, from zero to b.size()-1.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::geometry::dynamic_time_warping({1,2,3},{1,1,2,3});
+#' std::print("{} {}\n",r.distance,r.path_a.size()); // 0 4
+#' ```
+#' @seealso dynamic_time_warping(), dtw_path_cost()
+#' @md
+#'
 `DTWResult` <- R6::R6Class("DTWResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1803,6 +7896,23 @@ rosetta_ref <- function(value = NULL) {
     `path_b` = function(value) if (missing(value)) .Call(`.rs_1078`, self) else invisible(.Call(`.rs_1079`, self, value))
   )
 )
+#' Logical work of the shared DTW recurrence and actual traceback.
+#'
+#' These are counts, not time. Validation, allocation, copies, comparisons and rendering are excluded. Each positive cell reads three predecessor slots, including infinite boundary slots. Every returned pair counts one traceback step.
+#' @section Constructor:
+#' `DTWWork$new()`
+#' @section Fields:
+#' * `$cells` (`integer`): Exactly a.size()*b.size() recurrence evaluations.
+#' * `$predecessor_reads` (`integer`): Three slots per recurrence cell, including borders.
+#' * `$traceback_steps` (`integer`): Number of actual output index pairs, including origin.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto r=dm::geometry::dynamic_time_warping_work({2},{5});
+#' std::print("{} {} {}\n",r.work.cells,r.work.predecessor_reads,r.work.traceback_steps); // 1 3 1
+#' ```
+#' @seealso DTWComputation
+#' @md
+#'
 `DTWWork` <- R6::R6Class("DTWWork", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1817,6 +7927,22 @@ rosetta_ref <- function(value = NULL) {
     `traceback_steps` = function(value) if (missing(value)) .Call(`.rs_1085`, self) else invisible(.Call(`.rs_1086`, self, value))
   )
 )
+#' Owned ordinary result and logical work, without retained cost-table history.
+#'
+#' Scratch consists of two cost rows and one predecessor byte per positive cell. No input references survive return. Copies own independent result paths.
+#' @section Constructor:
+#' `DTWComputation$new()`
+#' @section Fields:
+#' * `$result` (`DTWResult`): Optimal path and its unnormalized absolute loss.
+#' * `$work` (`DTWWork`): Actual recurrence and traceback counts.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto c=dm::geometry::dynamic_time_warping_work({0,1},{0,1});
+#' std::print("{} {}\n",c.result.distance,c.work.cells); // 0 4
+#' ```
+#' @seealso dynamic_time_warping_work(), DTWTrace
+#' @md
+#'
 `DTWComputation` <- R6::R6Class("DTWComputation", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1830,6 +7956,27 @@ rosetta_ref <- function(value = NULL) {
     `work` = function(value) if (missing(value)) .Call(`.rs_1090`, self) else invisible(.Call(`.rs_1091`, self, value))
   )
 )
+#' Owned input, actual accumulated costs and chosen predecessors from one DTW run.
+#'
+#' Positive cells are row-major at i*b.size()+j; sentinel border is implicit. Costs and predecessor codes are captured during the original recurrence, not reconstructed afterward. Infinite cells mark unrepresentable costs. Logical capture entries are a.size()+b.size()+2*a.size()*b.size(): one per input scalar, cost and direction. Result paths, rolling scratch rows, scalar metadata and allocator bytes are excluded. Copies are independent.
+#' @section Constructor:
+#' `DTWTrace$new()`
+#' @section Fields:
+#' * `$a` (`vector<numeric>`): Owned first input, unchanged by alignment.
+#' * `$b` (`vector<numeric>`): Owned second input.
+#' * `$cumulative` (`vector<numeric>`): Actual positive-cell prefix costs, row-major.
+#' * `$predecessors` (`vector<character (DTWPredecessor)>`): Actual selected directions, parallel to cumulative.
+#' * `$result` (`DTWResult`): Finite optimal distance and selected actual traceback.
+#' * `$work` (`DTWWork`): Counts from the same recurrence/traceback.
+#' * `$captured_entries` (`integer`): Complete logical capture cost described above.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::dynamic_time_warping_trace({1},{4});
+#' std::print("{} {}\n",t.cumulative[0],t.captured_entries); // 3 4
+#' ```
+#' @seealso dynamic_time_warping_trace(), dtw_trace_entries()
+#' @md
+#'
 `DTWTrace` <- R6::R6Class("DTWTrace", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1848,6 +7995,30 @@ rosetta_ref <- function(value = NULL) {
     `captured_entries` = function(value) if (missing(value)) .Call(`.rs_1105`, self) else invisible(.Call(`.rs_1106`, self, value))
   )
 )
+#' A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built once (via a median-splitting, alternating-axis partition) at construction -- doesn't support incremental insertion/removal after that.
+#' @section Constructor:
+#' `KDTree2D$new(points)`
+#'
+#' * `points` (`vector<Point2D>`)
+#' @section Methods:
+#' * `$empty()` -> `logical`
+#'
+#' * `$size()` -> `integer`
+#'
+#' * `$nearest(query)` -> `Point2D`
+#'
+#'   The closest point to `query`. Throws std::logic_error if the tree is empty.
+#'
+#' * `$k_nearest(query, k)` -> `vector<Point2D>`
+#'
+#'   The `k` closest points to `query`, nearest first. Returns fewer than `k`
+#'   points if the tree itself has fewer than `k`.
+#'
+#' * `$points_in_radius(query, radius)` -> `vector<Point2D>`
+#'
+#'   All points within `radius` (inclusive) of `query`, in no particular order.
+#' @md
+#'
 `KDTree2D` <- R6::R6Class("KDTree2D", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1862,6 +8033,14 @@ rosetta_ref <- function(value = NULL) {
     `points_in_radius` = function(...) .Call(`.rs_1112`, self, list(...))
   )
 )
+#' C++ class `datamunge::geometry::Circle`
+#' @section Constructor:
+#' `Circle$new()`
+#' @section Fields:
+#' * `$center` (`Point2D`)
+#' * `$radius` (`numeric`)
+#' @md
+#'
 `Circle` <- R6::R6Class("Circle", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1875,6 +8054,15 @@ rosetta_ref <- function(value = NULL) {
     `radius` = function(value) if (missing(value)) .Call(`.rs_1116`, self) else invisible(.Call(`.rs_1117`, self, value))
   )
 )
+#' C++ class `datamunge::geometry::DiameterResult`
+#' @section Constructor:
+#' `DiameterResult$new()`
+#' @section Fields:
+#' * `$a` (`Point2D`)
+#' * `$b` (`Point2D`)
+#' * `$distance` (`numeric`)
+#' @md
+#'
 `DiameterResult` <- R6::R6Class("DiameterResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1889,6 +8077,17 @@ rosetta_ref <- function(value = NULL) {
     `distance` = function(value) if (missing(value)) .Call(`.rs_1123`, self) else invisible(.Call(`.rs_1124`, self, value))
   )
 )
+#' C++ class `datamunge::geometry::MinimumBoundingRectangle`
+#' @section Constructor:
+#' `MinimumBoundingRectangle$new()`
+#' @section Fields:
+#' * `$corners` (`vector<Point2D>`): The four corners, in order (so consecutive corners are adjacent, matching this
+#'   module's polygon convention elsewhere).
+#' * `$width` (`numeric`)
+#' * `$height` (`numeric`)
+#' * `$area` (`numeric`)
+#' @md
+#'
 `MinimumBoundingRectangle` <- R6::R6Class("MinimumBoundingRectangle", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1904,6 +8103,24 @@ rosetta_ref <- function(value = NULL) {
     `area` = function(value) if (missing(value)) .Call(`.rs_1132`, self) else invisible(.Call(`.rs_1133`, self, value))
   )
 )
+#' C++ class `datamunge::geometry::VoronoiDiagram`
+#' @section Constructor:
+#' `VoronoiDiagram$new()`
+#' @section Fields:
+#' * `$vertices` (`vector<Point2D>`): The circumcenter of each Delaunay triangle -- the Voronoi diagram's vertices
+#'   (may repeat a coordinate if it's shared by multiple cells; kept as plain
+#'   resolved points rather than a shared, index-referenced pool for a simpler,
+#'   binding-friendly shape).
+#' * `$cells` (`vector<vector<Point2D>>`): cells\[i\] is points\[i\]'s Voronoi cell boundary, as circumcenters in angular
+#'   order around points\[i\]. For an INTERIOR point this is a closed polygon (as with
+#'   any polygon in this module, the closing edge back to cells\[i\].front() is
+#'   implicit). For a point on the convex hull, the true Voronoi cell is unbounded --
+#'   this only returns its FINITE portion (an open polyline, missing the two rays to
+#'   infinity), since robustly constructing those rays is out of scope here. Empty
+#'   for a point that ended up in no Delaunay triangle (possible for an
+#'   exactly-duplicated input point).
+#' @md
+#'
 `VoronoiDiagram` <- R6::R6Class("VoronoiDiagram", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1917,6 +8134,83 @@ rosetta_ref <- function(value = NULL) {
     `cells` = function(value) if (missing(value)) .Call(`.rs_1137`, self) else invisible(.Call(`.rs_1138`, self, value))
   )
 )
+#' Binding counterpart of Mat/SpMat with shared, immutable expression operands.
+#'
+#' Transpose, multiplication and inverse actions defer native computation until eval(), values() or text(). Handles keep temporary operands alive across garbage collection. Sparse products use CSR; solves use the canonical dense LU/QR implementation. Concurrent const evaluation is safe; no evaluation cache is mutated.
+#' @section Constructor:
+#' `LinalgMatrix$new(values, rows, cols, sparse = FALSE)`
+#'
+#' Construct an owned dense or CSR matrix from row-major values.
+#'
+#' * `values` (`vector<numeric>`): Exactly rows * cols coefficients; sparse zero entries are omitted.
+#' * `rows` (`integer`): Number of rows, including zero.
+#' * `cols` (`integer`): Number of columns, including zero.
+#' * `sparse` (`logical`): Select CSR storage, default false.
+#' @section Methods:
+#' * `$rows()` -> `integer`
+#'
+#'   Read the deferred result's row count without evaluating.
+#'   - Returns: Number of rows.
+#'
+#' * `$cols()` -> `integer`
+#'
+#'   Read the deferred result's column count without evaluating.
+#'   - Returns: Number of columns.
+#'
+#' * `$is_sparse()` -> `logical`
+#'
+#'   Inspect the deferred result's storage policy without evaluating.
+#'   - Returns: True for CSR results; inverse actions and solves return dense results.
+#'
+#' * `$transpose()` -> `LinalgMatrix`
+#'
+#'   Form a lazy transpose, retaining shared ownership of this operand.
+#'   - Returns: Deferred transpose handle.
+#'
+#' * `$multiply(other)` -> `LinalgMatrix`
+#'
+#'   Form a lazy matrix product, fusing preceding inverse actions into a solve.
+#'   An expression solve(A) * B * C evaluates B * C before one native solve.
+#'   - `other`: Right operand, retained by shared ownership.
+#'   - Returns: Deferred product or solve handle.
+#'
+#' * `$inverse_action()` -> `LinalgMatrix`
+#'
+#'   Form a deferred square inverse action, without factorisation or inversion.
+#'   Multiplication turns this into a solve; evaluating it alone forms an explicit inverse.
+#'   - Returns: Deferred inverse-action handle.
+#'
+#' * `$solve(rhs)` -> `LinalgMatrix`
+#'
+#'   Evaluate a square system with LU or a tall least-squares system with QR.
+#'   - `rhs`: Matrix of right-hand sides with rows() rows.
+#'   - Returns: Owned dense solution snapshot.
+#'
+#' * `$eval()` -> `LinalgMatrix`
+#'
+#'   Evaluate once into an owned snapshot with no deferred operands.
+#'   - Returns: Materialised matrix handle, sharing immutable storage when already concrete.
+#'
+#' * `$values()` -> `vector<numeric>`
+#'
+#'   Evaluate and copy all coefficients in row-major order.
+#'   - Returns: Dense vector, including sparse zeros.
+#'
+#' * `$text()` -> `character`
+#'
+#'   Evaluate once and produce the native capped Mat/SpMat preview.
+#'   - Returns: Shape, storage information and at most ten rows/eight columns.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::LinalgMatrix A({2, 0, 0, 4}, 2, 2), b({6, 8}, 2, 1);
+#' auto x = A.inverse_action().multiply(b);
+#' std::print("{:.0f}\n", x.values()[0]); // 3
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: If dimensions overflow or do not match values.
+#' @seealso Mat, SpMat, solve()
+#' @md
+#'
 `LinalgMatrix` <- R6::R6Class("LinalgMatrix", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1936,6 +8230,15 @@ rosetta_ref <- function(value = NULL) {
     `text` = function(...) .Call(`.rs_1149`, self, list(...))
   )
 )
+#' Right-hand side of a first-order ODE system dy/dt = f(t, y): R x R^n -> R^n.
+#'
+#' Director-enabled only in the Python binding, matching datamunge::filter::VectorFunction (the closest existing precedent -- a vector<double>-returning pure-virtual director): every other SWIG backend either has no director support at all, or -- confirmed by a real compile failure while wiring this class up in R -- cannot generate a working director wrapper for a virtual method that returns std::vector<double>. Every other binding can only use ODESolver::solve_builtin()'s fixed set of named systems, since a live user-supplied RHS requires exactly that subclassing.
+#' @section Constructor:
+#' `RHS$new()`
+#' @section Methods:
+#' * `$evaluate(t, y)` -> `vector<numeric>`
+#' @md
+#'
 `RHS` <- R6::R6Class("RHS", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1946,6 +8249,19 @@ rosetta_ref <- function(value = NULL) {
     `evaluate` = function(...) .Call(`.rs_1151`, self, list(...))
   )
 )
+#' C++ class `datamunge::ode::ODEOptions`
+#' @section Constructor:
+#' `ODEOptions$new()`
+#' @section Fields:
+#' * `$method` (`character (StepMethod)`)
+#' * `$multistep_order` (`integer`): Order (2-4) for AdamsBashforth/AdamsMoulton; ignored by every other method.
+#' * `$step_size` (`numeric`): Fixed step size for every method except RK45, where it is only the *initial* step
+#'   (subsequent steps are chosen adaptively).
+#' * `$abs_tol` (`numeric`): RK45-only: local error tolerances driving adaptive step-size control.
+#' * `$rel_tol` (`numeric`)
+#' * `$max_step` (`numeric`): RK45-only: hard cap on step size; 0 means unbounded (capped only by t_end - t_start).
+#' @md
+#'
 `ODEOptions` <- R6::R6Class("ODEOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1963,6 +8279,24 @@ rosetta_ref <- function(value = NULL) {
     `max_step` = function(value) if (missing(value)) .Call(`.rs_1163`, self) else invisible(.Call(`.rs_1164`, self, value))
   )
 )
+#' One numerically integrated trajectory: t\[i\] paired with y\[i\] (the full state vector at that time), in increasing-time order, always including both endpoints.
+#'
+#' `t` and `y` are public fields for direct C++ use, but are not exposed to language bindings (a container-typed struct *field getter* -- even a plain vector<double>, not just a nested vector<vector<double>> -- hits a swig-jse R-backend codegen bug that a same-shaped plain *method* return does not) -- time_at()/state_at()/size() are the cross-language-safe way to read it.
+#' @section Constructor:
+#' `ODESolution$new()`
+#' @section Fields:
+#' * `$steps_taken` (`integer`)
+#' * `$function_evaluations` (`integer`)
+#' @section Methods:
+#' * `$size()` -> `integer`
+#'
+#' * `$time_at(index)` -> `numeric`
+#'
+#' * `$state_at(index)` -> `vector<numeric>`
+#'
+#'   The full state vector at t\[index\].
+#' @md
+#'
 `ODESolution` <- R6::R6Class("ODESolution", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1979,6 +8313,35 @@ rosetta_ref <- function(value = NULL) {
     `function_evaluations` = function(value) if (missing(value)) .Call(`.rs_1171`, self) else invisible(.Call(`.rs_1172`, self, value))
   )
 )
+#' Numerically integrates dy/dt = f(t, y) forward from t_start to t_end (t_end must be greater than t_start; this project's "basic" ODE support does not handle backward integration) given an initial state y0, via one of: explicit Euler, the explicit midpoint rule (RK2), classical Runge-Kutta (RK4), adaptive Dormand-Prince Runge-Kutta 4(5) (RK45), explicit Adams-Bashforth (order 2-4), or Adams-Bashforth-Moulton predictor-corrector (order 2-4 -- the "implicit" linear multistep option; this project uses a PECE predictor-corrector rather than a full Newton-iteration implicit solve, avoiding the need for a Jacobian).
+#'
+#' Every multistep method self-starts using classical RK4 for its first few steps.
+#' @section Constructor:
+#' `ODESolver$new(options = ODEOptions$new())`
+#'
+#' * `options` (`ODEOptions`)
+#' @section Methods:
+#' * `$solve(rhs, y0, t_start, t_end)` -> `ODESolution`
+#'
+#' * `$solve_builtin(system, params, y0, t_start, t_end)` -> `ODESolution`
+#'
+#'   Same as solve(), but the RHS is one of a fixed set of named systems instead of a
+#'   live user-supplied one -- the only way every language binding (not just the ones
+#'   with SWIG director support) can use this solver. `params` is interpreted
+#'   positionally per system (missing entries fall back to the defaults below):
+#'   - "exponential_decay": dy/dt = -k y.                     params = \{k=1\}, y0 size 1.
+#'   - "logistic_growth":   dy/dt = r y (1 - y/K).            params = \{r=1, K=1\}, y0 size 1.
+#'   - "harmonic_oscillator": (x,v), dx/dt=v, dv/dt=-omega^2 x. params = \{omega=1\}, y0 size 2.
+#'   - "van_der_pol":       (x,v), dx/dt=v, dv/dt=mu(1-x^2)v-x. params = \{mu=1\}, y0 size 2.
+#'   - "lorenz": (x,y,z), the classic chaotic system.         params = \{sigma=10, rho=28, beta=8/3\}, y0 size 3.
+#'     Throws std::invalid_argument for an unknown system name.
+#'
+#' * `$options()` -> `ODEOptions`
+#'
+#'   The options this ODESolver was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `ODESolver` <- R6::R6Class("ODESolver", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -1991,6 +8354,22 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1176`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::ACOROptions`
+#' @section Constructor:
+#' `ACOROptions$new()`
+#' @section Fields:
+#' * `$archive_size` (`integer`): k: number of solutions kept in the archive.
+#' * `$samples_per_iteration` (`integer`): m: new ants generated each iteration.
+#' * `$locality` (`numeric`): q: locality of the search; smaller values concentrate sampling more tightly
+#'   around the best-ranked archive solutions.
+#' * `$convergence_speed` (`numeric`): xi (ξ): convergence speed; larger values widen sampling around each archive
+#'   solution, slowing convergence.
+#' * `$max_iterations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20 consecutive
+#'   iterations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `ACOROptions` <- R6::R6Class("ACOROptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2009,6 +8388,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1190`, self) else invisible(.Call(`.rs_1191`, self, value))
   )
 )
+#' Ant Colony Optimization for continuous domains (ACOR), Socha & Dorigo (2008).
+#'
+#' A solution archive of size k is maintained; each iteration, new ants are sampled from a Gaussian kernel mixture built from the archive (ranked by quality, so better solutions attract denser sampling), then the archive is truncated back to its k best members merged with the new ants. Derivative-free, box-constrained.
+#' @section Constructor:
+#' `ACOR$new(options = ACOROptions$new())`
+#'
+#' * `options` (`ACOROptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one member of the archive.
+#'
+#' * `$options()` -> `ACOROptions`
+#'
+#'   The options this ACOR was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `ACOR` <- R6::R6Class("ACOR", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2020,6 +8419,26 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1194`, self, list(...))
   )
 )
+#' Configuration for Adam; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `AdamOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
+#' * `$beta1` (`numeric`): First-moment decay in \[0,1). Default 0.9.
+#' * `$beta2` (`numeric`): Second-moment decay in \[0,1). Default 0.999.
+#' * `$epsilon` (`numeric`): Positive numerical offset; its root placement is specified by the method. Default 1e-8.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::AdamOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso Adam
+#' @md
+#'
 `AdamOptions` <- R6::R6Class("AdamOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2037,6 +8456,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1206`, self) else invisible(.Call(`.rs_1207`, self, value))
   )
 )
+#' Adam on the DifferentiableFunction callback interface.
+#'
+#' Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `Adam$new(options = AdamOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`AdamOptions`): Method-specific controls; defaults are listed by AdamOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run Adam from the supplied point using the configured finite budget.
+#'   Bias-corrected full-batch first and second moments, denominator sqrt(vhat)+epsilon. Tests the pre-update gradient norm after applying its update. No line search or general nonconvex convergence guarantee; O(p) reset local state.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `AdamOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::Adam optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - D. P. Kingma and J. Ba (2015), Adam: A Method for Stochastic Optimization, https://arxiv.org/abs/1412.6980
+#' @seealso AdamOptions, trace_optimize()
+#' @md
+#'
 `Adam` <- R6::R6Class("Adam", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2048,6 +8498,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1210`, self, list(...))
   )
 )
+#' Configuration for AdaGrad; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `AdaGradOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$epsilon` (`numeric`): Positive numerical offset; its root placement is specified by the method. Default 1e-8.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::AdaGradOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso AdaGrad
+#' @md
+#'
 `AdaGradOptions` <- R6::R6Class("AdaGradOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2063,6 +8531,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1218`, self) else invisible(.Call(`.rs_1219`, self, value))
   )
 )
+#' AdaGrad on the DifferentiableFunction callback interface.
+#'
+#' Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `AdaGrad$new(options = AdaGradOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`AdaGradOptions`): Method-specific controls; defaults are listed by AdaGradOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run AdaGrad from the supplied point using the configured finite budget.
+#'   Accumulates squared full gradients; divides each update by sqrt(sum+epsilon). Tests the pre-update gradient norm after applying the update. Every optimize call resets the accumulator. O(p) local storage.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `AdaGradOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::AdaGrad optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - J. Duchi, E. Hazan and Y. Singer (2011), Adaptive Subgradient Methods for Online Learning and Stochastic Optimization, https://jmlr.org/papers/v12/duchi11a.html
+#' @seealso AdaGradOptions, trace_optimize()
+#' @md
+#'
 `AdaGrad` <- R6::R6Class("AdaGrad", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2074,6 +8573,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1222`, self, list(...))
   )
 )
+#' Configuration for AdaDelta; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `AdaDeltaOptions$new()`
+#' @section Fields:
+#' * `$decay_rate` (`numeric`): Squared-history exponential decay in \[0,1). Default 0.95.
+#' * `$epsilon` (`numeric`): Positive numerical offset; its root placement is specified by the method. Default 1e-6.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::AdaDeltaOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso AdaDelta
+#' @md
+#'
 `AdaDeltaOptions` <- R6::R6Class("AdaDeltaOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2089,6 +8606,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1230`, self) else invisible(.Call(`.rs_1231`, self, value))
   )
 )
+#' AdaDelta on the DifferentiableFunction callback interface.
+#'
+#' Uses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `AdaDelta$new(options = AdaDeltaOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`AdaDeltaOptions`): Method-specific controls; defaults are listed by AdaDeltaOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run AdaDelta from the supplied point using the configured finite budget.
+#'   Uses squared-gradient and squared-update exponential averages. The update multiplies the gradient by sqrt(previous_update_average+epsilon)/sqrt(current_gradient_average+epsilon). No separate learning-rate option. Tests the gradient used after applying its update; O(p) reset local state.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `AdaDeltaOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::AdaDelta optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - M. D. Zeiler (2012), ADADELTA: An Adaptive Learning Rate Method, https://arxiv.org/abs/1212.5701
+#' @seealso AdaDeltaOptions, trace_optimize()
+#' @md
+#'
 `AdaDelta` <- R6::R6Class("AdaDelta", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2100,6 +8648,26 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1234`, self, list(...))
   )
 )
+#' Configuration for AMSGrad; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `AMSGradOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
+#' * `$beta1` (`numeric`): First-moment decay in \[0,1). Default 0.9.
+#' * `$beta2` (`numeric`): Second-moment decay in \[0,1). Default 0.999.
+#' * `$epsilon` (`numeric`): Positive numerical offset; its root placement is specified by the method. Default 1e-8.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::AMSGradOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso AMSGrad
+#' @md
+#'
 `AMSGradOptions` <- R6::R6Class("AMSGradOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2117,6 +8685,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1246`, self) else invisible(.Call(`.rs_1247`, self, value))
   )
 )
+#' AMSGrad on the DifferentiableFunction callback interface.
+#'
+#' Bias-corrected AMSGrad variant: maximises uncorrected second moments, then divides that maximum by 1-beta2^t. The corrected denominator need not be monotone, so the original uncorrected theorem is not automatically inherited. Tests the gradient used after updating; O(p) reset state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `AMSGrad$new(options = AMSGradOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`AMSGradOptions`): Method-specific controls; defaults are listed by AMSGradOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run AMSGrad from the supplied point using the configured finite budget.
+#'   Bias-corrected AMSGrad variant: maximises uncorrected second moments, then divides that maximum by 1-beta2^t. The corrected denominator need not be monotone, so the original uncorrected theorem is not automatically inherited. Tests the gradient used after updating; O(p) reset state.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `AMSGradOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::AMSGrad optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - S. Reddi, S. Kale and S. Kumar (2018), On the Convergence of Adam and Beyond, https://openreview.net/forum?id=ryQu7f-RZ
+#' @seealso AMSGradOptions, trace_optimize()
+#' @md
+#'
 `AMSGrad` <- R6::R6Class("AMSGrad", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2128,6 +8727,21 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1250`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::ArtificialBeeColonyOptions`
+#' @section Constructor:
+#' `ArtificialBeeColonyOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Number of food sources; also the number of employed bees and the number of
+#'   onlooker bees.
+#' * `$abandonment_limit` (`integer`): A food source that fails to improve for this many consecutive trials is
+#'   abandoned and replaced with a fresh random point. Zero selects the standard
+#'   heuristic default of population_size * dimension.
+#' * `$max_generations` (`integer`): One cycle == one employed-bee phase + one onlooker-bee phase (+ scout phase).
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20
+#'   consecutive generations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `ArtificialBeeColonyOptions` <- R6::R6Class("ArtificialBeeColonyOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2144,6 +8758,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1260`, self) else invisible(.Call(`.rs_1261`, self, value))
   )
 )
+#' Artificial Bee Colony (Karaboga, 2005): a swarm-intelligence method inspired by honey bee foraging.
+#'
+#' Employed bees exploit known food sources, onlooker bees probabilistically favor the fitter sources, and scout bees replace sources that have stagnated for too long. Derivative-free, box-constrained.
+#' @section Constructor:
+#' `ArtificialBeeColony$new(options = ArtificialBeeColonyOptions$new())`
+#'
+#' * `options` (`ArtificialBeeColonyOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one food source.
+#'
+#' * `$options()` -> `ArtificialBeeColonyOptions`
+#'
+#'   The options this ArtificialBeeColony was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `ArtificialBeeColony` <- R6::R6Class("ArtificialBeeColony", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2155,6 +8789,25 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1264`, self, list(...))
   )
 )
+#' Configuration for AugmentedLagrangian; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `AugmentedLagrangianOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$initial_penalty` (`numeric`): Positive initial equality penalty rho. Default 1.0.
+#' * `$max_outer_iterations` (`integer`): Maximum multiplier/barrier outer stages. Default 50.
+#' * `$inner_iterations` (`integer`): Inner updates per outer stage; for SVRG zero uses component count. Default 200.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::AugmentedLagrangianOptions o;
+#' std::print("{}\n",o.max_outer_iterations); // 50
+#' ```
+#' @seealso AugmentedLagrangian
+#' @md
+#'
 `AugmentedLagrangianOptions` <- R6::R6Class("AugmentedLagrangianOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2171,6 +8824,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1274`, self) else invisible(.Call(`.rs_1275`, self, value))
   )
 )
+#' AugmentedLagrangian on the EqualityConstrainedFunction callback interface.
+#'
+#' Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `AugmentedLagrangian$new(options = AugmentedLagrangianOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`AugmentedLagrangianOptions`): Method-specific controls; defaults are listed by AugmentedLagrangianOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run AugmentedLagrangian from the supplied point using the configured finite budget.
+#'   Uses fixed inner gradient steps on f+lambda*c+rho*||c||^2/2, capped so each displacement norm is at most one. Updates multipliers after each inner budget and doubles rho until feasibility tolerance or outer budget. No dual-stationarity test is exposed. Objective return alone is not a KKT certificate.
+#'   - `function`: Borrowed EqualityConstrainedFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `AugmentedLagrangianOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::AugmentedLagrangian optimizer;
+#' std::print("{}\n",optimizer.options().max_outer_iterations); // 50
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso AugmentedLagrangianOptions, trace_optimize()
+#' @md
+#'
 `AugmentedLagrangian` <- R6::R6Class("AugmentedLagrangian", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2182,6 +8866,28 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1278`, self, list(...))
   )
 )
+#' Surrogate/acquisition extension point for BayesianOptimization.
+#'
+#' A surrogate is refitted to all observations before every proposal. acquisition() scores a
+#' candidate point; the optimizer evaluates the objective where the score is largest.
+#' RBFGaussianProcessSurrogate is the built-in implementation.
+#' @section Constructor:
+#' `BayesianSurrogate$new()`
+#' @section Methods:
+#' * `$fit(points, values)`
+#'
+#'   Fits the surrogate to the observations so far.
+#'   - `points`: Evaluated points, one per observation.
+#'   - `values`: Objective values at `points`.
+#'
+#' * `$acquisition(point, incumbent)` -> `numeric`
+#'
+#'   Scores a candidate; larger means more worth evaluating.
+#'   - `point`: Candidate point.
+#'   - `incumbent`: Smallest objective value observed so far.
+#'   - Returns: The acquisition value.
+#' @md
+#'
 `BayesianSurrogate` <- R6::R6Class("BayesianSurrogate", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2193,6 +8899,18 @@ rosetta_ref <- function(value = NULL) {
     `acquisition` = function(...) .Call(`.rs_1281`, self, list(...))
   )
 )
+#' Settings for BayesianOptimization.
+#' @section Constructor:
+#' `BayesianOptimizationOptions$new()`
+#' @section Fields:
+#' * `$initial_samples` (`integer`): Uniform random points evaluated before the surrogate is first fitted (at least 1).
+#' * `$max_iterations` (`integer`): Surrogate-guided evaluations after the initial design.
+#' * `$seed` (`integer`): Seed of the random design and the candidate draws.
+#' * `$candidates` (`integer`): Uniform random candidates scored by the acquisition function per iteration (at least 1).
+#' * `$refine_iterations` (`integer`): Compass-search step halvings that polish the best candidate on the acquisition
+#'   surface; 0 keeps the best random candidate as it is.
+#' @md
+#'
 `BayesianOptimizationOptions` <- R6::R6Class("BayesianOptimizationOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2209,6 +8927,18 @@ rosetta_ref <- function(value = NULL) {
     `refine_iterations` = function(value) if (missing(value)) .Call(`.rs_1291`, self) else invisible(.Call(`.rs_1292`, self, value))
   )
 )
+#' Everything a BayesianOptimization::run() evaluated, in order.
+#' @section Constructor:
+#' `BayesianOptimizationResult$new()`
+#' @section Fields:
+#' * `$best_point` (`vector<numeric>`): The evaluated point with the smallest value.
+#' * `$best_value` (`numeric`): The smallest observed value.
+#' * `$points` (`vector<vector<numeric>>`): Every evaluated point: the initial design first, then one per iteration.
+#' * `$values` (`vector<numeric>`): The objective value at each point.
+#' * `$best_values` (`vector<numeric>`): Running minimum of values after each evaluation.
+#' * `$acquisition_values` (`vector<numeric>`): The acquisition value of each proposed point (one per iteration, none for the design).
+#' @md
+#'
 `BayesianOptimizationResult` <- R6::R6Class("BayesianOptimizationResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2226,6 +8956,66 @@ rosetta_ref <- function(value = NULL) {
     `acquisition_values` = function(value) if (missing(value)) .Call(`.rs_1304`, self) else invisible(.Call(`.rs_1305`, self, value))
   )
 )
+#' Minimises an expensive black-box function on a box with few evaluations.
+#'
+#' The loop is:
+#' 1. evaluate `initial_samples` points drawn uniformly in `[lower, upper]`;
+#' 2. repeat `max_iterations` times: fit the surrogate to all observations, score `candidates`
+#'   uniform random points with BayesianSurrogate::acquisition() (the incumbent being the
+#'   smallest value so far), polish the best one by compass search on the acquisition (steps
+#'   of 10% of each side, halved `refine_iterations` times, clipped to the box), and evaluate
+#'   the objective there.
+#'
+#' Only point evaluations of the objective are used, so it suits expensive simulations,
+#' experiments and hyperparameter tuning where each evaluation costs far more than the
+#' surrogate fit.
+#' @section Constructor:
+#' `BayesianOptimization$new(options = BayesianOptimizationOptions$new())`
+#'
+#' Creates the optimizer.
+#'
+#' * `options` (`BayesianOptimizationOptions`): Design size, iteration count, seed and acquisition search settings.
+#' @section Methods:
+#' * `$run(`function`, lower, upper, surrogate)` -> `BayesianOptimizationResult`
+#'
+#'   Runs the loop and records every evaluation.
+#'   - `function`: Objective to minimise.
+#'   - `lower`: Lower corner of the box.
+#'   - `upper`: Upper corner of the box (each entry larger than in `lower`).
+#'   - `surrogate`: Surrogate refitted before every proposal.
+#'   - Returns: The evaluations and the best point.
+#'
+#' * `$optimize(`function`, coordinates, lower, upper, surrogate)` -> `numeric`
+#'
+#'   Runs the loop and returns only the best value.
+#'   - `function`: Objective to minimise.
+#'   - `coordinates`: Output: the best point (its length must equal the bounds').
+#'   - `lower`: Lower corner of the box.
+#'   - `upper`: Upper corner of the box.
+#'   - `surrogate`: Surrogate refitted before every proposal.
+#'   - Returns: The smallest observed value.
+#'
+#' * `$options()` -> `BayesianOptimizationOptions`
+#'
+#'   The options this BayesianOptimization was configured with.
+#'   - Returns: The stored options.
+#' @section Examples (C++):
+#' ```cpp
+#' struct Bowl : dm::optim::ArbitraryFunction {
+#'     double evaluate(const std::vector<double>& x) override { return (x[0] - 1.0) * (x[0] - 1.0); }
+#' } bowl;
+#' dm::optim::RBFGaussianProcessSurrogate gp({.fit_hyperparameters = true});
+#' const auto result = dm::optim::BayesianOptimization({.initial_samples = 4, .max_iterations = 10})
+#'                         .run(bowl, {-3.0}, {3.0}, gp);
+#' std::print("{:.3f} after {} evaluations\n", result.best_point[0], result.values.size());  // 1.002 after 14 evaluations
+#' ```
+#' @references - D. R. Jones, M. Schonlau and W. J. Welch (1998). "Efficient global optimization of expensive
+#'   black-box functions". Journal of Global Optimization 13, 455–492.
+#' - B. Shahriari et al. (2016). "Taking the human out of the loop: a review of Bayesian
+#'   optimization". Proceedings of the IEEE 104(1), 148–175.
+#' @seealso RBFGaussianProcessSurrogate, expected_improvement()
+#' @md
+#'
 `BayesianOptimization` <- R6::R6Class("BayesianOptimization", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2238,6 +9028,25 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1309`, self, list(...))
   )
 )
+#' Configuration for ConjugateGradient; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `ConjugateGradientOptions$new()`
+#' @section Fields:
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 1000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$armijo_c1` (`numeric`): Sufficient-decrease fraction in (0,1). Default 1e-4.
+#' * `$backtracking_factor` (`numeric`): Trial-step multiplier in (0,1). Default 0.5.
+#' * `$max_line_search_trials` (`integer`): Maximum candidate line-search trials per update. Default 30.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::ConjugateGradientOptions o;
+#' std::print("{}\n",o.max_iterations); // 1000
+#' ```
+#' @seealso ConjugateGradient
+#' @md
+#'
 `ConjugateGradientOptions` <- R6::R6Class("ConjugateGradientOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2254,6 +9063,37 @@ rosetta_ref <- function(value = NULL) {
     `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1319`, self) else invisible(.Call(`.rs_1320`, self, value))
   )
 )
+#' ConjugateGradient on the DifferentiableFunction callback interface.
+#'
+#' Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `ConjugateGradient$new(options = ConjugateGradientOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`ConjugateGradientOptions`): Method-specific controls; defaults are listed by ConjugateGradientOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run ConjugateGradient from the supplied point using the configured finite budget.
+#'   Nonlinear Polak-Ribiere-plus directions with negative beta truncated to zero, periodic/descent restarts and an Armijo line search. It is not linear CG with exact line minimisation and does not imply termination in p steps. Returns when gradient/change/search conditions stop progress.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `ConjugateGradientOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::ConjugateGradient optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 1000
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso ConjugateGradientOptions, trace_optimize()
+#' @md
+#'
 `ConjugateGradient` <- R6::R6Class("ConjugateGradient", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2265,6 +9105,25 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1323`, self, list(...))
   )
 )
+#' Configuration for CMAES; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `CMAESOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Population size; CMA-ES zero selects its dimension-based default. Default 0.
+#' * `$initial_step_size` (`numeric`): Positive initial CMA Gaussian search SD. Default 0.5.
+#' * `$max_generations` (`integer`): Maximum population generations. Default 500.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::CMAESOptions o;
+#' std::print("{}\n",o.max_generations); // 500
+#' ```
+#' @seealso CMAES
+#' @md
+#'
 `CMAESOptions` <- R6::R6Class("CMAESOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2281,6 +9140,37 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1333`, self) else invisible(.Call(`.rs_1334`, self, value))
   )
 )
+#' CMAES on the ArbitraryFunction callback interface.
+#'
+#' Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `CMAES$new(options = CMAESOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`CMAESOptions`): Method-specific controls; defaults are listed by CMAESOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run CMAES from the supplied point using the configured finite budget.
+#'   Unbounded covariance-adaptation evolution strategy with weighted elites, evolution paths and global step-size adaptation. Default offspring count is 4+floor(3*log(p)). Covariance eigensolve is dense with numerical eigenvalue floors. Stops on search-scale/axis tolerance or generation budget; stochastic results depend on seed and population, not a global certificate.
+#'   - `function`: Borrowed ArbitraryFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `CMAESOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::CMAES optimizer;
+#' std::print("{}\n",optimizer.options().max_generations); // 500
+#' ```
+#' @references - N. Hansen and A. Ostermeier (2001), Completely Derandomized Self-Adaptation in Evolution Strategies, https://doi.org/10.1162/106365601750190398
+#' @seealso CMAESOptions, trace_optimize()
+#' @md
+#'
 `CMAES` <- R6::R6Class("CMAES", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2292,6 +9182,26 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1337`, self, list(...))
   )
 )
+#' Configuration for CoordinateDescent; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `CoordinateDescentOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 1.0.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 1000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$armijo_c1` (`numeric`): Sufficient-decrease fraction in (0,1). Default 1e-4.
+#' * `$backtracking_factor` (`numeric`): Trial-step multiplier in (0,1). Default 0.5.
+#' * `$max_line_search_trials` (`integer`): Maximum candidate line-search trials per update. Default 30.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::CoordinateDescentOptions o;
+#' std::print("{}\n",o.max_iterations); // 1000
+#' ```
+#' @seealso CoordinateDescent
+#' @md
+#'
 `CoordinateDescentOptions` <- R6::R6Class("CoordinateDescentOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2309,6 +9219,37 @@ rosetta_ref <- function(value = NULL) {
     `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1349`, self) else invisible(.Call(`.rs_1350`, self, value))
   )
 )
+#' CoordinateDescent on the DifferentiableFunction callback interface.
+#'
+#' Each epoch visits coordinates in index order. Every partial update requests a full gradient and an Armijo-backtracked value sequence; this is not exact one-dimensional minimisation. An exhausted search restores that coordinate. Stops on the full end-of-epoch gradient norm. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `CoordinateDescent$new(options = CoordinateDescentOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`CoordinateDescentOptions`): Method-specific controls; defaults are listed by CoordinateDescentOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run CoordinateDescent from the supplied point using the configured finite budget.
+#'   Each epoch visits coordinates in index order. Every partial update requests a full gradient and an Armijo-backtracked value sequence; this is not exact one-dimensional minimisation. An exhausted search restores that coordinate. Stops on the full end-of-epoch gradient norm.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `CoordinateDescentOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::CoordinateDescent optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 1000
+#' ```
+#' @references - S. J. Wright (2015), Coordinate descent algorithms, https://doi.org/10.1007/s10107-015-0892-3. This implementation uses the stated full-gradient coordinate/block steps.
+#' @seealso CoordinateDescentOptions, trace_optimize()
+#' @md
+#'
 `CoordinateDescent` <- R6::R6Class("CoordinateDescent", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2320,6 +9261,23 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1353`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::CrossEntropyMethodOptions`
+#' @section Constructor:
+#' `CrossEntropyMethodOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Candidates sampled from the search distribution each iteration.
+#' * `$elite_ratio` (`numeric`): Fraction of population_size kept as the elite set;
+#'   elite_count = max(2, ceil(population_size * elite_ratio)).
+#' * `$initial_std_dev` (`numeric`): Per-dimension standard deviation of the initial sampling distribution.
+#' * `$smoothing` (`numeric`): Exponential smoothing factor in (0, 1\] blending the new elite statistics with the
+#'   previous generation's: new = smoothing * elite_stat + (1 - smoothing) * old.
+#'   smoothing == 1 means full replacement each iteration (no smoothing at all).
+#' * `$max_iterations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20 consecutive
+#'   iterations, or once every per-dimension standard deviation has collapsed below it.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `CrossEntropyMethodOptions` <- R6::R6Class("CrossEntropyMethodOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2338,6 +9296,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1367`, self) else invisible(.Call(`.rs_1368`, self, value))
   )
 )
+#' The Cross-Entropy Method (CEM) for derivative-free continuous optimization on an ArbitraryFunction within a box constraint.
+#'
+#' A diagonal-covariance Gaussian search distribution is repeatedly refit from the best ("elite") fraction of each generation's samples, with the new distribution parameters exponentially smoothed against the previous generation's for stability (Rubinstein 1997; Rubinstein & Kroese 2004).
+#' @section Constructor:
+#' `CrossEntropyMethod$new(options = CrossEntropyMethodOptions$new())`
+#'
+#' * `options` (`CrossEntropyMethodOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed the initial distribution mean.
+#'
+#' * `$options()` -> `CrossEntropyMethodOptions`
+#'
+#'   The options this CrossEntropyMethod was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `CrossEntropyMethod` <- R6::R6Class("CrossEntropyMethod", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2349,6 +9327,28 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1371`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::CuckooSearchOptions`
+#' @section Constructor:
+#' `CuckooSearchOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Number of nests (candidate solutions) in the population.
+#' * `$discovery_rate` (`numeric`): pa: fraction of the worst nests discovered/abandoned each iteration. Yang & Deb's
+#'   original paper headlines 0.25, but this implementation's "replace a randomly
+#'   chosen comparison nest" Levy-flight rule (faithful to the paper) homogenizes the
+#'   population fast enough at pa=0.25 that convergence quality becomes sharply
+#'   seed-dependent on smooth objectives (verified: only 6/30 seeds converged well at
+#'   pa=0.25, population_size=25 on a simple 3D sphere). 0.4 -- still within the
+#'   commonly-used literature range -- injects enough fresh diversity each iteration to
+#'   fix this at the default population size (verified: 30/30 seeds).
+#' * `$levy_beta` (`numeric`): Levy flight stability index, in (0, 2\]; 1.5 is the standard choice in the
+#'   original paper.
+#' * `$step_scale` (`numeric`): alpha: overall Levy step-size multiplier.
+#' * `$max_iterations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20
+#'   consecutive iterations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `CuckooSearchOptions` <- R6::R6Class("CuckooSearchOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2367,6 +9367,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1385`, self) else invisible(.Call(`.rs_1386`, self, value))
   )
 )
+#' Cuckoo Search (Yang & Deb, 2009) on an ArbitraryFunction within a box constraint: a population of nests is perturbed by heavy-tailed Levy flights (via Mantegna's algorithm) and a fraction of the worst nests is abandoned and rebuilt each iteration, mimicking brood parasitism.
+#'
+#' Derivative-free.
+#' @section Constructor:
+#' `CuckooSearch$new(options = CuckooSearchOptions$new())`
+#'
+#' * `options` (`CuckooSearchOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one nest of the population.
+#'
+#' * `$options()` -> `CuckooSearchOptions`
+#'
+#'   The options this CuckooSearch was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `CuckooSearch` <- R6::R6Class("CuckooSearch", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2378,6 +9398,28 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1389`, self, list(...))
   )
 )
+#' Configuration for DifferentialEvolution; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `DEOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Population size; CMA-ES zero selects its dimension-based default. Default 50.
+#' * `$max_generations` (`integer`): Maximum population generations. Default 500.
+#' * `$differential_weight` (`numeric`): Differential mutation scale F. Default 0.8.
+#' * `$crossover_rate` (`numeric`): Crossover probability CR/per-gene inclusion as defined by the method. Default 0.9.
+#' * `$mutation_strategy` (`character`): rand1, best1, current_to_best1 or rand2. Default "rand1".
+#' * `$crossover_strategy` (`character`): DE binomial/exponential or GA single_point/uniform/blend. Default "binomial".
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-10.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::DEOptions o;
+#' std::print("{}\n",o.max_generations); // 500
+#' ```
+#' @seealso DifferentialEvolution
+#' @md
+#'
 `DEOptions` <- R6::R6Class("DEOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2397,6 +9439,39 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1405`, self) else invisible(.Call(`.rs_1406`, self, value))
   )
 )
+#' DifferentialEvolution on the ArbitraryFunction callback interface.
+#'
+#' Box-constrained differential mutation/crossover with greedy trial replacement. Supports the declared rand1/best1/current_to_best1/rand2 and binomial/exponential strategies. Coordinates seed one clamped member; more than twenty small-best-improvement generations can stop the run. O(population_size*p) storage; no global certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `DifferentialEvolution$new(options = DEOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`DEOptions`): Method-specific controls; defaults are listed by DEOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Run DifferentialEvolution from the supplied point using the configured finite budget.
+#'   Box-constrained differential mutation/crossover with greedy trial replacement. Supports the declared rand1/best1/current_to_best1/rand2 and binomial/exponential strategies. Coordinates seed one clamped member; more than twenty small-best-improvement generations can stop the run. O(population_size*p) storage; no global certificate.
+#'   - `function`: Borrowed ArbitraryFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - `lower_bound`: Matching finite inclusive lower box limits.
+#'   - `upper_bound`: Matching finite inclusive upper limits, greater than lower limits.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `DEOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::DifferentialEvolution optimizer;
+#' std::print("{}\n",optimizer.options().max_generations); // 500
+#' ```
+#' @references - R. Storn and K. Price (1997), Differential Evolution - A Simple and Efficient Heuristic for global Optimization over Continuous Spaces, https://doi.org/10.1023/A:1008202821328
+#' @seealso DEOptions, trace_optimize()
+#' @md
+#'
 `DifferentialEvolution` <- R6::R6Class("DifferentialEvolution", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2408,6 +9483,23 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1409`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::EstimationOfDistributionOptions`
+#' @section Constructor:
+#' `EstimationOfDistributionOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Lambda: candidates sampled from the Gaussian model each generation.
+#' * `$selection_ratio` (`numeric`): Fraction of population_size kept as "elite" each generation to re-estimate the
+#'   Gaussian from; mu = max(2, ceil(population_size * selection_ratio)).
+#' * `$initial_std_dev` (`numeric`): Per-dimension standard deviation of the initial diagonal covariance.
+#' * `$covariance_regularization` (`numeric`): Diagonal regularization added to the re-estimated covariance every generation, to
+#'   keep it numerically well-conditioned (needed whenever mu <= dimension, or whenever
+#'   the elite set happens to be nearly coplanar).
+#' * `$max_generations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20 consecutive
+#'   generations, or once the covariance has collapsed to near-zero.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `EstimationOfDistributionOptions` <- R6::R6Class("EstimationOfDistributionOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2426,6 +9518,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1423`, self) else invisible(.Call(`.rs_1424`, self, value))
   )
 )
+#' Estimation of Distribution Algorithm (EMNA-style, full-covariance Gaussian) on an ArbitraryFunction within a box constraint.
+#'
+#' Unlike explicit-operator methods (GA, DE) or covariance-adapting methods (CMA-ES), EMNA builds an explicit multivariate Gaussian model of where the good solutions are each generation -- re-estimating its mean and covariance from scratch as the empirical mean/covariance of the current generation's elite, with no smoothing or evolution paths -- and samples the next generation directly from that model. Derivative-free.
+#' @section Constructor:
+#' `EstimationOfDistribution$new(options = EstimationOfDistributionOptions$new())`
+#'
+#' * `options` (`EstimationOfDistributionOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed the initial Gaussian mean.
+#'
+#' * `$options()` -> `EstimationOfDistributionOptions`
+#'
+#'   The options this EstimationOfDistribution was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `EstimationOfDistribution` <- R6::R6Class("EstimationOfDistribution", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2437,6 +9549,22 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1427`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::EvolutionStrategyOptions`
+#' @section Constructor:
+#' `EvolutionStrategyOptions$new()`
+#' @section Fields:
+#' * `$mu` (`integer`): mu: number of parents.
+#' * `$offspring_size` (`integer`): lambda: number of offspring generated per generation.
+#' * `$strategy` (`character`): One of "comma" (next generation's parents are the best mu of the offspring only --
+#'   the literature-recommended default, since it avoids getting stuck on a
+#'   lucky-but-misleading step size) or "plus" (next generation's parents are the best
+#'   mu of parents union offspring).
+#' * `$initial_step_size` (`numeric`): Initial global self-adapting mutation step size (sigma).
+#' * `$max_generations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20 consecutive generations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `EvolutionStrategyOptions` <- R6::R6Class("EvolutionStrategyOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2455,6 +9583,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1441`, self) else invisible(.Call(`.rs_1442`, self, value))
   )
 )
+#' Classic self-adaptive (mu, lambda) / (mu+lambda) Evolution Strategy with a single global step size mutated log-normally each generation (Rechenberg 1973, Schwefel 1981).
+#'
+#' This is the pre-CMA-ES form -- no covariance matrix adaptation -- and is the foundational lineage CMAES (also in this module) descends from. Derivative-free, box-constrained.
+#' @section Constructor:
+#' `EvolutionStrategy$new(options = EvolutionStrategyOptions$new())`
+#'
+#' * `options` (`EvolutionStrategyOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one parent of the population.
+#'
+#' * `$options()` -> `EvolutionStrategyOptions`
+#'
+#'   The options this EvolutionStrategy was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `EvolutionStrategy` <- R6::R6Class("EvolutionStrategy", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2466,6 +9614,22 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1445`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::FireflyAlgorithmOptions`
+#' @section Constructor:
+#' `FireflyAlgorithmOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`)
+#' * `$attractiveness_at_zero` (`numeric`): beta0: attractiveness at distance 0.
+#' * `$light_absorption` (`numeric`): gamma: controls how fast attractiveness decays with distance.
+#' * `$randomization_step` (`numeric`): alpha: scale of the per-move random walk term.
+#' * `$randomization_decay` (`numeric`): alpha is multiplied by this every iteration (geometric decay -- exploration
+#'   shrinks over time).
+#' * `$max_iterations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20
+#'   consecutive iterations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `FireflyAlgorithmOptions` <- R6::R6Class("FireflyAlgorithmOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2485,6 +9649,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1461`, self) else invisible(.Call(`.rs_1462`, self, value))
   )
 )
+#' The Firefly Algorithm (Yang, 2008/2009): a population of fireflies is pairwise attracted toward brighter (better) neighbors, with attractiveness decaying with squared distance and a shrinking random-walk term for exploration.
+#'
+#' Derivative-free, O(n^2) per iteration in the population size.
+#' @section Constructor:
+#' `FireflyAlgorithm$new(options = FireflyAlgorithmOptions$new())`
+#'
+#' * `options` (`FireflyAlgorithmOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one member of the population.
+#'
+#' * `$options()` -> `FireflyAlgorithmOptions`
+#'
+#'   The options this FireflyAlgorithm was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `FireflyAlgorithm` <- R6::R6Class("FireflyAlgorithm", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2496,6 +9680,23 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1465`, self, list(...))
   )
 )
+#' Configuration for FISTA; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `FISTAOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::FISTAOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso FISTA
+#' @md
+#'
 `FISTAOptions` <- R6::R6Class("FISTAOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2510,6 +9711,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1471`, self) else invisible(.Call(`.rs_1472`, self, value))
   )
 )
+#' FISTA on the ProximalFunction callback interface.
+#'
+#' Classical t recurrence (1+sqrt(1+4*t^2))/2 and extrapolated gradient points, followed by the supplied proximal map. Stops on successive accepted-coordinate displacement. No adaptive restart, backtracking or monotonicity safeguard. Supply the correct proximal dimensions and a rate at most 1/L for the standard convex bound. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `FISTA$new(options = FISTAOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`FISTAOptions`): Method-specific controls; defaults are listed by FISTAOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run FISTA from the supplied point using the configured finite budget.
+#'   Classical t recurrence (1+sqrt(1+4*t^2))/2 and extrapolated gradient points, followed by the supplied proximal map. Stops on successive accepted-coordinate displacement. No adaptive restart, backtracking or monotonicity safeguard. Supply the correct proximal dimensions and a rate at most 1/L for the standard convex bound.
+#'   - `function`: Borrowed ProximalFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `FISTAOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::FISTA optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - A. Beck and M. Teboulle (2009), A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems, https://doi.org/10.1137/080716542
+#' @seealso FISTAOptions, trace_optimize()
+#' @md
+#'
 `FISTA` <- R6::R6Class("FISTA", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2521,6 +9753,33 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1475`, self, list(...))
   )
 )
+#' Configuration for GeneticAlgorithm; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `GAOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Population size; CMA-ES zero selects its dimension-based default. Default 100.
+#' * `$max_generations` (`integer`): Maximum population generations. Default 500.
+#' * `$crossover_rate` (`numeric`): Crossover probability CR/per-gene inclusion as defined by the method. Default 0.8.
+#' * `$mutation_rate` (`numeric`): Per-gene Gaussian mutation probability. Default 0.1.
+#' * `$mutation_std_dev` (`numeric`): Mutation SD as a fraction of the gene bounds width. Default 0.1.
+#' * `$selection_strategy` (`character`): tournament, roulette or rank. Default "tournament".
+#' * `$tournament_size` (`integer`): Tournament candidate count. Default 3.
+#' * `$crossover_strategy` (`character`): DE binomial/exponential or GA single_point/uniform/blend. Default "blend".
+#' * `$blend_alpha` (`numeric`): BLX-alpha expansion for blend crossover. Default 0.5.
+#' * `$elitism` (`logical`): Preserve elite population members. Default true.
+#' * `$elite_count` (`integer`): Number of members retained under elitism. Default 2.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-10.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::GAOptions o;
+#' std::print("{}\n",o.max_generations); // 500
+#' ```
+#' @seealso GeneticAlgorithm
+#' @md
+#'
 `GAOptions` <- R6::R6Class("GAOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2545,6 +9804,39 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1501`, self) else invisible(.Call(`.rs_1502`, self, value))
   )
 )
+#' GeneticAlgorithm on the ArbitraryFunction callback interface.
+#'
+#' Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `GeneticAlgorithm$new(options = GAOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`GAOptions`): Method-specific controls; defaults are listed by GAOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Run GeneticAlgorithm from the supplied point using the configured finite budget.
+#'   Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+#'   - `function`: Borrowed ArbitraryFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - `lower_bound`: Matching finite inclusive lower box limits.
+#'   - `upper_bound`: Matching finite inclusive upper limits, greater than lower limits.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `GAOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::GeneticAlgorithm optimizer;
+#' std::print("{}\n",optimizer.options().max_generations); // 500
+#' ```
+#' @references - J. H. Holland (1992 reprint), Adaptation in Natural and Artificial Systems, MIT Press, https://mitpress.mit.edu/9780262581110/adaptation-in-natural-and-artificial-systems/. This implementation uses real-valued operators, as specified above, rather than binary chromosomes.
+#' @seealso GAOptions, trace_optimize()
+#' @md
+#'
 `GeneticAlgorithm` <- R6::R6Class("GeneticAlgorithm", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2556,6 +9848,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1505`, self, list(...))
   )
 )
+#' Configuration for GradientDescent; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `GradientDescentOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$momentum` (`numeric`): Fixed momentum coefficient; zero removes velocity carryover. Default 0.0.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::GradientDescentOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso GradientDescent
+#' @md
+#'
 `GradientDescentOptions` <- R6::R6Class("GradientDescentOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2571,6 +9881,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1513`, self) else invisible(.Call(`.rs_1514`, self, value))
   )
 )
+#' GradientDescent on the DifferentiableFunction callback interface.
+#'
+#' Velocity is momentum*velocity-step_size*gradient. Updates before testing the gradient just used or absolute objective change. Equal objective values can stop an oscillation away from stationarity. O(p) reset velocity state; no line search. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `GradientDescent$new(options = GradientDescentOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`GradientDescentOptions`): Method-specific controls; defaults are listed by GradientDescentOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run GradientDescent from the supplied point using the configured finite budget.
+#'   Velocity is momentum*velocity-step_size*gradient. Updates before testing the gradient just used or absolute objective change. Equal objective values can stop an oscillation away from stationarity. O(p) reset velocity state; no line search.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `GradientDescentOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::GradientDescent optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso GradientDescentOptions, trace_optimize()
+#' @md
+#'
 `GradientDescent` <- R6::R6Class("GradientDescent", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2582,6 +9923,16 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1517`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::GreyWolfOptimizerOptions`
+#' @section Constructor:
+#' `GreyWolfOptimizerOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`)
+#' * `$max_iterations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20 consecutive iterations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `GreyWolfOptimizerOptions` <- R6::R6Class("GreyWolfOptimizerOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2597,6 +9948,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1525`, self) else invisible(.Call(`.rs_1526`, self, value))
   )
 )
+#' Grey Wolf Optimizer (GWO) on an ArbitraryFunction within a box constraint: a population of wolves is guided each iteration by its three best members (alpha, beta, delta), moving every wolf to the elementwise average of three independently randomized pulls toward those leaders.
+#'
+#' Derivative-free. Mirjalili, Mirjalili & Lewis (2014), "Grey wolf optimizer", Advances in Engineering Software, 69, 46-61.
+#' @section Constructor:
+#' `GreyWolfOptimizer$new(options = GreyWolfOptimizerOptions$new())`
+#'
+#' * `options` (`GreyWolfOptimizerOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one wolf of the population.
+#'
+#' * `$options()` -> `GreyWolfOptimizerOptions`
+#'
+#'   The options this GreyWolfOptimizer was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `GreyWolfOptimizer` <- R6::R6Class("GreyWolfOptimizer", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2608,6 +9979,23 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1529`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::HarmonySearchOptions`
+#' @section Constructor:
+#' `HarmonySearchOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): HMS: harmony memory size.
+#' * `$memory_consideration_rate` (`numeric`): HMCR: probability a dimension is drawn from the harmony memory rather than
+#'   uniformly at random, in (0, 1).
+#' * `$pitch_adjustment_rate` (`numeric`): PAR: probability a memory-considered dimension is further pitch-adjusted, in \[0, 1\].
+#' * `$bandwidth_fraction` (`numeric`): Pitch adjustment bandwidth, as a fraction of each dimension's \[lower, upper\] range.
+#' * `$max_iterations` (`integer`): HS improvises exactly one new candidate per iteration (unlike generational methods
+#'   that evaluate population_size candidates per generation), so it typically needs a
+#'   much larger iteration budget for a comparable total evaluation count.
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for
+#'   20 * population_size consecutive iterations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `HarmonySearchOptions` <- R6::R6Class("HarmonySearchOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2626,6 +10014,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1543`, self) else invisible(.Call(`.rs_1544`, self, value))
   )
 )
+#' Harmony search on an ArbitraryFunction within a box constraint: a fixed-size harmony memory of candidate solutions is improvised one new vector at a time, mixing memory consideration, pitch adjustment, and random selection per dimension, with greedy replacement of the worst memory member.
+#'
+#' Derivative-free.
+#' @section Constructor:
+#' `HarmonySearch$new(options = HarmonySearchOptions$new())`
+#'
+#' * `options` (`HarmonySearchOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one member of the harmony memory.
+#'
+#' * `$options()` -> `HarmonySearchOptions`
+#'
+#'   The options this HarmonySearch was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `HarmonySearch` <- R6::R6Class("HarmonySearch", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2637,6 +10045,25 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1547`, self, list(...))
   )
 )
+#' Configuration for InteriorPoint; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `InteriorPointOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$initial_barrier` (`numeric`): Positive starting log-barrier weight mu. Default 1.0.
+#' * `$barrier_decay` (`numeric`): Barrier multiplier after each inner budget. Default 0.1.
+#' * `$max_outer_iterations` (`integer`): Maximum multiplier/barrier outer stages. Default 20.
+#' * `$inner_iterations` (`integer`): Inner updates per outer stage; for SVRG zero uses component count. Default 200.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::InteriorPointOptions o;
+#' std::print("{}\n",o.max_outer_iterations); // 20
+#' ```
+#' @seealso InteriorPoint
+#' @md
+#'
 `InteriorPointOptions` <- R6::R6Class("InteriorPointOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2653,6 +10080,37 @@ rosetta_ref <- function(value = NULL) {
     `inner_iterations` = function(value) if (missing(value)) .Call(`.rs_1557`, self) else invisible(.Call(`.rs_1558`, self, value))
   )
 )
+#' InteriorPoint on the InequalityConstrainedFunction callback interface.
+#'
+#' Gradient steps on f-mu*sum(log(-c)) with c<0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `InteriorPoint$new(options = InteriorPointOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`InteriorPointOptions`): Method-specific controls; defaults are listed by InteriorPointOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run InteriorPoint from the supplied point using the configured finite budget.
+#'   Gradient steps on f-mu*sum(log(-c)) with c<0. Backtracks only for strict feasibility, not barrier-objective decrease, then decays mu after each fixed inner budget. Requires a strictly feasible start and can fail later when feasible steps underflow. No KKT or barrier-stationarity stop test; no phase-I feasibility search.
+#'   - `function`: Borrowed InequalityConstrainedFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `InteriorPointOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::InteriorPoint optimizer;
+#' std::print("{}\n",optimizer.options().max_outer_iterations); // 20
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso InteriorPointOptions, trace_optimize()
+#' @md
+#'
 `InteriorPoint` <- R6::R6Class("InteriorPoint", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2664,6 +10122,26 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1561`, self, list(...))
   )
 )
+#' Configuration for LBFGS; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `LBFGSOptions$new()`
+#' @section Fields:
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 500.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$history_size` (`integer`): Positive maximum stored curvature-pair count. Default 10.
+#' * `$armijo_c1` (`numeric`): Sufficient-decrease fraction in (0,1). Default 1e-4.
+#' * `$wolfe_c2` (`numeric`): Weak-Wolfe curvature fraction. Default 0.9.
+#' * `$max_line_search_trials` (`integer`): Maximum candidate line-search trials per update. Default 50.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::LBFGSOptions o;
+#' std::print("{}\n",o.max_iterations); // 500
+#' ```
+#' @seealso LBFGS
+#' @md
+#'
 `LBFGSOptions` <- R6::R6Class("LBFGSOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2681,6 +10159,37 @@ rosetta_ref <- function(value = NULL) {
     `max_line_search_trials` = function(value) if (missing(value)) .Call(`.rs_1573`, self) else invisible(.Call(`.rs_1574`, self, value))
   )
 )
+#' LBFGS on the DifferentiableFunction callback interface.
+#'
+#' Limited-memory BFGS with weak-Wolfe bracket/bisection search, descent fallback and positive-curvature pair retention. If the search budget ends, a previous Armijo step can be used; if none was found, returns. Tests gradient norm or absolute objective change. O(history_size*p) state; history_size must be positive. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `LBFGS$new(options = LBFGSOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`LBFGSOptions`): Method-specific controls; defaults are listed by LBFGSOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run LBFGS from the supplied point using the configured finite budget.
+#'   Limited-memory BFGS with weak-Wolfe bracket/bisection search, descent fallback and positive-curvature pair retention. If the search budget ends, a previous Armijo step can be used; if none was found, returns. Tests gradient norm or absolute objective change. O(history_size*p) state; history_size must be positive.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `LBFGSOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::LBFGS optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 500
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso LBFGSOptions, trace_optimize()
+#' @md
+#'
 `LBFGS` <- R6::R6Class("LBFGS", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2692,6 +10201,23 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1577`, self, list(...))
   )
 )
+#' Configuration for LevenbergMarquardt; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `LevenbergMarquardtOptions$new()`
+#' @section Fields:
+#' * `$initial_damping` (`numeric`): Positive initial LM diagonal shift. Default 1e-3.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 200.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::LevenbergMarquardtOptions o;
+#' std::print("{}\n",o.max_iterations); // 200
+#' ```
+#' @seealso LevenbergMarquardt
+#' @md
+#'
 `LevenbergMarquardtOptions` <- R6::R6Class("LevenbergMarquardtOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2706,6 +10232,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1583`, self) else invisible(.Call(`.rs_1584`, self, value))
   )
 )
+#' LevenbergMarquardt on the ResidualFunction callback interface.
+#'
+#' Forms J transpose J plus scalar damping*I and solves by unpivoted elimination. Accepts only strict reductions of half residual SSE, multiplying damping by .3 on acceptance and 10 on rejection. Tests proposed step norm even after rejection. A small rejected step is not a gradient certificate; no parameter constraints. O(np^2+p^3) work. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `LevenbergMarquardt$new(options = LevenbergMarquardtOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`LevenbergMarquardtOptions`): Method-specific controls; defaults are listed by LevenbergMarquardtOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run LevenbergMarquardt from the supplied point using the configured finite budget.
+#'   Forms J transpose J plus scalar damping*I and solves by unpivoted elimination. Accepts only strict reductions of half residual SSE, multiplying damping by .3 on acceptance and 10 on rejection. Tests proposed step norm even after rejection. A small rejected step is not a gradient certificate; no parameter constraints. O(np^2+p^3) work.
+#'   - `function`: Borrowed ResidualFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates (half residual SSE); not a stop-status code.
+#'
+#' * `$options()` -> `LevenbergMarquardtOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::LevenbergMarquardt optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 200
+#' ```
+#' @references - K. Levenberg (1944), A Method for the Solution of Certain Non-Linear Problems in Least Squares, https://doi.org/10.1090/qam/10666; D. W. Marquardt (1963), An Algorithm for Least-Squares Estimation of Nonlinear Parameters, https://doi.org/10.1137/0111030
+#' @seealso LevenbergMarquardtOptions, trace_optimize()
+#' @md
+#'
 `LevenbergMarquardt` <- R6::R6Class("LevenbergMarquardt", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2717,6 +10274,27 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1587`, self, list(...))
   )
 )
+#' Configuration for NelderMead; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `NelderMeadOptions$new()`
+#' @section Fields:
+#' * `$initial_simplex_scale` (`numeric`): Per-coordinate displacement forming the initial simplex. Default 0.05.
+#' * `$reflection` (`numeric`): Simplex reflection coefficient. Default 1.0.
+#' * `$expansion` (`numeric`): Simplex expansion coefficient. Default 2.0.
+#' * `$contraction` (`numeric`): Simplex contraction coefficient. Default 0.5.
+#' * `$shrink` (`numeric`): Simplex shrink fraction. Default 0.5.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 2000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::NelderMeadOptions o;
+#' std::print("{}\n",o.max_iterations); // 2000
+#' ```
+#' @seealso NelderMead
+#' @md
+#'
 `NelderMeadOptions` <- R6::R6Class("NelderMeadOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2735,6 +10313,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1601`, self) else invisible(.Call(`.rs_1602`, self, value))
   )
 )
+#' NelderMead on the ArbitraryFunction callback interface.
+#'
+#' Local simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `NelderMead$new(options = NelderMeadOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`NelderMeadOptions`): Method-specific controls; defaults are listed by NelderMeadOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run NelderMead from the supplied point using the configured finite budget.
+#'   Local simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage.
+#'   - `function`: Borrowed ArbitraryFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `NelderMeadOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::NelderMead optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 2000
+#' ```
+#' @references - J. A. Nelder and R. Mead (1965), A Simplex Method for Function Minimization, https://doi.org/10.1093/comjnl/7.4.308
+#' @seealso NelderMeadOptions, trace_optimize()
+#' @md
+#'
 `NelderMead` <- R6::R6Class("NelderMead", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2746,6 +10355,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1605`, self, list(...))
   )
 )
+#' Configuration for NesterovAcceleratedGradient; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `NesterovAcceleratedGradientOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$momentum` (`numeric`): Fixed momentum coefficient; zero removes velocity carryover. Default 0.9.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::NesterovAcceleratedGradientOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso NesterovAcceleratedGradient
+#' @md
+#'
 `NesterovAcceleratedGradientOptions` <- R6::R6Class("NesterovAcceleratedGradientOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2761,6 +10388,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1613`, self) else invisible(.Call(`.rs_1614`, self, value))
   )
 )
+#' NesterovAcceleratedGradient on the DifferentiableFunction callback interface.
+#'
+#' Evaluates the gradient at coordinates+momentum*velocity, then updates velocity and coordinates. Tests that look-ahead gradient after the update. Fixed momentum and rate do not implement every strongly-convex acceleration schedule. O(p) reset local state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `NesterovAcceleratedGradient$new(options = NesterovAcceleratedGradientOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`NesterovAcceleratedGradientOptions`): Method-specific controls; defaults are listed by NesterovAcceleratedGradientOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run NesterovAcceleratedGradient from the supplied point using the configured finite budget.
+#'   Evaluates the gradient at coordinates+momentum*velocity, then updates velocity and coordinates. Tests that look-ahead gradient after the update. Fixed momentum and rate do not implement every strongly-convex acceleration schedule. O(p) reset local state.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `NesterovAcceleratedGradientOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::NesterovAcceleratedGradient optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso NesterovAcceleratedGradientOptions, trace_optimize()
+#' @md
+#'
 `NesterovAcceleratedGradient` <- R6::R6Class("NesterovAcceleratedGradient", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2772,6 +10430,26 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1617`, self, list(...))
   )
 )
+#' Configuration for Nadam; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `NadamOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
+#' * `$beta1` (`numeric`): First-moment decay in \[0,1). Default 0.9.
+#' * `$beta2` (`numeric`): Second-moment decay in \[0,1). Default 0.999.
+#' * `$epsilon` (`numeric`): Positive numerical offset; its root placement is specified by the method. Default 1e-8.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::NadamOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso Nadam
+#' @md
+#'
 `NadamOptions` <- R6::R6Class("NadamOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2789,6 +10467,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1629`, self) else invisible(.Call(`.rs_1630`, self, value))
   )
 )
+#' Nadam on the DifferentiableFunction callback interface.
+#'
+#' Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `Nadam$new(options = NadamOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`NadamOptions`): Method-specific controls; defaults are listed by NadamOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run Nadam from the supplied point using the configured finite budget.
+#'   Fixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `NadamOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::Nadam optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - T. Dozat (2016), Incorporating Nesterov Momentum into Adam, https://openreview.net/pdf?id=OM0jvwB8jIp57ZJjtNEZ
+#' @seealso NadamOptions, trace_optimize()
+#' @md
+#'
 `Nadam` <- R6::R6Class("Nadam", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2800,6 +10509,23 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1633`, self, list(...))
   )
 )
+#' Configuration for Newton; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `NewtonOptions$new()`
+#' @section Fields:
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 100.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$damping` (`numeric`): Fixed diagonal Hessian shift; not adaptive damping. Default 1e-10.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::NewtonOptions o;
+#' std::print("{}\n",o.max_iterations); // 100
+#' ```
+#' @seealso Newton
+#' @md
+#'
 `NewtonOptions` <- R6::R6Class("NewtonOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2814,6 +10540,37 @@ rosetta_ref <- function(value = NULL) {
     `damping` = function(value) if (missing(value)) .Call(`.rs_1639`, self) else invisible(.Call(`.rs_1640`, self, value))
   )
 )
+#' Newton on the HessianFunction callback interface.
+#'
+#' Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `Newton$new(options = NewtonOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`NewtonOptions`): Method-specific controls; defaults are listed by NewtonOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run Newton from the supplied point using the configured finite budget.
+#'   Adds fixed damping to the supplied Hessian diagonal, solves with partial-pivot Gaussian elimination, and takes a full step. This is not a globalised line-search method; indefinite or nearly singular Hessians can increase the loss or produce huge steps. Stops on gradient norm. Dense O(p^3) solve/O(p^2) storage.
+#'   - `function`: Borrowed HessianFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `NewtonOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::Newton optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 100
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso NewtonOptions, trace_optimize()
+#' @md
+#'
 `Newton` <- R6::R6Class("Newton", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2825,6 +10582,20 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1643`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::ParallelTemperingOptions`
+#' @section Constructor:
+#' `ParallelTemperingOptions$new()`
+#' @section Fields:
+#' * `$num_replicas` (`integer`)
+#' * `$initial_temperature` (`numeric`): T_max, the hottest replica's fixed temperature.
+#' * `$final_temperature` (`numeric`): T_min, the coldest replica's fixed temperature.
+#' * `$step_std_dev` (`numeric`): Base standard deviation of each replica's Gaussian proposal; scaled per-replica by
+#'   sqrt(T_i / T_min) so hotter replicas take proportionally larger exploratory steps.
+#' * `$swap_interval` (`integer`): Attempt a replica-exchange swap sweep every this many single-replica update sweeps.
+#' * `$max_sweeps` (`integer`)
+#' * `$seed` (`integer`)
+#' @md
+#'
 `ParallelTemperingOptions` <- R6::R6Class("ParallelTemperingOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2843,6 +10614,22 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1657`, self) else invisible(.Call(`.rs_1658`, self, value))
   )
 )
+#' Parallel tempering (replica exchange Monte Carlo): the population-based generalization of SimulatedAnnealing.
+#'
+#' Runs num_replicas Metropolis chains simultaneously, each held at its own fixed temperature on a geometric ladder, and periodically proposes swapping adjacent-temperature replicas' states so hot chains help cold chains escape local minima. Derivative-free, unconstrained, suitable for non-differentiable/black-box objectives -- like SimulatedAnnealing, requires nothing beyond evaluate().
+#' @section Constructor:
+#' `ParallelTempering$new(options = ParallelTemperingOptions$new())`
+#'
+#' * `options` (`ParallelTemperingOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#' * `$options()` -> `ParallelTemperingOptions`
+#'
+#'   The options this ParallelTempering was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `ParallelTempering` <- R6::R6Class("ParallelTempering", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2854,6 +10641,31 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1661`, self, list(...))
   )
 )
+#' Configuration for PSO; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `PSOOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`): Population size; CMA-ES zero selects its dimension-based default. Default 40.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 1000.
+#' * `$inertia_weight` (`numeric`): Initial or constant particle velocity carryover. Default 0.7298.
+#' * `$cognitive_coefficient` (`numeric`): Particle attraction to its own best position. Default 1.49618.
+#' * `$social_coefficient` (`numeric`): Particle attraction to its neighbourhood best. Default 1.49618.
+#' * `$topology` (`character`): global or ring particle neighbourhood. Default "global".
+#' * `$ring_neighbors` (`integer`): Neighbours on each ring side when ring topology is selected. Default 2.
+#' * `$inertia_strategy` (`character`): constant or linear_decay. Default "constant".
+#' * `$final_inertia_weight` (`numeric`): Final carryover for linear_decay inertia. Default 0.4.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-10.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::PSOOptions o;
+#' std::print("{}\n",o.max_iterations); // 1000
+#' ```
+#' @seealso PSO
+#' @md
+#'
 `PSOOptions` <- R6::R6Class("PSOOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2876,6 +10688,39 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1683`, self) else invisible(.Call(`.rs_1684`, self, value))
   )
 )
+#' PSO on the ArbitraryFunction callback interface.
+#'
+#' Box-constrained particle swarm with global or ring attraction and constant or linearly decayed inertia. Coordinates seed one clamped particle; returns the best visited feasible point. Stops after more than twenty small-best-improvement iterations or its budget. O(population_size*p) storage; no global-optimality certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `PSO$new(options = PSOOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`PSOOptions`): Method-specific controls; defaults are listed by PSOOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Run PSO from the supplied point using the configured finite budget.
+#'   Box-constrained particle swarm with global or ring attraction and constant or linearly decayed inertia. Coordinates seed one clamped particle; returns the best visited feasible point. Stops after more than twenty small-best-improvement iterations or its budget. O(population_size*p) storage; no global-optimality certificate.
+#'   - `function`: Borrowed ArbitraryFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - `lower_bound`: Matching finite inclusive lower box limits.
+#'   - `upper_bound`: Matching finite inclusive upper limits, greater than lower limits.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `PSOOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::PSO optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 1000
+#' ```
+#' @references - J. Kennedy and R. Eberhart (1995), Particle Swarm Optimization, https://doi.org/10.1109/ICNN.1995.488968. This implementation adds the documented inertia, topology and clamping controls.
+#' @seealso PSOOptions, trace_optimize()
+#' @md
+#'
 `PSO` <- R6::R6Class("PSO", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2887,6 +10732,23 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1687`, self, list(...))
   )
 )
+#' Configuration for ProximalGradient; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `ProximalGradientOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::ProximalGradientOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso ProximalGradient
+#' @md
+#'
 `ProximalGradientOptions` <- R6::R6Class("ProximalGradientOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2901,6 +10763,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1693`, self) else invisible(.Call(`.rs_1694`, self, value))
   )
 )
+#' ProximalGradient on the ProximalFunction callback interface.
+#'
+#' ISTA update prox(x-step_size*gradient(x),step_size), with gradient of the smooth part only. Stops on coordinate displacement norm. There is no Lipschitz estimation or backtracking; caller chooses a stable rate. The returned objective includes both smooth and nonsmooth parts. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `ProximalGradient$new(options = ProximalGradientOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`ProximalGradientOptions`): Method-specific controls; defaults are listed by ProximalGradientOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run ProximalGradient from the supplied point using the configured finite budget.
+#'   ISTA update prox(x-step_size*gradient(x),step_size), with gradient of the smooth part only. Stops on coordinate displacement norm. There is no Lipschitz estimation or backtracking; caller chooses a stable rate. The returned objective includes both smooth and nonsmooth parts.
+#'   - `function`: Borrowed ProximalFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `ProximalGradientOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::ProximalGradient optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - A. Beck and M. Teboulle (2009), A Fast Iterative Shrinkage-Thresholding Algorithm for Linear Inverse Problems, https://doi.org/10.1137/080716542
+#' @seealso ProximalGradientOptions, trace_optimize()
+#' @md
+#'
 `ProximalGradient` <- R6::R6Class("ProximalGradient", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2912,6 +10805,28 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1697`, self, list(...))
   )
 )
+#' Configuration for RandomizedBlockCoordinateDescent; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `RandomizedBlockCoordinateDescentOptions$new()`
+#' @section Fields:
+#' * `$block_size` (`integer`): Positive number of coordinates updated together. Default 1.
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 1.0.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 1000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$armijo_c1` (`numeric`): Sufficient-decrease fraction in (0,1). Default 1e-4.
+#' * `$backtracking_factor` (`numeric`): Trial-step multiplier in (0,1). Default 0.5.
+#' * `$max_line_search_trials` (`integer`): Maximum candidate line-search trials per update. Default 30.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::RandomizedBlockCoordinateDescentOptions o;
+#' std::print("{}\n",o.max_iterations); // 1000
+#' ```
+#' @seealso RandomizedBlockCoordinateDescent
+#' @md
+#'
 `RandomizedBlockCoordinateDescentOptions` <- R6::R6Class("RandomizedBlockCoordinateDescentOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2931,6 +10846,37 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1713`, self) else invisible(.Call(`.rs_1714`, self, value))
   )
 )
+#' RandomizedBlockCoordinateDescent on the DifferentiableFunction callback interface.
+#'
+#' Randomly permutes coordinates each epoch and visits consecutive blocks once. Full-gradient block directions use Armijo backtracking and restore a failed block. This is random reshuffling, not independent coordinate draws. Stops on the full epoch-end gradient norm; O(p) local storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `RandomizedBlockCoordinateDescent$new(options = RandomizedBlockCoordinateDescentOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`RandomizedBlockCoordinateDescentOptions`): Method-specific controls; defaults are listed by RandomizedBlockCoordinateDescentOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run RandomizedBlockCoordinateDescent from the supplied point using the configured finite budget.
+#'   Randomly permutes coordinates each epoch and visits consecutive blocks once. Full-gradient block directions use Armijo backtracking and restore a failed block. This is random reshuffling, not independent coordinate draws. Stops on the full epoch-end gradient norm; O(p) local storage.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `RandomizedBlockCoordinateDescentOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::RandomizedBlockCoordinateDescent optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 1000
+#' ```
+#' @references - S. J. Wright (2015), Coordinate descent algorithms, https://doi.org/10.1007/s10107-015-0892-3. This implementation uses the stated full-gradient coordinate/block steps.
+#' @seealso RandomizedBlockCoordinateDescentOptions, trace_optimize()
+#' @md
+#'
 `RandomizedBlockCoordinateDescent` <- R6::R6Class("RandomizedBlockCoordinateDescent", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2942,6 +10888,25 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1717`, self, list(...))
   )
 )
+#' Configuration for RMSProp; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `RMSPropOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.
+#' * `$decay_rate` (`numeric`): Squared-history exponential decay in \[0,1). Default 0.9.
+#' * `$epsilon` (`numeric`): Positive numerical offset; its root placement is specified by the method. Default 1e-8.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::RMSPropOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso RMSProp
+#' @md
+#'
 `RMSPropOptions` <- R6::R6Class("RMSPropOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2958,6 +10923,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1727`, self) else invisible(.Call(`.rs_1728`, self, value))
   )
 )
+#' RMSProp on the DifferentiableFunction callback interface.
+#'
+#' Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `RMSProp$new(options = RMSPropOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`RMSPropOptions`): Method-specific controls; defaults are listed by RMSPropOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run RMSProp from the supplied point using the configured finite budget.
+#'   Uses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.
+#'   - `function`: Borrowed DifferentiableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `RMSPropOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::RMSProp optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - G. Hinton (2012), lecture 6e, https://www.cs.utoronto.ca/~hinton/coursera_lectures.html
+#' @seealso RMSPropOptions, trace_optimize()
+#' @md
+#'
 `RMSProp` <- R6::R6Class("RMSProp", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2969,6 +10965,14 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1731`, self, list(...))
   )
 )
+#' The Gaussian-process posterior of the objective at one point.
+#' @section Constructor:
+#' `SurrogatePrediction$new()`
+#' @section Fields:
+#' * `$mean` (`numeric`): Posterior mean, in the units of the objective.
+#' * `$sd` (`numeric`): Posterior standard deviation of the noise-free objective.
+#' @md
+#'
 `SurrogatePrediction` <- R6::R6Class("SurrogatePrediction", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -2982,6 +10986,29 @@ rosetta_ref <- function(value = NULL) {
     `sd` = function(value) if (missing(value)) .Call(`.rs_1735`, self) else invisible(.Call(`.rs_1736`, self, value))
   )
 )
+#' Settings of an RBFGaussianProcessSurrogate built from options.
+#'
+#' With `normalize_values`, the values are centred at their mean (the prior mean) and divided
+#' by their standard deviation before fitting, so the kernel hyperparameters are on a fixed
+#' scale whatever the objective's units. With `fit_hyperparameters`, the length scale (and the
+#' signal variance, in closed form) maximise the marginal likelihood at every fit().
+#' @section Constructor:
+#' `GaussianProcessSurrogateOptions$new()`
+#' @section Fields:
+#' * `$length_scale` (`numeric`): Kernel length scale
+#' * `$signal_variance` (`numeric`): Prior variance
+#' * `$noise` (`numeric`): Observation-noise variance added to the kernel diagonal. When fitting, the ratio
+#'   noise / signal_variance (the nugget) is what stays fixed.
+#' * `$normalize_values` (`logical`): Centre and scale the values before fitting.
+#' * `$fit_hyperparameters` (`logical`): Maximise the marginal likelihood over
+#' * `$fit_noise` (`logical`): Also maximise over the nugget ratio, from
+#' * `$min_length_scale` (`numeric`): Smallest length scale searched; 0 means 0.01 times the widest coordinate range of the data.
+#' * `$max_length_scale` (`numeric`): Largest length scale searched; 0 means 10 times the widest coordinate range of the data.
+#' * `$acquisition` (`character (Acquisition)`): Acquisition function.
+#' * `$exploration` (`numeric`): Margin
+#' * `$kappa` (`numeric`): Width
+#' @md
+#'
 `GaussianProcessSurrogateOptions` <- R6::R6Class("GaussianProcessSurrogateOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3004,6 +11031,107 @@ rosetta_ref <- function(value = NULL) {
     `kappa` = function(value) if (missing(value)) .Call(`.rs_1758`, self) else invisible(.Call(`.rs_1759`, self, value))
   )
 )
+#' Exact Gaussian-process regression surrogate with the squared-exponential kernel
+#'
+#' `s\exp(-\lVert x-x'\rVert^2/2\ell^2)`.
+#'
+#' fit() Cholesky-factors `K+\sigma_n^2I=LL^\top` once and solves for
+#' `\alpha=(K+\sigma_n^2I)^{-1}(y-m)`; predict() then needs one forward substitution per point:
+#' mean `m+k_*^\top\alpha` and variance `s-\lVert L^{-1}k_*\rVert^2`.
+#'
+#' The two-argument constructor keeps the original fixed setup: zero prior mean, unit signal
+#' variance, no normalisation or fitting, expected improvement. The options constructor adds
+#' value normalisation, marginal-likelihood fitting of the hyperparameters and other acquisitions.
+#' The kernel is isotropic, so the inputs should be on comparable scales.
+#' @section Constructor:
+#' `RBFGaussianProcessSurrogate$new(length_scale = 1.0, noise = 9.9999999999999995E-7)`
+#'
+#' Fixed-hyperparameter surrogate with expected improvement.
+#'
+#' `RBFGaussianProcessSurrogate$new(options)`
+#'
+#' Surrogate configured by options.
+#'
+#' * `length_scale` (`numeric`): Kernel length scale
+#' * `noise` (`numeric`): Noise variance added to the diagonal (
+#' * `options` (`GaussianProcessSurrogateOptions`): Hyperparameters, normalisation, fitting and acquisition.
+#' @section Methods:
+#' * `$options()` -> `GaussianProcessSurrogateOptions`
+#'
+#'   The options this surrogate was built with.
+#'   - Returns: The stored options.
+#'
+#' * `$fit(points, values)`
+#'
+#'   Fits the GP to the observations (refitting hyperparameters when configured).
+#'   - `points`: Training points, all of one dimension.
+#'   - `values`: Objective values.
+#'
+#' * `$acquisition(point, incumbent)` -> `numeric`
+#'
+#'   The configured acquisition at `point`.
+#'   - `point`: Candidate point.
+#'   - `incumbent`: Smallest observed value.
+#'   - Returns: The acquisition value (0 before fitting).
+#'
+#' * `$predict(point)` -> `SurrogatePrediction`
+#'
+#'   Posterior mean and standard deviation at `point`.
+#'   - `point`: Query point.
+#'   - Returns: The prediction, in the objective's units.
+#'
+#' * `$log_marginal_likelihood()` -> `numeric`
+#'
+#'   Log marginal likelihood of the values at the hyperparameters in use.
+#'
+#' * `$length_scale()` -> `numeric`
+#'
+#'   The length scale in use (fitted, after fit(), when fitting is on).
+#'
+#' * `$noise()` -> `numeric`
+#'
+#'   The noise variance in use, in normalised units when normalising.
+#'
+#' * `$signal_variance()` -> `numeric`
+#'
+#'   The signal variance in use, in normalised units when normalising.
+#'
+#' * `$prior_mean()` -> `numeric`
+#'
+#'   The prior mean: the mean of the values when normalising, else 0.
+#'
+#' * `$value_scale()` -> `numeric`
+#'
+#'   The value scale: the standard deviation of the values when normalising, else 1.
+#'   - Returns: The scale.
+#'
+#' * `$points()` -> `vector<vector<numeric>>`
+#'
+#'   The training points from the last fit() (empty before fitting).
+#'   - Returns: The stored training points.
+#'
+#' * `$values()` -> `vector<numeric>`
+#'
+#'   The training values from the last fit() (empty before fitting).
+#'   - Returns: The stored training values.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.0);
+#' gp.fit({{0.0}, {2.0}}, {1.0, -1.0});
+#' const auto p = gp.predict({1.0});
+#' std::print("{:.4f} {:.4f}\n", p.mean, p.sd);  // 0.0000 0.5933
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: If `length_scale` is not positive or `noise` is negative.
+#'
+#' * `std::invalid_argument`: If a hyperparameter or length-scale bound is out of range.
+#' @section Inherits:
+#' `BayesianSurrogate`
+#' @references - C. E. Rasmussen and C. K. I. Williams (2006). *Gaussian Processes for Machine Learning*,
+#'   chapters 2 and 5. MIT Press.
+#' @seealso BayesianOptimization, expected_improvement()
+#' @md
+#'
 `RBFGaussianProcessSurrogate` <- R6::R6Class("RBFGaussianProcessSurrogate", inherit = `BayesianSurrogate`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3025,6 +11153,26 @@ rosetta_ref <- function(value = NULL) {
     `values` = function(...) .Call(`.rs_1772`, self, list(...))
   )
 )
+#' Configuration for SGD; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `SGDOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$max_epochs` (`integer`): Maximum passes/outer epochs; zero performs no epoch updates. Default 100.
+#' * `$batch_size` (`integer`): Positive number of terms per averaged mini-batch. Default 1.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$shuffle` (`logical`): Reshuffle all component indices before each epoch. Default true.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::SGDOptions o;
+#' std::print("{}\n",o.max_epochs); // 100
+#' ```
+#' @seealso SGD
+#' @md
+#'
 `SGDOptions` <- R6::R6Class("SGDOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3042,6 +11190,37 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1784`, self) else invisible(.Call(`.rs_1785`, self, value))
   )
 )
+#' SGD on the DifferentiableSeparableFunction callback interface.
+#'
+#' Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `SGD$new(options = SGDOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`SGDOptions`): Method-specific controls; defaults are listed by SGDOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run SGD from the supplied point using the configured finite budget.
+#'   Uses the mean gradient of each mini-batch, reshuffling component indices each epoch when enabled. Full objective remains the sum of components. Stops on absolute full-objective change per epoch. Nonempty components and positive batch_size are required; seeds reproduce the same build, not a cross-library shuffle transcript.
+#'   - `function`: Borrowed DifferentiableSeparableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `SGDOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::SGD optimizer;
+#' std::print("{}\n",optimizer.options().max_epochs); // 100
+#' ```
+#' @references - H. Robbins and S. Monro (1951), A Stochastic Approximation Method, https://doi.org/10.1214/aoms/1177729586. The fixed-rate reshuffling variant here differs from their decreasing-step stochastic approximation.
+#' @seealso SGDOptions, trace_optimize()
+#' @md
+#'
 `SGD` <- R6::R6Class("SGD", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3053,6 +11232,25 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1788`, self, list(...))
   )
 )
+#' Configuration for SimulatedAnnealing; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `SimulatedAnnealingOptions$new()`
+#' @section Fields:
+#' * `$initial_temperature` (`numeric`): Positive starting Metropolis temperature. Default 10.0.
+#' * `$cooling_rate` (`numeric`): Geometric temperature multiplier. Default 0.98.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$step_std_dev` (`numeric`): Gaussian proposal standard deviation. Default 1.0.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::SimulatedAnnealingOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso SimulatedAnnealing
+#' @md
+#'
 `SimulatedAnnealingOptions` <- R6::R6Class("SimulatedAnnealingOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3069,6 +11267,37 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1798`, self) else invisible(.Call(`.rs_1799`, self, value))
   )
 )
+#' SimulatedAnnealing on the ArbitraryFunction callback interface.
+#'
+#' Gaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `SimulatedAnnealing$new(options = SimulatedAnnealingOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`SimulatedAnnealingOptions`): Method-specific controls; defaults are listed by SimulatedAnnealingOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run SimulatedAnnealing from the supplied point using the configured finite budget.
+#'   Gaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage.
+#'   - `function`: Borrowed ArbitraryFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `SimulatedAnnealingOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::SimulatedAnnealing optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - S. Kirkpatrick, C. D. Gelatt and M. P. Vecchi (1983), Optimization by Simulated Annealing, https://doi.org/10.1126/science.220.4598.671. Finite geometric cooling here supplies no global guarantee.
+#' @seealso SimulatedAnnealingOptions, trace_optimize()
+#' @md
+#'
 `SimulatedAnnealing` <- R6::R6Class("SimulatedAnnealing", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3080,6 +11309,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1802`, self, list(...))
   )
 )
+#' Configuration for SAGA; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `SAGAOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::SAGAOptions o;
+#' std::print("{}\n",o.max_iterations); // 10000
+#' ```
+#' @seealso SAGA
+#' @md
+#'
 `SAGAOptions` <- R6::R6Class("SAGAOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3095,6 +11342,37 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1810`, self) else invisible(.Call(`.rs_1811`, self, value))
   )
 )
+#' SAGA on the DifferentiableSeparableFunction callback interface.
+#'
+#' Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `SAGA$new(options = SAGAOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`SAGAOptions`): Method-specific controls; defaults are listed by SAGAOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run SAGA from the supplied point using the configured finite budget.
+#'   Uses current_i-table_i+mean(table), then refreshes one stored component gradient and its running mean. The estimator targets mean component loss while evaluate() returns their sum. Stops on epoch-boundary objective change or the last estimator norm; the latter is not the full gradient norm. O(n*p) gradient table.
+#'   - `function`: Borrowed DifferentiableSeparableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `SAGAOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::SAGA optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 10000
+#' ```
+#' @references - A. Defazio, F. Bach and S. Lacoste-Julien (2014), SAGA: A Fast Incremental Gradient Method With Support for Non-Strongly Convex Composite Objectives, https://arxiv.org/abs/1407.0202
+#' @seealso SAGAOptions, trace_optimize()
+#' @md
+#'
 `SAGA` <- R6::R6Class("SAGA", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3106,6 +11384,25 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1814`, self, list(...))
   )
 )
+#' Configuration for SVRG; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `SVRGOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.01.
+#' * `$max_epochs` (`integer`): Maximum passes/outer epochs; zero performs no epoch updates. Default 100.
+#' * `$inner_iterations` (`integer`): Inner updates per outer stage; for SVRG zero uses component count. Default 0.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' * `$seed` (`integer`): Local mt19937_64 seed; same-build reproducibility, not guaranteed independent streams. Default 42.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::SVRGOptions o;
+#' std::print("{}\n",o.max_epochs); // 100
+#' ```
+#' @seealso SVRG
+#' @md
+#'
 `SVRGOptions` <- R6::R6Class("SVRGOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3122,6 +11419,37 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1824`, self) else invisible(.Call(`.rs_1825`, self, value))
   )
 )
+#' SVRG on the DifferentiableSeparableFunction callback interface.
+#'
+#' Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `SVRG$new(options = SVRGOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`SVRGOptions`): Method-specific controls; defaults are listed by SVRGOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run SVRG from the supplied point using the configured finite budget.
+#'   Uses mean component gradients: current_i-snapshot_i+full_snapshot_gradient/n. The division by n is essential for an unbiased mean-loss estimator and matches SGD/SAGA scale. Earlier code omitted it. Stops on absolute full-sum objective change per epoch. O(p) snapshot state, two component-gradient calls per inner update plus one full gradient per epoch.
+#'   - `function`: Borrowed DifferentiableSeparableFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `SVRGOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::SVRG optimizer;
+#' std::print("{}\n",optimizer.options().max_epochs); // 100
+#' ```
+#' @references - R. Johnson and T. Zhang (2013), Accelerating Stochastic Gradient Descent using Predictive Variance Reduction, https://proceedings.neurips.cc/paper/2013/hash/ac1dd209cbcc5e5d1c6e28598e8cbbe8-Abstract.html
+#' @seealso SVRGOptions, trace_optimize()
+#' @md
+#'
 `SVRG` <- R6::R6Class("SVRG", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3133,6 +11461,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1828`, self, list(...))
   )
 )
+#' Configuration for SQP; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `SQPOptions$new()`
+#' @section Fields:
+#' * `$step_size` (`numeric`): Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 1.0.
+#' * `$regularization` (`numeric`): Constraint row squared-norm denominator offset. Default 1e-6.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 200.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::SQPOptions o;
+#' std::print("{}\n",o.max_iterations); // 200
+#' ```
+#' @seealso SQP
+#' @md
+#'
 `SQPOptions` <- R6::R6Class("SQPOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3148,6 +11494,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1836`, self) else invisible(.Call(`.rs_1837`, self, value))
   )
 )
+#' SQP on the EqualityConstrainedFunction callback interface.
+#'
+#' Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `SQP$new(options = SQPOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`SQPOptions`): Method-specific controls; defaults are listed by SQPOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run SQP from the supplied point using the configured finite budget.
+#'   Restricted projection-like implementation, not a general SQP QP solver: takes an objective-gradient step, then sequential linearised row corrections using squared Jacobian-row norms plus regularization. Its stopping condition compares constraint norm and the constant absolute step_size to tolerance, not the actual displacement or Lagrangian gradient.
+#'   - `function`: Borrowed EqualityConstrainedFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `SQPOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::SQP optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 200
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso SQPOptions, trace_optimize()
+#' @md
+#'
 `SQP` <- R6::R6Class("SQP", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3159,6 +11536,24 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1840`, self, list(...))
   )
 )
+#' Configuration for TrustRegionNewton; fields retain their documented native defaults.
+#'
+#' Supply finite values in the supported ranges. Controls are copied at construction; validation, stopping and loss scaling belong to optimize().
+#' @section Constructor:
+#' `TrustRegionNewtonOptions$new()`
+#' @section Fields:
+#' * `$initial_radius` (`numeric`): Positive starting Cauchy-step radius. Default 1.0.
+#' * `$max_radius` (`numeric`): Maximum radius after successful Cauchy steps. Default 1000.0.
+#' * `$max_iterations` (`integer`): Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 200.
+#' * `$tolerance` (`numeric`): Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::optim::TrustRegionNewtonOptions o;
+#' std::print("{}\n",o.max_iterations); // 200
+#' ```
+#' @seealso TrustRegionNewton
+#' @md
+#'
 `TrustRegionNewtonOptions` <- R6::R6Class("TrustRegionNewtonOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3174,6 +11569,37 @@ rosetta_ref <- function(value = NULL) {
     `tolerance` = function(value) if (missing(value)) .Call(`.rs_1848`, self) else invisible(.Call(`.rs_1849`, self, value))
   )
 )
+#' TrustRegionNewton on the HessianFunction callback interface.
+#'
+#' Cauchy-point variant: clips a steepest-descent ray using gHg and the current radius. Accepts any strict objective decrease and doubles the radius, otherwise halves it. It does not compute a model-agreement ratio, dogleg step or exact trust-region subproblem. Stops on gradient norm or tiny radius; O(p^2) Hessian work. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+#' @section Constructor:
+#' `TrustRegionNewton$new(options = TrustRegionNewtonOptions$new())`
+#'
+#' Store a copy of the controls without running the objective.
+#'
+#' * `options` (`TrustRegionNewtonOptions`): Method-specific controls; defaults are listed by TrustRegionNewtonOptions.
+#' @section Methods:
+#' * `$optimize(`function`, coordinates)` -> `numeric`
+#'
+#'   Run TrustRegionNewton from the supplied point using the configured finite budget.
+#'   Cauchy-point variant: clips a steepest-descent ray using gHg and the current radius. Accepts any strict objective decrease and doubles the radius, otherwise halves it. It does not compute a model-agreement ratio, dogleg step or exact trust-region subproblem. Stops on gradient norm or tiny radius; O(p^2) Hessian work.
+#'   - `function`: Borrowed HessianFunction with matching finite output shapes.
+#'   - `coordinates`: Owned-by-caller finite start; overwritten with the native returned point.
+#'   - Returns: Objective at the native returned coordinates; not a stop-status code.
+#'
+#' * `$options()` -> `TrustRegionNewtonOptions`
+#'
+#'   Borrow this optimizer's stored configuration.
+#'   - Returns: Const option reference, valid during this object's lifetime; no mutation.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::optim::TrustRegionNewton optimizer;
+#' std::print("{}\n",optimizer.options().max_iterations); // 200
+#' ```
+#' @references - J. Nocedal and S. J. Wright (2006), Numerical Optimization, second edition, https://doi.org/10.1007/978-0-387-40065-5. The implemented variant and stopping rules are specified above.
+#' @seealso TrustRegionNewtonOptions, trace_optimize()
+#' @md
+#'
 `TrustRegionNewton` <- R6::R6Class("TrustRegionNewton", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3185,6 +11611,17 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1852`, self, list(...))
   )
 )
+#' C++ class `datamunge::optim::WhaleOptimizationOptions`
+#' @section Constructor:
+#' `WhaleOptimizationOptions$new()`
+#' @section Fields:
+#' * `$population_size` (`integer`)
+#' * `$spiral_constant` (`numeric`): b: shape constant of the logarithmic bubble-net spiral.
+#' * `$max_iterations` (`integer`)
+#' * `$tolerance` (`numeric`): Stops after the best-ever value has improved by less than this for 20 consecutive iterations.
+#' * `$seed` (`integer`)
+#' @md
+#'
 `WhaleOptimizationOptions` <- R6::R6Class("WhaleOptimizationOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3201,6 +11638,26 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1862`, self) else invisible(.Call(`.rs_1863`, self, value))
   )
 )
+#' Whale Optimization Algorithm (Mirjalili & Lewis, 2016): a population of whales alternates between encircling prey, random search, and a logarithmic bubble-net spiral to home in on the best point found so far.
+#'
+#' Derivative-free, box-constrained.
+#' @section Constructor:
+#' `WhaleOptimization$new(options = WhaleOptimizationOptions$new())`
+#'
+#' * `options` (`WhaleOptimizationOptions`)
+#' @section Methods:
+#' * `$optimize(`function`, coordinates, lower_bound, upper_bound)` -> `numeric`
+#'
+#'   Minimizes `function` within \[`lower_bound`, `upper_bound`\], updating
+#'   `coordinates` in place to the best point found, and returns its value. The
+#'   initial `coordinates` (clamped into bounds) seed one whale of the population.
+#'
+#' * `$options()` -> `WhaleOptimizationOptions`
+#'
+#'   The options this WhaleOptimization was configured with.
+#'   - Returns: The stored options.
+#' @md
+#'
 `WhaleOptimization` <- R6::R6Class("WhaleOptimization", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3212,6 +11669,28 @@ rosetta_ref <- function(value = NULL) {
     `options` = function(...) .Call(`.rs_1866`, self, list(...))
   )
 )
+#' C++ class `datamunge::fda::BSplineBasis`
+#' @section Constructor:
+#' `BSplineBasis$new()`
+#'
+#' Degree-0 basis with knots \{0, 1\}: one constant function on \[0, 1\].
+#'
+#' `BSplineBasis$new(degree, knots)`
+#'
+#' * `degree` (`integer`)
+#' * `knots` (`vector<numeric>`)
+#' @section Methods:
+#' * `$degree()` -> `integer`
+#'
+#' * `$basis_size()` -> `integer`
+#'
+#' * `$knots()` -> `vector<numeric>`
+#'
+#' * `$domain()` -> `list(numeric, numeric)`
+#' @section Static methods:
+#' * `BSplineBasis$open_uniform(degree, basis_size, min_x = 0.0, max_x = 1.0)` -> `BSplineBasis`
+#' @md
+#'
 `BSplineBasis` <- R6::R6Class("BSplineBasis", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3227,6 +11706,32 @@ rosetta_ref <- function(value = NULL) {
   )
 )
 `BSplineBasis`$`open_uniform` <- function(...) .Call(`.rs_1868`, NULL, list(...))
+#' Owned hypothesis-test result, analogous to R's htest list.
+#'
+#' Each test documents which fields it populates and what its interval estimates. Unused numeric fields retain zero; this default is storage, not a claim of zero effect. Read bounds only when has_conf_int is true; one-sided intervals may be unbounded. p_value is a null-model tail probability, not a posterior probability of the null. Objects own their method string and contain no borrowed references or shared state.
+#' @section Constructor:
+#' `HypothesisTestResult$new()`
+#' @section Fields:
+#' * `$statistic` (`numeric`): Test-specific statistic (t, U, D, F, H, count or chi-square).
+#' * `$parameter1` (`numeric`): Primary df or count parameter; consult the test contract.
+#' * `$parameter2` (`numeric`): Secondary df/count parameter where used; otherwise zero.
+#' * `$p_value` (`numeric`): Null-reference p-value, not adjusted for multiple testing.
+#' * `$estimate1` (`numeric`): First test-specific estimate, such as a mean, ratio or correlation.
+#' * `$estimate2` (`numeric`): Second estimate when applicable, such as a second group mean.
+#' * `$conf_int_lower` (`numeric`): Lower confidence bound, meaningful only when has_conf_int.
+#' * `$conf_int_upper` (`numeric`): Upper confidence bound, meaningful only when has_conf_int.
+#' * `$has_conf_int` (`logical`): Whether confidence bounds were computed for this result.
+#' * `$alternative` (`character (Alternative)`): Tail requested by the caller.
+#' * `$method` (`character`): Owned human-readable method, including relevant approximation labels.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::stats::t_test_one_sample({1,2,3,4});
+#' std::print("{}\n",t.has_conf_int); // true
+#' ```
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+#' @seealso Alternative, hypothesis_test_table()
+#' @md
+#'
 `HypothesisTestResult` <- R6::R6Class("HypothesisTestResult", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3249,6 +11754,29 @@ rosetta_ref <- function(value = NULL) {
     `method` = function(value) if (missing(value)) .Call(`.rs_1894`, self) else invisible(.Call(`.rs_1895`, self, value))
   )
 )
+#' Model orders and optimizer settings for an ARIMA fit.
+#'
+#' The regular orders are (p, d, q) and the seasonal orders are (P, D, Q) with period s.
+#' Leave every seasonal field at zero for a plain ARIMA(p, d, q) model.
+#' @section Constructor:
+#' `ARIMAOptions$new()`
+#' @section Fields:
+#' * `$p` (`integer`): Non-seasonal AR order (p).
+#' * `$d` (`integer`): Non-seasonal differencing order (d).
+#' * `$q` (`integer`): Non-seasonal MA order (q).
+#' * `$seasonal_p` (`integer`): Seasonal AR order (P).
+#' * `$seasonal_d` (`integer`): Seasonal differencing order (D).
+#' * `$seasonal_q` (`integer`): Seasonal MA order (Q).
+#' * `$seasonal_period` (`integer`): Seasonal period (s); must be nonzero when P, D, or Q is nonzero.
+#' * `$include_mean` (`logical`): Fit an intercept (mean of the fully-differenced series). Only meaningful when
+#'   d == 0 && seasonal_d == 0 -- matching R's arima(), a mean term is not fit on a
+#'   series that has already been differenced to stationarity.
+#' * `$de_population_size` (`integer`): Population size of the differential-evolution optimizer.
+#' * `$de_max_generations` (`integer`): Maximum number of differential-evolution generations.
+#' * `$coefficient_bound` (`numeric`): Box constraint \[-bound, bound\] applied to every AR/MA coefficient during optimization.
+#' * `$seed` (`integer`): Random seed for the differential-evolution optimizer.
+#' @md
+#'
 `ARIMAOptions` <- R6::R6Class("ARIMAOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3272,6 +11800,126 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1919`, self) else invisible(.Call(`.rs_1920`, self, value))
   )
 )
+#' A Box-Jenkins seasonal ARIMA(p, d, q)(P, D, Q)_s model, fit to a single numeric series by conditional sum of squares (CSS): the series is differenced (regular d times, then seasonal D times with period s) to stationarity, the combined AR/MA polynomials (regular composed with seasonal, via polynomial multiplication) are estimated by minimizing the conditional residual sum of squares with DifferentialEvolution, and forecasts are produced by recursing the fitted difference equation forward and re-integrating through the differencing steps.
+#'
+#' Setting seasonal_period == 0 (the default) reduces this to a plain, non-seasonal
+#' ARIMA(p, d, q) model -- i.e. SARIMA is the general case, ARIMA the special case,
+#' exactly as in R's arima()/statsmodels' SARIMAX().
+#'
+#' Note: CSS estimation approximates the exact Gaussian likelihood by conditioning
+#' on the first max(p + P*s, q + Q*s) observations rather than filtering the full
+#' series (e.g. via a Kalman filter); it is a standard, textbook ARIMA fitting
+#' method (R's arima(method = "CSS")) but will differ slightly from exact-ML fits.
+#' @section Constructor:
+#' `ARIMA$new(y, options = ARIMAOptions$new())`
+#'
+#' Fit the model to a series.
+#'
+#' * `y` (`vector<numeric>`): The observed series, in time order.
+#' * `options` (`ARIMAOptions`): Model orders and optimizer settings.
+#' @section Methods:
+#' * `$options()` -> `ARIMAOptions`
+#'
+#'   The options the model was fit with.
+#'   - Returns: The stored ARIMAOptions.
+#'
+#' * `$ar_coefficients()` -> `vector<numeric>`
+#'
+#'   Fitted non-seasonal AR coefficients
+#'   - Returns: A vector of length p; the AR polynomial is
+#'
+#' * `$ma_coefficients()` -> `vector<numeric>`
+#'
+#'   Fitted non-seasonal MA coefficients
+#'   - Returns: A vector of length q; the MA polynomial is
+#'
+#' * `$seasonal_ar_coefficients()` -> `vector<numeric>`
+#'
+#'   Fitted seasonal AR coefficients
+#'   - Returns: A vector of length P; the polynomial is
+#'
+#' * `$seasonal_ma_coefficients()` -> `vector<numeric>`
+#'
+#'   Fitted seasonal MA coefficients
+#'   - Returns: A vector of length Q; the polynomial is
+#'
+#' * `$mean()` -> `numeric`
+#'
+#'   Fitted mean of the differenced series.
+#'   - Returns: The mean, or 0 when no mean term was fit (include_mean is false, or d or D is nonzero).
+#'
+#' * `$observations()` -> `integer`
+#'
+#'   Length of the input series.
+#'   - Returns: The number of observations passed to the constructor.
+#'
+#' * `$n_used()` -> `integer`
+#'
+#'   Number of residuals that enter the sum of squares.
+#'   - Returns: The differenced series length minus
+#'
+#' * `$sigma2()` -> `numeric`
+#'
+#'   Innovation variance estimate.
+#'   - Returns: The CSS residual sum of squares divided by n_used().
+#'
+#' * `$log_likelihood()` -> `numeric`
+#'
+#'   Gaussian log-likelihood at the CSS estimate, over n_used() residuals.
+#'
+#' * `$aic()` -> `numeric`
+#'
+#'   Akaike information criterion.
+#'
+#' * `$bic()` -> `numeric`
+#'
+#'   Bayesian information criterion.
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#'   One-step-ahead fitted values on the original scale, aligned to the input
+#'   series (the first `observations() - n_used()` entries -- the presample points
+#'   conditioned on by CSS -- are copies of the observed value, matching a
+#'   residual of exactly zero there rather than an undefined value).
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#'   One-step-ahead residuals on the original scale (zero for the presample points).
+#'
+#' * `$forecast(horizon)` -> `vector<numeric>`
+#'
+#'   Point forecasts for the next `horizon` periods, on the original scale.
+#'   - `horizon`: Number of steps ahead to forecast.
+#'   - Returns: A vector of length `horizon` (empty when `horizon` is 0).
+#'
+#' * `$expanded_ar_coefficients()` -> `vector<numeric>`
+#'
+#'   AR coefficients of the stationary (differenced) model after multiplying the regular
+#'   and seasonal polynomials,
+#'   - Returns: The
+#'
+#' * `$expanded_ma_coefficients()` -> `vector<numeric>`
+#'
+#'   MA coefficients
+#'   - Returns: The
+#'
+#' * `$psi_weights(count)` -> `vector<numeric>`
+#'
+#'   The first `count`
+#'   - `count`: Number of weights.
+#'
+#' * `$forecast_with_intervals(horizon)` -> `list(vector<numeric>, vector<numeric>)`
+#'
+#'   Point forecasts and their standard errors (from the psi-weight / MA(infinity)
+#'   expansion of the full, non-stationary AR/MA representation of y), on the
+#'   original scale.
+#'   - `horizon`: Number of steps ahead to forecast.
+#'   - Returns: A pair (point forecasts, standard errors), each of length `horizon`.
+#' @section Errors:
+#' * `std::invalid_argument`: If a seasonal order is set while seasonal_period is zero,
+#' or if the series is too short for the requested differencing or AR order.
+#' @md
+#'
 `ARIMA` <- R6::R6Class("ARIMA", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3300,6 +11948,22 @@ rosetta_ref <- function(value = NULL) {
     `forecast_with_intervals` = function(...) .Call(`.rs_1940`, self, list(...))
   )
 )
+#' Owned pair counts and coefficients from kendall_tau().
+#' @section Constructor:
+#' `KendallTau$new()`
+#' @section Fields:
+#' * `$concordant` (`integer`): Pairs ordered the same way by x and y.
+#' * `$discordant` (`integer`): Pairs ordered oppositely by x and y.
+#' * `$ties_x` (`integer`): Pairs tied in x only.
+#' * `$ties_y` (`integer`): Pairs tied in y only.
+#' * `$ties_xy` (`integer`): Pairs tied in both.
+#' * `$tau_a` (`numeric`): `(C-D)/\binom n2`
+#' * `$tau_b` (`numeric`)
+#' @section Examples (C++):
+#' See kendall_tau().
+#' @seealso kendall_tau()
+#' @md
+#'
 `KendallTau` <- R6::R6Class("KendallTau", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3318,6 +11982,22 @@ rosetta_ref <- function(value = NULL) {
     `tau_b` = function(value) if (missing(value)) .Call(`.rs_1954`, self) else invisible(.Call(`.rs_1955`, self, value))
   )
 )
+#' C++ class `datamunge::stats::ExponentialSmoothingOptions`
+#' @section Constructor:
+#' `ExponentialSmoothingOptions$new()`
+#' @section Fields:
+#' * `$trend` (`character (TrendType)`)
+#' * `$seasonal` (`character (SeasonalType)`)
+#' * `$seasonal_period` (`integer`)
+#' * `$alpha` (`numeric`)
+#' * `$beta` (`numeric`)
+#' * `$gamma` (`numeric`)
+#' * `$phi` (`numeric`)
+#' * `$de_population_size` (`integer`)
+#' * `$de_max_generations` (`integer`)
+#' * `$seed` (`integer`)
+#' @md
+#'
 `ExponentialSmoothingOptions` <- R6::R6Class("ExponentialSmoothingOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3339,6 +12019,53 @@ rosetta_ref <- function(value = NULL) {
     `seed` = function(value) if (missing(value)) .Call(`.rs_1975`, self) else invisible(.Call(`.rs_1976`, self, value))
   )
 )
+#' Exponential smoothing (Holt-Winters family): simple exponential smoothing (no trend, no seasonality), Holt linear trend (with optional damping), and seasonal Holt-Winters (additive or multiplicative), unified under one class the way R's HoltWinters() and statsmodels' ExponentialSmoothing() are -- which components are active is controlled entirely by ExponentialSmoothingOptions::trend/seasonal.
+#'
+#' Initial level/trend/seasonal-index states are set once from a simple classical
+#' decomposition of the first one or two seasonal cycles and then held fixed; only
+#' the smoothing parameters (alpha, beta, gamma, phi) are fit, by minimizing
+#' one-step-ahead sum of squared errors with DifferentialEvolution.
+#' @section Constructor:
+#' `ExponentialSmoothing$new(y, options = ExponentialSmoothingOptions$new())`
+#'
+#' * `y` (`vector<numeric>`)
+#' * `options` (`ExponentialSmoothingOptions`)
+#' @section Methods:
+#' * `$options()` -> `ExponentialSmoothingOptions`
+#'
+#' * `$alpha()` -> `numeric`
+#'
+#' * `$beta()` -> `numeric`
+#'
+#' * `$gamma()` -> `numeric`
+#'
+#' * `$phi()` -> `numeric`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$sse()` -> `numeric`
+#'
+#' * `$sigma2()` -> `numeric`
+#'
+#' * `$log_likelihood()` -> `numeric`
+#'
+#' * `$aic()` -> `numeric`
+#'
+#' * `$bic()` -> `numeric`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#'   In-sample one-step-ahead fitted values, aligned to the input series. The
+#'   warm-up prefix used to set initial states (see class docs) is copied from the
+#'   observed values (residual exactly zero there).
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#' * `$forecast(horizon)` -> `vector<numeric>`
+#'
+#'   Point forecasts for the next `horizon` periods.
+#' @md
+#'
 `ExponentialSmoothing` <- R6::R6Class("ExponentialSmoothing", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3362,6 +12089,35 @@ rosetta_ref <- function(value = NULL) {
     `forecast` = function(...) .Call(`.rs_1991`, self, list(...))
   )
 )
+#' B-spline design factory, analogous to R's splines::bs().
+#'
+#' Owns a clamped basis on fixed boundaries, reused for training and prediction. By default the first basis column is omitted, so a formula's intercept does not duplicate the partition of unity. No fitting or smoothing is performed. Const evaluations are independent and safe to run concurrently.
+#' @section Constructor:
+#' `Bspline$new(lower, upper, knots, degree = 3, intercept = FALSE)`
+#'
+#' Build a clamped basis from strictly increasing knot breakpoints.
+#'
+#' * `lower` (`numeric`): Finite left boundary, strictly below upper.
+#' * `upper` (`numeric`): Finite right boundary.
+#' * `knots` (`vector<numeric>`): Finite increasing breakpoints inside \[lower, upper\]; boundary
+#'   entries are optional and ignored when building interior knots. May be empty.
+#' * `degree` (`integer`): Polynomial degree, default 3 (cubic).
+#' * `intercept` (`logical`): Include the first basis column, default false; use a
+#'   no-intercept formula when true. Column count is interior knots + degree
+#'   + (intercept ? 1 : 0).
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::Bspline basis(0, 1, {0, 0.5, 1});
+#' const auto design = basis.eval({0, 0.5, 1});
+#' std::print("{} {}\n", design.rows(), design.cols()); // 3 4
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: For invalid boundaries/knots or overflowing degree.
+#' @references - C. de Boor (1972). "On calculating with B-splines". Journal of Approximation
+#'   Theory 6(1), 50-62. doi:10.1016/0021-9045(72)90080-9.
+#' @seealso bs(), fda::BSplineBasis, stats::LM
+#' @md
+#'
 `Bspline` <- R6::R6Class("Bspline", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3371,6 +12127,58 @@ rosetta_ref <- function(value = NULL) {
     }
   )
 )
+#' A least-squares B-spline regression curve y ≈ Σ_j β_j B_j(x).
+#'
+#' `dm::BSR` for short.
+#'
+#' The fit is ordinary least squares (no roughness penalty). Throws std::invalid_argument for
+#' mismatched/empty inputs or too few basis functions for the degree, and std::runtime_error when
+#' the design is rank deficient (some basis function has too little data under it; use fewer
+#' basis functions / knots).
+#' @section Constructor:
+#' `BSplineRegression$new(x, y, n_basis, degree = 3)`
+#'
+#' Fixed-width basis: `n_basis` B-splines of the given `degree` (cubic by default)
+#' whose knots are equally spaced over the range of `x`.
+#'
+#' `BSplineRegression$new(x, y, knots, degree = 3)`
+#'
+#' Basis built on the given knot locations (breakpoints), like `knots=` in R's
+#' `splines::bs()`. Boundary knots are the smallest/largest of `knots` and `x`; the rest are
+#' interior knots. Gives (number of interior knots) + degree + 1 basis functions.
+#'
+#' * `x` (`std::vector<double>`)
+#' * `y` (`std::vector<double>`)
+#' * `n_basis` (`integer`)
+#' * `degree` (`integer`)
+#' * `knots` (`std::vector<double>`)
+#' @section Methods:
+#' * `$predict(x)` -> `std::vector<double>`
+#'
+#'   Evaluates the fitted curve at `x`. Points outside the fitted domain take the value
+#'   at the nearest boundary, i.e. constant extrapolation.
+#'
+#' * `$coefficients()` -> `std::vector<double>`
+#'
+#' * `$fitted()` -> `std::vector<double>`
+#'
+#' * `$residuals()` -> `std::vector<double>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$basis_size()` -> `integer`
+#'
+#' * `$degree()` -> `integer`
+#'
+#' * `$knots()` -> `std::vector<double>`
+#'
+#'   The full knot sequence (boundary knots repeated degree + 1 times).
+#'
+#' * `$domain()` -> `list(numeric, numeric)`
+#'
+#'   The \[min, max\] interval the basis covers.
+#' @md
+#'
 `BSplineRegression` <- R6::R6Class("BSplineRegression", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3389,6 +12197,158 @@ rosetta_ref <- function(value = NULL) {
     `domain` = function(...) .Call(`.rs_2002`, self, list(...))
   )
 )
+#' A P-spline regression curve y ≈ Σ_j β_j B_j(x) (Eilers & Marx).
+#'
+#' `dm::PSR` for short.
+#'
+#' Minimizes ||y - Bβ||² + λ ||D_d β||², where D_d is the order-d difference matrix on the
+#' coefficients (d = 2 by default). Uniform knots continue past both ends of the data
+#' without repeated boundary knots. When d <= degree+1, polynomials of degree < d
+#' go unpenalized: λ → ∞ gives the least-squares line for d = 2. A rich basis can
+#' include functions with no data under them if the data identify the penalty nullspace.
+#' Without an explicit λ, it is chosen
+#' by minimizing generalized cross-validation, GCV(λ) = n·RSS / (n − edf)².
+#'
+#' The polynomial-nullspace claim requires uniform spacing; it need not hold for irregular
+#' supplied knots. A positive lambda identifies a rich basis only when the design identifies
+#' the penalty nullspace. No values are dropped. The class owns its fit and permits concurrent
+#' const reads. Sparse assembly and dense Cholesky cost O(n(p+1)^2+K^3); GCV repeats
+#' this work. Very large lambda can make the equations numerically singular.
+#' @section Constructor:
+#' `PSplineRegression$new(x, y, n_basis)`
+#'
+#' `n_basis` cubic B-splines with equally spaced knots over the range of `x`; λ chosen
+#' by GCV.
+#' Searches log10(lambda) on \[-8,8\] in steps of 0.5, then uses golden-section refinement
+#' around the best grid point. Singular candidates score infinity. This bounded refinement
+#' does not guarantee a global continuous minimum. Penalty order is two.
+#'
+#' `PSplineRegression$new(x, y, n_basis, lambda, degree = 3, penalty_order = 2)`
+#'
+#' `n_basis` B-splines of the given `degree` with equally spaced knots over the range of
+#' `x`, penalized with smoothing parameter `lambda` on differences of order `penalty_order`.
+#'
+#' `PSplineRegression$new(x, y, knots)`
+#'
+#' Cubic basis on the given knot locations; boundary knots are the smallest/largest of
+#' `knots` and `x`. The difference penalty assumes roughly even spacing. λ chosen by GCV.
+#' Uses the same bounded GCV search as the basis-count constructor.
+#'
+#' `PSplineRegression$new(x, y, knots, lambda, degree = 3, penalty_order = 2)`
+#'
+#' Basis on the given knot locations with a fixed smoothing parameter `lambda`.
+#' Outer spacings are continued past the domain, without repeated boundary knots.
+#' The penalty acts on coefficient index and does not correct for unequal knot spacing.
+#'
+#' * `x` (`std::vector<double>`): Nonempty finite coordinates spanning a positive-width interval.
+#' * `y` (`std::vector<double>`): Finite responses matching x.
+#' * `n_basis` (`integer`): Basis count K, at least four.
+#' * `lambda` (`numeric`): Finite nonnegative multiplier of summed squared coefficient differences.
+#' * `degree` (`integer`): Polynomial degree, default three.
+#' * `penalty_order` (`integer`): Positive difference order, default two.
+#' * `knots` (`std::vector<double>`): Nonempty finite breakpoints, sorted/deduplicated and enlarged to contain x.
+#' @section Methods:
+#' * `$predict(x)` -> `std::vector<double>`
+#'
+#'   Evaluates the fitted curve at `x`. Points outside the fitted domain take the value
+#'   at the nearest boundary, i.e. constant extrapolation.
+#'   - `x`: Finite evaluation coordinates; empty is accepted.
+#'   - Returns: Owned predictions in input order, after clamping x to domain().
+#'
+#' * `$coefficients()` -> `std::vector<double>`
+#'
+#'   Fitted coefficients in basis order.
+#'   - Returns: Owned K-vector.
+#'
+#' * `$fitted()` -> `std::vector<double>`
+#'
+#'   Predictions at the training coordinates.
+#'   - Returns: Owned n-vector in training order.
+#'
+#' * `$residuals()` -> `std::vector<double>`
+#'
+#'   Observed minus fitted training responses.
+#'   - Returns: Owned n-vector in training order.
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#'   In-sample 1-RSS/TSS, with the constant-response convention of PSplineFitResult.
+#'   - Returns: Scalar R squared.
+#'
+#' * `$lambda()` -> `numeric`
+#'
+#'   The smoothing parameter λ used for the fit (the GCV minimizer when not given).
+#'   - Returns: Finite nonnegative multiplier used in the fit.
+#'
+#' * `$penalty_order()` -> `integer`
+#'
+#'   Order of adjacent coefficient differences.
+#'   - Returns: Positive difference order, independent of spline degree.
+#'
+#' * `$effective_df()` -> `numeric`
+#'
+#'   Effective degrees of freedom, trace of the hat matrix.
+#'   - Returns: Fixed-lambda smoother trace, the sum of training leverages.
+#'
+#' * `$gcv()` -> `numeric`
+#'
+#'   Generalized cross-validation score n·RSS / (n − edf)² of the fit.
+#'   - Returns: Fixed-lambda score in response-squared units; infinity when n-edf is numerically zero.
+#'
+#' * `$basis_size()` -> `integer`
+#'
+#'   Number of basis functions, including boundary functions.
+#'   - Returns: Basis dimension K.
+#'
+#' * `$degree()` -> `integer`
+#'
+#'   Polynomial degree of each spline segment.
+#'   - Returns: Degree p, independent of penalty order.
+#'
+#' * `$knots()` -> `std::vector<double>`
+#'
+#'   The full knot sequence, including the `degree` extra knots past each end of the data.
+#'   - Returns: Owned sequence of K+degree+1 knots.
+#'
+#' * `$domain()` -> `list(numeric, numeric)`
+#'
+#'   The \[min, max\] interval the basis covers.
+#'   - Returns: Closed interval endpoints (minimum,maximum).
+#'
+#' * `$coefficient_differences()` -> `std::vector<double>`
+#'
+#'   Fitted order-d coefficient differences, whose squared norm is roughness.
+#'   - Returns: Owned K-d vector in left-to-right difference order.
+#' @section Examples (C++):
+#' ```cpp
+#' const dm::PSR fit({0,1,2},{0,1,0},3,1.0,1,2);
+#' std::print("{:.6f} {:.6f}\n",fit.predict({1})[0],fit.effective_df()); // 0.428571 2.142857
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: For invalid data or basis size.
+#'
+#' * `std::runtime_error`: If all candidate systems fail numerically.
+#'
+#' * `std::invalid_argument`: For invalid data/options or non-finite extended knots.
+#'
+#' * `std::runtime_error`: If the penalized system is singular or non-finite.
+#'
+#' * `std::overflow_error`: If difference weights or the penalty overflow.
+#'
+#' * `std::invalid_argument`: For invalid data/knots or zero-width combined domain.
+#'
+#' * `std::runtime_error`: If every candidate system fails numerically.
+#'
+#' * `std::invalid_argument`: For invalid data, options, knots or zero-width combined domain.
+#'
+#' * `std::runtime_error`: If the system is singular or non-finite.
+#'
+#' * `std::overflow_error`: If difference weights or the penalty overflow.
+#' @references - P. H. C. Eilers and B. D. Marx (1996). Flexible smoothing with B-splines and penalties.
+#'   https://doi.org/10.1214/ss/1038425655
+#' @seealso fda::fit_pspline(), smoothing_path(), summary()
+#' @md
+#'
 `PSplineRegression` <- R6::R6Class("PSplineRegression", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3412,6 +12372,271 @@ rosetta_ref <- function(value = NULL) {
     `coefficient_differences` = function(...) .Call(`.rs_2017`, self, list(...))
   )
 )
+#' SWIG-friendly facade for the C++ dataframe API exposed to bindings.
+#' @section Constructor:
+#' `DataFrame$new()`
+#'
+#' `DataFrame$new(values, names)`
+#'
+#' Copy a numeric vector into a one-column DataFrame.
+#'
+#' * `values` (`vector<numeric>`): Copied row values, including nonfinite values.
+#' * `names` (`vector<character>`): Exactly one nonempty column name.
+#' @section Methods:
+#' * `$nrows()` -> `integer`
+#'
+#' * `$ncols()` -> `integer`
+#'
+#' * `$shape()` -> `vector<integer>`
+#'
+#' * `$columns()` -> `vector<character>`
+#'
+#' * `$add_numeric_column(column_name, values, valid_mask = c())`
+#'
+#' * `$add_string_column(column_name, values, valid_mask = c())`
+#'
+#' * `$add_string_column_encoded(column_name, encoded_values, valid_mask = c())`
+#'
+#' * `$fill_null_numeric(column_name, value)`
+#'
+#' * `$fill_null_string(column_name, value)`
+#'
+#' * `$mutate_numeric(column_name, values, valid_mask = c())` -> `DataFrame or NULL`
+#'
+#'   dplyr::mutate()-style upsert: adds column_name if absent, replaces it (same type) if
+#'   present. Always returns a new DataFrame, so it composes into a pipe.
+#'
+#' * `$mutate_string(column_name, values, valid_mask = c())` -> `DataFrame or NULL`
+#'
+#' * `$mutate_string_encoded(column_name, encoded_values, valid_mask = c())` -> `DataFrame or NULL`
+#'
+#' * `$rename(old_name, new_name)` -> `DataFrame or NULL`
+#'
+#'   Non-mutating, chainable single-pair rename.
+#'
+#' * `$select(selected_columns)` -> `DataFrame or NULL`
+#'
+#' * `$select_encoded(encoded_columns)` -> `DataFrame or NULL`
+#'
+#' * `$relocate(columns, after = "")` -> `DataFrame or NULL`
+#'
+#'   dplyr::relocate()-style column reorder: moves `columns` to the front (default) or
+#'   immediately after the column named `after`.
+#'
+#' * `$relocate_encoded(encoded_columns, after = "")` -> `DataFrame or NULL`
+#'
+#' * `$sort_by(column_name, ascending = TRUE)` -> `DataFrame or NULL`
+#'
+#' * `$arrange(columns, ascending = c())` -> `DataFrame or NULL`
+#'
+#'   dplyr::arrange()-style multi-key sort. `ascending` defaults to all-true; when
+#'   provided it must have the same length as `columns`.
+#'
+#' * `$arrange_encoded(encoded_columns, ascending = c())` -> `DataFrame or NULL`
+#'
+#' * `$drop_duplicates(subset = c())` -> `DataFrame or NULL`
+#'
+#' * `$drop_duplicates_encoded(encoded_subset)` -> `DataFrame or NULL`
+#'
+#' * `$distinct(subset = c())` -> `DataFrame or NULL`
+#'
+#'   dplyr::distinct() alias for drop_duplicates().
+#'
+#' * `$distinct_encoded(encoded_subset)` -> `DataFrame or NULL`
+#'
+#' * `$pull_numeric(column_name)` -> `vector<numeric>`
+#'
+#'   dplyr::pull()-style column extraction. Nulls come back as NaN (numeric) / "" (string)
+#'   in the value vector; check pull_numeric_valid()/pull_string_valid() (1 = present, 0 =
+#'   null, same convention as add_numeric_column's valid_mask) if nulls matter.
+#'
+#' * `$pull_numeric_valid(column_name)` -> `vector<integer>`
+#'
+#' * `$pull_string(column_name)` -> `vector<character>`
+#'
+#' * `$pull_string_valid(column_name)` -> `vector<integer>`
+#'
+#' * `$n_distinct(column_name)` -> `integer`
+#'
+#'   Number of distinct values in column_name; a null counts as one additional distinct
+#'   value if present.
+#'
+#' * `$group_by_sum(key_columns, value_columns)` -> `DataFrame or NULL`
+#'
+#' * `$group_by_sum_encoded(encoded_key_columns, encoded_value_columns)` -> `DataFrame or NULL`
+#'
+#' * `$count(key_columns, count_column_name = "n")` -> `DataFrame or NULL`
+#'
+#'   dplyr::count()-style grouped row counts, default result column name "n".
+#'
+#' * `$count_encoded(encoded_key_columns, count_column_name = "n")` -> `DataFrame or NULL`
+#'
+#' * `$summarise(key_columns, agg_columns, agg_funcs, result_names)` -> `DataFrame or NULL`
+#'
+#'   General dplyr::summarise()-style aggregation: one output row per distinct
+#'   combination of `key_columns`, with one output column per (agg_columns\[i\],
+#'   agg_funcs\[i\], result_names\[i\]) triple -- all three arrays must have the same length.
+#'   agg_funcs entries are one of "sum", "mean", "min", "max", "median", "stddev",
+#'   "count", "n_distinct" ("count" ignores the corresponding agg_columns entry, which may
+#'   be ""); a "" result_names entry defaults to the agg_columns entry (or "n" for count).
+#'
+#' * `$summarise_encoded(encoded_key_columns, encoded_agg_columns, encoded_agg_funcs, encoded_result_names)` -> `DataFrame or NULL`
+#'
+#' * `$pivot_longer(value_columns, names_to = "name", values_to = "value")` -> `DataFrame or NULL`
+#'
+#'   dplyr::pivot_longer()-style reshape: stacks `value_columns` into two new columns
+#'   (`names_to` holding the source column name, `values_to` holding its value).
+#'
+#' * `$pivot_longer_encoded(encoded_value_columns, names_to = "name", values_to = "value")` -> `DataFrame or NULL`
+#'
+#' * `$pivot_wider(names_from, values_from, id_columns = c())` -> `DataFrame or NULL`
+#'
+#'   dplyr::pivot_wider()-style reshape: `names_from` (a string column) supplies new
+#'   column names, `values_from` supplies their values; `id_columns` defaults to every
+#'   other column.
+#'
+#' * `$pivot_wider_encoded(names_from, values_from, encoded_id_columns)` -> `DataFrame or NULL`
+#'
+#' * `$bind_rows(other)` -> `DataFrame or NULL`
+#'
+#'   dplyr::bind_rows()-style row union: aligns columns by name (unlike concat_rows,
+#'   which isn't exposed here), null-filling any column present in only one frame.
+#'
+#' * `$bind_cols(other)` -> `DataFrame or NULL`
+#'
+#'   dplyr::bind_cols()-style column union: both frames must have the same row count and
+#'   disjoint column names.
+#'
+#' * `$join(right, left_key, right_key, join_type = "inner", left_suffix = "_x", right_suffix = "_y")` -> `DataFrame or NULL`
+#'   - `join_type`: One of "inner" (default), "left", "right", "full", "semi", "anti". Any
+#'     column name present in both frames (other than the key column when left_key ==
+#'     right_key) is suffixed on both sides so the result never has duplicate names.
+#'
+#' * `$numeric_count(column_name)` -> `integer`
+#'
+#' * `$numeric_null_count(column_name)` -> `integer`
+#'
+#' * `$numeric_sum(column_name)` -> `numeric`
+#'
+#' * `$numeric_mean(column_name)` -> `numeric`
+#'
+#' * `$numeric_min(column_name)` -> `numeric`
+#'
+#' * `$numeric_max(column_name)` -> `numeric`
+#'
+#' * `$to_string(max_rows = 10)` -> `character`
+#'
+#' * `$to_md(digits = 3)` -> `character`
+#'
+#'   The frame as a Markdown table (numeric columns right-aligned, at most `digits`
+#'   decimals each), like knitr::kable(); see dstruct::DataFrame::to_md().
+#'
+#' * `$is_numeric_column(column_name)` -> `logical`
+#'
+#'   true if column_name holds numeric values, false if it holds strings.
+#'
+#' * `$is_null(column_name, row_index)` -> `logical`
+#'
+#' * `$numeric_at(column_name, row_index)` -> `numeric`
+#'
+#'   The value at (column_name, row_index); throws if the cell is null or the column isn't numeric.
+#'
+#' * `$string_at(column_name, row_index)` -> `character`
+#'
+#'   The value at (column_name, row_index); throws if the cell is null or the column isn't string-typed.
+#' @section Static methods:
+#' * `DataFrame$empty()` -> `DataFrame or NULL`
+#'
+#'   Equivalent to the default constructor, exposed as a static factory (like iris()/
+#'   penguins()) as a workaround for a SWIG R-backend bug where the plain no-argument
+#'   constructor's ownership-flagged pointer breaks method dispatch on the result.
+#'
+#' * `DataFrame$iris()` -> `DataFrame or NULL`
+#'
+#' * `DataFrame$penguins()` -> `DataFrame or NULL`
+#'
+#' * `DataFrame$tooth_growth()` -> `DataFrame or NULL`
+#'
+#' * `DataFrame$wine()` -> `DataFrame or NULL`
+#'
+#'   UCI wine recognition data, 178 x 14; see datasets::wine().
+#'
+#' * `DataFrame$titanic()` -> `DataFrame or NULL`
+#'
+#'   Kaggle Titanic training set, 891 x 12 with missing values; see datasets::titanic().
+#'
+#' * `DataFrame$eight_schools()` -> `DataFrame or NULL`
+#'
+#'   Rubin's eight schools coaching experiment, 8 x 3; see datasets::eight_schools().
+#'
+#' * `DataFrame$air_passengers()` -> `DataFrame or NULL`
+#'
+#'   Monthly airline passengers 1949-1960, 144 x 3; see datasets::air_passengers().
+#'
+#' * `DataFrame$volcano()` -> `DataFrame or NULL`
+#'
+#'   Maunga Whau (Mt Eden) elevations on a 10 m grid, 5307 x 3; see datasets::volcano().
+#'
+#' * `DataFrame$faithful()` -> `DataFrame or NULL`
+#'
+#'   Old Faithful eruptions, 272 x 2; see datasets::faithful().
+#'
+#' * `DataFrame$mtcars()` -> `DataFrame or NULL`
+#'
+#'   Motor Trend cars, 32 x 12 (row names as `model`); see datasets::mtcars().
+#'
+#' * `DataFrame$airquality()` -> `DataFrame or NULL`
+#'
+#'   New York air quality 1973, 153 x 6 with missing values; see datasets::airquality().
+#'
+#' * `DataFrame$breast_cancer()` -> `DataFrame or NULL`
+#'
+#'   Wisconsin diagnostic breast cancer, 569 x 31; see datasets::breast_cancer().
+#'
+#' * `DataFrame$diabetes()` -> `DataFrame or NULL`
+#'
+#'   Efron et al.'s diabetes progression data, 442 x 11; see datasets::diabetes().
+#'
+#' * `DataFrame$digits()` -> `DataFrame or NULL`
+#'
+#'   8x8 handwritten digits, 1797 x 65; see datasets::digits().
+#'
+#' * `DataFrame$diamonds()` -> `DataFrame or NULL`
+#'
+#'   ggplot2's diamonds, 53940 x 10, downloaded once and cached; see datasets::diamonds().
+#'
+#' * `DataFrame$california_housing()` -> `DataFrame or NULL`
+#'
+#'   California housing, 20640 x 10, downloaded once and cached; see
+#'   datasets::california_housing().
+#'
+#' * `DataFrame$dataset(name)` -> `DataFrame or NULL`
+#'
+#'   Any table-shaped dataset by name, e.g. "wine"; see datasets::load().
+#'
+#' * `DataFrame$dataset_catalog()` -> `DataFrame or NULL`
+#'
+#'   One row per available dataset (name, rows, columns, storage, size_mb,
+#'   description); see datasets::catalog().
+#'
+#' * `DataFrame$read_csv(path, delimiter = ",")` -> `DataFrame or NULL`
+#'
+#'   Reads a whole CSV file, typing columns automatically; see datasets::read_csv().
+#'   - `path`: The file to read.
+#'   - `delimiter`: The field separator.
+#'
+#' * `DataFrame$parse_csv(text, delimiter = ",")` -> `DataFrame or NULL`
+#'
+#'   Parses CSV text, typing columns automatically; see datasets::parse_csv().
+#'
+#' * `DataFrame$from_image_batch(batch)` -> `DataFrame or NULL`
+#'
+#'   An ImageLoader batch as a table (`pixel_0`.., `label`, `index`); see
+#'   datasets::to_dataframe().
+#' @section Errors:
+#' * `std::invalid_argument`: For invalid column names.
+#' @md
+#'
 `DataFrame` <- R6::R6Class("DataFrame", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3519,6 +12744,59 @@ rosetta_ref <- function(value = NULL) {
 `DataFrame`$`read_csv` <- function(...) .Call(`.rs_2092`, NULL, list(...))
 `DataFrame`$`parse_csv` <- function(...) .Call(`.rs_2093`, NULL, list(...))
 `DataFrame`$`from_image_batch` <- function(...) .Call(`.rs_2094`, NULL, list(...))
+#' SWIG-friendly streaming CSV reader: returns a big file as DataFrames of at most batch_size() rows each, so only one chunk is in memory at a time.
+#'
+#' Wraps datasets::CsvReader; column types are fixed from the first 1000 rows.
+#' @section Constructor:
+#' `CsvReader$new(path, batch_size = 1000, delimiter = ",")`
+#'
+#' Opens `path` and infers its column types.
+#'
+#' * `path` (`character`): The CSV file.
+#' * `batch_size` (`integer`): Rows per chunk; must be positive.
+#' * `delimiter` (`character`): The field separator.
+#' @section Methods:
+#' * `$has_next()` -> `logical`
+#'
+#'   true while rows remain.
+#'
+#' * `$next_chunk()` -> `DataFrame or NULL`
+#'
+#'   The next chunk (caller owns it).
+#'
+#' * `$reset()`
+#'
+#'   Rewinds to the first data row.
+#'
+#' * `$batch_size()` -> `integer`
+#'
+#'   Rows per chunk.
+#'
+#' * `$set_batch_size(rows)`
+#'
+#'   Changes the rows per chunk.
+#'
+#' * `$column_names()` -> `vector<character>`
+#'
+#'   Column names, in file order.
+#'
+#' * `$rows_read()` -> `numeric`
+#'
+#'   Rows returned since opening or the last reset().
+#' @section Examples (C++):
+#' ```cpp
+#' dm::CsvReader reader(dm::datasets::fetch("diamonds"), 10000);
+#' while (reader.has_next()) {
+#'   std::unique_ptr<dm::DataFrame> chunk(reader.next());
+#'   // ... use chunk ...
+#' }
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: if batch_size is not positive.
+#'
+#' * `std::runtime_error`: if the file cannot be opened or is malformed.
+#' @md
+#'
 `CsvReader` <- R6::R6Class("CsvReader", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3535,6 +12813,49 @@ rosetta_ref <- function(value = NULL) {
     `rows_read` = function(...) .Call(`.rs_2102`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::gis::ShapeLayer — reads a shapefile (.shp geometry + .dbf attributes) and draws it as a map.
+#'
+#' Geometry access is flattened into per-shape/   per-part coordinate vectors rather than exposing gis::Shape's nested   vector<vector<Point2D>> directly, matching this facade layer's usual convention for   types SWIG can't bind cleanly.
+#' @section Constructor:
+#' No public constructor.
+#' @section Methods:
+#' * `$size()` -> `integer`
+#'
+#' * `$shape_type()` -> `character`
+#'
+#'   One of "point", "polyline", "polygon", "multipoint", or "null" (an empty layer).
+#'
+#' * `$bounds()` -> `vector<numeric>`
+#'
+#'   \{xmin, ymin, xmax, ymax\}, from the shapefile's own declared bounding box.
+#'
+#' * `$attributes()` -> `DataFrame or NULL`
+#'
+#' * `$shape_kind(shape_index)` -> `character`
+#'
+#' * `$num_parts(shape_index)` -> `integer`
+#'
+#'   Number of parts (rings for Polygon, lines for PolyLine; 0 for Point/MultiPoint,
+#'   which use point_x()/point_y() instead).
+#'
+#' * `$part_x(shape_index, part_index)` -> `vector<numeric>`
+#'
+#' * `$part_y(shape_index, part_index)` -> `vector<numeric>`
+#'
+#' * `$point_x(shape_index)` -> `vector<numeric>`
+#'
+#'   Every point's x/y in a Point or MultiPoint shape (a single element for Point).
+#'
+#' * `$point_y(shape_index)` -> `vector<numeric>`
+#'
+#' * `$plot(fill_color = <default>, border_color = <default>, width = 800, height = 800)` -> `RPlot`
+#' @section Static methods:
+#' * `ShapeLayer$read(path)` -> `ShapeLayer or NULL`
+#'
+#'   Reads "<path>.shp" and "<path>.dbf" (`path` may already end in one of those
+#'   extensions, or in neither).
+#' @md
+#'
 `ShapeLayer` <- R6::R6Class("ShapeLayer", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3557,6 +12878,117 @@ rosetta_ref <- function(value = NULL) {
   )
 )
 `ShapeLayer`$`read` <- function(...) .Call(`.rs_2104`, NULL, list(...))
+#' SWIG-friendly facade for datamunge::graphics::GGPlot — a ggplot2-style grammar-of-graphics builder.
+#'
+#' Geom/theme/scale/facet calls are chainable, mirroring ggplot2's own layered `ggplot(df, aes(...)) + geom_point() + ...` style as closely as C++ method chaining allows.
+#' @section Constructor:
+#' `GGPlot$new(data, x_column, y_column = "", color_column = "", fill_column = "", group_column = "")`
+#'
+#' * `data` (`DataFrame`)
+#' * `x_column` (`character`)
+#' * `y_column` (`character`)
+#' * `color_column` (`character`)
+#' * `fill_column` (`character`)
+#' * `group_column` (`character`)
+#' @section Methods:
+#' * `$geom_point(color = <default>, size = 3.0)` -> `GGPlot`
+#'
+#' * `$geom_line(color = <default>, width = 1.5)` -> `GGPlot`
+#'
+#' * `$geom_bar(color = <default>)` -> `GGPlot`
+#'
+#' * `$geom_col(color = <default>)` -> `GGPlot`
+#'
+#' * `$geom_histogram(bins = 30, color = <default>)` -> `GGPlot`
+#'
+#' * `$geom_boxplot(color = <default>)` -> `GGPlot`
+#'
+#' * `$geom_smooth(color = <default>)` -> `GGPlot`
+#'
+#' * `$geom_area(color = <default>)` -> `GGPlot`
+#'
+#' * `$geom_ribbon(ymin_column, ymax_column, color = <default>)` -> `GGPlot`
+#'
+#' * `$geom_density(color = <default>)` -> `GGPlot`
+#'
+#' * `$facet_wrap(column, ncol = 0)` -> `GGPlot`
+#'
+#' * `$theme_minimal()` -> `GGPlot`
+#'
+#' * `$theme_bw()` -> `GGPlot`
+#'
+#' * `$theme_classic()` -> `GGPlot`
+#'
+#' * `$scale_color_manual(values)` -> `GGPlot`
+#'
+#' * `$labs(title = "", x = "", y = "")` -> `GGPlot`
+#'
+#' * `$to_svg()` -> `character`
+#'
+#'   Renders the plot as a standalone SVG document and returns it as a string.
+#'
+#' * `$save(path)`
+#'
+#' * `$save_svg(path)`
+#'
+#' * `$show(title_hint = "")`
+#'
+#' * `$rows()` -> `integer`
+#'
+#'   Number of data rows being plotted.
+#'   - Returns: The row count of the frame passed to the constructor.
+#'
+#' * `$x_column()` -> `character`
+#'
+#'   The column mapped to x.
+#'   - Returns: The x column name.
+#'
+#' * `$y_column()` -> `character`
+#'
+#'   The column mapped to y.
+#'   - Returns: The y column name; empty when unmapped.
+#'
+#' * `$color_column()` -> `character`
+#'
+#'   The discrete color grouping column.
+#'   - Returns: The color column name; empty when unmapped.
+#'
+#' * `$layer_count()` -> `integer`
+#'
+#'   Number of geom layers added so far.
+#'   - Returns: The layer count.
+#'
+#' * `$layer_kinds()` -> `vector<character>`
+#'
+#'   The geom of each layer in drawing order ("point", "line", "smooth", ...).
+#'   - Returns: One name per layer.
+#'
+#' * `$theme_name()` -> `character`
+#'
+#'   The selected theme's name.
+#'   - Returns: "gray" (the default), "minimal", "bw" or "classic".
+#'
+#' * `$facet_column()` -> `character`
+#'
+#'   The facet_wrap() column.
+#'   - Returns: The column name; empty when not faceted.
+#'
+#' * `$title_text()` -> `character`
+#'
+#'   The title set by labs().
+#'   - Returns: The title; empty when unset.
+#'
+#' * `$x_label()` -> `character`
+#'
+#'   The x-axis label set by labs().
+#'   - Returns: The label; empty when unset.
+#'
+#' * `$y_label()` -> `character`
+#'
+#'   The y-axis label set by labs().
+#'   - Returns: The label; empty when unset.
+#' @md
+#'
 `GGPlot` <- R6::R6Class("GGPlot", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3597,6 +13029,194 @@ rosetta_ref <- function(value = NULL) {
     `y_label` = function(...) .Call(`.rs_2146`, self, list(...))
   )
 )
+#' A scatterplot matrix (R's `pairs()`, GGally's `ggpairs()`) over the columns of a data frame, with chainable setters; the SWIG-friendly facade for graphics::Splom.
+#'
+#' Panel (row i, column j) puts variable j on x and variable i on y. The panel type follows
+#' the two variables' kinds (numeric columns are quantitative, string columns categorical):
+#' - diagonal: kernel density curves, one per group_by() group (numeric), or a stacked bar of
+#'   level counts (string), titled with the variable name;
+#' - numeric vs numeric above the diagonal: the points with a local linear smooth of the mean and
+#'   a 95% prediction band, one per group; point colors follow set_col() or group_by();
+#' - numeric vs numeric below the diagonal: bivariate kernel density contours, one set per group;
+#' - string vs numeric: one violin per level with the median and interquartile range marked;
+#' - string vs string: a mosaic shaded by chi-squared Pearson residuals, with its p-value.
+#'
+#' Values are copied at construction, so the frame need not outlive the matrix. Rows with a
+#' missing value in either variable are dropped from that panel only. Setters return
+#' `Splom&` for chaining; nothing is drawn until to_svg(), save(), or show(). The default
+#' figure is 960 by 960 pixels with blue `{37, 99, 235}` points of radius 2.5.
+#' @section Constructor:
+#' `Splom$new(data, columns = c())`
+#'
+#' Builds the matrix from a facade DataFrame (the overload SWIG bindings use).
+#'
+#' * `data` (`DataFrame`): Source frame; its values are copied.
+#' * `columns` (`vector<character>`): Columns to include in order; empty selects every numeric column plus every
+#'   string column with at most graphics::Splom::max_default_levels distinct values.
+#' @section Methods:
+#' * `$set_col(color)` -> `Splom`
+#'
+#'   Sets one color for every scatter point; same as color().
+#'   - `color`: Point color, alpha included; also used for bars without grouping.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$set_title(value)` -> `Splom`
+#'
+#'   Same as title(), matching the `set_*` style of dm::Plot.
+#'   - `value`: Figure heading; empty removes the heading band.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$title(value)` -> `Splom`
+#'
+#'   Sets the heading above the grid; "" removes it.
+#'   - `value`: Figure heading.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$size(width, height)` -> `Splom`
+#'
+#'   Sets the figure size in pixels (default 960 by 960); panels share it equally.
+#'   - `width`: Figure width in pixels.
+#'   - `height`: Figure height in pixels.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$color(value)` -> `Splom`
+#'
+#'   Uses one color for all points and clears any grouping.
+#'   - `value`: Point color (default `{37, 99, 235}`).
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$group_by(column, palette = c())` -> `Splom`
+#'
+#'   Splits every numeric panel by the groups of string column `column` (GGally's
+#'   `ggpairs(aes(colour = group))`); an empty palette uses the default level palette.
+#'   - `column`: String column to group by, or "" to clear.
+#'   - `palette`: Group colors in sorted-group order; empty uses the default.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$point_colors(colors)` -> `Splom`
+#'
+#'   Sets one color per data row for the points (recycled); clears group_by().
+#'   - `colors`: Per-row colors, recycled when shorter than the frame.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$level_palette(colors)` -> `Splom`
+#'
+#'   Sets the fills cycled over categorical levels in violins and stacked bars.
+#'   - `colors`: Fill colors in sorted-level order, recycled.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$marker_size(value)` -> `Splom`
+#'
+#'   Sets the point radius in pixels (default 2.5).
+#'   - `value`: Positive marker radius.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$diagonal_names()` -> `Splom`
+#'
+#'   Shows only the variable names on the diagonal, like R's `pairs()`.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$diagonal_density()` -> `Splom`
+#'
+#'   Shows kernel densities, one per group (numeric), or a stacked bar (string) on the
+#'   diagonal (the default).
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$diagonal_histogram()` -> `Splom`
+#'
+#'   Shows a histogram (numeric) or stacked bar (string) on the diagonal.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$span(value)` -> `Splom`
+#'
+#'   Sets the fraction of each group's points used in each local fit of the smooths
+#'   above the diagonal (R's `loess(span =)`, default 0.75).
+#'   - `value`: Span in (0, 1\]; smaller values follow the data more closely.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$prediction_level(value)` -> `Splom`
+#'
+#'   Sets the coverage of the prediction bands above the diagonal (default 0.95).
+#'   - `value`: Coverage in (0, 1).
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$bins(value)` -> `Splom`
+#'
+#'   Sets the histogram bin count used by diagonal_histogram() (default 10).
+#'   - `value`: Positive number of equal-width bins.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$show_grid(enabled = TRUE)` -> `Splom`
+#'
+#'   Toggles the light background grid of the scatter and violin panels (default on).
+#'   - `enabled`: True draws the grid.
+#'   - Returns: This matrix, for chaining.
+#'
+#' * `$variables()` -> `vector<character>`
+#'
+#'   Variable names in panel order.
+#'   - Returns: A copy of the selected column names.
+#'
+#' * `$groups()` -> `vector<character>`
+#'
+#'   Sorted group labels set by group_by(), in palette order; empty without grouping.
+#'   - Returns: A copy of the group labels; also empty after the factor form of set_col().
+#'
+#' * `$title_text()` -> `character`
+#'
+#'   The figure title set by set_title() or title().
+#'   - Returns: The title; empty when unset.
+#'
+#' * `$width()` -> `integer`
+#'
+#'   Figure width in pixels.
+#'   - Returns: The width (960 by default).
+#'
+#' * `$height()` -> `integer`
+#'
+#'   Figure height in pixels.
+#'   - Returns: The height (960 by default).
+#'
+#' * `$panel(row, col)` -> `RPlot`
+#'
+#'   Builds the panel with variable `col` on x and variable `row` on y.
+#'   - `row`: Zero-based index of the y variable.
+#'   - `col`: Zero-based index of the x variable; equal to `row` gives the diagonal panel.
+#'   - Returns: The rendered-on-demand panel plot.
+#'
+#' * `$to_svg()` -> `character`
+#'
+#'   Renders the matrix as a standalone SVG document and returns it as a string.
+#'   - Returns: The complete SVG text of the full grid, including the title band.
+#'
+#' * `$save(path)`
+#'
+#'   Writes the matrix to `path`, choosing the format from the extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$save_svg(path)`
+#'
+#'   Writes to_svg() to `path` regardless of its extension.
+#'   - `path`: Destination file; an existing file is overwritten.
+#'
+#' * `$show(title_hint = "")`
+#'
+#'   Opens the matrix in the interactive X11 viewer and blocks until the window closes.
+#'   - `title_hint`: Window title; empty uses the figure title, or "datamunge splom".
+#' @section Examples (C++):
+#' ```cpp
+#' const auto iris = dm::datasets::iris();
+#' const auto species = dm::factor(dm::c(iris.get_column<std::string>("Species").values()));
+#' const auto palette = dm::c(dm::RGB{255, 255, 80}, dm::RGB{100, 255, 255},
+#'                            dm::RGB{220, 100, 255});
+#' auto pairs = dm::Splom(iris).set_title("Iris Pairs").set_col(species, palette);
+#' pairs.show();  // or pairs.save("iris_pairs.svg") without a display
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: For a missing column, or fewer than two variables.
+#' @seealso dm::splom(), dm::Plot, graphics::Splom
+#' @md
+#'
 `Splom` <- R6::R6Class("Splom", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3632,6 +13252,88 @@ rosetta_ref <- function(value = NULL) {
     `show` = function(...) invisible(.Call(`.rs_2173`, self, list(...)))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::LM — R-`lm()`-style linear models fit from a DataFrame.
+#' @section Constructor:
+#' `LM$new(data, formula, weights_column = "")`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `weights_column` (`character`): Optional column name enabling weighted least squares; pass "" (the default) for OLS.
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$has_intercept()` -> `logical`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$rank()` -> `integer`
+#'
+#' * `$degrees_of_freedom()` -> `integer`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$coefficient_names()` -> `vector<character>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#' * `$standard_errors()` -> `vector<numeric>`
+#'
+#' * `$t_values()` -> `vector<numeric>`
+#'
+#' * `$p_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$adjusted_r_squared()` -> `numeric`
+#'
+#' * `$sigma()` -> `numeric`
+#'
+#' * `$f_statistic()` -> `numeric`
+#'
+#' * `$f_p_value()` -> `numeric`
+#'
+#' * `$confidence_interval_lower(level = 0.94999999999999996)` -> `vector<numeric>`
+#'
+#' * `$confidence_interval_upper(level = 0.94999999999999996)` -> `vector<numeric>`
+#'
+#' * `$leverage()` -> `vector<numeric>`
+#'
+#' * `$standardized_residuals()` -> `vector<numeric>`
+#'
+#' * `$studentized_residuals()` -> `vector<numeric>`
+#'
+#' * `$cooks_distance()` -> `vector<numeric>`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$predict_frame(newdata, interval_kind = "none", level = 0.94999999999999996)` -> `DataFrame or NULL`
+#'   - `interval_kind`: One of "none", "confidence", "prediction". Returned DataFrame has a "fit" column,
+#'     plus "se_fit"/"lwr"/"upr" when an interval is requested.
+#'
+#' * `$anova()` -> `DataFrame or NULL`
+#'
+#'   Sequential (Type I) analysis-of-variance table as a DataFrame with columns
+#'   term/df/sum_sq/mean_sq/f_value/p_value.
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#'
+#' * `$plot_normal_qq()` -> `RPlot`
+#'
+#' * `$plot_scale_location()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_leverage()` -> `RPlot`
+#'
+#' * `$save_diagnostic_plots(path_prefix)`
+#'
+#'   Saves all four diagnostic plots as "<path_prefix>_<name>.svg".
+#' @md
+#'
 `LM` <- R6::R6Class("LM", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3674,6 +13376,79 @@ rosetta_ref <- function(value = NULL) {
     `save_diagnostic_plots` = function(...) invisible(.Call(`.rs_2207`, self, list(...)))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::LMM — a linear mixed model fit by (RE)ML, with a single grouping factor, e.g. "score ~ x1 + (1 + x1 | school)".
+#' @section Constructor:
+#' `LMM$new(data, formula, reml = TRUE, de_population_size = 40, de_max_generations = 300, theta_bound = 5.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `reml` (`logical`): REML (default) or maximum likelihood.
+#' * `de_population_size` (`integer`)
+#' * `de_max_generations` (`integer`)
+#' * `theta_bound` (`numeric`): Box-constraint magnitude (relative to the residual SD) for the
+#'   DifferentialEvolution search over variance-component parameters.
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$group_variable()` -> `character`
+#'
+#' * `$has_random_intercept()` -> `logical`
+#'
+#' * `$random_effect_names()` -> `vector<character>`
+#'
+#' * `$is_reml()` -> `logical`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$num_groups()` -> `integer`
+#'
+#' * `$rank()` -> `integer`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$coefficient_names()` -> `vector<character>`
+#'
+#' * `$standard_errors()` -> `vector<numeric>`
+#'
+#' * `$z_values()` -> `vector<numeric>`
+#'
+#' * `$p_values()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#' * `$residual_variance()` -> `numeric`
+#'
+#' * `$residual_std_dev()` -> `numeric`
+#'
+#' * `$random_effect_std_devs()` -> `vector<numeric>`
+#'
+#' * `$random_effect_correlation(i, j)` -> `numeric`
+#'
+#' * `$group_labels()` -> `vector<character>`
+#'
+#' * `$random_effects_for_group(group_index)` -> `vector<numeric>`
+#'
+#'   The BLUP random-effect vector for the group at `group_index` (see group_labels()),
+#'   in the same order as random_effect_names().
+#'
+#' * `$log_likelihood()` -> `numeric`
+#'
+#' * `$deviance()` -> `numeric`
+#'
+#' * `$aic()` -> `numeric`
+#'
+#' * `$bic()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#' @md
+#'
 `LMM` <- R6::R6Class("LMM", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3711,6 +13486,74 @@ rosetta_ref <- function(value = NULL) {
     `predict` = function(...) .Call(`.rs_2236`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::GLMM — a generalized linear mixed model fit by penalized quasi-likelihood, with a single grouping factor, e.g. "success ~ x1 + (1 | school)" with family="binomial".
+#' @section Constructor:
+#' `GLMM$new(data, formula, family = "binomial", max_iterations = 20, tol = 9.9999999999999995E-7, de_population_size = 30, de_max_generations = 150, theta_bound = 5.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `family` (`character`): One of "binomial" (logit link) or "poisson" (log link).
+#' * `max_iterations` (`integer`)
+#' * `tol` (`numeric`)
+#' * `de_population_size` (`integer`)
+#' * `de_max_generations` (`integer`)
+#' * `theta_bound` (`numeric`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$family()` -> `character`
+#'
+#' * `$group_variable()` -> `character`
+#'
+#' * `$has_random_intercept()` -> `logical`
+#'
+#' * `$random_effect_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$num_groups()` -> `integer`
+#'
+#' * `$rank()` -> `integer`
+#'
+#' * `$iterations()` -> `integer`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$coefficient_names()` -> `vector<character>`
+#'
+#' * `$standard_errors()` -> `vector<numeric>`
+#'
+#' * `$z_values()` -> `vector<numeric>`
+#'
+#' * `$p_values()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$random_effect_std_devs()` -> `vector<numeric>`
+#'
+#' * `$random_effect_correlation(i, j)` -> `numeric`
+#'
+#' * `$group_labels()` -> `vector<character>`
+#'
+#' * `$random_effects_for_group(group_index)` -> `vector<numeric>`
+#'
+#'   The BLUP random-effect vector for the group at `group_index` (see group_labels()),
+#'   in the same order as random_effect_names().
+#'
+#' * `$deviance()` -> `numeric`
+#'
+#' * `$aic()` -> `numeric`
+#'
+#' * `$bic()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#' @md
+#'
 `GLMM` <- R6::R6Class("GLMM", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3745,6 +13588,68 @@ rosetta_ref <- function(value = NULL) {
     `predict` = function(...) .Call(`.rs_2262`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::INLAMixedModel — a mixed model (same formula grammar as GLMM/LMM) fit by Integrated Nested Laplace Approximation instead of penalized quasi-likelihood/REML: a genuinely Bayesian alternative returning real posterior means/sds (including for the variance components) rather than point estimates + asymptotic standard errors.
+#'
+#' See datamunge::bayes::INLA (C++-only, not exposed to bindings -- same reasoning as AutodiffModel) for the underlying algorithm.
+#' @section Constructor:
+#' `INLAMixedModel$new(data, formula, family = "gaussian", strategy = "grid", fixed_effect_prior_sd = 1000.0, grid_points_per_dim = 7, grid_span = 4.0, mode_population_size = 40, mode_max_generations = 200, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `family` (`character`): One of "gaussian" (identity link), "binomial" (logit link), or "poisson" (log link).
+#' * `strategy` (`character`): One of "grid" (integrate over hyperparameter uncertainty) or "eb"
+#'   (empirical Bayes: fix hyperparameters at their posterior mode).
+#' * `fixed_effect_prior_sd` (`numeric`)
+#' * `grid_points_per_dim` (`integer`)
+#' * `grid_span` (`numeric`)
+#' * `mode_population_size` (`integer`)
+#' * `mode_max_generations` (`integer`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$family()` -> `character`
+#'
+#' * `$group_variable()` -> `character`
+#'
+#' * `$random_effect_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$num_groups()` -> `integer`
+#'
+#' * `$fixed_effects_mean()` -> `vector<numeric>`
+#'
+#' * `$fixed_effects_sd()` -> `vector<numeric>`
+#'
+#' * `$coefficient_names()` -> `vector<character>`
+#'
+#' * `$random_effect_std_devs()` -> `vector<numeric>`
+#'
+#' * `$residual_std_dev()` -> `numeric`
+#'
+#'   Gaussian family only; throws for binomial/poisson (dispersion fixed at 1).
+#'
+#' * `$group_labels()` -> `vector<character>`
+#'
+#' * `$random_effects_mean_for_group(group_index)` -> `vector<numeric>`
+#'
+#'   The posterior-mean/sd BLUP-like random-effect vector for the group at
+#'   `group_index` (see group_labels()), in random_effect_names() order.
+#'
+#' * `$random_effects_sd_for_group(group_index)` -> `vector<numeric>`
+#'
+#' * `$log_marginal_likelihood()` -> `numeric`
+#'
+#'   log p(y), approximated by the same INLA machinery used to fit the model.
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#' @md
+#'
 `INLAMixedModel` <- R6::R6Class("INLAMixedModel", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3772,6 +13677,66 @@ rosetta_ref <- function(value = NULL) {
     `predict` = function(...) .Call(`.rs_2281`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::LDA — R-`MASS::lda()`-style linear discriminant analysis.
+#' @section Constructor:
+#' `LDA$new(data, formula, priors = c())`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `priors` (`vector<numeric>`): Optional class prior probabilities (must sum to 1, ordered as classes() once sorted
+#'   alphabetically); pass an empty vector (the default) to use observed class proportions.
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$num_discriminants()` -> `integer`
+#'
+#' * `$priors()` -> `vector<numeric>`
+#'
+#' * `$group_means()` -> `DataFrame or NULL`
+#'
+#'   One row per class, one numeric column per predictor.
+#'
+#' * `$scaling()` -> `DataFrame or NULL`
+#'
+#'   One row per predictor, one numeric column per linear discriminant (LD1, LD2, ...).
+#'
+#' * `$proportion_of_trace()` -> `vector<numeric>`
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes().
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$to_md(digits = 4)` -> `character`
+#'
+#'   The fit as Markdown tables (priors, group means, coefficients, proportion of trace).
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column, LD1/LD2/... discriminant scores, and posterior_<class> probability columns.
+#'
+#' * `$plot_discriminants(decision_regions = TRUE)` -> `RPlot`
+#'
+#'   LD1/LD2 scatter; with `decision_regions`, class regions shaded and boundaries drawn.
+#'
+#' * `$save_discriminant_plot(path)`
+#'
+#' * `$plot_decision_regions()` -> `RPlot`
+#'
+#'   Decision regions in predictor space, for a model with exactly two predictors.
+#' @md
+#'
 `LDA` <- R6::R6Class("LDA", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3799,6 +13764,44 @@ rosetta_ref <- function(value = NULL) {
     `plot_decision_regions` = function(...) .Call(`.rs_2300`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::SVM — R-`e1071::svm()`-style multi-class SVM classification.
+#' @section Constructor:
+#' `SVM$new(data, formula, kernel = "radial", cost = 1.0, gamma = -1.0, coef0 = 0.0, degree = 3, scale = TRUE)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `kernel` (`character`): One of "linear", "polynomial", "radial" (default), "sigmoid".
+#' * `cost` (`numeric`)
+#' * `gamma` (`numeric`): <= 0 means "auto" = 1 / number of predictors.
+#' * `coef0` (`numeric`)
+#' * `degree` (`integer`)
+#' * `scale` (`logical`)
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$num_support_vectors()` -> `integer`
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes().
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column plus one numeric vote-count column per class (votes_<class>).
+#' @md
+#'
 `SVM` <- R6::R6Class("SVM", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3818,6 +13821,57 @@ rosetta_ref <- function(value = NULL) {
     `predict_frame` = function(...) .Call(`.rs_2311`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::DecisionTreeClassifier — a CART-style classification tree.
+#' @section Constructor:
+#' `DecisionTreeClassifier$new(data, formula, max_depth = 5, min_samples_split = 2, min_samples_leaf = 1, criterion = "gini")`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `max_depth` (`integer`)
+#' * `min_samples_split` (`integer`)
+#' * `min_samples_leaf` (`integer`)
+#' * `criterion` (`character`): "gini" (default) or "entropy".
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$node_count()` -> `integer`
+#'
+#' * `$leaf_count()` -> `integer`
+#'
+#' * `$depth()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes().
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column plus one numeric probability column per class (prob_<class>).
+#'
+#' * `$plot_classification(data, x_feature, y_feature)` -> `RPlot`
+#'
+#'   Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+#'   points overlaid in a distinct marker.
+#'
+#' * `$plot_decision_regions(x_feature, y_feature, grid_resolution = 60)` -> `RPlot`
+#'
+#'   Background grid of predicted class regions plus training points; requires exactly 2 predictors.
+#' @md
+#'
 `DecisionTreeClassifier` <- R6::R6Class("DecisionTreeClassifier", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3842,6 +13896,45 @@ rosetta_ref <- function(value = NULL) {
     `plot_decision_regions` = function(...) .Call(`.rs_2327`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::DecisionTreeRegressor — a CART-style regression tree.
+#' @section Constructor:
+#' `DecisionTreeRegressor$new(data, formula, max_depth = 5, min_samples_split = 2, min_samples_leaf = 1)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `max_depth` (`integer`)
+#' * `min_samples_split` (`integer`)
+#' * `min_samples_leaf` (`integer`)
+#' @section Methods:
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$node_count()` -> `integer`
+#'
+#' * `$leaf_count()` -> `integer`
+#'
+#' * `$depth()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#' @md
+#'
 `DecisionTreeRegressor` <- R6::R6Class("DecisionTreeRegressor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3865,6 +13958,65 @@ rosetta_ref <- function(value = NULL) {
     `plot_residuals_vs_fitted` = function(...) .Call(`.rs_2342`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::RandomForestClassifier — a bagged ensemble of CART trees, each fit on a bootstrap sample with a random subset of predictors considered at every split.
+#' @section Constructor:
+#' `RandomForestClassifier$new(data, formula, n_trees = 100, max_depth = 10, min_samples_split = 2, min_samples_leaf = 1, max_features = 0, criterion = "gini", bootstrap = TRUE, sample_fraction = 1.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `n_trees` (`integer`)
+#' * `max_depth` (`integer`)
+#' * `min_samples_split` (`integer`)
+#' * `min_samples_leaf` (`integer`)
+#' * `max_features` (`integer`): 0 = auto (floor(sqrt(number of predictors))).
+#' * `criterion` (`character`): "gini" (default) or "entropy".
+#' * `bootstrap` (`logical`)
+#' * `sample_fraction` (`numeric`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_trees()` -> `integer`
+#'
+#' * `$max_features_used()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$oob_accuracy()` -> `numeric`
+#'
+#'   Out-of-bag accuracy estimate (majority vote among trees that did not train on each row).
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes().
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column plus one numeric vote-share column per class (votes_<class>).
+#'
+#' * `$plot_classification(data, x_feature, y_feature)` -> `RPlot`
+#'
+#'   Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+#'   points overlaid in a distinct marker.
+#'
+#' * `$plot_decision_regions(x_feature, y_feature, grid_resolution = 60)` -> `RPlot`
+#'
+#'   Background grid of majority-vote predicted class regions plus training points; requires exactly 2
+#'   predictors.
+#' @md
+#'
 `RandomForestClassifier` <- R6::R6Class("RandomForestClassifier", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3889,6 +14041,52 @@ rosetta_ref <- function(value = NULL) {
     `plot_decision_regions` = function(...) .Call(`.rs_2358`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::RandomForestRegressor — a bagged ensemble of CART regression trees, each fit on a bootstrap sample with a random subset of predictors considered at every split.
+#' @section Constructor:
+#' `RandomForestRegressor$new(data, formula, n_trees = 100, max_depth = 10, min_samples_split = 2, min_samples_leaf = 1, max_features = 0, bootstrap = TRUE, sample_fraction = 1.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `n_trees` (`integer`)
+#' * `max_depth` (`integer`)
+#' * `min_samples_split` (`integer`)
+#' * `min_samples_leaf` (`integer`)
+#' * `max_features` (`integer`): 0 = auto (floor(number of predictors / 3)).
+#' * `bootstrap` (`logical`)
+#' * `sample_fraction` (`numeric`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_trees()` -> `integer`
+#'
+#' * `$max_features_used()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$oob_r_squared()` -> `numeric`
+#'
+#' * `$oob_rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#' @md
+#'
 `RandomForestRegressor` <- R6::R6Class("RandomForestRegressor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3913,6 +14111,76 @@ rosetta_ref <- function(value = NULL) {
     `plot_residuals_vs_fitted` = function(...) .Call(`.rs_2374`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::ElasticNet — regularized linear regression fit by coordinate descent (alpha=0 is ridge, alpha=1 is lasso); see also the Ridge and Lasso convenience facades below.
+#' @section Constructor:
+#' `ElasticNet$new(data, formula, alpha = 0.5, lambda = -1.0, n_lambda = 100, cv_folds = 5, standardize = TRUE, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `alpha` (`numeric`): L1/L2 mixing: 0 = ridge, 1 = lasso, in between = elastic net.
+#' * `lambda` (`numeric`): Regularization strength; pass a negative value (the default) to select it automatically via
+#'   cross-validation.
+#' * `n_lambda` (`integer`)
+#' * `cv_folds` (`integer`)
+#' * `standardize` (`logical`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$has_intercept()` -> `logical`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$alpha()` -> `numeric`
+#'
+#' * `$lambda()` -> `numeric`
+#'
+#'   The lambda actually used to produce coefficients() -- either the caller-supplied value or the
+#'   cross-validation-selected one.
+#'
+#' * `$lambda_was_selected()` -> `logical`
+#'
+#' * `$lambda_path()` -> `vector<numeric>`
+#'
+#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$intercept()` -> `numeric`
+#'
+#' * `$non_zero_coefficients()` -> `integer`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_coefficient_path()` -> `RPlot`
+#'
+#'   Coefficient trace (one series per predictor) across the lambda path; throws unless lambda was
+#'   auto-selected.
+#'
+#' * `$plot_cv_curve()` -> `RPlot`
+#'
+#'   Cross-validated MSE across the lambda path with the selected lambda marked; throws unless lambda
+#'   was auto-selected.
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#' @md
+#'
 `ElasticNet` <- R6::R6Class("ElasticNet", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3945,6 +14213,61 @@ rosetta_ref <- function(value = NULL) {
     `plot_residuals_vs_fitted` = function(...) .Call(`.rs_2398`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::Ridge — pure L2-penalized ("ridge") regression, a special case of ElasticNet with alpha fixed to 0. Shrinks coefficients toward zero without ever zeroing them.
+#' @section Constructor:
+#' `Ridge$new(data, formula, lambda = -1.0, n_lambda = 100, cv_folds = 5, standardize = TRUE, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `lambda` (`numeric`)
+#' * `n_lambda` (`integer`)
+#' * `cv_folds` (`integer`)
+#' * `standardize` (`logical`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$has_intercept()` -> `logical`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$lambda()` -> `numeric`
+#'
+#' * `$lambda_was_selected()` -> `logical`
+#'
+#' * `$lambda_path()` -> `vector<numeric>`
+#'
+#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$intercept()` -> `numeric`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_coefficient_path()` -> `RPlot`
+#'
+#' * `$plot_cv_curve()` -> `RPlot`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#' @md
+#'
 `Ridge` <- R6::R6Class("Ridge", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -3975,6 +14298,63 @@ rosetta_ref <- function(value = NULL) {
     `plot_residuals_vs_fitted` = function(...) .Call(`.rs_2420`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::Lasso — pure L1-penalized ("lasso") regression, a special case of ElasticNet with alpha fixed to 1. Can shrink coefficients exactly to zero, performing variable selection.
+#' @section Constructor:
+#' `Lasso$new(data, formula, lambda = -1.0, n_lambda = 100, cv_folds = 5, standardize = TRUE, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `lambda` (`numeric`)
+#' * `n_lambda` (`integer`)
+#' * `cv_folds` (`integer`)
+#' * `standardize` (`logical`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$has_intercept()` -> `logical`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$lambda()` -> `numeric`
+#'
+#' * `$lambda_was_selected()` -> `logical`
+#'
+#' * `$lambda_path()` -> `vector<numeric>`
+#'
+#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$intercept()` -> `numeric`
+#'
+#' * `$non_zero_coefficients()` -> `integer`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_coefficient_path()` -> `RPlot`
+#'
+#' * `$plot_cv_curve()` -> `RPlot`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#' @md
+#'
 `Lasso` <- R6::R6Class("Lasso", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4006,6 +14386,53 @@ rosetta_ref <- function(value = NULL) {
     `plot_residuals_vs_fitted` = function(...) .Call(`.rs_2443`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::KNNClassifier — k-nearest-neighbors classification.
+#'
+#' Since a training point's nearest neighbor is always itself, training_accuracy()/confusion_matrix() report leave-one-out performance rather than a trivial resubstitution fit.
+#' @section Constructor:
+#' `KNNClassifier$new(data, formula, k = 5, metric = "euclidean", weighted = FALSE, standardize = TRUE)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `k` (`integer`)
+#' * `metric` (`character`): "euclidean" (default) or "manhattan".
+#' * `weighted` (`logical`)
+#' * `standardize` (`logical`)
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$k()` -> `integer`
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes(); leave-one-out.
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column plus one numeric vote-share column per class (votes_<class>).
+#'
+#' * `$plot_classification(data, x_feature, y_feature)` -> `RPlot`
+#'
+#'   Scatter of `data` in the (x_feature, y_feature) plane, colored by true class, with misclassified
+#'   points overlaid in a distinct marker.
+#'
+#' * `$plot_decision_regions(x_feature, y_feature, grid_resolution = 60)` -> `RPlot`
+#'
+#'   Background grid of predicted class regions plus training points; requires exactly 2 predictors.
+#' @md
+#'
 `KNNClassifier` <- R6::R6Class("KNNClassifier", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4027,6 +14454,42 @@ rosetta_ref <- function(value = NULL) {
     `plot_decision_regions` = function(...) .Call(`.rs_2456`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::KNNRegressor — k-nearest-neighbors regression.
+#'
+#' As with KNNClassifier, fitted_values()/r_squared()/rmse() report leave-one-out performance.
+#' @section Constructor:
+#' `KNNRegressor$new(data, formula, k = 5, metric = "euclidean", weighted = FALSE, standardize = TRUE)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `k` (`integer`)
+#' * `metric` (`character`): "euclidean" (default) or "manhattan".
+#' * `weighted` (`logical`)
+#' * `standardize` (`logical`)
+#' @section Methods:
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$k()` -> `integer`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#' @md
+#'
 `KNNRegressor` <- R6::R6Class("KNNRegressor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4047,6 +14510,49 @@ rosetta_ref <- function(value = NULL) {
     `plot_residuals_vs_fitted` = function(...) .Call(`.rs_2468`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::KMeans — k-means clustering (Lloyd's algorithm with k-means++ initialization) fit from a DataFrame and a list of numeric feature columns.
+#' @section Constructor:
+#' `KMeans$new(data, feature_columns, n_clusters = 8, max_iterations = 300, n_init = 10, tolerance = 1.0E-4, seed = 42)`
+#'
+#' `KMeans$new(data, encoded_feature_columns, n_clusters = 8, max_iterations = 300, n_init = 10, tolerance = 1.0E-4, seed = 42)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- a workaround for SWIG-bound languages whose
+#' overload resolution can't pass a real string vector to a constructor with other
+#' default arguments (see DataFrame::add_string_column_encoded()).
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_clusters` (`integer`)
+#' * `max_iterations` (`integer`)
+#' * `n_init` (`integer`)
+#' * `tolerance` (`numeric`)
+#' * `seed` (`integer`)
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$n_clusters()` -> `integer`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$iterations_used()` -> `integer`
+#'
+#' * `$labels()` -> `vector<integer>`
+#'
+#' * `$inertia()` -> `numeric`
+#'
+#' * `$cluster_center(cluster_index)` -> `vector<numeric>`
+#'
+#'   The feature vector of cluster `cluster_index's` center.
+#'
+#' * `$predict(newdata)` -> `vector<integer>`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#' @md
+#'
 `KMeans` <- R6::R6Class("KMeans", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4066,6 +14572,73 @@ rosetta_ref <- function(value = NULL) {
     `print_summary` = function(...) invisible(.Call(`.rs_2479`, self, list(...)))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::PCA — principal component analysis fit from a DataFrame and a list of numeric feature columns via eigendecomposition of the correlation (default) or covariance matrix.
+#' @section Constructor:
+#' `PCA$new(data, feature_columns, center = TRUE, scale = TRUE)`
+#'
+#' `PCA$new(data, encoded_feature_columns, center = TRUE, scale = TRUE)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `center` (`logical`): Mean-center each feature before fitting; almost always left true.
+#' * `scale` (`logical`): Standardize each feature to unit variance before fitting (i.e. fit on the
+#'   correlation matrix rather than the covariance matrix); recommended whenever
+#'   features are on different scales, and the default here.
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$num_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#'   Row indices (into the DataFrame passed to the constructor) that survived
+#'   null-dropping, in fitted order -- use to align an external label vector for
+#'   plot_scores_grouped().
+#'
+#' * `$explained_variance()` -> `vector<numeric>`
+#'
+#' * `$explained_variance_ratio()` -> `vector<numeric>`
+#'
+#' * `$cumulative_explained_variance_ratio()` -> `vector<numeric>`
+#'
+#' * `$component_loadings(component_index)` -> `vector<numeric>`
+#'
+#' * `$component_scores(component_index)` -> `vector<numeric>`
+#'
+#' * `$scores_frame()` -> `DataFrame or NULL`
+#'
+#'   The fitted training scores as a DataFrame ("PC1", "PC2", ... columns), one row per
+#'   kept observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+#'
+#' * `$transform(newdata)` -> `DataFrame or NULL`
+#'
+#'   Projects new data onto the already-fitted components, as a DataFrame with the same
+#'   "PC1", "PC2", ... columns as scores_frame().
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_scores(component_x = 0, component_y = 1)` -> `RPlot`
+#'
+#'   Scatter of scores in the (component_x, component_y) plane, single series.
+#'
+#' * `$plot_scores_grouped(group_labels, component_x = 0, component_y = 1)` -> `RPlot`
+#'
+#'   Same, colored by an external grouping vector (e.g. a withheld response column);
+#'   `group_labels` must have one entry per kept_row_indices() entry.
+#'
+#' * `$plot_scree()` -> `RPlot`
+#'
+#'   Scree plot: percent of variance explained by each component, as a bar chart.
+#' @md
+#'
 `PCA` <- R6::R6Class("PCA", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4091,6 +14664,58 @@ rosetta_ref <- function(value = NULL) {
     `plot_scree` = function(...) .Call(`.rs_2496`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::MDS — classical (metric/Torgerson) multidimensional scaling fit from a DataFrame and a list of numeric feature columns: embeds the rows in a low-dimensional space that best reproduces their original pairwise distances.
+#' @section Constructor:
+#' `MDS$new(data, feature_columns, n_components = 2, metric = "euclidean")`
+#'
+#' `MDS$new(data, encoded_feature_columns, n_components = 2, metric = "euclidean")`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#'   Row indices (into the DataFrame passed to the constructor) that survived
+#'   null-dropping, in fitted order -- use to align an external label vector for
+#'   plot_embedding_grouped().
+#'
+#' * `$eigenvalues()` -> `vector<numeric>`
+#'
+#' * `$goodness_of_fit()` -> `numeric`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#'   The fitted embedding as a DataFrame ("Dim1", "Dim2", ... columns), one row per kept
+#'   observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#'   Scatter of the embedding in the (dimension_x, dimension_y) plane, single series.
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#'   Same, colored by an external grouping vector (e.g. a withheld response column);
+#'   `group_labels` must have one entry per kept_row_indices() entry.
+#' @md
+#'
 `MDS` <- R6::R6Class("MDS", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4112,6 +14737,52 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2509`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::Isomap — nonlinear manifold learning via geodesic (shortest-path, over a k-nearest-neighbor graph) distances embedded with classical MDS.
+#'
+#' Throws if the k-nearest-neighbor graph is disconnected.
+#' @section Constructor:
+#' `Isomap$new(data, feature_columns, n_components = 2, n_neighbors = 10, metric = "euclidean")`
+#'
+#' `Isomap$new(data, encoded_feature_columns, n_components = 2, n_neighbors = 10, metric = "euclidean")`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `n_neighbors` (`integer`)
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$eigenvalues()` -> `vector<numeric>`
+#'
+#' * `$goodness_of_fit()` -> `numeric`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#'   The fitted embedding as a DataFrame ("Dim1", "Dim2", ... columns), one row per kept
+#'   observation -- ready to bind_cols()/plot with the rest of the DataFrame API.
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `Isomap` <- R6::R6Class("Isomap", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4133,6 +14804,46 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2522`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::LLE — locally linear embedding: preserves each point's local reconstruction weights from its k nearest neighbors rather than global distances, letting it unfold nonlinear manifolds PCA/MDS cannot.
+#' @section Constructor:
+#' `LLE$new(data, feature_columns, n_components = 2, n_neighbors = 10, regularization = 0.001, metric = "euclidean")`
+#'
+#' `LLE$new(data, encoded_feature_columns, n_components = 2, n_neighbors = 10, regularization = 0.001, metric = "euclidean")`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `n_neighbors` (`integer`)
+#' * `regularization` (`numeric`)
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$eigenvalues()` -> `vector<numeric>`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `LLE` <- R6::R6Class("LLE", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4153,6 +14864,56 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2534`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::TSNE — t-distributed Stochastic Neighbor Embedding, a nonlinear method that preserves local neighborhood structure (via a perplexity-calibrated probability distribution) primarily for 2D/3D visualization.
+#' @section Constructor:
+#' `TSNE$new(data, feature_columns, n_components = 2, perplexity = 30.0, max_iterations = 1000, learning_rate = 200.0, early_exaggeration = 12.0, early_exaggeration_iterations = 250, initial_momentum = 0.5, final_momentum = 0.80000000000000004, momentum_switch_iteration = 250, metric = "euclidean", seed = 42)`
+#'
+#' `TSNE$new(data, encoded_feature_columns, n_components = 2, perplexity = 30.0, max_iterations = 1000, learning_rate = 200.0, early_exaggeration = 12.0, early_exaggeration_iterations = 250, initial_momentum = 0.5, final_momentum = 0.80000000000000004, momentum_switch_iteration = 250, metric = "euclidean", seed = 42)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `perplexity` (`numeric`)
+#' * `max_iterations` (`integer`)
+#' * `learning_rate` (`numeric`)
+#' * `early_exaggeration` (`numeric`)
+#' * `early_exaggeration_iterations` (`integer`)
+#' * `initial_momentum` (`numeric`)
+#' * `final_momentum` (`numeric`)
+#' * `momentum_switch_iteration` (`integer`)
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
+#' * `seed` (`integer`)
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$achieved_perplexity()` -> `vector<numeric>`
+#'
+#'   The achieved perplexity for each fitted point after the per-point binary search --
+#'   should be close to the constructor's perplexity argument if calibration converged.
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `TSNE` <- R6::R6Class("TSNE", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4173,6 +14934,47 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2546`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::LaplacianEigenmaps — embeds points via the smallest non-trivial eigenvectors of a heat-kernel-weighted, sparse k-nearest-neighbor graph Laplacian.
+#'
+#' Distinct from DiffusionMaps (also heat-kernel-based, but dense and alpha-normalized).
+#' @section Constructor:
+#' `LaplacianEigenmaps$new(data, feature_columns, n_components = 2, n_neighbors = 10, heat_kernel_t = 1.0)`
+#'
+#' `LaplacianEigenmaps$new(data, encoded_feature_columns, n_components = 2, n_neighbors = 10, heat_kernel_t = 1.0)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `n_neighbors` (`integer`)
+#' * `heat_kernel_t` (`numeric`)
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$eigenvalues()` -> `vector<numeric>`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `LaplacianEigenmaps` <- R6::R6Class("LaplacianEigenmaps", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4193,6 +14995,48 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2558`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::DiffusionMaps — embeds points via the leading eigenvectors of a dense, alpha-normalized heat-kernel Markov transition matrix, scaled by eigenvalue^diffusion_time.
+#'
+#' Distinct from LaplacianEigenmaps (sparse k-NN graph Laplacian, no density normalization).
+#' @section Constructor:
+#' `DiffusionMaps$new(data, feature_columns, n_components = 2, heat_kernel_epsilon = 1.0, alpha = 0.5, diffusion_time = 1.0)`
+#'
+#' `DiffusionMaps$new(data, encoded_feature_columns, n_components = 2, heat_kernel_epsilon = 1.0, alpha = 0.5, diffusion_time = 1.0)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `heat_kernel_epsilon` (`numeric`)
+#' * `alpha` (`numeric`)
+#' * `diffusion_time` (`numeric`)
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$eigenvalues()` -> `vector<numeric>`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `DiffusionMaps` <- R6::R6Class("DiffusionMaps", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4213,6 +15057,49 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2570`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::KernelPCA — principal component analysis generalized to a nonlinear feature space via the kernel trick.
+#'
+#' With a linear kernel it reproduces plain unscaled PCA's scores (up to a sign flip per component).
+#' @section Constructor:
+#' `KernelPCA$new(data, feature_columns, n_components = 2, kernel = "rbf", gamma = 1.0, degree = 3.0, coef0 = 1.0)`
+#'
+#' `KernelPCA$new(data, encoded_feature_columns, n_components = 2, kernel = "rbf", gamma = 1.0, degree = 3.0, coef0 = 1.0)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `kernel` (`character`): One of "linear", "rbf" (default), "polynomial".
+#' * `gamma` (`numeric`)
+#' * `degree` (`numeric`)
+#' * `coef0` (`numeric`)
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$eigenvalues()` -> `vector<numeric>`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `KernelPCA` <- R6::R6Class("KernelPCA", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4233,6 +15120,52 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2582`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::SammonMapping — iteratively minimizes a weighted distance-preservation "stress" (small high-dimensional distances weighted much more heavily than large ones) via Sammon's original pseudo-Newton update.
+#' @section Constructor:
+#' `SammonMapping$new(data, feature_columns, n_components = 2, learning_rate = 0.29999999999999999, max_iterations = 500, tolerance = 1.0000000000000001E-9, metric = "euclidean", seed = 42)`
+#'
+#' `SammonMapping$new(data, encoded_feature_columns, n_components = 2, learning_rate = 0.29999999999999999, max_iterations = 500, tolerance = 1.0000000000000001E-9, metric = "euclidean", seed = 42)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `learning_rate` (`numeric`)
+#' * `max_iterations` (`integer`)
+#' * `tolerance` (`numeric`)
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
+#' * `seed` (`integer`)
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#' * `$stress()` -> `numeric`
+#'
+#'   Final Sammon stress -- lower is better, 0 is a perfect distance-preserving embedding.
+#'
+#' * `$iterations_run()` -> `integer`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `SammonMapping` <- R6::R6Class("SammonMapping", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4254,6 +15187,56 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2595`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::UMAP — builds a fuzzy simplicial set (a smoothly-calibrated, fuzzy-union-symmetrized k-nearest-neighbor graph) and optimizes a low-dimensional embedding via cross-entropy minimization (attractive + negative-sampled repulsive forces).
+#'
+#' A deliberately simplified but honest implementation -- see the real class's own documentation for the two named simplifications.
+#' @section Constructor:
+#' `UMAP$new(data, feature_columns, n_components = 2, n_neighbors = 15, min_dist = 0.10000000000000001, max_iterations = 500, learning_rate = 1.0, negative_sample_rate = 5.0, metric = "euclidean", seed = 42)`
+#'
+#' `UMAP$new(data, encoded_feature_columns, n_components = 2, n_neighbors = 15, min_dist = 0.10000000000000001, max_iterations = 500, learning_rate = 1.0, negative_sample_rate = 5.0, metric = "euclidean", seed = 42)`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_components` (`integer`)
+#' * `n_neighbors` (`integer`)
+#' * `min_dist` (`numeric`)
+#' * `max_iterations` (`integer`)
+#' * `learning_rate` (`numeric`)
+#' * `negative_sample_rate` (`numeric`)
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
+#' * `seed` (`integer`)
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_components()` -> `integer`
+#'
+#' * `$kept_row_indices()` -> `vector<integer>`
+#'
+#' * `$dimension(index)` -> `vector<numeric>`
+#'
+#' * `$embedding_frame()` -> `DataFrame or NULL`
+#'
+#' * `$sigmas()` -> `vector<numeric>`
+#'
+#'   Per-point sigma_i / rho_i from the smooth k-NN calibration -- mainly for diagnostics.
+#'
+#' * `$rhos()` -> `vector<numeric>`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$plot_embedding(dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#'
+#' * `$plot_embedding_grouped(group_labels, dimension_x = 0, dimension_y = 1)` -> `RPlot`
+#' @md
+#'
 `UMAP` <- R6::R6Class("UMAP", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4275,6 +15258,47 @@ rosetta_ref <- function(value = NULL) {
     `plot_embedding_grouped` = function(...) .Call(`.rs_2608`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::AgglomerativeClustering — bottom-up hierarchical clustering fit from a DataFrame and a list of numeric feature columns.
+#' @section Constructor:
+#' `AgglomerativeClustering$new(data, feature_columns, n_clusters = 2, linkage = "ward", metric = "euclidean")`
+#'
+#' `AgglomerativeClustering$new(data, encoded_feature_columns, n_clusters = 2, linkage = "ward", metric = "euclidean")`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `n_clusters` (`integer`)
+#' * `linkage` (`character`): One of "single", "complete", "average", "ward" (default).
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan"; ward linkage requires euclidean.
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$labels()` -> `vector<integer>`
+#'
+#' * `$cut(n_clusters)` -> `vector<integer>`
+#'
+#'   Re-cuts the already-built dendrogram to produce `n_clusters` clusters, without refitting.
+#'
+#' * `$num_merges()` -> `integer`
+#'
+#' * `$merge_cluster_a(merge_index)` -> `integer`
+#'
+#' * `$merge_cluster_b(merge_index)` -> `integer`
+#'
+#' * `$merge_distance(merge_index)` -> `numeric`
+#'
+#' * `$merge_size(merge_index)` -> `integer`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#' @md
+#'
 `AgglomerativeClustering` <- R6::R6Class("AgglomerativeClustering", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4295,6 +15319,39 @@ rosetta_ref <- function(value = NULL) {
     `print_summary` = function(...) invisible(.Call(`.rs_2620`, self, list(...)))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::DBSCAN — density-based clustering fit from a DataFrame and a list of numeric feature columns.
+#' @section Constructor:
+#' `DBSCAN$new(data, feature_columns, eps = 0.5, min_samples = 5, metric = "euclidean")`
+#'
+#' `DBSCAN$new(data, encoded_feature_columns, eps = 0.5, min_samples = 5, metric = "euclidean")`
+#'
+#' Same as the vector<string> constructor, but feature_columns is a single "<count>
+#' col1..."-encoded string -- see KMeans's encoded constructor for why.
+#'
+#' * `data` (`DataFrame`)
+#' * `feature_columns` (`vector<character>`)
+#' * `eps` (`numeric`)
+#' * `min_samples` (`integer`)
+#' * `metric` (`character`): One of "euclidean" (default) or "manhattan".
+#' * `encoded_feature_columns` (`character`)
+#' @section Methods:
+#' * `$feature_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_clusters()` -> `integer`
+#'
+#' * `$n_noise()` -> `integer`
+#'
+#' * `$labels()` -> `vector<integer>`
+#'
+#'   Cluster index (0-based) assigned to each fitted row, or -1 for noise.
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#' @md
+#'
 `DBSCAN` <- R6::R6Class("DBSCAN", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4311,6 +15368,57 @@ rosetta_ref <- function(value = NULL) {
     `print_summary` = function(...) invisible(.Call(`.rs_2628`, self, list(...)))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::GBMClassifier — multiclass gradient boosting (a sequence of shallow trees, one per class per round, fit to the current multinomial-deviance gradient).
+#' @section Constructor:
+#' `GBMClassifier$new(data, formula, n_trees = 100, learning_rate = 0.10000000000000001, max_depth = 3, min_samples_split = 2, min_samples_leaf = 1, subsample = 1.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `n_trees` (`integer`)
+#' * `learning_rate` (`numeric`)
+#' * `max_depth` (`integer`)
+#' * `min_samples_split` (`integer`)
+#' * `min_samples_leaf` (`integer`)
+#' * `subsample` (`numeric`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_trees()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes().
+#'
+#' * `$training_deviance()` -> `vector<numeric>`
+#'
+#'   Multinomial deviance on the training set after each boosting round (length n_trees()).
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column plus one numeric probability column per class (prob_<class>).
+#'
+#' * `$plot_classification(data, x_feature, y_feature)` -> `RPlot`
+#'
+#' * `$plot_decision_regions(x_feature, y_feature, grid_resolution = 60)` -> `RPlot`
+#'
+#' * `$plot_training_deviance()` -> `RPlot`
+#' @md
+#'
 `GBMClassifier` <- R6::R6Class("GBMClassifier", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4335,6 +15443,51 @@ rosetta_ref <- function(value = NULL) {
     `plot_training_deviance` = function(...) .Call(`.rs_2644`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::GBMRegressor — a sequence of shallow regression trees, each fit to the residuals of the current ensemble (gradient boosting on squared error).
+#' @section Constructor:
+#' `GBMRegressor$new(data, formula, n_trees = 100, learning_rate = 0.10000000000000001, max_depth = 3, min_samples_split = 2, min_samples_leaf = 1, subsample = 1.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `n_trees` (`integer`)
+#' * `learning_rate` (`numeric`)
+#' * `max_depth` (`integer`)
+#' * `min_samples_split` (`integer`)
+#' * `min_samples_leaf` (`integer`)
+#' * `subsample` (`numeric`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_trees()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$training_deviance()` -> `vector<numeric>`
+#'
+#'   Mean squared error on the training set after each boosting round (length n_trees()).
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#'
+#' * `$plot_training_deviance()` -> `RPlot`
+#' @md
+#'
 `GBMRegressor` <- R6::R6Class("GBMRegressor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4358,6 +15511,63 @@ rosetta_ref <- function(value = NULL) {
     `plot_training_deviance` = function(...) .Call(`.rs_2659`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::XGBoostClassifier — regularized, second-order (gradient + Hessian) multiclass gradient boosting, using the same regularized-gain tree-growing objective as the XGBoost algorithm (L1/L2 leaf regularization plus a per-split complexity penalty).
+#' @section Constructor:
+#' `XGBoostClassifier$new(data, formula, n_trees = 100, learning_rate = 0.29999999999999999, max_depth = 6, lambda = 1.0, alpha = 0.0, gamma = 0.0, min_child_weight = 1.0, min_samples_leaf = 1, subsample = 1.0, colsample_bytree = 1.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `n_trees` (`integer`)
+#' * `learning_rate` (`numeric`)
+#' * `max_depth` (`integer`)
+#' * `lambda` (`numeric`)
+#' * `alpha` (`numeric`)
+#' * `gamma` (`numeric`)
+#' * `min_child_weight` (`numeric`)
+#' * `min_samples_leaf` (`integer`)
+#' * `subsample` (`numeric`)
+#' * `colsample_bytree` (`numeric`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_trees()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#'   Gain-based importance (XGBoost's default "gain" metric), normalized to sum to 1.
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes().
+#'
+#' * `$training_deviance()` -> `vector<numeric>`
+#'
+#'   Multinomial deviance on the training set after each boosting round (length n_trees()).
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column plus one numeric probability column per class (prob_<class>).
+#'
+#' * `$plot_classification(data, x_feature, y_feature)` -> `RPlot`
+#'
+#' * `$plot_decision_regions(x_feature, y_feature, grid_resolution = 60)` -> `RPlot`
+#'
+#' * `$plot_training_deviance()` -> `RPlot`
+#' @md
+#'
 `XGBoostClassifier` <- R6::R6Class("XGBoostClassifier", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4382,6 +15592,53 @@ rosetta_ref <- function(value = NULL) {
     `plot_training_deviance` = function(...) .Call(`.rs_2675`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::XGBoostRegressor — regularized, second-order gradient boosting regression with the same tree-growing objective as the XGBoost algorithm.
+#' @section Constructor:
+#' `XGBoostRegressor$new(data, formula, n_trees = 100, learning_rate = 0.29999999999999999, max_depth = 6, lambda = 1.0, alpha = 0.0, gamma = 0.0, min_child_weight = 1.0, min_samples_leaf = 1, subsample = 1.0, colsample_bytree = 1.0, seed = 42)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `n_trees` (`integer`)
+#' * `learning_rate` (`numeric`)
+#' * `max_depth` (`integer`)
+#' * `lambda` (`numeric`)
+#' * `alpha` (`numeric`)
+#' * `gamma` (`numeric`)
+#' * `min_child_weight` (`numeric`)
+#' * `min_samples_leaf` (`integer`)
+#' * `subsample` (`numeric`)
+#' * `colsample_bytree` (`numeric`)
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$n_trees()` -> `integer`
+#'
+#' * `$feature_importance()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$training_deviance()` -> `vector<numeric>`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#'
+#' * `$plot_training_deviance()` -> `RPlot`
+#' @md
+#'
 `XGBoostRegressor` <- R6::R6Class("XGBoostRegressor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4405,6 +15662,55 @@ rosetta_ref <- function(value = NULL) {
     `plot_training_deviance` = function(...) .Call(`.rs_2690`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::KernelRegression — Nadaraya-Watson kernel regression, a nonparametric fit where each prediction is a kernel-weighted average of training responses.
+#' @section Constructor:
+#' `KernelRegression$new(data, formula, kernel = "gaussian", bandwidth = -1.0, n_bandwidth = 50, standardize = TRUE)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `kernel` (`character`): "gaussian" (default), "epanechnikov", "uniform", or "triangular".
+#' * `bandwidth` (`numeric`): Bandwidth in standardized-predictor units; pass a negative value (the default) to select
+#'   it automatically via leave-one-out cross-validation.
+#' * `n_bandwidth` (`integer`)
+#' * `standardize` (`logical`)
+#' @section Methods:
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$bandwidth()` -> `numeric`
+#'
+#'   The bandwidth actually used -- either the caller-supplied value or the cross-validation-selected one.
+#'
+#' * `$bandwidth_was_selected()` -> `logical`
+#'
+#' * `$bandwidth_grid()` -> `vector<numeric>`
+#'
+#' * `$cv_mean_squared_error()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$plot_fit(data, grid_resolution = 200)` -> `RPlot`
+#'
+#'   Scatter of `data` plus the fitted kernel-regression curve; only valid for a single-predictor model.
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#'
+#' * `$plot_cv_curve()` -> `RPlot`
+#' @md
+#'
 `KernelRegression` <- R6::R6Class("KernelRegression", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4430,6 +15736,67 @@ rosetta_ref <- function(value = NULL) {
     `plot_cv_curve` = function(...) .Call(`.rs_2707`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::GaussianProcessRegression — exact Gaussian process regression with an RBF kernel, fit via Cholesky decomposition.
+#'
+#' Unlike every other regressor here, predictions come with a principled posterior confidence interval; see predict_frame().
+#' @section Constructor:
+#' `GaussianProcessRegression$new(data, formula, length_scale = -1.0, noise_ratio = -1.0, n_length_scale_grid = 20, n_noise_grid = 15, standardize = TRUE)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `length_scale` (`numeric`): RBF kernel length scale in standardized-predictor units; pass a negative value (the
+#'   default) to select it automatically by maximizing the log marginal likelihood.
+#' * `noise_ratio` (`numeric`): noise_variance / signal_variance; pass a negative value (the default) to select it
+#'   automatically the same way (0 is a legal fixed value: a noiseless/interpolating GP).
+#' * `n_length_scale_grid` (`integer`)
+#' * `n_noise_grid` (`integer`)
+#' * `standardize` (`logical`)
+#' @section Methods:
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$length_scale()` -> `numeric`
+#'
+#' * `$signal_variance()` -> `numeric`
+#'
+#' * `$noise_variance()` -> `numeric`
+#'
+#' * `$log_marginal_likelihood()` -> `numeric`
+#'
+#' * `$length_scale_was_selected()` -> `logical`
+#'
+#' * `$noise_ratio_was_selected()` -> `logical`
+#'
+#' * `$length_scale_grid()` -> `vector<numeric>`
+#'
+#' * `$length_scale_profile_log_likelihood()` -> `vector<numeric>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$r_squared()` -> `numeric`
+#'
+#' * `$rmse()` -> `numeric`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#' * `$predict_frame(newdata, interval_kind = "none", level = 0.94999999999999996)` -> `DataFrame or NULL`
+#'   - `interval_kind`: One of "none" or "confidence". Returned DataFrame has a "fit" column, plus
+#'     "se_fit"/"lwr"/"upr" when an interval is requested.
+#'
+#' * `$plot_fit(data, grid_resolution = 200, level = 0.94999999999999996)` -> `RPlot`
+#'
+#' * `$plot_predicted_vs_actual()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#'
+#' * `$plot_length_scale_profile()` -> `RPlot`
+#' @md
+#'
 `GaussianProcessRegression` <- R6::R6Class("GaussianProcessRegression", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4460,6 +15827,46 @@ rosetta_ref <- function(value = NULL) {
     `plot_length_scale_profile` = function(...) .Call(`.rs_2729`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::NaiveBayesClassifier — a Naive Bayes classifier that models numeric predictors with per-class Gaussians and categorical predictors with per-class frequency tables (each categorical predictor's levels modeled jointly as one variable, not as separate independent dummy features).
+#' @section Constructor:
+#' `NaiveBayesClassifier$new(data, formula, laplace_smoothing = 1.0, var_smoothing = 1.0000000000000001E-9)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `laplace_smoothing` (`numeric`)
+#' * `var_smoothing` (`numeric`)
+#' @section Methods:
+#' * `$classes()` -> `vector<character>`
+#'
+#' * `$predictor_names()` -> `vector<character>`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$class_priors()` -> `vector<numeric>`
+#'
+#' * `$training_accuracy()` -> `numeric`
+#'
+#' * `$confusion_matrix()` -> `DataFrame or NULL`
+#'
+#'   "actual" column plus one numeric column per class (counts), both ordered as classes().
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<character>`
+#'
+#' * `$predict_frame(newdata)` -> `DataFrame or NULL`
+#'
+#'   "class" column plus one numeric probability column per class (prob_<class>).
+#'
+#' * `$plot_classification(data, x_feature, y_feature)` -> `RPlot`
+#'
+#' * `$plot_decision_regions(x_feature, y_feature, grid_resolution = 60)` -> `RPlot`
+#'
+#'   Background grid of predicted class regions; requires exactly two predictors, both numeric.
+#' @md
+#'
 `NaiveBayesClassifier` <- R6::R6Class("NaiveBayesClassifier", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4481,6 +15888,87 @@ rosetta_ref <- function(value = NULL) {
     `plot_decision_regions` = function(...) .Call(`.rs_2742`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::stats::GLM — a generalized linear model (gaussian, binomial, poisson, or Gamma family with its canonical link, matching R's glm() defaults) fit by iteratively reweighted least squares.
+#' @section Constructor:
+#' `GLM$new(data, formula, family = "gaussian", weights_column = "", max_iter = 25, tol = 1.0E-8)`
+#'
+#' * `data` (`DataFrame`)
+#' * `formula` (`character`)
+#' * `family` (`character`): One of "gaussian" (identity link), "binomial" (logit link), "poisson" (log link), or
+#'   "Gamma" (inverse link).
+#' * `weights_column` (`character`): Optional column name enabling prior weights; pass "" (the default) for none.
+#' * `max_iter` (`integer`)
+#' * `tol` (`numeric`)
+#' @section Methods:
+#' * `$formula_text()` -> `character`
+#'
+#' * `$family()` -> `character`
+#'
+#' * `$has_intercept()` -> `logical`
+#'
+#' * `$observations()` -> `integer`
+#'
+#' * `$rank()` -> `integer`
+#'
+#' * `$degrees_of_freedom()` -> `integer`
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#' * `$coefficient_names()` -> `vector<character>`
+#'
+#' * `$fitted_values()` -> `vector<numeric>`
+#'
+#' * `$linear_predictors()` -> `vector<numeric>`
+#'
+#' * `$residuals()` -> `vector<numeric>`
+#'
+#' * `$pearson_residuals()` -> `vector<numeric>`
+#'
+#' * `$standardized_residuals()` -> `vector<numeric>`
+#'
+#' * `$leverage()` -> `vector<numeric>`
+#'
+#' * `$standard_errors()` -> `vector<numeric>`
+#'
+#' * `$test_statistics()` -> `vector<numeric>`
+#'
+#' * `$p_values()` -> `vector<numeric>`
+#'
+#' * `$deviance()` -> `numeric`
+#'
+#' * `$null_deviance()` -> `numeric`
+#'
+#' * `$dispersion()` -> `numeric`
+#'
+#' * `$aic()` -> `numeric`
+#'
+#' * `$confidence_interval_lower(level = 0.94999999999999996)` -> `vector<numeric>`
+#'
+#' * `$confidence_interval_upper(level = 0.94999999999999996)` -> `vector<numeric>`
+#'
+#' * `$summary()` -> `character`
+#'
+#' * `$print_summary()`
+#'
+#' * `$predict(newdata)` -> `vector<numeric>`
+#'
+#'   Response-scale predictions (back-transformed through the inverse link).
+#'
+#' * `$predict_frame(newdata, interval_kind = "none", level = 0.94999999999999996)` -> `DataFrame or NULL`
+#'   - `interval_kind`: One of "none" or "confidence". Returned DataFrame has a "fit" column, plus
+#'     "se_fit"/"lwr"/"upr" when an interval is requested.
+#'
+#' * `$plot_residuals_vs_fitted()` -> `RPlot`
+#'
+#' * `$plot_normal_qq()` -> `RPlot`
+#'
+#' * `$plot_scale_location()` -> `RPlot`
+#'
+#' * `$plot_residuals_vs_leverage()` -> `RPlot`
+#'
+#' * `$save_diagnostic_plots(path_prefix)`
+#' @md
+#'
 `GLM` <- R6::R6Class("GLM", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4522,6 +16010,185 @@ rosetta_ref <- function(value = NULL) {
     `save_diagnostic_plots` = function(...) invisible(.Call(`.rs_2775`, self, list(...)))
   )
 )
+#' SWIG-friendly facade for datamunge::linalg::Tensor -- a dense, row-major, N-dimensional array that can hold float64, bool, or string elements (chosen at construction).
+#' @section Constructor:
+#' `Tensor$new(shape, dtype = "float64")`
+#'
+#' * `shape` (`vector<integer>`)
+#' * `dtype` (`character`): One of "float64", "bool", or "string".
+#' @section Methods:
+#' * `$ndim()` -> `integer`
+#'
+#' * `$shape()` -> `vector<integer>`
+#'
+#' * `$size()` -> `integer`
+#'
+#' * `$dtype_name()` -> `character`
+#'
+#' * `$at(index)` -> `numeric`
+#'
+#' * `$set(index, value)`
+#'
+#' * `$string_at(index)` -> `character`
+#'
+#' * `$set_string(index, value)`
+#'
+#' * `$at_flat(i)` -> `numeric`
+#'
+#' * `$set_flat(i, value)`
+#'
+#' * `$string_at_flat(i)` -> `character`
+#'
+#' * `$set_string_flat(i, value)`
+#'
+#' * `$reshape(new_shape)` -> `Tensor or NULL`
+#'
+#' * `$flatten()` -> `Tensor or NULL`
+#'
+#' * `$transpose(permutation = c())` -> `Tensor or NULL`
+#'
+#' * `$squeeze()` -> `Tensor or NULL`
+#'
+#' * `$squeeze_axis(axis)` -> `Tensor or NULL`
+#'
+#' * `$expand_dims(axis)` -> `Tensor or NULL`
+#'
+#' * `$slice(axis, start, stop, step = 1)` -> `Tensor or NULL`
+#'
+#' * `$index_select(axis, indices)` -> `Tensor or NULL`
+#'
+#' * `$add(other)` -> `Tensor or NULL`
+#'
+#' * `$subtract(other)` -> `Tensor or NULL`
+#'
+#' * `$multiply(other)` -> `Tensor or NULL`
+#'
+#' * `$divide(other)` -> `Tensor or NULL`
+#'
+#' * `$power(other)` -> `Tensor or NULL`
+#'
+#' * `$add_scalar(scalar)` -> `Tensor or NULL`
+#'
+#' * `$subtract_scalar(scalar)` -> `Tensor or NULL`
+#'
+#' * `$multiply_scalar(scalar)` -> `Tensor or NULL`
+#'
+#' * `$divide_scalar(scalar)` -> `Tensor or NULL`
+#'
+#' * `$power_scalar(exponent)` -> `Tensor or NULL`
+#'
+#' * `$negate()` -> `Tensor or NULL`
+#'
+#' * `$abs()` -> `Tensor or NULL`
+#'
+#' * `$sqrt()` -> `Tensor or NULL`
+#'
+#' * `$exp()` -> `Tensor or NULL`
+#'
+#' * `$log()` -> `Tensor or NULL`
+#'
+#' * `$apply(callback)` -> `Tensor or NULL`
+#'
+#'   Applies a user-supplied Callback elementwise. Requires a numeric dtype; result is float64.
+#'
+#' * `$equal(other)` -> `Tensor or NULL`
+#'
+#' * `$not_equal(other)` -> `Tensor or NULL`
+#'
+#' * `$less(other)` -> `Tensor or NULL`
+#'
+#' * `$less_equal(other)` -> `Tensor or NULL`
+#'
+#' * `$greater(other)` -> `Tensor or NULL`
+#'
+#' * `$greater_equal(other)` -> `Tensor or NULL`
+#'
+#' * `$sum()` -> `numeric`
+#'
+#' * `$mean()` -> `numeric`
+#'
+#' * `$max()` -> `numeric`
+#'
+#' * `$min()` -> `numeric`
+#'
+#' * `$prod()` -> `numeric`
+#'
+#' * `$argmax()` -> `integer`
+#'
+#' * `$argmin()` -> `integer`
+#'
+#' * `$all()` -> `logical`
+#'
+#' * `$any()` -> `logical`
+#'
+#' * `$sum_axis(axis, keepdims = FALSE)` -> `Tensor or NULL`
+#'
+#' * `$mean_axis(axis, keepdims = FALSE)` -> `Tensor or NULL`
+#'
+#' * `$max_axis(axis, keepdims = FALSE)` -> `Tensor or NULL`
+#'
+#' * `$min_axis(axis, keepdims = FALSE)` -> `Tensor or NULL`
+#'
+#' * `$prod_axis(axis, keepdims = FALSE)` -> `Tensor or NULL`
+#'
+#' * `$argmax_axis(axis, keepdims = FALSE)` -> `Tensor or NULL`
+#'
+#' * `$argmin_axis(axis, keepdims = FALSE)` -> `Tensor or NULL`
+#'
+#' * `$matmul(other)` -> `Tensor or NULL`
+#'
+#' * `$dot(other)` -> `numeric`
+#'
+#' * `$outer(other)` -> `Tensor or NULL`
+#'
+#' * `$max_pool2d(pool_size, stride = -1)` -> `Tensor or NULL`
+#'
+#' * `$avg_pool2d(pool_size, stride = -1)` -> `Tensor or NULL`
+#'
+#' * `$relu()` -> `Tensor or NULL`
+#'
+#' * `$sigmoid()` -> `Tensor or NULL`
+#'
+#' * `$softmax()` -> `Tensor or NULL`
+#'
+#' * `$to_string(max_elements = 100)` -> `character`
+#' @section Static methods:
+#' * `Tensor$zeros(shape)` -> `Tensor or NULL`
+#'
+#' * `Tensor$ones(shape)` -> `Tensor or NULL`
+#'
+#' * `Tensor$full(shape, value)` -> `Tensor or NULL`
+#'
+#' * `Tensor$from_values(shape, values)` -> `Tensor or NULL`
+#'
+#' * `Tensor$from_bool_values(shape, values)` -> `Tensor or NULL`
+#'
+#' * `Tensor$from_string_values(shape, values)` -> `Tensor or NULL`
+#'
+#' * `Tensor$arange(start, stop, step = 1.0)` -> `Tensor or NULL`
+#'
+#' * `Tensor$eye(n)` -> `Tensor or NULL`
+#'
+#' * `Tensor$concatenate2(a, b, axis)` -> `Tensor or NULL`
+#'
+#'   Concatenates two tensors along an existing axis (shapes must match on every other axis).
+#'
+#' * `Tensor$stack2(a, b, axis)` -> `Tensor or NULL`
+#'
+#'   Stacks two same-shaped tensors along a new axis inserted at position `axis`.
+#'
+#' * `Tensor$from_image(img)` -> `Tensor or NULL`
+#'
+#'   The Tensor's own image_to_tensor() bridge: `img` (already directly SWIG-bindable,
+#'   no facade needed) as a \[channels, height, width\] tensor normalized to \[0, 1\].
+#'
+#' * `Tensor$conv2d(input, kernel, bias, stride = 1, padding = 0)` -> `Tensor or NULL`
+#'
+#'   Basic (inference-only) neural-network building blocks -- see
+#'   datamunge::cv::conv2d/max_pool2d/avg_pool2d/relu/sigmoid/softmax for the underlying
+#'   implementation and full documentation of shapes/semantics.
+#' @md
+#'
 `Tensor` <- R6::R6Class("Tensor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4622,6 +16289,56 @@ rosetta_ref <- function(value = NULL) {
 `Tensor`$`stack2` <- function(...) .Call(`.rs_2806`, NULL, list(...))
 `Tensor`$`from_image` <- function(...) .Call(`.rs_2848`, NULL, list(...))
 `Tensor`$`conv2d` <- function(...) .Call(`.rs_2849`, NULL, list(...))
+#' SWIG-friendly facade for datamunge::autodiff::Dual -- a first-order forward-mode dual number.
+#'
+#' Build an expression out of named operations (starting from a seed with derivative=1) to read off an exact derivative alongside the value.
+#' @section Constructor:
+#' `Dual$new(value, derivative = 0.0)`
+#'
+#' * `value` (`numeric`)
+#' * `derivative` (`numeric`)
+#' @section Methods:
+#' * `$value()` -> `numeric`
+#'
+#' * `$derivative()` -> `numeric`
+#'
+#' * `$add(other)` -> `Dual`
+#'
+#' * `$subtract(other)` -> `Dual`
+#'
+#' * `$multiply(other)` -> `Dual`
+#'
+#' * `$divide(other)` -> `Dual`
+#'
+#' * `$negate()` -> `Dual`
+#'
+#' * `$add_scalar(scalar)` -> `Dual`
+#'
+#' * `$subtract_scalar(scalar)` -> `Dual`
+#'
+#' * `$multiply_scalar(scalar)` -> `Dual`
+#'
+#' * `$divide_scalar(scalar)` -> `Dual`
+#'
+#' * `$pow(exponent)` -> `Dual`
+#'
+#' * `$exp()` -> `Dual`
+#'
+#' * `$log()` -> `Dual`
+#'
+#' * `$sqrt()` -> `Dual`
+#'
+#' * `$sin()` -> `Dual`
+#'
+#' * `$cos()` -> `Dual`
+#'
+#' * `$tan()` -> `Dual`
+#'
+#' * `$tanh()` -> `Dual`
+#'
+#' * `$abs()` -> `Dual`
+#' @md
+#'
 `Dual` <- R6::R6Class("Dual", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4651,6 +16368,58 @@ rosetta_ref <- function(value = NULL) {
     `abs` = function(...) .Call(`.rs_2876`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::autodiff::HyperDual -- a second-order forward-mode dual number carrying two independent derivative directions plus their exact mixed second partial, for computing Hessian entries.
+#' @section Constructor:
+#' `HyperDual$new(value, eps1 = 0.0, eps2 = 0.0, eps1eps2 = 0.0)`
+#'
+#' * `value` (`numeric`)
+#' * `eps1` (`numeric`)
+#' * `eps2` (`numeric`)
+#' * `eps1eps2` (`numeric`)
+#' @section Methods:
+#' * `$value()` -> `numeric`
+#'
+#' * `$eps1()` -> `numeric`
+#'
+#' * `$eps2()` -> `numeric`
+#'
+#' * `$eps1eps2()` -> `numeric`
+#'
+#' * `$add(other)` -> `HyperDual`
+#'
+#' * `$subtract(other)` -> `HyperDual`
+#'
+#' * `$multiply(other)` -> `HyperDual`
+#'
+#' * `$divide(other)` -> `HyperDual`
+#'
+#' * `$negate()` -> `HyperDual`
+#'
+#' * `$add_scalar(scalar)` -> `HyperDual`
+#'
+#' * `$subtract_scalar(scalar)` -> `HyperDual`
+#'
+#' * `$multiply_scalar(scalar)` -> `HyperDual`
+#'
+#' * `$divide_scalar(scalar)` -> `HyperDual`
+#'
+#' * `$pow(exponent)` -> `HyperDual`
+#'
+#' * `$exp()` -> `HyperDual`
+#'
+#' * `$log()` -> `HyperDual`
+#'
+#' * `$sqrt()` -> `HyperDual`
+#'
+#' * `$sin()` -> `HyperDual`
+#'
+#' * `$cos()` -> `HyperDual`
+#'
+#' * `$tan()` -> `HyperDual`
+#'
+#' * `$tanh()` -> `HyperDual`
+#' @md
+#'
 `HyperDual` <- R6::R6Class("HyperDual", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4681,6 +16450,56 @@ rosetta_ref <- function(value = NULL) {
     `tanh` = function(...) .Call(`.rs_2898`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::autodiff::Var -- a handle into a Tape.
+#' @section Constructor:
+#' `Var$new(tape, value)`
+#'
+#' Records a new independent leaf variable on `tape`.
+#'
+#' * `tape` (`Tape`)
+#' * `value` (`numeric`)
+#' @section Methods:
+#' * `$value()` -> `numeric`
+#'
+#' * `$index()` -> `integer`
+#'
+#' * `$add(other)` -> `Var`
+#'
+#' * `$subtract(other)` -> `Var`
+#'
+#' * `$multiply(other)` -> `Var`
+#'
+#' * `$divide(other)` -> `Var`
+#'
+#' * `$negate()` -> `Var`
+#'
+#' * `$add_scalar(scalar)` -> `Var`
+#'
+#' * `$subtract_scalar(scalar)` -> `Var`
+#'
+#' * `$multiply_scalar(scalar)` -> `Var`
+#'
+#' * `$divide_scalar(scalar)` -> `Var`
+#'
+#' * `$pow(exponent)` -> `Var`
+#'
+#' * `$exp()` -> `Var`
+#'
+#' * `$log()` -> `Var`
+#'
+#' * `$sqrt()` -> `Var`
+#'
+#' * `$sin()` -> `Var`
+#'
+#' * `$cos()` -> `Var`
+#'
+#' * `$tan()` -> `Var`
+#'
+#' * `$tanh()` -> `Var`
+#'
+#' * `$abs()` -> `Var`
+#' @md
+#'
 `Var` <- R6::R6Class("Var", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4710,6 +16529,19 @@ rosetta_ref <- function(value = NULL) {
     `abs` = function(...) .Call(`.rs_2919`, self, list(...))
   )
 )
+#' SWIG-friendly facade for datamunge::autodiff::Tape -- a reverse-mode ("backpropagation") computation tape.
+#'
+#' Create leaf Vars against a Tape, build an expression out of named Var operations, then call backward() on the output Var to get the derivative of that output with respect to every node on the tape (index a leaf's own index() into the result to read its gradient).
+#' @section Constructor:
+#' `Tape$new()`
+#' @section Methods:
+#' * `$size()` -> `integer`
+#'
+#' * `$value_at(index)` -> `numeric`
+#'
+#' * `$backward(output)` -> `vector<numeric>`
+#' @md
+#'
 `Tape` <- R6::R6Class("Tape", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4722,6 +16554,132 @@ rosetta_ref <- function(value = NULL) {
     `backward` = function(...) .Call(`.rs_2923`, self, list(...))
   )
 )
+#' An owned B-rep solid with value-returning modelling and export operations.
+#'
+#' Geometry uses doubles in caller-selected consistent units. Copies own topology; immutable surfaces may be shared. Operations return new solids, preserving inputs. Unsupported kernel operations throw std::runtime_error with the kernel diagnostic. Concurrent const access is safe; do not mutate a shared object concurrently.
+#' @section Constructor:
+#' No public constructor.
+#' @section Methods:
+#' * `$united(other)` -> `CadSolid`
+#'
+#'   Return the union with another solid.
+#'   - `other`: Borrowed operand, in the same units/frame.
+#'   - Returns: New solid; inputs unchanged.
+#'
+#' * `$subtracted(other)` -> `CadSolid`
+#'
+#'   Subtract another solid, preserving cavities and trimmed faces.
+#'   - `other`: Borrowed tool solid.
+#'   - Returns: New solid.
+#'
+#' * `$intersected(other)` -> `CadSolid`
+#'
+#'   Return the common material of two solids.
+#'   - `other`: Borrowed operand.
+#'   - Returns: New solid.
+#'
+#' * `$translated(x, y, z)` -> `CadSolid`
+#'
+#'   Return a translated copy.
+#'   - `x`: Finite X displacement in model units.
+#'   - `y`: Finite Y displacement.
+#'   - `z`: Finite Z displacement.
+#'   - Returns: New solid.
+#'
+#' * `$rotated(x, y, z, radians)` -> `CadSolid`
+#'
+#'   Rotate about an axis through the origin, using the right-hand rule.
+#'   - `x`: Axis X component.
+#'   - `y`: Axis Y component.
+#'   - `z`: Axis Z component; axis must be finite and nonzero.
+#'   - `radians`: Finite rotation angle.
+#'   - Returns: New solid.
+#'
+#' * `$filleted(edges, radius)` -> `CadSolid`
+#'
+#'   Fillet selected edge IDs in sequence using persistent face-pair references.
+#'   - `edges`: Edge IDs from this solid's model; empty list leaves a copy unchanged.
+#'   - `radius`: Positive finite rolling-ball radius.
+#'   - Returns: New solid. Source kernel supports straight edges between planar faces.
+#'
+#' * `$chamfered(edges, setback)` -> `CadSolid`
+#'
+#'   Chamfer selected edge IDs by a common setback.
+#'   - `edges`: Source edge IDs; empty list returns a copy.
+#'   - `setback`: Positive finite distance along adjacent faces.
+#'   - Returns: New solid.
+#'
+#' * `$shelled(thickness, open_faces = c())` -> `CadSolid`
+#'
+#'   Hollow a solid, optionally opening specified faces.
+#'   - `thickness`: Positive finite wall thickness.
+#'   - `open_faces`: Face IDs to open; empty creates a sealed cavity.
+#'   - Returns: New solid, subject to ShellBody's supported surface combinations.
+#'
+#' * `$volume(chord = 0.01)` -> `numeric`
+#'
+#'   Measure volume from the trimmed tessellated boundary.
+#'   - `chord`: Positive tessellation tolerance; lower improves curved-face accuracy.
+#'   - Returns: Signed volume in cubic model units; honours imported STEP trimming.
+#'
+#' * `$valid()` -> `logical`
+#'
+#'   Validate topology, orientations and geometric boundary consistency.
+#'   - Returns: True when the kernel validation report has no errors.
+#'
+#' * `$edges()` -> `vector<integer>`
+#'
+#'   List the source edge IDs usable by filleted() and chamfered().
+#'   - Returns: Owned vector of unique edge IDs.
+#'
+#' * `$faces()` -> `vector<integer>`
+#'
+#'   List face IDs usable by shelled() and the low-level modifiers.
+#'   - Returns: Owned vector of face IDs.
+#'
+#' * `$save(path, chord = 0.01)`
+#'
+#'   Save STEP, binary STL, OBJ, glTF or an SVG drawing by extension.
+#'   - `path`: Output path; parent directory must exist; existing files are replaced.
+#'   - `chord`: Positive tessellation tolerance for mesh/drawing output; default .01.
+#' @section Static methods:
+#' * `CadSolid$box(width, depth, height)` -> `CadSolid`
+#'
+#'   Construct an axis-aligned box with minimum corner at the origin.
+#'   - `width`: Positive finite X extent.
+#'   - `depth`: Positive finite Y extent.
+#'   - `height`: Positive finite Z extent.
+#'   - Returns: Owned solid.
+#'
+#' * `CadSolid$cylinder(radius, height)` -> `CadSolid`
+#'
+#'   Construct a cylinder with base at the origin and axis +Z.
+#'   - `radius`: Positive finite radius.
+#'   - `height`: Positive finite height.
+#'   - Returns: Owned solid.
+#'
+#' * `CadSolid$sphere(radius)` -> `CadSolid`
+#'
+#'   Construct a sphere centred at the origin.
+#'   - `radius`: Positive finite radius.
+#'   - Returns: Owned solid.
+#'
+#' * `CadSolid$torus(major_radius, minor_radius)` -> `CadSolid`
+#'
+#'   Construct a ring torus centred at the origin around +Z.
+#'   - `major_radius`: Positive finite distance from axis to tube centre.
+#'   - `minor_radius`: Positive finite tube radius smaller than major_radius.
+#'   - Returns: Owned solid.
+#' @section Examples (C++):
+#' ```cpp
+#' auto block = dm::cad::Solid::box(4, 3, 2);
+#' auto hole = dm::cad::Solid::cylinder(.4, 4).translated(2, 1.5, -1);
+#' auto part = block.subtracted(hole);
+#' part.save("part.step");
+#' ```
+#' @seealso Model, FeatureTree, load_scene()
+#' @md
+#'
 `CadSolid` <- R6::R6Class("CadSolid", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4752,6 +16710,130 @@ rosetta_ref <- function(value = NULL) {
 `CadSolid`$`cylinder` <- function(...) .Call(`.rs_2926`, NULL, list(...))
 `CadSolid`$`sphere` <- function(...) .Call(`.rs_2927`, NULL, list(...))
 `CadSolid`$`torus` <- function(...) .Call(`.rs_2928`, NULL, list(...))
+#' A small code-driven scene facade, exposed as CadScene in Python/R.
+#'
+#' Owns scene/camera/render controls. All operations delegate to the canonical CAD, polygon and renderer APIs; copying retains independent scene state.
+#' @section Constructor:
+#' `CadScene$new()`
+#'
+#' Create an empty scene with automatic camera framing.
+#' @section Methods:
+#' * `$set_joint(name, value)`
+#'
+#'   Set a movable independent joint on a view loaded from URDF.
+#'   - `name`: Joint name.
+#'   - `value`: Coordinate in radians/metres, within limits.
+#'
+#' * `$joint_names()` -> `vector<character>`
+#'
+#'   List independent movable joints of a URDF view.
+#'   - Returns: Owned names; empty for ordinary scenes.
+#'
+#' * `$add(solid, color = "#4080d9", name = "Solid")` -> `integer`
+#'
+#'   Tessellate a solid and append it as a scene object.
+#'   - `solid`: Borrowed source, unchanged.
+#'   - `color`: Hex RGB/RGBA tint, default #4080d9.
+#'   - `name`: Object name, default Solid.
+#'   - Returns: New object ID.
+#'
+#' * `$primitive(kind)` -> `integer`
+#'
+#'   Append a source polygon modeller primitive.
+#'   - `kind`: cube, sphere, cylinder, cone, plane, torus or wedge (lowercase).
+#'   - Returns: New object ID; editable via scene() in C++.
+#'
+#' * `$size(width, height)`
+#'
+#'   Set the output dimensions used by render() and picking.
+#'   - `width`: Pixel width, 1..8192.
+#'   - `height`: Pixel height, 1..8192.
+#'
+#' * `$samples(count)`
+#'
+#'   Set regular-grid antialiasing samples per axis.
+#'   - `count`: 1..4, i.e. 1..16 rays/pixel.
+#'
+#' * `$style(name)`
+#'
+#'   Select shaded, unlit, wireframe or shaded-wireframe output.
+#'   - `name`: One of those exact lowercase names.
+#'
+#' * `$shadows(enabled)`
+#'
+#'   Enable/disable shadows cast by the first visible light.
+#'   - `enabled`: True enables triangle-ray shadow tests.
+#'
+#' * `$camera(x, y, z, target_x, target_y, target_z)`
+#'
+#'   Set explicit camera position and target, with +Z as up.
+#'   - `x`: Camera X position.
+#'   - `y`: Camera Y position.
+#'   - `z`: Camera Z position.
+#'   - `target_x`: Target X.
+#'   - `target_y`: Target Y.
+#'   - `target_z`: Target Z; all values finite, target distinct and view not parallel to +Z.
+#'
+#' * `$fit()`
+#'
+#'   Resume automatic perspective framing after an explicit camera.
+#'
+#' * `$light(x, y, z, color = "#ffffff", intensity = 1.0)` -> `integer`
+#'
+#'   Add a directional light; the first explicit light replaces the fallback light.
+#'   - `x`: Direction X from surface toward light.
+#'   - `y`: Direction Y.
+#'   - `z`: Direction Z; finite nonzero vector.
+#'   - `color`: Hex RGB/RGBA light color, default white; alpha unused.
+#'   - `intensity`: Nonnegative finite multiplier, default 1.
+#'   - Returns: New light ID.
+#'
+#' * `$render(path)`
+#'
+#'   Render synchronously and save a PNG/JPEG/PPM color image.
+#'   - `path`: Output filename, parent directory must exist.
+#'
+#' * `$save_gltf(path)`
+#'
+#'   Save the scene as self-contained glTF with meshes, textures and lights.
+#'   - `path`: Output .gltf filename; parent must exist.
+#'
+#' * `$pick_object(x, y)` -> `integer`
+#'
+#'   Pick a source object using the current camera and image dimensions.
+#'   - `x`: Pixel X from left; continuous coordinates.
+#'   - `y`: Pixel Y from top.
+#'   - Returns: Object ID or -1 for background.
+#'
+#' * `$object_count()` -> `integer`
+#'
+#'   Count scene objects, including empty groups.
+#'   - Returns: Object count.
+#'
+#' * `$triangle_count()` -> `integer`
+#'
+#'   Count triangles over all object mesh references, including hidden objects.
+#'   - Returns: Triangle count.
+#' @section Static methods:
+#' * `CadScene$from_file(path)` -> `CadScene`
+#'
+#'   Import any format supported by load_scene().
+#'   - `path`: Input filename.
+#'   - Returns: Owned view with automatic framing.
+#'
+#' * `CadScene$from_urdf(path)` -> `CadScene`
+#'
+#'   Load an articulated URDF visual model and its asset files.
+#'   - `path`: URDF file; relative meshes resolve beside it.
+#'   - Returns: Owned view at the loader's initial joint coordinates.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::cad::View view;
+#' view.add(dm::cad::Solid::box(2, 3, 4), "#3b82f6", "block");
+#' view.size(640, 480); view.render("block.png");
+#' ```
+#' @md
+#'
 `CadScene` <- R6::R6Class("CadScene", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4781,6 +16863,22 @@ rosetta_ref <- function(value = NULL) {
 )
 `CadScene`$`from_file` <- function(...) .Call(`.rs_2942`, NULL, list(...))
 `CadScene`$`from_urdf` <- function(...) .Call(`.rs_2943`, NULL, list(...))
+#' Solver settings shared by fit_tensor_bspline(), fit_tensor_pspline() and the hierarchical fitting methods.
+#' @section Constructor:
+#' `SplineSolveOptions$new()`
+#' @section Fields:
+#' * `$method` (`character (SplineSolver)`): Requested solver.
+#' * `$direct_limit` (`integer`): Automatic switches from Cholesky to CG above this many unknowns.
+#' * `$tolerance` (`numeric`): CG relative residual tolerance.
+#' * `$max_iterations` (`integer`): CG iteration cap; 0 means 10 times the unknown count.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::fda::SplineSolveOptions options;
+#' options.method = dm::fda::SplineSolver::Cholesky;
+#' ```
+#' @seealso SplineSolver
+#' @md
+#'
 `SplineSolveOptions` <- R6::R6Class("SplineSolveOptions", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4796,6 +16894,29 @@ rosetta_ref <- function(value = NULL) {
     `max_iterations` = function(value) if (missing(value)) .Call(`.rs_2967`, self) else invisible(.Call(`.rs_2968`, self, value))
   )
 )
+#' A refined B-spline basis together with the operator that maps coarse coefficients onto it.
+#'
+#' For any coefficient vector c on the coarse basis, `matrix * c` (equivalently apply())
+#' gives coefficients on the refined basis that represent exactly the same spline.
+#' @section Constructor:
+#' `BSplineRefinement$new()`
+#' @section Fields:
+#' * `$basis` (`BSplineBasis`): Refined basis (same degree and domain).
+#' @section Methods:
+#' * `$apply(coefficients)` -> `vector<numeric>`
+#'
+#'   Maps coarse coefficients to the refined basis.
+#'   - `coefficients`: One coefficient per coarse basis function.
+#'   - Returns: One coefficient per refined basis function, representing the same spline.
+#' @section Examples (C++):
+#' ```cpp
+#' auto coarse = dm::fda::BSplineBasis::open_uniform(2, 4);
+#' auto refined = dm::fda::dyadic_refine(coarse);
+#' std::print("{}\n", refined.basis.basis_size()); // 6
+#' ```
+#' @seealso refine_basis(), dyadic_refine()
+#' @md
+#'
 `BSplineRefinement` <- R6::R6Class("BSplineRefinement", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4809,6 +16930,116 @@ rosetta_ref <- function(value = NULL) {
     `basis` = function(value) if (missing(value)) .Call(`.rs_2971`, self) else invisible(.Call(`.rs_2972`, self, value))
   )
 )
+#' A scalar tensor-product B-spline f(x) = sum_j c_j B_j(x) with owned coefficients.
+#'
+#' With one basis this is an ordinary spline curve; with d bases a surface or volume. The
+#' coefficient net is row-major over the per-axis basis sizes (last axis fastest), the same
+#' column order as fda::BSpline::evaluate(). Evaluation clamps each coordinate into the
+#' basis domain, so points outside the domain take the boundary value. Const methods are
+#' safe to call concurrently while the object is not mutated.
+#' @section Constructor:
+#' `TensorBSpline$new(basis, coefficients)`
+#'
+#' One-dimensional spline curve on `basis`.
+#'
+#' `TensorBSpline$new(bases, coefficients)`
+#'
+#' Tensor-product spline over one basis per axis.
+#'
+#' * `basis` (`BSplineBasis`): Basis for the single axis.
+#' * `coefficients` (`vector<numeric>`): One coefficient per basis function.
+#' * `bases` (`vector<BSplineBasis>`): One basis per dimension (at least one).
+#' @section Methods:
+#' * `$dimensions()` -> `integer`
+#'
+#'   Number of parameter dimensions d.
+#'   - Returns: bases().size().
+#'
+#' * `$bases()` -> `vector<BSplineBasis>`
+#'
+#'   The per-axis bases.
+#'   - Returns: Reference valid for the lifetime of this object.
+#'
+#' * `$shape()` -> `vector<integer>`
+#'
+#'   Per-axis basis sizes, i.e. the shape of the coefficient net.
+#'   - Returns: d sizes in axis order.
+#'
+#' * `$coefficient_count()` -> `integer`
+#'
+#'   Total number of coefficients (product of shape()).
+#'   - Returns: Coefficient count.
+#'
+#' * `$coefficients()` -> `vector<numeric>`
+#'
+#'   The row-major coefficient net.
+#'   - Returns: Reference valid until the next mutation of this object.
+#'
+#' * `$domain_min()` -> `vector<numeric>`
+#'
+#'   Lower corner of the parameter domain (each basis's first clamped knot).
+#'   - Returns: d coordinates.
+#'
+#' * `$domain_max()` -> `vector<numeric>`
+#'
+#'   Upper corner of the parameter domain.
+#'   - Returns: d coordinates.
+#'
+#' * `$coefficient(index)` -> `numeric`
+#'
+#'   Reads one coefficient by per-axis basis index.
+#'   - `index`: d indices, each in \[0, shape()\[k\]).
+#'   - Returns: The coefficient.
+#'
+#' * `$set_coefficient(index, value)`
+#'
+#'   Overwrites one coefficient by per-axis basis index.
+#'   - `index`: d indices, each in \[0, shape()\[k\]).
+#'   - `value`: New coefficient.
+#'
+#' * `$evaluate(x)` -> `numeric`
+#'   `$evaluate(point)` -> `numeric`
+#'
+#'   Evaluates a one-dimensional spline at `x` (clamped into the domain).
+#'   - `x`: Finite coordinate.
+#'   - Returns: f(x).
+#'
+#'   Evaluates at one d-dimensional point (each coordinate clamped into the domain).
+#'   - `point`: d finite coordinates.
+#'   - Returns: f(point).
+#'
+#' * `$evaluate_points(points)` -> `vector<numeric>`
+#'
+#'   Evaluates at many points.
+#'   - `points`: Points, each of length d.
+#'   - Returns: One value per point, in input order.
+#'
+#' * `$evaluate_grid(axes)` -> `vector<numeric>`
+#'
+#'   Evaluates on the Cartesian product of per-axis sample values.
+#'   - `axes`: d non-empty coordinate lists.
+#'   - Returns: Row-major grid of values (axis 0 slowest, last axis fastest).
+#'
+#' * `$dyadic_refine()` -> `TensorBSpline`
+#'
+#'   Dyadically refines every axis and maps the coefficients, giving an identical
+#'   function on the finer, nested tensor basis.
+#'   - Returns: The refined spline.
+#' @section Examples (C++):
+#' ```cpp
+#' auto b = dm::fda::BSplineBasis::open_uniform(1, 2);     // linear on [0, 1]
+#' dm::fda::TensorBSpline f({b, b}, {0, 1, 1, 2});         // f(x, y) = x + y
+#' std::print("{:.2f}\n", f.evaluate({0.25, 0.5}));        // 0.75
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: If the coefficient count differs from basis.basis_size().
+#'
+#' * `std::invalid_argument`: If `bases` is empty or the net size does not match.
+#' @references - C. de Boor (1972). On calculating with B-splines. Journal of Approximation Theory
+#'   6(1), 50-62. https://doi.org/10.1016/0021-9045(72)90080-9
+#' @seealso fit_tensor_bspline(), fit_tensor_pspline(), BSpline
+#' @md
+#'
 `TensorBSpline` <- R6::R6Class("TensorBSpline", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4831,6 +17062,147 @@ rosetta_ref <- function(value = NULL) {
     `dyadic_refine` = function(...) .Call(`.rs_2986`, self, list(...))
   )
 )
+#' Dyadic 2^d-ary tree of axis-aligned boxes shared by the hierarchical splines.
+#'
+#' Cells live in a flat vector and are addressed by id (root 0). Children are created on
+#' demand by halving every axis; slot bit k selects the upper half of axis k.
+#' @section Constructor:
+#' `OrthantCellTree$new(lo, hi)`
+#'
+#' Creates the root cell \[lo, hi\].
+#'
+#' * `lo` (`vector<numeric>`): Lower corner.
+#' * `hi` (`vector<numeric>`): Upper corner, with lo\[k\] < hi\[k\].
+#' @section Methods:
+#' * `$dimensions()` -> `integer`
+#'
+#'   Number of dimensions d.
+#'   - Returns: d.
+#'
+#' * `$arity()` -> `integer`
+#'
+#'   Children per cell, 2^d.
+#'   - Returns: 2^d.
+#'
+#' * `$size()` -> `integer`
+#'
+#'   Number of cells created so far.
+#'   - Returns: Cell count.
+#'
+#' * `$max_depth()` -> `integer`
+#'
+#'   Greatest depth of any cell.
+#'   - Returns: Maximum depth (root is 0).
+#'
+#' * `$check(cell)`
+#'
+#'   Throws std::out_of_range unless `cell` is a valid id.
+#'   - `cell`: Cell id.
+#'
+#' * `$check_slot(slot)`
+#'
+#'   Throws std::out_of_range unless 0 <= `slot` < arity().
+#'   - `slot`: Child slot.
+#'
+#' * `$lo(cell)` -> `vector<numeric>`
+#'
+#'   Cell lower corner.
+#'   - `cell`: Cell id.
+#'   - Returns: d coordinates.
+#'
+#' * `$hi(cell)` -> `vector<numeric>`
+#'
+#'   Cell upper corner.
+#'   - `cell`: Cell id.
+#'   - Returns: d coordinates.
+#'
+#' * `$depth(cell)` -> `integer`
+#'
+#'   Cell depth.
+#'   - `cell`: Cell id.
+#'   - Returns: Depth (root 0).
+#'
+#' * `$parent(cell)` -> `integer`
+#'
+#'   Parent id.
+#'   - `cell`: Cell id.
+#'   - Returns: Parent id, or -1 for the root.
+#'
+#' * `$child(cell, slot)` -> `integer`
+#'
+#'   Child id.
+#'   - `cell`: Cell id.
+#'   - `slot`: Child slot.
+#'   - Returns: Id or -1 if absent.
+#'
+#' * `$is_leaf(cell)` -> `logical`
+#'
+#'   True when no child of `cell` exists.
+#'   - `cell`: Cell id.
+#'   - Returns: Leaf flag.
+#'
+#' * `$ensure_child(cell, slot)` -> `integer`
+#'
+#'   Returns the child at `slot`, creating it if needed.
+#'   - `cell`: Parent id.
+#'   - `slot`: Child slot.
+#'   - Returns: Child id.
+#'
+#' * `$child_box(cell, slot)` -> `list(vector<numeric>, vector<numeric>)`
+#'
+#'   Box of the (possibly not yet created) child at `slot`.
+#'   - `cell`: Parent id.
+#'   - `slot`: Child slot.
+#'   - Returns: Pair (lo, hi) of the child box.
+#'
+#' * `$slot_for(cell, point)` -> `integer`
+#'
+#'   Slot of `cell's` child that contains `point` (upper half on ties at the max).
+#'   - `cell`: Cell id.
+#'   - `point`: d coordinates.
+#'   - Returns: Child slot.
+#'
+#' * `$contains(cell, point)` -> `logical`
+#'
+#'   Whether `point` lies in the closed box of `cell`.
+#'   - `cell`: Cell id.
+#'   - `point`: d coordinates.
+#'   - Returns: Containment flag.
+#'
+#' * `$locate(point)` -> `integer`
+#'
+#'   Deepest existing cell containing `point`.
+#'   - `point`: d coordinates.
+#'   - Returns: Cell id, or -1 outside the root box.
+#'
+#' * `$cells_at_depth(depth)` -> `vector<integer>`
+#'
+#'   Ids of every cell at `depth`.
+#'   - `depth`: Depth.
+#'   - Returns: Ids in creation order.
+#'
+#' * `$covered_to_depth(target_depth, blo, bhi)` -> `logical`
+#'
+#'   Whether the part of \[blo, bhi\] inside the root is covered by cells of depth
+#'   \>= `target_depth` (i.e. the box lies in the refined domain Omega^target_depth).
+#'   - `target_depth`: Depth to test.
+#'   - `blo`: Box lower corner.
+#'   - `bhi`: Box upper corner.
+#'   - Returns: Coverage flag.
+#' @section Static methods:
+#' * `OrthantCellTree$overlaps(lo, hi, blo, bhi)` -> `logical`
+#'
+#'   Whether the open box (lo, hi) intersects the box \[blo, bhi\].
+#'   - `lo`: Box A lower corner.
+#'   - `hi`: Box A upper corner.
+#'   - `blo`: Box B lower corner.
+#'   - `bhi`: Box B upper corner.
+#'   - Returns: True when the interiors overlap.
+#' @section Errors:
+#' * `std::invalid_argument`: On empty/mismatched/non-finite bounds, lo >= hi, or
+#' more than 20 dimensions.
+#' @md
+#'
 `OrthantCellTree` <- R6::R6Class("OrthantCellTree", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4861,6 +17233,14 @@ rosetta_ref <- function(value = NULL) {
   )
 )
 `OrthantCellTree`$`overlaps` <- function(...) .Call(`.rs_3006`, NULL, list(...))
+#' One axis's level-to-level refinement operator stored both ways.
+#' @section Constructor:
+#' `AxisRefinement$new()`
+#' @section Fields:
+#' * `$rows` (`vector<vector<list(integer, numeric)>>`): rows\[i\]: (coarse j, R(i, j)) for refined index i.
+#' * `$cols` (`vector<vector<list(integer, numeric)>>`): cols\[j\]: (refined i, R(i, j)) for coarse index j.
+#' @md
+#'
 `AxisRefinement` <- R6::R6Class("AxisRefinement", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4874,6 +17254,187 @@ rosetta_ref <- function(value = NULL) {
     `cols` = function(value) if (missing(value)) .Call(`.rs_3011`, self) else invisible(.Call(`.rs_3012`, self, value))
   )
 )
+#' Classical (overlay) hierarchical B-spline in the style of Forsey and Bartels: every cell of a dyadic tree may carry its own local "detail" TensorBSpline.
+#'
+#' evaluate(x) sums the patch of every cell on the root-to-leaf path containing x. Each
+#' patch is evaluated in its cell's local coordinates, (x - cell_min) / (cell_max -
+#' cell_min) in \[0, 1\]^d, so patch bases should span \[0, 1\]. Patches are independent
+#' (no shared nested basis and no truncation); see TruncatedHierarchicalBSpline for the
+#' THB-spline construction. Cells are identified by integer ids (root 0).
+#' @section Constructor:
+#' `HierarchicalBSpline$new(domain_min, domain_max)`
+#'
+#' Creates a hierarchy whose root cell is \[domain_min, domain_max\], with no patches.
+#'
+#' * `domain_min` (`vector<numeric>`): Lower corner (length d >= 1).
+#' * `domain_max` (`vector<numeric>`): Upper corner, with domain_min\[k\] < domain_max\[k\].
+#' @section Methods:
+#' * `$dimensions()` -> `integer`
+#'
+#'   Number of dimensions d.
+#'   - Returns: d.
+#'
+#' * `$cell_count()` -> `integer`
+#'
+#'   Number of cells created so far.
+#'   - Returns: Cell count.
+#'
+#' * `$root()` -> `integer`
+#'
+#'   Root cell id.
+#'   - Returns: Always 0.
+#'
+#' * `$parent(cell)` -> `integer`
+#'
+#'   Parent id.
+#'   - `cell`: Cell id.
+#'   - Returns: Parent id, -1 for the root.
+#'
+#' * `$child(cell, slot)` -> `integer`
+#'
+#'   Child id at `slot`.
+#'   - `cell`: Cell id.
+#'   - `slot`: Child slot in \[0, 2^d).
+#'   - Returns: Child id, or -1 when not created.
+#'
+#' * `$depth(cell)` -> `integer`
+#'
+#'   Depth of `cell` (root 0).
+#'   - `cell`: Cell id.
+#'   - Returns: Depth.
+#'
+#' * `$cell_min(cell)` -> `vector<numeric>`
+#'
+#'   Lower corner of `cell`.
+#'   - `cell`: Cell id.
+#'   - Returns: d coordinates.
+#'
+#' * `$cell_max(cell)` -> `vector<numeric>`
+#'
+#'   Upper corner of `cell`.
+#'   - `cell`: Cell id.
+#'   - Returns: d coordinates.
+#'
+#' * `$locate(point)` -> `integer`
+#'
+#'   Deepest existing cell containing `point`.
+#'   - `point`: d coordinates.
+#'   - Returns: Cell id, or -1 if `point` is outside the domain.
+#'
+#' * `$has_spline(cell)` -> `logical`
+#'
+#'   Whether `cell` carries a patch.
+#'   - `cell`: Cell id.
+#'   - Returns: Flag.
+#'
+#' * `$spline(cell)` -> `TensorBSpline`
+#'
+#'   The patch of `cell`.
+#'   - `cell`: Cell id.
+#'   - Returns: Reference valid until the patch is replaced or cleared.
+#'
+#' * `$set_spline(cell, spline)`
+#'
+#'   Installs (or replaces) the patch of `cell`.
+#'   - `cell`: Cell id.
+#'   - `spline`: Patch in cell-local \[0, 1\]^d coordinates.
+#'
+#' * `$clear_spline(cell)`
+#'
+#'   Removes the patch of `cell` (no-op if none).
+#'   - `cell`: Cell id.
+#'
+#' * `$subdivide(cell)` -> `vector<integer>`
+#'
+#'   Creates all 2^d children of `cell` (existing ones are kept), without patches.
+#'   - `cell`: Cell id.
+#'   - Returns: The 2^d child ids in slot order.
+#'
+#' * `$refine(cell, slot)` -> `integer`
+#'   `$refine(cell, slot, spline)` -> `integer`
+#'
+#'   Creates (if needed) only the child of `cell` at `slot`.
+#'   - `cell`: Cell id.
+#'   - `slot`: Child slot; bit k selects the upper half of axis k.
+#'   - Returns: The child id.
+#'
+#'   Creates (if needed) the child at `slot` and installs `spline` on it.
+#'   - `cell`: Cell id.
+#'   - `slot`: Child slot.
+#'   - `spline`: Patch for the child.
+#'   - Returns: The child id.
+#'
+#' * `$refine_region(region_min, region_max, depth)`
+#'   `$refine_region(region_min, region_max, depth, factory)`
+#'
+#'   Subdivides, down to depth `depth`, every cell overlapping the open box
+#'   (region_min, region_max).
+#'   - `region_min`: Lower corner.
+#'   - `region_max`: Upper corner (min < max per axis).
+#'   - `depth`: Deepest depth to create (cells already deeper are untouched).
+#'
+#'   Like refine_region(region_min, region_max, depth) but calls `factory` on every
+#'   touched cell (new or existing) and installs any patch it returns.
+#'   - `region_min`: Lower corner.
+#'   - `region_max`: Upper corner.
+#'   - `depth`: Deepest depth.
+#'   - `factory`: Patch callback; std::nullopt leaves a cell unchanged.
+#'
+#' * `$fit_cell(cell, bases, points, values, options = SplineSolveOptions$new())`
+#'
+#'   Least-squares fits a new patch on `cell` so the whole hierarchy matches
+#'   `values` at `points`.
+#'   - `cell`: Cell id; must not already have a patch (clear_spline() first to refit).
+#'   - `bases`: Patch bases on \[0, 1\], one per dimension.
+#'   - `points`: Sample locations inside the cell.
+#'   - `values`: One raw data value per point.
+#'   - `options`: Solver settings.
+#'
+#' * `$fit_cell_penalized(cell, bases, points, values, lambdas, order = 2, options = SplineSolveOptions$new())`
+#'
+#'   Penalized (P-spline) variant of fit_cell() with per-axis `lambdas` and
+#'   difference `order`; all-zero lambdas give fit_cell().
+#'   - `cell`: Cell id without a patch.
+#'   - `bases`: Patch bases on \[0, 1\].
+#'   - `points`: Sample locations inside the cell.
+#'   - `values`: Raw data values.
+#'   - `lambdas`: Nonnegative per-axis weights.
+#'   - `order`: Difference order (default 2).
+#'   - `options`: Solver settings.
+#'
+#' * `$evaluate(point)` -> `numeric`
+#'
+#'   Sum of the patches along the path of cells containing `point`.
+#'   - `point`: d coordinates inside the domain.
+#'   - Returns: Hierarchy value (0 where no patch applies).
+#'
+#' * `$evaluate_points(points)` -> `vector<numeric>`
+#'
+#'   Evaluates at many points.
+#'   - `points`: Points of length d.
+#'   - Returns: One value per point.
+#'
+#' * `$evaluate_grid(axes)` -> `vector<numeric>`
+#'
+#'   Evaluates on a Cartesian grid.
+#'   - `axes`: d non-empty coordinate lists.
+#'   - Returns: Row-major values (last axis fastest).
+#' @section Examples (C++):
+#' ```cpp
+#' dm::fda::HierarchicalBSpline h({0.0}, {1.0});
+#' auto b = dm::fda::BSplineBasis::open_uniform(0, 1);              // constant patch
+#' h.set_spline(h.root(), dm::fda::TensorBSpline(b, {1.0}));
+#' h.refine(h.root(), 1, dm::fda::TensorBSpline(b, {2.0}));          // upper half
+#' std::print("{} {}\n", h.evaluate({0.25}), h.evaluate({0.75}));    // 1 3
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: On empty, mismatched or non-finite bounds, min >= max,
+#' or more than 20 dimensions.
+#' @references - D. R. Forsey and R. H. Bartels (1988). Hierarchical B-spline refinement. ACM SIGGRAPH
+#'   Computer Graphics 22(4), 205-212. https://doi.org/10.1145/378456.378512
+#' @seealso TruncatedHierarchicalBSpline
+#' @md
+#'
 `HierarchicalBSpline` <- R6::R6Class("HierarchicalBSpline", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4904,6 +17465,243 @@ rosetta_ref <- function(value = NULL) {
     `evaluate_grid` = function(...) .Call(`.rs_3034`, self, list(...))
   )
 )
+#' Truncated hierarchical B-spline (THB-spline) of Giannelli, Juttler and Speleers.
+#'
+#' Level 0 is the caller's TensorBSpline; level l + 1 is the dyadic refinement of level l.
+#' A dyadic cell tree defines the nested domains Omega^0 (whole domain) contains Omega^1
+#' contains ..., where Omega^l is the union of cells of depth >= l. A level-l basis
+#' function is active when its support lies in Omega^l but not in Omega^(l+1). The THB
+#' basis consists of the active functions, each truncated: its representation on finer
+#' levels drops the finer functions whose support lies in the finer refined domain. The
+#' resulting basis is a partition of unity, preserves the continuity of the underlying
+#' splines, and spans the hierarchical spline space.
+#'
+#' Internally each level stores a full coefficient net whose entries outside the next
+#' level's refined domain always equal the refinement of the coarser level; coefficient
+#' edits are pushed down through all finer levels with truncation, so evaluation needs
+#' only the finest level covering a point. Refinement never changes the represented
+#' function. Bases must be clamped. Cells are integer ids (root 0).
+#' @section Constructor:
+#' `TruncatedHierarchicalBSpline$new(base)`
+#'
+#' Starts a hierarchy whose level 0 (and root cell / domain) is `base`.
+#'
+#' * `base` (`TensorBSpline`): Level-0 spline; every axis basis must be clamped.
+#' @section Methods:
+#' * `$dimensions()` -> `integer`
+#'
+#'   Number of dimensions d.
+#'   - Returns: d.
+#'
+#' * `$level_count()` -> `integer`
+#'
+#'   Number of materialized levels (1 + deepest cell depth).
+#'   - Returns: Level count.
+#'
+#' * `$level(level)` -> `TensorBSpline`
+#'
+#'   The level- `l` spline on the whole domain; it equals the hierarchy wherever
+#'   Omega^l but not Omega^(l+1) applies.
+#'   - `level`: Level in \[0, level_count()).
+#'   - Returns: Reference valid until the next refinement or coefficient edit.
+#'
+#' * `$cell_count()` -> `integer`
+#'
+#'   Number of cells.
+#'   - Returns: Cell count.
+#'
+#' * `$root()` -> `integer`
+#'
+#'   Root cell id.
+#'   - Returns: Always 0.
+#'
+#' * `$parent(cell)` -> `integer`
+#'
+#'   Parent id.
+#'   - `cell`: Cell id.
+#'   - Returns: Parent id, -1 for the root.
+#'
+#' * `$child(cell, slot)` -> `integer`
+#'
+#'   Child id.
+#'   - `cell`: Cell id.
+#'   - `slot`: Child slot.
+#'   - Returns: Child id or -1.
+#'
+#' * `$depth(cell)` -> `integer`
+#'
+#'   Depth (= level used there if it is a leaf).
+#'   - `cell`: Cell id.
+#'   - Returns: Depth.
+#'
+#' * `$cell_min(cell)` -> `vector<numeric>`
+#'
+#'   Lower corner.
+#'   - `cell`: Cell id.
+#'   - Returns: d coordinates.
+#'
+#' * `$cell_max(cell)` -> `vector<numeric>`
+#'
+#'   Upper corner.
+#'   - `cell`: Cell id.
+#'   - Returns: d coordinates.
+#'
+#' * `$locate(point)` -> `integer`
+#'
+#'   Deepest cell containing `point` (its depth is the finest level there).
+#'   - `point`: d coordinates.
+#'   - Returns: Cell id, or -1 outside the domain.
+#'
+#' * `$refine(cell, slot)` -> `integer`
+#'
+#'   Creates (if needed) the child of `cell` at `slot`, materializing the next
+#'   level when first reached. The represented function is unchanged.
+#'   - `cell`: Cell id.
+#'   - `slot`: Child slot.
+#'   - Returns: Child id.
+#'
+#' * `$subdivide(cell)` -> `vector<integer>`
+#'
+#'   Creates all 2^d children of `cell`.
+#'   - `cell`: Cell id.
+#'   - Returns: Child ids in slot order.
+#'
+#' * `$refine_region(region_min, region_max, depth)`
+#'
+#'   Subdivides, down to depth `depth`, every cell overlapping the open box
+#'   (region_min, region_max). The represented function is unchanged.
+#'   - `region_min`: Lower corner.
+#'   - `region_max`: Upper corner (min < max per axis).
+#'   - `depth`: Deepest level to create.
+#'
+#' * `$support_min(level, index)` -> `vector<numeric>`
+#'
+#'   Lower corner of the support box of basis function `index` at `level`.
+#'   - `level`: Level.
+#'   - `index`: Multi-index into that level's net.
+#'   - Returns: d coordinates.
+#'
+#' * `$support_max(level, index)` -> `vector<numeric>`
+#'
+#'   Upper corner of the support box.
+#'   - `level`: Level.
+#'   - `index`: Multi-index.
+#'   - Returns: d coordinates.
+#'
+#' * `$is_active(level, index)` -> `logical`
+#'
+#'   Whether level- `level` function `index` is in the THB basis (support in
+#'   Omega^level but not in Omega^(level+1)).
+#'   - `level`: Level.
+#'   - `index`: Multi-index.
+#'   - Returns: Activity flag.
+#'
+#' * `$active_indices(level)` -> `vector<vector<integer>>`
+#'
+#'   Every active multi-index at `level`, in row-major order.
+#'   - `level`: Level.
+#'   - Returns: Multi-indices.
+#'
+#' * `$basis_size()` -> `integer`
+#'
+#'   Total number of THB basis functions over all levels.
+#'   - Returns: Count.
+#'
+#' * `$coefficient(level, index)` -> `numeric`
+#'
+#'   THB coefficient of a basis function (for active functions; inactive entries
+#'   are internal bookkeeping).
+#'   - `level`: Level.
+#'   - `index`: Multi-index.
+#'   - Returns: Coefficient.
+#'
+#' * `$set_coefficient(level, index, value)`
+#'
+#'   Sets the coefficient of an active function and propagates the change, with
+#'   truncation, to every finer level. The edit is local to the function's support.
+#'   - `level`: Level.
+#'   - `index`: Active multi-index.
+#'   - `value`: New coefficient.
+#'
+#' * `$truncated_basis(level, index, point)` -> `numeric`
+#'
+#'   Value of the truncated basis function (level, index) at `point`.
+#'   - `level`: Level.
+#'   - `index`: Multi-index (inactive functions give 0).
+#'   - `point`: d coordinates inside the domain.
+#'   - Returns: Truncated basis value.
+#'
+#' * `$fit_level(level, points, values, options = SplineSolveOptions$new())`
+#'
+#'   Least-squares update of the active coefficients at `level` only.
+#'   - `level`: Level with at least one active function.
+#'   - `points`: Sample locations inside the domain.
+#'   - `values`: One raw value per point.
+#'   - `options`: Solver settings.
+#'
+#' * `$fit_level_penalized(level, points, values, lambdas, order = 2, options = SplineSolveOptions$new())`
+#'
+#'   Penalized variant of fit_level(): adds the level's full-grid tensor difference
+#'   penalty restricted to its active functions, applied to the coefficient change.
+#'   - `level`: Level.
+#'   - `points`: Sample locations.
+#'   - `values`: Raw values.
+#'   - `lambdas`: Nonnegative per-axis weights.
+#'   - `order`: Difference order (default 2).
+#'   - `options`: Solver settings.
+#'
+#' * `$fit(points, values, options = SplineSolveOptions$new())`
+#'
+#'   Least-squares fit of every active coefficient on every level at once
+#'   (replaces the current function).
+#'   - `points`: Sample locations inside the domain.
+#'   - `values`: One value per point.
+#'   - `options`: Solver settings.
+#'
+#' * `$fit_penalized(points, values, lambdas, order = 2, options = SplineSolveOptions$new())`
+#'
+#'   Penalized all-level fit: adds lambda_k times the squared order-q differences
+#'   along axis k of every run of q + 1 neighbouring active coefficients of a level.
+#'   - `points`: Sample locations.
+#'   - `values`: One value per point.
+#'   - `lambdas`: Nonnegative per-axis weights.
+#'   - `order`: Difference order (default 2).
+#'   - `options`: Solver settings.
+#'
+#' * `$evaluate(point)` -> `numeric`
+#'
+#'   Evaluates the hierarchical spline (finest level covering `point`).
+#'   - `point`: d coordinates inside the domain.
+#'   - Returns: Value.
+#'
+#' * `$evaluate_points(points)` -> `vector<numeric>`
+#'
+#'   Evaluates at many points.
+#'   - `points`: Points of length d.
+#'   - Returns: One value per point.
+#'
+#' * `$evaluate_grid(axes)` -> `vector<numeric>`
+#'
+#'   Evaluates on a Cartesian grid.
+#'   - `axes`: d non-empty coordinate lists.
+#'   - Returns: Row-major values (last axis fastest).
+#' @section Examples (C++):
+#' ```cpp
+#' auto b = dm::fda::BSplineBasis::open_uniform(2, 4);
+#' dm::fda::TruncatedHierarchicalBSpline thb(dm::fda::TensorBSpline({b, b}, std::vector<double>(16, 1.0)));
+#' thb.refine_region({0.0, 0.0}, {0.5, 0.5}, 1);
+#' std::print("{} {:.3f}\n", thb.level_count(), thb.evaluate({0.2, 0.2})); // 2 1.000
+#' ```
+#' @section Errors:
+#' * `std::invalid_argument`: If an axis basis is not clamped or d > 20.
+#' @references - C. Giannelli, B. Juttler and H. Speleers (2012). THB-splines: The truncated basis for
+#'   hierarchical splines. Computer Aided Geometric Design 29(7), 485-498.
+#'   https://doi.org/10.1016/j.cagd.2012.03.025
+#' - D. R. Forsey and R. H. Bartels (1988). Hierarchical B-spline refinement.
+#'   https://doi.org/10.1145/378456.378512
+#' @seealso HierarchicalBSpline, dyadic_refine()
+#' @md
+#'
 `TruncatedHierarchicalBSpline` <- R6::R6Class("TruncatedHierarchicalBSpline", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -4942,6 +17740,155 @@ rosetta_ref <- function(value = NULL) {
     `evaluate_grid` = function(...) .Call(`.rs_3064`, self, list(...))
   )
 )
+#' C++ class `datamunge::nn::NnTensor`
+#' @section Constructor:
+#' `NnTensor$new()`
+#'
+#' An empty (undefined) tensor.
+#'
+#' `NnTensor$new(values, shape, dtype = "float32")`
+#'
+#' `values` in row-major order filling `shape`; dtype "float32", "float64", "int32", "int64" or "bool".
+#'
+#' * `values` (`vector<numeric>`)
+#' * `shape` (`vector<integer>`)
+#' * `dtype` (`character`)
+#' @section Methods:
+#' * `$save_npy(path)`
+#'
+#' * `$defined()` -> `logical`
+#'
+#' * `$values()` -> `vector<numeric>`
+#'
+#' * `$shape()` -> `vector<integer>`
+#'
+#' * `$dtype()` -> `character`
+#'
+#' * `$ndim()` -> `integer`
+#'
+#' * `$numel()` -> `integer`
+#'
+#' * `$item()` -> `numeric`
+#'
+#'   The value of a one-element tensor.
+#'
+#' * `$at(index)` -> `numeric`
+#'
+#'   The element at a full index.
+#'
+#' * `$str()` -> `character`
+#'
+#'   A short printable description with the values.
+#'
+#' * `$astype(dtype)` -> `NnTensor`
+#'
+#' * `$reshape(shape)` -> `NnTensor`
+#'
+#' * `$transpose(perm = c())` -> `NnTensor`
+#'
+#'   Permutes axes; an empty `perm` reverses them.
+#'
+#' * `$slice(axis, start, stop)` -> `NnTensor`
+#'
+#'   x\[start:stop\] along `axis`.
+#'
+#' * `$concat(other, axis)` -> `NnTensor`
+#'
+#' * `$add(other)` -> `NnTensor`
+#'
+#' * `$sub(other)` -> `NnTensor`
+#'
+#' * `$mul(other)` -> `NnTensor`
+#'
+#' * `$div(other)` -> `NnTensor`
+#'
+#' * `$add_scalar(value)` -> `NnTensor`
+#'
+#' * `$mul_scalar(value)` -> `NnTensor`
+#'
+#' * `$pow(exponent)` -> `NnTensor`
+#'
+#' * `$neg()` -> `NnTensor`
+#'
+#' * `$matmul(other, transpose_a = FALSE, transpose_b = FALSE)` -> `NnTensor`
+#'
+#' * `$exp()` -> `NnTensor`
+#'
+#' * `$log()` -> `NnTensor`
+#'
+#' * `$sqrt()` -> `NnTensor`
+#'
+#' * `$abs()` -> `NnTensor`
+#'
+#' * `$square()` -> `NnTensor`
+#'
+#' * `$tanh()` -> `NnTensor`
+#'
+#' * `$sigmoid()` -> `NnTensor`
+#'
+#' * `$relu()` -> `NnTensor`
+#'
+#' * `$activate(activation)` -> `NnTensor`
+#'
+#'   Any activation by name: "relu", "gelu", "silu", "softplus", "elu", "leaky_relu", ...
+#'
+#' * `$softmax(axis = -1)` -> `NnTensor`
+#'
+#' * `$log_softmax(axis = -1)` -> `NnTensor`
+#'
+#' * `$sum(axes = c(), keepdims = FALSE)` -> `NnTensor`
+#'
+#' * `$mean(axes = c(), keepdims = FALSE)` -> `NnTensor`
+#'
+#' * `$max(axes = c(), keepdims = FALSE)` -> `NnTensor`
+#'
+#' * `$min(axes = c(), keepdims = FALSE)` -> `NnTensor`
+#'
+#' * `$argmax(axis = -1)` -> `NnTensor`
+#'
+#' * `$set_requires_grad(requires_grad = TRUE)`
+#'
+#'   Marks a float tensor as a leaf whose gradient `backward` accumulates.
+#'
+#' * `$requires_grad()` -> `logical`
+#'
+#' * `$backward()`
+#'
+#'   Back-propagates from this one-element tensor into every leaf's grad().
+#'
+#' * `$grad()` -> `NnTensor`
+#'
+#'   The accumulated gradient (undefined if none).
+#'
+#' * `$zero_grad()`
+#'
+#' * `$detach()` -> `NnTensor`
+#'
+#'   The same values without gradient history.
+#'
+#' * `$format()` -> `character`
+#' @section Static methods:
+#' * `NnTensor$zeros(shape, dtype = "float32")` -> `NnTensor`
+#'
+#' * `NnTensor$ones(shape, dtype = "float32")` -> `NnTensor`
+#'
+#' * `NnTensor$full(shape, value, dtype = "float32")` -> `NnTensor`
+#'
+#' * `NnTensor$arange(start, stop, step = 1.0, dtype = "float32")` -> `NnTensor`
+#'
+#'   start, start + step, ... below stop.
+#'
+#' * `NnTensor$randn(shape, seed, mean = 0.0, std = 1.0, dtype = "float32")` -> `NnTensor`
+#'
+#'   Seeded N(mean, std^2) and U(low, high) samples.
+#'
+#' * `NnTensor$uniform(shape, seed, low = 0.0, high = 1.0, dtype = "float32")` -> `NnTensor`
+#'
+#' * `NnTensor$load_npy(path)` -> `NnTensor`
+#'
+#'   NumPy .npy files.
+#' @md
+#'
 `NnTensor` <- R6::R6Class("NnTensor", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -5012,6 +17959,100 @@ rosetta_ref <- function(value = NULL) {
 `NnTensor`$`randn` <- function(...) .Call(`.rs_3070`, NULL, list(...))
 `NnTensor`$`uniform` <- function(...) .Call(`.rs_3071`, NULL, list(...))
 `NnTensor`$`load_npy` <- function(...) .Call(`.rs_3072`, NULL, list(...))
+#' A sequential network.
+#'
+#' Layers are added by spec and own parameters named "<kind><index>/..." (e.g. "dense0/W", "conv1/b"); batch-norm moving statistics live in a second store. Parameters are created on the first forward pass, when the input width is known.
+#' @section Constructor:
+#' `NnModel$new(seed = 0)`
+#'
+#' * `seed` (`integer`)
+#' @section Methods:
+#' * `$add_dense(units, activation = "none")`
+#'
+#'   Fully connected layer; activation "none", "relu", "tanh", "sigmoid", "gelu", ...
+#'
+#' * `$add_conv2d(filters, kernel, stride = 1, padding = "same", activation = "none")`
+#'
+#'   2-D convolution on NHWC input; padding "same" or "valid".
+#'
+#' * `$add_max_pool2d(window, stride, padding = "valid")`
+#'
+#' * `$add_avg_pool2d(window, stride, padding = "valid")`
+#'
+#' * `$add_global_avg_pool2d()`
+#'
+#' * `$add_batch_norm(momentum = 0.98999999999999999, eps = 0.001)`
+#'
+#'   Batch normalization over the last axis (momentum 0.99, eps 1e-3, TF defaults).
+#'
+#' * `$add_layer_norm(eps = 1.0000000000000001E-5)`
+#'
+#' * `$add_dropout(rate)`
+#'
+#'   Inverted dropout, active only when training.
+#'
+#' * `$add_activation(activation)`
+#'
+#' * `$add_flatten()`
+#'
+#'   Collapses every axis but the first.
+#'
+#' * `$add_reshape(shape)`
+#'
+#'   Reshapes each example (the batch axis is kept): e.g. \{28, 28, 1\}.
+#'
+#' * `$num_layers()` -> `integer`
+#'
+#' * `$summary()` -> `character`
+#'
+#'   One line per layer with its parameter shapes (after the first forward pass).
+#'
+#' * `$forward(x, training = FALSE)` -> `NnTensor`
+#'
+#'   Runs the network. `training` enables dropout and batch statistics (and
+#'   updates batch-norm moving averages).
+#'
+#' * `$predict(x)` -> `NnTensor`
+#'
+#'   forward(x, false) without recording gradients.
+#'
+#' * `$loss(x, y, loss = "mse", training = FALSE)` -> `numeric`
+#'
+#'   Loss of the network on (x, y): "mse", "softmax_cross_entropy" (y holds
+#'   integer class labels) or "sigmoid_cross_entropy" (y in \[0, 1\]).
+#'
+#' * `$compute_gradients(x, y, loss = "mse")` -> `numeric`
+#'
+#'   Computes the loss in training mode and stores the gradient of every
+#'   parameter (read them with `gradient`). Returns the loss.
+#'
+#' * `$gradient(name)` -> `NnTensor`
+#'
+#' * `$set_optimizer(kind = "adam", learning_rate = 0.001)`
+#'
+#'   Optimizer for `train_step`: "sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad", ...
+#'
+#' * `$train_step(x, y, loss = "mse")` -> `numeric`
+#'
+#'   compute_gradients followed by one optimizer update. Returns the loss.
+#'
+#' * `$parameter_names()` -> `vector<character>`
+#'
+#' * `$parameter(name)` -> `NnTensor`
+#'
+#' * `$set_parameter(name, value)`
+#'
+#' * `$parameter_count()` -> `integer`
+#'
+#' * `$save(path)`
+#'
+#'   Parameters and batch-norm statistics as one .npz archive ("state/..." for statistics).
+#'
+#' * `$load(path)`
+#'
+#'   Loads an archive written by save() (or any .npz with the same names).
+#' @md
+#'
 `NnModel` <- R6::R6Class("NnModel", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -5047,6 +18088,26 @@ rosetta_ref <- function(value = NULL) {
     `load` = function(...) invisible(.Call(`.rs_3146`, self, list(...)))
   )
 )
+#' Preallocated observations, rewards and independent episode-end flags.
+#'
+#' Observations are row-major \[environments,observation_size\]. Terminal observations stay in final_observations until the next terminal transition for that index. No auto-reset occurs. Masked-out rows keep all previous values.
+#' @section Constructor:
+#' `TaskOutput$new()`
+#' @section Fields:
+#' * `$observations` (`vector<numeric>`): Current observations, including terminal states.
+#' * `$rewards` (`vector<numeric>`): Reward from the last selected step, zero after reset.
+#' * `$terminated` (`vector<integer>`): Physical failure, requiring explicit reset.
+#' * `$truncated` (`vector<integer>`): Time limit, requiring explicit reset; bootstrap is valid.
+#' * `$final_observations` (`vector<numeric>`): Last episode's final observations, meaningful when
+#'   final_valid is one.
+#' * `$final_valid` (`vector<integer>`): Whether a final observation has ever been recorded for this row.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::sim::TaskBatch task(dm::sim::Task::InvertedPendulum,2);
+#' const auto& result=task.output();
+#' ```
+#' @md
+#'
 `TaskOutput` <- R6::R6Class("TaskOutput", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -5064,6 +18125,63 @@ rosetta_ref <- function(value = NULL) {
     `final_valid` = function(value) if (missing(value)) .Call(`.rs_3158`, self) else invisible(.Call(`.rs_3159`, self, value))
   )
 )
+#' Batched native InvertedPendulum or Hopper rollouts without a graphics dependency.
+#'
+#' CPU worlds use persistent parallel workers. Actions and all output arrays are finite double precision, with no NN dependency. Single-writer, including reset. Invalid actions fail before forces are applied. A native solver error propagates; reset selected worlds before retrying after such an error. Reset uses small independent uniform joint perturbations and never touches another row's RNG.
+#' @section Constructor:
+#' No public constructor.
+#' @section Methods:
+#' * `$size()` -> `integer`
+#'
+#'   Return the number of independent environments.
+#'   - Returns: Positive environment count.
+#'
+#' * `$observation_size()` -> `integer`
+#'
+#'   Read the task's observation width.
+#'   - Returns: Four for InvertedPendulum or eleven for Hopper.
+#'
+#' * `$action_size()` -> `integer`
+#'
+#'   Read the continuous action width.
+#'   - Returns: One for InvertedPendulum or three for Hopper.
+#'
+#' * `$output()` -> `TaskOutput`
+#'
+#'   Borrow current rollout outputs without advancing the simulation.
+#'   - Returns: Internal reusable arrays, valid until destruction and modified by step/reset.
+#'
+#' * `$step(actions, mask = c())` -> `TaskOutput`
+#'
+#'   Advance selected task rows and retain final observations on episode end.
+#'   Selected completed rows must be reset first. An unselected row remains unchanged.
+#'   - `actions`: Row-major \[size(),action_size()\] values in the documented action box.
+#'   - `mask`: Empty selects all; otherwise size() binary bytes.
+#'   - Returns: Borrowed reusable rollout output; no automatic reset.
+#'
+#' * `$reset(mask = c())` -> `TaskOutput`
+#'
+#'   Restore and perturb selected rows; retain final observations for rollout collectors.
+#'   Clears rewards/end flags for selected rows. Random streams continue between episodes.
+#'   - `mask`: Empty selects all; otherwise size() binary bytes.
+#'   - Returns: Borrowed reset observations and current unselected rows.
+#'
+#' * `$seed(seed)`
+#'
+#'   Reproduce fresh reset draws after explicit reseeding; physics is unchanged until reset.
+#'   - `seed`: New batch random seed.
+#' @section Static methods:
+#' * `TaskBatch$create(task, count, workers = 1, seed = 0, time_limit = 1000)` -> `TaskBatch or NULL`
+#'
+#'   Create an owned native CPU task batch. task is InvertedPendulum or Hopper; count and workers
+#'   must be positive. seed defaults to zero and time_limit to 1000 successful episode steps.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::sim::TaskBatch task(dm::sim::Task::InvertedPendulum,4,dm::compute::Context({},2),42);
+#' const auto& result=task.step(std::vector<double>(4,0));
+#' ```
+#' @md
+#'
 `TaskBatch` <- R6::R6Class("TaskBatch", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -5082,6 +18200,55 @@ rosetta_ref <- function(value = NULL) {
   )
 )
 `TaskBatch`$`create` <- function(...) .Call(`.rs_3168`, NULL, list(...))
+#' C++ class `datamunge::dstruct::DirectedGraph<std::string>`
+#' @section Constructor:
+#' `DirectedGraph$new()`
+#'
+#' `DirectedGraph$new(vertices)`
+#'
+#' * `vertices` (`vector<character>`)
+#' @section Methods:
+#' * `$empty()` -> `logical`
+#'
+#' * `$vertex_count()` -> `integer`
+#'
+#' * `$edge_count()` -> `integer`
+#'
+#' * `$clear()`
+#'
+#' * `$add_vertex(vertex)` -> `logical`
+#'
+#' * `$remove_vertex(vertex)` -> `logical`
+#'
+#' * `$has_vertex(vertex)` -> `logical`
+#'
+#' * `$add_edge(src, dst)` -> `logical`
+#'
+#' * `$remove_edge(src, dst)` -> `logical`
+#'
+#' * `$has_edge(src, dst)` -> `logical`
+#'
+#' * `$vertices()` -> `vector<character>`
+#'
+#' * `$outgoing_neighbors(vertex)` -> `vector<character>`
+#'
+#' * `$incoming_neighbors(vertex)` -> `vector<character>`
+#'
+#' * `$out_degree(vertex)` -> `integer`
+#'
+#' * `$in_degree(vertex)` -> `integer`
+#'
+#' * `$bfs(start)` -> `vector<character>`
+#'
+#' * `$dfs(start)` -> `vector<character>`
+#'
+#' * `$contains_path(src, dst)` -> `logical`
+#'
+#' * `$transpose()` -> `DirectedGraph`
+#'
+#' * `$topological_sort()` -> `vector<character>`
+#' @md
+#'
 `DirectedGraph` <- R6::R6Class("DirectedGraph", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -5111,6 +18278,57 @@ rosetta_ref <- function(value = NULL) {
     `topological_sort` = function(...) .Call(`.rs_3188`, self, list(...))
   )
 )
+#' C++ class `datamunge::dstruct::UndirectedGraph<std::string>`
+#' @section Constructor:
+#' `UndirectedGraph$new()`
+#'
+#' `UndirectedGraph$new(vertices)`
+#'
+#' * `vertices` (`vector<character>`)
+#' @section Methods:
+#' * `$empty()` -> `logical`
+#'
+#' * `$vertex_count()` -> `integer`
+#'
+#' * `$edge_count()` -> `integer`
+#'
+#' * `$clear()`
+#'
+#' * `$add_vertex(vertex)` -> `logical`
+#'
+#' * `$remove_vertex(vertex)` -> `logical`
+#'
+#' * `$has_vertex(vertex)` -> `logical`
+#'
+#' * `$add_edge(a, b)` -> `logical`
+#'
+#' * `$remove_edge(a, b)` -> `logical`
+#'
+#' * `$has_edge(a, b)` -> `logical`
+#'
+#' * `$vertices()` -> `vector<character>`
+#'
+#' * `$neighbors(vertex)` -> `vector<character>`
+#'
+#' * `$degree(vertex)` -> `integer`
+#'
+#' * `$bfs(start)` -> `vector<character>`
+#'
+#' * `$dfs(start)` -> `vector<character>`
+#'
+#' * `$contains_path(src, dst)` -> `logical`
+#'
+#' * `$connected_components()` -> `vector<vector<character>>`
+#'
+#'   The graph's connected components, each as a vector of vertices in BFS-visit
+#'   order; components themselves appear in vertices() order.
+#'
+#' * `$has_cycle()` -> `logical`
+#'
+#'   True if the graph contains a cycle (a self-loop, or two distinct paths between
+#'   some pair of vertices) in any component.
+#' @md
+#'
 `UndirectedGraph` <- R6::R6Class("UndirectedGraph", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -5138,6 +18356,90 @@ rosetta_ref <- function(value = NULL) {
     `has_cycle` = function(...) .Call(`.rs_3207`, self, list(...))
   )
 )
+#' C++ class `datamunge::dstruct::WeightedGraph<std::string, double>`
+#' @section Constructor:
+#' `WeightedGraph$new(directed)`
+#'
+#' `WeightedGraph$new(vertices, directed)`
+#'
+#' * `directed` (`logical`)
+#' * `vertices` (`vector<character>`)
+#' @section Methods:
+#' * `$directed()` -> `logical`
+#'
+#' * `$empty()` -> `logical`
+#'
+#' * `$vertex_count()` -> `integer`
+#'
+#' * `$edge_count()` -> `integer`
+#'
+#' * `$clear()`
+#'
+#' * `$add_vertex(vertex)` -> `logical`
+#'
+#' * `$remove_vertex(vertex)` -> `logical`
+#'
+#' * `$has_vertex(vertex)` -> `logical`
+#'
+#' * `$add_edge(src, dst, weight)` -> `logical`
+#'
+#'   Replaces the weight if the edge already exists (rather than rejecting the call,
+#'   unlike DirectedGraph/UndirectedGraph's add_edge -- weights are the whole point
+#'   of this class, so re-adding with a new weight is the natural way to update one).
+#'
+#' * `$remove_edge(src, dst)` -> `logical`
+#'
+#' * `$has_edge(src, dst)` -> `logical`
+#'
+#' * `$edge_weight(src, dst)` -> `numeric`
+#'
+#' * `$vertices()` -> `vector<character>`
+#'
+#' * `$neighbors(vertex)` -> `vector<character>`
+#'
+#'   Outgoing neighbors if directed(); all incident neighbors if !directed().
+#'
+#' * `$dijkstra_distances(source)` -> `vector<list(character, numeric)>`
+#'
+#'   Same computation as dijkstra(), but returned as (vertex, distance) pairs in
+#'   vertices() order rather than an unordered_map -- a binding-friendly shape (plain
+#'   vector<pair<>>, using the same std_pair/std_vector machinery already relied on
+#'   elsewhere) for language bindings where std::unordered_map isn't cleanly exposed.
+#'
+#' * `$bellman_ford_distances(source)` -> `vector<list(character, numeric)>`
+#'
+#'   Same computation as bellman_ford(), but returned as (vertex, distance) pairs in
+#'   vertices() order rather than an unordered_map -- see dijkstra_distances() for why.
+#'   Empty (with has_negative_cycle() separately reporting the reason) when a negative
+#'   cycle makes the distances themselves meaningless.
+#'
+#' * `$bellman_ford_has_negative_cycle(source)` -> `logical`
+#'
+#' * `$minimum_spanning_tree()` -> `WeightedGraph`
+#'
+#'   Kruskal's minimum spanning tree/forest, as a new undirected WeightedGraph
+#'   containing every vertex and the selected edges. Throws std::logic_error if
+#'   directed() (MST is only defined for undirected graphs).
+#'
+#' * `$connected_components()` -> `vector<vector<character>>`
+#'
+#'   Connected components (ignoring weights). Throws std::logic_error if directed()
+#'   (use strongly_connected_components() instead).
+#'
+#' * `$strongly_connected_components()` -> `vector<vector<character>>`
+#'
+#'   Strongly connected components (Tarjan's algorithm), each as a vector of
+#'   vertices; components are returned in reverse-topological order (a component with
+#'   no edges leaving it to another component comes first). Throws std::logic_error
+#'   if !directed() (use connected_components() instead).
+#'
+#' * `$has_cycle()` -> `logical`
+#'
+#'   True if the graph contains a cycle: a self-loop (either kind), or -- for a
+#'   directed graph, a directed cycle (found via 3-color DFS); for an undirected
+#'   graph, two distinct paths between some pair of vertices.
+#' @md
+#'
 `WeightedGraph` <- R6::R6Class("WeightedGraph", inherit = `.rosetta_object`, cloneable = FALSE,
   public = list(
     initialize = function(...) {
@@ -5168,24 +18470,150 @@ rosetta_ref <- function(value = NULL) {
     `has_cycle` = function(...) .Call(`.rs_3229`, self, list(...))
   )
 )
+#' Monomial orderings supported for multivariate polynomial leading-term selection.
+#'
+#' Lex: pure lexicographic (variable 0 dominates). Grlex: total degree first, then lexicographic to break ties. Grevlex: total degree first, then REVERSE lexicographic (smallest trailing-variable exponent wins) to break ties -- the usual default for Groebner basis computations since it tends to keep intermediate polynomials smaller than Grlex.
+#' @format A list of enumerator names, which arguments of this type accept: `"Lex"`, `"Grlex"`, `"Grevlex"`.
+#' @md
+#'
 `MonomialOrder` <- list(`Lex` = "Lex", `Grlex` = "Grlex", `Grevlex` = "Grevlex")
+#' The number of stored bytes per pixel doubles as the mode's own value (1/2/3/4), so `channels()` never needs a separate lookup table.
+#' @format A list of enumerator names, which arguments of this type accept: `"Grayscale"`, `"GrayscaleAlpha"`, `"RGB"`, `"RGBA"`.
+#' @md
+#'
 `ImageMode` <- list(`Grayscale` = "Grayscale", `GrayscaleAlpha` = "GrayscaleAlpha", `RGB` = "RGB", `RGBA` = "RGBA")
+#' The neighborhood shape morphological operations probe around each pixel.
+#' @format A list of enumerator names, which arguments of this type accept: `"Square"`, `"Cross"`.
+#' @md
+#'
 `StructuringElement` <- list(`Square` = "Square", `Cross` = "Cross")
+#' C++ enumeration `datamunge::image::ResampleFilter`
+#' @format A list of enumerator names, which arguments of this type accept: `"Nearest"`, `"Bilinear"`.
+#' @md
+#'
 `ResampleFilter` <- list(`Nearest` = "Nearest", `Bilinear` = "Bilinear")
+#' Select an endpoint value or an outward-conormal natural boundary condition.
+#'
+#' The conormal p*du/dn uses -u' at the left and +u' at the right. Physical diffusive outward flux is its negative; these are different sign conventions.
+#' @format A list of enumerator names, which arguments of this type accept: `"Dirichlet"`, `"Neumann"`, `"Robin"`.
+#' @section Examples (C++):
+#' ```cpp
+#' std::print("{}\n",dm::fem::BCType::Neumann); // Neumann
+#' ```
+#' @seealso BoundaryCondition1D
+#' @md
+#'
 `BCType` <- list(`Dirichlet` = "Dirichlet", `Neumann` = "Neumann", `Robin` = "Robin")
+#' Select the forward lower or reverse upper monotone-chain scan.
+#' @format A list of enumerator names, which arguments of this type accept: `"lower"`, `"upper"`.
+#' @section Examples (C++):
+#' ```cpp
+#' std::cout << (dm::geometry::HullPass::lower==dm::geometry::HullPass::lower); // 1
+#' ```
+#' @seealso HullEvent
+#' @md
+#'
 `HullPass` <- list(`lower` = "lower", `upper` = "upper")
+#' Actual constant-size stack event; no full stack snapshots are copied.
+#' @format A list of enumerator names, which arguments of this type accept: `"test"`, `"pop"`, `"push"`.
+#' @section Examples (C++):
+#' ```cpp
+#' std::cout << (dm::geometry::HullAction::pop==dm::geometry::HullAction::pop); // 1
+#' ```
+#' @seealso HullEvent
+#' @md
+#'
 `HullAction` <- list(`test` = "test", `pop` = "pop", `push` = "push")
+#' How a DataSeries is drawn and how its coordinate vectors are read.
+#' @format A list of enumerator names, which arguments of this type accept: `"Scatter"`, `"Line"`, `"Bar"`, `"Box"`, `"Polygon"`, `"Text"`, `"Segment"`.
+#' @md
+#'
 `DataSeries_Kind` <- list(`Scatter` = "Scatter", `Line` = "Line", `Bar` = "Bar", `Box` = "Box", `Polygon` = "Polygon", `Text` = "Text", `Segment` = "Segment")
 `DataSeries`$`Kind` <- `DataSeries_Kind`
+#' Selected predecessor of an actual positive DTW cell.
+#'
+#' advance_a changes the first coordinate, advance_b the second. Finite ties prefer diagonal, then advance_a, then advance_b. Unrepresentable accumulated costs have no finite predecessor witness; successful traceback never uses them.
+#' @format A list of enumerator names, which arguments of this type accept: `"origin"`, `"diagonal"`, `"advance_a"`, `"advance_b"`, `"unrepresentable"`.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto t=dm::geometry::dynamic_time_warping_trace({1},{1});
+#' std::print("{}\n",t.predecessors[0]==dm::geometry::DTWPredecessor::origin); // true
+#' ```
+#' @seealso DTWTrace
+#' @md
+#'
 `DTWPredecessor` <- list(`origin` = "origin", `diagonal` = "diagonal", `advance_a` = "advance_a", `advance_b` = "advance_b", `unrepresentable` = "unrepresentable")
+#' C++ enumeration `datamunge::geometry::Orientation`
+#' @format A list of enumerator names, which arguments of this type accept: `"Collinear"`, `"Clockwise"`, `"CounterClockwise"`.
+#' @md
+#'
 `Orientation` <- list(`Collinear` = "Collinear", `Clockwise` = "Clockwise", `CounterClockwise` = "CounterClockwise")
+#' C++ enumeration `datamunge::ode::StepMethod`
+#' @format A list of enumerator names, which arguments of this type accept: `"Euler"`, `"Midpoint"`, `"RK4"`, `"RK45"`, `"AdamsBashforth"`, `"AdamsMoulton"`.
+#' @md
+#'
 `StepMethod` <- list(`Euler` = "Euler", `Midpoint` = "Midpoint", `RK4` = "RK4", `RK45` = "RK45", `AdamsBashforth` = "AdamsBashforth", `AdamsMoulton` = "AdamsMoulton")
+#' Which acquisition function RBFGaussianProcessSurrogate::acquisition() returns.
+#' @format A list of enumerator names, which arguments of this type accept: `"ExpectedImprovement"`, `"ProbabilityOfImprovement"`, `"LowerConfidenceBound"`.
+#' @md
+#'
 `Acquisition` <- list(`ExpectedImprovement` = "ExpectedImprovement", `ProbabilityOfImprovement` = "ProbabilityOfImprovement", `LowerConfidenceBound` = "LowerConfidenceBound")
+#' Prespecified tail of a test's null reference, like R's alternative argument.
+#'
+#' Location/proportion alternatives refer to the signed effect; KS alternatives refer to empirical CDF ordering and consequently reverse the stochastic-location direction.
+#' @format A list of enumerator names, which arguments of this type accept: `"TwoSided"`, `"Less"`, `"Greater"`.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto a=dm::stats::Alternative::Less;
+#' const auto t=dm::stats::t_test_one_sample({1,2,3,4},0,a);
+#' std::print("{}\n",t.alternative==a); // true
+#' ```
+#' @references - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html
+#' @seealso HypothesisTestResult
+#' @md
+#'
 `Alternative` <- list(`TwoSided` = "TwoSided", `Less` = "Less", `Greater` = "Greater")
+#' C++ enumeration `datamunge::stats::TrendType`
+#' @format A list of enumerator names, which arguments of this type accept: `"None"`, `"Additive"`, `"AdditiveDamped"`.
+#' @md
+#'
 `TrendType` <- list(`None` = "None", `Additive` = "Additive", `AdditiveDamped` = "AdditiveDamped")
+#' C++ enumeration `datamunge::stats::SeasonalType`
+#' @format A list of enumerator names, which arguments of this type accept: `"None"`, `"Additive"`, `"Multiplicative"`.
+#' @md
+#'
 `SeasonalType` <- list(`None` = "None", `Additive` = "Additive", `Multiplicative` = "Multiplicative")
+#' Multiple-comparison p-value adjustment methods, matching R's p.adjust.methods.
+#'
+#' Bonferroni/Holm/Hochberg/Hommel control the family-wise error rate (FWER); BH/BY control the false discovery rate (FDR); None returns the p-values unchanged.
+#' @format A list of enumerator names, which arguments of this type accept: `"Bonferroni"`, `"Holm"`, `"Hochberg"`, `"Hommel"`, `"BH"`, `"BY"`, `"None"`.
+#' @md
+#'
 `PAdjustMethod` <- list(`Bonferroni` = "Bonferroni", `Holm` = "Holm", `Hochberg` = "Hochberg", `Hommel` = "Hommel", `BH` = "BH", `BY` = "BY", `None` = "None")
+#' Linear-system method used by the spline least-squares fits.
+#'
+#' Every fit forms symmetric normal equations (B^T B + P) c = B^T y. Cholesky is exact but
+#' costs O(K^3) for K unknowns; conjugate gradient on the sparse system costs roughly
+#' O(nnz) per iteration and suits large, well-conditioned (usually penalized) systems.
+#' @format A list of enumerator names, which arguments of this type accept: `"Automatic"`, `"Cholesky"`, `"ConjugateGradient"`.
+#' @section Examples (C++):
+#' ```cpp
+#' dm::fda::SplineSolveOptions options{dm::fda::SplineSolver::ConjugateGradient};
+#' ```
+#' @seealso SplineSolveOptions
+#' @md
+#'
 `SplineSolver` <- list(`Automatic` = "Automatic", `Cholesky` = "Cholesky", `ConjugateGradient` = "ConjugateGradient")
+#' Built-in native rigid-body control task, using SI units and Y-up coordinates.
+#'
+#' These are datamunge task definitions, not numerical replicas of another simulator.
+#' @format A list of enumerator names, which arguments of this type accept: `"InvertedPendulum"`, `"Hopper"`.
+#' @section Examples (C++):
+#' ```cpp
+#' const auto task=dm::sim::Task::InvertedPendulum;
+#' ```
+#' @md
+#'
 `Task` <- list(`InvertedPendulum` = "InvertedPendulum", `Hopper` = "Hopper")
 .rosetta_guarded <- c("poly_quotient", "poly_remainder", "simpson_estimate", "adaptive_simpson_recurse", "definite_integral", "taylor_series", "descartes_sign_changes", "descartes_negative_root_bound", "monic", "is_negligible_remainder", "poly_gcd", "poly_extended_gcd", "poly_gcd_pseudo_remainder_sequence", "sturm_sequence", "sturm_sign_changes", "cauchy_root_bound", "sturm_root_count", "isolate_real_roots", "refine_root", "real_roots", "c_add", "c_sub", "c_mul", "c_div", "c_abs", "c_eval", "complex_roots", "rational_roots", "square_free_factorization", "factor_over_reals", "s_polynomial", "reduce", "multivariate_reduce", "groebner_basis", "sylvester_matrix", "resultant", "discriminant", "hsv_to_rgb", "to_grayscale", "to_rgb", "to_rgba", "split_channels", "merge_channels", "dog_blobs", "structure_tensor", "harris_corners", "shi_tomasi_corners", "fast_corners", "line_endpoints", "hough_lines", "hough_circles", "is_foreground", "erode", "dilate", "morphological_open", "morphological_close", "lucas_kanade_optical_flow", "image_convolve", "box_blur", "gaussian_blur", "sharpen", "sobel_edges", "adjust_brightness", "adjust_contrast", "threshold", "bilinear_sample", "resize", "crop", "flip_horizontal", "flip_vertical", "rotate90", "rotate", "gaussian_pyramid", "signed_difference_image", "laplacian_pyramid", "connected_components", "otsu_threshold", "kmeans_segment", "squared_distance", "distance", "cross", "delaunay_triangulation", "delaunay_trace", "delaunay_analyze", "make_mesh2d_from_points", "boundary_nodes", "bounding_box", "closest_pair", "convex_hull", "convex_hull_analyze", "convex_hull_trace", "value_colors", "plot_dtw_alignment", "discrete_frechet_distance", "circle_from_one_point", "circle_from_two_points", "circle_from_three_points", "circle_contains", "min_enclosing_circle", "point_in_polygon", "signed_polygon_area", "polygon_area", "polygon_centroid", "is_convex_polygon", "orientation", "on_segment", "segments_intersect", "line_intersection_point", "segment_intersection_point", "inside_clip_edge", "clip_polygon", "point_in_triangle", "triangulate_polygon", "polygon_diameter", "minimum_bounding_rectangle", "point_to_line_distance", "simplify_polyline", "circumcenter", "voronoi_diagram", "write_bmp", "set_pixel_clipped", "stamp", "draw_line", "draw_rectangle", "draw_circle", "draw_polygon", "write_ppm", "write_pgm", "write_pbm", "write_png", "call_with_callback", "map_dvector_with_callback", "refine_basis", "dyadic_refine", "fit_tensor_bspline", "fit_tensor_pspline")
 .rosetta_has_native <- function(x) base::inherits(x, "RosettaObject") ||
@@ -5204,8 +18632,11 @@ for (.rosetta_name in .rosetta_guarded) {
   }
 }
 base::rm(list = base::intersect(base::c(".rosetta_name", ".rosetta_pkg", ".rosetta_fallback"), base::ls(all.names = TRUE)))
+#' @rdname RGB
 `RGBA` <- `RGB`
+#' @rdname BSplineRegression
 `BSR` <- `BSplineRegression`
+#' @rdname PSplineRegression
 `PSR` <- `PSplineRegression`
 .rosetta_onload <- function(env = parent.frame()) {
   values <- .Call(`.rs_init`, env)

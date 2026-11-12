@@ -10,3 +10,5 @@ Encoding: UTF-8
 Imports: methods, R6
 Suggests: testthat
 SystemRequirements: C++23, GNU make
+Roxygen: list(markdown = TRUE, r6 = FALSE)
+RoxygenNote: 7.3.3

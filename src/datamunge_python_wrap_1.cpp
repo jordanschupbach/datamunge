@@ -1230,7 +1230,21 @@ inline PyObject* set_doc(PyObject* module, PyObject* args) {
     }
     const char* utf8 = PyUnicode_AsUTF8(text);
     if (!utf8) return nullptr;
-    try { keep(module, text); } catch (const python_error&) { return nullptr; }  // owns the text
+    // A text signature ("name(a, b)\n--\n\n") stays in front of the new text, for inspect.signature().
+    Ref combined(Py_NewRef(text));
+    const std::string_view old_doc = definition->ml_doc ? definition->ml_doc : "";
+    const auto marker = old_doc.find(")\n--\n\n");
+    const std::string_view name = definition->ml_name ? definition->ml_name : "";
+    if (marker != std::string_view::npos && old_doc.substr(0, name.size()) == name && old_doc.size() > name.size() &&
+        old_doc[name.size()] == '(' && old_doc.substr(0, marker).find('\n') == std::string_view::npos &&
+        std::string_view(utf8).find(")\n--\n\n") == std::string_view::npos) {
+        const auto signature = std::string(old_doc.substr(0, marker + 6)) + utf8;
+        combined = Ref(PyUnicode_FromStringAndSize(signature.data(), static_cast<Py_ssize_t>(signature.size())));
+        if (!combined) return nullptr;
+        utf8 = PyUnicode_AsUTF8(combined.get());
+        if (!utf8) return nullptr;
+    }
+    try { keep(module, combined.get()); } catch (const python_error&) { return nullptr; }  // owns the text
     definition->ml_doc = utf8;
     Py_RETURN_NONE;
 }
@@ -1886,73 +1900,71 @@ struct rosetta_class_181_director final : datamunge::optim::RBFGaussianProcessSu
 };
 }
 namespace ROSETTA_PY_MODULE {
-PyObject* rosetta_function_279(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_274(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"a", "b"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Polynomial &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const datamunge::algebra::Polynomial &>::check(a[1], strict))) {
-                    if (n == 2) {
+                static const char* const names[] = {"p"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const datamunge::algebra::Polynomial &>::check(a[0], strict))) {
+                    if (n == 1) {
                         rosetta_py::Param<const datamunge::algebra::Polynomial &> p0(a[0]);
-                        rosetta_py::Param<const datamunge::algebra::Polynomial &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::poly_extended_gcd(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::descartes_sign_changes(p0.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("poly_extended_gcd", "    poly_extended_gcd(a: Polynomial, b: Polynomial) -> PolyExtendedGcdResult\n", args, kwargs);
+        rosetta_py::no_overload("descartes_sign_changes", "    descartes_sign_changes(p: Polynomial) -> int\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_301(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_316(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"divisor", "dividend"};
+                static const char* const names[] = {"poly", "prime"};
                 PyObject* a[2]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<int> &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::vector<int> &>::check(a[1], strict))) {
+                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))) {
                     if (n == 2) {
-                        rosetta_py::Param<const std::vector<int> &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<int> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::detail::monomial_divides(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::berlekamp_factor_mod(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("monomial_divides", "    monomial_divides(divisor: list[int], dividend: list[int]) -> bool\n", args, kwargs);
+        rosetta_py::no_overload("berlekamp_factor_mod", "    berlekamp_factor_mod(poly: list[float], prime: float) -> list[list[float]]\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_318(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_326(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"poly", "p"};
+                static const char* const names[] = {"scale", "dimension"};
                 PyObject* a[2]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<std::vector<long long>>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<long long>::check(a[1], strict))) {
+                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<int>::check(a[1], strict))) {
                     if (n == 2) {
-                        rosetta_py::Param<std::vector<long long>> p0(a[0]);
-                        rosetta_py::Param<long long> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::algebra::factor_gf_p(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
+                        rosetta_py::Param<double> p0(a[0]);
+                        rosetta_py::Param<int> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::bayes::gaussian_importance_efficiency(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("factor_gf_p", "    factor_gf_p(poly: list[int], p: int) -> GfFactorization\n", args, kwargs);
+        rosetta_py::no_overload("gaussian_importance_efficiency", "    gaussian_importance_efficiency(scale: float, dimension: int) -> float\n", args, kwargs);
     }, nullptr);
 }
 PyObject* rosetta_function_347(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -1991,73 +2003,25 @@ PyObject* rosetta_function_347(PyObject* self, PyObject* args, PyObject* kwargs)
         rosetta_py::no_overload("dilate", "    dilate(img: Image, se: StructuringElement = ..., radius: int = ...) -> Image\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_353(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_397(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"src", "kernel"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<const std::vector<double> &>::check(a[1], strict))) {
-                    if (n == 2) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        rosetta_py::Param<const std::vector<double> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::convolve(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("convolve", "    convolve(src: Image, kernel: list[float]) -> Image\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_357(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"src"};
+                static const char* const names[] = {"n"};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::image::Image &>::check(a[0], strict))) {
+                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))) {
                     if (n == 1) {
-                        rosetta_py::Param<const datamunge::image::Image &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::sobel_edges(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                        rosetta_py::Param<unsigned long> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::graphics::diverging_colors(p0.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("sobel_edges", "    sobel_edges(src: Image) -> Image\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_379(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"a", "b", "num_elements"};
-                PyObject* a[3]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 3, 3, a, &n)
-                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<unsigned long>::check(a[2], strict))) {
-                    if (n == 3) {
-                        rosetta_py::Param<double> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        rosetta_py::Param<unsigned long> p2(a[2]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::fem::make_uniform_mesh1d(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("make_uniform_mesh1d", "    make_uniform_mesh1d(a: float, b: float, num_elements: int) -> Mesh1D\n", args, kwargs);
+        rosetta_py::no_overload("diverging_colors", "    diverging_colors(n: int) -> list[RGB]\n", args, kwargs);
     }, nullptr);
 }
 PyObject* rosetta_function_406(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -2081,27 +2045,6 @@ PyObject* rosetta_function_406(PyObject* self, PyObject* args, PyObject* kwargs)
             }
         }
         rosetta_py::no_overload("discrete_frechet_distance", "    discrete_frechet_distance(p: list[Point2D], q: list[Point2D]) -> float\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_414(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"vertices"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::geometry::polygon_area(p0.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("polygon_area", "    polygon_area(vertices: list[Point2D]) -> float\n", args, kwargs);
     }, nullptr);
 }
 PyObject* rosetta_function_420(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -2133,6 +2076,27 @@ PyObject* rosetta_function_420(PyObject* self, PyObject* args, PyObject* kwargs)
         rosetta_py::no_overload("line_intersection_point", "    line_intersection_point(p1: Point2D, p2: Point2D, p3: Point2D, p4: Point2D, out: Point2D) -> bool\n", args, kwargs);
     }, nullptr);
 }
+PyObject* rosetta_function_425(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"polygon"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const std::vector<datamunge::geometry::Point2D> &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::geometry::triangulate_polygon(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("triangulate_polygon", "    triangulate_polygon(polygon: list[Point2D]) -> list[Triangle]\n", args, kwargs);
+    }, nullptr);
+}
 PyObject* rosetta_function_434(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
@@ -2158,6 +2122,27 @@ PyObject* rosetta_function_434(PyObject* self, PyObject* args, PyObject* kwargs)
             }
         }
         rosetta_py::no_overload("set_pixel_clipped", "    set_pixel_clipped(img: Image, x: int, y: int, color: Pixel) -> None\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_440(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        (void)self;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"path"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::image::read_ppm(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("read_ppm", "    read_ppm(path: str) -> Image\n", args, kwargs);
     }, nullptr);
 }
 PyObject* rosetta_function_452(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -2282,47 +2267,52 @@ PyObject* rosetta_function_474(PyObject* self, PyObject* args, PyObject* kwargs)
         rosetta_py::no_overload("bs", "    bs(lower: float, upper: float, knots: list[float], degree: int = ..., intercept: bool = ...) -> Bspline\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_482(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_478(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"values"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::pair<double, double> &>::check(a[0], strict))) {
-                    if (n == 1) {
-                        rosetta_py::Param<const std::pair<double, double> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::sum_dpair(p0.get()); }, nullptr, rosetta_py::Return::automatic);
+                static const char* const names[] = {"values", "cb"};
+                PyObject* a[2]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<datamunge::Callback *>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
+                        rosetta_py::Param<datamunge::Callback *> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::map_dvector_with_callback(p0.get(), p1.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("sum_dpair", "    sum_dpair(values: tuple[float, float]) -> float\n", args, kwargs);
+        rosetta_py::no_overload("map_dvector_with_callback", "    map_dvector_with_callback(values: list[float], cb: Callback | None) -> list[float]\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_488(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_494(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
-        try {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::nn::nn_get_num_threads(); }, nullptr, rosetta_py::Return::automatic);
+                static const char* const names[] = {"from", "to", "n"};
+                PyObject* a[3]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 3, 3, a, &n)
+                    && (n <= 0 || rosetta_py::Param<double>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<unsigned long>::check(a[2], strict))) {
+                    if (n == 3) {
+                        rosetta_py::Param<double> p0(a[0]);
+                        rosetta_py::Param<double> p1(a[1]);
+                        rosetta_py::Param<unsigned long> p2(a[2]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::python_bindings::seql(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("nn_get_num_threads", "    nn_get_num_threads() -> int\n", args, kwargs);
-        } catch (const std::exception& error) { rosetta_py::fail(PyExc_RuntimeError, error.what());
-        }
+        rosetta_py::no_overload("seql", "    seql(from: float, to: float, n: int) -> list[float]\n", args, kwargs);
     }, nullptr);
 }
 PyObject* rosetta_function_573(PyObject* self, PyObject* args, PyObject* kwargs) {
@@ -2373,7 +2363,7 @@ static int rosetta_class_12_init(PyObject* self, PyObject* args, PyObject* kwarg
     }, -1);
 }
 static PyMethodDef rosetta_class_12_methods[] = {
-    {"evaluate", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_573)), METH_VARARGS | METH_KEYWORDS, "evaluate(coordinates: list[float]) -> float\n\nEvaluates the objective at coordinates."},
+    {"evaluate", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_573)), METH_VARARGS | METH_KEYWORDS, "evaluate($self, coordinates)\n--\n\nEvaluates the objective at `coordinates`.\n\nParameters\n----------\ncoordinates : list[float]\n\nReturns\n-------\nfloat"},
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_12_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
@@ -2383,55 +2373,138 @@ static PyType_Slot rosetta_class_12_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_12_methods},
     {Py_tp_getset, rosetta_class_12_getset},
-    {Py_tp_doc, const_cast<char*>("ArbitraryFunction()\n\nThe most general objective function: only supports evaluation. Optimizers that\n       consume this type (e.g. SimulatedAnnealing) are derivative-free.\n\nThis is a director-enabled extension point: subclass it directly (in C++, or, via\n       SWIG directors, in any supported language) to define a custom objective.")},
+    {Py_tp_doc, const_cast<char*>("ArbitraryFunction()\n--\n\nThe most general objective function: only supports evaluation. Optimizers that\nconsume this type (e.g. SimulatedAnnealing) are derivative-free.\n\nThis is a director-enabled extension point: subclass it directly (in C++, or, via\nSWIG directors, in any supported language) to define a custom objective.")},
     {0, nullptr}};
 PyType_Spec rosetta_class_12_spec = {"pydatamunge._datamunge.ArbitraryFunction", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_12_slots};
-static PyObject* rosetta_field_596_get(PyObject* self, void*) {
+PyObject* rosetta_function_587(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::GibbsResult>(self);
-        return rosetta_py::result<decltype((native->samples))>(native->samples, self, rosetta_py::Return::automatic);
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"coordinates"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))) {
+                    auto* native = rosetta_py::native<datamunge::optim::InequalityConstrainedFunction>(self);
+                    if (n == 1) {
+                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { if (rosetta_py::is_director(self)) rosetta_py::pure_virtual("datamunge::optim::InequalityConstrainedFunction::inequalities"); return native->inequalities(p0.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("inequalities", "    inequalities(coordinates: list[float]) -> list[float]\n", args, kwargs);
     }, nullptr);
 }
-static int rosetta_field_596_set(PyObject* self, PyObject* value, void*) {
+PyObject* rosetta_function_588(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"coordinates"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))) {
+                    auto* native = rosetta_py::native<datamunge::optim::InequalityConstrainedFunction>(self);
+                    if (n == 1) {
+                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { if (rosetta_py::is_director(self)) rosetta_py::pure_virtual("datamunge::optim::InequalityConstrainedFunction::inequality_jacobian"); return native->inequality_jacobian(p0.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("inequality_jacobian", "    inequality_jacobian(coordinates: list[float]) -> list[list[float]]\n", args, kwargs);
+    }, nullptr);
+}
+static int rosetta_class_19_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        const bool director = Py_TYPE(self) != rosetta_py::Info<datamunge::optim::InequalityConstrainedFunction>::value.type;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::optim::InequalityConstrainedFunction* created = nullptr;
+                        if (director) created = new rosetta_class_19_director(self);
+                        else rosetta_py::fail(PyExc_TypeError, "InequalityConstrainedFunction is abstract; subclass it and implement its pure virtual methods");
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::InequalityConstrainedFunction>::value;
+                        object->owned = 1; object->director = director;
+                        if (director) static_cast<rosetta_py::Director*>(static_cast<rosetta_class_19_director*>(created))->rosetta_self = self;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("InequalityConstrainedFunction", "    InequalityConstrainedFunction()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_19_methods[] = {
+    {"inequalities", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_587)), METH_VARARGS | METH_KEYWORDS, "inequalities($self, coordinates)\n--\n\nParameters\n----------\ncoordinates : list[float]\n\nReturns\n-------\nlist[float]"},
+    {"inequality_jacobian", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_588)), METH_VARARGS | METH_KEYWORDS, "inequality_jacobian($self, coordinates)\n--\n\nParameters\n----------\ncoordinates : list[float]\n\nReturns\n-------\nlist[list[float]]"},
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_19_getset[] = {
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_19_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_19_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_19_methods},
+    {Py_tp_getset, rosetta_class_19_getset},
+    {Py_tp_doc, const_cast<char*>("InequalityConstrainedFunction()\n--\n\n")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_19_spec = {"pydatamunge._datamunge.InequalityConstrainedFunction", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_19_slots};
+static PyObject* rosetta_field_667_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::image::HSV>(self);
+        return rosetta_py::result<decltype((native->h))>(native->h, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_667_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::GibbsResult>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->samples)>>&> converted(value);
-        rosetta_py::assign_field(native->samples, converted.get());
+        auto* native = rosetta_py::native<datamunge::image::HSV>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->h)>>&> converted(value);
+        rosetta_py::assign_field(native->h, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_597_get(PyObject* self, void*) {
+static PyObject* rosetta_field_668_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::GibbsResult>(self);
-        return rosetta_py::result<decltype((native->accept_rates))>(native->accept_rates, self, rosetta_py::Return::automatic);
+        auto* native = rosetta_py::native<datamunge::image::HSV>(self);
+        return rosetta_py::result<decltype((native->s))>(native->s, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_597_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_668_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::GibbsResult>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->accept_rates)>>&> converted(value);
-        rosetta_py::assign_field(native->accept_rates, converted.get());
+        auto* native = rosetta_py::native<datamunge::image::HSV>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->s)>>&> converted(value);
+        rosetta_py::assign_field(native->s, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_598_get(PyObject* self, void*) {
+static PyObject* rosetta_field_669_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::bayes::GibbsResult>(self);
-        return rosetta_py::result<decltype((native->final_step_sizes))>(native->final_step_sizes, self, rosetta_py::Return::automatic);
+        auto* native = rosetta_py::native<datamunge::image::HSV>(self);
+        return rosetta_py::result<decltype((native->v))>(native->v, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_598_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_669_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::bayes::GibbsResult>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->final_step_sizes)>>&> converted(value);
-        rosetta_py::assign_field(native->final_step_sizes, converted.get());
+        auto* native = rosetta_py::native<datamunge::image::HSV>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->v)>>&> converted(value);
+        rosetta_py::assign_field(native->v, converted.get());
         return 0;
     }, -1);
 }
-static int rosetta_class_22_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_40_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -2442,34 +2515,34 @@ static int rosetta_class_22_init(PyObject* self, PyObject* args, PyObject* kwarg
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        datamunge::bayes::GibbsResult* created = nullptr;
-                        created = new datamunge::bayes::GibbsResult();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::bayes::GibbsResult>::value;
+                        datamunge::image::HSV* created = nullptr;
+                        created = new datamunge::image::HSV();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::image::HSV>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("GibbsResult", "    GibbsResult()\n", args, kwargs);
+        rosetta_py::no_overload("HSV", "    HSV()\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_22_methods[] = {
+static PyMethodDef rosetta_class_40_methods[] = {
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_22_getset[] = {
-    {"samples", rosetta_field_596_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::GibbsResult::samples)>> ? rosetta_field_596_set : nullptr, "Post-warmup draws, one vector\n<double\n> per sample.", nullptr},
-    {"accept_rates", rosetta_field_597_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::GibbsResult::accept_rates)>> ? rosetta_field_597_set : nullptr, "Mean acceptance rate per coordinate (across all iterations), in parameter order.", nullptr},
-    {"final_step_sizes", rosetta_field_598_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::bayes::GibbsResult::final_step_sizes)>> ? rosetta_field_598_set : nullptr, "Per-coordinate step sizes after warmup.", nullptr},
+static PyGetSetDef rosetta_class_40_getset[] = {
+    {"h", rosetta_field_667_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::image::HSV::h)>> ? rosetta_field_667_set : nullptr, "Type: float", nullptr},
+    {"s", rosetta_field_668_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::image::HSV::s)>> ? rosetta_field_668_set : nullptr, "Type: float", nullptr},
+    {"v", rosetta_field_669_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::image::HSV::v)>> ? rosetta_field_669_set : nullptr, "Type: float", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_22_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_22_init)},
+static PyType_Slot rosetta_class_40_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_40_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_22_methods},
-    {Py_tp_getset, rosetta_class_22_getset},
-    {Py_tp_doc, const_cast<char*>("GibbsResult()\n\nOutput of GibbsSampler::sample().")},
+    {Py_tp_methods, rosetta_class_40_methods},
+    {Py_tp_getset, rosetta_class_40_getset},
+    {Py_tp_doc, const_cast<char*>("HSV()\n--\n\nA pixel color in HSV space: h in [0, 360), s and v in [0, 1].\n\nAttributes\n----------\nh : float\ns : float\nv : float")},
     {0, nullptr}};
-PyType_Spec rosetta_class_22_spec = {"pydatamunge._datamunge.GibbsResult", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_22_slots};
+PyType_Spec rosetta_class_40_spec = {"pydatamunge._datamunge.HSV", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_40_slots};
 PyObject* rosetta_function_694(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
@@ -2613,15 +2686,15 @@ static int rosetta_class_48_init(PyObject* self, PyObject* args, PyObject* kwarg
     }, -1);
 }
 static PyMethodDef rosetta_class_48_methods[] = {
-    {"size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_694)), METH_VARARGS | METH_KEYWORDS, "size() -> int\n\nNumber of images in the batch."},
-    {"features", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_695)), METH_VARARGS | METH_KEYWORDS, "features() -> int\n\nValues per image (height * width * channels)."},
-    {"image", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_696)), METH_VARARGS | METH_KEYWORDS, "image(i: int) -> list[float]\n\nA copy of image i's\nfeatures() values.\n\nthrows: if i\nis not in [0, size())."},
+    {"size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_694)), METH_VARARGS | METH_KEYWORDS, "size($self)\n--\n\nNumber of images in the batch.\n\nReturns\n-------\nint"},
+    {"features", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_695)), METH_VARARGS | METH_KEYWORDS, "features($self)\n--\n\nValues per image (height * width * channels).\n\nReturns\n-------\nint"},
+    {"image", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_696)), METH_VARARGS | METH_KEYWORDS, "image($self, i)\n--\n\nA copy of image `i's` features() values.\n\nParameters\n----------\ni : int\n\nReturns\n-------\nlist[float]\n\nRaises\n------\nIndexError\n    if `i` is not in [0, size())."},
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_48_getset[] = {
-    {"pixels", rosetta_field_697_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::pixels)>> ? rosetta_field_697_set : nullptr, "Image values, row-major per `shape`.", nullptr},
-    {"labels", rosetta_field_698_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::labels)>> ? rosetta_field_698_set : nullptr, "Class index of each image (see ImageLoader::class_names()).", nullptr},
-    {"indices", rosetta_field_699_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::indices)>> ? rosetta_field_699_set : nullptr, "Position of each image within its split, 0-based.", nullptr},
-    {"shape", rosetta_field_700_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::shape)>> ? rosetta_field_700_set : nullptr, "Dimensions of `pixels`; shape[0] is the number of images.", nullptr},
+    {"pixels", rosetta_field_697_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::pixels)>> ? rosetta_field_697_set : nullptr, "Image values, row-major per `shape`.\n\nType: list[float]", nullptr},
+    {"labels", rosetta_field_698_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::labels)>> ? rosetta_field_698_set : nullptr, "Class index of each image (see ImageLoader::class_names()).\n\nType: list[int]", nullptr},
+    {"indices", rosetta_field_699_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::indices)>> ? rosetta_field_699_set : nullptr, "Position of each image within its split, 0-based.\n\nType: list[int]", nullptr},
+    {"shape", rosetta_field_700_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::datasets::ImageBatch::shape)>> ? rosetta_field_700_set : nullptr, "Dimensions of `pixels`; shape[0] is the number of images.\n\nType: list[int]", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
 static PyType_Slot rosetta_class_48_slots[] = {
     {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_48_init)},
@@ -2629,505 +2702,362 @@ static PyType_Slot rosetta_class_48_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_48_methods},
     {Py_tp_getset, rosetta_class_48_getset},
-    {Py_tp_doc, const_cast<char*>("ImageBatch()\n\nOne batch of images and labels returned by ImageLoader.\n\n`pixels` holds size() images back to back, each laid out as `shape` describes:\n- \"nhwc\": shape {n, height, width, channels}, channels interleaved per pixel;\n- \"nchw\": shape {n, channels, height, width}, one full plane per channel;\n- \"flat\": shape {n, height * width * channels}, in \"nhwc\" order.")},
+    {Py_tp_doc, const_cast<char*>("ImageBatch()\n--\n\nOne batch of images and labels returned by ImageLoader.\n\n`pixels` holds size() images back to back, each laid out as `shape` describes:\n- \"nhwc\": shape {n, height, width, channels}, channels interleaved per pixel;\n- \"nchw\": shape {n, channels, height, width}, one full plane per channel;\n- \"flat\": shape {n, height * width * channels}, in \"nhwc\" order.\n\nAttributes\n----------\npixels : list[float]\n    Image values, row-major per `shape`.\nlabels : list[int]\n    Class index of each image (see ImageLoader::class_names()).\nindices : list[int]\n    Position of each image within its split, 0-based.\nshape : list[int]\n    Dimensions of `pixels`; shape[0] is the number of images.")},
     {0, nullptr}};
 PyType_Spec rosetta_class_48_spec = {"pydatamunge._datamunge.ImageBatch", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_48_slots};
-PyObject* rosetta_function_799(PyObject* self, PyObject* args, PyObject* kwargs) {
+static PyObject* rosetta_field_883_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"mesh", "k", "f", "dirichlet_nodes", "dirichlet_values"};
-                PyObject* a[5]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 5, 5, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::fem::Mesh2D &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<datamunge::fem::ScalarField2D &>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<const std::vector<int> &>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<const std::vector<double> &>::check(a[4], strict))) {
-                    if (n == 5) {
-                        rosetta_py::Param<const datamunge::fem::Mesh2D &> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        rosetta_py::Param<datamunge::fem::ScalarField2D &> p2(a[2]);
-                        rosetta_py::Param<const std::vector<int> &> p3(a[3]);
-                        rosetta_py::Param<const std::vector<double> &> p4(a[4]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::fem::FEM2D::solve(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("solve", "    solve(mesh: Mesh2D, k: float, f: ScalarField2D, dirichlet_nodes: list[int], dirichlet_values: list[float]) -> FEM2DResult\n", args, kwargs);
+        auto* native = rosetta_py::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        return rosetta_py::result<decltype((native->hull))>(native->hull, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-PyObject* rosetta_function_800(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        (void)self;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"mesh", "k", "source", "source_params", "dirichlet_nodes", "dirichlet_values"};
-                PyObject* a[6]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 6, 6, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::fem::Mesh2D &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<double>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<const std::vector<double> &>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<const std::vector<int> &>::check(a[4], strict))
-                    && (n <= 5 || rosetta_py::Param<const std::vector<double> &>::check(a[5], strict))) {
-                    if (n == 6) {
-                        rosetta_py::Param<const datamunge::fem::Mesh2D &> p0(a[0]);
-                        rosetta_py::Param<double> p1(a[1]);
-                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p2(a[2]);
-                        rosetta_py::Param<const std::vector<double> &> p3(a[3]);
-                        rosetta_py::Param<const std::vector<int> &> p4(a[4]);
-                        rosetta_py::Param<const std::vector<double> &> p5(a[5]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return ::datamunge::fem::FEM2D::solve_builtin(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("solve_builtin", "    solve_builtin(mesh: Mesh2D, k: float, source: str, source_params: list[float], dirichlet_nodes: list[int], dirichlet_values: list[float]) -> FEM2DResult\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_65_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    if (n == 0) {
-                        datamunge::fem::FEM2D* created = nullptr;
-                        created = new datamunge::fem::FEM2D();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::fem::FEM2D>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("FEM2D", "    FEM2D()\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_65_methods[] = {
-    {"solve", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_799)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "solve(mesh: Mesh2D, k: float, f: ScalarField2D, dirichlet_nodes: list[int], dirichlet_values: list[float]) -> FEM2DResult\n\nSolves -k * Laplacian(u) = f with Dirichlet data u = dirichlet_values[i] at node\n       dirichlet_nodes[i] (every other node is a free unknown); k is the constant,\n       isotropic diffusion coefficient. Throws std::invalid_argument if\n       dirichlet_nodes.size() != dirichlet_values.size(), if any index in\n       dirichlet_nodes is out of range, or if every node is constrained (nothing to\n       solve for)."},
-    {"solve_builtin", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_800)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "solve_builtin(mesh: Mesh2D, k: float, source: str, source_params: list[float], dirichlet_nodes: list[int], dirichlet_values: list[float]) -> FEM2DResult\n\nSame as solve(), but f is one of a fixed set of named source terms instead of a\n       live user-supplied callback. source_params is interpreted positionally, with the\n       listed defaults used for any parameter past the end of source_params:\n         - \"zero\":     f(x, y) = 0.                                source_params unused.\n         - \"constant\": f(x, y) = c.                                {c=1}.\n         - \"sine\":     f(x, y) = amplitude*sin(fx*x)*sin(fy*y).    {amplitude=1, fx=1, fy=1}.\n       Throws std::invalid_argument for an unknown source name."},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_65_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_65_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_65_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_65_methods},
-    {Py_tp_getset, rosetta_class_65_getset},
-    {Py_tp_doc, const_cast<char*>("FEM2D()\n\nGalerkin finite-element solver for the 2D Poisson equation\n       -k * (u_xx + u_yy) = f(x, y) on a triangular mesh, using piecewise-linear (P1)\n       Lagrange elements and Dirichlet boundary conditions only (this \"basic\" 2D solver\n       does not offer FEM1D's Neumann/Robin options). Internally assembles a sparse\n       stiffness system and solves it with the conjugate-gradient solver\n       (datamunge::linalg::cg) -- the assembled matrices themselves are never exposed,\n       matching this codebase's rule that linalg's sparse/dense matrix types are never\n       SWIG-bound.")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_65_spec = {"pydatamunge._datamunge.FEM2D", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_65_slots};
-PyObject* rosetta_function_838(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->predict(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("predict", "    predict() -> None\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_839(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"z"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->update(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("update", "    update(z: list[float]) -> None\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_840(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->state(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("state", "    state() -> list[float]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_841(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->covariance(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("covariance", "    covariance() -> list[list[float]]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_842(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"measurements"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<std::vector<double>> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::filter::ExtendedKalmanFilter>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<std::vector<double>> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->filter(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("filter", "    filter(measurements: list[list[float]]) -> list[KalmanState]\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_75_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"f", "h", "Q", "R", "x0", "P0", "jacobian_step"};
-                PyObject* a[7]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 7, 6, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::filter::VectorFunction &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<datamunge::filter::VectorFunction &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<std::vector<double>>::check(a[4], strict))
-                    && (n <= 5 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[5], strict))
-                    && (n <= 6 || rosetta_py::Param<double>::check(a[6], strict))) {
-                    if (n == 6) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        datamunge::filter::ExtendedKalmanFilter* created = nullptr;
-                        created = new datamunge::filter::ExtendedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::ExtendedKalmanFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 7) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_py::Param<double> p6(a[6]);
-                        datamunge::filter::ExtendedKalmanFilter* created = nullptr;
-                        created = new datamunge::filter::ExtendedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::ExtendedKalmanFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("ExtendedKalmanFilter", "    ExtendedKalmanFilter(f: VectorFunction, h: VectorFunction, Q: list[list[float]], R: list[list[float]], x0: list[float], P0: list[list[float]], jacobian_step: float = ...)\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_75_methods[] = {
-    {"predict", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_838)), METH_VARARGS | METH_KEYWORDS, "predict() -> None\n"},
-    {"update", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_839)), METH_VARARGS | METH_KEYWORDS, "update(z: list[float]) -> None\n"},
-    {"state", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_840)), METH_VARARGS | METH_KEYWORDS, "state() -> list[float]\n"},
-    {"covariance", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_841)), METH_VARARGS | METH_KEYWORDS, "covariance() -> list[list[float]]\n"},
-    {"filter", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_842)), METH_VARARGS | METH_KEYWORDS, "filter(measurements: list[list[float]]) -> list[KalmanState]\n"},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_75_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_75_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_75_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_75_methods},
-    {Py_tp_getset, rosetta_class_75_getset},
-    {Py_tp_doc, const_cast<char*>("ExtendedKalmanFilter(f: VectorFunction, h: VectorFunction, Q: list[list[float]], R: list[list[float]], x0: list[float], P0: list[list[float]], jacobian_step: float = ...)\n\nThe Extended Kalman Filter: the standard first-order generalization of KalmanFilter\n       to a nonlinear model x_k = f(x_{k-1}) + w_k, z_k = h(x_k) + v_k -- linearizes f and h\n       (via numerical Jacobians, see detail::numerical_jacobian()) about the current state\n       estimate at every step and otherwise runs the exact same predict/update algebra as\n       the linear filter. Exactly reproduces KalmanFilter's result when f\nand h\n       happen to be linear (their Jacobian is then the same constant matrix everywhere).")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_75_spec = {"pydatamunge._datamunge.ExtendedKalmanFilter", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_75_slots};
-PyObject* rosetta_function_853(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::UnscentedKalmanFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->predict(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("predict", "    predict() -> None\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_854(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"z"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<double> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::filter::UnscentedKalmanFilter>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<double> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->update(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("update", "    update(z: list[float]) -> None\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_855(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::UnscentedKalmanFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->state(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("state", "    state() -> list[float]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_856(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::filter::UnscentedKalmanFilter>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->covariance(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("covariance", "    covariance() -> list[list[float]]\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_857(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"measurements"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const std::vector<std::vector<double>> &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::filter::UnscentedKalmanFilter>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const std::vector<std::vector<double>> &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->filter(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("filter", "    filter(measurements: list[list[float]]) -> list[KalmanState]\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_78_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"f", "h", "Q", "R", "x0", "P0", "alpha", "beta", "kappa"};
-                PyObject* a[9]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 9, 6, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::filter::VectorFunction &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<datamunge::filter::VectorFunction &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[3], strict))
-                    && (n <= 4 || rosetta_py::Param<std::vector<double>>::check(a[4], strict))
-                    && (n <= 5 || rosetta_py::Param<std::vector<std::vector<double>>>::check(a[5], strict))
-                    && (n <= 6 || rosetta_py::Param<double>::check(a[6], strict))
-                    && (n <= 7 || rosetta_py::Param<double>::check(a[7], strict))
-                    && (n <= 8 || rosetta_py::Param<double>::check(a[8], strict))) {
-                    if (n == 6) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        datamunge::filter::UnscentedKalmanFilter* created = nullptr;
-                        created = new datamunge::filter::UnscentedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::UnscentedKalmanFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 7) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_py::Param<double> p6(a[6]);
-                        datamunge::filter::UnscentedKalmanFilter* created = nullptr;
-                        created = new datamunge::filter::UnscentedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::UnscentedKalmanFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 8) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_py::Param<double> p6(a[6]);
-                        rosetta_py::Param<double> p7(a[7]);
-                        datamunge::filter::UnscentedKalmanFilter* created = nullptr;
-                        created = new datamunge::filter::UnscentedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::UnscentedKalmanFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 9) {
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p0(a[0]);
-                        rosetta_py::Param<datamunge::filter::VectorFunction &> p1(a[1]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p2(a[2]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p3(a[3]);
-                        rosetta_py::Param<std::vector<double>> p4(a[4]);
-                        rosetta_py::Param<std::vector<std::vector<double>>> p5(a[5]);
-                        rosetta_py::Param<double> p6(a[6]);
-                        rosetta_py::Param<double> p7(a[7]);
-                        rosetta_py::Param<double> p8(a[8]);
-                        datamunge::filter::UnscentedKalmanFilter* created = nullptr;
-                        created = new datamunge::filter::UnscentedKalmanFilter(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get(), p7.get(), p8.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::filter::UnscentedKalmanFilter>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("UnscentedKalmanFilter", "    UnscentedKalmanFilter(f: VectorFunction, h: VectorFunction, Q: list[list[float]], R: list[list[float]], x0: list[float], P0: list[list[float]], alpha: float = ..., beta: float = ..., kappa: float = ...)\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_78_methods[] = {
-    {"predict", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_853)), METH_VARARGS | METH_KEYWORDS, "predict() -> None\n"},
-    {"update", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_854)), METH_VARARGS | METH_KEYWORDS, "update(z: list[float]) -> None\n"},
-    {"state", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_855)), METH_VARARGS | METH_KEYWORDS, "state() -> list[float]\n"},
-    {"covariance", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_856)), METH_VARARGS | METH_KEYWORDS, "covariance() -> list[list[float]]\n"},
-    {"filter", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_857)), METH_VARARGS | METH_KEYWORDS, "filter(measurements: list[list[float]]) -> list[KalmanState]\n"},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_78_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_78_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_78_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_78_methods},
-    {Py_tp_getset, rosetta_class_78_getset},
-    {Py_tp_doc, const_cast<char*>("UnscentedKalmanFilter(f: VectorFunction, h: VectorFunction, Q: list[list[float]], R: list[list[float]], x0: list[float], P0: list[list[float]], alpha: float = ..., beta: float = ..., kappa: float = ...)\n\nThe Unscented Kalman Filter: propagates a small deterministic set of \"sigma points\"\n       through the true nonlinear f/h (rather than linearizing f/h itself, as\n       ExtendedKalmanFilter does), then reconstructs the predicted mean/covariance from the\n       propagated points' weighted statistics. Captures nonlinearity to (at least) second\n       order without ever needing a Jacobian -- generally more accurate than EKF for\n       strongly nonlinear models, at the cost of 2n+1 function evaluations per step instead\n       of one. Exactly reproduces KalmanFilter's result when f\nand h\nare linear.")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_78_spec = {"pydatamunge._datamunge.UnscentedKalmanFilter", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_78_slots};
-static PyObject* rosetta_field_911_get(PyObject* self, void*) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::graphics::LegendEntry>(self);
-        return rosetta_py::result<decltype((native->label))>(native->label, self, rosetta_py::Return::automatic);
-    }, nullptr);
-}
-static int rosetta_field_911_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_883_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::graphics::LegendEntry>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->label)>>&> converted(value);
-        rosetta_py::assign_field(native->label, converted.get());
+        auto* native = rosetta_py::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->hull)>>&> converted(value);
+        rosetta_py::assign_field(native->hull, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_912_get(PyObject* self, void*) {
+static PyObject* rosetta_field_884_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::graphics::LegendEntry>(self);
+        auto* native = rosetta_py::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        return rosetta_py::result<decltype((native->input_indices))>(native->input_indices, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_884_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->input_indices)>>&> converted(value);
+        rosetta_py::assign_field(native->input_indices, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_885_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        return rosetta_py::result<decltype((native->work))>(native->work, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_885_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::geometry::ConvexHullAnalysis>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->work)>>&> converted(value);
+        rosetta_py::assign_field(native->work, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_85_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::geometry::ConvexHullAnalysis* created = nullptr;
+                        created = new datamunge::geometry::ConvexHullAnalysis();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::geometry::ConvexHullAnalysis>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("ConvexHullAnalysis", "    ConvexHullAnalysis()\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_85_methods[] = {
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_85_getset[] = {
+    {"hull", rosetta_field_883_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::ConvexHullAnalysis::hull)>> ? rosetta_field_883_set : nullptr, "Owned unclosed strict hull.\n\nType: list[Point2D]", nullptr},
+    {"input_indices", rosetta_field_884_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::ConvexHullAnalysis::input_indices)>> ? rosetta_field_884_set : nullptr, "Earliest original identities in hull order.\n\nType: list[int]", nullptr},
+    {"work", rosetta_field_885_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::geometry::ConvexHullAnalysis::work)>> ? rosetta_field_885_set : nullptr, "Actual producing operations.\n\nType: ConvexHullWork", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_85_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_85_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_85_methods},
+    {Py_tp_getset, rosetta_class_85_getset},
+    {Py_tp_doc, const_cast<char*>("ConvexHullAnalysis()\n--\n\nOwned strict hull, earliest original identities and actual work without history.\nVertices start at the lexicographic minimum and run counterclockwise, without\nrepeating the first. Collinear edge points are omitted. Empty gives no points;\none distinct point gives one; a collinear set gives its sorted two endpoints.\nIdentity vector aligns one-for-one with hull vertices.\n\nAttributes\n----------\nhull : list[Point2D]\n    Owned unclosed strict hull.\ninput_indices : list[int]\n    Earliest original identities in hull order.\nwork : ConvexHullWork\n    Actual producing operations.\n\nSee Also\n--------\nconvex_hull_analyze()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto a=dm::geometry::convex_hull_analyze({{1,0},{0,0},{0,1}});\n    std::cout << a.hull.size() << ' ' << a.input_indices[0]; // 3 1")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_85_spec = {"pydatamunge._datamunge.ConvexHullAnalysis", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_85_slots};
+static PyObject* rosetta_field_892_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        return rosetta_py::result<decltype((native->r))>(native->r, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_892_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->r)>>&> converted(value);
+        rosetta_py::assign_field(native->r, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_893_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        return rosetta_py::result<decltype((native->g))>(native->g, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_893_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->g)>>&> converted(value);
+        rosetta_py::assign_field(native->g, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_894_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        return rosetta_py::result<decltype((native->b))>(native->b, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_894_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->b)>>&> converted(value);
+        rosetta_py::assign_field(native->b, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_895_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        return rosetta_py::result<decltype((native->alpha))>(native->alpha, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_895_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::RGB>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->alpha)>>&> converted(value);
+        rosetta_py::assign_field(native->alpha, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_88_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 0; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    if (n == 0) {
+                        datamunge::graphics::RGB* created = nullptr;
+                        created = new datamunge::graphics::RGB();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::RGB>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+            {
+                static const char* const names[] = {"red", "green", "blue", "opacity"};
+                PyObject* a[4]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 4, 3, a, &n)
+                    && (n <= 0 || rosetta_py::Param<int>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<int>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<int>::check(a[2], strict))
+                    && (n <= 3 || rosetta_py::Param<double>::check(a[3], strict))) {
+                    if (n == 3) {
+                        rosetta_py::Param<int> p0(a[0]);
+                        rosetta_py::Param<int> p1(a[1]);
+                        rosetta_py::Param<int> p2(a[2]);
+                        datamunge::graphics::RGB* created = nullptr;
+                        created = new datamunge::graphics::RGB(p0.get(), p1.get(), p2.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::RGB>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 4) {
+                        rosetta_py::Param<int> p0(a[0]);
+                        rosetta_py::Param<int> p1(a[1]);
+                        rosetta_py::Param<int> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        datamunge::graphics::RGB* created = nullptr;
+                        created = new datamunge::graphics::RGB(p0.get(), p1.get(), p2.get(), p3.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::RGB>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+            {
+                static const char* const names[] = {"red"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<int>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<int> p0(a[0]);
+                        datamunge::graphics::RGB* created = nullptr;
+                        created = new datamunge::graphics::RGB(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::RGB>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+            {
+                static const char* const names[] = {"red", "green"};
+                PyObject* a[2]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
+                    && (n <= 0 || rosetta_py::Param<int>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<int>::check(a[1], strict))) {
+                    if (n == 2) {
+                        rosetta_py::Param<int> p0(a[0]);
+                        rosetta_py::Param<int> p1(a[1]);
+                        datamunge::graphics::RGB* created = nullptr;
+                        created = new datamunge::graphics::RGB(p0.get(), p1.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::RGB>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+            {
+                static const char* const names[] = {"color"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                        datamunge::graphics::RGB* created = nullptr;
+                        created = new datamunge::graphics::RGB(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::RGB>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+            {
+                static const char* const names[] = {"color"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const char *>::check(a[0], strict))) {
+                    if (n == 1) {
+                        rosetta_py::Param<const char *> p0(a[0]);
+                        datamunge::graphics::RGB* created = nullptr;
+                        created = new datamunge::graphics::RGB(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::RGB>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("RGB", "    RGB()\n    RGB(red: int, green: int, blue: int, opacity: float = ...)\n    RGB(red: int)\n    RGB(red: int, green: int)\n    RGB(color: str)\n    RGB(color: str)\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_88_methods[] = {
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_88_getset[] = {
+    {"r", rosetta_field_892_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::RGB::r)>> ? rosetta_field_892_set : nullptr, "Red channel, 0-255 (default 31).\n\nType: int", nullptr},
+    {"g", rosetta_field_893_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::RGB::g)>> ? rosetta_field_893_set : nullptr, "Green channel, 0-255 (default 41).\n\nType: int", nullptr},
+    {"b", rosetta_field_894_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::RGB::b)>> ? rosetta_field_894_set : nullptr, "Blue channel, 0-255 (default 55).\n\nType: int", nullptr},
+    {"alpha", rosetta_field_895_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::RGB::alpha)>> ? rosetta_field_895_set : nullptr, "Opacity in [0, 1]; 1 (the default) is opaque, 0 is invisible.\n\nType: float", nullptr},
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_88_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_88_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_88_methods},
+    {Py_tp_getset, rosetta_class_88_getset},
+    {Py_tp_doc, const_cast<char*>("RGB()\nRGB(red: int, green: int, blue: int, opacity: float = ...)\nRGB(red: int)\nRGB(red: int, green: int)\nRGB(color: str)\nRGB(color: str)\n\nA plotting color: 8-bit red, green, and blue channels plus an alpha opacity,\nthe C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.\n\nBrace-initialize numeric channels: `dm::RGB{255, 0, 0}` is opaque red and\n`dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the\nlibrary's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep\nthem in [0, 255] (both the raster and SVG renderers clamp out-of-range channels), and\nkeep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGBA (the same type as RGB) by value,\nand `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().\nColor strings convert implicitly: names are case-insensitive black, white, red, green,\nblue, yellow, cyan, magenta, gray/grey and transparent; hex accepts #RRGGBB and\n#RRGGBBAA, with alpha last and scaled to [0, 1]. Malformed text throws before a\nplot is changed. RGB and RGBA remain the same type, preserving existing palettes\nand the binary layout of numeric colors. Parsing owns no reference to the string.\n\nConstruct the default opaque dark-slate ink color.\n\nConstruct numeric RGB channels and an optional normalized alpha.\nChannels and alpha are retained; renderers clamp them when drawing.\n\nPreserve direct initialization with a red channel and default remaining channels.\nExplicit so a number cannot accidentally become a color argument.\n\nPreserve direct initialization with red/green and default blue/alpha.\n\nImplicitly parse a color name, #RRGGBB or #RRGGBBAA string.\nNames and hexadecimal digits are case-insensitive. Hex alpha is the final\nbyte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named\ngreen is (0, 128, 0); transparent is black with alpha zero. The input is copied\nwhile parsing and is never borrowed by a plot or palette.\n\nAccept a string literal with the same parsing rules as the string constructor.\n\nParameters\n----------\nred : int\n    Red channel, conventionally 0-255.\ngreen : int\n    Green channel, conventionally 0-255.\nblue : int\n    Blue channel, conventionally 0-255.\nopacity : float, default 1.0\n    Alpha in [0, 1], default 1 (opaque).\ncolor : str\n    Color text; supported names are listed in the class description.\n\nAttributes\n----------\nr : int\n    Red channel, 0-255 (default 31).\ng : int\n    Green channel, 0-255 (default 41).\nb : int\n    Blue channel, 0-255 (default 55).\nalpha : float\n    Opacity in [0, 1]; 1 (the default) is opaque, 0 is invisible.\n\nRaises\n------\nValueError\n    For empty text, unknown names or malformed hex.\nValueError\n    For null, empty or malformed text.\n\nSee Also\n--------\ndm::RGBA\ndm::Plot::set_col()\ndm::points()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto gold = dm::RGB{255, 215, 0};\n    const auto glass = dm::RGBA{37, 99, 235, 0.3};  // translucent blue\n    const dm::RGB ink;                              // {31, 41, 55}, opaque\n    std::print(\"{} {} {}\\n\", gold.r, glass.alpha, ink.r);  // 255 0.3 31\n    const auto palette = dm::c(gold, glass);       // a dm::Vector<dm::RGB>\nSee the RGB class example.\nSee the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.\nSee the numeric constructor; RGB{255} keeps the other default channels.\nSee the numeric constructor; RGB{255, 0} keeps the other default channels.\n.. code-block:: cpp\n\n    const dm::RGBA glass = std::string(\"#ff44ff55\");\n    const auto plt = dm::plot(dm::c(0, 1), dm::c(1, 2), \"data\", \"#ff44ff55\");\n    std::print(\"{} {}\\n\", glass.r, dm::round(glass.alpha, 3)); // 255 0.333\nSee the string constructor, whose plot call accepts a literal directly.")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_88_spec = {"pydatamunge._datamunge.RGB", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_88_slots};
+static PyObject* rosetta_field_906_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        return rosetta_py::result<decltype((native->vertical))>(native->vertical, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_906_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->vertical)>>&> converted(value);
+        rosetta_py::assign_field(native->vertical, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_907_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        return rosetta_py::result<decltype((native->value))>(native->value, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_907_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->value)>>&> converted(value);
+        rosetta_py::assign_field(native->value, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_908_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        return rosetta_py::result<decltype((native->slope))>(native->slope, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_908_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->slope)>>&> converted(value);
+        rosetta_py::assign_field(native->slope, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_909_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
         return rosetta_py::result<decltype((native->color))>(native->color, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_912_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_909_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::graphics::LegendEntry>(self);
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
         rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->color)>>&> converted(value);
         rosetta_py::assign_field(native->color, converted.get());
         return 0;
     }, -1);
 }
-static int rosetta_class_91_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static PyObject* rosetta_field_910_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        return rosetta_py::result<decltype((native->stroke_width))>(native->stroke_width, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_910_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::graphics::ABLine>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->stroke_width)>>&> converted(value);
+        rosetta_py::assign_field(native->stroke_width, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_90_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -3138,33 +3068,36 @@ static int rosetta_class_91_init(PyObject* self, PyObject* args, PyObject* kwarg
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        datamunge::graphics::LegendEntry* created = nullptr;
-                        created = new datamunge::graphics::LegendEntry();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::LegendEntry>::value;
+                        datamunge::graphics::ABLine* created = nullptr;
+                        created = new datamunge::graphics::ABLine();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::graphics::ABLine>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("LegendEntry", "    LegendEntry()\n", args, kwargs);
+        rosetta_py::no_overload("ABLine", "    ABLine()\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_91_methods[] = {
+static PyMethodDef rosetta_class_90_methods[] = {
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_91_getset[] = {
-    {"label", rosetta_field_911_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::LegendEntry::label)>> ? rosetta_field_911_set : nullptr, "Row text.", nullptr},
-    {"color", rosetta_field_912_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::LegendEntry::color)>> ? rosetta_field_912_set : nullptr, "Swatch color, including alpha (default opaque black).", nullptr},
+static PyGetSetDef rosetta_class_90_getset[] = {
+    {"vertical", rosetta_field_906_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::ABLine::vertical)>> ? rosetta_field_906_set : nullptr, "True for a vertical line at x = value (default false).\n\nType: bool", nullptr},
+    {"value", rosetta_field_907_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::ABLine::value)>> ? rosetta_field_907_set : nullptr, "y-intercept for a sloped/horizontal line; x-position for a vertical line\n\nType: float", nullptr},
+    {"slope", rosetta_field_908_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::ABLine::slope)>> ? rosetta_field_908_set : nullptr, "Change in y per unit x; ignored when vertical (default 0).\n\nType: float", nullptr},
+    {"color", rosetta_field_909_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::ABLine::color)>> ? rosetta_field_909_set : nullptr, "Line color (default opaque black).\n\nType: RGB", nullptr},
+    {"stroke_width", rosetta_field_910_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::graphics::ABLine::stroke_width)>> ? rosetta_field_910_set : nullptr, "Line width in pixels (default 1).\n\nType: float", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_91_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_91_init)},
+static PyType_Slot rosetta_class_90_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_90_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_91_methods},
-    {Py_tp_getset, rosetta_class_91_getset},
-    {Py_tp_doc, const_cast<char*>("LegendEntry()\n\nOne manually specified legend row, as drawn by R's `legend()`.\n\nWhen a plot has any manual entries, they replace the default auto-generated\n(one-row-per-labeled-series) legend. Each row is a color swatch followed by the label,\nstacked from the top-right corner of the plotting area in insertion order.\n\n auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).legend({\"data\"}, {dm::RGB{0, 0, 255}});\n std::print(\"{} {}\\n\", plt.legend_entries()[0].label, plt.legend_entries()[0].color.b);  // data 255\n\npar: - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html\n\nsee: RPlot::legend(), dm::legend(), Plot::legend_entries()")},
+    {Py_tp_methods, rosetta_class_90_methods},
+    {Py_tp_getset, rosetta_class_90_getset},
+    {Py_tp_doc, const_cast<char*>("ABLine()\n--\n\nA straight reference line across the whole plotting area, as drawn by R's\n`abline(a, b)`, `abline(h =)` and `abline(v =)`.\n\nA sloped or horizontal line is y = value + slope * x evaluated at both ends of the visible\nx range; a vertical line sits at x = value and ignores slope. Reference lines are drawn\nbeneath every DataSeries. Vertical lines widen the automatic x range to include them;\nsloped and horizontal lines never change the axis ranges. Created by RPlot::abline(),\nabline_h(), abline_v(), and qqline(); read back through Plot::reference_lines().\n\nAttributes\n----------\nvertical : bool\n    True for a vertical line at x = value (default false).\nvalue : float\n    y-intercept for a sloped/horizontal line; x-position for a vertical line\nslope : float\n    Change in y per unit x; ignored when vertical (default 0).\ncolor : RGB\n    Line color (default opaque black).\nstroke_width : float\n    Line width in pixels (default 1).\n\nSee Also\n--------\nRPlot::abline()\nPlot::reference_lines()\n\nReferences\n----------\n- R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(0.0, 1.0), dm::c(0.0, 2.0)).abline(0.5, 2.0).abline_v(0.25);\n    const auto& lines = plt.reference_lines();\n    std::print(\"{} {} {}\\n\", lines[0].slope, lines[1].vertical, lines[1].value);  // 2 true 0.25")},
     {0, nullptr}};
-PyType_Spec rosetta_class_91_spec = {"pydatamunge._datamunge.LegendEntry", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_91_slots};
+PyType_Spec rosetta_class_90_spec = {"pydatamunge._datamunge.ABLine", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_90_slots};
 PyObject* rosetta_function_972(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         (void)self;
@@ -4938,57 +4871,57 @@ static int rosetta_class_93_init(PyObject* self, PyObject* args, PyObject* kwarg
     }, -1);
 }
 static PyMethodDef rosetta_class_93_methods[] = {
-    {"create", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_972)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "create() -> RPlot\n\nReturns a fresh empty plot; same as the default constructor `dm::Plot()`.\n\nKept for language bindings, where a named factory reads better than a constructor.\n\n auto plt = dm::Plot::create();\n std::print(\"{}\\n\", plt.series().size());  // 0\n\nsee: RPlot()\n\nReturns: An empty plot with default labels and styling."},
-    {"size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_973)), METH_VARARGS | METH_KEYWORDS, "size(width: int, height: int) -> RPlot\n\nSets the canvas size in pixels (default 960 by 640), like the `width`/`height`\n       of R's `png()` or `svg()` device.\n\nNot validated here: rendering throws std::runtime_error when the canvas leaves no room\ninside the margins (by default the canvas must exceed 114 by 156 pixels).\n\n auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).size(400, 300);\n std::print(\"{}x{}\\n\", plt.width(), plt.height());  // 400x300\n\nsee: margins()\n\nParameters:\n    width: Canvas width in pixels.\n    height: Canvas height in pixels.\n\nReturns: This plot, for chaining."},
-    {"title", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_974)), METH_VARARGS | METH_KEYWORDS, "title(value: str) -> RPlot\n\nSets the main heading, like R's `main =`; an empty string removes it.\n\nsee: set_title()\n\nParameters:\n    value: Heading text (copied).\n\nReturns: This plot, for chaining."},
-    {"subtitle", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_975)), METH_VARARGS | METH_KEYWORDS, "subtitle(value: str) -> RPlot\n\nSets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().\n\nsee: set_subtitle()\n\nParameters:\n    value: Subtitle text drawn under the title; empty removes it.\n\nReturns: This plot, for chaining."},
-    {"x_label", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_976)), METH_VARARGS | METH_KEYWORDS, "x_label(value: str) -> RPlot\n\nSets the horizontal-axis label; same as xlab() and set_xlab().\n\nsee: set_xlab()\n\nParameters:\n    value: Label text (copied).\n\nReturns: This plot, for chaining."},
-    {"y_label", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_977)), METH_VARARGS | METH_KEYWORDS, "y_label(value: str) -> RPlot\n\nSets the vertical-axis label; same as ylab() and set_ylab().\n\nsee: set_ylab()\n\nParameters:\n    value: Label text (copied).\n\nReturns: This plot, for chaining."},
-    {"xlab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_978)), METH_VARARGS | METH_KEYWORDS, "xlab(value: str) -> RPlot\n\nR-style alias for x_label(), like R's `xlab =`.\n\nsee: set_xlab()\n\nParameters:\n    value: Label text (copied).\n\nReturns: This plot, for chaining."},
-    {"ylab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_979)), METH_VARARGS | METH_KEYWORDS, "ylab(value: str) -> RPlot\n\nR-style alias for y_label(), like R's `ylab =`.\n\nsee: set_ylab()\n\nParameters:\n    value: Label text (copied).\n\nReturns: This plot, for chaining."},
-    {"set_title", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_980)), METH_VARARGS | METH_KEYWORDS, "set_title(value: str) -> RPlot\n\nSets the main heading drawn above the plotting area (R's `main =`).\n\nThe plot owns a copy of the text. An empty string clears the heading; a fresh plot\nshows \"datamunge plot\" until this is called. Same as title().\n\n auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(2.0, 4.0, 8.0))\n                .set_title(\"Growth\")\n                .set_subtitle(\"Doubling every step\")\n                .set_xlab(\"Step\")\n                .set_ylab(\"Count\");\n std::print(\"{} / {}\\n\", plt.title_text(), plt.subtitle_text());\n // Growth / Doubling every step\n\nsee: set_subtitle(), set_xlab(), set_ylab(), dm::title()\n\nParameters:\n    value: Heading text.\n\nReturns: This plot, for chaining."},
-    {"set_subtitle", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_981)), METH_VARARGS | METH_KEYWORDS, "set_subtitle(value: str) -> RPlot\n\nSets the smaller second heading drawn beneath the title (unlike R's `sub =`,\n       which sits below the x axis).\n\nThe plot owns a copy of the text. Empty (the default) draws no subtitle and reserves no\nextra top margin. Same as subtitle().\n\n auto plt = dm::Plot().set_title(\"Iris Dataset\").set_subtitle(\"Sepal Width vs Length\");\n plt.set_subtitle(\"\");  // remove it again\n\nsee: set_title(), dm::subtitle()\n\nParameters:\n    value: Subtitle text.\n\nReturns: This plot, for chaining."},
-    {"set_xlab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_982)), METH_VARARGS | METH_KEYWORDS, "set_xlab(value: str) -> RPlot\n\nSets the horizontal-axis label (R's `xlab =`).\n\nThe plot owns a copy of the text; the default is \"x\" and an empty string hides the\nlabel. Same as xlab() and x_label().\n\n auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_xlab(\"Sepal Width\");\n std::print(\"{}\\n\", plt.x_label_text());  // Sepal Width\n\nsee: set_ylab(), dm::xlab()\n\nParameters:\n    value: Axis label text.\n\nReturns: This plot, for chaining."},
-    {"set_ylab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_983)), METH_VARARGS | METH_KEYWORDS, "set_ylab(value: str) -> RPlot\n\nSets the vertical-axis label (R's `ylab =`).\n\nThe plot owns a copy of the text; the default is \"y\" and an empty string hides the\nlabel. Same as ylab() and y_label().\n\n auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_ylab(\"Sepal Length\");\n std::print(\"{}\\n\", plt.y_label_text());  // Sepal Length\n\nsee: set_xlab(), dm::ylab()\n\nParameters:\n    value: Axis label text.\n\nReturns: This plot, for chaining."},
-    {"set_col", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_984)), METH_VARARGS | METH_KEYWORDS, "set_col(color: RGB) -> RPlot\nset_col(color: str) -> RPlot\nset_col(color: str) -> RPlot\n\nRecolors every data series already on the plot (R's `col =` applied after the fact).\n\nEvery existing series (points, lines, bars, ...) takes color,\nand per-point palettes\nfrom dm::points(...).set_col() or points_colored() are cleared, so the whole plot becomes\none color. Only layers present now are affected: points added later keep their own\ncolors. Reference lines (abline) and manual legend entries keep their explicit colors.\n\n auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 1.0, 2.0))\n                .set_col(dm::RGB{220, 100, 255});\n std::print(\"{}\\n\", plt.series()[0].color.r);  // 220\n\nsee: set_col(std::string), dm::points()\n\nParameters:\n    color: New color, including its alpha.\n\nReturns: This plot, for chaining.\n\nSame as set_col(RGB) but takes a color name or hex string, like R's `col = \"blue\"`.\n\nMatching is case-insensitive. Names are black, white, red, green, blue, yellow, cyan,\nmagenta, gray/grey, and transparent (a much smaller set than R's `colors()`). Green is\nRGB(0,128,0) as in CSS, and transparent is black with zero alpha. Hex strings are\n`#RRGGBB` or `#RRGGBBAA`, where AA is an alpha byte (`80` is about 0.5).\n\nthrows: For unknown names or malformed hex; the plot is unchanged.\n\n const auto x = dm::runif(0, 1, 100);\n auto plt = dm::Plot(x, dm::rnorm(0, 1, 100)).set_col(\"blue\");\n plt.set_col(\"#FF000080\");  // half-transparent red\n const auto& col = plt.series()[0].color;\n std::print(\"{} {:.2f}\\n\", col.r, col.alpha);  // 255 0.50\n\nsee: set_col(RGB)\n\nParameters:\n    color: Color name or hex string.\n\nReturns: This plot, for chaining.\n\nParse a literal color without ambiguity between the string and RGBA overloads.\n\nthrows: For null, empty or malformed color text; leaves the plot unchanged.\n\npar: See set_col(std::string), which accepts literals with this overload.\n\nParameters:\n    color: Null-terminated color name or hex text; must be non-null.\n\nReturns: This plot, for chaining."},
-    {"background", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_985)), METH_VARARGS | METH_KEYWORDS, "background(color: RGB) -> RPlot\n\nSets the fill color of the whole canvas, like R's `par(bg =)`.\n\nThe default is white `{255, 255, 255}`. The color fills the margins as well as the\nplotting area. Its alpha is ignored: the background is always drawn opaque.\n\n auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0))\n                .background(dm::RGB{17, 24, 39})\n                .axis_color(dm::RGB{229, 231, 235})\n                .grid_color(dm::RGB{55, 65, 81});  // a dark theme\n std::print(\"{} {}\\n\", plt.background_color().r, plt.axes_color().r);  // 17 229\n\npar: - R `par()` (`bg`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nsee: axis_color(), grid_color()\n\nParameters:\n    color: Canvas fill color.\n\nReturns: This plot, for chaining."},
-    {"axis_color", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_986)), METH_VARARGS | METH_KEYWORDS, "axis_color(color: RGB) -> RPlot\n\nSets the color of the axis lines and of all plot-level text: tick labels, axis\n       labels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).\n\nThe default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and\ndata layers keep their own colors.\n\npar: See background(), which builds a dark theme with all three color setters.\n\npar: - R `par()` (`col.axis`, `col.lab`, `col.main`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nsee: background(), grid_color()\n\nParameters:\n    color: Axis and text color.\n\nReturns: This plot, for chaining."},
-    {"grid_color", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_987)), METH_VARARGS | METH_KEYWORDS, "grid_color(color: RGB) -> RPlot\n\nSets the color of the background grid lines (default light gray `{229, 231, 235}`).\n\nHas no visible effect while the grid is off (show_grid(false)) or the axes are hidden.\n\npar: See background(), which builds a dark theme with all three color setters.\n\nsee: show_grid(), background()\n\nParameters:\n    color: Grid-line color.\n\nReturns: This plot, for chaining."},
-    {"show_grid", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_988)), METH_VARARGS | METH_KEYWORDS, "show_grid(enabled: bool = ...) -> RPlot\n\nTurns the light background grid on or off (on by default), like adding or\n       omitting R's `grid()`.\n\nOne vertical line per x tick and one horizontal line per y tick, so the grid always lines\nup with the tick labels (round values, evenly spaced ticks, or custom tick positions).\nHidden axes hide the grid too.\n\n auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).show_grid(false);\n std::print(\"{}\\n\", plt.grid_visible());  // false\n\npar: - R `grid()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/grid.html\n\nsee: grid_color(), hide_axes()\n\nParameters:\n    enabled: True (the default) draws the grid; false omits it.\n\nReturns: This plot, for chaining."},
-    {"x_limits", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_989)), METH_VARARGS | METH_KEYWORDS, "x_limits(min_x: float, max_x: float) -> RPlot\n\nFixes the visible x range, like R's `xlim = c(min_x, max_x)`.\n\nWithout limits the x range is fitted to every layer (and vertical reference line), plus\n5% padding on each side. With limits, the plotting area spans exactly [ min_x,\nmax_x]\nwith no padding (R pads `xlim` by 4% unless `xaxs = \"i\"`). Data outside the range is not\nclipped and may be drawn over the margins.\n\nthrows: Unless `max_x > min_x` (NaN fails); the plot is unchanged.\n\n auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0))\n                .x_limits(0.0, 4.0)\n                .y_limits(0.0, 10.0);\n std::print(\"{} {} {}\\n\", plt.has_x_limits(), plt.x_max(), plt.y_max());  // true 4 10\n\npar: - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nsee: y_limits()\n\nParameters:\n    min_x: Left edge of the plotting area, in data units.\n    max_x: Right edge; must be greater than min_x.\n\nReturns: This plot, for chaining."},
-    {"y_limits", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_990)), METH_VARARGS | METH_KEYWORDS, "y_limits(min_y: float, max_y: float) -> RPlot\n\nFixes the visible y range, like R's `ylim = c(min_y, max_y)`.\n\nWithout limits the y range is fitted to every layer, plus 10% padding at each end (bar\nlayers also include y = 0). With limits, the plotting area spans exactly\n[ min_y,\nmax_y].\nData outside the range is not clipped.\n\nthrows: Unless `max_y > min_y` (NaN fails); the plot is unchanged.\n\npar: See x_limits(), which sets both ranges.\n\npar: - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nsee: x_limits()\n\nParameters:\n    min_y: Bottom edge of the plotting area, in data units.\n    max_y: Top edge; must be greater than min_y.\n\nReturns: This plot, for chaining."},
-    {"xlim", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_991)), METH_VARARGS | METH_KEYWORDS, "xlim(min_x: float, max_x: float) -> RPlot\n\nShort spelling of x_limits(), matching R's xlim plot argument.\nFixes the horizontal plotting range without automatic padding. Data outside\nthe range follows x_limits() rendering behavior; this does not filter layers.\n\nthrows: Unless max_x > min_x (NaN fails); the plot is unchanged.\n\n auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);\n std::print(\"{} {}\\n\", plt.x_max(), plt.y_min()); // 1 -4\n\nsee: x_limits(), ylim()\n\nParameters:\n    min_x: Left edge in data units.\n    max_x: Right edge; must be greater than min_x.\n\nReturns: This plot, for chaining."},
-    {"ylim", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_992)), METH_VARARGS | METH_KEYWORDS, "ylim(min_y: float, max_y: float) -> RPlot\n\nShort spelling of y_limits(), matching R's ylim plot argument.\nFixes the vertical plotting range without automatic padding; layers are retained.\n\nthrows: Unless max_y > min_y (NaN fails); the plot is unchanged.\n\npar: See xlim(), whose example uses both aliases.\n\nsee: y_limits(), xlim()\n\nParameters:\n    min_y: Bottom edge in data units.\n    max_y: Top edge; must be greater than min_y.\n\nReturns: This plot, for chaining."},
-    {"hide_axes", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_993)), METH_VARARGS | METH_KEYWORDS, "hide_axes(enabled: bool = ...) -> RPlot\n\nHides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,\n       ann = FALSE` (the title and subtitle are still drawn).\n\npie() turns this on. Margins are unchanged, so call margins() as well to let the data use\nthe freed space.\n\n auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).hide_axes();\n std::print(\"{}\\n\", plt.axes_hidden());  // true\n\npar: - R `plot.default()` (`axes`, `ann`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nsee: show_grid(), margins()\n\nParameters:\n    enabled: True (the default) hides them; false shows them again.\n\nReturns: This plot, for chaining."},
-    {"x_tick_labels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_994)), METH_VARARGS | METH_KEYWORDS, "x_tick_labels(labels: list[str]) -> RPlot\n\nReplaces the numeric x ticks with labels\nat x = 0, 1, 2, ..., like R's\n       `axis(1, at = 0:(n - 1), labels = labels)`.\n\nMatches the bar positions of barplot() and boxplot(). Clears any positions set by\nx_ticks(); an empty vector restores the numeric ticks.\n\n auto plt = dm::Plot(dm::c(0.0, 1.0, 2.0), dm::c(5.0, 3.0, 4.0))\n                .x_tick_labels({\"low\", \"mid\", \"high\"});\n std::print(\"{}\\n\", plt.x_tick_label_list()[2]);  // high\n\npar: - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nsee: x_ticks(), y_tick_labels()\n\nParameters:\n    labels: Tick texts, in order.\n\nReturns: This plot, for chaining."},
-    {"x_ticks", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_995)), METH_VARARGS | METH_KEYWORDS, "x_ticks(positions: list[float], labels: list[str]) -> RPlot\n\nReplaces the numeric x ticks with labels\ndrawn at data positions positions,\n       like R's `axis(1, at = positions, labels = labels)`.\n\nPositions need not be sorted or inside the visible range. Two empty vectors restore the\nnumeric ticks.\n\nthrows: If the two vectors differ in length; the plot is unchanged.\n\n const auto x = dm::seql(0.0, 6.283, 50);\n auto plt = dm::Plot(x, dm::sin(x))\n                .x_ticks({0.0, 3.1416, 6.2832}, {\"0\", \"pi\", \"2 pi\"})\n                .y_ticks({-1.0, 0.0, 1.0}, {\"min\", \"0\", \"max\"});\n std::print(\"{}\\n\", plt.x_tick_position_list()[1]);  // 3.1416\n\npar: - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nsee: x_tick_labels(), y_ticks()\n\nParameters:\n    positions: x data coordinates of the ticks.\n    labels: Tick texts, one per position.\n\nReturns: This plot, for chaining."},
-    {"y_tick_labels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_996)), METH_VARARGS | METH_KEYWORDS, "y_tick_labels(labels: list[str]) -> RPlot\n\nReplaces the numeric y ticks with labels\nat y = 0, 1, 2, ..., like R's\n       `axis(2, at = 0:(n - 1), labels = labels)`.\n\nClears any positions set by y_ticks(); an empty vector restores the numeric ticks.\n\n auto plt = dm::Plot(dm::c(3.0, 5.0), dm::c(0.0, 1.0)).y_tick_labels({\"no\", \"yes\"});\n std::print(\"{}\\n\", plt.y_tick_label_list().size());  // 2\n\npar: - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nsee: y_ticks(), x_tick_labels()\n\nParameters:\n    labels: Tick texts, in order.\n\nReturns: This plot, for chaining."},
-    {"y_ticks", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_997)), METH_VARARGS | METH_KEYWORDS, "y_ticks(positions: list[float], labels: list[str]) -> RPlot\n\nReplaces the numeric y ticks with labels\ndrawn at data positions positions,\n       like R's `axis(2, at = positions, labels = labels)`.\n\nTwo empty vectors restore the numeric ticks.\n\nthrows: If the two vectors differ in length; the plot is unchanged.\n\npar: See x_ticks(), which sets both axes.\n\npar: - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nsee: y_tick_labels(), x_ticks()\n\nParameters:\n    positions: y data coordinates of the ticks.\n    labels: Tick texts, one per position.\n\nReturns: This plot, for chaining."},
-    {"margins", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_998)), METH_VARARGS | METH_KEYWORDS, "margins(left: float, right: float, top: float, bottom: float) -> RPlot\n\nOverrides the automatic outer margins around the plotting area, in pixels, like\n       R's `par(mai =)` (which uses inches and orders bottom, left, top, right).\n\nThe automatic margins are left 90, right 24, top 72 (96 when a subtitle is set), and\nbottom 84; they leave room for the title, axis labels, and ticks. Explicit margins are used\nas given, with no extra room for a subtitle. Tight margins suit small multi-panel tiles\nwhose title and axis labels are empty. Rendering throws std::runtime_error if the margins\nleave no plotting area.\n\nthrows: If any margin is negative or non-finite; the plot is unchanged.\n\n auto tile = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0))\n                 .set_title(\"\").set_xlab(\"\").set_ylab(\"\")\n                 .margins(30, 10, 10, 20)\n                 .tick_font_size(9);\n std::print(\"{} {}\\n\", tile.has_custom_margins(), tile.margin_left());  // true 30\n\npar: - R `par()` (`mai`, `mar`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nsee: size(), tick_font_size(), RLayout\n\nParameters:\n    left: Left margin in pixels.\n    right: Right margin in pixels.\n    top: Top margin in pixels.\n    bottom: Bottom margin in pixels.\n\nReturns: This plot, for chaining."},
-    {"tick_font_size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_999)), METH_VARARGS | METH_KEYWORDS, "tick_font_size(pixels: float) -> RPlot\n\nSets the tick-label font size in pixels (default 12), like R's `cex.axis`.\n\nIn SVG output the size is used as given. The raster outputs (PNG, PDF, show()) draw tick\nlabels with half-size glyphs when the size is below 12.\n\nthrows: If pixels\nis not positive and finite; the plot is unchanged.\n\npar: See margins(), which shrinks the ticks for a small tile.\n\npar: - R `par()` (`cex.axis`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nsee: margins()\n\nParameters:\n    pixels: Font size in pixels.\n\nReturns: This plot, for chaining."},
-    {"pretty_ticks", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1000)), METH_VARARGS | METH_KEYWORDS, "pretty_ticks(enabled: bool = ...) -> RPlot\n\nPlaces numeric ticks at round values (default on) instead of six evenly spaced\n       ticks across the range, in the spirit of R's `pretty()`.\n\nThe step is 1, 2, or 5 times a power of ten, chosen as the \"nice number\" nearest a fifth\nof the visible range (Heckbert's rule), and ticks are its multiples inside the range.\nThat gives about four to seven ticks, close to R's `pretty()`: a padded range of -0.365\nto 7.665 gets ticks at 0, 2, 4 and 6. Custom tick labels take precedence. The background\ngrid follows the ticks.\n\n auto plt = dm::Plot(dm::c(0.0, 100.0), dm::c(0.0, 1.0)).pretty_ticks();\n std::print(\"{}\\n\", plt.to_svg().contains(\">40</text>\"));  // true: ticks 0, 20, ..., 100\n\npar: - R `pretty()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/pretty.html\n- P. S. Heckbert (1990). \"Nice Numbers for Graph Labels\". In Graphics Gems, 61-63.\n  Academic Press. doi:10.1016/B978-0-08-050753-8.50020-8\n\nsee: x_ticks(), show_grid()\n\nParameters:\n    enabled: True turns round ticks on; false restores six even ticks.\n\nReturns: This plot, for chaining."},
-    {"plot", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1001)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "plot(x: list[float], y: list[float], type: str = ..., label: str = ..., color: RGB = ...) -> RPlot\n\nBuilds a scatter, line, or line-plus-points plot of y\nagainst x,\nlike R's\n       `plot(x, y, type = \"p\" | \"l\" | \"b\")`.\n\n`\"p\"` (the default) adds one scatter series with 4-pixel markers; `\"l\"` adds one 2-pixel\nline joining the points in input order; `\"b\"` adds the line and then unlabeled points on\ntop (R's `\"b\"` leaves gaps in the line around each point; this draws it through them). The\ntitle and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.\n\nthrows: If the coordinates are empty or differ in length, or\ntype\nis not one of the three codes.\n\n const auto x = dm::seql(0.0, 4.0, 5);\n auto plt = dm::Plot::plot(x, x * x, \"b\", \"x squared\");\n std::print(\"{} series\\n\", plt.series().size());  // 2 series\n\npar: - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nsee: RPlot(std::vector\n<double\n>, std::vector\n<double\n>), points(), lines()\n\nParameters:\n    x: Horizontal coordinates, one per point.\n    y: Vertical coordinates, paired with x\nby position.\n    type: `\"p\"` (default), `\"l\"`, or `\"b\"`; case-sensitive.\n    label: Legend text; empty (the default) keeps the plot out of the automatic legend.\n       With `\"b\"` only the line carries it.\n    color: Color of the points and line (default blue `{37, 99, 235}`).\n\nReturns: A new plot holding the series."},
-    {"hist", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1002)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "hist(data: list[float], bins: int = ..., label: str = ..., color: RGB = ...) -> RPlot\n\nBuilds a frequency histogram of data\nwith bins\nequal-width bins, like R's\n       `hist(x, breaks = bins)`.\n\nThe bins split [min, max] of the data into equal widths (R instead treats `breaks` as a\nsuggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their\nright edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is\nthe opposite, so a value on an inner boundary is counted one bin higher here. Constant\ndata uses the range [value, value + 1]. Each bin is one bar of height equal to its count,\ncentered on the bin with width equal to the bin width. The title is \"Histogram\", the x\nlabel \"x\", and the y label \"Frequency\". The data is consumed; the plot keeps only counts.\n\nthrows: For empty/non-finite data, zero bins, or a range/bin\n        width that cannot be represented as a finite positive double.\n\n auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);\n const auto& bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]\n std::print(\"{} {} {}\\n\", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4\n\npar: - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html\n\nsee: dm::Histogram, bars()\n\nParameters:\n    data: Observations; all must be finite.\n    bins: Number of bins (default 10).\n    label: Legend text; empty (the default) shows no legend.\n    color: Bar color (default light blue `{96, 165, 250}`).\n\nReturns: A new plot holding one Bar series."},
-    {"barplot", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1003)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "barplot(heights: list[float], names: list[str] = ..., label: str = ..., color: RGB = ...) -> RPlot\n\nBuilds a bar chart with one bar per height, like R's\n       `barplot(heights, names.arg = names)`.\n\nBar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at\n0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range\nalways includes 0. Nonempty names\nbecome x tick labels under the bars. The title and\naxis labels keep their defaults.\n\nthrows: If heights\nis empty or names\nis nonempty with a\n        different length.\n\n auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {\"a\", \"b\", \"c\"}).set_title(\"Counts\");\n std::print(\"{} {}\\n\", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c\n\npar: - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html\n\nsee: bars(), x_tick_labels()\n\nParameters:\n    heights: Bar heights, in display order.\n    names: Tick labels, one per bar; empty (the default) keeps numeric ticks.\n    label: Legend text; empty (the default) shows no legend.\n    color: Bar color (default green `{22, 163, 74}`).\n\nReturns: A new plot holding one Bar series."},
-    {"boxplot", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1004)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "boxplot(groups: list[list[float]], names: list[str] = ..., color: RGB = ...) -> RPlot\nboxplot(groups: list[list[float]], names: list[str], colors: list[RGB]) -> RPlot\n\nBuilds side-by-side box-and-whisker plots, one per group, like R's\n       `boxplot(list(...), names = names)`.\n\nGroup g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the\nthird quartile with a line at the median. Quartiles are R's default \"type 7\" sample\nquantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's\nrule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses\nTukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ\nslightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws\nhinges at 3 and 8. All boxes share color;\nthe title and axis labels keep their defaults.\n\nthrows: If groups\nor any group is empty, or names\nis nonempty\n        with a different length.\n\n auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {\"a\", \"b\"});\n const auto& y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...\n std::print(\"{} {} {} {} {} | {}\\n\", y[0], y[1], y[2], y[3], y[4], y[5]);\n // 1 3.25 5.5 7.75 9 | 40\n plt.save(\"boxes.svg\");\n\npar: - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)\n- R. McGill, J. W. Tukey, W. A. Larsen (1978). \"Variations of Box Plots\". The American\n  Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236\n- R. J. Hyndman, Y. Fan (1996). \"Sample Quantiles in Statistical Packages\". The American\n  Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)\n- R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html\n- R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html\n\nsee: box(), x_tick_labels()\n\nParameters:\n    groups: One vector of observations per box; each must be nonempty.\n    names: Tick labels under the boxes; empty (the default) keeps numeric ticks.\n    color: Box, whisker, and outlier color (default light blue `{96, 165, 250}`).\n\nReturns: A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).\n\nboxplot() with one color per box, like R's `boxplot(..., col = colors)`.\n\nthrows: As boxplot(), or if colors\nis empty.\n\n auto plt = dm::graphics::RPlot::boxplot({{1, 2, 3}, {2, 4, 6}}, {\"a\", \"b\"},\n                                     std::vector<dm::RGB>{{78, 121, 167}, {242, 142, 43}});\n\nsee: boxplot(std::vector\n<std\n::vector\n<double\n>>, std::vector\n<std\n::string>, RGB)\n\nParameters:\n    groups: One vector of observations per box; each must be nonempty.\n    names: Tick labels under the boxes; empty keeps numeric ticks.\n    colors: Box colors, recycled when shorter than groups;\nmust be nonempty.\n\nReturns: A new plot holding one Box series per group."},
-    {"pie", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1005)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "pie(values: list[float], names: list[str] = ..., colors: list[RGB] = ...) -> RPlot\n\nBuilds a pie chart with one wedge per value, like R's\n       `pie(x, labels = names, col = colors, clockwise = TRUE)`.\n\nWedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12\no'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).\nEach wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are\ndrawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the\nautomatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette\nstarting blue, red, green. The axes and grid are hidden and both ranges are fixed at\n[-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is\nsquare, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an\nellipse.\n\nthrows: If values\nis empty, has a negative entry, or sums to 0,\n        or names\nis nonempty with a different length.\n\n auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {\"rent\", \"food\", \"fun\"}).size(598, 640);\n std::print(\"{}\\n\", plt.series().size());  // 6\n plt.save(\"budget.svg\");\n\npar: - R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html\n\nsee: polygon(), text()\n\nParameters:\n    values: Wedge sizes; nonnegative, with a positive sum.\n    names: Wedge labels; empty (the default) draws none.\n    colors: Wedge colors, recycled; empty (the default) uses the built-in palette.\n\nReturns: A new plot holding one Polygon series per wedge plus one Text series per name."},
-    {"curve", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1006)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "curve(f: Callback, from: float, to: float, n: int = ..., label: str = ..., color: RGB = ...) -> RPlot\n\nPlots a function over [ from,\nto]\nas a line, like R's `curve(expr, from, to, n)`.\n\nEvaluates `f.call(x)` at n\nevenly spaced points including both ends, in increasing\norder, and joins them with a 2-pixel line. f\nis used only during this call and is not\nretained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.\n\nthrows: If n\nis below 2 or to\nis not greater than from.\n\n struct Square : dm::Callback {\n   double call(double x) override { return x * x; }\n };\n Square square;\n auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);\n std::print(\"{}\\n\", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]\n\npar: - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html\n\nsee: lines()\n\nParameters:\n    f: The function to draw: a dm::Callback subclass overriding `call(double)`.\n    from: Left end of the range.\n    to: Right end; must be greater than from.\n    n: Number of sample points, at least 2 (default 101, as in R).\n    label: Legend text; empty (the default) shows no legend.\n    color: Line color (default red `{220, 38, 38}`).\n\nReturns: A new plot holding one Line series."},
-    {"qqnorm", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1007)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "qqnorm(data: list[float], label: str = ..., color: RGB = ...) -> RPlot\n\nBuilds a normal Q-Q plot: the sorted data\nagainst standard-normal quantiles,\n       like R's `qqnorm(y)`.\n\nThe i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting\nposition (i - 0.5) / n. R's `ppoints()` uses that rule only for n > 10 and\n(i - 3/8) / (n + 1/4) for n\n<\n= 10, so the x coordinates differ from R for small samples.\nPoints that fall on a straight line indicate normally distributed data; add the reference\nline with qqline(). The title is \"Normal Q-Q\", the axis labels \"Theoretical Quantiles\"\nand \"Sample Quantiles\".\n\nthrows: If data\nhas fewer than two values.\n\n const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};\n auto plt = dm::Plot::qqnorm(sample).qqline(sample);\n std::print(\"{:.4f}\\n\", plt.series()[0].x[0]);  // -1.2816\n\npar: - M. B. Wilk, R. Gnanadesikan (1968). \"Probability plotting methods for the analysis of\n  data\". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1\n- R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html\n- R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html\n\nsee: qqline()\n\nParameters:\n    data: The sample; at least two values. Consumed (sorted in place).\n    label: Legend text (default \"sample\", so the automatic legend shows one row; pass\n       \"\" to hide it).\n    color: Point color (default blue `{37, 99, 235}`).\n\nReturns: A new plot holding one Scatter series."},
-    {"points", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1008)), METH_VARARGS | METH_KEYWORDS, "points(x: list[float], y: list[float], label: str = ..., color: RGB = ..., marker_size: float = ...) -> RPlot\npoints(x: list[float], y: list[float], color: RGB, marker_size: float = ...) -> RPlot\npoints(x: list[float], y: list[float], label: str) -> RPlot\n\nAdds a scatter series to this plot, like R's `points(x, y, col = color)`.\n\nThe coordinates are copied (or moved from rvalues) into a new series drawn above the\nexisting ones; axis ranges grow to include it. A nonempty label\nadds a row to the\nautomatic legend (shown only while no manual legend() entries exist).\n\nthrows: If the coordinates are empty or have different lengths.\n\n const auto x = dm::seql(0.0, 6.0, 13);\n auto plt = dm::Plot().set_title(\"sin and cos\");\n plt.points(x, dm::sin(x), \"sin\", dm::RGB{37, 99, 235})\n    .points(x, dm::cos(x), \"cos\", dm::RGB{220, 38, 38}, 6.0);\n plt.save(\"trig.svg\");  // automatic legend lists \"sin\" and \"cos\"\n\npar: - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html\n\nsee: points_colored(), dm::points(), set_col()\n\nParameters:\n    x: Horizontal coordinates, one per point.\n    y: Vertical coordinates, paired with x\nby position.\n    label: Legend text for this series; empty (the default) keeps it out of the legend.\n    color: Marker color for every point (default blue `{37, 99, 235}`).\n    marker_size: Marker radius in pixels (default 4).\n\nReturns: This plot, for chaining.\n\nSame as points(x, y, label, color, marker_size) with an empty label, so the\n       series stays out of the automatic legend.\n\nthrows: If the coordinates are empty or have different lengths.\n\n auto plt = dm::Plot();\n plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);\n\nsee: points()\n\nParameters:\n    x: Horizontal coordinates.\n    y: Vertical coordinates, paired with x.\n    color: Marker color for every point.\n    marker_size: Marker radius in pixels (default 4).\n\nReturns: This plot, for chaining.\n\nPreserve a three-argument literal label when colors also accept string literals.\n\nthrows: For empty or mismatched coordinate vectors.\n\n auto plt = dm::Plot().points(dm::c(0, 1), dm::c(1, 2), \"red\");\n std::print(\"{}\\n\", plt.series()[0].label); // red\n\nParameters:\n    x: Horizontal coordinates.\n    y: Vertical coordinates, paired with x.\n    label: Legend label, including text that resembles a color; null means empty.\n\nReturns: This plot, for chaining."},
-    {"points_colored", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1009)), METH_VARARGS | METH_KEYWORDS, "points_colored(x: list[float], y: list[float], colors: list[RGB], marker_size: float = ...) -> RPlot\n\nAppends scatter points with a recycled per-point RGB(A) palette.\nCoordinates must have equal nonzero lengths; colors must not be empty.\nA partial palette cycle is allowed without a warning. Colors retain their own alpha.\nThe series is unlabeled, so it never appears in the automatic legend.\n\nthrows: If the coordinate lengths or palette are invalid.\n\n const auto palette = dm::c(dm::RGB{255, 0, 0}, dm::RGB{0, 0, 255});\n auto plt = dm::Plot().points_colored(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 2.0, 1.0), palette);\n std::print(\"{}\\n\", plt.series()[0].point_colors.size());  // 2 (red, blue, red)\n\npar: - R `points()` (vector `col`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html\n\nsee: dm::points() and Points::set_col(), the pipe-friendly form of this call.\n\nParameters:\n    x: Horizontal coordinates.\n    y: Vertical coordinates, paired with x.\n    colors: Palette; point i uses `colors[i % colors.size()]`.\n    marker_size: Marker radius in pixels (default 4).\n\nReturns: This plot, for chaining."},
-    {"line", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1010)), METH_VARARGS | METH_KEYWORDS, "line(x: list[float], y: list[float], label: str = ..., color: RGB = ..., stroke_width: float = ...) -> RPlot\n\nAdds a line joining the points in input order, like R's `lines(x, y, col = color,\n       lwd = stroke_width)`; same as lines().\n\nThe points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or\nmoved from rvalues) into a new Line series drawn above existing layers; axis ranges grow\nto include it. A nonempty label\nadds a row to the automatic legend.\n\nthrows: If the coordinates are empty or have different lengths.\n\npar: See lines().\n\npar: - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html\n\nsee: lines(), plot()\n\nParameters:\n    x: Horizontal coordinates, one per vertex.\n    y: Vertical coordinates, paired with x\nby position.\n    label: Legend text; empty (the default) keeps it out of the legend.\n    color: Line color (default red `{220, 38, 38}`).\n    stroke_width: Line width in pixels (default 2).\n\nReturns: This plot, for chaining."},
-    {"lines", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1011)), METH_VARARGS | METH_KEYWORDS, "lines(x: list[float], y: list[float], label: str = ..., color: RGB = ..., stroke_width: float = ...) -> RPlot\nlines(x: list[float], y: list[float], color: RGB, stroke_width: float = ...) -> RPlot\nlines(x: list[float], y: list[float], label: str) -> RPlot\n\nAdds a line joining the points in input order, like R's `lines(x, y, col = color,\n       lwd = stroke_width)`.\n\nSame as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates\nare copied (or moved from rvalues) into a new Line series drawn above existing layers;\naxis ranges grow to include it. A nonempty label\nadds a row to the automatic legend.\n\nthrows: If the coordinates are empty or have different lengths.\n\n const auto x = dm::seql(0.0, 6.0, 25);\n auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));\n plt.lines(x, dm::sin(x), \"sin(x)\", dm::RGB{220, 38, 38}, 3.0);\n std::print(\"{}\\n\", plt.series()[1].stroke_width);  // 3\n\npar: - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html\n\nsee: line(), lines(std::vector\n<double\n>, std::vector\n<double\n>, RGB, double), plot()\n\nParameters:\n    x: Horizontal coordinates, one per vertex.\n    y: Vertical coordinates, paired with x\nby position.\n    label: Legend text; empty (the default) keeps it out of the legend.\n    color: Line color (default red `{220, 38, 38}`).\n    stroke_width: Line width in pixels (default 2).\n\nReturns: This plot, for chaining.\n\nUnlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.\n\nthrows: If the coordinates are empty or have different lengths.\n\n auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);\n std::print(\"{}\\n\", plt.series()[0].label.empty());  // true\n\nsee: lines()\n\nParameters:\n    x: Horizontal coordinates.\n    y: Vertical coordinates, paired with x.\n    color: Line color.\n    stroke_width: Line width in pixels (default 2).\n\nReturns: This plot, for chaining.\n\nPreserve a three-argument literal label when colors also accept string literals.\n\nthrows: For empty or mismatched coordinate vectors.\n\n auto plt = dm::Plot().lines(dm::c(0, 1), dm::c(1, 2), \"red\");\n std::print(\"{}\\n\", plt.series()[0].label); // red\n\nParameters:\n    x: Horizontal coordinates.\n    y: Vertical coordinates, paired with x.\n    label: Legend label, including text that resembles a color; null means empty.\n\nReturns: This plot, for chaining."},
-    {"bars", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1012)), METH_VARARGS | METH_KEYWORDS, "bars(x: list[float], y: list[float], label: str = ..., color: RGB = ..., bar_width: float = ...) -> RPlot\n\nAdds vertical bars centered at arbitrary x positions, the low-level form behind\n       barplot() and hist() (R's `rect()` from 0 to each height).\n\nBar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point\ndown); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty\nlabel\nadds a row to the automatic legend.\n\nthrows: If the coordinates are empty or have different lengths.\n\n auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), \"net\",\n                            dm::RGB{22, 163, 74}, 1.0);\n std::print(\"{}\\n\", plt.series()[0].bar_width);  // 1\n\npar: - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html\n\nsee: barplot(), hist()\n\nParameters:\n    x: Bar centers, in data units.\n    y: Bar heights, paired with x\nby position.\n    label: Legend text; empty (the default) keeps it out of the legend.\n    color: Bar color (default green `{22, 163, 74}`).\n    bar_width: Bar width in data units (default 0.8).\n\nReturns: This plot, for chaining."},
-    {"box", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1013)), METH_VARARGS | METH_KEYWORDS, "box(position: float, whisker_lo: float, q1: float, median: float, q3: float, whisker_hi: float, outliers: list[float] = ..., color: RGB = ..., width: float = ...) -> RPlot\n\nAdds one box-and-whisker from precomputed statistics at an arbitrary x position,\n       the low-level form behind boxplot() (R's `bxp()`).\n\nDraws a box from q1\nto q3\nwith a thicker line at median,\nwhiskers out to\nwhisker_lo\nand whisker_hi\nwith end caps, and one dot per outlier. The values are\nnot checked for order or finiteness. In SVG the box is filled at 35% opacity.\n\n auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);\n std::print(\"{} {}\\n\", plt.series().size(), plt.series()[0].y.size());  // 2 6\n\npar: - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.\n- R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html\n\nsee: boxplot()\n\nParameters:\n    position: Box center, in x data units.\n    whisker_lo: Lower whisker end.\n    q1: Lower box edge (first quartile).\n    median: Median line.\n    q3: Upper box edge (third quartile).\n    whisker_hi: Upper whisker end.\n    outliers: Values drawn as individual points (default none).\n    color: Box, whisker, and outlier color (default light blue `{96, 165, 250}`).\n    width: Box width in data units (default 0.6).\n\nReturns: This plot, for chaining."},
-    {"abline", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1014)), METH_VARARGS | METH_KEYWORDS, "abline(intercept: float, slope: float, color: RGB = ..., stroke_width: float = ...) -> RPlot\n\nAdds the reference line y = intercept + slope * x across the plotting area, like\n       R's `abline(a = intercept, b = slope)`.\n\nThe line runs between the left and right edges of the visible x range and is drawn\nbeneath every data layer. It does not change the axis ranges, and it is not clipped to the\nplotting area, so a steep line can extend into the margins. Stored as an ABLine.\n\nwarning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n         `.pdf`, and show()) currently omit them.\n\n const auto x = dm::c(1.0, 2.0, 3.0, 4.0);\n auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))\n                .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x\n                .abline_h(5.0)\n                .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);\n std::print(\"{}\\n\", plt.reference_lines().size());  // 3\n plt.save(\"ablines.svg\");\n\npar: - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html\n\nsee: abline_h(), abline_v(), qqline(), ABLine\n\nParameters:\n    intercept: y value at x = 0.\n    slope: Change in y per unit x.\n    color: Line color (default opaque black).\n    stroke_width: Line width in pixels (default 1).\n\nReturns: This plot, for chaining."},
-    {"abline_h", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1015)), METH_VARARGS | METH_KEYWORDS, "abline_h(y_value: float, color: RGB = ..., stroke_width: float = ...) -> RPlot\n\nAdds a horizontal reference line at y = y_value,\nlike R's `abline(h = y_value)`.\n\nSame as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not\nincluded in the axis ranges, so a value outside the visible y range is off the plot.\n\nwarning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n         `.pdf`, and show()) currently omit them.\n\npar: See abline().\n\npar: - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html\n\nsee: abline(), abline_v()\n\nParameters:\n    y_value: Height of the line, in data units.\n    color: Line color (default opaque black).\n    stroke_width: Line width in pixels (default 1).\n\nReturns: This plot, for chaining."},
-    {"abline_v", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1016)), METH_VARARGS | METH_KEYWORDS, "abline_v(x_value: float, color: RGB = ..., stroke_width: float = ...) -> RPlot\n\nAdds a vertical reference line at x = x_value,\nlike R's `abline(v = x_value)`.\n\nSpans the full height of the plotting area beneath the data. Unlike horizontal and\nsloped lines, it widens the automatic x range to include x_value.\n\nwarning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n         `.pdf`, and show()) currently omit them.\n\npar: See abline().\n\npar: - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html\n\nsee: abline(), abline_h()\n\nParameters:\n    x_value: Horizontal position of the line, in data units.\n    color: Line color (default opaque black).\n    stroke_width: Line width in pixels (default 1).\n\nReturns: This plot, for chaining."},
-    {"qqline", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1017)), METH_VARARGS | METH_KEYWORDS, "qqline(data: list[float], color: RGB = ..., stroke_width: float = ...) -> RPlot\n\nAdds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line\n       through the first and third quartiles of data\nand of the standard normal.\n\nPass the same data given to qqnorm(). The sample quartiles are R's default \"type 7\"\nquantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The\nslope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it\nestimates the standard deviation and the intercept estimates the mean. Added through\nabline().\n\nthrows: If data\nhas fewer than two values.\n\nwarning: Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n         `.pdf`, and show()) currently omit them.\n\n const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};\n auto plt = dm::Plot::qqnorm(sample).qqline(sample);\n const auto& line = plt.reference_lines()[0];\n std::print(\"{:.4f} {:.4f}\\n\", line.value, line.slope);  // 3.0000 1.4826\n\npar: - R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html\n- R. J. Hyndman, Y. Fan (1996). \"Sample Quantiles in Statistical Packages\". The American\n  Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566\n\nsee: qqnorm(), abline()\n\nParameters:\n    data: The sample; at least two values. Taken by value, so the caller's data is unchanged.\n    color: Line color (default red `{220, 38, 38}`).\n    stroke_width: Line width in pixels (default 1.5).\n\nReturns: This plot, for chaining."},
-    {"legend", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1018)), METH_VARARGS | METH_KEYWORDS, "legend(labels: list[str], colors: list[RGB]) -> RPlot\n\nAdds manual legend rows, like R's `legend(legend = labels, col = colors)`.\n\nEach label is paired with the color at the same position and drawn as a swatch row in\nthe legend box. Once any manual row exists, it replaces the automatic legend built from\nlabeled series. Calling again appends more rows. Unlike dm::legend(), colors are not\nrecycled here: the vectors must match in length. Empty vectors add nothing.\n\nthrows: If labels\nand colors\ndiffer in length.\n\n const auto up = dm::RGB{37, 99, 235};\n const auto down = dm::RGB{220, 38, 38};\n auto plt = dm::Plot();\n plt.points(dm::c(1.0, 2.0), dm::c(1.0, 2.0), up)\n    .points(dm::c(1.0, 2.0), dm::c(2.0, 1.0), down)\n    .legend({\"rising\", \"falling\"}, {up, down});\n std::print(\"{}\\n\", plt.legend_entries().size());  // 2\n\npar: - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html\n\nsee: dm::legend() for the recycling, pipe-friendly layer.\n\nParameters:\n    labels: Row texts, in display order.\n    colors: Swatch colors, one per label.\n\nReturns: This plot, for chaining."},
-    {"text", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1019)), METH_VARARGS | METH_KEYWORDS, "text(x: float, y: float, label: str, color: RGB = ..., font_size: float = ...) -> RPlot\n\nDraws label\ncentered on the data point ( x,\ny),\nlike R's\n       `text(x, y, labels = label)`.\n\nThe text is centered both horizontally and vertically on the point, like R's default\n`adj`. The point counts toward the automatic axis ranges, but the text's extent does not,\nso long labels near the edge can overflow. Text layers never appear in the legend, and\nset_col() recolors them along with the data.\n\n auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))\n                .text(2.0, 4.4, \"peak\", dm::RGB{220, 38, 38}, 16.0);\n std::print(\"{} {}\\n\", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16\n\npar: - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html\n\nsee: pie(), legend()\n\nParameters:\n    x: Horizontal position, in data units.\n    y: Vertical position, in data units.\n    label: The text to draw (XML-escaped in SVG output).\n    color: Text color (default near-black `{17, 24, 39}`).\n    font_size: Font size in pixels (default 14).\n\nReturns: This plot, for chaining."},
-    {"polygon", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1020)), METH_VARARGS | METH_KEYWORDS, "polygon(x: list[float], y: list[float], color: RGB = ..., filled: bool = ...) -> RPlot\n\nDraws the closed polygon through the vertices (x[i], y[i]), like R's\n       `polygon(x, y, col = color)`.\n\nThe last vertex joins the first automatically. Filled polygons (the default) are painted\nwith color\n(plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);\nunfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well\nfor shaded regions such as confidence bands. Vertices count toward the axis ranges.\n\nthrows: If the coordinates are empty or have different lengths.\n\n auto plt = dm::Plot()\n                .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})\n                .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);\n std::print(\"{}\\n\", plt.series()[1].filled);  // false\n\npar: - R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html\n\nsee: pie(), segments()\n\nParameters:\n    x: Vertex x coordinates, in order around the polygon.\n    y: Vertex y coordinates, paired with x.\n    color: Fill (and outline) color (default blue `{37, 99, 235}`).\n    filled: True (the default) fills; false draws the outline only.\n\nReturns: This plot, for chaining."},
-    {"image", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1021)), METH_VARARGS | METH_KEYWORDS, "image(x: list[float], y: list[float], z: list[list[float]], palette: list[RGB] = ..., z_min: float = ..., z_max: float = ...) -> RPlot\n\nDraws a grid of coloured rectangles, one per value of z,\nlike R's `image(x, y, z)`.\n\nCell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step\nbeyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear\nscale from z_min\nto z_max;\nNaN cells are left empty. Each cell is added as a filled\npolygon, so the grid should have at most tens of thousands of cells.\n\nthrows: If the sizes do not match, x or y is not increasing, or the\n        palette is empty.\n\n auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});\n std::print(\"{}\\n\", plt.series().size());  // 6\n\npar: - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html\n\nsee: terrain_colors(), polygon()\n\nParameters:\n    x: Cell centres along x, increasing (at least 2).\n    y: Cell centres along y, increasing (at least 2).\n    z: Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.\n    palette: Colours from low to high (default terrain_colors(12)).\n    z_min: Value mapped to the first colour; NaN (the default) uses the smallest z.\n    z_max: Value mapped to the last colour; NaN (the default) uses the largest z.\n\nReturns: This plot, for chaining."},
-    {"segments", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1022)), METH_VARARGS | METH_KEYWORDS, "segments(x0: list[float], y0: list[float], x1: list[float], y1: list[float], color: RGB = ..., stroke_width: float = ...) -> RPlot\n\nDraws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like\n       R's `segments(x0, y0, x1, y1)`.\n\nAll segments share color\nand stroke_width\nand form one Segment layer; their end\npoints count toward the axis ranges. Useful for error bars, residual sticks, and\ndendrograms.\n\nthrows: If the four vectors differ in length or are empty.\n\n const auto x = dm::c(1.0, 2.0, 3.0);\n const auto y = dm::c(2.0, 3.5, 3.0);\n auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars\n std::print(\"{}\\n\", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)\n\npar: - R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html\n\nsee: abline(), polygon()\n\nParameters:\n    x0: Start x coordinates.\n    y0: Start y coordinates.\n    x1: End x coordinates.\n    y1: End y coordinates.\n    color: Segment color (default opaque black).\n    stroke_width: Segment width in pixels (default 1).\n\nReturns: This plot, for chaining."},
+    {"create", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_972)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "create()\n--\n\nReturns a fresh empty plot; same as the default constructor `dm::Plot()`.\n\nKept for language bindings, where a named factory reads better than a constructor.\n\nReturns\n-------\nRPlot\n    An empty plot with default labels and styling.\n\nSee Also\n--------\nRPlot()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot::create();\n    std::print(\"{}\\n\", plt.series().size());  // 0"},
+    {"size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_973)), METH_VARARGS | METH_KEYWORDS, "size($self, width, height)\n--\n\nSets the canvas size in pixels (default 960 by 640), like the `width`/`height`\nof R's `png()` or `svg()` device.\n\nNot validated here: rendering throws std::runtime_error when the canvas leaves no room\ninside the margins (by default the canvas must exceed 114 by 156 pixels).\n\nParameters\n----------\nwidth : int\n    Canvas width in pixels.\nheight : int\n    Canvas height in pixels.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nmargins()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).size(400, 300);\n    std::print(\"{}x{}\\n\", plt.width(), plt.height());  // 400x300"},
+    {"title", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_974)), METH_VARARGS | METH_KEYWORDS, "title($self, value)\n--\n\nSets the main heading, like R's `main =`; an empty string removes it.\n\nParameters\n----------\nvalue : str\n    Heading text (copied).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_title()"},
+    {"subtitle", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_975)), METH_VARARGS | METH_KEYWORDS, "subtitle($self, value)\n--\n\nSets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().\n\nParameters\n----------\nvalue : str\n    Subtitle text drawn under the title; empty removes it.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_subtitle()"},
+    {"x_label", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_976)), METH_VARARGS | METH_KEYWORDS, "x_label($self, value)\n--\n\nSets the horizontal-axis label; same as xlab() and set_xlab().\n\nParameters\n----------\nvalue : str\n    Label text (copied).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_xlab()"},
+    {"y_label", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_977)), METH_VARARGS | METH_KEYWORDS, "y_label($self, value)\n--\n\nSets the vertical-axis label; same as ylab() and set_ylab().\n\nParameters\n----------\nvalue : str\n    Label text (copied).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_ylab()"},
+    {"xlab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_978)), METH_VARARGS | METH_KEYWORDS, "xlab($self, value)\n--\n\nR-style alias for x_label(), like R's `xlab =`.\n\nParameters\n----------\nvalue : str\n    Label text (copied).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_xlab()"},
+    {"ylab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_979)), METH_VARARGS | METH_KEYWORDS, "ylab($self, value)\n--\n\nR-style alias for y_label(), like R's `ylab =`.\n\nParameters\n----------\nvalue : str\n    Label text (copied).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_ylab()"},
+    {"set_title", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_980)), METH_VARARGS | METH_KEYWORDS, "set_title($self, value)\n--\n\nSets the main heading drawn above the plotting area (R's `main =`).\n\nThe plot owns a copy of the text. An empty string clears the heading; a fresh plot\nshows \"datamunge plot\" until this is called. Same as title().\n\nParameters\n----------\nvalue : str\n    Heading text.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_subtitle()\nset_xlab()\nset_ylab()\ndm::title()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(2.0, 4.0, 8.0))\n                   .set_title(\"Growth\")\n                   .set_subtitle(\"Doubling every step\")\n                   .set_xlab(\"Step\")\n                   .set_ylab(\"Count\");\n    std::print(\"{} / {}\\n\", plt.title_text(), plt.subtitle_text());\n    // Growth / Doubling every step"},
+    {"set_subtitle", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_981)), METH_VARARGS | METH_KEYWORDS, "set_subtitle($self, value)\n--\n\nSets the smaller second heading drawn beneath the title (unlike R's `sub =`,\nwhich sits below the x axis).\n\nThe plot owns a copy of the text. Empty (the default) draws no subtitle and reserves no\nextra top margin. Same as subtitle().\n\nParameters\n----------\nvalue : str\n    Subtitle text.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_title()\ndm::subtitle()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot().set_title(\"Iris Dataset\").set_subtitle(\"Sepal Width vs Length\");\n    plt.set_subtitle(\"\");  // remove it again"},
+    {"set_xlab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_982)), METH_VARARGS | METH_KEYWORDS, "set_xlab($self, value)\n--\n\nSets the horizontal-axis label (R's `xlab =`).\n\nThe plot owns a copy of the text; the default is \"x\" and an empty string hides the\nlabel. Same as xlab() and x_label().\n\nParameters\n----------\nvalue : str\n    Axis label text.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_ylab()\ndm::xlab()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_xlab(\"Sepal Width\");\n    std::print(\"{}\\n\", plt.x_label_text());  // Sepal Width"},
+    {"set_ylab", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_983)), METH_VARARGS | METH_KEYWORDS, "set_ylab($self, value)\n--\n\nSets the vertical-axis label (R's `ylab =`).\n\nThe plot owns a copy of the text; the default is \"y\" and an empty string hides the\nlabel. Same as ylab() and y_label().\n\nParameters\n----------\nvalue : str\n    Axis label text.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nset_xlab()\ndm::ylab()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_ylab(\"Sepal Length\");\n    std::print(\"{}\\n\", plt.y_label_text());  // Sepal Length"},
+    {"set_col", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_984)), METH_VARARGS | METH_KEYWORDS, "set_col(color: RGB) -> RPlot\nset_col(color: str) -> RPlot\nset_col(color: str) -> RPlot\n\nRecolors every data series already on the plot (R's `col =` applied after the fact).\n\nEvery existing series (points, lines, bars, ...) takes `color`, and per-point palettes\nfrom dm::points(...).set_col() or points_colored() are cleared, so the whole plot becomes\none color. Only layers present now are affected: points added later keep their own\ncolors. Reference lines (abline) and manual legend entries keep their explicit colors.\n\nSame as set_col(RGB) but takes a color name or hex string, like R's `col = \"blue\"`.\n\nMatching is case-insensitive. Names are black, white, red, green, blue, yellow, cyan,\nmagenta, gray/grey, and transparent (a much smaller set than R's `colors()`). Green is\nRGB(0,128,0) as in CSS, and transparent is black with zero alpha. Hex strings are\n`#RRGGBB` or `#RRGGBBAA`, where AA is an alpha byte (`80` is about 0.5).\n\nParse a literal color without ambiguity between the string and RGBA overloads.\n\nParameters\n----------\ncolor : RGB or str\n    New color, including its alpha.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    For unknown names or malformed hex; the plot is unchanged.\nValueError\n    For null, empty or malformed color text; leaves the plot unchanged.\n\nSee Also\n--------\nset_col(std::string)\ndm::points()\nset_col(RGB)\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 1.0, 2.0))\n                   .set_col(dm::RGB{220, 100, 255});\n    std::print(\"{}\\n\", plt.series()[0].color.r);  // 220\n.. code-block:: cpp\n\n    const auto x = dm::runif(0, 1, 100);\n    auto plt = dm::Plot(x, dm::rnorm(0, 1, 100)).set_col(\"blue\");\n    plt.set_col(\"#FF000080\");  // half-transparent red\n    const auto& col = plt.series()[0].color;\n    std::print(\"{} {:.2f}\\n\", col.r, col.alpha);  // 255 0.50\nSee set_col(std::string), which accepts literals with this overload."},
+    {"background", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_985)), METH_VARARGS | METH_KEYWORDS, "background($self, color)\n--\n\nSets the fill color of the whole canvas, like R's `par(bg =)`.\n\nThe default is white `{255, 255, 255}`. The color fills the margins as well as the\nplotting area. Its alpha is ignored: the background is always drawn opaque.\n\nParameters\n----------\ncolor : RGB\n    Canvas fill color.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\naxis_color()\ngrid_color()\n\nReferences\n----------\n- R `par()` (`bg`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0))\n                   .background(dm::RGB{17, 24, 39})\n                   .axis_color(dm::RGB{229, 231, 235})\n                   .grid_color(dm::RGB{55, 65, 81});  // a dark theme\n    std::print(\"{} {}\\n\", plt.background_color().r, plt.axes_color().r);  // 17 229"},
+    {"axis_color", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_986)), METH_VARARGS | METH_KEYWORDS, "axis_color($self, color)\n--\n\nSets the color of the axis lines and of all plot-level text: tick labels, axis\nlabels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).\n\nThe default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and\ndata layers keep their own colors.\n\nParameters\n----------\ncolor : RGB\n    Axis and text color.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nbackground()\ngrid_color()\n\nReferences\n----------\n- R `par()` (`col.axis`, `col.lab`, `col.main`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nExamples\n--------\nSee background(), which builds a dark theme with all three color setters."},
+    {"grid_color", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_987)), METH_VARARGS | METH_KEYWORDS, "grid_color($self, color)\n--\n\nSets the color of the background grid lines (default light gray `{229, 231, 235}`).\n\nHas no visible effect while the grid is off (show_grid(false)) or the axes are hidden.\n\nParameters\n----------\ncolor : RGB\n    Grid-line color.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nshow_grid()\nbackground()\n\nExamples\n--------\nSee background(), which builds a dark theme with all three color setters."},
+    {"show_grid", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_988)), METH_VARARGS | METH_KEYWORDS, "show_grid($self, enabled=True)\n--\n\nTurns the light background grid on or off (on by default), like adding or\nomitting R's `grid()`.\n\nOne vertical line per x tick and one horizontal line per y tick, so the grid always lines\nup with the tick labels (round values, evenly spaced ticks, or custom tick positions).\nHidden axes hide the grid too.\n\nParameters\n----------\nenabled : bool, default True\n    True (the default) draws the grid; false omits it.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\ngrid_color()\nhide_axes()\n\nReferences\n----------\n- R `grid()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/grid.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).show_grid(false);\n    std::print(\"{}\\n\", plt.grid_visible());  // false"},
+    {"x_limits", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_989)), METH_VARARGS | METH_KEYWORDS, "x_limits($self, min_x, max_x)\n--\n\nFixes the visible x range, like R's `xlim = c(min_x, max_x)`.\n\nWithout limits the x range is fitted to every layer (and vertical reference line), plus\n5% padding on each side. With limits, the plotting area spans exactly [ `min_x`, `max_x]`\nwith no padding (R pads `xlim` by 4% unless `xaxs = \"i\"`). Data outside the range is not\nclipped and may be drawn over the margins.\n\nParameters\n----------\nmin_x : float\n    Left edge of the plotting area, in data units.\nmax_x : float\n    Right edge; must be greater than `min_x`.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    Unless `max_x > min_x` (NaN fails); the plot is unchanged.\n\nSee Also\n--------\ny_limits()\n\nReferences\n----------\n- R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0))\n                   .x_limits(0.0, 4.0)\n                   .y_limits(0.0, 10.0);\n    std::print(\"{} {} {}\\n\", plt.has_x_limits(), plt.x_max(), plt.y_max());  // true 4 10"},
+    {"y_limits", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_990)), METH_VARARGS | METH_KEYWORDS, "y_limits($self, min_y, max_y)\n--\n\nFixes the visible y range, like R's `ylim = c(min_y, max_y)`.\n\nWithout limits the y range is fitted to every layer, plus 10% padding at each end (bar\nlayers also include y = 0). With limits, the plotting area spans exactly\n[ `min_y`, `max_y]`. Data outside the range is not clipped.\n\nParameters\n----------\nmin_y : float\n    Bottom edge of the plotting area, in data units.\nmax_y : float\n    Top edge; must be greater than `min_y`.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    Unless `max_y > min_y` (NaN fails); the plot is unchanged.\n\nSee Also\n--------\nx_limits()\n\nReferences\n----------\n- R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nExamples\n--------\nSee x_limits(), which sets both ranges."},
+    {"xlim", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_991)), METH_VARARGS | METH_KEYWORDS, "xlim($self, min_x, max_x)\n--\n\nShort spelling of x_limits(), matching R's xlim plot argument.\nFixes the horizontal plotting range without automatic padding. Data outside\nthe range follows x_limits() rendering behavior; this does not filter layers.\n\nParameters\n----------\nmin_x : float\n    Left edge in data units.\nmax_x : float\n    Right edge; must be greater than min_x.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    Unless max_x > min_x (NaN fails); the plot is unchanged.\n\nSee Also\n--------\nx_limits()\nylim()\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);\n    std::print(\"{} {}\\n\", plt.x_max(), plt.y_min()); // 1 -4"},
+    {"ylim", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_992)), METH_VARARGS | METH_KEYWORDS, "ylim($self, min_y, max_y)\n--\n\nShort spelling of y_limits(), matching R's ylim plot argument.\nFixes the vertical plotting range without automatic padding; layers are retained.\n\nParameters\n----------\nmin_y : float\n    Bottom edge in data units.\nmax_y : float\n    Top edge; must be greater than min_y.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    Unless max_y > min_y (NaN fails); the plot is unchanged.\n\nSee Also\n--------\ny_limits()\nxlim()\n\nExamples\n--------\nSee xlim(), whose example uses both aliases."},
+    {"hide_axes", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_993)), METH_VARARGS | METH_KEYWORDS, "hide_axes($self, enabled=True)\n--\n\nHides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,\nann = FALSE` (the title and subtitle are still drawn).\n\npie() turns this on. Margins are unchanged, so call margins() as well to let the data use\nthe freed space.\n\nParameters\n----------\nenabled : bool, default True\n    True (the default) hides them; false shows them again.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nshow_grid()\nmargins()\n\nReferences\n----------\n- R `plot.default()` (`axes`, `ann`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).hide_axes();\n    std::print(\"{}\\n\", plt.axes_hidden());  // true"},
+    {"x_tick_labels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_994)), METH_VARARGS | METH_KEYWORDS, "x_tick_labels($self, labels)\n--\n\nReplaces the numeric x ticks with `labels` at x = 0, 1, 2, ..., like R's\n`axis(1, at = 0:(n - 1), labels = labels)`.\n\nMatches the bar positions of barplot() and boxplot(). Clears any positions set by\nx_ticks(); an empty vector restores the numeric ticks.\n\nParameters\n----------\nlabels : list[str]\n    Tick texts, in order.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nx_ticks()\ny_tick_labels()\n\nReferences\n----------\n- R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(0.0, 1.0, 2.0), dm::c(5.0, 3.0, 4.0))\n                   .x_tick_labels({\"low\", \"mid\", \"high\"});\n    std::print(\"{}\\n\", plt.x_tick_label_list()[2]);  // high"},
+    {"x_ticks", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_995)), METH_VARARGS | METH_KEYWORDS, "x_ticks($self, positions, labels)\n--\n\nReplaces the numeric x ticks with `labels` drawn at data positions `positions`,\nlike R's `axis(1, at = positions, labels = labels)`.\n\nPositions need not be sorted or inside the visible range. Two empty vectors restore the\nnumeric ticks.\n\nParameters\n----------\npositions : list[float]\n    x data coordinates of the ticks.\nlabels : list[str]\n    Tick texts, one per position.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the two vectors differ in length; the plot is unchanged.\n\nSee Also\n--------\nx_tick_labels()\ny_ticks()\n\nReferences\n----------\n- R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::seql(0.0, 6.283, 50);\n    auto plt = dm::Plot(x, dm::sin(x))\n                   .x_ticks({0.0, 3.1416, 6.2832}, {\"0\", \"pi\", \"2 pi\"})\n                   .y_ticks({-1.0, 0.0, 1.0}, {\"min\", \"0\", \"max\"});\n    std::print(\"{}\\n\", plt.x_tick_position_list()[1]);  // 3.1416"},
+    {"y_tick_labels", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_996)), METH_VARARGS | METH_KEYWORDS, "y_tick_labels($self, labels)\n--\n\nReplaces the numeric y ticks with `labels` at y = 0, 1, 2, ..., like R's\n`axis(2, at = 0:(n - 1), labels = labels)`.\n\nClears any positions set by y_ticks(); an empty vector restores the numeric ticks.\n\nParameters\n----------\nlabels : list[str]\n    Tick texts, in order.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\ny_ticks()\nx_tick_labels()\n\nReferences\n----------\n- R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(3.0, 5.0), dm::c(0.0, 1.0)).y_tick_labels({\"no\", \"yes\"});\n    std::print(\"{}\\n\", plt.y_tick_label_list().size());  // 2"},
+    {"y_ticks", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_997)), METH_VARARGS | METH_KEYWORDS, "y_ticks($self, positions, labels)\n--\n\nReplaces the numeric y ticks with `labels` drawn at data positions `positions`,\nlike R's `axis(2, at = positions, labels = labels)`.\n\nTwo empty vectors restore the numeric ticks.\n\nParameters\n----------\npositions : list[float]\n    y data coordinates of the ticks.\nlabels : list[str]\n    Tick texts, one per position.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the two vectors differ in length; the plot is unchanged.\n\nSee Also\n--------\ny_tick_labels()\nx_ticks()\n\nReferences\n----------\n- R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html\n\nExamples\n--------\nSee x_ticks(), which sets both axes."},
+    {"margins", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_998)), METH_VARARGS | METH_KEYWORDS, "margins($self, left, right, top, bottom)\n--\n\nOverrides the automatic outer margins around the plotting area, in pixels, like\nR's `par(mai =)` (which uses inches and orders bottom, left, top, right).\n\nThe automatic margins are left 90, right 24, top 72 (96 when a subtitle is set), and\nbottom 84; they leave room for the title, axis labels, and ticks. Explicit margins are used\nas given, with no extra room for a subtitle. Tight margins suit small multi-panel tiles\nwhose title and axis labels are empty. Rendering throws std::runtime_error if the margins\nleave no plotting area.\n\nParameters\n----------\nleft : float\n    Left margin in pixels.\nright : float\n    Right margin in pixels.\ntop : float\n    Top margin in pixels.\nbottom : float\n    Bottom margin in pixels.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If any margin is negative or non-finite; the plot is unchanged.\n\nSee Also\n--------\nsize()\ntick_font_size()\nRLayout\n\nReferences\n----------\n- R `par()` (`mai`, `mar`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto tile = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0))\n                    .set_title(\"\").set_xlab(\"\").set_ylab(\"\")\n                    .margins(30, 10, 10, 20)\n                    .tick_font_size(9);\n    std::print(\"{} {}\\n\", tile.has_custom_margins(), tile.margin_left());  // true 30"},
+    {"tick_font_size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_999)), METH_VARARGS | METH_KEYWORDS, "tick_font_size($self, pixels)\n--\n\nSets the tick-label font size in pixels (default 12), like R's `cex.axis`.\n\nIn SVG output the size is used as given. The raster outputs (PNG, PDF, show()) draw tick\nlabels with half-size glyphs when the size is below 12.\n\nParameters\n----------\npixels : float\n    Font size in pixels.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If `pixels` is not positive and finite; the plot is unchanged.\n\nSee Also\n--------\nmargins()\n\nReferences\n----------\n- R `par()` (`cex.axis`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html\n\nExamples\n--------\nSee margins(), which shrinks the ticks for a small tile."},
+    {"pretty_ticks", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1000)), METH_VARARGS | METH_KEYWORDS, "pretty_ticks($self, enabled=True)\n--\n\nPlaces numeric ticks at round values (default on) instead of six evenly spaced\nticks across the range, in the spirit of R's `pretty()`.\n\nThe step is 1, 2, or 5 times a power of ten, chosen as the \"nice number\" nearest a fifth\nof the visible range (Heckbert's rule), and ticks are its multiples inside the range.\nThat gives about four to seven ticks, close to R's `pretty()`: a padded range of -0.365\nto 7.665 gets ticks at 0, 2, 4 and 6. Custom tick labels take precedence. The background\ngrid follows the ticks.\n\nParameters\n----------\nenabled : bool, default True\n    True turns round ticks on; false restores six even ticks.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nx_ticks()\nshow_grid()\n\nReferences\n----------\n- R `pretty()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/pretty.html\n- P. S. Heckbert (1990). \"Nice Numbers for Graph Labels\". In Graphics Gems, 61-63.\n  Academic Press. doi:10.1016/B978-0-08-050753-8.50020-8\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(0.0, 100.0), dm::c(0.0, 1.0)).pretty_ticks();\n    std::print(\"{}\\n\", plt.to_svg().contains(\">40</text>\"));  // true: ticks 0, 20, ..., 100"},
+    {"plot", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1001)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "plot(x, y, type=\"p\", label=\"\", color=...)\n--\n\nBuilds a scatter, line, or line-plus-points plot of `y` against `x`, like R's\n`plot(x, y, type = \"p\" | \"l\" | \"b\")`.\n\n`\"p\"` (the default) adds one scatter series with 4-pixel markers; `\"l\"` adds one 2-pixel\nline joining the points in input order; `\"b\"` adds the line and then unlabeled points on\ntop (R's `\"b\"` leaves gaps in the line around each point; this draws it through them). The\ntitle and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.\n\nParameters\n----------\nx : list[float]\n    Horizontal coordinates, one per point.\ny : list[float]\n    Vertical coordinates, paired with `x` by position.\ntype : str, default \"p\"\n    `\"p\"` (default), `\"l\"`, or `\"b\"`; case-sensitive.\nlabel : str, default \"\"\n    Legend text; empty (the default) keeps the plot out of the automatic legend.\n    With `\"b\"` only the line carries it.\ncolor : RGB, optional\n    Color of the points and line (default blue `{37, 99, 235}`).\n\nReturns\n-------\nRPlot\n    A new plot holding the series.\n\nRaises\n------\nValueError\n    If the coordinates are empty or differ in length, or\n    `type` is not one of the three codes.\n\nSee Also\n--------\nRPlot(std::vector<double>\nstd::vector<double>)\npoints()\nlines()\n\nReferences\n----------\n- R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::seql(0.0, 4.0, 5);\n    auto plt = dm::Plot::plot(x, x * x, \"b\", \"x squared\");\n    std::print(\"{} series\\n\", plt.series().size());  // 2 series"},
+    {"hist", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1002)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "hist(data, bins=10, label=\"\", color=...)\n--\n\nBuilds a frequency histogram of `data` with `bins` equal-width bins, like R's\n`hist(x, breaks = bins)`.\n\nThe bins split [min, max] of the data into equal widths (R instead treats `breaks` as a\nsuggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their\nright edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is\nthe opposite, so a value on an inner boundary is counted one bin higher here. Constant\ndata uses the range [value, value + 1]. Each bin is one bar of height equal to its count,\ncentered on the bin with width equal to the bin width. The title is \"Histogram\", the x\nlabel \"x\", and the y label \"Frequency\". The data is consumed; the plot keeps only counts.\n\nParameters\n----------\ndata : list[float]\n    Observations; all must be finite.\nbins : int, default 10\n    Number of bins (default 10).\nlabel : str, default \"\"\n    Legend text; empty (the default) shows no legend.\ncolor : RGB, optional\n    Bar color (default light blue `{96, 165, 250}`).\n\nReturns\n-------\nRPlot\n    A new plot holding one Bar series.\n\nRaises\n------\nValueError\n    For empty/non-finite data, zero bins, or a range/bin\n    width that cannot be represented as a finite positive double.\n\nSee Also\n--------\ndm::Histogram\nbars()\n\nReferences\n----------\n- R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);\n    const auto& bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]\n    std::print(\"{} {} {}\\n\", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4"},
+    {"barplot", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1003)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "barplot(heights, names=..., label=\"\", color=...)\n--\n\nBuilds a bar chart with one bar per height, like R's\n`barplot(heights, names.arg = names)`.\n\nBar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at\n0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range\nalways includes 0. Nonempty `names` become x tick labels under the bars. The title and\naxis labels keep their defaults.\n\nParameters\n----------\nheights : list[float]\n    Bar heights, in display order.\nnames : list[str], optional\n    Tick labels, one per bar; empty (the default) keeps numeric ticks.\nlabel : str, default \"\"\n    Legend text; empty (the default) shows no legend.\ncolor : RGB, optional\n    Bar color (default green `{22, 163, 74}`).\n\nReturns\n-------\nRPlot\n    A new plot holding one Bar series.\n\nRaises\n------\nValueError\n    If `heights` is empty or `names` is nonempty with a\n    different length.\n\nSee Also\n--------\nbars()\nx_tick_labels()\n\nReferences\n----------\n- R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {\"a\", \"b\", \"c\"}).set_title(\"Counts\");\n    std::print(\"{} {}\\n\", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c"},
+    {"boxplot", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1004)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "boxplot(groups: list[list[float]], names: list[str] = ..., color: RGB = ...) -> RPlot\nboxplot(groups: list[list[float]], names: list[str], colors: list[RGB]) -> RPlot\n\nBuilds side-by-side box-and-whisker plots, one per group, like R's\n`boxplot(list(...), names = names)`.\n\nGroup g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the\nthird quartile with a line at the median. Quartiles are R's default \"type 7\" sample\nquantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's\nrule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses\nTukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ\nslightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws\nhinges at 3 and 8. All boxes share `color`; the title and axis labels keep their defaults.\n\nboxplot() with one color per box, like R's `boxplot(..., col = colors)`.\n\nParameters\n----------\ngroups : list[list[float]]\n    One vector of observations per box; each must be nonempty.\nnames : list[str], optional or list[str]\n    Tick labels under the boxes; empty (the default) keeps numeric ticks.\ncolor : RGB, optional\n    Box, whisker, and outlier color (default light blue `{96, 165, 250}`).\ncolors : list[RGB]\n    Box colors, recycled when shorter than `groups`; must be nonempty.\n\nReturns\n-------\nRPlot\n    A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).\nRPlot\n    A new plot holding one Box series per group.\n\nRaises\n------\nValueError\n    If `groups` or any group is empty, or `names` is nonempty\n    with a different length.\nValueError\n    As boxplot(), or if `colors` is empty.\n\nSee Also\n--------\nbox()\nx_tick_labels()\nboxplot(std::vector<std::vector<double>>\nstd::vector<std::string>\nRGB)\n\nReferences\n----------\n- J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)\n- R. McGill, J. W. Tukey, W. A. Larsen (1978). \"Variations of Box Plots\". The American\n  Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236\n- R. J. Hyndman, Y. Fan (1996). \"Sample Quantiles in Statistical Packages\". The American\n  Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)\n- R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html\n- R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {\"a\", \"b\"});\n    const auto& y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...\n    std::print(\"{} {} {} {} {} | {}\\n\", y[0], y[1], y[2], y[3], y[4], y[5]);\n    // 1 3.25 5.5 7.75 9 | 40\n    plt.save(\"boxes.svg\");\n.. code-block:: cpp\n\n    auto plt = dm::graphics::RPlot::boxplot({{1, 2, 3}, {2, 4, 6}}, {\"a\", \"b\"},\n                                        std::vector<dm::RGB>{{78, 121, 167}, {242, 142, 43}});"},
+    {"pie", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1005)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "pie(values, names=..., colors=...)\n--\n\nBuilds a pie chart with one wedge per value, like R's\n`pie(x, labels = names, col = colors, clockwise = TRUE)`.\n\nWedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12\no'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).\nEach wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are\ndrawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the\nautomatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette\nstarting blue, red, green. The axes and grid are hidden and both ranges are fixed at\n[-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is\nsquare, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an\nellipse.\n\nParameters\n----------\nvalues : list[float]\n    Wedge sizes; nonnegative, with a positive sum.\nnames : list[str], optional\n    Wedge labels; empty (the default) draws none.\ncolors : list[RGB], optional\n    Wedge colors, recycled; empty (the default) uses the built-in palette.\n\nReturns\n-------\nRPlot\n    A new plot holding one Polygon series per wedge plus one Text series per name.\n\nRaises\n------\nValueError\n    If `values` is empty, has a negative entry, or sums to 0,\n    or `names` is nonempty with a different length.\n\nSee Also\n--------\npolygon()\ntext()\n\nReferences\n----------\n- R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {\"rent\", \"food\", \"fun\"}).size(598, 640);\n    std::print(\"{}\\n\", plt.series().size());  // 6\n    plt.save(\"budget.svg\");"},
+    {"curve", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1006)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "curve(f, _from, /, to, n=101, label=\"\", color=...)\n--\n\nPlots a function over [ `from`, `to]` as a line, like R's `curve(expr, from, to, n)`.\n\nEvaluates `f.call(x)` at `n` evenly spaced points including both ends, in increasing\norder, and joins them with a 2-pixel line. `f` is used only during this call and is not\nretained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.\n\nParameters\n----------\nf : Callback\n    The function to draw: a dm::Callback subclass overriding `call(double)`.\n_from : float\n    Left end of the range.\nto : float\n    Right end; must be greater than `from`.\nn : int, default 101\n    Number of sample points, at least 2 (default 101, as in R).\nlabel : str, default \"\"\n    Legend text; empty (the default) shows no legend.\ncolor : RGB, optional\n    Line color (default red `{220, 38, 38}`).\n\nReturns\n-------\nRPlot\n    A new plot holding one Line series.\n\nRaises\n------\nValueError\n    If `n` is below 2 or `to` is not greater than `from`.\n\nSee Also\n--------\nlines()\n\nReferences\n----------\n- R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    struct Square : dm::Callback {\n      double call(double x) override { return x * x; }\n    };\n    Square square;\n    auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);\n    std::print(\"{}\\n\", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]"},
+    {"qqnorm", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1007)), METH_VARARGS | METH_KEYWORDS | METH_STATIC, "qqnorm(data, label=\"sample\", color=...)\n--\n\nBuilds a normal Q-Q plot: the sorted `data` against standard-normal quantiles,\nlike R's `qqnorm(y)`.\n\nThe i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting\nposition (i - 0.5) / n. R's `ppoints()` uses that rule only for n > 10 and\n(i - 3/8) / (n + 1/4) for n <= 10, so the x coordinates differ from R for small samples.\nPoints that fall on a straight line indicate normally distributed data; add the reference\nline with qqline(). The title is \"Normal Q-Q\", the axis labels \"Theoretical Quantiles\"\nand \"Sample Quantiles\".\n\nParameters\n----------\ndata : list[float]\n    The sample; at least two values. Consumed (sorted in place).\nlabel : str, default \"sample\"\n    Legend text (default \"sample\", so the automatic legend shows one row; pass\n    \"\" to hide it).\ncolor : RGB, optional\n    Point color (default blue `{37, 99, 235}`).\n\nReturns\n-------\nRPlot\n    A new plot holding one Scatter series.\n\nRaises\n------\nValueError\n    If `data` has fewer than two values.\n\nSee Also\n--------\nqqline()\n\nReferences\n----------\n- M. B. Wilk, R. Gnanadesikan (1968). \"Probability plotting methods for the analysis of\n  data\". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1\n- R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html\n- R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};\n    auto plt = dm::Plot::qqnorm(sample).qqline(sample);\n    std::print(\"{:.4f}\\n\", plt.series()[0].x[0]);  // -1.2816"},
+    {"points", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1008)), METH_VARARGS | METH_KEYWORDS, "points(x: list[float], y: list[float], label: str = ..., color: RGB = ..., marker_size: float = ...) -> RPlot\npoints(x: list[float], y: list[float], color: RGB, marker_size: float = ...) -> RPlot\npoints(x: list[float], y: list[float], label: str) -> RPlot\n\nAdds a scatter series to this plot, like R's `points(x, y, col = color)`.\n\nThe coordinates are copied (or moved from rvalues) into a new series drawn above the\nexisting ones; axis ranges grow to include it. A nonempty `label` adds a row to the\nautomatic legend (shown only while no manual legend() entries exist).\n\nSame as points(x, y, label, color, marker_size) with an empty label, so the\nseries stays out of the automatic legend.\n\nPreserve a three-argument literal label when colors also accept string literals.\n\nParameters\n----------\nx : list[float]\n    Horizontal coordinates, one per point.\ny : list[float]\n    Vertical coordinates, paired with `x` by position.\nlabel : str, default \"\" or str\n    Legend text for this series; empty (the default) keeps it out of the legend.\ncolor : RGB, optional or RGB\n    Marker color for every point (default blue `{37, 99, 235}`).\nmarker_size : float, default 4.0\n    Marker radius in pixels (default 4).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the coordinates are empty or have different lengths.\nValueError\n    For empty or mismatched coordinate vectors.\n\nSee Also\n--------\npoints_colored()\ndm::points()\nset_col()\npoints()\n\nReferences\n----------\n- R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::seql(0.0, 6.0, 13);\n    auto plt = dm::Plot().set_title(\"sin and cos\");\n    plt.points(x, dm::sin(x), \"sin\", dm::RGB{37, 99, 235})\n       .points(x, dm::cos(x), \"cos\", dm::RGB{220, 38, 38}, 6.0);\n    plt.save(\"trig.svg\");  // automatic legend lists \"sin\" and \"cos\"\n.. code-block:: cpp\n\n    auto plt = dm::Plot();\n    plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);\n.. code-block:: cpp\n\n    auto plt = dm::Plot().points(dm::c(0, 1), dm::c(1, 2), \"red\");\n    std::print(\"{}\\n\", plt.series()[0].label); // red"},
+    {"points_colored", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1009)), METH_VARARGS | METH_KEYWORDS, "points_colored($self, x, y, colors, marker_size=4.0)\n--\n\nAppends scatter points with a recycled per-point RGB(A) palette.\nCoordinates must have equal nonzero lengths; colors must not be empty.\nA partial palette cycle is allowed without a warning. Colors retain their own alpha.\nThe series is unlabeled, so it never appears in the automatic legend.\n\nParameters\n----------\nx : list[float]\n    Horizontal coordinates.\ny : list[float]\n    Vertical coordinates, paired with `x`.\ncolors : list[RGB]\n    Palette; point i uses `colors[i % colors.size()]`.\nmarker_size : float, default 4.0\n    Marker radius in pixels (default 4).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the coordinate lengths or palette are invalid.\n\nSee Also\n--------\ndm::points() and Points::set_col()\nthe pipe-friendly form of this call.\n\nReferences\n----------\n- R `points()` (vector `col`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto palette = dm::c(dm::RGB{255, 0, 0}, dm::RGB{0, 0, 255});\n    auto plt = dm::Plot().points_colored(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 2.0, 1.0), palette);\n    std::print(\"{}\\n\", plt.series()[0].point_colors.size());  // 2 (red, blue, red)"},
+    {"line", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1010)), METH_VARARGS | METH_KEYWORDS, "line($self, x, y, label=\"\", color=..., stroke_width=2.0)\n--\n\nAdds a line joining the points in input order, like R's `lines(x, y, col = color,\nlwd = stroke_width)`; same as lines().\n\nThe points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or\nmoved from rvalues) into a new Line series drawn above existing layers; axis ranges grow\nto include it. A nonempty `label` adds a row to the automatic legend.\n\nParameters\n----------\nx : list[float]\n    Horizontal coordinates, one per vertex.\ny : list[float]\n    Vertical coordinates, paired with `x` by position.\nlabel : str, default \"\"\n    Legend text; empty (the default) keeps it out of the legend.\ncolor : RGB, optional\n    Line color (default red `{220, 38, 38}`).\nstroke_width : float, default 2.0\n    Line width in pixels (default 2).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the coordinates are empty or have different lengths.\n\nSee Also\n--------\nlines()\nplot()\n\nReferences\n----------\n- R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html\n\nExamples\n--------\nSee lines()."},
+    {"lines", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1011)), METH_VARARGS | METH_KEYWORDS, "lines(x: list[float], y: list[float], label: str = ..., color: RGB = ..., stroke_width: float = ...) -> RPlot\nlines(x: list[float], y: list[float], color: RGB, stroke_width: float = ...) -> RPlot\nlines(x: list[float], y: list[float], label: str) -> RPlot\n\nAdds a line joining the points in input order, like R's `lines(x, y, col = color,\nlwd = stroke_width)`.\n\nSame as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates\nare copied (or moved from rvalues) into a new Line series drawn above existing layers;\naxis ranges grow to include it. A nonempty `label` adds a row to the automatic legend.\n\nUnlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.\n\nPreserve a three-argument literal label when colors also accept string literals.\n\nParameters\n----------\nx : list[float]\n    Horizontal coordinates, one per vertex.\ny : list[float]\n    Vertical coordinates, paired with `x` by position.\nlabel : str, default \"\" or str\n    Legend text; empty (the default) keeps it out of the legend.\ncolor : RGB, optional or RGB\n    Line color (default red `{220, 38, 38}`).\nstroke_width : float, default 2.0\n    Line width in pixels (default 2).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the coordinates are empty or have different lengths.\nValueError\n    For empty or mismatched coordinate vectors.\n\nSee Also\n--------\nline()\nlines(std::vector<double>\nstd::vector<double>\nRGB\ndouble)\nplot()\nlines()\n\nReferences\n----------\n- R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::seql(0.0, 6.0, 25);\n    auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));\n    plt.lines(x, dm::sin(x), \"sin(x)\", dm::RGB{220, 38, 38}, 3.0);\n    std::print(\"{}\\n\", plt.series()[1].stroke_width);  // 3\n.. code-block:: cpp\n\n    auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);\n    std::print(\"{}\\n\", plt.series()[0].label.empty());  // true\n.. code-block:: cpp\n\n    auto plt = dm::Plot().lines(dm::c(0, 1), dm::c(1, 2), \"red\");\n    std::print(\"{}\\n\", plt.series()[0].label); // red"},
+    {"bars", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1012)), METH_VARARGS | METH_KEYWORDS, "bars($self, x, y, label=\"\", color=..., bar_width=0.80000000000000004)\n--\n\nAdds vertical bars centered at arbitrary x positions, the low-level form behind\nbarplot() and hist() (R's `rect()` from 0 to each height).\n\nBar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point\ndown); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty\n`label` adds a row to the automatic legend.\n\nParameters\n----------\nx : list[float]\n    Bar centers, in data units.\ny : list[float]\n    Bar heights, paired with `x` by position.\nlabel : str, default \"\"\n    Legend text; empty (the default) keeps it out of the legend.\ncolor : RGB, optional\n    Bar color (default green `{22, 163, 74}`).\nbar_width : float, default 0.80000000000000004\n    Bar width in data units (default 0.8).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the coordinates are empty or have different lengths.\n\nSee Also\n--------\nbarplot()\nhist()\n\nReferences\n----------\n- R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), \"net\",\n                               dm::RGB{22, 163, 74}, 1.0);\n    std::print(\"{}\\n\", plt.series()[0].bar_width);  // 1"},
+    {"box", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1013)), METH_VARARGS | METH_KEYWORDS, "box($self, position, whisker_lo, q1, median, q3, whisker_hi, outliers=..., color=..., width=0.59999999999999998)\n--\n\nAdds one box-and-whisker from precomputed statistics at an arbitrary x position,\nthe low-level form behind boxplot() (R's `bxp()`).\n\nDraws a box from `q1` to `q3` with a thicker line at `median`, whiskers out to\n`whisker_lo` and `whisker_hi` with end caps, and one dot per outlier. The values are\nnot checked for order or finiteness. In SVG the box is filled at 35% opacity.\n\nParameters\n----------\nposition : float\n    Box center, in x data units.\nwhisker_lo : float\n    Lower whisker end.\nq1 : float\n    Lower box edge (first quartile).\nmedian : float\n    Median line.\nq3 : float\n    Upper box edge (third quartile).\nwhisker_hi : float\n    Upper whisker end.\noutliers : list[float], optional\n    Values drawn as individual points (default none).\ncolor : RGB, optional\n    Box, whisker, and outlier color (default light blue `{96, 165, 250}`).\nwidth : float, default 0.59999999999999998\n    Box width in data units (default 0.6).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\nboxplot()\n\nReferences\n----------\n- J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.\n- R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);\n    std::print(\"{} {}\\n\", plt.series().size(), plt.series()[0].y.size());  // 2 6"},
+    {"abline", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1014)), METH_VARARGS | METH_KEYWORDS, "abline($self, intercept, slope, color=..., stroke_width=1.0)\n--\n\nAdds the reference line y = intercept + slope * x across the plotting area, like\nR's `abline(a = intercept, b = slope)`.\n\nThe line runs between the left and right edges of the visible x range and is drawn\nbeneath every data layer. It does not change the axis ranges, and it is not clipped to the\nplotting area, so a steep line can extend into the margins. Stored as an ABLine.\n\nParameters\n----------\nintercept : float\n    y value at x = 0.\nslope : float\n    Change in y per unit x.\ncolor : RGB, optional\n    Line color (default opaque black).\nstroke_width : float, default 1.0\n    Line width in pixels (default 1).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nWarnings\n--------\nOnly to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n`.pdf`, and show()) currently omit them.\n\nSee Also\n--------\nabline_h()\nabline_v()\nqqline()\nABLine\n\nReferences\n----------\n- R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::c(1.0, 2.0, 3.0, 4.0);\n    auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))\n                   .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x\n                   .abline_h(5.0)\n                   .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);\n    std::print(\"{}\\n\", plt.reference_lines().size());  // 3\n    plt.save(\"ablines.svg\");"},
+    {"abline_h", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1015)), METH_VARARGS | METH_KEYWORDS, "abline_h($self, y_value, color=..., stroke_width=1.0)\n--\n\nAdds a horizontal reference line at y = `y_value`, like R's `abline(h = y_value)`.\n\nSame as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not\nincluded in the axis ranges, so a value outside the visible y range is off the plot.\n\nParameters\n----------\ny_value : float\n    Height of the line, in data units.\ncolor : RGB, optional\n    Line color (default opaque black).\nstroke_width : float, default 1.0\n    Line width in pixels (default 1).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nWarnings\n--------\nOnly to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n`.pdf`, and show()) currently omit them.\n\nSee Also\n--------\nabline()\nabline_v()\n\nReferences\n----------\n- R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html\n\nExamples\n--------\nSee abline()."},
+    {"abline_v", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1016)), METH_VARARGS | METH_KEYWORDS, "abline_v($self, x_value, color=..., stroke_width=1.0)\n--\n\nAdds a vertical reference line at x = `x_value`, like R's `abline(v = x_value)`.\n\nSpans the full height of the plotting area beneath the data. Unlike horizontal and\nsloped lines, it widens the automatic x range to include `x_value`.\n\nParameters\n----------\nx_value : float\n    Horizontal position of the line, in data units.\ncolor : RGB, optional\n    Line color (default opaque black).\nstroke_width : float, default 1.0\n    Line width in pixels (default 1).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nWarnings\n--------\nOnly to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n`.pdf`, and show()) currently omit them.\n\nSee Also\n--------\nabline()\nabline_h()\n\nReferences\n----------\n- R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html\n\nExamples\n--------\nSee abline()."},
+    {"qqline", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1017)), METH_VARARGS | METH_KEYWORDS, "qqline($self, data, color=..., stroke_width=1.5)\n--\n\nAdds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line\nthrough the first and third quartiles of `data` and of the standard normal.\n\nPass the same data given to qqnorm(). The sample quartiles are R's default \"type 7\"\nquantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The\nslope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it\nestimates the standard deviation and the intercept estimates the mean. Added through\nabline().\n\nParameters\n----------\ndata : list[float]\n    The sample; at least two values. Taken by value, so the caller's data is unchanged.\ncolor : RGB, optional\n    Line color (default red `{220, 38, 38}`).\nstroke_width : float, default 1.5\n    Line width in pixels (default 1.5).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If `data` has fewer than two values.\n\nWarnings\n--------\nOnly to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,\n`.pdf`, and show()) currently omit them.\n\nSee Also\n--------\nqqnorm()\nabline()\n\nReferences\n----------\n- R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html\n- R. J. Hyndman, Y. Fan (1996). \"Sample Quantiles in Statistical Packages\". The American\n  Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566\n\nExamples\n--------\n.. code-block:: cpp\n\n    const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};\n    auto plt = dm::Plot::qqnorm(sample).qqline(sample);\n    const auto& line = plt.reference_lines()[0];\n    std::print(\"{:.4f} {:.4f}\\n\", line.value, line.slope);  // 3.0000 1.4826"},
+    {"legend", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1018)), METH_VARARGS | METH_KEYWORDS, "legend($self, labels, colors)\n--\n\nAdds manual legend rows, like R's `legend(legend = labels, col = colors)`.\n\nEach label is paired with the color at the same position and drawn as a swatch row in\nthe legend box. Once any manual row exists, it replaces the automatic legend built from\nlabeled series. Calling again appends more rows. Unlike dm::legend(), colors are not\nrecycled here: the vectors must match in length. Empty vectors add nothing.\n\nParameters\n----------\nlabels : list[str]\n    Row texts, in display order.\ncolors : list[RGB]\n    Swatch colors, one per label.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If `labels` and `colors` differ in length.\n\nSee Also\n--------\ndm::legend() for the recycling\npipe-friendly layer.\n\nReferences\n----------\n- R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto up = dm::RGB{37, 99, 235};\n    const auto down = dm::RGB{220, 38, 38};\n    auto plt = dm::Plot();\n    plt.points(dm::c(1.0, 2.0), dm::c(1.0, 2.0), up)\n       .points(dm::c(1.0, 2.0), dm::c(2.0, 1.0), down)\n       .legend({\"rising\", \"falling\"}, {up, down});\n    std::print(\"{}\\n\", plt.legend_entries().size());  // 2"},
+    {"text", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1019)), METH_VARARGS | METH_KEYWORDS, "text($self, x, y, label, color=..., font_size=14.0)\n--\n\nDraws `label` centered on the data point (`x`, `y)`, like R's\n`text(x, y, labels = label)`.\n\nThe text is centered both horizontally and vertically on the point, like R's default\n`adj`. The point counts toward the automatic axis ranges, but the text's extent does not,\nso long labels near the edge can overflow. Text layers never appear in the legend, and\nset_col() recolors them along with the data.\n\nParameters\n----------\nx : float\n    Horizontal position, in data units.\ny : float\n    Vertical position, in data units.\nlabel : str\n    The text to draw (XML-escaped in SVG output).\ncolor : RGB, optional\n    Text color (default near-black `{17, 24, 39}`).\nfont_size : float, default 14.0\n    Font size in pixels (default 14).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nSee Also\n--------\npie()\nlegend()\n\nReferences\n----------\n- R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))\n                   .text(2.0, 4.4, \"peak\", dm::RGB{220, 38, 38}, 16.0);\n    std::print(\"{} {}\\n\", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16"},
+    {"polygon", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1020)), METH_VARARGS | METH_KEYWORDS, "polygon($self, x, y, color=..., filled=True)\n--\n\nDraws the closed polygon through the vertices (x[i], y[i]), like R's\n`polygon(x, y, col = color)`.\n\nThe last vertex joins the first automatically. Filled polygons (the default) are painted\nwith `color` (plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);\nunfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well\nfor shaded regions such as confidence bands. Vertices count toward the axis ranges.\n\nParameters\n----------\nx : list[float]\n    Vertex x coordinates, in order around the polygon.\ny : list[float]\n    Vertex y coordinates, paired with `x`.\ncolor : RGB, optional\n    Fill (and outline) color (default blue `{37, 99, 235}`).\nfilled : bool, default True\n    True (the default) fills; false draws the outline only.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the coordinates are empty or have different lengths.\n\nSee Also\n--------\npie()\nsegments()\n\nReferences\n----------\n- R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::Plot()\n                   .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})\n                   .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);\n    std::print(\"{}\\n\", plt.series()[1].filled);  // false"},
+    {"image", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1021)), METH_VARARGS | METH_KEYWORDS, "image($self, x, y, z, palette=..., z_min=..., z_max=...)\n--\n\nDraws a grid of coloured rectangles, one per value of `z`, like R's `image(x, y, z)`.\n\nCell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step\nbeyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear\nscale from `z_min` to `z_max`; NaN cells are left empty. Each cell is added as a filled\npolygon, so the grid should have at most tens of thousands of cells.\n\nParameters\n----------\nx : list[float]\n    Cell centres along x, increasing (at least 2).\ny : list[float]\n    Cell centres along y, increasing (at least 2).\nz : list[list[float]]\n    Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.\npalette : list[RGB], optional\n    Colours from low to high (default terrain_colors(12)).\nz_min : float, optional\n    Value mapped to the first colour; NaN (the default) uses the smallest z.\nz_max : float, optional\n    Value mapped to the last colour; NaN (the default) uses the largest z.\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the sizes do not match, x or y is not increasing, or the\n    palette is empty.\n\nSee Also\n--------\nterrain_colors()\npolygon()\n\nReferences\n----------\n- R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});\n    std::print(\"{}\\n\", plt.series().size());  // 6"},
+    {"segments", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1022)), METH_VARARGS | METH_KEYWORDS, "segments($self, x0, y0, x1, y1, color=..., stroke_width=1.0)\n--\n\nDraws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like\nR's `segments(x0, y0, x1, y1)`.\n\nAll segments share `color` and `stroke_width` and form one Segment layer; their end\npoints count toward the axis ranges. Useful for error bars, residual sticks, and\ndendrograms.\n\nParameters\n----------\nx0 : list[float]\n    Start x coordinates.\ny0 : list[float]\n    Start y coordinates.\nx1 : list[float]\n    End x coordinates.\ny1 : list[float]\n    End y coordinates.\ncolor : RGB, optional\n    Segment color (default opaque black).\nstroke_width : float, default 1.0\n    Segment width in pixels (default 1).\n\nReturns\n-------\nRPlot\n    This plot, for chaining.\n\nRaises\n------\nValueError\n    If the four vectors differ in length or are empty.\n\nSee Also\n--------\nabline()\npolygon()\n\nReferences\n----------\n- R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::c(1.0, 2.0, 3.0);\n    const auto y = dm::c(2.0, 3.5, 3.0);\n    auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars\n    std::print(\"{}\\n\", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)"},
     {nullptr, nullptr, 0, nullptr}};
 static PyGetSetDef rosetta_class_93_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
@@ -4998,10 +4931,133 @@ static PyType_Slot rosetta_class_93_slots[] = {
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
     {Py_tp_methods, rosetta_class_93_methods},
     {Py_tp_getset, rosetta_class_93_getset},
-    {Py_tp_doc, const_cast<char*>("RPlot()\nRPlot(x: list[float], y: list[float])\n\nA single R-base-graphics-style plot, spelled `dm::Plot` in user code.\n\nCovers R's high-level plotting calls (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,\n`curve()`, `qqnorm()`, ...) as constructors and static factories, plus the \"add to the\ncurrent plot\" verbs R exposes as separate functions (`points()`, `lines()`, `abline()`,\n`legend()`, `text()`, ...) as chainable member functions. A plot is an ordinary value: it\nowns copies of its data, copies cheaply enough to pass around, and draws nothing until it\nis rendered with to_svg(), save(), or show().\n\nTwo composition styles mix freely. Setters such as set_title() and verbs such as points()\nmutate the plot and return `RPlot\n&\n` for chaining; the pipe `plot | dm::points(...)` (see\ncompose.hpp) appends a reusable layer to a copy. A fresh plot has the title\n\"datamunge plot\", axis labels \"x\" and \"y\", a 960x640 canvas, and a light grid.\n\n const auto x = dm::seql(-2.0, 2.0, 9);\n auto plt = dm::Plot(x, x * x)\n                .set_title(\"Parabola\")\n                .set_xlab(\"x\")\n                .set_ylab(\"x squared\");\n plt.lines(x, x * x, dm::RGB{220, 38, 38}).abline_h(0.0);\n plt.save(\"parabola.svg\");\n\nsee: dm::points(), dm::legend(), dm::Histogram, dm::Splom, RLayout")},
+    {Py_tp_doc, const_cast<char*>("RPlot()\nRPlot(x: list[float], y: list[float])\n\nA single R-base-graphics-style plot, spelled `dm::Plot` in user code.\n\nCovers R's high-level plotting calls (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,\n`curve()`, `qqnorm()`, ...) as constructors and static factories, plus the \"add to the\ncurrent plot\" verbs R exposes as separate functions (`points()`, `lines()`, `abline()`,\n`legend()`, `text()`, ...) as chainable member functions. A plot is an ordinary value: it\nowns copies of its data, copies cheaply enough to pass around, and draws nothing until it\nis rendered with to_svg(), save(), or show().\n\nTwo composition styles mix freely. Setters such as set_title() and verbs such as points()\nmutate the plot and return `RPlot&` for chaining; the pipe `plot | dm::points(...)` (see\ncompose.hpp) appends a reusable layer to a copy. A fresh plot has the title\n\"datamunge plot\", axis labels \"x\" and \"y\", a 960x640 canvas, and a light grid.\n\nConstructs an empty plot with default labels and styling, ready for layers.\n\nConstructs a scatter plot of `y` against `x`, like R's `plot(x, y)`.\n\nEquivalent to `RPlot::plot(x, y)`: one unlabeled scatter series drawn in blue\n`{37, 99, 235}` with 4-pixel markers; axis ranges fit the data. The coordinates are\ncopied (or moved from rvalues); `dm::Vector<double>` converts implicitly. Restyle the\npoints afterwards with set_col().\n\nParameters\n----------\nx : list[float]\n    Horizontal coordinates, one per point.\ny : list[float]\n    Vertical coordinates, paired with `x` by position.\n\nRaises\n------\nValueError\n    If the coordinates are empty or have different lengths.\n\nSee Also\n--------\ndm::points()\ndm::legend()\ndm::Histogram\ndm::Splom\nRLayout\npoints()\nset_col()\nplot()\n\nExamples\n--------\n.. code-block:: cpp\n\n    const auto x = dm::seql(-2.0, 2.0, 9);\n    auto plt = dm::Plot(x, x * x)\n                   .set_title(\"Parabola\")\n                   .set_xlab(\"x\")\n                   .set_ylab(\"x squared\");\n    plt.lines(x, x * x, dm::RGB{220, 38, 38}).abline_h(0.0);\n    plt.save(\"parabola.svg\");\n.. code-block:: cpp\n\n    auto plt = dm::Plot();\n    std::print(\"{} | {} | {}\\n\", plt.title_text(), plt.x_label_text(), plt.y_label_text());\n    // datamunge plot | x | y\n.. code-block:: cpp\n\n    const auto iris = dm::datasets::iris();\n    auto plt = dm::Plot(iris.get_column(\"Petal.Length\").values(),\n                        iris.get_column(\"Petal.Width\").values())\n                   .set_col(\"blue\");\n    plt.save(\"petals.svg\");")},
     {0, nullptr}};
 PyType_Spec rosetta_class_93_spec = {"pydatamunge._datamunge.RPlot", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_93_slots};
-PyObject* rosetta_function_1107(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1097(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"rhs", "y0", "t_start", "t_end"};
+                PyObject* a[4]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 4, 4, a, &n)
+                    && (n <= 0 || rosetta_py::Param<datamunge::ode::RHS &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<const std::vector<double> &>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<double>::check(a[2], strict))
+                    && (n <= 3 || rosetta_py::Param<double>::check(a[3], strict))) {
+                    auto* native = rosetta_py::native<datamunge::ode::ODESolver>(self);
+                    if (n == 4) {
+                        rosetta_py::Param<datamunge::ode::RHS &> p0(a[0]);
+                        rosetta_py::Param<const std::vector<double> &> p1(a[1]);
+                        rosetta_py::Param<double> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->solve(p0.get(), p1.get(), p2.get(), p3.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("solve", "    solve(rhs: RHS, y0: list[float], t_start: float, t_end: float) -> ODESolution\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1098(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"system", "params", "y0", "t_start", "t_end"};
+                PyObject* a[5]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 5, 5, a, &n)
+                    && (n <= 0 || rosetta_py::Param<const std::__cxx11::basic_string<char> &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<const std::vector<double> &>::check(a[1], strict))
+                    && (n <= 2 || rosetta_py::Param<const std::vector<double> &>::check(a[2], strict))
+                    && (n <= 3 || rosetta_py::Param<double>::check(a[3], strict))
+                    && (n <= 4 || rosetta_py::Param<double>::check(a[4], strict))) {
+                    auto* native = rosetta_py::native<datamunge::ode::ODESolver>(self);
+                    if (n == 5) {
+                        rosetta_py::Param<const std::__cxx11::basic_string<char> &> p0(a[0]);
+                        rosetta_py::Param<const std::vector<double> &> p1(a[1]);
+                        rosetta_py::Param<const std::vector<double> &> p2(a[2]);
+                        rosetta_py::Param<double> p3(a[3]);
+                        rosetta_py::Param<double> p4(a[4]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->solve_builtin(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("solve_builtin", "    solve_builtin(system: str, params: list[float], y0: list[float], t_start: float, t_end: float) -> ODESolution\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1099(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {nullptr};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                    auto* native = rosetta_py::native<datamunge::ode::ODESolver>(self);
+                    if (n == 0) {
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("options", "    options() -> ODEOptions\n", args, kwargs);
+    }, nullptr);
+}
+static int rosetta_class_108_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<int>([&]() -> int {
+        auto* object = rosetta_py::instance(self);
+        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"options"};
+                PyObject* a[1]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
+                    && (n <= 0 || rosetta_py::Param<datamunge::ode::ODEOptions>::check(a[0], strict))) {
+                    if (n == 0) {
+                        datamunge::ode::ODESolver* created = nullptr;
+                        created = new datamunge::ode::ODESolver();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::ode::ODESolver>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 1) {
+                        rosetta_py::Param<datamunge::ode::ODEOptions> p0(a[0]);
+                        datamunge::ode::ODESolver* created = nullptr;
+                        created = new datamunge::ode::ODESolver(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::ode::ODESolver>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("ODESolver", "    ODESolver(options: ODEOptions = ...)\n", args, kwargs);
+    }, -1);
+}
+static PyMethodDef rosetta_class_108_methods[] = {
+    {"solve", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1097)), METH_VARARGS | METH_KEYWORDS, "solve($self, rhs, y0, t_start, t_end)\n--\n\nParameters\n----------\nrhs : RHS\ny0 : list[float]\nt_start : float\nt_end : float\n\nReturns\n-------\nODESolution"},
+    {"solve_builtin", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1098)), METH_VARARGS | METH_KEYWORDS, "solve_builtin($self, system, params, y0, t_start, t_end)\n--\n\nSame as solve(), but the RHS is one of a fixed set of named systems instead of a\nlive user-supplied one -- the only way every language binding (not just the ones\nwith SWIG director support) can use this solver. `params` is interpreted\npositionally per system (missing entries fall back to the defaults below):\n- \"exponential_decay\": dy/dt = -k y.                     params = {k=1}, y0 size 1.\n- \"logistic_growth\":   dy/dt = r y (1 - y/K).            params = {r=1, K=1}, y0 size 1.\n- \"harmonic_oscillator\": (x,v), dx/dt=v, dv/dt=-omega^2 x. params = {omega=1}, y0 size 2.\n- \"van_der_pol\":       (x,v), dx/dt=v, dv/dt=mu(1-x^2)v-x. params = {mu=1}, y0 size 2.\n- \"lorenz\": (x,y,z), the classic chaotic system.         params = {sigma=10, rho=28, beta=8/3}, y0 size 3.\n  Throws std::invalid_argument for an unknown system name.\n\nParameters\n----------\nsystem : str\nparams : list[float]\ny0 : list[float]\nt_start : float\nt_end : float\n\nReturns\n-------\nODESolution"},
+    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1099)), METH_VARARGS | METH_KEYWORDS, "options($self)\n--\n\nThe options this ODESolver was configured with.\n\nReturns\n-------\nODEOptions\n    The stored options."},
+    {nullptr, nullptr, 0, nullptr}};
+static PyGetSetDef rosetta_class_108_getset[] = {
+    {nullptr, nullptr, nullptr, nullptr, nullptr}};
+static PyType_Slot rosetta_class_108_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_108_init)},
+    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
+    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
+    {Py_tp_methods, rosetta_class_108_methods},
+    {Py_tp_getset, rosetta_class_108_getset},
+    {Py_tp_doc, const_cast<char*>("ODESolver(options=...)\n--\n\nNumerically integrates dy/dt = f(t, y) forward from t_start to t_end (t_end must be\ngreater than t_start; this project's \"basic\" ODE support does not handle backward\nintegration) given an initial state y0, via one of: explicit Euler, the explicit\nmidpoint rule (RK2), classical Runge-Kutta (RK4), adaptive Dormand-Prince\nRunge-Kutta 4(5) (RK45), explicit Adams-Bashforth (order 2-4), or\nAdams-Bashforth-Moulton predictor-corrector (order 2-4 -- the \"implicit\" linear\nmultistep option; this project uses a PECE predictor-corrector rather than a full\nNewton-iteration implicit solve, avoiding the need for a Jacobian). Every multistep\nmethod self-starts using classical RK4 for its first few steps.\n\nParameters\n----------\noptions : ODEOptions, optional")},
+    {0, nullptr}};
+PyType_Spec rosetta_class_108_spec = {"pydatamunge._datamunge.ODESolver", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_108_slots};
+PyObject* rosetta_function_1224(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5013,7 +5069,7 @@ PyObject* rosetta_function_1107(PyObject* self, PyObject* args, PyObject* kwargs
                     && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))
                     && (n <= 2 || rosetta_py::Param<const std::vector<double> &>::check(a[2], strict))
                     && (n <= 3 || rosetta_py::Param<const std::vector<double> &>::check(a[3], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::ACOR>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistribution>(self);
                     if (n == 4) {
                         rosetta_py::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
                         rosetta_py::Param<std::vector<double> &> p1(a[1]);
@@ -5031,7 +5087,7 @@ PyObject* rosetta_function_1107(PyObject* self, PyObject* args, PyObject* kwargs
         rosetta_py::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: list[float], lower_bound: list[float], upper_bound: list[float]) -> float\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_1108(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1225(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5039,7 +5095,7 @@ PyObject* rosetta_function_1108(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::ACOR>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::EstimationOfDistribution>(self);
                     if (n == 0) {
                         PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
                         return result;
@@ -5047,10 +5103,10 @@ PyObject* rosetta_function_1108(PyObject* self, PyObject* args, PyObject* kwargs
                 }
             }
         }
-        rosetta_py::no_overload("options", "    options() -> ACOROptions\n", args, kwargs);
+        rosetta_py::no_overload("options", "    options() -> EstimationOfDistributionOptions\n", args, kwargs);
     }, nullptr);
 }
-static int rosetta_class_110_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_140_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -5060,134 +5116,164 @@ static int rosetta_class_110_init(PyObject* self, PyObject* args, PyObject* kwar
                 static const char* const names[] = {"options"};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::ACOROptions>::check(a[0], strict))) {
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::EstimationOfDistributionOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::optim::ACOR* created = nullptr;
-                        created = new datamunge::optim::ACOR();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::ACOR>::value;
+                        datamunge::optim::EstimationOfDistribution* created = nullptr;
+                        created = new datamunge::optim::EstimationOfDistribution();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::EstimationOfDistribution>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                     if (n == 1) {
-                        rosetta_py::Param<datamunge::optim::ACOROptions> p0(a[0]);
-                        datamunge::optim::ACOR* created = nullptr;
-                        created = new datamunge::optim::ACOR(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::ACOR>::value;
+                        rosetta_py::Param<datamunge::optim::EstimationOfDistributionOptions> p0(a[0]);
+                        datamunge::optim::EstimationOfDistribution* created = nullptr;
+                        created = new datamunge::optim::EstimationOfDistribution(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::EstimationOfDistribution>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("ACOR", "    ACOR(options: ACOROptions = ...)\n", args, kwargs);
+        rosetta_py::no_overload("EstimationOfDistribution", "    EstimationOfDistribution(options: EstimationOfDistributionOptions = ...)\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_110_methods[] = {
-    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1107)), METH_VARARGS | METH_KEYWORDS, "optimize(function: ArbitraryFunction, coordinates: list[float], lower_bound: list[float], upper_bound: list[float]) -> float\n\nMinimizes function\nwithin [ lower_bound,\nupper_bound],\nupdating\ncoordinates\nin place to the best point found, and returns its value. The\n       initial coordinates\n(clamped into bounds) seed one member of the archive."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1108)), METH_VARARGS | METH_KEYWORDS, "options() -> ACOROptions\n\nThe options this ACOR was configured with.\n\nReturns: The stored options."},
+static PyMethodDef rosetta_class_140_methods[] = {
+    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1224)), METH_VARARGS | METH_KEYWORDS, "optimize($self, function, coordinates, lower_bound, upper_bound)\n--\n\nMinimizes `function` within [ `lower_bound`, `upper_bound]`, updating\n`coordinates` in place to the best point found, and returns its value. The\ninitial `coordinates` (clamped into bounds) seed the initial Gaussian mean.\n\nParameters\n----------\nfunction : ArbitraryFunction\ncoordinates : list[float]\nlower_bound : list[float]\nupper_bound : list[float]\n\nReturns\n-------\nfloat"},
+    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1225)), METH_VARARGS | METH_KEYWORDS, "options($self)\n--\n\nThe options this EstimationOfDistribution was configured with.\n\nReturns\n-------\nEstimationOfDistributionOptions\n    The stored options."},
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_110_getset[] = {
+static PyGetSetDef rosetta_class_140_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_110_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_110_init)},
+static PyType_Slot rosetta_class_140_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_140_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_110_methods},
-    {Py_tp_getset, rosetta_class_110_getset},
-    {Py_tp_doc, const_cast<char*>("ACOR(options: ACOROptions = ...)\n\nAnt Colony Optimization for continuous domains (ACOR), Socha\n&\nDorigo (2008). A\n       solution archive of size k is maintained; each iteration, new ants are sampled from a\n       Gaussian kernel mixture built from the archive (ranked by quality, so better solutions\n       attract denser sampling), then the archive is truncated back to its k best members\n       merged with the new ants. Derivative-free, box-constrained.")},
+    {Py_tp_methods, rosetta_class_140_methods},
+    {Py_tp_getset, rosetta_class_140_getset},
+    {Py_tp_doc, const_cast<char*>("EstimationOfDistribution(options=...)\n--\n\nEstimation of Distribution Algorithm (EMNA-style, full-covariance Gaussian) on an\nArbitraryFunction within a box constraint. Unlike explicit-operator methods (GA, DE)\nor covariance-adapting methods (CMA-ES), EMNA builds an explicit multivariate Gaussian\nmodel of where the good solutions are each generation -- re-estimating its mean and\ncovariance from scratch as the empirical mean/covariance of the current generation's\nelite, with no smoothing or evolution paths -- and samples the next generation directly\nfrom that model. Derivative-free.\n\nParameters\n----------\noptions : EstimationOfDistributionOptions, optional")},
     {0, nullptr}};
-PyType_Spec rosetta_class_110_spec = {"pydatamunge._datamunge.ACOR", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_110_slots};
-static PyObject* rosetta_field_1109_get(PyObject* self, void*) {
+PyType_Spec rosetta_class_140_spec = {"pydatamunge._datamunge.EstimationOfDistribution", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_140_slots};
+static PyObject* rosetta_field_1235_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_py::result<decltype((native->step_size))>(native->step_size, self, rosetta_py::Return::automatic);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        return rosetta_py::result<decltype((native->population_size))>(native->population_size, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1109_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1235_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->step_size)>>&> converted(value);
-        rosetta_py::assign_field(native->step_size, converted.get());
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->population_size)>>&> converted(value);
+        rosetta_py::assign_field(native->population_size, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1110_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1236_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_py::result<decltype((native->beta1))>(native->beta1, self, rosetta_py::Return::automatic);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        return rosetta_py::result<decltype((native->attractiveness_at_zero))>(native->attractiveness_at_zero, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1110_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1236_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->beta1)>>&> converted(value);
-        rosetta_py::assign_field(native->beta1, converted.get());
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->attractiveness_at_zero)>>&> converted(value);
+        rosetta_py::assign_field(native->attractiveness_at_zero, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1111_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1237_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_py::result<decltype((native->beta2))>(native->beta2, self, rosetta_py::Return::automatic);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        return rosetta_py::result<decltype((native->light_absorption))>(native->light_absorption, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1111_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1237_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->beta2)>>&> converted(value);
-        rosetta_py::assign_field(native->beta2, converted.get());
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->light_absorption)>>&> converted(value);
+        rosetta_py::assign_field(native->light_absorption, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1112_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1238_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        return rosetta_py::result<decltype((native->epsilon))>(native->epsilon, self, rosetta_py::Return::automatic);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        return rosetta_py::result<decltype((native->randomization_step))>(native->randomization_step, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1112_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1238_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
-        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->epsilon)>>&> converted(value);
-        rosetta_py::assign_field(native->epsilon, converted.get());
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->randomization_step)>>&> converted(value);
+        rosetta_py::assign_field(native->randomization_step, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1113_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1239_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        return rosetta_py::result<decltype((native->randomization_decay))>(native->randomization_decay, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1239_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->randomization_decay)>>&> converted(value);
+        rosetta_py::assign_field(native->randomization_decay, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1240_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
         return rosetta_py::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1113_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1240_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
         rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>&> converted(value);
         rosetta_py::assign_field(native->max_iterations, converted.get());
         return 0;
     }, -1);
 }
-static PyObject* rosetta_field_1114_get(PyObject* self, void*) {
+static PyObject* rosetta_field_1241_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
         return rosetta_py::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_field_1114_set(PyObject* self, PyObject* value, void*) {
+static int rosetta_field_1241_set(PyObject* self, PyObject* value, void*) {
     return rosetta_py::guard<int>([&]() -> int {
         if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
-        auto* native = rosetta_py::native<datamunge::optim::AdamOptions>(self);
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
         rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>&> converted(value);
         rosetta_py::assign_field(native->tolerance, converted.get());
         return 0;
     }, -1);
 }
-static int rosetta_class_111_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static PyObject* rosetta_field_1242_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        return rosetta_py::result<decltype((native->seed))>(native->seed, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1242_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::FireflyAlgorithmOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>&> converted(value);
+        rosetta_py::assign_field(native->seed, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_143_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -5198,226 +5284,140 @@ static int rosetta_class_111_init(PyObject* self, PyObject* args, PyObject* kwar
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
                     if (n == 0) {
-                        datamunge::optim::AdamOptions* created = nullptr;
-                        created = new datamunge::optim::AdamOptions();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::AdamOptions>::value;
+                        datamunge::optim::FireflyAlgorithmOptions* created = nullptr;
+                        created = new datamunge::optim::FireflyAlgorithmOptions();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::FireflyAlgorithmOptions>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("AdamOptions", "    AdamOptions()\n", args, kwargs);
+        rosetta_py::no_overload("FireflyAlgorithmOptions", "    FireflyAlgorithmOptions()\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_111_methods[] = {
+static PyMethodDef rosetta_class_143_methods[] = {
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_111_getset[] = {
-    {"step_size", rosetta_field_1109_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::AdamOptions::step_size)>> ? rosetta_field_1109_set : nullptr, "Fixed learning-rate/initial search step; use the objective scaling stated by optimize(). Default 0.001.", nullptr},
-    {"beta1", rosetta_field_1110_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::AdamOptions::beta1)>> ? rosetta_field_1110_set : nullptr, "First-moment decay in [0,1). Default 0.9.", nullptr},
-    {"beta2", rosetta_field_1111_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::AdamOptions::beta2)>> ? rosetta_field_1111_set : nullptr, "Second-moment decay in [0,1). Default 0.999.", nullptr},
-    {"epsilon", rosetta_field_1112_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::AdamOptions::epsilon)>> ? rosetta_field_1112_set : nullptr, "Positive numerical offset; its root placement is specified by the method. Default 1e-8.", nullptr},
-    {"max_iterations", rosetta_field_1113_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::AdamOptions::max_iterations)>> ? rosetta_field_1113_set : nullptr, "Maximum native iterations/epochs as described by optimize(); zero performs no updates. Default 10000.", nullptr},
-    {"tolerance", rosetta_field_1114_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::AdamOptions::tolerance)>> ? rosetta_field_1114_set : nullptr, "Stopping threshold; its actual gradient/change/displacement/scale meaning is method-specific. Default 1e-8.", nullptr},
+static PyGetSetDef rosetta_class_143_getset[] = {
+    {"population_size", rosetta_field_1235_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::population_size)>> ? rosetta_field_1235_set : nullptr, "Type: int", nullptr},
+    {"attractiveness_at_zero", rosetta_field_1236_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::attractiveness_at_zero)>> ? rosetta_field_1236_set : nullptr, "beta0: attractiveness at distance 0.\n\nType: float", nullptr},
+    {"light_absorption", rosetta_field_1237_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::light_absorption)>> ? rosetta_field_1237_set : nullptr, "gamma: controls how fast attractiveness decays with distance.\n\nType: float", nullptr},
+    {"randomization_step", rosetta_field_1238_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::randomization_step)>> ? rosetta_field_1238_set : nullptr, "alpha: scale of the per-move random walk term.\n\nType: float", nullptr},
+    {"randomization_decay", rosetta_field_1239_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::randomization_decay)>> ? rosetta_field_1239_set : nullptr, "alpha is multiplied by this every iteration (geometric decay -- exploration\nshrinks over time).\n\nType: float", nullptr},
+    {"max_iterations", rosetta_field_1240_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::max_iterations)>> ? rosetta_field_1240_set : nullptr, "Type: int", nullptr},
+    {"tolerance", rosetta_field_1241_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::tolerance)>> ? rosetta_field_1241_set : nullptr, "Stops after the best-ever value has improved by less than this for 20\nconsecutive iterations.\n\nType: float", nullptr},
+    {"seed", rosetta_field_1242_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::FireflyAlgorithmOptions::seed)>> ? rosetta_field_1242_set : nullptr, "Type: int", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_111_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_111_init)},
+static PyType_Slot rosetta_class_143_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_143_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_111_methods},
-    {Py_tp_getset, rosetta_class_111_getset},
-    {Py_tp_doc, const_cast<char*>("AdamOptions()\n\nConfiguration for Adam; fields retain their documented native defaults.\nSupply finite values in the supported ranges. Controls are copied at construction;\nvalidation, stopping and loss scaling belong to optimize().\n\n dm::optim::AdamOptions o;\n std::print(\"{}\\n\",o.max_iterations); // 10000\n\nsee: Adam")},
+    {Py_tp_methods, rosetta_class_143_methods},
+    {Py_tp_getset, rosetta_class_143_getset},
+    {Py_tp_doc, const_cast<char*>("FireflyAlgorithmOptions()\n--\n\nAttributes\n----------\npopulation_size : int\nattractiveness_at_zero : float\n    beta0: attractiveness at distance 0.\nlight_absorption : float\n    gamma: controls how fast attractiveness decays with distance.\nrandomization_step : float\n    alpha: scale of the per-move random walk term.\nrandomization_decay : float\n    alpha is multiplied by this every iteration (geometric decay -- exploration\n    shrinks over time).\nmax_iterations : int\ntolerance : float\n    Stops after the best-ever value has improved by less than this for 20\n    consecutive iterations.\nseed : int")},
     {0, nullptr}};
-PyType_Spec rosetta_class_111_spec = {"pydatamunge._datamunge.AdamOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_111_slots};
-PyObject* rosetta_function_1196(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyType_Spec rosetta_class_143_spec = {"pydatamunge._datamunge.FireflyAlgorithmOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_143_slots};
+static PyObject* rosetta_field_1271_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "coordinates", "lower_bound", "upper_bound"};
-                PyObject* a[4]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 4, 4, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))
-                    && (n <= 2 || rosetta_py::Param<const std::vector<double> &>::check(a[2], strict))
-                    && (n <= 3 || rosetta_py::Param<const std::vector<double> &>::check(a[3], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::CrossEntropyMethod>(self);
-                    if (n == 4) {
-                        rosetta_py::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
-                        rosetta_py::Param<std::vector<double> &> p1(a[1]);
-                        rosetta_py::Param<const std::vector<double> &> p2(a[2]);
-                        rosetta_py::Param<const std::vector<double> &> p3(a[3]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get(), p2.get(), p3.get()); }, self, rosetta_py::Return::automatic);
-                        if (result) {
-                        p1.writeback(a[1]);
-                        }
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: list[float], lower_bound: list[float], upper_bound: list[float]) -> float\n", args, kwargs);
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        return rosetta_py::result<decltype((native->population_size))>(native->population_size, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-PyObject* rosetta_function_1197(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_field_1271_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->population_size)>>&> converted(value);
+        rosetta_py::assign_field(native->population_size, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1272_get(PyObject* self, void*) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {nullptr};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::CrossEntropyMethod>(self);
-                    if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("options", "    options() -> CrossEntropyMethodOptions\n", args, kwargs);
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        return rosetta_py::result<decltype((native->max_iterations))>(native->max_iterations, self, rosetta_py::Return::automatic);
     }, nullptr);
 }
-static int rosetta_class_134_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_field_1272_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>&> converted(value);
+        rosetta_py::assign_field(native->max_iterations, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1273_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        return rosetta_py::result<decltype((native->tolerance))>(native->tolerance, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1273_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>&> converted(value);
+        rosetta_py::assign_field(native->tolerance, converted.get());
+        return 0;
+    }, -1);
+}
+static PyObject* rosetta_field_1274_get(PyObject* self, void*) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        return rosetta_py::result<decltype((native->seed))>(native->seed, self, rosetta_py::Return::automatic);
+    }, nullptr);
+}
+static int rosetta_field_1274_set(PyObject* self, PyObject* value, void*) {
+    return rosetta_py::guard<int>([&]() -> int {
+        if (!value) rosetta_py::fail(PyExc_AttributeError, "cannot delete native fields");
+        auto* native = rosetta_py::native<datamunge::optim::GreyWolfOptimizerOptions>(self);
+        rosetta_py::Param<const std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>&> converted(value);
+        rosetta_py::assign_field(native->seed, converted.get());
+        return 0;
+    }, -1);
+}
+static int rosetta_class_151_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {"options"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::CrossEntropyMethodOptions>::check(a[0], strict))) {
-                    if (n == 0) {
-                        datamunge::optim::CrossEntropyMethod* created = nullptr;
-                        created = new datamunge::optim::CrossEntropyMethod();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::CrossEntropyMethod>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 1) {
-                        rosetta_py::Param<datamunge::optim::CrossEntropyMethodOptions> p0(a[0]);
-                        datamunge::optim::CrossEntropyMethod* created = nullptr;
-                        created = new datamunge::optim::CrossEntropyMethod(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::CrossEntropyMethod>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("CrossEntropyMethod", "    CrossEntropyMethod(options: CrossEntropyMethodOptions = ...)\n", args, kwargs);
-    }, -1);
-}
-static PyMethodDef rosetta_class_134_methods[] = {
-    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1196)), METH_VARARGS | METH_KEYWORDS, "optimize(function: ArbitraryFunction, coordinates: list[float], lower_bound: list[float], upper_bound: list[float]) -> float\n\nMinimizes function\nwithin [ lower_bound,\nupper_bound],\nupdating\ncoordinates\nin place to the best point found, and returns its value. The\n       initial coordinates\n(clamped into bounds) seed the initial distribution mean."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1197)), METH_VARARGS | METH_KEYWORDS, "options() -> CrossEntropyMethodOptions\n\nThe options this CrossEntropyMethod was configured with.\n\nReturns: The stored options."},
-    {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_134_getset[] = {
-    {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_134_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_134_init)},
-    {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
-    {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_134_methods},
-    {Py_tp_getset, rosetta_class_134_getset},
-    {Py_tp_doc, const_cast<char*>("CrossEntropyMethod(options: CrossEntropyMethodOptions = ...)\n\nThe Cross-Entropy Method (CEM) for derivative-free continuous optimization on an\n       ArbitraryFunction within a box constraint. A diagonal-covariance Gaussian search\n       distribution is repeatedly refit from the best (\"elite\") fraction of each generation's\n       samples, with the new distribution parameters exponentially smoothed against the\n       previous generation's for stability (Rubinstein 1997; Rubinstein\n&\nKroese 2004).")},
-    {0, nullptr}};
-PyType_Spec rosetta_class_134_spec = {"pydatamunge._datamunge.CrossEntropyMethod", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_134_slots};
-PyObject* rosetta_function_1313(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"function", "coordinates"};
-                PyObject* a[2]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
-                    && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::NelderMead>(self);
-                    if (n == 2) {
-                        rosetta_py::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
-                        rosetta_py::Param<std::vector<double> &> p1(a[1]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
-                        if (result) {
-                        p1.writeback(a[1]);
-                        }
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: list[float]) -> float\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_1314(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::NelderMead>(self);
                     if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("options", "    options() -> NelderMeadOptions\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_162_init(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<int>([&]() -> int {
-        auto* object = rosetta_py::instance(self);
-        if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"options"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::NelderMeadOptions>::check(a[0], strict))) {
-                    if (n == 0) {
-                        datamunge::optim::NelderMead* created = nullptr;
-                        created = new datamunge::optim::NelderMead();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::NelderMead>::value;
-                        object->owned = 1; object->director = false;
-                        return 0;
-                    }
-                    if (n == 1) {
-                        rosetta_py::Param<datamunge::optim::NelderMeadOptions> p0(a[0]);
-                        datamunge::optim::NelderMead* created = nullptr;
-                        created = new datamunge::optim::NelderMead(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::NelderMead>::value;
+                        datamunge::optim::GreyWolfOptimizerOptions* created = nullptr;
+                        created = new datamunge::optim::GreyWolfOptimizerOptions();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::GreyWolfOptimizerOptions>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("NelderMead", "    NelderMead(options: NelderMeadOptions = ...)\n", args, kwargs);
+        rosetta_py::no_overload("GreyWolfOptimizerOptions", "    GreyWolfOptimizerOptions()\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_162_methods[] = {
-    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1313)), METH_VARARGS | METH_KEYWORDS, "optimize(function: ArbitraryFunction, coordinates: list[float]) -> float\n\nRun NelderMead from the supplied point using the configured finite budget.\nLocal simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage.\n\nthrows: NelderMead: initial_simplex_scale must be positive; NelderMead: reflection must be positive; NelderMead: expansion must be greater than 1; NelderMead: contraction must be in (0, 1); NelderMead: shrink must be in (0, 1); NelderMead: tolerance must be non-negative.\n\nthrows: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\n dm::optim::QuadraticObjective f({2,8},{1,-2});\n dm::optim::NelderMeadOptions controls;controls.max_iterations=5;\n std::vector<double> x{0,0};\n const auto value=dm::optim::NelderMead(controls).optimize(f,x);\n std::print(\"{}\\n\",std::isfinite(value)); // true\n\nsee: trace_optimize(), NelderMeadOptions\n\nParameters:\n    function: Borrowed ArbitraryFunction with matching finite output shapes.\n    coordinates: Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns: Objective at the native returned coordinates; not a stop-status code."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1314)), METH_VARARGS | METH_KEYWORDS, "options() -> NelderMeadOptions\n\nBorrow this optimizer's stored configuration.\n\nReturns: Const option reference, valid during this object's lifetime; no mutation."},
+static PyMethodDef rosetta_class_151_methods[] = {
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_162_getset[] = {
+static PyGetSetDef rosetta_class_151_getset[] = {
+    {"population_size", rosetta_field_1271_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GreyWolfOptimizerOptions::population_size)>> ? rosetta_field_1271_set : nullptr, "Type: int", nullptr},
+    {"max_iterations", rosetta_field_1272_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GreyWolfOptimizerOptions::max_iterations)>> ? rosetta_field_1272_set : nullptr, "Type: int", nullptr},
+    {"tolerance", rosetta_field_1273_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GreyWolfOptimizerOptions::tolerance)>> ? rosetta_field_1273_set : nullptr, "Stops after the best-ever value has improved by less than this for 20 consecutive iterations.\n\nType: float", nullptr},
+    {"seed", rosetta_field_1274_get, std::is_copy_assignable_v<std::remove_cv_t<decltype(datamunge::optim::GreyWolfOptimizerOptions::seed)>> ? rosetta_field_1274_set : nullptr, "Type: int", nullptr},
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_162_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_162_init)},
+static PyType_Slot rosetta_class_151_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_151_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_162_methods},
-    {Py_tp_getset, rosetta_class_162_getset},
-    {Py_tp_doc, const_cast<char*>("NelderMead(options: NelderMeadOptions = ...)\n\nNelderMead on the ArbitraryFunction callback interface.\nLocal simplex reflection, expansion, contraction and shrink search. Starts with per-coordinate displacements initial_simplex_scale and stops when simplex diameter and value spread are small. Those conditions do not prove stationarity or a global minimum. O(p^2) simplex storage.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\n const dm::optim::NelderMead optimizer;\n std::print(\"{}\\n\",optimizer.options().max_iterations); // 2000\n\npar: - J. A. Nelder and R. Mead (1965), A Simplex Method for Function Minimization, https://doi.org/10.1093/comjnl/7.4.308\n\nsee: NelderMeadOptions, trace_optimize()")},
+    {Py_tp_methods, rosetta_class_151_methods},
+    {Py_tp_getset, rosetta_class_151_getset},
+    {Py_tp_doc, const_cast<char*>("GreyWolfOptimizerOptions()\n--\n\nAttributes\n----------\npopulation_size : int\nmax_iterations : int\ntolerance : float\n    Stops after the best-ever value has improved by less than this for 20 consecutive iterations.\nseed : int")},
     {0, nullptr}};
-PyType_Spec rosetta_class_162_spec = {"pydatamunge._datamunge.NelderMead", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_162_slots};
-PyObject* rosetta_function_1327(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyType_Spec rosetta_class_151_spec = {"pydatamunge._datamunge.GreyWolfOptimizerOptions", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_151_slots};
+PyObject* rosetta_function_1376(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5427,7 +5427,7 @@ PyObject* rosetta_function_1327(PyObject* self, PyObject* args, PyObject* kwargs
                 if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
                     && (n <= 0 || rosetta_py::Param<datamunge::optim::DifferentiableFunction &>::check(a[0], strict))
                     && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))) {
-                    auto* native = rosetta_py::native<datamunge::optim::Nadam>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::RMSProp>(self);
                     if (n == 2) {
                         rosetta_py::Param<datamunge::optim::DifferentiableFunction &> p0(a[0]);
                         rosetta_py::Param<std::vector<double> &> p1(a[1]);
@@ -5443,7 +5443,7 @@ PyObject* rosetta_function_1327(PyObject* self, PyObject* args, PyObject* kwargs
         rosetta_py::no_overload("optimize", "    optimize(function: DifferentiableFunction, coordinates: list[float]) -> float\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_1328(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyObject* rosetta_function_1377(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5451,7 +5451,7 @@ PyObject* rosetta_function_1328(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::optim::Nadam>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::RMSProp>(self);
                     if (n == 0) {
                         PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
                         return result;
@@ -5459,10 +5459,10 @@ PyObject* rosetta_function_1328(PyObject* self, PyObject* args, PyObject* kwargs
                 }
             }
         }
-        rosetta_py::no_overload("options", "    options() -> NadamOptions\n", args, kwargs);
+        rosetta_py::no_overload("options", "    options() -> RMSPropOptions\n", args, kwargs);
     }, nullptr);
 }
-static int rosetta_class_166_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_178_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
@@ -5472,44 +5472,70 @@ static int rosetta_class_166_init(PyObject* self, PyObject* args, PyObject* kwar
                 static const char* const names[] = {"options"};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
-                    && (n <= 0 || rosetta_py::Param<datamunge::optim::NadamOptions>::check(a[0], strict))) {
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::RMSPropOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::optim::Nadam* created = nullptr;
-                        created = new datamunge::optim::Nadam();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::Nadam>::value;
+                        datamunge::optim::RMSProp* created = nullptr;
+                        created = new datamunge::optim::RMSProp();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::RMSProp>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                     if (n == 1) {
-                        rosetta_py::Param<datamunge::optim::NadamOptions> p0(a[0]);
-                        datamunge::optim::Nadam* created = nullptr;
-                        created = new datamunge::optim::Nadam(p0.get());
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::Nadam>::value;
+                        rosetta_py::Param<datamunge::optim::RMSPropOptions> p0(a[0]);
+                        datamunge::optim::RMSProp* created = nullptr;
+                        created = new datamunge::optim::RMSProp(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::RMSProp>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("Nadam", "    Nadam(options: NadamOptions = ...)\n", args, kwargs);
+        rosetta_py::no_overload("RMSProp", "    RMSProp(options: RMSPropOptions = ...)\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_166_methods[] = {
-    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1327)), METH_VARARGS | METH_KEYWORDS, "optimize(function: DifferentiableFunction, coordinates: list[float]) -> float\n\nRun Nadam from the supplied point using the configured finite budget.\nFixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.\n\nthrows: Nadam: step_size must be positive; Nadam: beta1 must be in [0, 1); Nadam: beta2 must be in [0, 1); Nadam: epsilon must be positive; Nadam: tolerance must be non-negative.\n\nthrows: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\n dm::optim::QuadraticObjective f({2,8},{1,-2});\n dm::optim::NadamOptions controls;controls.max_iterations=5;\n std::vector<double> x{0,0};\n const auto value=dm::optim::Nadam(controls).optimize(f,x);\n std::print(\"{}\\n\",std::isfinite(value)); // true\n\nsee: trace_optimize(), NadamOptions\n\nParameters:\n    function: Borrowed DifferentiableFunction with matching finite output shapes.\n    coordinates: Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns: Objective at the native returned coordinates; not a stop-status code."},
-    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1328)), METH_VARARGS | METH_KEYWORDS, "options() -> NadamOptions\n\nBorrow this optimizer's stored configuration.\n\nReturns: Const option reference, valid during this object's lifetime; no mutation."},
+static PyMethodDef rosetta_class_178_methods[] = {
+    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1376)), METH_VARARGS | METH_KEYWORDS, "optimize($self, function, coordinates)\n--\n\nRun RMSProp from the supplied point using the configured finite budget.\nUses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.\n\nParameters\n----------\nfunction : DifferentiableFunction\n    Borrowed DifferentiableFunction with matching finite output shapes.\ncoordinates : list[float]\n    Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns\n-------\nfloat\n    Objective at the native returned coordinates; not a stop-status code.\n\nRaises\n------\nValueError\n    RMSProp: step_size must be positive; RMSProp: decay_rate must be in [0, 1); RMSProp: epsilon must be positive; RMSProp: tolerance must be non-negative.\nRuntimeError\n    `std::exception`: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\nSee Also\n--------\ntrace_optimize()\nRMSPropOptions\n\nExamples\n--------\n.. code-block:: cpp\n\n    dm::optim::QuadraticObjective f({2,8},{1,-2});\n    dm::optim::RMSPropOptions controls;controls.max_iterations=5;\n    std::vector<double> x{0,0};\n    const auto value=dm::optim::RMSProp(controls).optimize(f,x);\n    std::print(\"{}\\n\",std::isfinite(value)); // true"},
+    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1377)), METH_VARARGS | METH_KEYWORDS, "options($self)\n--\n\nBorrow this optimizer's stored configuration.\n\nReturns\n-------\nRMSPropOptions\n    Const option reference, valid during this object's lifetime; no mutation."},
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_166_getset[] = {
+static PyGetSetDef rosetta_class_178_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_166_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_166_init)},
+static PyType_Slot rosetta_class_178_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_178_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_166_methods},
-    {Py_tp_getset, rosetta_class_166_getset},
-    {Py_tp_doc, const_cast<char*>("Nadam(options: NadamOptions = ...)\n\nNadam on the DifferentiableFunction callback interface.\nFixed-beta Nadam variant: direction beta1*m/(1-beta1^t)+(1-beta1)*g/(1-beta1^t), divided by sqrt(v/(1-beta2^t))+epsilon. Does not implement scheduled momentum products. Tests the gradient used after updating; O(p) reset state.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\n const dm::optim::Nadam optimizer;\n std::print(\"{}\\n\",optimizer.options().max_iterations); // 10000\n\npar: - T. Dozat (2016), Incorporating Nesterov Momentum into Adam, https://openreview.net/pdf\?id=OM0jvwB8jIp57ZJjtNEZ\n\nsee: NadamOptions, trace_optimize()")},
+    {Py_tp_methods, rosetta_class_178_methods},
+    {Py_tp_getset, rosetta_class_178_getset},
+    {Py_tp_doc, const_cast<char*>("RMSProp(options=...)\n--\n\nRMSProp on the DifferentiableFunction callback interface.\nUses an exponential squared-gradient average with decay_rate, dividing by sqrt(average)+epsilon. Tests the pre-update gradient norm after updating. Fixed rates can oscillate. O(p) local state, reset on every call.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\nStore a copy of the controls without running the objective.\n\nParameters\n----------\noptions : RMSPropOptions, optional\n    Method-specific controls; defaults are listed by RMSPropOptions.\n\nSee Also\n--------\nRMSPropOptions\ntrace_optimize()\noptimize()\n\nReferences\n----------\n- G. Hinton (2012), lecture 6e, https://www.cs.utoronto.ca/~hinton/coursera_lectures.html\n\nExamples\n--------\n.. code-block:: cpp\n\n    const dm::optim::RMSProp optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_iterations); // 10000\n.. code-block:: cpp\n\n    const dm::optim::RMSProp optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_iterations); // 10000")},
     {0, nullptr}};
-PyType_Spec rosetta_class_166_spec = {"pydatamunge._datamunge.Nadam", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_166_slots};
-PyObject* rosetta_function_2409(PyObject* self, PyObject* args, PyObject* kwargs) {
+PyType_Spec rosetta_class_178_spec = {"pydatamunge._datamunge.RMSProp", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_178_slots};
+PyObject* rosetta_function_1416(PyObject* self, PyObject* args, PyObject* kwargs) {
+    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                static const char* const names[] = {"function", "coordinates"};
+                PyObject* a[2]; Py_ssize_t n = 0;
+                if (rosetta_py::collect(args, kwargs, names, 2, 2, a, &n)
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::ArbitraryFunction &>::check(a[0], strict))
+                    && (n <= 1 || rosetta_py::Param<std::vector<double> &>::check(a[1], strict))) {
+                    auto* native = rosetta_py::native<datamunge::optim::SimulatedAnnealing>(self);
+                    if (n == 2) {
+                        rosetta_py::Param<datamunge::optim::ArbitraryFunction &> p0(a[0]);
+                        rosetta_py::Param<std::vector<double> &> p1(a[1]);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, self, rosetta_py::Return::automatic);
+                        if (result) {
+                        p1.writeback(a[1]);
+                        }
+                        return result;
+                    }
+                }
+            }
+        }
+        rosetta_py::no_overload("optimize", "    optimize(function: ArbitraryFunction, coordinates: list[float]) -> float\n", args, kwargs);
+    }, nullptr);
+}
+PyObject* rosetta_function_1417(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -5517,96 +5543,62 @@ PyObject* rosetta_function_2409(PyObject* self, PyObject* args, PyObject* kwargs
                 static const char* const names[] = {nullptr};
                 PyObject* a[1]; Py_ssize_t n = 0;
                 if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
-                    auto* native = rosetta_py::native<datamunge::Tape>(self);
+                    auto* native = rosetta_py::native<datamunge::optim::SimulatedAnnealing>(self);
                     if (n == 0) {
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->size(); }, self, rosetta_py::Return::automatic);
+                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->options(); }, self, rosetta_py::Return::automatic);
                         return result;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("size", "    size() -> int\n", args, kwargs);
+        rosetta_py::no_overload("options", "    options() -> SimulatedAnnealingOptions\n", args, kwargs);
     }, nullptr);
 }
-PyObject* rosetta_function_2410(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"index"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<unsigned long>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::Tape>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<unsigned long> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->value_at(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("value_at", "    value_at(index: int) -> float\n", args, kwargs);
-    }, nullptr);
-}
-PyObject* rosetta_function_2411(PyObject* self, PyObject* args, PyObject* kwargs) {
-    return rosetta_py::guard<PyObject*>([&]() -> PyObject* {
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                static const char* const names[] = {"output"};
-                PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 1, 1, a, &n)
-                    && (n <= 0 || rosetta_py::Param<const datamunge::Var &>::check(a[0], strict))) {
-                    auto* native = rosetta_py::native<datamunge::Tape>(self);
-                    if (n == 1) {
-                        rosetta_py::Param<const datamunge::Var &> p0(a[0]);
-                        PyObject* result = rosetta_py::call([&]() -> decltype(auto) { return native->backward(p0.get()); }, self, rosetta_py::Return::automatic);
-                        return result;
-                    }
-                }
-            }
-        }
-        rosetta_py::no_overload("backward", "    backward(output: Var) -> list[float]\n", args, kwargs);
-    }, nullptr);
-}
-static int rosetta_class_251_init(PyObject* self, PyObject* args, PyObject* kwargs) {
+static int rosetta_class_185_init(PyObject* self, PyObject* args, PyObject* kwargs) {
     return rosetta_py::guard<int>([&]() -> int {
         auto* object = rosetta_py::instance(self);
         if (object->ptr) rosetta_py::fail(PyExc_RuntimeError, "native object already initialized");
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                static const char* const names[] = {nullptr};
+                static const char* const names[] = {"options"};
                 PyObject* a[1]; Py_ssize_t n = 0;
-                if (rosetta_py::collect(args, kwargs, names, 0, 0, a, &n)) {
+                if (rosetta_py::collect(args, kwargs, names, 1, 0, a, &n)
+                    && (n <= 0 || rosetta_py::Param<datamunge::optim::SimulatedAnnealingOptions>::check(a[0], strict))) {
                     if (n == 0) {
-                        datamunge::Tape* created = nullptr;
-                        created = new datamunge::Tape();
-                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::Tape>::value;
+                        datamunge::optim::SimulatedAnnealing* created = nullptr;
+                        created = new datamunge::optim::SimulatedAnnealing();
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::SimulatedAnnealing>::value;
+                        object->owned = 1; object->director = false;
+                        return 0;
+                    }
+                    if (n == 1) {
+                        rosetta_py::Param<datamunge::optim::SimulatedAnnealingOptions> p0(a[0]);
+                        datamunge::optim::SimulatedAnnealing* created = nullptr;
+                        created = new datamunge::optim::SimulatedAnnealing(p0.get());
+                        object->ptr = created; object->info = &rosetta_py::Info<datamunge::optim::SimulatedAnnealing>::value;
                         object->owned = 1; object->director = false;
                         return 0;
                     }
                 }
             }
         }
-        rosetta_py::no_overload("Tape", "    Tape()\n", args, kwargs);
+        rosetta_py::no_overload("SimulatedAnnealing", "    SimulatedAnnealing(options: SimulatedAnnealingOptions = ...)\n", args, kwargs);
     }, -1);
 }
-static PyMethodDef rosetta_class_251_methods[] = {
-    {"size", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2409)), METH_VARARGS | METH_KEYWORDS, "size() -> int\n"},
-    {"value_at", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2410)), METH_VARARGS | METH_KEYWORDS, "value_at(index: int) -> float\n"},
-    {"backward", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_2411)), METH_VARARGS | METH_KEYWORDS, "backward(output: Var) -> list[float]\n"},
+static PyMethodDef rosetta_class_185_methods[] = {
+    {"optimize", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1416)), METH_VARARGS | METH_KEYWORDS, "optimize($self, function, coordinates)\n--\n\nRun SimulatedAnnealing from the supplied point using the configured finite budget.\nGaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage.\n\nParameters\n----------\nfunction : ArbitraryFunction\n    Borrowed ArbitraryFunction with matching finite output shapes.\ncoordinates : list[float]\n    Owned-by-caller finite start; overwritten with the native returned point.\n\nReturns\n-------\nfloat\n    Objective at the native returned coordinates; not a stop-status code.\n\nRaises\n------\nRuntimeError\n    `std::exception`: Exceptions from supplied callbacks propagate. Raw solvers do not uniformly reject nonfinite inputs.\n\nSee Also\n--------\ntrace_optimize()\nSimulatedAnnealingOptions\n\nExamples\n--------\n.. code-block:: cpp\n\n    dm::optim::QuadraticObjective f({2,8},{1,-2});\n    dm::optim::SimulatedAnnealingOptions controls;controls.max_iterations=5;\n    std::vector<double> x{0,0};\n    const auto value=dm::optim::SimulatedAnnealing(controls).optimize(f,x);\n    std::print(\"{}\\n\",std::isfinite(value)); // true"},
+    {"options", reinterpret_cast<PyCFunction>(reinterpret_cast<void(*)()>(rosetta_function_1417)), METH_VARARGS | METH_KEYWORDS, "options($self)\n--\n\nBorrow this optimizer's stored configuration.\n\nReturns\n-------\nSimulatedAnnealingOptions\n    Const option reference, valid during this object's lifetime; no mutation."},
     {nullptr, nullptr, 0, nullptr}};
-static PyGetSetDef rosetta_class_251_getset[] = {
+static PyGetSetDef rosetta_class_185_getset[] = {
     {nullptr, nullptr, nullptr, nullptr, nullptr}};
-static PyType_Slot rosetta_class_251_slots[] = {
-    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_251_init)},
+static PyType_Slot rosetta_class_185_slots[] = {
+    {Py_tp_init, reinterpret_cast<void*>(&rosetta_class_185_init)},
     {Py_tp_traverse, reinterpret_cast<void*>(&rosetta_py::traverse)},
     {Py_tp_clear, reinterpret_cast<void*>(&rosetta_py::clear)},
-    {Py_tp_methods, rosetta_class_251_methods},
-    {Py_tp_getset, rosetta_class_251_getset},
-    {Py_tp_doc, const_cast<char*>("Tape()\n\nSWIG-friendly facade for datamunge::autodiff::Tape -- a reverse-mode\n       (\"backpropagation\") computation tape. Create leaf Vars against a Tape, build an\n       expression out of named Var operations, then call backward() on the output Var\n       to get the derivative of that output with respect to every node on the tape\n       (index a leaf's own index() into the result to read its gradient).")},
+    {Py_tp_methods, rosetta_class_185_methods},
+    {Py_tp_getset, rosetta_class_185_getset},
+    {Py_tp_doc, const_cast<char*>("SimulatedAnnealing(options=...)\n--\n\nSimulatedAnnealing on the ArbitraryFunction callback interface.\nGaussian random-walk proposals with geometrically decaying temperature and Metropolis acceptance of worse values. Returns the best visited point, not the last accepted state. A finite cooling schedule does not certify a global optimum; O(p) storage.\nThe caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;\ncoordinates mutate in place and can retain a partial state if a callback throws.\nCalls use local optimizer state and propagate callback exceptions; sharing a mutable\nobjective across threads requires external synchronisation. Normal return alone\nis not a uniform convergence certificate.\n\nStore a copy of the controls without running the objective.\n\nParameters\n----------\noptions : SimulatedAnnealingOptions, optional\n    Method-specific controls; defaults are listed by SimulatedAnnealingOptions.\n\nSee Also\n--------\nSimulatedAnnealingOptions\ntrace_optimize()\noptimize()\n\nReferences\n----------\n- S. Kirkpatrick, C. D. Gelatt and M. P. Vecchi (1983), Optimization by Simulated Annealing, https://doi.org/10.1126/science.220.4598.671. Finite geometric cooling here supplies no global guarantee.\n\nExamples\n--------\n.. code-block:: cpp\n\n    const dm::optim::SimulatedAnnealing optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_iterations); // 10000\n.. code-block:: cpp\n\n    const dm::optim::SimulatedAnnealing optimizer;\n    std::print(\"{}\\n\",optimizer.options().max_iterations); // 10000")},
     {0, nullptr}};
-PyType_Spec rosetta_class_251_spec = {"pydatamunge._datamunge.Tape", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_251_slots};
+PyType_Spec rosetta_class_185_spec = {"pydatamunge._datamunge.SimulatedAnnealing", 0, 0, Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC, rosetta_class_185_slots};
 } // namespace ROSETTA_PY_MODULE

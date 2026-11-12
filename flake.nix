@@ -129,6 +129,8 @@
           export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
 
           # Python commands use the installed wheel in build/venv/pydatamunge-run.
+          # mep's Python hover (K) and completion introspect pydatamunge with that interpreter.
+          export MEP_PYTHON="''${MEP_PYTHON:-$datamungeRoot/build/venv/pydatamunge-run/bin/python}"
           # just build-r
           export R_LIBS="$datamungeRoot/build/r/library''${R_LIBS:+:}$R_LIBS"
           # just build-javascript: build/Release/datamungejs.node behind ./index.js
@@ -225,6 +227,7 @@
             rosettaPkg
             pkgs.python3
             pkgs.pkg-config
+            (pkgs.rWrapper.override { packages = [ pkgs.rPackages.R6 pkgs.rPackages.roxygen2 ]; })
           ];
           preConfigure = "python3 scripts/prebuild_bindings.py r";
         };
@@ -1109,6 +1112,8 @@
             pkgs.R
             pkgs.rPackages.R6
             pkgs.rPackages.testthat
+            # Turns rosetta's generated roxygen comments into man/ pages (scripts/prebuild_bindings.py r).
+            pkgs.rPackages.roxygen2
             rosettaPkg
             pkgs.pkg-config
             pkgs.libxml2

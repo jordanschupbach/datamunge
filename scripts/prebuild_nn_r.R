@@ -104,4 +104,9 @@ makevars <- c("CXX_STD = CXX23", "ifeq ($(DATAMUNGE_USE_SYSTEM_LIB),1)", system_
 write_changed(file.path(stage, "src/Makevars"), makevars)
 write_changed(file.path(stage, "src/Makevars.win"), c("CXX_STD = CXX23", self_contained, "all: $(SHLIB)"))
 write_changed(file.path(stage, ".Rbuildignore"), "[.](o|so|dll|dylib)$")
+# Help pages from the roxygen comments Rosetta generates from the C++ Doxygen comments (the Rd
+# roclet only, with the R files sourced rather than the package compiled and loaded).
+if (requireNamespace("roxygen2", quietly = TRUE)) {
+  roxygen2::roxygenise(stage, roclets = "rd", load_code = roxygen2::load_source)
+} else message("roxygen2 is not installed: skipping generated help pages")
 cat(sprintf("Prepared datamungerNN with %d native R examples in %s\n", length(native), stage))

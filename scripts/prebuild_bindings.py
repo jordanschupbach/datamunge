@@ -80,11 +80,25 @@ def main():
     prebuild_r()
 
 
+def roxygenize(package):
+    """Write man/ pages from the roxygen comments Rosetta generates from the C++ Doxygen comments.
+
+    Only the Rd roclet runs (NAMESPACE stays hand-written) and the R files are sourced, not the
+    compiled package loaded. Without roxygen2 the package simply has no generated help pages."""
+    script = (
+        'if (!requireNamespace("roxygen2", quietly = TRUE)) {'
+        ' message("roxygen2 is not installed: skipping generated help pages"); quit(status = 0L) };'
+        ' roxygen2::roxygenise(commandArgs(TRUE)[[1L]], roclets = "rd", load_code = roxygen2::load_source)'
+    )
+    subprocess.run(["Rscript", "--vanilla", "-e", script, str(package)], cwd=ROOT, check=True)
+
+
 def prebuild_r():
-    """Generate src/datamunge_r_wrap*.cpp and R/datamunger.R, the datamunger package's R6 classes."""
+    """Generate src/datamunge_r_wrap*.cpp and R/datamunger.R, the datamunger package's R6 classes, and their help pages."""
     bindings = Path("src/datamunger/rosetta")
     generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunger", "datamunge_r_wrap", R_PARTS,
                      r_interface="R/datamunger.R")
+    roxygenize(ROOT)
 
 if __name__ == "__main__":
     main()

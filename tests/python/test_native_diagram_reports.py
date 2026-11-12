@@ -33,11 +33,22 @@ class NativeDiagramReports(unittest.TestCase):
                     self.assertTrue(attributes.startswith("cpp,"))
                     self.assertTrue(code.startswith("#include <dm/dm.hpp>"))
                     self.assertIn("pkg-config --cflags --libs datamunge", attributes)
-                    self.assertIn("diagram.save_svg(\"build/", code)
-                    figure = re.search(r'file="([^"]+)"', attributes).group(1)
-                    image = report.parent / figure
-                    self.assertTrue(image.is_file(), image)
+                    figure = re.search(r'file="([^"]+)"', attributes)
+                    if figure is None:
+                        # Multi-figure blocks emit their own markdown and save every
+                        # image through a build/ directory constant.
+                        self.assertIn('results="markdown"', attributes)
+                        self.assertRegex(code, r'const std::string directory="build/')
+                        self.assertRegex(code, r"\.save_svg\(directory\+")
+                        continue
+                    self.assertRegex(code, r'\.save_svg\("build/')
+                    figure = figure.group(1)
                     self.assertIn(f"\\image({figure})", source[match.end():])
+                    # Rendered figures are gitignored and only exist after `just docs`,
+                    # so check their content when present.
+                    image = report.parent / figure
+                    if not image.is_file():
+                        continue
                     svg = ET.parse(image).getroot()
                     self.assertEqual(svg.tag, "{http://www.w3.org/2000/svg}svg")
                     self.assertEqual(svg.attrib.get("role"), "img")
