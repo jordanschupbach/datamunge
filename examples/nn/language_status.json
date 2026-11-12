@@ -2,7 +2,7 @@
   "schema": 1,
   "total": 289,
   "test_epoch_limit": 5,
-  "api_sha256": "eead013efe4dd32eb8119a40f229de5e1055207cddcca973f5047b56db164629",
+  "api_sha256": "15ae018cbea0f54cea35e4d7ad7dda2151cef085ba34b3456d330de0f3f1a469",
   "examples": {
     "c3d": {
       "cpp": "examples/cpp/source/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.cpp",
@@ -357,7 +357,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.R",
         "implementation": "native",
-        "sha256": "9484954f889fddb156d069c513f143e4463b4a585029a5a56ccbd62c68d16976",
+        "sha256": "78cb7fcad9dd3393decbe4f59f24fd5a651aa79a71c42325fe9844bb1f6097d5",
         "validation": null
       }
     },
@@ -374,7 +374,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_cifar10.R",
         "implementation": "native",
-        "sha256": "93b7fd0bab7b7b6e8d3b04a35bb2dd5a69be957877a3693d3c5a8f93d46508ef",
+        "sha256": "183f7871028e0f22811ee8f069b710c4dbd42589ffd5641932e419895048ad91",
         "validation": null
       }
     },
@@ -391,7 +391,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.R",
         "implementation": "native",
-        "sha256": "479e0eaf5e60b6df15d2d1c95c65750d2c26f408321ec0b00194d4f9098bfe76",
+        "sha256": "25fd14f12fed3989aec489d2e1c273641f110587c2060f897699c779b2633f87",
         "validation": null
       }
     },
@@ -476,7 +476,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.R",
         "implementation": "native",
-        "sha256": "34b46f690bd9149e0afb8b774c8b44ad20c4cdd99943eb51f17c5860b86d6332",
+        "sha256": "16c7d0abee5a991c0f8875216f3f7e0dd8b1cda2fcf5ee148f707e7346f04f99",
         "validation": null
       }
     },
@@ -527,7 +527,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/alexnet.R",
         "implementation": "native",
-        "sha256": "58aac16275dea46d67e4414442eff20f81b53fe9e649cac139071b0a3796725e",
+        "sha256": "754acb545cdbf706d94323cd390a9ca946aa45562b128db5da9fe2bb75bbeeda",
         "validation": null
       }
     },
@@ -544,7 +544,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/googlenet.R",
         "implementation": "native",
-        "sha256": "b50e6b87efcfc7e82c63cbfaab99b04d2281e883bce5bee3f7c9e766d15e0ebd",
+        "sha256": "354bcf22cc3e99c3e9ff399b8c2efba32ebeecc3c9d95b59d3d7603e6bc93498",
         "validation": null
       }
     },
@@ -561,7 +561,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v2_v3.R",
         "implementation": "native",
-        "sha256": "49ac1b84d9a2a35537474615c9042a4da53277c8ba8fb0e3897994e9318c1f32",
+        "sha256": "405c76d1f344d276655bb053ac107b4121fef59839a8c2a416e7779eab7a312c",
         "validation": null
       }
     },
@@ -578,7 +578,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v4_resnet.R",
         "implementation": "native",
-        "sha256": "fc455ab81df14f329954fba01512f57d7c03e17200f52851f59bac61f918fe2f",
+        "sha256": "7783138651dbf7a07796ba98cc3a91846f3e1a07f5e24bc076dde7d1b2a6027a",
         "validation": null
       }
     },
@@ -629,7 +629,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/xception.R",
         "implementation": "native",
-        "sha256": "fee3373b3fcfd9d67b4b1c07029bc9a7c79d96ca582e7b5f08c95b2facec2c59",
+        "sha256": "493e3df617ba4b0f53c0768f6808faebe55979294d391fe0eaec3e08e9db2efb",
         "validation": null
       }
     },
@@ -646,7 +646,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/zfnet.R",
         "implementation": "native",
-        "sha256": "5ba98cb9a1426ebbbc716c53fcef8e1e1b0cb6cc6055be81cd5e7fe990a7e7c5",
+        "sha256": "f8c159d50c9472665a2b0e040e6b05520bd5a2a1f529c2bccf7901dcc6b439b5",
         "validation": null
       }
     },
@@ -663,7 +663,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/densenet.R",
         "implementation": "native",
-        "sha256": "ed9c56196b2e644b05ba700b5cad9a03885644274f876766b54954efc2e6e2de",
+        "sha256": "a2fdbd567dee3caa7b18b315b4d089f8ef3cc81dd2750847f723b690f93f10ba",
         "validation": null
       }
     },
@@ -714,7 +714,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/preactivation_resnet.R",
         "implementation": "native",
-        "sha256": "617721f1813954bef68e85f5695ec8ae7bae025cd9aa599b1954a0a2f01a0802",
+        "sha256": "5dc3bc648f4c14af526cc18352793928f6ddda2b727883d53f5f6c21fd6e9e23",
         "validation": null
       }
     },
@@ -731,7 +731,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/pyramidnet.R",
         "implementation": "native",
-        "sha256": "c52ec96b9274711d5b2be8872518b7b729701d46d89d381e30bf3e4dd233deda",
+        "sha256": "aeeccbeb5a563200663ddd42a6b18a9f8b950403578e2381b6535e293ec900fa",
         "validation": null
       }
     },
@@ -748,7 +748,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/res2net.R",
         "implementation": "native",
-        "sha256": "c276b873dde44b70d36a91b3901c709ed871fb7f72b9e292b62ddfc908504da6",
+        "sha256": "10c80d9cfecf5f320891742039d491346f8b261a68fdd0823a9c94ff183775db",
         "validation": null
       }
     },
@@ -765,7 +765,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_basic.R",
         "implementation": "native",
-        "sha256": "46629a49b52bb252557c7264b886ffa6c68e3d2c0cfc852be7b5d1b0d65b0460",
+        "sha256": "0f7c772210118f7543e2902854340e9c283dede5c607adc8956a8ad55d3fbca9",
         "validation": null
       }
     },
@@ -782,7 +782,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_bottleneck.R",
         "implementation": "native",
-        "sha256": "83379c1a1835d76be245e24f224906ba2ef0e4d0b4f2723f74846c7e008036eb",
+        "sha256": "2c797e232c763b8c7565b7c244511d9cffcdecb8153503408d4ad025361c5e1f",
         "validation": null
       }
     },
@@ -799,7 +799,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnext.R",
         "implementation": "native",
-        "sha256": "00ae0c17d1143536fc0e021a40b1fb26a92f0db09ddf999ecf8c0fa5eff841c3",
+        "sha256": "976d1bcce37fecd07b7f2fe64818b73cafde82fe7725f045f1932c81df09d88f",
         "validation": null
       }
     },
@@ -816,7 +816,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/revnet.R",
         "implementation": "native",
-        "sha256": "ce6bd5b104784038c51c59851ab69e2da74144fc61bed5c7c5095a268ecc46b9",
+        "sha256": "6c86943512a754716c312463d30da59fedf6e374b03238cef7c4c879c8f3d16f",
         "validation": null
       }
     },
@@ -833,7 +833,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/stochastic_depth.R",
         "implementation": "native",
-        "sha256": "15ee321908aca89e209749e84327df00a48cd3664ed73b0765283d5eea8a902a",
+        "sha256": "37c20ac3672b15e010c15d8b08629c24373b8052f275463e2bcd1fefcce91b0b",
         "validation": null
       }
     },
@@ -850,7 +850,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/wide_resnet.R",
         "implementation": "native",
-        "sha256": "bc576519d063f0a5e475b5ea69f44d5817764e12c9c79364ee12390b45150a2e",
+        "sha256": "8a8175480e35a048652769b2d249f97dcc14450c978df648139dc90e35ecf9df",
         "validation": null
       }
     },
@@ -884,7 +884,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet.R",
         "implementation": "native",
-        "sha256": "57341caa731c0b8c47ace29b0973f280291dd6e38a45746b304ea56022298ac6",
+        "sha256": "d5c7a5e372ad4c27b5eeccfee628a7eb730e8a8cba231a073f24526f6686a2ea",
         "validation": null
       }
     },
@@ -901,7 +901,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet_v2.R",
         "implementation": "native",
-        "sha256": "dbb4bda915290d2d2800e66a6b5de7a7970ba448ba610ce30842046fc00f5e23",
+        "sha256": "8eb1d9f6befd57f5e5248a452978299fac046ca0025cbef883949e940d87ba2b",
         "validation": null
       }
     },
@@ -918,7 +918,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/ghostnet.R",
         "implementation": "native",
-        "sha256": "9c3b8a69872e153bf478bfe2a4b4d01f51a967c91fb1dcc35ede9c748b70b685",
+        "sha256": "8f4a068c051cb110e8059793a9cdecb02b1fe1bd92188b450a26e47240a5fb47",
         "validation": null
       }
     },
@@ -935,7 +935,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mnasnet.R",
         "implementation": "native",
-        "sha256": "88c7883dc142931faa0844e1f730a726b2c406e1b678177e7182fdb34033b178",
+        "sha256": "06d80f56d05cc62952389d5f78d974b60ac460bbffb3f5017760a479bfe71e70",
         "validation": null
       }
     },
@@ -952,7 +952,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v1.R",
         "implementation": "native",
-        "sha256": "5b9d05dc86de02017aef6438bb426eb0a991b9b2cb051438970e752fb42ab515",
+        "sha256": "9b9d5a578bb6b19281785a72b73e49bf90a9af92d694f7a6e109501895864a09",
         "validation": null
       }
     },
@@ -969,7 +969,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v2.R",
         "implementation": "native",
-        "sha256": "e8e3294bd4395dcc1e60c56bad4b7db6b26ae92e1587d6c75cd8c80124bcd2fb",
+        "sha256": "b140f69fd6a0ac7e848abb7c906203591f5904d2f63fed74251ca8c342c802e1",
         "validation": null
       }
     },
@@ -1003,7 +1003,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/regnet.R",
         "implementation": "native",
-        "sha256": "46b46cc8da802080e99e036e30dd803b3c3f3f5248d377bb591e824a0f455109",
+        "sha256": "f62801fe3cf5daf27bda203159dbd0c14ba0a225169ff998475ce9ec324c32ab",
         "validation": null
       }
     },
@@ -1037,7 +1037,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.R",
         "implementation": "native",
-        "sha256": "3aab3245a6d50f911fa3d57d7d4eea2d1b21277cf2ade9af28b97574a151e87e",
+        "sha256": "27ce596fc132b4be6ab3be809c1b28bd3ce8e53c21a830624e5f3c3e08cf830b",
         "validation": null
       }
     },
@@ -1071,7 +1071,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/cbam.R",
         "implementation": "native",
-        "sha256": "acd15400b8f30c55ec7599f7e1f76aab4e182b4a1cb87cd86f3ae1904bc5bf64",
+        "sha256": "10d7386f2ce21d75d58891913d8739eb364a49a6df2046d9e594716ac5575e66",
         "validation": null
       }
     },
@@ -1088,7 +1088,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext.R",
         "implementation": "native",
-        "sha256": "b3494c90e8c85d2fc1bcb288f53d63e7d5c98561f273e44a69ebd4e9e5cd256a",
+        "sha256": "baa7af8ec433cf6b9df1d39387b047ec0aabee6c338a4a67d24eb169bdcaedc0",
         "validation": null
       }
     },
@@ -1105,7 +1105,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext_v2.R",
         "implementation": "native",
-        "sha256": "5b404d97736cfda4c6c622cdc20933c82f02d193f7d4b091b6f0d9a043196b4b",
+        "sha256": "111d0aad3fb74679095d0df88c2113c7a0296bfec48213ed85fd91a100eb4cc3",
         "validation": null
       }
     },
@@ -1122,7 +1122,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/deformable_conv.R",
         "implementation": "native",
-        "sha256": "a3ad5c94dbebd2135774ca157fc34db9aedec153119410e995924322c036c8ad",
+        "sha256": "1a05a1c2daada090cb16a6b97b68b84970d5645b613eee39d567da659a5f43ac",
         "validation": null
       }
     },
@@ -1139,7 +1139,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/eca_net.R",
         "implementation": "native",
-        "sha256": "f9f25068dab19e1296332d0b3921ed9fbf46ecda995e49d61e972bfb528b4972",
+        "sha256": "117abed54072e568948e24cf9444b6262ffc203ac9a987256a01da3a3fd5cd84",
         "validation": null
       }
     },
@@ -1156,7 +1156,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/non_local.R",
         "implementation": "native",
-        "sha256": "29b282c4a435113530271702008fb877909cebe3c49610fba100456894aa3a2e",
+        "sha256": "50411db72ee2de6b646102093971264d43eec7ff73712badc93469f47980b0b3",
         "validation": null
       }
     },
@@ -1173,7 +1173,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/octconv.R",
         "implementation": "native",
-        "sha256": "dc2859966e021006135c91d5f212f56bd9867b9966baa93690c752a66b104649",
+        "sha256": "c850c4d5bd0d68a75540eb7d3db4601582716f413b44a9475621c6cbec68d42b",
         "validation": null
       }
     },
@@ -1190,7 +1190,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/repvgg.R",
         "implementation": "native",
-        "sha256": "0555d9b8f97c815f936af9a17d4c941ea72daeb42a5814ef87f4ecd5580fcbda",
+        "sha256": "94f505af6cba86494535c08801b240e95927d0e05f690624955f6c907ff4a6ab",
         "validation": null
       }
     },
@@ -1207,7 +1207,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/senet.R",
         "implementation": "native",
-        "sha256": "2d7d1ce5a533989cb847c364159a691dc7749acce88d35e8da4586f2adee1336",
+        "sha256": "a7fe9e828410205b8591281212e1b5bb5192fc08d14943f8d5b7d599c4be58ef",
         "validation": null
       }
     },
@@ -1224,7 +1224,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/sknet.R",
         "implementation": "native",
-        "sha256": "a186b3b270974451b50da51432e67af7f1fef5cf5a94157c3cd6fb7e755cd255",
+        "sha256": "11504636921b5fe6b14aa970a7c2f936f32bac766ce972b4124a3295bad34a40",
         "validation": null
       }
     },
@@ -1683,7 +1683,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/segnet.R",
         "implementation": "native",
-        "sha256": "25aee7977f40c5e3a43d8e5f285a631a55e3613a57421d9bffcdbf4f55492b8a",
+        "sha256": "8c261bc2b7cc596a0f8d702b90227341d03864cdab0adff8d077e24ee21094c0",
         "validation": null
       }
     },
@@ -2142,7 +2142,7 @@
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.R",
         "implementation": "native",
-        "sha256": "7411b405ac1b87ddde29aa67e0b86e9c9cf26f1f02867129e89b2c340d12e9b2",
+        "sha256": "5cb6e93350bb4da39ef4cf37803a521b369632fbcfd22073146739c7f70d3581",
         "validation": null
       }
     },
@@ -2618,7 +2618,7 @@
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/gru.R",
         "implementation": "native",
-        "sha256": "ea501ebb02f33b418a6280146e5d2f184b6225ce82a2e75e69224e5849a22f69",
+        "sha256": "e829d215e6f2b046b8f41dc91c325e6e64b828aee15565ca9b135d0dde6a5144",
         "validation": null
       }
     },
@@ -2652,7 +2652,7 @@
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/layer_norm_lstm.R",
         "implementation": "native",
-        "sha256": "744bdb1c6948813dd07757ec439bc6704319c3d6662652d74f6d978d8656e951",
+        "sha256": "a8dcaf8a39fa69d80838e91bc8b39c2762aa8947fda411a05b326a7d27bc0f46",
         "validation": null
       }
     },
@@ -2669,7 +2669,7 @@
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/lstm.R",
         "implementation": "native",
-        "sha256": "798968b81c83a9e850c0ae67d6a8ed8b6dca0441a5243050fad6bb38ea6cc190",
+        "sha256": "5b0e92068c5d2c24f9f53edd765c5ed25a6b1783856b808a38fdbd23533fdb84",
         "validation": null
       }
     },
@@ -3094,7 +3094,7 @@
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/dnc.R",
         "implementation": "native",
-        "sha256": "a4062268cf23a11c434107a3c6b437a9d90951128e37f0702887b34be05ccfaa",
+        "sha256": "9f8a69fbcae358664010855909d243680a0e4c453d3241596f2e017ecdf79eb5",
         "validation": null
       }
     },
@@ -3111,7 +3111,7 @@
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/key_value.R",
         "implementation": "native",
-        "sha256": "0ea1fd1485ec05228b7c9a303f079f6fcd8f843c07edebff77b09fbec90cb03c",
+        "sha256": "e753cfa91e01b2655abc04e3b8cd98654a0722376745740ccb4cc8669e8eb785",
         "validation": null
       }
     },
@@ -3128,7 +3128,7 @@
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/memnet.R",
         "implementation": "native",
-        "sha256": "5bd77cf66e48ad7f582b820885c73e72cc626e7b66733d976307e9d7f155a8f4",
+        "sha256": "f0335bf0f989c2d8cb281d0a846b71133933cee85512e00d27456673b2f9bd89",
         "validation": null
       }
     },
@@ -3145,7 +3145,7 @@
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/ntm.R",
         "implementation": "native",
-        "sha256": "fdd98bb4a6a3e5366782b3a5e62d3e984d831e886da4b4ad31d767728df84059",
+        "sha256": "fdf50b037e0ec021c1c70b59a4a29809439d8f7168ad13ff37d940b66efc4c73",
         "validation": null
       }
     },
@@ -3196,7 +3196,7 @@
       "r": {
         "path": "examples/r/nn/5_attention_and_transformers/5.1_attention_fundamentals/multi_head_attention.R",
         "implementation": "native",
-        "sha256": "276087eb6f6e1c41f0afc587d28ae57446bc5e017035197f39ca6b1db2f19b8f",
+        "sha256": "4f7e5c0703daeda3cf3c0ca798e165edea591926b0b88b8f63b026182389b025",
         "validation": null
       }
     },

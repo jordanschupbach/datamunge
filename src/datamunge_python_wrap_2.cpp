@@ -1525,7 +1525,6 @@ template<> struct Bound<datamunge::optim::RMSProp> : std::true_type {};
 template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
 template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
-template<> struct Copyable<datamunge::optim::RBFGaussianProcessSurrogate> : std::false_type {};
 template<> struct Bound<datamunge::optim::SGDOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGD> : std::true_type {};
 template<> struct Bound<datamunge::optim::SimulatedAnnealingOptions> : std::true_type {};

@@ -22,7 +22,7 @@ SPEC.loader.exec_module(generator)
 
 def test_complete_migrated_catalogue_and_python_launchers(monkeypatch):
     sources = generator.examples()
-    assert len(sources) == 165
+    assert len(sources) == 130
     assert {p.stem for p in sources} <= set(nn_examples.available(native_only=False))
     assert not list((ROOT / "examples/nn").glob("[12]_*/**/*.cpp"))
     calls = []

@@ -28,8 +28,13 @@ def test_splom_setters_chain_and_group_by_groups():
     assert list(matrix.groups()) == ["setosa", "versicolor", "virginica"]
     panel = matrix.panel(0, 1)
     assert panel.has_custom_margins()
-    assert panel.series().size() == 1
-    assert panel.series()[0].point_colors.size() == 150
+    # Upper panels draw, per group, a prediction band, the group's points and its mean curve.
+    series = list(panel.series())
+    kinds = [s.kind for s in series]
+    Kind = series[0]
+    assert kinds.count(Kind.Kind_Polygon) == 3 and kinds.count(Kind.Kind_Line) == 3
+    points = [s for s in series if s.kind == Kind.Kind_Scatter]
+    assert [len(s.x) for s in points] == [50, 50, 50]
     assert matrix.to_svg().count("<svg") == 1 + 2 * 2
 
 

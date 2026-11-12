@@ -47,7 +47,7 @@ def test_builtin_datasets_have_documented_shapes():
 def test_catalog_and_unknown_names():
     dm = _dm()
     catalog = dm.DataFrame.dataset_catalog()
-    assert catalog.nrows() == 23
+    assert catalog.nrows() == 24
     assert "diamonds" in list(dm.downloadable())
     assert "rebot_devarm" in list(dm.downloadable())
     with pytest.raises(ValueError):

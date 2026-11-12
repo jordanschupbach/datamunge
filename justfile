@@ -383,7 +383,8 @@ build-javascript: prebuild-javascript
 
 build-python: prebuild-python
   {{ NIX_DEVELOP }} .#python --command bash -c 'test -x build/venv/pydatamunge-run/bin/python || python -m venv --system-site-packages build/venv/pydatamunge-run'
-  {{ NIX_DEVELOP }} .#python --command bash -c 'if test -f build/nn-python/enabled; then export DATAMUNGE_BUILD_NN_EXAMPLES=${DATAMUNGE_BUILD_NN_EXAMPLES:-1}; fi; CMAKE_BUILD_PARALLEL_LEVEL={{ JOBS }} build/venv/pydatamunge-run/bin/python -m pip install --force-reinstall . --no-deps --no-build-isolation'
+  # Link the shell's datamunge library (built with native data assets) rather than recompiling the core without them.
+  {{ NIX_DEVELOP }} .#python --command bash -c 'if test -f build/nn-python/enabled; then export DATAMUNGE_BUILD_NN_EXAMPLES=${DATAMUNGE_BUILD_NN_EXAMPLES:-1}; fi; DATAMUNGE_USE_SYSTEM_LIB=1 CMAKE_BUILD_PARALLEL_LEVEL={{ JOBS }} build/venv/pydatamunge-run/bin/python -m pip install --force-reinstall . --no-deps --no-build-isolation'
 
 
 build-java: prebuild-java

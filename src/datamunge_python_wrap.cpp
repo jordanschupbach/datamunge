@@ -1525,7 +1525,6 @@ template<> struct Bound<datamunge::optim::RMSProp> : std::true_type {};
 template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
 template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
-template<> struct Copyable<datamunge::optim::RBFGaussianProcessSurrogate> : std::false_type {};
 template<> struct Bound<datamunge::optim::SGDOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGD> : std::true_type {};
 template<> struct Bound<datamunge::optim::SimulatedAnnealingOptions> : std::true_type {};
@@ -6045,6 +6044,9 @@ static int rosetta_exec(PyObject* module) {
             rosetta_py::add_object(module, "Task_InvertedPendulum", rosetta_py::checked(PyObject_GetAttrString(enum_type, "InvertedPendulum")));
             rosetta_py::add_object(module, "Task_Hopper", rosetta_py::checked(PyObject_GetAttrString(enum_type, "Hopper")));
         }
+        rosetta_py::add_object(module, "RGBA", rosetta_py::checked(PyObject_GetAttrString(module, "RGB")));
+        rosetta_py::add_object(module, "BSR", rosetta_py::checked(PyObject_GetAttrString(module, "BSplineRegression")));
+        rosetta_py::add_object(module, "PSR", rosetta_py::checked(PyObject_GetAttrString(module, "PSplineRegression")));
         return 0;
     }, -1);
 }

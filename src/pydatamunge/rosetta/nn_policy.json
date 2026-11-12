@@ -631,6 +631,89 @@
     "detection_evaluation::DatasetAp": {
       "per_class50_labels": "nn_python_extend::detection_evaluation__DatasetAp__per_class50_labels",
       "per_class50_value": "nn_python_extend::detection_evaluation__DatasetAp__per_class50_value"
+    },
+    "resnet::ResNetOutputs": {
+      "stage": "nn_python_extend::resnet__ResNetOutputs__stage"
+    },
+    "inception::InceptionOutputs": {
+      "branches": "nn_python_extend::inception__InceptionOutputs__branches_at"
+    },
+    "alexnet::AlexNetOutputs": {
+      "convolution": "nn_python_extend::alexnet__AlexNetOutputs__convolution_at",
+      "pooling": "nn_python_extend::alexnet__AlexNetOutputs__pooling_at"
+    },
+    "googlenet::GoogLeNetOutputs": {
+      "stem": "nn_python_extend::googlenet__GoogLeNetOutputs__stem_at",
+      "inception": "nn_python_extend::googlenet__GoogLeNetOutputs__inception_at"
+    },
+    "nin::NinOutputs": {
+      "blocks": "nn_python_extend::nin__NinOutputs__blocks_at",
+      "pooling": "nn_python_extend::nin__NinOutputs__pooling_at"
+    },
+    "vgg::VggOutputs": {
+      "pooling": "nn_python_extend::vgg__VggOutputs__pooling_at"
+    },
+    "zfnet::ZFNetOutputs": {
+      "convolution": "nn_python_extend::zfnet__ZFNetOutputs__convolution_at",
+      "pooling": "nn_python_extend::zfnet__ZFNetOutputs__pooling_at",
+      "normalized": "nn_python_extend::zfnet__ZFNetOutputs__normalized_at"
+    },
+    "preact::PreActResNetOutputs": {
+      "stages": "nn_python_extend::preact__PreActResNetOutputs__stages_at"
+    },
+    "dpn::DPNLayout": {
+      "blocks": "nn_python_extend::dpn__DPNLayout__blocks_at",
+      "inc": "nn_python_extend::dpn__DPNLayout__inc_at"
+    },
+    "dpn::DPNOutputs": {
+      "stages": "nn_python_extend::dpn__DPNOutputs__stages_at"
+    },
+    "revnet::RevNetUnit": {
+      "input_channels": "nn_python_extend::revnet__RevNetUnit__input_channels",
+      "set_input_channels": "nn_python_extend::revnet__RevNetUnit__set_input_channels"
+    },
+    "wide_resnet::WideResNetOutputs": {
+      "stages": "nn_python_extend::wide_resnet__WideResNetOutputs__stages_at"
+    },
+    "mobilenet::MobileNetV3Block": {
+      "input_channels": "nn_python_extend::mobilenet__MobileNetV3Block__input_channels",
+      "set_input_channels": "nn_python_extend::mobilenet__MobileNetV3Block__set_input_channels"
+    },
+    "shufflenet::ShuffleNetOutputs": {
+      "layer_count": "nn_python_extend::shufflenet__ShuffleNetOutputs__layer_count",
+      "layer_shape": "nn_python_extend::shufflenet__ShuffleNetOutputs__layer_shape",
+      "layer_cost": "nn_python_extend::shufflenet__ShuffleNetOutputs__layer_cost"
+    },
+    "repvgg::RepVGGBlockSpec": {
+      "input_channels": "nn_python_extend::repvgg__RepVGGBlockSpec__input_channels",
+      "set_input_channels": "nn_python_extend::repvgg__RepVGGBlockSpec__set_input_channels"
+    },
+    "attention_cnn::AttentionResNetConfig": {
+      "use_selective_kernel": "nn_python_extend::attention_cnn__AttentionResNetConfig__use_selective_kernel",
+      "has_conv2_hook": "nn_python_extend::attention_cnn__AttentionResNetConfig__has_conv2_hook",
+      "has_after_block_hook": "nn_python_extend::attention_cnn__AttentionResNetConfig__has_after_block_hook"
+    },
+    "hrnet::HRNetConfig": {
+      "modules": "nn_python_extend::hrnet__HRNetConfig__modules_at",
+      "set_modules": "nn_python_extend::hrnet__HRNetConfig__set_modules_at"
+    },
+    "deeplab::DeepLabV2Config": {
+      "rates": "nn_python_extend::deeplab__DeepLabV2Config__rates_at",
+      "set_rates": "nn_python_extend::deeplab__DeepLabV2Config__set_rates_at"
+    },
+    "deeplab::DeepLabV3Config": {
+      "rates": "nn_python_extend::deeplab__DeepLabV3Config__rates_at",
+      "set_rates": "nn_python_extend::deeplab__DeepLabV3Config__set_rates_at"
+    },
+    "centernet::CenterNetConfig": {
+      "upsample_widths": "nn_python_extend::centernet__CenterNetConfig__upsample_widths_at",
+      "set_upsample_widths": "nn_python_extend::centernet__CenterNetConfig__set_upsample_widths_at"
+    },
+    "wordtree::WordTree": {
+      "group": "nn_python_extend::wordtree__WordTree__group"
+    },
+    "capsnet::CapsNetOutputs": {
+      "Reconstruct": "nn_python_extend::capsnet__CapsNetOutputs__Reconstruct"
     }
   },
   "copy_types": [

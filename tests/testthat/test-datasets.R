@@ -20,7 +20,7 @@ test_that("built-in datasets load with their documented shapes", {
   }
   expect_equal(DataFrame$faithful()$numeric_at("waiting", 0), 79)
   expect_true(DataFrame$airquality()$is_null("Ozone", 4))
-  expect_equal(DataFrame$dataset_catalog()$nrows(), 23)
+  expect_equal(DataFrame$dataset_catalog()$nrows(), 24)
   expect_true("rebot_devarm" %in% downloadable())
   expect_error(DataFrame$dataset("no_such_dataset"))
 })
