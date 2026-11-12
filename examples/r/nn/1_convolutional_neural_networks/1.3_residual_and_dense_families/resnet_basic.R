@@ -1,5 +1,6 @@
 # Native R NN example. ResNet-18/34 checks and compact CIFAR-10 training; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_basic.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # ResNet-18 and ResNet-34 with post-activation basic residual blocks (tflow's
 # resnet_basic): canonical block/full-network checks, then compact quarter-width
 # CIFAR-10 training of both depths with a 3x3 stride-one stem, 12k fit / 5k

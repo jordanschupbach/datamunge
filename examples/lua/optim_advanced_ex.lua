@@ -2,48 +2,30 @@
 -- LevenbergMarquardt, Newton, TrustRegionNewton, AugmentedLagrangian, SQP,
 -- InteriorPoint, BayesianOptimization, RBFGaussianProcessSurrogate) from Lua.
 --
--- IMPORTANT FINDING: every one of these 10 optimizers takes a *director*
--- interface (ProximalFunction / HessianFunction / EqualityConstrainedFunction
--- / InequalityConstrainedFunction / ResidualFunction, or plain
--- ArbitraryFunction for BayesianOptimization's objective) as its first
--- argument, and the datamunge C++ library ships NO concrete implementation
--- of any of them -- every language's example defines its own objective by
--- subclassing. Lua's SWIG backend is stock upstream SWIG (not the swig-jse
--- fork other languages use here), and stock SWIG's Lua module
--- (Source/Modules/lua.cxx) has ZERO director code generation -- confirmed by
--- grepping the generated build/datamungelua/datamunge_lua_wrap.cxx for
--- "director": 0 matches, vs. 177/156 for this project's Ruby/Perl wrappers.
--- Concretely: these abstract classes get no constructor wrapper at all
--- (`_wrap_class_HessianFunction` etc. has a literal `0` in the constructor
--- slot), so `dm.HessianFunction()` fails with
--- "attempt to call a table value (field 'HessianFunction')" -- there is no
--- way to subclass them from Lua. This is a pre-existing, whole-module gap
--- (already noted for the original ArbitraryFunction/DifferentiableFunction
--- family in this project's Lua notes) and applies identically to all 10 new
--- classes: none of them can be driven with a custom objective from Lua.
---
--- What CAN be verified from Lua: the binding wired in cleanly (every new
--- class/Options-struct constructs without error) and RBFGaussianProcessSurrogate
--- -- the one NEW class that is concrete (not abstract) -- works correctly
--- end to end.
+-- Every one of these optimizers takes an interface (ProximalFunction / HessianFunction /
+-- EqualityConstrainedFunction / InequalityConstrainedFunction / ResidualFunction, or
+-- ArbitraryFunction for BayesianOptimization) that the C++ library leaves abstract: callers
+-- implement the objective. From Lua, subclass the interface with Class:extend{...}; the
+-- optimizer then calls the Lua methods. Coordinates are updated in place through a dm.ref()
+-- cell (the C++ parameter is a non-const std::vector<double>&).
 
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function dvv(rows)
-  local m = dm.DVectorVector(#rows)
-  for i, row in ipairs(rows) do m[i - 1] = dv(row) end
+  local m = {}
+  for i, row in ipairs(rows) do m[i] = dv(row) end
   return m
 end
 
 local function to_table(v)
   local t = {}
-  for i = 0, v:size() - 1 do t[i + 1] = v[i] end
+  for i = 1, #v do t[i] = v[i] end
   return t
 end
 
@@ -112,30 +94,34 @@ bo_opts.initial_samples = 8
 local bo = dm.BayesianOptimization(bo_opts)
 print("BayesianOptimization: " .. tostring(bo))
 
-print("\n=================== Director/subclass check (the load-bearing capability) ===================")
--- Every optimizer above needs a user-supplied director-interface object
--- (HessianFunction, ResidualFunction, ProximalFunction, ArbitraryFunction,
--- ...) as its objective/residual/constraint argument. Confirm empirically
--- that these interfaces cannot even be instantiated from Lua, let alone
--- subclassed and called back into.
-for _, name in ipairs({ "HessianFunction", "ResidualFunction", "ProximalFunction",
-                        "ArbitraryFunction", "EqualityConstrainedFunction",
-                        "InequalityConstrainedFunction" }) do
-  local ok, err = pcall(function() return dm[name]() end)
-  print(("dm.%s(): ok=%s err=%s"):format(name, tostring(ok), tostring(err)))
+print("\n=================== Lua objectives (subclassing the C++ interfaces) ===================")
+-- Newton's method on f(x, y) = (x - 1)^2 + 10 (y + 2)^2 with exact gradient and Hessian.
+local Quadratic = dm.HessianFunction:extend{}
+function Quadratic:evaluate(c) return (c[1] - 1) ^ 2 + 10 * (c[2] + 2) ^ 2 end
+function Quadratic:gradient(c) return { 2 * (c[1] - 1), 20 * (c[2] + 2) } end
+function Quadratic:hessian() return { { 2, 0 }, { 0, 20 } } end
+local start = dm.ref({ 5.0, 5.0 })
+local value = newton:optimize(Quadratic(), start)
+print(("Newton: f = %.6g at (%.6f, %.6f) (exact minimum 0 at (1, -2))"):format(value, start.value[1], start.value[2]))
+
+-- Levenberg-Marquardt fitting y = a * exp(b t) to exact data from a = 2, b = 0.5.
+local ts = { 0.0, 0.5, 1.0, 1.5, 2.0 }
+local Exponential = dm.ResidualFunction:extend{}
+function Exponential:residuals(p)
+  local r = {}
+  for i, t in ipairs(ts) do r[i] = p[1] * math.exp(p[2] * t) - 2 * math.exp(0.5 * t) end
+  return r
 end
-print([[
-==> CONCLUSION: Lua's stock-SWIG backend generates zero director code
-    (Source/Modules/lua.cxx has no director support at all, unlike the
-    swig-jse fork used by Python/Ruby/Perl/etc. in this project). None of
-    ProximalGradient, FISTA, LevenbergMarquardt, Newton, TrustRegionNewton,
-    AugmentedLagrangian, SQP, or InteriorPoint can be run end-to-end from
-    Lua, since all of them require a user-defined subclass of a pure
-    interface type that Lua cannot even instantiate (no constructor is
-    generated for abstract director-eligible classes without director
-    support). BayesianOptimization is in the same boat for its `ArbitraryFunction&`
-    objective argument, even though its surrogate (RBFGaussianProcessSurrogate)
-    is a ready-to-use concrete class that DOES work, as demonstrated above.
-    This is not a bug introduced by this batch of 10 classes -- it is the
-    same pre-existing, whole-optim-module limitation already recorded for
-    Lua (matches R, C#, PHP, Go, Java as non-director languages here).]])
+function Exponential:jacobian(p)
+  local rows = {}
+  for i, t in ipairs(ts) do rows[i] = { math.exp(p[2] * t), p[1] * t * math.exp(p[2] * t) } end
+  return rows
+end
+local params = dm.ref({ 1.0, 0.1 })
+local sse = lm:optimize(Exponential(), params)
+print(("LevenbergMarquardt: residual = %.3g, a = %.6f, b = %.6f (exact: 2, 0.5)"):format(sse, params.value[1], params.value[2]))
+
+-- An interface method a subclass leaves out raises a Lua error when the optimizer calls it.
+local Incomplete = dm.HessianFunction:extend{ evaluate = function() return 0 end }
+local ok, err = pcall(function() return newton:optimize(Incomplete(), dm.ref({ 0.0, 0.0 })) end)
+print("missing gradient(): ok=" .. tostring(ok) .. ", error mentions it: " .. tostring(tostring(err):find("gradient", 1, true) ~= nil))

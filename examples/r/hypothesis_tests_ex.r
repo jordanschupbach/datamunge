@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/hypothesis_tests_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 # Hypothesis-test functions are free functions: t_test_two_sample(x, y), etc. Enums such as
 # Alternative cross as their enumerator names ("TwoSided"/"Less"/"Greater", or Alternative$Less).
 library(datamunger)

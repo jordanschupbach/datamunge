@@ -1,5 +1,6 @@
 # Native Python NN example. Whitespace, Unicode characters, learned BPE and greedy WordPiece.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/text_tokenization.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Whitespace, Unicode characters, learned BPE and greedy WordPiece.
 
 Port of tflow's text_tokenization. Learn ten BPE merges from a weighted toy

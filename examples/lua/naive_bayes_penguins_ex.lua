@@ -23,13 +23,13 @@ for i = 0, penguins:nrows() - 1 do
   if not (penguins:is_null("species", i) or penguins:is_null("bill_length_mm", i) or
           penguins:is_null("bill_depth_mm", i) or penguins:is_null("island", i) or penguins:is_null("sex", i)) then
     local actual = penguins:string_at("species", i)
-    if predictions[i] ~= actual then
+    if predictions[i + 1] ~= actual then
       misclassified = misclassified + 1
       print("  row " .. i .. ": bill_length=" .. penguins:numeric_at("bill_length_mm", i) ..
             " bill_depth=" .. penguins:numeric_at("bill_depth_mm", i) ..
             " island=" .. penguins:string_at("island", i) ..
             " sex=" .. penguins:string_at("sex", i) ..
-            "  actual=" .. actual .. "  predicted=" .. predictions[i])
+            "  actual=" .. actual .. "  predicted=" .. predictions[i + 1])
     end
   end
 end

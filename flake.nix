@@ -104,6 +104,23 @@
         phpPackage =
           if has system php-from-source.packages then php-from-source.packages.${system} else pkgs.php;
         lua = pkgs.lua5_4 or (pkgs.lua54 or pkgs.lua);
+        # SBCL plus the ASDF systems the generated Common Lisp system loads (cffi, trivial-garbage).
+        # sbcl.withPackages' wrapper fails nixpkgs' makeWrapper check, so shells export the source
+        # registry it would set; the store systems keep their prebuilt fasls in place.
+        lispSystems =
+          let
+            closure = libs: lib.unique (lib.concatMap (p: [ p ] ++ closure (p.lispLibs or [ ])) libs);
+          in
+          closure [
+            pkgs.sbclPackages.cffi
+            pkgs.sbclPackages.trivial-garbage
+          ];
+        lispHook = ''
+          export CL_SOURCE_REGISTRY="''${CL_SOURCE_REGISTRY:+$CL_SOURCE_REGISTRY:}${
+            lib.concatMapStringsSep ":" (p: "${p}//") lispSystems
+          }"
+          export ASDF_OUTPUT_TRANSLATIONS="${lib.concatMapStringsSep ":" (p: "${p}:${p}") lispSystems}"
+        '';
         # php-config/phpize for building the extension; nixpkgs' wrapped PHP keeps them in the
         # unwrapped package's dev output.
         phpDev = lib.optional (phpPackage ? unwrapped) phpPackage.unwrapped.dev;
@@ -146,6 +163,9 @@
           # just build-lua (installs into build/lua/prefix)
           export LUA_PATH="$datamungeRoot/build/lua/prefix/share/lua/?.lua;''${LUA_PATH:-;}"
           export LUA_CPATH="$datamungeRoot/build/lua/prefix/lib/lua/?.so;$datamungeRoot/build/lua/prefix/lib64/lua/?.so;''${LUA_CPATH:-;}"
+          # just build-lisp (installs datamunge.asd, .lisp and .so into build/lisp/prefix):
+          # (asdf:load-system "datamunge") from SBCL in the default or lisp shell.
+          export CL_SOURCE_REGISTRY="$datamungeRoot/build/lisp/prefix/share/common-lisp/source//''${CL_SOURCE_REGISTRY:+:$CL_SOURCE_REGISTRY}"
           # just build-octave
           export OCTAVE_PATH="$datamungeRoot/build/datamungeoctave''${OCTAVE_PATH:+:}$OCTAVE_PATH"
           # just build-guile (installs into build/guile/prefix)
@@ -235,6 +255,7 @@
         datamungetcl = import ./nix/datamungetcl.nix { pkgs = bindingPkgs; };
         octruby = import ./nix/octruby.nix { pkgs = bindingPkgs; };
         datamungelua = import ./nix/datamungelua.nix { pkgs = bindingPkgs; };
+        datamungelisp = import ./nix/datamungelisp.nix { pkgs = bindingPkgs; };
         datamungeocaml = import ./nix/datamungeocaml.nix { pkgs = bindingPkgs; };
         datamungeguile = import ./nix/datamungeguile.nix { pkgs = bindingPkgs; };
         datamungeoctave = import ./nix/datamungeoctave.nix { pkgs = bindingPkgs; };
@@ -562,6 +583,24 @@
             installPhase = "mkdir -p $out";
           };
 
+          lisp = pkgs.stdenv.mkDerivation {
+            name = "datamunge-lisp-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.sbcl ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = lispHook + ''
+              export CL_SOURCE_REGISTRY="${datamungelisp}/share/common-lisp/source//:$CL_SOURCE_REGISTRY"
+              export HOME="$TMPDIR"
+              sbcl --noinform --non-interactive --load tests/lisp/test_datamunge.lisp
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
           ruby = pkgs.stdenv.mkDerivation {
             name = "datamunge-ruby-check";
             src = pkgs.lib.cleanSource ./.;
@@ -770,6 +809,7 @@
             datamungetcl
             octruby
             datamungelua
+            datamungelisp
             datamungeocaml
             datamungeguile
             datamungeoctave
@@ -840,10 +880,16 @@
             # working tree (`just build-<lang>`), not nix; see localBindingsHook.
             pkgs.nodejs
             pkgs.R
+            # datamunger's runtime dep; mep's R UI mode runs bare `R` from this shell.
+            pkgs.rPackages.R6
+            pkgs.rPackages.testthat
+            pkgs.rPackages.roxygen2
             pkgs.ruby
             pkgs.perl
             phpPackage
             lua
+            # Common Lisp: mep's Lisp UI mode runs `sbcl` from this shell (see lispHook).
+            pkgs.sbcl
             pkgs.tcl
             pkgs.octave
             pkgs.guile
@@ -862,7 +908,7 @@
             pkgs.go
           ];
 
-          shellHook = localBindingsHook;
+          shellHook = localBindingsHook + lispHook;
         };
 
         devShells.format =
@@ -1076,7 +1122,20 @@
               ]
             ))
           ];
-          shellHook = localBindingsHook;
+          # `just build-python` installs pydatamunge into build/venv/pydatamunge-run (a
+          # --system-site-packages venv over this shell's python), so put that venv first on
+          # PATH: bare `python` then imports the working-tree binding plus numpy/ipython/etc.
+          shellHook = localBindingsHook + ''
+            pydatamungeVenv="$datamungeRoot/build/venv/pydatamunge-run"
+            # (run it, not just -x: a venv whose base python was garbage-collected must not
+            # shadow the shell's python, which `just build-python` uses to recreate it)
+            if "$pydatamungeVenv/bin/python" -c "" 2>/dev/null; then
+              export VIRTUAL_ENV="$pydatamungeVenv"
+              export PATH="$pydatamungeVenv/bin:$PATH"
+            else
+              echo "pydatamunge is not built yet; run \`just build-python\` to create $pydatamungeVenv" >&2
+            fi
+          '';
         };
 
         devShells.jsbuild = pkgs.mkShell {
@@ -1279,13 +1338,31 @@
             datamunge
             lua
             pkgs.arrow-cpp
-            swigPkg
+            # just prebuild-lua: scripts/prebuild_bindings.py lua runs rosetta.
+            rosettaPkg
+            pkgs.python3
             pkgs.cmake
             pkgs.pkg-config
             pkgs.just
           ];
 
           shellHook = localBindingsHook;
+        };
+
+        devShells.lisp = pkgs.mkShell {
+          packages = [
+            datamunge
+            pkgs.sbcl
+            # just prebuild-lisp: scripts/prebuild_bindings.py lisp runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.just
+          ];
+
+          shellHook = localBindingsHook + lispHook;
         };
 
         devShells.ocaml = pkgs.mkShell {

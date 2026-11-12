@@ -1,5 +1,6 @@
 # Native Python NN example. Binary and multinomial classification, including confusion matrices.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.6_classical_machine_learning/logistic_regression.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Stable logistic losses, explicit Adam updates and held-out evaluation."""
 import math
 from pydatamunge import nn

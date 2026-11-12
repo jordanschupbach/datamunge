@@ -1,5 +1,6 @@
 # Native Python NN example. Stochastic depth: DropPath mask/schedule/shortcut checks, then constant-depth versus stochastic-depth 20-layer CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/stochastic_depth.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Stochastic depth: survival schedules, masking conventions and learning.
 
 Port of tflow's stochastic_depth. Verify original train=bF/test=pF and

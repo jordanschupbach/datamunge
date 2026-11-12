@@ -1,5 +1,6 @@
 # Native R NN example. alexnet: explicit C++-equivalent CIFAR-10 workflow over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/alexnet.R
+# REPL: nix develop .#r --command R --no-save --quiet
 suppressPackageStartupMessages(library(datamungerNN))
 check <- nn_components$check
 example_runtime <- nn_components$example_runtime

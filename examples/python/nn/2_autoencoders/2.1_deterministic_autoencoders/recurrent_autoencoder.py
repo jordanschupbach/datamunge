@@ -1,5 +1,6 @@
 # Native Python NN example. Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/recurrent_autoencoder.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Sequence-to-sequence tanh recurrent autoencoder with a final-state-only bottleneck.
 
 Prepare MNIST pools with the native mnist-assets dataset API; data are read

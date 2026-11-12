@@ -1,5 +1,6 @@
 # Native Python NN example. Per-gate per-example LayerNorm LSTM with raw cell carry and normalized readout.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/layer_norm_lstm.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Per-gate per-example LayerNorm LSTM with raw cell carry and normalized
 hidden readout.
 

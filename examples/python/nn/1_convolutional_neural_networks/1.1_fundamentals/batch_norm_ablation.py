@@ -1,5 +1,6 @@
 # Native Python NN example. Paired MNIST CNN batch-norm ablation trained and checked in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Paired MNIST CNN experiments with and without batch normalization.
 
 Port of tflow's batch_norm_ablation. Use the same 12,000 fitting rows,

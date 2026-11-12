@@ -1,5 +1,6 @@
 # Native R NN example. Training, dependency pruning and frozen export live here.
 # CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.5_persistence_and_interoperability/frozen_graph.R
+# REPL: nix develop .#r --command R --no-save --quiet
 .nn_common<-file.path(Sys.getenv('DATAMUNGE_EXAMPLES_ROOT',getwd()),'examples/r/nn/common.R')
 if(!file.exists(.nn_common)).nn_common<-system.file('examples/nn/common.R',package='datamungerNN',mustWork=TRUE)
 source(.nn_common,local=TRUE);rm(.nn_common)

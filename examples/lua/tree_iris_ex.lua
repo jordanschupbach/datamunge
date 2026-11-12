@@ -14,11 +14,11 @@ local predictions = model:predict(iris)
 local misclassified = 0
 for i = 0, iris:nrows() - 1 do
   local actual = iris:string_at("Species", i)
-  if predictions[i] ~= actual then
+  if predictions[i + 1] ~= actual then
     misclassified = misclassified + 1
     print("  row " .. i .. ": Petal.Length=" .. iris:numeric_at("Petal.Length", i) ..
           " Petal.Width=" .. iris:numeric_at("Petal.Width", i) ..
-          "  actual=" .. actual .. "  predicted=" .. predictions[i])
+          "  actual=" .. actual .. "  predicted=" .. predictions[i + 1])
   end
 end
 print(misclassified .. " of " .. iris:nrows() .. " misclassified (" .. (100.0 * misclassified / iris:nrows()) .. "%)")

@@ -1,14 +1,14 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function to_table(v)
   local t = {}
-  for i = 0, v:size() - 1 do t[i + 1] = v[i] end
+  for i = 1, #v do t[i] = v[i] end
   return t
 end
 
@@ -36,12 +36,12 @@ end
 
 print("\n=================== Harmonic oscillator (energy conservation) ===================")
 local options = dm.ODEOptions()
-options.method = dm.StepMethod_RK4
+options.method = dm.StepMethod.RK4
 options.step_size = 0.01
 solver = dm.ODESolver(options)
 local sol = solver:solve_builtin("harmonic_oscillator", dv({ 1.0 }), dv({ 1.0, 0.0 }), 0.0, 20.0)
 local final = last_state(sol)
-local x, v = final[0], final[1]
+local x, v = final[1], final[2]
 print(string.format("x(20) = %.6f (cos(20) = %.6f)", x, math.cos(20)))
 print(string.format("energy x^2+v^2 = %.6f (should stay near 1.0)", x * x + v * v))
 
@@ -49,8 +49,8 @@ local t_series, x_series, v_series = {}, {}, {}
 for i = 0, sol:size() - 1 do
   t_series[i + 1] = sol:time_at(i)
   local st = sol:state_at(i)
-  x_series[i + 1] = st[0]
-  v_series[i + 1] = st[1]
+  x_series[i + 1] = st[1]
+  v_series[i + 1] = st[2]
 end
 local plot = dm.RPlot.plot(dv(t_series), dv(x_series), "l", "x(t)")
 plot:lines(dv(t_series), dv(v_series), "v(t)")
@@ -60,7 +60,7 @@ print("wrote ode_harmonic_oscillator_lua.svg")
 
 print("\n=================== Lorenz attractor (phase plane) ===================")
 options = dm.ODEOptions()
-options.method = dm.StepMethod_RK4
+options.method = dm.StepMethod.RK4
 options.step_size = 0.005
 solver = dm.ODESolver(options)
 sol = solver:solve_builtin("lorenz", dv({ 10.0, 28.0, 8.0 / 3.0 }), dv({ 1.0, 1.0, 1.0 }), 0.0, 25.0)
@@ -69,8 +69,8 @@ print(string.format("steps_taken = %d", sol.steps_taken))
 local xs, zs = {}, {}
 for i = 0, sol:size() - 1 do
   local st = sol:state_at(i)
-  xs[i + 1] = st[0]
-  zs[i + 1] = st[2]
+  xs[i + 1] = st[1]
+  zs[i + 1] = st[3]
 end
 plot = dm.RPlot.plot(dv(xs), dv(zs), "l", "trajectory")
 plot:title("Lorenz Attractor (x-z phase plane)"):x_label("x"):y_label("z")

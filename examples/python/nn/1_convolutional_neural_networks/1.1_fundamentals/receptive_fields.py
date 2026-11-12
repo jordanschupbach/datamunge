@@ -1,5 +1,6 @@
 # Native Python NN example. Receptive-field geometry and trained CNN feature derivatives in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/receptive_fields.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Receptive fields and trained CNN feature maps, with numerical validation.
 
 Port of tflow's receptive_fields. Preparation: just python-example cnn_mnist

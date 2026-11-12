@@ -1,5 +1,6 @@
 # Native Python NN example. RegNet design/cost/gradient checks and Y-400MF CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/regnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """RegNet: X and Y models generated from a quantized linear width rule.
 
 Generate all fourteen released RegNetX/Y models (400MF to 32GF) from

@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/ggplot_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 # Demonstrates GGPlot -- the ggplot2-style grammar-of-graphics library.
 # Mutator calls below are wrapped in invisible(): GGPlot's chainable methods return the
 # plot itself, and Rscript auto-prints any un-assigned top-level result.

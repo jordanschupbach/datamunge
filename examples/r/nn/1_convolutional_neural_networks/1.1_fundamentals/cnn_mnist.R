@@ -1,5 +1,6 @@
 # Native R NN example. Model composition and training run in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # Epochs are honored in both modes; --quick reduces the dataset, --full uses all MNIST.
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT", getwd()), "examples/r/nn/common.R")
 if (!file.exists(.nn_common))

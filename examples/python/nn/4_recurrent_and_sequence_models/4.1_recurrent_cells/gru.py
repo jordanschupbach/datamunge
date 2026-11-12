@@ -1,5 +1,6 @@
 # Native Python NN example. Reset-before GRU with explicit masked unroll and full BPTT on the marked-token task.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/gru.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Reset-before GRU with explicit masked unroll and full BPTT on the common
 three-epoch task.
 

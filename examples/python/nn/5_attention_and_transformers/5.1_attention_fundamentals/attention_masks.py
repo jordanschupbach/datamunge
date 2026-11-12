@@ -1,5 +1,6 @@
 # Native Python NN example. Padding/causal masks, cache equivalence and gradient isolation.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/attention_masks.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Four masked attention cases with complete derivatives and independent finite differences."""
 import math
 from pathlib import Path

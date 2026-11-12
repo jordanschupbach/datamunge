@@ -1,5 +1,6 @@
 # Native R NN example. Deformable convolutions v1/v2: layer checks against ordinary, shifted and host-bilinear convolutions, compact deformable ResNet-50 counts/derivatives, then DCNv1 and DCNv2 CIFAR-10 training; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/deformable_conv.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # Deformable convolutions v1 / v2: learned sampling offsets (and v2 modulation masks).
 #
 # Port of tflow's deformable_conv (layer: common/deformable.hpp on

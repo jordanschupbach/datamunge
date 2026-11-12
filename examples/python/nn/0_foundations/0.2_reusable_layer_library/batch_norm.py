@@ -1,5 +1,6 @@
 # Native Python NN example. Batch statistics, moving state, deep stacks and gradients.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/batch_norm.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Training/inference batch normalization checked against independent moments."""
 import math
 from pydatamunge import nn

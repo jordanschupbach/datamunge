@@ -1,5 +1,6 @@
 # Native Python NN example. Sinusoidal, learned, rotary and ALiBi checks.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/positional_encodings.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Position representations, independent rotations and relative-position scores."""
 import math
 from pydatamunge import nn

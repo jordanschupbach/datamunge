@@ -1,5 +1,6 @@
 # Native Python NN example. HRNetV2 exchange-fusion/model checks and compact procedural-shapes segmentation training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/hrnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """HRNetV2: persistent high-resolution branches and repeated exchange fusion.
 https://arxiv.org/abs/1908.07919
 https://github.com/HRNet/HRNet-Semantic-Segmentation/blob/HRNet-OCR/lib/models/seg_hrnet.py

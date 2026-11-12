@@ -1,5 +1,6 @@
 # Native Python NN example. Kim CNN-rand sentence classification with Adadelta written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Kim2014 CNN-rand: learned embeddings,parallel3/4/5-ReLU word convolutions,
 max-over-time pooling,dropout.5,softmax and Adadelta with head maxnorm3.
 Real pinned MR v1.0 sentences;fit-only vocabulary,duplicate-group holdout.

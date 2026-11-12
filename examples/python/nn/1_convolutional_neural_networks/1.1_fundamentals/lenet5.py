@@ -1,5 +1,6 @@
 # Native Python NN example. LeNet-5 architecture checks and MNIST fitting run in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """LeNet-5: sparse convolutions, learned subsampling and a fixed RBF head.
 
 Port of tflow's lenet5. Preparation (in ~/projects/tflow_examples):

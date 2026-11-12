@@ -1,14 +1,14 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function to_table(vec)
   local out = {}
-  for i = 0, vec:size() - 1 do out[i + 1] = vec[i] end
+  for i = 1, #vec do out[i] = vec[i] end
   return out
 end
 
@@ -37,13 +37,13 @@ options.de_population_size = 80
 options.de_max_generations = 400
 local model = dm.ARIMA(dv(y), options)
 
-print("AR coefficient: " .. model:ar_coefficients()[0])
-print("MA coefficient: " .. model:ma_coefficients()[0])
+print("AR coefficient: " .. model:ar_coefficients()[1])
+print("MA coefficient: " .. model:ma_coefficients()[1])
 print("sigma^2: " .. model:sigma2() .. ", AIC: " .. model:aic() .. ", BIC: " .. model:bic())
 
 local pair = model:forecast_with_intervals(6)
-print("6-step forecast: " .. table.concat(to_table(pair.first), ", "))
-print("forecast std. errors: " .. table.concat(to_table(pair.second), ", "))
+print("6-step forecast: " .. table.concat(to_table(pair[1]), ", "))
+print("forecast std. errors: " .. table.concat(to_table(pair[2]), ", "))
 
 print("\n=================== SARIMA(1,0,0)(1,1,0)_12 on a seasonal series ===================")
 math.randomseed(7)
@@ -62,7 +62,7 @@ options2.seasonal_period = 12
 options2.de_population_size = 100
 options2.de_max_generations = 500
 local model2 = dm.ARIMA(dv(s), options2)
-print("AR coefficient: " .. model2:ar_coefficients()[0] .. ", seasonal AR coefficient: " .. model2:seasonal_ar_coefficients()[0])
+print("AR coefficient: " .. model2:ar_coefficients()[1] .. ", seasonal AR coefficient: " .. model2:seasonal_ar_coefficients()[1])
 print("12-step forecast: " .. table.concat(to_table(model2:forecast(12)), ", "))
 
 print("\n=================== Exponential smoothing: Holt-Winters on retail-style seasonal data ===================")
@@ -75,8 +75,8 @@ for i = 0, 47 do
 end
 
 local es_options = dm.ExponentialSmoothingOptions()
-es_options.trend = dm.TrendType_Additive
-es_options.seasonal = dm.SeasonalType_Multiplicative
+es_options.trend = dm.TrendType.Additive
+es_options.seasonal = dm.SeasonalType.Multiplicative
 es_options.seasonal_period = 12
 es_options.de_population_size = 60
 es_options.de_max_generations = 300
@@ -93,7 +93,7 @@ print("SES alpha= " .. ses:alpha())
 print("SES 5-step forecast: " .. table.concat(to_table(ses:forecast(5)), ", "))
 
 local holt_options = dm.ExponentialSmoothingOptions()
-holt_options.trend = dm.TrendType_Additive
+holt_options.trend = dm.TrendType.Additive
 local holt = dm.ExponentialSmoothing(dv(flat), holt_options)
 print("Holt alpha=" .. holt:alpha() .. " beta=" .. holt:beta())
 print("Holt 5-step forecast: " .. table.concat(to_table(holt:forecast(5)), ", "))

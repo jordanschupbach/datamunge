@@ -1,5 +1,6 @@
 # Native Python NN example. Variable lifecycle and initializer algorithms.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.1_tensors_graphs_sessions/variables_initializers.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Mutable tensors, independent stores, seeded initialization and gradients."""
 import math
 from pydatamunge import nn

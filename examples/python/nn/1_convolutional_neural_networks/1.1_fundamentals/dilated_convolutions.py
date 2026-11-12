@@ -1,5 +1,6 @@
 # Native Python NN example. Atrous convolutions: exact dilation, gridding and learning distant context.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Atrous convolutions: exact dilation, gridding and learning distant context.
 
 Port of tflow's dilated_convolutions. A 3x3 filter at rate d has effective

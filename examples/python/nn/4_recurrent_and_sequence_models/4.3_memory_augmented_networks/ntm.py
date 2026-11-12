@@ -1,5 +1,6 @@
 # Native Python NN example: ntm, explicit loop over canonical C++ memory components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/ntm.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Options: epochs=N out=PATH init=PATH tf=PATH. Data: $DATAMUNGE_DATA_DIR/ntm.
 """
 import json

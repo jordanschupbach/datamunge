@@ -1,15 +1,15 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local ALT_NAMES = {
-  [dm.Alternative_Less] = "less",
-  [dm.Alternative_Greater] = "greater",
-  [dm.Alternative_TwoSided] = "two.sided",
+  [dm.Alternative.Less] = "less",
+  [dm.Alternative.Greater] = "greater",
+  [dm.Alternative.TwoSided] = "two.sided",
 }
 
 local function print_result(label, r)
@@ -45,10 +45,7 @@ local all_petal = {}
 for _, v in ipairs(setosa_petal) do table.insert(all_petal, v) end
 for _, v in ipairs(versicolor_petal) do table.insert(all_petal, v) end
 for _, v in ipairs(virginica_petal) do table.insert(all_petal, v) end
-local sizes = dm.SizeVector(3)
-sizes[0] = #setosa_petal
-sizes[1] = #versicolor_petal
-sizes[2] = #virginica_petal
+local sizes = { #setosa_petal, #versicolor_petal, #virginica_petal }
 print_result("One-way ANOVA", dm.one_way_anova(dv(all_petal), sizes))
 print_result("Kruskal-Wallis", dm.kruskal_wallis_test(dv(all_petal), sizes))
 

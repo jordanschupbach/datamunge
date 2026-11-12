@@ -1,5 +1,6 @@
 # Native Python NN example. Global average pooling vs flatten heads, written out with datamunge::nn ops.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/global_pooling_vs_flatten.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Global average pooling vs flatten: invariance, location and learned heads.
 
 Port of tflow's global_pooling_vs_flatten. For [N,H,W,C] feature maps and K

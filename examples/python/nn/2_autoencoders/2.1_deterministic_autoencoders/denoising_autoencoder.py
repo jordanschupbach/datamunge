@@ -1,5 +1,6 @@
 # Native Python NN example. Corrupted-input/clean-target denoising autoencoder with a matched ordinary control.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/denoising_autoencoder.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Actual corrupted-input/CLEAN-target autoencoder with fresh epoch noise and matched ordinary AE.
 Three epochs/default; fixed validation/test Gaussian banks, clean/low/strong/secondseed controls.
 

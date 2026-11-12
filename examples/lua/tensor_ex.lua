@@ -1,20 +1,20 @@
 local dm = require("datamunge")
 
 local function sv(t)
-  local v = dm.SizeVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function to_table(vec)
   local out = {}
-  for i = 0, vec:size() - 1 do out[i + 1] = vec[i] end
+  for i = 1, #vec do out[i] = vec[i] end
   return out
 end
 
@@ -78,10 +78,9 @@ local scatter = centered:transpose():matmul(centered)
 print("feature means (Sepal.Length, Sepal.Width, Petal.Length, Petal.Width): " .. feature_means:to_string())
 print("(X-mean)^T (X-mean) [4x4 scatter matrix]: " .. scatter:to_string(16))
 
-local species = dm.SVector(iris:nrows())
-for i = 0, iris:nrows() - 1 do species[i] = iris:string_at("Species", i) end
+local species = {}
+for i = 0, iris:nrows() - 1 do species[i + 1] = iris:string_at("Species", i) end
 local species_tensor = dm.Tensor.from_string_values(sv({iris:nrows()}), species)
-local setosa_only = dm.SVector(1)
-setosa_only[0] = "setosa"
+local setosa_only = { "setosa" }
 local setosa_mask = species_tensor:equal(dm.Tensor.from_string_values(sv({1}), setosa_only))
 print("setosa count = " .. setosa_mask:sum() .. " (of " .. iris:nrows() .. " rows)")

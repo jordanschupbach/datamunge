@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/tree_iris_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 # Note: DataFrame_numeric_at/string_at take a 0-based row index (matching the underlying
 # C++ API); vectors returned to R (like predict()'s result) are indexed the normal R way (1-based).
 library(datamunger)

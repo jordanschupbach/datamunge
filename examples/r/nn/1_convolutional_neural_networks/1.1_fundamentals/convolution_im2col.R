@@ -1,5 +1,6 @@
 # Native R NN example. Explicit patch geometry, packing and checks run in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/convolution_im2col.R
+# REPL: nix develop .#r --command R --no-save --quiet
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT", getwd()), "examples/r/nn/common.R")
 if (!file.exists(.nn_common))
     .nn_common <- system.file("examples/nn/common.R", package = "datamungerNN", mustWork = TRUE)

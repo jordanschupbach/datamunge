@@ -1,8 +1,8 @@
 local dm = require("datamunge")
 
 local function sv(t)
-  local v = dm.SVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
@@ -21,7 +21,7 @@ pca:print_summary()
 print("\nPC1 loadings (which original features drive it):")
 local names = pca:feature_names()
 local loadings = pca:component_loadings(0)
-for i = 0, names:size() - 1 do
+for i = 1, #names do
   print(string.format("  %s: %.4f", names[i], loadings[i]))
 end
 
@@ -43,4 +43,4 @@ local unscaled_ratio = unscaled:explained_variance_ratio()
 print(string.format(
   "PC1 explains %.2f%% of variance (vs. %.2f%% scaled) -- Sepal.Length's larger raw variance "
     .. "dominates the unscaled covariance matrix.",
-  unscaled_ratio[0] * 100, scaled_ratio[0] * 100))
+  unscaled_ratio[1] * 100, scaled_ratio[1] * 100))

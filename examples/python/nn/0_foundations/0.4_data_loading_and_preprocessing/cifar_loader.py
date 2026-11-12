@@ -1,5 +1,6 @@
 # Native Python NN example. CIFAR-10/CIFAR-100 binary decoding, planar-to-NHWC conversion and labels.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/cifar_loader.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """CIFAR-10/CIFAR-100 binary decoding, planar-to-NHWC conversion and labels.
 
 Port of tflow's cifar_loader. Write original-format records with

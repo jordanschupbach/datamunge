@@ -1,5 +1,6 @@
 # Native Python NN example. SqueezeNet fire-module/geometry checks and three CIFAR-10 trainings (v1.0, v1.0 bypass, v1.1); the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """SqueezeNet: AlexNet-level design with 50x fewer parameters via fire modules.
 
 Check that a fire module's concatenated 1x1 and 3x3 expand layers equal a

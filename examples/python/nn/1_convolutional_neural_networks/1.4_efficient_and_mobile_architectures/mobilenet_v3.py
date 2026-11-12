@@ -1,5 +1,6 @@
 # Native Python NN example. MobileNet v3 hard-activation/SE/cost/gradient checks and Large/Small CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v3.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """MobileNet v3 Large and Small: searched blocks, hard-swish and squeeze-and-excitation.
 
 Compare hard-swish and the hard sigmoid with swish and the logistic

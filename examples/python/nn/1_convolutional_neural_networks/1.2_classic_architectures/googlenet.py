@@ -1,5 +1,6 @@
 # Native Python NN example. googlenet: Inception v1 branch/auxiliary/full-architecture checks and compact CIFAR-10 training with auxiliary heads over SWIG components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/googlenet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """GoogLeNet / Inception v1: parallel receptive fields and auxiliary supervision.
 
 Port of tflow's googlenet. Implement the nine modules and 224-pixel/1000-class

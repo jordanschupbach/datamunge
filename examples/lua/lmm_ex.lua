@@ -1,8 +1,8 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
@@ -58,7 +58,7 @@ print("\n--- Best Linear Unbiased Predictors (BLUPs) for a few schools ---")
 local group_labels = model:group_labels()
 for _, idx in ipairs({0, 1, 2}) do
   local re = model:random_effects_for_group(idx)
-  print("school " .. group_labels[idx] .. ": intercept shift=" .. re[0] .. ", slope shift=" .. re[1])
+  print("school " .. group_labels[idx + 1] .. ": intercept shift=" .. re[1] .. ", slope shift=" .. re[2])
 end
 
 print("\n--- Prediction: population-level vs. school-adjusted ---")
@@ -67,5 +67,5 @@ newdata_population:add_numeric_column("study_hours", dv({5.0}))
 local newdata_school0 = dm.DataFrame()
 newdata_school0:add_numeric_column("study_hours", dv({5.0}))
 newdata_school0:add_numeric_column("school", dv({0.0}))
-print("5 study hours, unseen school:      " .. model:predict(newdata_population)[0] .. " (fixed effects only)")
-print("5 study hours, school 0 (known):    " .. model:predict(newdata_school0)[0] .. " (fixed effects + school 0's BLUP)")
+print("5 study hours, unseen school:      " .. model:predict(newdata_population)[1] .. " (fixed effects only)")
+print("5 study hours, school 0 (known):    " .. model:predict(newdata_school0)[1] .. " (fixed effects + school 0's BLUP)")

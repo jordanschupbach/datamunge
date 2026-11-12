@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/gaussian_process_regression_iris_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 library(datamunger)
 
 FORMULA <- "Petal.Length ~ Petal.Width"

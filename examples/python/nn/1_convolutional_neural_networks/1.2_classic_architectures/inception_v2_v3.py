@@ -1,5 +1,6 @@
 # Native Python NN example. inception_v2_v3: factorization/BN/label-smoothing checks, full v2/v3 architecture checks and compact CIFAR-10 training of both versions over SWIG components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v2_v3.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Inception v2 and v3: batch normalization, factorization and label smoothing.
 
 Port of tflow's inception_v2_v3. Implement full TF-Slim reference layouts:

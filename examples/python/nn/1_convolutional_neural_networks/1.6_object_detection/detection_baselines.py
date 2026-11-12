@@ -1,5 +1,6 @@
 # Native Python NN example. Detection by classification (sliding windows versus classical region proposals over an 11-way patch classifier); the C++ example's workflow, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/detection_baselines.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Detection by classification: sliding windows versus region proposals.
 
 Port of tflow's detection_baselines. Preparation (in ~/projects/tflow_examples):

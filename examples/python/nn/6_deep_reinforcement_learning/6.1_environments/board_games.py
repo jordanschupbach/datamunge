@@ -1,5 +1,6 @@
 # Native Python NN example. Tic-tac-toe, Connect Four and Othello, for self-play.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/board_games.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Tic-tac-toe, Connect Four and Othello, for self-play.
 
 Port of tflow's board_games. Board games use rl::Game

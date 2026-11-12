@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/xgboost_iris_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 library(datamunger)
 
 iris <- DataFrame$iris()

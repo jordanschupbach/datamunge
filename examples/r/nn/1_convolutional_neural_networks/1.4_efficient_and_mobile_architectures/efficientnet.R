@@ -1,5 +1,6 @@
 # Native R NN example. efficientnet: explicit C++-equivalent CIFAR-10 workflow over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet.R
+# REPL: nix develop .#r --command R --no-save --quiet
 suppressPackageStartupMessages(library(datamungerNN))
 check <- nn_components$check
 example_runtime <- nn_components$example_runtime

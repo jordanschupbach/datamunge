@@ -1,4 +1,5 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/datasets_ex.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 # Tour of the example datasets: built-in tables, cached downloads, and streaming loaders.
 # The built-in part runs offline; the download/stream parts fetch data once into
 # dm.data_home() (set DATAMUNGE_DATA_OFFLINE=1 to skip them).

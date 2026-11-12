@@ -1,5 +1,6 @@
 # Native Python NN example. MNIST and Fashion-MNIST: strict IDX loading and nn preprocessing.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/idx_loader.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """MNIST and Fashion-MNIST: strict IDX loading and nn preprocessing.
 
 Port of tflow's idx_loader. Create a tiny on-disk IDX pair with known

@@ -1,5 +1,6 @@
 # Native R NN example. inception_v2_v3: factorization/BN/label-smoothing checks, full v2/v3 architecture checks and compact CIFAR-10 training of both versions over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v2_v3.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # Inception v2 and v3: batch normalization, factorization and label smoothing.
 #
 # Port of tflow's inception_v2_v3. Implement full TF-Slim reference layouts:

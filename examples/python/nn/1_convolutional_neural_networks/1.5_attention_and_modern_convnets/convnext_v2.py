@@ -1,5 +1,6 @@
 # Native Python NN example. ConvNeXt V2: GRN formula/invariance/derivative checks, the eight released sizes' costs, V2-Tiny derivatives and compact V2-Atto CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext_v2.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """ConvNeXt V2: global response normalization in place of layer scale.
 
 Port of tflow's convnext_v2 (model: common/convnext.hpp). Check global

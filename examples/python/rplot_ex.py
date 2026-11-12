@@ -1,4 +1,5 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/rplot_ex.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Demonstrates dm.RPlot / dm.RLayout -- the R-base-graphics-style plotting library."""
 import math
 import os

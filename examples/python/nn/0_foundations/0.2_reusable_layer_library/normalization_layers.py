@@ -1,5 +1,6 @@
 # Native Python NN example. Layer, RMS, group and instance normalization checks.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/normalization_layers.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Independent grouped moments, batch independence and affine invariances."""
 import math
 from pydatamunge import nn

@@ -1,18 +1,18 @@
 local dm = require("datamunge")
 
 local function sv(t)
-  local v = dm.SVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function report_purity(cluster_labels, species, n_clusters)
   local votes = {}
   for c = 0, n_clusters - 1 do votes[c] = {} end
-  for i = 0, cluster_labels:size() - 1 do
+  for i = 1, #cluster_labels do
     local label = cluster_labels[i]
     if label >= 0 then
-      votes[label][species[i]] = (votes[label][species[i]] or 0) + 1
+      votes[label][species[i - 1]] = (votes[label][species[i - 1]] or 0) + 1
     end
   end
   for c = 0, n_clusters - 1 do

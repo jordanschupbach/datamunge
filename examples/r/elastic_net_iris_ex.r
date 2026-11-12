@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/elastic_net_iris_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 library(datamunger)
 
 FORMULA <- "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width"

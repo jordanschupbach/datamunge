@@ -1,8 +1,8 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
@@ -34,7 +34,7 @@ logit:print_summary()
 local fitted = logit:fitted_values()
 local correct = 0
 for i = 0, #is_virginica - 1 do
-  if (fitted[i] >= 0.5) == (is_virginica[i + 1] >= 0.5) then correct = correct + 1 end
+  if (fitted[i + 1] >= 0.5) == (is_virginica[i + 1] >= 0.5) then correct = correct + 1 end
 end
 print("\nResubstitution accuracy at 0.5 threshold: " .. (100.0 * correct / #is_virginica) .. "%")
 

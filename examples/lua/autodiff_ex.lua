@@ -32,8 +32,8 @@ local b = dm.Var(tape, 3.0)
 local y = a:multiply(b):add(a:sin())
 print("y = a*b + sin(a) at a=2, b=3 -> y = " .. y:value())
 local adjoint = tape:backward(y)
-print("dy/da = " .. adjoint[a:index()] .. " (exact: b + cos(a))")
-print("dy/db = " .. adjoint[b:index()] .. " (exact: a)")
+print("dy/da = " .. adjoint[a:index() + 1] .. " (exact: b + cos(a))")
+print("dy/db = " .. adjoint[b:index() + 1] .. " (exact: a)")
 
 print("\n=================== Forward vs reverse mode agree on the Rosenbrock function ===================")
 local px, py = 0.0, 0.0
@@ -53,7 +53,7 @@ local grad_rev = tape2:backward(vf)
 
 print("f(0,0) = " .. rosenbrock_value(px, py))
 print("gradient (forward mode): [" .. gx .. ", " .. gy .. "]")
-print("gradient (reverse mode): [" .. grad_rev[vx:index()] .. ", " .. grad_rev[vy:index()] .. "]")
+print("gradient (reverse mode): [" .. grad_rev[vx:index() + 1] .. ", " .. grad_rev[vy:index() + 1] .. "]")
 
 print("\n=================== Jacobian of a vector-valued function ===================")
 -- f(x,y) = [x^2, xy, y^3] at (2,3) -- one Dual pass per (output, input) pair.
@@ -112,8 +112,8 @@ for step = 0, n_steps - 1 do
   local vf2 = va2:multiply(va2):add(vb2:multiply(vb2):multiply_scalar(100.0))
   local grad = t:backward(vf2)
   local loss = vf2:value()
-  point[1] = point[1] - learning_rate * grad[vx2:index()]
-  point[2] = point[2] - learning_rate * grad[vy2:index()]
+  point[1] = point[1] - learning_rate * grad[vx2:index() + 1]
+  point[2] = point[2] - learning_rate * grad[vy2:index() + 1]
   if step == 0 or step == n_steps - 1 then
     print("step " .. step .. ": loss = " .. loss .. ", x = [" .. point[1] .. ", " .. point[2] .. "]")
   end

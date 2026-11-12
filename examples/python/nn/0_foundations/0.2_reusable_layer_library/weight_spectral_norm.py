@@ -1,5 +1,6 @@
 # Native Python NN example. Explicit weight/spectral reparameterization algorithms.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/weight_spectral_norm.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Gain/direction gradients, power iteration and spectral Lipschitz checks."""
 import math
 from pydatamunge import nn

@@ -1,5 +1,6 @@
 # Native R NN example. ZFNet architecture checks, compact CIFAR-10 training and deconvnet visualization; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/zfnet.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # ZFNet: finer early sampling, dense connectivity and deconvnet visualization.
 #
 # Port of tflow's zfnet. Build the Figure-3 network from Zeiler/Fergus, ECCV

@@ -1,5 +1,6 @@
 # Native Python NN example. Image-folder datasets with PNG/JPEG decoding and bilinear resize.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/image_folder_loader.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Image-folder datasets with PNG/JPEG decoding and bilinear resize.
 
 Port of tflow's image_folder_loader. Generate small RGB PNG/JPEG and

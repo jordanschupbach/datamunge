@@ -1,8 +1,8 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
@@ -30,4 +30,4 @@ local new_points = dm.DataFrame()
 new_points:add_numeric_column("x", dv({ 0.25, 0.75 }))
 new_points:add_numeric_column("y", dv({ 0.50, 0.25 }))
 local pred = surface:predict(new_points)
-print(string.format("Predictions: [%.6f, %.6f]", pred[0], pred[1]))
+print(string.format("Predictions: [%.6f, %.6f]", pred[1], pred[2]))

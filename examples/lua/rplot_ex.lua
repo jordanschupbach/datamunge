@@ -2,20 +2,20 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function sv(t)
-  local v = dm.SVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function dvv(rows)
-  local m = dm.DVectorVector(#rows)
-  for i, r in ipairs(rows) do m[i - 1] = dv(r) end
+  local m = {}
+  for i, r in ipairs(rows) do m[i] = dv(r) end
   return m
 end
 

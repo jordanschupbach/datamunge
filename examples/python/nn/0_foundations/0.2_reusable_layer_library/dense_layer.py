@@ -1,5 +1,6 @@
 # Native Python NN example. Dense forward passes, sharing, initializer scales and gradients.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/dense_layer.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Check the bound dense layer against independent arithmetic and derivatives."""
 import math
 from pydatamunge import nn

@@ -1,5 +1,6 @@
 # Native Python NN example. LunarLander-style 2D physics (simplified).
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/lunar_lander.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """LunarLander-style 2D physics (simplified).
 
 Port of tflow's lunar_lander. A rigid body with a main engine and two side

@@ -1,5 +1,6 @@
 # Native Python NN example. CondenseNet learned-group-convolution/cost/gradient checks and CondenseNet-86 CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/condensenet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """CondenseNet: learned group convolutions condensed during training.
 
 Port of tflow's condensenet. Drive one learned group convolution (16 -> 16

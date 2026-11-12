@@ -1,5 +1,6 @@
 # Native R NN example. ConvNeXt V2: GRN formula/invariance/derivative checks, the eight released sizes' costs, V2-Tiny derivatives and compact V2-Atto CIFAR-10 training; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext_v2.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # ConvNeXt V2: global response normalization in place of layer scale.
 #
 # Port of tflow's convnext_v2 (model: common/convnext.hpp). Check global

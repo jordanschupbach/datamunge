@@ -1,5 +1,6 @@
 # Native Python NN example. PCM16 WAV decoding, STFT power and log-mel spectrograms with datamunge::nn.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/audio_features.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """PCM16 WAV decoding, STFT power and log-mel spectrograms with datamunge::nn.
 
 Port of tflow's audio_features. Encode a stereo 1 kHz signal at 8 kHz, load

@@ -1,5 +1,6 @@
 # Native Python NN example. DeepLab v1/v2 ASPP, CRF and dense-backbone checks plus compact shape-segmentation training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/deeplab_v1_v2.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """DeepLab v1/v2: atrous dense features, ASPP and dense Potts CRF refinement.
 https://arxiv.org/abs/1412.7062
 https://arxiv.org/abs/1606.00915

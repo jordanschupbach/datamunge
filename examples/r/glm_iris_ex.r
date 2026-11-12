@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/glm_iris_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 # Note: simplified relative to the C++ example -- this skips manually building the
 # predicted-probability sigmoid-curve RPlot and instead just saves the standard GLM
 # diagnostic plots, same as lm_ex.r does for LM.

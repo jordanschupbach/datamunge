@@ -85,6 +85,9 @@ run-tcl: build-tcl
 run-lua: build-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --install build/datamungelua --prefix build/lua/prefix >/dev/null && export LUA_CPATH="$(pwd)/build/lua/prefix/lib/lua/?.so;$(pwd)/build/lua/prefix/lib64/lua/?.so;;" && export LUA_PATH="$(pwd)/build/lua/prefix/share/lua/?.lua;;" && export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && lua examples/lua/{{ TARGET }}.lua'
 
+run-lisp: build-lisp
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --noinform --non-interactive --load examples/lisp/{{ TARGET }}.lisp'
+
 run-ruby: build-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/{{ TARGET }}.rb'
 
@@ -116,6 +119,13 @@ run-all-lua: build-lua
     for f in examples/lua/*.lua; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
       if lua "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## lua: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-lisp: build-lisp
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/lisp/*.lisp; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if sbcl --noinform --non-interactive --load "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## lisp: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-guile: build-guile
@@ -293,9 +303,14 @@ prebuild-ruby:
 prebuild-tcl:
   {{ NIX_DEVELOP }} .#tcl --command bash -c "mkdir -p build/datamungetcl/swig && swig -tcl8 -c++ -Iinclude -o build/datamungetcl/swig/datamunge_tcl_wrap.cxx -oh build/datamungetcl/swig/datamunge_tcl_wrap.h src/datamungetcl/swig/datamungetcl.i"
 
-# Lua (SWIG)
+# Lua (Rosetta): src/datamunge_lua_wrap*.cpp and the LuaCATS stub src/datamungelua/library/datamunge.lua,
+# which .luarc.json points editors (lua-language-server, mep) at for hover and completion.
 prebuild-lua:
-  {{ NIX_DEVELOP }} .#lua --command bash -c "mkdir -p build/datamungelua-swig && swig -lua -c++ -Iinclude -outdir build/datamungelua-swig -o build/datamungelua-swig/datamunge_lua_wrap.cxx -oh build/datamungelua-swig/datamunge_lua_wrap.h src/datamungelua/swig/datamungelua.i"
+  {{ NIX_DEVELOP }} .#lua --command python3 scripts/prebuild_bindings.py lua
+
+# Common Lisp (Rosetta): src/datamunge_lisp_wrap*.cpp and src/datamungelisp/datamunge.{lisp,asd}
+prebuild-lisp:
+  {{ NIX_DEVELOP }} .#lisp --command python3 scripts/prebuild_bindings.py lisp
 
 # D (SWIG)
 prebuild-d:
@@ -441,10 +456,19 @@ build-tcl: prebuild-tcl
   {{ NIX_DEVELOP }} .#tcl --command bash -c 'ext="$(tclsh <<< "puts [info sharedlibextension]")" && if [ "$ext" != ".so" ]; then cp -f build/datamungetcl/Datamunge.so "build/datamungetcl/Datamunge$ext"; fi'
 
 build-lua: prebuild-lua
-  rm -rf build/datamungelua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelua -B build/datamungelua -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
   {{ NIX_DEVELOP }} .#lua --command bash -c 'cmake --build build/datamungelua -j{{ JOBS }} --verbose'
   {{ NIX_DEVELOP }} .#lua --command bash -c 'rm -rf build/lua/prefix && cmake --install build/datamungelua --prefix build/lua/prefix'
+
+# Installs datamunge.asd, datamunge.lisp and datamunge.so into build/lisp/prefix, which the
+# dev shells put on CL_SOURCE_REGISTRY: (asdf:load-system "datamunge"), package nickname dm.
+build-lisp: prebuild-lisp
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungelisp -B build/datamungelisp -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'cmake --build build/datamungelisp -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'rm -rf build/lisp/prefix && cmake --install build/datamungelisp --prefix build/lisp/prefix'
+
+test-lisp: build-lisp
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --noinform --non-interactive --load tests/lisp/test_datamunge.lisp'
 
 build-rust:
   {{ NIX_DEVELOP }} .#rust --command bash -c 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'
@@ -508,6 +532,9 @@ repl-tcl: build-tcl
 
 repl-lua: build-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'lua'
+
+repl-lisp: build-lisp
+  {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --eval "(require \"asdf\")" --eval "(asdf:load-system \"datamunge\")"'
 
 repl-ruby: build-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -c 'irb -r octruby'

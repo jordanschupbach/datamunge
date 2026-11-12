@@ -1,5 +1,6 @@
 # Native Python NN example. U-Net geometry/crop/parameter checks and compact procedural-shape segmentation; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/unet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """U-Net: crop-and-concatenate skips and learned symmetric upsampling.
 https://arxiv.org/abs/1505.04597
 

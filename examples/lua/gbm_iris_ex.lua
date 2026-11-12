@@ -14,11 +14,11 @@ local predictions = model:predict(iris)
 local misclassified = 0
 for i = 0, iris:nrows() - 1 do
   local actual = iris:string_at("Species", i)
-  if predictions[i] ~= actual then
+  if predictions[i + 1] ~= actual then
     misclassified = misclassified + 1
     print("  row " .. i .. ": Petal.Length=" .. iris:numeric_at("Petal.Length", i) ..
           " Petal.Width=" .. iris:numeric_at("Petal.Width", i) ..
-          "  actual=" .. actual .. "  predicted=" .. predictions[i])
+          "  actual=" .. actual .. "  predicted=" .. predictions[i + 1])
   end
 end
 print(misclassified .. " of " .. iris:nrows() .. " misclassified (" .. (100.0 * misclassified / iris:nrows()) .. "%)")
@@ -34,8 +34,8 @@ local few = dm.GBMClassifier(iris, "Species ~ Petal.Length + Petal.Width", 5)
 local few_dev = few:training_deviance()
 local model_dev = model:training_deviance()
 print("\n5-round ensemble:   training accuracy=" .. (few:training_accuracy() * 100.0) ..
-      "%  deviance=" .. few_dev[few_dev:size() - 1])
+      "%  deviance=" .. few_dev[#few_dev])
 print("100-round ensemble: training accuracy=" .. (model:training_accuracy() * 100.0) ..
-      "%  deviance=" .. model_dev[model_dev:size() - 1])
+      "%  deviance=" .. model_dev[#model_dev])
 few:plot_decision_regions("Petal.Length", "Petal.Width"):save("gbm_iris_decision_regions_5rounds.svg")
 print("Saved gbm_iris_decision_regions_5rounds.svg")

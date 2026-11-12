@@ -1,4 +1,5 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/ode_ex.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 import math
 
 from pydatamunge import datamunge as dm

@@ -1,5 +1,6 @@
 # Native Python NN example. Faster R-CNN on MNIST digit scenes: anchor-matching check, joint RPN/RoI-head training, RPN recall and test AP; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/faster_rcnn.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Faster R-CNN: a region proposal network shares the backbone with the Fast R-CNN head.
 
 Port of tflow's faster_rcnn. Preparation (in ~/projects/tflow_examples):

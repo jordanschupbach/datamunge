@@ -1,5 +1,6 @@
 # Native Python NN example. Grid world and cliff walking.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/grid_world.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Grid world and cliff walking.
 
 Port of tflow's grid_world. Two small finite MDPs used by the tabular

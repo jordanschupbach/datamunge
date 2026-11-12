@@ -1,5 +1,6 @@
 # Native Python NN example. Schedule boundaries and explicit scheduled SGD.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.3_optimizers_and_training_loop/learning_rate_schedules.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Use completed optimizer updates to index learning-rate schedules."""
 from pydatamunge import nn
 from pydatamunge.nn_workflows import options

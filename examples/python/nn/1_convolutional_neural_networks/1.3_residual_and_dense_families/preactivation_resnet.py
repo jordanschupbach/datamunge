@@ -1,5 +1,6 @@
 # Native Python NN example. preactivation_resnet: explicit C++-equivalent CIFAR-10 workflow over SWIG components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/preactivation_resnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 import math
 import os
 import sys

@@ -3,20 +3,20 @@ local dm = require("datamunge")
 -- Plain Lua tables never auto-convert to vector<T> parameters in Lua's SWIG bindings --
 -- build a real DVector/SVector/IVector via the sized constructor and 0-indexed assignment.
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function sv(t)
-  local v = dm.SVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function iv(t)
-  local v = dm.IVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
@@ -56,7 +56,7 @@ print(joined:to_string())
 print()
 
 local shape = cleaned:shape()
-print("shape = (" .. shape[0] .. ", " .. shape[1] .. ")")
+print("shape = (" .. shape[1] .. ", " .. shape[2] .. ")")
 print("sales count = " .. cleaned:numeric_count("sales"))
 print("sales nulls = " .. cleaned:numeric_null_count("sales"))
 print("sales sum = " .. cleaned:numeric_sum("sales"))

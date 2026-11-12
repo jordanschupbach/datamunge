@@ -1,5 +1,6 @@
 # Native R NN example. eca_net: the C++ checks and training workflow over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/eca_net.R
+# REPL: nix develop .#r --command R --no-save --quiet
 suppressPackageStartupMessages(library(datamungerNN))
 check <- nn_components$check
 example_runtime <- nn_components$example_runtime

@@ -1,5 +1,6 @@
 # Native Python NN example. FCN-32s/16s/8s checks and compact procedural-shape segmentation; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/fcn.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """FCN-32s/16s/8s: dense VGG predictions, bilinear deconvolution and skip fusion.
 https://arxiv.org/abs/1411.4038
 https://github.com/shelhamer/fcn.berkeleyvision.org

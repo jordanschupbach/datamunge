@@ -1,5 +1,6 @@
 # Native Python NN example. Activation-L1 and Bernoulli-KL sparse autoencoders with matched controls.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/sparse_autoencoder.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """BOTH activation-L1 and mean-unit Bernoulli-KL sparse autoencoders with matched controls.
 Four matched 64-sigmoid variants, three epochs/default, no label targets.
 

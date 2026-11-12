@@ -1,5 +1,6 @@
 # Native Python NN example. Activation values, derivatives, statistics and deep stacks.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/activations.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Compare thirteen nonlinearities with independent closed-form expressions."""
 import math
 from pydatamunge import nn

@@ -1,4 +1,5 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/hypothesis_tests_ex.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 from pydatamunge import datamunge as dm
 
 _ALT_NAMES = {dm.Alternative_Less: "less", dm.Alternative_Greater: "greater", dm.Alternative_TwoSided: "two.sided"}

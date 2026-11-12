@@ -1,5 +1,6 @@
 # Native Python NN example. ZFNet architecture checks, compact CIFAR-10 training and deconvnet visualization; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/zfnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """ZFNet: finer early sampling, dense connectivity and deconvnet visualization.
 
 Port of tflow's zfnet. Build the Figure-3 network from Zeiler/Fergus, ECCV

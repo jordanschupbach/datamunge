@@ -1,5 +1,6 @@
 # Native R NN example. googlenet: Inception v1 branch/auxiliary/full-architecture checks and compact CIFAR-10 training with auxiliary heads over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/googlenet.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # GoogLeNet / Inception v1: parallel receptive fields and auxiliary supervision.
 #
 # Port of tflow's googlenet. Implement the nine modules and 224-pixel/1000-class

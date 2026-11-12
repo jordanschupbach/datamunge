@@ -1,5 +1,6 @@
 # Native Python NN example. ShuffleNet shuffle/unit/cost/gradient checks and v1 (3 groups) / v2 CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/shufflenet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """ShuffleNet v1 and v2: grouped pointwise convolutions with channel shuffle, and channel split.
 
 Check the released channel shuffle and the paper's transpose exactly, and

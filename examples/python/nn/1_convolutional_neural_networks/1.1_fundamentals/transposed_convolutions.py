@@ -1,5 +1,6 @@
 # Native Python NN example. Transposed convolution, its adjoint identity and checkerboard artifacts.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Transposed convolution, its adjoint identity and checkerboard artifacts.
 
 Port of tflow's transposed_convolutions. TensorFlow implements transposed

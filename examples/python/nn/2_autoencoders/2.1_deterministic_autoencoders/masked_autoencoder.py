@@ -1,5 +1,6 @@
 # Native Python NN example. Visible-only transformer masked autoencoder (75 percent patch masking).
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/masked_autoencoder.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Visible-only transformer MAE with 75 percent masking and a smaller mask-token decoder.
 
 Port of tflow's masked_autoencoder. The canonical C++ dataset API prepares MNIST.

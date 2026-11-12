@@ -1,5 +1,6 @@
 # Native R NN example. cbam: explicit C++-equivalent CIFAR-10 workflow over the bound C++ components.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/cbam.R
+# REPL: nix develop .#r --command R --no-save --quiet
 suppressPackageStartupMessages(library(datamungerNN))
 check <- nn_components$check
 example_runtime <- nn_components$example_runtime

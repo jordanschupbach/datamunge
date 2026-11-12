@@ -1,5 +1,6 @@
 # Native Python NN example. efficientnet: explicit C++-equivalent CIFAR-10 workflow over SWIG components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 import math
 import os
 import sys

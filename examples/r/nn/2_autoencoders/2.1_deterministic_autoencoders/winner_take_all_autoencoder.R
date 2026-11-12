@@ -1,5 +1,6 @@
 # Native R NN example. Lifetime winner-take-all autoencoder: training-only per-feature batch winners, matched plain control.
 # CMD: nix develop .#r --command Rscript examples/r/nn/2_autoencoders/2.1_deterministic_autoencoders/winner_take_all_autoencoder.R
+# REPL: nix develop .#r --command R --no-save --quiet
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)

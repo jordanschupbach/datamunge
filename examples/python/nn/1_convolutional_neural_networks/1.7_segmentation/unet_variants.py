@@ -1,5 +1,6 @@
 # Native Python NN example. UNet++ and attention U-Net gate/parameter checks and compact procedural-shape segmentation; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/unet_variants.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """UNet++ dense nested skip paths and additive attention U-Net.
 https://arxiv.org/abs/1807.10165
 https://arxiv.org/abs/1804.03999

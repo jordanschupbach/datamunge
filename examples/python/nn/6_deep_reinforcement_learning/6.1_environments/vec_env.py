@@ -1,5 +1,6 @@
 # Native Python NN example. Vectorized environments for parallel rollouts.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/vec_env.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Vectorized environments for parallel rollouts.
 
 Port of tflow's vec_env. rl::VecEnv (common/rl/vec_env.hpp, copied from

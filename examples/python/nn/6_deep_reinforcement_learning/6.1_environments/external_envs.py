@@ -1,5 +1,6 @@
 # Native Python NN example. Binding to external environments: ALE (Atari 2600) and vsim.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/external_envs.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Binding to external environments: ALE (Atari 2600) and vsim.
 
 Port of tflow's external_envs. tflow reaches two real simulators through

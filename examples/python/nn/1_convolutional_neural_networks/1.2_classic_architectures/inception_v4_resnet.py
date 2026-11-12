@@ -1,5 +1,6 @@
 # Native Python NN example. inception_v4_resnet: residual-scale and full v4/Inception-ResNet-v2 checks, then compact CIFAR-10 training of both variants with an auxiliary head over SWIG components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v4_resnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Inception v4 and Inception-ResNet-v2: full depth and scaled residual branches.
 
 Port of tflow's inception_v4_resnet. Implement the complete TF-Slim layouts:

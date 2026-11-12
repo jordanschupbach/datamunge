@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/datasets_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 # Tour of the example datasets: built-in tables, cached downloads, and streaming loaders.
 # The download and stream parts fetch data once into data_home(); set DATAMUNGE_DATA_OFFLINE=1 to skip them.
 library(datamunger)

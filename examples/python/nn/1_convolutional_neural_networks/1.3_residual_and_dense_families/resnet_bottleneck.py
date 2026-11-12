@@ -1,5 +1,6 @@
 # Native Python NN example. ResNet-50/101/152: explicit CIFAR-10 training over SWIG components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_bottleneck.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Canonical bottleneck block, parameter/state, stage and gradient checks, then
 compact quarter-width CIFAR-10 fits with Adam, crop/flip, L2, validation NLL
 checkpoint selection and the test confusion matrix. Each loop is written here.

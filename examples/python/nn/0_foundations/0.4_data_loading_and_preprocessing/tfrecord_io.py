@@ -1,5 +1,6 @@
 # Native Python NN example. TFRecord writing, streaming reads, compression and tf.Example parsing.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.4_data_loading_and_preprocessing/tfrecord_io.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """TFRecord writing, streaming reads, compression and tf.Example parsing.
 
 Port of tflow's tfrecord_io. Serialize float, integer and bytes features in

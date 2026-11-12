@@ -2783,7 +2783,7 @@ class Tape {
   ///
   /// The tape is unchanged, so backward() may be called again for other outputs.
   /// @param output A Var recorded on this tape (usually the final expression).
-  /// @return One adjoint per node, indexed by Var::index() (0-based; add 1 in R).
+  /// @return One adjoint per node, indexed by Var::index() (0-based; add 1 in R and Lua).
   /// @throws std::out_of_range When @p output is not a node of this tape.
   /// @par Example
   /// @code

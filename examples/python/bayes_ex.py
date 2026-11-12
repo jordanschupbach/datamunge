@@ -1,4 +1,5 @@
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/bayes_ex.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 # Note: the C++ bayes_ex.cpp builds its models with datamunge::bayes::AutodiffModel, which
 # wraps a Tape/Var lambda for automatic differentiation of the log-posterior -- but
 # AutodiffModel is explicitly C++-only (never bound via SWIG, in any language), since a

@@ -1,5 +1,6 @@
 # Native Python NN example. Model composition and training run in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """The canonical two-convolution MNIST classifier through datamunge::nn SWIG ops."""
 from pydatamunge.nn_components import dataset_assets
 from pydatamunge import nn

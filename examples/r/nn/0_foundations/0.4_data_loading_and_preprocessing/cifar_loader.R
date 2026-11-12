@@ -1,5 +1,6 @@
 # Native R NN example. CIFAR-10/CIFAR-100 binary decoding, planar-to-NHWC conversion and labels.
 # CMD: nix develop .#r --command Rscript examples/r/nn/0_foundations/0.4_data_loading_and_preprocessing/cifar_loader.R
+# REPL: nix develop .#r --command R --no-save --quiet
 .nn_common <- file.path(Sys.getenv("DATAMUNGE_EXAMPLES_ROOT",getwd()),"examples/r/nn/common.R")
 if (!file.exists(.nn_common)) .nn_common <- system.file("examples/nn/common.R",package="datamungerNN",mustWork=TRUE)
 source(.nn_common,local=TRUE)

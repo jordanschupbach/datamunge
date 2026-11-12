@@ -1,5 +1,6 @@
 # Native Python NN example. SegNet index-unpool/model checks and compact procedural-shapes segmentation training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/segnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """SegNet: unpool using encoder max locations, then learn dense decoder maps.
 https://arxiv.org/abs/1511.00561
 https://github.com/alexgkendall/SegNet-Tutorial

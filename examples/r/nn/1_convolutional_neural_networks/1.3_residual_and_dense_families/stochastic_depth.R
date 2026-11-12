@@ -1,5 +1,6 @@
 # Native R NN example. Stochastic depth: DropPath mask/schedule/shortcut checks, then constant-depth versus stochastic-depth 20-layer CIFAR-10 training; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/stochastic_depth.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # Stochastic depth: survival schedules, masking conventions and learning.
 #
 # Port of tflow's stochastic_depth. Verify original train=bF/test=pF and

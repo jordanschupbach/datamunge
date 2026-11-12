@@ -1,5 +1,6 @@
 # Native Python NN example. Pooling windows, gradients, global/3-D ops and translation.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/pooling.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Check border averages, argmax routing and the original random fixtures."""
 from pydatamunge import nn
 

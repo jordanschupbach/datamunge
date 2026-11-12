@@ -11,13 +11,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.py",
         "implementation": "reference_wrapper",
-        "sha256": "063688068d78e14cbb4bc4f55fad6811130c9cf85c9a0eca2c276bcaf377fc6a",
+        "sha256": "044cec90b1658275b46b3504f86a6eceddb8442a3e671f3e956b10de287ed352",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/c3d.R",
         "implementation": "reference_wrapper",
-        "sha256": "15131d48f29a2482e28b9e76fe896f4db1694fdcbe255258a1cfcf1a9b492683",
+        "sha256": "b62bbb15b68c8a229e8a65fdda6f0b3ec9ca768e8d0b7375b369a7a61bd576d7",
         "validation": null
       }
     },
@@ -28,13 +28,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/factorized_video.py",
         "implementation": "reference_wrapper",
-        "sha256": "9150a859d90aea2069db051f94599c50c2356b23aba65483c230ca2ffba6f3ec",
+        "sha256": "700ccd5b90450dabe4016d7fb7176711ab46e1abad4951b0a7609edea07db789",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/factorized_video.R",
         "implementation": "reference_wrapper",
-        "sha256": "392fb911cdb6a1423505972764480aa76d1040335b85cfd5bef174c12d0fe7cf",
+        "sha256": "3a897f9e7f8ed0bc90536bd9be6bb41e1756c20e4fd94a7aeaad18749039feca",
         "validation": null
       }
     },
@@ -45,13 +45,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/i3d.py",
         "implementation": "reference_wrapper",
-        "sha256": "fd634c3b44c475376d1313ee10e6ec2ccf8bb9528990079b2a8a9b6c64c468eb",
+        "sha256": "1092206f48f9d0b0d08e5d1a52e35883223c73af4528d91770b0385c5ad5fd85",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/i3d.R",
         "implementation": "reference_wrapper",
-        "sha256": "5d63ef7128cef2f80a740a292673a2a704c924b52c2c22e61eab85db17c0e3c7",
+        "sha256": "0c03b6de70986c9626543714e1100b2924d89088fc9fdae5ed7bf79a144e4832",
         "validation": null
       }
     },
@@ -62,13 +62,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/medical_volume_classification.py",
         "implementation": "reference_wrapper",
-        "sha256": "034da276ecf5e2797bd581103f1d4044efa9319ccab2bd93d26fb170261562f5",
+        "sha256": "1f5fbb74ed75bc2777e1b7d8418be29de5a5ea587e32527a1c05277b7503f860",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/medical_volume_classification.R",
         "implementation": "reference_wrapper",
-        "sha256": "fc864961434132303a854e2bdf17ea735a3aa73635c49970b7929d499eec7c06",
+        "sha256": "c863fbdf0733192dca10a4950d5d8af09b1773ca79856e971747150bd27603a7",
         "validation": null
       }
     },
@@ -79,13 +79,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_geometry.py",
         "implementation": "reference_wrapper",
-        "sha256": "096c6a6d7bc986638eac84c45337a9a49c67dd356c083c7ae3eefa53e152ef6f",
+        "sha256": "2e0dbcfc35112782499917e0c27b19ba550039300e1799e081f8276d584b986f",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_geometry.R",
         "implementation": "reference_wrapper",
-        "sha256": "1a8261f78830c374420b9651d9a0b568d08aa4250747677651394d69d1d7baea",
+        "sha256": "a9f297cf1dd4a8d364b9aac08632db7ba5e41e105ea12e56c2a7dd5600aac40c",
         "validation": null
       }
     },
@@ -96,13 +96,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_models_checks.py",
         "implementation": "reference_wrapper",
-        "sha256": "42d107a9308735423b7a26f9005ee38fafb1c69f3a08d10d5c9ef05ca60b2acf",
+        "sha256": "6d2940dbf41fcbc6862fa90521f03f91249626874fd97b6bcbbfdb510d4ccc02",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/point_models_checks.R",
         "implementation": "reference_wrapper",
-        "sha256": "426e09bc272f20db04910d66ca2c36a729b02ae1b7d7ca5efaec5b23840bd09c",
+        "sha256": "315afe40a035aad70c3cff1ad766291210f4c0c459189922d9a35c18e23132c6",
         "validation": null
       }
     },
@@ -113,13 +113,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet.py",
         "implementation": "reference_wrapper",
-        "sha256": "949911aed218949b7611a83262245e93ab21d279a974ef6fe60e703dcad7c4dc",
+        "sha256": "7b9f19453e086306cf84e95b48a4dfb4e862bd278f0a5a12ef051b358f4d8d7b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet.R",
         "implementation": "reference_wrapper",
-        "sha256": "5f1119b214f0717ded47fd2184c69ecb8a2a30841e49a2a703393694dcd5e9f3",
+        "sha256": "5945da7b7a88368998eb9a95fe27d1397c1e28bf0719e540f05d72eadeffe9e5",
         "validation": null
       }
     },
@@ -130,13 +130,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet_plus_plus.py",
         "implementation": "reference_wrapper",
-        "sha256": "9656ff18522e6263eeac500f408fc2aee8a790ab8d5349a5b9937e45a532b400",
+        "sha256": "27d0dabc68f7c6f7ff02cad537c644a7b3017cb46888d14b307466561ced5748",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/pointnet_plus_plus.R",
         "implementation": "reference_wrapper",
-        "sha256": "99b53e6b0955e4216796c1c840fec796802ac24978f5fb5c20cc26ea57702a75",
+        "sha256": "54bb6c20ea2bd79cbe67cee489557650dd6bc5a2537c69c095cf7635532d96d8",
         "validation": null
       }
     },
@@ -147,13 +147,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/slowfast.py",
         "implementation": "reference_wrapper",
-        "sha256": "19a57026633ea1bac4f0b02a553cf922ec7de99260f8edba91ce7ca3bca9dfdf",
+        "sha256": "3490c7d7660d3345192cbdbeebe7f4999d144a31a5c5a0fe96e32866e591e95b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/slowfast.R",
         "implementation": "reference_wrapper",
-        "sha256": "46cd2b1cbfe5dbb3224ebebe21f6039e90f47b6e61df7ffb45fb7b470d01f9c3",
+        "sha256": "0c02f5e9b8ada11ae4957bb3a5375ff89e0f87f956b0c4e9d559d9461ec3e625",
         "validation": null
       }
     },
@@ -164,13 +164,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/two_stream.py",
         "implementation": "reference_wrapper",
-        "sha256": "6612dc3094e4da61aab11d0a05198e89220dad3d458ea84d1ff49022e22129d5",
+        "sha256": "d1903ef320556187fe7681c90daae227ab356fd491648a0aae24986e556fa9a9",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/two_stream.R",
         "implementation": "reference_wrapper",
-        "sha256": "3065addd3362bfc3b7ff99080430f0fda2342aa54dc2b0fd287ca395da5cfdfb",
+        "sha256": "08e25c38086676e2efca5b51d6cb7ebcaa1005a621fc06cc98d6a2a5c7968163",
         "validation": null
       }
     },
@@ -181,13 +181,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/voxnet.py",
         "implementation": "reference_wrapper",
-        "sha256": "183b3d710c31d7542e72e4b6e8cffab8995545ad3b040cd1e4578608f550a4ac",
+        "sha256": "237ccef19c44044286de74428725a7a6992c7921251e001a4c782598b4ce9cff",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.10_3d_and_video_convolutions/voxnet.R",
         "implementation": "reference_wrapper",
-        "sha256": "7e4d8710f5831415747b6ba428a6234f26232836059887a3c34f7e8425e62972",
+        "sha256": "d2c875cd653e552ecaac0ac2d42f001ac6acbe66bc54b5b85bd4cec89e8a6703",
         "validation": null
       }
     },
@@ -198,13 +198,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/deepdream.py",
         "implementation": "reference_wrapper",
-        "sha256": "74d4d03e31d8258916709344842e9bfa619e417b7a72ec10828da6432c4edb48",
+        "sha256": "003bcf9779cd8b3e943d3d70be0c6e1b3345af55fc06a3e9a04f3266f1af442b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/deepdream.R",
         "implementation": "reference_wrapper",
-        "sha256": "b3319a5a49c265549d5fc43276b37f5dd2b693e30d87121a5d84761b497574df",
+        "sha256": "e782e9e39b63812e049623bd999b378f21f54dea8c2ec9b417ffdb455599b1d4",
         "validation": null
       }
     },
@@ -215,13 +215,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/feature_visualization.py",
         "implementation": "reference_wrapper",
-        "sha256": "599c9cbceb34ea150754f4e501bf94b2342344e7d25aa4bcf5d95a28b8863b16",
+        "sha256": "aa566989dff5857c4af6527204709f3b283613de33deb4d0b8bd202f9e08407a",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/feature_visualization.R",
         "implementation": "reference_wrapper",
-        "sha256": "6844a52b79dac09ddeaae296f39fda97e7207d1023a18a121b2c01da4d025d18",
+        "sha256": "70d73686a55ef917a8d6c64d3162b2d1e50dd7afdc21fde42dcdeea84cc5f7f7",
         "validation": null
       }
     },
@@ -232,13 +232,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/filter_activations.py",
         "implementation": "reference_wrapper",
-        "sha256": "6a9590d6182399ac6782e59a14aca2b85c12552b2679e3618a4cf87fdcc7f0fd",
+        "sha256": "79c837c9e7b10b82f7a5047a90b2b221931b9c80fd62c8bc72a87579a1fce117",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/filter_activations.R",
         "implementation": "reference_wrapper",
-        "sha256": "4a58cf95d72399be68dd815a636ca9aa7e19b6eab045408e4f73a10e32abdb88",
+        "sha256": "503a22301bcf03386a1616224a5ce86f98b161c232a0c6c202166e2b5e99211a",
         "validation": null
       }
     },
@@ -249,13 +249,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/grad_cam.py",
         "implementation": "reference_wrapper",
-        "sha256": "2a9563177dc9c41895fa08786ae8e814a7da85e1849570bb9a3aef338afa31f8",
+        "sha256": "0ba5567e16ccada681b97c238e6ef85d686b2ea91605100dde3b25ec1ec39a24",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/grad_cam.R",
         "implementation": "reference_wrapper",
-        "sha256": "9d6d8b06f98aa6edb9251040bc5b0c9a5f9267742e0735aaf8761a2af997b97f",
+        "sha256": "f531fd19c8989de60628ea5bdec385af387d0133382fd51ee7ec168e788e3d26",
         "validation": null
       }
     },
@@ -266,13 +266,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/guided_backprop.py",
         "implementation": "reference_wrapper",
-        "sha256": "0e4b823456f71cdf44fd5bd75255b703467510435e34d84b90ae2670b8bc0199",
+        "sha256": "b24ec3161848495745ecd82ce99817a136baa3a64c1928e0bd759d0bbb784d5b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/guided_backprop.R",
         "implementation": "reference_wrapper",
-        "sha256": "91fc64e4066d0a80a732cdda2b01be8dd8ed062a24e5d4eec16666e4f69f81ec",
+        "sha256": "f518212fae8af28da5ca1f76c726a00d27f9898250ae9e2745cd1ff2e83d6edf",
         "validation": null
       }
     },
@@ -283,13 +283,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/integrated_gradients.py",
         "implementation": "reference_wrapper",
-        "sha256": "3191f886dc5e107d92ef9dd48b86f5d65a55332db51ecb783fa2f01b5dadbf80",
+        "sha256": "c8865ff6e93c7644f0dcb45139b57379d6380bd6049c787081ded29ab1da36bb",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/integrated_gradients.R",
         "implementation": "reference_wrapper",
-        "sha256": "369608e85c4a06cdf2cf5cf561c3cdb667591c6e8b2835d1f8281d528c32bf4d",
+        "sha256": "ffb5b1668f415802fc6be1d215a98074db7fd9a2b53e2751d2754fd86efd0de4",
         "validation": null
       }
     },
@@ -300,13 +300,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/occlusion_sensitivity.py",
         "implementation": "reference_wrapper",
-        "sha256": "e0195153fb3fb8f10ae3de97242d93f4fa684ac509ba15358cbec1bcaf7a0a60",
+        "sha256": "951a44c08199ee25bef2156054b07ad77a44244dd9c110320ba7573569c65ab4",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/occlusion_sensitivity.R",
         "implementation": "reference_wrapper",
-        "sha256": "0dcd16a0c9c89a4477f56c05b4cf7bfb8777cdc8265c38e6a710ec0ca1ac40db",
+        "sha256": "e564a7332776f349694b1668c110530ce893303a018127544c7c3bc809ff34c0",
         "validation": null
       }
     },
@@ -317,13 +317,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/smoothgrad.py",
         "implementation": "reference_wrapper",
-        "sha256": "8fcd202962ea75b9a871484856644c40dfd905a2442fb8535b2ed5e16445a8a7",
+        "sha256": "c8d542028ed897ad94066fcd73867a652e76287bf09636ee579fc595d190a6cc",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/smoothgrad.R",
         "implementation": "reference_wrapper",
-        "sha256": "0a429c8a47baf3fc6faa42ccf3dc49d031a9f3a1d199945bf06bc1ee655da142",
+        "sha256": "b16059c253d80db9b80f999411dead4e1bd319cc696f909f7b3c39e8004d4575",
         "validation": null
       }
     },
@@ -334,13 +334,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.11_interpretability/vanilla_saliency.py",
         "implementation": "reference_wrapper",
-        "sha256": "91970f59827bc45d3251b8079d15f36a3d91987a6dfc3bc61f5b326266c4ea55",
+        "sha256": "646d7c9a93d9c512dd7808b3818eaf675b7cd245cc091502310b04eed6fd91b0",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.11_interpretability/vanilla_saliency.R",
         "implementation": "reference_wrapper",
-        "sha256": "05823b5b7675cb15d6d2ade62a6121e6901467015ac4a226239e66a6eafe80c6",
+        "sha256": "3cb813f46d0c4d0447e2ec028f15098e2dcda8081aae9b7896b0eb82fe36ba7b",
         "validation": null
       }
     },
@@ -351,13 +351,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.py",
         "implementation": "native",
-        "sha256": "b0a5430f3e48d5fc48593fff8d602f55605a0c708d482633d280a06d17969469",
+        "sha256": "0f1ebbbcfc2ae1f69239c6ad7874287a41abc9d49835cf5017f776d6901f6bcf",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/batch_norm_ablation.R",
         "implementation": "native",
-        "sha256": "78cb7fcad9dd3393decbe4f59f24fd5a651aa79a71c42325fe9844bb1f6097d5",
+        "sha256": "593c1e3d4adc0b32ba697525c43a1c1566deba891b0b2a5f71f2f1fc3faf3b05",
         "validation": null
       }
     },
@@ -368,13 +368,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_cifar10.py",
         "implementation": "native",
-        "sha256": "b779a365f14101787a13f9a100ebbc53a195e8741b3d45c51a93588795e23194",
+        "sha256": "893c2e7d37ec881e5bf0a7ff09edbebfd631571a5eeecb21af918e8d6af3baee",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_cifar10.R",
         "implementation": "native",
-        "sha256": "183f7871028e0f22811ee8f069b710c4dbd42589ffd5641932e419895048ad91",
+        "sha256": "454d7bf24a9aaae0ba3440be3a90eece9a2451b3ebd8ef707346d83c3310dccf",
         "validation": null
       }
     },
@@ -385,13 +385,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.py",
         "implementation": "native",
-        "sha256": "f0f4cb9a5887ac460de7e6fe6e289ea3f944d648fbbc143f271debba746d69e2",
+        "sha256": "f10d7b76bf1429c0ebbc6fa4c09dca0da7b9a93e84de930da697dce1a54851ac",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/cnn_mnist.R",
         "implementation": "native",
-        "sha256": "25fd14f12fed3989aec489d2e1c273641f110587c2060f897699c779b2633f87",
+        "sha256": "c68760b67c90c1f992fcbcea5d22fc3c641749e5495cc468fe9771da5c0a9884",
         "validation": null
       }
     },
@@ -402,13 +402,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/convolution_im2col.py",
         "implementation": "native",
-        "sha256": "77b02636a07d457b6dfb7ec6677883c9d7cb9139f50736b10400749bc657f56b",
+        "sha256": "32e3357c046a493c3969a6affd0dc29961b04c1b500040185c212a98905d8288",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/convolution_im2col.R",
         "implementation": "native",
-        "sha256": "e38498050ca0b40d3e03977717f9ba3ae54b4df3d517fb8cc1a620f129520a7c",
+        "sha256": "f98050d44da5b3a56814f7609002829306b1d140677beda4db405b9b42b6cb3f",
         "validation": null
       }
     },
@@ -419,13 +419,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.py",
         "implementation": "native",
-        "sha256": "53558a43b57e95f87fae5396fc2e43eda13500d234335732051d532c5ce652f2",
+        "sha256": "d466b137daedcedbd36e4fbc360d1b0bb7901d0a2df7b2df08e7b83a4ae5e7f2",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.R",
         "implementation": "native",
-        "sha256": "b97429b7eacca2fe2e5b7fe002a8b14fc822c1a53fff867c9d310ba2ba568c78",
+        "sha256": "a120abac9acd07dbd508dfe0841c80270daffd14871ba2a4ace5fff8a5ba8cb7",
         "validation": null
       }
     },
@@ -436,13 +436,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.py",
         "implementation": "native",
-        "sha256": "d320f49d05f185b212e4223dabfacb453c10aa4d40fc3e6ff7687532a1eb202d",
+        "sha256": "3f285368d4d041c5caaa34697765fd805558117c29ebb3d58c94cfd54eb783f8",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/dilated_convolutions.R",
         "implementation": "native",
-        "sha256": "ba3014ec79fafe43b1c7cc2e58b39af7a90e719dbaf4ab704a40db74a0cade15",
+        "sha256": "98ecdd4d8b712a8b1b9ceba08c9dccfbc40194d4517a8c83324d98bc8f1da551",
         "validation": null
       }
     },
@@ -453,13 +453,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/global_pooling_vs_flatten.py",
         "implementation": "native",
-        "sha256": "d77a43b49f1b21492a9c1443ef7c2008713b3537a9bfe2acbf38e0677abffcbe",
+        "sha256": "478b98dc2ed208fcfa528a1c33a6b5a1a3352427484c4d5e7d49d4f8f7d7621e",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/global_pooling_vs_flatten.R",
         "implementation": "native",
-        "sha256": "360861a03fe1a8d07445111185c3b0a79404e4e4ece85f370048b767b235eb9c",
+        "sha256": "fe5a885f621b1e59934fc41fb0441d903b2be7a387e88285b0577ede6c08be89",
         "validation": null
       }
     },
@@ -470,13 +470,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.py",
         "implementation": "native",
-        "sha256": "4408d94dc0d8d1cbc4c1d10e3e4eca835d4deb525c7ed02bc8e3d2f679146607",
+        "sha256": "249a3e9ac35d800a2ba0bb1628a8ae1578a090c4e13ed239979f4a729feceb6c",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/lenet5.R",
         "implementation": "native",
-        "sha256": "16c7d0abee5a991c0f8875216f3f7e0dd8b1cda2fcf5ee148f707e7346f04f99",
+        "sha256": "76074a2a9e8353b97c0f7910d55d8c49ba0fdde5ff05c8f262ced01061da1f3c",
         "validation": null
       }
     },
@@ -487,13 +487,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/receptive_fields.py",
         "implementation": "native",
-        "sha256": "6bcf0089dcb7833d1231da72caffe80282aa64d12684c28a4399089527ebc16d",
+        "sha256": "414d43c3c05f08625d1266d823e67613598cfebdaa28947a890d3eb710db5bd4",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/receptive_fields.R",
         "implementation": "native",
-        "sha256": "6a1d241f90ebe1f4fe249a0e948ede79dbf9647a1ab33ec026cd1871dca3d87c",
+        "sha256": "33a289f58aa222094ee96105f592291d3053551c416a030d4ba04622b98d8f3b",
         "validation": null
       }
     },
@@ -504,13 +504,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.py",
         "implementation": "native",
-        "sha256": "e90fe8375f49851d25b6a3438a8b815c6c23a66d671401b1acd5284726205051",
+        "sha256": "48093415636b82ae573273b1e524f4bda6f250cf680470d1938d9ed919667b03",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.1_fundamentals/transposed_convolutions.R",
         "implementation": "native",
-        "sha256": "a0db730aaa0d13d18eb1ed58441a7d3580fe2fd59dcbaae9c8899718bdefb499",
+        "sha256": "dd531e90ce9eceb994fdc4c29a1c7f0506048727eeaed81cad15052c9cce4f61",
         "validation": null
       }
     },
@@ -521,13 +521,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/alexnet.py",
         "implementation": "native",
-        "sha256": "34b12a622591c412ddc1bb695400e8647902ceffe2c63d7129c742b6d15b25a2",
+        "sha256": "d076b87682f262935479b609aa6620a584305fb587aa6633c03a23926195c054",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/alexnet.R",
         "implementation": "native",
-        "sha256": "754acb545cdbf706d94323cd390a9ca946aa45562b128db5da9fe2bb75bbeeda",
+        "sha256": "7db52670ae73d9eaa24181fb6fc2068c7b57386e872853f5236ba9686dc39b64",
         "validation": null
       }
     },
@@ -538,13 +538,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/googlenet.py",
         "implementation": "native",
-        "sha256": "b18b52d403706f620e9a3e8168628f86567073982d371771e3c15dd75f73df16",
+        "sha256": "019d18b6b1e6245c6235a4e545edb72b9eb0b27761f8f079139e05de3b1ffbff",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/googlenet.R",
         "implementation": "native",
-        "sha256": "354bcf22cc3e99c3e9ff399b8c2efba32ebeecc3c9d95b59d3d7603e6bc93498",
+        "sha256": "3de71044b8a011af61550a29d731d46c1547539952c7a81fccc3c65f1eb05cbb",
         "validation": null
       }
     },
@@ -555,13 +555,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v2_v3.py",
         "implementation": "native",
-        "sha256": "3271b4d2c65bde5fa1e7906b2135cb5639d47cec61f64b821908c070be3cdda9",
+        "sha256": "990121cc1be8b57b818c44b80ea53944965450977c08c40e51ac5e9ca1c245c7",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v2_v3.R",
         "implementation": "native",
-        "sha256": "405c76d1f344d276655bb053ac107b4121fef59839a8c2a416e7779eab7a312c",
+        "sha256": "960384f7e164b748e3eb9840ccba77b59f5dc06109ee863d9380d70080b3619f",
         "validation": null
       }
     },
@@ -572,13 +572,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v4_resnet.py",
         "implementation": "native",
-        "sha256": "ff9fbaba4b37e4e747ff40f4d1f1d16a83108a6a1712a72f04fab83fe07eefbe",
+        "sha256": "dc1b9f5c4f76b5ab4cb8a0ac33a35372baee169bea2c2d67d17f20ab492062b1",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/inception_v4_resnet.R",
         "implementation": "native",
-        "sha256": "7783138651dbf7a07796ba98cc3a91846f3e1a07f5e24bc076dde7d1b2a6027a",
+        "sha256": "aa1899eef0246b28879c45fb4abda9b249cfe80abe7abca9b7f9abe5c033e3c6",
         "validation": null
       }
     },
@@ -589,13 +589,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/network_in_network.py",
         "implementation": "reference_wrapper",
-        "sha256": "7f326852172a3341e2e16dceae20d23d2fbbd156ca4af12ba122d04ae65a67eb",
+        "sha256": "0951c9edcc004ba09a0446a2e9a67c5bfe3913a069539493bf6255d29aee24f2",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/network_in_network.R",
         "implementation": "reference_wrapper",
-        "sha256": "cc07771e6d7fb1d95f4af353bfdb9655c0ac46486e9d6a74325e1f01901e7fd4",
+        "sha256": "3f3c9c597f45050fbb0e1532c6ba137460a57c217e82bed3712013ce7a854914",
         "validation": null
       }
     },
@@ -606,13 +606,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/vgg.py",
         "implementation": "reference_wrapper",
-        "sha256": "bb967d9c7bfe39a2110f11ea7c478432dddaf5febbb8c9f52e836d78cb336169",
+        "sha256": "a3ced4dfc8f650d4cb7b6bb4855b10fe2772bb5d4cbdc139f6cd9f0c8977b665",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/vgg.R",
         "implementation": "reference_wrapper",
-        "sha256": "ba35f6806df4b7da66e19e98875ebbd9d5d3a81a18459d74da670f532075782d",
+        "sha256": "d812fbcbcf7a6b0056e4e23eaadf0cc2dc76c2a06a414f955c487c59e569b7fd",
         "validation": null
       }
     },
@@ -623,13 +623,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/xception.py",
         "implementation": "native",
-        "sha256": "b1dc6b010063c1228fa13f7c8a546c33b4831202c019d3df891637316df1c612",
+        "sha256": "ed919b688d4deb3657fd133143a0971a590ad05de00c9782d9b59a6ae66c7bcd",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/xception.R",
         "implementation": "native",
-        "sha256": "493e3df617ba4b0f53c0768f6808faebe55979294d391fe0eaec3e08e9db2efb",
+        "sha256": "6ef7322ce13eb43e84256d76908565a0c7dd23d0f7ca9b8ee63e01399f2baf42",
         "validation": null
       }
     },
@@ -640,13 +640,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/zfnet.py",
         "implementation": "native",
-        "sha256": "1c08cbd543c8095a4cf782a9054a425225f29dd025a1c5381232a29d74eccab3",
+        "sha256": "ed14f3c8b068061f3bc22b65b2682e854c8dc69e1a11cc73d8aa6cf1238bbbb6",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.2_classic_architectures/zfnet.R",
         "implementation": "native",
-        "sha256": "f8c159d50c9472665a2b0e040e6b05520bd5a2a1f529c2bccf7901dcc6b439b5",
+        "sha256": "acc838ba82570f729f390957cc6f9705a70cb92c6c64e1510e13b3ea43298761",
         "validation": null
       }
     },
@@ -657,13 +657,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/densenet.py",
         "implementation": "native",
-        "sha256": "f860078bafa7beb039bbb5617113466a76fb4296022197d5a46536faa570b364",
+        "sha256": "f75dc8406f51c3624a2aceed8a1ba2ab33308249ebe136bf428b215aeeba12a3",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/densenet.R",
         "implementation": "native",
-        "sha256": "a2fdbd567dee3caa7b18b315b4d089f8ef3cc81dd2750847f723b690f93f10ba",
+        "sha256": "3558d1572d720f875f71a267334e31bec8753bb4882de6a271a1cf6a2527221b",
         "validation": null
       }
     },
@@ -674,13 +674,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/dpn.py",
         "implementation": "native",
-        "sha256": "0b078bc07b7266edf9b5115db69cfa71ac97120f8400a5822ceef52629dd6d6a",
+        "sha256": "24507b53c384a1adf6cd57bdcd06c758643a06920079ef0c943664eb683666a5",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/dpn.R",
         "implementation": "reference_wrapper",
-        "sha256": "48eeef867372f098056b42ff8af3632847bb755e669496bfd040abb3ad82152a",
+        "sha256": "f4d99a6f8dc4e25a07c557f8ee64823cc9630610c31bfb9ef3ce0c9595686909",
         "validation": null
       }
     },
@@ -691,13 +691,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/highway_networks.py",
         "implementation": "reference_wrapper",
-        "sha256": "e9e5fd07ecabe7c53fd0adffe519e06b00e6d8a5279d5b7252958124b0db3327",
+        "sha256": "dc21cd3c0848909d41686e800de855b5b6e30ce463c8402498cb224ec6dd2998",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/highway_networks.R",
         "implementation": "reference_wrapper",
-        "sha256": "b6403495bc69ae3306d2f595f3ea30bd445f1439a5f4ec9c9cf30b9fb3a35e35",
+        "sha256": "3de95631eea992235c876d2c3ac36041c248feecd698b94c239dd85913e142b3",
         "validation": null
       }
     },
@@ -708,13 +708,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/preactivation_resnet.py",
         "implementation": "native",
-        "sha256": "cbc6225ea214bd4017646cef80d49a48239811d81a6817dd0bc719b97b866013",
+        "sha256": "e1817e282f409dfbd023db24aa251adbbd70fd13fe9ce40536a694d920e36d48",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/preactivation_resnet.R",
         "implementation": "native",
-        "sha256": "5dc3bc648f4c14af526cc18352793928f6ddda2b727883d53f5f6c21fd6e9e23",
+        "sha256": "0ca679aba9159af4b01e4382820ac376f0059ad2fb69e99d4efc58557865af58",
         "validation": null
       }
     },
@@ -725,13 +725,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/pyramidnet.py",
         "implementation": "native",
-        "sha256": "0bf58f5414489c8b0467c6de539cf5adcc1e5bcaf0aff16e6311e2187be0548d",
+        "sha256": "110bace985a3b5aa6d7b1182c0dc82703249d3e495bbb291235ac1a034c01394",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/pyramidnet.R",
         "implementation": "native",
-        "sha256": "aeeccbeb5a563200663ddd42a6b18a9f8b950403578e2381b6535e293ec900fa",
+        "sha256": "715e4ab92b6dca98f4b5f5fcb7d983698e862cc45fb510b1507589c1317bd742",
         "validation": null
       }
     },
@@ -742,13 +742,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/res2net.py",
         "implementation": "native",
-        "sha256": "38d6598095c78049e9f38bfcab7eabb73f09388683611e80ee11b92fb15e64bc",
+        "sha256": "e2e8e8f1e8f06b734d01dfcf9b65c85709855f68cd11b1c19bff61eab90dba0c",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/res2net.R",
         "implementation": "native",
-        "sha256": "10c80d9cfecf5f320891742039d491346f8b261a68fdd0823a9c94ff183775db",
+        "sha256": "95271490a41c44e6be53ab3cb6829de5d118c59bf1b0adcaaf2c3b6c00358a5e",
         "validation": null
       }
     },
@@ -759,13 +759,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_basic.py",
         "implementation": "native",
-        "sha256": "6c5599e0e2df2f984fab49c9cff56d9e969ac9044aa03749a88c5935e9657642",
+        "sha256": "b8c1e16312daaa29c422477178094baf5116d4eb753e4eb0fd837271bd071d5e",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_basic.R",
         "implementation": "native",
-        "sha256": "0f7c772210118f7543e2902854340e9c283dede5c607adc8956a8ad55d3fbca9",
+        "sha256": "116b616f3db3dc7780561714b9b2e51a5fa2248e58c20f5ebd5754eac8a52a58",
         "validation": null
       }
     },
@@ -776,13 +776,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_bottleneck.py",
         "implementation": "native",
-        "sha256": "2cd9adf08053ee1e227a91d10997260f2ff941a9904664f472c5cbe8407eb89d",
+        "sha256": "517fc393a45784166a2f31fd7c90616a7b9395c0e8f78ef179f27f8bb719e603",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_bottleneck.R",
         "implementation": "native",
-        "sha256": "2c797e232c763b8c7565b7c244511d9cffcdecb8153503408d4ad025361c5e1f",
+        "sha256": "230e0bc5a7b97f864d41dd02c5459a9e0419971e2a00507163abcee010c8dd05",
         "validation": null
       }
     },
@@ -793,13 +793,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnext.py",
         "implementation": "native",
-        "sha256": "d0a10cf335280c9fe48bf1f2482dd56d18aa6f199de0e38d3e34f8975f0df3f1",
+        "sha256": "a049ea18c40890f6517523f9b00e90123e592c742770bd81235d6ee7a93981c6",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnext.R",
         "implementation": "native",
-        "sha256": "976d1bcce37fecd07b7f2fe64818b73cafde82fe7725f045f1932c81df09d88f",
+        "sha256": "544659cb22f46b8c944e4f1cd3c374390694c8a48d509417d635c9af297710f9",
         "validation": null
       }
     },
@@ -810,13 +810,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/revnet.py",
         "implementation": "native",
-        "sha256": "ff6fac8c03bae9d4999ef97c0a58b46d47ff0d8904f63f7af9969aa21ba47108",
+        "sha256": "30cfc639c0d906f5b602ee1ceaf8e0ae5268c01ec80378125941872988fd5b91",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/revnet.R",
         "implementation": "native",
-        "sha256": "6c86943512a754716c312463d30da59fedf6e374b03238cef7c4c879c8f3d16f",
+        "sha256": "e893a964f66bc6152d39929203574612d87bdd976f73840ab305058551095b8a",
         "validation": null
       }
     },
@@ -827,13 +827,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/stochastic_depth.py",
         "implementation": "native",
-        "sha256": "781e7a3be0d6987083229f42addaa49f5781f0d6164889d07dfd15f38b6db561",
+        "sha256": "f4895ce9a73f536cd1b510190e5ba6d15a09a3072a047f2920e4f1cc58346495",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/stochastic_depth.R",
         "implementation": "native",
-        "sha256": "37c20ac3672b15e010c15d8b08629c24373b8052f275463e2bcd1fefcce91b0b",
+        "sha256": "d8f1f8d9344896611674dfc2d51261120137984658c0e7fdba1e8d91ef724236",
         "validation": null
       }
     },
@@ -844,13 +844,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/wide_resnet.py",
         "implementation": "native",
-        "sha256": "8173bc80b80fd55cfbba15503b0407d1572095ef1ea111eef46f738c9c77cdec",
+        "sha256": "0579088c2e6f3c541edaec3272b17921356697d6086354a1d29d760f6948177b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/wide_resnet.R",
         "implementation": "native",
-        "sha256": "8a8175480e35a048652769b2d249f97dcc14450c978df648139dc90e35ecf9df",
+        "sha256": "544681db76a50eb0c2288a09072b6b328e0329fcae3a4821ed02a2a6ddffed6a",
         "validation": null
       }
     },
@@ -861,13 +861,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/condensenet.py",
         "implementation": "native",
-        "sha256": "3b6962df7b9f6948f140a545b06f25d51088905dd2853957e9b605653516b4f8",
+        "sha256": "2203c49f12a5d20ddb54af2833db7b8442689434a207f666cf5cf9c4902d0991",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/condensenet.R",
         "implementation": "reference_wrapper",
-        "sha256": "430283dcc3458f951503649ef42004b2968035c281e95bbb2c1bc5f7e2527b62",
+        "sha256": "3bea9e6bc955c76d9d3c8a859a289fe88a1df642427ce3e6c1ad3bb7f01a551c",
         "validation": null
       }
     },
@@ -878,13 +878,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet.py",
         "implementation": "native",
-        "sha256": "292ebc3a20de72246816cee0c3ea257361f0bfc0e8137bd828d03d695666ac7c",
+        "sha256": "f9ac0ffaa4bd372beaea276f91dcc23000d81331e08806b769fe956b20a04c14",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet.R",
         "implementation": "native",
-        "sha256": "d5c7a5e372ad4c27b5eeccfee628a7eb730e8a8cba231a073f24526f6686a2ea",
+        "sha256": "0802de0db9fe78cffd604954a0b36c8d3ddfa69c8a72d71c3a96b8db936f39f7",
         "validation": null
       }
     },
@@ -895,13 +895,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet_v2.py",
         "implementation": "native",
-        "sha256": "a11572e2ffe3d3981f69b7fc5072c2cd98ede70488fee93e860fed240b2b014a",
+        "sha256": "40ff65ca466bc689b09c9c8f33c24699e20645a7e4874ba88844370eff12396e",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/efficientnet_v2.R",
         "implementation": "native",
-        "sha256": "8eb1d9f6befd57f5e5248a452978299fac046ca0025cbef883949e940d87ba2b",
+        "sha256": "8331400491b321e756029cc07e8113bebe00a92389f6ced2e0338fd5a7edc8d6",
         "validation": null
       }
     },
@@ -912,13 +912,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/ghostnet.py",
         "implementation": "native",
-        "sha256": "a55bbda0b3b24935b77056b3e374ad70a1e3afb091e22402d7610626866e051f",
+        "sha256": "43d6d5f9eae412faee78712ad99c09188140444bdc5eff905233a8f1580f534f",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/ghostnet.R",
         "implementation": "native",
-        "sha256": "8f4a068c051cb110e8059793a9cdecb02b1fe1bd92188b450a26e47240a5fb47",
+        "sha256": "427e4e4e39b1dbdce9cf5e97e90af7373ad85f0897bef90ad48fc14e04615f88",
         "validation": null
       }
     },
@@ -929,13 +929,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mnasnet.py",
         "implementation": "native",
-        "sha256": "6e807424a3e249ce074ed4cfb41597e039ed8d024e7f745fa85d68f610be43bb",
+        "sha256": "953cfa3c824c8cc9b55e2a928a01e097f062a4100372c39ceb627fae22bcca52",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mnasnet.R",
         "implementation": "native",
-        "sha256": "06d80f56d05cc62952389d5f78d974b60ac460bbffb3f5017760a479bfe71e70",
+        "sha256": "758aa22f737a8c8fd5f13da89254ebcb644a2cfaf631d3f7dcf22c32be63f07d",
         "validation": null
       }
     },
@@ -946,13 +946,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v1.py",
         "implementation": "native",
-        "sha256": "4028d4da08c272a323a501fa40f19cad57bc50436f4526ce9daed735c4867736",
+        "sha256": "b4dd3e8f0a7c8cd74b59351efeb2f97f372ad492408d89ba3c368e09e4f7eaab",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v1.R",
         "implementation": "native",
-        "sha256": "9b9d5a578bb6b19281785a72b73e49bf90a9af92d694f7a6e109501895864a09",
+        "sha256": "6aae0132275ac88c69c93532c7199834a01224a4963219745041f546deb00168",
         "validation": null
       }
     },
@@ -963,13 +963,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v2.py",
         "implementation": "native",
-        "sha256": "3409d37d31de1e5cabc7dd1c316dad0e48f0dd71260c7fa8df71e6b86354b19e",
+        "sha256": "a6197e801aecea8efbbb44c7a08a16278f9c0b300b8b0f6402f58ff854afffc7",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v2.R",
         "implementation": "native",
-        "sha256": "b140f69fd6a0ac7e848abb7c906203591f5904d2f63fed74251ca8c342c802e1",
+        "sha256": "6502daf8a05eb37cd9685a3672398f69536e26ad5f436aed47b3d4525ca70bec",
         "validation": null
       }
     },
@@ -980,13 +980,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v3.py",
         "implementation": "native",
-        "sha256": "621307f2df8ab377d2d9526652574522f30a2b2fb2d066f959d2894da31fb923",
+        "sha256": "828157a96c373bf87ee5e9325e72cd9d15c3bb3dbaa4043782b80bc9c29a55cc",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v3.R",
         "implementation": "reference_wrapper",
-        "sha256": "061409248a6cadac7d8ef1b24e65553a005d44bde76d29cab46c80c79850294c",
+        "sha256": "794bd783f5d24da706b14a1117c91d29311a50ce6c234f95990bb519c04be2a1",
         "validation": null
       }
     },
@@ -997,13 +997,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/regnet.py",
         "implementation": "native",
-        "sha256": "599a84dfbf9732853300d542b0bd83472bed44ae2348e0e4343a412a5afb86db",
+        "sha256": "83162c8715e51851199c304600bebbeb8c2a66aec72e7a4dde9841c43ff0ad78",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/regnet.R",
         "implementation": "native",
-        "sha256": "f62801fe3cf5daf27bda203159dbd0c14ba0a225169ff998475ce9ec324c32ab",
+        "sha256": "8cc1c7663926b2b74ebf6ce339d7c151e551e8df97bea850fe6221425b1dd5c3",
         "validation": null
       }
     },
@@ -1014,13 +1014,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/shufflenet.py",
         "implementation": "native",
-        "sha256": "ca28674dced67b22af26112db95059ade1e51580004d30af41f8d98b96152f72",
+        "sha256": "fbe34eee704d31bf63e6a0bd266d819b9393456010638ce3678aec21369e585f",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/shufflenet.R",
         "implementation": "reference_wrapper",
-        "sha256": "3ef9226067bef2bb52525cb216e56b80158a58f1f72a9aee4a1f5896df157d8c",
+        "sha256": "a7f17237781ae41b8c62bcc0de3604c7a1bd18cc866e8be6a8f9b695796b68e9",
         "validation": null
       }
     },
@@ -1031,13 +1031,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.py",
         "implementation": "native",
-        "sha256": "970ad7743d83451fa947d17080ef1bf78f2158be99cbb50d6321546a0993e46c",
+        "sha256": "d6343428089f116ee1cf5124b9fb611cc7250e3ea3aada5ef926558b07fe4b67",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.R",
         "implementation": "native",
-        "sha256": "27ce596fc132b4be6ab3be809c1b28bd3ce8e53c21a830624e5f3c3e08cf830b",
+        "sha256": "c68dc8fa1cebf4f089bccc22c3a7cf8ff7554fa7cd38c6d7f8adf01ba773f4fb",
         "validation": null
       }
     },
@@ -1048,13 +1048,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/capsule_networks.py",
         "implementation": "reference_wrapper",
-        "sha256": "5efebf2598a30cfcdb54de3afced7e875306ebf425853134a87777aa4094cf33",
+        "sha256": "04d4bac2b5d085b49f9175b15d05cb500eb2e7b61f1e741be210c89d91af1e9a",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/capsule_networks.R",
         "implementation": "reference_wrapper",
-        "sha256": "a55e19f9cf7d82d05f7e363d5485ade9002bbe2d5b555398a59a4631f43e0fd1",
+        "sha256": "8cc2e047f028f326fe364ff83a9cd820f67df9f6bdff18175d41a3d7b7e8dbb3",
         "validation": null
       }
     },
@@ -1065,13 +1065,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/cbam.py",
         "implementation": "native",
-        "sha256": "c93ccd3667568adb6bf525b81ad16fd9f9767f2483d31b2779d1f4a6eed757d5",
+        "sha256": "f2a1ea190d0be1098316c9ef0fe657fbeaa3799de008142c586526b26dc2bea1",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/cbam.R",
         "implementation": "native",
-        "sha256": "10d7386f2ce21d75d58891913d8739eb364a49a6df2046d9e594716ac5575e66",
+        "sha256": "245007b3816bb0da9940de3a64ff891b54e4f0da61e7888c1edf5aeaa4b00535",
         "validation": null
       }
     },
@@ -1082,13 +1082,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext.py",
         "implementation": "native",
-        "sha256": "735c8778274ab23a19bd82ccbff2c20ceb32882a546a54b5057221194824c943",
+        "sha256": "a719a827d382d91c6e1706890754121b34d038d4f2f8bf25a651c7997620b393",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext.R",
         "implementation": "native",
-        "sha256": "baa7af8ec433cf6b9df1d39387b047ec0aabee6c338a4a67d24eb169bdcaedc0",
+        "sha256": "f7196bea0529fcf2a3216f42ea1ff1c872b44c86e1faeabd27b2fcbaa3866dae",
         "validation": null
       }
     },
@@ -1099,13 +1099,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext_v2.py",
         "implementation": "native",
-        "sha256": "c652bf232767da4a7d2c64a1e707ff9fd665d6167fb6a5c1755d266559e3e52d",
+        "sha256": "8bd27b9734231dac52bd647845f45e39ce4bebae4a3732ef3ef99f3f2c0ab49d",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/convnext_v2.R",
         "implementation": "native",
-        "sha256": "111d0aad3fb74679095d0df88c2113c7a0296bfec48213ed85fd91a100eb4cc3",
+        "sha256": "147fde4a24562b7717d92a4badbbe507430a723e72267f1d160bbe216047baa6",
         "validation": null
       }
     },
@@ -1116,13 +1116,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/deformable_conv.py",
         "implementation": "native",
-        "sha256": "9e15927b63bef5fb6b1894fbcb1955512670fdca3202896ebb79a2876b3af174",
+        "sha256": "0869b0c966fab41ab5677f2b76c91341b43eb551d60a0402bc57c82cee9c649f",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/deformable_conv.R",
         "implementation": "native",
-        "sha256": "1a05a1c2daada090cb16a6b97b68b84970d5645b613eee39d567da659a5f43ac",
+        "sha256": "42764d045cb3df752d40f1a25d722b4ba5f8f41fb731761e58ce2b63b0870499",
         "validation": null
       }
     },
@@ -1133,13 +1133,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/eca_net.py",
         "implementation": "native",
-        "sha256": "6fec062869667dc38e51e69b4c38b4b2c7501f5caa5875bc883438fd3a80b265",
+        "sha256": "17065bb8ed27a2f7357b7d34ef646463ed1a6a19b0bf4029ffec6cee3b08cc1f",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/eca_net.R",
         "implementation": "native",
-        "sha256": "117abed54072e568948e24cf9444b6262ffc203ac9a987256a01da3a3fd5cd84",
+        "sha256": "d6269ee8f8cbc4f6e4dce6f4009110669e3ab7d594b66009d7da35dfba841de6",
         "validation": null
       }
     },
@@ -1150,13 +1150,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/non_local.py",
         "implementation": "native",
-        "sha256": "25166243ab5280b24c8f6c9bc3f3ad8201529e5df2539f6d42f1d3277f07b9dc",
+        "sha256": "3ac83260f5d47a740f4c62d12580e950f07bafebe52854fddf7ccadd544a0f1e",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/non_local.R",
         "implementation": "native",
-        "sha256": "50411db72ee2de6b646102093971264d43eec7ff73712badc93469f47980b0b3",
+        "sha256": "b8b44965aea664b5ee83547a1b814b241ef9ae140a48d2538674e2f0c0fbed55",
         "validation": null
       }
     },
@@ -1167,13 +1167,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/octconv.py",
         "implementation": "native",
-        "sha256": "eb004dff8723b86abe5c4ec1ff0b3140bdf9e5b6bd5517ed153d3ef4de56e2d1",
+        "sha256": "b905e0a379c39b7e06d51acaccd64145d99c0029f4fc5c615ca9d43b60f7be77",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/octconv.R",
         "implementation": "native",
-        "sha256": "c850c4d5bd0d68a75540eb7d3db4601582716f413b44a9475621c6cbec68d42b",
+        "sha256": "cf3e63020c7f35e77174847ceb3e002ea58c858f84dfe50dcb5dccd1945d3685",
         "validation": null
       }
     },
@@ -1184,13 +1184,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/repvgg.py",
         "implementation": "native",
-        "sha256": "497bcebc3e461466b7c96308955efda536f68e33898610538f53769c472ae9bc",
+        "sha256": "3e76cc13daf18fda50db126504a1e2b0a6929f4020d92e0f54ccb49850532bba",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/repvgg.R",
         "implementation": "native",
-        "sha256": "94f505af6cba86494535c08801b240e95927d0e05f690624955f6c907ff4a6ab",
+        "sha256": "9a851447437ce85d3bb8a87c703b3088409ea98513284047bf432d5c8a5f69c2",
         "validation": null
       }
     },
@@ -1201,13 +1201,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/senet.py",
         "implementation": "native",
-        "sha256": "2f1970991247c6b4b551beb03d075ab4a7b38b12d509d19d1454355605a645ba",
+        "sha256": "e6680b506079066e073be88f0b1297e6dcfbd081573d851a92c16d81c873616a",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/senet.R",
         "implementation": "native",
-        "sha256": "a7fe9e828410205b8591281212e1b5bb5192fc08d14943f8d5b7d599c4be58ef",
+        "sha256": "6ad829064a1307ff5a23b577a7fda9280e1cfe2ba6d89d94f046d2c50d40488f",
         "validation": null
       }
     },
@@ -1218,13 +1218,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/sknet.py",
         "implementation": "native",
-        "sha256": "45418e737c83881f4c79ba8505085aefefb1bdeb088f4665af134d760261ad62",
+        "sha256": "e0cf5b68ff229889d1fc17c8c9b0b7f02b6defc4c5160ccc6d5811b69e419ccb",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/sknet.R",
         "implementation": "native",
-        "sha256": "11504636921b5fe6b14aa970a7c2f936f32bac766ce972b4124a3295bad34a40",
+        "sha256": "bf85637d1ec48d700b82ccae4d1bf070966ed1ea84557d04aaae34931d53178c",
         "validation": null
       }
     },
@@ -1235,13 +1235,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/spatial_transformer.py",
         "implementation": "reference_wrapper",
-        "sha256": "a9b4d965a61e5a074b9a65347fe2bd166021e51c79ba07e638d57e329e859e38",
+        "sha256": "bfed8fc6b809b8fb5dd468955ae2f342d4150da65d35b3325d6efc8ff13bab3e",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.5_attention_and_modern_convnets/spatial_transformer.R",
         "implementation": "reference_wrapper",
-        "sha256": "081cec33961ff761b4d2c109cec771d930f1de8c7d0c8a9f55675e303208a1b5",
+        "sha256": "6f94c6ca38096c9cc186911f93042c6a81b292153e679d662635180f42eff963",
         "validation": null
       }
     },
@@ -1252,13 +1252,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/centernet.py",
         "implementation": "reference_wrapper",
-        "sha256": "6a59a25aefbda11ef514d02c05f355e63e51b1b51d98f85c31b1031c9edec2f1",
+        "sha256": "79eeef076b6eb83275e8789d028186329b5ae69a5a7c168f28972abf6e2cd004",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/centernet.R",
         "implementation": "reference_wrapper",
-        "sha256": "46c80d0c01f231acb5ac7265494e2ef86bf3d2096c0e5c4fc1b35041d8693d6a",
+        "sha256": "8e1db05dd5f98e74418d660a23f033a27863d50f1ca0947437d9cce8e986197f",
         "validation": null
       }
     },
@@ -1269,13 +1269,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/detection_baselines.py",
         "implementation": "native",
-        "sha256": "c448de8f39c646caf2dd52aa14770d63b4aae1246e30bf0c96e9bd419a2ab3b2",
+        "sha256": "9ba282e0a0ead9ee2e7c2e94d7464d81b243d05a079f29af952d2d9edfbd0781",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/detection_baselines.R",
         "implementation": "reference_wrapper",
-        "sha256": "04e8317b9a754da8ff06862c2f1d991cb8209a57863ac1ab0739d7185795d178",
+        "sha256": "4543ce198d1857d465fe9a50f889bbd14207ccbae89861876afd3f721f45aea5",
         "validation": null
       }
     },
@@ -1286,13 +1286,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/detection_evaluation.py",
         "implementation": "reference_wrapper",
-        "sha256": "3a22f99693ba20367cfae3ec5b8ca4613f242ac41268ed2bb8021a694d774572",
+        "sha256": "863397b5e6490bb737fd48e12b53e12d65bf7533626271ba00ecb0c6e86a3579",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/detection_evaluation.R",
         "implementation": "reference_wrapper",
-        "sha256": "35e76b90a5594674da8f665585d6369c3aa4f9fcfd72475c353b94e705e16d46",
+        "sha256": "9a6d19b9172f060dec0b370926dbc3f0c85ce9103010aa213751077318db6246",
         "validation": null
       }
     },
@@ -1303,13 +1303,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/detr.py",
         "implementation": "reference_wrapper",
-        "sha256": "d304752bff493b951e18e98fa371a15c30b35568c51404de9d678a5d0574f197",
+        "sha256": "c6f0416595a96c91fa265d810c5b3790e6902e83d5ef8c1ec790023e3c2365a2",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/detr.R",
         "implementation": "reference_wrapper",
-        "sha256": "90596c48d2015a8c7e0d76b9a09122a3b00f0409cfd408967a47cc23726b2b46",
+        "sha256": "a6fb498f85f4c8012bab74d7c5f4c13fd95c3d2ddd9724d76d4a8c151c2e7cb9",
         "validation": null
       }
     },
@@ -1320,13 +1320,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/efficientdet.py",
         "implementation": "reference_wrapper",
-        "sha256": "178456e6638ff1b786dbd7437fbf86efdc2e0f3d6c68140e0cfcf787be5cda63",
+        "sha256": "d507120411f71dca367964d7832a0e50b10bad7a73b2361ed0b418602d0c4864",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/efficientdet.R",
         "implementation": "reference_wrapper",
-        "sha256": "d0d7d21b36865b3d916da376cdfbfc19d70aa319f1ea9fddf3e49cdb3b124a98",
+        "sha256": "2a84bb7d2012b1b99aa9702adc593e1576b28dc5eb5645bb494e20d74943184b",
         "validation": null
       }
     },
@@ -1337,13 +1337,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fast_rcnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "28ef2d453778340e313506b867410728fe7d873d8602ff50fe058faf9e05e5a5",
+        "sha256": "20da41e6e43af3b11c70cc10fb299c406b381c8052780bc72c38f0877ade529f",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/fast_rcnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "6200c760250603aea6261eb654e87db08b41b067c6ad7bb8d48b1bad18274fd3",
+        "sha256": "55c14943ac937f46c472de380b74ce7b1f6a3f3aeeb74f378cb62b67af3d9383",
         "validation": null
       }
     },
@@ -1354,13 +1354,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/faster_rcnn.py",
         "implementation": "native",
-        "sha256": "1647d9d0bc55c9ba11157250dc8b7bb74afb5cc3bc38176f3fef0ea97e933365",
+        "sha256": "7ae272a9036f5b970c35fec8db56ed2a5138e3e98753bc27c4b260751901c96b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/faster_rcnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "e9743df7bda5955079fbe363399ea709c34e06210b20a884e3baad266ceadcdf",
+        "sha256": "af39f27bdfcc5758546909cfc964a832a2144df0c2d7c601cee01b566b1ec947",
         "validation": null
       }
     },
@@ -1371,13 +1371,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fcos.py",
         "implementation": "reference_wrapper",
-        "sha256": "73061bd925dd0e203150297c92c2547ae4a4326e35ada87bc9b9d876696552ce",
+        "sha256": "08b95ffd038d9000e5174985ac083363f276bda69c8251cdf141a1729c4a2d15",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/fcos.R",
         "implementation": "reference_wrapper",
-        "sha256": "1bbf26c88b7de3e7fa0bd01c2b15e7d71bd14de9b14895aa760d63e96dfcd4e1",
+        "sha256": "28906ef38117a37768b6869c1795f9c3444f46794189716b8751f0b466f2791d",
         "validation": null
       }
     },
@@ -1388,13 +1388,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/fpn.py",
         "implementation": "reference_wrapper",
-        "sha256": "2c1abb1aea7684a7830763bbe384636f06b3d12346f9f9be4a0ce29c253b7d95",
+        "sha256": "e9ba93773949ea912ad2e39907ababbec9a785dd8c8723cb77860c723c54e877",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/fpn.R",
         "implementation": "reference_wrapper",
-        "sha256": "712fbe11c4b808f6d444d3942604e8b45a2c10e5b8b21038457c7311946f87a9",
+        "sha256": "c851d5696af531cd4e8db9b59a4d338c0618be854b1fd1c402178b0d7970b78b",
         "validation": null
       }
     },
@@ -1405,13 +1405,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/nms_matching.py",
         "implementation": "reference_wrapper",
-        "sha256": "98122a7ab0e5d6a17e068044df822843f3d65a91e5b7df54622cf51e8a8f0dce",
+        "sha256": "79b1a6a596a7dee94d695185fdfafa10c4a2215676c26009787e936a602413f3",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/nms_matching.R",
         "implementation": "reference_wrapper",
-        "sha256": "680b02082d48b30d67e2832db1e822c823282d0b15a30cc05590e21823efee08",
+        "sha256": "d1fdd366e2a7a1cfc9ab59536abe9fa85d84f5d6d8cddf126ef99e7ccb067090",
         "validation": null
       }
     },
@@ -1422,13 +1422,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/rcnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "02faba0029892f55b2a8c08505bac42c9868f283f81229f1a26dd7ad2afefc84",
+        "sha256": "b859dfaac46546e14241f776b19ae5971c7fcf65b08d42174a4eb6bb3a1477b4",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/rcnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "25c4a948cad90b8eefcf4c2e0467510e2c9f8d30ab32f637b2f6831628d96e67",
+        "sha256": "6d817f1fcbdb3e8f1a11c529d0717522c0cb8d3cfb0e101ba43bbfefa4ed2e2c",
         "validation": null
       }
     },
@@ -1439,13 +1439,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/retinanet.py",
         "implementation": "reference_wrapper",
-        "sha256": "d0598276b51f7af678ac21cefc69422617b3a639c6f88b7a4a7a314df1ab7f8f",
+        "sha256": "98ce49eb9a314068600df153011dad9c3078ad4c5602426ccf9d01b1e77bd096",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/retinanet.R",
         "implementation": "reference_wrapper",
-        "sha256": "dc0079f0533c1b68dcc495405453969838e7a0aedb606b9a5253d85af3b670a2",
+        "sha256": "c8292296817651016189c0d664a3271b6b12c176c3d19ce7be41aa01665484cf",
         "validation": null
       }
     },
@@ -1456,13 +1456,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/ssd.py",
         "implementation": "reference_wrapper",
-        "sha256": "b4b0a2b62d94d598652d4db369ec7cc188a9972f4ec19b2930ad531e0dbd154b",
+        "sha256": "cc109da8e229f38bac82f77b7e1a674916ae2f841f6e0c140d3360a1f316c305",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/ssd.R",
         "implementation": "reference_wrapper",
-        "sha256": "b362ff47219f24465c5d07f7fff5ab81143e1f8cc55f5741870b46c9e4914e48",
+        "sha256": "28884664ac6789d2d0336d8fd200f8fb466f68d690c658df3355c6cd415d1a61",
         "validation": null
       }
     },
@@ -1473,13 +1473,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v1.py",
         "implementation": "reference_wrapper",
-        "sha256": "6318b1af6758e8799c4f9c1963daf8a86604524ac21c8c23c81ee9a89534e348",
+        "sha256": "e2a21b79e7bd92ceb4201433089f8e93c5c492785081ae8e9b50a822b232c28c",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v1.R",
         "implementation": "reference_wrapper",
-        "sha256": "5cdce8a6c2ddeaffeacfa17cfa73ed2529de58cd702cf96da937d0df5b19d534",
+        "sha256": "f366472c3bf8ddce15a386d830c28b4c3b4caca96b40a41f48f553a82ef54f0c",
         "validation": null
       }
     },
@@ -1490,13 +1490,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v2.py",
         "implementation": "reference_wrapper",
-        "sha256": "501b7d31921a9e1d04adb341e7c8d7b72125690c88009bd239245f42ce6359d1",
+        "sha256": "bd4cdd4d98a31e1478b48c5bb742044ee712396b94aa2eeea939ad8c27c9f658",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v2.R",
         "implementation": "reference_wrapper",
-        "sha256": "ffcb4e5dceedcf7566e65707cfbb8877c2a95a63f16a4342eff39070b591f70e",
+        "sha256": "24a65083eed39dbdaefaccf8654d4433e85f944b9151b5321bc850053c9f56e6",
         "validation": null
       }
     },
@@ -1507,13 +1507,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v3.py",
         "implementation": "reference_wrapper",
-        "sha256": "e2dc920421a660631e65ba1ec3b25ceaa4d6f14f545e716a30d0ec552a64e6c9",
+        "sha256": "f4aa5c708bce5b715a83d1c07ead354c7b2ce5d44593a6b2ac7ec3f5a6f51ebe",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v3.R",
         "implementation": "reference_wrapper",
-        "sha256": "11c2e1032ad1c00184d8e38a40389e2437108d2b9439115ef57003f9fa0b8651",
+        "sha256": "09746ca93e65c6ba3daaf73f5bdca83cec77347ba4adc0a095019c3a99511367",
         "validation": null
       }
     },
@@ -1524,13 +1524,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v5_style.py",
         "implementation": "reference_wrapper",
-        "sha256": "c8f33f2aabf8aa9af9196f0ae35eb2d2c0f2d1efab1cc98532f27bc39ecdc8fe",
+        "sha256": "133037faec994d5a9e2d0d627ee2e889df4ef293420ab579258a52659247b2aa",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.6_object_detection/yolo_v5_style.R",
         "implementation": "reference_wrapper",
-        "sha256": "a7202af9e2f78f1bff3532e3202c6eadcbbe99b7e4bcbaf09d347981ede6cf79",
+        "sha256": "bb946f7ddfeeb63e3d1271a5dbb5873e11be2194aa6848321d602b685ed58787",
         "validation": null
       }
     },
@@ -1541,13 +1541,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/deeplab_v1_v2.py",
         "implementation": "native",
-        "sha256": "89cc567f3c07251f8c5a83d5fe77a12d9add7d8ebd437afec7da37a15482d115",
+        "sha256": "5632fc21d4aaa8633fb121500805b146abfe5599595d2d1588a2e7412d0ea71b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/deeplab_v1_v2.R",
         "implementation": "reference_wrapper",
-        "sha256": "91286d235389e73805ed968c89d12ec72ad613810c54669bbbdd3228f04bc7c1",
+        "sha256": "0d4b808e2ea7cae22d99ad52482a9bcd1a0e465b5798db8cfb17943810894782",
         "validation": null
       }
     },
@@ -1558,13 +1558,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/deeplab_v3_plus.py",
         "implementation": "reference_wrapper",
-        "sha256": "cbae0426194b0aa0cc7ebbf95fe79c00f9346f2a823cd684d224e06d385940f9",
+        "sha256": "fd71755baf7bf7b03f4118cdea681731f52aca8d46590e7ae9f1b9ee424449aa",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/deeplab_v3_plus.R",
         "implementation": "reference_wrapper",
-        "sha256": "e0c7a519a6079a3d670e9dd7f26d9621f29347912529addae3c2c1cbfbf6e201",
+        "sha256": "b5f8d365b82e7a8b22979e3643501a3f49138ed1872dc95d3b217ae49181389b",
         "validation": null
       }
     },
@@ -1575,13 +1575,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/fcn.py",
         "implementation": "native",
-        "sha256": "2ebadb6d241ea32af86ea304deaf4e8d65f45c03fc5177bd4d6d60aac49be5aa",
+        "sha256": "8ae857d7be30bb5cbddc81990cd9f7ddf363fced8f346b45ae67b8f503bd9f60",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/fcn.R",
         "implementation": "reference_wrapper",
-        "sha256": "5437189056ab3b16db5ca80966372969850830926d6969b30d74d0b20ec7fd68",
+        "sha256": "8f879961704119646e615a7e7c17e3c916430f5749ced5ebeb4794feb507df19",
         "validation": null
       }
     },
@@ -1592,13 +1592,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/hrnet.py",
         "implementation": "native",
-        "sha256": "9a6e909a487885e45ca3a50cabbfacd054bef46443d19e9b08005eb6790cad94",
+        "sha256": "e62f92325e6603f951c2e04efe98062e00f2bd1e5ff01b92fad8dc3a1cc3e2d6",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/hrnet.R",
         "implementation": "reference_wrapper",
-        "sha256": "b51491d7de3bf10835906f033cafbe1579f1d49004634d99ecd4ae19b075703c",
+        "sha256": "bc485b94b7196a9513759f6fc917e8994973938de54fac209ed64cd2efcb5476",
         "validation": null
       }
     },
@@ -1609,13 +1609,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/mask_rcnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "237ad37761194eadf15f622fcf8acde2d348bbd36f5089a6616d988074551307",
+        "sha256": "d092829a6b03cefa3263c445cc4266c4b939d0f1e741d9e67b7071d1b4fc150d",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/mask_rcnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "13bae831a9a21c34b5f268fb2442e94c8b5c0647cdba70972d2da4d054c75e4d",
+        "sha256": "18521a51c69a82613a74c225ec724f774f470c5e3c58b539f184793b63625a8c",
         "validation": null
       }
     },
@@ -1626,13 +1626,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/panoptic_fpn.py",
         "implementation": "reference_wrapper",
-        "sha256": "f0e3877c9853ecef1cc91ea12cff38939becbb20c753aa6b1ebc2918b29d5066",
+        "sha256": "81474a871e59d72dd428602971d30b52dd022bf4e35f0cf12f5c81cf225cc062",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/panoptic_fpn.R",
         "implementation": "reference_wrapper",
-        "sha256": "713bda2ebac300a5f4b9d4786749b17ce87d5573cd9c6e1d6378aebcd9e58d28",
+        "sha256": "6881773b3613e71885910b27b65fbd6b8632db3a6d5874c066d054728ef1e0c3",
         "validation": null
       }
     },
@@ -1643,13 +1643,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/pspnet.py",
         "implementation": "reference_wrapper",
-        "sha256": "8db5825c70ca59476eb06da3274d7fa085166bd990dac338ea6adeba9dfca2db",
+        "sha256": "e87aeab27827ecf4212e8c106892b58886de69f1923927eda4fc640b7c6fdff2",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/pspnet.R",
         "implementation": "reference_wrapper",
-        "sha256": "4a2cd4fec00c0d6f0a59ac19a9af205fb57c0a1e796c4092fb0fbaf41db108f5",
+        "sha256": "d6a3fedd5c0637d096b92731c7aba18e1bb9ef1a3cc1b546eb732541aed5df73",
         "validation": null
       }
     },
@@ -1660,13 +1660,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/segmentation_losses.py",
         "implementation": "reference_wrapper",
-        "sha256": "b1bb4322764d244c21472682dcd07c01776647b0082c2f066eaa8d1df3af64f2",
+        "sha256": "5f278bfb2886121597ecefca72efcd2460ff8158ebda6721a4adaec3e54b4682",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/segmentation_losses.R",
         "implementation": "reference_wrapper",
-        "sha256": "50bdc83dbb48d0de48244422962bfc0cd5709e8e5ab64811239f890e769ef0c4",
+        "sha256": "c8b5d685f4e3e400132491f57b2c32c1aeb4977c07de608a3e34f510246e7647",
         "validation": null
       }
     },
@@ -1677,13 +1677,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/segnet.py",
         "implementation": "native",
-        "sha256": "ef1b59d7dc3b241ae815cbfaf4247abdd53e33f978222c5fa7e248eca5006b4b",
+        "sha256": "522178822da584b10be1eb5f892a29bc8105fdfeb3aa9a508b9cd794afba9250",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/segnet.R",
         "implementation": "native",
-        "sha256": "8c261bc2b7cc596a0f8d702b90227341d03864cdab0adff8d077e24ee21094c0",
+        "sha256": "bc19614958308b08fdb7d76c41875ecb9305964e54d4129e034aeb7b91e1b75f",
         "validation": null
       }
     },
@@ -1694,13 +1694,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/unet.py",
         "implementation": "native",
-        "sha256": "266b9164abda29132e1d7916a893309f2aa5de2d99cae5b7b0776ab66c9fa065",
+        "sha256": "be563d6c219daef92b09dbadc8bf804e461b1fa6a426e6c96d376215fe72bf77",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/unet.R",
         "implementation": "reference_wrapper",
-        "sha256": "2beb3e9393d6b3fc56877b9f819c96123f0c991a3ab13fb43589235ab6c076d4",
+        "sha256": "214d4d226a1d6f3c6e3044dfe8444ba201806ef1d7332129c5edd17e362ea53f",
         "validation": null
       }
     },
@@ -1711,13 +1711,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/unet_variants.py",
         "implementation": "native",
-        "sha256": "f429859c890bab4a06c44b0a0dbf0ff1f19fd639e8d5e856a73abd4ed2ca751a",
+        "sha256": "a7555993b60129a3bbe9ac3eb49ac802a74833204a0a7ce63462f83b3283683d",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/unet_variants.R",
         "implementation": "reference_wrapper",
-        "sha256": "860fdbe4f6cc62f0fea99857b560f62b3e926860b809fd8eef68f013337b80df",
+        "sha256": "528a315609d1f63fcdb88102666adf1f4ecba9f8891e4a0c7d69e8f230820a72",
         "validation": null
       }
     },
@@ -1728,13 +1728,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/volumetric_segmentation.py",
         "implementation": "reference_wrapper",
-        "sha256": "31296fa6b56d6b072979c3a17c05bad2c1b58445f0d33c4c534be4f5ef5918ae",
+        "sha256": "b9752b2e5eccf1e2471a39b0e7b959686943868fb9b751c610ce147773be0ce4",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/volumetric_segmentation.R",
         "implementation": "reference_wrapper",
-        "sha256": "78d2491750490c9b29c426218c3d95b68683936aaa1f8342fa35cf03a35e353a",
+        "sha256": "671036b3aa72246fe1f3e92bc2fd224f4614700e66ae9c78dfd61017c9ac9dd8",
         "validation": null
       }
     },
@@ -1745,13 +1745,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.7_segmentation/yolact.py",
         "implementation": "reference_wrapper",
-        "sha256": "2cb6fde1c1fe3e41b886fd7598187f4c021af9503b68bcf8db8da87ee607baea",
+        "sha256": "da954d8c36eb987715d601c91fa0b9d59189ced9ded1bf374c35c6315b673f4c",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/yolact.R",
         "implementation": "reference_wrapper",
-        "sha256": "849be01b60617cd502b440fa85dcc0a483e816c42a2322e1ca4230d45c5b0847",
+        "sha256": "50af2166bbfc66cd7a4773ae84713576aabd9e12afcdfe11aaf97129a7d92647",
         "validation": null
       }
     },
@@ -1762,13 +1762,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/angular_margin.py",
         "implementation": "reference_wrapper",
-        "sha256": "db97bfd7bee6c6d3c55cb5f1bfd117e77177c4735682e6cda412dd3e94c2f3c6",
+        "sha256": "27fce757775aa5675c3f49c179e7c4b4a5a375b552dcdd4ab17d7ff33410dd52",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/angular_margin.R",
         "implementation": "reference_wrapper",
-        "sha256": "6b4c2fb944c8485948f3af80ea29bf58948ae4dbdfd7cc376047f3a3b03808bf",
+        "sha256": "602708f61c66b2389e1b0b53ea467837fcd7bf443faee57c4bcfe65fc4b0f285",
         "validation": null
       }
     },
@@ -1779,13 +1779,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/bilinear_cnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "d6db21b532296aa89d1a52c37b01d7b461eb353c89058895d740c2930a09ceda",
+        "sha256": "6c3bd86c2dd9f3092f066af5e45d48396205c9cedb046d02485f6220af0796f8",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/bilinear_cnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "38465ade5fd783e448edd6ec5206b0263e65c510a7da12e9fa3e080dea75a49e",
+        "sha256": "f82d0d9733e134771ed27b92d7d9c09b0ef7b5626de38607bcb16de1d58840ef",
         "validation": null
       }
     },
@@ -1796,13 +1796,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/context_encoder.py",
         "implementation": "reference_wrapper",
-        "sha256": "979c2e66b5288e761befe205cee99b5195bf10fc4e7ca02fdb8c59a0a0ebeec4",
+        "sha256": "ad22a20aa49c3bb69095700072e049cd8716395e3d732e9216cc54c1c218d5ad",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/context_encoder.R",
         "implementation": "reference_wrapper",
-        "sha256": "ad3ecdca43b688b71ff3d875d2369bb8a9951b3d064cd50fb40228de892697e5",
+        "sha256": "ba88da548a3fa52647b2965e1eeb8e0bcd2a30024086cdec11d8caa6bc42a16c",
         "validation": null
       }
     },
@@ -1813,13 +1813,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/crnn_ctc.py",
         "implementation": "reference_wrapper",
-        "sha256": "7cc85a512f04f92fa8c819e523c969f816fd3ac3063e6d4cc224feca2416f51a",
+        "sha256": "36521d1b14eee85900d0f981f6cb86d5e3af4c99f7648835c01cdf52ff705418",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/crnn_ctc.R",
         "implementation": "reference_wrapper",
-        "sha256": "d6b2d33f8c73408951f89e45f008f78ec88802687a10f1eb551dc3886c0f4605",
+        "sha256": "85d06eb16c734e3b2b6973230ad753fe46ba508f20ce8de9da61494b9fa8b71e",
         "validation": null
       }
     },
@@ -1830,13 +1830,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/dncnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "efbb83c60f1dd6ec2ca13737afc31adde45ed1b1d3032c3625335804bcbdacb6",
+        "sha256": "b62ca6afaf648b0bbf817d30788336d9cd638731fd820aa67e86804b98e3ec8c",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/dncnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "afbfb4a220f7f10db4d95894409fb9b9f198dd97c1791d310e845cee608e38a8",
+        "sha256": "95489cd956f74f19c66db371b32f1c4f927b981096aa7b73b207cdd45d347178",
         "validation": null
       }
     },
@@ -1847,13 +1847,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/facenet_triplet.py",
         "implementation": "reference_wrapper",
-        "sha256": "376f50298e655805a0cd1385de3c96026081f9340b71b4b06eb9aa1da909835e",
+        "sha256": "dd790568c5a7ac94ff378b0b5faec4042e029d9600121f54fe6de3299ece8206",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/facenet_triplet.R",
         "implementation": "reference_wrapper",
-        "sha256": "2540e641eb4b4f61d74afded4f099af59f353c6e9948f5ac4415c116b9a8aa2b",
+        "sha256": "b3167d34518d888b66c8152386e1a98caf46320466359fe8ef38090e92685cdc",
         "validation": null
       }
     },
@@ -1864,13 +1864,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/flownets.py",
         "implementation": "reference_wrapper",
-        "sha256": "2e54688e0a7604ec99ff326aa5e29a35704b90a3729ba67d6fb0ae1727264bcb",
+        "sha256": "3a4f8672d8e7e31d0dc6804c72754832f87f3f7385f5dd64523be1bef9ff0a72",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/flownets.R",
         "implementation": "reference_wrapper",
-        "sha256": "6e9940dc1ba5d31ec79c7cc9b8c7c4ca3e297a27181d2c726813fe91671a1312",
+        "sha256": "a5676477bd8cf7afddc062591730ea77578385bbe37a164fc8d8246ffe1c43f5",
         "validation": null
       }
     },
@@ -1881,13 +1881,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/gatys_style_transfer.py",
         "implementation": "reference_wrapper",
-        "sha256": "0d89c90307f1721da862dadd3c29723fbf1e826e99d49630a42d82123d4b2164",
+        "sha256": "6d2bee3755e5bf42bc6327f721a888f51a09e9435c73293d223c522929a8aad2",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/gatys_style_transfer.R",
         "implementation": "reference_wrapper",
-        "sha256": "18cea99fd4ba9d37462c86226582c28aa25f69cecefc06c01e33d594a1e30ba6",
+        "sha256": "4e0a26faa7697c25d199ba4ec16929134510cc7e2872c3c14a252d89db478038",
         "validation": null
       }
     },
@@ -1898,13 +1898,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/image_colorization.py",
         "implementation": "reference_wrapper",
-        "sha256": "3b41c45211ebd804089256d56f633e76121377e3836126b49f563b65a72832f8",
+        "sha256": "9e2818db968045a82658c0118086595c70adc75e7faa968cf31f5e0a59d14c21",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/image_colorization.R",
         "implementation": "reference_wrapper",
-        "sha256": "8c43abb5ea1d0f1e72a40000239702c5edc8c53776f46b8d41b3f9dfee746862",
+        "sha256": "23dd4ad1f397352ec13d15f1f4aef08ef3a7745ffc3693afd58aa94b3a59d007",
         "validation": null
       }
     },
@@ -1915,13 +1915,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/image_retrieval.py",
         "implementation": "reference_wrapper",
-        "sha256": "79694f2b0194d320bbdfec40239c5a490b8a575d03ec0b1a3fbe3adc08f40be1",
+        "sha256": "5083e3262da6ed5b214076596f4fc8240a3aa6722d89d005677288a89b8a6a6b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/image_retrieval.R",
         "implementation": "reference_wrapper",
-        "sha256": "3295bd7744efd1045faedee6e0767a6c379a2ec519c6062b945da1c7ee1eabae",
+        "sha256": "3d1ce1d5b38444cbb13d1070cca26334f999df8dd97904f9d8f9b45dca504f75",
         "validation": null
       }
     },
@@ -1932,13 +1932,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/johnson_fast_style.py",
         "implementation": "reference_wrapper",
-        "sha256": "68273b7c5e4010533d2019dac09456d79977929fd8070913d23821920dddf5e8",
+        "sha256": "6745afd5c7fb99503261cc60035f29935d9ed55555a84a7b0b301d258d6dcc0a",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/johnson_fast_style.R",
         "implementation": "reference_wrapper",
-        "sha256": "defb9bc5b213374c0d8fc3c1c4c3bb1200433956e8872b77a9904cde49d5d107",
+        "sha256": "c9a18748b668eacc6b9809169f7235253ffab04596c2dfdcc83dbda1feb2e976",
         "validation": null
       }
     },
@@ -1949,13 +1949,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/monocular_depth.py",
         "implementation": "reference_wrapper",
-        "sha256": "47caeb5f0b2d153ee2f286dafd6b59fa76f2a0c10d4a71cdf89ba85074598bdb",
+        "sha256": "6c432865303ec89a2bfdf512d11ce040aa19f043b5994d637f37cf19b518a058",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/monocular_depth.R",
         "implementation": "reference_wrapper",
-        "sha256": "e0bc04e747328d25a1bee46d39799e01853681b0199587bec8b0e50bc749f837",
+        "sha256": "27a1b7beb47e8ef40eae8fe217f1c9ccb5441191c1ad7d49db8be77ad8f9ba59",
         "validation": null
       }
     },
@@ -1966,13 +1966,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/multilabel_classification.py",
         "implementation": "reference_wrapper",
-        "sha256": "610634dc0915b97b5976d553234bb5b06265088105b040d8d3eccc9dff37fbc0",
+        "sha256": "7f40af6bda76da689a6eed1238c0b03f210130462c310dda387afd3eb0d4d185",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/multilabel_classification.R",
         "implementation": "reference_wrapper",
-        "sha256": "aa40d4fe16b6ff4b2d5232fc1574b72df6018ef5c10eeb67ca6d4a202914e710",
+        "sha256": "297d86e7c75fc6c8957afe2188b65f9d53d35d6a3afe8938e4ab4d804fbbbfb8",
         "validation": null
       }
     },
@@ -1983,13 +1983,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/openpose_pafs.py",
         "implementation": "reference_wrapper",
-        "sha256": "5f3ab04149c00ccce0c66cec6c8e6e285558b172864b69dbf8f62da1f17be16b",
+        "sha256": "6aa2edbe8b425250cd4f0b31ac331d4bba023401b53dd45f673effc2f1f82bae",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/openpose_pafs.R",
         "implementation": "reference_wrapper",
-        "sha256": "d5f4b65b28fc34d515c49ceb2b3a7684be7f399dae9b99213b8d9cf9c3bf518e",
+        "sha256": "8ccf14981b98b059aaf7da9134900c06ac2a8193238b4ded349f4729f6901b99",
         "validation": null
       }
     },
@@ -2000,13 +2000,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/partial_inpainting.py",
         "implementation": "reference_wrapper",
-        "sha256": "0e2c39e85687ddc424ded43e9cb924ef7e80f97294e9b039f1a07a7b52b2f8b3",
+        "sha256": "e109df6490dcbf7e87ea594f6de41c8c8180dfc4b6b0468bc2ab976b69697f95",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/partial_inpainting.R",
         "implementation": "reference_wrapper",
-        "sha256": "94b45af09aa98d103d1e1db21584ee3db143085800bef08072c9a3d2554dfe42",
+        "sha256": "3933a6cf4d849f51b53b681a9fa02cd4e98cc5f3c3482ee40525ed7323ca453c",
         "validation": null
       }
     },
@@ -2017,13 +2017,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/pwcnet.py",
         "implementation": "reference_wrapper",
-        "sha256": "5f761192b9f07ba54ecd0aa222b8452ebcb7280b25dcccfef9727cd4be674caf",
+        "sha256": "4bc18545525a24ff3bdf6b3b9cc4f6c018ce75b5d630c659421a852f107be5b0",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/pwcnet.R",
         "implementation": "reference_wrapper",
-        "sha256": "0086171e784e065d1b9e7c05bf22443bcc12456572d8e0b6ed71c13782fdaf6b",
+        "sha256": "4530b211a0d12695244b43758168928b5d6fc952f4fd9f768f33376a6fabf8c9",
         "validation": null
       }
     },
@@ -2034,13 +2034,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/siamese.py",
         "implementation": "reference_wrapper",
-        "sha256": "47d6c99e69afa23454994a621c5aa25efe2b685a2971f2c44e6348d2b1ecde34",
+        "sha256": "5838aa0e3d59fafd95dad285ff1c79d64939b5eb5fdd3aec1e1b7f80ff955017",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/siamese.R",
         "implementation": "reference_wrapper",
-        "sha256": "3d14a7ebe074c0deec1e218ae18495e27e3c1a50d312ad52a7821053ff43f532",
+        "sha256": "a516f3c48e7ffcbdead413492f1190a3ac7ceb65fcbc905d260234bc287abec7",
         "validation": null
       }
     },
@@ -2051,13 +2051,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/stacked_hourglass.py",
         "implementation": "reference_wrapper",
-        "sha256": "4f2cea5c2a5bb754593022ee64f3a1191ead067aa40f3efd774b3fa3b4e4b683",
+        "sha256": "ee1ffdb69647c04cfa1703012f5ceb123fc590539717e3c3680560d5bab0ead7",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/stacked_hourglass.R",
         "implementation": "reference_wrapper",
-        "sha256": "b7aa651c828ce9e93f7cba3321b144f34528122af973835fa2d199ba53cffe5c",
+        "sha256": "759b73003df09ebe7b75868dc1a14878d024912bc5499a59004016fccb8ffffd",
         "validation": null
       }
     },
@@ -2068,13 +2068,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/super_resolution.py",
         "implementation": "reference_wrapper",
-        "sha256": "80bfeb99db822d7936df9144bbf7e9a5e312b72b9ab8046fce0b87f4aa064fdb",
+        "sha256": "b547a47b3441d332f30dcab2f2e025fd41bc3ab41a056191220d0d3e51f96ce7",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/super_resolution.R",
         "implementation": "reference_wrapper",
-        "sha256": "91b95384af6b65428233dd9c0aa1bb1b95d1c8e3acc9da8aaa6388334a2099b7",
+        "sha256": "ad33548cb20882f1f797a17365a62d3bb1807e63b6ccad42e12a9ffc51cfbae7",
         "validation": null
       }
     },
@@ -2085,13 +2085,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/vqa_baseline.py",
         "implementation": "reference_wrapper",
-        "sha256": "0dabb8ee65109323b8fd4d427ea097e01516aea108fc63e400dbfbe07502a6ac",
+        "sha256": "a785fa66e5ecba7b4a08a9f19c30d79e521cee90482e0319a1689024d96b64a6",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.8_other_vision_tasks/vqa_baseline.R",
         "implementation": "reference_wrapper",
-        "sha256": "6de59408acb2cb1591a7c9ef86a4845b0453855ea594b9fb54ec9f0de0b01360",
+        "sha256": "4fe88ac2e86d87b18407b57784bbc53d430048eaa9f7083ffdec9cbdbff177f3",
         "validation": null
       }
     },
@@ -2102,13 +2102,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/character_cnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "0269eb25840f9f277008b7f209df253cdb83c788d4563a7264752c540ee7ab5c",
+        "sha256": "631ebe87fcbd406b68451dd01e95b15f531d9c228936a62d1851946a21844969",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/character_cnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "204284a36dcdded4eb09ad9ad8d30db428749780fd68a2dd1cb18f0505c7ce8d",
+        "sha256": "b8545bdf59193e85e38a0d2fb609d18701b4a39ec2fa1b0af56574f8feca9f14",
         "validation": null
       }
     },
@@ -2119,13 +2119,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/ecg_sensor_cnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "37bef43b8c1abc06f74751445971eb35d271bdbf1375ef114f6c6395e0334e5f",
+        "sha256": "7004f39fb98693e5200a2d77fe3da56eeb68d164e0235fc4275ea5e949527c69",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/ecg_sensor_cnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "65680efc3cbca5edf299aafbe8078b5be5771818e8e93f3f8b23a806cf736643",
+        "sha256": "6c85bdfa3369c9a269917dd7fe24103ea3a137dd03d2e77b11e64cba0ec101bd",
         "validation": null
       }
     },
@@ -2136,13 +2136,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.py",
         "implementation": "native",
-        "sha256": "4486524d2c4612f07805d79dea4df9b9b749dce431c1dff7717e459e067d27f4",
+        "sha256": "5babf40e3a4d9f2cc7232ac8da86c052cf5f9253bd8f8cbe75d7d5252cce8cea",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/kim_sentence_cnn.R",
         "implementation": "native",
-        "sha256": "5cb6e93350bb4da39ef4cf37803a521b369632fbcfd22073146739c7f70d3581",
+        "sha256": "2402316c53e7ce5c8051eaa8ae1e28aa13d04c4b7167da80ff11b06f7eb9cac5",
         "validation": null
       }
     },
@@ -2153,13 +2153,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/tcn.py",
         "implementation": "reference_wrapper",
-        "sha256": "1becd30fa708c87e8f9a1ec89cd5c976f18f35819a7267ac6deb64ac70e11979",
+        "sha256": "0eabcc5faaf2db477faaf9171c29c9f9a093000047c6c3cce7835b58798a5a6f",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/tcn.R",
         "implementation": "reference_wrapper",
-        "sha256": "e5cab860bbca8d09adf96f25682031befbc0e8f6130395c0a108c5c8e5f63b1e",
+        "sha256": "4ca3308616aa142562db70b4cf6c6990293408882f766400f1d30266ac3a3d9c",
         "validation": null
       }
     },
@@ -2170,13 +2170,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/time_series_cnn.py",
         "implementation": "reference_wrapper",
-        "sha256": "26f8c7fe406da2dea76a946444c1406becd4977346bfe71cd1ea5390561f9d96",
+        "sha256": "0949ed93cb03d7a088c46d32737bbc6f9d7f94236be12fe7724e656d3c2bc00b",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/time_series_cnn.R",
         "implementation": "reference_wrapper",
-        "sha256": "5e910ce9cebcd4fd6debaab925fde6a08781732934a710701059d2637e413474",
+        "sha256": "430157a9181f718e5208abaa318e99c5ccf612f44a966be979dd45af2baab38d",
         "validation": null
       }
     },
@@ -2187,13 +2187,13 @@
       "python": {
         "path": "examples/python/nn/1_convolutional_neural_networks/1.9_1d_convolutions/wavenet_stack.py",
         "implementation": "reference_wrapper",
-        "sha256": "df1971dbcff52a0f95280b182a739c4fac70bef9edc9eebba136c43f1634017f",
+        "sha256": "84791f04a8e1cb312bb23f0d5b6781827419e75348c2bfd23cb29416e6798837",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/1_convolutional_neural_networks/1.9_1d_convolutions/wavenet_stack.R",
         "implementation": "reference_wrapper",
-        "sha256": "1e709e82f3e910e84fc89ecf9f450b65a9c12932f7039515a37f2a0f74e85992",
+        "sha256": "d47859fd6ba2fc25e4d25097b9490fb2c5fa7310973de7caac02349b78ea3e8e",
         "validation": null
       }
     },
@@ -2204,13 +2204,13 @@
       "python": {
         "path": "examples/python/nn/2_autoencoders/2.3_applications/autorec.py",
         "implementation": "reference_wrapper",
-        "sha256": "614e6528e0ed8ae6e439703a4ac23a8be8c74714838912565d306223e1cb8614",
+        "sha256": "0655cee376bc91c0b5aea92f5d2887b0b3f4fecdfd073683b00554f2e2b4c541",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/2_autoencoders/2.3_applications/autorec.R",
         "implementation": "reference_wrapper",
-        "sha256": "666ab21af84ec02b17cda691fba6cf8272e0c656df84b18ea701ec9f1e194893",
+        "sha256": "1eccbd5a479002307bcb8bd7f329a34b3dd73a81d72b3719a6da2022e1658888",
         "validation": null
       }
     },
@@ -2612,13 +2612,13 @@
       "python": {
         "path": "examples/python/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/gru.py",
         "implementation": "native",
-        "sha256": "7bd25c9b7d5f53d1f36b34bef9aa0e98132bdcdc9e70f32dccf0b870a7766bb9",
+        "sha256": "58f8bb54f8c4ec53aee3c5fb8fa3e05e22f422fb929bdfec6ca846906800b327",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/gru.R",
         "implementation": "native",
-        "sha256": "e829d215e6f2b046b8f41dc91c325e6e64b828aee15565ca9b135d0dde6a5144",
+        "sha256": "3a257755e255922f3a9060819d157e3151973af9e3c48cba6a9d0c52c917bb4a",
         "validation": null
       }
     },
@@ -2646,13 +2646,13 @@
       "python": {
         "path": "examples/python/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/layer_norm_lstm.py",
         "implementation": "native",
-        "sha256": "47ab8609f6d01f0a806a7c6b93e4dcaa6d3006ce364c6df68502afa766bde2d8",
+        "sha256": "24557e9ae9c2c30b57a9de00cfc9346490d0b7f367214efeb5bf5d60c28abf13",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/layer_norm_lstm.R",
         "implementation": "native",
-        "sha256": "a8dcaf8a39fa69d80838e91bc8b39c2762aa8947fda411a05b326a7d27bc0f46",
+        "sha256": "72c1f07901b30ff23b6749abaaca08ebc6785fe7b0137a688e738da20ef5301a",
         "validation": null
       }
     },
@@ -2663,13 +2663,13 @@
       "python": {
         "path": "examples/python/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/lstm.py",
         "implementation": "native",
-        "sha256": "2c4f8ea8c123b9e029bf41762908f59967860e40e94bfdf4b64a3c57f6b53477",
+        "sha256": "6c7eed6304fc14da5d97402232f9177ee7fe14a3c0f897b3cf997bda1ac48061",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.1_recurrent_cells/lstm.R",
         "implementation": "native",
-        "sha256": "5b0e92068c5d2c24f9f53edd765c5ed25a6b1783856b808a38fdbd23533fdb84",
+        "sha256": "a333e727b4eea93445fa5b2d47fc421e8125246f2b072aa07e8cb10429cf45da",
         "validation": null
       }
     },
@@ -3088,13 +3088,13 @@
       "python": {
         "path": "examples/python/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/dnc.py",
         "implementation": "native",
-        "sha256": "92deed92fef46165d642228faecf9b5af17a256c599f596140bb9d92fa5a132e",
+        "sha256": "79849ba2993cb9d8bc5ab29cae1d865e59e5bf4e7e5a35176da7f709102f5fba",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/dnc.R",
         "implementation": "native",
-        "sha256": "9f8a69fbcae358664010855909d243680a0e4c453d3241596f2e017ecdf79eb5",
+        "sha256": "65d4e1e22501901c392e2cfdcbc4dd2cae694bd0cdc3393e075cf6707c50eae2",
         "validation": null
       }
     },
@@ -3105,13 +3105,13 @@
       "python": {
         "path": "examples/python/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/key_value.py",
         "implementation": "native",
-        "sha256": "4e1cfbff5936364dcd5b43adb29fbd0e0dc7a4b18dda0d29ea7ac06cc0963a2f",
+        "sha256": "073984f243a37056815bd053a8b3efce108c102bb7d199f0a320e1ef0bba3f00",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/key_value.R",
         "implementation": "native",
-        "sha256": "e753cfa91e01b2655abc04e3b8cd98654a0722376745740ccb4cc8669e8eb785",
+        "sha256": "20ff8fb01414d16f6c41c5c3478fc6676759ce6920f26bb2f69d59e76db0c168",
         "validation": null
       }
     },
@@ -3122,13 +3122,13 @@
       "python": {
         "path": "examples/python/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/memnet.py",
         "implementation": "native",
-        "sha256": "7f10c29bec570195bd876e2ce5189458401ee24d164cf700565068e89636bc5b",
+        "sha256": "859b56712d2ed4278f90a4d1212e3b5e3a905890ecab7cb06e1186c66b5586e0",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/memnet.R",
         "implementation": "native",
-        "sha256": "f0335bf0f989c2d8cb281d0a846b71133933cee85512e00d27456673b2f9bd89",
+        "sha256": "449bfd8567aa5c5925765446631ef5acfdb1f2aeb4178c549790993a3350c55d",
         "validation": null
       }
     },
@@ -3139,13 +3139,13 @@
       "python": {
         "path": "examples/python/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/ntm.py",
         "implementation": "native",
-        "sha256": "77038fbca314789e0196eeb2adad80831c1a44b10ee56d213af34eeedfaf49ec",
+        "sha256": "f74519141aa24c5acc40df6558788dd6e34445ffa1c300602685176ba9f025ce",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/4_recurrent_and_sequence_models/4.3_memory_augmented_networks/ntm.R",
         "implementation": "native",
-        "sha256": "fdf50b037e0ec021c1c70b59a4a29809439d8f7168ad13ff37d940b66efc4c73",
+        "sha256": "1336603e687d6c935ef08e91314a9f4c39ebfaa828a26fcb67f9d4486faf84a5",
         "validation": null
       }
     },
@@ -3156,13 +3156,13 @@
       "python": {
         "path": "examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/attention_masks.py",
         "implementation": "native",
-        "sha256": "3bd82d11ca998db095cb3cd7c075f93201b42c6adda6bfd76732013d08a3f6d2",
+        "sha256": "e3b69ba6bc386d09837b087ddbeee8162e018ab07e48b35927c0936ed5a1788c",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/5_attention_and_transformers/5.1_attention_fundamentals/attention_masks.R",
         "implementation": "native",
-        "sha256": "88a1be86e91d1caebf1933e179e0df720cfd8a0ac5075376abaa1ea40effa27c",
+        "sha256": "6e07759c037f2ee644927ba74b6ded9e82d86ea0637d8fb1a5f396c4f459e61b",
         "validation": null
       }
     },
@@ -3173,13 +3173,13 @@
       "python": {
         "path": "examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/attention_visualization.py",
         "implementation": "native",
-        "sha256": "d869b298bbae272327ac0ab0c0360beb0e022718b3e6e5c115cefb5507efead3",
+        "sha256": "8c961e5cd0e17030246ae8beeab4afadd0dbfdedf2a35202ad09bf3db7e36646",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/5_attention_and_transformers/5.1_attention_fundamentals/attention_visualization.R",
         "implementation": "native",
-        "sha256": "0c979b9d92a73d38fbd80ed43450b0d17d156f1387de90db3e4e001e1fd14875",
+        "sha256": "3793f051771860dd6099ec92940743a10ce63a74cfcab96e39c2857462cf3b71",
         "validation": null
       }
     },
@@ -3190,13 +3190,13 @@
       "python": {
         "path": "examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/multi_head_attention.py",
         "implementation": "native",
-        "sha256": "3e7aaa8a7107e75567f443fc6ea72ed957e6679e6c12c83ec0cec497a7cdb8d3",
+        "sha256": "b667474ab75ddfb758e3a2badf31817d5c1b182b1b67968c90d43d6538a93fe7",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/5_attention_and_transformers/5.1_attention_fundamentals/multi_head_attention.R",
         "implementation": "native",
-        "sha256": "4f7e5c0703daeda3cf3c0ca798e165edea591926b0b88b8f63b026182389b025",
+        "sha256": "de07af8f7f92327f72cd862f82af74135a07c4d85f41a7b02d14cce9f23e0d6b",
         "validation": null
       }
     },
@@ -3207,13 +3207,13 @@
       "python": {
         "path": "examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/scaled_dot_attention.py",
         "implementation": "native",
-        "sha256": "25d060499d26815125da4f0f3bd3911a62ecdcba04f3f67f974d9fd2f766491c",
+        "sha256": "9a6121d10eb26b8aa79778ec8b3d6ffdefd545b1d9447b98c66bda2706443022",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/5_attention_and_transformers/5.1_attention_fundamentals/scaled_dot_attention.R",
         "implementation": "native",
-        "sha256": "14ff4c7b41c05df767541209619c39bd645dce8b623fa24dbd2578761ecff9b2",
+        "sha256": "ba07f231654fde50d2524a3b2db76563ef3485ac512db8f2b5e3d29ffe3e86ff",
         "validation": null
       }
     },
@@ -3224,13 +3224,13 @@
       "python": {
         "path": "examples/python/nn/5_attention_and_transformers/5.1_attention_fundamentals/transformer_positions.py",
         "implementation": "native",
-        "sha256": "3a9704574b80b1571a223567178bb38166d521d95d5a46e2d0530a589cb7ab69",
+        "sha256": "f945f96c5a5b31ef36df406dbf8f2673314177a3ffbd77327cf675fb9e95162a",
         "validation": null
       },
       "r": {
         "path": "examples/r/nn/5_attention_and_transformers/5.1_attention_fundamentals/transformer_positions.R",
         "implementation": "native",
-        "sha256": "8ab3941822cbd04e8474681adfd8fee54f4dac02e258d3ad517207b618697205",
+        "sha256": "578deca4cd55822777a45b4df174e9dd0eae571ef34673529bca584f17eb1044",
         "validation": null
       }
     },
@@ -3768,7 +3768,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/acrobot.py",
         "implementation": "native",
-        "sha256": "6c19dfb2698e166198715baf5f4ec952712cf675aa9a1842e1b7e0fc19f90312",
+        "sha256": "aa84950d171faf21f47002c612350c825efe6edb0e31d6744763662915b23300",
         "validation": null
       },
       "r": {
@@ -3785,7 +3785,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/ale_envs.py",
         "implementation": "native",
-        "sha256": "f546c34c8b853b69b25d1d99a23491753d6bba43c6bb096dad6b515e55038666",
+        "sha256": "ce1a11c6d3097fea1d41cb7527fe1427b14dc2e92cebe752f18447fa770875db",
         "validation": null
       },
       "r": {
@@ -3802,7 +3802,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/bandits.py",
         "implementation": "native",
-        "sha256": "359f6058195815b3e91ba841cdf343e4c68244f7c9eb5f42db92f3bd957f0691",
+        "sha256": "a0c863f9d84f21aa7fb5ed72c7784dfd62c2d3bb6950bc7871c92c414abef20e",
         "validation": null
       },
       "r": {
@@ -3819,7 +3819,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/board_games.py",
         "implementation": "native",
-        "sha256": "df6d4a980a755e84ec8b494278c4c2d3f568f41c95eba296714ec506f6b8f40c",
+        "sha256": "3f3ba24907363013445f7527265dee9018cb24475cfcda2ec68ded972f84f723",
         "validation": null
       },
       "r": {
@@ -3836,7 +3836,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/cartpole.py",
         "implementation": "native",
-        "sha256": "9efcb3e11ccd65afa08bbed25e8e12f56d6d1464ff1c4c4ab5d9e0c3ceacf010",
+        "sha256": "f0f1b23f81d0f732ea2fd2192eaf55d208fc0d2e5d3e84aa73877cf0b0c626d0",
         "validation": null
       },
       "r": {
@@ -3853,7 +3853,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/env_interface.py",
         "implementation": "native",
-        "sha256": "2226358698779f79656fa1cfcdeb7c3a7f0e742f8cfa125e98d10ab3f2ccb70d",
+        "sha256": "551970dd3a5991ed242f31a5998a11d9d1b67731fab31cdfd1884e89006ec2c4",
         "validation": null
       },
       "r": {
@@ -3870,7 +3870,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/external_envs.py",
         "implementation": "native",
-        "sha256": "10f5f2530728e059deefc26500a44fdb90cc647b53fe31394bac7a8eb0f3adba",
+        "sha256": "632371d505fce14844c70d1df53b994a91b7ac0a24745232d66d20396dc2bed5",
         "validation": null
       },
       "r": {
@@ -3887,7 +3887,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/grid_world.py",
         "implementation": "native",
-        "sha256": "5c6825ac1c543fc65c4f3b9771abe98c5c27fa0fd94f7ff200a67e55c5316ea5",
+        "sha256": "4e1107b27fc5ce1e30fd5354d35def6850842a6e7f3177ecaef097c770d2fee4",
         "validation": null
       },
       "r": {
@@ -3904,7 +3904,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/lunar_lander.py",
         "implementation": "native",
-        "sha256": "20cfd843937d43c9fd51fd44612559e2156cb03fbfa889ec9b16a9f67cbf490d",
+        "sha256": "eac08769b561d2aa5a0d33e06b66c7b7fe294fe5060d1336d1c6a29b51f022de",
         "validation": null
       },
       "r": {
@@ -3921,7 +3921,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/mountain_car.py",
         "implementation": "native",
-        "sha256": "dda99e088392846c130f702f0f5c24d532912f0dd944419aa993f133da19728a",
+        "sha256": "1f8d100e5ce3bde1299e267077693ef6b49331d744ba11013b7e90e0485507e1",
         "validation": null
       },
       "r": {
@@ -3938,7 +3938,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/pendulum.py",
         "implementation": "native",
-        "sha256": "33db6c52b087402bdc4e34b45366cc418284cbb36f5c467182f9c47077bc1f26",
+        "sha256": "636cca136fa80034299f7c876af4bbb4c71628149800f15f28323dac92a03a72",
         "validation": null
       },
       "r": {
@@ -3955,7 +3955,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/render_video.py",
         "implementation": "native",
-        "sha256": "3135ec0cdd8db927cd3fc391356ec2b4d5437446d055432e664e1e697eeb30b5",
+        "sha256": "b6d9bdb379f316830a7d986d48727524e225d2a5274578bbf895228cc145e252",
         "validation": null
       },
       "r": {
@@ -3972,7 +3972,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/snake.py",
         "implementation": "native",
-        "sha256": "987404bdf66765a2076a83c7075a88d119e4d18eebd73b8323e63013b822cba8",
+        "sha256": "6f082f4af91d2c8097d19ef57669a18f0d44d9a92c40cf4f37730ca2fd2c27a7",
         "validation": null
       },
       "r": {
@@ -3989,7 +3989,7 @@
       "python": {
         "path": "examples/python/nn/6_deep_reinforcement_learning/6.1_environments/vec_env.py",
         "implementation": "native",
-        "sha256": "105c1447644d1d2372c8a7b71cc96a2937aea263f5140ef7b613f543f5c9b6f2",
+        "sha256": "6de019767f000ecb7238a27e9359abf7e3e90c9e108ce0606ae7be476e9a5711",
         "validation": null
       },
       "r": {

@@ -7,8 +7,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1794438940,
-        "narHash": "sha256-WZeyanTv2LVMKuXz1hiAFyftpS6LJAltB23Fuo+HoC0=",
+        "lastModified": 1794444056,
+        "narHash": "sha256-pc4WK/jL8tfaFiGtalx6dMdpjKZyhtqu6PYG1qcjd7s=",
         "path": "/mnt/projects/crepl",
         "type": "path"
       },
@@ -218,11 +218,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1794443096,
-        "narHash": "sha256-amhc4Qwe5fpYmnAb0XW6VzKeKwyARAZKviUKSCscKaQ=",
+        "lastModified": 1794452784,
+        "narHash": "sha256-Zwnqs69dFJUMQcBGE8+ohoxPgy6FYy2LAZyx0Z+OsI8=",
         "ref": "refs/heads/master",
-        "rev": "16296d586438e2db4d4deac31177d64419e29aca",
-        "revCount": 9,
+        "rev": "db07915a65f56d402b3b2a9f4f9c1a3270991e57",
+        "revCount": 11,
         "type": "git",
         "url": "file:///mnt/projects/rosetta"
       },

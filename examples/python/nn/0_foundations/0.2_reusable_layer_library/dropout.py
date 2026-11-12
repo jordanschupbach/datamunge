@@ -1,5 +1,6 @@
 # Native Python NN example. Inverted dropout, regularization and Monte Carlo uncertainty.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.2_reusable_layer_library/dropout.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Train explicit MLPs with/without dropout and measure stochastic predictions."""
 import math
 from pydatamunge import nn

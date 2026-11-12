@@ -1,4 +1,5 @@
 # CMD: nix develop .#r --command Rscript examples/r/rplot_ex.r
+# REPL: nix develop .#r --command R --no-save --quiet
 # Demonstrates RPlot / RLayout -- the R-base-graphics-style plotting library.
 # Mutator calls below are wrapped in invisible(): RPlot's chainable methods return the plot
 # itself (mirroring the underlying C++ Plot&/RPlot& chaining), and Rscript auto-prints any

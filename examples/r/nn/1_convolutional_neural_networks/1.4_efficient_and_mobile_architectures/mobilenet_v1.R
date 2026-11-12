@@ -1,5 +1,6 @@
 # Native R NN example. MobileNet v1 cost/Table-2/gradient checks and alpha 1 / 0.5 CIFAR-10 training; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/mobilenet_v1.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # MobileNet v1: depthwise separable convolutions with width and resolution multipliers.
 #
 # Port of tflow's mobilenet_v1. Measure every layer's output size from a

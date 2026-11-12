@@ -1,5 +1,6 @@
 # Native Python NN example. alexnet: explicit C++-equivalent CIFAR-10 workflow over SWIG components.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.2_classic_architectures/alexnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 import math
 import os
 import sys

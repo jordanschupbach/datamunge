@@ -1,5 +1,6 @@
 # Native Python NN example. ResNet-18/34 checks and compact CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/resnet_basic.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """ResNet-18 and ResNet-34 with post-activation basic residual blocks.
 
 Port of tflow's resnet_basic. Implement the 2/2/2/2 and 3/4/6/3 stage

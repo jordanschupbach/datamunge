@@ -1,5 +1,6 @@
 # Native Python NN example. Greedy layer-wise pretrained stacked sigmoid autoencoder with a scratch control.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/2_autoencoders/2.1_deterministic_autoencoders/stacked_autoencoder.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Greedy 784->64 and 64->16 pretraining, exact transfer into 784->64->16->64->784.
 Three epochs per stage/default; validation-only selection and same-stack scratch control.
 

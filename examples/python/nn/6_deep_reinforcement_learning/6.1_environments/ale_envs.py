@@ -1,5 +1,6 @@
 # Native Python NN example. Atari through ALE with DQN preprocessing.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/ale_envs.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Atari through ALE with DQN preprocessing.
 
 Port of tflow's ale_envs. What a DQN agent sees: every agent step repeats

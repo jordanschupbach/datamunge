@@ -1,5 +1,6 @@
 # Native Python NN example. Wide ResNet dropout/full-model checks and three WRN-16 CIFAR-10 trainings; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/wide_resnet.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Wide ResNet: width scaling and dropout inside the residual branch.
 
 Port of tflow's wide_resnet. Implement the authors' CIFAR 6n+4 layout with

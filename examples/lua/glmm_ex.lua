@@ -1,14 +1,14 @@
 local dm = require("datamunge")
 
 local function dv(t)
-  local v = dm.DVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
 local function sv(t)
-  local v = dm.SVector(#t)
-  for i, x in ipairs(t) do v[i - 1] = x end
+  local v = {}
+  for i, x in ipairs(t) do v[i] = x end
   return v
 end
 
@@ -84,7 +84,7 @@ print("\nTrue generating values: intercept=" .. true_intercept .. ", slope=" .. 
 print("\n--- BLUPs for a few stores ---")
 local group_labels = store_model:group_labels()
 for _, idx in ipairs({0, 1, 2}) do
-  print("store " .. group_labels[idx] .. ": intercept shift=" .. store_model:random_effects_for_group(idx)[0])
+  print("store " .. group_labels[idx + 1] .. ": intercept shift=" .. store_model:random_effects_for_group(idx)[1])
 end
 
 print("\n--- Prediction: population-level vs. store-adjusted ---")
@@ -93,5 +93,5 @@ newdata_population:add_numeric_column("promo", dv({1.5}))
 local newdata_store0 = dm.DataFrame()
 newdata_store0:add_numeric_column("promo", dv({1.5}))
 newdata_store0:add_numeric_column("store", dv({0.0}))
-print("promo=1.5, unseen store:   " .. store_model:predict(newdata_population)[0] .. " expected visits (fixed effects only)")
-print("promo=1.5, store 0 (known): " .. store_model:predict(newdata_store0)[0] .. " expected visits (fixed effects + store 0's BLUP)")
+print("promo=1.5, unseen store:   " .. store_model:predict(newdata_population)[1] .. " expected visits (fixed effects only)")
+print("promo=1.5, store 0 (known): " .. store_model:predict(newdata_store0)[1] .. " expected visits (fixed effects + store 0's BLUP)")

@@ -1,5 +1,6 @@
 # Native R NN example. RegNet design/cost/gradient checks and Y-400MF CIFAR-10 training; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/regnet.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # RegNet: X and Y models generated from a quantized linear width rule.
 #
 # Generate all fourteen released RegNetX/Y models (400MF to 32GF) from

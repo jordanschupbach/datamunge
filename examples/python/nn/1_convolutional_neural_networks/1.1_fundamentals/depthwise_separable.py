@@ -1,5 +1,6 @@
 # Native Python NN example. Depthwise separable convolution: equivalence, gradients, rank and cost.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.1_fundamentals/depthwise_separable.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Depthwise separable convolution: equivalence, gradients, rank and cost.
 
 Port of tflow's depthwise_separable. Compose HWIM depthwise and 1x1

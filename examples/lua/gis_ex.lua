@@ -115,7 +115,7 @@ local counties = dm.ShapeLayer.read(base)
 print("shapes = " .. counties:size() .. ", shape_type = " .. counties:shape_type())
 local bounds = counties:bounds()
 local bt = {}
-for i = 0, bounds:size() - 1 do bt[#bt + 1] = string.format("%g", bounds[i]) end
+for _, b in ipairs(bounds) do bt[#bt + 1] = string.format("%g", b) end
 print("bounds = [" .. table.concat(bt, ", ") .. "]")
 print()
 

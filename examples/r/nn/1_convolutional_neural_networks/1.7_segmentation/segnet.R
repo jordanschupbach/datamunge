@@ -1,5 +1,6 @@
 # Native R NN example. SegNet index-unpool/model checks and compact procedural-shapes segmentation training; the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.7_segmentation/segnet.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # SegNet: unpool using encoder max locations, then learn dense decoder maps.
 # https://arxiv.org/abs/1511.00561
 # https://github.com/alexgkendall/SegNet-Tutorial

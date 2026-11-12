@@ -1,5 +1,6 @@
 # Native Python NN example. PCA and kernel projection are implemented here.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/0_foundations/0.6_classical_machine_learning/principal_components.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Thin-SVD PCA and centered RBF kernel PCA, including held-out checks."""
 import math
 from pydatamunge import nn

@@ -1,5 +1,6 @@
 # Native Python NN example. DPN unit/path/count checks and compact DPN-92 CIFAR-10 training; the C++ example's loop, written out in Python.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/1_convolutional_neural_networks/1.3_residual_and_dense_families/dpn.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Dual path networks: a shared bottleneck feeding residual and dense paths.
 
 Port of tflow's dpn. Follow the released DPN units: pre-activation 1x1 /

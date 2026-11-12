@@ -1,5 +1,6 @@
 # Native R NN example. SqueezeNet fire-module/geometry checks and three CIFAR-10 trainings (v1.0, v1.0 bypass, v1.1); the C++ example's loop, written out in R.
 # CMD: nix develop .#r --command Rscript examples/r/nn/1_convolutional_neural_networks/1.4_efficient_and_mobile_architectures/squeezenet.R
+# REPL: nix develop .#r --command R --no-save --quiet
 # SqueezeNet: AlexNet-level design with 50x fewer parameters via fire modules.
 #
 # Check that a fire module's concatenated 1x1 and 3x3 expand layers equal a

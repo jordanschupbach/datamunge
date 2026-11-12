@@ -1,5 +1,6 @@
 # Native Python NN example. Environment interface: reset, step, render, seeding.
 # CMD: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/nn/6_deep_reinforcement_learning/6.1_environments/env_interface.py
+# REPL: nix develop .#python --command env -u PYTHONPATH build/venv/pydatamunge-run/bin/python
 """Environment interface: reset, step, render, seeding.
 
 Port of tflow's env_interface. All RL examples talk to environments through
