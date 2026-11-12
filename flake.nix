@@ -166,6 +166,9 @@
           # just build-lisp (installs datamunge.asd, .lisp and .so into build/lisp/prefix):
           # (asdf:load-system "datamunge") from SBCL in the default or lisp shell.
           export CL_SOURCE_REGISTRY="$datamungeRoot/build/lisp/prefix/share/common-lisp/source//''${CL_SOURCE_REGISTRY:+:$CL_SOURCE_REGISTRY}"
+          # just build-cobol (installs libdatamungecobol and the copybooks into build/cobol/prefix):
+          # COPY "datamunge.cpy" finds them through COBCPY (cobc and mep's COBOL LSP).
+          export COBCPY="$datamungeRoot/build/cobol/prefix/share/cobol/copy''${COBCPY:+:$COBCPY}"
           # just build-octave
           export OCTAVE_PATH="$datamungeRoot/build/datamungeoctave''${OCTAVE_PATH:+:}$OCTAVE_PATH"
           # just build-guile (installs into build/guile/prefix)
@@ -256,6 +259,9 @@
         octruby = import ./nix/octruby.nix { pkgs = bindingPkgs; };
         datamungelua = import ./nix/datamungelua.nix { pkgs = bindingPkgs; };
         datamungelisp = import ./nix/datamungelisp.nix { pkgs = bindingPkgs; };
+        datamungecobol = import ./nix/datamungecobol.nix { pkgs = bindingPkgs; };
+        # GnuCOBOL: cobc lives in the bin output, which a shell's packages leave out.
+        gnuCobol = [ pkgs.gnucobol pkgs.gnucobol.bin ];
         datamungeocaml = import ./nix/datamungeocaml.nix { pkgs = bindingPkgs; };
         datamungeguile = import ./nix/datamungeguile.nix { pkgs = bindingPkgs; };
         datamungeoctave = import ./nix/datamungeoctave.nix { pkgs = bindingPkgs; };
@@ -601,6 +607,25 @@
             installPhase = "mkdir -p $out";
           };
 
+          cobol = pkgs.stdenv.mkDerivation {
+            name = "datamunge-cobol-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = gnuCobol;
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              export COBCPY="${datamungecobol}/share/cobol/copy"
+              cobc -x -free -fstatic-call -o test_datamunge tests/cobol/test_datamunge.cob \
+                -L${datamungecobol}/lib -ldatamungecobol -Q -Wl,-rpath,${datamungecobol}/lib
+              ./test_datamunge
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
           ruby = pkgs.stdenv.mkDerivation {
             name = "datamunge-ruby-check";
             src = pkgs.lib.cleanSource ./.;
@@ -810,6 +835,7 @@
             octruby
             datamungelua
             datamungelisp
+            datamungecobol
             datamungeocaml
             datamungeguile
             datamungeoctave
@@ -890,6 +916,10 @@
             lua
             # Common Lisp: mep's Lisp UI mode runs `sbcl` from this shell (see lispHook).
             pkgs.sbcl
+          ]
+          # COBOL: mep's COBOL UI mode runs `cobc` from this shell.
+          ++ gnuCobol
+          ++ [
             pkgs.tcl
             pkgs.octave
             pkgs.guile
@@ -1363,6 +1393,23 @@
           ];
 
           shellHook = localBindingsHook + lispHook;
+        };
+
+        devShells.cobol = pkgs.mkShell {
+          packages = [
+            datamunge
+            pkgs.arrow-cpp
+            # just prebuild-cobol: scripts/prebuild_bindings.py cobol runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.just
+          ]
+          ++ gnuCobol;
+
+          shellHook = localBindingsHook;
         };
 
         devShells.ocaml = pkgs.mkShell {

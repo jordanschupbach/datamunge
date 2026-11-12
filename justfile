@@ -16,6 +16,9 @@ NIX_DEVELOP := "nix develop --accept-flake-config --option eval-cache false" + S
 # a directory with a datamunge.pc for the working tree makes them use the current library).
 MEPML_PKG_CONFIG_PATH := env_var_or_default("DATAMUNGE_MEPML_PKG_CONFIG_PATH", "")
 BINDINGS_DIR := "src"
+# Compiles a free-format COBOL program against build/cobol/prefix (just build-cobol): the
+# copybooks come from COBCPY (set by the dev shells) and the stubs from libdatamungecobol.
+COBC := 'cobc -x -free -fstatic-call -Wall -I "$(pwd)/build/cobol/prefix/share/cobol/copy" -L "$(pwd)/build/cobol/prefix/lib" -ldatamungecobol -Q -Wl,-rpath,"$(pwd)/build/cobol/prefix/lib"'
 
 # {{{ run commands
 
@@ -88,6 +91,9 @@ run-lua: build-lua
 run-lisp: build-lisp
   {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --noinform --non-interactive --load examples/lisp/{{ TARGET }}.lisp'
 
+run-cobol: build-cobol
+  {{ NIX_DEVELOP }} .#cobol --command bash -c 'mkdir -p build/cobol/bin && {{ COBC }} -o build/cobol/bin/{{ TARGET }} examples/cobol/{{ TARGET }}.cob && build/cobol/bin/{{ TARGET }}'
+
 run-ruby: build-ruby
   {{ NIX_DEVELOP }} .#ruby --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && export DYLD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${DYLD_LIBRARY_PATH:+:}$DYLD_LIBRARY_PATH" && ruby -I {{ BINDINGS_DIR }}/octruby/lib examples/ruby/{{ TARGET }}.rb'
 
@@ -126,6 +132,13 @@ run-all-lisp: build-lisp
     for f in examples/lisp/*.lisp; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
       if sbcl --noinform --non-interactive --load "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## lisp: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-cobol: build-cobol
+  {{ NIX_DEVELOP }} .#cobol --command bash -c 'mkdir -p build/cobol/bin; pass=0; fail=0; failed=""; \
+    for f in examples/cobol/*.cob; do n="$(basename "$f" .cob)"; printf "\n========== %s ==========\n" "$n"; \
+      if {{ COBC }} -o "build/cobol/bin/$n" "$f" && "build/cobol/bin/$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## cobol: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-guile: build-guile
@@ -312,6 +325,11 @@ prebuild-lua:
 prebuild-lisp:
   {{ NIX_DEVELOP }} .#lisp --command python3 scripts/prebuild_bindings.py lisp
 
+# COBOL (Rosetta): src/datamunge_cobol_wrap*.cpp and the copybooks
+# src/datamungecobol/copybooks/datamunge{,-callbacks}.cpy (record prefix DM)
+prebuild-cobol:
+  {{ NIX_DEVELOP }} .#cobol --command python3 scripts/prebuild_bindings.py cobol
+
 # D (SWIG)
 prebuild-d:
   bash -c 'set -euo pipefail; \
@@ -469,6 +487,16 @@ build-lisp: prebuild-lisp
 
 test-lisp: build-lisp
   {{ NIX_DEVELOP }} .#lisp --command bash -c 'sbcl --noinform --non-interactive --load tests/lisp/test_datamunge.lisp'
+
+# Installs libdatamungecobol and the copybooks into build/cobol/prefix (lib/ and
+# share/cobol/copy/, which the dev shells put on COBCPY).
+build-cobol: prebuild-cobol
+  {{ NIX_DEVELOP }} .#cobol --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungecobol -B build/datamungecobol -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#cobol --command bash -c 'cmake --build build/datamungecobol -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#cobol --command bash -c 'rm -rf build/cobol/prefix && cmake --install build/datamungecobol --prefix build/cobol/prefix'
+
+test-cobol: build-cobol
+  {{ NIX_DEVELOP }} .#cobol --command bash -c 'mkdir -p build/cobol/bin && {{ COBC }} -o build/cobol/bin/test_datamunge tests/cobol/test_datamunge.cob && build/cobol/bin/test_datamunge'
 
 build-rust:
   {{ NIX_DEVELOP }} .#rust --command bash -c 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'

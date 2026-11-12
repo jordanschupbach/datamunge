@@ -2,7 +2,8 @@
 """Generate binding sources before packaging; failed generation leaves old files intact.
 
 All come from Rosetta: Python from src/pydatamunge/rosetta, R from src/datamunger/rosetta,
-Lua from src/datamungelua/rosetta, Common Lisp from src/datamungelisp/rosetta."""
+Lua from src/datamungelua/rosetta, Common Lisp from src/datamungelisp/rosetta, COBOL from
+src/datamungecobol/rosetta."""
 
 import argparse
 import os
@@ -24,14 +25,16 @@ PYTHON_PARTS = 16
 R_PARTS = 16
 LUA_PARTS = 16
 LISP_PARTS = 16
+COBOL_PARTS = 16
 
 
 def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include",), r_interface=None, lua_meta=None,
-                     lisp_dir=None):
+                     lisp_dir=None, cobol_dir=None):
     """Generate src/<stem>*.cpp with Rosetta: the Python extension `module`, with
     r_interface (a path) the R package `module` and its R6 classes at that path, or with
     lua_meta (a path) the Lua module `module` and its LuaCATS stub at that path, or with
-    lisp_dir (a directory) the Common Lisp system `module`: lisp_dir/module.lisp and .asd."""
+    lisp_dir (a directory) the Common Lisp system `module`: lisp_dir/module.lisp and .asd, or with
+    cobol_dir (a directory) the COBOL copybooks cobol_dir/module.cpy and module-callbacks.cpy."""
     with tempfile.TemporaryDirectory(prefix=".rosetta-", dir=ROOT / "src") as tmp:
         generated = Path(tmp) / (stem + ".cpp")
         language = ["--language", "python"]
@@ -43,6 +46,11 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
             language = ["--language", "common-lisp", "--lisp-api", "full", "--lisp-nicknames", "dm",
                         "--lisp-output", str(Path(tmp) / (module + ".lisp")),
                         "--lisp-system", str(Path(tmp) / (module + ".asd"))]
+        if cobol_dir is not None:
+            # String results (summaries, to_string) get 16 KiB; other strings the default 256 bytes.
+            language = ["--language", "cobol", "--cobol-api", "full", "--cobol-prefix", "dm", "--cobol-result-size", "16384",
+                        "--cobol-output", str(Path(tmp) / (module + ".cpy")),
+                        "--cobol-callbacks", str(Path(tmp) / (module + "-callbacks.cpy"))]
         subprocess.run(
             [
                 os.environ.get("ROSETTA", "rosetta"),
@@ -79,6 +87,10 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
         if lisp_dir is not None:
             for name in (module + ".lisp", module + ".asd"):
                 install_if_changed(Path(tmp) / name, ROOT / lisp_dir / name)
+        if cobol_dir is not None:
+            (ROOT / cobol_dir).mkdir(parents=True, exist_ok=True)
+            for name in (module + ".cpy", module + "-callbacks.cpy"):
+                install_if_changed(Path(tmp) / name, ROOT / cobol_dir / name)
 
 
 def prebuild_python():
@@ -90,7 +102,7 @@ def prebuild_python():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("language", choices=["python", "r", "lua", "lisp"])
+    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "cobol"])
     args = parser.parse_args()
     if args.language == "python":
         prebuild_python()
@@ -100,6 +112,9 @@ def main():
         return
     if args.language == "lisp":
         prebuild_lisp()
+        return
+    if args.language == "cobol":
+        prebuild_cobol()
         return
     prebuild_r()
 
@@ -141,6 +156,15 @@ def prebuild_lisp():
     bindings = Path("src/datamungelisp/rosetta")
     generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_lisp_wrap", LISP_PARTS,
                      lisp_dir="src/datamungelisp")
+
+
+def prebuild_cobol():
+    """Generate src/datamunge_cobol_wrap*.cpp (the native library libdatamungecobol) and the
+    copybooks src/datamungecobol/copybooks/datamunge{,-callbacks}.cpy: one record per call (prefix
+    DM), whose *>> comments carry the C++ documentation and the CALL statement."""
+    bindings = Path("src/datamungecobol/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_cobol_wrap", COBOL_PARTS,
+                     cobol_dir="src/datamungecobol/copybooks")
 
 
 if __name__ == "__main__":

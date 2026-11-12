@@ -1,0 +1,145 @@
+*> Ridge, Lasso and Elastic Net regression on iris, with coefficient-path and CV plots.
+*> Run with `just run-cobol TARGET=elastic_net_iris_ex`.
+IDENTIFICATION DIVISION.
+PROGRAM-ID. ELASTIC-NET-IRIS-EX.
+DATA DIVISION.
+WORKING-STORAGE SECTION.
+COPY "datamunge.cpy".
+
+01 FORMULA-TEXT PIC X(100) VALUE
+   "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width".
+
+01 IRIS      USAGE BINARY-DOUBLE UNSIGNED.
+01 RIDGE     USAGE BINARY-DOUBLE UNSIGNED.
+01 LASSO     USAGE BINARY-DOUBLE UNSIGNED.
+01 ELASTIC   USAGE BINARY-DOUBLE UNSIGNED.
+01 PLOT      USAGE BINARY-DOUBLE UNSIGNED.
+01 INT-1     PIC -(9)9.
+01 INT-2     PIC -(9)9.
+
+PROCEDURE DIVISION.
+    CALL "dm_data_frame_iris" USING DM-DATA-FRAME-IRIS DM-STATUS
+    PERFORM CHECK
+    MOVE DM-DATA-FRAME-IRIS-RESULT TO IRIS
+    PERFORM DISPLAY-IRIS-SHAPE
+    DISPLAY "formula: " FUNCTION TRIM(FORMULA-TEXT)
+    DISPLAY " "
+
+    DISPLAY "=================== Ridge ==================="
+    MOVE IRIS TO DM-RIDGE-NEW-DATA
+    MOVE FORMULA-TEXT TO DM-RIDGE-NEW-FORMULA
+    CALL "dm_ridge_new" USING DM-RIDGE-NEW DM-STATUS
+    PERFORM CHECK
+    MOVE DM-RIDGE-NEW-RESULT TO RIDGE
+    MOVE RIDGE TO DM-RIDGE-PRINT-SUMMARY-SELF
+    CALL "dm_ridge_print_summary" USING DM-RIDGE-PRINT-SUMMARY DM-STATUS
+    PERFORM CHECK
+
+    DISPLAY " "
+    DISPLAY "=================== Lasso ==================="
+    MOVE IRIS TO DM-LASSO-NEW-DATA
+    MOVE FORMULA-TEXT TO DM-LASSO-NEW-FORMULA
+    CALL "dm_lasso_new" USING DM-LASSO-NEW DM-STATUS
+    PERFORM CHECK
+    MOVE DM-LASSO-NEW-RESULT TO LASSO
+    MOVE LASSO TO DM-LASSO-PRINT-SUMMARY-SELF
+    CALL "dm_lasso_print_summary" USING DM-LASSO-PRINT-SUMMARY DM-STATUS
+    PERFORM CHECK
+
+    DISPLAY " "
+    DISPLAY "================= Elastic Net ================="
+    *> ElasticNet(data, formula, alpha, lambda, n_lambda, cv_folds, standardize, seed)
+    MOVE IRIS TO DM-ELASTIC-NET-NEW-DATA
+    MOVE FORMULA-TEXT TO DM-ELASTIC-NET-NEW-FORMULA
+    MOVE 3 TO DM-ELASTIC-NET-NEW-GIVEN
+    MOVE 0.5 TO DM-ELASTIC-NET-NEW-ALPHA
+    CALL "dm_elastic_net_new" USING DM-ELASTIC-NET-NEW DM-STATUS
+    PERFORM CHECK
+    MOVE DM-ELASTIC-NET-NEW-RESULT TO ELASTIC
+    MOVE ELASTIC TO DM-ELASTIC-NET-PRINT-SUMMARY-SELF
+    CALL "dm_elastic_net_print_summary" USING DM-ELASTIC-NET-PRINT-SUMMARY DM-STATUS
+    PERFORM CHECK
+
+    DISPLAY " "
+    DISPLAY "Saved figures showing how each model's coefficients respond to the "
+        "regularization strength, and the cross-validation curve used to pick it:"
+
+    *> The plot methods return RPlot handles; dm_plot_save takes them as Plots.
+    MOVE RIDGE TO DM-RIDGE-PLOT-COEFFICIENT-PATH-SELF
+    CALL "dm_ridge_plot_coefficient_path" USING DM-RIDGE-PLOT-COEFFICIENT-PATH DM-STATUS
+    PERFORM CHECK
+    MOVE DM-RIDGE-PLOT-COEFFICIENT-PATH-RESULT TO PLOT
+    MOVE "elastic_net_ridge_path.svg" TO DM-PLOT-SAVE-PATH
+    PERFORM SAVE-PLOT
+    MOVE RIDGE TO DM-RIDGE-PLOT-CV-CURVE-SELF
+    CALL "dm_ridge_plot_cv_curve" USING DM-RIDGE-PLOT-CV-CURVE DM-STATUS
+    PERFORM CHECK
+    MOVE DM-RIDGE-PLOT-CV-CURVE-RESULT TO PLOT
+    MOVE "elastic_net_ridge_cv.svg" TO DM-PLOT-SAVE-PATH
+    PERFORM SAVE-PLOT
+    DISPLAY "  ridge:       elastic_net_ridge_path.svg, elastic_net_ridge_cv.svg"
+
+    MOVE LASSO TO DM-LASSO-PLOT-COEFFICIENT-PATH-SELF
+    CALL "dm_lasso_plot_coefficient_path" USING DM-LASSO-PLOT-COEFFICIENT-PATH DM-STATUS
+    PERFORM CHECK
+    MOVE DM-LASSO-PLOT-COEFFICIENT-PATH-RESULT TO PLOT
+    MOVE "elastic_net_lasso_path.svg" TO DM-PLOT-SAVE-PATH
+    PERFORM SAVE-PLOT
+    MOVE LASSO TO DM-LASSO-PLOT-CV-CURVE-SELF
+    CALL "dm_lasso_plot_cv_curve" USING DM-LASSO-PLOT-CV-CURVE DM-STATUS
+    PERFORM CHECK
+    MOVE DM-LASSO-PLOT-CV-CURVE-RESULT TO PLOT
+    MOVE "elastic_net_lasso_cv.svg" TO DM-PLOT-SAVE-PATH
+    PERFORM SAVE-PLOT
+    DISPLAY "  lasso:       elastic_net_lasso_path.svg, elastic_net_lasso_cv.svg"
+
+    MOVE ELASTIC TO DM-ELASTIC-NET-PLOT-COEFFICIENT-PATH-SELF
+    CALL "dm_elastic_net_plot_coefficient_path" USING DM-ELASTIC-NET-PLOT-COEFFICIENT-PATH DM-STATUS
+    PERFORM CHECK
+    MOVE DM-ELASTIC-NET-PLOT-COEFFICIENT-PATH-RESULT TO PLOT
+    MOVE "elastic_net_elasticnet_path.svg" TO DM-PLOT-SAVE-PATH
+    PERFORM SAVE-PLOT
+    MOVE ELASTIC TO DM-ELASTIC-NET-PLOT-CV-CURVE-SELF
+    CALL "dm_elastic_net_plot_cv_curve" USING DM-ELASTIC-NET-PLOT-CV-CURVE DM-STATUS
+    PERFORM CHECK
+    MOVE DM-ELASTIC-NET-PLOT-CV-CURVE-RESULT TO PLOT
+    MOVE "elastic_net_elasticnet_cv.svg" TO DM-PLOT-SAVE-PATH
+    PERFORM SAVE-PLOT
+    DISPLAY "  elastic net: elastic_net_elasticnet_path.svg, elastic_net_elasticnet_cv.svg"
+
+    MOVE ELASTIC TO DM-HANDLE-SELF
+    CALL "dm_close" USING DM-HANDLE DM-STATUS
+    MOVE LASSO TO DM-HANDLE-SELF
+    CALL "dm_close" USING DM-HANDLE DM-STATUS
+    MOVE RIDGE TO DM-HANDLE-SELF
+    CALL "dm_close" USING DM-HANDLE DM-STATUS
+    MOVE IRIS TO DM-HANDLE-SELF
+    CALL "dm_close" USING DM-HANDLE DM-STATUS
+    STOP RUN.
+
+DISPLAY-IRIS-SHAPE.
+    MOVE IRIS TO DM-DATA-FRAME-NROWS-SELF
+    CALL "dm_data_frame_nrows" USING DM-DATA-FRAME-NROWS DM-STATUS
+    PERFORM CHECK
+    MOVE DM-DATA-FRAME-NROWS-RESULT TO INT-1
+    MOVE IRIS TO DM-DATA-FRAME-NCOLS-SELF
+    CALL "dm_data_frame_ncols" USING DM-DATA-FRAME-NCOLS DM-STATUS
+    PERFORM CHECK
+    MOVE DM-DATA-FRAME-NCOLS-RESULT TO INT-2
+    DISPLAY "iris: " FUNCTION TRIM(INT-1) " rows x " FUNCTION TRIM(INT-2) " cols".
+
+*> Saves PLOT to DM-PLOT-SAVE-PATH and closes it.
+SAVE-PLOT.
+    MOVE PLOT TO DM-PLOT-SAVE-SELF
+    CALL "dm_plot_save" USING DM-PLOT-SAVE DM-STATUS
+    PERFORM CHECK
+    MOVE PLOT TO DM-HANDLE-SELF
+    CALL "dm_close" USING DM-HANDLE DM-STATUS.
+
+*> Stops with the error after a failed call.
+CHECK.
+    IF NOT DM-STATUS-OK
+        DISPLAY "datamunge error (" FUNCTION TRIM(DM-STATUS-KIND) "): "
+            DM-STATUS-MESSAGE(1:DM-STATUS-LENGTH) UPON SYSERR
+        STOP RUN RETURNING 1
+    END-IF.
