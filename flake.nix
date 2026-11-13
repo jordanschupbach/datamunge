@@ -14,11 +14,11 @@
       url = "github:jordanschupbach/swig";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # Local development checkout: no crepl commit is required to use its changes.
-    # Refresh with `nix flake update crepl` after editing that checkout.
+    # crepl tracking its main branch on GitHub. Bump with `nix flake update crepl`.
+    # To test an uncommitted local checkout, pass
+    # `--override-input crepl path:/mnt/projects/crepl`.
     crepl = {
-      # ~/projects is a symlink here; Nix path inputs need its resolved location.
-      url = "path:/mnt/projects/crepl";
+      url = "github:jordanschupbach/crepl";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # Rosetta generates the Python extension (pydatamunge._datamunge) from C++ headers.

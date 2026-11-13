@@ -7,14 +7,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1794444056,
-        "narHash": "sha256-pc4WK/jL8tfaFiGtalx6dMdpjKZyhtqu6PYG1qcjd7s=",
-        "path": "/mnt/projects/crepl",
-        "type": "path"
+        "lastModified": 1793212914,
+        "narHash": "sha256-9g0z/s6EGS9PA4u1zgk0CezNFfpFUkskHfcOpowS8pk=",
+        "owner": "jordanschupbach",
+        "repo": "crepl",
+        "rev": "aabd163ccc22c7a1d07707462a3ff6b9bf689593",
+        "type": "github"
       },
       "original": {
-        "path": "/mnt/projects/crepl",
-        "type": "path"
+        "owner": "jordanschupbach",
+        "repo": "crepl",
+        "type": "github"
       }
     },
     "crepl_2": {
@@ -218,11 +221,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1794452784,
-        "narHash": "sha256-Zwnqs69dFJUMQcBGE8+ohoxPgy6FYy2LAZyx0Z+OsI8=",
+        "lastModified": 1794509182,
+        "narHash": "sha256-kG/5kcWH3CRo8PcMWDh1zQIe5xkJOSXsn45LNIO2W/U=",
         "ref": "refs/heads/master",
-        "rev": "db07915a65f56d402b3b2a9f4f9c1a3270991e57",
-        "revCount": 11,
+        "rev": "5e1711acd0ff08bfbd64d2448ef689cdf1a4a3e8",
+        "revCount": 13,
         "type": "git",
         "url": "file:///mnt/projects/rosetta"
       },
